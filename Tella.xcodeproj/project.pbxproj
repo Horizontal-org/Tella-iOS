@@ -1,0 +1,754 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		099DAF5012E2AAC07023ED5B /* Pods_Tella.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D855E2E74D391E08F41FAF2 /* Pods_Tella.framework */; };
+		1DA1301CA6EEE3EA167A69E5 /* Pods_TellaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 230D453FEF909909430BD7CB /* Pods_TellaTests.framework */; };
+		868768C4DB67AE87D33BFF07 /* Pods_Tella_TellaUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0E4EBD7DED4AA4907512549 /* Pods_Tella_TellaUITests.framework */; };
+		F66E65AD23E3207D000F93E5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65AC23E3207D000F93E5 /* AppDelegate.swift */; };
+		F66E65AF23E3207D000F93E5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65AE23E3207D000F93E5 /* SceneDelegate.swift */; };
+		F66E65B123E3207D000F93E5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65B023E3207D000F93E5 /* ContentView.swift */; };
+		F66E65B323E32080000F93E5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F66E65B223E32080000F93E5 /* Assets.xcassets */; };
+		F66E65B623E32080000F93E5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F66E65B523E32080000F93E5 /* Preview Assets.xcassets */; };
+		F66E65B923E32080000F93E5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F66E65B723E32080000F93E5 /* LaunchScreen.storyboard */; };
+		F66E65C423E32080000F93E5 /* TellaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65C323E32080000F93E5 /* TellaTests.swift */; };
+		F66E65CF23E32080000F93E5 /* TellaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65CE23E32080000F93E5 /* TellaUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F66E65C023E32080000F93E5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F66E65A123E3207D000F93E5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F66E65A823E3207D000F93E5;
+			remoteInfo = Tella;
+		};
+		F66E65CB23E32080000F93E5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F66E65A123E3207D000F93E5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F66E65A823E3207D000F93E5;
+			remoteInfo = Tella;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0645A8F80914BC44C9B3E130 /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		230D453FEF909909430BD7CB /* Pods_TellaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TellaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D855E2E74D391E08F41FAF2 /* Pods_Tella.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tella.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		64AC5E3423C04F4EEF5A1530 /* Pods-Tella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.release.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.release.xcconfig"; sourceTree = "<group>"; };
+		6A5299BC04393DE99BC9ACFB /* Pods-TellaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.release.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.release.xcconfig"; sourceTree = "<group>"; };
+		7350BBDE726FAE0F65C397B2 /* Pods-Tella-TellaUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.release.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.release.xcconfig"; sourceTree = "<group>"; };
+		B9FA0A01106483BDD3DBAF59 /* Pods-Tella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.debug.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.debug.xcconfig"; sourceTree = "<group>"; };
+		C3C61E50E8879509A188F202 /* Pods-Tella-TellaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		D0E4EBD7DED4AA4907512549 /* Pods_Tella_TellaUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tella_TellaUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F66E65A923E3207D000F93E5 /* Tella.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tella.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F66E65AC23E3207D000F93E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F66E65AE23E3207D000F93E5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		F66E65B023E3207D000F93E5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F66E65B223E32080000F93E5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F66E65B523E32080000F93E5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		F66E65B823E32080000F93E5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F66E65BA23E32080000F93E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F66E65BF23E32080000F93E5 /* TellaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TellaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F66E65C323E32080000F93E5 /* TellaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaTests.swift; sourceTree = "<group>"; };
+		F66E65C523E32080000F93E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F66E65CA23E32080000F93E5 /* TellaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TellaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F66E65CE23E32080000F93E5 /* TellaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaUITests.swift; sourceTree = "<group>"; };
+		F66E65D023E32080000F93E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F66E65A623E3207D000F93E5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				099DAF5012E2AAC07023ED5B /* Pods_Tella.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F66E65BC23E32080000F93E5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1DA1301CA6EEE3EA167A69E5 /* Pods_TellaTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F66E65C723E32080000F93E5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				868768C4DB67AE87D33BFF07 /* Pods_Tella_TellaUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0558468A822E92DE438E793C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4D855E2E74D391E08F41FAF2 /* Pods_Tella.framework */,
+				D0E4EBD7DED4AA4907512549 /* Pods_Tella_TellaUITests.framework */,
+				230D453FEF909909430BD7CB /* Pods_TellaTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A1BAD8F01FC9507A7BB0F69D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B9FA0A01106483BDD3DBAF59 /* Pods-Tella.debug.xcconfig */,
+				64AC5E3423C04F4EEF5A1530 /* Pods-Tella.release.xcconfig */,
+				C3C61E50E8879509A188F202 /* Pods-Tella-TellaUITests.debug.xcconfig */,
+				7350BBDE726FAE0F65C397B2 /* Pods-Tella-TellaUITests.release.xcconfig */,
+				0645A8F80914BC44C9B3E130 /* Pods-TellaTests.debug.xcconfig */,
+				6A5299BC04393DE99BC9ACFB /* Pods-TellaTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		F66E65A023E3207D000F93E5 = {
+			isa = PBXGroup;
+			children = (
+				F66E65AB23E3207D000F93E5 /* Tella */,
+				F66E65C223E32080000F93E5 /* TellaTests */,
+				F66E65CD23E32080000F93E5 /* TellaUITests */,
+				F66E65AA23E3207D000F93E5 /* Products */,
+				A1BAD8F01FC9507A7BB0F69D /* Pods */,
+				0558468A822E92DE438E793C /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		F66E65AA23E3207D000F93E5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F66E65A923E3207D000F93E5 /* Tella.app */,
+				F66E65BF23E32080000F93E5 /* TellaTests.xctest */,
+				F66E65CA23E32080000F93E5 /* TellaUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F66E65AB23E3207D000F93E5 /* Tella */ = {
+			isa = PBXGroup;
+			children = (
+				F66E65AC23E3207D000F93E5 /* AppDelegate.swift */,
+				F66E65AE23E3207D000F93E5 /* SceneDelegate.swift */,
+				F66E65B023E3207D000F93E5 /* ContentView.swift */,
+				F66E65B223E32080000F93E5 /* Assets.xcassets */,
+				F66E65B723E32080000F93E5 /* LaunchScreen.storyboard */,
+				F66E65BA23E32080000F93E5 /* Info.plist */,
+				F66E65B423E32080000F93E5 /* Preview Content */,
+			);
+			path = Tella;
+			sourceTree = "<group>";
+		};
+		F66E65B423E32080000F93E5 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				F66E65B523E32080000F93E5 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		F66E65C223E32080000F93E5 /* TellaTests */ = {
+			isa = PBXGroup;
+			children = (
+				F66E65C323E32080000F93E5 /* TellaTests.swift */,
+				F66E65C523E32080000F93E5 /* Info.plist */,
+			);
+			path = TellaTests;
+			sourceTree = "<group>";
+		};
+		F66E65CD23E32080000F93E5 /* TellaUITests */ = {
+			isa = PBXGroup;
+			children = (
+				F66E65CE23E32080000F93E5 /* TellaUITests.swift */,
+				F66E65D023E32080000F93E5 /* Info.plist */,
+			);
+			path = TellaUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F66E65A823E3207D000F93E5 /* Tella */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F66E65D323E32080000F93E5 /* Build configuration list for PBXNativeTarget "Tella" */;
+			buildPhases = (
+				97C212BDE47BDEC34110409E /* [CP] Check Pods Manifest.lock */,
+				F66E65A523E3207D000F93E5 /* Sources */,
+				F66E65A623E3207D000F93E5 /* Frameworks */,
+				F66E65A723E3207D000F93E5 /* Resources */,
+				2DB4E9BDAD1398C56C629716 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Tella;
+			productName = Tella;
+			productReference = F66E65A923E3207D000F93E5 /* Tella.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F66E65BE23E32080000F93E5 /* TellaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F66E65D623E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaTests" */;
+			buildPhases = (
+				ADC8F5251668D2851064E979 /* [CP] Check Pods Manifest.lock */,
+				F66E65BB23E32080000F93E5 /* Sources */,
+				F66E65BC23E32080000F93E5 /* Frameworks */,
+				F66E65BD23E32080000F93E5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F66E65C123E32080000F93E5 /* PBXTargetDependency */,
+			);
+			name = TellaTests;
+			productName = TellaTests;
+			productReference = F66E65BF23E32080000F93E5 /* TellaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		F66E65C923E32080000F93E5 /* TellaUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F66E65D923E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaUITests" */;
+			buildPhases = (
+				4C54EC8C46CF3EC123CA2E09 /* [CP] Check Pods Manifest.lock */,
+				F66E65C623E32080000F93E5 /* Sources */,
+				F66E65C723E32080000F93E5 /* Frameworks */,
+				F66E65C823E32080000F93E5 /* Resources */,
+				395D3B1E8AFA1146A2022975 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F66E65CC23E32080000F93E5 /* PBXTargetDependency */,
+			);
+			name = TellaUITests;
+			productName = TellaUITests;
+			productReference = F66E65CA23E32080000F93E5 /* TellaUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F66E65A123E3207D000F93E5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1110;
+				LastUpgradeCheck = 1110;
+				ORGANIZATIONNAME = "Anessa Petteruti";
+				TargetAttributes = {
+					F66E65A823E3207D000F93E5 = {
+						CreatedOnToolsVersion = 11.1;
+					};
+					F66E65BE23E32080000F93E5 = {
+						CreatedOnToolsVersion = 11.1;
+						TestTargetID = F66E65A823E3207D000F93E5;
+					};
+					F66E65C923E32080000F93E5 = {
+						CreatedOnToolsVersion = 11.1;
+						TestTargetID = F66E65A823E3207D000F93E5;
+					};
+				};
+			};
+			buildConfigurationList = F66E65A423E3207D000F93E5 /* Build configuration list for PBXProject "Tella" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F66E65A023E3207D000F93E5;
+			productRefGroup = F66E65AA23E3207D000F93E5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F66E65A823E3207D000F93E5 /* Tella */,
+				F66E65BE23E32080000F93E5 /* TellaTests */,
+				F66E65C923E32080000F93E5 /* TellaUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F66E65A723E3207D000F93E5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F66E65B923E32080000F93E5 /* LaunchScreen.storyboard in Resources */,
+				F66E65B623E32080000F93E5 /* Preview Assets.xcassets in Resources */,
+				F66E65B323E32080000F93E5 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F66E65BD23E32080000F93E5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F66E65C823E32080000F93E5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2DB4E9BDAD1398C56C629716 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tella/Pods-Tella-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tella/Pods-Tella-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tella/Pods-Tella-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		395D3B1E8AFA1146A2022975 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4C54EC8C46CF3EC123CA2E09 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Tella-TellaUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		97C212BDE47BDEC34110409E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Tella-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ADC8F5251668D2851064E979 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TellaTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F66E65A523E3207D000F93E5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F66E65AD23E3207D000F93E5 /* AppDelegate.swift in Sources */,
+				F66E65AF23E3207D000F93E5 /* SceneDelegate.swift in Sources */,
+				F66E65B123E3207D000F93E5 /* ContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F66E65BB23E32080000F93E5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F66E65C423E32080000F93E5 /* TellaTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F66E65C623E32080000F93E5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F66E65CF23E32080000F93E5 /* TellaUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F66E65C123E32080000F93E5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F66E65A823E3207D000F93E5 /* Tella */;
+			targetProxy = F66E65C023E32080000F93E5 /* PBXContainerItemProxy */;
+		};
+		F66E65CC23E32080000F93E5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F66E65A823E3207D000F93E5 /* Tella */;
+			targetProxy = F66E65CB23E32080000F93E5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		F66E65B723E32080000F93E5 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F66E65B823E32080000F93E5 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F66E65D123E32080000F93E5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F66E65D223E32080000F93E5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F66E65D423E32080000F93E5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B9FA0A01106483BDD3DBAF59 /* Pods-Tella.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"Tella/Preview Content\"";
+				DEVELOPMENT_TEAM = 2RXQS7CK9P;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = Tella/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.anessapetteruti.Tella;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F66E65D523E32080000F93E5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 64AC5E3423C04F4EEF5A1530 /* Pods-Tella.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"Tella/Preview Content\"";
+				DEVELOPMENT_TEAM = 2RXQS7CK9P;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = Tella/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.anessapetteruti.Tella;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F66E65D723E32080000F93E5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0645A8F80914BC44C9B3E130 /* Pods-TellaTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2RXQS7CK9P;
+				INFOPLIST_FILE = TellaTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.anessapetteruti.TellaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tella.app/Tella";
+			};
+			name = Debug;
+		};
+		F66E65D823E32080000F93E5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A5299BC04393DE99BC9ACFB /* Pods-TellaTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2RXQS7CK9P;
+				INFOPLIST_FILE = TellaTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.anessapetteruti.TellaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tella.app/Tella";
+			};
+			name = Release;
+		};
+		F66E65DA23E32080000F93E5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C3C61E50E8879509A188F202 /* Pods-Tella-TellaUITests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2RXQS7CK9P;
+				INFOPLIST_FILE = TellaUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.anessapetteruti.TellaUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Tella;
+			};
+			name = Debug;
+		};
+		F66E65DB23E32080000F93E5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7350BBDE726FAE0F65C397B2 /* Pods-Tella-TellaUITests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2RXQS7CK9P;
+				INFOPLIST_FILE = TellaUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.anessapetteruti.TellaUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Tella;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F66E65A423E3207D000F93E5 /* Build configuration list for PBXProject "Tella" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F66E65D123E32080000F93E5 /* Debug */,
+				F66E65D223E32080000F93E5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F66E65D323E32080000F93E5 /* Build configuration list for PBXNativeTarget "Tella" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F66E65D423E32080000F93E5 /* Debug */,
+				F66E65D523E32080000F93E5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F66E65D623E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F66E65D723E32080000F93E5 /* Debug */,
+				F66E65D823E32080000F93E5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F66E65D923E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F66E65DA23E32080000F93E5 /* Debug */,
+				F66E65DB23E32080000F93E5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F66E65A123E3207D000F93E5 /* Project object */;
+}
