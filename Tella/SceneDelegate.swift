@@ -51,12 +51,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
+        print("good morning")
+        if let imageView : UIImageView = UIApplication.shared.keyWindow?.subviews.last?.viewWithTag(101) as? UIImageView {
+            imageView.removeFromSuperview()
+        }
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+        print("goodnight")
+        let imageView = UIImageView(frame: UIScreen.main.bounds)
+        imageView.tag = 101
+        imageView.backgroundColor = UIColor.white
+        imageView.contentMode = .center
+        imageView.image = UIImage (named: "splash")
+        UIApplication.shared.keyWindow?.subviews.last?.addSubview(imageView)
     }
 
 
