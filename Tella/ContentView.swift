@@ -9,8 +9,14 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        return VStack {
+    
+    @State var currentView: MainViewEnum = .MAIN
+    var back: Button<AnyView> {
+        return backButton { self.currentView = .MAIN }
+    }
+    
+    func getMainView() -> AnyView {
+        return AnyView(Group {
             // title row
             HStack {
                 bigText("TELLA")
@@ -25,29 +31,52 @@ struct ContentView: View {
             // center buttons
             VStack {
                 bigLabeledImageButton(.CAMERA, "CAMERA") {
-                    print("camera button pressed")
+                    self.currentView = .CAMERA
                 }
                 bigLabeledImageButton(.RECORD, "RECORD") {
-                    print("record button pressed")
+                    self.currentView = .RECORD
                 }
             }
             Spacer()
             // bottom buttons
             HStack {
                 smallLabeledImageButton(.COLLECT, "Collect") {
-                    print("collect button pressed")
+                    self.currentView = .COLLECT
                 }
                 Spacer()
                 smallLabeledImageButton(.GALLERY, "Gallery") {
-                    print("gallery button pressed")
+                    self.currentView = .GALLERY
                 }
             }
             // settings button
             Button(action: {
-                print("settings button pressed")
+                self.currentView = .SETTINGS
             }) {
                 smallImg(.SETTINGS)
             }
+        })
+    }
+    
+    func getViewContents(_ currentView: MainViewEnum) -> AnyView {
+        switch currentView {
+        case .MAIN:
+            return getMainView()
+        case .CAMERA:
+            return AnyView(CameraView(back: back))
+        case .COLLECT:
+            return AnyView(CollectView(back: back))
+        case .RECORD:
+            return AnyView(RecordView(back: back))
+        case .SETTINGS:
+            return AnyView(SettingsView(back: back))
+        case .GALLERY:
+            return AnyView(GalleryView(back: back))
+        }
+    }
+    
+    var body: some View {
+        return VStack {
+            getViewContents(currentView)
         }
             .padding(20)
             .background(Color.black)

@@ -14,3 +14,11 @@ enum ImageEnum: String {
     case SETTINGS = "settings-icon"
     case SHUTDOWN = "shutdown-icon"
 }
+
+enum MainViewEnum {
+    case MAIN, CAMERA, COLLECT, RECORD, SETTINGS, GALLERY
+}
+
+enum GalleryViewEnum {
+    
+}

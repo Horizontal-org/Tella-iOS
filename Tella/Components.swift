@@ -8,22 +8,22 @@
 
 import SwiftUI
 
-private func makeText(_ text: String, _ size: CGFloat) -> some View {
-    Text(text)
+private func makeText(_ text: String, _ size: CGFloat) -> AnyView {
+    AnyView(Text(text)
         .font(.custom("Avenir Next Ultra Light", size: size))
         .foregroundColor(.white)
-        .font(.title)
+        .font(.title))
 }
 
-func bigText(_ text: String) -> some View {
+func bigText(_ text: String) -> AnyView {
     return makeText(text, 55)
 }
 
-func mediumText(_ text: String) -> some View {
+func mediumText(_ text: String) -> AnyView {
     return makeText(text, 35)
 }
 
-func smallText(_ text: String) -> some View {
+func smallText(_ text: String) -> AnyView {
     return makeText(text, 25)
 }
 
@@ -73,4 +73,10 @@ func bigLabeledImageButton(_ img: ImageEnum, _ text: String, _ onPress: @escapin
 
 func smallLabeledImageButton(_ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> some View {
     makeLabeledImageButton(false, img, text, onPress)
+}
+
+func backButton(_ onPress: @escaping () -> ()) -> Button<AnyView> {
+    Button(action: onPress) {
+        bigText("<")
+    }
 }
