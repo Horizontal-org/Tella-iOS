@@ -35,6 +35,8 @@ struct SettingsView: View {
             VStack {
                 Spacer().frame(maxHeight: 30)
                 HStack {
+                    smallImg(.KEY)
+                    Spacer().frame(maxWidth: 15)
                     Button(action: {
                         print("change password button pressed")
                     }) {
@@ -45,6 +47,8 @@ struct SettingsView: View {
                 }
                 Spacer().frame(maxHeight: 15)
                 HStack {
+                    smallImg(.KEYTYPE)
+                    Spacer().frame(maxWidth: 15)
                     Button(action: {
                         print("change password type button pressed")
                     }) {
