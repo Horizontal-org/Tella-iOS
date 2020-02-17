@@ -27,36 +27,36 @@ func smallText(_ text: String) -> some View {
     return makeText(text, 25)
 }
 
-private func makeImg(_ imgName: String, _ sideLength: CGFloat) -> some View {
-    Image(imgName)
+private func makeImg(_ imgName: ImageEnum, _ sideLength: CGFloat) -> some View {
+    Image(imgName.rawValue)
         .renderingMode(.original)
         .resizable()
         .frame(width: sideLength, height: sideLength)
 }
 
-func bigImg(_ imgName: String) -> some View {
-    return makeImg(imgName, 40)
+func bigImg(_ img: ImageEnum) -> some View {
+    return makeImg(img, 40)
 }
 
-func mediumImg(_ imgName: String) -> some View {
-    return makeImg(imgName, 35)
+func mediumImg(_ img: ImageEnum) -> some View {
+    return makeImg(img, 35)
 }
 
-func smallImg(_ imgName: String) -> some View {
-    return makeImg(imgName, 25)
+func smallImg(_ img: ImageEnum) -> some View {
+    return makeImg(img, 25)
 }
 
-private func makeLabeledImageButton(_ isBig: Bool, _ imgName: String, _ text: String, _ onPress: @escaping () -> ()) -> some View {
+private func makeLabeledImageButton(_ isBig: Bool, _ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> some View {
     Button(action: {
        onPress()
     }) {
         HStack {
             if isBig {
-                mediumImg(imgName)
+                mediumImg(img)
                 Spacer()
                 mediumText(text)
             } else {
-                smallImg(imgName)
+                smallImg(img)
                 Spacer().frame(maxWidth: 10)
                 smallText(text)
             }
@@ -67,10 +67,10 @@ private func makeLabeledImageButton(_ isBig: Bool, _ imgName: String, _ text: St
         .cornerRadius(25)
 }
 
-func bigLabeledImageButton(_ imgName: String, _ text: String, _ onPress: @escaping () -> ()) -> some View {
-    makeLabeledImageButton(true, imgName, text, onPress)
+func bigLabeledImageButton(_ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> some View {
+    makeLabeledImageButton(true, img, text, onPress)
 }
 
-func smallLabeledImageButton(_ imgName: String, _ text: String, _ onPress: @escaping () -> ()) -> some View {
-    makeLabeledImageButton(false, imgName, text, onPress)
+func smallLabeledImageButton(_ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> some View {
+    makeLabeledImageButton(false, img, text, onPress)
 }

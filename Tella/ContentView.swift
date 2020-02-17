@@ -18,27 +18,27 @@ struct ContentView: View {
                 Button(action: {
                     print("shutdown button pressed")
                 }) {
-                    bigImg("shutdown-icon")
+                    bigImg(.SHUTDOWN)
                 }
             }
             Spacer()
             // center buttons
             VStack {
-                bigLabeledImageButton("camera-icon", "CAMERA") {
+                bigLabeledImageButton(.CAMERA, "CAMERA") {
                     print("camera button pressed")
                 }
-                bigLabeledImageButton("record-icon", "RECORD") {
+                bigLabeledImageButton(.RECORD, "RECORD") {
                     print("record button pressed")
                 }
             }
             Spacer()
             // bottom buttons
             HStack {
-                smallLabeledImageButton("collect-icon", "Collect") {
+                smallLabeledImageButton(.COLLECT, "Collect") {
                     print("collect button pressed")
                 }
                 Spacer()
-                smallLabeledImageButton("gallery-icon", "Gallery") {
+                smallLabeledImageButton(.GALLERY, "Gallery") {
                     print("gallery button pressed")
                 }
             }
@@ -46,7 +46,7 @@ struct ContentView: View {
             Button(action: {
                 print("settings button pressed")
             }) {
-                smallImg("settings-icon")
+                smallImg(.SETTINGS)
             }
         }
             .padding(20)
