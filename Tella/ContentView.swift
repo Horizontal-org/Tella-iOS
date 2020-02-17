@@ -78,13 +78,15 @@ struct ContentView: View {
     }
     
     var body: some View {
-        return VStack {
-            getViewContents(currentView)
-        }
-            .padding(20)
-            .background(Color.black.edgesIgnoringSafeArea(.all))
-        
+        // makes black background and overlays content
+        return Color.black
+            .edgesIgnoringSafeArea(.all) // ignore just for the color
+            .overlay(
+                getViewContents(currentView)
+                    .padding(20) // padding for content
+            )
     }
+        
 }
 
 struct ontentView_Previews: PreviewProvider {

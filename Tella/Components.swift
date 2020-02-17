@@ -28,27 +28,27 @@ func smallText(_ text: String) -> AnyView {
     return makeText(text, 25)
 }
 
-private func makeImg(_ imgName: ImageEnum, _ sideLength: CGFloat) -> some View {
-    Image(imgName.rawValue)
+private func makeImg(_ imgName: ImageEnum, _ sideLength: CGFloat) -> AnyView {
+    AnyView(Image(imgName.rawValue)
         .renderingMode(.original)
         .resizable()
-        .frame(width: sideLength, height: sideLength)
+        .frame(width: sideLength, height: sideLength))
 }
 
-func bigImg(_ img: ImageEnum) -> some View {
+func bigImg(_ img: ImageEnum) -> AnyView {
     return makeImg(img, 40)
 }
 
-func mediumImg(_ img: ImageEnum) -> some View {
+func mediumImg(_ img: ImageEnum) -> AnyView {
     return makeImg(img, 35)
 }
 
-func smallImg(_ img: ImageEnum) -> some View {
+func smallImg(_ img: ImageEnum) -> AnyView {
     return makeImg(img, 25)
 }
 
-private func makeLabeledImageButton(_ isBig: Bool, _ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> some View {
-    Button(action: {
+private func makeLabeledImageButton(_ isBig: Bool, _ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> AnyView {
+    AnyView(Button(action: {
        onPress()
     }) {
         HStack {
@@ -65,14 +65,14 @@ private func makeLabeledImageButton(_ isBig: Bool, _ img: ImageEnum, _ text: Str
     }
         .padding(isBig ? 20 : 10)
         .border(Color.white, width: isBig ? 1 : 0)
-        .cornerRadius(25)
+        .cornerRadius(25))
 }
 
-func bigLabeledImageButton(_ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> some View {
+func bigLabeledImageButton(_ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> AnyView {
     makeLabeledImageButton(true, img, text, onPress)
 }
 
-func smallLabeledImageButton(_ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> some View {
+func smallLabeledImageButton(_ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> AnyView {
     makeLabeledImageButton(false, img, text, onPress)
 }
 
