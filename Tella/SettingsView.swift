@@ -15,8 +15,46 @@ struct SettingsView: View {
     
     var body: some View {
         return Group {
-            bigText("SETTINGS")
-            back
+//            mediumText("SETTINGS")
+//            back
+            HStack {
+                Button(action: {
+                    print("back button pressed")
+                }) {
+                    back
+                }
+                Spacer()
+                mediumText("SETTINGS")
+                Spacer()
+                Button(action: {
+                    print("shutdown button pressed")
+                }) {
+                    mediumImg(.SHUTDOWN)
+                }
+            }
+            VStack {
+                Spacer().frame(maxHeight: 30)
+                HStack {
+                    Button(action: {
+                        print("change password button pressed")
+                    }) {
+                        smallText("Change password")
+                    }
+                
+                    Spacer()
+                }
+                Spacer().frame(maxHeight: 15)
+                HStack {
+                    Button(action: {
+                        print("change password type button pressed")
+                    }) {
+                        smallText("Change password type")
+                    }
+                
+                    Spacer()
+                }
+            }
+            Spacer()
         }
     }
 }
