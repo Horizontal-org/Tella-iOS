@@ -37,20 +37,25 @@ struct ContentView: View {
                 smallLabeledImageButton(.COLLECT, "Collect") {
                     print("collect button pressed")
                 }
-                Spacer()
                 smallLabeledImageButton(.GALLERY, "Gallery") {
                     print("gallery button pressed")
                 }
             }
+
             // settings button
             Button(action: {
                 print("settings button pressed")
             }) {
+                Spacer()
+
                 smallImg(.SETTINGS)
+                Spacer().frame(maxWidth: 10)
+
             }
         }
             .padding(20)
-            .background(Color.black)
+            .background(Color.black.edgesIgnoringSafeArea(.all))
+        
     }
 }
 
