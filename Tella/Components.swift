@@ -43,7 +43,7 @@ func mediumImg(_ img: ImageEnum) -> some View {
 }
 
 func smallImg(_ img: ImageEnum) -> some View {
-    return makeImg(img, 25)
+    return makeImg(img, 30)
 }
 
 private func makeLabeledImageButton(_ isBig: Bool, _ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> some View {
@@ -53,7 +53,7 @@ private func makeLabeledImageButton(_ isBig: Bool, _ img: ImageEnum, _ text: Str
         HStack {
             if isBig {
                 mediumImg(img)
-                Spacer()
+                Spacer().frame(maxWidth: 20)
                 mediumText(text)
             } else {
                 smallImg(img)

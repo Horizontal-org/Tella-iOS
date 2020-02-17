@@ -43,16 +43,20 @@ struct ContentView: View {
                 smallLabeledImageButton(.COLLECT, "Collect") {
                     self.currentView = .COLLECT
                 }
-                Spacer()
                 smallLabeledImageButton(.GALLERY, "Gallery") {
                     self.currentView = .GALLERY
                 }
             }
+
             // settings button
             Button(action: {
                 self.currentView = .SETTINGS
             }) {
+                Spacer()
+
                 smallImg(.SETTINGS)
+                Spacer().frame(maxWidth: 10)
+
             }
         })
     }
@@ -79,7 +83,8 @@ struct ContentView: View {
             getViewContents(currentView)
         }
             .padding(20)
-            .background(Color.black)
+            .background(Color.black.edgesIgnoringSafeArea(.all))
+        
     }
 }
 
