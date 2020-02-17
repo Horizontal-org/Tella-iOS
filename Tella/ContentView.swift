@@ -53,7 +53,6 @@ struct ContentView: View {
                 self.currentView = .SETTINGS
             }) {
                 Spacer()
-
                 smallImg(.SETTINGS)
                 Spacer().frame(maxWidth: 10)
 

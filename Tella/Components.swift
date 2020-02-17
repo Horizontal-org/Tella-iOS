@@ -12,7 +12,8 @@ private func makeText(_ text: String, _ size: CGFloat) -> AnyView {
     AnyView(Text(text)
         .font(.custom("Avenir Next Ultra Light", size: size))
         .foregroundColor(.white)
-        .font(.title))
+        .font(.title)
+        .lineLimit(1))
 }
 
 func bigText(_ text: String) -> AnyView {
@@ -43,7 +44,7 @@ func mediumImg(_ img: ImageEnum) -> some View {
 }
 
 func smallImg(_ img: ImageEnum) -> some View {
-    return makeImg(img, 30)
+    return makeImg(img, 25)
 }
 
 private func makeLabeledImageButton(_ isBig: Bool, _ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> some View {
