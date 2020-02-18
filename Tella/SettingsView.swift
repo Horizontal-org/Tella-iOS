@@ -15,14 +15,8 @@ struct SettingsView: View {
     
     var body: some View {
         return Group {
-//            mediumText("SETTINGS")
-//            back
             HStack {
-                Button(action: {
-                    print("back button pressed")
-                }) {
-                    back
-                }
+                back
                 Spacer()
                 mediumText("SETTINGS")
                 Spacer()

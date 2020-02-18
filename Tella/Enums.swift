@@ -18,6 +18,7 @@ enum ImageEnum: String {
     case GRID = "grid-icon"
     case KEY = "key-icon"
     case KEYTYPE = "key-type-icon"
+    case PLUS = "plus-icon"
 }
 
 enum MainViewEnum {

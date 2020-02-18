@@ -22,11 +22,7 @@ struct GalleryView: View {
             return Group {
                 
                 HStack {
-                    Button(action: {
-                        print("back button pressed")
-                    }) {
-                        back
-                    }
+                    back
                     Spacer()
                     mediumText("GALLERY")
                     Spacer()
@@ -59,6 +55,15 @@ struct GalleryView: View {
                 List(files) { file in
                     FileRow(file: file)
 
+                }
+                Spacer()
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        print("plus icon pressed")
+                    }) {
+                        bigImg(.PLUS)
+                    }
                 }
 
             }
