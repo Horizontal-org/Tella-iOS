@@ -41,8 +41,7 @@ struct DocPicker: UIViewControllerRepresentable {
         Coordinator(isDocShown: $isDocShown, doc: $doc, self)
 
     }
-    
-    //initialize docPicker with specified document types and mode as import
+
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
         let docPicker = UIDocumentPickerViewController(documentTypes: ["com.apple.iwork.pages.pages", "com.apple.iwork.numbers.numbers", "com.apple.iwork.keynote.key","public.image", "com.apple.application", "public.item","public.data", "public.content", "public.audiovisual-content", "public.movie", "public.audiovisual-content", "public.video", "public.audio", "public.text", "public.data", "public.zip-archive", "com.pkware.zip-archive", "public.composite-content", "com.adobe.pdf"], in: .import)
         docPicker.delegate = context.coordinator
@@ -53,7 +52,6 @@ struct DocPicker: UIViewControllerRepresentable {
 
     }
 
-    //coordinator acts as the go between for swiftui and uikit
     class Coordinator: NSObject, UINavigationControllerDelegate, UIDocumentPickerDelegate {
 
         @Binding var docInCoordinator: NSObject?
@@ -68,7 +66,9 @@ struct DocPicker: UIViewControllerRepresentable {
         }
         //this function called on document click
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+            //do something with the doc object above probably
             print("a")
+            print(urls)
             guard let url = urls.first else {
                 return
             }
@@ -78,7 +78,7 @@ struct DocPicker: UIViewControllerRepresentable {
             }
             isDocCoordinatorShown = false
         }
-        //called when cancel button pressed
+        
         func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
             print("cancelled")
             isDocCoordinatorShown = false
@@ -100,7 +100,6 @@ struct GalleryView: View {
     
     
     let back: Button<AnyView>
-
         
     var body: some View {
             
@@ -129,14 +128,14 @@ struct GalleryView: View {
                 Button(action: {
                     print("list icon pressed")
                 }) {
-                    //smallImg(.LIST)
+                    smallImg(.LIST)
                     smallText("List view")
                 }
                 Spacer().frame(maxWidth: 40)
                 Button(action: {
                     print("grid icon pressed")
                 }) {
-                    //smallImg(.GRID)
+                    smallImg(.GRID)
                     smallText("Grid view")
                 }
             }
@@ -152,11 +151,12 @@ struct GalleryView: View {
                 Button(action: {
                     self.showingSheet = true
                 }) {
-                    //bigImg(.PLUS)
-                    smallText("plus")
+                    bigImg(.PLUS)
                 }
                 .actionSheet(isPresented: $showingSheet) {
                     //creates the popup on plus button, giving options of where to import from
+//                    let alertController = UIAlertController(title: "Import from...", message: nil, preferredStyle: .actionSheet)
+//                    alertController.addAction(UIAlertAction(title: "Files", style: .default, handler: self.showingDocPicker.toggle())
                     ActionSheet(title: Text("Import from..."), message: nil, buttons: [
                         .default(Text("Files")) { self.showingDocPicker.toggle() },
                         .default(Text("Photos")) { self.showCaptureImageView.toggle() },
@@ -164,12 +164,10 @@ struct GalleryView: View {
                         .cancel()
                     ])
                 }
-                    //presenting the document picker on top of the current view
                 .sheet(isPresented: $showingDocPicker) {
                     DocPicker(isDocShown: self.$showingDocPicker, doc: self.$doc)
                 
                 }
-                    //presenting the image view
                 .sheet(isPresented: $showCaptureImageView) {
                     CaptureImageView(isShown: self.$showCaptureImageView, image: self.$image)
                 
@@ -206,10 +204,8 @@ struct File: Identifiable {
 
 struct FileRow: View {
     var file: File
-    
+
     var body: some View {
-        smallText(file.name)
+        Text("\(file.name)").font(.custom("Avenir Next Ultra Light", size: 20)).foregroundColor(.black)
     }
-
-
 }

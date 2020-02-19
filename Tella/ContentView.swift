@@ -11,6 +11,8 @@ import SwiftUI
 struct ContentView: View {
     
     @State var currentView: MainViewEnum = .MAIN
+    @State var image: Image? = nil
+    
     var back: Button<AnyView> {
         return backButton { self.currentView = .MAIN }
     }
