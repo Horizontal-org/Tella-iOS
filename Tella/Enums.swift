@@ -13,6 +13,12 @@ enum ImageEnum: String {
     case RECORD = "record-icon"
     case SETTINGS = "settings-icon"
     case SHUTDOWN = "shutdown-icon"
+    case BACK = "back-icon"
+    case LIST = "list-icon"
+    case GRID = "grid-icon"
+    case KEY = "key-icon"
+    case KEYTYPE = "key-type-icon"
+    case PLUS = "plus-icon"
 }
 
 enum MainViewEnum {

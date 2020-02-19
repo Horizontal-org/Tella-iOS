@@ -78,6 +78,6 @@ func smallLabeledImageButton(_ img: ImageEnum, _ text: String, _ onPress: @escap
 
 func backButton(_ onPress: @escaping () -> ()) -> Button<AnyView> {
     Button(action: onPress) {
-        bigText("<")
+        mediumText("<")
     }
 }
