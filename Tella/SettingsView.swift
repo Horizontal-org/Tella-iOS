@@ -15,40 +15,20 @@ struct SettingsView: View {
     
     var body: some View {
         return Group {
-            HStack {
-                back
-                Spacer()
-                mediumText("SETTINGS")
-                Spacer()
-                Button(action: {
-                    print("shutdown button pressed")
-                }) {
-                    mediumImg(.SHUTDOWN)
-                }
-            }
+            header(back, "SETTINGS")
             VStack {
                 Spacer().frame(maxHeight: 30)
                 HStack {
-                    smallImg(.KEY)
-                    Spacer().frame(maxWidth: 15)
-                    Button(action: {
+                    smallLabeledImageButton(.KEY, "Change password") {
                         print("change password button pressed")
-                    }) {
-                        smallText("Change password")
                     }
-                
                     Spacer()
                 }
                 Spacer().frame(maxHeight: 15)
                 HStack {
-                    smallImg(.KEYTYPE)
-                    Spacer().frame(maxWidth: 15)
-                    Button(action: {
+                    smallLabeledImageButton(.KEYTYPE, "Change password type") {
                         print("change password type button pressed")
-                    }) {
-                        smallText("Change password type")
                     }
-                
                     Spacer()
                 }
             }

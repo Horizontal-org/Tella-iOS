@@ -12,66 +12,36 @@ struct GalleryView: View {
     
     let back: Button<AnyView>
         
-        var body: some View {
-            
-            let first = File(name: "File 1")
-            let second = File(name: "File 2")
-            let third = File(name: "File 3")
-            let files = [first, second, third]
-            
-            return Group {
-                
-                HStack {
-                    back
-                    Spacer()
-                    mediumText("GALLERY")
-                    Spacer()
-                    Button(action: {
-                        print("shutdown button pressed")
-                    }) {
-                        mediumImg(.SHUTDOWN)
-                    }
+    let files = [File(name: "File 1"), File(name: "File 2"), File(name: "File 3")]
+    
+    var body: some View {
+        return Group {
+            header(back, "GALLERY")
+            Spacer().frame(maxHeight: 50)
+            HStack {
+                smallLabeledImageButton(.LIST, "List view") {
+                    print("list icon pressed")
                 }
-
-                Spacer().frame(maxHeight: 50)
-
-                HStack {
-                    Button(action: {
-                        print("list icon pressed")
-                    }) {
-                        smallImg(.LIST)
-                        smallText("List view")
-                    }
-                    Spacer().frame(maxWidth: 40)
-                    Button(action: {
-                        print("grid icon pressed")
-                    }) {
-                        smallImg(.GRID)
-                        smallText("Grid view")
-                    }
+                Spacer().frame(maxWidth: 40)
+                smallLabeledImageButton(.GRID, "Grid view") {
+                    print("grid icon pressed")
                 }
-
-                Spacer()
-                List(files) { file in
-                    FileRow(file: file)
-
-                }
-                Spacer()
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        print("plus icon pressed")
-                    }) {
-                        bigImg(.PLUS)
-                    }
-                }
-
             }
-
-
+            Spacer()
+            List(files) { file in
+                smallText(file.name)
+            }
+            Spacer()
+            HStack {
+                Spacer()
+                Button(action: {
+                    print("plus icon pressed")
+                }) {
+                    bigImg(.PLUS)
+                }
+            }
         }
-    
-    
+    }
 }
 
 struct File: Identifiable {
@@ -83,6 +53,6 @@ struct FileRow: View {
     var file: File
 
     var body: some View {
-        Text("\(file.name)").font(.custom("Avenir Next Ultra Light", size: 20)).foregroundColor(.black)
+        smallText(file.name)
     }
 }

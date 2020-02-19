@@ -83,7 +83,7 @@ struct ContentView: View {
             .edgesIgnoringSafeArea(.all) // ignore just for the color
             .overlay(
                 getViewContents(currentView)
-                    .padding(20) // padding for content
+                    .padding(mainPadding) // padding for content
             )
     }
         
