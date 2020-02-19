@@ -8,12 +8,14 @@
 
 import SwiftUI
 
+//TODO tweak this boundary
+let mainPadding: CGFloat = UIScreen.main.bounds.width > 400 ? 20 : 10
+
 private func makeText(_ text: String, _ size: CGFloat) -> AnyView {
     AnyView(Text(text)
         .font(.custom("Avenir Next Ultra Light", size: size))
         .foregroundColor(.white)
-        .font(.title)
-        .lineLimit(1))
+        .font(.title))
 }
 
 func bigText(_ text: String) -> AnyView {
@@ -78,6 +80,20 @@ func smallLabeledImageButton(_ img: ImageEnum, _ text: String, _ onPress: @escap
 
 func backButton(_ onPress: @escaping () -> ()) -> Button<AnyView> {
     Button(action: onPress) {
-        bigText("<")
+        mediumText("<")
     }
+}
+
+func header(_ back: Button<AnyView>, _ title: String) -> AnyView {
+    AnyView(HStack {
+        back
+        Spacer()
+        mediumText(title)
+        Spacer()
+        Button(action: {
+            print("shutdown button pressed")
+        }) {
+            mediumImg(.SHUTDOWN)
+        }
+    })
 }

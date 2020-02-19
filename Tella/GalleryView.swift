@@ -16,7 +16,7 @@ struct CaptureImageView {
     func makeCoordinator() -> Coordinator {
       return Coordinator(isShown: $isShown, image: $image)
     }
-    
+
 }
 extension CaptureImageView: UIViewControllerRepresentable {
     func makeUIViewController(context: UIViewControllerRepresentableContext<CaptureImageView>) -> UIImagePickerController {
@@ -24,24 +24,24 @@ extension CaptureImageView: UIViewControllerRepresentable {
         picker.delegate = context.coordinator
         return picker
     }
-    
+
     func updateUIViewController(_ uiViewController: UIImagePickerController,
                                 context: UIViewControllerRepresentableContext<CaptureImageView>) {
-        
+
     }
 }
 
 struct DocPicker: UIViewControllerRepresentable {
-    
+
     typealias UIViewControllerType = UIDocumentPickerViewController
     @Binding var isDocShown: Bool
     @Binding var doc: NSObject?
-    
+
     func makeCoordinator() -> DocPicker.Coordinator {
         Coordinator(isDocShown: $isDocShown, doc: $doc, self)
 
     }
-    
+
     //initialize docPicker with specified document types and mode as import
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
         let docPicker = UIDocumentPickerViewController(documentTypes: ["com.apple.iwork.pages.pages", "com.apple.iwork.numbers.numbers", "com.apple.iwork.keynote.key","public.image", "com.apple.application", "public.item","public.data", "public.content", "public.audiovisual-content", "public.movie", "public.audiovisual-content", "public.video", "public.audio", "public.text", "public.data", "public.zip-archive", "com.pkware.zip-archive", "public.composite-content", "com.adobe.pdf"], in: .import)
@@ -61,10 +61,10 @@ struct DocPicker: UIViewControllerRepresentable {
         var parent: DocPicker
         init(isDocShown: Binding<Bool>, doc: Binding<NSObject?>, _ pickerController: DocPicker) {
             _isDocCoordinatorShown = isDocShown
-            _docInCoordinator = doc 
-            
+            _docInCoordinator = doc
+
             self.parent = pickerController
-            
+
         }
         //this function called on document click
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
@@ -83,68 +83,46 @@ struct DocPicker: UIViewControllerRepresentable {
             print("cancelled")
             isDocCoordinatorShown = false
         }
-        
+
     }
 }
 
 struct GalleryView: View {
-    
+
     @State var image: Image? = nil
     @State var showFileImageView: Bool = false
     @State var showCaptureImageView: Bool = false
-    
+
+    let back: Button<AnyView>
+    let files = [File(name: "File 1"), File(name: "File 2"), File(name: "File 3")]
+
     @State var doc: NSObject? = nil
     @State private var showingDocPicker = false
-    
     @State var showingSheet: Bool = false
-    
-    
-    let back: Button<AnyView>
 
-        
+
     var body: some View {
-            
+
         let first = File(name: "File 1")
         let second = File(name: "File 2")
         let third = File(name: "File 3")
         let files = [first, second, third]
-        
+
         return Group {
-                
-            HStack {
-                back
-                Spacer()
-                mediumText("GALLERY")
-                Spacer()
-                Button(action: {
-                    print("shutdown button pressed")
-                }) {
-                    mediumImg(.SHUTDOWN)
-                }
-            }
-
+            header(back, "GALLERY")
             Spacer().frame(maxHeight: 50)
-
             HStack {
-                Button(action: {
+                smallLabeledImageButton(.LIST, "List view") {
                     print("list icon pressed")
-                }) {
-                    //smallImg(.LIST)
-                    smallText("List view")
                 }
                 Spacer().frame(maxWidth: 40)
-                Button(action: {
+                smallLabeledImageButton(.GRID, "Grid view") {
                     print("grid icon pressed")
-                }) {
-                    //smallImg(.GRID)
-                    smallText("Grid view")
                 }
             }
-
             Spacer()
             List(files) { file in
-                FileRow(file: file)
-
+                smallText(file.name)
             }
             Spacer()
             HStack {
@@ -167,20 +145,20 @@ struct GalleryView: View {
                     //presenting the document picker on top of the current view
                 .sheet(isPresented: $showingDocPicker) {
                     DocPicker(isDocShown: self.$showingDocPicker, doc: self.$doc)
-                
+
                 }
                     //presenting the image view
                 .sheet(isPresented: $showCaptureImageView) {
                     CaptureImageView(isShown: self.$showCaptureImageView, image: self.$image)
-                
+
                 }
-                
+
             }
         }
         }
-        
+
     }
-    
+
 
 
 //code to fix constraints bug found from: https://stackoverflow.com/questions/55653187/swift-default-alertviewcontroller-breaking-constraints
@@ -206,10 +184,7 @@ struct File: Identifiable {
 
 struct FileRow: View {
     var file: File
-    
     var body: some View {
         smallText(file.name)
     }
-
-
 }

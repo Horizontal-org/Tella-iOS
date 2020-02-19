@@ -15,8 +15,24 @@ struct SettingsView: View {
     
     var body: some View {
         return Group {
-            bigText("SETTINGS")
-            back
+            header(back, "SETTINGS")
+            VStack {
+                Spacer().frame(maxHeight: 30)
+                HStack {
+                    smallLabeledImageButton(.KEY, "Change password") {
+                        print("change password button pressed")
+                    }
+                    Spacer()
+                }
+                Spacer().frame(maxHeight: 15)
+                HStack {
+                    smallLabeledImageButton(.KEYTYPE, "Change password type") {
+                        print("change password type button pressed")
+                    }
+                    Spacer()
+                }
+            }
+            Spacer()
         }
     }
 }
