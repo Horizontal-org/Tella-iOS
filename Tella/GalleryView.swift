@@ -10,23 +10,23 @@ import SwiftUI
 import UIKit
 
 //creating struct
-struct CaptureImageView {
+struct ImagePickerView {
     @Binding var isShown: Bool
     @Binding var image: Image?
-    func makeCoordinator() -> Coordinator {
-      return Coordinator(isShown: $isShown, image: $image)
+    func makeCoordinator() -> ImportCoordinator {
+      return ImportCoordinator(isShown: $isShown, image: $image)
     }
 
 }
-extension CaptureImageView: UIViewControllerRepresentable {
-    func makeUIViewController(context: UIViewControllerRepresentableContext<CaptureImageView>) -> UIImagePickerController {
+extension ImagePickerView: UIViewControllerRepresentable {
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePickerView>) -> UIImagePickerController {
         let picker = UIImagePickerController()
         picker.delegate = context.coordinator
         return picker
     }
 
     func updateUIViewController(_ uiViewController: UIImagePickerController,
-                                context: UIViewControllerRepresentableContext<CaptureImageView>) {
+                                context: UIViewControllerRepresentableContext<ImagePickerView>) {
 
     }
 }
@@ -91,7 +91,7 @@ struct GalleryView: View {
 
     @State var image: Image? = nil
     @State var showFileImageView: Bool = false
-    @State var showCaptureImageView: Bool = false
+    @State var showImagePickerView: Bool = false
 
     let back: Button<AnyView>
     let files = [File(name: "File 1"), File(name: "File 2"), File(name: "File 3")]
@@ -136,7 +136,7 @@ struct GalleryView: View {
                     //creates the popup on plus button, giving options of where to import from
                     ActionSheet(title: Text("Import from..."), message: nil, buttons: [
                         .default(Text("Files")) { self.showingDocPicker.toggle() },
-                        .default(Text("Photos")) { self.showCaptureImageView.toggle() },
+                        .default(Text("Photos")) { self.showImagePickerView.toggle() },
                         //.default(Text("Voice Memos")) { },
                         .cancel()
                     ])
@@ -147,8 +147,8 @@ struct GalleryView: View {
 
                 }
                     //presenting the image view
-                .sheet(isPresented: $showCaptureImageView) {
-                    CaptureImageView(isShown: self.$showCaptureImageView, image: self.$image)
+                .sheet(isPresented: $showImagePickerView) {
+                    ImagePickerView(isShown: self.$showImagePickerView, image: self.$image)
 
                 }
 
