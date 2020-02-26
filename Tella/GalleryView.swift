@@ -14,8 +14,43 @@ struct GalleryView: View {
     
     var body: some View {
         return Group {
-            bigText("GALLERY")
-            back
+            header(back, "GALLERY")
+            Spacer().frame(maxHeight: 50)
+            HStack {
+                smallLabeledImageButton(.LIST, "List view") {
+                    print("list icon pressed")
+                }
+                Spacer().frame(maxWidth: 40)
+                smallLabeledImageButton(.GRID, "Grid view") {
+                    print("grid icon pressed")
+                }
+            }
+            Spacer()
+            List(TellaFileManager.getEncryptedFileNames().map({ (value: String) -> File in File(name: value) })) { file in
+                smallText(file.name)
+            }
+            Spacer()
+            HStack {
+                Spacer()
+                Button(action: {
+                    print("plus icon pressed")
+                }) {
+                    bigImg(.PLUS)
+                }
+            }
         }
+    }
+}
+
+struct File: Identifiable {
+    var id = UUID()
+    var name: String
+}
+
+struct FileRow: View {
+    var file: File
+
+    var body: some View {
+        smallText(file.name)
     }
 }

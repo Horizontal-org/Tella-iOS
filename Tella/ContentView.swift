@@ -11,8 +11,13 @@ import SwiftUI
 struct ContentView: View {
     
     @State var currentView: MainViewEnum = .MAIN
+    
+    private func backFunc() {
+        self.currentView = .MAIN
+    }
+    
     var back: Button<AnyView> {
-        return backButton { self.currentView = .MAIN }
+        return backButton { self.backFunc() }
     }
     
     func getMainView() -> AnyView {
@@ -65,7 +70,7 @@ struct ContentView: View {
         case .MAIN:
             return getMainView()
         case .CAMERA:
-            return AnyView(CameraView(back: back))
+            return AnyView(CameraView(back: backFunc))
         case .COLLECT:
             return AnyView(CollectView(back: back))
         case .RECORD:
@@ -79,12 +84,16 @@ struct ContentView: View {
     
     var body: some View {
         // makes black background and overlays content
-        return Color.black
+        if currentView == .CAMERA {
+            return AnyView(CameraView(back: backFunc))
+        } else {
+            return AnyView(Color.black
             .edgesIgnoringSafeArea(.all) // ignore just for the color
             .overlay(
                 getViewContents(currentView)
-                    .padding(20) // padding for content
-            )
+                    .padding(mainPadding) // padding for content
+            ))
+        }
     }
         
 }
