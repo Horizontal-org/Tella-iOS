@@ -11,8 +11,6 @@ import SwiftUI
 struct GalleryView: View {
     
     let back: Button<AnyView>
-        
-    let files = [File(name: "File 1"), File(name: "File 2"), File(name: "File 3")]
     
     var body: some View {
         return Group {
@@ -28,7 +26,7 @@ struct GalleryView: View {
                 }
             }
             Spacer()
-            List(files) { file in
+            List(TellaFileManager.getEncryptedFileNames().map({ (value: String) -> File in File(name: value) })) { file in
                 smallText(file.name)
             }
             Spacer()
