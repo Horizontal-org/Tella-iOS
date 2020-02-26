@@ -100,7 +100,6 @@ struct GalleryView: View {
     @State private var showingDocPicker = false
     @State var showingSheet: Bool = false
 
-
     var body: some View {
 
         let first = File(name: "File 1")
@@ -121,7 +120,7 @@ struct GalleryView: View {
                 }
             }
             Spacer()
-            List(files) { file in
+            List(TellaFileManager.getEncryptedFileNames().map({ (value: String) -> File in File(name: value) })) { file in
                 smallText(file.name)
             }
             Spacer()

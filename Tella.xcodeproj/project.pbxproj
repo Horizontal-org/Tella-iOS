@@ -16,8 +16,10 @@
 		6D14AAD423FB0AD90094D71D /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AAD323FB0AD90094D71D /* RecordView.swift */; };
 		6D14AAD623FB0B120094D71D /* CollectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AAD523FB0B120094D71D /* CollectView.swift */; };
 		6D14AAD823FB0B310094D71D /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AAD723FB0B310094D71D /* GalleryView.swift */; };
-		9BC6ACFE3F45B3E4C86DD7AE /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 490B0780A59D8C938F5BF2EE /* libPods-Tella.a */; };
-		F472CA29C5F25900251AC8A0 /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2156C86E5E72C285C52B2696 /* libPods-TellaTests.a */; };
+		6D14AADA2405AC1B0094D71D /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AAD92405AC1A0094D71D /* FileManager.swift */; };
+		9FFDD1C35EF7C2E7C8BD9F2B /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C49E9B1EAC24FDF8053C9643 /* libPods-TellaTests.a */; };
+		B99303A8A10E84FA245B1108 /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1E736DE6DA8ECC5BD7BDA3C /* libPods-Tella.a */; };
+		D80DA4182CA966CED546BF80 /* libPods-Tella-TellaUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE1C86D9DDB173034D2CF9 /* libPods-Tella-TellaUITests.a */; };
 		F66E65AD23E3207D000F93E5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65AC23E3207D000F93E5 /* AppDelegate.swift */; };
 		F66E65AF23E3207D000F93E5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65AE23E3207D000F93E5 /* SceneDelegate.swift */; };
 		F66E65B123E3207D000F93E5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65B023E3207D000F93E5 /* ContentView.swift */; };
@@ -58,10 +60,13 @@
 		6D14AAD323FB0AD90094D71D /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
 		6D14AAD523FB0B120094D71D /* CollectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectView.swift; sourceTree = "<group>"; };
 		6D14AAD723FB0B310094D71D /* GalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
-		6DA74271CA6CB02D62BAEDB1 /* Pods-Tella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.release.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.release.xcconfig"; sourceTree = "<group>"; };
-		93227722D3AE2BB04C2EA11A /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
-		9336493A1383F25C837934B3 /* Pods-Tella-TellaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		E41F5B58F53FF0287817ED32 /* Pods-Tella-TellaUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.release.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.release.xcconfig"; sourceTree = "<group>"; };
+		6D14AAD92405AC1A0094D71D /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
+		82BF5CDE87F4E653272E3507 /* Pods-TellaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.release.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.release.xcconfig"; sourceTree = "<group>"; };
+		B1E736DE6DA8ECC5BD7BDA3C /* libPods-Tella.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C49E9B1EAC24FDF8053C9643 /* libPods-TellaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TellaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5F553F3A2E046C8ACC50B36 /* Pods-Tella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.debug.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.debug.xcconfig"; sourceTree = "<group>"; };
+		CD1FCEABC58D7874825930E8 /* Pods-Tella-TellaUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.release.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.release.xcconfig"; sourceTree = "<group>"; };
+		E7AE1C86D9DDB173034D2CF9 /* libPods-Tella-TellaUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella-TellaUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65A923E3207D000F93E5 /* Tella.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tella.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65AC23E3207D000F93E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F66E65AE23E3207D000F93E5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -155,13 +160,13 @@
 		F66E65AB23E3207D000F93E5 /* Tella */ = {
 			isa = PBXGroup;
 			children = (
+				F66E65B223E32080000F93E5 /* Assets.xcassets */,
+				F66E65B423E32080000F93E5 /* Preview Content */,
+				F66E65B723E32080000F93E5 /* LaunchScreen.storyboard */,
+				F66E65BA23E32080000F93E5 /* Info.plist */,
 				F66E65AC23E3207D000F93E5 /* AppDelegate.swift */,
 				F66E65AE23E3207D000F93E5 /* SceneDelegate.swift */,
 				F66E65B023E3207D000F93E5 /* ContentView.swift */,
-				F66E65B223E32080000F93E5 /* Assets.xcassets */,
-				F66E65B723E32080000F93E5 /* LaunchScreen.storyboard */,
-				F66E65BA23E32080000F93E5 /* Info.plist */,
-				F66E65B423E32080000F93E5 /* Preview Content */,
 				6D14AACB23FA3A2B0094D71D /* Components.swift */,
 				6D14AACD23FADACE0094D71D /* Enums.swift */,
 				1E67B39123FC9067001F3D64 /* Coordinator.swift */,
@@ -170,6 +175,7 @@
 				6D14AAD323FB0AD90094D71D /* RecordView.swift */,
 				6D14AAD523FB0B120094D71D /* CollectView.swift */,
 				6D14AAD723FB0B310094D71D /* GalleryView.swift */,
+				6D14AAD92405AC1A0094D71D /* FileManager.swift */,
 			);
 			path = Tella;
 			sourceTree = "<group>";
@@ -411,6 +417,7 @@
 				6D14AAD623FB0B120094D71D /* CollectView.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* Coordinator.swift in Sources */,
 				6D14AAD423FB0AD90094D71D /* RecordView.swift in Sources */,
+				6D14AADA2405AC1B0094D71D /* FileManager.swift in Sources */,
 				F66E65AF23E3207D000F93E5 /* SceneDelegate.swift in Sources */,
 				F66E65B123E3207D000F93E5 /* ContentView.swift in Sources */,
 				6D14AAD823FB0B310094D71D /* GalleryView.swift in Sources */,

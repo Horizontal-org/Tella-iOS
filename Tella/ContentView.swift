@@ -9,14 +9,18 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+
     @State var currentView: MainViewEnum = .MAIN
     @State var image: Image? = nil
-    
-    var back: Button<AnyView> {
-        return backButton { self.currentView = .MAIN }
+
+    private func backFunc() {
+        self.currentView = .MAIN
     }
-    
+
+    var back: Button<AnyView> {
+        return backButton { self.backFunc() }
+    }
+
     func getMainView() -> AnyView {
         return AnyView(Group {
             // title row
@@ -61,13 +65,13 @@ struct ContentView: View {
             }
         })
     }
-    
+
     func getViewContents(_ currentView: MainViewEnum) -> AnyView {
         switch currentView {
         case .MAIN:
             return getMainView()
         case .CAMERA:
-            return AnyView(CameraView(back: back))
+            return AnyView(CameraView(back: backFunc))
         case .COLLECT:
             return AnyView(CollectView(back: back))
         case .RECORD:
@@ -78,17 +82,21 @@ struct ContentView: View {
             return AnyView(GalleryView(back: back))
         }
     }
-    
+
     var body: some View {
         // makes black background and overlays content
-        return Color.black
+        if currentView == .CAMERA {
+            return AnyView(CameraView(back: backFunc))
+        } else {
+            return AnyView(Color.black
             .edgesIgnoringSafeArea(.all) // ignore just for the color
             .overlay(
                 getViewContents(currentView)
                     .padding(mainPadding) // padding for content
-            )
+            ))
+        }
     }
-        
+
 }
 
 struct ontentView_Previews: PreviewProvider {
