@@ -9,95 +9,22 @@
 import SwiftUI
 import UIKit
 
-//creating struct
-struct ImagePickerView {
-    @Binding var isShown: Bool
-    @Binding var image: Image?
-    func makeCoordinator() -> ImportCoordinator {
-      return ImportCoordinator(isShown: $isShown, image: $image)
-    }
 
-}
-extension ImagePickerView: UIViewControllerRepresentable {
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePickerView>) -> UIImagePickerController {
-        let picker = UIImagePickerController()
-        picker.delegate = context.coordinator
-        return picker
-    }
 
-    func updateUIViewController(_ uiViewController: UIImagePickerController,
-                                context: UIViewControllerRepresentableContext<ImagePickerView>) {
-
-    }
-}
-
-struct DocPicker: UIViewControllerRepresentable {
-
-    typealias UIViewControllerType = UIDocumentPickerViewController
-    @Binding var isDocShown: Bool
-    @Binding var doc: NSObject?
-
-    func makeCoordinator() -> DocPicker.Coordinator {
-        Coordinator(isDocShown: $isDocShown, doc: $doc, self)
-
-    }
-
-    //initialize docPicker with specified document types and mode as import
-    func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
-        let docPicker = UIDocumentPickerViewController(documentTypes: ["com.apple.iwork.pages.pages", "com.apple.iwork.numbers.numbers", "com.apple.iwork.keynote.key","public.image", "com.apple.application", "public.item","public.data", "public.content", "public.audiovisual-content", "public.movie", "public.audiovisual-content", "public.video", "public.audio", "public.text", "public.data", "public.zip-archive", "com.pkware.zip-archive", "public.composite-content", "com.adobe.pdf"], in: .import)
-        docPicker.delegate = context.coordinator
-        return docPicker
-    }
-
-    func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: Context) {
-
-    }
-
-    //coordinator acts as the go between for swiftui and uikit
-    class Coordinator: NSObject, UINavigationControllerDelegate, UIDocumentPickerDelegate {
-
-        @Binding var docInCoordinator: NSObject?
-        @Binding var isDocCoordinatorShown: Bool
-        var parent: DocPicker
-        init(isDocShown: Binding<Bool>, doc: Binding<NSObject?>, _ pickerController: DocPicker) {
-            _isDocCoordinatorShown = isDocShown
-            _docInCoordinator = doc
-
-            self.parent = pickerController
-
-        }
-        //this function called on document click
-        func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-            print("a")
-            guard let url = urls.first else {
-                return
-            }
-            if let resourceValues = try? url.resourceValues(forKeys: [.typeIdentifierKey]),
-                let uti = resourceValues.typeIdentifier {
-                print(uti)
-            }
-            isDocCoordinatorShown = false
-        }
-        //called when cancel button pressed
-        func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-            print("cancelled")
-            isDocCoordinatorShown = false
-        }
-
-    }
+enum ActivePicker {
+   case image, document
 }
 
 struct GalleryView: View {
 
     @State var image: Image? = nil
-    @State var showFileImageView: Bool = false
-    @State var showImagePickerView: Bool = false
+    @State private var showPicker = false
+    @State private var activePicker: ActivePicker = .image
 
     let back: Button<AnyView>
     let files = [File(name: "File 1"), File(name: "File 2"), File(name: "File 3")]
 
     @State var doc: NSObject? = nil
-    @State private var showingDocPicker = false
     @State var showingSheet: Bool = false
 
     var body: some View {
@@ -129,29 +56,31 @@ struct GalleryView: View {
                 Button(action: {
                     self.showingSheet = true
                 }) {
-                    //bigImg(.PLUS)
-                    smallText("plus")
+                    bigImg(.PLUS)
                 }
                 .actionSheet(isPresented: $showingSheet) {
                     //creates the popup on plus button, giving options of where to import from
                     ActionSheet(title: Text("Import from..."), message: nil, buttons: [
-                        .default(Text("Files")) { self.showingDocPicker.toggle() },
-                        .default(Text("Photos")) { self.showImagePickerView.toggle() },
+                        .default(Text("Files")) {
+                            self.showPicker.toggle()
+                            self.activePicker = ActivePicker.document
+                        },
+                        .default(Text("Photos")) {
+                            self.showPicker.toggle()
+                            self.activePicker = ActivePicker.image
+                        },
                         //.default(Text("Voice Memos")) { },
                         .cancel()
                     ])
                 }
-                    //presenting the document picker on top of the current view
-                .sheet(isPresented: $showingDocPicker) {
-                    DocPicker(isDocShown: self.$showingDocPicker, doc: self.$doc)
-
+                    //presenting the specified picker on top of the current view
+                .sheet(isPresented: $showPicker) {
+                    if self.activePicker == ActivePicker.image {
+                        ImagePickerView(isShown: self.$showPicker, image: self.$image)
+                    } else if self.activePicker == ActivePicker.document {
+                        DocPickerView(isShown: self.$showPicker, doc: self.$doc)
+                    }
                 }
-                    //presenting the image view
-                .sheet(isPresented: $showImagePickerView) {
-                    ImagePickerView(isShown: self.$showImagePickerView, image: self.$image)
-
-                }
-
             }
         }
         }
