@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4C1B395223F1F64400557E68 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C1B395123F1F64400557E68 /* splash.png */; };
 		6D14AACC23FA3A2B0094D71D /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AACB23FA3A2B0094D71D /* Components.swift */; };
 		6D14AACE23FADACE0094D71D /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AACD23FADACE0094D71D /* Enums.swift */; };
 		6D14AAD023FAE6AC0094D71D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AACF23FAE6AC0094D71D /* SettingsView.swift */; };
@@ -47,7 +46,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4C1B395123F1F64400557E68 /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splash.png; sourceTree = "<group>"; };
 		1608D56F9CAF4F6FFE8428EE /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1DC25B357B9918CBE4F480A9 /* Pods-Tella-TellaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4F915CF457C0DA88E8AC3244 /* Pods-Tella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.release.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.release.xcconfig"; sourceTree = "<group>"; };
@@ -157,7 +155,6 @@
 		F66E65AB23E3207D000F93E5 /* Tella */ = {
 			isa = PBXGroup;
 			children = (
-				4C1B395123F1F64400557E68 /* splash.png */,
 				F66E65B223E32080000F93E5 /* Assets.xcassets */,
 				F66E65B423E32080000F93E5 /* Preview Content */,
 				F66E65B723E32080000F93E5 /* LaunchScreen.storyboard */,
@@ -312,7 +309,6 @@
 			files = (
 				F66E65B923E32080000F93E5 /* LaunchScreen.storyboard in Resources */,
 				F66E65B623E32080000F93E5 /* Preview Assets.xcassets in Resources */,
-				4C1B395223F1F64400557E68 /* splash.png in Resources */,
 				F66E65B323E32080000F93E5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
