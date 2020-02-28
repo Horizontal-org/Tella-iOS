@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4CE85B852408B23800CF24AF /* demoIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CE85B842408B23800CF24AF /* demoIcon@2x.png */; };
+		4CE85B872408B26100CF24AF /* demoIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CE85B862408B26100CF24AF /* demoIcon@3x.png */; };
 		6D14AACC23FA3A2B0094D71D /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AACB23FA3A2B0094D71D /* Components.swift */; };
 		6D14AACE23FADACE0094D71D /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AACD23FADACE0094D71D /* Enums.swift */; };
 		6D14AAD023FAE6AC0094D71D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AACF23FAE6AC0094D71D /* SettingsView.swift */; };
@@ -48,6 +50,8 @@
 /* Begin PBXFileReference section */
 		1608D56F9CAF4F6FFE8428EE /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1DC25B357B9918CBE4F480A9 /* Pods-Tella-TellaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		4CE85B842408B23800CF24AF /* demoIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "demoIcon@2x.png"; sourceTree = "<group>"; };
+		4CE85B862408B26100CF24AF /* demoIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "demoIcon@3x.png"; sourceTree = "<group>"; };
 		4F915CF457C0DA88E8AC3244 /* Pods-Tella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.release.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.release.xcconfig"; sourceTree = "<group>"; };
 		6D14AACB23FA3A2B0094D71D /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		6D14AACD23FADACE0094D71D /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
@@ -107,6 +111,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4CE85B832408B1AF00CF24AF /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				4CE85B862408B26100CF24AF /* demoIcon@3x.png */,
+				4CE85B842408B23800CF24AF /* demoIcon@2x.png */,
+			);
+			name = resources;
+			sourceTree = "<group>";
+		};
 		9A2CC43B3FBED67259F6815D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -162,6 +175,7 @@
 				F66E65AC23E3207D000F93E5 /* AppDelegate.swift */,
 				F66E65AE23E3207D000F93E5 /* SceneDelegate.swift */,
 				F66E65B023E3207D000F93E5 /* ContentView.swift */,
+				4CE85B832408B1AF00CF24AF /* resources */,
 				6D14AACB23FA3A2B0094D71D /* Components.swift */,
 				6D14AACD23FADACE0094D71D /* Enums.swift */,
 				6D14AACF23FAE6AC0094D71D /* SettingsView.swift */,
@@ -307,8 +321,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4CE85B872408B26100CF24AF /* demoIcon@3x.png in Resources */,
 				F66E65B923E32080000F93E5 /* LaunchScreen.storyboard in Resources */,
 				F66E65B623E32080000F93E5 /* Preview Assets.xcassets in Resources */,
+				4CE85B852408B23800CF24AF /* demoIcon@2x.png in Resources */,
 				F66E65B323E32080000F93E5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
