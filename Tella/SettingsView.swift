@@ -34,7 +34,7 @@ struct SettingsView: View {
                 Spacer().frame(maxHeight: 15)
                 HStack {
                     // TODO: change image for button
-                    smallLabeledImageButton(.KEYTYPE, "Change app icon") {
+                    smallLabeledImageButton(.GRID, "Change app icon") {
                         if UIApplication.shared.alternateIconName == nil {
                             UIApplication.shared.setAlternateIconName("AppIcon-2")
                         } else {
