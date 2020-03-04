@@ -9,84 +9,124 @@
 import SwiftUI
 import UIKit
 
-
-
-enum ActivePicker {
-   case image, document
-}
-
 struct GalleryView: View {
+    
+    @State var currentView = GalleryViewEnum.MAIN
+    @State var displayList = true
+    @State var fileList = TellaFileManager.getEncryptedFileNames()
+    
+    func galleryBack() {
+        self.currentView = GalleryViewEnum.MAIN;
+        self.fileList = TellaFileManager.getEncryptedFileNames()
+    }
 
-    @State var image: Image? = nil
-    @State private var showPicker = false
-    @State private var activePicker: ActivePicker = .image
-
+    var galleryBackButton: Button<AnyView> {
+        return backButton { self.galleryBack() }
+    }
+    
     let back: Button<AnyView>
-    let files = [File(name: "File 1"), File(name: "File 2"), File(name: "File 3")]
+    
+    func getListGridView() -> AnyView {
+        if displayList {
+            return AnyView(List(fileList.map({ (value: String) -> File in File(name: value) })) { file in
+                Group {
+                    Button(action: {
+                        print("preview")
+                        self.currentView = .PREVIEW(filepath: TellaFileManager.fileNameToPath(name: file.name))
+                    }) {
+                        smallText(file.name)
+                    }.buttonStyle(BorderlessButtonStyle())
+                    Spacer()
+                    Button(action: {
+                        print("delete")
+                        TellaFileManager.deleteEncryptedFile(name: file.name)
+                        self.fileList = TellaFileManager.getEncryptedFileNames()
+                    }) {
+                        smallText("x")
+                    }.buttonStyle(BorderlessButtonStyle())
+                }
+            })
+        } else {
+            return smallText("Grid View Not Implemented")
+        }
+    }
 
-    @State var doc: NSObject? = nil
-    @State var showingSheet: Bool = false
-
-    var body: some View {
-
-        let first = File(name: "File 1")
-        let second = File(name: "File 2")
-        let third = File(name: "File 3")
-        let files = [first, second, third]
-
-        return Group {
+    func getMainView() -> AnyView {
+        return AnyView(Group {
             header(back, "GALLERY")
             Spacer().frame(maxHeight: 50)
             HStack {
-                smallLabeledImageButton(.LIST, "List view") {
-                    print("list icon pressed")
-                }
-                Spacer().frame(maxWidth: 40)
-                smallLabeledImageButton(.GRID, "Grid view") {
-                    print("grid icon pressed")
+                if displayList {
+                    smallLabeledImageButton(.GRID, "Grid view") {
+                        self.displayList = false
+                    }
+                } else {
+                    smallLabeledImageButton(.LIST, "List view") {
+                        self.displayList = true
+                    }
                 }
             }
             Spacer()
-            List(TellaFileManager.getEncryptedFileNames().map({ (value: String) -> File in File(name: value) })) { file in
-                smallText(file.name)
-            }
+            getListGridView()
             Spacer()
             HStack {
                 Spacer()
                 Button(action: {
-                    self.showingSheet = true
+                    self.currentView = .PICKERPICKER
                 }) {
                     bigImg(.PLUS)
                 }
-                .actionSheet(isPresented: $showingSheet) {
-                    //creates the popup on plus button, giving options of where to import from
-                    ActionSheet(title: Text("Import from..."), message: nil, buttons: [
-                        .default(Text("Files")) {
-                            self.showPicker.toggle()
-                            self.activePicker = ActivePicker.document
-                        },
-                        .default(Text("Photos")) {
-                            self.showPicker.toggle()
-                            self.activePicker = ActivePicker.image
-                        },
-                        //.default(Text("Voice Memos")) { },
-                        .cancel()
-                    ])
-                }
-                    //presenting the specified picker on top of the current view
-                .sheet(isPresented: $showPicker) {
-                    if self.activePicker == ActivePicker.image {
-                        ImagePickerView(isShown: self.$showPicker, image: self.$image)
-                    } else if self.activePicker == ActivePicker.document {
-                        DocPickerView(isShown: self.$showPicker, doc: self.$doc)
+            }
+            .actionSheet(isPresented: Binding(
+                get: {self.currentView == .PICKERPICKER},
+                set: {
+                    _ = $0
+                    if self.currentView == .PICKERPICKER {
+                        self.currentView = .MAIN
                     }
+                })) {
+                //creates the popup on plus button, giving options of where to import from
+                ActionSheet(title: Text("Import from..."), message: nil, buttons: [
+                    .default(Text("Files")) {
+                        self.currentView = .DOCPICKER
+                    },
+                    .default(Text("Photos")) {
+                        self.currentView = .IMAGEPICKER
+                    },
+                    .cancel()
+                ])
+            }
+                //presenting the specified picker on top of the current view
+            .sheet(isPresented: Binding(
+                get: {self.currentView == .IMAGEPICKER || self.currentView == .DOCPICKER},
+            set: {
+                _ = $0
+                if self.currentView == .IMAGEPICKER || self.currentView == .DOCPICKER {
+                    self.currentView = .MAIN
+                }
+            })) {
+                if self.currentView == .IMAGEPICKER {
+                    ImagePickerView(back: self.galleryBack)
+                } else if self.currentView == .DOCPICKER {
+                    DocPickerView(back: self.galleryBack)
                 }
             }
-        }
-        }
-
+        })
     }
-
+    
+    func getViewContents(_ currentView: GalleryViewEnum) -> AnyView {
+        switch currentView {
+        case .PREVIEW(let filepath):
+            return AnyView(PreviewView(back: galleryBackButton, filepath: filepath))
+        default:
+            return getMainView()
+        }
+    }
+    
+    var body: some View {
+        getViewContents(currentView)
+    }
+}
 
 
 //code to fix constraints bug found from: https://stackoverflow.com/questions/55653187/swift-default-alertviewcontroller-breaking-constraints

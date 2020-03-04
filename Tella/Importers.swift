@@ -5,48 +5,18 @@
 //  Created by Erin Simshauser on 2/18/20.
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
-
 import SwiftUI
 import Photos
 
-//creating struct
 struct ImagePickerView: UIViewControllerRepresentable {
-    @Binding var isShown: Bool
-    @Binding var image: Image?
     
+    let back: () -> ()
 
-    
-    func makeCoordinator() -> ImagePickerView.ImageCoordinator {
+    func makeCoordinator() -> ImageCoordinator {
         print("make coordinator called")
-      return ImageCoordinator(isShown: $isShown, image: $image)
+      return ImageCoordinator(back)
     }
-    
-    class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-        @Binding var isCoordinatorShown: Bool
-        @Binding var imageInCoordinator: Image?
-        
-        init(isShown: Binding<Bool>, image: Binding<Image?>) {
-            _isCoordinatorShown = isShown
-            _imageInCoordinator = image
-            
-        }
-        //this function gets called when user selects an image
-        func imagePickerController(_ picker: UIImagePickerController,
-                    didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            //this is getting the image from user selection
-            guard let unwrapImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-            
-            TellaFileManager.saveImage(unwrapImage)
 
-            isCoordinatorShown = false
-            
-        }
-        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-            isCoordinatorShown = false
-            
-        }
-    }
-    
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePickerView>) ->
         UIImagePickerController {
             print("makeUIViewController called")
@@ -61,48 +31,34 @@ struct ImagePickerView: UIViewControllerRepresentable {
     }
 }
 
-struct DocPickerView: UIViewControllerRepresentable {
-
-//    typealias UIViewControllerType = UIDocumentPickerViewController
-    @Binding var isShown: Bool
-    @Binding var doc: NSObject?
-
-    func makeCoordinator() -> DocPickerView.DocCoordinator {
-            print("make docCoordinator")
-           return DocCoordinator(isShown: $isShown, doc: $doc, self)
-       }
+class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
-    //coordinator acts as the go between for swiftui and uikit
+    let back: () -> ()
     
-    class DocCoordinator: NSObject, UINavigationControllerDelegate, UIDocumentPickerDelegate {
-
-        @Binding var docInCoordinator: NSObject?
-        @Binding var isDocCoordinatorShown: Bool
-        var parent: DocPickerView
-        init(isShown: Binding<Bool>, doc: Binding<NSObject?>, _ pickerController: DocPickerView) {
-            _isDocCoordinatorShown = isShown
-            _docInCoordinator = doc
-
-            self.parent = pickerController
-
-        }
-        //this function called on document click
-        func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-            guard let url = urls.first else {
-                print("Failed to retrieve url")
-                return
-            }
-            TellaFileManager.copyExternalFile(url)
-            isDocCoordinatorShown = false
-        }
-        //called when cancel button pressed
-        func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-            print("cancelled")
-            isDocCoordinatorShown = false
-        }
-
+    init(_ back: @escaping () -> ()) {
+        self.back = back
     }
     
+//  this function gets called when user selects an image
+    func imagePickerController(_ picker: UIImagePickerController,
+                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let unwrapImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
+        TellaFileManager.saveImage(unwrapImage)
+        back()
+    }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        back()
+    }
+}
+
+struct DocPickerView: UIViewControllerRepresentable {
+    
+    let back: () -> ()
+
+    func makeCoordinator() -> DocCoordinator {
+        return DocCoordinator(back)
+    }
+
     //initialize docPicker with specified document types and mode as import
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
         print("make UIViewController called")
@@ -111,6 +67,30 @@ struct DocPickerView: UIViewControllerRepresentable {
         return docPicker
     }
 
-    func updateUIViewController(_ uiViewController: UIDocumentPickerViewController,
-                                context: UIViewControllerRepresentableContext<DocPickerView>) { }
+    func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: UIViewControllerRepresentableContext<DocPickerView>) {}
+}
+
+//coordinator acts as the go between for swiftui and uikit
+class DocCoordinator: NSObject, UINavigationControllerDelegate, UIDocumentPickerDelegate {
+
+    let back: () -> ()
+    
+    init(_ back: @escaping () -> ()) {
+        self.back = back
+    }
+    
+//  this function called on document click
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard let url = urls.first else {
+            print("Failed to retrieve url")
+            return
+        }
+        TellaFileManager.copyExternalFile(url)
+        back()
+    }
+    //called when cancel button pressed
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        back()
+    }
+
 }
