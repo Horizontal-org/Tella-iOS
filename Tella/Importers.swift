@@ -88,14 +88,11 @@ struct DocPickerView: UIViewControllerRepresentable {
         }
         //this function called on document click
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-            print("a")
             guard let url = urls.first else {
+                print("Failed to retrieve url")
                 return
             }
-            if let resourceValues = try? url.resourceValues(forKeys: [.typeIdentifierKey]),
-                let uti = resourceValues.typeIdentifier {
-                print(uti)
-            }
+            TellaFileManager.copyExternalFile(url)
             isDocCoordinatorShown = false
         }
         //called when cancel button pressed

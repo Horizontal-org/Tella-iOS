@@ -66,17 +66,16 @@ struct TellaFileManager {
         saveFile(image.pngData()!)
     }
     
-    private static func saveFile(_ data: Data) {
-        var foundNewName = false
-        var newName = getRandomFilename()
-        while !foundNewName {
-            if !instance.fileExists(atPath: "\(encryptedFolderPath)/\(newName)") {
-                foundNewName = true
-            } else {
-                newName = getRandomFilename()
-            }
+    static func copyExternalFile(_ url: URL) {
+        do {
+            try instance.copyItem(atPath: url.path, toPath: "\(encryptedFolderPath)/\(getRandomFilename())")
+        } catch let error {
+            print("Error: \(error.localizedDescription)")
         }
-        instance.createFile(atPath: "\(encryptedFolderPath)/\(newName)", contents: data)
+    }
+    
+    private static func saveFile(_ data: Data) {
+        instance.createFile(atPath: "\(encryptedFolderPath)/\(getRandomFilename())", contents: data)
     }
     
     static func getEncryptedFileNames() -> [String] {
