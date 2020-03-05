@@ -81,7 +81,9 @@ func urlToFileTypeEnum(_ url: URL) -> FileTypeEnum {
         switch uti {
         case "com.adobe.pdf":
             return .PDF
-            //TODO add cases here
+        case "com.apple.quicktime-movie":
+            return .VIDEO
+        //TODO add cases here
         default:
             break
         }

@@ -48,7 +48,7 @@ enum GalleryViewEnum {
 enum FileTypeEnum: String {
     case IMAGE = "png"
     case TEXT = "txt"
-    case VIDEO = "mp4"
+    case VIDEO = "MOV"
     case PDF = "pdf"
     case OTHER = "unknown"
 }

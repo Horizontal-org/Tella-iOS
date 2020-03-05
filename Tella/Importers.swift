@@ -7,6 +7,7 @@
 //
 import SwiftUI
 import Photos
+import MobileCoreServices
 
 struct ImagePickerView: UIViewControllerRepresentable {
     
@@ -20,9 +21,11 @@ struct ImagePickerView: UIViewControllerRepresentable {
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePickerView>) ->
         UIImagePickerController {
             print("makeUIViewController called")
-        let picker = UIImagePickerController()
-        picker.delegate = context.coordinator
-        return picker
+            let picker = UIImagePickerController()
+            picker.delegate = context.coordinator
+            picker.mediaTypes = [(kUTTypeImage as String), (kUTTypeMovie as String)];
+            print(picker.mediaTypes)
+            return picker
     }
 
     func updateUIViewController(_ uiViewController: UIImagePickerController,
@@ -42,8 +45,15 @@ class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerC
 //  this function gets called when user selects an image
     func imagePickerController(_ picker: UIImagePickerController,
                 didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let unwrapImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-        TellaFileManager.saveImage(unwrapImage)
+        let mediaType = info[UIImagePickerController.InfoKey.mediaType] as AnyObject
+        print(mediaType)
+        if mediaType as! CFString == kUTTypeImage {
+            guard let unwrapImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
+            TellaFileManager.saveImage(unwrapImage)
+        } else if mediaType as! CFString == kUTTypeMovie {
+            guard let videoURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL else { return }
+            TellaFileManager.copyExternalFile(videoURL)
+        }
         back()
     }
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
