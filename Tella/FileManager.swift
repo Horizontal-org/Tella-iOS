@@ -15,13 +15,34 @@ struct TellaFileManager {
     private static let rootDir = "\(NSHomeDirectory())/Documents"
     private static let keyFolderPath = "\(rootDir)/keys"
     private static let encryptedFolderPath = "\(rootDir)/files"
-    private static let publicKeyPath = "\(keyFolderPath)/pub-key.txt"
-    private static let privateKeyPath = "\(keyFolderPath)/priv-key.txt"
+    private static let publicKeyPath = "\(encryptedFolderPath)/pub-key.txt"
     private static let fileNameLength = 12
     
     static func initDirectories() {
         initDirectory(keyFolderPath)
         initDirectory(encryptedFolderPath)
+    }
+    
+    static func initKeys() {
+        let flags = SecAccessControlCreateFlags(rawValue: SecAccessControlCreateFlags.biometryAny.rawValue | SecAccessControlCreateFlags.privateKeyUsage.rawValue | SecAccessControlCreateFlags.applicationPassword.rawValue)
+        let access = SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenUnlockedThisDeviceOnly, flags, nil)!
+        let attributes: [String: Any] = [
+          kSecAttrKeyType as String:            kSecAttrKeyTypeECSECPrimeRandom,
+          kSecAttrKeySizeInBits as String:      256,
+          kSecAttrTokenID as String:            kSecAttrTokenIDSecureEnclave,
+          kSecPrivateKeyAttrs as String: [
+            kSecAttrIsPermanent as String:      true,
+            kSecAttrApplicationTag as String:   "testing-tag-1",
+            kSecAttrAccessControl as String:    access
+          ]
+        ]
+        var error: Unmanaged<CFError>?
+        guard let privateKey = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
+            print("Error: \(error?.takeRetainedValue().localizedDescription ?? "")")
+            return
+        }
+        let publicKey = SecKeyCopyPublicKey(privateKey)
+        
     }
     
     static func clearAllFiles() {
@@ -48,10 +69,6 @@ struct TellaFileManager {
     
     static func savePublicKey(_ key: String) {
         instance.createFile(atPath: publicKeyPath, contents: key.data(using: String.Encoding.utf8)!)
-    }
-    
-    static func savePrivateKey(_ key: String) {
-        instance.createFile(atPath: privateKeyPath, contents: key.data(using: String.Encoding.utf8)!)
     }
     
     static func saveEncryptedFile() {
