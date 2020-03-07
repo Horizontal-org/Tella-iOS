@@ -26,5 +26,29 @@ enum MainViewEnum {
 }
 
 enum GalleryViewEnum {
+    case MAIN, PREVIEW(filepath: String), DOCPICKER, IMAGEPICKER, PICKERPICKER
     
+    static func ==(lhs: GalleryViewEnum, rhs: GalleryViewEnum) -> Bool {
+        switch lhs {
+        case .MAIN:
+            if case .MAIN = rhs { return true }
+        case .PREVIEW(let filepath):
+            if case .PREVIEW(let filepath2) = rhs, filepath == filepath2 { return true }
+         case .DOCPICKER:
+            if case .DOCPICKER = rhs { return true }
+        case .IMAGEPICKER:
+            if case .IMAGEPICKER = rhs { return true }
+        case .PICKERPICKER:
+            if case .PICKERPICKER = rhs { return true }
+        }
+        return false
+    }
+}
+
+enum FileTypeEnum: String {
+    case IMAGE = "png"
+    case TEXT = "txt"
+    case VIDEO = "MOV"
+    case PDF = "pdf"
+    case OTHER = "unknown"
 }
