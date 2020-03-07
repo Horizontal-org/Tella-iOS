@@ -5,7 +5,6 @@
 //  Created by Oliphant, Samuel on 2/25/20.
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
-
 import Foundation
 import UIKit
 
@@ -51,32 +50,63 @@ struct TellaFileManager {
     }
     
     static func savePrivateKey(_ key: String) {
+        //TODO encrypt this
         instance.createFile(atPath: privateKeyPath, contents: key.data(using: String.Encoding.utf8)!)
     }
     
     static func saveEncryptedFile() {
-        
+        //TODO
     }
     
     static func saveTextFile(_ text: String) {
-        saveFile(text.data(using: String.Encoding.utf8)!)
+        saveFile(text.data(using: String.Encoding.utf8)!, .TEXT)
     }
     
     static func saveImage(_ image: UIImage) {
-        saveFile(image.pngData()!)
+        if let fixed = image.fixedOrientation() {
+            saveFile(fixed.pngData()!, .IMAGE)
+        }
     }
     
-    private static func saveFile(_ data: Data) {
+    private static func saveFile(_ data: Data, _ type: FileTypeEnum) {
         var foundNewName = false
-        var newName = getRandomFilename()
+        var newName = getRandomFilename(type)
         while !foundNewName {
             if !instance.fileExists(atPath: "\(encryptedFolderPath)/\(newName)") {
                 foundNewName = true
             } else {
-                newName = getRandomFilename()
+                newName = getRandomFilename(type)
             }
         }
         instance.createFile(atPath: "\(encryptedFolderPath)/\(newName)", contents: data)
+    }
+    
+    static func copyExternalFile(_ url: URL) {
+        do {
+            try instance.copyItem(atPath: url.path, toPath: "\(encryptedFolderPath)/\(getRandomFilename(urlToFileTypeEnum(url)))")
+        } catch let error {
+            print("Error: \(error.localizedDescription)")
+        }
+    }
+    
+    static func recoverImageFile(_ atPath: String) -> UIImage? {
+        let data = instance.contents(atPath: atPath)
+        if let unwrapped = data {
+            return UIImage(data: unwrapped)
+        }
+        return nil
+    }
+    
+    static func recoverTextFile(_ atPath: String) -> String? {
+        let data = instance.contents(atPath: atPath)
+        if let unwrapped = data {
+            return String(data: unwrapped, encoding: String.Encoding.utf8)
+        }
+        return nil
+    }
+    
+    static func recoverData(_ atPath: String) -> Data? {
+        return instance.contents(atPath: atPath)
     }
     
     static func getEncryptedFileNames() -> [String] {
@@ -89,8 +119,20 @@ struct TellaFileManager {
         }
     }
     
-    private static func getRandomFilename() -> String {
+    static func fileNameToPath(name: String) -> String {
+        return "\(encryptedFolderPath)/\(name)"
+    }
+    
+    private static func getRandomFilename(_ type: FileTypeEnum) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        return String((0..<TellaFileManager.fileNameLength).map{ _ in letters.randomElement()! })
+        return String((0..<TellaFileManager.fileNameLength).map{ _ in letters.randomElement()! }) + "." + type.rawValue
+    }
+    
+    static func deleteEncryptedFile(name: String) {
+        do {
+            try instance.removeItem(atPath: "\(encryptedFolderPath)/\(name)")
+        } catch let error {
+            print("Error: \(error.localizedDescription)")
+        }
     }
 }
