@@ -7,10 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		119F89E1EC06D6813CEB3500 /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7EC82CE90EBBEB5E468800F /* libPods-Tella.a */; };
 		1E67B39223FC9067001F3D64 /* Importers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* Importers.swift */; };
-		2C3010589B89DDD6E279BDDF /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E9879C27FB7E777992B135B /* libPods-TellaTests.a */; };
-		3BEBD1F215F1C407D5CA9BA8 /* libPods-Tella-TellaUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DC6BE9FABB5469778D0B4C0 /* libPods-Tella-TellaUITests.a */; };
+		45C189E7C13995B66DC5E4DF /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D0CF24AE4FC6E195219D930 /* libPods-TellaTests.a */; };
 		4CE85B852408B23800CF24AF /* demoIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CE85B842408B23800CF24AF /* demoIcon@2x.png */; };
 		4CE85B872408B26100CF24AF /* demoIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CE85B862408B26100CF24AF /* demoIcon@3x.png */; };
 		6D14AACC23FA3A2B0094D71D /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AACB23FA3A2B0094D71D /* Components.swift */; };
@@ -23,6 +21,7 @@
 		6D14AADA2405AC1B0094D71D /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AAD92405AC1A0094D71D /* FileManager.swift */; };
 		6DD4C038240F4B9900491438 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD4C037240F4B9900491438 /* PreviewView.swift */; };
 		6DD4C03A240F547300491438 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD4C039240F547300491438 /* Util.swift */; };
+		E12CB8DB2EF4EAB5A7E30A55 /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 709EB4248F0BF4B28B960244 /* libPods-Tella.a */; };
 		F66E65AD23E3207D000F93E5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65AC23E3207D000F93E5 /* AppDelegate.swift */; };
 		F66E65AF23E3207D000F93E5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65AE23E3207D000F93E5 /* SceneDelegate.swift */; };
 		F66E65B123E3207D000F93E5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65B023E3207D000F93E5 /* ContentView.swift */; };
@@ -31,6 +30,7 @@
 		F66E65B923E32080000F93E5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F66E65B723E32080000F93E5 /* LaunchScreen.storyboard */; };
 		F66E65C423E32080000F93E5 /* TellaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65C323E32080000F93E5 /* TellaTests.swift */; };
 		F66E65CF23E32080000F93E5 /* TellaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65CE23E32080000F93E5 /* TellaUITests.swift */; };
+		F9B75187F1F306D7A073086F /* libPods-Tella-TellaUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 539BC4D68EF562BB18E00819 /* libPods-Tella-TellaUITests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,16 +51,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0DDE909CB801841002141BE8 /* Pods-Tella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.release.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.release.xcconfig"; sourceTree = "<group>"; };
 		1E67B39123FC9067001F3D64 /* Importers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Importers.swift; sourceTree = "<group>"; };
-		2C35B0C14E4A9BA771D8DBED /* Pods-Tella-TellaUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.release.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.release.xcconfig"; sourceTree = "<group>"; };
-		4D7072EAEEBB1D92B2377BF6 /* Pods-Tella-TellaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		6BEF8875A7D0902F08C0C301 /* Pods-TellaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.release.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.release.xcconfig"; sourceTree = "<group>"; };
-		1608D56F9CAF4F6FFE8428EE /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
-		1DC25B357B9918CBE4F480A9 /* Pods-Tella-TellaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		20CDD48993D4F37D51979E72 /* Pods-Tella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.release.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.release.xcconfig"; sourceTree = "<group>"; };
+		424DCB48CCA9888126534BD2 /* Pods-Tella-TellaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		4C85CA0C2CEE0D6651E5D987 /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4CE85B842408B23800CF24AF /* demoIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "demoIcon@2x.png"; sourceTree = "<group>"; };
 		4CE85B862408B26100CF24AF /* demoIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "demoIcon@3x.png"; sourceTree = "<group>"; };
-		4F915CF457C0DA88E8AC3244 /* Pods-Tella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.release.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.release.xcconfig"; sourceTree = "<group>"; };
+		4DD49E829FF1BD166C9B8C3A /* Pods-Tella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.debug.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.debug.xcconfig"; sourceTree = "<group>"; };
+		539BC4D68EF562BB18E00819 /* libPods-Tella-TellaUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella-TellaUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D14AACB23FA3A2B0094D71D /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		6D14AACD23FADACE0094D71D /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		6D14AACF23FAE6AC0094D71D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -71,11 +69,10 @@
 		6D14AAD92405AC1A0094D71D /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		6DD4C037240F4B9900491438 /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
 		6DD4C039240F547300491438 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
-		791A7726C3926C61183D2595 /* Pods-Tella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.debug.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.debug.xcconfig"; sourceTree = "<group>"; };
-		7DC6BE9FABB5469778D0B4C0 /* libPods-Tella-TellaUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella-TellaUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8E9879C27FB7E777992B135B /* libPods-TellaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TellaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BA33639C7268DF4DC60CCC34 /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
-		E7EC82CE90EBBEB5E468800F /* libPods-Tella.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		709EB4248F0BF4B28B960244 /* libPods-Tella.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D0CF24AE4FC6E195219D930 /* libPods-TellaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TellaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		94A8BE7F6F79CE94D48D50AF /* Pods-Tella-TellaUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.release.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.release.xcconfig"; sourceTree = "<group>"; };
+		DCC471E11330CF394E9313E0 /* Pods-TellaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.release.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.release.xcconfig"; sourceTree = "<group>"; };
 		F66E65A923E3207D000F93E5 /* Tella.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tella.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65AC23E3207D000F93E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F66E65AE23E3207D000F93E5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -97,7 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				119F89E1EC06D6813CEB3500 /* libPods-Tella.a in Frameworks */,
+				E12CB8DB2EF4EAB5A7E30A55 /* libPods-Tella.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,7 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C3010589B89DDD6E279BDDF /* libPods-TellaTests.a in Frameworks */,
+				45C189E7C13995B66DC5E4DF /* libPods-TellaTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,13 +110,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BEBD1F215F1C407D5CA9BA8 /* libPods-Tella-TellaUITests.a in Frameworks */,
+				F9B75187F1F306D7A073086F /* libPods-Tella-TellaUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		288BFA4F498D806296A00682 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4DD49E829FF1BD166C9B8C3A /* Pods-Tella.debug.xcconfig */,
+				20CDD48993D4F37D51979E72 /* Pods-Tella.release.xcconfig */,
+				424DCB48CCA9888126534BD2 /* Pods-Tella-TellaUITests.debug.xcconfig */,
+				94A8BE7F6F79CE94D48D50AF /* Pods-Tella-TellaUITests.release.xcconfig */,
+				4C85CA0C2CEE0D6651E5D987 /* Pods-TellaTests.debug.xcconfig */,
+				DCC471E11330CF394E9313E0 /* Pods-TellaTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		4514CA8F918DED27E584E2E0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				709EB4248F0BF4B28B960244 /* libPods-Tella.a */,
+				539BC4D68EF562BB18E00819 /* libPods-Tella-TellaUITests.a */,
+				8D0CF24AE4FC6E195219D930 /* libPods-TellaTests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		4CE85B832408B1AF00CF24AF /* resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -129,29 +150,6 @@
 			name = resources;
 			sourceTree = "<group>";
 		};
-		9A2CC43B3FBED67259F6815D /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				791A7726C3926C61183D2595 /* Pods-Tella.debug.xcconfig */,
-				0DDE909CB801841002141BE8 /* Pods-Tella.release.xcconfig */,
-				4D7072EAEEBB1D92B2377BF6 /* Pods-Tella-TellaUITests.debug.xcconfig */,
-				2C35B0C14E4A9BA771D8DBED /* Pods-Tella-TellaUITests.release.xcconfig */,
-				BA33639C7268DF4DC60CCC34 /* Pods-TellaTests.debug.xcconfig */,
-				6BEF8875A7D0902F08C0C301 /* Pods-TellaTests.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
-		AF64660E3916CF293EF04F0D /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				E7EC82CE90EBBEB5E468800F /* libPods-Tella.a */,
-				7DC6BE9FABB5469778D0B4C0 /* libPods-Tella-TellaUITests.a */,
-				8E9879C27FB7E777992B135B /* libPods-TellaTests.a */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		F66E65A023E3207D000F93E5 = {
 			isa = PBXGroup;
 			children = (
@@ -159,8 +157,8 @@
 				F66E65C223E32080000F93E5 /* TellaTests */,
 				F66E65CD23E32080000F93E5 /* TellaUITests */,
 				F66E65AA23E3207D000F93E5 /* Products */,
-				A1BAD8F01FC9507A7BB0F69D /* Pods */,
-				AF64660E3916CF293EF04F0D /* Frameworks */,
+				288BFA4F498D806296A00682 /* Pods */,
+				4514CA8F918DED27E584E2E0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -233,7 +231,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F66E65D323E32080000F93E5 /* Build configuration list for PBXNativeTarget "Tella" */;
 			buildPhases = (
-				20376D73F94DDF22A1FA3D59 /* [CP] Check Pods Manifest.lock */,
+				D419B8F017393C79D994859C /* [CP] Check Pods Manifest.lock */,
 				F66E65A523E3207D000F93E5 /* Sources */,
 				F66E65A623E3207D000F93E5 /* Frameworks */,
 				F66E65A723E3207D000F93E5 /* Resources */,
@@ -251,7 +249,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F66E65D623E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaTests" */;
 			buildPhases = (
-				EF8FC764EA72E7CBDC004FED /* [CP] Check Pods Manifest.lock */,
+				2A43E7F448FD0DFDA5E8E734 /* [CP] Check Pods Manifest.lock */,
 				F66E65BB23E32080000F93E5 /* Sources */,
 				F66E65BC23E32080000F93E5 /* Frameworks */,
 				F66E65BD23E32080000F93E5 /* Resources */,
@@ -270,7 +268,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F66E65D923E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaUITests" */;
 			buildPhases = (
-				33E3FCCAA8A102F03E49A44D /* [CP] Check Pods Manifest.lock */,
+				BD5F96E94C7758C16F961ADA /* [CP] Check Pods Manifest.lock */,
 				F66E65C623E32080000F93E5 /* Sources */,
 				F66E65C723E32080000F93E5 /* Frameworks */,
 				F66E65C823E32080000F93E5 /* Resources */,
@@ -358,7 +356,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		20376D73F94DDF22A1FA3D59 /* [CP] Check Pods Manifest.lock */ = {
+		2A43E7F448FD0DFDA5E8E734 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -373,14 +371,14 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Tella-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TellaTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		33E3FCCAA8A102F03E49A44D /* [CP] Check Pods Manifest.lock */ = {
+		BD5F96E94C7758C16F961ADA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -402,7 +400,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EF8FC764EA72E7CBDC004FED /* [CP] Check Pods Manifest.lock */ = {
+		D419B8F017393C79D994859C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -417,7 +415,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TellaTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Tella-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -607,7 +605,7 @@
 		};
 		F66E65D423E32080000F93E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 791A7726C3926C61183D2595 /* Pods-Tella.debug.xcconfig */;
+			baseConfigurationReference = 4DD49E829FF1BD166C9B8C3A /* Pods-Tella.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -628,7 +626,7 @@
 		};
 		F66E65D523E32080000F93E5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0DDE909CB801841002141BE8 /* Pods-Tella.release.xcconfig */;
+			baseConfigurationReference = 20CDD48993D4F37D51979E72 /* Pods-Tella.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -649,7 +647,7 @@
 		};
 		F66E65D723E32080000F93E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BA33639C7268DF4DC60CCC34 /* Pods-TellaTests.debug.xcconfig */;
+			baseConfigurationReference = 4C85CA0C2CEE0D6651E5D987 /* Pods-TellaTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -672,7 +670,7 @@
 		};
 		F66E65D823E32080000F93E5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6BEF8875A7D0902F08C0C301 /* Pods-TellaTests.release.xcconfig */;
+			baseConfigurationReference = DCC471E11330CF394E9313E0 /* Pods-TellaTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -695,7 +693,7 @@
 		};
 		F66E65DA23E32080000F93E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4D7072EAEEBB1D92B2377BF6 /* Pods-Tella-TellaUITests.debug.xcconfig */;
+			baseConfigurationReference = 424DCB48CCA9888126534BD2 /* Pods-Tella-TellaUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -716,7 +714,7 @@
 		};
 		F66E65DB23E32080000F93E5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2C35B0C14E4A9BA771D8DBED /* Pods-Tella-TellaUITests.release.xcconfig */;
+			baseConfigurationReference = 94A8BE7F6F79CE94D48D50AF /* Pods-Tella-TellaUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
