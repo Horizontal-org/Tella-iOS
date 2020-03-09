@@ -26,7 +26,12 @@ struct PreviewView: View {
         case .VIDEO:
             return AnyView(smallText("Video preview not available"))
         case .TEXT:
-            return AnyView(smallText("Text preview not available"))
+            let txt = TellaFileManager.recoverTextFile(filepath)
+            return AnyView(
+                ScrollView(.vertical) {
+                    smallText(txt ?? "Could not recover text")
+                }
+            )
         case .PDF:
             if let data = TellaFileManager.recoverData(filepath) {
                 return AnyView(PDFKitView(data: data))
