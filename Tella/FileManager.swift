@@ -5,59 +5,20 @@
 //  Created by Oliphant, Samuel on 2/25/20.
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
-import Foundation
+
 import UIKit
 
 struct TellaFileManager {
     
     private static let instance = FileManager.default
-    private static let rootDir = "\(NSHomeDirectory())/Documents"
+    static let rootDir = "\(NSHomeDirectory())/Documents"
     private static let keyFolderPath = "\(rootDir)/keys"
     private static let encryptedFolderPath = "\(rootDir)/files"
-    private static let publicKeyPath = "\(encryptedFolderPath)/pub-key.txt"
-    private static let privateKeyTag = "org.hzontal.tella.ios"
     private static let fileNameLength = 12
     
     static func initDirectories() {
         initDirectory(keyFolderPath)
         initDirectory(encryptedFolderPath)
-    }
-    
-    static func initKeys() {
-        // TODO check if key doesnt exist
-        if (true) {
-            let flags = SecAccessControlCreateFlags(
-                    rawValue: SecAccessControlCreateFlags.biometryAny.rawValue |
-                            SecAccessControlCreateFlags.privateKeyUsage.rawValue |
-                            SecAccessControlCreateFlags.applicationPassword.rawValue)
-            let access = SecAccessControlCreateWithFlags(
-                    kCFAllocatorDefault,
-                    kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
-                    flags,
-                    nil)!
-            let attributes: [String: Any] = [
-                kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
-                kSecAttrKeySizeInBits as String: 256,
-                kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
-                kSecPrivateKeyAttrs as String: [
-                    kSecAttrIsPermanent as String: true,
-                    kSecAttrApplicationTag as String: privateKeyTag,
-                    kSecAttrAccessControl as String: access
-                ]
-            ]
-            var error: Unmanaged<CFError>?
-            guard let privateKey = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
-                print("Error: \(error?.takeRetainedValue().localizedDescription ?? "")")
-                return
-            }
-            let publicKey = SecKeyCopyPublicKey(privateKey)
-            var error: Unmanaged<CFError>?
-            guard let data = SecKeyCopyExternalRepresentation(publicKey, &error) as Data else {
-                print("Error: \(error?.takeRetainedValue().localizedDescription ?? "")")
-                return
-            }
-            savePublicKey(data)
-        }
     }
     
     static func clearAllFiles() {
@@ -82,29 +43,15 @@ struct TellaFileManager {
         }
     }
     
-    static func savePublicKey(_ key: Data) {
-        instance.createFile(atPath: publicKeyPath, contents: key)
-    }
-
-    static func recoverPublicKey() -> SecKey? {
-        let options: [String: Any] = [kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
-                                      kSecAttrKeyClass as String: kSecAttrKeyClassPublic,
-                                      kSecAttrKeySizeInBits as String : 256]
-        var error: Unmanaged<CFError>?
-        guard let key = SecKeyCreateWithData(data as CFData, options as CFDictionary, &error) else {
-            print("Error: \(error?.takeRetainedValue().localizedDescription ?? "")")
-            return nil
-        }
-        return key
-    }
-    
     static func saveTextFile(_ text: String) {
         saveFile(text.data(using: String.Encoding.utf8)!, FileTypeEnum.TEXT.rawValue)
     }
     
     static func saveImage(_ image: UIImage) {
         if let fixed = image.fixedOrientation() {
-            saveFile(fixed.pngData()!, FileTypeEnum.IMAGE.rawValue)
+            if let pngData = fixed.pngData() {
+                saveFile(pngData, FileTypeEnum.IMAGE.rawValue)
+            }
         }
     }
     
@@ -118,7 +65,11 @@ struct TellaFileManager {
                 newName = getRandomFilename(type)
             }
         }
-        instance.createFile(atPath: "\(encryptedFolderPath)/\(newName)", contents: data)
+        if let encrypted = CryptoManager.encrypt(data) {
+            instance.createFile(atPath: "\(encryptedFolderPath)/\(newName)", contents: encrypted)
+        } else {
+            print("encryption failed")
+        }
     }
     
     static func copyExternalFile(_ url: URL) {
@@ -130,17 +81,30 @@ struct TellaFileManager {
     }
     
     static func recoverImageFile(_ atPath: String) -> UIImage? {
-        let data = instance.contents(atPath: atPath)
+        let data = recoverAndDecrypt(atPath)
         if let unwrapped = data {
             return UIImage(data: unwrapped)
         }
         return nil
     }
     
+    static func tempSaveText() {
+        saveTextFile("hi")
+    }
+    
     static func recoverTextFile(_ atPath: String) -> String? {
-        let data = instance.contents(atPath: atPath)
+        let data = recoverAndDecrypt(atPath)
         if let unwrapped = data {
             return String(data: unwrapped, encoding: String.Encoding.utf8)
+        }
+        return nil
+    }
+    
+    static func recoverAndDecrypt(_ atPath: String) -> Data? {
+        if let data = recoverData(atPath) {
+            if let decrypted = CryptoManager.decrypt(data) {
+                return decrypted
+            }
         }
         return nil
     }
@@ -173,6 +137,23 @@ struct TellaFileManager {
             try instance.removeItem(atPath: "\(encryptedFolderPath)/\(name)")
         } catch let error {
             print("Error: \(error.localizedDescription)")
+        }
+    }
+    
+    static func writePublicKey(_ data: Data) {
+        deletePublicKey()
+        instance.createFile(atPath: CryptoManager.publicKeyPath, contents: data)
+    }
+    
+    static func deletePublicKey() {
+        if CryptoManager.publicKeyExists() {
+            do {
+                try instance.removeItem(atPath: CryptoManager.publicKeyPath)
+            } catch let error {
+                print("Error: \(error.localizedDescription)")
+            }
+        } else {
+            print("Public key did not exist")
         }
     }
 }

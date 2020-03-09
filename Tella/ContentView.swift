@@ -53,15 +53,20 @@ struct ContentView: View {
                     self.currentView = .GALLERY
                 }
             }
-
-            // settings button
-            Button(action: {
-                self.currentView = .SETTINGS
-            }) {
+            HStack {
+                Button(action: {
+                    self.currentView = .CRYPTO
+                }) {
+                    smallText("💀")
+                }
                 Spacer()
-                smallImg(.SETTINGS)
+                // settings button
+                Button(action: {
+                    self.currentView = .SETTINGS
+                }) {
+                    smallImg(.SETTINGS)
+                }
                 Spacer().frame(maxWidth: 10)
-
             }
         })
     }
@@ -80,6 +85,8 @@ struct ContentView: View {
             return AnyView(SettingsView(back: back))
         case .GALLERY:
             return AnyView(GalleryView(back: back))
+        case .CRYPTO:
+            return AnyView(CryptoView(back: back))
         }
     }
 

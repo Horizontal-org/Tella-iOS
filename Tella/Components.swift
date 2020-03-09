@@ -92,6 +92,8 @@ func header(_ back: Button<AnyView>, _ title: String) -> AnyView {
         Spacer()
         Button(action: {
             print("shutdown button pressed")
+//            TellaFileManager.initKeys()
+            TellaFileManager.tempSaveText()
         }) {
             mediumImg(.SHUTDOWN)
         }
