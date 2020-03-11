@@ -59,16 +59,16 @@ struct TellaFileManager {
     }
     
     static func saveTextFile(_ text: String) {
-        saveFile(text.data(using: String.Encoding.utf8)!, .TEXT)
+        saveFile(text.data(using: String.Encoding.utf8)!, FileTypeEnum.TEXT.rawValue)
     }
     
     static func saveImage(_ image: UIImage) {
         if let fixed = image.fixedOrientation() {
-            saveFile(fixed.pngData()!, .IMAGE)
+            saveFile(fixed.pngData()!, FileTypeEnum.IMAGE.rawValue)
         }
     }
     
-    private static func saveFile(_ data: Data, _ type: FileTypeEnum) {
+    private static func saveFile(_ data: Data, _ type: String) {
         var foundNewName = false
         var newName = getRandomFilename(type)
         while !foundNewName {
@@ -83,7 +83,7 @@ struct TellaFileManager {
     
     static func copyExternalFile(_ url: URL) {
         do {
-            try instance.copyItem(atPath: url.path, toPath: "\(encryptedFolderPath)/\(getRandomFilename(urlToFileTypeEnum(url)))")
+            try instance.copyItem(atPath: url.path, toPath: "\(encryptedFolderPath)/\(getRandomFilename(url.pathExtension))")
         } catch let error {
             print("Error: \(error.localizedDescription)")
         }
@@ -123,9 +123,9 @@ struct TellaFileManager {
         return "\(encryptedFolderPath)/\(name)"
     }
     
-    private static func getRandomFilename(_ type: FileTypeEnum) -> String {
+    private static func getRandomFilename(_ type: String) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        return String((0..<TellaFileManager.fileNameLength).map{ _ in letters.randomElement()! }) + "." + type.rawValue
+        return String((0..<TellaFileManager.fileNameLength).map{ _ in letters.randomElement()! }) + "." + type
     }
     
     static func deleteEncryptedFile(name: String) {

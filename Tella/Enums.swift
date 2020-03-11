@@ -50,5 +50,4 @@ enum FileTypeEnum: String {
     case TEXT = "txt"
     case VIDEO = "MOV"
     case PDF = "pdf"
-    case OTHER = "unknown"
 }

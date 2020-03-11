@@ -74,20 +74,3 @@ extension UIImage {
         return UIImage.init(cgImage: newCGImage, scale: 1, orientation: .up)
     }
 }
-
-func urlToFileTypeEnum(_ url: URL) -> FileTypeEnum {
-    if let resourceValues = try? url.resourceValues(forKeys: [.typeIdentifierKey]),
-        let uti = resourceValues.typeIdentifier {
-        switch uti {
-        case "com.adobe.pdf":
-            return .PDF
-        case "com.apple.quicktime-movie":
-            return .VIDEO
-        //TODO add cases here
-        default:
-            break
-        }
-    }
-    
-    return .OTHER
-}
