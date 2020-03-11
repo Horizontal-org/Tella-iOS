@@ -14,6 +14,8 @@ struct GalleryView: View {
     @State var currentView = GalleryViewEnum.MAIN
     @State var displayList = true
     @State var fileList = TellaFileManager.getEncryptedFileNames()
+    @State var showingAlert = false
+    
     
     func galleryBack() {
         self.currentView = GalleryViewEnum.MAIN;
@@ -33,17 +35,24 @@ struct GalleryView: View {
                     Button(action: {
                         print("preview")
                         self.currentView = .PREVIEW(filepath: TellaFileManager.fileNameToPath(name: file.name))
+                        //self.showingPreview.toggle()
+                        
                     }) {
                         smallText(file.name)
-                    }.buttonStyle(BorderlessButtonStyle())
+                    }
                     Spacer()
                     Button(action: {
-                        print("delete")
-                        TellaFileManager.deleteEncryptedFile(name: file.name)
-                        self.fileList = TellaFileManager.getEncryptedFileNames()
+                        self.showingAlert = true
                     }) {
                         smallText("x")
                     }.buttonStyle(BorderlessButtonStyle())
+                        .alert(isPresented: self.$showingAlert) {
+                            Alert(title: Text("Are you sure you want to delete this?"), message: Text("There is no undo"), primaryButton: .destructive(Text("Delete"), action: {
+                                    print("delete")
+                                    TellaFileManager.deleteEncryptedFile(name: file.name)
+                                    self.fileList = TellaFileManager.getEncryptedFileNames()
+                            }), secondaryButton: .cancel())
+                    }
                 }
             })
         } else {
