@@ -15,6 +15,7 @@ struct GalleryView: View {
     @State var displayList = true
     @State var fileList = TellaFileManager.getEncryptedFileNames()
     @State var showingAlert = false
+    @State var currFile = String()
     
     
     func galleryBack() {
@@ -32,27 +33,20 @@ struct GalleryView: View {
         if displayList {
             return AnyView(List(fileList.map({ (value: String) -> File in File(name: value) })) { file in
                 Group {
+                    
                     Button(action: {
-                        print("preview")
                         self.currentView = .PREVIEW(filepath: TellaFileManager.fileNameToPath(name: file.name))
-                        //self.showingPreview.toggle()
-                        
+                        print(file.name)
                     }) {
                         smallText(file.name)
                     }
                     Spacer()
                     Button(action: {
                         self.showingAlert = true
+                        self.currFile = file.name
                     }) {
                         smallText("x")
                     }.buttonStyle(BorderlessButtonStyle())
-                        .alert(isPresented: self.$showingAlert) {
-                            Alert(title: Text("Are you sure you want to delete this?"), message: Text("There is no undo"), primaryButton: .destructive(Text("Delete"), action: {
-                                    print("delete")
-                                    TellaFileManager.deleteEncryptedFile(name: file.name)
-                                    self.fileList = TellaFileManager.getEncryptedFileNames()
-                            }), secondaryButton: .cancel())
-                    }
                 }
             })
         } else {
@@ -77,6 +71,15 @@ struct GalleryView: View {
             }
             Spacer()
             getListGridView()
+            .alert(isPresented: self.$showingAlert) {
+                Alert(title: Text("Are you sure you want to delete this?"), message: Text("There is no undo"), primaryButton: .destructive(Text("Delete"), action: {
+                    
+                    self.showingAlert.toggle()
+                    TellaFileManager.deleteEncryptedFile(name: self.currFile)
+                    self.fileList = TellaFileManager.getEncryptedFileNames()s
+                    }),secondaryButton: .cancel()
+                )
+            }
             Spacer()
             HStack {
                 Spacer()
