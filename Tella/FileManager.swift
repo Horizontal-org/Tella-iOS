@@ -6,6 +6,7 @@
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
 struct TellaFileManager {
@@ -74,13 +75,14 @@ struct TellaFileManager {
     
     static func copyExternalFile(_ url: URL) {
         do {
-            try instance.copyItem(atPath: url.path, toPath: "\(encryptedFolderPath)/\(getRandomFilename(url.pathExtension))")
+            let data = try Data(contentsOf: url)
+            saveFile(data, url.pathExtension)
         } catch let error {
             print("Error: \(error.localizedDescription)")
         }
     }
     
-    static func recoverImageFile(_ atPath: String) -> UIImage? {
+    static func recoverImageFile(_ atPath: String, _ privKey: SecKey) -> UIImage? {
         let data = recoverAndDecrypt(atPath)
         if let unwrapped = data {
             return UIImage(data: unwrapped)
@@ -92,7 +94,7 @@ struct TellaFileManager {
         saveTextFile("hi")
     }
     
-    static func recoverTextFile(_ atPath: String) -> String? {
+    static func recoverTextFile(_ atPath: String, _ privKey: SecKey? = nil) -> String? {
         let data = recoverAndDecrypt(atPath)
         if let unwrapped = data {
             return String(data: unwrapped, encoding: String.Encoding.utf8)
@@ -100,9 +102,9 @@ struct TellaFileManager {
         return nil
     }
     
-    static func recoverAndDecrypt(_ atPath: String) -> Data? {
+    static func recoverAndDecrypt(_ atPath: String, _ privKey: SecKey? = nil) -> Data? {
         if let data = recoverData(atPath) {
-            if let decrypted = CryptoManager.decrypt(data) {
+            if let decrypted = CryptoManager.decrypt(data, privKey) {
                 return decrypted
             }
         }

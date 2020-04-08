@@ -84,7 +84,11 @@ struct ContentView: View {
         case .SETTINGS:
             return AnyView(SettingsView(back: back))
         case .GALLERY:
-            return AnyView(GalleryView(back: back))
+            guard let privKey = CryptoManager.recoverPrivateKey() else {
+                self.currentView = .MAIN
+                return AnyView(smallText("Failed to recover private key"))
+            }
+            return AnyView(GalleryView(back: back, privKey: privKey))
         case .CRYPTO:
             return AnyView(CryptoView(back: back))
         }

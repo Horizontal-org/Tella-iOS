@@ -80,10 +80,8 @@ struct CryptoManager {
     }
     
     static func initKeys() {
-        // TODO check if key doesnt exist
         if !privateKeyExists() {
-            let flags = SecAccessControlCreateFlags(
-                    rawValue: SecAccessControlCreateFlags.biometryAny.rawValue |
+            let flags = SecAccessControlCreateFlags(rawValue:
                             SecAccessControlCreateFlags.privateKeyUsage.rawValue |
                             SecAccessControlCreateFlags.applicationPassword.rawValue)
             let access = SecAccessControlCreateWithFlags(
@@ -136,10 +134,17 @@ struct CryptoManager {
         return cipherText
     }
     
-    static func decrypt(_ data: Data) -> Data? {
-        guard let privateKey = recoverPrivateKey() else {
-            print("Failed to recover private key")
-            return nil
+    static func decrypt(_ data: Data, _ privKey: SecKey? = nil) -> Data? {
+        let privateKey: SecKey
+        if let unwrapped = privKey {
+            privateKey = unwrapped
+        } else {
+            if let unwrapped = recoverPrivateKey() {
+                privateKey = unwrapped
+            } else {
+                print("Failed to recover private key")
+                return nil
+            }
         }
         let algorithm: SecKeyAlgorithm = .eciesEncryptionCofactorX963SHA256AESGCM
         guard SecKeyIsAlgorithmSupported(privateKey, .decrypt, algorithm) else {
