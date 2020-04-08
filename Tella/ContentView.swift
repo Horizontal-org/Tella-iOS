@@ -13,6 +13,8 @@ struct ContentView: View {
     @State var currentView: MainViewEnum = .MAIN
     @State var image: Image? = nil
 
+    @State private var showShutdownWarningAlert = false
+    
     private func backFunc() {
         self.currentView = .MAIN
     }
@@ -28,9 +30,14 @@ struct ContentView: View {
                 bigText("TELLA")
                 Spacer()
                 Button(action: {
-                    print("shutdown button pressed")
+                    self.showShutdownWarningAlert = true
                 }) {
                     bigImg(.SHUTDOWN)
+                }
+                .alert(isPresented: $showShutdownWarningAlert) {
+                    return Alert(title: Text("Delete all files?"), message: Text("This cannot be undone."),
+                                 primaryButton: .default(Text("Delete"), action: { TellaFileManager.clearAllFiles() }),
+                        secondaryButton: .cancel())
                 }
             }
             Spacer()

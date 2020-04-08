@@ -27,6 +27,7 @@ struct TellaFileManager {
         do {
             try instance.removeItem(atPath: keyFolderPath)
             try instance.removeItem(atPath: encryptedFolderPath)
+            initDirectories()
         } catch let error {
             print("Error: \(error.localizedDescription)")
         }
