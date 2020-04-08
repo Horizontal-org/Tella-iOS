@@ -11,23 +11,31 @@ import SwiftUI
 //TODO tweak this boundary
 let mainPadding: CGFloat = UIScreen.main.bounds.width > 400 ? 20 : 10
 
-private func makeText(_ text: String, _ size: CGFloat) -> AnyView {
-    AnyView(Text(text)
-        .font(.custom("Avenir Next Ultra Light", size: size))
-        .foregroundColor(.white)
-        .font(.title))
+private func makeText(_ text: String, _ size: CGFloat, _ header: Bool) -> AnyView {
+    if header {
+        return AnyView(Text(text)
+            .font(.custom("Avenir Light Oblique", size: size))
+            .foregroundColor(.white)
+            .font(.title)
+            .tracking(3))
+    }
+        return AnyView(Text(text)
+            .font(.custom("Avenir Light", size: size))
+            .foregroundColor(.white)
+            .font(.title))
+
 }
 
-func bigText(_ text: String) -> AnyView {
-    return makeText(text, 55)
+func bigText(_ text: String, _ header: Bool) -> AnyView {
+    return makeText(text, 55, header)
 }
 
 func mediumText(_ text: String) -> AnyView {
-    return makeText(text, 35)
+    return makeText(text, 35, false)
 }
 
 func smallText(_ text: String) -> AnyView {
-    return makeText(text, 25)
+    return makeText(text, 25, false)
 }
 
 private func makeImg(_ imgName: ImageEnum, _ sideLength: CGFloat) -> AnyView {
@@ -67,7 +75,8 @@ private func makeLabeledImageButton(_ isBig: Bool, _ img: ImageEnum, _ text: Str
     }
         .padding(isBig ? 20 : 10)
         .border(Color.white, width: isBig ? 1 : 0)
-        .cornerRadius(25))
+        .cornerRadius(15)
+    )
 }
 
 func bigLabeledImageButton(_ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> AnyView {
@@ -84,6 +93,12 @@ func backButton(_ onPress: @escaping () -> ()) -> Button<AnyView> {
     }
 }
 
+func doneButton(_ onPress: @escaping () -> ()) -> Button<AnyView> {
+    Button(action: onPress) {
+        return makeText("Close", 18, false)
+    }
+}
+
 func header(_ back: Button<AnyView>, _ title: String) -> AnyView {
     AnyView(HStack {
         back
@@ -95,5 +110,15 @@ func header(_ back: Button<AnyView>, _ title: String) -> AnyView {
         }) {
             mediumImg(.SHUTDOWN)
         }
+    })
+}
+
+func previewHeader(_ back: Button<AnyView>, _ title: String) -> AnyView {
+    AnyView(HStack {
+        Spacer()
+        mediumText(title)
+        Spacer()
+        back
+        //but i want to make this an x button
     })
 }

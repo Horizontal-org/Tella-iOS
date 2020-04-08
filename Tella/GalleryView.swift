@@ -16,6 +16,7 @@ struct GalleryView: View {
     @State var fileList = TellaFileManager.getEncryptedFileNames()
     @State var showingAlert = false
     @State var currFile = String()
+    //@State var showingPrev = false
     
     
     func galleryBack() {
@@ -27,6 +28,10 @@ struct GalleryView: View {
         return backButton { self.galleryBack() }
     }
     
+    var previewBackButton: Button<AnyView> {
+        return doneButton { self.galleryBack() }
+    }
+    
     let back: Button<AnyView>
     
     func getListGridView() -> AnyView {
@@ -36,7 +41,7 @@ struct GalleryView: View {
                     
                     Button(action: {
                         self.currentView = .PREVIEW(filepath: TellaFileManager.fileNameToPath(name: file.name))
-                        print(file.name)
+                        //print(file.name)
                     }) {
                         smallText(file.name)
                     }
@@ -76,7 +81,7 @@ struct GalleryView: View {
                     
                     self.showingAlert.toggle()
                     TellaFileManager.deleteEncryptedFile(name: self.currFile)
-                    self.fileList = TellaFileManager.getEncryptedFileNames()s
+                    self.fileList = TellaFileManager.getEncryptedFileNames()
                     }),secondaryButton: .cancel()
                 )
             }
@@ -129,7 +134,7 @@ struct GalleryView: View {
     func getViewContents(_ currentView: GalleryViewEnum) -> AnyView {
         switch currentView {
         case .PREVIEW(let filepath):
-            return AnyView(PreviewView(back: galleryBackButton, filepath: filepath))
+            return AnyView(PreviewView(back: previewBackButton, filepath: filepath))
         default:
             return getMainView()
         }

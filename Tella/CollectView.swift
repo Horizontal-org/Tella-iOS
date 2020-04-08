@@ -14,7 +14,7 @@ struct CollectView: View {
     
     var body: some View {
         return Group {
-            bigText("COLLECT")
+            bigText("COLLECT", false)
             back
         }
     }

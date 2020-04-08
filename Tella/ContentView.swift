@@ -25,7 +25,7 @@ struct ContentView: View {
         return AnyView(Group {
             // title row
             HStack {
-                bigText("TELLA")
+                bigText("TELLA", true)
                 Spacer()
                 Button(action: {
                     print("shutdown button pressed")

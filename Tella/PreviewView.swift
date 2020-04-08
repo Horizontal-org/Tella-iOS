@@ -10,6 +10,7 @@ import PDFKit
 
 struct PreviewView: View {
     
+    @State var filename: String = ""
     let back: Button<AnyView>
     let filepath: String
     var fileType: FileTypeEnum? {
@@ -22,7 +23,17 @@ struct PreviewView: View {
     
     var body: some View {
         return Group {
-            header(back, "PREVIEW")
+            HStack{
+                Spacer()
+                TextField(
+                    "Rename",
+                    text: $filename,
+                    onCommit: {TellaFileManager.rename(original: self.filepath, new: self.filename, type: self.filepath.components(separatedBy: ".")[1])}
+                )
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                Spacer()
+                back
+            }
             Spacer()
             getPreview()
             Spacer()

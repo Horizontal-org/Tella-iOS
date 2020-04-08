@@ -14,7 +14,7 @@ struct RecordView: View {
     
     var body: some View {
         return Group {
-            bigText("RECORD")
+            bigText("RECORD", false)
             back
         }
     }

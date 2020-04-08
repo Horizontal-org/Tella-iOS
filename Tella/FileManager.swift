@@ -135,4 +135,16 @@ struct TellaFileManager {
             print("Error: \(error.localizedDescription)")
         }
     }
+    
+    static func rename(original: String, new: String, type: String){
+//        instance.createFile(atPath: "\(encryptedFolderPath)/\(new + "." + type)", contents: self.recoverData(original))
+//
+        do {
+            print(new)
+            try instance.moveItem(atPath: original, toPath: self.fileNameToPath(name: new + "." + type))
+        } catch let error{
+            print("error: \(error.localizedDescription)")
+        }
+//        self.deleteEncryptedFile(name: self.fileNameToPath(name: original))
+    }
 }

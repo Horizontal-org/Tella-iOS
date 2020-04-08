@@ -42,7 +42,6 @@ struct QuickLookView: UIViewControllerRepresentable {
         
         func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
             let url = NSURL(fileURLWithPath: file)
-            print(file)
             return url
         }
 
@@ -59,5 +58,6 @@ struct QuickLookView: UIViewControllerRepresentable {
         }
           
     }
+    
 }
   
