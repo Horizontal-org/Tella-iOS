@@ -47,7 +47,40 @@ struct GalleryView: View {
                 }
             })
         } else {
-            return smallText("Grid View Not Implemented")
+            return AnyView(List(fileList.map({ (value: String) -> File in File(name: value) })) { file in
+                Group {
+                    Button(action: {
+                        print("grid preview")
+                        self.currentView = .PREVIEW(filepath: TellaFileManager.fileNameToPath(name: file.name))
+                    }) {
+                        if (file.name.suffix(3) == "png") {
+                            Spacer()
+                            mediumImg(.PHOTOPREV)
+                            Spacer()
+                        }
+                        if (file.name.suffix(3) == "txt") {
+                            Spacer()
+                            mediumImg(.FILEPREV)
+                            Spacer()
+                        }
+                        if (file.name.suffix(3) == "MOV") {
+                            Spacer()
+                            mediumImg(.VIDEOPREV)
+                            Spacer()
+                        }
+                        if (file.name.suffix(3) == "pdf") {
+                            Spacer()
+                            mediumImg(.AUDIOPREV)
+                            Spacer()
+                        }
+                        else {
+                            print("Other file type")
+                        }
+
+                    }.buttonStyle(BorderlessButtonStyle())
+    
+                }
+            })
         }
     }
 

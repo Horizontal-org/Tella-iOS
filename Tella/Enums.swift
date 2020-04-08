@@ -19,6 +19,10 @@ enum ImageEnum: String {
     case KEY = "key-icon"
     case KEYTYPE = "key-type-icon"
     case PLUS = "plus-icon"
+    case PHOTOPREV = "photo-preview"
+    case VIDEOPREV = "video-preview"
+    case AUDIOPREV = "audio-preview"
+    case FILEPREV = "file-preview"
 }
 
 enum MainViewEnum {
