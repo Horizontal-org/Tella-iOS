@@ -79,10 +79,10 @@ struct CryptoManager {
         return key
     }
 
-    static func deleteMetaKeypair() {
+    static func deleteMetaKeypair() throws {
         let status = SecItemDelete(metaPrivateKeyQuery as CFDictionary)
         if status != errSecSuccess {
-            print("Failed to delete meta private key in enclave")
+            throw RuntimeError("Failed to delete meta private key in enclave")
         }
         TellaFileManager.deleteKeyFile(.META_PUBLIC)
     }
@@ -134,7 +134,7 @@ struct CryptoManager {
         TellaFileManager.saveKeyData(publicData, .PUBLIC)
     }
     
-    private static func createMetaPrivateKey(_ type: PasswordTypeEnum) -> SecKey? {
+    private static func createMetaPrivateKey(_ type: PasswordTypeEnum) throws -> SecKey {
         var flags = SecAccessControlCreateFlags.privateKeyUsage
         flags.formUnion(type.toFlag())
         let access = SecAccessControlCreateWithFlags(
@@ -154,8 +154,8 @@ struct CryptoManager {
         ]
         var error: Unmanaged<CFError>?
         guard let metaPrivateKey = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
-            print("Error: \(error?.takeRetainedValue().localizedDescription ?? "")")
-            return nil
+            let msg = "Error: \(error?.takeRetainedValue().localizedDescription ?? "")"
+            throw RuntimeError(msg)
         }
         return metaPrivateKey
     }
@@ -173,42 +173,28 @@ struct CryptoManager {
         return privateKey
     }
     
-    static func initKeys(_ type: PasswordTypeEnum) {
-        print("Ensuring clean slate")
-        if !metaPrivateKeyExists() || !TellaFileManager.keyFileExists(.PRIVATE) {
-            // Shouldn't happen other than when the app is initially opened. This is only when a key gets mistakenly lost.
-            print("Cleaning")
-            deleteMetaKeypair()
-            deleteKeypair()
-            TellaFileManager.clearAllFiles()
+    static func keysInitialized() -> Bool {
+        return metaPrivateKeyExists() && TellaFileManager.keyFileExists(.PRIVATE)
+    }
+    
+    static func initKeys(_ type: PasswordTypeEnum) throws {
+        print("Creating all-new keys")
+        guard let privateKey = createPrivateKey() else {
+            print("Creating private key failed")
+            return
         }
-        if metaPrivateKeyExists() && TellaFileManager.keyFileExists(.PRIVATE) {
-            print("Updating meta keys")
-            // Keys already exist, just need to update meta keys
-            guard let privateKey = recoverKey(.PRIVATE) else {
-                print("Recovering private key failed")
-                return
-            }
-            deleteMetaKeypair()
-            guard let metaPrivateKey = createMetaPrivateKey(type) else {
-                print("Creating meta private key failed")
-                return
-            }
-            saveMetaPublicKey(metaPrivateKey)
-            saveKeypair(privateKey)
-        } else {
-            print("Creating all-new keys")
-            guard let metaPrivateKey = createMetaPrivateKey(type) else {
-                print("Creating meta private key failed")
-                return
-            }
-            saveMetaPublicKey(metaPrivateKey)
-            guard let privateKey = createPrivateKey() else {
-                print("Creating private key failed")
-                return
-            }
-            saveKeypair(privateKey)
-        }
+        try keyHelper(privateKey, type)
+    }
+    
+    static func updateKeys(_ privateKey: SecKey, _ type: PasswordTypeEnum) throws {
+        try deleteMetaKeypair()
+        try keyHelper(privateKey, type)
+    }
+    
+    private static func keyHelper(_ privateKey: SecKey, _ type: PasswordTypeEnum) throws {
+        let metaPrivateKey = try createMetaPrivateKey(type)
+        saveMetaPublicKey(metaPrivateKey)
+        saveKeypair(privateKey)
     }
     
     static func encryptUserData(_ data: Data) -> Data? {

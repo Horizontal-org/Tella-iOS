@@ -31,7 +31,7 @@ struct CryptoView: View {
                     }
                     Spacer().frame(maxHeight: 15)
                     Button(action: {
-                        CryptoManager.deleteMetaKeypair()
+                        try? CryptoManager.deleteMetaKeypair()
                     }) {
                         smallText("delete meta keypair")
                     }
@@ -57,7 +57,7 @@ struct CryptoView: View {
                     }
                     Spacer().frame(maxHeight: 15)
                     Button(action: {
-                        CryptoManager.initKeys(.PASSWORD)
+                        try? CryptoManager.initKeys(.PASSWORD)
                     }) {
                         smallText("init keys w/ password")
                     }

@@ -24,7 +24,11 @@ enum ImageEnum: String {
 }
 
 enum MainViewEnum {
-    case MAIN, CAMERA, COLLECT, RECORD, SETTINGS, GALLERY, CRYPTO
+    case MAIN, CAMERA, COLLECT, RECORD, SETTINGS, GALLERY, CRYPTO, AUTH
+}
+
+enum SettingsEnum{
+    case MAIN, CHANGE
 }
 
 enum GalleryViewEnum {
