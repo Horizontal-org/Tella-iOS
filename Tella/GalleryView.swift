@@ -6,6 +6,7 @@
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
 
+import Foundation
 import SwiftUI
 import UIKit
 
@@ -25,6 +26,7 @@ struct GalleryView: View {
     }
     
     let back: Button<AnyView>
+    let privKey: SecKey
     
     func getListGridView() -> AnyView {
         if displayList {
@@ -117,7 +119,7 @@ struct GalleryView: View {
     func getViewContents(_ currentView: GalleryViewEnum) -> AnyView {
         switch currentView {
         case .PREVIEW(let filepath):
-            return AnyView(PreviewView(back: galleryBackButton, filepath: filepath))
+            return AnyView(PreviewView(back: galleryBackButton, filepath: filepath, privKey: privKey))
         default:
             return getMainView()
         }

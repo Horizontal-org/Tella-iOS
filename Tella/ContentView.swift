@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
 
-    @State var currentView: MainViewEnum = .MAIN
+    @State var currentView: MainViewEnum
     @State var image: Image? = nil
 
     private func backFunc() {
@@ -53,15 +53,15 @@ struct ContentView: View {
                     self.currentView = .GALLERY
                 }
             }
-
-            // settings button
-            Button(action: {
-                self.currentView = .SETTINGS
-            }) {
+            HStack {
                 Spacer()
-                smallImg(.SETTINGS)
+                // settings button
+                Button(action: {
+                    self.currentView = .SETTINGS
+                }) {
+                    smallImg(.SETTINGS)
+                }
                 Spacer().frame(maxWidth: 10)
-
             }
         })
     }
@@ -79,7 +79,17 @@ struct ContentView: View {
         case .SETTINGS:
             return AnyView(SettingsView(back: back))
         case .GALLERY:
-            return AnyView(GalleryView(back: back))
+            guard let privKey = CryptoManager.recoverKey(.PRIVATE) else {
+                return AnyView(
+                    VStack {
+                        smallText("Correct password not input.")
+                        back
+                    }
+                )
+            }
+            return AnyView(GalleryView(back: back, privKey: privKey))
+        case .AUTH:
+            return AnyView(PasswordView(back: backFunc))
         }
     }
 
@@ -95,12 +105,5 @@ struct ContentView: View {
                     .padding(mainPadding) // padding for content
             ))
         }
-    }
-
-}
-
-struct ontentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }

@@ -6,6 +6,8 @@
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
 
+import Foundation
+
 enum ImageEnum: String {
     case CAMERA = "camera-icon"
     case COLLECT = "collect-icon"
@@ -22,7 +24,11 @@ enum ImageEnum: String {
 }
 
 enum MainViewEnum {
-    case MAIN, CAMERA, COLLECT, RECORD, SETTINGS, GALLERY
+    case MAIN, CAMERA, COLLECT, RECORD, SETTINGS, GALLERY, AUTH
+}
+
+enum SettingsEnum{
+    case MAIN, CHANGE
 }
 
 enum GalleryViewEnum {
@@ -51,3 +57,52 @@ enum FileTypeEnum: String {
     case VIDEO = "MOV"
     case PDF = "pdf"
 }
+
+enum KeyEnum {
+    case META_PRIVATE
+    case META_PUBLIC
+    case PUBLIC
+    case PRIVATE
+    
+    public func toKeyFileEnum() -> KeyFileEnum? {
+        switch (self) {
+        case .META_PRIVATE:
+            return nil
+        case .META_PUBLIC:
+            return .META_PUBLIC
+        case .PUBLIC:
+            return .PUBLIC
+        case .PRIVATE:
+            return .PRIVATE
+        }
+    }
+}
+
+enum KeyFileEnum: String {
+    case META_PUBLIC = "meta-pub-key.txt"
+    case PUBLIC = "pub-key.txt"
+    case PRIVATE = "priv-key.txt"
+    
+    public func toPath() -> String {
+        return "\(TellaFileManager.rootDir)/keys/\(self.rawValue)"
+    }
+}
+
+enum PasswordTypeEnum: String {
+    case BIOMETRIC = "biometric"
+    case PASSWORD = "password"
+    case PASSCODE = "passcode"
+    
+    public func toFlag() -> SecAccessControlCreateFlags {
+        switch(self) {
+        case .BIOMETRIC:
+            return .biometryAny
+        case .PASSWORD:
+            return .applicationPassword
+        case .PASSCODE:
+            return .devicePasscode
+        }
+    }
+}
+
+
