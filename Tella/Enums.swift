@@ -5,6 +5,9 @@
 //  Created by Oliphant, Samuel on 2/17/20.
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
+/*
+ Enum class
+ */
 
 enum ImageEnum: String {
     case CAMERA = "camera-icon"

@@ -5,6 +5,11 @@
 //  Created by Oliphant, Samuel on 2/25/20.
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
+
+/*
+ This class represents the Preview view used in the gallery view. It will automatically handle any file type with a built in fallback for unrecognized file types
+ */
+
 import SwiftUI
 import PDFKit
 

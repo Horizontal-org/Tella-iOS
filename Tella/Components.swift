@@ -6,11 +6,16 @@
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
 
+/*
+ This class is used to factor out the core UI elements. The functions are used over all of the files so that information (text, images, buttons) is presented uniformly and cleanly throughout the app.
+ */
+
 import SwiftUI
 
 //TODO tweak this boundary
 let mainPadding: CGFloat = UIScreen.main.bounds.width > 400 ? 20 : 10
 
+//  Text related functions
 private func makeText(_ text: String, _ size: CGFloat) -> AnyView {
     AnyView(Text(text)
         .font(.custom("Avenir Next Ultra Light", size: size))
@@ -30,6 +35,7 @@ func smallText(_ text: String) -> AnyView {
     return makeText(text, 25)
 }
 
+//  Image related functions
 private func makeImg(_ imgName: ImageEnum, _ sideLength: CGFloat) -> AnyView {
     AnyView(Image(imgName.rawValue)
         .renderingMode(.original)
@@ -49,6 +55,7 @@ func smallImg(_ img: ImageEnum) -> AnyView {
     return makeImg(img, 25)
 }
 
+//  Button related functions
 private func makeLabeledImageButton(_ isBig: Bool, _ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> AnyView {
     AnyView(Button(action: {
        onPress()
@@ -84,6 +91,7 @@ func backButton(_ onPress: @escaping () -> ()) -> Button<AnyView> {
     }
 }
 
+//  Navigational elements
 func header(_ back: Button<AnyView>, _ title: String) -> AnyView {
     AnyView(HStack {
         back

@@ -20,7 +20,9 @@ struct ContentView: View {
     var back: Button<AnyView> {
         return backButton { self.backFunc() }
     }
-
+    
+//  setting up the homepage/main view of the app
+//  this is the core view that the user will start on and navigate to and from
     func getMainView() -> AnyView {
         return AnyView(Group {
             // title row
@@ -66,6 +68,8 @@ struct ContentView: View {
         })
     }
 
+//  updates the current view presented based on the currentView variable
+//  the currentView variable is updated when the user clicks ond of the buttons
     func getViewContents(_ currentView: MainViewEnum) -> AnyView {
         switch currentView {
         case .MAIN:
