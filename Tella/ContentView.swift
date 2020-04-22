@@ -54,11 +54,6 @@ struct ContentView: View {
                 }
             }
             HStack {
-                Button(action: {
-                    self.currentView = .CRYPTO
-                }) {
-                    smallText("💀")
-                }
                 Spacer()
                 // settings button
                 Button(action: {
@@ -93,8 +88,6 @@ struct ContentView: View {
                 )
             }
             return AnyView(GalleryView(back: back, privKey: privKey))
-        case .CRYPTO:
-            return AnyView(CryptoView(back: back))
         case .AUTH:
             return AnyView(PasswordView(back: backFunc))
         }
