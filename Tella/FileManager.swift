@@ -23,12 +23,12 @@ struct TellaFileManager {
     }
     
     static func clearAllFiles() {
-        do {
-            try instance.removeItem(atPath: keyFolderPath)
-            try instance.removeItem(atPath: encryptedFolderPath)
-        } catch let error {
-            print("Error: \(error.localizedDescription)")
+        getEncryptedFileNames().forEach { name in
+            deleteEncryptedFile(name: name)
         }
+        deleteKeyFile(.PUBLIC)
+        deleteKeyFile(.PRIVATE)
+        deleteKeyFile(.META_PUBLIC)
     }
     
     private static func initDirectory(_ atPath: String) {
@@ -66,7 +66,7 @@ struct TellaFileManager {
                 newName = getRandomFilename(type)
             }
         }
-        if let encrypted = CryptoManager.encrypt(data) {
+        if let encrypted = CryptoManager.encryptUserData(data) {
             instance.createFile(atPath: "\(encryptedFolderPath)/\(newName)", contents: encrypted)
         } else {
             print("encryption failed")
@@ -83,7 +83,7 @@ struct TellaFileManager {
     }
     
     static func recoverImageFile(_ atPath: String, _ privKey: SecKey) -> UIImage? {
-        let data = recoverAndDecrypt(atPath)
+        let data = recoverAndDecrypt(atPath, privKey)
         if let unwrapped = data {
             return UIImage(data: unwrapped)
         }
@@ -94,15 +94,15 @@ struct TellaFileManager {
         saveTextFile("hi")
     }
     
-    static func recoverTextFile(_ atPath: String, _ privKey: SecKey? = nil) -> String? {
-        let data = recoverAndDecrypt(atPath)
+    static func recoverTextFile(_ atPath: String, _ privKey: SecKey) -> String? {
+        let data = recoverAndDecrypt(atPath, privKey)
         if let unwrapped = data {
             return String(data: unwrapped, encoding: String.Encoding.utf8)
         }
         return nil
     }
     
-    static func recoverAndDecrypt(_ atPath: String, _ privKey: SecKey? = nil) -> Data? {
+    static func recoverAndDecrypt(_ atPath: String, _ privKey: SecKey) -> Data? {
         if let data = recoverData(atPath) {
             if let decrypted = CryptoManager.decrypt(data, privKey) {
                 return decrypted
@@ -134,6 +134,7 @@ struct TellaFileManager {
         return String((0..<TellaFileManager.fileNameLength).map{ _ in letters.randomElement()! }) + "." + type
     }
     
+    
     static func deleteEncryptedFile(name: String) {
         do {
             try instance.removeItem(atPath: "\(encryptedFolderPath)/\(name)")
@@ -142,20 +143,28 @@ struct TellaFileManager {
         }
     }
     
-    static func writePublicKey(_ data: Data) {
-        deletePublicKey()
-        instance.createFile(atPath: CryptoManager.publicKeyPath, contents: data)
+    static func keyFileExists(_ type: KeyFileEnum) -> Bool {
+        return instance.fileExists(atPath: type.toPath())
     }
     
-    static func deletePublicKey() {
-        if CryptoManager.publicKeyExists() {
+    static func saveKeyData(_ data: Data, _ type: KeyFileEnum) {
+        instance.createFile(atPath: type.toPath(), contents: data)
+    }
+    
+    static func recoverKeyData(_ type: KeyFileEnum) -> Data? {
+        return recoverData(type.toPath())
+    }
+    
+    static func deleteKeyFile(_ type: KeyFileEnum) {
+        if instance.fileExists(atPath: type.toPath()) {
             do {
-                try instance.removeItem(atPath: CryptoManager.publicKeyPath)
+                try instance.removeItem(atPath: type.toPath())
             } catch let error {
                 print("Error: \(error.localizedDescription)")
             }
         } else {
-            print("Public key did not exist")
+            print("\(type.rawValue) did not exist")
         }
     }
+
 }

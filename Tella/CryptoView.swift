@@ -16,35 +16,51 @@ struct CryptoView: View {
         return Group {
             header(back, "CRYPTO")
             VStack {
-                Spacer().frame(maxHeight: 30)
-                Button(action: {
-                    print(CryptoManager.publicKeyExists())
-                }) {
-                    smallText("pub key exists")
+                Group {
+                    Spacer().frame(maxHeight: 30)
+                    Button(action: {
+                        print(TellaFileManager.keyFileExists(.META_PUBLIC))
+                    }) {
+                        smallText("meta pub key exists")
+                    }
+                    Spacer().frame(maxHeight: 15)
+                    Button(action: {
+                        print(CryptoManager.metaPrivateKeyExists())
+                    }) {
+                        smallText("meta priv key exists")
+                    }
+                    Spacer().frame(maxHeight: 15)
+                    Button(action: {
+                        CryptoManager.deleteMetaKeypair()
+                    }) {
+                        smallText("delete meta keypair")
+                    }
                 }
-                Spacer().frame(maxHeight: 15)
-                Button(action: {
-                    print(CryptoManager.privateKeyExists())
-                }) {
-                    smallText("priv key exists")
-                }
-                Spacer().frame(maxHeight: 15)
-                Button(action: {
-                    TellaFileManager.deletePublicKey()
-                }) {
-                    smallText("delete pub key")
-                }
-                Spacer().frame(maxHeight: 15)
-                Button(action: {
-                    CryptoManager.deletePrivateKey()
-                }) {
-                    smallText("delete priv key")
-                }
-                Spacer().frame(maxHeight: 15)
-                Button(action: {
-                    CryptoManager.initKeys()
-                }) {
-                    smallText("init keys")
+                Group {
+                    Spacer().frame(maxHeight: 15)
+                    Button(action: {
+                        print(TellaFileManager.keyFileExists(.PUBLIC))
+                    }) {
+                        smallText("pub key exists")
+                    }
+                    Spacer().frame(maxHeight: 15)
+                    Button(action: {
+                        print(TellaFileManager.keyFileExists(.PRIVATE))
+                    }) {
+                        smallText("priv key exists")
+                    }
+                    Spacer().frame(maxHeight: 15)
+                    Button(action: {
+                        CryptoManager.deleteKeypair()
+                    }) {
+                        smallText("delete keypair")
+                    }
+                    Spacer().frame(maxHeight: 15)
+                    Button(action: {
+                        CryptoManager.initKeys(.PASSWORD)
+                    }) {
+                        smallText("init keys w/ password")
+                    }
                 }
             }
             Spacer()

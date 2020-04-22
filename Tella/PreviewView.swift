@@ -30,7 +30,7 @@ struct PreviewView: View {
         case .VIDEO:
             return AnyView(smallText("Video preview not available"))
         case .TEXT:
-            let txt = TellaFileManager.recoverTextFile(filepath)
+            let txt = TellaFileManager.recoverTextFile(filepath, privKey)
             return AnyView(
                 ScrollView(.vertical) {
                     smallText(txt ?? "Could not recover text")
