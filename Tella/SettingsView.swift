@@ -10,12 +10,12 @@
 import SwiftUI
 
 struct SettingsView: View {
-    
+    @State private var shutdownWarningDisplayed = false
     let back: Button<AnyView>
     
     var body: some View {
         return Group {
-            header(back, "SETTINGS")
+            header(back, "SETTINGS", shutdownWarningPresented: $shutdownWarningDisplayed)
             VStack {
                 Spacer().frame(maxHeight: 30)
                 HStack {

@@ -9,7 +9,7 @@ import SwiftUI
 import PDFKit
 
 struct PreviewView: View {
-    
+    @State private var shutdownWarningDisplayed = false
     let back: Button<AnyView>
     let filepath: String
     var fileType: FileTypeEnum? {
@@ -40,7 +40,7 @@ struct PreviewView: View {
     
     var body: some View {
         return Group {
-            header(back, "PREVIEW")
+            header(back, "PREVIEW", shutdownWarningPresented: $shutdownWarningDisplayed)
             Spacer()
             getPreview()
             Spacer()

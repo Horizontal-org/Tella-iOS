@@ -10,7 +10,7 @@ import SwiftUI
 import UIKit
 
 struct GalleryView: View {
-    
+    @State private var shutdownWarningDisplayed = false
     @State var currentView = GalleryViewEnum.MAIN
     @State var displayList = true
     @State var fileList = TellaFileManager.getEncryptedFileNames()
@@ -53,7 +53,7 @@ struct GalleryView: View {
 
     func getMainView() -> AnyView {
         return AnyView(Group {
-            header(back, "GALLERY")
+            header(back, "GALLERY", shutdownWarningPresented: $shutdownWarningDisplayed)
             Spacer().frame(maxHeight: 50)
             HStack {
                 if displayList {

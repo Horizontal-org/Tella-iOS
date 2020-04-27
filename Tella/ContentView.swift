@@ -29,16 +29,7 @@ struct ContentView: View {
             HStack {
                 bigText("TELLA")
                 Spacer()
-                Button(action: {
-                    self.showShutdownWarningAlert = true
-                }) {
-                    bigImg(.SHUTDOWN)
-                }
-                .alert(isPresented: $showShutdownWarningAlert) {
-                    return Alert(title: Text("Delete all files?"), message: Text("This cannot be undone."),
-                                 primaryButton: .default(Text("Delete"), action: { TellaFileManager.clearAllFiles() }),
-                        secondaryButton: .cancel())
-                }
+                shutdown(isPresented: $showShutdownWarningAlert)
             }
             Spacer()
             // center buttons
