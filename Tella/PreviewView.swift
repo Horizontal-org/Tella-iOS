@@ -6,6 +6,11 @@
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
 
+
+/*
+ This class represents the Preview view used in the gallery view. It will automatically handle any file type with a built in fallback for unrecognized file types
+ */
+
 import Foundation
 import SwiftUI
 import PDFKit
