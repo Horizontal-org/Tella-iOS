@@ -74,3 +74,15 @@ extension UIImage {
         return UIImage.init(cgImage: newCGImage, scale: 1, orientation: .up)
     }
 }
+
+struct RuntimeError: Error {
+    let message: String
+
+    init(_ message: String) {
+        self.message = message
+    }
+
+    public var localizedDescription: String {
+        return message
+    }
+}

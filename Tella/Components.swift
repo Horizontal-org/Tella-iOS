@@ -6,11 +6,16 @@
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
 
+/*
+ This class is used to factor out the core UI elements. The functions are used over all of the files so that information (text, images, buttons) is presented uniformly and cleanly throughout the app.
+ */
+
 import SwiftUI
 
 //TODO tweak this boundary
 let mainPadding: CGFloat = UIScreen.main.bounds.width > 400 ? 20 : 10
 
+//  Text related functions
 private func makeText(_ text: String, _ size: CGFloat, _ header: Bool) -> AnyView {
     if header {
         return AnyView(Text(text)
@@ -23,6 +28,7 @@ private func makeText(_ text: String, _ size: CGFloat, _ header: Bool) -> AnyVie
             .font(.custom("Avenir Light", size: size))
             .foregroundColor(.white)
             .font(.title))
+
 
 }
 
@@ -38,6 +44,7 @@ func smallText(_ text: String) -> AnyView {
     return makeText(text, 25, false)
 }
 
+//  Image related functions
 private func makeImg(_ imgName: ImageEnum, _ sideLength: CGFloat) -> AnyView {
     AnyView(Image(imgName.rawValue)
         .renderingMode(.original)
@@ -57,6 +64,7 @@ func smallImg(_ img: ImageEnum) -> AnyView {
     return makeImg(img, 25)
 }
 
+//  Button related functions
 private func makeLabeledImageButton(_ isBig: Bool, _ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> AnyView {
     AnyView(Button(action: {
        onPress()
@@ -93,11 +101,14 @@ func backButton(_ onPress: @escaping () -> ()) -> Button<AnyView> {
     }
 }
 
+
 func doneButton(_ onPress: @escaping () -> ()) -> Button<AnyView> {
     Button(action: onPress) {
         return makeText("Close", 18, false)
     }
 }
+
+//  Navigational elements
 
 func header(_ back: Button<AnyView>, _ title: String) -> AnyView {
     AnyView(HStack {
@@ -113,6 +124,7 @@ func header(_ back: Button<AnyView>, _ title: String) -> AnyView {
     })
 }
 
+
 func previewHeader(_ back: Button<AnyView>, _ title: String) -> AnyView {
     AnyView(HStack {
         Spacer()
@@ -121,4 +133,34 @@ func previewHeader(_ back: Button<AnyView>, _ title: String) -> AnyView {
         back
         //but i want to make this an x button
     })
+}
+
+private func roundedButton(_ text: String, _ onClick: @escaping () -> ()) -> AnyView {
+    return AnyView(Button(action: {
+        onClick()
+    }) {
+        smallText(text).padding(10)
+        .overlay(
+            RoundedRectangle(cornerRadius: 30)
+                .stroke(Color.white, lineWidth: 0.5)
+        )
+    })
+}
+
+func roundedInitPasswordButton(_ text: String, _ type: PasswordTypeEnum, _ back: @escaping () -> ()) -> AnyView {
+    return roundedButton(text) {
+        do {
+            try CryptoManager.initKeys(type)
+            back()
+        } catch {}
+    }
+}
+
+func roundedChangePasswordButton(_ text: String, _ privateKey: SecKey, _ type: PasswordTypeEnum, _ back: @escaping () -> ()) -> AnyView {
+    return roundedButton(text) {
+        do {
+            try CryptoManager.updateKeys(privateKey, type)
+        } catch {}
+        back()
+    }
 }
