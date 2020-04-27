@@ -49,7 +49,20 @@ struct GalleryView: View {
                 }
             })
         } else {
-            return smallText("Grid View Not Implemented")
+            return AnyView(List(fileList.map({ (value: String) -> File in File(name: value) })) { file in
+                        Group {
+                            Button(action: {
+                                print("grid preview")
+                                self.currentView = .PREVIEW(filepath: TellaFileManager.fileNameToPath(name: file.name))
+                            }) {
+                                    Spacer()
+                                    mediumImg(.PHOTOPREV)
+                                    Spacer()
+
+                            }.buttonStyle(BorderlessButtonStyle())
+            
+                        }
+                    })
         }
     }
 
