@@ -16,40 +16,15 @@ struct ChangeView: View {
     
     var body: some View {
         return VStack {
-            HStack {
-                backButton {
-                    self.back()
-                }
-                Spacer()
-                mediumText("CHANGE")
-                Spacer()
-            }
-            smallText("Change password to type:")
+            bigText("TELLA")
             Spacer()
-            Button(action: {
-                do {
-                    try CryptoManager.updateKeys(self.privateKey, .PASSWORD)
-                } catch {}
-                self.back()
-            }) {
-                smallText("Password")
-            }
-            Button(action: {
-                do {
-                    try CryptoManager.updateKeys(self.privateKey, .PASSCODE)
-                } catch {}
-                self.back()
-            }) {
-                smallText("Phone Passcode")
-            }
-            Button(action: {
-                do {
-                    try CryptoManager.updateKeys(self.privateKey, .BIOMETRIC)
-                } catch {}
-                self.back()
-            }) {
-                smallText("Phone Biometrics")
-            }
+            smallText("Change password type:")
+            Spacer().frame(height: 30)
+            roundedChangePasswordButton("        Password        ", self.privateKey, .PASSWORD, self.back)
+            Spacer().frame(height: 10)
+            roundedChangePasswordButton("  Phone Passcode  ", self.privateKey, .PASSCODE, self.back)
+            Spacer().frame(height: 10)
+            roundedChangePasswordButton(" Phone Biometrics ", self.privateKey, .BIOMETRIC, self.back)
             Spacer()
         }
     }

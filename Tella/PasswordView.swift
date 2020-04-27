@@ -14,33 +14,15 @@ struct PasswordView: View {
     
     var body: some View {
         return VStack {
-            mediumText("SECURITY")
-            smallText("Choose password type:")
+            bigText("TELLA")
             Spacer()
-            Button(action: {
-                do {
-                    try CryptoManager.initKeys(.PASSWORD)
-                    self.back()
-                } catch {}
-            }) {
-                smallText("Password")
-            }
-            Button(action: {
-                do {
-                    try CryptoManager.initKeys(.PASSCODE)
-                    self.back()
-                } catch {}
-            }) {
-                smallText("Phone Passcode")
-            }
-            Button(action: {
-                do {
-                    try CryptoManager.initKeys(.BIOMETRIC)
-                    self.back()
-                } catch {}
-            }) {
-                smallText("Phone Biometrics")
-            }
+            smallText("Choose password type:")
+            Spacer().frame(height: 30)
+            roundedInitPasswordButton("        Password        ", .PASSWORD, self.back)
+            Spacer().frame(height: 10)
+            roundedInitPasswordButton("  Phone Passcode  ", .PASSCODE, self.back)
+            Spacer().frame(height: 10)
+            roundedInitPasswordButton(" Phone Biometrics ", .BIOMETRIC, self.back)
             Spacer()
         }
     }
