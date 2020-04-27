@@ -6,22 +6,29 @@
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
 
+
+/*
+ Wraps up file manipulation functions up safely using a static singleton.
+ */
 import Foundation
 import UIKit
 
 struct TellaFileManager {
     
+    // Singleton file manager instance
     private static let instance = FileManager.default
     static let rootDir = "\(NSHomeDirectory())/Documents"
     private static let keyFolderPath = "\(rootDir)/keys"
     private static let encryptedFolderPath = "\(rootDir)/files"
-    private static let fileNameLength = 12
+    private static let fileNameLength = 8
     
+    // Initializes directories for the keys and files.
     static func initDirectories() {
         initDirectory(keyFolderPath)
         initDirectory(encryptedFolderPath)
     }
     
+    // Removes all files associated with the user.
     static func clearAllFiles() {
         getEncryptedFileNames().forEach { name in
             deleteEncryptedFile(name: name)
@@ -31,6 +38,7 @@ struct TellaFileManager {
         deleteKeyFile(.META_PUBLIC)
     }
     
+    // Safely initializes a directory and quits the app if it fails.
     private static func initDirectory(_ atPath: String) {
         if !instance.fileExists(atPath: atPath) {
             do {
