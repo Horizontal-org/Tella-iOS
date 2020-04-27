@@ -105,3 +105,33 @@ func header(_ back: Button<AnyView>, _ title: String) -> AnyView {
         }
     })
 }
+
+private func roundedButton(_ text: String, _ onClick: @escaping () -> ()) -> AnyView {
+    return AnyView(Button(action: {
+        onClick()
+    }) {
+        smallText(text).padding(10)
+        .overlay(
+            RoundedRectangle(cornerRadius: 30)
+                .stroke(Color.white, lineWidth: 0.5)
+        )
+    })
+}
+
+func roundedInitPasswordButton(_ text: String, _ type: PasswordTypeEnum, _ back: @escaping () -> ()) -> AnyView {
+    return roundedButton(text) {
+        do {
+            try CryptoManager.initKeys(type)
+            back()
+        } catch {}
+    }
+}
+
+func roundedChangePasswordButton(_ text: String, _ privateKey: SecKey, _ type: PasswordTypeEnum, _ back: @escaping () -> ()) -> AnyView {
+    return roundedButton(text) {
+        do {
+            try CryptoManager.updateKeys(privateKey, type)
+        } catch {}
+        back()
+    }
+}
