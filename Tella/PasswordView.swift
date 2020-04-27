@@ -18,44 +18,11 @@ struct PasswordView: View {
             Spacer()
             smallText("Choose password type:")
             Spacer().frame(height: 30)
-            Button(action: {
-                do {
-                    try CryptoManager.initKeys(.PASSWORD)
-                    self.back()
-                } catch {}
-            }) {
-                smallText("        Password        ").padding(10)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 30)
-                        .stroke(Color.white, lineWidth: 0.5)
-                )
-            }
+            roundedInitPasswordButton("        Password        ", .PASSWORD, self.back)
             Spacer().frame(height: 10)
-            Button(action: {
-                do {
-                    try CryptoManager.initKeys(.PASSCODE)
-                    self.back()
-                } catch {}
-            }) {
-                smallText("  Phone Passcode  ").padding(10)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 30)
-                        .stroke(Color.white, lineWidth: 0.5)
-                )
-            }
+            roundedInitPasswordButton("  Phone Passcode  ", .PASSCODE, self.back)
             Spacer().frame(height: 10)
-            Button(action: {
-                do {
-                    try CryptoManager.initKeys(.BIOMETRIC)
-                    self.back()
-                } catch {}
-            }) {
-                smallText(" Phone Biometrics ").padding(10)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 30)
-                        .stroke(Color.white, lineWidth: 0.5)
-                )
-            }
+            roundedInitPasswordButton(" Phone Biometrics ", .BIOMETRIC, self.back)
             Spacer()
         }
     }
