@@ -5,6 +5,11 @@
 //  Created by Oliphant, Samuel on 2/26/20.
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
+
+/*
+ Utilites class for miscellaneous functions
+ */
+
 import UIKit
 
 // Taken from here:
@@ -72,5 +77,17 @@ extension UIImage {
 
         guard let newCGImage = ctx.makeImage() else { return nil }
         return UIImage.init(cgImage: newCGImage, scale: 1, orientation: .up)
+    }
+}
+
+struct RuntimeError: Error {
+    let message: String
+
+    init(_ message: String) {
+        self.message = message
+    }
+
+    public var localizedDescription: String {
+        return message
     }
 }

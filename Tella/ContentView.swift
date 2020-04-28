@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
 
-    @State var currentView: MainViewEnum = .MAIN
+    @State var currentView: MainViewEnum
     @State var image: Image? = nil
 
     @State private var showShutdownWarningAlert = false
@@ -22,7 +22,9 @@ struct ContentView: View {
     var back: Button<AnyView> {
         return backButton { self.backFunc() }
     }
-
+    
+//  setting up the homepage/main view of the app
+//  this is the core view that the user will start on and navigate to and from
     func getMainView() -> AnyView {
         return AnyView(Group {
             // title row
@@ -51,19 +53,21 @@ struct ContentView: View {
                     self.currentView = .GALLERY
                 }
             }
-
-            // settings button
-            Button(action: {
-                self.currentView = .SETTINGS
-            }) {
+            HStack {
                 Spacer()
-                smallImg(.SETTINGS)
+                // settings button
+                Button(action: {
+                    self.currentView = .SETTINGS
+                }) {
+                    smallImg(.SETTINGS)
+                }
                 Spacer().frame(maxWidth: 10)
-
             }
         })
     }
 
+//  updates the current view presented based on the currentView variable
+//  the currentView variable is updated when the user clicks ond of the buttons
     func getViewContents(_ currentView: MainViewEnum) -> AnyView {
         switch currentView {
         case .MAIN:
@@ -77,7 +81,17 @@ struct ContentView: View {
         case .SETTINGS:
             return AnyView(SettingsView(back: back))
         case .GALLERY:
-            return AnyView(GalleryView(back: back))
+            guard let privKey = CryptoManager.recoverKey(.PRIVATE) else {
+                return AnyView(
+                    VStack {
+                        smallText("Correct password not input.")
+                        back
+                    }
+                )
+            }
+            return AnyView(GalleryView(back: back, privKey: privKey))
+        case .AUTH:
+            return AnyView(PasswordView(back: backFunc))
         }
     }
 
@@ -93,12 +107,5 @@ struct ContentView: View {
                     .padding(mainPadding) // padding for content
             ))
         }
-    }
-
-}
-
-struct ontentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }

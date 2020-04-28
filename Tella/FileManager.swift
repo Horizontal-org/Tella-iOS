@@ -5,34 +5,44 @@
 //  Created by Oliphant, Samuel on 2/25/20.
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
+
+
+/*
+ Wraps up file manipulation functions up safely using a static singleton.
+ */
 import Foundation
 import UIKit
 
 struct TellaFileManager {
     
+    // Singleton file manager instance
     private static let instance = FileManager.default
-    private static let rootDir = "\(NSHomeDirectory())/Documents"
+    static let rootDir = "\(NSHomeDirectory())/Documents"
     private static let keyFolderPath = "\(rootDir)/keys"
     private static let encryptedFolderPath = "\(rootDir)/files"
-    private static let publicKeyPath = "\(keyFolderPath)/pub-key.txt"
-    private static let privateKeyPath = "\(keyFolderPath)/priv-key.txt"
-    private static let fileNameLength = 12
+    private static let fileNameLength = 8
     
+    // Initializes directories for the keys and files.
     static func initDirectories() {
         initDirectory(keyFolderPath)
         initDirectory(encryptedFolderPath)
     }
     
+    // Removes all files associated with the user.
     static func clearAllFiles() {
-        do {
-            try instance.removeItem(atPath: keyFolderPath)
-            try instance.removeItem(atPath: encryptedFolderPath)
-            initDirectories()
-        } catch let error {
-            print("Error: \(error.localizedDescription)")
+        getEncryptedFileNames().forEach { name in
+            deleteEncryptedFile(name: name)
+        }
+        deleteKeyFile(.PUBLIC)
+        deleteKeyFile(.PRIVATE)
+        deleteKeyFile(.META_PUBLIC)
+        let err: ()? = try? CryptoManager.deleteMetaKeypair()
+        if err != nil {
+            print("could not delete private meta key from enclave")
         }
     }
     
+    // Safely initializes a directory and quits the app if it fails.
     private static func initDirectory(_ atPath: String) {
         if !instance.fileExists(atPath: atPath) {
             do {
@@ -46,26 +56,15 @@ struct TellaFileManager {
         }
     }
     
-    static func savePublicKey(_ key: String) {
-        instance.createFile(atPath: publicKeyPath, contents: key.data(using: String.Encoding.utf8)!)
-    }
-    
-    static func savePrivateKey(_ key: String) {
-        //TODO encrypt this
-        instance.createFile(atPath: privateKeyPath, contents: key.data(using: String.Encoding.utf8)!)
-    }
-    
-    static func saveEncryptedFile() {
-        //TODO
-    }
-    
     static func saveTextFile(_ text: String) {
         saveFile(text.data(using: String.Encoding.utf8)!, FileTypeEnum.TEXT.rawValue)
     }
     
     static func saveImage(_ image: UIImage) {
         if let fixed = image.fixedOrientation() {
-            saveFile(fixed.pngData()!, FileTypeEnum.IMAGE.rawValue)
+            if let pngData = fixed.pngData() {
+                saveFile(pngData, FileTypeEnum.IMAGE.rawValue)
+            }
         }
     }
     
@@ -79,29 +78,47 @@ struct TellaFileManager {
                 newName = getRandomFilename(type)
             }
         }
-        instance.createFile(atPath: "\(encryptedFolderPath)/\(newName)", contents: data)
+        if let encrypted = CryptoManager.encryptUserData(data) {
+            instance.createFile(atPath: "\(encryptedFolderPath)/\(newName)", contents: encrypted)
+        } else {
+            print("encryption failed")
+        }
     }
     
     static func copyExternalFile(_ url: URL) {
         do {
-            try instance.copyItem(atPath: url.path, toPath: "\(encryptedFolderPath)/\(getRandomFilename(url.pathExtension))")
+            let data = try Data(contentsOf: url)
+            saveFile(data, url.pathExtension)
         } catch let error {
             print("Error: \(error.localizedDescription)")
         }
     }
     
-    static func recoverImageFile(_ atPath: String) -> UIImage? {
-        let data = instance.contents(atPath: atPath)
+    static func recoverImageFile(_ atPath: String, _ privKey: SecKey) -> UIImage? {
+        let data = recoverAndDecrypt(atPath, privKey)
         if let unwrapped = data {
             return UIImage(data: unwrapped)
         }
         return nil
     }
     
-    static func recoverTextFile(_ atPath: String) -> String? {
-        let data = instance.contents(atPath: atPath)
+    static func tempSaveText() {
+        saveTextFile("hi")
+    }
+    
+    static func recoverTextFile(_ atPath: String, _ privKey: SecKey) -> String? {
+        let data = recoverAndDecrypt(atPath, privKey)
         if let unwrapped = data {
             return String(data: unwrapped, encoding: String.Encoding.utf8)
+        }
+        return nil
+    }
+    
+    static func recoverAndDecrypt(_ atPath: String, _ privKey: SecKey) -> Data? {
+        if let data = recoverData(atPath) {
+            if let decrypted = CryptoManager.decrypt(data, privKey) {
+                return decrypted
+            }
         }
         return nil
     }
@@ -129,6 +146,7 @@ struct TellaFileManager {
         return String((0..<TellaFileManager.fileNameLength).map{ _ in letters.randomElement()! }) + "." + type
     }
     
+    
     static func deleteEncryptedFile(name: String) {
         do {
             try instance.removeItem(atPath: "\(encryptedFolderPath)/\(name)")
@@ -136,4 +154,29 @@ struct TellaFileManager {
             print("Error: \(error.localizedDescription)")
         }
     }
+    
+    static func keyFileExists(_ type: KeyFileEnum) -> Bool {
+        return instance.fileExists(atPath: type.toPath())
+    }
+    
+    static func saveKeyData(_ data: Data, _ type: KeyFileEnum) {
+        instance.createFile(atPath: type.toPath(), contents: data)
+    }
+    
+    static func recoverKeyData(_ type: KeyFileEnum) -> Data? {
+        return recoverData(type.toPath())
+    }
+    
+    static func deleteKeyFile(_ type: KeyFileEnum) {
+        if instance.fileExists(atPath: type.toPath()) {
+            do {
+                try instance.removeItem(atPath: type.toPath())
+            } catch let error {
+                print("Error: \(error.localizedDescription)")
+            }
+        } else {
+            print("\(type.rawValue) did not exist")
+        }
+    }
+
 }
