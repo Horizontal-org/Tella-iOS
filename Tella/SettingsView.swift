@@ -35,12 +35,12 @@ struct SettingsView: View {
             VStack {
                 Spacer().frame(maxHeight: 30)
                 HStack {
-                    smallLabeledImageButton(.KEY, "Change password") {
+                    smallLabeledImageButton(.KEY, "Change lock") {
                         //we want this button to be password protected, so when the button is clicked users have to enter password
                         //present view to enter curr password --> this will need to vary based on what
                         //type of password the user has currently
                         //if right then need to change
-                        print("change password button pressed")
+                        print("change lock button pressed")
                         self.currentView = .CHANGE
                     }
                     Spacer()
@@ -50,7 +50,7 @@ struct SettingsView: View {
                     smallLabeledImageButton(.KEYTYPE, "Add Biometric") {
                         //present view to enter old password
                         //present new view with options for password types
-                        print("change password type button pressed")
+                        print("change lock type button pressed")
                     }
                     Spacer()
                 }
