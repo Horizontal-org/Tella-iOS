@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1E08E81A241922A5007B50D9 /* preview.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 1E08E819241922A5007B50D9 /* preview.pdf */; };
 		1E67B39223FC9067001F3D64 /* Importers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* Importers.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
 		45C189E7C13995B66DC5E4DF /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D0CF24AE4FC6E195219D930 /* libPods-TellaTests.a */; };
@@ -56,7 +55,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1E08E819241922A5007B50D9 /* preview.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = preview.pdf; path = ../preview.pdf; sourceTree = SOURCE_ROOT; };
 		1E67B39123FC9067001F3D64 /* Importers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Importers.swift; sourceTree = "<group>"; };
 		1EAE6BF424146C2100114244 /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
 		20CDD48993D4F37D51979E72 /* Pods-Tella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.release.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.release.xcconfig"; sourceTree = "<group>"; };
@@ -204,11 +202,9 @@
 				6DD4C037240F4B9900491438 /* PreviewView.swift */,
 				1EAE6BF424146C2100114244 /* QuickLook.swift */,
 				6DD4C039240F547300491438 /* Util.swift */,
-				1E08E819241922A5007B50D9 /* preview.pdf */,
 				6D848FA22416D12D004896E0 /* CryptoManager.swift */,
 				6DC2ABC8245029BC004579DF /* PasswordView.swift */,
 				6DC2ABCA24502D08004579DF /* ChangeView.swift */,
-
 			);
 			path = Tella;
 			sourceTree = "<group>";
@@ -351,7 +347,6 @@
 				F66E65B623E32080000F93E5 /* Preview Assets.xcassets in Resources */,
 				4CE85B852408B23800CF24AF /* demoIcon@2x.png in Resources */,
 				F66E65B323E32080000F93E5 /* Assets.xcassets in Resources */,
-				1E08E81A241922A5007B50D9 /* preview.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

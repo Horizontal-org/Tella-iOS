@@ -151,17 +151,17 @@ struct TellaFileManager {
         }
     }
 
-
-    static func rename(original: String, new: String, type: String){
-//        instance.createFile(atPath: "\(encryptedFolderPath)/\(new + "." + type)", contents: self.recoverData(original))
-//
+    //function called for the renaming feature
+    //automatically handles checking for the same name and won't rename a file if there is already a file with the same name
+    static func rename(original: String, new: String, type: String) -> Bool {
         do {
             print(new)
             try instance.moveItem(atPath: original, toPath: self.fileNameToPath(name: new + "." + type))
         } catch let error{
             print("error: \(error.localizedDescription)")
+            return false
         }
-//        self.deleteEncryptedFile(name: self.fileNameToPath(name: original))
+        return true
     }
 
     static func keyFileExists(_ type: KeyFileEnum) -> Bool {
@@ -187,6 +187,5 @@ struct TellaFileManager {
             print("\(type.rawValue) did not exist")
         }
     }
-
 
 }

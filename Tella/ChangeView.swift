@@ -16,7 +16,7 @@ struct ChangeView: View {
     
     var body: some View {
         return VStack {
-            bigText("TELLA")
+            bigText("TELLA", true)
             Spacer()
             smallText("Change password type:")
             Spacer().frame(height: 30)
