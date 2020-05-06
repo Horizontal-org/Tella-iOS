@@ -90,20 +90,14 @@ struct TellaFileManager {
         }
     }
     
-    static func recoverImageFile(_ atPath: String, _ privKey: SecKey) -> UIImage? {
-        let data = recoverAndDecrypt(atPath, privKey)
+    static func recoverImage(_ data: Data?) -> UIImage? {
         if let unwrapped = data {
             return UIImage(data: unwrapped)
         }
         return nil
     }
     
-    static func tempSaveText() {
-        saveTextFile("hi")
-    }
-    
-    static func recoverTextFile(_ atPath: String, _ privKey: SecKey) -> String? {
-        let data = recoverAndDecrypt(atPath, privKey)
+    static func recoverText(_ data: Data?) -> String? {
         if let unwrapped = data {
             return String(data: unwrapped, encoding: String.Encoding.utf8)
         }

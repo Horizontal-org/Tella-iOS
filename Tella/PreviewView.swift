@@ -19,31 +19,39 @@ struct PreviewView: View {
     
     let back: Button<AnyView>
     let filepath: String
-    let privKey: SecKey
+    let data: Data?
+    
+    @State private var isSharePresented: Bool = false
+    
+    init(back: Button<AnyView>, filepath: String, privKey: SecKey) {
+        self.back = back
+        self.filepath = filepath
+        self.data = TellaFileManager.recoverAndDecrypt(filepath, privKey)
+    }
     
     var fileType: FileTypeEnum? {
-        return FileTypeEnum(rawValue: filepath.components(separatedBy: ".")[1])
+        return FileTypeEnum(rawValue: filepath.components(separatedBy: ".").last!)
     }
     
     func getPreview() -> AnyView {
         switch fileType {
         case .IMAGE:
-            if let img = TellaFileManager.recoverImageFile(filepath, privKey) {
+            if let img = TellaFileManager.recoverImage(data) {
                 return AnyView(Image(uiImage: img).resizable().scaledToFit())
             }
             return AnyView(smallText("Image could not be recovered"))
         case .VIDEO:
             return AnyView(smallText("Video preview not available"))
         case .TEXT:
-            let txt = TellaFileManager.recoverTextFile(filepath, privKey)
+            let txt = TellaFileManager.recoverText(data)
             return AnyView(
                 ScrollView(.vertical) {
                     smallText(txt ?? "Could not recover text")
                 }
             )
         case .PDF:
-            if let data = TellaFileManager.recoverAndDecrypt(filepath, privKey) {
-                return AnyView(PDFKitView(data: data))
+            if let pdf = data {
+                return AnyView(PDFKitView(data: pdf))
             } else {
                 return smallText("Data not found")
             }
@@ -58,6 +66,14 @@ struct PreviewView: View {
             Spacer()
             getPreview()
             Spacer()
+            roundedButton("EXPORT") {
+                self.isSharePresented = self.data != nil
+            }
+            .sheet(isPresented: $isSharePresented, onDismiss: {
+                print("Dismiss")
+            }, content: {
+                ActivityViewController(fileData: self.data!)
+            })
         }
     }
 }
