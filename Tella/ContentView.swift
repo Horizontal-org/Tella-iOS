@@ -13,6 +13,8 @@ struct ContentView: View {
     @State var currentView: MainViewEnum
     @State var image: Image? = nil
 
+    @State private var showShutdownWarningAlert = false
+    
     private func backFunc() {
         self.currentView = .MAIN
     }
@@ -29,11 +31,7 @@ struct ContentView: View {
             HStack {
                 bigText("TELLA")
                 Spacer()
-                Button(action: {
-                    print("shutdown button pressed")
-                }) {
-                    bigImg(.SHUTDOWN)
-                }
+                shutdown(isPresented: $showShutdownWarningAlert)
             }
             Spacer()
             // center buttons

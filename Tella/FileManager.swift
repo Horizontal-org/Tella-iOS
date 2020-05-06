@@ -36,6 +36,10 @@ struct TellaFileManager {
         deleteKeyFile(.PUBLIC)
         deleteKeyFile(.PRIVATE)
         deleteKeyFile(.META_PUBLIC)
+        let err: ()? = try? CryptoManager.deleteMetaKeypair()
+        if err != nil {
+            print("could not delete private meta key from enclave")
+        }
     }
     
     // Safely initializes a directory and quits the app if it fails.

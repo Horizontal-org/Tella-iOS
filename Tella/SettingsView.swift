@@ -18,8 +18,9 @@
 import SwiftUI
 
 struct SettingsView: View {
-    
+
     @State var currentView: SettingsEnum = .MAIN
+    @State private var shutdownWarningDisplayed = false
     
     func settingsBackFunc() {
         self.currentView = .MAIN
@@ -31,7 +32,7 @@ struct SettingsView: View {
     //  Setting up the view for the settings page
     func getMainView() -> AnyView {
         return AnyView(Group {
-            header(back, "SETTINGS")
+            header(back, "SETTINGS", shutdownWarningPresented: $shutdownWarningDisplayed)
             VStack {
                 Spacer().frame(maxHeight: 30)
                 HStack {

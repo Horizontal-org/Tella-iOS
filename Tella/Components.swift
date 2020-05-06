@@ -58,7 +58,7 @@ func smallImg(_ img: ImageEnum) -> AnyView {
 //  Button related functions
 private func makeLabeledImageButton(_ isBig: Bool, _ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> AnyView {
     AnyView(Button(action: {
-       onPress()
+        onPress()
     }) {
         HStack {
             if isBig {
@@ -72,9 +72,9 @@ private func makeLabeledImageButton(_ isBig: Bool, _ img: ImageEnum, _ text: Str
             }
         }
     }
-        .padding(isBig ? 20 : 10)
-        .border(Color.white, width: isBig ? 1 : 0)
-        .cornerRadius(25))
+    .padding(isBig ? 20 : 10)
+    .border(Color.white, width: isBig ? 1 : 0)
+    .cornerRadius(25))
 }
 
 func bigLabeledImageButton(_ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> AnyView {
@@ -90,19 +90,29 @@ func backButton(_ onPress: @escaping () -> ()) -> Button<AnyView> {
         mediumText("<")
     }
 }
+struct shutdown : View {
+    @Binding var isPresented: Bool
+    var body : some View {
+        Button(action: {
+            self.isPresented = true
+        }) {
+            mediumImg(.SHUTDOWN)
+        }.alert(isPresented: $isPresented) {
+            return Alert(title: Text("Delete all files?"), message: Text("This cannot be undone."),
+                         primaryButton: .default(Text("Delete"), action: { TellaFileManager.clearAllFiles() }),
+                         secondaryButton: .cancel())
+        }
+    }
+}
 
 //  Navigational elements
-func header(_ back: Button<AnyView>, _ title: String) -> AnyView {
+func header(_ back: Button<AnyView>, _ title: String, shutdownWarningPresented: Binding<Bool>) -> AnyView {
     AnyView(HStack {
         back
         Spacer()
         mediumText(title)
         Spacer()
-        Button(action: {
-            print("shutdown button pressed")
-        }) {
-            mediumImg(.SHUTDOWN)
-        }
+        shutdown(isPresented: shutdownWarningPresented)
     })
 }
 
