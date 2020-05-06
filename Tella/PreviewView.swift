@@ -119,10 +119,10 @@ struct PreviewView: View {
             Spacer()
             }
 
-            header(back, "PREVIEW", shutdownWarningPresented: $shutdownWarningDisplayed)
-            Spacer()
-            getPreview()
-            Spacer()
+            //header(back, "PREVIEW", shutdownWarningPresented: $shutdownWarningDisplayed)
+//            Spacer()
+//            getPreview()
+//            Spacer()
             roundedButton("EXPORT") {
                 self.isSharePresented = self.data != nil
             }
