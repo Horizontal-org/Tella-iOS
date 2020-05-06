@@ -8,7 +8,7 @@
 
 /*
  This is the Settings page. The button for this is the gear icon in the bottom corner of the main view
- 
+
  Key functionality:
     User can change their password (actual string) as well as changing what type of password they use (alphanumeric code or 4-digit numeric code)
     User can add a biometric option (TouchID or FaceID depending on the device) which can be used as a shortcut for entering the app. User will still need a fallback password/pin in case biometrics fail (in dark lighting, wearing gloves)
@@ -18,20 +18,21 @@
 import SwiftUI
 
 struct SettingsView: View {
-    
+
     @State var currentView: SettingsEnum = .MAIN
-    
+    @State private var shutdownWarningDisplayed = false
+
     func settingsBackFunc() {
         self.currentView = .MAIN
     }
-        
+
     let back: Button<AnyView>
-    
+
 
     //  Setting up the view for the settings page
     func getMainView() -> AnyView {
         return AnyView(Group {
-            header(back, "SETTINGS")
+            header(back, "SETTINGS", shutdownWarningPresented: $shutdownWarningDisplayed)
             VStack {
                 Spacer().frame(maxHeight: 30)
                 HStack {
@@ -68,9 +69,9 @@ struct SettingsView: View {
                 }
             }
             Spacer()
-        }
-    )}
-    
+        })
+    }
+
     func getViewContents(_ currentView: SettingsEnum) -> AnyView {
         switch currentView {
         case .CHANGE:
@@ -89,7 +90,7 @@ struct SettingsView: View {
             return getMainView()
         }
     }
-    
+
     var body: some View {
         getViewContents(currentView)
     }

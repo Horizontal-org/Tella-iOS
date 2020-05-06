@@ -115,3 +115,17 @@ class DocCoordinator: NSObject, UINavigationControllerDelegate, UIDocumentPicker
     }
 
 }
+
+struct ActivityViewController: UIViewControllerRepresentable {
+
+    var fileData: Data
+    var applicationActivities: [UIActivity]? = nil
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityViewController>) -> UIActivityViewController {
+        let controller = UIActivityViewController(activityItems: [fileData], applicationActivities: applicationActivities)
+        return controller
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityViewController>) {}
+
+}

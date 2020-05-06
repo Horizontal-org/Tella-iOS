@@ -21,7 +21,7 @@ import SwiftUI
 import UIKit
 
 struct GalleryView: View {
-
+    @State private var shutdownWarningDisplayed = false
     @State var currentView = GalleryViewEnum.MAIN
     @State var displayList = true
     @State var fileList = TellaFileManager.getEncryptedFileNames()
@@ -82,7 +82,7 @@ struct GalleryView: View {
 //  Sets up the main view. Has a toggle for displaying list or grid view. Has a plus button in the bottom right corner for importing files.
     func getMainView() -> AnyView {
         return AnyView(Group {
-            header(back, "GALLERY")
+            header(back, "GALLERY", shutdownWarningPresented: $shutdownWarningDisplayed)
             Spacer().frame(maxHeight: 50)
             HStack {
                 if displayList {
