@@ -68,7 +68,7 @@ struct SettingsView: View {
                 }
             }
             Spacer()
-        }
+        })
     }
     
     func getViewContents(_ currentView: SettingsEnum) -> AnyView {

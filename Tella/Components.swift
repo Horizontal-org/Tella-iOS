@@ -106,7 +106,7 @@ func header(_ back: Button<AnyView>, _ title: String) -> AnyView {
     })
 }
 
-private func roundedButton(_ text: String, _ onClick: @escaping () -> ()) -> AnyView {
+func roundedButton(_ text: String, _ onClick: @escaping () -> ()) -> AnyView {
     return AnyView(Button(action: {
         onClick()
     }) {
