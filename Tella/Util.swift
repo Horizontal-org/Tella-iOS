@@ -5,6 +5,11 @@
 //  Created by Oliphant, Samuel on 2/26/20.
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
+
+/*
+ Utilites class for miscellaneous functions
+ */
+
 import UIKit
 
 // Taken from here:

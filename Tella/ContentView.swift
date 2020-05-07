@@ -13,6 +13,8 @@ struct ContentView: View {
     @State var currentView: MainViewEnum
     @State var image: Image? = nil
 
+    @State private var showShutdownWarningAlert = false
+    
     private func backFunc() {
         self.currentView = .MAIN
     }
@@ -20,18 +22,16 @@ struct ContentView: View {
     var back: Button<AnyView> {
         return backButton { self.backFunc() }
     }
-
+    
+//  setting up the homepage/main view of the app
+//  this is the core view that the user will start on and navigate to and from
     func getMainView() -> AnyView {
         return AnyView(Group {
             // title row
             HStack {
-                bigText("TELLA")
+                bigText("TELLA", true)
                 Spacer()
-                Button(action: {
-                    print("shutdown button pressed")
-                }) {
-                    bigImg(.SHUTDOWN)
-                }
+                shutdown(isPresented: $showShutdownWarningAlert)
             }
             Spacer()
             // center buttons
@@ -66,6 +66,8 @@ struct ContentView: View {
         })
     }
 
+//  updates the current view presented based on the currentView variable
+//  the currentView variable is updated when the user clicks ond of the buttons
     func getViewContents(_ currentView: MainViewEnum) -> AnyView {
         switch currentView {
         case .MAIN:

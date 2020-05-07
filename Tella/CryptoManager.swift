@@ -6,18 +6,25 @@
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
 
+/*
+This struct provides the necessary functions for key management and data encryption/decryption. Two keypairs are maintained, the meta keypair and the regular keypair. The private meta key is stored in the secure enclave. The public meta key is stored in a file. The regular private key is encrypted using the public meta key and the encrypted result is stored in a file. The regular public key is stored in a file. So, to encrypt files, the regular public key is used.
+ To access files, the user is prompted for their authentication when they enter the gallery view. When this authentication is complete, the meta private key is recovered and used to decrypt the regular private key and store the unencrypted private key in memory. Now the user is able to examine their unencrypted files using the regular private key to decrypt.
+ */
+
 import Foundation
 
 struct CryptoManager {
     
     private static let metaPrivateKeyTag = "org.hzontal.tella.ios"
     private static let algorithm: SecKeyAlgorithm = .eciesEncryptionCofactorX963SHA256AESGCM
+    // Query used to recover the meta private key
     private static let metaPrivateKeyQuery: [String: Any] = [kSecClass as String: kSecClassKey,
                                                          kSecAttrApplicationTag as String: metaPrivateKeyTag,
                                                          kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
                                                          kSecReturnRef as String: true,
                                                          kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave]
     
+    // Returns the options for the given key
     private static func getOptions(_ type: KeyEnum) -> [String: Any] {
         switch (type) {
         case .META_PRIVATE:
@@ -40,6 +47,7 @@ struct CryptoManager {
         return recoverMetaPrivateKey() != nil
     }
     
+    // Retrieves the meta private key from the secure enclave. Returns nil on failure or if the key doesn't exist yet.
     static func recoverMetaPrivateKey() -> SecKey? {
         var item: CFTypeRef?
         let status = SecItemCopyMatching(metaPrivateKeyQuery as CFDictionary, &item)
@@ -51,6 +59,9 @@ struct CryptoManager {
         return key
     }
     
+    
+    // Retrieves a key from a file: meta public, regular public, or regular private.
+    // When retrieving the regular private, the user is prompted for their authentication.
     static func recoverKey(_ type: KeyEnum) -> SecKey? {
         guard let keyFileType = type.toKeyFileEnum() else {
             return recoverMetaPrivateKey()
@@ -60,6 +71,7 @@ struct CryptoManager {
             return nil
         }
         if type == .PRIVATE {
+            // Decrypts the regular private key
             guard let metaPrivateKey = recoverKey(.META_PRIVATE) else {
                 print("meta private key not recovered")
                 return nil
@@ -92,6 +104,7 @@ struct CryptoManager {
         TellaFileManager.deleteKeyFile(.PRIVATE)
     }
     
+    // Generates meta public key from meta private key and stores it.
     static func saveMetaPublicKey(_ privateKey: SecKey) {
         print("Saving meta public")
         guard let publicKey = SecKeyCopyPublicKey(privateKey) else {
@@ -107,6 +120,7 @@ struct CryptoManager {
         print("Done saving meta public")
     }
     
+    // Retrieves the regular public key, encrypts the regular private key, and saves both.
     static func saveKeypair(_ privateKey: SecKey) {
         var error: Unmanaged<CFError>?
         guard let privateData = SecKeyCopyExternalRepresentation(privateKey, &error) as Data? else {
@@ -134,7 +148,9 @@ struct CryptoManager {
         TellaFileManager.saveKeyData(publicData, .PUBLIC)
     }
     
+    // Generates the meta private key with the appropriate authentication
     private static func createMetaPrivateKey(_ type: PasswordTypeEnum) throws -> SecKey {
+        // .privateKeyUsage needed so it is accessible
         var flags = SecAccessControlCreateFlags.privateKeyUsage
         flags.formUnion(type.toFlag())
         let access = SecAccessControlCreateWithFlags(
@@ -160,6 +176,7 @@ struct CryptoManager {
         return metaPrivateKey
     }
     
+    // Generates a new regular private key. Returns nil on failure.
     private static func createPrivateKey() -> SecKey? {
         let attributes: [String: Any] = [
             kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
@@ -173,6 +190,7 @@ struct CryptoManager {
         return privateKey
     }
     
+    // Checks if both private keys are properly initialized
     static func keysInitialized() -> Bool {
         return metaPrivateKeyExists() && TellaFileManager.keyFileExists(.PRIVATE)
     }
@@ -205,6 +223,7 @@ struct CryptoManager {
         return encrypt(data, publicKey)
     }
     
+    // Uses the given public key to encrypt the data. Returns nil on failure.
     private static func encrypt(_ data: Data, _ publicKey: SecKey) -> Data? {
         guard SecKeyIsAlgorithmSupported(publicKey, .encrypt, algorithm) else {
             print("Algorithm is not supported")
@@ -218,6 +237,7 @@ struct CryptoManager {
         return cipherText
     }
     
+    // Uses the given private key to decrypt the data. Returns nil on failure.
     static func decrypt(_ data: Data, _ privateKey: SecKey) -> Data? {
         guard SecKeyIsAlgorithmSupported(privateKey, .decrypt, algorithm) else {
             print("Algorithm is not supported")

@@ -5,6 +5,9 @@
 //  Created by Oliphant, Samuel on 2/17/20.
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
+/*
+ Enum class
+ */
 
 import Foundation
 
@@ -57,6 +60,7 @@ enum FileTypeEnum: String {
     case TEXT = "txt"
     case VIDEO = "MOV"
     case PDF = "pdf"
+    case AUDIO = "m4a"
 }
 
 enum KeyEnum {
@@ -104,6 +108,10 @@ enum PasswordTypeEnum: String {
             return .devicePasscode
         }
     }
+}
+
+enum PreviewViewEnum{
+    case SAME, INVALID
 }
 
 

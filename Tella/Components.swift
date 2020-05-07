@@ -6,28 +6,42 @@
 //  Copyright © 2020 Anessa Petteruti. All rights reserved.
 //
 
+/*
+ This class is used to factor out the core UI elements. The functions are used over all of the files so that information (text, images, buttons) is presented uniformly and cleanly throughout the app.
+ */
+
 import SwiftUI
 
 //TODO tweak this boundary
 let mainPadding: CGFloat = UIScreen.main.bounds.width > 400 ? 20 : 10
 
-private func makeText(_ text: String, _ size: CGFloat) -> AnyView {
-    AnyView(Text(text)
-        .font(.custom("Avenir Next Ultra Light", size: size))
-        .foregroundColor(.white)
-        .font(.title))
+//  Text related functions
+private func makeText(_ text: String, _ size: CGFloat, _ header: Bool) -> AnyView {
+    if header {
+        return AnyView(Text(text)
+            .font(.custom("Avenir Light Oblique", size: size))
+            .foregroundColor(.white)
+            .font(.title)
+            .tracking(3))
+    }
+        return AnyView(Text(text)
+            .font(.custom("Avenir Light", size: size))
+            .foregroundColor(.white)
+            .font(.title))
+
+
 }
 
-func bigText(_ text: String) -> AnyView {
-    return makeText(text, 55)
+func bigText(_ text: String, _ header: Bool) -> AnyView {
+    return makeText(text, 55, header)
 }
 
 func mediumText(_ text: String) -> AnyView {
-    return makeText(text, 35)
+    return makeText(text, 35, false)
 }
 
 func smallText(_ text: String) -> AnyView {
-    return makeText(text, 25)
+    return makeText(text, 25, false)
 }
 
 func verySmallText(_ text: String) -> AnyView {
@@ -54,9 +68,10 @@ func smallImg(_ img: ImageEnum) -> AnyView {
     return makeImg(img, 25)
 }
 
+//  Button related functions
 private func makeLabeledImageButton(_ isBig: Bool, _ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> AnyView {
     AnyView(Button(action: {
-       onPress()
+        onPress()
     }) {
         HStack {
             if isBig {
@@ -70,9 +85,9 @@ private func makeLabeledImageButton(_ isBig: Bool, _ img: ImageEnum, _ text: Str
             }
         }
     }
-        .padding(isBig ? 20 : 10)
-        .border(Color.white, width: isBig ? 1 : 0)
-        .cornerRadius(25))
+    .padding(isBig ? 20 : 10)
+    .border(Color.white, width: isBig ? 1 : 0)
+    .cornerRadius(25))
 }
 
 func bigLabeledImageButton(_ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> AnyView {
@@ -88,22 +103,54 @@ func backButton(_ onPress: @escaping () -> ()) -> Button<AnyView> {
         mediumText("<")
     }
 }
+struct shutdown : View {
+    @Binding var isPresented: Bool
+    var body : some View {
+        Button(action: {
+            self.isPresented = true
+        }) {
+            mediumImg(.SHUTDOWN)
+        }.alert(isPresented: $isPresented) {
+            return Alert(title: Text("Delete all files?"), message: Text("This cannot be undone."),
+                         primaryButton: .default(Text("Delete"), action: { TellaFileManager.clearAllFiles() }),
+                         secondaryButton: .cancel())
+        }
+    }
+}
 
-func header(_ back: Button<AnyView>, _ title: String) -> AnyView {
+
+func doneButton(_ onPress: @escaping () -> ()) -> Button<AnyView> {
+    Button(action: onPress) {
+        return makeText("Close", 18, false)
+    }
+}
+
+//  Navigational elements
+func header(_ back: Button<AnyView>, _ title: String, shutdownWarningPresented: Binding<Bool>) -> AnyView {
     AnyView(HStack {
         back
         Spacer()
         mediumText(title)
         Spacer()
-        Button(action: {
-            print("shutdown button pressed")
-        }) {
-            mediumImg(.SHUTDOWN)
-        }
+        shutdown(isPresented: shutdownWarningPresented)
     })
 }
 
-private func roundedButton(_ text: String, _ onClick: @escaping () -> ()) -> AnyView {
+
+
+func previewHeader(_ back: Button<AnyView>, _ title: String) -> AnyView {
+    AnyView(HStack {
+        Spacer()
+        mediumText(title)
+        Spacer()
+        back
+        //but i want to make this an x button
+    })
+}
+
+
+func roundedButton(_ text: String, _ onClick: @escaping () -> ()) -> AnyView {
+
     return AnyView(Button(action: {
         onClick()
     }) {
