@@ -50,20 +50,32 @@ struct GalleryView: View {
             })
         } else {
             return AnyView(List(fileList.map({ (value: String) -> File in File(name: value) })) { file in
-                        Group {
-                            Button(action: {
-                                print("grid preview")
-                                self.currentView = .PREVIEW(filepath: TellaFileManager.fileNameToPath(name: file.name))
-                            }) {
-                                    Spacer()
-                                    mediumImg(.PHOTOPREV)
-                                    Spacer()
-
-                            }.buttonStyle(BorderlessButtonStyle())
-            
+                Group {
+                    Button(action: {
+                        print("preview")
+                        self.currentView = .PREVIEW(filepath: TellaFileManager.fileNameToPath(name: file.name))
+                    }) {
+                        VStack {
+                            Spacer()
+                            bigImg(.PHOTOPREV)
+                            Spacer()
+                            verySmallText(file.name)
                         }
-                    })
+                    }.buttonStyle(BorderlessButtonStyle())
+                    Spacer()
+                    Button(action: {
+                        print("delete")
+                        TellaFileManager.deleteEncryptedFile(name: file.name)
+                        self.fileList = TellaFileManager.getEncryptedFileNames()
+                    }) {
+                        smallText("x")
+                    }.buttonStyle(BorderlessButtonStyle())
+                }.frame(height: CGFloat(100))
+            })
+            
+            
         }
+        
     }
 
     func getMainView() -> AnyView {

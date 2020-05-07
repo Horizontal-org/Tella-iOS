@@ -30,6 +30,10 @@ func smallText(_ text: String) -> AnyView {
     return makeText(text, 25)
 }
 
+func verySmallText(_ text: String) -> AnyView {
+    return makeText(text, 15)
+}
+
 private func makeImg(_ imgName: ImageEnum, _ sideLength: CGFloat) -> AnyView {
     AnyView(Image(imgName.rawValue)
         .renderingMode(.original)
