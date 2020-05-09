@@ -8,7 +8,7 @@
 
 3. [Detailed list of features](#features)
 
-4. [How to get Tella and start using it?](#use-Tella)
+4. [How to get Tella and start using it?](#use-tella)
 
 5. [Tech & frameworks used](#tech-used)
 
@@ -16,7 +16,7 @@
 
 7. [Contact us](#contact)
 
-## Overview
+## Overview <a id="overview"></a>
 
 Tella is a human rights documentation app for Android and iOS. **The iOS version of Tella is not yet publicly available. [All issues in milestone `v1.0`](https://github.com/Horizontal-org/Tella-iOS/milestone/1) need to be completed before Tella for iOS can be published.**
 
@@ -31,7 +31,7 @@ Tella:
 
 You can watch a [short video demonstrating Tella's main features here](https://vimeo.com/344220220/8c7f2fba67) (the video is from Tella for Android; most features are still to be completed for iOS)
 
-## Why Tella?
+## Why Tella? <a id="why-tella"></a>
 
 Across the world, journalists and human rights defenders are facing increasing levels of physical repression, with mobile devices searched or seized at border crossings and airports, checkpoints, in the street, or in targeted raids. At the same time, digital surveillance and censorship threaten the flow of information out of repressive areas, particularly on violence, human rights abuse, or corruption. 
 
@@ -49,7 +49,7 @@ Tella is used by:
 - Electoral observation and monitoring organizations to monitor elections from inside and outside polling stations in real time and expose electoral fraud
 - Research institutions and international organizations to conduct research, interviews or surveys in challenging environments, particularly in conflict areas
 
-## Detailed list of features
+## Detailed list of features <a id="features"></a>
 
 Below are the full list of features that will make up [Tella for iOS v1.0](https://github.com/Horizontal-org/Tella-iOS/milestone/1). Those features are already available in [Tella for Android](https://github.com/Horizontal-org/Tella-Android) but most haven't yet been developed for iOS.
 
@@ -73,15 +73,15 @@ A Quick Delete button allows users, in a just a few seconds, to delete sensitive
 ### Verification
 In the Tella settings, users can activate "Verification Mode". When activated, every time a user takes a photo or a video, or records audio, Tella automatically captures metadata about the file. This metadata can be used to corroborate evidence, cross check with other facts known about the event or about the area where it was captured.
 
-## How to get Tella and start using it?
+## How to get Tella and start using it? <a id="use-tella"></a>
 
 Tella is publicly available only on Android. You can [download it](https://play.google.com/store/apps/details?id=org.hzontal.tella) from the Google Play Store or [get the APK from here](https://www.hzontal.org/tella-download) to install manually on your device.
 
-## Tech & frameworks used
+## Tech & frameworks used <a id="tech-used"></a>
 
 
 
-## Contributing to the code
+## Contributing to the code <a id="contributing"></a>
 
 **Step 1: Get familiar with Tella.** The best way is simply to download Tella play with it and try the different features, or [read our documentation here](https://docs.tella-app.org).
 
@@ -95,7 +95,7 @@ Tella is publicly available only on Android. You can [download it](https://play.
 
 **Step 6: Pushing your branch and creating a pull request** Push your branch up and create a pull request. Please indicate which issue your PR addresses in the title. 
 
-## Contact us
+## Contact us <a id="contact"></a>
 We love hearing from users, designers, and developers! If you have any question, ideas or suggestions on how we can improve or what new features we should add, or if you need support deploying Tella, don't hesitate to reach out!
 
 You can create an issue [here on our Github](https://github.com/Horizontal-org/Tella-iOS/issues) or email us at contact@tella-app.org. 
