@@ -59,7 +59,6 @@ struct GalleryView: View {
                         //  the getViewcontents method responds to updates on the variable currentView
 
                         self.currentView = .PREVIEW(filepath: TellaFileManager.fileNameToPath(name: file.name))
-                        //print(file.name)
                     }) {
                         smallText(file.name)
                     }
