@@ -45,7 +45,7 @@ func smallText(_ text: String) -> AnyView {
 }
 
 func verySmallText(_ text: String) -> AnyView {
-    return makeText(text, 15)
+    return makeText(text, 15, false)
 }
 
 //  Image related functions
