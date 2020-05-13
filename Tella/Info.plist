@@ -2,18 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-
 	<key>NSFaceIDUsageDescription</key>
 	<string>Allow Tella to use Face ID</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Allow Tella to export files to your photos</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Allow Tella to reord audio</string>
+	<string>Allow Tella to record audio</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Allow Tella to take photos and record videos</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
-	
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -54,16 +52,10 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Import from media</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Allow Tella to take photos and record videos</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Allow Tella to reord audio</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

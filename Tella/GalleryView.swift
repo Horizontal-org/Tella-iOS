@@ -130,7 +130,7 @@ struct GalleryView: View {
                     .default(Text("Files")) {
                         self.currentView = .DOCPICKER
                     },
-                    .default(Text("Photos")) {
+                    .default(Text("Camera Roll")) {
                         self.currentView = .IMAGEPICKER
                     },
                     .cancel()

@@ -14,6 +14,7 @@
 import Foundation
 import SwiftUI
 import PDFKit
+import AVFoundation
 
 //overwriting the ~= function so that it takes a string and regex then returns a true if a match and false otherwise
 extension String {
@@ -38,6 +39,9 @@ struct PreviewView: View {
     let data: Data?
 
     @State private var isSharePresented: Bool = false
+    
+    var audioPlayer = AudioPlayer()
+    
 
     init(back: Button<AnyView>, filepath: String, privKey: SecKey) {
         self.back = back
@@ -60,7 +64,28 @@ struct PreviewView: View {
         case .VIDEO:
             return AnyView(smallText("Video previewing not yet supported"))
         case .AUDIO:
-            return AnyView(smallText("Audio previewing not yet supported"))
+            if self.audioPlayer.isPlaying() {
+                return AnyView(roundedButton("Pause"){
+                    self.audioPlayer.stopPlayback()
+                })
+            } else {
+                return AnyView(
+                    Group {
+                        HStack {
+                        Button (action:{
+                            self.audioPlayer.startPlayback(audio: self.data!)
+                        }) {
+                            largeImg(.PLAY)
+                        }
+                        Button (action:{
+                            self.audioPlayer.stopPlayback()
+                        }) {
+                            largeImg(.PAUSE)
+                        }
+                        }
+                    }
+                )
+            }
         case .TEXT:
             let txt = TellaFileManager.recoverText(data)
             return AnyView(
@@ -79,6 +104,22 @@ struct PreviewView: View {
         }
 
     }
+
+//    func playAudio(data: Data){
+//        do {
+//            self.audioPlayer = try AVAudioPlayer.init(data: data)
+//            //audio.delegate = audio as! AVAudioPlayerDelegate
+//            //audio.prepareToPlay()
+//            print("before play")
+//            if (self.audioPlayer?.play())! {
+//                print("actually played")
+//            }
+//            print("play")
+//        } catch let error {
+//            print(error.localizedDescription)
+//            print("error")
+//        }
+//    }
 
     var body: some View {
         return Group {
@@ -119,9 +160,6 @@ struct PreviewView: View {
             Spacer()
             }
 
-            header(back, "PREVIEW", shutdownWarningPresented: $shutdownWarningDisplayed)
-            Spacer()
-            getPreview()
             Spacer()
             roundedButton("EXPORT") {
                 self.isSharePresented = self.data != nil

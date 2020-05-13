@@ -52,6 +52,10 @@ private func makeImg(_ imgName: ImageEnum, _ sideLength: CGFloat) -> AnyView {
         .frame(width: sideLength, height: sideLength))
 }
 
+func largeImg(_ img: ImageEnum) -> AnyView {
+    return makeImg(img, 60)
+}
+
 func bigImg(_ img: ImageEnum) -> AnyView {
     return makeImg(img, 40)
 }
