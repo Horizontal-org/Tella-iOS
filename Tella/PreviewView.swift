@@ -16,7 +16,8 @@ import SwiftUI
 import PDFKit
 import AVFoundation
 
-//overwriting the ~= function so that it takes a string and regex then returns a true if a match and false otherwise
+//  overwriting the ~= function so that it takes a string and regex then returns a true if a match and false otherwise
+//  this is used for parsing user entered filenames
 extension String {
     static func ~= (lhs: String, rhs: String) -> Bool {
         guard let regex = try? NSRegularExpression(pattern: rhs) else { return false }
@@ -64,28 +65,22 @@ struct PreviewView: View {
         case .VIDEO:
             return AnyView(smallText("Video previewing not yet supported"))
         case .AUDIO:
-            if self.audioPlayer.isPlaying() {
-                return AnyView(roundedButton("Pause"){
-                    self.audioPlayer.stopPlayback()
-                })
-            } else {
-                return AnyView(
-                    Group {
-                        HStack {
-                        Button (action:{
-                            self.audioPlayer.startPlayback(audio: self.data!)
-                        }) {
-                            largeImg(.PLAY)
-                        }
-                        Button (action:{
-                            self.audioPlayer.stopPlayback()
-                        }) {
-                            largeImg(.PAUSE)
-                        }
-                        }
+            return AnyView(
+                Group {
+                    HStack {
+                    Button (action:{
+                        self.audioPlayer.startPlayback(audio: self.data!)
+                    }) {
+                        largeImg(.PLAY)
                     }
-                )
-            }
+                    Button (action:{
+                        self.audioPlayer.stopPlayback()
+                    }) {
+                        largeImg(.PAUSE)
+                    }
+                    }
+                }
+            )
         case .TEXT:
             let txt = TellaFileManager.recoverText(data)
             return AnyView(
@@ -105,22 +100,6 @@ struct PreviewView: View {
 
     }
 
-//    func playAudio(data: Data){
-//        do {
-//            self.audioPlayer = try AVAudioPlayer.init(data: data)
-//            //audio.delegate = audio as! AVAudioPlayerDelegate
-//            //audio.prepareToPlay()
-//            print("before play")
-//            if (self.audioPlayer?.play())! {
-//                print("actually played")
-//            }
-//            print("play")
-//        } catch let error {
-//            print(error.localizedDescription)
-//            print("error")
-//        }
-//    }
-
     var body: some View {
         return Group {
 
@@ -132,6 +111,10 @@ struct PreviewView: View {
                     "Rename",
                     text: $filename,
                     onCommit: {
+                    //  first checks if the user entered filename has valid characters
+                    //  if this fails, it will indicate that an invalid renaming alert should be shown
+                    // if this succeeds it will attempt to rename
+                    // the rename function returns true on success and false on failure in the case that the new filename is already in use
                         if self.filename ~= "^[a-zA-Z0-9_]*$"{
                             if TellaFileManager.rename(original: self.filepath, new: self.filename, type: self.filepath.components(separatedBy: ".")[1]){
                             } else {
@@ -174,6 +157,7 @@ struct PreviewView: View {
     }
 }
 
+//  adapting the UIKit PDFView to be used with SwiftUI
 struct PDFKitView : UIViewRepresentable {
 
     let data: Data
