@@ -40,9 +40,9 @@ struct PreviewView: View {
     let data: Data?
 
     @State private var isSharePresented: Bool = false
-    
+
     var audioPlayer = AudioPlayer()
-    
+
 
     init(back: Button<AnyView>, filepath: String, privKey: SecKey) {
         self.back = back

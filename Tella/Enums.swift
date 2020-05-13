@@ -26,6 +26,8 @@ enum ImageEnum: String {
     case PLUS = "plus-icon"
     case PLAY = "play-icon"
     case PAUSE = "pause-icon"
+    case PHOTOPREV = "photo-preview"
+
 }
 
 enum MainViewEnum {
@@ -38,7 +40,7 @@ enum SettingsEnum{
 
 enum GalleryViewEnum {
     case MAIN, PREVIEW(filepath: String), DOCPICKER, IMAGEPICKER, PICKERPICKER
-    
+
     static func ==(lhs: GalleryViewEnum, rhs: GalleryViewEnum) -> Bool {
         switch lhs {
         case .MAIN:
@@ -69,7 +71,7 @@ enum KeyEnum {
     case META_PUBLIC
     case PUBLIC
     case PRIVATE
-    
+
     public func toKeyFileEnum() -> KeyFileEnum? {
         switch (self) {
         case .META_PRIVATE:
@@ -88,7 +90,7 @@ enum KeyFileEnum: String {
     case META_PUBLIC = "meta-pub-key.txt"
     case PUBLIC = "pub-key.txt"
     case PRIVATE = "priv-key.txt"
-    
+
     public func toPath() -> String {
         return "\(TellaFileManager.rootDir)/keys/\(self.rawValue)"
     }
@@ -98,7 +100,7 @@ enum PasswordTypeEnum: String {
     case BIOMETRIC = "biometric"
     case PASSWORD = "password"
     case PASSCODE = "passcode"
-    
+
     public func toFlag() -> SecAccessControlCreateFlags {
         switch(self) {
         case .BIOMETRIC:
@@ -114,5 +116,3 @@ enum PasswordTypeEnum: String {
 enum PreviewViewEnum{
     case SAME, INVALID
 }
-
-

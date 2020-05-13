@@ -11,8 +11,6 @@
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
 		1EBF3CB5246649DC0004E331 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBF3CB4246649DC0004E331 /* AudioPlayer.swift */; };
 		45C189E7C13995B66DC5E4DF /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D0CF24AE4FC6E195219D930 /* libPods-TellaTests.a */; };
-		4CE85B852408B23800CF24AF /* demoIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CE85B842408B23800CF24AF /* demoIcon@2x.png */; };
-		4CE85B872408B26100CF24AF /* demoIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CE85B862408B26100CF24AF /* demoIcon@3x.png */; };
 		6D14AACC23FA3A2B0094D71D /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AACB23FA3A2B0094D71D /* Components.swift */; };
 		6D14AACE23FADACE0094D71D /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AACD23FADACE0094D71D /* Enums.swift */; };
 		6D14AAD023FAE6AC0094D71D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AACF23FAE6AC0094D71D /* SettingsView.swift */; };
@@ -35,6 +33,8 @@
 		F66E65B923E32080000F93E5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F66E65B723E32080000F93E5 /* LaunchScreen.storyboard */; };
 		F66E65C423E32080000F93E5 /* TellaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65C323E32080000F93E5 /* TellaTests.swift */; };
 		F66E65CF23E32080000F93E5 /* TellaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65CE23E32080000F93E5 /* TellaUITests.swift */; };
+		F671F2E724634618008E07A6 /* demoIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F671F2E524634617008E07A6 /* demoIcon@2x.png */; };
+		F671F2E824634618008E07A6 /* demoIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F671F2E624634618008E07A6 /* demoIcon@3x.png */; };
 		F9B75187F1F306D7A073086F /* libPods-Tella-TellaUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 539BC4D68EF562BB18E00819 /* libPods-Tella-TellaUITests.a */; };
 /* End PBXBuildFile section */
 
@@ -62,8 +62,6 @@
 		20CDD48993D4F37D51979E72 /* Pods-Tella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.release.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.release.xcconfig"; sourceTree = "<group>"; };
 		424DCB48CCA9888126534BD2 /* Pods-Tella-TellaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4C85CA0C2CEE0D6651E5D987 /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
-		4CE85B842408B23800CF24AF /* demoIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "demoIcon@2x.png"; sourceTree = "<group>"; };
-		4CE85B862408B26100CF24AF /* demoIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "demoIcon@3x.png"; sourceTree = "<group>"; };
 		4DD49E829FF1BD166C9B8C3A /* Pods-Tella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.debug.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.debug.xcconfig"; sourceTree = "<group>"; };
 		539BC4D68EF562BB18E00819 /* libPods-Tella-TellaUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella-TellaUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D14AACB23FA3A2B0094D71D /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
@@ -97,6 +95,8 @@
 		F66E65CA23E32080000F93E5 /* TellaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TellaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65CE23E32080000F93E5 /* TellaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaUITests.swift; sourceTree = "<group>"; };
 		F66E65D023E32080000F93E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F671F2E524634617008E07A6 /* demoIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "demoIcon@2x.png"; sourceTree = "<group>"; };
+		F671F2E624634618008E07A6 /* demoIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "demoIcon@3x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,8 +153,8 @@
 		4CE85B832408B1AF00CF24AF /* resources */ = {
 			isa = PBXGroup;
 			children = (
-				4CE85B862408B26100CF24AF /* demoIcon@3x.png */,
-				4CE85B842408B23800CF24AF /* demoIcon@2x.png */,
+				F671F2E524634617008E07A6 /* demoIcon@2x.png */,
+				F671F2E624634618008E07A6 /* demoIcon@3x.png */,
 			);
 			name = resources;
 			sourceTree = "<group>";
@@ -345,10 +345,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4CE85B872408B26100CF24AF /* demoIcon@3x.png in Resources */,
+				F671F2E824634618008E07A6 /* demoIcon@3x.png in Resources */,
 				F66E65B923E32080000F93E5 /* LaunchScreen.storyboard in Resources */,
 				F66E65B623E32080000F93E5 /* Preview Assets.xcassets in Resources */,
-				4CE85B852408B23800CF24AF /* demoIcon@2x.png in Resources */,
+				F671F2E724634618008E07A6 /* demoIcon@2x.png in Resources */,
 				F66E65B323E32080000F93E5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -629,7 +629,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Tella/Preview Content\"";
+
 				DEVELOPMENT_TEAM = BUX7H5JJ89;
+ 
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Tella/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -650,6 +652,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Tella/Preview Content\"";
+
 				DEVELOPMENT_TEAM = BUX7H5JJ89;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Tella/Info.plist;

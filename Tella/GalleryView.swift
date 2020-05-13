@@ -75,8 +75,33 @@ struct GalleryView: View {
                 }
             })
         } else {
-            return smallText("Grid View Not Implemented")
+            return AnyView(List(fileList.map({ (value: String) -> File in File(name: value) })) { file in
+                Group {
+                    Button(action: {
+                        print("preview")
+                        self.currentView = .PREVIEW(filepath: TellaFileManager.fileNameToPath(name: file.name))
+                    }) {
+                        VStack {
+                            Spacer()
+                            bigImg(.PHOTOPREV)
+                            Spacer()
+                            verySmallText(file.name)
+                        }
+                    }.buttonStyle(BorderlessButtonStyle())
+                    Spacer()
+                    Button(action: {
+                        print("delete")
+                        TellaFileManager.deleteEncryptedFile(name: file.name)
+                        self.fileList = TellaFileManager.getEncryptedFileNames()
+                    }) {
+                        smallText("x")
+                    }.buttonStyle(BorderlessButtonStyle())
+                }.frame(height: CGFloat(100))
+            })
+            
+            
         }
+        
     }
 
 //  Sets up the main view. Has a toggle for displaying list or grid view. Has a plus button in the bottom right corner for importing files.
