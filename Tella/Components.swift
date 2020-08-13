@@ -176,12 +176,18 @@ func roundedButton(_ text: String, _ onClick: @escaping () -> ()) -> AnyView {
     })
 }
 
-func roundedInitPasswordButton(_ text: String, _ type: PasswordTypeEnum, _ back: @escaping () -> ()) -> AnyView {
+func roundedInitPasswordButton(
+    _ text: String,
+    _ type: PasswordTypeEnum,
+    _ completion: @escaping (Bool) -> Void) -> AnyView {
+
     return roundedButton(text) {
         do {
             try CryptoManager.initKeys(type)
-            back()
-        } catch {}
+            completion(true)
+        } catch {
+            completion(false)
+        }
     }
 }
 
@@ -189,14 +195,14 @@ func roundedChangePasswordButton(
     _ text: String,
     _ privateKey: SecKey,
     _ type: PasswordTypeEnum,
-    _ back: @escaping (Bool) -> Void) -> AnyView {
+    _ completion: @escaping (Bool) -> Void) -> AnyView {
 
     return roundedButton(text) {
         do {
             try CryptoManager.updateKeys(privateKey, type)
-            back(true)
+            completion(true)
         } catch {
-            back(false)
+            completion(false)
         }
     }
 }

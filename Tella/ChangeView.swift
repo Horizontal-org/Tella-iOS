@@ -19,8 +19,6 @@ struct ChangeView: View {
     let privateKey: SecKey
 
     @State private var isAlertVisible = false
-
-    private static let passwordTypes: [PasswordTypeEnum] = [.PASSWORD, .PASSCODE, .BIOMETRIC]
     
     var body: some View {
         VStack {
@@ -31,7 +29,7 @@ struct ChangeView: View {
             Spacer().frame(height: 30)
 
             VStack {
-                ForEach(Array(zip(Self.passwordTypes.indices, Self.passwordTypes)), id: \.0) { index, type in
+                ForEach(Array(zip(PasswordView.passwordTypes.indices, PasswordView.passwordTypes)), id: \.0) { index, type in
                     Group {
                         if index > 0 {
                             Spacer().frame(height: 10)
@@ -51,16 +49,6 @@ struct ChangeView: View {
         }
         .alert(isPresented: $isAlertVisible) {
             Alert(title: Text("Failed to change lock"))
-        }
-    }
-}
-
-private extension PasswordTypeEnum {
-    var buttonText: String {
-        switch self {
-        case .PASSWORD: return "Password"
-        case .PASSCODE: return " Phone Passcode"
-        case .BIOMETRIC: return "Phone Biometrics"
         }
     }
 }

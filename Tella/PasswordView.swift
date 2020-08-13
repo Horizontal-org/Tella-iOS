@@ -14,6 +14,8 @@ import SwiftUI
 struct PasswordView: View {
     
     let back: () -> ()
+
+    static let passwordTypes: [PasswordTypeEnum] = [.PASSWORD, .PASSCODE, .BIOMETRIC]
     
     var body: some View {
         return VStack {
@@ -21,11 +23,21 @@ struct PasswordView: View {
             Spacer()
             smallText("Choose lock type:")
             Spacer().frame(height: 30)
-            roundedInitPasswordButton("        Password        ", .PASSWORD, self.back)
-            Spacer().frame(height: 10)
-            roundedInitPasswordButton("  Phone Passcode  ", .PASSCODE, self.back)
-            Spacer().frame(height: 10)
-            roundedInitPasswordButton(" Phone Biometrics ", .BIOMETRIC, self.back)
+            VStack {
+                ForEach(Array(zip(Self.passwordTypes.indices, Self.passwordTypes)), id: \.0) { index, type in
+                    Group {
+                        if index > 0 {
+                            Spacer().frame(height: 10)
+                        }
+                        roundedInitPasswordButton(type.buttonText, type) { isSuccess in
+                            if isSuccess {
+                                self.back()
+                            }
+                        }
+                    }
+                }
+            }
+                .fixedSize()
             Spacer()
         }
     }

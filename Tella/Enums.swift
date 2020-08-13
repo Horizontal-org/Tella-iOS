@@ -103,6 +103,14 @@ enum PasswordTypeEnum {
             return .devicePasscode
         }
     }
+
+    var buttonText: String {
+        switch self {
+        case .PASSWORD: return "Password"
+        case .PASSCODE: return " Phone Passcode"
+        case .BIOMETRIC: return "Phone Biometrics"
+        }
+    }
 }
 
 enum PreviewViewEnum{
