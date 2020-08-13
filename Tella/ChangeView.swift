@@ -17,19 +17,50 @@ struct ChangeView: View {
     
     let back: () -> ()
     let privateKey: SecKey
+
+    @State private var isAlertVisible = false
+
+    private static let passwordTypes: [PasswordTypeEnum] = [.PASSWORD, .PASSCODE, .BIOMETRIC]
     
     var body: some View {
-        return VStack {
+        VStack {
+            header(backButton { self.back() })
             bigText("TELLA", true)
             Spacer()
             smallText("Change lock type:")
             Spacer().frame(height: 30)
-            roundedChangePasswordButton("        Password        ", self.privateKey, .PASSWORD, self.back)
-            Spacer().frame(height: 10)
-            roundedChangePasswordButton("  Phone Passcode  ", self.privateKey, .PASSCODE, self.back)
-            Spacer().frame(height: 10)
-            roundedChangePasswordButton(" Phone Biometrics ", self.privateKey, .BIOMETRIC, self.back)
+
+            VStack {
+                ForEach(Array(zip(Self.passwordTypes.indices, Self.passwordTypes)), id: \.0) { index, type in
+                    Group {
+                        if index > 0 {
+                            Spacer().frame(height: 10)
+                        }
+                        roundedChangePasswordButton(type.buttonText, self.privateKey, type) { isSuccess in
+                            if isSuccess {
+                                self.back()
+                            } else {
+                                self.isAlertVisible = true
+                            }
+                        }
+                    }
+                }
+            }
+                .fixedSize()
             Spacer()
+        }
+        .alert(isPresented: $isAlertVisible) {
+            Alert(title: Text("Failed to change lock"))
+        }
+    }
+}
+
+private extension PasswordTypeEnum {
+    var buttonText: String {
+        switch self {
+        case .PASSWORD: return "Password"
+        case .PASSCODE: return " Phone Passcode"
+        case .BIOMETRIC: return "Phone Biometrics"
         }
     }
 }

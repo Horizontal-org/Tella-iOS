@@ -88,10 +88,10 @@ enum KeyFileEnum: String {
     case PRIVATE = "priv-key.txt"
 }
 
-enum PasswordTypeEnum: String {
-    case BIOMETRIC = "biometric"
-    case PASSWORD = "password"
-    case PASSCODE = "passcode"
+enum PasswordTypeEnum {
+    case BIOMETRIC
+    case PASSWORD
+    case PASSCODE
 
     public func toFlag() -> SecAccessControlCreateFlags {
         switch(self) {
