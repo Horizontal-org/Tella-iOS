@@ -17,15 +17,24 @@ struct TellaFileManager {
 
     // Singleton file manager instance
     private static let instance = FileManager.default
-    static let rootDir = "\(NSHomeDirectory())/Documents"
-    private static let keyFolderPath = "\(rootDir)/keys"
+    private static let rootDir = "\(NSHomeDirectory())/Documents"
+    private static let baseKeyFolderPath = "\(rootDir)/keys"
     private static let encryptedFolderPath = "\(rootDir)/files"
     private static let fileNameLength = 8
 
+    @UserDefaultsProperty(key: "keyID")
+    private static var keyID: String?
+
     // Initializes directories for the keys and files.
     static func initDirectories() {
-        initDirectory(keyFolderPath)
-        initDirectory(encryptedFolderPath)
+        do {
+            try createDirectory(baseKeyFolderPath)
+            try createDirectory(encryptedFolderPath)
+        } catch let error {
+            print("Error: \(error.localizedDescription)")
+            // Quits app because initialization failed
+            UIControl().sendAction(#selector(URLSessionTask.suspend), to: UIApplication.shared, for: nil)
+        }
     }
 
     // Removes all files associated with the user.
@@ -33,27 +42,17 @@ struct TellaFileManager {
         getEncryptedFileNames().forEach { name in
             deleteEncryptedFile(name: name)
         }
-        deleteKeyFile(.PUBLIC)
-        deleteKeyFile(.PRIVATE)
-        deleteKeyFile(.META_PUBLIC)
-        let err: ()? = try? CryptoManager.deleteMetaKeypair()
-        if err != nil {
+        guard let keyID = keyID else { return }
+        deleteKeyFolder(keyID)
+
+        if !CryptoManager.deleteMetaKeypair(keyID) {
             print("could not delete private meta key from enclave")
         }
+        Self.keyID = nil
     }
 
-    // Safely initializes a directory and quits the app if it fails.
-    private static func initDirectory(_ atPath: String) {
-        if !instance.fileExists(atPath: atPath) {
-            do {
-                try instance.createDirectory(atPath: atPath, withIntermediateDirectories: true)
-            } catch let error {
-                print("Error: \(error.localizedDescription)")
-                // Quits app because initialization failed
-                UIControl().sendAction(#selector(URLSessionTask.suspend), to: UIApplication.shared, for: nil)
-                return
-            }
-        }
+    static func createDirectory(_ atPath: String) throws {
+        try instance.createDirectory(atPath: atPath, withIntermediateDirectories: true)
     }
 
     static func saveTextFile(_ text: String) {
@@ -117,7 +116,7 @@ struct TellaFileManager {
         return nil
     }
 
-    static func recoverData(_ atPath: String) -> Data? {
+    private static func recoverData(_ atPath: String) -> Data? {
         return instance.contents(atPath: atPath)
     }
 
@@ -163,27 +162,46 @@ struct TellaFileManager {
     }
 
     static func keyFileExists(_ type: KeyFileEnum) -> Bool {
-        return instance.fileExists(atPath: type.toPath())
+        guard let keyID = keyID else { return false }
+        let path = keyFilePath(type, keyID)
+        return instance.fileExists(atPath: path)
     }
 
-    static func saveKeyData(_ data: Data, _ type: KeyFileEnum) {
-        instance.createFile(atPath: type.toPath(), contents: data)
+    static func saveKeyData(_ data: Data, _ type: KeyFileEnum, _ keyID: String) -> Bool {
+        let path = keyFilePath(type, keyID)
+        return instance.createFile(atPath: path, contents: data)
     }
 
     static func recoverKeyData(_ type: KeyFileEnum) -> Data? {
-        return recoverData(type.toPath())
+        guard let keyID = keyID else { return nil }
+        let path = keyFilePath(type, keyID)
+        return recoverData(path)
     }
 
-    static func deleteKeyFile(_ type: KeyFileEnum) {
-        if instance.fileExists(atPath: type.toPath()) {
+    static func initKeyFolder(_ keyID: String) throws {
+        let path = keyFolderPath(keyID)
+        try createDirectory(path)
+    }
+
+    static func deleteKeyFolder(_ keyID: String) {
+        let path = keyFolderPath(keyID)
+        if instance.fileExists(atPath: path) {
             do {
-                try instance.removeItem(atPath: type.toPath())
+                try instance.removeItem(atPath: path)
             } catch let error {
                 print("Error: \(error.localizedDescription)")
             }
         } else {
-            print("\(type.rawValue) did not exist")
+            print("\(path) did not exist")
         }
     }
 
+    private static func keyFolderPath(_ keyID: String) -> String {
+        "\(baseKeyFolderPath)/\(keyID)"
+    }
+
+    private static func keyFilePath(_ type: KeyFileEnum, _ keyID: String) -> String {
+        let folderPath = keyFolderPath(keyID)
+        return "\(folderPath)/\(type.rawValue)"
+    }
 }

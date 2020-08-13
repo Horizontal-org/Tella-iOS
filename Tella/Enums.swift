@@ -68,7 +68,6 @@ enum FileTypeEnum: String {
 
 enum KeyEnum {
     case META_PRIVATE
-    case META_PUBLIC
     case PUBLIC
     case PRIVATE
 
@@ -76,8 +75,6 @@ enum KeyEnum {
         switch (self) {
         case .META_PRIVATE:
             return nil
-        case .META_PUBLIC:
-            return .META_PUBLIC
         case .PUBLIC:
             return .PUBLIC
         case .PRIVATE:
@@ -87,13 +84,8 @@ enum KeyEnum {
 }
 
 enum KeyFileEnum: String {
-    case META_PUBLIC = "meta-pub-key.txt"
     case PUBLIC = "pub-key.txt"
     case PRIVATE = "priv-key.txt"
-
-    public func toPath() -> String {
-        return "\(TellaFileManager.rootDir)/keys/\(self.rawValue)"
-    }
 }
 
 enum PasswordTypeEnum: String {
