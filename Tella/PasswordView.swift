@@ -14,8 +14,6 @@ import SwiftUI
 struct PasswordView: View {
     
     let back: () -> ()
-
-    static let passwordTypes: [PasswordTypeEnum] = [.PASSWORD, .PASSCODE, .BIOMETRIC]
     
     var body: some View {
         return VStack {
@@ -24,7 +22,7 @@ struct PasswordView: View {
             smallText("Choose lock type:")
             Spacer().frame(height: 30)
             VStack {
-                ForEach(Array(zip(Self.passwordTypes.indices, Self.passwordTypes)), id: \.0) { index, type in
+                ForEach(Array(zip(PasswordTypeEnum.allCases.indices, PasswordTypeEnum.allCases)), id: \.0) { index, type in
                     Group {
                         if index > 0 {
                             Spacer().frame(height: 10)

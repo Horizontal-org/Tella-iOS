@@ -29,7 +29,7 @@ struct ChangeView: View {
             Spacer().frame(height: 30)
 
             VStack {
-                ForEach(Array(zip(PasswordView.passwordTypes.indices, PasswordView.passwordTypes)), id: \.0) { index, type in
+                ForEach(Array(zip(PasswordTypeEnum.allCases.indices, PasswordTypeEnum.allCases)), id: \.0) { index, type in
                     Group {
                         if index > 0 {
                             Spacer().frame(height: 10)
