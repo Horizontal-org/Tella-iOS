@@ -160,49 +160,19 @@ func previewHeader(_ back: Button<AnyView>, _ title: String) -> AnyView {
     })
 }
 
+struct RoundedButton: View {
+    let text: String
+    let onClick: () -> Void
 
-func roundedButton(_ text: String, _ onClick: @escaping () -> ()) -> AnyView {
-
-    return AnyView(Button(action: {
-        onClick()
-    }) {
-        smallText(text)
-            .padding(EdgeInsets(vertical: 10, horizontal: 20))
-            .frame(maxWidth: .infinity)
-            .overlay(
-                RoundedRectangle(cornerRadius: 30)
-                    .stroke(Color.white, lineWidth: 0.5)
-            )
-    })
-}
-
-func roundedInitPasswordButton(
-    _ text: String,
-    _ type: PasswordTypeEnum,
-    _ completion: @escaping (Bool) -> Void) -> AnyView {
-
-    return roundedButton(text) {
-        do {
-            try CryptoManager.initKeys(type)
-            completion(true)
-        } catch {
-            completion(false)
-        }
-    }
-}
-
-func roundedChangePasswordButton(
-    _ text: String,
-    _ privateKey: SecKey,
-    _ type: PasswordTypeEnum,
-    _ completion: @escaping (Bool) -> Void) -> AnyView {
-
-    return roundedButton(text) {
-        do {
-            try CryptoManager.updateKeys(privateKey, type)
-            completion(true)
-        } catch {
-            completion(false)
+    var body: some View {
+        Button(action: onClick) {
+            smallText(text)
+                .padding(EdgeInsets(vertical: 10, horizontal: 20))
+                .frame(maxWidth: .infinity)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 30)
+                        .stroke(Color.white, lineWidth: 0.5)
+                )
         }
     }
 }

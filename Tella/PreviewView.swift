@@ -144,9 +144,10 @@ struct PreviewView: View {
             }
 
             Spacer()
-            roundedButton("EXPORT") {
+            RoundedButton(text: "EXPORT") {
                 self.isSharePresented = self.data != nil
             }
+                .fixedSize()
             .sheet(isPresented: $isSharePresented, onDismiss: {
                 print("Dismiss")
             }, content: {

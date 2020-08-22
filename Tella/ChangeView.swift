@@ -34,10 +34,11 @@ struct ChangeView: View {
                         if index > 0 {
                             Spacer().frame(height: 10)
                         }
-                        roundedChangePasswordButton(type.buttonText, self.privateKey, type) { isSuccess in
-                            if isSuccess {
+                        RoundedButton(text: type.buttonText) {
+                            do {
+                                try CryptoManager.updateKeys(self.privateKey, type)
                                 self.back()
-                            } else {
+                            } catch {
                                 self.isAlertVisible = true
                             }
                         }

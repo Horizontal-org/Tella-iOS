@@ -16,7 +16,7 @@ struct PasswordView: View {
     let back: () -> ()
     
     var body: some View {
-        return VStack {
+        VStack {
             bigText("TELLA", true)
             Spacer()
             smallText("Choose lock type:")
@@ -27,10 +27,11 @@ struct PasswordView: View {
                         if index > 0 {
                             Spacer().frame(height: 10)
                         }
-                        roundedInitPasswordButton(type.buttonText, type) { isSuccess in
-                            if isSuccess {
+                        RoundedButton(text: type.buttonText) {
+                            do {
+                                try CryptoManager.initKeys(type)
                                 self.back()
-                            }
+                            } catch {}
                         }
                     }
                 }
