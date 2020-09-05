@@ -15,14 +15,26 @@ import Foundation
 
 struct CryptoManager {
     
-    private static let metaPrivateKeyTag = "org.hzontal.tella.ios"
+    private static let metaPrivateKeyTagPrefix = "org.hzontal.tella.ios"
     private static let algorithm: SecKeyAlgorithm = .eciesEncryptionCofactorX963SHA256AESGCM
+
+    private static func metaPrivateKeyTag(_ keyID: String) -> String {
+        return "\(metaPrivateKeyTagPrefix).\(keyID)"
+    }
+
     // Query used to recover the meta private key
-    private static let metaPrivateKeyQuery: [String: Any] = [kSecClass as String: kSecClassKey,
-                                                         kSecAttrApplicationTag as String: metaPrivateKeyTag,
-                                                         kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
-                                                         kSecReturnRef as String: true,
-                                                         kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave]
+    private static func metaPrivateKeyQuery(_ keyID: String) -> [String: Any] {
+        return [
+            kSecClass as String: kSecClassKey,
+            kSecAttrApplicationTag as String: metaPrivateKeyTag(keyID),
+            kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
+            kSecReturnRef as String: true,
+            kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
+        ]
+    }
+
+    @UserDefaultsProperty(key: "keyID")
+    private static var keyID: String?
     
     // Returns the options for the given key
     private static func getOptions(_ type: KeyEnum) -> [String: Any] {
@@ -32,7 +44,7 @@ struct CryptoManager {
                 kSecAttrKeyClass as String: kSecAttrKeyClassPrivate,
                 kSecAttrKeySizeInBits as String : 256,
                 kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave]
-        case .META_PUBLIC, .PUBLIC:
+        case .PUBLIC:
             return [kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
                 kSecAttrKeyClass as String: kSecAttrKeyClassPublic,
                 kSecAttrKeySizeInBits as String : 256]
@@ -48,9 +60,11 @@ struct CryptoManager {
     }
     
     // Retrieves the meta private key from the secure enclave. Returns nil on failure or if the key doesn't exist yet.
-    static func recoverMetaPrivateKey() -> SecKey? {
+    private static func recoverMetaPrivateKey() -> SecKey? {
+        guard let keyID = keyID else { return nil }
+        let query = metaPrivateKeyQuery(keyID)
         var item: CFTypeRef?
-        let status = SecItemCopyMatching(metaPrivateKeyQuery as CFDictionary, &item)
+        let status = SecItemCopyMatching(query as CFDictionary, &item)
         guard status == errSecSuccess else {
             print("Error: \(SecCopyErrorMessageString(status, nil) ?? "" as CFString)")
             return nil
@@ -91,72 +105,62 @@ struct CryptoManager {
         return key
     }
 
-    static func deleteMetaKeypair() throws {
-        let status = SecItemDelete(metaPrivateKeyQuery as CFDictionary)
+    @discardableResult
+    static func deleteMetaKeypair(_ keyID: String) -> Bool {
+        let query = metaPrivateKeyQuery(keyID)
+        let status = SecItemDelete(query as CFDictionary)
         if status != errSecSuccess {
-            throw RuntimeError("Failed to delete meta private key in enclave")
+            print("Failed to delete meta private key in enclave")
+            return false
         }
-        TellaFileManager.deleteKeyFile(.META_PUBLIC)
+        return true
     }
     
-    static func deleteKeypair() {
-        TellaFileManager.deleteKeyFile(.PUBLIC)
-        TellaFileManager.deleteKeyFile(.PRIVATE)
-    }
-    
-    // Generates meta public key from meta private key and stores it.
-    static func saveMetaPublicKey(_ privateKey: SecKey) {
+    // Generates meta public key from meta private key.
+    private static func createMetaPublicKey(_ privateKey: SecKey) throws -> SecKey {
         print("Saving meta public")
         guard let publicKey = SecKeyCopyPublicKey(privateKey) else {
-            print("Failed to generate meta public key")
-            return
+            throw RuntimeError("Failed to generate meta public key")
         }
-        var error2: Unmanaged<CFError>?
-        guard let publicData = SecKeyCopyExternalRepresentation(publicKey, &error2) as Data? else {
-            print("Error: \(error2?.takeRetainedValue().localizedDescription ?? "")")
-            return
-        }
-        TellaFileManager.saveKeyData(publicData, .META_PUBLIC)
-        print("Done saving meta public")
+        return publicKey
     }
     
     // Retrieves the regular public key, encrypts the regular private key, and saves both.
-    static func saveKeypair(_ privateKey: SecKey) {
+    private static func saveKeypair(_ privateKey: SecKey, _ metaPrivateKey: SecKey, _ keyID: String) throws {
         var error: Unmanaged<CFError>?
         guard let privateData = SecKeyCopyExternalRepresentation(privateKey, &error) as Data? else {
-            print("Error: \(error?.takeRetainedValue().localizedDescription ?? "")")
-            return
+            let msg = "Error: \(error?.takeRetainedValue().localizedDescription ?? "")"
+            throw RuntimeError(msg)
         }
-        guard let metaPublicKey = recoverKey(.META_PUBLIC) else {
-            print("Error: Could not recover meta public key")
-            return
-        }
+        let metaPublicKey = try createMetaPublicKey(metaPrivateKey)
         guard let privateEncryptedData = encrypt(privateData, metaPublicKey) else {
-            print("Error: Could not encrypt private key")
-            return
+            throw RuntimeError("Error: Could not encrypt private key")
         }
         guard let publicKey = SecKeyCopyPublicKey(privateKey) else {
-            print("Failed to generate public key")
-            return
+            throw RuntimeError("Failed to generate public key")
         }
-        var error2: Unmanaged<CFError>?
-        guard let publicData = SecKeyCopyExternalRepresentation(publicKey, &error2) as Data? else {
-            print("Error: \(error2?.takeRetainedValue().localizedDescription ?? "")")
-            return
+        guard let publicData = SecKeyCopyExternalRepresentation(publicKey, &error) as Data? else {
+            let msg = "Error: \(error?.takeRetainedValue().localizedDescription ?? "")"
+            throw RuntimeError(msg)
         }
-        TellaFileManager.saveKeyData(privateEncryptedData, .PRIVATE)
-        TellaFileManager.saveKeyData(publicData, .PUBLIC)
+        try TellaFileManager.initKeyFolder(keyID)
+        guard TellaFileManager.saveKeyData(privateEncryptedData, .PRIVATE, keyID) else {
+            TellaFileManager.deleteKeyFolder(keyID)
+            throw RuntimeError("Failed to save encrypted private key")
+        }
+        guard TellaFileManager.saveKeyData(publicData, .PUBLIC, keyID) else {
+            TellaFileManager.deleteKeyFolder(keyID)
+            throw RuntimeError("Failed to save public key")
+        }
     }
     
     // Generates the meta private key with the appropriate authentication
-    private static func createMetaPrivateKey(_ type: PasswordTypeEnum) throws -> SecKey {
+    private static func createMetaPrivateKey(_ type: PasswordTypeEnum, _ appTag: String) throws -> SecKey {
         // .privateKeyUsage needed so it is accessible
-        var flags = SecAccessControlCreateFlags.privateKeyUsage
-        flags.formUnion(type.toFlag())
         let access = SecAccessControlCreateWithFlags(
                 kCFAllocatorDefault,
                 kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
-                flags,
+                [.privateKeyUsage, type.toFlag()],
                 nil)!
         let attributes: [String: Any] = [
             kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
@@ -164,7 +168,7 @@ struct CryptoManager {
             kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
             kSecPrivateKeyAttrs as String: [
                 kSecAttrIsPermanent as String: true,
-                kSecAttrApplicationTag as String: metaPrivateKeyTag,
+                kSecAttrApplicationTag as String: appTag,
                 kSecAttrAccessControl as String: access
             ]
         ]
@@ -177,15 +181,16 @@ struct CryptoManager {
     }
     
     // Generates a new regular private key. Returns nil on failure.
-    private static func createPrivateKey() -> SecKey? {
+    private static func createPrivateKey() throws -> SecKey {
         let attributes: [String: Any] = [
             kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
             kSecAttrKeySizeInBits as String: 256
         ]
         var error: Unmanaged<CFError>?
         guard let privateKey = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
-            print("Error: \(error?.takeRetainedValue().localizedDescription ?? "")")
-            return nil
+            print("Creating private key failed")
+            let msg = "Error: \(error?.takeRetainedValue().localizedDescription ?? "")"
+            throw RuntimeError(msg)
         }
         return privateKey
     }
@@ -197,22 +202,28 @@ struct CryptoManager {
     
     static func initKeys(_ type: PasswordTypeEnum) throws {
         print("Creating all-new keys")
-        guard let privateKey = createPrivateKey() else {
-            print("Creating private key failed")
-            return
-        }
+        let privateKey = try createPrivateKey()
         try keyHelper(privateKey, type)
     }
     
     static func updateKeys(_ privateKey: SecKey, _ type: PasswordTypeEnum) throws {
-        try deleteMetaKeypair()
+        guard let keyID = keyID else {
+            throw RuntimeError("Could not find key ID")
+        }
         try keyHelper(privateKey, type)
+        deleteMetaKeypair(keyID)
     }
     
     private static func keyHelper(_ privateKey: SecKey, _ type: PasswordTypeEnum) throws {
-        let metaPrivateKey = try createMetaPrivateKey(type)
-        saveMetaPublicKey(metaPrivateKey)
-        saveKeypair(privateKey)
+        let newKeyID = UUID().uuidString
+        let newAppTag = metaPrivateKeyTag(newKeyID)
+        let metaPrivateKey = try createMetaPrivateKey(type, newAppTag)
+        try saveKeypair(privateKey, metaPrivateKey, newKeyID)
+
+        if let keyID = keyID {
+            TellaFileManager.deleteKeyFolder(keyID)
+        }
+        keyID = newKeyID
     }
     
     static func encryptUserData(_ data: Data) -> Data? {

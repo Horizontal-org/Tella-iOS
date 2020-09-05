@@ -16,16 +16,27 @@ struct PasswordView: View {
     let back: () -> ()
     
     var body: some View {
-        return VStack {
+        VStack {
             bigText("TELLA", true)
             Spacer()
             smallText("Choose lock type:")
             Spacer().frame(height: 30)
-            roundedInitPasswordButton("        Password        ", .PASSWORD, self.back)
-            Spacer().frame(height: 10)
-            roundedInitPasswordButton("  Phone Passcode  ", .PASSCODE, self.back)
-            Spacer().frame(height: 10)
-            roundedInitPasswordButton(" Phone Biometrics ", .BIOMETRIC, self.back)
+            VStack {
+                ForEach(Array(zip(PasswordTypeEnum.allCases.indices, PasswordTypeEnum.allCases)), id: \.0) { index, type in
+                    Group {
+                        if index > 0 {
+                            Spacer().frame(height: 10)
+                        }
+                        RoundedButton(text: type.buttonText) {
+                            do {
+                                try CryptoManager.initKeys(type)
+                                self.back()
+                            } catch {}
+                        }
+                    }
+                }
+            }
+                .fixedSize()
             Spacer()
         }
     }

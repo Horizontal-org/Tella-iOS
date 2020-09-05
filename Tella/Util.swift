@@ -11,6 +11,7 @@
  */
 
 import UIKit
+import SwiftUI
 
 // Taken from here:
 // https://iosdevcenters.blogspot.com/2019/08/ios-image-orientation-before-upload-on.html
@@ -89,5 +90,11 @@ struct RuntimeError: Error {
 
     public var localizedDescription: String {
         return message
+    }
+}
+
+extension EdgeInsets {
+    init(vertical: CGFloat, horizontal: CGFloat) {
+        self.init(top: vertical, leading: horizontal, bottom: vertical, trailing: horizontal)
     }
 }

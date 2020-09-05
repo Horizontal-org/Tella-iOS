@@ -68,7 +68,6 @@ enum FileTypeEnum: String {
 
 enum KeyEnum {
     case META_PRIVATE
-    case META_PUBLIC
     case PUBLIC
     case PRIVATE
 
@@ -76,8 +75,6 @@ enum KeyEnum {
         switch (self) {
         case .META_PRIVATE:
             return nil
-        case .META_PUBLIC:
-            return .META_PUBLIC
         case .PUBLIC:
             return .PUBLIC
         case .PRIVATE:
@@ -87,19 +84,14 @@ enum KeyEnum {
 }
 
 enum KeyFileEnum: String {
-    case META_PUBLIC = "meta-pub-key.txt"
     case PUBLIC = "pub-key.txt"
     case PRIVATE = "priv-key.txt"
-
-    public func toPath() -> String {
-        return "\(TellaFileManager.rootDir)/keys/\(self.rawValue)"
-    }
 }
 
-enum PasswordTypeEnum: String {
-    case BIOMETRIC = "biometric"
-    case PASSWORD = "password"
-    case PASSCODE = "passcode"
+enum PasswordTypeEnum: CaseIterable {
+    case PASSWORD
+    case PASSCODE
+    case BIOMETRIC
 
     public func toFlag() -> SecAccessControlCreateFlags {
         switch(self) {
@@ -109,6 +101,14 @@ enum PasswordTypeEnum: String {
             return .applicationPassword
         case .PASSCODE:
             return .devicePasscode
+        }
+    }
+
+    var buttonText: String {
+        switch self {
+        case .PASSWORD: return "Password"
+        case .PASSCODE: return " Phone Passcode"
+        case .BIOMETRIC: return "Phone Biometrics"
         }
     }
 }

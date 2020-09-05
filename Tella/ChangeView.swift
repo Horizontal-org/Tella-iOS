@@ -17,19 +17,39 @@ struct ChangeView: View {
     
     let back: () -> ()
     let privateKey: SecKey
+
+    @State private var isAlertVisible = false
     
     var body: some View {
-        return VStack {
+        VStack {
+            header(backButton { self.back() })
             bigText("TELLA", true)
             Spacer()
             smallText("Change lock type:")
             Spacer().frame(height: 30)
-            roundedChangePasswordButton("        Password        ", self.privateKey, .PASSWORD, self.back)
-            Spacer().frame(height: 10)
-            roundedChangePasswordButton("  Phone Passcode  ", self.privateKey, .PASSCODE, self.back)
-            Spacer().frame(height: 10)
-            roundedChangePasswordButton(" Phone Biometrics ", self.privateKey, .BIOMETRIC, self.back)
+
+            VStack {
+                ForEach(Array(zip(PasswordTypeEnum.allCases.indices, PasswordTypeEnum.allCases)), id: \.0) { index, type in
+                    Group {
+                        if index > 0 {
+                            Spacer().frame(height: 10)
+                        }
+                        RoundedButton(text: type.buttonText) {
+                            do {
+                                try CryptoManager.updateKeys(self.privateKey, type)
+                                self.back()
+                            } catch {
+                                self.isAlertVisible = true
+                            }
+                        }
+                    }
+                }
+            }
+                .fixedSize()
             Spacer()
+        }
+        .alert(isPresented: $isAlertVisible) {
+            Alert(title: Text("Failed to change lock"))
         }
     }
 }

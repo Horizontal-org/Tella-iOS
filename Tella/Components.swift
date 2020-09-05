@@ -130,14 +130,22 @@ func doneButton(_ onPress: @escaping () -> ()) -> Button<AnyView> {
 }
 
 //  Navigational elements
-func header(_ back: Button<AnyView>, _ title: String, shutdownWarningPresented: Binding<Bool>) -> AnyView {
-    AnyView(HStack {
+func header(
+    _ back: Button<AnyView>,
+    _ title: String? = nil,
+    shutdownWarningPresented: Binding<Bool>? = nil) -> some View {
+
+    HStack {
         back
         Spacer()
-        mediumText(title)
-        Spacer()
-        shutdown(isPresented: shutdownWarningPresented)
-    })
+        title.map { title in
+            Group {
+                mediumText(title)
+                Spacer()
+            }
+        }
+        shutdownWarningPresented.map { shutdown(isPresented: $0) }
+    }
 }
 
 
@@ -152,34 +160,19 @@ func previewHeader(_ back: Button<AnyView>, _ title: String) -> AnyView {
     })
 }
 
+struct RoundedButton: View {
+    let text: String
+    let onClick: () -> Void
 
-func roundedButton(_ text: String, _ onClick: @escaping () -> ()) -> AnyView {
-
-    return AnyView(Button(action: {
-        onClick()
-    }) {
-        smallText(text).padding(10)
-        .overlay(
-            RoundedRectangle(cornerRadius: 30)
-                .stroke(Color.white, lineWidth: 0.5)
-        )
-    })
-}
-
-func roundedInitPasswordButton(_ text: String, _ type: PasswordTypeEnum, _ back: @escaping () -> ()) -> AnyView {
-    return roundedButton(text) {
-        do {
-            try CryptoManager.initKeys(type)
-            back()
-        } catch {}
-    }
-}
-
-func roundedChangePasswordButton(_ text: String, _ privateKey: SecKey, _ type: PasswordTypeEnum, _ back: @escaping () -> ()) -> AnyView {
-    return roundedButton(text) {
-        do {
-            try CryptoManager.updateKeys(privateKey, type)
-        } catch {}
-        back()
+    var body: some View {
+        Button(action: onClick) {
+            smallText(text)
+                .padding(EdgeInsets(vertical: 10, horizontal: 20))
+                .frame(maxWidth: .infinity)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 30)
+                        .stroke(Color.white, lineWidth: 0.5)
+                )
+        }
     }
 }
