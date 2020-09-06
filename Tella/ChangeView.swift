@@ -22,7 +22,7 @@ struct ChangeView: View {
     
     var body: some View {
         VStack {
-            header(backButton { self.back() })
+            header(BackButton { self.back() })
             bigText("TELLA", true)
             Spacer()
             smallText("Change lock type:")

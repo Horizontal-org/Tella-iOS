@@ -16,67 +16,65 @@ import SwiftUI
 let mainPadding: CGFloat = UIScreen.main.bounds.width > 400 ? 20 : 10
 
 //  Text related functions
-private func makeText(_ text: String, _ size: CGFloat, _ header: Bool) -> AnyView {
+private func makeText(_ text: String, _ size: CGFloat, _ header: Bool) -> some View {
     if header {
-        return AnyView(Text(text)
+        return Text(text)
             .font(.custom("Avenir Light Oblique", size: size))
             .foregroundColor(.white)
             .font(.title)
-            .tracking(3))
+            .tracking(3)
+            .eraseToAnyView()
     }
-        return AnyView(Text(text)
-            .font(.custom("Avenir Light", size: size))
-            .foregroundColor(.white)
-            .font(.title))
-
-
+    return Text(text)
+        .font(.custom("Avenir Light", size: size))
+        .foregroundColor(.white)
+        .font(.title)
+        .eraseToAnyView()
 }
 
-func bigText(_ text: String, _ header: Bool) -> AnyView {
-    return makeText(text, 55, header)
+func bigText(_ text: String, _ header: Bool) -> some View {
+    makeText(text, 55, header)
 }
 
-func mediumText(_ text: String) -> AnyView {
-    return makeText(text, 35, false)
+func mediumText(_ text: String) -> some View {
+    makeText(text, 35, false)
 }
 
-func smallText(_ text: String) -> AnyView {
-    return makeText(text, 25, false)
+func smallText(_ text: String) -> some View {
+    makeText(text, 25, false)
 }
 
-func verySmallText(_ text: String) -> AnyView {
-    return makeText(text, 15, false)
+func verySmallText(_ text: String) -> some View {
+    makeText(text, 15, false)
 }
 
 //  Image related functions
-private func makeImg(_ imgName: ImageEnum, _ sideLength: CGFloat) -> AnyView {
-    AnyView(Image(imgName.rawValue)
+private func makeImg(_ imgName: ImageEnum, _ sideLength: CGFloat) -> some View {
+    Image(imgName.rawValue)
         .renderingMode(.original)
         .resizable()
-        .frame(width: sideLength, height: sideLength))
+        .frame(width: sideLength, height: sideLength)
 }
 
-func largeImg(_ img: ImageEnum) -> AnyView {
-    return makeImg(img, 60)
+func largeImg(_ img: ImageEnum) -> some View {
+    makeImg(img, 60)
 }
 
-func bigImg(_ img: ImageEnum) -> AnyView {
-    return makeImg(img, 40)
+func bigImg(_ img: ImageEnum) -> some View {
+    makeImg(img, 40)
 }
 
-func mediumImg(_ img: ImageEnum) -> AnyView {
-    return makeImg(img, 35)
+func mediumImg(_ img: ImageEnum) -> some View {
+    makeImg(img, 35)
 }
 
-func smallImg(_ img: ImageEnum) -> AnyView {
-    return makeImg(img, 25)
+func smallImg(_ img: ImageEnum) -> some View {
+    makeImg(img, 25)
 }
 
 //  Button related functions
-private func makeLabeledImageButton(_ isBig: Bool, _ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> AnyView {
-    AnyView(Button(action: {
-        onPress()
-    }) {
+private func makeLabeledImageButton(_ isBig: Bool, _ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> some View {
+    Button(action: onPress, label: {
         HStack {
             if isBig {
                 mediumImg(img)
@@ -88,27 +86,31 @@ private func makeLabeledImageButton(_ isBig: Bool, _ img: ImageEnum, _ text: Str
                 smallText(text)
             }
         }
-    }
-    .padding(isBig ? 20 : 10)
-    .border(Color.white, width: isBig ? 1 : 0)
-    .cornerRadius(25))
+    })
+        .padding(isBig ? 20 : 10)
+        .border(Color.white, width: isBig ? 1 : 0)
+        .cornerRadius(25)
 }
 
-func bigLabeledImageButton(_ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> AnyView {
+func bigLabeledImageButton(_ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> some View {
     makeLabeledImageButton(true, img, text, onPress)
 }
 
-func smallLabeledImageButton(_ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> AnyView {
+func smallLabeledImageButton(_ img: ImageEnum, _ text: String, _ onPress: @escaping () -> ()) -> some View {
     makeLabeledImageButton(false, img, text, onPress)
 }
 
-func backButton(_ onPress: @escaping () -> ()) -> Button<AnyView> {
-    Button(action: onPress) {
-        mediumText("<")
+struct BackButton: View {
+    var action: () -> Void
+
+    var body : some View {
+        Button(action: action) {
+            mediumText("<")
+        }
     }
 }
 
-struct ShutdowButton : View {
+struct ShutdowButton: View {
     @Binding var isPresented: Bool
 
     var body : some View {
@@ -132,16 +134,15 @@ struct ShutdowButton : View {
     }
 }
 
-
-func doneButton(_ onPress: @escaping () -> ()) -> Button<AnyView> {
+func doneButton(_ onPress: @escaping () -> ()) -> some View {
     Button(action: onPress) {
-        return makeText("Close", 18, false)
+        makeText("Close", 18, false)
     }
 }
 
 //  Navigational elements
-func header(
-    _ back: Button<AnyView>,
+func header<BackView: View>(
+    _ back: BackView,
     _ title: String? = nil,
     shutdownWarningPresented: Binding<Bool>? = nil) -> some View {
 
@@ -158,16 +159,14 @@ func header(
     }
 }
 
-
-
-func previewHeader(_ back: Button<AnyView>, _ title: String) -> AnyView {
-    AnyView(HStack {
+func previewHeader(_ back: AnyView, _ title: String) -> some View {
+    HStack {
         Spacer()
         mediumText(title)
         Spacer()
         back
         //but i want to make this an x button
-    })
+    }
 }
 
 struct RoundedButton: View {

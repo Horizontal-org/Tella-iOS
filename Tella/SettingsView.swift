@@ -18,7 +18,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-
+    @EnvironmentObject private var appViewState: AppViewState
     @State var currentView: SettingsEnum = .MAIN
     @State private var shutdownWarningDisplayed = false
 
@@ -26,13 +26,15 @@ struct SettingsView: View {
         self.currentView = .MAIN
     }
 
-    let back: Button<AnyView>
-
-
     //  Setting up the view for the settings page
-    func getMainView() -> AnyView {
-        return AnyView(Group {
-            header(back, "SETTINGS", shutdownWarningPresented: $shutdownWarningDisplayed)
+    func getMainView() -> some View {
+        Group {
+            header(
+                BackButton {
+                    self.appViewState.navigateBack()
+                },
+                "SETTINGS",
+                shutdownWarningPresented: $shutdownWarningDisplayed)
             VStack {
                 Spacer().frame(maxHeight: 30)
                 HStack {
@@ -55,25 +57,22 @@ struct SettingsView: View {
                 }
             }
             Spacer()
-        })
+        }
     }
 
-    func getViewContents(_ currentView: SettingsEnum) -> AnyView {
+    func getViewContents(_ currentView: SettingsEnum) -> some View {
         switch currentView {
         case .CHANGE:
             guard let privateKey = CryptoManager.recoverKey(.PRIVATE) else {
-                return AnyView(
-                    VStack {
-                        smallText("Correct password not input.")
-                        backButton {
-                            self.settingsBackFunc()
-                        }
-                    }
-                )
+                return VStack {
+                    smallText("Correct password not input.")
+                    BackButton(action: self.settingsBackFunc)
+                }.eraseToAnyView()
             }
-            return AnyView(ChangeView(back: settingsBackFunc, privateKey: privateKey))
+            return ChangeView(back: settingsBackFunc, privateKey: privateKey)
+                .eraseToAnyView()
         default:
-            return getMainView()
+            return getMainView().eraseToAnyView()
         }
     }
 

@@ -12,21 +12,20 @@
 import SwiftUI
 
 struct CameraView: View {
-    
-    let back: () -> ()
-    
     var body: some View {
-        CaptureImageView(back: back)
+        CaptureImageView()
     }
 }
 
 //  Setting uo the wrapper class for UIImagePickerController
+
 struct CaptureImageView: UIViewControllerRepresentable {
-    
-    let back: () -> ()
-    
+    @EnvironmentObject private var appViewState: AppViewState
+
     func makeCoordinator() -> Coordinator {
-        return Coordinator(back)
+        Coordinator {
+            self.appViewState.navigateBack()
+        }
     }
     
     func makeUIViewController(context: UIViewControllerRepresentableContext<CaptureImageView>) ->
@@ -42,22 +41,22 @@ struct CaptureImageView: UIViewControllerRepresentable {
 
 //  Coordinator which acts as the go between for UIKit and SwiftUI
 class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-    
-    let back: () -> ()
-    
-    init(_ back: @escaping () -> ()) {
-        self.back = back
+    private var completion: () -> Void
+
+    init(completion: @escaping () -> Void) {
+        self.completion = completion
     }
+
 //  This function is called when a user takes a photo
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let unwrappedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
         //  saves the image taken by the camera to the internal Tella file manager
         TellaFileManager.saveImage(unwrappedImage)
-        back()
+        completion()
     }
 
 //  This function is called when a user cancels and returns them to the main page
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        back()
+        completion()
     }
 }

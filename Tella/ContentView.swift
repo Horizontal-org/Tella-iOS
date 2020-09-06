@@ -9,103 +9,48 @@
 import SwiftUI
 
 struct ContentView: View {
-
-    @State var currentView: MainViewEnum
-    @State var image: Image? = nil
-
-    @State private var showShutdownWarningAlert = false
-    
-    private func backFunc() {
-        self.currentView = .MAIN
-    }
-
-    var back: Button<AnyView> {
-        return backButton { self.backFunc() }
-    }
-    
-//  setting up the homepage/main view of the app
-//  this is the core view that the user will start on and navigate to and from
-    func getMainView() -> AnyView {
-        return AnyView(Group {
-            // title row
-            HStack {
-                bigText("TELLA", true)
-                Spacer()
-                ShutdowButton(isPresented: $showShutdownWarningAlert)
-            }
-            Spacer()
-            // center buttons
-            VStack {
-                bigLabeledImageButton(.CAMERA, "CAMERA") {
-                    self.currentView = .CAMERA
-                }
-                bigLabeledImageButton(.RECORD, "RECORD") {
-                    self.currentView = .RECORD
-                }
-            }
-            Spacer()
-            // bottom buttons
-            HStack {
-                smallLabeledImageButton(.COLLECT, "Collect") {
-                    self.currentView = .COLLECT
-                }
-                smallLabeledImageButton(.GALLERY, "Gallery") {
-                    self.currentView = .GALLERY
-                }
-            }
-            HStack {
-                Spacer()
-                // settings button
-                Button(action: {
-                    self.currentView = .SETTINGS
-                }) {
-                    smallImg(.SETTINGS)
-                }
-                Spacer().frame(maxWidth: 10)
-            }
-        })
-    }
+    @EnvironmentObject private var appViewState: AppViewState
 
 //  updates the current view presented based on the currentView variable
 //  the currentView variable is updated when the user clicks ond of the buttons
-    func getViewContents(_ currentView: MainViewEnum) -> AnyView {
+    func getViewContents(_ currentView: MainViewEnum) -> some View {
         switch currentView {
         case .MAIN:
-            return getMainView()
+            return MainView().eraseToAnyView()
         case .CAMERA:
-            return AnyView(CameraView(back: backFunc))
+            return CameraView().eraseToAnyView()
         case .COLLECT:
-            return AnyView(CollectView(back: back))
+            return CollectView().eraseToAnyView()
         case .RECORD:
-            return AnyView(RecordView(back: back))
+            return RecordView().eraseToAnyView()
         case .SETTINGS:
-            return AnyView(SettingsView(back: back))
+            return SettingsView().eraseToAnyView()
         case .GALLERY:
             guard let privKey = CryptoManager.recoverKey(.PRIVATE) else {
-                return AnyView(
-                    VStack {
-                        smallText("Correct password not input.")
-                        back
+                return VStack {
+                    smallText("Correct password not input.")
+                    BackButton {
+                        self.appViewState.navigateBack()
                     }
-                )
+                }.eraseToAnyView()
             }
-            return AnyView(GalleryView(back: back, privKey: privKey))
+            return GalleryView(privKey: privKey).eraseToAnyView()
         case .AUTH:
-            return AnyView(PasswordView(back: backFunc))
+            return PasswordView().eraseToAnyView()
         }
     }
 
     var body: some View {
         // makes black background and overlays content
-        if currentView == .CAMERA {
-            return AnyView(CameraView(back: backFunc))
-        } else {
-            return AnyView(Color.black
+        if appViewState.currentView == .CAMERA {
+            return CameraView().eraseToAnyView()
+        }
+        return Color.black
             .edgesIgnoringSafeArea(.all) // ignore just for the color
             .overlay(
-                getViewContents(currentView)
+                getViewContents(appViewState.currentView)
                     .padding(mainPadding) // padding for content
-            ))
-        }
+            )
+            .eraseToAnyView()
     }
 }
