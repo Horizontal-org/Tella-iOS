@@ -111,6 +111,7 @@ struct BackButton: View {
 }
 
 struct ShutdowButton: View {
+    @EnvironmentObject private var appViewState: AppViewState
     @Binding var isPresented: Bool
 
     var body : some View {
@@ -127,6 +128,7 @@ struct ShutdowButton: View {
                         Text("Delete"),
                         action: {
                             TellaFileManager.clearAllFiles()
+                            self.appViewState.resetToAuth()
                         }
                     ),
                     secondaryButton: .cancel())
