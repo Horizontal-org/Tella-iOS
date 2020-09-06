@@ -41,7 +41,7 @@ struct CaptureImageView: UIViewControllerRepresentable {
 
 //  Coordinator which acts as the go between for UIKit and SwiftUI
 class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-    private var completion: () -> Void
+    private let completion: () -> Void
 
     init(completion: @escaping () -> Void) {
         self.completion = completion
