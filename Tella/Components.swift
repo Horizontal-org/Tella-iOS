@@ -107,18 +107,28 @@ func backButton(_ onPress: @escaping () -> ()) -> Button<AnyView> {
         mediumText("<")
     }
 }
-struct shutdown : View {
+
+struct ShutdowButton : View {
     @Binding var isPresented: Bool
+
     var body : some View {
         Button(action: {
             self.isPresented = true
-        }) {
+        }, label: {
             mediumImg(.SHUTDOWN)
-        }.alert(isPresented: $isPresented) {
-            return Alert(title: Text("Delete all files?"), message: Text("This cannot be undone."),
-                         primaryButton: .default(Text("Delete"), action: { TellaFileManager.clearAllFiles() }),
-                         secondaryButton: .cancel())
-        }
+        })
+            .alert(isPresented: $isPresented) {
+                Alert(
+                    title: Text("Delete all files?"),
+                    message: Text("This cannot be undone."),
+                    primaryButton: .default(
+                        Text("Delete"),
+                        action: {
+                            TellaFileManager.clearAllFiles()
+                        }
+                    ),
+                    secondaryButton: .cancel())
+            }
     }
 }
 
@@ -144,7 +154,7 @@ func header(
                 Spacer()
             }
         }
-        shutdownWarningPresented.map { shutdown(isPresented: $0) }
+        shutdownWarningPresented.map { ShutdowButton(isPresented: $0) }
     }
 }
 

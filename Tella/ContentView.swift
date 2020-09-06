@@ -31,7 +31,7 @@ struct ContentView: View {
             HStack {
                 bigText("TELLA", true)
                 Spacer()
-                shutdown(isPresented: $showShutdownWarningAlert)
+                ShutdowButton(isPresented: $showShutdownWarningAlert)
             }
             Spacer()
             // center buttons
