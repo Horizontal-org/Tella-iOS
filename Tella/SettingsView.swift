@@ -28,6 +28,10 @@ struct SettingsView: View {
 
     let back: Button<AnyView>
 
+    private var versionString: String {
+        let bundle = Bundle.main
+        return "\(bundle.name), \(bundle.versionNumber) (\(bundle.buildNumber))"
+    }
 
     //  Setting up the view for the settings page
     func getMainView() -> AnyView {
@@ -53,6 +57,9 @@ struct SettingsView: View {
                     }
                     Spacer()
                 }
+                Spacer()
+                Text(versionString)
+                    .foregroundColor(.white)
             }
             Spacer()
         })
