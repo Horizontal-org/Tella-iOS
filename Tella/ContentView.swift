@@ -46,9 +46,6 @@ struct ContentView: View {
             Spacer()
             // bottom buttons
             HStack {
-                smallLabeledImageButton(.COLLECT, "Collect") {
-                    self.currentView = .COLLECT
-                }
                 smallLabeledImageButton(.GALLERY, "Gallery") {
                     self.currentView = .GALLERY
                 }
