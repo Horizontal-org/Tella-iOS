@@ -75,8 +75,8 @@ struct GalleryView: View {
             })
         } else {
             // let files = fileList.map({ (value: String) -> File in File(name: value) })
-            return AnyView(ScrollView(content: {
-                GridView<String>(columns: 3, items: fileList) { (f) -> (AnyView) in
+            return AnyView(
+                GridView<String>(columns: 3, items: $fileList) { (f) -> (AnyView) in
                     let path = TellaFileManager.fileNameToPath(name: f)
                     let data = TellaFileManager.recoverAndDecrypt(path, privKey)
                     let img = TellaFileManager.recoverImage(data)
@@ -84,10 +84,10 @@ struct GalleryView: View {
                         return AnyView(Image(uiImage: concreteImage).resizable())
                     }
                     else{
-                        return AnyView(Image("grid-icon"))
+                        return AnyView(Image("grid-icon").resizable())
                     }
                 }
-            }))
+            )
             /*
             return AnyView(List(fileList.map({ (value: String) -> File in File(name: value) })) { file in
                 Group {

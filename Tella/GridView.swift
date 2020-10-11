@@ -12,7 +12,7 @@ import SwiftUI
 struct GridView<T: Any>: View{
     
     @State var columns: Int = 3
-    @State var padding: Double = 10.0
+    @State var spacing: Double = 10.0
     
     // rows x columns
     private var organizedGrid: [[T]] = []
@@ -50,16 +50,31 @@ struct GridView<T: Any>: View{
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            ForEach(0..<organizedGrid.count) { (row: Int) in
-                let columnItems = organizedGrid[row]
-                HStack {
-                    ForEach(0..<columnItems.count) { (column: Int) in
-                        let item = columnItems[column]
-                        content?(item).frame(width: 100, height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, alignment: .center)
+        GeometryReader { (geometry) in
+            let spacingWidth = CGFloat(spacing) * CGFloat(columns - 1)
+            let itemWidth = (geometry.size.width - spacingWidth) / CGFloat(columns)
+            let itemHeight = itemWidth
+            let itemSpacing = spacingWidth / 2.0
+            ScrollView {
+                VStack {
+                    ForEach(0..<organizedGrid.count) { (row: Int) in
+                        let columnItems = organizedGrid[row]
+                        HStack(spacing: itemSpacing) {
+                            ForEach(0..<columnItems.count) { (column: Int) in
+                                let item = columnItems[column]
+                                content?(item).frame(width: itemWidth, height: itemHeight, alignment: .center)
+                            }
+                        }.frame(width: geometry.size.width, alignment: .leading)
                     }
-                }
+                }.frame(maxWidth: .infinity, maxHeight: .infinity).padding(0)
             }
         }
+    }
+}
+
+extension View{
+    fileprivate func Print(_ items: Any...) -> some View{
+        print(items)
+        return EmptyView()
     }
 }
