@@ -50,8 +50,9 @@ struct RecordView: View {
     }
     private func getDoneView() -> some View {
         VStack {
-            Button(action: self.viewModel.onDiscardRecord) {
-                Image(systemName: "trash")
+            
+            bigLabeledImageButton(.PLUS, "SAVE") {
+                self.viewModel.onSaveRecording()
             }
             HStack {
                 HStack {
@@ -63,8 +64,8 @@ struct RecordView: View {
                     }
                 }
             }
-            Button(action: self.viewModel.onSaveRecording ) {
-                Image(systemName: "checkmark")
+            bigLabeledImageButton(.SHUTDOWN, "DISCARD") {
+                self.viewModel.onDiscardRecord()
             }
         }
     }
