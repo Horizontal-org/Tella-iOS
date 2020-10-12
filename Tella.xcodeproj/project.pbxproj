@@ -29,6 +29,7 @@
 		D7F55FC825348FA50028739E /* RecordState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FC725348FA50028739E /* RecordState.swift */; };
 		D7F55FCD25348FB80028739E /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FCC25348FB80028739E /* AudioManager.swift */; };
 		D7F55FD225348FDD0028739E /* MockedAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FD125348FDD0028739E /* MockedAudioManager.swift */; };
+		D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FD9253490BE0028739E /* RecordingAudioManager.swift */; };
 		E12CB8DB2EF4EAB5A7E30A55 /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 709EB4248F0BF4B28B960244 /* libPods-Tella.a */; };
 		F66E65AD23E3207D000F93E5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65AC23E3207D000F93E5 /* AppDelegate.swift */; };
 		F66E65AF23E3207D000F93E5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65AE23E3207D000F93E5 /* SceneDelegate.swift */; };
@@ -90,6 +91,7 @@
 		D7F55FC725348FA50028739E /* RecordState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordState.swift; sourceTree = "<group>"; };
 		D7F55FCC25348FB80028739E /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		D7F55FD125348FDD0028739E /* MockedAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedAudioManager.swift; sourceTree = "<group>"; };
+		D7F55FD9253490BE0028739E /* RecordingAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingAudioManager.swift; sourceTree = "<group>"; };
 		DCC471E11330CF394E9313E0 /* Pods-TellaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.release.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.release.xcconfig"; sourceTree = "<group>"; };
 		F66E65A923E3207D000F93E5 /* Tella.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tella.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65AC23E3207D000F93E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				D7F55FC725348FA50028739E /* RecordState.swift */,
 				6D14AAD323FB0AD90094D71D /* RecordView.swift */,
 				D75F9E9B25342539006F6212 /* RecordViewModel.swift */,
+				D7F55FD9253490BE0028739E /* RecordingAudioManager.swift */,
 			);
 			path = audio;
 			sourceTree = "<group>";
@@ -466,6 +469,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */,
 				6DD4C038240F4B9900491438 /* PreviewView.swift in Sources */,
 				6DC2ABC9245029BC004579DF /* PasswordView.swift in Sources */,
 				F66E65AD23E3207D000F93E5 /* AppDelegate.swift in Sources */,

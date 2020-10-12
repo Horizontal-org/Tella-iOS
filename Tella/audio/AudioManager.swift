@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 protocol AudioManager {
     func startRecording()
     func stopRecording()

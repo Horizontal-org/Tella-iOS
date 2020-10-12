@@ -13,7 +13,7 @@ class RecordViewModel: ObservableObject {
     
     @Published var state: RecordState = .ready
     
-    private var audioBackend: AudioManager = MockedAudioManager()
+    private var audioBackend: AudioManager = RecordingAudioManager()
     
     func onStartRecording() {
         self.state = .recording
@@ -48,7 +48,6 @@ class RecordViewModel: ObservableObject {
         
         self.updateView()
     }
-    
     
     fileprivate func updateView() {
         self.objectWillChange.send()
