@@ -22,30 +22,39 @@ struct RecordView: View {
     
     var body: some View {
         HStack {
-            VStack<AnyView> {
-                
-                switch self.viewModel.state {
-                    case .ready: return AnyView ( self.getReadyView() )
-                    case .recording: return AnyView ( getRecordingView() )
-                    case .paused: return AnyView ( getPausedView() )
-                    case .done: return AnyView ( getDoneView() )
+            VStack {
+                VStack(alignment: .leading) {
+                     self.back
                 }
+                Spacer()
+                self.getContentView()
+                Spacer()
             }
         }
     }
     
+    private func getContentView() -> AnyView {
+        
+        switch self.viewModel.state {
+            case .ready: return AnyView ( self.getReadyView() )
+            case .recording: return AnyView ( getRecordingView() )
+            case .paused: return AnyView ( getPausedView() )
+            case .done: return AnyView ( getDoneView() )
+        }
+        
+    }
     private func getReadyView() -> some View {
         Button(action: {
             self.viewModel.onStartRecording()
         }) {
-            Image(systemName: "circle.fill")
+            largeImg(.RECORD)
         }
     }
     private func getRecordingView() -> some View {
         Button(action: {
             self.viewModel.onStopRecording()
         }) {
-            Image(systemName: "stop.fill")
+            largeImg(.PAUSE)
         }
     }
     private func getDoneView() -> some View {
@@ -55,15 +64,14 @@ struct RecordView: View {
                 self.viewModel.onSaveRecording()
             }
             HStack {
-                HStack {
-                    Button (action: self.viewModel.onPlayRecord) {
-                        largeImg(.PLAY)
-                    }
-                    Button (action: self.viewModel.onPauseRecord) {
-                        largeImg(.PAUSE)
-                    }
+                Button (action: self.viewModel.onPlayRecord) {
+                    largeImg(.PLAY)
+                }
+                Button (action: self.viewModel.onPauseRecord) {
+                    largeImg(.PAUSE)
                 }
             }
+            
             bigLabeledImageButton(.SHUTDOWN, "DISCARD") {
                 self.viewModel.onDiscardRecord()
             }
