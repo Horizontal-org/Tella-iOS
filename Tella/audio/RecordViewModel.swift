@@ -8,62 +8,12 @@
 
 import Foundation
 
-enum RecordState {
-    case ready
-    case recording
-    case paused
-    case done
-}
-
-enum RecordEvent {
-    case save
-    case discard
-    case start
-    case cancel
-    case pause
-    case resume
-    case complete
-    
-}
-
-protocol AudioBackend {
-    func startRecording()
-    func stopRecording()
-    func saveRecord()
-    func discardRecord()
-    func resetRecorder()
-}
-
-class MockedAudioBackend: AudioBackend {
-    func startRecording() {
-        
-    }
-    
-    func stopRecording() {
-        
-    }
-    
-    func saveRecord() {
-        
-    }
-    
-    func discardRecord() {
-        
-    }
-    
-    func resetRecorder() {
-        
-    }
-    
-    
-}
 
 class RecordViewModel: ObservableObject {
     
     @Published var state: RecordState = .ready
-    @Published var centerButtonText: String = "Record"
     
-    private var audioBackend: AudioBackend = MockedAudioBackend()
+    private var audioBackend: AudioManager = MockedAudioManager()
     
     func onStartRecording() {
         self.state = .recording
