@@ -51,7 +51,16 @@ class RecordingAudioManager: AudioManager {
     }
     
     func discardRecord() {
-        // TODO
+        guard
+            let fileName = self.currentFileName
+        else { return }
+        
+        do {
+            try FileManager.default.removeItem(at: fileName)
+        } catch let error {
+            // @TODO Delegate this error
+            print("Failed to remove file!", error)
+        }
     }
     
     func resetRecorder() {
@@ -59,15 +68,24 @@ class RecordingAudioManager: AudioManager {
     }
     
     func playRecord() {
-        if let name = self.currentFileName,
-           let data = try? Data(contentsOf: name) {
-            self.audioPlayer.startPlayback(audio: data)
-        }
+        guard
+            let audioData = self.getCurrentAudio()
+        else { return }
+        
+        self.audioPlayer.startPlayback(audio: audioData)
         
     }
     
     func stopRecord() {
         self.audioPlayer.stopPlayback()
+    }
+    
+    func getCurrentAudio() -> Data? {
+        guard
+            let url = self.currentFileName
+        else { return nil }
+        
+        return try? Data(contentsOf: url)
     }
     
     fileprivate func getFileName() -> URL? {
