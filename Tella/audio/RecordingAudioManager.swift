@@ -10,7 +10,9 @@ import AVFoundation
 
 class RecordingAudioManager: AudioManager {
     
+    private var audioPlayer = AudioPlayer()
     private var recorder: AVAudioRecorder!
+    private var currentFileName: URL?
     
     func startRecording() {
         guard
@@ -28,8 +30,10 @@ class RecordingAudioManager: AudioManager {
             AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
         ]
         
+        
         do {
             self.recorder = try AVAudioRecorder(url: fileName, settings: settings)
+            self.currentFileName = fileName
             self.recorder.record()
         } catch let error {
             // @TODO Delegate this to the ViewModel
@@ -52,6 +56,18 @@ class RecordingAudioManager: AudioManager {
     
     func resetRecorder() {
         
+    }
+    
+    func playRecord() {
+        if let name = self.currentFileName,
+           let data = try? Data(contentsOf: name) {
+            self.audioPlayer.startPlayback(audio: data)
+        }
+        
+    }
+    
+    func stopRecord() {
+        self.audioPlayer.stopPlayback()
     }
     
     fileprivate func getFileName() -> URL? {

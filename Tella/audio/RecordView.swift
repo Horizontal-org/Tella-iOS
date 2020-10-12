@@ -49,11 +49,20 @@ struct RecordView: View {
         }
     }
     private func getDoneView() -> some View {
-        HStack {
+        VStack {
             Button(action: self.viewModel.onDiscardRecord) {
                 Image(systemName: "trash")
             }
-            
+            HStack {
+                HStack {
+                    Button (action: self.viewModel.onPlayRecord) {
+                        largeImg(.PLAY)
+                    }
+                    Button (action: self.viewModel.onPauseRecord) {
+                        largeImg(.PAUSE)
+                    }
+                }
+            }
             Button(action: self.viewModel.onSaveRecording ) {
                 Image(systemName: "checkmark")
             }

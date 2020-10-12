@@ -14,4 +14,7 @@ protocol AudioManager {
     func saveRecord()
     func discardRecord()
     func resetRecorder()
+    
+    func playRecord()
+    func stopRecord()
 }

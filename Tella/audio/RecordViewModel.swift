@@ -41,6 +41,14 @@ class RecordViewModel: ObservableObject {
         self.resetRecording()
     }
     
+    func onPlayRecord() {
+        self.audioBackend.playRecord()
+    }
+    
+    func onPauseRecord() {
+        self.audioBackend.stopRecord()
+    }
+    
     fileprivate func resetRecording() {
         self.state = .ready
         
