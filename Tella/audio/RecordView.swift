@@ -9,9 +9,14 @@
 /*
  This class will handle the recording functionality of the app. Functionality should allow users to record audio which will automatically be saved and encrypted in the Tella app but not on the users phone
  */
+
 import SwiftUI
+import Foundation
+import Combine
 
 struct RecordView: View {
+    
+    @ObservedObject var viewModel = RecordViewModel()
     
     let back: Button<AnyView>
     
