@@ -21,9 +21,47 @@ struct RecordView: View {
     let back: Button<AnyView>
     
     var body: some View {
-        return Group {
-            bigText("RECORD", false)
-            back
+        HStack {
+            VStack<AnyView> {
+                
+                switch self.viewModel.state {
+                    case .ready: return AnyView ( self.getReadyView() )
+                    case .recording: return AnyView ( getRecordingView() )
+                    case .paused: return AnyView ( getPausedView() )
+                    case .done: return AnyView ( getDoneView() )
+                }
+            }
         }
     }
+    
+    private func getReadyView() -> some View {
+        Button(action: {
+            self.viewModel.onStartRecording()
+        }) {
+            Image(systemName: "circle.fill")
+        }
+    }
+    private func getRecordingView() -> some View {
+        Button(action: {
+            self.viewModel.onStopRecording()
+        }) {
+            Image(systemName: "stop.fill")
+        }
+    }
+    private func getDoneView() -> some View {
+        HStack {
+            Button(action: self.viewModel.onDiscardRecord) {
+                Image(systemName: "trash")
+            }
+            
+            Button(action: self.viewModel.onSaveRecording ) {
+                Image(systemName: "checkmark")
+            }
+        }
+    }
+    
+    
+    private func getPausedView() -> some View { Text("TODO") }
+    
+    
 }
