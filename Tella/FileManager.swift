@@ -66,6 +66,10 @@ struct TellaFileManager {
             }
         }
     }
+    
+    static func saveAudio(_ audioData: Data) {
+        self.saveFile(audioData, FileTypeEnum.AUDIO.rawValue)
+    }
 
     private static func saveFile(_ data: Data, _ type: String) {
         var foundNewName = false

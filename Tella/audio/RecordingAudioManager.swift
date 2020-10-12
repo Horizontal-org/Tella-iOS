@@ -47,7 +47,12 @@ class RecordingAudioManager: AudioManager {
     }
     
     func saveRecord() {
-        // TODO
+        guard
+            let audioData = self.getCurrentAudio()
+        else { return }
+        
+        TellaFileManager.saveAudio(audioData)
+        self.discardRecord()
     }
     
     func discardRecord() {
