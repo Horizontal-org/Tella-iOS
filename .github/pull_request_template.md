@@ -6,9 +6,9 @@ For more information on contributing to Tella source code, see the [Contributor 
 
 
 **Select the type of change(s) made in this pull request:**
-- [ ] Bug fix *(Fixes an issue)*
-- [ ] New feature *(Adds functionality)*
-- [ ] Documentation *(Fix to documentation)*
+- [] Bug fix *(Fixes an issue)*
+- [] New feature *(Adds functionality)*
+- [] Documentation *(Fix to documentation)*
 
 ----------------------------------------------------------------------------------------
 
