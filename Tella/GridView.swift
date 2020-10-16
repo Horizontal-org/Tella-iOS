@@ -1,80 +1,355 @@
 //
 //  GridView.swift
-//  Tella
+//  A grid that shows content, which can be lazily loaded.
 //
-//  Created by Thisura Dodangoda on 10/11/20.
-//  Copyright © 2020 Anessa Petteruti. All rights reserved.
+//  Created by Thisura Dodangoda on 10/15/20.
 //
 
-import Foundation
 import SwiftUI
+import AVKit
+import Foundation
 
-struct GridView<T: Any>: View{
+/*
+ Module Architecture
+ 
+ GridView: 1 <--layout information-- GridViewModel
+ |
+  -- GridViewItem: [0..n] <--layout information-- GridViewItemModel
+ */
+
+
+class GridViewModel: ObservableObject{
     
-    @State var columns: Int = 3
-    @State var spacing: Double = 10.0
+    var gridViewItems: [GridViewItemModel] = []
+    var initializedOnce: Bool = false
     
-    // rows x columns
-    private var organizedGrid: [[T]] = []
-    private var content: ((T) -> (AnyView))?
+    private var currentProcessingOperation: DispatchWorkItem?
+    private var viewRenderingSize: CGSize = .zero
     
-    init(columns: Int, items: [T], @ViewBuilder content: @escaping (T) -> (AnyView)){
-        self.columns = columns
-        self.content = content
-        setupData(items)
-    }
+    private var initComplete: Bool = false
+    private var privKey: SecKey!
     
-    mutating private func setupData(_ items: [T]){
-        guard self.content != nil else { return }
-        
-        guard items.count > 0 else {
-            organizedGrid = []
-            return
-        }
-        organizedGrid = []
-        
-        var row: Int = 0
-        var column: Int = 0
-        
-        organizedGrid.append([])
-        for item in items{
-            organizedGrid[row].append(item)
-            
-            column += 1
-            if column >= columns{
-                column = 0
-                row += 1
-                organizedGrid.append([])
+    private var _previousGalleryWidth: CGFloat = 100.0
+    private var _previousSpacing: CGFloat = 100.0
+    
+    var galleryViewWidth: CGFloat = 100.0{
+        didSet{
+            if galleryViewWidth != _previousGalleryWidth{
+                setNeedsViewUpdate();
             }
+            _previousGalleryWidth = galleryViewWidth
         }
     }
+    var spacing: CGFloat = 10.0{
+        didSet {
+            if spacing != _previousSpacing{
+                setNeedsViewUpdate();
+            }
+            _previousSpacing = spacing
+        }
+    }
+    /**
+     Width of one item
+     */
+    var itemViewWidth: CGFloat = 20.0
+    /**
+     No of columns
+     */
+    var columns: Int = 3 {
+        didSet{
+            setNeedsViewUpdate()
+        }
+    }
+    
+    @Published var vStacksCount: Int = 0
+    @Published var vStackIndexHalfFilled: Int = 0
+    @Published var vStackHalfFilledItemCount: Int = 0
+    @Published var isProcessing: Bool = false
+    
+    init(_ galleryViewWidth: CGFloat, spacing: CGFloat){
+        self.galleryViewWidth = galleryViewWidth
+        self.spacing = spacing
+        
+        initComplete = true
+        setNeedsViewUpdate()
+    }
+    
+    private func processItems(){
+        isProcessing = true
+         
+        if let currentOperation = currentProcessingOperation{
+            currentOperation.cancel()
+            dispatchWorkItemCleanup()
+        }
+        
+        currentProcessingOperation = DispatchWorkItem(qos: .background, flags: [], block: { [weak self] in
+            print("GridView started processing items")
+            
+            guard let s = self else { return }
+            guard s.gridViewItems.count > 0 else { return }
+            
+            let spacingWidth = (CGFloat(s.columns - 1) * s.spacing)
+            s.itemViewWidth = (s.galleryViewWidth - (spacingWidth)) / CGFloat(s.columns)
+            
+            let divResult = s.gridViewItems.count.quotientAndRemainder(dividingBy: s.columns)
+            let vStacksCount = divResult.quotient + (divResult.remainder > 0 ? 1 : 0)
+            var vStackIndexHalfFilled = -1
+            var vStackHalfFilledItemCount = 0
+            
+            if divResult.remainder > 0{
+                vStackIndexHalfFilled = divResult.quotient
+                vStackHalfFilledItemCount = divResult.remainder
+            }
+            
+            DispatchQueue.main.async{ [weak self] in
+                self?.isProcessing = false
+                self?.vStackIndexHalfFilled = vStackIndexHalfFilled
+                self?.vStacksCount = vStacksCount
+                self?.vStackHalfFilledItemCount = vStackHalfFilledItemCount
+                self?.dispatchWorkItemCleanup()
+            }
+            
+            // Process data items
+            for item in s.gridViewItems{
+                item.processData(privKey: s.privKey)
+            }
+        })
+        
+        DispatchQueue.global().async(execute: currentProcessingOperation!)
+    }
+    
+    private func dispatchWorkItemCleanup(){
+        currentProcessingOperation = nil
+    }
+    
+    func setNeedsViewUpdate(){
+        guard initComplete else { return }
+        // todo
+        // processItems on background thread and then set needsViewRebuild
+        //needsViewRebuild = true
+        processItems()
+    }
+    
+    fileprivate func getItem(atRow: Int, column: Int) -> GridViewItemModel?{
+        var index = max(0, atRow * columns)
+        index += column
+        if index < gridViewItems.count{
+            return gridViewItems[index]
+        }
+        else{
+            return nil
+        }
+    }
+    
+    func addItem(_ item: GridViewItemModel, at: Int){
+        if at < gridViewItems.count{
+            gridViewItems.insert(item, at: at)
+        }
+        else{
+            gridViewItems.append(item)
+        }
+        setNeedsViewUpdate()
+    }
+    
+    @discardableResult
+    func removeItem(_ at: Int) -> GridViewItemModel?{
+        var result: GridViewItemModel?
+        if at < gridViewItems.count{
+            result = gridViewItems.remove(at: at)
+        }
+        else{
+            result = gridViewItems.popLast()
+        }
+        
+        if result != nil{
+            setNeedsViewUpdate()
+        }
+        
+        return result
+    }
+    
+    @discardableResult
+    func adjustWidth(_ to: CGFloat) -> GridViewModel{
+        self.galleryViewWidth = to
+        return self
+    }
+    
+    func setPrivKey(_ privKey: SecKey){
+        self.privKey = privKey
+    }
+}
+
+class GridViewItemModel: ObservableObject{
+    enum ViewState{
+        case loading, noContent, contentShowing
+    }
+    
+    @Published var viewState: ViewState = .loading
+    @Published var idName: String = "unk"
+    @Published var type: FileTypeEnum = .IMAGE
+    @Published var fileName: String = ""
+    
+    private var data: Data? = nil
+    
+    init(){
+        
+    }
+    
+    fileprivate func setSelfStateInMain(_ newState: ViewState){
+        DispatchQueue.main.async { [weak self] in
+            self?.viewState = newState
+        }
+    }
+    
+    fileprivate func processData(privKey: SecKey){
+        assert(!Thread.isMainThread, "\(#function) Must be run from a Background Thread")
+        
+        setSelfStateInMain(.loading)
+        
+        let filePath = TellaFileManager.fileNameToPath(name: fileName)
+        data = TellaFileManager.recoverAndDecrypt(filePath, privKey)
+        
+        // Further processing
+        if type == .IMAGE{
+            data = getPreviewImage(data)
+        }
+        
+        if data == nil{
+            setSelfStateInMain(.noContent)
+        }
+        else{
+            setSelfStateInMain(.contentShowing)
+        }
+    }
+    
+    private func getPreviewImage(_ imageData: Data?) -> Data? {
+        guard let imageData = imageData else { return nil }
+        guard let image = TellaFileManager.recoverImage(imageData) else { return nil }
+        let oldWidth = image.size.width;
+        let oldHeight = image.size.height;
+        let fixedScaleFactor: CGFloat = 0.05
+        let scaleFactor = fixedScaleFactor
+        
+        let newHeight = oldHeight * scaleFactor;
+        let newWidth = oldWidth * scaleFactor;
+        let newSize = CGSize(width: newWidth, height: newHeight)
+        
+        UIGraphicsBeginImageContextWithOptions(newSize,false,UIScreen.main.scale);
+        
+        image.draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height));
+        let newImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        return newImage?.jpegData(compressionQuality: 0.0)
+    }
+    
+    fileprivate func getData() -> Data?{
+        return data
+    }
+}
+
+struct ActivityIndicator: UIViewRepresentable {
+
+    @State var isAnimating: Bool
+    let style: UIActivityIndicatorView.Style
+
+    func makeUIView(context: UIViewRepresentableContext<ActivityIndicator>) -> UIActivityIndicatorView {
+        return UIActivityIndicatorView(style: style)
+    }
+
+    func updateUIView(_ uiView: UIActivityIndicatorView, context: UIViewRepresentableContext<ActivityIndicator>) {
+        isAnimating ? uiView.startAnimating() : uiView.stopAnimating()
+    }
+}
+
+struct GridView: View{
+    @ObservedObject var model: GridViewModel
+    var onClickAction: ((_ model: GridViewItemModel) -> ())?
     
     var body: some View {
-        GeometryReader { (geometry) in
-            let spacingWidth = CGFloat(spacing) * CGFloat(columns - 1)
-            let itemWidth = (geometry.size.width - spacingWidth) / CGFloat(columns)
-            let itemHeight = itemWidth
-            let itemSpacing = spacingWidth / 2.0
-            ScrollView {
-                VStack {
-                    ForEach(0..<organizedGrid.count) { (row: Int) in
-                        let columnItems = organizedGrid[row]
-                        HStack(spacing: itemSpacing) {
-                            ForEach(0..<columnItems.count) { (column: Int) in
-                                let item = columnItems[column]
-                                content?(item).frame(width: itemWidth, height: itemHeight, alignment: .center)
-                            }
-                        }.frame(width: geometry.size.width, alignment: .leading)
+        ScrollView {
+            VStack {
+                if model.isProcessing {
+                    HStack {
+                        ActivityIndicator(isAnimating: true, style: .medium)
+                        Text("Loading...").font(.system(size: 8.0))
                     }
-                }.frame(maxWidth: .infinity, maxHeight: .infinity).padding(0)
+                }
+                else{
+                    ForEach(0..<model.vStacksCount, id: \.self){ (i: Int) in
+                        HStack(spacing: model.spacing / 2.0) {
+                            if (model.vStackIndexHalfFilled == i){
+                                // Last row with half filled items
+                                ForEach(0..<model.vStackHalfFilledItemCount, id: \.self){ (j: Int) in
+                                    if let item = model.getItem(atRow: i, column: j){
+                                        GridViewItem(model: item) { (m) in
+                                            self.onClickAction?(m)
+                                        }.frame(width: model.itemViewWidth, height: model.itemViewWidth)
+                                    }
+                                    else{
+                                        EmptyView()
+                                    }
+                                }
+                            }
+                            else{
+                                // All other rows
+                                ForEach(0..<model.columns, id: \.self){ (j: Int) in
+                                    if let item = model.getItem(atRow: i, column: j){
+                                        GridViewItem(model: item) { (m) in
+                                            self.onClickAction?(m)
+                                        }.frame(width: model.itemViewWidth, height: model.itemViewWidth)
+                                    }
+                                    else{
+                                        EmptyView()
+                                    }
+                                }
+                            }
+                        }.frame(maxWidth: .infinity)
+                    }
+                }
+            }.frame(maxWidth: .infinity)
+        }
+    }
+}
+
+struct GridViewItem: View{
+    
+    @ObservedObject var model: GridViewItemModel
+    fileprivate var onClick: ((_ model: GridViewItemModel) -> ())? = nil
+    
+    var body: some View {
+        Button {
+            onClick?(model)
+        } label: {
+            VStack {
+                switch(model.viewState){
+                case .loading:
+                    ActivityIndicator(isAnimating: model.viewState == .loading, style: .medium)
+                case .noContent:
+                    Text("No Contnet")
+                case .contentShowing:
+                     
+                    switch(model.type){
+                    case .IMAGE:
+                        GridViewImage(data: model.getData())
+                    default:
+                        Text("Unsuppported File Type").font(Font.system(size: 8.0))
+                    }
+                    
+                }
             }
         }
     }
 }
 
-extension View{
-    fileprivate func Print(_ items: Any...) -> some View{
-        print(items)
-        return EmptyView()
+struct GridViewImage: View{
+    var data: Data?
+    var body: some View {
+        if let data = data, let img = UIImage(data: data) {
+            Image(uiImage: img).resizable().scaledToFit()
+        }
+        else{
+            smallText("Image could not be recovered")
+        }
     }
 }

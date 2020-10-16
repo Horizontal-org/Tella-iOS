@@ -26,7 +26,7 @@
 		6DD4C03A240F547300491438 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD4C039240F547300491438 /* Util.swift */; };
 		CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02ED7E24E42B3900014176 /* UserDefaultsProperty.swift */; };
 		E12CB8DB2EF4EAB5A7E30A55 /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 709EB4248F0BF4B28B960244 /* libPods-Tella.a */; };
-		F590D1BD2532D10200DF0715 /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F590D1BC2532D10200DF0715 /* GridView.swift */; };
+		F50EF04A2539342000AD097B /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F50EF0492539342000AD097B /* GridView.swift */; };
 		F66E65AD23E3207D000F93E5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65AC23E3207D000F93E5 /* AppDelegate.swift */; };
 		F66E65AF23E3207D000F93E5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65AE23E3207D000F93E5 /* SceneDelegate.swift */; };
 		F66E65B123E3207D000F93E5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65B023E3207D000F93E5 /* ContentView.swift */; };
@@ -84,7 +84,8 @@
 		94A8BE7F6F79CE94D48D50AF /* Pods-Tella-TellaUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.release.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.release.xcconfig"; sourceTree = "<group>"; };
 		CE02ED7E24E42B3900014176 /* UserDefaultsProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsProperty.swift; sourceTree = "<group>"; };
 		DCC471E11330CF394E9313E0 /* Pods-TellaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.release.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.release.xcconfig"; sourceTree = "<group>"; };
-		F590D1BC2532D10200DF0715 /* GridView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
+		F50EF0492539342000AD097B /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
+		F590D1BC2532D10200DF0715 /* _GridViewUnused.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _GridViewUnused.swift; sourceTree = "<group>"; };
 		F66E65A923E3207D000F93E5 /* Tella.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tella.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65AC23E3207D000F93E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F66E65AE23E3207D000F93E5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -204,7 +205,8 @@
 				6D14AAD323FB0AD90094D71D /* RecordView.swift */,
 				6D14AAD523FB0B120094D71D /* CollectView.swift */,
 				6D14AAD723FB0B310094D71D /* GalleryView.swift */,
-				F590D1BC2532D10200DF0715 /* GridView.swift */,
+				F50EF0492539342000AD097B /* GridView.swift */,
+				F590D1BC2532D10200DF0715 /* _GridViewUnused.swift */,
 				6D14AAD92405AC1A0094D71D /* FileManager.swift */,
 				6DD4C037240F4B9900491438 /* PreviewView.swift */,
 				1EBF3CB4246649DC0004E331 /* AudioPlayer.swift */,
@@ -459,7 +461,7 @@
 				6D14AAD023FAE6AC0094D71D /* SettingsView.swift in Sources */,
 				6D14AAD623FB0B120094D71D /* CollectView.swift in Sources */,
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
-				F590D1BD2532D10200DF0715 /* GridView.swift in Sources */,
+				F50EF04A2539342000AD097B /* GridView.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* Importers.swift in Sources */,
 				6D14AAD423FB0AD90094D71D /* RecordView.swift in Sources */,
 				1EBF3CB5246649DC0004E331 /* AudioPlayer.swift in Sources */,

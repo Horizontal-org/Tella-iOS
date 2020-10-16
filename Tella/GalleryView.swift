@@ -27,13 +27,36 @@ struct GalleryView: View {
     @State var fileList = TellaFileManager.getEncryptedFileNames()
     @State var showingAlert = false
     @State var currFile = String()
+    var gridViewModel: GridViewModel = GridViewModel(UIScreen.main.bounds.width, spacing: 10.0)
     //@State var showingPrev = false
 
 
-//  Setting up a special back button that allows user to navigate back to the gallery when importing or previewing files
+    func setGridViewDataFromFileList(initial: Bool = false){
+        if initial{
+            gridViewModel.initializedOnce = true
+        }
+        
+        var itemCount: Int = 0
+        gridViewModel.gridViewItems = fileList.map({ (fileName: String) -> GridViewItemModel? in
+            let itemModel = GridViewItemModel()
+            guard let type = FileTypeEnum(rawValue: fileName.components(separatedBy: ".").last!) else { return nil }
+            itemModel.fileName = fileName
+            itemModel.type = type
+            itemModel.idName = itemCount.description
+            
+            itemCount += 1
+            
+            return itemModel
+        }).filter { $0 != nil }.map { $0! }
+        
+        gridViewModel.setNeedsViewUpdate()
+    }
+    
+    //  Setting up a special back button that allows user to navigate back to the gallery when importing or previewing files
     func galleryBack() {
         self.currentView = GalleryViewEnum.MAIN;
         self.fileList = TellaFileManager.getEncryptedFileNames()
+        setGridViewDataFromFileList()
     }
 
     var galleryBackButton: Button<AnyView> {
@@ -74,7 +97,24 @@ struct GalleryView: View {
                 }
             })
         } else {
-            // let files = fileList.map({ (value: String) -> File in File(name: value) })
+            return AnyView(
+                GeometryReader { geometry in
+                    GridView(model: gridViewModel.adjustWidth(geometry.size.width)) { (clickedModel) in
+                        let fileName = clickedModel.fileName
+                        self.currentView = .PREVIEW(filepath: TellaFileManager.fileNameToPath(name: fileName))
+                    }
+                }
+            )
+            
+            /*
+            return AnyView(
+                GridView<String>(gridViewModel, content: { (item: String) -> (AnyView) in
+                    AnyView(
+                        Text(item)
+                    )
+                })
+            )*/
+            /*
             return AnyView(
                 GridView<String>(columns: 3, items: $fileList) { (f) -> (AnyView) in
                     let path = TellaFileManager.fileNameToPath(name: f)
@@ -87,7 +127,7 @@ struct GalleryView: View {
                         return AnyView(Image("grid-icon").resizable())
                     }
                 }
-            )
+            )*/
             /*
             return AnyView(List(fileList.map({ (value: String) -> File in File(name: value) })) { file in
                 Group {
@@ -195,6 +235,12 @@ struct GalleryView: View {
 
     //  Presents either the main view or the preview view based on the currentView enum
     func getViewContents(_ currentView: GalleryViewEnum) -> AnyView {
+        
+        if !gridViewModel.initializedOnce{
+            gridViewModel.setPrivKey(privKey)
+            setGridViewDataFromFileList(initial: true)
+        }
+        
         switch currentView {
         case .PREVIEW(let filepath):
             return AnyView(PreviewView(back: previewBackButton, filepath: filepath, privKey: privKey))
