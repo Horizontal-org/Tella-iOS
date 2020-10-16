@@ -65,6 +65,7 @@ class GridViewModel: ObservableObject{
     @Published var vStackIndexHalfFilled: Int = 0
     @Published var vStackHalfFilledItemCount: Int = 0
     @Published var isProcessing: Bool = false
+    @Published var noItemsToShow: Bool = false
     
     init(_ galleryViewWidth: CGFloat, spacing: CGFloat){
         self.galleryViewWidth = galleryViewWidth
@@ -76,6 +77,7 @@ class GridViewModel: ObservableObject{
     
     private func processItems(){
         isProcessing = true
+        noItemsToShow = false
          
         if let currentOperation = currentProcessingOperation{
             currentOperation.cancel()
@@ -86,7 +88,13 @@ class GridViewModel: ObservableObject{
             print("GridView started processing items")
             
             guard let s = self else { return }
-            guard s.gridViewItems.count > 0 else { return }
+            guard s.gridViewItems.count > 0 else {
+                DispatchQueue.main.async{
+                    s.isProcessing = false
+                    s.noItemsToShow = true
+                }
+                return
+            }
             
             let spacingWidth = (CGFloat(s.columns - 1) * s.spacing)
             s.itemViewWidth = (s.galleryViewWidth - (spacingWidth)) / CGFloat(s.columns)
@@ -124,9 +132,6 @@ class GridViewModel: ObservableObject{
     
     func setNeedsViewUpdate(){
         guard initComplete else { return }
-        // todo
-        // processItems on background thread and then set needsViewRebuild
-        //needsViewRebuild = true
         processItems()
     }
     
@@ -265,6 +270,7 @@ struct ActivityIndicator: UIViewRepresentable {
 struct GridView: View{
     @ObservedObject var model: GridViewModel
     var onClickAction: ((_ model: GridViewItemModel) -> ())?
+    var onDeleteAction: ((_ model: GridViewItemModel) -> ())?
     
     var body: some View {
         ScrollView {
@@ -275,6 +281,9 @@ struct GridView: View{
                         Text("Loading...").font(.system(size: 8.0))
                     }
                 }
+                else if model.noItemsToShow{
+                    Text("No items to preview").font(.system(size: 8.0))
+                }
                 else{
                     ForEach(0..<model.vStacksCount, id: \.self){ (i: Int) in
                         HStack(spacing: model.spacing / 2.0) {
@@ -282,8 +291,12 @@ struct GridView: View{
                                 // Last row with half filled items
                                 ForEach(0..<model.vStackHalfFilledItemCount, id: \.self){ (j: Int) in
                                     if let item = model.getItem(atRow: i, column: j){
-                                        GridViewItem(model: item) { (m) in
-                                            self.onClickAction?(m)
+                                        GridViewItem(
+                                            model: item,
+                                            size: model.itemViewWidth) { (onClickModel) in
+                                            self.onClickAction?(onClickModel)
+                                        } onDelete: { (onDeleteModel) in
+                                            self.onDeleteAction?(onDeleteModel)
                                         }.frame(width: model.itemViewWidth, height: model.itemViewWidth)
                                     }
                                     else{
@@ -295,8 +308,12 @@ struct GridView: View{
                                 // All other rows
                                 ForEach(0..<model.columns, id: \.self){ (j: Int) in
                                     if let item = model.getItem(atRow: i, column: j){
-                                        GridViewItem(model: item) { (m) in
-                                            self.onClickAction?(m)
+                                        GridViewItem(
+                                            model: item,
+                                            size: model.itemViewWidth) { (onClickModel) in
+                                            self.onClickAction?(onClickModel)
+                                        } onDelete: { (onDeleteModel) in
+                                            self.onDeleteAction?(onDeleteModel)
                                         }.frame(width: model.itemViewWidth, height: model.itemViewWidth)
                                     }
                                     else{
@@ -315,29 +332,44 @@ struct GridView: View{
 struct GridViewItem: View{
     
     @ObservedObject var model: GridViewItemModel
+    var size: CGFloat = 10.0
     fileprivate var onClick: ((_ model: GridViewItemModel) -> ())? = nil
+    fileprivate var onDelete: ((_ model: GridViewItemModel) -> ())? = nil
     
     var body: some View {
-        Button {
-            onClick?(model)
-        } label: {
-            VStack {
-                switch(model.viewState){
-                case .loading:
-                    ActivityIndicator(isAnimating: model.viewState == .loading, style: .medium)
-                case .noContent:
-                    Text("No Contnet")
-                case .contentShowing:
-                     
-                    switch(model.type){
-                    case .IMAGE:
-                        GridViewImage(data: model.getData())
-                    default:
-                        Text("Unsuppported File Type").font(Font.system(size: 8.0))
+        ZStack{
+            Button {
+                onClick?(model)
+            } label: {
+                VStack {
+                    switch(model.viewState){
+                    case .loading:
+                        ActivityIndicator(isAnimating: model.viewState == .loading, style: .medium)
+                    case .noContent:
+                        Text("No Contnet")
+                    case .contentShowing:
+                         
+                        switch(model.type){
+                        case .IMAGE:
+                            GridViewImage(data: model.getData())
+                        default:
+                            Text("Unsuppported File Type").font(Font.system(size: 8.0))
+                        }
                     }
-                    
                 }
             }
+            Button {
+                onDelete?(model)
+            } label: {
+                Text("x")
+                    .foregroundColor(Color.white)
+                    .frame(width: 40.0, height: 40.0, alignment: .center)
+                    .font(.system(size: 12.0))
+            }
+            .background(Color.black.opacity(0.4))
+            .buttonStyle(PlainButtonStyle())
+            .cornerRadius(20.0)
+            .offset(x: size / 2.0 - 20.0, y: size / 2.0 - 20.0)
         }
     }
 }

@@ -99,36 +99,25 @@ struct GalleryView: View {
         } else {
             return AnyView(
                 GeometryReader { geometry in
-                    GridView(model: gridViewModel.adjustWidth(geometry.size.width)) { (clickedModel) in
+                    GridView(
+                    model: gridViewModel.adjustWidth(geometry.size.width)) { (clickedModel) in
+                        // Preview item on click
+                        
                         let fileName = clickedModel.fileName
                         self.currentView = .PREVIEW(filepath: TellaFileManager.fileNameToPath(name: fileName))
+                    } onDeleteAction: { (deleteModel) in
+                        // Delete item on small 'x' click
+                        
+                        let fileName = deleteModel.fileName
+                        TellaFileManager.deleteEncryptedFile(name: fileName)
+                        self.fileList = TellaFileManager.getEncryptedFileNames()
+                        self.setGridViewDataFromFileList()
                     }
                 }
             )
-            
             /*
-            return AnyView(
-                GridView<String>(gridViewModel, content: { (item: String) -> (AnyView) in
-                    AnyView(
-                        Text(item)
-                    )
-                })
-            )*/
-            /*
-            return AnyView(
-                GridView<String>(columns: 3, items: $fileList) { (f) -> (AnyView) in
-                    let path = TellaFileManager.fileNameToPath(name: f)
-                    let data = TellaFileManager.recoverAndDecrypt(path, privKey)
-                    let img = TellaFileManager.recoverImage(data)
-                    if let concreteImage = img{
-                        return AnyView(Image(uiImage: concreteImage).resizable())
-                    }
-                    else{
-                        return AnyView(Image("grid-icon").resizable())
-                    }
-                }
-            )*/
-            /*
+             
+             // Original implementation by 'Anessa Petteruti'
             return AnyView(List(fileList.map({ (value: String) -> File in File(name: value) })) { file in
                 Group {
                     Button(action: {
