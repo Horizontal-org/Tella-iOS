@@ -21,6 +21,7 @@ import SwiftUI
 import UIKit
 
 struct GalleryView: View {
+    @EnvironmentObject private var appViewState: AppViewState
     @State private var shutdownWarningDisplayed = false
     @State var currentView = GalleryViewEnum.MAIN
     @State var displayList = true
@@ -36,21 +37,20 @@ struct GalleryView: View {
         self.fileList = TellaFileManager.getEncryptedFileNames()
     }
 
-    var galleryBackButton: Button<AnyView> {
-        return backButton { self.galleryBack() }
+    var galleryBackButton: some View {
+        return BackButton { self.galleryBack() }
     }
 
-    var previewBackButton: Button<AnyView> {
+    var previewBackButton: some View {
         return doneButton { self.galleryBack() }
     }
 
-    let back: Button<AnyView>
     let privKey: SecKey
 
 // Setting up the List view for the files
     func getListGridView() -> AnyView {
         if displayList {
-            return AnyView(List(fileList.map({ (value: String) -> File in File(name: value) })) { file in
+            return List(fileList.map({ (value: String) -> File in File(name: value) })) { file in
                 Group {
 
                     //  Functionality for previewing files
@@ -72,9 +72,9 @@ struct GalleryView: View {
                         smallText("x")
                     }.buttonStyle(BorderlessButtonStyle())
                 }
-            })
+            }.eraseToAnyView()
         } else {
-            return AnyView(List(fileList.map({ (value: String) -> File in File(name: value) })) { file in
+            return List(fileList.map({ (value: String) -> File in File(name: value) })) { file in
                 Group {
                     Button(action: {
                         print("preview")
@@ -96,17 +96,19 @@ struct GalleryView: View {
                         smallText("x")
                     }.buttonStyle(BorderlessButtonStyle())
                 }.frame(height: CGFloat(100))
-            })
-            
-            
+            }.eraseToAnyView()
         }
-        
     }
 
 //  Sets up the main view. Has a toggle for displaying list or grid view. Has a plus button in the bottom right corner for importing files.
-    func getMainView() -> AnyView {
-        return AnyView(Group {
-            header(back, "GALLERY", shutdownWarningPresented: $shutdownWarningDisplayed)
+    func getMainView() -> some View {
+        Group {
+            header(
+                BackButton {
+                    self.appViewState.navigateBack()
+                },
+                "GALLERY",
+                shutdownWarningPresented: $shutdownWarningDisplayed)
             Spacer().frame(maxHeight: 50)
             HStack {
                 if displayList {
@@ -175,17 +177,18 @@ struct GalleryView: View {
                     DocPickerView(back: self.galleryBack)
                 }
             }
-        })
+        }
     }
 
     //  Presents either the main view or the preview view based on the currentView enum
     func getViewContents(_ currentView: GalleryViewEnum) -> AnyView {
         switch currentView {
         case .PREVIEW(let filepath):
-            return AnyView(PreviewView(back: previewBackButton, filepath: filepath, privKey: privKey))
-
+            return PreviewView(back: previewBackButton, filepath: filepath, privKey: privKey)
+                .eraseToAnyView()
         default:
             return getMainView()
+                .eraseToAnyView()
         }
     }
 
