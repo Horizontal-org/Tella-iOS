@@ -26,6 +26,10 @@ struct SettingsView: View {
         self.currentView = .MAIN
     }
 
+    private var versionString: String {
+        let bundle = Bundle.main
+        return "\(bundle.name), \(bundle.versionNumber) (\(bundle.buildNumber))"
+    }
     //  Setting up the view for the settings page
     func getMainView() -> some View {
         Group {
@@ -55,6 +59,9 @@ struct SettingsView: View {
                     }
                     Spacer()
                 }
+                Spacer()
+                Text(versionString)
+                    .foregroundColor(.white)
             }
             Spacer()
         }
