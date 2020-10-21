@@ -12,8 +12,7 @@
 import SwiftUI
 
 struct PasswordView: View {
-    
-    let back: () -> ()
+    @EnvironmentObject private var appViewState: AppViewState
     
     var body: some View {
         VStack {
@@ -30,7 +29,7 @@ struct PasswordView: View {
                         RoundedButton(text: type.buttonText) {
                             do {
                                 try CryptoManager.initKeys(type)
-                                self.back()
+                                self.appViewState.resetToMain()
                             } catch {}
                         }
                     }
