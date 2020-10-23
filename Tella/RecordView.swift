@@ -12,14 +12,13 @@
 import SwiftUI
 
 struct RecordView: View {
-    @EnvironmentObject private var appViewState: AppViewState
+    
+    let back: Button<AnyView>
     
     var body: some View {
-        Group {
+        return Group {
             bigText("RECORD", false)
-            BackButton {
-                self.appViewState.navigateBack()
-            }
+            back
         }
     }
 }
