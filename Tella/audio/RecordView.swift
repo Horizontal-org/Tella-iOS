@@ -17,14 +17,19 @@ import Combine
 struct RecordView: View {
     
     @ObservedObject var viewModel = RecordViewModel()
+    @EnvironmentObject private var appViewState: AppViewState
     
-    let back: Button<AnyView>
+    func goBack() {
+        self.appViewState.navigateBack()
+    }
     
     var body: some View {
         HStack {
             VStack {
                 VStack(alignment: .leading) {
-                     self.back
+                    BackButton {
+                        self.goBack()
+                    }
                 }
                 Spacer()
                 self.getContentView()
