@@ -107,10 +107,8 @@ struct GalleryView: View {
                 } onDeleteAction: { (deleteModel) in
                     // Delete item on small 'x' click
                     
-                    let fileName = deleteModel.fileName
-                    TellaFileManager.deleteEncryptedFile(name: fileName)
-                    self.fileList = TellaFileManager.getEncryptedFileNames()
-                    self.setGridViewDataFromFileList()
+                    self.showingAlert = true
+                    self.currFile = deleteModel.fileName
                 }
             }.eraseToAnyView()
             /*
@@ -173,6 +171,7 @@ struct GalleryView: View {
                     self.showingAlert.toggle()
                     TellaFileManager.deleteEncryptedFile(name: self.currFile)
                     self.fileList = TellaFileManager.getEncryptedFileNames()
+                    self.setGridViewDataFromFileList(initial: false)
                     }),secondaryButton: .cancel()
                 )
             }
