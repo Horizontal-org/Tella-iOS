@@ -140,6 +140,7 @@ struct ActivityViewController: UIViewControllerRepresentable {
 
     }
     
+    //Function to Share Media (Audio/Video).
     func controllerToShareMedia(with filePath: String) -> UIActivityViewController {
         let mediaData = fileData as NSData
         mediaData.write(toFile: filePath, atomically: true)

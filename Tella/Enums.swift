@@ -27,6 +27,7 @@ enum ImageEnum: String {
     case PLAY = "play-icon"
     case PAUSE = "pause-icon"
     case PHOTOPREV = "photo-preview"
+    case VIDEO = "video-icon"
 
 }
 

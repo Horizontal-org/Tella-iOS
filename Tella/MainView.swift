@@ -29,7 +29,7 @@ struct MainView: View {
                 bigLabeledImageButton(.RECORD, "AUDIO") {
                     self.appViewState.navigate(to: .RECORD)
                 }
-                bigLabeledImageButton(.CAMERA, "VIDEO") {
+                bigLabeledImageButton(.VIDEO, "VIDEO") {
                     self.appViewState.navigate(to: .VIDEO)
                 }
             }

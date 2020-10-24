@@ -23,11 +23,13 @@ struct PlayerView: UIViewRepresentable {
   }
 }
 
+
+//Class to Add AVPlayer to PreviewView.
 class VideoPlayerUI: UIView {
   private let playerLayer = AVPlayerLayer()
     
   var videoData: Data?
-    
+
     init(videoData: Data) {
         super.init(frame: .zero)
         let tmpFileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent("video").appendingPathExtension("mp4")

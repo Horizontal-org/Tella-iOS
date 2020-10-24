@@ -15,7 +15,7 @@ struct VideoRecordingView: View {
     }
 }
 
-//  Setting uo the wrapper class for UIImagePickerController
+//  Setting up the wrapper class for UIImagePickerController
 
 struct CaptureVideoView: UIViewControllerRepresentable {
     @EnvironmentObject private var appViewState: AppViewState
@@ -26,6 +26,7 @@ struct CaptureVideoView: UIViewControllerRepresentable {
         }
     }
     
+    //Setting up VideoRecorder Presenter. Output video will be in MOV.
     func makeUIViewController(context: UIViewControllerRepresentableContext<CaptureVideoView>) ->
         UIImagePickerController {
             let picker = UIImagePickerController()
@@ -47,7 +48,7 @@ class VideoCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerC
     }
     
     
-
+    // this function is called when a user finish recording the video.
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedVideo:URL = (info[UIImagePickerController.InfoKey.mediaURL] as? URL) {
             TellaFileManager.saveVideo(selectedVideo)
