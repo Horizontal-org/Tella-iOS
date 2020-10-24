@@ -149,7 +149,7 @@ struct PreviewView<BackView: View>: View {
             .sheet(isPresented: $isSharePresented, onDismiss: {
                 print("Dismiss")
             }, content: {
-                ActivityViewController(fileData: self.data!)
+                ActivityViewController(fileData: self.data!, fileType: self.fileType!)
             })
 
         }
