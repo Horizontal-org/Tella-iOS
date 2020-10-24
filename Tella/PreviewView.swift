@@ -64,8 +64,7 @@ struct PreviewView<BackView: View>: View {
             return smallText("Image could not be recovered")
                 .eraseToAnyView()
         case .VIDEO:
-            return smallText("Video previewing not yet supported")
-                .eraseToAnyView()
+            return PlayerView(data: self.data!).eraseToAnyView()
         case .AUDIO:
             return Group {
                 HStack {

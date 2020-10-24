@@ -23,11 +23,14 @@ struct MainView: View {
             Spacer()
             // center buttons
             VStack {
-                bigLabeledImageButton(.CAMERA, "CAMERA") {
+                bigLabeledImageButton(.CAMERA, "PHOTO") {
                     self.appViewState.navigate(to: .CAMERA)
                 }
-                bigLabeledImageButton(.RECORD, "RECORD") {
+                bigLabeledImageButton(.RECORD, "AUDIO") {
                     self.appViewState.navigate(to: .RECORD)
+                }
+                bigLabeledImageButton(.CAMERA, "VIDEO") {
+                    self.appViewState.navigate(to: .VIDEO)
                 }
             }
             Spacer()
