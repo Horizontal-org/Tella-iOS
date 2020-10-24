@@ -12,13 +12,14 @@
 import SwiftUI
 
 struct CollectView: View {
-    
-    let back: Button<AnyView>
+    @EnvironmentObject private var appViewState: AppViewState
     
     var body: some View {
-        return Group {
+        Group {
             bigText("COLLECT", false)
-            back
+            BackButton {
+                self.appViewState.navigateBack()
+            }
         }
     }
 }

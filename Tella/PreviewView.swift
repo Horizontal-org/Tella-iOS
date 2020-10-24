@@ -26,16 +26,14 @@ extension String {
     }
 }
 
-struct PreviewView: View {
-
-
+struct PreviewView<BackView: View>: View {
     @State var filename: String = ""
     @State var alertType = PreviewViewEnum.INVALID
     @State var showAlert = false
 
     @State private var shutdownWarningDisplayed = false
 
-    let back: Button<AnyView>
+    let back: BackView
     let filepath: String
     let data: Data?
 
@@ -44,7 +42,7 @@ struct PreviewView: View {
     var audioPlayer = AudioPlayer()
 
 
-    init(back: Button<AnyView>, filepath: String, privKey: SecKey) {
+    init(back: BackView, filepath: String, privKey: SecKey) {
         self.back = back
         self.filepath = filepath
         self.data = TellaFileManager.recoverAndDecrypt(filepath, privKey)
@@ -59,50 +57,51 @@ struct PreviewView: View {
         switch fileType {
         case .IMAGE:
             if let img = TellaFileManager.recoverImage(data) {
-                return AnyView(Image(uiImage: img).resizable().scaledToFit())
+                return Image(uiImage: img).resizable()
+                    .scaledToFit()
+                    .eraseToAnyView()
             }
-            return AnyView(smallText("Image could not be recovered"))
+            return smallText("Image could not be recovered")
+                .eraseToAnyView()
         case .VIDEO:
-            return AnyView(smallText("Video previewing not yet supported"))
+            return smallText("Video previewing not yet supported")
+                .eraseToAnyView()
         case .AUDIO:
-            return AnyView(
-                Group {
-                    HStack {
+            return Group {
+                HStack {
                     Button (action:{
                         self.audioPlayer.startPlayback(audio: self.data!)
-                    }) {
+                    }, label: {
                         largeImg(.PLAY)
-                    }
+                    })
                     Button (action:{
                         self.audioPlayer.stopPlayback()
-                    }) {
+                    }, label: {
                         largeImg(.PAUSE)
-                    }
-                    }
+                    })
                 }
-            )
+            }.eraseToAnyView()
         case .TEXT:
             let txt = TellaFileManager.recoverText(data)
-            return AnyView(
-                ScrollView(.vertical) {
-                    smallText(txt ?? "Could not recover text")
-                }
-            )
+            return ScrollView(.vertical) {
+                smallText(txt ?? "Could not recover text")
+            }.eraseToAnyView()
         case .PDF:
             if let pdf = data {
-                return AnyView(PDFKitView(data: pdf))
+                return PDFKitView(data: pdf)
+                    .eraseToAnyView()
             } else {
                 return smallText("Data not found")
+                    .eraseToAnyView()
             }
         default:
-            return AnyView(smallText("Unrecognized Type"))
+            return smallText("Unrecognized Type")
+                .eraseToAnyView()
         }
-
     }
 
     var body: some View {
         return Group {
-
             VStack{
                 mediumText((filepath as NSString).lastPathComponent)
             HStack{
