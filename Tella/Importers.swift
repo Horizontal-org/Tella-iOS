@@ -119,13 +119,38 @@ class DocCoordinator: NSObject, UINavigationControllerDelegate, UIDocumentPicker
 struct ActivityViewController: UIViewControllerRepresentable {
 
     var fileData: Data
+    var fileType: FileTypeEnum
     var applicationActivities: [UIActivity]? = nil
 
     func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityViewController>) -> UIActivityViewController {
-        let controller = UIActivityViewController(activityItems: [fileData], applicationActivities: applicationActivities)
-        return controller
-    }
+        
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        
+        switch fileType {
+        case .AUDIO:
+            let filePath="\(documentsPath)/audioFromTella.aac"
+            return controllerToShareMedia(with: filePath)
+        case .VIDEO:
+            let filePath="\(documentsPath)/videoFromTella.mov"
+            return controllerToShareMedia(with: filePath)
+        default:
+            let controller = UIActivityViewController(activityItems: [fileData], applicationActivities: applicationActivities)
+            return controller
+        }
 
+    }
+    
+    //Function to Share Media (Audio/Video).
+    func controllerToShareMedia(with filePath: String) -> UIActivityViewController {
+        let mediaData = fileData as NSData
+        mediaData.write(toFile: filePath, atomically: true)
+        let activityVC = UIActivityViewController(activityItems: [NSURL(fileURLWithPath: filePath)], applicationActivities: nil)
+        return activityVC
+    }
+    
+    
+
+    
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityViewController>) {}
 
 }

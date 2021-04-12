@@ -37,6 +37,8 @@ struct ContentView: View {
             return GalleryView(privKey: privKey).eraseToAnyView()
         case .AUTH:
             return PasswordView().eraseToAnyView()
+        case .VIDEO:
+            return VideoRecordingView().eraseToAnyView()
         }
     }
 
@@ -44,6 +46,10 @@ struct ContentView: View {
         // makes black background and overlays content
         if appViewState.currentView == .CAMERA {
             return CameraView().eraseToAnyView()
+        }
+        
+        if appViewState.currentView == .VIDEO {
+            return VideoRecordingView().eraseToAnyView()
         }
         return Color.black
             .edgesIgnoringSafeArea(.all) // ignore just for the color
