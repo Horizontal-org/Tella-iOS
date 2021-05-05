@@ -70,6 +70,12 @@ struct TellaFileManager {
     static func saveAudio(_ audioData: Data) {
         self.saveFile(audioData, FileTypeEnum.AUDIO.rawValue)
     }
+    
+    static func saveVideo(_ url: URL) {
+        if let videoData = try? Data(contentsOf: url) {
+            saveFile(videoData, FileTypeEnum.VIDEO.rawValue)
+        }
+    }
 
     private static func saveFile(_ data: Data, _ type: String) {
         var foundNewName = false

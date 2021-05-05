@@ -64,8 +64,7 @@ struct PreviewView<BackView: View>: View {
             return smallText("Image could not be recovered")
                 .eraseToAnyView()
         case .VIDEO:
-            return smallText("Video previewing not yet supported")
-                .eraseToAnyView()
+            return PlayerView(data: self.data!).eraseToAnyView()
         case .AUDIO:
             return Group {
                 HStack {
@@ -150,7 +149,7 @@ struct PreviewView<BackView: View>: View {
             .sheet(isPresented: $isSharePresented, onDismiss: {
                 print("Dismiss")
             }, content: {
-                ActivityViewController(fileData: self.data!)
+                ActivityViewController(fileData: self.data!, fileType: self.fileType!)
             })
 
         }

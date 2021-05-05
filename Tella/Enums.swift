@@ -27,11 +27,12 @@ enum ImageEnum: String {
     case PLAY = "play-icon"
     case PAUSE = "pause-icon"
     case PHOTOPREV = "photo-preview"
+    case VIDEO = "video-icon"
 
 }
 
 enum MainViewEnum {
-    case MAIN, CAMERA, COLLECT, RECORD, SETTINGS, GALLERY, AUTH
+    case MAIN, CAMERA, COLLECT, RECORD, SETTINGS, GALLERY, AUTH, VIDEO
 }
 
 enum SettingsEnum{
