@@ -15,18 +15,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var appViewState = AppViewState()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        if CryptoManager.keysInitialized() {
-            appViewState.resetToMain()
-        } else {
-            appViewState.resetToAuth()
-        }
+        
+        // TODO: Use CryptoManager instead
+//        if CryptoManagerV1.keysInitialized() {
+//            appViewState.resetToMain()
+//        } else {
+//            appViewState.resetToAuth()
+//        }
         
         // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView().environmentObject(appViewState)
-        
+//        let contentView = ContentView().environmentObject(appViewState)
+        let contentView = AppView()//ContentView().environmentObject(appViewState)
+
         // override incorrect defaults
         UITableView.appearance().backgroundColor = .clear
         UITableViewCell.appearance().backgroundColor = .clear
@@ -60,7 +60,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
-        if let imageView : UIImageView = UIApplication.shared.keyWindow?.subviews.last?.viewWithTag(101) as? UIImageView {
+        if let imageView : UIImageView = UIApplication.shared.windows.first?.subviews.last?.viewWithTag(101) as? UIImageView {
             imageView.removeFromSuperview()
         }
     }
@@ -74,7 +74,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         imageView.backgroundColor = UIColor.white
         imageView.contentMode = .center
         imageView.image = UIImage (named: "splash")
-        UIApplication.shared.keyWindow?.subviews.last?.addSubview(imageView)
+        UIApplication.shared.windows.first?.subviews.last?.addSubview(imageView)
     }
 }
 

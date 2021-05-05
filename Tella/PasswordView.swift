@@ -28,7 +28,7 @@ struct PasswordView: View {
                         }
                         RoundedButton(text: type.buttonText) {
                             do {
-                                try CryptoManager.initKeys(type)
+                                try CryptoManagerV1.initKeys(type)
                                 self.appViewState.resetToMain()
                             } catch {}
                         }

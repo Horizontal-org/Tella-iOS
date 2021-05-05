@@ -26,7 +26,7 @@ struct ContentView: View {
         case .SETTINGS:
             return SettingsView().eraseToAnyView()
         case .GALLERY:
-            guard let privKey = CryptoManager.recoverKey(.PRIVATE) else {
+            guard let privKey = CryptoManagerV1.recoverKey(.PRIVATE) else {
                 return VStack {
                     smallText("Correct password not input.")
                     BackButton {

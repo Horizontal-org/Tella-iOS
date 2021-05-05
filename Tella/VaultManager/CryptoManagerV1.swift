@@ -2,70 +2,38 @@
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
+/*
+This struct provides the necessary functions for key management and data encryption/decryption. Two keypairs are maintained, the meta keypair and the regular keypair. The private meta key is stored in the secure enclave. The public meta key is stored in a file. The regular private key is encrypted using the public meta key and the encrypted result is stored in a file. The regular public key is stored in a file. So, to encrypt files, the regular public key is used.
+ To access files, the user is prompted for their authentication when they enter the gallery view. When this authentication is complete, the meta private key is recovered and used to decrypt the regular private key and store the unencrypted private key in memory. Now the user is able to examine their unencrypted files using the regular private key to decrypt.
+ */
+
 import Foundation
 
-protocol CryptoManagerInterface {
-    func encrypt(_ data: Data) -> Data?
-    func decrypt(_ data: Data) -> Data?
-}
-
-class DummyCryptoManager: CryptoManagerInterface {
-
-    func encrypt(_ data: Data) -> Data? {
-        return data
-    }
+struct CryptoManagerV1 {
     
-    func decrypt(_ data: Data) -> Data? {
-        return data
-    }
-    
-}
-
-enum KeyEnum {
-    case META_PRIVATE
-    case PUBLIC
-    case PRIVATE
-
-    public func toKeyFileEnum() -> KeyFileEnum? {
-        switch (self) {
-        case .META_PRIVATE:
-            return nil
-        case .PUBLIC:
-            return .PUBLIC
-        case .PRIVATE:
-            return .PRIVATE
-        }
-    }
-}
-
-enum KeyFileEnum: String {
-    case PUBLIC = "pub-key.txt"
-    case PRIVATE = "priv-key.txt"
-}
-
-class CryptoManager {
-    
-    static let shared = CryptoManager()
-    
-    private static let metaPrivateKeyTagPrefix = "org.horizontal.tella.ios"
+    private static let metaPrivateKeyTagPrefix = "org.tella.ios"
     private static let algorithm: SecKeyAlgorithm = .eciesEncryptionCofactorX963SHA256AESGCM
 
+    private static func metaPrivateKeyTag(_ keyID: String) -> String {
+        return "\(metaPrivateKeyTagPrefix).\(keyID)"
+    }
+
+    // Query used to recover the meta private key
+    private static func metaPrivateKeyQuery(_ keyID: String) -> [String: Any] {
+        return [
+            kSecClass as String: kSecClassKey,
+            kSecAttrApplicationTag as String: metaPrivateKeyTag(keyID),
+            kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
+            kSecReturnRef as String: true,
+            kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
+        ]
+    }
+
     @UserDefaultsProperty(key: "keyID")
-    private var keyID: String?
-
-    private func metaPrivateKeyTag(_ keyID: String) -> String {
-        return "\(Self.metaPrivateKeyTagPrefix).\(keyID)"
-    }
+    private static var keyID: String?
     
-    init() {
-    }
-    
-    var metaPrivateKeyExists: Bool {
-        return recoverMetaPrivateKey() != nil
-    }
-
     // Returns the options for the given key
-    private func getOptions(_ type: KeyEnum) -> [String: Any] {
+    private static func getOptions(_ type: KeyEnum) -> [String: Any] {
         switch (type) {
         case .META_PRIVATE:
             return [kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
@@ -83,50 +51,43 @@ class CryptoManager {
         }
     }
     
-    // Retrieves the meta private key from the secure enclave.
-    // Returns nil on failure or if the key doesn't exist yet.
-    private func recoverMetaPrivateKey() -> SecKey? {
+    static func metaPrivateKeyExists() -> Bool {
+        return recoverMetaPrivateKey() != nil
+    }
+    
+    // Retrieves the meta private key from the secure enclave. Returns nil on failure or if the key doesn't exist yet.
+    private static func recoverMetaPrivateKey() -> SecKey? {
         guard let keyID = keyID else { return nil }
         let query = metaPrivateKeyQuery(keyID)
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
         guard status == errSecSuccess else {
-            debugLog("Error: \(SecCopyErrorMessageString(status, nil) ?? "" as CFString)", space: .crypto)
+            print("Error: \(SecCopyErrorMessageString(status, nil) ?? "" as CFString)")
             return nil
         }
         let key = item as! SecKey
         return key
     }
     
-    // Query used to recover the meta private key
-    private func metaPrivateKeyQuery(_ keyID: String) -> [String: Any] {
-        return [
-            kSecClass as String: kSecClassKey,
-            kSecAttrApplicationTag as String: metaPrivateKeyTag(keyID),
-            kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
-            kSecReturnRef as String: true,
-            kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
-        ]
-    }
-
+    
     // Retrieves a key from a file: meta public, regular public, or regular private.
     // When retrieving the regular private, the user is prompted for their authentication.
-    func recoverKey(_ type: KeyEnum) -> SecKey? {
+    static func recoverKey(_ type: KeyEnum) -> SecKey? {
         guard let keyFileType = type.toKeyFileEnum() else {
             return recoverMetaPrivateKey()
         }
         guard var data = TellaFileManager.recoverKeyData(keyFileType) else {
-            debugLog("key not found")
+            print("key not found")
             return nil
         }
         if type == .PRIVATE {
             // Decrypts the regular private key
             guard let metaPrivateKey = recoverKey(.META_PRIVATE) else {
-                debugLog("meta private key not recovered")
+                print("meta private key not recovered")
                 return nil
             }
             guard let decryptedData = decrypt(data, metaPrivateKey) else {
-                debugLog("data not decrypted")
+                print("data not decrypted")
                 return nil
             }
             data = decryptedData
@@ -134,14 +95,14 @@ class CryptoManager {
         let options: [String: Any] = getOptions(type)
         var error: Unmanaged<CFError>?
         guard let key = SecKeyCreateWithData(data as CFData, options as CFDictionary, &error) else {
-            debugLog("Error: \(error?.takeRetainedValue().localizedDescription ?? "")", space: .crypto)
+            print("Error: \(error?.takeRetainedValue().localizedDescription ?? "")")
             return nil
         }
         return key
     }
 
     @discardableResult
-    func deleteMetaKeypair(_ keyID: String) -> Bool {
+    static func deleteMetaKeypair(_ keyID: String) -> Bool {
         let query = metaPrivateKeyQuery(keyID)
         let status = SecItemDelete(query as CFDictionary)
         if status != errSecSuccess {
@@ -150,10 +111,10 @@ class CryptoManager {
         }
         return true
     }
-
+    
     // Generates meta public key from meta private key.
-    private func createMetaPublicKey(_ privateKey: SecKey) throws -> SecKey {
-        debugLog("Saving meta public")
+    private static func createMetaPublicKey(_ privateKey: SecKey) throws -> SecKey {
+        print("Saving meta public")
         guard let publicKey = SecKeyCopyPublicKey(privateKey) else {
             throw RuntimeError("Failed to generate meta public key")
         }
@@ -161,7 +122,7 @@ class CryptoManager {
     }
     
     // Retrieves the regular public key, encrypts the regular private key, and saves both.
-    private func saveKeypair(_ privateKey: SecKey, _ metaPrivateKey: SecKey, _ keyID: String) throws {
+    private static func saveKeypair(_ privateKey: SecKey, _ metaPrivateKey: SecKey, _ keyID: String) throws {
         var error: Unmanaged<CFError>?
         guard let privateData = SecKeyCopyExternalRepresentation(privateKey, &error) as Data? else {
             let msg = "Error: \(error?.takeRetainedValue().localizedDescription ?? "")"
@@ -190,7 +151,7 @@ class CryptoManager {
     }
     
     // Generates the meta private key with the appropriate authentication
-    private func createMetaPrivateKey(_ type: PasswordTypeEnum, _ appTag: String) throws -> SecKey {
+    private static func createMetaPrivateKey(_ type: PasswordTypeEnum, _ appTag: String) throws -> SecKey {
         // .privateKeyUsage needed so it is accessible
         let access = SecAccessControlCreateWithFlags(
                 kCFAllocatorDefault,
@@ -216,7 +177,7 @@ class CryptoManager {
     }
     
     // Generates a new regular private key. Returns nil on failure.
-    private func createPrivateKey() throws -> SecKey {
+    private static func createPrivateKey() throws -> SecKey {
         let attributes: [String: Any] = [
             kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
             kSecAttrKeySizeInBits as String: 256
@@ -231,17 +192,17 @@ class CryptoManager {
     }
     
     // Checks if both private keys are properly initialized
-    func keysInitialized() -> Bool {
-        return metaPrivateKeyExists && TellaFileManager.keyFileExists(.PRIVATE)
+    static func keysInitialized() -> Bool {
+        return metaPrivateKeyExists() && TellaFileManager.keyFileExists(.PRIVATE)
     }
     
-    func initKeys(_ type: PasswordTypeEnum) throws {
-        debugLog("Creating all-new keys")
+    static func initKeys(_ type: PasswordTypeEnum) throws {
+        print("Creating all-new keys")
         let privateKey = try createPrivateKey()
         try keyHelper(privateKey, type)
     }
     
-    func updateKeys(_ privateKey: SecKey, _ type: PasswordTypeEnum) throws {
+    static func updateKeys(_ privateKey: SecKey, _ type: PasswordTypeEnum) throws {
         guard let keyID = keyID else {
             throw RuntimeError("Could not find key ID")
         }
@@ -249,7 +210,7 @@ class CryptoManager {
         deleteMetaKeypair(keyID)
     }
     
-    func keyHelper(_ privateKey: SecKey, _ type: PasswordTypeEnum) throws {
+    private static func keyHelper(_ privateKey: SecKey, _ type: PasswordTypeEnum) throws {
         let newKeyID = UUID().uuidString
         let newAppTag = metaPrivateKeyTag(newKeyID)
         let metaPrivateKey = try createMetaPrivateKey(type, newAppTag)
@@ -261,48 +222,39 @@ class CryptoManager {
         keyID = newKeyID
     }
     
+    static func encryptUserData(_ data: Data) -> Data? {
+        guard let publicKey = recoverKey(.PUBLIC) else {
+            print("Failed to recover public key")
+            return nil
+        }
+        return encrypt(data, publicKey)
+    }
+    
     // Uses the given public key to encrypt the data. Returns nil on failure.
-    private func encrypt(_ data: Data, _ publicKey: SecKey) -> Data? {
-        guard SecKeyIsAlgorithmSupported(publicKey, .encrypt, CryptoManager.algorithm) else {
-            debugLog("Algorithm is not supported", space: .crypto)
+    private static func encrypt(_ data: Data, _ publicKey: SecKey) -> Data? {
+        guard SecKeyIsAlgorithmSupported(publicKey, .encrypt, algorithm) else {
+            print("Algorithm is not supported")
             return nil
         }
         var error: Unmanaged<CFError>?
-        guard let cipherText = SecKeyCreateEncryptedData(publicKey, CryptoManager.algorithm, data as CFData, &error) as Data? else {
-            debugLog("Error: Failed to produce cipher text. \(error!.takeRetainedValue().localizedDescription)", space: .crypto)
+        guard let cipherText = SecKeyCreateEncryptedData(publicKey, algorithm, data as CFData, &error) as Data? else {
+            print("Error: Failed to produce cipher text. \(error!.takeRetainedValue().localizedDescription)")
             return nil
         }
         return cipherText
     }
     
     // Uses the given private key to decrypt the data. Returns nil on failure.
-    func decrypt(_ data: Data, _ privateKey: SecKey) -> Data? {
-        guard SecKeyIsAlgorithmSupported(privateKey, .decrypt, CryptoManager.algorithm) else {
-            debugLog("Algorithm is not supported")
+    static func decrypt(_ data: Data, _ privateKey: SecKey) -> Data? {
+        guard SecKeyIsAlgorithmSupported(privateKey, .decrypt, algorithm) else {
+            print("Algorithm is not supported")
             return nil
         }
         var error: Unmanaged<CFError>?
-        guard let clearText = SecKeyCreateDecryptedData(privateKey, CryptoManager.algorithm, data as CFData, &error) as Data? else {
-            debugLog("Decryption failed: \(error!.takeRetainedValue().localizedDescription)", space: .crypto)
+        guard let clearText = SecKeyCreateDecryptedData(privateKey, algorithm, data as CFData, &error) as Data? else {
+            print("Decryption failed: \(error!.takeRetainedValue().localizedDescription)")
             return nil
         }
         return clearText
     }
-
-}
-
-extension CryptoManager: CryptoManagerInterface {
-    
-    func encrypt(_ data: Data) -> Data? {
-        guard let publicKey = recoverKey(.PUBLIC) else {
-            debugLog("Failed to recover public key", space: .crypto)
-            return nil
-        }
-        return encrypt(data, publicKey)
-    }
-    
-    func decrypt(_ data: Data) -> Data? {
-        return data
-    }
-    
 }

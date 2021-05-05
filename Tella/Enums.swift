@@ -66,27 +66,6 @@ enum FileTypeEnum: String {
     case AUDIO = "m4a"
 }
 
-enum KeyEnum {
-    case META_PRIVATE
-    case PUBLIC
-    case PRIVATE
-
-    public func toKeyFileEnum() -> KeyFileEnum? {
-        switch (self) {
-        case .META_PRIVATE:
-            return nil
-        case .PUBLIC:
-            return .PUBLIC
-        case .PRIVATE:
-            return .PRIVATE
-        }
-    }
-}
-
-enum KeyFileEnum: String {
-    case PUBLIC = "pub-key.txt"
-    case PRIVATE = "priv-key.txt"
-}
 
 enum PasswordTypeEnum: CaseIterable {
     case PASSWORD

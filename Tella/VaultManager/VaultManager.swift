@@ -161,7 +161,7 @@ class VaultManager: VaultManagerInterface {
         let fileURL = path(for: rootFileName).appendingPathComponent(vaultFile.containerName)
         do {
             let encodedData = try encoder.encode(vaultFile)
-            if let encrypted = cryptoManager.encryptUserData(encodedData) {
+            if let encrypted = cryptoManager.encrypt(encodedData) {
                 fileManager.createFile(atPath: fileURL, contents: encrypted)
             } else {
                 debugLog("encryption failed")
@@ -176,7 +176,7 @@ class VaultManager: VaultManagerInterface {
         let fileURL = path(for: containerName)
         let vaultFile = VaultFile(type: type, fileName: name, containerName: containerName, files: nil)
         parent?.files?.append(vaultFile)
-        if let encrypted = cryptoManager.encryptUserData(data) {
+        if let encrypted = cryptoManager.encrypt(data) {
             _ = fileManager.createFile(atPath: fileURL, contents: encrypted)
         } else {
             debugLog("encryption failed \(String(describing: name))", level: .debug, space: .crypto)

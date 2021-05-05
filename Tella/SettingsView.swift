@@ -70,7 +70,7 @@ struct SettingsView: View {
     func getViewContents(_ currentView: SettingsEnum) -> some View {
         switch currentView {
         case .CHANGE:
-            guard let privateKey = CryptoManager.recoverKey(.PRIVATE) else {
+            guard let privateKey = CryptoManagerV1.recoverKey(.PRIVATE) else {
                 return VStack {
                     smallText("Correct password not input.")
                     BackButton(action: self.settingsBackFunc)
