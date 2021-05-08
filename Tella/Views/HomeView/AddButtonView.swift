@@ -9,12 +9,12 @@ struct AddButtonView: View {
     var body: some View {
         VStack(alignment:.trailing) {
             Spacer()
-            HStack {
+            HStack(spacing: 0) {
                 Spacer()
                 Button(action: {
                     //TODO: add new media action
                 }) {
-                    HStack {
+                    HStack(spacing: 0) {
                         Image("home.add").frame(width: 24, height: 24)
                     }
                     .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))

@@ -12,7 +12,7 @@ struct ReventFilesListView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading){
+        VStack(alignment: .leading, spacing: 0){
             Text("Recent files")
                 .font(Font(UIFont.boldSystemFont(ofSize: 14)))
                 .foregroundColor(.white)

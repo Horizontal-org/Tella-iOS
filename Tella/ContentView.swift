@@ -38,7 +38,8 @@ struct ContentView: View {
         case .AUTH:
             return PasswordView().eraseToAnyView()
         case .VIDEO:
-            return VideoRecordingView().eraseToAnyView()
+            return PasswordView().eraseToAnyView()
+//            return VideoRecordingView().eraseToAnyView()
         }
     }
 
@@ -49,7 +50,8 @@ struct ContentView: View {
         }
         
         if appViewState.currentView == .VIDEO {
-            return VideoRecordingView().eraseToAnyView()
+            return PasswordView().eraseToAnyView()
+//            return VideoRecordingView().eraseToAnyView()
         }
         return Color.black
             .edgesIgnoringSafeArea(.all) // ignore just for the color

@@ -9,7 +9,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .top) {
-                VStack{
+                VStack(spacing: 0){
                     ScrollView{
                         ReventFilesListView()
                         FileGroupsView()
@@ -19,7 +19,7 @@ struct HomeView: View {
             }
             .navigationBarTitle("Tella")
             .navigationBarItems(trailing:
-                    HStack {
+                    HStack(spacing: 8) {
                         NavigationLink(destination: SettingsView()) {
                             Image("home.close")
                                 .imageScale(.large)
@@ -28,7 +28,7 @@ struct HomeView: View {
                             Image("home.settings")
                                 .imageScale(.large)
                             }
-                    }
+                    }.background(Color(Styles.Colors.backgroundMain))
                 )
             .background(Color(Styles.Colors.backgroundMain))
 //            .edgesIgnoringSafeArea(.vertical)
