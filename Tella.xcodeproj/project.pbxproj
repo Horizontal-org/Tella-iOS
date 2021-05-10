@@ -39,7 +39,6 @@
 		D51639802631130E003A11B5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50727CB2625573200BBC370 /* HomeView.swift */; };
 		D5163985263113B7003A11B5 /* MicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D56979262747F700C45416 /* MicView.swift */; };
 		D516398A263113C6003A11B5 /* UploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5163989263113C6003A11B5 /* UploadView.swift */; };
-		D521CE2D26421AB000370C9E /* AddButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D521CE2C26421AB000370C9E /* AddButtonView.swift */; };
 		D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B77002601CA3A0001CD34 /* VaultManager.swift */; };
 		D572EAC5263A383100CE191A /* ReventFilesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC4263A383100CE191A /* ReventFilesListView.swift */; };
 		D572EAC7263A383900CE191A /* RecentFileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC6263A383900CE191A /* RecentFileCell.swift */; };
@@ -146,7 +145,6 @@
 		D51639752631091E003A11B5 /* NewAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = NewAssets.xcassets; sourceTree = "<group>"; };
 		D516397B2631113B003A11B5 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		D5163989263113C6003A11B5 /* UploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadView.swift; sourceTree = "<group>"; };
-		D521CE2C26421AB000370C9E /* AddButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonView.swift; sourceTree = "<group>"; };
 		D53B77002601CA3A0001CD34 /* VaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManager.swift; sourceTree = "<group>"; };
 		D53B77022601D5170001CD34 /* Tella.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Tella.entitlements; sourceTree = "<group>"; };
 		D572EAC4263A383100CE191A /* ReventFilesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReventFilesListView.swift; sourceTree = "<group>"; };
@@ -320,7 +318,6 @@
 				D572EAC6263A383900CE191A /* RecentFileCell.swift */,
 				D572EAC8263A384B00CE191A /* FileGroupsView.swift */,
 				D5DA7F972646220100B00FDA /* FileGroupButtonView.swift */,
-				D521CE2C26421AB000370C9E /* AddButtonView.swift */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -718,7 +715,6 @@
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* Importers.swift in Sources */,
 				D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */,
-				D521CE2D26421AB000370C9E /* AddButtonView.swift in Sources */,
 				1EBF3CB5246649DC0004E331 /* AudioPlayer.swift in Sources */,
 				6D14AADA2405AC1B0094D71D /* FileManager.swift in Sources */,
 				D50727BF2625561400BBC370 /* KeychainManager.swift in Sources */,

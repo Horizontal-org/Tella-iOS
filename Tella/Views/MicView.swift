@@ -10,8 +10,14 @@ struct MicView: View {
     }
     
     var body: some View {
-        VStack(){
+        ZStack {
+            Color.yellow
+            VStack(){
+                Text("Mic View")
+                    .frame(maxWidth: .infinity)
+            }
         }
+        .edgesIgnoringSafeArea(.all)
     }
 }
 

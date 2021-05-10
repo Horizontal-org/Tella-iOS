@@ -23,40 +23,28 @@ struct AppView: View {
     }
     
     var body: some View {
-        ZStack{
-            TabView(selection: $selection) {
-                HomeView()
-                    .tabItem {
-                        Image("tab.home")
-                        Text("Home")
-                            .foregroundColor(.red)
-                    }.tag(Tabs.home)
-    //            HomeView()
-    //                .tabItem {
-    //                    Image("tab.forms")
-    //                    Text("Forms")
-    //            }.tag(Tabs.forms)
-    //            UploadView()
-    //                .tabItem {
-    //                    Image("tab.upload")
-    //                    Text("Reports")
-    //            }.tag(Tabs.reports)
-                CameraView()
-                    .tabItem {
-                        Image("tab.camera")
-                        Text("Camera")
-                }.tag(Tabs.camera)
-                MicView()
-                    .tabItem {
-                        Image("tab.mic")
-                        Text("Mic")
-                    }.tag(Tabs.mic)
-            }
-            .accentColor(.white)
+        TabView(selection: $selection) {
+            HomeView()
+                .tabItem {
+                    Image("tab.home")
+                    Text("Home")
+                }.tag(Tabs.home)
+            CameraView()
+                .tabItem {
+                    Image("tab.camera")
+                    Text("Camera")
+            }.tag(Tabs.camera)
+            MicView()
+                .tabItem {
+                    Image("tab.mic")
+                    Text("Mic")
+                }.tag(Tabs.mic)
         }
+        .accentColor(.white)
     }
     
     private func setupApperance() {
+        
         UITabBar.appearance().barTintColor = Styles.Colors.backgroundTab
         
         UINavigationBar.appearance().backgroundColor = Styles.Colors.backgroundMain
@@ -75,7 +63,7 @@ struct AppView: View {
         UIBarButtonItem.appearance().setTitleTextAttributes([
             .foregroundColor: UIColor.white,
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18)],
-                                                            for: .normal)
+for: .normal)
         UIWindow.appearance().tintColor = Styles.Colors.backgroundMain
     }
 }

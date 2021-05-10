@@ -15,7 +15,7 @@ struct FileGroupsView: View {
                 .font(Font(UIFont.boldSystemFont(ofSize: 14)))
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, maxHeight: 24, alignment: .topLeading)
-                .padding(EdgeInsets(top: 8, leading: 16, bottom: 0, trailing: 16))
+                .padding(EdgeInsets(top: 8, leading: 16, bottom: 16, trailing: 16))
             VStack(spacing: 0) {
                 // TODO: replace with LazyVGridView once iOS 13 not supported
                 HStack(spacing: 0){
