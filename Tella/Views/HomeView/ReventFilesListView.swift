@@ -26,7 +26,7 @@ struct ReventFilesListView: View {
                     NavigationLink(
                                         destination: FileDetailView()
                                     ) {
-                        RecentFileCell(file: files[index])
+                        RecentFileCell(recentFile: files[index])
                     }
                 }
               }

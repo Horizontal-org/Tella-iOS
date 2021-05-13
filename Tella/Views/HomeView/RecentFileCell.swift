@@ -4,7 +4,6 @@
 
 import SwiftUI
 
-
 protocol RecentFileProtocol {
     var image: UIImage {get}
 }
@@ -21,10 +20,6 @@ struct RecentFileCell: View {
 
     let recentFile: RecentFileProtocol
     
-    init(file: RecentFileProtocol) {
-        self.recentFile = file
-    }
-    
     var body: some View {
         Image(uiImage: recentFile.image)
             .resizable()
@@ -35,6 +30,6 @@ struct RecentFileCell: View {
 
 struct RecentFileCell_Previews: PreviewProvider {
     static var previews: some View {
-        RecentFileCell(file: mockRecentFile())
+        RecentFileCell(recentFile: mockRecentFile())
     }
 }

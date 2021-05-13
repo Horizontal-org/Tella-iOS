@@ -43,9 +43,11 @@ enum KeyFileEnum: String {
     case PRIVATE = "priv-key.txt"
 }
 
+
 class CryptoManager {
     
-    static let shared = CryptoManager()
+    static let shared = CryptoManager(cryptoFileManager: CryptoFileManager())
+    private let cryptoFileManager: CryptoFileManagerProtocol
     
     private static let metaPrivateKeyTagPrefix = "org.horizontal.tella.ios"
     private static let algorithm: SecKeyAlgorithm = .eciesEncryptionCofactorX963SHA256AESGCM
@@ -57,7 +59,8 @@ class CryptoManager {
         return "\(Self.metaPrivateKeyTagPrefix).\(keyID)"
     }
     
-    init() {
+    init(cryptoFileManager: CryptoFileManagerProtocol) {
+        self.cryptoFileManager = cryptoFileManager
     }
     
     var metaPrivateKeyExists: Bool {
@@ -115,7 +118,7 @@ class CryptoManager {
         guard let keyFileType = type.toKeyFileEnum() else {
             return recoverMetaPrivateKey()
         }
-        guard var data = TellaFileManager.recoverKeyData(keyFileType) else {
+        guard var data = cryptoFileManager.recoverKeyData(keyFileType) else {
             debugLog("key not found")
             return nil
         }
@@ -178,13 +181,13 @@ class CryptoManager {
             let msg = "Error: \(error?.takeRetainedValue().localizedDescription ?? "")"
             throw RuntimeError(msg)
         }
-        try TellaFileManager.initKeyFolder(keyID)
-        guard TellaFileManager.saveKeyData(privateEncryptedData, .PRIVATE, keyID) else {
-            TellaFileManager.deleteKeyFolder(keyID)
+        try cryptoFileManager.initKeyFolder(keyID)
+        guard cryptoFileManager.saveKeyData(privateEncryptedData, .PRIVATE, keyID) else {
+            cryptoFileManager.deleteKeyFolder(keyID)
             throw RuntimeError("Failed to save encrypted private key")
         }
-        guard TellaFileManager.saveKeyData(publicData, .PUBLIC, keyID) else {
-            TellaFileManager.deleteKeyFolder(keyID)
+        guard cryptoFileManager.saveKeyData(publicData, .PUBLIC, keyID) else {
+            cryptoFileManager.deleteKeyFolder(keyID)
             throw RuntimeError("Failed to save public key")
         }
     }
@@ -232,7 +235,7 @@ class CryptoManager {
     
     // Checks if both private keys are properly initialized
     func keysInitialized() -> Bool {
-        return metaPrivateKeyExists && TellaFileManager.keyFileExists(.PRIVATE)
+        return metaPrivateKeyExists && cryptoFileManager.keyFileExists(.PRIVATE)
     }
     
     func initKeys(_ type: PasswordTypeEnum) throws {
@@ -256,7 +259,7 @@ class CryptoManager {
         try saveKeypair(privateKey, metaPrivateKey, newKeyID)
 
         if let keyID = keyID {
-            TellaFileManager.deleteKeyFolder(keyID)
+            cryptoFileManager.deleteKeyFolder(keyID)
         }
         keyID = newKeyID
     }

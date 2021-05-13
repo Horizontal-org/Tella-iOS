@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import UIKit
 
 enum FileType: String, Codable {
     case video
@@ -19,6 +20,10 @@ class VaultFile: Codable {
     let fileName: String?
     let containerName: String
     var files: [VaultFile]?
+    
+    var thumbnail: UIImage {
+        return UIImage(named: "test_image") ?? UIImage()
+    }
     
     init(type: FileType, fileName: String?, containerName: String, files: [VaultFile]?) {
         self.type = type
@@ -45,7 +50,7 @@ extension VaultFile: Equatable {
     
 }
 
-protocol FileManagerInterface: class {
+protocol FileManagerInterface {
     func contents(atPath path: URL) -> Data?
     func contentsOfDirectory(atPath path: URL) -> [String]
 
@@ -96,7 +101,7 @@ class DefaultFileManager: FileManagerInterface {
     
 }
 
-protocol VaultManagerInterface: class {
+protocol VaultManagerInterface {
     
     var containerPath: String { get }
 
