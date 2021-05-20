@@ -51,7 +51,7 @@ class VideoCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerC
     // this function is called when a user finish recording the video.
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedVideo:URL = (info[UIImagePickerController.InfoKey.mediaURL] as? URL) {
-            TellaFileManager.saveVideo(selectedVideo)
+          //  TellaFileManager.saveVideo(selectedVideo)
          }
 
         completion()
