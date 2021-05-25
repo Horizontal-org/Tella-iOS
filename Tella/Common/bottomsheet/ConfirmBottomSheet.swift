@@ -59,7 +59,7 @@ struct ButtonSheetStyle: ButtonStyle {
       .padding(.leading, 20)
   }
 }
-struct TestView: View {
+private struct TestView: View {
     @State var show = true
     
     var body: some View {
