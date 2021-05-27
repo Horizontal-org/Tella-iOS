@@ -39,6 +39,7 @@ struct DragView<Content: View> : View {
     var modalHeight:CGFloat
     @Binding var isShown:Bool
     var color:Color = .white
+    @State var value : CGFloat = 0
     
     private func onDragEnded(drag: DragGesture.Value) {
         let dragThreshold = modalHeight * (2/3)
@@ -89,7 +90,16 @@ struct DragView<Content: View> : View {
                     .gesture(drag)
                 }
             }.edgesIgnoringSafeArea(.all)
-            .zIndex(.infinity)
+            .zIndex(.infinity).offset(y: -self.value)
+            .animation(.spring())
+            .onAppear{
+                NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) {(noti) in
+                    self.value = modalHeight
+                }
+                NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) {(noti) in
+                    self.value = 0
+                }
+            }
             
         }
     }
@@ -113,4 +123,23 @@ func fraction_progress(lowerLimit: Double = 0, upperLimit:Double, current:Double
     }
     
 }
+
+struct RoundedCorner: Shape {
+    
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+    
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        return Path(path.cgPath)
+    }
+}
+
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape( RoundedCorner(radius: radius, corners: corners) )
+    }
+}
+
+
 

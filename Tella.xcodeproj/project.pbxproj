@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E230E2D265BE05A00465F07 /* EditBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E230E2C265BE05A00465F07 /* EditBottomSheet.swift */; };
 		0E78B3A72656B03600F9BDBC /* DragView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E78B3A52656B03500F9BDBC /* DragView.swift */; };
 		0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E78B3A62656B03500F9BDBC /* ConfirmBottomSheet.swift */; };
 		0E78B3AE2656B04B00F9BDBC /* open-sans.regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0E78B3AD2656B04B00F9BDBC /* open-sans.regular.ttf */; };
@@ -114,6 +115,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0E230E2C265BE05A00465F07 /* EditBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBottomSheet.swift; sourceTree = "<group>"; };
 		0E78B3A52656B03500F9BDBC /* DragView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragView.swift; sourceTree = "<group>"; };
 		0E78B3A62656B03500F9BDBC /* ConfirmBottomSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmBottomSheet.swift; sourceTree = "<group>"; };
 		0E78B3AD2656B04B00F9BDBC /* open-sans.regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "open-sans.regular.ttf"; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 			children = (
 				0E78B3A52656B03500F9BDBC /* DragView.swift */,
 				0E78B3A62656B03500F9BDBC /* ConfirmBottomSheet.swift */,
+				0E230E2C265BE05A00465F07 /* EditBottomSheet.swift */,
 			);
 			path = bottomsheet;
 			sourceTree = "<group>";
@@ -757,6 +760,7 @@
 				D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */,
 				1EBF3CB5246649DC0004E331 /* AudioPlayer.swift in Sources */,
 				6D14AADA2405AC1B0094D71D /* FileManager.swift in Sources */,
+				0E230E2D265BE05A00465F07 /* EditBottomSheet.swift in Sources */,
 				D50727BF2625561400BBC370 /* KeychainManager.swift in Sources */,
 				D7CFC37F254260D300CCB352 /* RecordView.swift in Sources */,
 				6D848FA32416D12D004896E0 /* CryptoManagerV1.swift in Sources */,
