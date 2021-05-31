@@ -45,6 +45,8 @@ struct AppView: View {
     
     private func setupApperance() {
         
+        UITableView.appearance().separatorStyle = .none
+        
         UITabBar.appearance().barTintColor = Styles.Colors.backgroundTab
         
         UINavigationBar.appearance().backgroundColor = Styles.Colors.backgroundMain

@@ -59,6 +59,9 @@
 		D5B823EB262774E00008E04B /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D5696C262747E100C45416 /* AppView.swift */; };
 		D5B823F0262775D80008E04B /* CryptoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B823EF262775D80008E04B /* CryptoManager.swift */; };
 		D5DA7F982646220100B00FDA /* FileGroupButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DA7F972646220100B00FDA /* FileGroupButtonView.swift */; };
+		D5DA7F9B2648D05400B00FDA /* FileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DA7F9A2648D05400B00FDA /* FileListView.swift */; };
+		D5DAFDCE265384C4002F3942 /* SettingsViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DAFDCC265384C4002F3942 /* SettingsViewV2.swift */; };
+		D5DAFDCF265384C4002F3942 /* SettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DAFDCD265384C4002F3942 /* SettingModel.swift */; };
 		D75F9E9C25342539006F6212 /* RecordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75F9E9B25342539006F6212 /* RecordViewModel.swift */; };
 		D7CFC37F254260D300CCB352 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CFC37E254260D300CCB352 /* RecordView.swift */; };
 		D7F55FC825348FA50028739E /* RecordState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FC725348FA50028739E /* RecordState.swift */; };
@@ -175,6 +178,9 @@
 		D5D56974262747F100C45416 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		D5D56979262747F700C45416 /* MicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicView.swift; sourceTree = "<group>"; };
 		D5DA7F972646220100B00FDA /* FileGroupButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGroupButtonView.swift; sourceTree = "<group>"; };
+		D5DA7F9A2648D05400B00FDA /* FileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListView.swift; sourceTree = "<group>"; };
+		D5DAFDCC265384C4002F3942 /* SettingsViewV2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewV2.swift; sourceTree = "<group>"; };
+		D5DAFDCD265384C4002F3942 /* SettingModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingModel.swift; sourceTree = "<group>"; };
 		D75F9E9B25342539006F6212 /* RecordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewModel.swift; sourceTree = "<group>"; };
 		D7CFC37E254260D300CCB352 /* RecordView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
 		D7F55FC725348FA50028739E /* RecordState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordState.swift; sourceTree = "<group>"; };
@@ -300,12 +306,15 @@
 				D5D5696C262747E100C45416 /* AppView.swift */,
 				D50727CB2625573200BBC370 /* HomeView.swift */,
 				D572EAC3263A381400CE191A /* HomeView */,
+				D5DA7F992648D02C00B00FDA /* FileListView */,
 				D5D56974262747F100C45416 /* CameraView.swift */,
 				D5D56979262747F700C45416 /* MicView.swift */,
 				D5163989263113C6003A11B5 /* UploadView.swift */,
 				D572EACA263A43C100CE191A /* FileDetailView.swift */,
 				D572EAC2263A380700CE191A /* FileManager */,
 				D516397B2631113B003A11B5 /* Styles.swift */,
+				D5DAFDCC265384C4002F3942 /* SettingsViewV2.swift */,
+				D5DAFDCD265384C4002F3942 /* SettingModel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -362,6 +371,14 @@
 				D57F5EAC26156C5200C1DA47 /* MockCryptoManager.swift */,
 			);
 			path = Mocks;
+			sourceTree = "<group>";
+		};
+		D5DA7F992648D02C00B00FDA /* FileListView */ = {
+			isa = PBXGroup;
+			children = (
+				D5DA7F9A2648D05400B00FDA /* FileListView.swift */,
+			);
+			path = FileListView;
 			sourceTree = "<group>";
 		};
 		D75F9E9A253424F7006F6212 /* audio */ = {
@@ -732,11 +749,13 @@
 				6DC2ABC9245029BC004579DF /* PasswordView.swift in Sources */,
 				D5B823EB262774E00008E04B /* AppView.swift in Sources */,
 				D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */,
+				D5DAFDCF265384C4002F3942 /* SettingModel.swift in Sources */,
 				F66E65AD23E3207D000F93E5 /* AppDelegate.swift in Sources */,
 				D7F55FCD25348FB80028739E /* AudioManager.swift in Sources */,
 				D5DA7F982646220100B00FDA /* FileGroupButtonView.swift in Sources */,
 				D51639802631130E003A11B5 /* HomeView.swift in Sources */,
 				0F3DC3E52523951C0024B4A0 /* BundleInfo.swift in Sources */,
+				D5DAFDCE265384C4002F3942 /* SettingsViewV2.swift in Sources */,
 				6D14AAD223FB08D60094D71D /* CameraView.swift in Sources */,
 				D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */,
 				6DC2ABCB24502D08004579DF /* ChangeView.swift in Sources */,
@@ -767,6 +786,7 @@
 				D7F55FC825348FA50028739E /* RecordState.swift in Sources */,
 				F66E65AF23E3207D000F93E5 /* SceneDelegate.swift in Sources */,
 				CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */,
+				D5DA7F9B2648D05400B00FDA /* FileListView.swift in Sources */,
 				D516397C2631113B003A11B5 /* Styles.swift in Sources */,
 				6DD4C03A240F547300491438 /* Util.swift in Sources */,
 				F66E65B123E3207D000F93E5 /* ContentView.swift in Sources */,

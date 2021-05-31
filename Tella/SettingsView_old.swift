@@ -17,7 +17,7 @@
 
 import SwiftUI
 
-struct SettingsView: View {
+struct SettingsView_old: View {
     @EnvironmentObject private var appViewState: AppViewState
     @State var currentView: SettingsEnum = .MAIN
     @State private var shutdownWarningDisplayed = false
@@ -85,5 +85,14 @@ struct SettingsView: View {
 
     var body: some View {
         getViewContents(currentView)
+    }
+}
+
+struct SettingsView_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        NavigationView {
+            SettingsView_old()
+        }
     }
 }
