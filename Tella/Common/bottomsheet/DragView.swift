@@ -38,7 +38,7 @@ struct DragView<Content: View> : View {
     @GestureState private var dragState = DragState.inactive
     var modalHeight:CGFloat
     @Binding var isShown:Bool
-    var color:Color = .white
+    var color:Color = Color("PrimaryColor")
     @State var value : CGFloat = 0
     
     private func onDragEnded(drag: DragGesture.Value) {
