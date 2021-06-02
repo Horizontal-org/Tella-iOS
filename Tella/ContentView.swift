@@ -24,7 +24,7 @@ struct ContentView: View {
         case .RECORD:
             return RecordView().eraseToAnyView()
         case .SETTINGS:
-            return SettingsView().eraseToAnyView()
+            return SettingsView_old().eraseToAnyView()
         case .GALLERY:
             guard let privKey = CryptoManagerV1.recoverKey(.PRIVATE) else {
                 return VStack {

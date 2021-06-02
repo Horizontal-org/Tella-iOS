@@ -6,6 +6,16 @@ import SwiftUI
 
 struct HomeView: View {
 
+    @ObservedObject var viewModel: SettingsModel
+    
+    init(viewModel: SettingsModel) {
+        self.viewModel = viewModel
+        setupView()
+    }
+    
+    private func setupView() {
+    }
+    
     var body: some View {
         NavigationView {
             ZStack(alignment: .top) {
@@ -21,11 +31,9 @@ struct HomeView: View {
             .navigationBarTitle("Tella")
             .navigationBarItems(trailing:
                     HStack(spacing: 8) {
-                        NavigationLink(destination: SettingsView()) {
-                            Image("home.close")
-                                .imageScale(.large)
-                            }
-                        NavigationLink(destination: SettingsView()) {
+                        Image("home.close")
+                            .imageScale(.large)
+                        NavigationLink(destination: SettingsView(viewModel: viewModel)) {
                             Image("home.settings")
                                 .imageScale(.large)
                             }
@@ -50,13 +58,12 @@ struct HomeView: View {
                 }
             }
         }.padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 16))
-
     }
 
 }
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        HomeView(viewModel: SettingsModel())
     }
 }

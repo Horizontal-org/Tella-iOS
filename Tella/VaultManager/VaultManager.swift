@@ -20,9 +20,24 @@ class VaultFile: Codable {
     let fileName: String?
     let containerName: String
     var files: [VaultFile]?
+    var thumbnail: Data?
     
-    var thumbnail: UIImage {
-        return UIImage(named: "test_image") ?? UIImage()
+    var thumbnailImage: UIImage? {
+        if let thumbnail = thumbnail, let image = UIImage(data: thumbnail) {
+            return image
+        }
+        switch type {
+        case .audio:
+           return #imageLiteral(resourceName: "filetype.audio")
+        case .document:
+            return #imageLiteral(resourceName: "filetype.audio")
+        case .folder:
+            return #imageLiteral(resourceName: "filetype.audio")
+        case .video:
+            return #imageLiteral(resourceName: "filetype.audio")
+        default:
+            return nil
+        }
     }
     
     init(type: FileType, fileName: String?, containerName: String, files: [VaultFile]?) {

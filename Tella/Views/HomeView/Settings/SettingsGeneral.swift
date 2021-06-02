@@ -1,9 +1,33 @@
 //
-//  SettingsGeneral.swift
-//  Tella
-//
-//  Created by Evgeny Yagrushkin on 2021-05-29.
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
-import Foundation
+import SwiftUI
+
+struct SettingsGeneral : View {
+    
+    init() {
+    }
+    
+    var body: some View {
+        ZStack {
+            Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)
+            Form {
+                Section{
+                    List{
+                    }
+                }
+                .listRowBackground(Color(Styles.Colors.backgroundTab))
+            }.background(Color(Styles.Colors.backgroundMain))
+        }
+        .navigationBarTitle("General")
+    }
+}
+
+struct SettingsGeneral_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            SettingsGeneral()
+        }
+    }
+}

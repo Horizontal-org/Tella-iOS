@@ -6,15 +6,17 @@ import SwiftUI
 
 struct FileListView: View {
     
-    init() {
+    var files: [VaultFile]
+    
+    init(files: [VaultFile]) {
         UITableView.appearance().separatorStyle = .none
         UITableView.appearance().tableFooterView = UIView()
         UITableView.appearance().separatorColor = .clear
+        self.files = files
     }
     
     var body: some View {
         List{
-            FileGridItem()
             FileListItem()
             FileListItem()
             FileListItem()
@@ -65,14 +67,26 @@ struct FileGridItem: View {
     }
 }
 
-
-
 struct FileListView_Previews: PreviewProvider {
     static var previews: some View {
-        FileListView()
-//        VStack{
-//            FileListItem()
-//            FileGridItem()
-//        }.frame(width: 500, height: 100, alignment: .leading)
+        FileListView(files: VaultFile.stubFiles())
     }
+}
+
+extension VaultFile {
+    
+    static func stub(type: FileType) -> VaultFile {
+        let file = VaultFile(type: type, fileName: UUID().uuidString, containerName: UUID().uuidString, files: nil)
+        return file
+    }
+
+    static func stubFiles() -> [VaultFile] {
+        return [VaultFile.stub(type: .audio),
+                VaultFile.stub(type: .video),
+                VaultFile.stub(type: .folder),
+                VaultFile.stub(type: .document),
+                VaultFile.stub(type: .document),
+                VaultFile.stub(type: .image)]
+    }
+    
 }

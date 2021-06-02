@@ -7,6 +7,7 @@ import SwiftUI
 struct AppView: View {
     
     @State private var selection: Tabs = .home
+    @EnvironmentObject private var viewModel: SettingsModel
 
      private enum Tabs: Hashable {
         case home
@@ -24,7 +25,7 @@ struct AppView: View {
     
     var body: some View {
         TabView(selection: $selection) {
-            HomeView()
+            HomeView(viewModel: viewModel)
                 .tabItem {
                     Image("tab.home")
                     Text("Home")
@@ -46,27 +47,35 @@ struct AppView: View {
     private func setupApperance() {
         
         UITableView.appearance().separatorStyle = .none
-        
         UITabBar.appearance().barTintColor = Styles.Colors.backgroundTab
-        
         UINavigationBar.appearance().backgroundColor = Styles.Colors.backgroundMain
         
-        UINavigationBar.appearance().largeTitleTextAttributes = [
-            .foregroundColor: UIColor.white,
-            .backgroundColor: Styles.Colors.backgroundMain,
-            .font: UIFont.boldSystemFont(ofSize: 35)]
+//        UINavigationBar.appearance().largeTitleTextAttributes = [
+//            .foregroundColor: UIColor.white,
+//            .backgroundColor: Styles.Colors.backgroundMain,
+//            .font: UIFont.boldSystemFont(ofSize: 35)]
+//        
+//        UINavigationBar.appearance().titleTextAttributes = [
+//            .foregroundColor: UIColor.white,
+//            .backgroundColor: Styles.Colors.backgroundMain,
+//            .font: UIFont.systemFont(ofSize: 18),
+//        ]
         
-        UINavigationBar.appearance().titleTextAttributes = [
-            .foregroundColor: UIColor.white,
-            .backgroundColor: Styles.Colors.backgroundMain,
-            .font: UIFont.systemFont(ofSize: 18),
-        ]
+        let coloredAppearance = UINavigationBarAppearance()
+        coloredAppearance.configureWithTransparentBackground()
+        coloredAppearance.backgroundColor = Styles.Colors.backgroundMain
+        coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        
+        UINavigationBar.appearance().standardAppearance = coloredAppearance
+        UINavigationBar.appearance().compactAppearance = coloredAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
         
         UIBarButtonItem.appearance().setTitleTextAttributes([
             .foregroundColor: UIColor.white,
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18)],
 for: .normal)
-        UIWindow.appearance().tintColor = Styles.Colors.backgroundMain
+        
     }
 }
 
