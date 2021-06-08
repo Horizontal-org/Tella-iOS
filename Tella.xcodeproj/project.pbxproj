@@ -15,12 +15,18 @@
 		0D4D751A2664738800D7A635 /* HostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D75192664738800D7A635 /* HostingController.swift */; };
 		0DC411E12668469C00BF0DE1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC411E02668469C00BF0DE1 /* SettingsView.swift */; };
 		0E230E2D265BE05A00465F07 /* EditBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E230E2C265BE05A00465F07 /* EditBottomSheet.swift */; };
+		0E278995266F75AC00B130C4 /* TopBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E278994266F75AC00B130C4 /* TopBarView.swift */; };
+		0E27899D266F76D500B130C4 /* FormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E27899C266F76D500B130C4 /* FormsView.swift */; };
 		0E64C6A6265E7625005A7934 /* FileActionsBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E64C6A5265E7625005A7934 /* FileActionsBottomSheet.swift */; };
 		0E78B3A72656B03600F9BDBC /* DragView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E78B3A52656B03500F9BDBC /* DragView.swift */; };
 		0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E78B3A62656B03500F9BDBC /* ConfirmBottomSheet.swift */; };
 		0E78B3AE2656B04B00F9BDBC /* open-sans.regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0E78B3AD2656B04B00F9BDBC /* open-sans.regular.ttf */; };
 		0E78B3BA2656B0BC00F9BDBC /* VideoPlayerUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E78B3B52656B0BC00F9BDBC /* VideoPlayerUI.swift */; };
 		0E78B3BB2656B0BC00F9BDBC /* VideoRecordingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E78B3B62656B0BC00F9BDBC /* VideoRecordingView.swift */; };
+		0E8CEA0A266FFDA700926799 /* BlankFormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8CEA09266FFDA700926799 /* BlankFormsView.swift */; };
+		0E8CEA0F266FFDC000926799 /* DraftFormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8CEA0E266FFDC000926799 /* DraftFormsView.swift */; };
+		0E8CEA14266FFDF200926799 /* OutBoxFormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8CEA13266FFDF200926799 /* OutBoxFormsView.swift */; };
+		0E8CEA19266FFE0600926799 /* SentFormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8CEA18266FFE0600926799 /* SentFormsView.swift */; };
 		0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E998552266E57FC0019FDF4 /* HeaderView.swift */; };
 		0F3DC3E52523951C0024B4A0 /* BundleInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F3DC3E42523951C0024B4A0 /* BundleInfo.swift */; };
 		1E67B39223FC9067001F3D64 /* Importers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* Importers.swift */; };
@@ -134,12 +140,18 @@
 		0D4D75192664738800D7A635 /* HostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingController.swift; sourceTree = "<group>"; };
 		0DC411E02668469C00BF0DE1 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0E230E2C265BE05A00465F07 /* EditBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBottomSheet.swift; sourceTree = "<group>"; };
+		0E278994266F75AC00B130C4 /* TopBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBarView.swift; sourceTree = "<group>"; };
+		0E27899C266F76D500B130C4 /* FormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormsView.swift; sourceTree = "<group>"; };
 		0E64C6A5265E7625005A7934 /* FileActionsBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileActionsBottomSheet.swift; sourceTree = "<group>"; };
 		0E78B3A52656B03500F9BDBC /* DragView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragView.swift; sourceTree = "<group>"; };
 		0E78B3A62656B03500F9BDBC /* ConfirmBottomSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmBottomSheet.swift; sourceTree = "<group>"; };
 		0E78B3AD2656B04B00F9BDBC /* open-sans.regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "open-sans.regular.ttf"; sourceTree = "<group>"; };
 		0E78B3B52656B0BC00F9BDBC /* VideoPlayerUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerUI.swift; sourceTree = "<group>"; };
 		0E78B3B62656B0BC00F9BDBC /* VideoRecordingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoRecordingView.swift; sourceTree = "<group>"; };
+		0E8CEA09266FFDA700926799 /* BlankFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankFormsView.swift; sourceTree = "<group>"; };
+		0E8CEA0E266FFDC000926799 /* DraftFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftFormsView.swift; sourceTree = "<group>"; };
+		0E8CEA13266FFDF200926799 /* OutBoxFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutBoxFormsView.swift; sourceTree = "<group>"; };
+		0E8CEA18266FFE0600926799 /* SentFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentFormsView.swift; sourceTree = "<group>"; };
 		0E998552266E57FC0019FDF4 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		0F3DC3E42523951C0024B4A0 /* BundleInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleInfo.swift; sourceTree = "<group>"; };
 		1E67B39123FC9067001F3D64 /* Importers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Importers.swift; sourceTree = "<group>"; };
@@ -270,6 +282,19 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		0E278993266F756B00B130C4 /* Forms */ = {
+			isa = PBXGroup;
+			children = (
+				0E278994266F75AC00B130C4 /* TopBarView.swift */,
+				0E27899C266F76D500B130C4 /* FormsView.swift */,
+				0E8CEA09266FFDA700926799 /* BlankFormsView.swift */,
+				0E8CEA0E266FFDC000926799 /* DraftFormsView.swift */,
+				0E8CEA13266FFDF200926799 /* OutBoxFormsView.swift */,
+				0E8CEA18266FFE0600926799 /* SentFormsView.swift */,
+			);
+			path = Forms;
+			sourceTree = "<group>";
+		};
 		0E78B3A42656B03500F9BDBC /* bottomsheet */ = {
 			isa = PBXGroup;
 			children = (
@@ -395,6 +420,7 @@
 		D572EAC3263A381400CE191A /* HomeView */ = {
 			isa = PBXGroup;
 			children = (
+				0E278993266F756B00B130C4 /* Forms */,
 				0D4D750E2662D14F00D7A635 /* Settings */,
 				D572EAC4263A383100CE191A /* ReventFilesListView.swift */,
 				D572EAC6263A383900CE191A /* RecentFileCell.swift */,
@@ -782,6 +808,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E78B3BA2656B0BC00F9BDBC /* VideoPlayerUI.swift in Sources */,
+				0E8CEA0A266FFDA700926799 /* BlankFormsView.swift in Sources */,
 				D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */,
 				6DD4C038240F4B9900491438 /* PreviewView.swift in Sources */,
 				0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */,
@@ -791,11 +818,14 @@
 				D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */,
 				D5DAFDCF265384C4002F3942 /* SettingModel.swift in Sources */,
 				F66E65AD23E3207D000F93E5 /* AppDelegate.swift in Sources */,
+				0E278995266F75AC00B130C4 /* TopBarView.swift in Sources */,
 				D7F55FCD25348FB80028739E /* AudioManager.swift in Sources */,
 				D5DA7F982646220100B00FDA /* FileGroupButtonView.swift in Sources */,
 				0D4D7510266316D200D7A635 /* SettingsGeneral.swift in Sources */,
 				D51639802631130E003A11B5 /* HomeView.swift in Sources */,
+				0E8CEA19266FFE0600926799 /* SentFormsView.swift in Sources */,
 				0F3DC3E52523951C0024B4A0 /* BundleInfo.swift in Sources */,
+				0E27899D266F76D500B130C4 /* FormsView.swift in Sources */,
 				6D14AAD223FB08D60094D71D /* CameraView.swift in Sources */,
 				D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */,
 				6DC2ABCB24502D08004579DF /* ChangeView.swift in Sources */,
@@ -829,6 +859,7 @@
 				D7CFC37F254260D300CCB352 /* RecordView.swift in Sources */,
 				6D848FA32416D12D004896E0 /* CryptoManagerV1.swift in Sources */,
 				0DC411E12668469C00BF0DE1 /* SettingsView.swift in Sources */,
+				0E8CEA14266FFDF200926799 /* OutBoxFormsView.swift in Sources */,
 				D7F55FC825348FA50028739E /* RecordState.swift in Sources */,
 				0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */,
 				F66E65AF23E3207D000F93E5 /* SceneDelegate.swift in Sources */,
@@ -838,6 +869,7 @@
 				6DD4C03A240F547300491438 /* Util.swift in Sources */,
 				F66E65B123E3207D000F93E5 /* ContentView.swift in Sources */,
 				D5B823F0262775D80008E04B /* CryptoManager.swift in Sources */,
+				0E8CEA0F266FFDC000926799 /* DraftFormsView.swift in Sources */,
 				0D4D7518266470A700D7A635 /* SettingsViews.swift in Sources */,
 				6D14AAD823FB0B310094D71D /* GalleryView.swift in Sources */,
 			);

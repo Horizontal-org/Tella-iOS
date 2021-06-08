@@ -13,34 +13,40 @@ struct HeaderView: View {
     var onHelpClick : () -> ()
     var onNewFormClick : () -> ()
     var body: some View {
-        HStack(alignment: .center ,spacing: 20){
-            Button(action: {
-                self.onNewFormClick()
-                print("button fill pressed")
-            }) {
-                Image("fill-icon")
-                    .renderingMode(.original)
+        VStack(alignment: .leading){
+            HStack(alignment: .center ,spacing: 20){
+                Button(action: {
+                    self.onNewFormClick()
+                    print("button fill pressed")
+                }) {
+                    Image("fill-icon")
+                        .renderingMode(.original)
+                }
+                
+                Button(action: {
+                    self.onRefreshClick()
+                    print("button refresh pressed")
+                }) {
+                    Image("refresh-icon")
+                        .renderingMode(.original)
+                }
+                
+                Button(action: {
+                    self.onHelpClick()
+                    print("button help pressed")
+                }) {
+                    Image("help-icon")
+                        .renderingMode(.original)
+                }.padding(.trailing, 20)
+                
             }
-            
-            Button(action: {
-                self.onRefreshClick()
-                print("button refresh pressed")
-            }) {
-                Image("refresh-icon")
-                    .renderingMode(.original)
-            }
-            
-            Button(action: {
-                self.onHelpClick()
-                print("button help pressed")
-            }) {
-                Image("help-icon")
-                    .renderingMode(.original)
-            }.padding(.trailing, 20)
-            
-        }
-        .frame(maxWidth: .infinity, maxHeight : 56,alignment: .trailing)
-        .background(Color(Styles.Colors.backgroundMain))
+            .frame(maxWidth: .infinity, maxHeight : 56,alignment: .trailing)
+        }.background(Color(Styles.Colors.backgroundMain))
+        .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+        
+
+      
+        
     }
 }
 

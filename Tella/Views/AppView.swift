@@ -40,6 +40,11 @@ struct AppView: View {
                     Image("tab.mic")
                     Text("Mic")
                 }.tag(Tabs.mic)
+            FormsView()
+                .tabItem {
+                    Image("tab.mic")
+                    Text("Mic")
+                }
         }
         .accentColor(.white)
     }
