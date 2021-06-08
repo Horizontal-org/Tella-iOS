@@ -6,6 +6,7 @@ import SwiftUI
 
 struct AppView: View {
     
+    @State private var hideAll = false
     @State private var selection: Tabs = .home
     @EnvironmentObject private var viewModel: SettingsModel
 
@@ -24,8 +25,22 @@ struct AppView: View {
     }
     
     var body: some View {
+        
+        if hideAll {
+            emptyView
+        } else {
+            tabbar
+        }
+    }
+
+    private var emptyView: some View{
+        VStack{
+        }.background(Color(Styles.Colors.backgroundMain))
+    }
+    
+    private var tabbar: some View{
         TabView(selection: $selection) {
-            HomeView(viewModel: viewModel)
+            HomeView(viewModel: viewModel, hideAll: $hideAll)
                 .tabItem {
                     Image("tab.home")
                     Text("Home")
@@ -47,19 +62,8 @@ struct AppView: View {
     private func setupApperance() {
         
         UITableView.appearance().separatorStyle = .none
-        UITabBar.appearance().barTintColor = Styles.Colors.backgroundTab
+        UITabBar.appearance().barTintColor =  Styles.Colors.backgroundTab
         UINavigationBar.appearance().backgroundColor = Styles.Colors.backgroundMain
-        
-//        UINavigationBar.appearance().largeTitleTextAttributes = [
-//            .foregroundColor: UIColor.white,
-//            .backgroundColor: Styles.Colors.backgroundMain,
-//            .font: UIFont.boldSystemFont(ofSize: 35)]
-//        
-//        UINavigationBar.appearance().titleTextAttributes = [
-//            .foregroundColor: UIColor.white,
-//            .backgroundColor: Styles.Colors.backgroundMain,
-//            .font: UIFont.systemFont(ofSize: 18),
-//        ]
         
         let coloredAppearance = UINavigationBarAppearance()
         coloredAppearance.configureWithTransparentBackground()
@@ -85,5 +89,6 @@ struct AppView_Previews: PreviewProvider {
             .preferredColorScheme(.light)
             .previewLayout(.device)
             .previewDevice("iPhone Xʀ")
+            .environmentObject(SettingsModel())
     }
 }
