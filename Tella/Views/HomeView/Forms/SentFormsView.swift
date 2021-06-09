@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SentFormsView: View {
     var body: some View {
-        Text("OutBoxFormsView")
+        Text("SentFormsView")
     }
 }
 

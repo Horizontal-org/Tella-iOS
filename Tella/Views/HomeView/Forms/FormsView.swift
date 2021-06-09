@@ -9,40 +9,38 @@
 import SwiftUI
 
 struct FormsView: View {
-    @State var index = 1
+    @State var index = 0
     @State var offset : CGFloat = UIScreen.main.bounds.width
+    @State private var selectedTabIndex = 0
     var width = UIScreen.main.bounds.width
     var body: some View {
-        VStack(spacing : 0){
+        VStack(alignment: .trailing,spacing : 0){
             TopBarView(index: self.$index, offset: self.$offset)
-            TabView(selection : self.$index){
-                    BlankFormsView()
-                        .tag(0)
-                        .tabItem {  }
-                    
-                    DraftFormsView()
-                        .tag(1)
-                    OutBoxFormsView()
-                        .tag(2)
-                    SentFormsView()
-                        .tag(3)
-                }
-            
-          /*  TopBarView(index: self.$index, offset: self.$offset)
-            GeometryReader{ g in
-                HStack(spacing : 0){
-                   BlankFormsView()
-                    .frame(width : g.frame(in: .global).width)
-                    DraftFormsView()
-                     .frame(width : g.frame(in: .global).width)
-                    OutBoxFormsView()
-                     .frame(width : g.frame(in: .global).width)
-                    SentFormsView()
-                     .frame(width : g.frame(in: .global).width)
-                }
-            }
-            .offset(x: self.offset)*/
-        }.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+            SentFormsView()
+        }.edgesIgnoringSafeArea(.all)
+        .animation(.default)
+        .highPriorityGesture(DragGesture()
+                                .onEnded({ value in
+                                    if value.translation.width < 50 {
+                                        // left
+                                        if (self.index > 0) {
+                                            self.index -= 1
+                                        }
+                                    }
+                                    
+                                    if value.translation.width > 50 {
+                                        if (self.index < 3) {
+                                            self.index += 1
+                                        }
+                                    }
+                                    if value.translation.height < 50 {
+                                        // up
+                                    }
+                                    
+                                    if value.translation.height > 0 {
+                                        // down
+                                    }
+                                }))
     }
 }
 
