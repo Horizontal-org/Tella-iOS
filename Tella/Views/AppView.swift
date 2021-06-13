@@ -45,16 +45,16 @@ struct AppView: View {
                     Text("Home")
                 }.tag(Tabs.home)
             ReportsView()
-            .tabItem {
-                Image("tab.reports")
-                Text("Reports")
-            }.tag(Tabs.camera)
-                CameraView()
+                .tabItem {
+                    Image("tab.reports")
+                    Text("Reports")
+                }.tag(Tabs.reports)
+            CameraView()
                 .tabItem {
                     Image("tab.camera")
                     Text("Camera")
                 }.tag(Tabs.camera)
-                MicView()
+            MicView()
                 .tabItem {
                     Image("tab.mic")
                     Text("Mic")
@@ -67,6 +67,7 @@ struct AppView: View {
         
         UITableView.appearance().separatorStyle = .none
         UITabBar.appearance().barTintColor =  Styles.Colors.backgroundTab
+        UITabBar.appearance().unselectedItemTintColor = UIColor.gray
         UINavigationBar.appearance().backgroundColor = Styles.Colors.backgroundMain
         
         let coloredAppearance = UINavigationBarAppearance()

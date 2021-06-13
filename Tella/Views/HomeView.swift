@@ -9,8 +9,9 @@ struct HomeView: View {
 
     @Binding var hideAll: Bool
     @ObservedObject var viewModel: HomeViewModel
-    @State private var showingSheet = false
-    
+    @State private var showingAddFileSheet = false
+    @State private var showingAddFileSheet1 = false
+
     init(viewModel: HomeViewModel, hideAll: Binding<Bool>) {
         self.viewModel = viewModel
         self._hideAll = hideAll
@@ -30,18 +31,14 @@ struct HomeView: View {
                         FileGroupsView(viewModel: viewModel)
                     }
                 }
-                buttonView
-                    .actionSheet(isPresented: $showingSheet) {
-                        ActionSheet(title: Text("Change background"),  buttons: [
-                            .default(Text("Take Photos/Videos")) {
-                            },
-                            .default(Text("Record Audio")) { },
-                            .default(Text("Import From Device")) { },
-                            .default(Text("Import and delete original")) { },
-                            .cancel()
-                        ])
-                    }
-//                AddFileBottomSheetFileActions(isPresented: $showingSheet)
+                AddFileButtonView(action: {
+                    showingAddFileSheet.toggle()
+                })
+                .actionSheet(isPresented: $showingAddFileSheet1) {
+                    addFileActionSheet()
+                }
+                //TODO: replace with AddFileBottomSheetFileActions
+                //AddFileBottomSheetFileActions(isPresented: $showingAddFileSheet)
             }
             .navigationBarTitle("Tella")
             .navigationBarItems(trailing:
@@ -62,24 +59,20 @@ struct HomeView: View {
         }
     }
     
-    var buttonView: some View {
-        VStack(alignment:.trailing) {
-            Spacer()
-            HStack(spacing: 0) {
-                Spacer()
-                Button(action: {
-                    //TODO: add new media action
-                    showingSheet.toggle()
-                }) {
-                    Circle()
-                        .fill(Color.yellow)
-                        .frame(width: 50, height: 50, alignment: .center)
-                        .overlay(Image("home.add"))
-                }
-            }
-        }.padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 16))
+    func addFileActionSheet() -> ActionSheet {
+        ActionSheet(title: Text("Change background"),  buttons: [
+            .default(Text("Take Photos/Videos")) {
+            },
+            .default(Text("Record Audio")) { },
+            .default(Text("Import From Device")) { },
+            .default(Text("Import and delete original")) { },
+            .cancel()
+        ])
     }
+    
 }
+
+
 
 struct HomeView_Previews: PreviewProvider {
     
@@ -88,3 +81,4 @@ struct HomeView_Previews: PreviewProvider {
         HomeView(viewModel: HomeViewModel(), hideAll: HomeView_Previews.$hideAll)
     }
 }
+
