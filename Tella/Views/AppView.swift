@@ -45,12 +45,17 @@ struct AppView: View {
                     Image("tab.home")
                     Text("Home")
                 }.tag(Tabs.home)
-            CameraView()
+            ReportsView()
+            .tabItem {
+                Image("tab.reports")
+                Text("Reports")
+            }.tag(Tabs.camera)
+                CameraView()
                 .tabItem {
                     Image("tab.camera")
                     Text("Camera")
-            }.tag(Tabs.camera)
-            MicView()
+                }.tag(Tabs.camera)
+                MicView()
                 .tabItem {
                     Image("tab.mic")
                     Text("Mic")

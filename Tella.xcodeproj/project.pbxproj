@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D4BC3C3267577F900DCDC30 /* ReportModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3BF267577F900DCDC30 /* ReportModels.swift */; };
+		0D4BC3C4267577F900DCDC30 /* NewReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3C0267577F900DCDC30 /* NewReportView.swift */; };
+		0D4BC3C5267577F900DCDC30 /* ReportsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3C1267577F900DCDC30 /* ReportsView.swift */; };
+		0D4BC3C6267577F900DCDC30 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3C2267577F900DCDC30 /* DocumentPicker.swift */; };
 		0D4D7510266316D200D7A635 /* SettingsGeneral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D750F266316D200D7A635 /* SettingsGeneral.swift */; };
 		0D4D7512266316DC00D7A635 /* SettingsSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7511266316DC00D7A635 /* SettingsSecurity.swift */; };
 		0D4D7514266316E500D7A635 /* SettingsAboutHelp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7513266316E500D7A635 /* SettingsAboutHelp.swift */; };
@@ -125,6 +129,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0D4BC3BF267577F900DCDC30 /* ReportModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportModels.swift; sourceTree = "<group>"; };
+		0D4BC3C0267577F900DCDC30 /* NewReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewReportView.swift; sourceTree = "<group>"; };
+		0D4BC3C1267577F900DCDC30 /* ReportsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportsView.swift; sourceTree = "<group>"; };
+		0D4BC3C2267577F900DCDC30 /* DocumentPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
 		0D4D750F266316D200D7A635 /* SettingsGeneral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGeneral.swift; sourceTree = "<group>"; };
 		0D4D7511266316DC00D7A635 /* SettingsSecurity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSecurity.swift; sourceTree = "<group>"; };
 		0D4D7513266316E500D7A635 /* SettingsAboutHelp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAboutHelp.swift; sourceTree = "<group>"; };
@@ -255,6 +263,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D4BC3BE2675737F00DCDC30 /* Reports */ = {
+			isa = PBXGroup;
+			children = (
+				0D4BC3C1267577F900DCDC30 /* ReportsView.swift */,
+				0D4BC3C0267577F900DCDC30 /* NewReportView.swift */,
+				0D4BC3BF267577F900DCDC30 /* ReportModels.swift */,
+				0D4BC3C2267577F900DCDC30 /* DocumentPicker.swift */,
+			);
+			path = Reports;
+			sourceTree = "<group>";
+		};
 		0D4D750E2662D14F00D7A635 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -339,6 +358,7 @@
 				D5D56979262747F700C45416 /* MicView.swift */,
 				D5163989263113C6003A11B5 /* UploadView.swift */,
 				D572EACA263A43C100CE191A /* FileDetailView.swift */,
+				0D4BC3BE2675737F00DCDC30 /* Reports */,
 				D572EAC2263A380700CE191A /* FileManager */,
 				D516397B2631113B003A11B5 /* Styles.swift */,
 				D5DAFDCD265384C4002F3942 /* SettingModel.swift */,
@@ -771,11 +791,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E78B3BA2656B0BC00F9BDBC /* VideoPlayerUI.swift in Sources */,
+				0D4BC3C3267577F900DCDC30 /* ReportModels.swift in Sources */,
 				D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */,
 				6DD4C038240F4B9900491438 /* PreviewView.swift in Sources */,
 				0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */,
 				CE64FA292505542E00B03CEC /* AppViewState.swift in Sources */,
 				6DC2ABC9245029BC004579DF /* PasswordView.swift in Sources */,
+				0D4BC3C4267577F900DCDC30 /* NewReportView.swift in Sources */,
 				D5B823EB262774E00008E04B /* AppView.swift in Sources */,
 				D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */,
 				D5DAFDCF265384C4002F3942 /* SettingModel.swift in Sources */,
@@ -800,8 +822,10 @@
 				D5163985263113B7003A11B5 /* MicView.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
 				6D14AACE23FADACE0094D71D /* Enums.swift in Sources */,
+				0D4BC3C6267577F900DCDC30 /* DocumentPicker.swift in Sources */,
 				0E78B3A72656B03600F9BDBC /* DragView.swift in Sources */,
 				D572EAC7263A383900CE191A /* RecentFileCell.swift in Sources */,
+				0D4BC3C5267577F900DCDC30 /* ReportsView.swift in Sources */,
 				0D4D7512266316DC00D7A635 /* SettingsSecurity.swift in Sources */,
 				0D4D7514266316E500D7A635 /* SettingsAboutHelp.swift in Sources */,
 				6D14AAD023FAE6AC0094D71D /* SettingsView_old.swift in Sources */,
@@ -1069,6 +1093,7 @@
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Tella/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1091,6 +1116,7 @@
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Tella/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

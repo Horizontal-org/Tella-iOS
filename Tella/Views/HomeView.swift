@@ -30,6 +30,17 @@ struct HomeView: View {
                     }
                 }
                 buttonView
+                    .actionSheet(isPresented: $showingSheet) {
+                        ActionSheet(title: Text("Change background"),  buttons: [
+                            .default(Text("Take Photos/Videos")) {
+                            },
+                            .default(Text("Record Audio")) { },
+                            .default(Text("Import From Device")) { },
+                            .default(Text("Import and delete original")) { },
+                            .cancel()
+                        ])
+                    }
+//                AddFileBottomSheetFileActions(isPresented: $showingSheet)
             }
             .navigationBarTitle("Tella")
             .navigationBarItems(trailing:
@@ -64,29 +75,32 @@ struct HomeView: View {
                         .frame(width: 50, height: 50, alignment: .center)
                         .overlay(Image("home.add"))
                 }
-                .sheet(isPresented: $showingSheet) {
-                    AddFileMenuView()
-                }
             }
         }.padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 16))
     }
 }
 
-struct AddFileMenuView: View {
-    @Environment(\.presentationMode) var presentationMode
-
+struct AddFileBottomSheetFileActions: View {
+    @Binding var isPresented: Bool
+    
+    let items = [
+        ListActionSheetItem(imageName: "upload-icon", content: "Take photo/video", action: {
+        }),
+        ListActionSheetItem(imageName: "upload-icon", content: "Record audio", action: {}),
+        ListActionSheetItem(imageName: "upload-icon", content: "Import from device", action: {}),
+        ListActionSheetItem(imageName: "delete-icon", content: "Import and delete original file", action: {})
+    ]
+    
     var body: some View {
         VStack{
-            Button("Press to dismiss") {
-                presentationMode.wrappedValue.dismiss()
+            DragView(modalHeight: CGFloat(items.count * 40 + 100), color: Color(Styles.Colors.backgroundTab), isShown: $isPresented){
+                ListActionSheet(items: items, headerTitle: "Add file to ...", isPresented: $isPresented)
             }
-            .font(.title)
-            .padding()
-            .background(Color.black)
-            .frame(height: 200)
         }
     }
 }
+
+
 
 struct HomeView_Previews: PreviewProvider {
     
