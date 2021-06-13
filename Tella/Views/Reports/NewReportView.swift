@@ -80,7 +80,7 @@ struct NewReportView: View {
                     } label: {
                         ZStack{
                             RoundedRectangle(cornerRadius: 8)
-                                .stroke(Styles.Colors.buttonAdd, style: Styles.Strokes.buttonAdd)
+                                .stroke(Styles.Colors.buttonAdd, style: Styles.Stroke.buttonAdd)
                                 .frame(width: 100, height: 100, alignment: .center)
                             Image("report_add")
                                 .resizable()

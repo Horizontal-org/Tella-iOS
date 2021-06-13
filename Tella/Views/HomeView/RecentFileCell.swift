@@ -5,23 +5,20 @@
 import SwiftUI
 
 protocol RecentFileProtocol {
-    var image: UIImage {get}
+    var thumbnailImage: UIImage {get}
 }
 
 struct mockRecentFile: RecentFileProtocol {
-    
-    var image: UIImage {
+    var thumbnailImage: UIImage {
         return UIImage(named: "test_image") ?? UIImage()
     }
-    
 }
 
 struct RecentFileCell: View {
 
     let recentFile: RecentFileProtocol
-    
     var body: some View {
-        Image(uiImage: recentFile.image)
+        Image(uiImage: recentFile.thumbnailImage)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 70, height: 70)

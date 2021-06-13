@@ -4,6 +4,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 enum FileType: String, Codable {
     case video
@@ -14,15 +15,16 @@ enum FileType: String, Codable {
     case rootFolder
 }
 
-class VaultFile: Codable {
+class VaultFile: Codable, ObservableObject, RecentFileProtocol {
     
     let type: FileType
     let fileName: String?
     let containerName: String
-    var files: [VaultFile]?
+    var files: [VaultFile]
     var thumbnail: Data?
+    var created: Date
     
-    var thumbnailImage: UIImage? {
+    var thumbnailImage: UIImage {
         if let thumbnail = thumbnail, let image = UIImage(data: thumbnail) {
             return image
         }
@@ -30,13 +32,15 @@ class VaultFile: Codable {
         case .audio:
            return #imageLiteral(resourceName: "filetype.audio")
         case .document:
-            return #imageLiteral(resourceName: "filetype.audio")
+            return #imageLiteral(resourceName: "filetype.document")
         case .folder:
-            return #imageLiteral(resourceName: "filetype.audio")
+            return #imageLiteral(resourceName: "filetype.folder")
         case .video:
-            return #imageLiteral(resourceName: "filetype.audio")
+            return #imageLiteral(resourceName: "filetype.video")
+        case .image:
+            return #imageLiteral(resourceName: "filetype.document")
         default:
-            return nil
+            return #imageLiteral(resourceName: "filetype.document")
         }
     }
     
@@ -44,14 +48,19 @@ class VaultFile: Codable {
         self.type = type
         self.fileName = fileName
         self.containerName = containerName
-        self.files = files
+        self.files = files ?? []
+        self.created = Date()
+    }
+    
+    static func rootFile() -> VaultFile {
+        return VaultFile(type: .folder, fileName: "rootFile", containerName: UUID().uuidString, files: nil)
     }
 }
 
 extension VaultFile: CustomDebugStringConvertible {
     
     var debugDescription: String {
-        return "\(type): \(String(describing: fileName)), \(containerName), \(files?.count ?? 0)"
+        return "\(type): \(String(describing: fileName)), \(containerName), \(files.count)"
     }
     
 }
@@ -130,25 +139,33 @@ protocol VaultManagerInterface {
 
 }   
 
-class VaultManager: VaultManagerInterface {
+class VaultManager: VaultManagerInterface, ObservableObject {
 
     static let shared = VaultManager(cryptoManager: DummyCryptoManager(), fileManager: DefaultFileManager(), rootFileName: "rootFile", containerPath: "")
 
     let containerPath: String
     private let rootFileName: String
-    private var root: VaultFile?
     
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
     private let cryptoManager: CryptoManagerInterface
     private let fileManager: FileManagerInterface
 
+    @Published var root: VaultFile
+    @Published var recentFiles: [VaultFile] = []
+
     init(cryptoManager: CryptoManagerInterface, fileManager: FileManagerInterface, rootFileName: String, containerPath: String) {
         self.cryptoManager = cryptoManager
         self.fileManager = fileManager
         self.rootFileName = rootFileName
         self.containerPath = containerPath
-        root = load(name: rootFileName)
+
+        root = VaultFile.rootFile()
+        if let root = load(name: rootFileName) {
+            self.root = root
+        } else {
+            save(file: root)
+        }
     }
 
     func load(name: String) -> VaultFile? {
@@ -195,7 +212,7 @@ class VaultManager: VaultManagerInterface {
         let containerName = UUID().uuidString
         let fileURL = path(for: containerName)
         let vaultFile = VaultFile(type: type, fileName: name, containerName: containerName, files: nil)
-        parent?.files?.append(vaultFile)
+        parent?.files.append(vaultFile)
         if let encrypted = cryptoManager.encrypt(data) {
             _ = fileManager.createFile(atPath: fileURL, contents: encrypted)
         } else {

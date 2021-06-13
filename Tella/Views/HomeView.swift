@@ -4,13 +4,14 @@
 
 import SwiftUI
 
+
 struct HomeView: View {
 
     @Binding var hideAll: Bool
-    @ObservedObject var viewModel: SettingsModel
+    @ObservedObject var viewModel: HomeViewModel
     @State private var showingSheet = false
     
-    init(viewModel: SettingsModel, hideAll: Binding<Bool>) {
+    init(viewModel: HomeViewModel, hideAll: Binding<Bool>) {
         self.viewModel = viewModel
         self._hideAll = hideAll
         setupView()
@@ -25,8 +26,8 @@ struct HomeView: View {
                 Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)
                 VStack(spacing: 0){
                     ScrollView{
-                        ReventFilesListView()
-                        FileGroupsView()
+                        RecentFilesListView(viewModel: viewModel)
+                        FileGroupsView(viewModel: viewModel)
                     }
                 }
                 buttonView
@@ -51,7 +52,7 @@ struct HomeView: View {
                         Image("home.close")
                             .imageScale(.large)
                         }
-                        NavigationLink(destination: SettingsView(viewModel: viewModel)) {
+                NavigationLink(destination: SettingsView(viewModel: viewModel.settings)) {
                             Image("home.settings")
                                 .imageScale(.large)
                             }
@@ -80,33 +81,10 @@ struct HomeView: View {
     }
 }
 
-struct AddFileBottomSheetFileActions: View {
-    @Binding var isPresented: Bool
-    
-    let items = [
-        ListActionSheetItem(imageName: "upload-icon", content: "Take photo/video", action: {
-        }),
-        ListActionSheetItem(imageName: "upload-icon", content: "Record audio", action: {}),
-        ListActionSheetItem(imageName: "upload-icon", content: "Import from device", action: {}),
-        ListActionSheetItem(imageName: "delete-icon", content: "Import and delete original file", action: {})
-    ]
-    
-    var body: some View {
-        VStack{
-            DragView(modalHeight: CGFloat(items.count * 40 + 100), color: Color(Styles.Colors.backgroundTab), isShown: $isPresented){
-                ListActionSheet(items: items, headerTitle: "Add file to ...", isPresented: $isPresented)
-            }
-        }
-    }
-}
-
-
-
 struct HomeView_Previews: PreviewProvider {
     
     @State static var hideAll = true
-    
     static var previews: some View {
-        HomeView(viewModel: SettingsModel(), hideAll: HomeView_Previews.$hideAll)
+        HomeView(viewModel: HomeViewModel(), hideAll: HomeView_Previews.$hideAll)
     }
 }

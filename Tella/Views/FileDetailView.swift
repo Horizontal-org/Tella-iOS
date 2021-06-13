@@ -6,17 +6,18 @@ import SwiftUI
 
 struct FileDetailView: View {
 
-    init() {
-    }
-    
+    var file: VaultFile
     var body: some View {
         VStack(){
+            Image(uiImage: file.thumbnailImage)
+            Text(file.fileName ?? "N/A")
+            Text(file.created, style: .date)
         }
     }
 }
 
 struct FileDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        FileDetailView()
+        FileDetailView(file: VaultFile.stub(type: .image))
     }
 }

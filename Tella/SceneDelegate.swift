@@ -13,7 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     private var appViewState = AppViewState()
-    private var appSettings = SettingsModel()
+    private var homeViewModel = HomeViewModel()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
@@ -26,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // Create the SwiftUI view that provides the window contents.
 //        let contentView = ContentView().environmentObject(appViewState)
-        let contentView = AppView().environmentObject(appSettings)
+        let contentView = AppView().environmentObject(homeViewModel)
 
         // override incorrect defaults
         UITableView.appearance().backgroundColor = .clear

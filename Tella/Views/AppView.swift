@@ -8,7 +8,7 @@ struct AppView: View {
     
     @State private var hideAll = false
     @State private var selection: Tabs = .home
-    @EnvironmentObject private var viewModel: SettingsModel
+    @EnvironmentObject private var viewModel: HomeViewModel
 
      private enum Tabs: Hashable {
         case home
@@ -25,7 +25,6 @@ struct AppView: View {
     }
     
     var body: some View {
-        
         if hideAll {
             emptyView
         } else {
