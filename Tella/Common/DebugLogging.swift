@@ -29,7 +29,7 @@ enum DebugSpace: String {
 }
 
 func debugLog(_ error: Error, level: DebugLevel = .debug, space: DebugSpace = .app, function: String = #function) {
-    debugLog("\(error)", level: level, space: space, function: function)
+    debugLog("\(error.localizedDescription)", level: level, space: space, function: function)
 }
 
 func debugLog(_ debugText: String, level: DebugLevel = .debug, space: DebugSpace = .app, function: String = #function) {

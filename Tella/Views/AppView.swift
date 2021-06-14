@@ -8,7 +8,7 @@ struct AppView: View {
     
     @State private var hideAll = false
     @State private var selection: Tabs = .home
-    @EnvironmentObject private var viewModel: HomeViewModel
+    @EnvironmentObject private var appModel: MainAppModel
 
      private enum Tabs: Hashable {
         case home
@@ -39,7 +39,7 @@ struct AppView: View {
     
     private var tabbar: some View{
         TabView(selection: $selection) {
-            HomeView(viewModel: viewModel, hideAll: $hideAll)
+            HomeView(appModel: appModel, hideAll: $hideAll)
                 .tabItem {
                     Image("tab.home")
                     Text("Home")

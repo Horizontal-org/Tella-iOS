@@ -6,10 +6,10 @@ import SwiftUI
 
 struct RecentFilesListView: View {
 
-    @ObservedObject var viewModel: HomeViewModel
+    @ObservedObject var viewModel: MainAppModel
     @State var recentFilesCount: Int
     
-    init(viewModel: HomeViewModel) {
+    init(viewModel: MainAppModel) {
         self.viewModel = viewModel
         self.recentFilesCount = viewModel.fileManager.recentFiles.count
     }
@@ -56,6 +56,6 @@ struct RecentFilesListView: View {
 
 struct ReventFilesListView_Previews: PreviewProvider {
     static var previews: some View {
-        RecentFilesListView(viewModel: HomeViewModel())
+        RecentFilesListView(viewModel: MainAppModel())
     }
 }

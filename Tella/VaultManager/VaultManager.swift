@@ -52,9 +52,10 @@ class VaultFile: Codable, ObservableObject, RecentFileProtocol {
         self.created = Date()
     }
     
-    static func rootFile() -> VaultFile {
-        return VaultFile(type: .folder, fileName: "rootFile", containerName: UUID().uuidString, files: nil)
+    static func rootFile(containerName: String) -> VaultFile {
+        return VaultFile(type: .folder, fileName: "", containerName: containerName, files: [])
     }
+    
 }
 
 extension VaultFile: CustomDebugStringConvertible {
@@ -75,6 +76,7 @@ extension VaultFile: Equatable {
 }
 
 protocol FileManagerInterface {
+    func copyItem(at srcURL: URL, to dstURL: URL) throws
     func contents(atPath path: URL) -> Data?
     func contentsOfDirectory(atPath path: URL) -> [String]
 
@@ -84,7 +86,6 @@ protocol FileManagerInterface {
 }
 
 class DefaultFileManager: FileManagerInterface {
-    
     let fileManager = FileManager.default
     
     func contents(atPath path: URL) -> Data? {
@@ -121,6 +122,10 @@ class DefaultFileManager: FileManagerInterface {
             return false
         }
         return true
+    }
+    
+    func copyItem(at srcURL: URL, to dstURL: URL) throws {
+        try fileManager.copyItem(at: srcURL, to: dstURL)
     }
     
 }
@@ -160,7 +165,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         self.rootFileName = rootFileName
         self.containerPath = containerPath
 
-        root = VaultFile.rootFile()
+        root = VaultFile.rootFile(containerName: rootFileName)
         if let root = load(name: rootFileName) {
             self.root = root
         } else {
@@ -168,26 +173,46 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
     }
 
-    func load(name: String) -> VaultFile? {
-        let fileURL = path(for: containerPath)
-        guard let encryptedData = FileManager.default.contents(atPath: fileURL.absoluteString) else {
-            return nil
+    func importFile(files: [URL], to parentFolder: VaultFile?){
+        for filePath in files {
+            debugLog("\(filePath)", space: .crypto)
+            let containerName = UUID().uuidString
+            let fileName = filePath.lastPathComponent
+            do {
+                //TODO: add encryption on copying
+                let newFilePath = containerURL(for: containerName)
+                if filePath.startAccessingSecurityScopedResource() {
+                    defer { filePath.stopAccessingSecurityScopedResource() }
+                    try FileManager.default.copyItem(at: filePath, to: newFilePath)
+                }
+            } catch let error {
+                debugLog(error, space: .crypto)
+                continue
+            }
+            let newFile = VaultFile(type: .document, fileName: fileName, containerName: containerName, files: nil)
+            (parentFolder ?? root).files.append(newFile)
         }
-        var file: VaultFile?
+        save(file: root)
+    }
+    
+    func load(name: String) -> VaultFile? {
+        let fileURL = containerURL(for: name)
+        debugLog("loading \(fileURL)")
         do {
+            let encryptedData = try Data(contentsOf: fileURL)
             if let decrypted = cryptoManager.decrypt(encryptedData) {
-                file = try decoder.decode(VaultFile.self, from: decrypted)
+                return try decoder.decode(VaultFile.self, from: decrypted)
             } else {
                 debugLog("file load failed \(name)")
             }
         } catch let error {
             debugLog(error)
         }
-        return file
+        return nil
     }
 
     func load(file vaultFile: VaultFile) -> Data? {
-        let fileURL = path(for: vaultFile.containerName)
+        let fileURL = containerURL(for: vaultFile.containerName)
         guard let encryptedData = fileManager.contents(atPath: fileURL) else {
             return nil
         }
@@ -195,7 +220,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
 
     func save(file vaultFile: VaultFile) {
-        let fileURL = path(for: rootFileName).appendingPathComponent(vaultFile.containerName)
+        let fileURL = containerURL(for: vaultFile.containerName)
         do {
             let encodedData = try encoder.encode(vaultFile)
             if let encrypted = cryptoManager.encrypt(encodedData) {
@@ -206,11 +231,12 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         } catch let error {
             debugLog("\(error)")
         }
+        debugLog("saved: \(fileURL) \(vaultFile.containerName)")
     }
     
     func save(_ data: Data, type: FileType, name: String?, parent: VaultFile?) -> VaultFile? {
         let containerName = UUID().uuidString
-        let fileURL = path(for: containerName)
+        let fileURL = containerURL(for: containerName)
         let vaultFile = VaultFile(type: type, fileName: name, containerName: containerName, files: nil)
         parent?.files.append(vaultFile)
         if let encrypted = cryptoManager.encrypt(data) {
@@ -242,9 +268,11 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
     
     func delete(file: VaultFile, parent: VaultFile?) {
-        let fileURL = path(for: file.containerName)
+        let fileURL = containerURL(for: file.containerName)
         //TODO: delete file at path
-//        parent?.files =
+        for aFile in file.files {
+            delete(file: aFile, parent: nil)
+        }
         do {
             try FileManager.default.removeItem(at: fileURL)
         } catch let error {
@@ -252,7 +280,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
     }
 
-    private func path(for containerName: String) -> URL {
+    private func containerURL(for containerName: String) -> URL {
         return containerURL.appendingPathComponent(containerName)
     }
     
@@ -260,5 +288,5 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         return FileManager.default.urls(for: .documentDirectory,
                                         in: .userDomainMask)[0].appendingPathComponent(containerPath)
     }
-
+    
 }

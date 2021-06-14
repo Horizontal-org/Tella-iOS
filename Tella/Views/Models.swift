@@ -4,7 +4,7 @@
 
 import SwiftUI
 
-class HomeViewModel: ObservableObject {
+class MainAppModel: ObservableObject {
     @Published var settings: SettingsModel = SettingsModel()
     @Published var fileManager: VaultManager = VaultManager.shared
 }
