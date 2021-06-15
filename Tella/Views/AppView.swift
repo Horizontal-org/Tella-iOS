@@ -6,8 +6,9 @@ import SwiftUI
 
 struct AppView: View {
     
+    @State private var hideAll = false
     @State private var selection: Tabs = .home
-    @EnvironmentObject private var viewModel: SettingsModel
+    @EnvironmentObject private var appModel: MainAppModel
 
      private enum Tabs: Hashable {
         case home
@@ -24,17 +25,35 @@ struct AppView: View {
     }
     
     var body: some View {
+        if hideAll {
+            emptyView
+        } else {
+            tabbar
+        }
+    }
+
+    private var emptyView: some View{
+        VStack{
+        }.background(Color(Styles.Colors.backgroundMain))
+    }
+    
+    private var tabbar: some View{
         TabView(selection: $selection) {
-            HomeView(viewModel: viewModel)
+            HomeView(appModel: appModel, hideAll: $hideAll)
                 .tabItem {
                     Image("tab.home")
                     Text("Home")
                 }.tag(Tabs.home)
+            ReportsView()
+                .tabItem {
+                    Image("tab.reports")
+                    Text("Reports")
+                }.tag(Tabs.reports)
             CameraView()
                 .tabItem {
                     Image("tab.camera")
                     Text("Camera")
-            }.tag(Tabs.camera)
+                }.tag(Tabs.camera)
             MicView()
                 .tabItem {
                     Image("tab.mic")
@@ -52,19 +71,9 @@ struct AppView: View {
     private func setupApperance() {
         
         UITableView.appearance().separatorStyle = .none
-        UITabBar.appearance().barTintColor = Styles.Colors.backgroundTab
+        UITabBar.appearance().barTintColor =  Styles.Colors.backgroundTab
+        UITabBar.appearance().unselectedItemTintColor = UIColor.gray
         UINavigationBar.appearance().backgroundColor = Styles.Colors.backgroundMain
-        
-//        UINavigationBar.appearance().largeTitleTextAttributes = [
-//            .foregroundColor: UIColor.white,
-//            .backgroundColor: Styles.Colors.backgroundMain,
-//            .font: UIFont.boldSystemFont(ofSize: 35)]
-//        
-//        UINavigationBar.appearance().titleTextAttributes = [
-//            .foregroundColor: UIColor.white,
-//            .backgroundColor: Styles.Colors.backgroundMain,
-//            .font: UIFont.systemFont(ofSize: 18),
-//        ]
         
         let coloredAppearance = UINavigationBarAppearance()
         coloredAppearance.configureWithTransparentBackground()
@@ -90,5 +99,6 @@ struct AppView_Previews: PreviewProvider {
             .preferredColorScheme(.light)
             .previewLayout(.device)
             .previewDevice("iPhone Xʀ")
+            .environmentObject(SettingsModel())
     }
 }

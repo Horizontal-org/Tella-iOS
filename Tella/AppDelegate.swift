@@ -14,6 +14,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         TellaFileManager.initDirectories()
+        setDebugLevel(level: .debug, for: .crypto)
+        setDebugLevel(level: .debug, for: .app)
+
         return true
     }
 

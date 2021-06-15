@@ -6,53 +6,73 @@ import SwiftUI
 
 struct FileListView: View {
     
+    var fileType: FileType?
     var files: [VaultFile]
     
-    init(files: [VaultFile]) {
+    init(files: [VaultFile], fileType: FileType? = nil) {
         UITableView.appearance().separatorStyle = .none
         UITableView.appearance().tableFooterView = UIView()
         UITableView.appearance().separatorColor = .clear
+        UITableView.appearance().allowsSelection = false
+        UITableViewCell.appearance().selectedBackgroundView = UIView()
         self.files = files
+        self.fileType = fileType
     }
     
     var body: some View {
-        List{
-            FileListItem()
-            FileListItem()
-            FileListItem()
+        ZStack(alignment: .top) {
+            Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)
+            List{
+                ForEach(files, id: \.fileName) { file in
+                    FileListItem(file: file)
+//                    NavigationLink(destination: FileDetailView(file: file)) {
+//                  }.background(Color(Styles.Colors.backgroundMain))
+                }
+            }
+            .listStyle(PlainListStyle())
+            .background(Color(Styles.Colors.backgroundMain))
         }
     }
 }
 
 struct FileListItem: View {
     
+    var file: VaultFile
+    @State var showFileMenu: Bool = false
+    
     var body: some View {
-        
         HStack(spacing: 0){
-            Image("test_image")
-                .resizable()
-                .frame(width: 35, height: 35)
-                .background(Color.gray)
-                .cornerRadius(5)
+            RoundedRectangle(cornerRadius: 5)
+                .fill(Styles.Colors.fileIconBackground)
+                .frame(width: 35, height: 35, alignment: .center)
+                .overlay(
+                    Image(uiImage: file.thumbnailImage)
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .cornerRadius(5)
+                )
             VStack(alignment: .leading, spacing: 0){
-                Text("Polling interview")
+                Text(file.fileName ?? "N/A")
                     .font(Font(UIFont.boldSystemFont(ofSize: 14)))
                     .foregroundColor(Color.white)
-                Text("18 may 2021")
+                Text(file.created, style: .date)
                     .font(Font(UIFont.systemFont(ofSize: 10)))
                     .foregroundColor(Color(white: 0.8))
             }
             .padding(EdgeInsets(top: 0, leading: 27, bottom: 0, trailing: 16))
             Spacer()
-            Image("test_image")
-                .resizable()
-                .frame(width: 35, height: 35)
-                .background(Color.gray)
+            Button {
+                showFileMenu = true
+            } label: {
+                Image("files.more")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+            }
         }
         .listRowBackground(Color(Styles.Colors.backgroundMain))
+        .background(Color(Styles.Colors.backgroundMain))
         .frame(height: 45)
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-        .listRowBackground(Color.yellow)
     }
 }
 
@@ -73,20 +93,3 @@ struct FileListView_Previews: PreviewProvider {
     }
 }
 
-extension VaultFile {
-    
-    static func stub(type: FileType) -> VaultFile {
-        let file = VaultFile(type: type, fileName: UUID().uuidString, containerName: UUID().uuidString, files: nil)
-        return file
-    }
-
-    static func stubFiles() -> [VaultFile] {
-        return [VaultFile.stub(type: .audio),
-                VaultFile.stub(type: .video),
-                VaultFile.stub(type: .folder),
-                VaultFile.stub(type: .document),
-                VaultFile.stub(type: .document),
-                VaultFile.stub(type: .image)]
-    }
-    
-}

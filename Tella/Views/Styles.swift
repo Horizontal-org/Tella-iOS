@@ -6,11 +6,32 @@ import UIKit
 import SwiftUI
 
 struct Styles {
+
+    struct uiColor {
+        static let backgroundFileButton = UIColor(hexValue: 0x4e4a74)
+        static let backgroundMain = UIColor(hexValue: 0x2C275A)
+        static let backgroundTab = UIColor(hexValue: 0x46407D)
+        static let buttonAdd = UIColor(hexValue: 0xD6933B)
+        static let fileIconBackground = UIColor(hexValue: 0x57527b)
+    }
     
     struct Colors {
         static let backgroundFileButton = UIColor(hexValue: 0x4e4a74)
         static let backgroundMain = UIColor(hexValue: 0x2C275A)
         static let backgroundTab = UIColor(hexValue: 0x46407D)
+        static let buttonAdd = Color(UIColor(hexValue: 0xD6933B))
+        static let fileIconBackground = Color(UIColor(hexValue: 0x57527b))
+    }
+    
+    struct Stroke {
+        static let buttonAdd = StrokeStyle(
+            lineWidth: 1,
+            lineCap: .round,
+            lineJoin: .miter,
+            miterLimit: 0,
+            dash: [8, 2],
+            dashPhase: 0
+        )
     }
 
 }
@@ -28,5 +49,9 @@ public extension UIColor {
         
         self.init(redInt: red, greenInt: green, blueInt: blue)
     }
+}
+
+var safeArea: UIEdgeInsets {
+    return UIApplication.shared.windows.last?.safeAreaInsets ?? .zero
 }
 

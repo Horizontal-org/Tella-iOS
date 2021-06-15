@@ -1,8 +1,5 @@
 //
-//  DragView.swift
-//  BottomSheetTest
-//
-//  Created by Ahlem on 29/04/2021.
+//  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
 import SwiftUI
@@ -35,11 +32,12 @@ extension UIApplication {
     }
 }
 struct DragView<Content: View> : View {
-    @GestureState private var dragState = DragState.inactive
     var modalHeight:CGFloat
+    var color:Color
+
+    @GestureState private var dragState = DragState.inactive
     @Binding var isShown:Bool
-    var color:Color = Color("PrimaryColor")
-    @State var value : CGFloat = 0
+    @State var value: CGFloat = 0
     
     private func onDragEnded(drag: DragGesture.Value) {
         let dragThreshold = modalHeight * (2/3)
@@ -140,6 +138,3 @@ extension View {
         clipShape( RoundedCorner(radius: radius, corners: corners) )
     }
 }
-
-
-

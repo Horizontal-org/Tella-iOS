@@ -6,7 +6,10 @@ import SwiftUI
 
 struct FileGroupsView: View {
 
-    init() {
+    @ObservedObject var appModel: MainAppModel
+
+    init(viewModel: MainAppModel) {
+        self.appModel = viewModel
     }
     
     var body: some View {
@@ -19,28 +22,29 @@ struct FileGroupsView: View {
             VStack(spacing: 0) {
                 // TODO: replace with LazyVGridView once iOS 13 not supported
                 HStack(spacing: 0){
-                    Button(action: {}) {
+                    NavigationLink(destination: FileListView(files: appModel.fileManager.root.files, fileType: nil)) {
                         FileGroupView(groupName: "My Files", iconName: "files.my_files")
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 8))
                     }
-                    Button(action: {}) {
+                    NavigationLink(destination: FileListView(files: appModel.fileManager.root.files, fileType: .image)) {
                         FileGroupView(groupName: "Gallery", iconName: "files.gallery")
-                            .padding(EdgeInsets(top: 0, leading: 8, bottom: 16, trailing: 0))
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 8))
                     }
                 }
                 HStack(spacing: 0){
-                    Button(action: {}) {
+                    NavigationLink(destination: FileListView(files: appModel.fileManager.root.files, fileType: .image)) {
                         FileGroupView(groupName: "Audio", iconName: "files.audio")
-                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 8))
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 8))
                     }
-                    Button(action: {}) {
-                    FileGroupView(groupName: "Documents", iconName: "files.documents")
-                        .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0))
+                    NavigationLink(destination: FileListView(files: appModel.fileManager.root.files, fileType: .document)) {
+                        FileGroupView(groupName: "Documents", iconName: "files.documents")
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 8))
                     }
                 }.padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0))
                 HStack(spacing: 0){
-                    Button(action: {}) {
+                    NavigationLink(destination: FileListView(files: appModel.fileManager.root.files, fileType: .document)) {
                         FileGroupView(groupName: "Others", iconName: "files.others")
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 8))
                     }
                 }
             }.padding(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
@@ -52,7 +56,7 @@ struct FileGroupsView: View {
 
 struct FileGroupsView_Previews: PreviewProvider {
     static var previews: some View {
-        FileGroupsView()
+        FileGroupsView(viewModel: MainAppModel())
     }
 }
 
