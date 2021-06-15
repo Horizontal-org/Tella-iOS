@@ -109,7 +109,7 @@ struct  PageViewCell: View {
                 .foregroundColor(selected ? .white : .gray)
                 .padding(.bottom, 1)
             Rectangle()
-                .fill(selected ?  .white : .clear)
+                .fill(selected ?  Color.white : Color.clear)
                 .frame(width: width, height: 4, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
         }
     }
