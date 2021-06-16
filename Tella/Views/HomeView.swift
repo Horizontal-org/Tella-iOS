@@ -6,16 +6,8 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 class HomeViewModel: ObservableObject {
-
-    @Published var isImporting = false
+    @Published var showingDocumentPicker = false
     @Published var showingAddFileSheet = false
-    
-    let importingContentTypes: [UTType] = [UTType(filenameExtension: "pdf")].compactMap { $0 }
-    
-    func importFile() {
-        isImporting = true
-    }
-
 }
 
 struct HomeView: View {
@@ -43,61 +35,86 @@ struct HomeView: View {
                         FileGroupsView(viewModel: appModel)
                     }
                 }
-                AddFileButtonView(action: {
-//                    viewModel.$showingAddFileSheet.toggle()
-                    viewModel.importFile()
-                })
-                    .fileImporter(
-                        isPresented: $viewModel.isImporting,
-                        allowedContentTypes: viewModel.importingContentTypes,
-                        allowsMultipleSelection: true,
-                        onCompletion: { result in
-                            if let urls = try? result.get() {
-                                appModel.fileManager.importFile(files: urls, to: nil)
-                            }
-                        }
-                    )
-//                .actionSheet(isPresented: $showingAddFileSheet1) {
-//                    addFileActionSheet()
-//                }
-                //TODO: replace with AddFileBottomSheetFileActions
-//                AddFileBottomSheetFileActions(isPresented: $showingAddFileSheet)
+                importFileActionSheet
+                documentPickerView
             }
             .navigationBarTitle("Tella")
-            .navigationBarItems(trailing:
-                    HStack(spacing: 8) {
-                    Button {
-                        hideAll = true
-                    } label: {
-                        Image("home.close")
-                            .imageScale(.large)
-                        }
-                NavigationLink(destination: SettingsView(viewModel: appModel.settings)) {
-                            Image("home.settings")
-                                .imageScale(.large)
-                            }
-                    }.background(Color(Styles.Colors.backgroundMain))
-                )
+            .navigationBarItems(trailing: navBarButtons)
             .background(Color(Styles.Colors.backgroundMain))
         }
     }
-    
-    func addFileActionSheet() -> ActionSheet {
-        ActionSheet(title: Text("Change background"),  buttons: [
-            .default(Text("Take Photos/Videos")) {
-                self.importFileFromDevice()
-            },
-            .default(Text("Record Audio")) { },
-            .default(Text("Import From Device")) {
-            
-        },
-            .default(Text("Import and delete original")) { },
-            .cancel()
-        ])
+
+    var navBarButtons: some View {
+        HStack(spacing: 40) {
+        Button {
+            hideAll = true
+        } label: {
+            Image("home.close")
+                .imageScale(.large)
+            }
+            NavigationLink(destination: SettingsView(viewModel: appModel.settings)) {
+                Image("home.settings")
+                    .imageScale(.large)
+            }
+        }.background(Color(Styles.Colors.backgroundMain))
     }
     
-    func importFileFromDevice() {
-        
+    @ViewBuilder
+    var documentPickerView: some View {
+        if #available(iOS 14.0, *) {
+            addFileDocumentImporter
+        } else {
+            HStack{}
+            .sheet(isPresented: $viewModel.showingDocumentPicker, content: {
+                DocPickerView { urls in
+                    appModel.fileManager.importFile(files: urls ?? [], to: nil)
+                }
+            })
+        }
+    }
+    
+    @available(iOS 14.0, *)
+    var addFileDocumentImporter: some View {
+        HStack{}
+        .fileImporter(
+            isPresented: $viewModel.showingDocumentPicker,
+            allowedContentTypes: [UTType(filenameExtension: "pdf")].compactMap { $0 },
+            allowsMultipleSelection: true,
+            onCompletion: { result in
+                if let urls = try? result.get() {
+                    appModel.fileManager.importFile(files: urls, to: nil)
+                }
+            }
+        )
+    }
+
+    var importFileActionSheet: some View {
+        AddFileButtonView(action: {
+            viewModel.showingAddFileSheet = true
+        })
+        .actionSheet(isPresented: $viewModel.showingAddFileSheet, content: {
+            addFileActionSheet
+        })
+    }
+    
+    //TODO: replace with AddFileBottomSheetFileActions
+    //      AddFileBottomSheetFileActions(isPresented: $showingAddFileSheet)
+    var addFileActionSheet: ActionSheet {
+        ActionSheet(title: Text("Change background"),  buttons: [
+            .default(Text("Take Photos/Videos")) {
+                appModel.changeTab(to: .mic)
+            },
+            .default(Text("Record Audio")) {
+                appModel.changeTab(to: .mic)
+            },
+            .default(Text("Import From Device")) {
+                viewModel.showingDocumentPicker = true
+            },
+            .default(Text("Import and delete original")) {
+                viewModel.showingDocumentPicker = true
+            },
+            .cancel()
+        ])
     }
     
 }

@@ -7,17 +7,8 @@ import SwiftUI
 struct AppView: View {
     
     @State private var hideAll = false
-    @State private var selection: Tabs = .home
     @EnvironmentObject private var appModel: MainAppModel
 
-     private enum Tabs: Hashable {
-        case home
-        case forms
-        case reports
-        case camera
-        case mic
-     }
-    
     init() {
         setDebugLevel(level: .debug, for: .app)
         setDebugLevel(level: .debug, for: .crypto)
@@ -38,27 +29,27 @@ struct AppView: View {
     }
     
     private var tabbar: some View{
-        TabView(selection: $selection) {
+        TabView(selection: $appModel.selectedTab) {
             HomeView(appModel: appModel, hideAll: $hideAll)
                 .tabItem {
                     Image("tab.home")
                     Text("Home")
-                }.tag(Tabs.home)
+                }.tag(MainAppModel.Tabs.home)
             ReportsView()
                 .tabItem {
                     Image("tab.reports")
                     Text("Reports")
-                }.tag(Tabs.reports)
+                }.tag(MainAppModel.Tabs.reports)
             CameraView()
                 .tabItem {
                     Image("tab.camera")
                     Text("Camera")
-                }.tag(Tabs.camera)
+                }.tag(MainAppModel.Tabs.camera)
             MicView()
                 .tabItem {
                     Image("tab.mic")
                     Text("Mic")
-                }.tag(Tabs.mic)
+                }.tag(MainAppModel.Tabs.mic)
         }
         .accentColor(.white)
     }
@@ -82,8 +73,7 @@ struct AppView: View {
         
         UIBarButtonItem.appearance().setTitleTextAttributes([
             .foregroundColor: UIColor.white,
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18)],
-for: .normal)
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18)], for: .normal)
         
     }
 }

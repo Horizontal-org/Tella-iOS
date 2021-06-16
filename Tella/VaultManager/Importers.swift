@@ -73,10 +73,10 @@ class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerC
 //  Setting up wrapper for UIDocumentPickerViewController
 struct DocPickerView: UIViewControllerRepresentable {
     
-    let back: () -> ()
+    let completion: ([URL]?) -> ()
 
     func makeCoordinator() -> DocCoordinator {
-        return DocCoordinator(back)
+        return DocCoordinator(completion)
     }
 
 //  Initialize docPicker with specified document types and mode as import
@@ -93,25 +93,20 @@ struct DocPickerView: UIViewControllerRepresentable {
 //  Coordinator acts as the go between for swiftui and uikit
 class DocCoordinator: NSObject, UINavigationControllerDelegate, UIDocumentPickerDelegate {
 
-    let back: () -> ()
+    let completion: ([URL]?) -> ()
     
-    init(_ back: @escaping () -> ()) {
-        self.back = back
+    init(_ completion: @escaping ([URL]?) -> ()) {
+        self.completion = completion
     }
     
 //  this function called on document click
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        //  Saves the file to the internal Tella file manager
-        guard let url = urls.first else {
-            print("Failed to retrieve url")
-            return
-        }
-        TellaFileManager.copyExternalFile(url)
-        back()
+//        TellaFileManager.copyExternalFile(url)
+        completion(urls)
     }
 //  called when cancel button pressed
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        back()
+        completion(nil)
     }
 
 }
@@ -127,5 +122,4 @@ struct ActivityViewController: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityViewController>) {}
-
 }
