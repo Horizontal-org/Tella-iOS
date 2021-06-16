@@ -172,9 +172,9 @@ struct GalleryView: View {
                 }
             })) {
                 if self.currentView == .IMAGEPICKER {
-                    ImagePickerView(back: self.galleryBack)
+//                    ImagePickerView(back: self.galleryBack)
                 } else if self.currentView == .DOCPICKER {
-                    DocPickerView(back: self.galleryBack)
+//                    DocPickerView(back: self.galleryBack)
                 }
             }
         }

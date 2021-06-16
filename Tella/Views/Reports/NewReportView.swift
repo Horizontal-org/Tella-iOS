@@ -60,8 +60,8 @@ struct NewReportView: View {
                             .padding([.leading, .trailing], 5)
                             .padding([.top, .bottom], 8)
                             .foregroundColor(Color.clear)
-                        TextEditor(text: self.$description)
-                            .foregroundColor(Color.white)
+//                        TextEditor(text: self.$description)
+//                            .foregroundColor(Color.white)
                     }
                     .padding(.trailing, 20)
                     Rectangle()

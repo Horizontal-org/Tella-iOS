@@ -55,7 +55,7 @@ struct FileListItem: View {
                 Text(file.fileName ?? "N/A")
                     .font(Font(UIFont.boldSystemFont(ofSize: 14)))
                     .foregroundColor(Color.white)
-                Text(file.created, style: .date)
+                Text("\(file.created)")
                     .font(Font(UIFont.systemFont(ofSize: 10)))
                     .foregroundColor(Color(white: 0.8))
             }

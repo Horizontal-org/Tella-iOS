@@ -11,7 +11,7 @@ struct FileDetailView: View {
         VStack(){
             Image(uiImage: file.thumbnailImage)
             Text(file.fileName ?? "N/A")
-            Text(file.created, style: .date)
+            Text("\(file.created)")
         }
     }
 }
