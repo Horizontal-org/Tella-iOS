@@ -6,9 +6,6 @@ import SwiftUI
 
 struct SettingsGeneral : View {
     
-    init() {
-    }
-    
     var body: some View {
         ZStack {
             Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)

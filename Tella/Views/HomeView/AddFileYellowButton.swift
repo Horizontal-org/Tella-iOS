@@ -4,17 +4,15 @@
 
 import SwiftUI
 
-struct AddFileButtonView: View {
+struct AddFileYellowButton: View {
 
     var action: () -> ()
-    
     var body: some View {
         VStack(alignment:.trailing) {
             Spacer()
             HStack(spacing: 0) {
                 Spacer()
                 Button(action: {
-                    //TODO: add new media action
                     self.action()
                 }) {
                     Circle()

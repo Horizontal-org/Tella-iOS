@@ -35,8 +35,7 @@ struct HomeView: View {
                         FileGroupsView(appModel: appModel)
                     }
                 }
-                importFileActionSheet
-                documentPickerView
+                AddFileButtonView(appModel: appModel)
             }
             .navigationBarTitle("Tella")
             .navigationBarItems(trailing: navBarButtons)
@@ -59,13 +58,29 @@ struct HomeView: View {
         }.background(Color(Styles.Colors.backgroundMain))
     }
     
+}
+
+struct AddFileButtonView: View {
+    
+    @ObservedObject var appModel: MainAppModel
+
+    @State var showingDocumentPicker = false
+    @State var showingAddFileSheet = false
+    
+    var body: some View {
+        VStack{
+            importFileActionSheet
+            documentPickerView
+        }
+    }
+    
     @ViewBuilder
     var documentPickerView: some View {
         if #available(iOS 14.0, *) {
             addFileDocumentImporter
         } else {
             HStack{}
-            .sheet(isPresented: $viewModel.showingDocumentPicker, content: {
+            .sheet(isPresented: $showingDocumentPicker, content: {
                 DocPickerView { urls in
                     appModel.importFile(files: urls ?? [], to: nil)
                 }
@@ -77,7 +92,7 @@ struct HomeView: View {
     var addFileDocumentImporter: some View {
         HStack{}
         .fileImporter(
-            isPresented: $viewModel.showingDocumentPicker,
+            isPresented: $showingDocumentPicker,
             allowedContentTypes: [UTType(filenameExtension: "pdf")].compactMap { $0 },
             allowsMultipleSelection: true,
             onCompletion: { result in
@@ -89,10 +104,10 @@ struct HomeView: View {
     }
 
     var importFileActionSheet: some View {
-        AddFileButtonView(action: {
-            viewModel.showingAddFileSheet = true
+        AddFileYellowButton(action: {
+            showingAddFileSheet = true
         })
-        .actionSheet(isPresented: $viewModel.showingAddFileSheet, content: {
+        .actionSheet(isPresented: $showingAddFileSheet, content: {
             addFileActionSheet
         })
     }
@@ -108,15 +123,15 @@ struct HomeView: View {
                 appModel.changeTab(to: .mic)
             },
             .default(Text("Import From Device")) {
-                viewModel.showingDocumentPicker = true
+                showingDocumentPicker = true
             },
             .default(Text("Import and delete original")) {
-                viewModel.showingDocumentPicker = true
+                showingDocumentPicker = true
             },
             .cancel()
         ])
     }
-    
+
 }
 
 struct HomeView_Previews: PreviewProvider {

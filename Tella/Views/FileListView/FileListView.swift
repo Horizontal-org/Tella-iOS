@@ -6,10 +6,12 @@ import SwiftUI
 
 struct FileListView: View {
     
+    @ObservedObject var appModel: MainAppModel
+    @ObservedObject var rootFile: VaultFile
     var fileType: FileType?
     var files: [VaultFile]
     
-    init(files: [VaultFile], fileType: FileType? = nil) {
+    init(appModel: MainAppModel, files: [VaultFile], fileType: FileType? = nil, rootFile: VaultFile) {
         UITableView.appearance().separatorStyle = .none
         UITableView.appearance().tableFooterView = UIView()
         UITableView.appearance().separatorColor = .clear
@@ -17,6 +19,8 @@ struct FileListView: View {
         UITableViewCell.appearance().selectedBackgroundView = UIView()
         self.files = files
         self.fileType = fileType
+        self.rootFile = rootFile
+        self.appModel = appModel
     }
     
     var body: some View {
@@ -31,6 +35,7 @@ struct FileListView: View {
             }
             .listStyle(PlainListStyle())
             .background(Color(Styles.Colors.backgroundMain))
+            AddFileButtonView(appModel: appModel)
         }
     }
 }
@@ -89,7 +94,7 @@ struct FileGridItem: View {
 
 struct FileListView_Previews: PreviewProvider {
     static var previews: some View {
-        FileListView(files: VaultFile.stubFiles())
+        FileListView(appModel: MainAppModel(), files: VaultFile.stubFiles(), rootFile: VaultFile.stub(type: .folder))
     }
 }
 
