@@ -8,10 +8,6 @@ struct FileGroupsView: View {
 
     @ObservedObject var appModel: MainAppModel
 
-    init(viewModel: MainAppModel) {
-        self.appModel = viewModel
-    }
-    
     var body: some View {
         VStack(spacing: 0){
             Text("Files")
@@ -56,7 +52,7 @@ struct FileGroupsView: View {
 
 struct FileGroupsView_Previews: PreviewProvider {
     static var previews: some View {
-        FileGroupsView(viewModel: MainAppModel())
+        FileGroupsView(appModel: MainAppModel())
     }
 }
 

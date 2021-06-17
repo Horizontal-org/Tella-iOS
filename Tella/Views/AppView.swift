@@ -7,6 +7,7 @@ import SwiftUI
 struct AppView: View {
     
     @State private var hideAll = false
+    @State private var hideTabBar = false
     @EnvironmentObject private var appModel: MainAppModel
 
     init() {
@@ -84,6 +85,6 @@ struct AppView_Previews: PreviewProvider {
             .preferredColorScheme(.light)
             .previewLayout(.device)
             .previewDevice("iPhone Xʀ")
-            .environmentObject(SettingsModel())
+            .environmentObject(MainAppModel())
     }
 }

@@ -2,133 +2,8 @@
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import SwiftUI
-
-enum FileType: String, Codable {
-    case video
-    case audio
-    case document
-    case image
-    case folder
-    case rootFolder
-}
-
-class VaultFile: Codable, ObservableObject, RecentFileProtocol {
-    
-    let type: FileType
-    let fileName: String?
-    let containerName: String
-    var files: [VaultFile]
-    var thumbnail: Data?
-    var created: Date
-    
-    var thumbnailImage: UIImage {
-        if let thumbnail = thumbnail, let image = UIImage(data: thumbnail) {
-            return image
-        }
-        switch type {
-        case .audio:
-           return #imageLiteral(resourceName: "filetype.audio")
-        case .document:
-            return #imageLiteral(resourceName: "filetype.document")
-        case .folder:
-            return #imageLiteral(resourceName: "filetype.folder")
-        case .video:
-            return #imageLiteral(resourceName: "filetype.video")
-        case .image:
-            return #imageLiteral(resourceName: "filetype.document")
-        default:
-            return #imageLiteral(resourceName: "filetype.document")
-        }
-    }
-    
-    init(type: FileType, fileName: String?, containerName: String, files: [VaultFile]?) {
-        self.type = type
-        self.fileName = fileName
-        self.containerName = containerName
-        self.files = files ?? []
-        self.created = Date()
-    }
-    
-    static func rootFile(containerName: String) -> VaultFile {
-        return VaultFile(type: .folder, fileName: "", containerName: containerName, files: [])
-    }
-    
-}
-
-extension VaultFile: CustomDebugStringConvertible {
-    
-    var debugDescription: String {
-        return "\(type): \(String(describing: fileName)), \(containerName), \(files.count)"
-    }
-    
-}
-
-extension VaultFile: Equatable {
-    
-    static func == (lhs: VaultFile, rhs: VaultFile) -> Bool {
-        lhs.fileName == rhs.fileName &&
-        lhs.containerName == rhs.containerName
-    }
-    
-}
-
-protocol FileManagerInterface {
-    func copyItem(at srcURL: URL, to dstURL: URL) throws
-    func contents(atPath path: URL) -> Data?
-    func contentsOfDirectory(atPath path: URL) -> [String]
-
-    @discardableResult
-    func createFile(atPath path: URL, contents data: Data?) -> Bool
-    func removeItem(at path: URL)
-}
-
-class DefaultFileManager: FileManagerInterface {
-    let fileManager = FileManager.default
-    
-    func contents(atPath path: URL) -> Data? {
-        do {
-            return try Data(contentsOf: path)
-        } catch let error {
-            debugLog(error)
-        }
-        return nil
-    }
-    
-    func contentsOfDirectory(atPath path: URL) -> [String] {
-        do {
-            return try fileManager.contentsOfDirectory(atPath: path.absoluteString)
-        } catch let error {
-            debugLog(error)
-        }
-        return []
-    }
-    
-    func removeItem(at path: URL) {
-        do {
-            try fileManager.removeItem(at: path)
-        } catch let error {
-            debugLog(error)
-        }
-    }
- 
-    func createFile(atPath path: URL, contents data: Data?) -> Bool {
-        do {
-            try data?.write(to: path)
-        } catch let error {
-            debugLog(error)
-            return false
-        }
-        return true
-    }
-    
-    func copyItem(at srcURL: URL, to dstURL: URL) throws {
-        try fileManager.copyItem(at: srcURL, to: dstURL)
-    }
-    
-}
 
 protocol VaultManagerInterface {
     
@@ -145,8 +20,6 @@ protocol VaultManagerInterface {
 }   
 
 class VaultManager: VaultManagerInterface, ObservableObject {
-
-    static let shared = VaultManager(cryptoManager: DummyCryptoManager(), fileManager: DefaultFileManager(), rootFileName: "rootFile", containerPath: "")
 
     let containerPath: String
     private let rootFileName: String
@@ -173,7 +46,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
     }
 
-    func importFile(files: [URL], to parentFolder: VaultFile?){
+    func importFile(files: [URL], to parentFolder: VaultFile?) {
         for filePath in files {
             debugLog("\(filePath)", space: .crypto)
             let containerName = UUID().uuidString
@@ -190,7 +63,8 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                 continue
             }
             let newFile = VaultFile(type: .document, fileName: fileName, containerName: containerName, files: nil)
-            (parentFolder ?? root).files.append(newFile)
+            (parentFolder ?? root).add(file: newFile)
+            recentFiles.append(newFile)
         }
         save(file: root)
     }

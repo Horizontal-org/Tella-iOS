@@ -29,10 +29,10 @@ struct HomeView: View {
         NavigationView {
             ZStack(alignment: .top) {
                 Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)
-                VStack(spacing: 0){
+                VStack(spacing: 0) {
                     ScrollView{
-                        RecentFilesListView(viewModel: appModel)
-                        FileGroupsView(viewModel: appModel)
+                        RecentFilesListView(appModel: appModel)
+                        FileGroupsView(appModel: appModel)
                     }
                 }
                 importFileActionSheet
@@ -45,7 +45,7 @@ struct HomeView: View {
     }
 
     var navBarButtons: some View {
-        HStack(spacing: 40) {
+        HStack(spacing: 20) {
         Button {
             hideAll = true
         } label: {
@@ -67,7 +67,7 @@ struct HomeView: View {
             HStack{}
             .sheet(isPresented: $viewModel.showingDocumentPicker, content: {
                 DocPickerView { urls in
-                    appModel.fileManager.importFile(files: urls ?? [], to: nil)
+                    appModel.importFile(files: urls ?? [], to: nil)
                 }
             })
         }
@@ -82,7 +82,7 @@ struct HomeView: View {
             allowsMultipleSelection: true,
             onCompletion: { result in
                 if let urls = try? result.get() {
-                    appModel.fileManager.importFile(files: urls, to: nil)
+                    appModel.importFile(files: urls, to: nil)
                 }
             }
         )

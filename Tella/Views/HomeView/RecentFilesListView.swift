@@ -6,13 +6,7 @@ import SwiftUI
 
 struct RecentFilesListView: View {
 
-    @ObservedObject var viewModel: MainAppModel
-    @State var recentFilesCount: Int
-    
-    init(viewModel: MainAppModel) {
-        self.viewModel = viewModel
-        self.recentFilesCount = viewModel.fileManager.recentFiles.count
-    }
+    @ObservedObject var appModel: MainAppModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0){
@@ -21,21 +15,20 @@ struct RecentFilesListView: View {
                 .foregroundColor(.white)
                 .frame(maxHeight: 24, alignment: .leading)
                 .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-            if recentFilesCount > 0 {
+            if appModel.fileManager.recentFiles.count > 0 {
                 recentFilesView
             } else {
                 emptyRecentFilesView
             }
         }
-        .frame(height: recentFilesCount > 0 ? 180: 100)
+        .frame(height: appModel.fileManager.recentFiles.count > 0 ? 180: 100)
         .background(Color(Styles.Colors.backgroundMain))
     }
     
     var recentFilesView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
           HStack(spacing: 10) {
-              
-              ForEach(viewModel.fileManager.recentFiles, id: \.fileName) { file in
+              ForEach(appModel.fileManager.recentFiles, id: \.fileName) { file in
                   Divider()
                     NavigationLink(destination: FileDetailView(file: file)) {
                       RecentFileCell(recentFile: file)
@@ -56,6 +49,6 @@ struct RecentFilesListView: View {
 
 struct ReventFilesListView_Previews: PreviewProvider {
     static var previews: some View {
-        RecentFilesListView(viewModel: MainAppModel())
+        RecentFilesListView(appModel: MainAppModel())
     }
 }

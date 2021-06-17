@@ -20,6 +20,8 @@
 		0D4D7516266466C500D7A635 /* SettingsDocumentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7515266466C500D7A635 /* SettingsDocumentation.swift */; };
 		0D4D7518266470A700D7A635 /* SettingsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7517266470A700D7A635 /* SettingsViews.swift */; };
 		0D4D751A2664738800D7A635 /* HostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D75192664738800D7A635 /* HostingController.swift */; };
+		0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC267A5267AED7C00E55AFA /* VaultFile.swift */; };
+		0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */; };
 		0DC411E12668469C00BF0DE1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC411E02668469C00BF0DE1 /* SettingsView.swift */; };
 		0E230E2D265BE05A00465F07 /* EditBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E230E2C265BE05A00465F07 /* EditBottomSheet.swift */; };
 		0E64C6A6265E7625005A7934 /* ActionsBottomSheetFileActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E64C6A5265E7625005A7934 /* ActionsBottomSheetFileActions.swift */; };
@@ -145,6 +147,8 @@
 		0D4D7515266466C500D7A635 /* SettingsDocumentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDocumentation.swift; sourceTree = "<group>"; };
 		0D4D7517266470A700D7A635 /* SettingsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViews.swift; sourceTree = "<group>"; };
 		0D4D75192664738800D7A635 /* HostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingController.swift; sourceTree = "<group>"; };
+		0DC267A5267AED7C00E55AFA /* VaultFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFile.swift; sourceTree = "<group>"; };
+		0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultFileManager.swift; sourceTree = "<group>"; };
 		0DC411E02668469C00BF0DE1 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0E230E2C265BE05A00465F07 /* EditBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBottomSheet.swift; sourceTree = "<group>"; };
 		0E64C6A5265E7625005A7934 /* ActionsBottomSheetFileActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsBottomSheetFileActions.swift; sourceTree = "<group>"; };
@@ -392,6 +396,8 @@
 			isa = PBXGroup;
 			children = (
 				D50727BE2625561400BBC370 /* KeychainManager.swift */,
+				0DC267A5267AED7C00E55AFA /* VaultFile.swift */,
+				0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */,
 				D53B77002601CA3A0001CD34 /* VaultManager.swift */,
 				D5B823EF262775D80008E04B /* CryptoManager.swift */,
 				D538C8AB264CE8D300D457B0 /* CryptoFileManager.swift */,
@@ -863,6 +869,7 @@
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* Importers.swift in Sources */,
 				D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */,
+				0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */,
 				1EBF3CB5246649DC0004E331 /* AudioPlayer.swift in Sources */,
 				6D14AADA2405AC1B0094D71D /* FileManager.swift in Sources */,
 				0E230E2D265BE05A00465F07 /* EditBottomSheet.swift in Sources */,
@@ -878,6 +885,7 @@
 				6DD4C03A240F547300491438 /* Util.swift in Sources */,
 				F66E65B123E3207D000F93E5 /* ContentView.swift in Sources */,
 				D5B823F0262775D80008E04B /* CryptoManager.swift in Sources */,
+				0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */,
 				0D4D7518266470A700D7A635 /* SettingsViews.swift in Sources */,
 				6D14AAD823FB0B310094D71D /* GalleryView.swift in Sources */,
 			);
@@ -1118,7 +1126,7 @@
 				CODE_SIGN_ENTITLEMENTS = Tella/Tella.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Tella/Preview Content\"";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
@@ -1145,7 +1153,7 @@
 				CODE_SIGN_ENTITLEMENTS = Tella/Tella.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Tella/Preview Content\"";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;

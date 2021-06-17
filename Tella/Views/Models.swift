@@ -15,11 +15,17 @@ class MainAppModel: ObservableObject {
     }
     
     @Published var settings: SettingsModel = SettingsModel()
-    @Published var fileManager: VaultManager = VaultManager.shared
+    @Published var fileManager: VaultManager = VaultManager(cryptoManager: DummyCryptoManager(), fileManager: DefaultFileManager(), rootFileName: "rootFile", containerPath: "")
+
     @Published var selectedTab: Tabs = .home
     
     func changeTab(to newTab: Tabs) {
         selectedTab = newTab
+    }
+    
+    func importFile(files: [URL], to parentFolder: VaultFile?) {
+        fileManager.importFile(files: files, to: parentFolder)
+        objectWillChange.send()
     }
 }
 
