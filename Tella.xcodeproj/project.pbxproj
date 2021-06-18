@@ -25,9 +25,7 @@
 		0E170255267910CC0069072A /* OutBoxFormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E170254267910CC0069072A /* OutBoxFormsView.swift */; };
 		0E170257267910DE0069072A /* DraftFormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E170256267910DE0069072A /* DraftFormsView.swift */; };
 		0E170259267913160069072A /* FormsCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E170258267913160069072A /* FormsCellView.swift */; };
-		0E17025B2679153C0069072A /* FavoriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E17025A2679153C0069072A /* FavoriteButton.swift */; };
 		0E230E2D265BE05A00465F07 /* EditBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E230E2C265BE05A00465F07 /* EditBottomSheet.swift */; };
-		0E278995266F75AC00B130C4 /* TopBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E278994266F75AC00B130C4 /* TopBarView.swift */; };
 		0E27899D266F76D500B130C4 /* FormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E27899C266F76D500B130C4 /* FormsView.swift */; };
 		0E64C6A6265E7625005A7934 /* ActionsBottomSheetFileActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E64C6A5265E7625005A7934 /* ActionsBottomSheetFileActions.swift */; };
 		0E78B3A72656B03600F9BDBC /* DragView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E78B3A52656B03500F9BDBC /* DragView.swift */; };
@@ -164,9 +162,7 @@
 		0E170254267910CC0069072A /* OutBoxFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutBoxFormsView.swift; sourceTree = "<group>"; };
 		0E170256267910DE0069072A /* DraftFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftFormsView.swift; sourceTree = "<group>"; };
 		0E170258267913160069072A /* FormsCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormsCellView.swift; sourceTree = "<group>"; };
-		0E17025A2679153C0069072A /* FavoriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteButton.swift; sourceTree = "<group>"; };
 		0E230E2C265BE05A00465F07 /* EditBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBottomSheet.swift; sourceTree = "<group>"; };
-		0E278994266F75AC00B130C4 /* TopBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBarView.swift; sourceTree = "<group>"; };
 		0E27899C266F76D500B130C4 /* FormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormsView.swift; sourceTree = "<group>"; };
 		0E64C6A5265E7625005A7934 /* ActionsBottomSheetFileActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsBottomSheetFileActions.swift; sourceTree = "<group>"; };
 		0E78B3A52656B03500F9BDBC /* DragView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragView.swift; sourceTree = "<group>"; };
@@ -349,14 +345,12 @@
 			isa = PBXGroup;
 			children = (
 				0E17025C267927670069072A /* models */,
-				0E278994266F75AC00B130C4 /* TopBarView.swift */,
 				0E27899C266F76D500B130C4 /* FormsView.swift */,
 				0E8CEA18266FFE0600926799 /* SentFormsView.swift */,
 				0E170252267910B90069072A /* BlankFormsView.swift */,
 				0E170254267910CC0069072A /* OutBoxFormsView.swift */,
 				0E170256267910DE0069072A /* DraftFormsView.swift */,
 				0E170258267913160069072A /* FormsCellView.swift */,
-				0E17025A2679153C0069072A /* FavoriteButton.swift */,
 			);
 			path = Forms;
 			sourceTree = "<group>";
@@ -903,7 +897,6 @@
 				D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */,
 				D5DAFDCF265384C4002F3942 /* Models.swift in Sources */,
 				F66E65AD23E3207D000F93E5 /* AppDelegate.swift in Sources */,
-				0E278995266F75AC00B130C4 /* TopBarView.swift in Sources */,
 				D7F55FCD25348FB80028739E /* AudioManager.swift in Sources */,
 				D5DA7F982646220100B00FDA /* FileGroupButtonView.swift in Sources */,
 				0D4D7510266316D200D7A635 /* SettingsGeneral.swift in Sources */,
@@ -922,7 +915,6 @@
 				0E64C6A6265E7625005A7934 /* ActionsBottomSheetFileActions.swift in Sources */,
 				D5077A40260D300600D72947 /* DebugLogging.swift in Sources */,
 				0ECC781D267AADA500A2ACF2 /* PageViewCellNotif.swift in Sources */,
-				0E17025B2679153C0069072A /* FavoriteButton.swift in Sources */,
 				0ECC7817267A533E00A2ACF2 /* PageViewCell.swift in Sources */,
 				D516398A263113C6003A11B5 /* UploadView.swift in Sources */,
 				0E78B3BB2656B0BC00F9BDBC /* VideoRecordingView.swift in Sources */,

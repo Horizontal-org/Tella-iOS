@@ -9,38 +9,55 @@
 import SwiftUI
 
 struct FormsCellView: View {
-    var formModel : FormsModel
-    
+    let formModel : FormModel
+    @State var toggle : Bool
+    init(formModel : FormModel){
+        //create State with initial value here
+        self.formModel = formModel
+        self._toggle = State(initialValue: self.formModel.form.isFavorite)
+    }
     var body: some View {
         HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/){
-            FavoriteButton(isSet: formModel.$isFavorite)
-                .padding()
+            Button(action: {
+                formModel.form.isFavorite.toggle()
+                self.toggle.toggle()
+                print(formModel.form.isFavorite)
+            }, label: {
+                Image(systemName: self.toggle ? "star.fill" : "star")
+                    .foregroundColor(self.toggle ? .yellow : .white)
+            })
+            .padding()
             VStack(alignment : .leading,spacing: 0){
-                Text(formModel.title)
+                Text(formModel.form.title)
                     .font(Font.custom("open-sans.regular", size: 14))
                     .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                     .foregroundColor(Color.white)
-                Text(formModel.description)
+                Text(formModel.form.description)
                     .font(Font.custom("open-sans.regular", size: 12))
                     .fontWeight(.regular)
                     .foregroundColor(Color.white)
                     .padding(.top, 4)
             }.padding(.vertical)
             Spacer()
-            VStack(spacing: 0){
-                RoundedRectangle(cornerRadius: 25)
-                    .fill(Color.white)
-                    .frame(width: 4, height: 4)
-                RoundedRectangle(cornerRadius: 25)
-                    .fill(Color.white)
-                    .frame(width: 4, height: 4)
-                    .padding(.top, 2)
-                RoundedRectangle(cornerRadius: 25)
-                    .fill(Color.white)
-                    .frame(width: 4, height: 4)
-                    .padding(.top, 2)
-            }
-            .padding(.trailing, 20)
+            Button(action: {
+                print("More clicked")
+            }, label: {
+                VStack(spacing: 0){
+                    RoundedRectangle(cornerRadius: 25)
+                        .fill(Color.white)
+                        .frame(width: 4, height: 4)
+                    RoundedRectangle(cornerRadius: 25)
+                        .fill(Color.white)
+                        .frame(width: 4, height: 4)
+                        .padding(.top, 2)
+                    RoundedRectangle(cornerRadius: 25)
+                        .fill(Color.white)
+                        .frame(width: 4, height: 4)
+                        .padding(.top, 2)
+                }
+                .padding(.trailing, 20)
+            })
+            
         }
         .background(Color(Styles.Colors.backgroundFileButton)
                         .clipShape(RoundedRectangle(cornerRadius:15)))
@@ -56,11 +73,5 @@ extension UIView {
         let mask = CAShapeLayer()
         mask.path = path.cgPath
         layer.mask = mask
-    }
-}
-
-struct FormsCellView_Previews: PreviewProvider {
-    static var previews: some View {
-        FormsCellView(formModel: FormsModel(title: "Test", description: "This is a description", isFavorite: true))
     }
 }

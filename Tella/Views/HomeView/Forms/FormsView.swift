@@ -21,7 +21,7 @@ struct FormsView: View {
             ZStack(alignment: .top) {
                 Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)
                 VStack(alignment: .leading) {
-                    PageView(selectedOption: self.$selecetedCell, outboxCount: self.$selectedTabIndex,titles: ["Blank","Drafts","OutBox","Sent"])
+                    PageView(selectedOption: self.$selecetedCell, outboxCount: self.$outBoxCount,titles: ["Blank","Drafts","OutBox","Sent"])
                         .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: 40, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                         .padding([.leading, .trailing], 10)
                     VStack {
@@ -39,7 +39,10 @@ struct FormsView: View {
                 }
             }
             .navigationBarTitle("Forms")
-            .navigationBarItems(trailing: HeaderView(onRefreshClick: {}, onHelpClick: {}, onNewFormClick: {}) )
+            .navigationBarItems(trailing: HeaderView(onRefreshClick: {}, onHelpClick: {}, onNewFormClick: {
+                print("Text")
+                self.outBoxCount+=1
+            }) )
         }.highPriorityGesture(DragGesture()
                                 .onEnded({ value in
                                     if value.translation.width < 50 {
@@ -59,59 +62,6 @@ struct FormsView: View {
     }
     
 }
-/*NavigationView {
- ZStack(alignment: .top) {
- Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)
- VStack(alignment: .leading,spacing : 0){
- 
- // TopBarView(index: self.$index, offset: self.$offset)
- TabView(selection : self.$index){
- BlankFormsView()
- .tag(0)
- .tabItem {}
- DraftFormsView()
- .tag(1)
- OutBoxFormsView()
- .tag(2)
- SentFormsView()
- .tag(3)
- 
- 
- }
- .edgesIgnoringSafeArea(.all)
- .animation(.default)
- .navigationBarTitle("Forms")
- .background(Color(Styles.Colors.backgroundMain))
- .highPriorityGesture(DragGesture()
- .onEnded({ value in
- if value.translation.width < 50 {
- // left
- if (self.index > 0) {
- self.index -= 1
- }
- }
- if value.translation.width > 50 {
- if (self.index < 3) {
- self.index += 1
- }
- }
- if value.translation.height < 50 {
- // up
- }
- 
- if value.translation.height > 0 {
- // down
- }
- }))
- }
- 
- }                    .navigationBarHidden(true)
- 
- 
- }                       .navigationBarHidden(true)
- .background(Color(Styles.Colors.backgroundMain))
- 
- */
 
 
 struct FormsView_Previews: PreviewProvider {

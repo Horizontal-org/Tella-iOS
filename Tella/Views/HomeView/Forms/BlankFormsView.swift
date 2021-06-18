@@ -9,15 +9,12 @@
 import SwiftUI
 
 struct BlankFormsView: View {
-    var listForms = [FormsModel(title: "Title 1", description: "Description 1", isFavorite: false), FormsModel(title: "Title 2", description: "Description 2", isFavorite: true),
-                     FormsModel(title: "Title 3", description: "Description 3", isFavorite: false),
-                     FormsModel(title: "Title 4", description: "Description 4", isFavorite: true)
-    ]
+    @ObservedObject var formViewModel = FormViewModel()
     var body: some View {
         ZStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 0){
                 ScrollView{
-                    ForEach(listForms) { formModel in
+                    ForEach(formViewModel.forms) { formModel in
                         FormsCellView(formModel: formModel)
                     }
                 }

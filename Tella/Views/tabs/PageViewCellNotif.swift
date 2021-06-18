@@ -21,13 +21,12 @@ struct  PageViewCellNotif: View {
                     .font(Font.system(size: 15))
                     .bold()
                     .foregroundColor(selected ? .white : .gray)
-                   
+         
                 Text("("+String(outBoxCount)+")")
                     .foregroundColor(.yellow)
-                    .font(Font.system(size: 15))
+                    .font(Font.system(size: 12))
                     .bold()
-                    .minimumScaleFactor(0.5)
-                    .lineLimit(1)
+                
             }.padding(.bottom, 1)
             Rectangle()
                 .fill(selected ?  Color.white : Color.clear)

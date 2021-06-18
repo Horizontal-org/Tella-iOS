@@ -19,6 +19,8 @@ struct  PageViewCell: View {
                 .font(Font.system(size: 15))
                 .bold()
                 .foregroundColor(selected ? .white : .gray)
+                .minimumScaleFactor(0.5)
+                .lineLimit(1)
                 .padding(.bottom, 1)
             Rectangle()
                 .fill(selected ?  Color.white : Color.clear)

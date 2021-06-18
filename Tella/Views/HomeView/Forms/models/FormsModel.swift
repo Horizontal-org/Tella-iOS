@@ -2,16 +2,42 @@
 //  FormsModel.swift
 //  Tella
 //
-//  Created by Ahlem on 16/06/2021.
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
 import Foundation
 import SwiftUI
 
-struct FormsModel : Identifiable {
+class FormViewModel: ObservableObject {
+    @Published var forms = [FormModel]()
+    
+    init() {
+        fetchForms()
+    }
+    
+    func fetchForms(){
+
+        forms.append(FormModel())
+        forms.append(FormModel())
+        forms.append(FormModel())
+        forms.append(FormModel())
+
+       // forms.append(FormModel(FormDetailsModel(title: "Test2", description: "Description2", isDraft: true, isFavorite: true)))
+       // forms.append(FormModel(FormDetailsModel(title: "Test3", description: "Description3", isDraft: true, isFavorite: true)))
+        //forms.append(FormModel(FormDetailsModel(title: "Test4", description: "Description4", isDraft: true, isFavorite: true)))
+
+    }
+}
+
+class FormModel: Identifiable {
     var id = UUID()
-    var title: String = ""
-    var description: String = ""
-    @State var isFavorite: Bool 
+    var form =  FormDetailsModel()
+}
+
+struct FormDetailsModel: Identifiable {
+    var id = UUID()
+    var title: String = "Test"
+    var description: String = "Test"
+    var isDraft: Bool = false
+    var isFavorite: Bool = false
 }

@@ -21,7 +21,7 @@ struct HeaderView: View {
                 }) {
                     Image("fill-icon")
                         .renderingMode(.original)
-                }.padding(.top, 10)
+                }
                 
                 Button(action: {
                     self.onRefreshClick()
@@ -29,7 +29,7 @@ struct HeaderView: View {
                 }) {
                     Image("refresh-icon")
                         .renderingMode(.original)
-                }.padding(.top, 10)
+                }
                 
                 Button(action: {
                     self.onHelpClick()
@@ -37,8 +37,8 @@ struct HeaderView: View {
                 }) {
                     Image("help-icon")
                         .renderingMode(.original)
-                }.padding(.trailing, 20)
-                .padding(.top, 10)
+                }
+                
                 
             }
             .frame(maxWidth: .infinity, maxHeight : 66,alignment: .trailing)
