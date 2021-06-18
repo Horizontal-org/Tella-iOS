@@ -8,14 +8,14 @@ struct SettingsGeneral : View {
     
     var body: some View {
         ZStack {
-            Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)
+            Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
             Form {
                 Section{
                     List{
                     }
                 }
-                .listRowBackground(Color(Styles.Colors.backgroundTab))
-            }.background(Color(Styles.Colors.backgroundMain))
+                .listRowBackground(Styles.Colors.backgroundTab)
+            }.background(Styles.Colors.backgroundMain)
         }
         .navigationBarTitle("General")
     }

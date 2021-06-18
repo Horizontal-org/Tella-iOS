@@ -107,7 +107,7 @@ struct NewReportView: View {
                                     .foregroundColor(.white)
                             }
                             .frame(width:(screenSize.width / 2) - 30 , height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                            .background(Color(Styles.Colors.backgroundTab))
+                            .background(Styles.Colors.backgroundTab)
                             .cornerRadius(25)
                         })
                         Button(action: {
@@ -120,7 +120,7 @@ struct NewReportView: View {
                             }
                             .foregroundColor(.white)
                             .frame(width: (screenSize.width / 2) - 30, height: 50, alignment: .center)
-                            .background(Color(Styles.Colors.backgroundTab))
+                            .background(Styles.Colors.backgroundTab)
                             .cornerRadius(25)
                         })
                         
@@ -138,7 +138,7 @@ struct NewReportView: View {
                         }
                         .foregroundColor(.white)
                         .frame(width: screenSize.width  - 40, height: 60, alignment: .center)
-                        .background(Color(Styles.Colors.backgroundTab))
+                        .background(Styles.Colors.backgroundTab)
                         .cornerRadius(25)
                         
                     })
@@ -147,9 +147,9 @@ struct NewReportView: View {
                     Spacer()
                 }
             }
-            .background(Color(Styles.Colors.backgroundMain))
+            .background(Styles.Colors.backgroundMain)
         }
-        .background(Color(Styles.Colors.backgroundMain))
+        .background(Styles.Colors.backgroundMain)
 
     }
     

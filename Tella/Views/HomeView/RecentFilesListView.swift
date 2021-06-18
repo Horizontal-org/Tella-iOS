@@ -22,7 +22,7 @@ struct RecentFilesListView: View {
             }
         }
         .frame(height: appModel.fileManager.recentFiles.count > 0 ? 180: 100)
-        .background(Color(Styles.Colors.backgroundMain))
+        .background(Styles.Colors.backgroundMain)
     }
     
     var recentFilesView: some View {

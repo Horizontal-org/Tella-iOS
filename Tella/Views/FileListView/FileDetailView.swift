@@ -8,9 +8,13 @@ struct FileDetailView: View {
 
     var file: VaultFile
     var body: some View {
-        VStack(){
+        VStack(alignment: .center, spacing: 20){
             Image(uiImage: file.thumbnailImage)
+                .border(.green, width: 1)
+                .frame(width: 100, height: 100, alignment: .center)
+            Text(file.type.rawValue)
             Text(file.fileName ?? "N/A")
+            Text(file.containerName)
             Text("\(file.created)")
         }
     }

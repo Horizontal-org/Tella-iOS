@@ -7,7 +7,7 @@ import SwiftUI
 struct FileListView: View {
     
     @ObservedObject var appModel: MainAppModel
-    @ObservedObject var rootFile: VaultFile
+    var rootFile: VaultFile
     var fileType: FileType?
     var files: [VaultFile]
     
@@ -19,24 +19,26 @@ struct FileListView: View {
         UITableViewCell.appearance().selectedBackgroundView = UIView()
         self.files = files
         self.fileType = fileType
-        self.rootFile = rootFile
         self.appModel = appModel
+        self.rootFile = rootFile
     }
     
     var body: some View {
         ZStack(alignment: .top) {
-            Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)
-            List{
-                ForEach(files, id: \.fileName) { file in
-                    FileListItem(file: file)
-//                    NavigationLink(destination: FileDetailView(file: file)) {
-//                  }.background(Color(Styles.Colors.backgroundMain))
+            List {
+                ForEach(files, id: \.self) { file in
+                    NavigationLink(destination: FileDetailView(file: file)){
+                        FileListItem(file: file)
+                            .frame(height: 50)
+                    }
                 }
+                .listRowBackground(Styles.Colors.backgroundMain)
             }
             .listStyle(PlainListStyle())
-            .background(Color(Styles.Colors.backgroundMain))
+            .background(Styles.Colors.backgroundMain)
             AddFileButtonView(appModel: appModel)
         }
+        .navigationBarTitle("\(rootFile.fileName)")
     }
 }
 
@@ -74,8 +76,8 @@ struct FileListItem: View {
                     .frame(width: 20, height: 20)
             }
         }
-        .listRowBackground(Color(Styles.Colors.backgroundMain))
-        .background(Color(Styles.Colors.backgroundMain))
+        .listRowBackground(Styles.Colors.backgroundMain)
+        .background(Styles.Colors.backgroundMain)
         .frame(height: 45)
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
     }

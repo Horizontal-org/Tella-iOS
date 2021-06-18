@@ -14,10 +14,14 @@ enum FileType: String, Codable {
     case rootFolder
 }
 
-class VaultFile: Codable, ObservableObject, RecentFileProtocol {
+class VaultFile: Codable, RecentFileProtocol, Hashable {
+    
+    func hash(into hasher: inout Hasher){
+        hasher.combine(containerName.hashValue)
+    }
     
     let type: FileType
-    var fileName: String?
+    var fileName: String
     let containerName: String
     var files: [VaultFile]
     var thumbnail: Data?
@@ -27,7 +31,7 @@ class VaultFile: Codable, ObservableObject, RecentFileProtocol {
         return VaultFile(type: .folder, fileName: "", containerName: containerName, files: [])
     }
 
-    init(type: FileType, fileName: String?, containerName: String, files: [VaultFile]?) {
+    init(type: FileType, fileName: String, containerName: String, files: [VaultFile]?) {
         self.type = type
         self.fileName = fileName
         self.containerName = containerName

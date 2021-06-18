@@ -10,7 +10,7 @@ struct SettingsSecurity : View {
 
     var body: some View {
         ZStack {
-            Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)
+            Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
             Form {
                 Section{
                     SettingToggleItem(title: "Quick Delete", description: "Shows a sliding button on the homescreen to quicky exit Tella in emergency situations. ", toggle: $viewModel.quickDelete)
@@ -18,8 +18,8 @@ struct SettingsSecurity : View {
                     SettingToggleItem(title: "Delete forms", description: "Delete all draft and submitted forms.", toggle: $viewModel.deleteForms)
                     SettingToggleItem(title: "Delete server settings", description: "Delete your connections to servers and all forms associated with them.", toggle: $viewModel.deleteServerSettings)
                 }
-                .listRowBackground(Color(Styles.Colors.backgroundTab))
-            }.background(Color(Styles.Colors.backgroundMain))
+                .listRowBackground(Styles.Colors.backgroundTab)
+            }.background(Styles.Colors.backgroundMain)
         }
         .navigationBarTitle("Secutiry")
     }

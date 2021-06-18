@@ -28,7 +28,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .top) {
-                Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)
+                Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
                 VStack(spacing: 0) {
                     ScrollView{
                         RecentFilesListView(appModel: appModel)
@@ -39,7 +39,7 @@ struct HomeView: View {
             }
             .navigationBarTitle("Tella")
             .navigationBarItems(trailing: navBarButtons)
-            .background(Color(Styles.Colors.backgroundMain))
+            .background(Styles.Colors.backgroundMain)
         }
     }
 
@@ -55,7 +55,7 @@ struct HomeView: View {
                 Image("home.settings")
                     .imageScale(.large)
             }
-        }.background(Color(Styles.Colors.backgroundMain))
+        }.background(Styles.Colors.backgroundMain)
     }
     
 }

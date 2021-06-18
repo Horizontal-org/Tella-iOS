@@ -11,8 +11,8 @@ protocol VaultManagerInterface {
 
     func load(name: String) -> VaultFile?
     func load(file: VaultFile) -> Data?
-    func save(_ data: Data, type: FileType, name: String?, parent: VaultFile?) -> VaultFile?
-    func save<T: Datable>(_ object: T, type: FileType, name: String?, parent: VaultFile?) -> VaultFile?
+    func save(_ data: Data, type: FileType, name: String, parent: VaultFile?) -> VaultFile?
+    func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?) -> VaultFile?
 
     func delete(file: VaultFile, parent: VaultFile?)
     func removeAllFiles()
@@ -108,11 +108,11 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         debugLog("saved: \(fileURL) \(vaultFile.containerName)")
     }
     
-    func save(_ data: Data, type: FileType, name: String?, parent: VaultFile?) -> VaultFile? {
+    func save(_ data: Data, type: FileType, name: String, parent: VaultFile?) -> VaultFile? {
         let containerName = UUID().uuidString
         let fileURL = containerURL(for: containerName)
         let vaultFile = VaultFile(type: type, fileName: name, containerName: containerName, files: nil)
-        parent?.files.append(vaultFile)
+        parent?.add(file: vaultFile)
         if let encrypted = cryptoManager.encrypt(data) {
             _ = fileManager.createFile(atPath: fileURL, contents: encrypted)
         } else {
@@ -121,7 +121,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         return vaultFile
     }
 
-    func save<T: Datable>(_ object: T, type: FileType, name: String?, parent: VaultFile?) -> VaultFile? {
+    func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?) -> VaultFile? {
         guard let data = object.data else {
             return nil
         }

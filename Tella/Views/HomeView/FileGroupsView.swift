@@ -46,7 +46,7 @@ struct FileGroupsView: View {
             }.padding(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
 
         }
-        .background(Color(Styles.Colors.backgroundMain))
+        .background(Styles.Colors.backgroundMain)
     }
 }
 

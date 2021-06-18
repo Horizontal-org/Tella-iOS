@@ -19,7 +19,7 @@ struct SettingItem: View {
                 .foregroundColor(Color.white)
         }
         .frame(height: 56)
-        .listRowBackground(Color(Styles.Colors.backgroundTab))
+        .listRowBackground(Styles.Colors.backgroundTab)
         .cornerRadius(25)
     }
 }
