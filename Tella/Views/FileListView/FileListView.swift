@@ -82,17 +82,13 @@ struct FileListView: View {
         ScrollView {
             LazyVGrid(columns: gridLayout, alignment: .center, spacing: 6) {
                 ForEach(VaultFile.sorted(files: files, by: viewModel.sortBy), id: \.self) { file in
-                    ZStack(alignment: .leading) {
-                        NavigationLink(
-                            destination: FileDetailView(file: file)) {
-                            EmptyView()
-                        }
-                        .opacity(0)
-                    file.gridImage
-                        .frame(minWidth: 0, maxWidth: .infinity)
-                        .frame(maxHeight: 300)
-                        .cornerRadius(5)
-                        .background(Styles.Colors.backgroundMain)
+                    NavigationLink(
+                        destination: FileDetailView(file: file)) {
+                        file.gridImage
+                            .frame(minWidth: 0, maxWidth: .infinity)
+                            .frame(maxHeight: 300)
+                            .cornerRadius(5)
+                            .background(Styles.Colors.backgroundMain)
                     }
                 }
             }.padding(EdgeInsets(top: 0, leading: 6, bottom: 0, trailing: 6))
