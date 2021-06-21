@@ -7,7 +7,7 @@ import SwiftUI
 struct FileListItem: View {
     
     var file: VaultFile
-    @State var showFileMenu: Bool = false
+    @State var showingActionSheet: Bool = false
     
     var body: some View {
         HStack(spacing: 0){
@@ -33,15 +33,18 @@ struct FileListItem: View {
                     // Fallback on earlier versions
                 }
             }
-            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 20))
+            .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 0))
             Spacer()
-            Button {
-                showFileMenu = true
-            } label: {
+            HStack{
                 Image("files.more")
                     .resizable()
                     .frame(width: 20, height: 20)
             }
+            .frame(width: 40, height: 40)
+            .onTapGesture {
+                showingActionSheet = true
+            }
+            FileActionMenu(selectedFile: file, showingActionSheet: $showingActionSheet)
         }
         .listRowBackground(Styles.Colors.backgroundMain)
         .background(Styles.Colors.backgroundMain)
