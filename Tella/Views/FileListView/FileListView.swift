@@ -4,15 +4,35 @@
 
 import SwiftUI
 
+extension VaultFile {
+    var gridImage: AnyView {
+        AnyView(
+            ZStack{
+                Image(uiImage: thumbnailImage)
+                    .resizable()
+                    .scaledToFit()
+                Image(uiImage: iconImage)
+            }
+            .background(Color.gray)
+        )
+    }
+}
+
+class FileListViewModel: ObservableObject {
+    @Published var showingSortFilesActionSheet = false
+    @Published var showingFileActionMenu = false
+    @Published var showingFilesSelectionMenu = false
+    @Published var selectingFiles = false
+    
+    @Published var sortBy: FileSortOptions = FileSortOptions.nameAZ
+    @Published var viewType: FileViewType = FileViewType.list
+}
+
 struct FileListView: View {
     
     @ObservedObject var appModel: MainAppModel
-    @State var showingSortFilesActionSheet = false
-    @State var selectingFiles = false
-    
-    @State var sortBy: FileSortOptions = FileSortOptions.nameAZ
-    @State var viewType: FileViewType = FileViewType.list
-    
+    @ObservedObject var viewModel = FileListViewModel()
+
     var rootFile: VaultFile
     var fileType: FileType?
     var files: [VaultFile]
@@ -37,28 +57,73 @@ struct FileListView: View {
             Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
             VStack {
                 topBarButtons
-                List {
-                    ForEach(VaultFile.sorted(files: files, by: sortBy), id: \.self) { file in
-                        NavigationLink(destination: FileDetailView(file: file)){
-                            FileListItem(file: file)
-                                .frame(height: 50)
-                        }
+                if #available(iOS 14.0, *) {
+                    if viewModel.viewType == .list {
+                        itemsListView
+                    } else {
+                        itemsGridView
                     }
-                    .listRowBackground(Styles.Colors.backgroundMain)
+                } else {
+                    itemsListView
                 }
-                .listStyle(PlainListStyle())
-                .background(Styles.Colors.backgroundMain)
             }
             AddFileButtonView(appModel: appModel)
         }
         .navigationBarTitle("\(rootFile.fileName)")
     }
+
+    @available(iOS 14.0, *)
+    private var gridLayout: [GridItem] {
+        [GridItem(.adaptive(minimum: 87))]
+    }
+    
+    @available(iOS 14.0, *)
+    var itemsGridView: some View {
+        ScrollView {
+            LazyVGrid(columns: gridLayout, alignment: .center, spacing: 6) {
+                ForEach(VaultFile.sorted(files: files, by: viewModel.sortBy), id: \.self) { file in
+                    ZStack(alignment: .leading) {
+                        NavigationLink(
+                            destination: FileDetailView(file: file)) {
+                            EmptyView()
+                        }
+                        .opacity(0)
+                    file.gridImage
+                        .frame(minWidth: 0, maxWidth: .infinity)
+                        .frame(maxHeight: 300)
+                        .cornerRadius(5)
+                        .background(Styles.Colors.backgroundMain)
+                    }
+                }
+            }.padding(EdgeInsets(top: 0, leading: 6, bottom: 0, trailing: 6))
+        }
+    }
+    
+    var itemsListView: some View {
+        List {
+            ForEach(VaultFile.sorted(files: files, by: viewModel.sortBy), id: \.self) { file in
+                ZStack(alignment: .leading) {
+                    NavigationLink(
+                        destination: FileDetailView(file: file)) {
+                        EmptyView()
+                    }
+                    .opacity(0)
+                    .background(Styles.Colors.backgroundMain)
+                    FileListItem(file: file)
+                }
+                .frame(height: 50)
+            }
+            .listRowBackground(Styles.Colors.backgroundMain)
+        }
+        .listStyle(PlainListStyle())
+        .background(Styles.Colors.backgroundMain)
+    }
     
     var topBarButtons: some View {
         HStack(spacing: 0) {
             sortFilesButton
-            FileSortMenu(showingSortFilesActionSheet: $showingSortFilesActionSheet,
-                         sortBy: $sortBy)
+            FileSortMenu(showingSortFilesActionSheet: $viewModel.showingSortFilesActionSheet,
+                         sortBy: $viewModel.sortBy)
             Spacer()
             selectingFilesButton
             if #available(iOS 14.0, *) {
@@ -71,12 +136,12 @@ struct FileListView: View {
 
     var sortFilesButton: some View {
         Button {
-            showingSortFilesActionSheet = true
+            viewModel.showingSortFilesActionSheet = true
         } label: {
             HStack{
-                Text(sortBy.displayName)
+                Text(viewModel.sortBy.displayName)
                     .foregroundColor(.white)
-                sortBy.image
+                viewModel.sortBy.image
                     .frame(width: 14, height: 14)
             }
         }
@@ -85,7 +150,7 @@ struct FileListView: View {
     
     var selectingFilesButton: some View {
         Button {
-            selectingFiles = !selectingFiles
+            viewModel.selectingFiles = !viewModel.selectingFiles
         } label: {
             HStack{
                 Image("files.selectingFiles")
@@ -97,10 +162,10 @@ struct FileListView: View {
     
     var viewTypeButton: some View {
         Button {
-            viewType = viewType == .list ? .grid : .list
+            viewModel.viewType = viewModel.viewType == .list ? FileViewType.grid : FileViewType.list
         } label: {
             HStack{
-                viewType.image
+                viewModel.viewType.image
                     .frame(width: 24, height: 24)
             }
         }
