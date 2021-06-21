@@ -11,7 +11,6 @@ enum FileType: String, Codable {
     case document
     case image
     case folder
-    case rootFolder
 }
 
 class VaultFile: Codable, RecentFileProtocol, Hashable {
@@ -67,6 +66,34 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
     func remove(file: VaultFile) {
     }
 
+    static func sorted(files: [VaultFile], by sortOrder: FileSortOptions) -> [VaultFile] {
+        return files.sorted { file1, file2 in
+
+            if file1.type == .folder && file2.type == .folder {
+                return file1.fileName > file2.fileName
+            }
+            
+            if file1.type == .folder {
+                return true
+            }
+            if file2.type == .folder {
+                return false
+            }
+
+            switch sortOrder {
+            case .nameAZ:
+                return file1.fileName > file2.fileName
+            case .nameZA:
+                return file1.fileName < file2.fileName
+            case .newestToOldest:
+                return file1.created < file2.created
+            case .oldestToNewest:
+                return file1.created > file2.created
+            }
+        }
+    }
+
+    
 }
 
 extension VaultFile: CustomDebugStringConvertible {
