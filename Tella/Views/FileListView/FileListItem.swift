@@ -15,9 +15,8 @@ struct FileListItem: View {
                 .fill(Styles.Colors.fileIconBackground)
                 .frame(width: 35, height: 35, alignment: .center)
                 .overlay(
-                    Image(uiImage: file.thumbnailImage)
-                        .resizable()
-                        .frame(width: 20, height: 20)
+                    file.gridImage
+                        .frame(width: 35, height: 35)
                         .cornerRadius(5)
                 )
             VStack(alignment: .leading, spacing: 0){

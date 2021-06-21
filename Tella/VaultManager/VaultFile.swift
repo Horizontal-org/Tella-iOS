@@ -42,6 +42,10 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
         if let thumbnail = thumbnail, let image = UIImage(data: thumbnail) {
             return image
         }
+        return UIImage()
+    }
+    
+    var iconImage: UIImage {
         switch type {
         case .audio:
            return #imageLiteral(resourceName: "filetype.audio")
@@ -53,10 +57,9 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
             return #imageLiteral(resourceName: "filetype.video")
         case .image:
             return #imageLiteral(resourceName: "filetype.document")
-        default:
-            return #imageLiteral(resourceName: "filetype.document")
         }
     }
+
     
     func add(file: VaultFile) {
         fileName = UUID().uuidString
@@ -66,7 +69,7 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
     func remove(file: VaultFile) {
     }
 
-    static func sorted(files: [VaultFile], by sortOrder: FileSortOptions) -> [VaultFile] {
+    static func sorted(files: [VaultFile], by sortOrder: FileSortOptions, filter: FileType? = nil) -> [VaultFile] {
         return files.sorted { file1, file2 in
 
             if file1.type == .folder && file2.type == .folder {
