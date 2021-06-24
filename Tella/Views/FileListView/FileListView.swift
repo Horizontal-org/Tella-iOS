@@ -67,7 +67,7 @@ struct FileListView: View {
                     itemsListView
                 }
             }
-            AddFileButtonView(appModel: appModel)
+            AddFileButtonView(appModel: appModel, rootFile: rootFile)
         }
         .navigationBarTitle("\(rootFile.fileName)")
     }

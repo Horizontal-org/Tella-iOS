@@ -35,7 +35,7 @@ struct HomeView: View {
                         FileGroupsView(appModel: appModel)
                     }
                 }
-                AddFileButtonView(appModel: appModel)
+                AddFileButtonView(appModel: appModel, rootFile: nil)
             }
             .navigationBarTitle("Tella")
             .navigationBarItems(trailing: navBarButtons)
@@ -63,6 +63,7 @@ struct HomeView: View {
 struct AddFileButtonView: View {
     
     @ObservedObject var appModel: MainAppModel
+    var rootFile: VaultFile?
 
     @State var showingDocumentPicker = false
     @State var showingAddFileSheet = false
