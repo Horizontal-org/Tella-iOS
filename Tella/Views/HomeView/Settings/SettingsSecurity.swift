@@ -17,12 +17,26 @@ struct SettingsSecurity : View {
                     SettingToggleItem(title: "Delete vault", description: "Delete all photos, videos, and audio recordings in your Tella Gallery.", toggle: $viewModel.deleteVault)
                     SettingToggleItem(title: "Delete forms", description: "Delete all draft and submitted forms.", toggle: $viewModel.deleteForms)
                     SettingToggleItem(title: "Delete server settings", description: "Delete your connections to servers and all forms associated with them.", toggle: $viewModel.deleteServerSettings)
+                    Button {
+                        swapAppIcon()
+                    } label: {
+                        Text("Change Icon")
+                    }
                 }
                 .listRowBackground(Styles.Colors.backgroundTab)
             }.background(Styles.Colors.backgroundMain)
         }
         .navigationBarTitle("Secutiry")
     }
+    
+    private func swapAppIcon() {
+        if UIApplication.shared.alternateIconName == nil {
+            UIApplication.shared.setAlternateIconName("AppIcon-2")
+        } else {
+            UIApplication.shared.setAlternateIconName(nil)
+        }
+    }
+    
 }
 
 struct SettingsSecurity_Previews: PreviewProvider {

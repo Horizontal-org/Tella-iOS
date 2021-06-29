@@ -66,12 +66,14 @@ struct AddFileButtonView: View {
     var rootFile: VaultFile?
 
     @State var showingDocumentPicker = false
+    @State var showingImagePicker = false
     @State var showingAddFileSheet = false
     
     var body: some View {
         VStack{
             importFileActionSheet
             documentPickerView
+            imagePickerView
         }
     }
     
@@ -82,13 +84,28 @@ struct AddFileButtonView: View {
         } else {
             HStack{}
             .sheet(isPresented: $showingDocumentPicker, content: {
-                DocPickerView { urls in
-                    appModel.importFile(files: urls ?? [], to: nil)
+                DocumentPickerView { urls in
+                    appModel.add(files: urls ?? [], to: rootFile, type: .document)
                 }
             })
         }
     }
     
+    var imagePickerView: some View {
+        HStack{}
+        .sheet(isPresented: $showingImagePicker, content: {
+            ImagePickerView { image, url in
+                showingImagePicker = false
+                if let url = url {
+                    appModel.add(files: [url], to: rootFile, type: .video)
+                }
+                if let image = image {
+                    appModel.add(image: image, to: rootFile, type: .image)
+                }
+            }
+        })
+    }
+
     @available(iOS 14.0, *)
     var addFileDocumentImporter: some View {
         HStack{}
@@ -98,7 +115,7 @@ struct AddFileButtonView: View {
             allowsMultipleSelection: true,
             onCompletion: { result in
                 if let urls = try? result.get() {
-                    appModel.importFile(files: urls, to: nil)
+                    appModel.add(files: urls, to: rootFile, type: .document)
                 }
             }
         )
@@ -123,12 +140,15 @@ struct AddFileButtonView: View {
             .default(Text("Record Audio")) {
                 appModel.changeTab(to: .mic)
             },
+            .default(Text("Import Image/Video")) {
+                showingImagePicker = true
+            },
             .default(Text("Import From Device")) {
                 showingDocumentPicker = true
             },
-            .default(Text("Import and delete original")) {
-                showingDocumentPicker = true
-            },
+//            .default(Text("Import and delete original")) {
+//                showingDocumentPicker = true
+//            },
             .cancel()
         ])
     }

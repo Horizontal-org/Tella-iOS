@@ -15,20 +15,20 @@ struct RecentFilesListView: View {
                 .foregroundColor(.white)
                 .frame(maxHeight: 24, alignment: .leading)
                 .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-            if appModel.fileManager.recentFiles.count > 0 {
+            if appModel.vaultManager.recentFiles.count > 0 {
                 recentFilesView
             } else {
                 emptyRecentFilesView
             }
         }
-        .frame(height: appModel.fileManager.recentFiles.count > 0 ? 180: 100)
+        .frame(height: appModel.vaultManager.recentFiles.count > 0 ? 180: 100)
         .background(Styles.Colors.backgroundMain)
     }
     
     var recentFilesView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
           HStack(spacing: 10) {
-              ForEach(appModel.fileManager.recentFiles, id: \.fileName) { file in
+              ForEach(appModel.vaultManager.recentFiles, id: \.fileName) { file in
                   Divider()
                     NavigationLink(destination: FileDetailView(file: file)) {
                       RecentFileCell(recentFile: file)

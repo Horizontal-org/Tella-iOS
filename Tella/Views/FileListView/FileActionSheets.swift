@@ -40,7 +40,9 @@ struct FileSortMenu: View {
 struct FileActionMenu: View {
     
     var selectedFile: VaultFile
+    var parentFile: VaultFile?
     @Binding var showingActionSheet: Bool
+    @ObservedObject var appModel: MainAppModel
 
     var body: some View {
         HStack{
@@ -52,19 +54,20 @@ struct FileActionMenu: View {
     
     var menuActionSheet: ActionSheet {
         ActionSheet(title: Text("\(selectedFile.fileName)"),  buttons: [
-            .default(Text("Upload")) {
-            },
-            .default(Text("Share")) {
-            },
-            .default(Text("Move")) {
-            },
-            .default(Text("Rename")) {
-            },
-            .default(Text("Save to device")) {
-            },
+//            .default(Text("Upload")) {
+//            },
+//            .default(Text("Share")) {
+//            },
+//            .default(Text("Move")) {
+//            },
+//            .default(Text("Rename")) {
+//            },
+//            .default(Text("Save to device")) {
+//            },
             .default(Text("File information")) {
             },
             .destructive(Text("Delete")) {
+                appModel.delete(file: selectedFile, from: parentFile)
             },
             .cancel()
         ])

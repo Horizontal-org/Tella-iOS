@@ -105,7 +105,7 @@ struct FileListView: View {
                     }
                     .opacity(0)
                     .background(Styles.Colors.backgroundMain)
-                    FileListItem(file: file)
+                    FileListItem(file: file, parentFile: rootFile, appModel: appModel)
                 }
                 .frame(height: 50)
             }

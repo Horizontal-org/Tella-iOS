@@ -46,7 +46,21 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
     }
 
-    func importFile(files: [URL], to parentFolder: VaultFile?) {
+    func importFile(image: UIImage, to parentFolder: VaultFile?, type: FileType) {
+        guard let data = image.pngData() else {
+            return
+        }
+        let fileName = "\(type)_new"
+        if let newFile = save(data, type: type, name: fileName, parent: parentFolder) {
+            if type == .image {
+                newFile.thumbnail = image.getThumbnail()?.pngData()
+            }
+            recentFiles.append(newFile)
+            save(file: root)
+        }
+    }
+    
+    func importFile(files: [URL], to parentFolder: VaultFile?, type: FileType) {
         for filePath in files {
             debugLog("\(filePath)", space: .crypto)
             let containerName = UUID().uuidString
@@ -142,16 +156,13 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
     
     func delete(file: VaultFile, parent: VaultFile?) {
+        parent?.files = parent?.files.filter({ $0.containerName != file.containerName }) ?? []
+        
         let fileURL = containerURL(for: file.containerName)
-        //TODO: delete file at path
         for aFile in file.files {
-            delete(file: aFile, parent: nil)
+            delete(file: aFile, parent: parent)
         }
-        do {
-            try FileManager.default.removeItem(at: fileURL)
-        } catch let error {
-            debugLog(error)
-        }
+        fileManager.removeItem(at: fileURL)
     }
 
     private func containerURL(for containerName: String) -> URL {

@@ -4,6 +4,14 @@
 
 import SwiftUI
 
+protocol AppModelFileManagerProtocol {
+    
+    func add(files: [URL], to parentFolder: VaultFile?, type: FileType)
+    func add(image: UIImage, to parentFolder: VaultFile?, type: FileType)
+    func delete(file: VaultFile)
+    
+}
+
 class MainAppModel: ObservableObject {
     
     enum Tabs: Hashable {
@@ -15,7 +23,7 @@ class MainAppModel: ObservableObject {
     }
     
     @Published var settings: SettingsModel = SettingsModel()
-    @Published var fileManager: VaultManager = VaultManager(cryptoManager: DummyCryptoManager(), fileManager: DefaultFileManager(), rootFileName: "rootFile", containerPath: "")
+    @Published var vaultManager: VaultManager = VaultManager(cryptoManager: DummyCryptoManager(), fileManager: DefaultFileManager(), rootFileName: "rootFile", containerPath: "")
 
     @Published var selectedTab: Tabs = .home
     
@@ -23,10 +31,21 @@ class MainAppModel: ObservableObject {
         selectedTab = newTab
     }
     
-    func importFile(files: [URL], to parentFolder: VaultFile?) {
-        fileManager.importFile(files: files, to: parentFolder)
+    func add(files: [URL], to parentFolder: VaultFile?, type: FileType) {
+        vaultManager.importFile(files: files, to: parentFolder, type: type)
         objectWillChange.send()
     }
+    
+    func add(image: UIImage, to parentFolder: VaultFile?, type: FileType) {
+        vaultManager.importFile(image: image, to: parentFolder, type: type)
+        objectWillChange.send()
+    }
+
+    func delete(file: VaultFile, from parentFolder: VaultFile?) {
+        vaultManager.delete(file: file, parent: parentFolder)
+        objectWillChange.send()
+    }
+    
 }
 
 class SettingsModel: ObservableObject {

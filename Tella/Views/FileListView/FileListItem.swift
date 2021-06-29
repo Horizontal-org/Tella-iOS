@@ -5,10 +5,13 @@
 import SwiftUI
 
 struct FileListItem: View {
-    
+
     var file: VaultFile
+    var parentFile: VaultFile?
+
     @State var showingActionSheet: Bool = false
-    
+    @ObservedObject var appModel: MainAppModel
+
     var body: some View {
         HStack(spacing: 0){
             RoundedRectangle(cornerRadius: 5)
@@ -43,7 +46,7 @@ struct FileListItem: View {
             .onTapGesture {
                 showingActionSheet = true
             }
-            FileActionMenu(selectedFile: file, showingActionSheet: $showingActionSheet)
+            FileActionMenu(selectedFile: file, parentFile: parentFile, showingActionSheet: $showingActionSheet, appModel: appModel)
         }
         .listRowBackground(Styles.Colors.backgroundMain)
         .background(Styles.Colors.backgroundMain)
