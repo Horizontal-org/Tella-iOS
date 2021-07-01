@@ -25,6 +25,7 @@ enum DebugLevel: Int {
 
 enum DebugSpace: String {
     case app = "app"
+    case files = "files"
     case crypto = "crypto"
 }
 

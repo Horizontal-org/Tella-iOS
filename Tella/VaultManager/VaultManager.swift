@@ -47,6 +47,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
 
     func importFile(image: UIImage, to parentFolder: VaultFile?, type: FileType) {
+        debugLog("\(image)", space: .files)
         guard let data = image.pngData() else {
             return
         }
@@ -55,14 +56,15 @@ class VaultManager: VaultManagerInterface, ObservableObject {
             if type == .image {
                 newFile.thumbnail = image.getThumbnail()?.pngData()
             }
-            recentFiles.append(newFile)
+            addRecentFile(file: newFile)
             save(file: root)
         }
     }
     
     func importFile(files: [URL], to parentFolder: VaultFile?, type: FileType) {
         for filePath in files {
-            debugLog("\(filePath)", space: .crypto)
+            debugLog("\(filePath)", space: .files)
+
             let containerName = UUID().uuidString
             let fileName = filePath.lastPathComponent
             do {
@@ -78,12 +80,14 @@ class VaultManager: VaultManagerInterface, ObservableObject {
             }
             let newFile = VaultFile(type: .document, fileName: fileName, containerName: containerName, files: nil)
             (parentFolder ?? root).add(file: newFile)
-            recentFiles.append(newFile)
+            addRecentFile(file: newFile)
         }
         save(file: root)
     }
     
     func load(name: String) -> VaultFile? {
+        debugLog("\(name)", space: .files)
+        
         let fileURL = containerURL(for: name)
         debugLog("loading \(fileURL)")
         do {
@@ -100,6 +104,8 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
 
     func load(file vaultFile: VaultFile) -> Data? {
+        debugLog("\(vaultFile)", space: .files)
+
         let fileURL = containerURL(for: vaultFile.containerName)
         guard let encryptedData = fileManager.contents(atPath: fileURL) else {
             return nil
@@ -108,6 +114,8 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
 
     func save(file vaultFile: VaultFile) {
+        debugLog("\(vaultFile)", space: .files)
+        
         let fileURL = containerURL(for: vaultFile.containerName)
         do {
             let encodedData = try encoder.encode(vaultFile)
@@ -123,6 +131,8 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
     
     func save(_ data: Data, type: FileType, name: String, parent: VaultFile?) -> VaultFile? {
+        debugLog("\(data.count); \(type); \(name); \nparent:\(String(describing: parent))", space: .files)
+        
         let containerName = UUID().uuidString
         let fileURL = containerURL(for: containerName)
         let vaultFile = VaultFile(type: type, fileName: name, containerName: containerName, files: nil)
@@ -143,6 +153,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
     
     func removeAllFiles() {
+        debugLog("", space: .files)
         do {
             let files = fileManager.contentsOfDirectory(atPath: containerURL)
             for aFile in files {
@@ -156,7 +167,9 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
     
     func delete(file: VaultFile, parent: VaultFile?) {
+        debugLog("\(file)", space: .files)
         parent?.files = parent?.files.filter({ $0.containerName != file.containerName }) ?? []
+        removeRecentFile(file: file)
         
         let fileURL = containerURL(for: file.containerName)
         for aFile in file.files {
@@ -172,6 +185,16 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     private var containerURL: URL {
         return FileManager.default.urls(for: .documentDirectory,
                                         in: .userDomainMask)[0].appendingPathComponent(containerPath)
+    }
+    
+    //MARK: recent file
+    private func addRecentFile(file: VaultFile) {
+        debugLog("\(file)", space: .files)
+        recentFiles.append(file)
+    }
+    
+    private func removeRecentFile(file: VaultFile) {
+        recentFiles = recentFiles.filter({ $0.containerName != file.containerName })
     }
     
 }

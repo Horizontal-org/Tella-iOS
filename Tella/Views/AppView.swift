@@ -41,7 +41,7 @@ struct AppView: View {
                     Image("tab.reports")
                     Text("Reports")
                 }.tag(MainAppModel.Tabs.reports)
-            CameraView()
+            CameraView(appModel: appModel)
                 .tabItem {
                     Image("tab.camera")
                     Text("Camera")

@@ -26,6 +26,7 @@
 		0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC267A5267AED7C00E55AFA /* VaultFile.swift */; };
 		0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */; };
 		0DC411E12668469C00BF0DE1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC411E02668469C00BF0DE1 /* SettingsView.swift */; };
+		0DC776F3268AEE1500A87700 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AAD123FB08D60094D71D /* CameraView.swift */; };
 		0DEFD548268943CC0014EADE /* DocumentPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEFD547268943CC0014EADE /* DocumentPickerView.swift */; };
 		0DEFD54A268945C60014EADE /* ModelStubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3CB26765B8C00DCDC30 /* ModelStubs.swift */; };
 		0DEFD54B268946460014EADE /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AACD23FADACE0094D71D /* Enums.swift */; };
@@ -43,7 +44,6 @@
 		1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerView.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
 		1EBF3CB5246649DC0004E331 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBF3CB4246649DC0004E331 /* AudioPlayer.swift */; };
-		6D14AAD223FB08D60094D71D /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AAD123FB08D60094D71D /* CameraView.swift */; };
 		6D14AADA2405AC1B0094D71D /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AAD92405AC1A0094D71D /* FileManager.swift */; };
 		6D848FA32416D12D004896E0 /* CryptoManagerV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D848FA22416D12D004896E0 /* CryptoManagerV1.swift */; };
 		6DC2ABC9245029BC004579DF /* PasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC2ABC8245029BC004579DF /* PasswordView.swift */; };
@@ -852,7 +852,6 @@
 				D51639802631130E003A11B5 /* HomeView.swift in Sources */,
 				0F3DC3E52523951C0024B4A0 /* BundleInfo.swift in Sources */,
 				0DEFD54C268946600014EADE /* Components.swift in Sources */,
-				6D14AAD223FB08D60094D71D /* CameraView.swift in Sources */,
 				D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */,
 				0D4D7516266466C500D7A635 /* SettingsDocumentation.swift in Sources */,
 				0D4D751A2664738800D7A635 /* HostingController.swift in Sources */,
@@ -863,6 +862,7 @@
 				0E78B3BB2656B0BC00F9BDBC /* VideoRecordingView.swift in Sources */,
 				D5163985263113B7003A11B5 /* MicView.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
+				0DC776F3268AEE1500A87700 /* CameraView.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				0D4BC3C6267577F900DCDC30 /* DocumentPicker.swift in Sources */,
 				0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */,

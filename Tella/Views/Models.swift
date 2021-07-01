@@ -32,18 +32,30 @@ class MainAppModel: ObservableObject {
     }
     
     func add(files: [URL], to parentFolder: VaultFile?, type: FileType) {
-        vaultManager.importFile(files: files, to: parentFolder, type: type)
-        objectWillChange.send()
+        DispatchQueue.global(qos: .background).async {
+            self.vaultManager.importFile(files: files, to: parentFolder, type: type)
+            self.publishUpdates()
+        }
     }
     
     func add(image: UIImage, to parentFolder: VaultFile?, type: FileType) {
-        vaultManager.importFile(image: image, to: parentFolder, type: type)
-        objectWillChange.send()
+        DispatchQueue.global(qos: .background).async {
+            self.vaultManager.importFile(image: image, to: parentFolder ?? self.vaultManager.root, type: type)
+            self.publishUpdates()
+        }
     }
 
     func delete(file: VaultFile, from parentFolder: VaultFile?) {
-        vaultManager.delete(file: file, parent: parentFolder)
-        objectWillChange.send()
+        DispatchQueue.global(qos: .background).async {
+            self.vaultManager.delete(file: file, parent: parentFolder)
+            self.publishUpdates()
+        }
+    }
+    
+    private func publishUpdates() {
+        DispatchQueue.main.async {
+            self.objectWillChange.send()
+        }
     }
     
 }

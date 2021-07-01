@@ -28,7 +28,7 @@ struct RecentFilesListView: View {
     var recentFilesView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
           HStack(spacing: 10) {
-              ForEach(appModel.vaultManager.recentFiles, id: \.fileName) { file in
+              ForEach(appModel.vaultManager.recentFiles, id: \.self) { file in
                   Divider()
                     NavigationLink(destination: FileDetailView(file: file)) {
                       RecentFileCell(recentFile: file)

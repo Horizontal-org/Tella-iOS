@@ -1,38 +1,44 @@
 //
-//  CameraView.swift
-//  Tella
+//  Copyright © 2021 INTERNEWS. All rights reserved.
 //
-//  Created by Oliphant, Samuel on 2/17/20.
-//  Copyright © 2020 Anessa Petteruti. All rights reserved.
-//
-/*
- This class presents the camera view. It uses the UIImagePickerController UIKit class in order to allow users to capture photos directly through the app. The images will automatically be encrypted and saved only in the Tella app, not in the user's gallery.
- This class also relies on a wrapper class for a UIKit framework. We are using the UIImagePickerController again, but this one has different settings because we are using it to access camera instead of photos.
- */
+
 import SwiftUI
 
 struct CameraView: View {
+    
+    @ObservedObject var appModel: MainAppModel
+    
     var body: some View {
-        CaptureImageView()
+        ZStack{
+            CaptureImageView { image in
+                guard let image = image else {
+                    return
+                }
+                appModel.add(image: image, to: nil, type: .image)
+            }
+        }
+        .edgesIgnoringSafeArea(.top)
     }
 }
 
 //  Setting uo the wrapper class for UIImagePickerController
-
 struct CaptureImageView: UIViewControllerRepresentable {
-    @EnvironmentObject private var appViewState: AppViewState
 
+    let completion: (UIImage?) -> ()
+    
     func makeCoordinator() -> Coordinator {
-        Coordinator {
-            self.appViewState.navigateBack()
-        }
+        Coordinator (completion: completion)
     }
     
     func makeUIViewController(context: UIViewControllerRepresentableContext<CaptureImageView>) ->
         UIImagePickerController {
             let picker = UIImagePickerController()
             picker.delegate = context.coordinator
-            picker.sourceType = .camera
+            #if targetEnvironment(simulator)
+                picker.sourceType = .photoLibrary
+            #else
+                picker.sourceType = .camera
+            #endif
             return picker
         }
     
@@ -41,22 +47,19 @@ struct CaptureImageView: UIViewControllerRepresentable {
 
 //  Coordinator which acts as the go between for UIKit and SwiftUI
 class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-    private let completion: () -> Void
+    
+    let completion: (UIImage?) -> ()
 
-    init(completion: @escaping () -> Void) {
+    init(completion: @escaping (UIImage?) -> ()) {
         self.completion = completion
     }
 
-//  This function is called when a user takes a photo
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let unwrappedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-        //  saves the image taken by the camera to the internal Tella file manager
-        TellaFileManager.saveImage(unwrappedImage)
-        completion()
+        completion(unwrappedImage)
     }
 
-//  This function is called when a user cancels and returns them to the main page
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        completion()
+        completion(nil)
     }
 }

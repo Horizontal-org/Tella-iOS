@@ -10,7 +10,7 @@ extension VaultFile {
             ZStack{
                 Image(uiImage: thumbnailImage)
                     .resizable()
-                    .scaledToFit()
+                    .aspectRatio(1, contentMode: .fill)
                 Image(uiImage: iconImage)
             }
             .background(Color.gray)

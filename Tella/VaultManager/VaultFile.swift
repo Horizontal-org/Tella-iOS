@@ -56,7 +56,7 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
         case .video:
             return #imageLiteral(resourceName: "filetype.video")
         case .image:
-            return #imageLiteral(resourceName: "filetype.document")
+            return UIImage()
         }
     }
 
