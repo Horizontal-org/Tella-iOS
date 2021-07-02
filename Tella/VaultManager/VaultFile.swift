@@ -10,6 +10,7 @@ enum FileType: String, Codable {
     case audio
     case document
     case image
+    case unknown
     case folder
 }
 
@@ -26,8 +27,8 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
     var thumbnail: Data?
     var created: Date
     
-    static func rootFile(containerName: String) -> VaultFile {
-        return VaultFile(type: .folder, fileName: "", containerName: containerName, files: [])
+    static func rootFile(containerName: String, fileName: String) -> VaultFile {
+        return VaultFile(type: .folder, fileName: fileName, containerName: containerName, files: [])
     }
 
     init(type: FileType, fileName: String, containerName: String, files: [VaultFile]? = nil, thumbnail: Data? = nil) {
@@ -58,6 +59,8 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
             return #imageLiteral(resourceName: "filetype.video")
         case .image:
             return UIImage()
+        case .unknown:
+            return #imageLiteral(resourceName: "filetype.document")
         }
     }
 
@@ -70,8 +73,36 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
     func remove(file: VaultFile) {
     }
 
-    static func sorted(files: [VaultFile], by sortOrder: FileSortOptions, filter: FileType? = nil) -> [VaultFile] {
-        return files.sorted { file1, file2 in
+}
+
+extension VaultFile: CustomDebugStringConvertible {
+    
+    var debugDescription: String {
+        return "\(type): \(String(describing: fileName)), \(containerName), \(files.count)"
+    }
+    
+}
+
+extension VaultFile: Equatable {
+    
+    static func == (lhs: VaultFile, rhs: VaultFile) -> Bool {
+        lhs.fileName == rhs.fileName &&
+        lhs.containerName == rhs.containerName
+    }
+    
+}
+
+extension Array where Element == VaultFile {
+    
+    func filtered(with filter: [FileType]?, includeFolders: Bool) -> [Element] {
+        guard let filter = filter else {
+            return self
+        }
+        return self.filter({ filter.contains($0.type) || (includeFolders && $0.type == .folder)})
+    }
+    
+    func sorted(by sortOrder: FileSortOptions) -> [VaultFile] {
+        return self.sorted { file1, file2 in
 
             if file1.type == .folder && file2.type == .folder {
                 return file1.fileName > file2.fileName
@@ -96,23 +127,5 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
             }
         }
     }
-
-    
 }
 
-extension VaultFile: CustomDebugStringConvertible {
-    
-    var debugDescription: String {
-        return "\(type): \(String(describing: fileName)), \(containerName), \(files.count)"
-    }
-    
-}
-
-extension VaultFile: Equatable {
-    
-    static func == (lhs: VaultFile, rhs: VaultFile) -> Bool {
-        lhs.fileName == rhs.fileName &&
-        lhs.containerName == rhs.containerName
-    }
-    
-}

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D25C412268EAF57002BB7CA /* VideoRecordingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E78B3B62656B0BC00F9BDBC /* VideoRecordingView.swift */; };
 		0D4BC3C3267577F900DCDC30 /* ReportModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3BF267577F900DCDC30 /* ReportModels.swift */; };
 		0D4BC3C4267577F900DCDC30 /* NewReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3C0267577F900DCDC30 /* NewReportView.swift */; };
 		0D4BC3C5267577F900DCDC30 /* ReportsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3C1267577F900DCDC30 /* ReportsView.swift */; };
@@ -39,7 +40,6 @@
 		0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E78B3A62656B03500F9BDBC /* ConfirmBottomSheet.swift */; };
 		0E78B3AE2656B04B00F9BDBC /* open-sans.regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0E78B3AD2656B04B00F9BDBC /* open-sans.regular.ttf */; };
 		0E78B3BA2656B0BC00F9BDBC /* VideoPlayerUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E78B3B52656B0BC00F9BDBC /* VideoPlayerUI.swift */; };
-		0E78B3BB2656B0BC00F9BDBC /* VideoRecordingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E78B3B62656B0BC00F9BDBC /* VideoRecordingView.swift */; };
 		0F3DC3E52523951C0024B4A0 /* BundleInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F3DC3E42523951C0024B4A0 /* BundleInfo.swift */; };
 		1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerView.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
@@ -326,6 +326,7 @@
 		0DEFD5492689456D0014EADE /* TellaV1 */ = {
 			isa = PBXGroup;
 			children = (
+				0E78B3B62656B0BC00F9BDBC /* VideoRecordingView.swift */,
 				6D848FA22416D12D004896E0 /* CryptoManagerV1.swift */,
 				F66E65B023E3207D000F93E5 /* ContentView.swift */,
 				6D14AACB23FA3A2B0094D71D /* Components.swift */,
@@ -526,7 +527,6 @@
 			children = (
 				0DEFD5492689456D0014EADE /* TellaV1 */,
 				0E78B3B52656B0BC00F9BDBC /* VideoPlayerUI.swift */,
-				0E78B3B62656B0BC00F9BDBC /* VideoRecordingView.swift */,
 				D53B77022601D5170001CD34 /* Tella.entitlements */,
 				0E78B3AC2656B04B00F9BDBC /* fonts */,
 				D53B76DC2601C9F40001CD34 /* Common */,
@@ -859,7 +859,6 @@
 				0E64C6A6265E7625005A7934 /* ActionsBottomSheetFileActions.swift in Sources */,
 				D5077A40260D300600D72947 /* DebugLogging.swift in Sources */,
 				0DEFD54B268946460014EADE /* Enums.swift in Sources */,
-				0E78B3BB2656B0BC00F9BDBC /* VideoRecordingView.swift in Sources */,
 				D5163985263113B7003A11B5 /* MicView.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
 				0DC776F3268AEE1500A87700 /* CameraView.swift in Sources */,
@@ -896,6 +895,7 @@
 				6DD4C03A240F547300491438 /* Util.swift in Sources */,
 				0DA213C92680288B00526995 /* FileActionSheets.swift in Sources */,
 				0DEFD548268943CC0014EADE /* DocumentPickerView.swift in Sources */,
+				0D25C412268EAF57002BB7CA /* VideoRecordingView.swift in Sources */,
 				D5B823F0262775D80008E04B /* CryptoManager.swift in Sources */,
 				0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */,
 				0D4D7518266470A700D7A635 /* SettingsViews.swift in Sources */,
@@ -1138,7 +1138,7 @@
 				CODE_SIGN_ENTITLEMENTS = Tella/Tella.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"Tella/Preview Content\"";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
@@ -1165,7 +1165,7 @@
 				CODE_SIGN_ENTITLEMENTS = Tella/Tella.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"Tella/Preview Content\"";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;

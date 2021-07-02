@@ -1,16 +1,9 @@
 //
-//  Util.swift
-//  Tella
+//  Copyright © 2021 INTERNEWS. All rights reserved.
 //
-//  Created by Oliphant, Samuel on 2/26/20.
-//  Copyright © 2020 Anessa Petteruti. All rights reserved.
-//
-
-/*
- Utilites class for miscellaneous functions
- */
 
 import UIKit
+import AVFoundation
 import SwiftUI
 
 // Taken from here:
@@ -134,8 +127,10 @@ extension URL {
                 fileType = .image
             case "MOV", "AVI":
                 fileType = .video
+            case "PDF":
+                fileType = .document
         default:
-            fileType = .document
+            fileType = .unknown
         }
         return fileType
     }

@@ -3,7 +3,6 @@
 //
 
 import UIKit
-import AVFoundation
 
 protocol VaultManagerInterface {
     
@@ -38,7 +37,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         self.rootFileName = rootFileName
         self.containerPath = containerPath
 
-        root = VaultFile.rootFile(containerName: rootFileName)
+        root = VaultFile.rootFile(containerName: rootFileName, fileName: "..")
         if let root = load(name: rootFileName) {
             self.root = root
         } else {

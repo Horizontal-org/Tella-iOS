@@ -22,23 +22,23 @@ struct FileGroupsView: View {
                         FileGroupView(groupName: "My Files", iconName: "files.my_files")
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 8))
                     }
-                    NavigationLink(destination: FileListView(appModel: appModel, files: appModel.vaultManager.root.files, fileType: .image, rootFile: appModel.vaultManager.root)) {
+                    NavigationLink(destination: FileListView(appModel: appModel, files: appModel.vaultManager.root.files, fileType: [.image, .video], rootFile: appModel.vaultManager.root)) {
                         FileGroupView(groupName: "Gallery", iconName: "files.gallery")
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 8))
                     }
                 }
                 HStack(spacing: 0){
-                    NavigationLink(destination: FileListView(appModel: appModel, files: appModel.vaultManager.root.files, fileType: .image, rootFile: appModel.vaultManager.root)) {
+                    NavigationLink(destination: FileListView(appModel: appModel, files: appModel.vaultManager.root.files, fileType: [.audio], rootFile: appModel.vaultManager.root)) {
                         FileGroupView(groupName: "Audio", iconName: "files.audio")
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 8))
                     }
-                    NavigationLink(destination: FileListView(appModel: appModel, files: appModel.vaultManager.root.files, fileType: .document, rootFile: appModel.vaultManager.root)) {
+                    NavigationLink(destination: FileListView(appModel: appModel, files: appModel.vaultManager.root.files, fileType: [.document], rootFile: appModel.vaultManager.root)) {
                         FileGroupView(groupName: "Documents", iconName: "files.documents")
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 8))
                     }
                 }.padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0))
                 HStack(spacing: 0){
-                    NavigationLink(destination: FileListView(appModel: appModel, files: appModel.vaultManager.root.files, fileType: .document, rootFile: appModel.vaultManager.root)) {
+                    NavigationLink(destination: FileListView(appModel: appModel, files: appModel.vaultManager.root.files, fileType: [.unknown], rootFile: appModel.vaultManager.root)) {
                         FileGroupView(groupName: "Others", iconName: "files.others")
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 8))
                     }

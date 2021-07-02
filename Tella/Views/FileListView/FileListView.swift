@@ -34,11 +34,11 @@ struct FileListView: View {
     @ObservedObject var viewModel = FileListViewModel()
 
     var rootFile: VaultFile
-    var fileType: FileType?
+    var fileType: [FileType]?
     var files: [VaultFile]
     
-    init(appModel: MainAppModel, files: [VaultFile], fileType: FileType? = nil, rootFile: VaultFile) {
-        self.files = files
+    init(appModel: MainAppModel, files: [VaultFile], fileType: [FileType]? = nil, rootFile: VaultFile) {
+        self.files = files.filtered(with: fileType, includeFolders: true)
         self.fileType = fileType
         self.appModel = appModel
         self.rootFile = rootFile
@@ -81,7 +81,7 @@ struct FileListView: View {
     var itemsGridView: some View {
         ScrollView {
             LazyVGrid(columns: gridLayout, alignment: .center, spacing: 6) {
-                ForEach(VaultFile.sorted(files: files, by: viewModel.sortBy), id: \.self) { file in
+                ForEach(files.sorted(by: viewModel.sortBy), id: \.self) { file in
                     NavigationLink(
                         destination: FileDetailView(file: file)) {
                         file.gridImage
@@ -97,7 +97,7 @@ struct FileListView: View {
     
     var itemsListView: some View {
         List {
-            ForEach(VaultFile.sorted(files: files, by: viewModel.sortBy), id: \.self) { file in
+            ForEach(files.sorted(by: viewModel.sortBy), id: \.self) { file in
                 ZStack(alignment: .leading) {
                     NavigationLink(
                         destination: FileDetailView(file: file)) {
