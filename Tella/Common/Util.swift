@@ -123,3 +123,50 @@ extension View {
         AnyView(self)
     }
 }
+
+// TODO: unit tests
+extension URL {
+    
+    var fileType: FileType {
+        let fileType: FileType
+        switch self.pathExtension.uppercased() {
+            case "PNG", "JPG":
+                fileType = .image
+            case "MOV", "AVI":
+                fileType = .video
+        default:
+            fileType = .document
+        }
+        return fileType
+    }
+
+    //TODO: add it for all files
+    var thumbnail: UIImage? {
+        let thumbnail: UIImage?
+        switch fileType {
+        case .video:
+            thumbnail = generateVideoThumbnail()
+        default:
+            thumbnail = nil
+        }
+        return thumbnail
+    }
+    
+    //TODO: not working for files from File
+    func generateVideoThumbnail() -> UIImage? {
+        do {
+            let asset = AVURLAsset(url: self)
+            let imageGenerator = AVAssetImageGenerator(asset: asset)
+            imageGenerator.appliesPreferredTrackTransform = true
+            // Select the right one based on which version you are using
+            // Swift 4.2
+            let cgImage = try imageGenerator.copyCGImage(at: .zero,
+                                                         actualTime: nil)
+            return UIImage(cgImage: cgImage)
+        } catch let error {
+            debugLog(error)
+            return nil
+        }
+    }
+    
+}

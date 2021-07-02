@@ -111,7 +111,7 @@ struct AddFileButtonView: View {
         HStack{}
         .fileImporter(
             isPresented: $showingDocumentPicker,
-            allowedContentTypes: [UTType(filenameExtension: "pdf")].compactMap { $0 },
+            allowedContentTypes: [.data],
             allowsMultipleSelection: true,
             onCompletion: { result in
                 if let urls = try? result.get() {

@@ -3,7 +3,7 @@
 //
 
 import UIKit
-import SwiftUI
+import AVFoundation
 
 protocol VaultManagerInterface {
     
@@ -67,18 +67,20 @@ class VaultManager: VaultManagerInterface, ObservableObject {
 
             let containerName = UUID().uuidString
             let fileName = filePath.lastPathComponent
+            let newFilePath = containerURL(for: containerName)
             do {
                 //TODO: add encryption on copying
-                let newFilePath = containerURL(for: containerName)
                 if filePath.startAccessingSecurityScopedResource() {
                     defer { filePath.stopAccessingSecurityScopedResource() }
-                    try FileManager.default.copyItem(at: filePath, to: newFilePath)
+                    try fileManager.copyItem(at: filePath, to: newFilePath)
                 }
             } catch let error {
                 debugLog(error, space: .crypto)
                 continue
             }
-            let newFile = VaultFile(type: .document, fileName: fileName, containerName: containerName, files: nil)
+            let fileType = filePath.fileType
+            let thumbnail = filePath.thumbnail?.pngData()
+            let newFile = VaultFile(type: fileType, fileName: fileName, containerName: containerName, thumbnail: thumbnail)
             (parentFolder ?? root).add(file: newFile)
             addRecentFile(file: newFile)
         }
@@ -154,15 +156,11 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     
     func removeAllFiles() {
         debugLog("", space: .files)
-        do {
-            let files = fileManager.contentsOfDirectory(atPath: containerURL)
-            for aFile in files {
-                if let fileURL = URL(string: aFile) {
-                    try FileManager.default.removeItem(at: fileURL)
-                }
+        let files = fileManager.contentsOfDirectory(atPath: containerURL)
+        for aFile in files {
+            if let fileURL = URL(string: aFile) {
+                fileManager.removeItem(at: fileURL)
             }
-        } catch let error{
-            debugLog(error)
         }
     }
     

@@ -30,12 +30,13 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
         return VaultFile(type: .folder, fileName: "", containerName: containerName, files: [])
     }
 
-    init(type: FileType, fileName: String, containerName: String, files: [VaultFile]?) {
+    init(type: FileType, fileName: String, containerName: String, files: [VaultFile]? = nil, thumbnail: Data? = nil) {
         self.type = type
         self.fileName = fileName
         self.containerName = containerName
         self.files = files ?? []
         self.created = Date()
+        self.thumbnail = thumbnail
     }
     
     var thumbnailImage: UIImage {
