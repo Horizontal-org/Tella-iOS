@@ -4,92 +4,183 @@
 
 import SwiftUI
 
+extension VaultFile {
+    var gridImage: AnyView {
+        AnyView(
+            ZStack{
+                Image(uiImage: thumbnailImage)
+                    .resizable()
+                    .aspectRatio(1, contentMode: .fill)
+                Image(uiImage: iconImage)
+            }
+            .background(Color.gray)
+        )
+    }
+}
+
+class FileListViewModel: ObservableObject {
+    @Published var showingSortFilesActionSheet = false
+    @Published var showingFileActionMenu = false
+    @Published var showingFilesSelectionMenu = false
+    @Published var selectingFiles = false
+    
+    @Published var sortBy: FileSortOptions = FileSortOptions.nameAZ
+    @Published var viewType: FileViewType = FileViewType.list
+}
+
 struct FileListView: View {
     
-    var fileType: FileType?
+    @ObservedObject var appModel: MainAppModel
+    @ObservedObject var viewModel = FileListViewModel()
+
+    var rootFile: VaultFile
+    var fileType: [FileType]?
     var files: [VaultFile]
     
-    init(files: [VaultFile], fileType: FileType? = nil) {
+    init(appModel: MainAppModel, files: [VaultFile], fileType: [FileType]? = nil, rootFile: VaultFile) {
+        self.files = files.filtered(with: fileType, includeFolders: true)
+        self.fileType = fileType
+        self.appModel = appModel
+        self.rootFile = rootFile
+    }
+    
+    func setupView() {
         UITableView.appearance().separatorStyle = .none
         UITableView.appearance().tableFooterView = UIView()
         UITableView.appearance().separatorColor = .clear
         UITableView.appearance().allowsSelection = false
         UITableViewCell.appearance().selectedBackgroundView = UIView()
-        self.files = files
-        self.fileType = fileType
     }
-    
+
     var body: some View {
         ZStack(alignment: .top) {
-            Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)
-            List{
-                ForEach(files, id: \.fileName) { file in
-                    FileListItem(file: file)
-//                    NavigationLink(destination: FileDetailView(file: file)) {
-//                  }.background(Color(Styles.Colors.backgroundMain))
+            Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
+            VStack {
+                topBarButtons
+                if #available(iOS 14.0, *) {
+                    if viewModel.viewType == .list {
+                        itemsListView
+                    } else {
+                        itemsGridView
+                    }
+                } else {
+                    itemsListView
                 }
             }
-            .listStyle(PlainListStyle())
-            .background(Color(Styles.Colors.backgroundMain))
+            AddFileButtonView(appModel: appModel, rootFile: rootFile)
+        }
+        .navigationBarTitle("\(rootFile.fileName)")
+    }
+
+    @available(iOS 14.0, *)
+    private var gridLayout: [GridItem] {
+        [GridItem(.adaptive(minimum: 87))]
+    }
+    
+    @available(iOS 14.0, *)
+    var itemsGridView: some View {
+        ScrollView {
+            LazyVGrid(columns: gridLayout, alignment: .center, spacing: 6) {
+                ForEach(files.sorted(by: viewModel.sortBy), id: \.self) { file in
+                    NavigationLink(
+                        destination: FileDetailView(file: file)) {
+                        file.gridImage
+                            .frame(minWidth: 0, maxWidth: .infinity)
+                            .frame(maxHeight: 300)
+                            .cornerRadius(5)
+                            .background(Styles.Colors.backgroundMain)
+                    }
+                }
+            }.padding(EdgeInsets(top: 0, leading: 6, bottom: 0, trailing: 6))
         }
     }
-}
-
-struct FileListItem: View {
     
-    var file: VaultFile
-    @State var showFileMenu: Bool = false
-    
-    var body: some View {
-        HStack(spacing: 0){
-            RoundedRectangle(cornerRadius: 5)
-                .fill(Styles.Colors.fileIconBackground)
-                .frame(width: 35, height: 35, alignment: .center)
-                .overlay(
-                    Image(uiImage: file.thumbnailImage)
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .cornerRadius(5)
-                )
-            VStack(alignment: .leading, spacing: 0){
-                Text(file.fileName ?? "N/A")
-                    .font(Font(UIFont.boldSystemFont(ofSize: 14)))
-                    .foregroundColor(Color.white)
-                Text("\(file.created)")
-                    .font(Font(UIFont.systemFont(ofSize: 10)))
-                    .foregroundColor(Color(white: 0.8))
+    var itemsListView: some View {
+        List {
+            ForEach(files.sorted(by: viewModel.sortBy), id: \.self) { file in
+                ZStack(alignment: .leading) {
+                    NavigationLink(
+                        destination: FileDetailView(file: file)) {
+                        EmptyView()
+                    }
+                    .opacity(0)
+                    .background(Styles.Colors.backgroundMain)
+                    FileListItem(file: file, parentFile: rootFile, appModel: appModel)
+                }
+                .frame(height: 50)
             }
-            .padding(EdgeInsets(top: 0, leading: 27, bottom: 0, trailing: 16))
+            .listRowBackground(Styles.Colors.backgroundMain)
+        }
+        .listStyle(PlainListStyle())
+        .background(Styles.Colors.backgroundMain)
+    }
+    
+    var topBarButtons: some View {
+        HStack(spacing: 0) {
+            sortFilesButton
+            FileSortMenu(showingSortFilesActionSheet: $viewModel.showingSortFilesActionSheet,
+                         sortBy: $viewModel.sortBy)
             Spacer()
-            Button {
-                showFileMenu = true
-            } label: {
-                Image("files.more")
-                    .resizable()
-                    .frame(width: 20, height: 20)
+            selectingFilesButton
+            if #available(iOS 14.0, *) {
+                viewTypeButton
             }
         }
-        .listRowBackground(Color(Styles.Colors.backgroundMain))
-        .background(Color(Styles.Colors.backgroundMain))
-        .frame(height: 45)
-        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+        .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+        .background(Styles.Colors.backgroundMain)
     }
-}
 
-struct FileGridItem: View {
-    var body: some View {
-        HStack() {
-            Image("test_image")
-                        .resizable()
-                        .frame(width: 35, height: 35)
-                    Text("landmark.name")
+    var sortFilesButton: some View {
+        Button {
+            viewModel.showingSortFilesActionSheet = true
+        } label: {
+            HStack{
+                Text(viewModel.sortBy.displayName)
+                    .foregroundColor(.white)
+                viewModel.sortBy.image
+                    .frame(width: 14, height: 14)
+            }
         }
+        .frame(height: 44)
     }
+    
+    var selectingFilesButton: some View {
+        Button {
+            viewModel.selectingFiles = !viewModel.selectingFiles
+        } label: {
+            HStack{
+                Image("files.selectingFiles")
+                    .frame(width: 24, height: 24)
+            }
+        }
+            .frame(width: 44, height: 44)
+    }
+    
+    var viewTypeButton: some View {
+        Button {
+            viewModel.viewType = viewModel.viewType == .list ? FileViewType.grid : FileViewType.list
+        } label: {
+            HStack{
+                viewModel.viewType.image
+                    .frame(width: 24, height: 24)
+            }
+        }
+        .frame(width: 44, height: 44)
+    }
+    
 }
 
 struct FileListView_Previews: PreviewProvider {
     static var previews: some View {
-        FileListView(files: VaultFile.stubFiles())
+        
+        NavigationView {
+            ZStack(alignment: .top) {
+                Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
+                FileListView(appModel: MainAppModel(), files: VaultFile.stubFiles(), rootFile: VaultFile.stub(type: .folder))
+            }
+            .navigationBarTitle("Tella")
+            .background(Styles.Colors.backgroundMain)
+        }
     }
 }
 

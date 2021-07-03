@@ -1,16 +1,9 @@
 //
-//  Util.swift
-//  Tella
+//  Copyright © 2021 INTERNEWS. All rights reserved.
 //
-//  Created by Oliphant, Samuel on 2/26/20.
-//  Copyright © 2020 Anessa Petteruti. All rights reserved.
-//
-
-/*
- Utilites class for miscellaneous functions
- */
 
 import UIKit
+import AVFoundation
 import SwiftUI
 
 // Taken from here:
@@ -81,6 +74,25 @@ extension UIImage {
     }
 }
 
+extension UIImage {
+
+  func getThumbnail() -> UIImage? {
+
+    guard let imageData = self.pngData() else { return nil }
+
+    let options = [
+        kCGImageSourceCreateThumbnailWithTransform: true,
+        kCGImageSourceCreateThumbnailFromImageAlways: true,
+        kCGImageSourceThumbnailMaxPixelSize: 300] as CFDictionary
+
+    guard let source = CGImageSourceCreateWithData(imageData as CFData, nil) else { return nil }
+    guard let imageReference = CGImageSourceCreateThumbnailAtIndex(source, 0, options) else { return nil }
+
+    return UIImage(cgImage: imageReference)
+
+  }
+}
+
 struct RuntimeError: Error {
     let message: String
 
@@ -103,4 +115,53 @@ extension View {
     func eraseToAnyView() -> AnyView {
         AnyView(self)
     }
+}
+
+// TODO: unit tests
+extension URL {
+    
+    var fileType: FileType {
+        let fileType: FileType
+        switch self.pathExtension.uppercased() {
+            case "PNG", "JPG":
+                fileType = .image
+            case "MOV", "AVI":
+                fileType = .video
+            case "PDF":
+                fileType = .document
+        default:
+            fileType = .unknown
+        }
+        return fileType
+    }
+
+    //TODO: add it for all files
+    var thumbnail: UIImage? {
+        let thumbnail: UIImage?
+        switch fileType {
+        case .video:
+            thumbnail = generateVideoThumbnail()
+        default:
+            thumbnail = nil
+        }
+        return thumbnail
+    }
+    
+    //TODO: not working for files from File
+    func generateVideoThumbnail() -> UIImage? {
+        do {
+            let asset = AVURLAsset(url: self)
+            let imageGenerator = AVAssetImageGenerator(asset: asset)
+            imageGenerator.appliesPreferredTrackTransform = true
+            // Select the right one based on which version you are using
+            // Swift 4.2
+            let cgImage = try imageGenerator.copyCGImage(at: .zero,
+                                                         actualTime: nil)
+            return UIImage(cgImage: cgImage)
+        } catch let error {
+            debugLog(error)
+            return nil
+        }
+    }
+    
 }

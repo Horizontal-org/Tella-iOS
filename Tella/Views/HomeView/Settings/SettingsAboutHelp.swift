@@ -11,7 +11,7 @@ struct SettingsAboutHelp : View {
     
     var body: some View {
         ZStack {
-            Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)
+            Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
             VStack {
                 Image("tella_Logo")
                     .frame(width: 65, height: 72, alignment: .center)
@@ -25,8 +25,8 @@ struct SettingsAboutHelp : View {
                             SettingItem(name: "Privacy Policy", image: Image(systemName: "shield"))
                         }
                     }
-                    .listRowBackground(Color(Styles.Colors.backgroundTab))
-                }.background(Color(Styles.Colors.backgroundMain))
+                    .listRowBackground(Styles.Colors.backgroundTab)
+                }.background(Styles.Colors.backgroundMain)
             }
         }
         .navigationBarTitle("About&Help")

@@ -7,6 +7,7 @@ import SwiftUI
 struct AppView: View {
     
     @State private var hideAll = false
+    @State private var hideTabBar = false
     @EnvironmentObject private var appModel: MainAppModel
     
     init() {
@@ -25,7 +26,7 @@ struct AppView: View {
     
     private var emptyView: some View{
         VStack{
-        }.background(Color(Styles.Colors.backgroundMain))
+        }.background(Styles.Colors.backgroundMain)
     }
     
     private var tabbar: some View{
@@ -40,7 +41,7 @@ struct AppView: View {
                     Image("tab.reports")
                     Text("Reports")
                 }.tag(MainAppModel.Tabs.reports)
-            CameraView()
+            CameraView(appModel: appModel)
                 .tabItem {
                     Image("tab.camera")
                     Text("Camera")
@@ -63,13 +64,13 @@ struct AppView: View {
     private func setupApperance() {
         
         UITableView.appearance().separatorStyle = .none
-        UITabBar.appearance().barTintColor =  Styles.Colors.backgroundTab
+        UITabBar.appearance().barTintColor =  Styles.uiColor.backgroundTab
         UITabBar.appearance().unselectedItemTintColor = UIColor.gray
-        UINavigationBar.appearance().backgroundColor = Styles.Colors.backgroundMain
+        UINavigationBar.appearance().backgroundColor = Styles.uiColor.backgroundMain
         
         let coloredAppearance = UINavigationBarAppearance()
         coloredAppearance.configureWithTransparentBackground()
-        coloredAppearance.backgroundColor = Styles.Colors.backgroundMain
+        coloredAppearance.backgroundColor = Styles.uiColor.backgroundMain
         coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         
@@ -90,6 +91,6 @@ struct AppView_Previews: PreviewProvider {
             .preferredColorScheme(.light)
             .previewLayout(.device)
             .previewDevice("iPhone Xʀ")
-            .environmentObject(SettingsModel())
+            .environmentObject(MainAppModel())
     }
 }

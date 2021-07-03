@@ -15,7 +15,7 @@ struct BlankFormsView: View {
                         FormsCellView(formModel: formModel)
                     }
                 }
-            }.background(Color(Styles.Colors.backgroundMain))
+            }.background(Styles.Colors.backgroundMain)
         }
     }
 }

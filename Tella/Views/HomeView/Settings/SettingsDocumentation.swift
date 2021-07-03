@@ -11,14 +11,14 @@ struct SettingsDocumentation : View {
     
     var body: some View {
         ZStack {
-            Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)
+            Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
             Form {
                 Section{
                 }
-                .listRowBackground(Color(Styles.Colors.backgroundTab))
+                .listRowBackground(Styles.Colors.backgroundTab)
                 Section {
                 }
-            }.background(Color(Styles.Colors.backgroundMain))
+            }.background(Styles.Colors.backgroundMain)
         }
         .navigationBarTitle("Documentation")
     }

@@ -66,7 +66,7 @@ private struct TestView: View {
                     self.show.toggle()}){
                 Text("Action sheet")
             }
-            DragView(modalHeight: 220, color: Color(Styles.Colors.backgroundTab), isShown: $show){
+            DragView(modalHeight: 220, color: Styles.Colors.backgroundTab, isShown: $show){
                 ConfirmBottomSheet(titleText: "Delete file?", msgText: "The selected file will be permanenetly delated from your vault.",cancelText: "CANCEL",actionText: "DELETE",isPresented: $show,didConfirmAction: {})
             }
         }

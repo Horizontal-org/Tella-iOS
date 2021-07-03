@@ -28,24 +28,23 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .top) {
-                Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)
-                VStack(spacing: 0){
+                Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
+                VStack(spacing: 0) {
                     ScrollView{
-                        RecentFilesListView(viewModel: appModel)
-                        FileGroupsView(viewModel: appModel)
+                        RecentFilesListView(appModel: appModel)
+                        FileGroupsView(appModel: appModel)
                     }
                 }
-                importFileActionSheet
-                documentPickerView
+                AddFileButtonView(appModel: appModel, rootFile: nil)
             }
             .navigationBarTitle("Tella")
             .navigationBarItems(trailing: navBarButtons)
-            .background(Color(Styles.Colors.backgroundMain))
+            .background(Styles.Colors.backgroundMain)
         }
     }
 
     var navBarButtons: some View {
-        HStack(spacing: 40) {
+        HStack(spacing: 20) {
         Button {
             hideAll = true
         } label: {
@@ -56,7 +55,26 @@ struct HomeView: View {
                 Image("home.settings")
                     .imageScale(.large)
             }
-        }.background(Color(Styles.Colors.backgroundMain))
+        }.background(Styles.Colors.backgroundMain)
+    }
+    
+}
+
+struct AddFileButtonView: View {
+    
+    @ObservedObject var appModel: MainAppModel
+    var rootFile: VaultFile?
+
+    @State var showingDocumentPicker = false
+    @State var showingImagePicker = false
+    @State var showingAddFileSheet = false
+    
+    var body: some View {
+        VStack{
+            importFileActionSheet
+            documentPickerView
+            imagePickerView
+        }
     }
     
     @ViewBuilder
@@ -65,34 +83,49 @@ struct HomeView: View {
             addFileDocumentImporter
         } else {
             HStack{}
-            .sheet(isPresented: $viewModel.showingDocumentPicker, content: {
-                DocPickerView { urls in
-                    appModel.fileManager.importFile(files: urls ?? [], to: nil)
+            .sheet(isPresented: $showingDocumentPicker, content: {
+                DocumentPickerView { urls in
+                    appModel.add(files: urls ?? [], to: rootFile, type: .document)
                 }
             })
         }
     }
     
+    var imagePickerView: some View {
+        HStack{}
+        .sheet(isPresented: $showingImagePicker, content: {
+            ImagePickerView { image, url in
+                showingImagePicker = false
+                if let url = url {
+                    appModel.add(files: [url], to: rootFile, type: .video)
+                }
+                if let image = image {
+                    appModel.add(image: image, to: rootFile, type: .image)
+                }
+            }
+        })
+    }
+
     @available(iOS 14.0, *)
     var addFileDocumentImporter: some View {
         HStack{}
         .fileImporter(
-            isPresented: $viewModel.showingDocumentPicker,
-            allowedContentTypes: [UTType(filenameExtension: "pdf")].compactMap { $0 },
+            isPresented: $showingDocumentPicker,
+            allowedContentTypes: [.data],
             allowsMultipleSelection: true,
             onCompletion: { result in
                 if let urls = try? result.get() {
-                    appModel.fileManager.importFile(files: urls, to: nil)
+                    appModel.add(files: urls, to: rootFile, type: .document)
                 }
             }
         )
     }
 
     var importFileActionSheet: some View {
-        AddFileButtonView(action: {
-            viewModel.showingAddFileSheet = true
+        AddFileYellowButton(action: {
+            showingAddFileSheet = true
         })
-        .actionSheet(isPresented: $viewModel.showingAddFileSheet, content: {
+        .actionSheet(isPresented: $showingAddFileSheet, content: {
             addFileActionSheet
         })
     }
@@ -107,16 +140,19 @@ struct HomeView: View {
             .default(Text("Record Audio")) {
                 appModel.changeTab(to: .mic)
             },
+            .default(Text("Import Image/Video")) {
+                showingImagePicker = true
+            },
             .default(Text("Import From Device")) {
-                viewModel.showingDocumentPicker = true
+                showingDocumentPicker = true
             },
-            .default(Text("Import and delete original")) {
-                viewModel.showingDocumentPicker = true
-            },
+//            .default(Text("Import and delete original")) {
+//                showingDocumentPicker = true
+//            },
             .cancel()
         ])
     }
-    
+
 }
 
 struct HomeView_Previews: PreviewProvider {

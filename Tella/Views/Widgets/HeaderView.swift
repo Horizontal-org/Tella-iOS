@@ -37,7 +37,7 @@ struct HeaderView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: 66, alignment: .trailing)
-        }.background(Color(Styles.Colors.backgroundMain))
+        }.background(Styles.Colors.backgroundMain)
         .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
     }
 }

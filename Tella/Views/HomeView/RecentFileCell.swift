@@ -6,27 +6,35 @@ import SwiftUI
 
 protocol RecentFileProtocol {
     var thumbnailImage: UIImage {get}
+    var iconImage: UIImage {get}
+    var gridImage: AnyView {get}
 }
 
-struct mockRecentFile: RecentFileProtocol {
-    var thumbnailImage: UIImage {
-        return UIImage(named: "test_image") ?? UIImage()
+extension RecentFileProtocol {
+    var gridImage: AnyView {
+        AnyView(
+            ZStack{
+                Image(uiImage: thumbnailImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 70, height: 70, alignment: .center)
+                    .clipped()
+                Image(uiImage: iconImage)
+            }
+            .frame(width: 70, height: 70, alignment: .center)
+            .background(Color.gray)
+        )
     }
 }
 
 struct RecentFileCell: View {
-
     let recentFile: RecentFileProtocol
     var body: some View {
-        Image(uiImage: recentFile.thumbnailImage)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 70, height: 70)
-    }
-}
-
-struct RecentFileCell_Previews: PreviewProvider {
-    static var previews: some View {
-        RecentFileCell(recentFile: mockRecentFile())
+        ZStack{
+            recentFile.gridImage
+                .frame(width: 70, height: 70)
+        }
+        .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
+//        .padding(.leading, 5)
     }
 }

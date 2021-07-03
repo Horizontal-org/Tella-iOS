@@ -16,7 +16,7 @@ struct ReportsView: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .top) {
-                Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)
+                Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
                 VStack(alignment: .leading) {
                     PageView(selectedOption: self.$selecetedCell, outboxCount: self.$outBoxCount)
                             .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: 40, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
@@ -40,10 +40,10 @@ struct ReportsView: View {
                         }
                     }
                 }
-                .background(Color(Styles.Colors.backgroundMain))
+                .background(Styles.Colors.backgroundMain)
             }
             .navigationBarTitle("Reports")
-            .background(Color(Styles.Colors.backgroundMain))
+            .background(Styles.Colors.backgroundMain)
         }
     }
 }

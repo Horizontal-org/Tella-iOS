@@ -18,16 +18,16 @@ struct SettingsView : View {
     
     var body: some View {
         ZStack {
-            Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)
+            Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
             Form {
                 Section{
                     SettingToggleItem(title: "Offline mode", description: "In offline Mode, all data is save for later submission. Useful to save cellular data or when connectivity is poor. Disable when you're ready to submit forms.", toggle: $viewModel.offLineMode)
                 }
-                .listRowBackground(Color(Styles.Colors.backgroundTab))
+                .listRowBackground(Styles.Colors.backgroundTab)
                 Section {
                     SettingMenu(viewModel: viewModel)
                 }
-            }.background(Color(Styles.Colors.backgroundMain))
+            }.background(Styles.Colors.backgroundMain)
         }.onAppear() {
             UITableView.appearance().backgroundColor = UIColor.clear
             UITableView.appearance().separatorStyle = .singleLine
@@ -57,7 +57,7 @@ struct SettingMenu: View {
                 SettingItem(name: "About & Help", image: Image(systemName: "key.fill"))
             }
         }
-        .listRowBackground(Color(Styles.Colors.backgroundTab))
+        .listRowBackground(Styles.Colors.backgroundTab)
         .cornerRadius(25)
     }
 }

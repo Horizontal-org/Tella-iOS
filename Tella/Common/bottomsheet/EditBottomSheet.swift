@@ -88,7 +88,7 @@ private struct TestEdit: View {
                     self.show.toggle()}){
                 Text("Action sheet")
             }
-            DragView(modalHeight: 220, color: Color(Styles.Colors.backgroundTab), isShown: $show){
+            DragView(modalHeight: 220, color: Styles.Colors.backgroundTab, isShown: $show){
                 EditBottomSheet(titleText: "Rename file", cancelText: "Cancel", actionText: "Confirm", isPresented: self.$show, didConfirmAction: {
                     name in
                     print(name)
