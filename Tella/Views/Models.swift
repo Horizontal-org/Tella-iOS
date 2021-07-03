@@ -27,6 +27,25 @@ class MainAppModel: ObservableObject {
 
     @Published var selectedTab: Tabs = .home
     
+    init() {
+        loadData()
+    }
+
+    private func loadData() {
+        let decoder = JSONDecoder()
+        if let data = UserDefaults.standard.object(forKey: "com.tella.settings") as? Data,
+            let settings = try? decoder.decode(SettingsModel.self, from: data) {
+            self.settings = settings
+        }
+    }
+    
+    func saveSettings() {
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(settings) {
+            UserDefaults.standard.set(encoded, forKey: "com.tella.settings")
+        }
+    }
+    
     func changeTab(to newTab: Tabs) {
         selectedTab = newTab
     }
@@ -60,7 +79,7 @@ class MainAppModel: ObservableObject {
     
 }
 
-class SettingsModel: ObservableObject {
+class SettingsModel: ObservableObject, Codable {
     var offLineMode = false
     var quickDelete: Bool = false
     var deleteVault: Bool = false

@@ -17,11 +17,16 @@ struct SettingsSecurity : View {
                     SettingToggleItem(title: "Delete vault", description: "Delete all photos, videos, and audio recordings in your Tella Gallery.", toggle: $viewModel.deleteVault)
                     SettingToggleItem(title: "Delete forms", description: "Delete all draft and submitted forms.", toggle: $viewModel.deleteForms)
                     SettingToggleItem(title: "Delete server settings", description: "Delete your connections to servers and all forms associated with them.", toggle: $viewModel.deleteServerSettings)
-                    Button {
-                        swapAppIcon()
-                    } label: {
-                        Text("Change Icon")
+                    HStack{
+                        Button {
+                            swapAppIcon()
+                        } label: {
+                            Text("Change Icon")
+                            .fontWeight(.semibold)
+                            .foregroundColor(Color.white).padding(.bottom, -5)
+                        }
                     }
+                    .padding()
                 }
                 .listRowBackground(Styles.Colors.backgroundTab)
             }.background(Styles.Colors.backgroundMain)
