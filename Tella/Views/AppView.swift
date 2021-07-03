@@ -41,6 +41,11 @@ struct AppView: View {
                     Image("tab.reports")
                     Text("Reports")
                 }.tag(MainAppModel.Tabs.reports)
+            FormsView()
+                .tabItem {
+                    Image("tab.forms")
+                    Text("Forms")
+                }.tag(MainAppModel.Tabs.forms)
             CameraView(appModel: appModel)
                 .tabItem {
                     Image("tab.camera")
@@ -51,12 +56,6 @@ struct AppView: View {
                     Image("tab.mic")
                     Text("Mic")
                 }.tag(MainAppModel.Tabs.mic)
-            
-            FormsView()
-                .tabItem {
-                    Image("tab.forms")
-                    Text("Forms")
-                }.tag(MainAppModel.Tabs.forms)
         }
         .accentColor(.white)
     }
