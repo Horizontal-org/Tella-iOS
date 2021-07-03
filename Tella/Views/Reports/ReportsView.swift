@@ -4,6 +4,7 @@
 import SwiftUI
 
 struct ReportsView: View {
+    
     @State var title: String = ""
     @State var description: String = ""
     @State var selecetedCell = Pages.new

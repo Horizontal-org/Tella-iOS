@@ -1,14 +1,11 @@
 //
-//  FormsView.swift
-//  Tella
-//
-//  Created by Ahlem on 08/06/2021.
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
 import SwiftUI
 
 struct FormsView: View {
+    
     @State var title: String = ""
     @State var description: String = ""
     @State var selecetedCell = Pages.new
@@ -16,12 +13,14 @@ struct FormsView: View {
     @State var outBoxCount = 0
     var width = UIScreen.main.bounds.width
     
+    private let titles = ["Blank","Drafts","OutBox","Sent"]
+    
     var body: some View {
         NavigationView {
             ZStack(alignment: .top) {
                 Color(Styles.Colors.backgroundMain).edgesIgnoringSafeArea(.all)
                 VStack(alignment: .leading) {
-                    PageView(selectedOption: self.$selecetedCell, outboxCount: self.$outBoxCount,titles: ["Blank","Drafts","OutBox","Sent"])
+                    PageView(selectedOption: self.$selecetedCell, outboxCount: self.$outBoxCount, titles: titles)
                         .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: 40, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                         .padding([.leading, .trailing], 10)
                     VStack {
@@ -39,8 +38,8 @@ struct FormsView: View {
                 }
             }
             .navigationBarTitle("Forms")
-            .navigationBarItems(trailing: HeaderView(onRefreshClick: {}, onHelpClick: {}, onNewFormClick: {
-                print("Text")
+            .navigationBarItems(trailing: HeaderView(onRefreshAction: {}, onHelpAction: {}, onNewFormAction: {
+                debugLog("New form tap")
                 self.outBoxCount+=1
             }) )
         }.highPriorityGesture(DragGesture()
@@ -60,9 +59,7 @@ struct FormsView: View {
                                 }))
         
     }
-    
 }
-
 
 struct FormsView_Previews: PreviewProvider {
     static var previews: some View {

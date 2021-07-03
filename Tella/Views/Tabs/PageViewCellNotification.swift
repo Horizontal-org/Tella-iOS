@@ -1,18 +1,18 @@
 //
-//  PageViewCellNotif.swift
-//  Tella
-//
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
 import SwiftUI
 
-struct  PageViewCellNotif: View {
+struct PageViewCellNotification: View {
+    
     let title: String
     let width: CGFloat
     let page: Pages
+    
     @Binding var selectedOption: Pages
     @Binding var outBoxCount: Int
+    
     public var body: some View {
         VStack {
             let selected: Bool = page == selectedOption

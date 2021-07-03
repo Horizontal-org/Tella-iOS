@@ -1,6 +1,4 @@
 //
-//  PageViewCell.swift
-//  Tella
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 

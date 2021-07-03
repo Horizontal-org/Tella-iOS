@@ -1,38 +1,37 @@
 //
-//  FormsCellView.swift
-//  Tella
-//
-//  Created by Ahlem on 15/06/2021.
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
 import SwiftUI
 
 struct FormsCellView: View {
+    
     let formModel : FormModel
     @State var toggle : Bool
-    init(formModel : FormModel){
+    
+    init(formModel : FormModel) {
         //create State with initial value here
         self.formModel = formModel
-        self._toggle = State(initialValue: self.formModel.form.isFavorite)
+        self._toggle = State(initialValue: self.formModel.details.isFavorite)
     }
+    
     var body: some View {
         HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/){
             Button(action: {
-                formModel.form.isFavorite.toggle()
+                formModel.details.isFavorite.toggle()
                 self.toggle.toggle()
-                print(formModel.form.isFavorite)
+                debugLog("\(formModel.details.isFavorite)")
             }, label: {
                 Image(systemName: self.toggle ? "star.fill" : "star")
                     .foregroundColor(self.toggle ? .yellow : .white)
             })
             .padding()
             VStack(alignment : .leading,spacing: 0){
-                Text(formModel.form.title)
+                Text(formModel.details.title)
                     .font(Font.custom("open-sans.regular", size: 14))
                     .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                     .foregroundColor(Color.white)
-                Text(formModel.form.description)
+                Text(formModel.details.description)
                     .font(Font.custom("open-sans.regular", size: 12))
                     .fontWeight(.regular)
                     .foregroundColor(Color.white)
@@ -40,7 +39,7 @@ struct FormsCellView: View {
             }.padding(.vertical)
             Spacer()
             Button(action: {
-                print("More clicked")
+                debugLog("More clicked")
             }, label: {
                 VStack(spacing: 0){
                     RoundedRectangle(cornerRadius: 25)
@@ -62,8 +61,6 @@ struct FormsCellView: View {
         .background(Color(Styles.Colors.backgroundFileButton)
                         .clipShape(RoundedRectangle(cornerRadius:15)))
         .padding(.horizontal, 16)
-        
-        
     }
 }
 

@@ -1,8 +1,4 @@
 //
-//  BlankFormsView.swift
-//  Tella
-//
-//  Created by Ahlem on 15/06/2021.
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
@@ -10,6 +6,7 @@ import SwiftUI
 
 struct BlankFormsView: View {
     @ObservedObject var formViewModel = FormViewModel()
+    
     var body: some View {
         ZStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 0){
@@ -19,9 +16,7 @@ struct BlankFormsView: View {
                     }
                 }
             }.background(Color(Styles.Colors.backgroundMain))
-            
         }
-        
     }
 }
 

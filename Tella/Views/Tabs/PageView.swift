@@ -1,17 +1,16 @@
 //
-//  PageView.swift
-//  Tella
-//
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
 import SwiftUI
 
 public struct PageView: View {
+    
     @Binding var selectedOption: Pages
     @Binding var outboxCount: Int
     let pageWidth = UIScreen.main.bounds.size.width/5
     var titles = ["New","Draft","Outbox","Sent"]
+    
    public var body: some View {
         HStack(spacing: 15) {
             Button(action: {
@@ -35,7 +34,7 @@ public struct PageView: View {
                     self.selectedOption = .outbox
                 }
             }, label: {
-                PageViewCellNotif(title: titles[2], width: pageWidth, page: .outbox, selectedOption: $selectedOption, outBoxCount: $outboxCount)
+                PageViewCellNotification(title: titles[2], width: pageWidth, page: .outbox, selectedOption: $selectedOption, outBoxCount: $outboxCount)
             })
             
             Button(action: {

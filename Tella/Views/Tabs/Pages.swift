@@ -1,7 +1,4 @@
 //
-//  Pages.swift
-//  Tella
-//
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
@@ -12,6 +9,19 @@ public enum Pages: Hashable {
     case draft
     case outbox
     case sent
+    
+    var title: String {
+        switch self {
+        case .new:
+            return NSLocalizedString("New", comment: "Forms/Reports tab menu")
+        case .draft:
+            return NSLocalizedString("Draft", comment: "Forms/Reports tab menu")
+        case .outbox:
+            return NSLocalizedString("Outbox", comment: "Forms/Reports tab menu")
+        case .sent:
+            return NSLocalizedString("Sent", comment: "Forms/Reports tab menu")
+        }
+    }
     
     static func fromHashValue(hashValue: Pages) -> Int {
         switch hashValue {
