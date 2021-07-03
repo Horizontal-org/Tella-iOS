@@ -58,6 +58,7 @@
 		0E87C877268C792000EB5E34 /* NSUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C876268C792000EB5E34 /* NSUIImage.swift */; };
 		0E87C879268C8F8F00EB5E34 /* VideoViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C878268C8F8F00EB5E34 /* VideoViewer.swift */; };
 		0E87C87B268C957600EB5E34 /* VideoPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C87A268C957600EB5E34 /* VideoPlayerController.swift */; };
+		0E87C87D268CCA3500EB5E34 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C87C268CCA3500EB5E34 /* WebView.swift */; };
 		0F3DC3E52523951C0024B4A0 /* BundleInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F3DC3E42523951C0024B4A0 /* BundleInfo.swift */; };
 		1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerView.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
@@ -194,6 +195,7 @@
 		0E87C876268C792000EB5E34 /* NSUIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSUIImage.swift; sourceTree = "<group>"; };
 		0E87C878268C8F8F00EB5E34 /* VideoViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewer.swift; sourceTree = "<group>"; };
 		0E87C87A268C957600EB5E34 /* VideoPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerController.swift; sourceTree = "<group>"; };
+		0E87C87C268CCA3500EB5E34 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		0F3DC3E42523951C0024B4A0 /* BundleInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleInfo.swift; sourceTree = "<group>"; };
 		1E67B39123FC9067001F3D64 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		1EAE6BF424146C2100114244 /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
@@ -346,6 +348,7 @@
 				0E87C876268C792000EB5E34 /* NSUIImage.swift */,
 				0E87C878268C8F8F00EB5E34 /* VideoViewer.swift */,
 				0E87C87A268C957600EB5E34 /* VideoPlayerController.swift */,
+				0E87C87C268CCA3500EB5E34 /* WebView.swift */,
 			);
 			path = FileDetailView;
 			sourceTree = "<group>";
@@ -952,9 +955,9 @@
 				0DC776F3268AEE1500A87700 /* CameraView.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				0E87C875268BDDFB00EB5E34 /* ImageViewer.swift in Sources */,
-				6D14AACE23FADACE0094D71D /* Enums.swift in Sources */,
 				0D4BC3C6267577F900DCDC30 /* DocumentPicker.swift in Sources */,
 				0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */,
+				0E87C87D268CCA3500EB5E34 /* WebView.swift in Sources */,
 				0E78B3A72656B03600F9BDBC /* DragView.swift in Sources */,
 				D572EAC7263A383900CE191A /* RecentFileCell.swift in Sources */,
 				0E87C87B268C957600EB5E34 /* VideoPlayerController.swift in Sources */,
@@ -967,7 +970,7 @@
 				D572EAC5263A383100CE191A /* RecentFilesListView.swift in Sources */,
 				D75F9E9C25342539006F6212 /* RecordViewModel.swift in Sources */,
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
-				1E67B39223FC9067001F3D64 /* Importers.swift in Sources */,
+				1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */,
 				0E87C877268C792000EB5E34 /* NSUIImage.swift in Sources */,
 				0DEFD54D268946690014EADE /* AppViewState.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */,
