@@ -9,7 +9,7 @@ struct AppView: View {
     @State private var hideAll = false
     @State private var hideTabBar = false
     @EnvironmentObject private var appModel: MainAppModel
-
+    
     init() {
         setDebugLevel(level: .debug, for: .app)
         setDebugLevel(level: .debug, for: .crypto)
@@ -23,7 +23,7 @@ struct AppView: View {
             tabbar
         }
     }
-
+    
     private var emptyView: some View{
         VStack{
         }.background(Styles.Colors.backgroundMain)
@@ -51,6 +51,12 @@ struct AppView: View {
                     Image("tab.mic")
                     Text("Mic")
                 }.tag(MainAppModel.Tabs.mic)
+            
+            FormsView()
+                .tabItem {
+                    Image("tab.forms")
+                    Text("Forms")
+                }.tag(MainAppModel.Tabs.forms)
         }
         .accentColor(.white)
     }
@@ -73,8 +79,8 @@ struct AppView: View {
         UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
         
         UIBarButtonItem.appearance().setTitleTextAttributes([
-            .foregroundColor: UIColor.white,
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18)], for: .normal)
+                                                                .foregroundColor: UIColor.white,
+                                                                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18)], for: .normal)
         
     }
 }
