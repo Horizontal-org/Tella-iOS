@@ -6,10 +6,10 @@ import SwiftUI
 
 struct SettingsView : View {
     
-    @ObservedObject var viewModel: SettingsModel
+    @ObservedObject var appModel: MainAppModel
     
-    init(viewModel: SettingsModel) {
-        self.viewModel = viewModel
+    init(appModel: MainAppModel) {
+        self.appModel = appModel
         setupView()
     }
     
@@ -21,11 +21,11 @@ struct SettingsView : View {
             Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
             Form {
                 Section{
-                    SettingToggleItem(title: "Offline mode", description: "In offline Mode, all data is save for later submission. Useful to save cellular data or when connectivity is poor. Disable when you're ready to submit forms.", toggle: $viewModel.offLineMode)
+                    SettingToggleItem(title: "Offline mode", description: "In offline Mode, all data is save for later submission. Useful to save cellular data or when connectivity is poor. Disable when you're ready to submit forms.", toggle: $appModel.settings.offLineMode)
                 }
                 .listRowBackground(Styles.Colors.backgroundTab)
                 Section {
-                    SettingMenu(viewModel: viewModel)
+                    SettingMenu(viewModel: appModel.settings)
                 }
             }.background(Styles.Colors.backgroundMain)
         }.onAppear() {
@@ -34,6 +34,9 @@ struct SettingsView : View {
             UITableView.appearance().separatorColor = .white
             UISwitch.appearance().onTintColor = .green
         }
+        .onDisappear(perform: {
+            appModel.saveSettings()
+        })
         .navigationBarTitle("Settings")
     }
 }
@@ -66,7 +69,7 @@ struct DemoDesign_Previews: PreviewProvider {
     
     static var previews: some View {
         NavigationView {
-            SettingsView(viewModel: SettingsModel())
+            SettingsView(appModel: MainAppModel())
         }
     }
 }

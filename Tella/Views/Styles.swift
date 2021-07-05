@@ -19,8 +19,8 @@ struct Styles {
         static let backgroundFileButton = Color(uiColor.backgroundFileButton)
         static let backgroundMain = Color(uiColor.backgroundMain)
         static let backgroundTab = Color(uiColor.backgroundTab)
-        static let buttonAdd = Color(UIColor(hexValue: 0xD6933B))
-        static let fileIconBackground = Color(UIColor(hexValue: 0x57527b))
+        static let buttonAdd = Color(uiColor.buttonAdd)
+        static let fileIconBackground = Color(uiColor.fileIconBackground)
     }
     
     struct Stroke {

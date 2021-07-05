@@ -30,6 +30,11 @@ struct HomeView: View {
             ZStack(alignment: .top) {
                 Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
                 VStack(spacing: 0) {
+//                    if appModel.settings.quickDelete {
+                    if true {
+                        SwipeToActionView()
+                            .frame(height: 60)
+                    }
                     ScrollView{
                         RecentFilesListView(appModel: appModel)
                         FileGroupsView(appModel: appModel)
@@ -51,7 +56,7 @@ struct HomeView: View {
             Image("home.close")
                 .imageScale(.large)
             }
-            NavigationLink(destination: SettingsView(viewModel: appModel.settings)) {
+            NavigationLink(destination: SettingsView(appModel: appModel)) {
                 Image("home.settings")
                     .imageScale(.large)
             }

@@ -28,6 +28,7 @@
 		0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */; };
 		0DC411E12668469C00BF0DE1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC411E02668469C00BF0DE1 /* SettingsView.swift */; };
 		0DC776F3268AEE1500A87700 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AAD123FB08D60094D71D /* CameraView.swift */; };
+		0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD99E042692D24D009327B3 /* SwipeToDeleteView.swift */; };
 		0DEFD548268943CC0014EADE /* DocumentPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEFD547268943CC0014EADE /* DocumentPickerView.swift */; };
 		0DEFD54A268945C60014EADE /* ModelStubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3CB26765B8C00DCDC30 /* ModelStubs.swift */; };
 		0DEFD54B268946460014EADE /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AACD23FADACE0094D71D /* Enums.swift */; };
@@ -164,6 +165,7 @@
 		0DC267A5267AED7C00E55AFA /* VaultFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFile.swift; sourceTree = "<group>"; };
 		0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultFileManager.swift; sourceTree = "<group>"; };
 		0DC411E02668469C00BF0DE1 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		0DD99E042692D24D009327B3 /* SwipeToDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeToDeleteView.swift; sourceTree = "<group>"; };
 		0DEFD547268943CC0014EADE /* DocumentPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPickerView.swift; sourceTree = "<group>"; };
 		0E170252267910B90069072A /* BlankFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankFormsView.swift; sourceTree = "<group>"; };
 		0E170254267910CC0069072A /* OutBoxFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutBoxFormsView.swift; sourceTree = "<group>"; };
@@ -482,6 +484,7 @@
 				D516397B2631113B003A11B5 /* Styles.swift */,
 				D5DAFDCD265384C4002F3942 /* Models.swift */,
 				0DA213C426801EA700526995 /* ViewHelpers.swift */,
+				0DD99E042692D24D009327B3 /* SwipeToDeleteView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -944,6 +947,7 @@
 				0E170257267910DE0069072A /* DraftFormsView.swift in Sources */,
 				0D4D7512266316DC00D7A635 /* SettingsSecurity.swift in Sources */,
 				0D4D7514266316E500D7A635 /* SettingsAboutHelp.swift in Sources */,
+				0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */,
 				0DA213C526801EA700526995 /* ViewHelpers.swift in Sources */,
 				D572EAC5263A383100CE191A /* RecentFilesListView.swift in Sources */,
 				D75F9E9C25342539006F6212 /* RecordViewModel.swift in Sources */,
