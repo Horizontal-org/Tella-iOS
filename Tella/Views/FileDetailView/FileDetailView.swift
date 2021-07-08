@@ -12,15 +12,18 @@ struct FileDetailView: View {
         VStack(alignment: .leading, spacing: 20){
             switch file.type {
             case .audio:
-                ImageViewer(imageData: file.thumbnail)
+                WebViewer(url: file.containerName)
             case .document:
-                PDFKitView(data: file.thumbnail ?? Data())
+                WebViewer(url: file.containerName)
             case .video:
-                ImageViewer(imageData: file.thumbnail)
+                //need to provide file path with vault
+                VideoViewer()
             case .image:
                 ImageViewer(imageData: file.thumbnail)
             case .folder:
                 ImageViewer(imageData: file.thumbnail)
+            default:
+                WebViewer(url: file.containerName)
             }
         }
     }
