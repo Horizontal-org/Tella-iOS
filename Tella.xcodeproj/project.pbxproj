@@ -27,8 +27,8 @@
 		0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC267A5267AED7C00E55AFA /* VaultFile.swift */; };
 		0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */; };
 		0DC411E12668469C00BF0DE1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC411E02668469C00BF0DE1 /* SettingsView.swift */; };
-		0DC776F3268AEE1500A87700 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AAD123FB08D60094D71D /* CameraView.swift */; };
 		0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD99E042692D24D009327B3 /* SwipeToDeleteView.swift */; };
+		0DD99E072692DD01009327B3 /* CustomCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD99E062692DD01009327B3 /* CustomCameraView.swift */; };
 		0DEFD548268943CC0014EADE /* DocumentPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEFD547268943CC0014EADE /* DocumentPickerView.swift */; };
 		0DEFD54A268945C60014EADE /* ModelStubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3CB26765B8C00DCDC30 /* ModelStubs.swift */; };
 		0DEFD54B268946460014EADE /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D14AACD23FADACE0094D71D /* Enums.swift */; };
@@ -75,7 +75,7 @@
 		D51639762631091E003A11B5 /* NewAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D51639752631091E003A11B5 /* NewAssets.xcassets */; };
 		D516397C2631113B003A11B5 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D516397B2631113B003A11B5 /* Styles.swift */; };
 		D51639802631130E003A11B5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50727CB2625573200BBC370 /* HomeView.swift */; };
-		D5163985263113B7003A11B5 /* MicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D56979262747F700C45416 /* MicView.swift */; };
+		D5163985263113B7003A11B5 /* AudioRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D56979262747F700C45416 /* AudioRecordView.swift */; };
 		D538C8AC264CE8D300D457B0 /* CryptoFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D538C8AB264CE8D300D457B0 /* CryptoFileManager.swift */; };
 		D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B77002601CA3A0001CD34 /* VaultManager.swift */; };
 		D572EAC5263A383100CE191A /* RecentFilesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC4263A383100CE191A /* RecentFilesListView.swift */; };
@@ -166,6 +166,7 @@
 		0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultFileManager.swift; sourceTree = "<group>"; };
 		0DC411E02668469C00BF0DE1 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0DD99E042692D24D009327B3 /* SwipeToDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeToDeleteView.swift; sourceTree = "<group>"; };
+		0DD99E062692DD01009327B3 /* CustomCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraView.swift; sourceTree = "<group>"; };
 		0DEFD547268943CC0014EADE /* DocumentPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPickerView.swift; sourceTree = "<group>"; };
 		0E170252267910B90069072A /* BlankFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankFormsView.swift; sourceTree = "<group>"; };
 		0E170254267910CC0069072A /* OutBoxFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutBoxFormsView.swift; sourceTree = "<group>"; };
@@ -197,7 +198,7 @@
 		6D14AACB23FA3A2B0094D71D /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		6D14AACD23FADACE0094D71D /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		6D14AACF23FAE6AC0094D71D /* SettingsView_old.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView_old.swift; sourceTree = "<group>"; };
-		6D14AAD123FB08D60094D71D /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CameraView.swift; path = Tella/Views/Camera/CameraView.swift; sourceTree = SOURCE_ROOT; };
+		6D14AAD123FB08D60094D71D /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CameraView.swift; path = Tella/TellaV1/CameraView.swift; sourceTree = SOURCE_ROOT; };
 		6D14AAD523FB0B120094D71D /* CollectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectView.swift; sourceTree = "<group>"; };
 		6D14AAD723FB0B310094D71D /* GalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
 		6D14AAD92405AC1A0094D71D /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
@@ -236,7 +237,7 @@
 		D59E9EAF260C5A51006D9F8E /* VaultManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManagerTests.swift; sourceTree = "<group>"; };
 		D5B823EF262775D80008E04B /* CryptoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoManager.swift; sourceTree = "<group>"; };
 		D5D5696C262747E100C45416 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
-		D5D56979262747F700C45416 /* MicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicView.swift; sourceTree = "<group>"; };
+		D5D56979262747F700C45416 /* AudioRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecordView.swift; sourceTree = "<group>"; };
 		D5DA7F972646220100B00FDA /* FileGroupButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGroupButtonView.swift; sourceTree = "<group>"; };
 		D5DA7F9A2648D05400B00FDA /* FileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListView.swift; sourceTree = "<group>"; };
 		D5DAFDCD265384C4002F3942 /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
@@ -301,7 +302,7 @@
 		0D2973812676CF49007888ED /* Mic */ = {
 			isa = PBXGroup;
 			children = (
-				D5D56979262747F700C45416 /* MicView.swift */,
+				D5D56979262747F700C45416 /* AudioRecordView.swift */,
 			);
 			path = Mic;
 			sourceTree = "<group>";
@@ -341,8 +342,8 @@
 		0DD99E0126910378009327B3 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
-				6D14AAD123FB08D60094D71D /* CameraView.swift */,
 				0E78B3B52656B0BC00F9BDBC /* VideoPlayerUI.swift */,
+				0DD99E062692DD01009327B3 /* CustomCameraView.swift */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -365,6 +366,7 @@
 				6DC2ABCA24502D08004579DF /* ChangeView.swift */,
 				CE64FA282505542E00B03CEC /* AppViewState.swift */,
 				D5163989263113C6003A11B5 /* UploadView.swift */,
+				6D14AAD123FB08D60094D71D /* CameraView.swift */,
 			);
 			path = TellaV1;
 			sourceTree = "<group>";
@@ -908,6 +910,7 @@
 				6DC2ABC9245029BC004579DF /* PasswordView.swift in Sources */,
 				0D4BC3C4267577F900DCDC30 /* NewReportView.swift in Sources */,
 				D5B823EB262774E00008E04B /* AppView.swift in Sources */,
+				0DD99E072692DD01009327B3 /* CustomCameraView.swift in Sources */,
 				D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */,
 				D5DAFDCF265384C4002F3942 /* Models.swift in Sources */,
 				F66E65AD23E3207D000F93E5 /* AppDelegate.swift in Sources */,
@@ -928,16 +931,15 @@
 				0ECC781D267AADA500A2ACF2 /* PageViewCellNotification.swift in Sources */,
 				0ECC7817267A533E00A2ACF2 /* PageViewCell.swift in Sources */,
 				0E78B3BB2656B0BC00F9BDBC /* VideoRecordingView.swift in Sources */,
-				D5163985263113B7003A11B5 /* MicView.swift in Sources */,
+				D5163985263113B7003A11B5 /* AudioRecordView.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				0E170255267910CC0069072A /* OutBoxFormsView.swift in Sources */,
 				0E170259267913160069072A /* FormsCellView.swift in Sources */,
 				0ECC7819267A53A700A2ACF2 /* PageView.swift in Sources */,
 				0DEFD54B268946460014EADE /* Enums.swift in Sources */,
-				D5163985263113B7003A11B5 /* MicView.swift in Sources */,
+				D5163985263113B7003A11B5 /* AudioRecordView.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
-				0DC776F3268AEE1500A87700 /* CameraView.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				0D4BC3C6267577F900DCDC30 /* DocumentPicker.swift in Sources */,
 				0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */,

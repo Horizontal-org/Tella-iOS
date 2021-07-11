@@ -38,6 +38,9 @@ struct SettingsView : View {
             appModel.saveSettings()
         })
         .navigationBarTitle("Settings")
+        .onDisappear {
+            appModel.publishUpdates()
+        }
     }
 }
 

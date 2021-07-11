@@ -15,6 +15,10 @@ struct SwipeToActionView: View {
     //TODO: add DELETE label
     var body: some View {
         return ZStack {
+            Text("DELETE")
+                .font(Font.system(size: 16))
+                .bold()
+                .foregroundColor(Color.white)
             RoundedRectangle(cornerRadius: 25)
                 .stroke(Color.white, lineWidth: 2)
                 .frame(width: width, height: height, alignment: .center)
@@ -51,7 +55,6 @@ struct SwipeToActionView: View {
     
     func swipeEndAction() {
         offset = 0
-        print("Swipe reach to max point")
     }
     
     var swipeButton: some View {
@@ -67,6 +70,6 @@ struct SwipeToActionView: View {
 struct buttonUI_Previews: PreviewProvider {
     static var previews: some View {
         SwipeToActionView()
-            .background(Color.green)
+            .background(Color.blue)
     }
 }

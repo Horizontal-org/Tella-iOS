@@ -1,9 +1,5 @@
 //
-//  RecordingAudioManager.swift
-//  Tella
-//
-//  Created by Bruno Pastre on 12/10/20.
-//  Copyright © 2020 Anessa Petteruti. All rights reserved.
+//  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
 import AVFoundation
@@ -14,6 +10,13 @@ class RecordingAudioManager: AudioManager {
     private var recorder: AVAudioRecorder!
     private var currentFileName: URL?
     
+    let settings = [
+        AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+        AVSampleRateKey: 12000,
+        AVNumberOfChannelsKey: 1,
+        AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+    ]
+
     func startRecording() {
         guard
             self.configureSession(),
@@ -22,14 +25,6 @@ class RecordingAudioManager: AudioManager {
             // @TODO Delegate this to the viewModel
             return
         }
-        
-        let settings = [
-            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-            AVSampleRateKey: 12000,
-            AVNumberOfChannelsKey: 1,
-            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
-        ]
-        
         
         do {
             self.recorder = try AVAudioRecorder(url: fileName, settings: settings)

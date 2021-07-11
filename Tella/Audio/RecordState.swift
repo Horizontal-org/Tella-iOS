@@ -1,9 +1,5 @@
 //
-//  RecordState.swift
-//  Tella
-//
-//  Created by Bruno Pastre on 12/10/20.
-//  Copyright © 2020 Anessa Petteruti. All rights reserved.
+//  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
 import Foundation

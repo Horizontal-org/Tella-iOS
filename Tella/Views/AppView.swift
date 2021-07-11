@@ -10,6 +10,8 @@ struct AppView: View {
     @State private var hideTabBar = false
     @EnvironmentObject private var appModel: MainAppModel
     
+    @State private var inputImage: UIImage?
+    
     init() {
         setDebugLevel(level: .debug, for: .app)
         setDebugLevel(level: .debug, for: .crypto)
@@ -36,6 +38,7 @@ struct AppView: View {
                     Image("tab.home")
                     Text("Home")
                 }.tag(MainAppModel.Tabs.home)
+#if DEBUG
             ReportsView()
                 .tabItem {
                     Image("tab.reports")
@@ -46,12 +49,13 @@ struct AppView: View {
                     Image("tab.forms")
                     Text("Forms")
                 }.tag(MainAppModel.Tabs.forms)
-            CameraView(appModel: appModel)
+#endif
+            CustomCameraView(image: self.$inputImage)
                 .tabItem {
                     Image("tab.camera")
                     Text("Camera")
                 }.tag(MainAppModel.Tabs.camera)
-            MicView()
+            AudioRecordView()
                 .tabItem {
                     Image("tab.mic")
                     Text("Mic")

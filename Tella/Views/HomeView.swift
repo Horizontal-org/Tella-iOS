@@ -13,12 +13,14 @@ class HomeViewModel: ObservableObject {
 struct HomeView: View {
 
     @Binding var hideAll: Bool
+    
     @ObservedObject var appModel: MainAppModel
     @StateObject var viewModel = HomeViewModel()
     
     init(appModel: MainAppModel, hideAll: Binding<Bool>) {
         self.appModel = appModel
         self._hideAll = hideAll
+//        quickDelete =
         setupView()
     }
     
@@ -30,8 +32,9 @@ struct HomeView: View {
             ZStack(alignment: .top) {
                 Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
                 VStack(spacing: 0) {
-//                    if appModel.settings.quickDelete {
-                    if true {
+                    //TODO: fix settings key to show delete button
+                    if appModel.settings.quickDelete {
+//                    if true {
                         SwipeToActionView()
                             .frame(height: 60)
                     }

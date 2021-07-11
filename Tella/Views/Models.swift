@@ -71,7 +71,7 @@ class MainAppModel: ObservableObject {
         }
     }
     
-    private func publishUpdates() {
+    func publishUpdates() {
         DispatchQueue.main.async {
             self.objectWillChange.send()
         }
@@ -80,9 +80,41 @@ class MainAppModel: ObservableObject {
 }
 
 class SettingsModel: ObservableObject, Codable {
-    var offLineMode = false
-    var quickDelete: Bool = false
-    var deleteVault: Bool = false
-    var deleteForms: Bool = false
-    var deleteServerSettings: Bool = false
+    
+    @Published var offLineMode = false
+    @Published var quickDelete: Bool = false
+    @Published var deleteVault: Bool = false
+    @Published var deleteForms: Bool = false
+    @Published var deleteServerSettings: Bool = false
+    
+    enum CodingKeys: CodingKey {
+        case offLineMode
+        case quickDelete
+        case deleteVault
+        case deleteForms
+        case deleteServerSettings
+    }
+    
+    init() {
+        
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        offLineMode = try container.decode(Bool.self, forKey: .offLineMode)
+        quickDelete = try container.decode(Bool.self, forKey: .quickDelete)
+        deleteVault = try container.decode(Bool.self, forKey: .deleteVault)
+        deleteForms = try container.decode(Bool.self, forKey: .deleteForms)
+        deleteServerSettings = try container.decode(Bool.self, forKey: .deleteServerSettings)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(offLineMode, forKey: .offLineMode)
+        try container.encode(quickDelete, forKey: .quickDelete)
+        try container.encode(deleteVault, forKey: .deleteVault)
+        try container.encode(deleteForms, forKey: .deleteForms)
+        try container.encode(deleteServerSettings, forKey: .deleteServerSettings)
+    }
+    
 }
