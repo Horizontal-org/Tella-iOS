@@ -5,57 +5,19 @@
 import SwiftUI
 import AVFoundation
  
-struct CustomCameraPhotoView: View {
-    @State private var image: Image?
-    @State private var showingCustomCamera = false
-    @State private var inputImage: UIImage?
-    
-    var body: some View {
-        
-        NavigationView {
-            VStack {
-                ZStack {
-                    Rectangle().fill(Color.secondary)
-                    
-                    if image != nil
-                    {
-                        image?
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    }
-                    else
-                    {
-                        Text("Take Photo").foregroundColor(.white).font(.headline)
-                    }
-                }
-                .onTapGesture {
-                    self.showingCustomCamera = true
-                }
-            }
-            .sheet(isPresented: $showingCustomCamera, onDismiss: loadImage) {
-                CustomCameraView(image: self.$inputImage)
-            }
-            .edgesIgnoringSafeArea(.all)
-        }
-    }
-    
-    func loadImage() {
-        guard let inputImage = inputImage else { return }
-        image = Image(uiImage: inputImage)
-    }
-}
-
 struct CustomCameraView: View {
     
-    @Binding var image: UIImage?
     @State var didTapCapture: Bool = false
+    let completion: (UIImage?) -> ()
+    
     var body: some View {
         ZStack(alignment: .bottom) {
             Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
-            CustomCameraRepresentable(image: self.$image, didTapCapture: $didTapCapture)
+            CustomCameraRepresentable(didTapCapture: $didTapCapture, completion: completion)
             CaptureButtonView().onTapGesture {
                 self.didTapCapture = true
-            }.padding(.bottom, 100)
+            }
+            .padding(.bottom, 100)
         }
         .edgesIgnoringSafeArea(.all)
     }
@@ -63,9 +25,8 @@ struct CustomCameraView: View {
 
 struct CustomCameraRepresentable: UIViewControllerRepresentable {
     
-    @Environment(\.presentationMode) var presentationMode
-    @Binding var image: UIImage?
     @Binding var didTapCapture: Bool
+    let completion: (UIImage?) -> ()
     
     func makeUIViewController(context: Context) -> CustomCameraController {
         let controller = CustomCameraController()
@@ -74,31 +35,73 @@ struct CustomCameraRepresentable: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ cameraViewController: CustomCameraController, context: Context) {
-        
         if(self.didTapCapture) {
             cameraViewController.didTapRecord()
         }
     }
+    
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
     
     class Coordinator: NSObject, UINavigationControllerDelegate, AVCapturePhotoCaptureDelegate {
-        let parent: CustomCameraRepresentable
         
+        let parent: CustomCameraRepresentable
+
         init(_ parent: CustomCameraRepresentable) {
             self.parent = parent
         }
         
         func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-            
             parent.didTapCapture = false
-            
-            if let imageData = photo.fileDataRepresentation() {
-                parent.image = UIImage(data: imageData)
-            }
-            parent.presentationMode.wrappedValue.dismiss()
+            parent.completion(photo.getImage())
         }
+    }
+}
+
+extension AVCapturePhoto {
+    
+    func getImage() -> UIImage? {
+        guard let cgImageRepresentation = cgImageRepresentation(),
+            let orientationInt = metadata[String(kCGImagePropertyOrientation)] as? UInt32,
+            let imageOrientation = UIImage.Orientation.orientation(fromCGOrientationRaw: orientationInt) else {
+                return nil
+        }
+
+        let cgImage = cgImageRepresentation.takeUnretainedValue()
+        let image = UIImage(cgImage: cgImage,
+                        scale: 1,
+                        orientation: imageOrientation)
+        return image
+    }
+    
+}
+
+extension UIImage.Orientation {
+
+    init(_ cgOrientation: CGImagePropertyOrientation) {
+        // we need to map with enum values becuase raw values do not match
+        switch cgOrientation {
+        case .up: self = .up
+        case .upMirrored: self = .upMirrored
+        case .down: self = .down
+        case .downMirrored: self = .downMirrored
+        case .left: self = .left
+        case .leftMirrored: self = .leftMirrored
+        case .right: self = .right
+        case .rightMirrored: self = .rightMirrored
+        }
+    }
+
+    /// Returns a UIImage.Orientation based on the matching cgOrientation raw value
+    static func orientation(fromCGOrientationRaw cgOrientationRaw: UInt32) -> UIImage.Orientation? {
+        var orientation: UIImage.Orientation?
+        if let cgOrientation = CGImagePropertyOrientation(rawValue: cgOrientationRaw) {
+            orientation = UIImage.Orientation(cgOrientation)
+        } else {
+            orientation = nil // only hit if improper cgOrientation is passed
+        }
+        return orientation
     }
 }
 
@@ -161,9 +164,8 @@ class CustomCameraController: UIViewController {
             photoOutput = AVCapturePhotoOutput()
             photoOutput?.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])], completionHandler: nil)
             captureSession.addOutput(photoOutput!)
-            
         } catch {
-            print(error)
+            debugLog(error)
         }
     }
     
@@ -179,7 +181,6 @@ class CustomCameraController: UIViewController {
         captureSession.startRunning()
     }
 }
-
 
 struct CaptureButtonView: View {
     @State private var animationAmount: CGFloat = 1

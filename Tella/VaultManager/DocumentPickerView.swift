@@ -10,8 +10,8 @@ struct DocumentPickerView: UIViewControllerRepresentable {
     
     let completion: ([URL]?) -> ()
 
-    func makeCoordinator() -> DocCoordinator {
-        return DocCoordinator(completion)
+    func makeCoordinator() -> DocumentCoordinator {
+        return DocumentCoordinator(completion)
     }
 
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
@@ -25,7 +25,7 @@ struct DocumentPickerView: UIViewControllerRepresentable {
 }
 
 //  Coordinator acts as the go between for swiftui and uikit
-class DocCoordinator: NSObject, UINavigationControllerDelegate, UIDocumentPickerDelegate {
+class DocumentCoordinator: NSObject, UINavigationControllerDelegate, UIDocumentPickerDelegate {
 
     let completion: ([URL]?) -> ()
     

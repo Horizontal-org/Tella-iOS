@@ -37,11 +37,17 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         self.rootFileName = rootFileName
         self.containerPath = containerPath
 
-        root = VaultFile.rootFile(containerName: rootFileName, fileName: "..")
+        root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
         if let root = load(name: rootFileName) {
             self.root = root
         } else {
             save(file: root)
+        }
+        
+        do {
+            try FileManager.default.createDirectory(at: containerURL, withIntermediateDirectories: true, attributes: nil)
+        } catch let error {
+            debugLog(error)
         }
     }
 
@@ -136,13 +142,14 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         
         let containerName = UUID().uuidString
         let fileURL = containerURL(for: containerName)
+        guard let encrypted = cryptoManager.encrypt(data),
+                fileManager.createFile(atPath: fileURL, contents: encrypted) else {
+            debugLog("encryption failed \(String(describing: name))", level: .debug, space: .crypto)
+            return nil
+        }
+        
         let vaultFile = VaultFile(type: type, fileName: name, containerName: containerName, files: nil)
         parent?.add(file: vaultFile)
-        if let encrypted = cryptoManager.encrypt(data) {
-            _ = fileManager.createFile(atPath: fileURL, contents: encrypted)
-        } else {
-            debugLog("encryption failed \(String(describing: name))", level: .debug, space: .crypto)
-        }
         return vaultFile
     }
 
@@ -155,23 +162,29 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     
     func removeAllFiles() {
         debugLog("", space: .files)
-        let files = fileManager.contentsOfDirectory(atPath: containerURL)
-        for aFile in files {
-            if let fileURL = URL(string: aFile) {
-                fileManager.removeItem(at: fileURL)
-            }
+        
+        for file in root.files {
+            delete(file: file, parent: root)
         }
+        
+//        let files = fileManager.contentsOfDirectory(atPath: containerURL)
+//        for fileURL in files {
+//            fileManager.removeItem(at: fileURL)
+//        }
+        root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
+        save(file: root)
+        recentFiles = []
     }
     
     func delete(file: VaultFile, parent: VaultFile?) {
         debugLog("\(file)", space: .files)
-        parent?.files = parent?.files.filter({ $0.containerName != file.containerName }) ?? []
+        parent?.remove(file: file)
         removeRecentFile(file: file)
         
-        let fileURL = containerURL(for: file.containerName)
         for aFile in file.files {
             delete(file: aFile, parent: parent)
         }
+        let fileURL = containerURL(for: file.containerName)
         fileManager.removeItem(at: fileURL)
     }
 
@@ -180,8 +193,10 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
     
     private var containerURL: URL {
-        return FileManager.default.urls(for: .documentDirectory,
-                                        in: .userDomainMask)[0].appendingPathComponent(containerPath)
+        
+        let url = FileManager.default.urls(for: .documentDirectory,
+                                              in: .userDomainMask)[0].appendingPathComponent(containerPath)
+        return url
     }
     
     //MARK: recent file

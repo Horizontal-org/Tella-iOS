@@ -59,8 +59,6 @@ struct TellaFileManager {
         saveFile(text.data(using: String.Encoding.utf8)!, FileTypeEnum.TEXT.rawValue)
     }
 
-    
-    ///ssss
     static func saveImage(_ image: UIImage) {
         if let fixed = image.fixedOrientation() {
             if let pngData = fixed.pngData() {

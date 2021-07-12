@@ -8,7 +8,7 @@ import SwiftUI
 protocol FileManagerInterface {
     func copyItem(at srcURL: URL, to dstURL: URL) throws
     func contents(atPath path: URL) -> Data?
-    func contentsOfDirectory(atPath path: URL) -> [String]
+    func contentsOfDirectory(atPath path: URL) -> [URL]
 
     @discardableResult
     func createFile(atPath path: URL, contents data: Data?) -> Bool
@@ -27,9 +27,9 @@ class DefaultFileManager: FileManagerInterface {
         return nil
     }
     
-    func contentsOfDirectory(atPath path: URL) -> [String] {
+    func contentsOfDirectory(atPath path: URL) -> [URL] {
         do {
-            return try fileManager.contentsOfDirectory(atPath: path.absoluteString)
+            return try fileManager.contentsOfDirectory(at: path, includingPropertiesForKeys: nil, options: [])
         } catch let error {
             debugLog(error)
         }
@@ -37,6 +37,7 @@ class DefaultFileManager: FileManagerInterface {
     }
     
     func removeItem(at path: URL) {
+        debugLog("removing \(path.path)")
         do {
             try fileManager.removeItem(at: path)
         } catch let error {
@@ -45,6 +46,7 @@ class DefaultFileManager: FileManagerInterface {
     }
  
     func createFile(atPath path: URL, contents data: Data?) -> Bool {
+        debugLog("creating \(path.path)")
         do {
             try data?.write(to: path)
         } catch let error {
@@ -55,6 +57,7 @@ class DefaultFileManager: FileManagerInterface {
     }
     
     func copyItem(at srcURL: URL, to dstURL: URL) throws {
+        debugLog("copying from \(srcURL.path) \(dstURL.path)")
         try fileManager.copyItem(at: srcURL, to: dstURL)
     }
     

@@ -35,7 +35,7 @@ func debugLog(_ error: Error, level: DebugLevel = .debug, space: DebugSpace = .a
 
 func debugLog(_ debugText: String, level: DebugLevel = .debug, space: DebugSpace = .app, function: String = #function) {
     #if DEBUG || STAGING
-        Logger.shared.log("\(function): \(debugText)", level: level, space: space)
+        Logger.shared.log("\(function):\n\(debugText)\n", level: level, space: space)
     #endif
 }
 

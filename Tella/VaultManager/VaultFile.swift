@@ -27,7 +27,7 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
     var thumbnail: Data?
     var created: Date
     
-    static func rootFile(containerName: String, fileName: String) -> VaultFile {
+    static func rootFile(fileName: String, containerName: String) -> VaultFile {
         return VaultFile(type: .folder, fileName: fileName, containerName: containerName, files: [])
     }
 
@@ -63,14 +63,13 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
             return #imageLiteral(resourceName: "filetype.document")
         }
     }
-
     
     func add(file: VaultFile) {
-        fileName = UUID().uuidString
         files.append(file)
     }
 
     func remove(file: VaultFile) {
+        files = files.filter({ $0.containerName != file.containerName })
     }
 
 }
@@ -121,9 +120,9 @@ extension Array where Element == VaultFile {
             case .nameZA:
                 return file1.fileName < file2.fileName
             case .newestToOldest:
-                return file1.created < file2.created
-            case .oldestToNewest:
                 return file1.created > file2.created
+            case .oldestToNewest:
+                return file1.created < file2.created
             }
         }
     }

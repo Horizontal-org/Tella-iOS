@@ -50,7 +50,11 @@ struct AppView: View {
                     Text("Forms")
                 }.tag(MainAppModel.Tabs.forms)
 #endif
-            CustomCameraView(image: self.$inputImage)
+            CustomCameraView(completion: { image in
+                if let image = image {
+                    self.appModel.add(image: image, to: appModel.vaultManager.root, type: .image)
+                }
+            })
                 .tabItem {
                     Image("tab.camera")
                     Text("Camera")

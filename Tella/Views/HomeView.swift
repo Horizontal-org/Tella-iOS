@@ -32,11 +32,11 @@ struct HomeView: View {
             ZStack(alignment: .top) {
                 Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
                 VStack(spacing: 0) {
-                    //TODO: fix settings key to show delete button
                     if appModel.settings.quickDelete {
-//                    if true {
-                        SwipeToActionView()
-                            .frame(height: 60)
+                        SwipeToActionView(completion: {
+                            appModel.removeAllFiles()
+                        })
+                        .frame(height: 60)
                     }
                     ScrollView{
                         RecentFilesListView(appModel: appModel)

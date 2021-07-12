@@ -5,12 +5,14 @@
 import SwiftUI
 
 struct SwipeToActionView: View {
-    
-    let height: CGFloat = 50
-    let maxtTranslationWidth: CGFloat = UIScreen.main.bounds.width - 40 - 50
-    let width: CGFloat = UIScreen.main.bounds.width - 40
 
-    @State var offset:CGFloat = 0
+    let completion: (() -> ())?
+
+    private let height: CGFloat = 50
+    private let maxtTranslationWidth: CGFloat = UIScreen.main.bounds.width - 40 - 50
+    private let width: CGFloat = UIScreen.main.bounds.width - 40
+
+    @State private var offset:CGFloat = 0
     
     //TODO: add DELETE label
     var body: some View {
@@ -55,6 +57,7 @@ struct SwipeToActionView: View {
     
     func swipeEndAction() {
         offset = 0
+        completion?()
     }
     
     var swipeButton: some View {
@@ -69,7 +72,7 @@ struct SwipeToActionView: View {
 
 struct buttonUI_Previews: PreviewProvider {
     static var previews: some View {
-        SwipeToActionView()
+        SwipeToActionView(completion: nil)
             .background(Color.blue)
     }
 }

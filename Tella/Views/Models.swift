@@ -23,7 +23,7 @@ class MainAppModel: ObservableObject {
     }
     
     @Published var settings: SettingsModel = SettingsModel()
-    @Published var vaultManager: VaultManager = VaultManager(cryptoManager: DummyCryptoManager(), fileManager: DefaultFileManager(), rootFileName: "rootFile", containerPath: "")
+    @Published var vaultManager: VaultManager = VaultManager(cryptoManager: DummyCryptoManager(), fileManager: DefaultFileManager(), rootFileName: "root", containerPath: "Containers")
 
     @Published var selectedTab: Tabs = .home
     
@@ -44,6 +44,11 @@ class MainAppModel: ObservableObject {
         if let encoded = try? encoder.encode(settings) {
             UserDefaults.standard.set(encoded, forKey: "com.tella.settings")
         }
+    }
+    
+    func removeAllFiles() {
+        vaultManager.removeAllFiles()
+        publishUpdates()
     }
     
     func changeTab(to newTab: Tabs) {
