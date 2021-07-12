@@ -11,6 +11,7 @@ struct FileListItem: View {
 
     @State var showingActionSheet: Bool = false
     @ObservedObject var appModel: MainAppModel
+    @State var showFileInfoActive = false
 
     var body: some View {
         HStack(spacing: 0){
@@ -34,6 +35,11 @@ struct FileListItem: View {
                     TextDate(date: file.created)
                     // Fallback on earlier versions
                 }
+                NavigationLink(destination:
+                   FileInfoView(file: file),
+                   isActive: $showFileInfoActive) {
+                     EmptyView()
+                }.hidden()
             }
             .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 0))
             Spacer()
@@ -46,7 +52,11 @@ struct FileListItem: View {
             .onTapGesture {
                 showingActionSheet = true
             }
-            FileActionMenu(selectedFile: file, parentFile: parentFile, showingActionSheet: $showingActionSheet, appModel: appModel)
+            FileActionMenu(selectedFile: file,
+                           parentFile: parentFile,
+                           showingActionSheet: $showingActionSheet,
+                           showFileInfoActive: $showFileInfoActive, appModel: appModel
+                )
         }
         .listRowBackground(Styles.Colors.backgroundMain)
         .background(Styles.Colors.backgroundMain)

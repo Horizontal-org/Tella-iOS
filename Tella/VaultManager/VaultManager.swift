@@ -53,9 +53,10 @@ class VaultManager: VaultManagerInterface, ObservableObject {
 
     func importFile(image: UIImage, to parentFolder: VaultFile?, type: FileType) {
         debugLog("\(image)", space: .files)
-        guard let data = image.pngData() else {
+        guard let data = image.fixedOrientation() else {
             return
         }
+        
         let fileName = "\(type)_new"
         if let newFile = save(data, type: type, name: fileName, parent: parentFolder) {
             if type == .image {

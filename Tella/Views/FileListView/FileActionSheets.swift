@@ -42,7 +42,9 @@ struct FileActionMenu: View {
     var selectedFile: VaultFile
     var parentFile: VaultFile?
     @Binding var showingActionSheet: Bool
+    @Binding var showFileInfoActive: Bool
     @ObservedObject var appModel: MainAppModel
+    
 
     var body: some View {
         HStack{
@@ -65,6 +67,7 @@ struct FileActionMenu: View {
 //            .default(Text("Save to device")) {
 //            },
             .default(Text("File information")) {
+                showFileInfoActive = true
             },
             .destructive(Text("Delete")) {
                 appModel.delete(file: selectedFile, from: parentFile)

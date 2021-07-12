@@ -95,17 +95,19 @@ struct FileListView: View {
         }
     }
     
+    @State private var selection: String? = nil
     var itemsListView: some View {
         List {
             ForEach(files.sorted(by: viewModel.sortBy), id: \.self) { file in
-                ZStack(alignment: .leading) {
-                    NavigationLink(
-                        destination: FileDetailView(file: file)) {
+                VStack(alignment: .leading) {
+                    NavigationLink(destination: FileDetailView(file: file), tag: file.containerName, selection: $selection) {
                         EmptyView()
                     }
-                    .opacity(0)
-                    .background(Styles.Colors.backgroundMain)
-                    FileListItem(file: file, parentFile: rootFile, appModel: appModel)
+                    FileListItem(file: file, parentFile: rootFile, appModel: appModel).background(
+                        Styles.Colors.backgroundMain
+                    ).onTapGesture {
+                        self.selection = file.containerName
+                    }
                 }
                 .frame(height: 50)
             }

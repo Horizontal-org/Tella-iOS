@@ -7,23 +7,24 @@ import SwiftUI
 struct FileDetailView: View {
 
     var file: VaultFile
+    
     var body: some View {
-        VStack(alignment: .center, spacing: 20){
-            if file.type == .image {
-                Image(uiImage: file.thumbnailImage)
-                    .border(Color.green, width: 1)
-                    .frame(width: 100, height: 100, alignment: .center)
+        VStack(alignment: .leading, spacing: 20) {
+            switch file.type {
+            case .audio:
+                WebViewer(url: file.containerName)
+            case .document:
+                WebViewer(url: file.containerName)
+            case .video:
+                //TODO: need to provide file path with vault
+                VideoViewer()
+            case .image:
+                ImageViewer(imageData: file.thumbnail)
+            case .folder:
+                ImageViewer(imageData: file.thumbnail)
+            default:
+                WebViewer(url: file.containerName)
             }
-            Text(file.type.rawValue)
-            Text(file.fileName)
-            Text(file.containerName)
-            Text("\(file.created)")
         }
-    }
-}
-
-struct FileDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        FileDetailView(file: VaultFile.stub(type: .image))
     }
 }
