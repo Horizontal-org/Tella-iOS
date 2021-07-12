@@ -12,21 +12,19 @@
 	<dict>
 		<key>CFBundleAlternateIcons</key>
 		<dict>
-			<key>AppIcon-2</key>
+			<key>AppIconAlternate1</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>demoIcon</string>
+					<string>AppIconAlternate1</string>
 				</array>
-				<key>UIPrerenderedIcon</key>
-				<false/>
 			</dict>
 		</dict>
 		<key>CFBundlePrimaryIcon</key>
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>Icon-1</string>
+				<string></string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<false/>

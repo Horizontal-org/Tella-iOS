@@ -51,19 +51,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+        removeSplashscreen()
     }
     
     func sceneWillResignActive(_ scene: UIScene) {
         // Called when the scene will move from an active state to an inactive state.
         // This may occur due to temporary interruptions (ex. an incoming phone call).
+        addSplashscreen()
     }
     
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
-        if let imageView : UIImageView = UIApplication.shared.windows.first?.subviews.last?.viewWithTag(101) as? UIImageView {
-            imageView.removeFromSuperview()
-        }
+        removeSplashscreen()
     }
     
     func sceneDidEnterBackground(_ scene: UIScene) {
@@ -71,12 +71,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
         homeViewModel.saveSettings()
-        let imageView = UIImageView(frame: UIScreen.main.bounds)
-        imageView.tag = 101
-        imageView.backgroundColor = UIColor.white
-        imageView.contentMode = .center
-        imageView.image = UIImage (named: "splash")
-        UIApplication.shared.windows.first?.subviews.last?.addSubview(imageView)
+        addSplashscreen()
     }
-}
 
+    func removeSplashscreen() {
+        if let splashView = UIApplication.shared.windows.first?.subviews.last?.viewWithTag(101) {
+            splashView.removeFromSuperview()
+        }
+    }
+    
+    func addSplashscreen() {
+        let splashView = UIImageView(frame: UIScreen.main.bounds)
+        splashView.tag = 101
+        splashView.backgroundColor = Styles.uiColor.backgroundMain
+        splashView.contentMode = .center
+        UIApplication.shared.windows.first?.subviews.last?.addSubview(splashView)
+    }
+    
+}
