@@ -1,8 +1,4 @@
 //
-//  VideoViewer.swift
-//  Tella
-//
-//  Created by Ahlem on 30/06/2021.
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
@@ -23,7 +19,6 @@ struct VideoViewer: View {
         } else {
             Text("Video URL not available!")
         }
-        
     }
 }
 
