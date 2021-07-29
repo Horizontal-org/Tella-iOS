@@ -53,7 +53,10 @@ struct SettingMenu: View {
 //            NavigationLink(destination: SettingsAboutHelp()) {
 //                SettingItem(name: "General", image: Image(systemName: "gear"))
 //            }
-            NavigationLink(destination: SettingsSecurity(viewModel: viewModel)) {
+            VStack(alignment: .leading){
+                NavigationLink(destination: SettingsSecurity(viewModel: viewModel)) {
+                    EmptyView()
+                }
                 SettingItem(name: "Security", image: Image(systemName: "person.crop.circle.badge.exclam"))
             }
             NavigationLink(destination: SettingsDocumentation()) {

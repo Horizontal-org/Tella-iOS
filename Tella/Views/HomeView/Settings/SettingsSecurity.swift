@@ -36,7 +36,7 @@ struct SettingsSecurity : View {
     
     private func swapAppIcon() {
         if UIApplication.shared.alternateIconName == nil {
-            UIApplication.shared.setAlternateIconName("AppIcon-2")
+            UIApplication.shared.setAlternateIconName("AppIcon_V1")
         } else {
             UIApplication.shared.setAlternateIconName(nil)
         }
