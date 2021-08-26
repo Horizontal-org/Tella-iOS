@@ -36,7 +36,7 @@ struct ChangeView: View {
                         }
                         RoundedButton(text: type.buttonText) {
                             do {
-                                try CryptoManagerV1.updateKeys(self.privateKey, type)
+                                try CryptoManager.shared.updateKeys(self.privateKey, type)
                                 self.back()
                             } catch {
                                 self.isAlertVisible = true

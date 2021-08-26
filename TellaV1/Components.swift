@@ -19,7 +19,7 @@ let mainPadding: CGFloat = UIScreen.main.bounds.width > 400 ? 20 : 10
 private func makeText(_ text: String, _ size: CGFloat, _ header: Bool) -> some View {
     if header {
         return Text(text)
-            .font(.custom("Avenir Light Oblique", size: size))
+            .font(.custom("open-sans.regular", size: size))
             .foregroundColor(.white)
             .font(.title)
             .tracking(3)
@@ -127,7 +127,8 @@ struct ShutdowButton: View {
                     primaryButton: .default(
                         Text("Delete"),
                         action: {
-                            TellaFileManager.clearAllFiles()
+                            //TODO: fix
+//                            TellaFileManager.clearAllFiles()
                             self.appViewState.resetToAuth()
                         }
                     ),

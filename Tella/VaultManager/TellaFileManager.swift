@@ -45,7 +45,7 @@ struct TellaFileManager {
         guard let keyID = keyID else { return }
         deleteKeyFolder(keyID)
 
-        if !CryptoManagerV1.deleteMetaKeypair(keyID) {
+        if !CryptoManager.shared.deleteMetaKeypair(keyID) {
             print("could not delete private meta key from enclave")
         }
         Self.keyID = nil
@@ -81,7 +81,7 @@ struct TellaFileManager {
                 newName = getRandomFilename(type)
             }
         }
-        if let encrypted = CryptoManagerV1.encryptUserData(data) {
+        if let encrypted = CryptoManager.shared.encrypt(data) {
             instance.createFile(atPath: "\(encryptedFolderPath)/\(newName)", contents: encrypted)
         } else {
             print("encryption failed")
@@ -113,7 +113,7 @@ struct TellaFileManager {
 
     static func recoverAndDecrypt(_ atPath: String, _ privKey: SecKey) -> Data? {
         if let data = recoverData(atPath) {
-            if let decrypted = CryptoManagerV1.decrypt(data, privKey) {
+            if let decrypted = CryptoManager.shared.decrypt(data, privKey) {
                 return decrypted
             }
         }
@@ -142,7 +142,6 @@ struct TellaFileManager {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         return String((0..<TellaFileManager.fileNameLength).map{ _ in letters.randomElement()! }) + "." + type
     }
-
 
     static func deleteEncryptedFile(name: String) {
         do {

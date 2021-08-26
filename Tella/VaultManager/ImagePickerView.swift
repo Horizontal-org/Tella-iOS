@@ -54,7 +54,6 @@ class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerC
                 return
             }
             completion(nil, videoURL)
-            TellaFileManager.copyExternalFile(videoURL)
         }
     }
     

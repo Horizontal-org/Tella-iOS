@@ -32,7 +32,7 @@ enum ImageEnum: String {
 }
 
 enum MainViewEnum {
-    case MAIN, CAMERA, COLLECT, RECORD, SETTINGS, GALLERY, AUTH, VIDEO
+    case MAIN, AUTH
 }
 
 enum SettingsEnum{

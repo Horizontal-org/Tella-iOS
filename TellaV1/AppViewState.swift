@@ -9,6 +9,8 @@
 import SwiftUI
 
 final class AppViewState: ObservableObject {
+    var homeViewModel = MainAppModel()
+
     @Published private var viewStack = [MainViewEnum]()
 
     var currentView: MainViewEnum {

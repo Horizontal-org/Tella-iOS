@@ -13,20 +13,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     private var appViewState = AppViewState()
-    private var homeViewModel = MainAppModel()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
-        // TODO: Use CryptoManager instead
-//        if CryptoManagerV1.keysInitialized() {
-//            appViewState.resetToMain()
-//        } else {
-//            appViewState.resetToAuth()
-//        }
+        if CryptoManager.shared.keysInitialized() {
+            appViewState.resetToMain()
+        } else {
+            appViewState.resetToAuth()
+        }
         
-        // Create the SwiftUI view that provides the window contents.
-//        let contentView = ContentView().environmentObject(appViewState)
-        let contentView = AppView().environmentObject(homeViewModel)
+        let contentView = ContentView().environmentObject(appViewState)
         
         // override incorrect defaults
         UITableView.appearance().backgroundColor = .clear
@@ -70,7 +66,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
-        homeViewModel.saveSettings()
+        appViewState.homeViewModel.saveSettings()
         addSplashscreen()
     }
 
