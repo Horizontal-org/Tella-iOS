@@ -13,7 +13,7 @@ struct ContentView: View {
         }
         
         if appViewState.currentView == .AUTH {
-            return PasswordView().eraseToAnyView()
+            return LockChoiceView().eraseToAnyView()
         }
         return Color.black
             .edgesIgnoringSafeArea(.all) // ignore just for the color

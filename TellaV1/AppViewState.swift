@@ -12,7 +12,10 @@ final class AppViewState: ObservableObject {
     var homeViewModel = MainAppModel()
 
     @Published private var viewStack = [MainViewEnum]()
+    init() {
+        CryptoManager.shared.keysInitialized() ? self.resetToMain() : self.resetToAuth()
 
+    }
     var currentView: MainViewEnum {
         return viewStack.last ?? .AUTH
     }

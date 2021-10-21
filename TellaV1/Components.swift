@@ -19,7 +19,7 @@ let mainPadding: CGFloat = UIScreen.main.bounds.width > 400 ? 20 : 10
 private func makeText(_ text: String, _ size: CGFloat, _ header: Bool) -> some View {
     if header {
         return Text(text)
-            .font(.custom("open-sans.regular", size: size))
+            .font(.custom("OpenSans-Regular", size: size))
             .foregroundColor(.white)
             .font(.title)
             .tracking(3)

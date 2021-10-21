@@ -6,7 +6,7 @@ import UIKit
 import SwiftUI
 
 struct Styles {
-
+    
     struct uiColor {
         static let backgroundFileButton = UIColor(hexValue: 0x4e4a74)
         static let backgroundMain = UIColor(hexValue: 0x2C275A)
@@ -33,7 +33,13 @@ struct Styles {
             dashPhase: 0
         )
     }
-
+    
+    struct Fonts {
+        static var boldFontName = "OpenSans-Bold"
+        static var regularFontName = "OpenSans-Regular"
+        static var lightFontName = "OpenSans-Light"
+        static var lightRobotoFontName = "Roboto-Light"        
+    }
 }
 
 public extension UIColor {

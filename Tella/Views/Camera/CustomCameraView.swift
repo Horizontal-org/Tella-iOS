@@ -68,7 +68,7 @@ extension AVCapturePhoto {
                 return nil
         }
 
-        let cgImage = cgImageRepresentation.takeUnretainedValue()
+        let cgImage = cgImageRepresentation
         let image = UIImage(cgImage: cgImage,
                         scale: 1,
                         orientation: imageOrientation)

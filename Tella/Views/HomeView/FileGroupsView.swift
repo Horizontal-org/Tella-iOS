@@ -18,8 +18,12 @@ struct FileGroupsView: View {
             VStack(spacing: 0) {
                 // TODO: replace with LazyVGridView once iOS 13 not supported
                 HStack(spacing: 0){
-                    NavigationLink(destination: FileListView(appModel: appModel, files: appModel.vaultManager.root.files, fileType: nil, rootFile: appModel.vaultManager.root)) {
-                        FileGroupView(groupName: "My Files", iconName: "files.my_files")
+                    NavigationLink(destination: FileListView(appModel: appModel,
+                                                             files: appModel.vaultManager.root.files,
+                                                             fileType: nil,
+                                                             rootFile: appModel.vaultManager.root)) {
+                        FileGroupView(groupName: "My Files",
+                                      iconName: "files.my_files")
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 8))
                     }
                     NavigationLink(destination: FileListView(appModel: appModel, files: appModel.vaultManager.root.files, fileType: [.image, .video], rootFile: appModel.vaultManager.root)) {

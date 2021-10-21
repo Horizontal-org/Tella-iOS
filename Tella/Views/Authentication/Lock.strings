@@ -1,0 +1,30 @@
+/* 
+ Localizable.strings
+ Tella
+ 
+ 
+ Copyright © 2021 INTERNEWS. All rights reserved.
+ */
+
+// Lock Choice view
+"LockChoiceTitle" = "How would you like to lock Tella?";
+"LockChoicePasswordButtonTitle" = "PASSWORD";
+"LockChoicePasswordButtonDescription" = "The most secure option";
+"LockChoicePINButtonTitle" = "PIN";
+"LockChoicePINButtonDescription" = "Moderately secure";
+
+// Lock Password view
+"LockPasswordTitle" = "Enter your password";
+"LockPasswordDescription" = "Use at least 6 characters and avoid using passwords that can be guessed easily, such as “password.” The longer your password, the more secure it is." ;
+"LockConfirmPasswordTitle" = "Confirm your password";
+"LockConfirmPasswordDescription" = "Please enter your password one more time, just to be sure.";
+"LockConfirmPasswordError" = "Please try again. Your passwords do not match.";
+
+// Lock Pin view
+
+"LockPinTitle" = "Enter your PIN";
+"LockPinDescription" = "Use at least 6 digits and avoid using numbers that can be guessed easily, such as your birthday." ;
+"LockConfirmPinTitle" = "Confirm your PIN";
+"LockConfirmPinDescription" = "Please enter your PIN one more time, just to be sure.";
+
+

@@ -121,13 +121,16 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         return cryptoManager.decrypt(encryptedData)
     }
 
-    func save(file vaultFile: VaultFile) {
+    func save(file vaultFile: VaultFile) { // dhekra save encryptionnnnn
         debugLog("\(vaultFile)", space: .files)
         
         let fileURL = containerURL(for: vaultFile.containerName)
         do {
             let encodedData = try encoder.encode(vaultFile)
             if let encrypted = cryptoManager.encrypt(encodedData) {
+                
+                
+                // ===
                 fileManager.createFile(atPath: fileURL, contents: encrypted)
             } else {
                 debugLog("encryption failed")
