@@ -28,3 +28,10 @@
 "LockConfirmPinDescription" = "Please enter your PIN one more time, just to be sure.";
 
 
+// Unlock Password view
+"UnlockPasswordError" = "Incorrect password, please try again";
+"UnlockPasswordTitle" = "Enter your password to unlock";
+
+// Unlock Pin view
+"UnlockPinTitle" = "Enter your PIN to unlock Tella";
+"UnlockPinError" = "Incorrect PIN, please try again";

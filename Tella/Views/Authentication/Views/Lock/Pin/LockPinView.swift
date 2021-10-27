@@ -16,7 +16,7 @@ struct LockPinView: View {
         CustomPinView(lockViewData: LockPinData(),
                       nextButtonAction: .destination,
                       fieldContent: $viewModel.password,
-                      shouldShowError: .constant(false),
+                      shouldShowErrorMessage: .constant(false),
                       destination: LockConfirmPinView(viewModel: viewModel))
     }
 }

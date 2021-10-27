@@ -72,6 +72,9 @@
 		12567FFC27178EE200A2D356 /* LockButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12567FFB27178EE200A2D356 /* LockButton.swift */; };
 		125680002717907900A2D356 /* LockPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12567FFF2717907900A2D356 /* LockPasswordView.swift */; };
 		12568002271790AF00A2D356 /* LockPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12568001271790AF00A2D356 /* LockPinView.swift */; };
+		125A0AEB2726CBDA00F6E77F /* UnlockPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A0AEA2726CBD900F6E77F /* UnlockPasswordView.swift */; };
+		125A0AED2726CBF000F6E77F /* UnlockPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A0AEC2726CBF000F6E77F /* UnlockPinView.swift */; };
+		125A0AEF2726F0A000F6E77F /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A0AEE2726F0A000F6E77F /* ContainerView.swift */; };
 		125D231C271F119D00250FBB /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231B271F119D00250FBB /* Validator.swift */; };
 		125D231F271F12A000250FBB /* NSRegularExpressionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */; };
 		125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2320271F823100250FBB /* UIApplicationExtension.swift */; };
@@ -88,7 +91,7 @@
 		12A148982720B47100A1ADDC /* LockDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148972720B47100A1ADDC /* LockDescriptionView.swift */; };
 		12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148992720B53800A1ADDC /* ConfirmPasswordErrorView.swift */; };
 		12D37A942721752B00E43BDB /* TellaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A932721752B00E43BDB /* TellaApp.swift */; };
-		12D37A962721A49D00E43BDB /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A952721A49D00E43BDB /* ContainerView.swift */; };
+		12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A952721A49D00E43BDB /* NavigationContainerView.swift */; };
 		12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */; };
 		1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerView.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
@@ -237,6 +240,9 @@
 		12567FFB27178EE200A2D356 /* LockButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockButton.swift; sourceTree = "<group>"; };
 		12567FFF2717907900A2D356 /* LockPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPasswordView.swift; sourceTree = "<group>"; };
 		12568001271790AF00A2D356 /* LockPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPinView.swift; sourceTree = "<group>"; };
+		125A0AEA2726CBD900F6E77F /* UnlockPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockPasswordView.swift; sourceTree = "<group>"; };
+		125A0AEC2726CBF000F6E77F /* UnlockPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockPinView.swift; sourceTree = "<group>"; };
+		125A0AEE2726F0A000F6E77F /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		125D231B271F119D00250FBB /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRegularExpressionExtension.swift; sourceTree = "<group>"; };
 		125D2320271F823100250FBB /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
@@ -252,7 +258,7 @@
 		12A148972720B47100A1ADDC /* LockDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockDescriptionView.swift; sourceTree = "<group>"; };
 		12A148992720B53800A1ADDC /* ConfirmPasswordErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordErrorView.swift; sourceTree = "<group>"; };
 		12D37A932721752B00E43BDB /* TellaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaApp.swift; sourceTree = "<group>"; };
-		12D37A952721A49D00E43BDB /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
+		12D37A952721A49D00E43BDB /* NavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContainerView.swift; sourceTree = "<group>"; };
 		12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinKeyboardModel.swift; sourceTree = "<group>"; };
 		1E67B39123FC9067001F3D64 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		1EAE6BF424146C2100114244 /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
@@ -559,6 +565,15 @@
 			path = LockChoice;
 			sourceTree = "<group>";
 		};
+		125A0AE92726CACE00F6E77F /* Unlock */ = {
+			isa = PBXGroup;
+			children = (
+				125A0AEA2726CBD900F6E77F /* UnlockPasswordView.swift */,
+				125A0AEC2726CBF000F6E77F /* UnlockPinView.swift */,
+			);
+			path = Unlock;
+			sourceTree = "<group>";
+		};
 		125D231D271F127D00250FBB /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -572,6 +587,7 @@
 		125D2322271F863200250FBB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				125A0AE92726CACE00F6E77F /* Unlock */,
 				12A1488D27209EF200A1ADDC /* Lock */,
 			);
 			path = Views;
@@ -704,7 +720,8 @@
 				0F3DC3E42523951C0024B4A0 /* BundleInfo.swift */,
 				6DD4C039240F547300491438 /* Util.swift */,
 				125D231B271F119D00250FBB /* Validator.swift */,
-				12D37A952721A49D00E43BDB /* ContainerView.swift */,
+				12D37A952721A49D00E43BDB /* NavigationContainerView.swift */,
+				125A0AEE2726F0A000F6E77F /* ContainerView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1116,6 +1133,7 @@
 				D7F55FCD25348FB80028739E /* AudioManager.swift in Sources */,
 				D5DA7F982646220100B00FDA /* FileGroupButtonView.swift in Sources */,
 				12D37A942721752B00E43BDB /* TellaApp.swift in Sources */,
+				125A0AEF2726F0A000F6E77F /* ContainerView.swift in Sources */,
 				125D231C271F119D00250FBB /* Validator.swift in Sources */,
 				0D4D7510266316D200D7A635 /* SettingsGeneral.swift in Sources */,
 				D51639802631130E003A11B5 /* HomeView.swift in Sources */,
@@ -1161,12 +1179,14 @@
 				0D4D7514266316E500D7A635 /* SettingsAboutHelp.swift in Sources */,
 				12567FF9271742C500A2D356 /* Localizable.swift in Sources */,
 				0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */,
+				125A0AEB2726CBDA00F6E77F /* UnlockPasswordView.swift in Sources */,
 				0DA213C526801EA700526995 /* ViewHelpers.swift in Sources */,
 				D572EAC5263A383100CE191A /* RecentFilesListView.swift in Sources */,
 				D75F9E9C25342539006F6212 /* RecordViewModel.swift in Sources */,
+				125A0AED2726CBF000F6E77F /* UnlockPinView.swift in Sources */,
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */,
-				12D37A962721A49D00E43BDB /* ContainerView.swift in Sources */,
+				12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */,
 				0E87C877268C792000EB5E34 /* NSUIImage.swift in Sources */,
 				125D2326271F896400250FBB /* CustomPinView.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */,

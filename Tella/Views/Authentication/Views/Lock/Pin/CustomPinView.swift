@@ -12,17 +12,16 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State private var isValid : Bool = false
-    @State private var shouldResetView : Bool = false
-    
+
     var lockViewData : T
     var nextButtonAction: NextButtonAction
     @Binding var fieldContent : String
-    @Binding var shouldShowError : Bool
+    @Binding var shouldShowErrorMessage : Bool
     var destination: Destination?
     var action : (() -> Void)?
     
     var body: some View {
-        ContainerView {
+        NavigationContainerView {
             VStack(alignment: .center) {
                 Spacer(minLength: 20)
                 
@@ -39,7 +38,8 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
                 Spacer()
                 PasswordTextFieldView(fieldContent: $fieldContent,
                                       isValid: $isValid,
-                                      shouldShowError: $shouldShowError,
+                                      shouldShowErrorMessage: $shouldShowErrorMessage,
+                                      shouldShowError: .constant(false),
                                       disabled: true)
                 
                 Spacer(minLength: 20)
@@ -49,7 +49,7 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
                 
                 Spacer()
                 VStack {
-                    if shouldShowError   {
+                    if shouldShowErrorMessage   {
                         ConfirmPasswordErrorView()
                         Spacer()
                     }
@@ -71,7 +71,7 @@ struct CustomPinView_Previews: PreviewProvider {
         CustomPinView(lockViewData: LockPinData(),
                       nextButtonAction: .action,
                       fieldContent: .constant(""),
-                      shouldShowError: .constant(false),
+                      shouldShowErrorMessage: .constant(false),
                       destination: EmptyView()
         )
     }

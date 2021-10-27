@@ -12,7 +12,7 @@ import CoreMIDI
 struct LockChoiceView: View {
     var body: some View {
         
-        ContainerView {
+        NavigationContainerView {
             
             VStack(alignment: .center, spacing: 24) {
                 Spacer()

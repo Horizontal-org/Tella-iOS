@@ -17,16 +17,10 @@ struct ContainerView<Content:View>: View {
     }
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                Styles.Colors.backgroundMain
-                    .edgesIgnoringSafeArea(.all)
-                self.content()
-            }
-            .navigationBarTitle("")
-            .navigationBarHidden(true)
+        ZStack {
+            Styles.Colors.backgroundMain
+                .edgesIgnoringSafeArea(.all)
+            self.content()
         }
-        .navigationBarTitle("")
-        .navigationBarHidden(true)
     }
 }

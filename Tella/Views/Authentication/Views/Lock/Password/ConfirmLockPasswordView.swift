@@ -12,20 +12,26 @@ struct ConfirmLockPasswordView: View {
     
     @EnvironmentObject private var appViewState: AppViewState
     @ObservedObject var viewModel : LockViewModel
-    @State var shouldShowError : Bool = false
+    @State var shouldShowErrorMessage : Bool = false
     
     var body: some View {
         
         PasswordView(lockViewData: LockConfirmPasswordData(),
                      nextButtonAction: .action,
                      fieldContent: $viewModel.confirmPassword,
-                     shouldShowError: $shouldShowError,
+                     shouldShowErrorMessage: $shouldShowErrorMessage,
                      destination: EmptyView()) {
             
-            if viewModel.shouldShowError {
-                shouldShowError = true
+            if viewModel.shouldShowErrorMessage {
+                shouldShowErrorMessage = true
             } else {
-                self.appViewState.resetToMain()
+                do {
+
+                    try CryptoManager.shared.initKeys(.PASSWORD, password: viewModel.password)
+                    self.appViewState.resetToMain()
+                }catch {
+
+                }
             }
         }
     }

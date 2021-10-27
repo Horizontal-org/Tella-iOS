@@ -32,7 +32,7 @@ enum ImageEnum: String {
 }
 
 enum MainViewEnum {
-    case MAIN, AUTH
+    case MAIN, AUTH, LOCK, UNLOCK
 }
 
 enum SettingsEnum{

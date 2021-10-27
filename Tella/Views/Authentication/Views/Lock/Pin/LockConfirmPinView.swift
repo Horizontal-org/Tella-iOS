@@ -9,23 +9,28 @@
 import SwiftUI
 
 struct LockConfirmPinView: View {
-   
+    
     @EnvironmentObject private var appViewState: AppViewState
     @ObservedObject var viewModel : LockViewModel
-    @State var shouldShowError : Bool = false
+    @State var shouldShowErrorMessage : Bool = false
     
     var body: some View {
-
+        
         CustomPinView(lockViewData: LockConfirmPinData(),
-                     nextButtonAction: .action,
-                     fieldContent: $viewModel.confirmPassword,
-                     shouldShowError: $shouldShowError,
-                     destination: EmptyView()) {
+                      nextButtonAction: .action,
+                      fieldContent: $viewModel.confirmPassword,
+                      shouldShowErrorMessage: $shouldShowErrorMessage,
+                      destination: EmptyView()) {
             
-            if viewModel.shouldShowError {
-                shouldShowError = true
+            if viewModel.shouldShowErrorMessage {
+                shouldShowErrorMessage = true
             } else {
-                self.appViewState.resetToMain()
+                do {
+                    try CryptoManager.shared.initKeys(.PASSWORD, password: viewModel.password)
+                    self.appViewState.resetToMain()
+                }catch {
+                    
+                }
             }
         }
     }

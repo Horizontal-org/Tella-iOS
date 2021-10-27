@@ -16,6 +16,8 @@ struct PinView: View {
     
     @Binding var fieldContent : String
     var keyboardNumbers : [PinKeyboardModel]
+    var action : (() -> Void)?
+    
     
     var body: some View {
         
@@ -42,6 +44,7 @@ struct PinView: View {
                     .buttonStyle(PinButtonStyle())
                 case .done:
                     Button {
+                        action?()
                     } label: {
                         Text(item.text)
                     }.buttonStyle(PinButtonStyle())

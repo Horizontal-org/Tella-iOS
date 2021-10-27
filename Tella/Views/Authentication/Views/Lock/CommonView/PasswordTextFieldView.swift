@@ -13,28 +13,36 @@ struct PasswordTextFieldView : View {
     @State var shouldShowPassword : Bool = false
     @Binding var fieldContent : String
     @Binding var isValid : Bool
+    @Binding var shouldShowErrorMessage : Bool
     @Binding var shouldShowError : Bool
-    
+   
     var disabled : Bool = false
-    
+    var onCommit : (() -> Void)? =  ({})
+
     var body: some View {
         
         VStack(spacing: 13) {
             HStack {
                 if shouldShowPassword {
-                    TextField("", text: $fieldContent)
-                        .textFieldStyle(PasswordStyle())
+                    TextField("", text: $fieldContent,onCommit: {
+                        self.onCommit?()
+                    })
+                        .textFieldStyle(PasswordStyle(shouldShowError: shouldShowError))
                         .onChange(of: fieldContent, perform: { value in
                             self.isValid = value.passwordValidator()
-                            shouldShowError = false
+                            shouldShowErrorMessage = false
+                            self.shouldShowError = false
                         })
                         .disabled(disabled)
-                    
                 } else {
-                    SecureField("", text: $fieldContent)
-                        .textFieldStyle(PasswordStyle())
+                    SecureField("", text: $fieldContent,onCommit: {
+                        self.onCommit?()
+                        
+                    })
+                        .textFieldStyle(PasswordStyle(shouldShowError: shouldShowError))
                         .onChange(of: fieldContent, perform: { value in
                             self.isValid = value.passwordValidator()
+                            self.shouldShowErrorMessage = false
                             self.shouldShowError = false
                         })
                         .disabled(disabled)
@@ -59,10 +67,12 @@ struct PasswordTextFieldView : View {
 
 struct PasswordStyle: TextFieldStyle {
     
+    var shouldShowError : Bool = false
+    
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
             .font(.custom(Styles.Fonts.regularFontName, size: 18))
-            .foregroundColor(Color.white)
+            .foregroundColor(shouldShowError ? Color.red : Color.white)
             .accentColor(Styles.Colors.buttonAdd)
             .multilineTextAlignment(.center)
             .disableAutocorrection(true)
@@ -73,6 +83,7 @@ struct PasswordTextFieldView_Previews: PreviewProvider {
     static var previews: some View {
         PasswordTextFieldView(fieldContent: .constant(""),
                               isValid: .constant(true),
-                              shouldShowError: .constant(true))
+                              shouldShowErrorMessage: .constant(true),
+                              shouldShowError: .constant(false))
     }
 }

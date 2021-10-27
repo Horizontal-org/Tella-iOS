@@ -16,7 +16,7 @@ struct LockPasswordView: View {
         PasswordView(lockViewData: LockPasswordData(),
                      nextButtonAction: .destination,
                      fieldContent: $viewModel.password,
-                     shouldShowError: .constant(false),
+                     shouldShowErrorMessage: .constant(false),
                      destination: ConfirmLockPasswordView(viewModel: viewModel))
     }
 }

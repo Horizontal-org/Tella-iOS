@@ -18,17 +18,16 @@ struct PasswordView<T:LockViewProtocol, Destination:View>: View   {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     @State private var isValid : Bool = false
-    @State private var shouldResetView : Bool = false
-    
+
     var lockViewData : T
     var nextButtonAction: NextButtonAction
     @Binding var fieldContent : String
-    @Binding var shouldShowError : Bool
+    @Binding var shouldShowErrorMessage : Bool
     var destination: Destination?
     var action : (() -> Void)?
     
     var body: some View {
-        ContainerView {
+        NavigationContainerView {
             VStack(alignment: .center) {
                 Spacer(minLength: 56)
                 
@@ -45,10 +44,10 @@ struct PasswordView<T:LockViewProtocol, Destination:View>: View   {
                 
                 PasswordTextFieldView(fieldContent: $fieldContent,
                                       isValid: $isValid,
-                                      shouldShowError: $shouldShowError)
+                                      shouldShowErrorMessage: $shouldShowErrorMessage, shouldShowError: .constant(false))
                 Spacer()
                 
-                if shouldShowError {
+                if shouldShowErrorMessage {
                     ConfirmPasswordErrorView()
                 }
                 
@@ -68,7 +67,7 @@ struct PasswordView_Previews: PreviewProvider {
         PasswordView(lockViewData: LockPasswordData(action: {}),
                      nextButtonAction: .action,
                      fieldContent: .constant(""),
-                     shouldShowError: .constant(false),
+                     shouldShowErrorMessage: .constant(false),
                      destination: EmptyView())
     }
 }
