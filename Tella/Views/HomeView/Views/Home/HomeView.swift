@@ -11,7 +11,7 @@ class HomeViewModel: ObservableObject {
 }
 
 struct HomeView: View {
-
+    
     @Binding var hideAll: Bool
     
     @ObservedObject var appModel: MainAppModel
@@ -20,59 +20,103 @@ struct HomeView: View {
     init(appModel: MainAppModel, hideAll: Binding<Bool>) {
         self.appModel = appModel
         self._hideAll = hideAll
-//        quickDelete =
+        //        quickDelete =
         setupView()
     }
     
     private func setupView() {
+        
     }
     
     var body: some View {
-        NavigationView {
-            ZStack(alignment: .top) {
-                Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
-                VStack(spacing: 0) {
-                    if appModel.settings.quickDelete {
-                        SwipeToActionView(completion: {
-                            appModel.removeAllFiles()
-                        })
-                        .frame(height: 60)
-                    }
-                    ScrollView{
-                        RecentFilesListView(appModel: appModel)
-                        FileGroupsView(appModel: appModel)
-                    }
+        
+        CustomNavigationContainerView {
+            VStack(spacing: 30) {
+                
+                VStack(spacing: 15) {
+                    Spacer()
+                        .frame( height: appModel.vaultManager.recentFiles.count > 0 ? 15 : 0 )
+                    RecentFilesListView(appModel: appModel)
                 }
-                AddFileButtonView(appModel: appModel, rootFile: nil)
+                
+                FileGroupsView(appModel: appModel)
+                
+                if appModel.settings.quickDelete {
+                    SwipeToActionView(completion: {
+                        appModel.removeAllFiles()
+                    })
+                }
             }
-            .navigationBarTitle("Tella")
-            .navigationBarItems(trailing: navBarButtons)
-            .background(Styles.Colors.backgroundMain)
+            
+            .navigationBarTitle("Tella", displayMode: .inline)
+            .navigationBarItems(
+                leading:
+                    Image("home.settings")
+                    .frame(width: 19, height: 20)
+                    .aspectRatio(contentMode: .fit)
+                    .navigateTo(destination: SettingsView(appModel: appModel))
+                , trailing:
+                    Button {
+                        hideAll = true
+                    } label: {
+                        Image("home.close")
+                            .imageScale(.large)
+                    }
+            )
+            
         }
     }
-
-    var navBarButtons: some View {
-        HStack(spacing: 20) {
-        Button {
-            hideAll = true
-        } label: {
-            Image("home.close")
-                .imageScale(.large)
-            }
+    
+    var TopBarView: some View {
+        
+        HStack {
             NavigationLink(destination: SettingsView(appModel: appModel)) {
                 Image("home.settings")
-                    .imageScale(.large)
+                    .frame(width: 19, height: 20)
+                    .aspectRatio(contentMode: .fit)
+                    .padding(EdgeInsets(top: 12, leading: 17, bottom: 10, trailing: 17))
             }
-        }.background(Styles.Colors.backgroundMain)
+            
+            Spacer()
+            
+            Text("Tella")
+                .font(.custom(Styles.Fonts.boldFontName, size: 24))
+                .foregroundColor(Color.white)
+            
+            Spacer()
+            
+            Button {
+                hideAll = true
+            } label: {
+                Image("home.close")
+                    .imageScale(.large)
+            }.padding(EdgeInsets(top: 12, leading: 17, bottom: 21, trailing: 17))
+        }
     }
-    
 }
+
+struct ContentViewe: View {
+    var body: some View {
+        NavigationView {
+            ZStack {
+                Color.black
+                NavigationLink(destination: Text("detail")) {
+                    Text("push")
+                }
+            }
+            .navigationBarTitle(Text("My Custom white title")
+                                    .foregroundColor(.white)
+                                    .font(.title), displayMode: .inline)
+        }
+    }
+}
+
 
 struct AddFileButtonView: View {
     
     @ObservedObject var appModel: MainAppModel
     var rootFile: VaultFile?
-
+    
     @State var showingDocumentPicker = false
     @State var showingImagePicker = false
     @State var showingAddFileSheet = false
@@ -113,7 +157,7 @@ struct AddFileButtonView: View {
             }
         })
     }
-
+    
     @available(iOS 14.0, *)
     var addFileDocumentImporter: some View {
         HStack{}
@@ -128,14 +172,14 @@ struct AddFileButtonView: View {
             }
         )
     }
-
+    
     var importFileActionSheet: some View {
         AddFileYellowButton(action: {
             showingAddFileSheet = true
         })
-        .actionSheet(isPresented: $showingAddFileSheet, content: {
-            addFileActionSheet
-        })
+            .actionSheet(isPresented: $showingAddFileSheet, content: {
+                addFileActionSheet
+            })
     }
     
     //TODO: replace with AddFileBottomSheetFileActions
@@ -154,13 +198,13 @@ struct AddFileButtonView: View {
             .default(Text("Import From Device")) {
                 showingDocumentPicker = true
             },
-//            .default(Text("Import and delete original")) {
-//                showingDocumentPicker = true
-//            },
-            .cancel()
+            //            .default(Text("Import and delete original")) {
+            //                showingDocumentPicker = true
+            //            },
+                .cancel()
         ])
     }
-
+    
 }
 
 struct HomeView_Previews: PreviewProvider {

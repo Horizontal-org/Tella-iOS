@@ -4,53 +4,43 @@
 
 import SwiftUI
 
+
+
 struct FileGroupsView: View {
-
+    
     @ObservedObject var appModel: MainAppModel
-
+    //    var homeFileItemss : [HomeFileItem] = homeFileItems
+    
+    let columns = [GridItem(.flexible(),spacing: 16),
+                   GridItem(.flexible(),spacing: 16)]
+    
+    
     var body: some View {
-        VStack(spacing: 0){
-            Text("Files")
-                .font(Font(UIFont.boldSystemFont(ofSize: 14)))
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity, maxHeight: 24, alignment: .topLeading)
-                .padding(EdgeInsets(top: 8, leading: 16, bottom: 16, trailing: 16))
-            VStack(spacing: 0) {
-                // TODO: replace with LazyVGridView once iOS 13 not supported
-                HStack(spacing: 0){
-                    NavigationLink(destination: FileListView(appModel: appModel,
-                                                             files: appModel.vaultManager.root.files,
-                                                             fileType: nil,
-                                                             rootFile: appModel.vaultManager.root)) {
-                        FileGroupView(groupName: "My Files",
-                                      iconName: "files.my_files")
-                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 8))
-                    }
-                    NavigationLink(destination: FileListView(appModel: appModel, files: appModel.vaultManager.root.files, fileType: [.image, .video], rootFile: appModel.vaultManager.root)) {
-                        FileGroupView(groupName: "Gallery", iconName: "files.gallery")
-                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 8))
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16 ) {
+                if appModel.vaultManager.recentFiles.count > 0 {
+                    
+                    Text(LocalizableHome.tellaFiles.localized)
+                        .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
+                        .foregroundColor(.white)
+                }
+                
+                LazyVGrid(columns: columns, spacing: 16) {
+                    ForEach(homeFileItems, id: \.self) { homeFileItem in
+                        FileGroupView(groupName: homeFileItem.title,
+                                      iconName: homeFileItem.imageName)
+                            .navigateTo(destination: FileListView(appModel: appModel,
+                                                                  files: appModel.vaultManager.root.files,
+                                                                  fileType: homeFileItem.fileType,
+                                                                  rootFile: appModel.vaultManager.root))
                     }
                 }
-                HStack(spacing: 0){
-                    NavigationLink(destination: FileListView(appModel: appModel, files: appModel.vaultManager.root.files, fileType: [.audio], rootFile: appModel.vaultManager.root)) {
-                        FileGroupView(groupName: "Audio", iconName: "files.audio")
-                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 8))
-                    }
-                    NavigationLink(destination: FileListView(appModel: appModel, files: appModel.vaultManager.root.files, fileType: [.document], rootFile: appModel.vaultManager.root)) {
-                        FileGroupView(groupName: "Documents", iconName: "files.documents")
-                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 8))
-                    }
-                }.padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0))
-                HStack(spacing: 0){
-                    NavigationLink(destination: FileListView(appModel: appModel, files: appModel.vaultManager.root.files, fileType: [.unknown], rootFile: appModel.vaultManager.root)) {
-                        FileGroupView(groupName: "Others", iconName: "files.others")
-                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 8))
-                    }
-                }
-            }.padding(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
-
+            }
         }
+        .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+        
         .background(Styles.Colors.backgroundMain)
+        
     }
 }
 

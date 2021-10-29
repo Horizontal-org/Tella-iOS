@@ -40,6 +40,7 @@
 		<string>OpenSans-Bold.ttf</string>
 		<string>OpenSans-Light.ttf</string>
 		<string>Roboto-Light.ttf</string>
+		<string>OpenSans-Semibold</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

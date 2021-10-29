@@ -5,45 +5,35 @@
 import SwiftUI
 
 struct RecentFilesListView: View {
-
+    
     @ObservedObject var appModel: MainAppModel
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0){
-            Text("Recent files")
-                .font(Font(UIFont.boldSystemFont(ofSize: 14)))
-                .foregroundColor(.white)
-                .frame(maxHeight: 24, alignment: .leading)
-                .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-            if appModel.vaultManager.recentFiles.count > 0 {
+        if appModel.vaultManager.recentFiles.count > 0 {
+            VStack(alignment: .leading, spacing: 15){
+                Text(LocalizableHome.recentFiles.localized)
+                    .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
+                    .foregroundColor(.white)
                 recentFilesView
-            } else {
-                emptyRecentFilesView
             }
+            .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0))
         }
-        .frame(height: appModel.vaultManager.recentFiles.count > 0 ? 180: 100)
-        .background(Styles.Colors.backgroundMain)
     }
     
     var recentFilesView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-          HStack(spacing: 10) {
-              ForEach(appModel.vaultManager.recentFiles, id: \.self) { file in
-                  Divider()
+            HStack(spacing: 7) {
+                ForEach(appModel.vaultManager.recentFiles, id: \.self) { file in
                     NavigationLink(destination: FileDetailView(file: file)) {
-                      RecentFileCell(recentFile: file)
-                  }
-              }.listRowBackground(Color.red)
-
-          }
+                        RecentFileCell(recentFile: file)
+                    }
+                    Divider()
+                    
+                }.listRowBackground(Color.red)
+            }
         }
         .frame(height: 70)
         .padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
-    }
-    
-    var emptyRecentFilesView: some View {
-        Text("No Recent Files")
-            .foregroundColor(Color.white)
     }
 }
 

@@ -34,7 +34,5 @@ struct RecentFileCell: View {
             recentFile.gridImage
                 .frame(width: 70, height: 70)
         }
-        .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
-//        .padding(.leading, 5)
     }
 }
