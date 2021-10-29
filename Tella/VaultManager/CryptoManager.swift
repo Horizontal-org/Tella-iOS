@@ -50,6 +50,9 @@ class CryptoManager {
     
     private var privateKey: SecKey?
     
+    @RawValueUserDefaultsProperty("PasswordType", defaultValue: PasswordTypeEnum.TELLA_PASSWORD)
+     var passwordType: PasswordTypeEnum
+
     init(cryptoFileManager: CryptoFileManagerProtocol) {
         self.cryptoFileManager = cryptoFileManager
     }
@@ -247,6 +250,7 @@ class CryptoManager {
         debugLog("Creating all-new keys")
         let privateKey = try createPrivateKey()
         try keyHelper(privateKey, type, password: password)
+        self.passwordType = type
     }
     
     func updateKeys(_ privateKey: SecKey, _ type: PasswordTypeEnum, password:String) throws {

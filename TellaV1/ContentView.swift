@@ -21,7 +21,8 @@ struct ContentView: View {
         }
         
         if appViewState.currentView == .UNLOCK {
-            return UnlockPinView().eraseToAnyView()
+            let passwordType = CryptoManager.shared.passwordType
+            return passwordType == .TELLA_PASSWORD ? UnlockPasswordView().eraseToAnyView() :  UnlockPinView().eraseToAnyView()
         }
 
 

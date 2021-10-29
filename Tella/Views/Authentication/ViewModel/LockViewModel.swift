@@ -14,15 +14,13 @@ class LockViewModel: ObservableObject {
     @Published var password : String = ""
     @Published var confirmPassword : String = ""
     
-    private var savedString : String?
-    
     var shouldShowErrorMessage : Bool {
         return password != confirmPassword
     }
     @Published var shouldShowUnlockError : Bool = false
-
+    
     func login() {
         let privateKey = CryptoManager.shared.recoverKey(.PRIVATE, password: password)
-         shouldShowUnlockError = privateKey == nil
+        shouldShowUnlockError = privateKey == nil
     }
 }

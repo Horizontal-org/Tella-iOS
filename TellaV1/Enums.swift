@@ -68,7 +68,7 @@ enum FileTypeEnum: String {
 }
 
 
-enum PasswordTypeEnum: CaseIterable {
+enum PasswordTypeEnum: String, CaseIterable {
     case TELLA_PASSWORD
     case TELLA_PIN
     case PASSCODE

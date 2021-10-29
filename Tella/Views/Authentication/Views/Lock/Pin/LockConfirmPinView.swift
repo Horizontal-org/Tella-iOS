@@ -26,7 +26,7 @@ struct LockConfirmPinView: View {
                 shouldShowErrorMessage = true
             } else {
                 do {
-                    try CryptoManager.shared.initKeys(.TELLA_PASSWORD, password: viewModel.password)
+                    try CryptoManager.shared.initKeys(.TELLA_PIN, password: viewModel.password)
                     self.appViewState.resetToMain()
                 }catch {
                     
