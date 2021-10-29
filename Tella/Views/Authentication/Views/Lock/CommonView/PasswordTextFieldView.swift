@@ -76,6 +76,7 @@ struct PasswordStyle: TextFieldStyle {
             .accentColor(Styles.Colors.buttonAdd)
             .multilineTextAlignment(.center)
             .disableAutocorrection(true)
+            .textContentType(UITextContentType.oneTimeCode)
     }
 }
 
