@@ -7,6 +7,7 @@ import SwiftUI
 struct RecentFilesListView: View {
     
     @ObservedObject var appModel: MainAppModel
+    @State var shouldShowMore : Bool = false
     
     var body: some View {
         if appModel.vaultManager.recentFiles.count > 0 {
@@ -23,13 +24,24 @@ struct RecentFilesListView: View {
     var recentFilesView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 7) {
-                ForEach(appModel.vaultManager.recentFiles, id: \.self) { file in
-                    NavigationLink(destination: FileDetailView(file: file)) {
-                        RecentFileCell(recentFile: file)
+                if (!shouldShowMore && appModel.vaultManager.recentFiles.count > 3) {
+                    ForEach(0..<3) { i in
+                        NavigationLink(destination: FileDetailView(file: appModel.vaultManager.recentFiles[i])) {
+                            RecentFileCell(recentFile: appModel.vaultManager.recentFiles[i])
+                        }
+                        Divider()
                     }
-                    Divider()
-                    
-                }.listRowBackground(Color.red)
+                    LoadMoreCell {
+                        shouldShowMore = true
+                    }
+                } else {
+                    ForEach(appModel.vaultManager.recentFiles, id: \.self) { file in
+                        NavigationLink(destination: FileDetailView(file: file)) {
+                            RecentFileCell(recentFile: file)
+                        }
+                        Divider()
+                    }
+                }
             }
         }
         .frame(height: 70)
