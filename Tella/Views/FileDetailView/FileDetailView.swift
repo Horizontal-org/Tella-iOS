@@ -6,6 +6,8 @@ import SwiftUI
 
 struct FileDetailView: View {
 
+    @ObservedObject var appModel: MainAppModel
+
     var file: VaultFile
     
     var body: some View {
@@ -16,10 +18,10 @@ struct FileDetailView: View {
             case .document:
                 WebViewer(url: file.containerName)
             case .video:
-                //TODO: need to provide file path with vault
-                VideoViewer()
+                VideoViewer(videoURL: appModel.vaultManager.loadVideo(file: file),
+                            appModel: appModel)
             case .image:
-                ImageViewer(imageData: file.thumbnail)
+                ImageViewer(imageData: appModel.vaultManager.load(file: file))
             case .folder:
                 ImageViewer(imageData: file.thumbnail)
             default:
@@ -27,4 +29,5 @@ struct FileDetailView: View {
             }
         }
     }
+    
 }

@@ -78,8 +78,11 @@ struct AppView: View {
         let coloredAppearance = UINavigationBarAppearance()
         coloredAppearance.configureWithTransparentBackground()
         coloredAppearance.backgroundColor = Styles.uiColor.backgroundMain
-        coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white,
+                                                 .font: UIFont(name: Styles.Fonts.boldFontName, size: 24)!]
+        coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white,
+                                                      .font: UIFont(name: Styles.Fonts.boldFontName, size: 24)!]
+        coloredAppearance.setBackIndicatorImage(UIImage(named: "back"), transitionMaskImage: UIImage(named: "back"))
         
         UINavigationBar.appearance().standardAppearance = coloredAppearance
         UINavigationBar.appearance().compactAppearance = coloredAppearance

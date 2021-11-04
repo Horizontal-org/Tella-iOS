@@ -3,6 +3,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 protocol VaultManagerInterface {
     
@@ -70,25 +71,18 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     func importFile(files: [URL], to parentFolder: VaultFile?, type: FileType) {
         for filePath in files {
             debugLog("\(filePath)", space: .files)
-
-            let containerName = UUID().uuidString
-            let fileName = filePath.lastPathComponent
-            let newFilePath = containerURL(for: containerName)
             do {
-                //TODO: add encryption on copying
-                if filePath.startAccessingSecurityScopedResource() {
-                    defer { filePath.stopAccessingSecurityScopedResource() }
-                    try fileManager.copyItem(at: filePath, to: newFilePath)
+                let data = try Data(contentsOf: filePath)
+                let fileName = filePath.lastPathComponent
+                
+                if let newFile = save(data, type: type, name: fileName, parent: parentFolder) {
+                    newFile.thumbnail = filePath.thumbnail?.pngData()
+                    addRecentFile(file: newFile)
                 }
-            } catch let error {
-                debugLog(error, space: .crypto)
-                continue
             }
-            let fileType = filePath.fileType
-            let thumbnail = filePath.thumbnail?.pngData()
-            let newFile = VaultFile(type: fileType, fileName: fileName, containerName: containerName, thumbnail: thumbnail)
-            (parentFolder ?? root).add(file: newFile)
-            addRecentFile(file: newFile)
+            catch  let error {
+                debugLog(error)
+            }
         }
         save(file: root)
     }
@@ -120,17 +114,28 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
         return cryptoManager.decrypt(encryptedData)
     }
+    
+    func loadVideo(file vaultFile: VaultFile) -> URL? {
+        
+        let videoData = self.load(file: vaultFile)
 
-    func save(file vaultFile: VaultFile) { // dhekra save encryptionnnnn
+        let tmpFileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(vaultFile.fileName)
+        
+        guard (fileManager.createFile(atPath: tmpFileURL, contents: videoData))
+
+        else {
+            return nil
+        }
+       return tmpFileURL
+    }
+
+    func save(file vaultFile: VaultFile) {
         debugLog("\(vaultFile)", space: .files)
         
         let fileURL = containerURL(for: vaultFile.containerName)
         do {
             let encodedData = try encoder.encode(vaultFile)
             if let encrypted = cryptoManager.encrypt(encodedData) {
-                
-                
-                // ===
                 fileManager.createFile(atPath: fileURL, contents: encrypted)
             } else {
                 debugLog("encryption failed")
@@ -190,6 +195,14 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
         let fileURL = containerURL(for: file.containerName)
         fileManager.removeItem(at: fileURL)
+    }
+    
+    func clearTmpDirectory() {
+        let tmpDirectory =  fileManager.contentsOfDirectory(atPath: NSTemporaryDirectory())
+        tmpDirectory.forEach {[unowned self] file in
+            let path = String.init(format: "%@%@", NSTemporaryDirectory(), file)
+            fileManager.removeItem(at: path)
+        }
     }
 
     private func containerURL(for containerName: String) -> URL {

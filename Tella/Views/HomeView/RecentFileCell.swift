@@ -7,11 +7,12 @@ import SwiftUI
 protocol RecentFileProtocol {
     var thumbnailImage: UIImage {get}
     var iconImage: UIImage {get}
-    var gridImage: AnyView {get}
+    var bigIconImage: UIImage {get}
+    var recentGridImage: AnyView {get}
 }
 
 extension RecentFileProtocol {
-    var gridImage: AnyView {
+    var recentGridImage: AnyView {
         AnyView(
             ZStack{
                 Image(uiImage: thumbnailImage)
@@ -19,7 +20,10 @@ extension RecentFileProtocol {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 70, height: 70, alignment: .center)
                     .clipped()
-                Image(uiImage: iconImage)
+                Image(uiImage: bigIconImage)
+                    .frame(width: 33, height: 33)
+                    .aspectRatio(contentMode: .fit)
+
             }
             .frame(width: 70, height: 70, alignment: .center)
             .background(Color.gray)
@@ -31,10 +35,33 @@ struct RecentFileCell: View {
     let recentFile: RecentFileProtocol
     var body: some View {
         ZStack{
-            recentFile.gridImage
+            recentFile.recentGridImage
                 .frame(width: 70, height: 70)
         }
-        .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
-//        .padding(.leading, 5)
+    }
+}
+
+struct LoadMoreCell: View {
+    
+    var onClick : (() -> Void)?
+    
+    var body: some View {
+        Button {
+            onClick?()
+        } label: {
+            VStack(spacing: 5){
+                Spacer()
+                Image("home.load_more")
+                    .frame(width: 33, height: 33)
+                    .aspectRatio(contentMode: .fit)
+                Text("27 more files")
+                    .font(.custom(Styles.Fonts.regularFontName, size: 9))
+                    .foregroundColor(.white)
+                Spacer()
+
+            }
+
+        }
+
     }
 }

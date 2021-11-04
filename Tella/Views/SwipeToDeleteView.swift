@@ -53,6 +53,7 @@ struct SwipeToActionView: View {
                             }
             })).animation(.linear)
         }
+        .padding(EdgeInsets(top: 5, leading: 19, bottom: 19, trailing: 19))
     }
     
     func swipeEndAction() {

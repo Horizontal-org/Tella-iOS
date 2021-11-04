@@ -83,7 +83,7 @@ struct FileListView: View {
             LazyVGrid(columns: gridLayout, alignment: .center, spacing: 6) {
                 ForEach(files.sorted(by: viewModel.sortBy), id: \.self) { file in
                     NavigationLink(
-                        destination: FileDetailView(file: file)) {
+                        destination: FileDetailView(appModel: appModel, file: file)) {
                         file.gridImage
                             .frame(minWidth: 0, maxWidth: .infinity)
                             .frame(maxHeight: 300)
@@ -100,7 +100,7 @@ struct FileListView: View {
         List {
             ForEach(files.sorted(by: viewModel.sortBy), id: \.self) { file in
                 VStack(alignment: .leading) {
-                    NavigationLink(destination: FileDetailView(file: file), tag: file.containerName, selection: $selection) {
+                    NavigationLink(destination: FileDetailView(appModel: appModel, file: file), tag: file.containerName, selection: $selection) {
                         EmptyView()
                     }
                     FileListItem(file: file, parentFile: rootFile, appModel: appModel).background(
