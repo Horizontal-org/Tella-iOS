@@ -27,6 +27,7 @@ struct ConfirmLockPasswordView: View {
             } else {
                 do {
                     try CryptoManager.shared.initKeys(.TELLA_PASSWORD, password: viewModel.password)
+                   _ = CryptoManager.shared.recoverKey(.PRIVATE, password: viewModel.password)
                     self.appViewState.resetToMain()
                 } catch {
 

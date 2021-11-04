@@ -48,7 +48,7 @@ class CryptoManager {
         return "\(Self.metaPrivateKeyTagPrefix).\(keyID)"
     }
     
-    private var privateKey: SecKey?
+    private var metaPrivateKey: SecKey?
     
     @RawValueUserDefaultsProperty("PasswordType", defaultValue: PasswordTypeEnum.TELLA_PASSWORD)
      var passwordType: PasswordTypeEnum
@@ -142,7 +142,7 @@ class CryptoManager {
             return nil
         }
         if type == .PRIVATE {
-            self.privateKey = key
+            self.metaPrivateKey = key
         }
 
         return key
@@ -317,11 +317,11 @@ extension CryptoManager: CryptoManagerInterface {
     
     func decrypt(_ data: Data) -> Data? {
 
-        guard let privateKey = self.privateKey else {
+        guard let metaPrivateKey = self.metaPrivateKey else {
             debugLog("Failed to recover private key", space: .crypto)
             return nil
         }
-        return decrypt(data, privateKey)
+        return decrypt(data, metaPrivateKey)
     }
     
 }
