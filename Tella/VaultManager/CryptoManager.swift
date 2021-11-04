@@ -3,22 +3,11 @@
 //
 
 import Foundation
+import LocalAuthentication
 
 protocol CryptoManagerInterface {
     func encrypt(_ data: Data) -> Data?
     func decrypt(_ data: Data) -> Data?
-}
-
-class DummyCryptoManager: CryptoManagerInterface {
-
-    func encrypt(_ data: Data) -> Data? {
-        return data
-    }
-    
-    func decrypt(_ data: Data) -> Data? {
-        return data
-    }
-    
 }
 
 enum KeyEnum {
@@ -59,13 +48,18 @@ class CryptoManager {
         return "\(Self.metaPrivateKeyTagPrefix).\(keyID)"
     }
     
+    private var privateKey: SecKey?
+    
+    @RawValueUserDefaultsProperty("PasswordType", defaultValue: PasswordTypeEnum.TELLA_PASSWORD)
+     var passwordType: PasswordTypeEnum
+
     init(cryptoFileManager: CryptoFileManagerProtocol) {
         self.cryptoFileManager = cryptoFileManager
     }
     
-    var metaPrivateKeyExists: Bool {
-        return recoverMetaPrivateKey() != nil
-    }
+//    var metaPrivateKeyExists: Bool {
+//        return recoverMetaPrivateKey() != nil
+//    }
 
     // Returns the options for the given key
     private func getOptions(_ type: KeyEnum) -> [String: Any] {
@@ -88,9 +82,9 @@ class CryptoManager {
     
     // Retrieves the meta private key from the secure enclave.
     // Returns nil on failure or if the key doesn't exist yet.
-    private func recoverMetaPrivateKey() -> SecKey? {
+    private func recoverMetaPrivateKey(password:String?) -> SecKey? {
         guard let keyID = keyID else { return nil }
-        let query = metaPrivateKeyQuery(keyID)
+        let query = metaPrivateKeyQuery(keyID,password: password)
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
         guard status == errSecSuccess else {
@@ -102,21 +96,28 @@ class CryptoManager {
     }
     
     // Query used to recover the meta private key
-    private func metaPrivateKeyQuery(_ keyID: String) -> [String: Any] {
+    private func metaPrivateKeyQuery(_ keyID: String, password:String?) -> [String: Any] {
+       
+        let context = LAContext()
+        if let password = password   {
+            context.setCredential(Data(password.utf8), type: .applicationPassword)
+        }
+
         return [
             kSecClass as String: kSecClassKey,
             kSecAttrApplicationTag as String: metaPrivateKeyTag(keyID),
             kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
             kSecReturnRef as String: true,
             kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
+            kSecUseAuthenticationContext as String : context
         ]
     }
 
     // Retrieves a key from a file: meta public, regular public, or regular private.
     // When retrieving the regular private, the user is prompted for their authentication.
-    func recoverKey(_ type: KeyEnum) -> SecKey? {
+    func recoverKey(_ type: KeyEnum, password:String? = nil) -> SecKey? {
         guard let keyFileType = type.toKeyFileEnum() else {
-            return recoverMetaPrivateKey()
+            return recoverMetaPrivateKey(password: password)
         }
         guard var data = cryptoFileManager.recoverKeyData(keyFileType) else {
             debugLog("key not found")
@@ -124,7 +125,7 @@ class CryptoManager {
         }
         if type == .PRIVATE {
             // Decrypts the regular private key
-            guard let metaPrivateKey = recoverKey(.META_PRIVATE) else {
+            guard let metaPrivateKey = recoverKey(.META_PRIVATE,password:password) else {
                 debugLog("meta private key not recovered")
                 return nil
             }
@@ -140,12 +141,14 @@ class CryptoManager {
             debugLog("Error: \(error?.takeRetainedValue().localizedDescription ?? "")", space: .crypto)
             return nil
         }
+        self.privateKey = key
+
         return key
     }
 
     @discardableResult
-    func deleteMetaKeypair(_ keyID: String) -> Bool {
-        let query = metaPrivateKeyQuery(keyID)
+    func deleteMetaKeypair(_ keyID: String, password:String) -> Bool {
+        let query = metaPrivateKeyQuery(keyID,password: password)
         let status = SecItemDelete(query as CFDictionary)
         if status != errSecSuccess {
             print("Failed to delete meta private key in enclave")
@@ -193,8 +196,11 @@ class CryptoManager {
     }
     
     // Generates the meta private key with the appropriate authentication
-    private func createMetaPrivateKey(_ type: PasswordTypeEnum, _ appTag: String) throws -> SecKey {
+    private func createMetaPrivateKey(_ type: PasswordTypeEnum, _ appTag: String, password:String) throws -> SecKey {
         // .privateKeyUsage needed so it is accessible
+        let context = LAContext()
+         context.setCredential(Data(password.utf8), type: .applicationPassword)
+
         let access = SecAccessControlCreateWithFlags(
                 kCFAllocatorDefault,
                 kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
@@ -208,7 +214,8 @@ class CryptoManager {
                 kSecAttrIsPermanent as String: true,
                 kSecAttrApplicationTag as String: appTag,
                 kSecAttrAccessControl as String: access
-            ]
+            ],
+            kSecUseAuthenticationContext as String : context,
         ]
         var error: Unmanaged<CFError>?
         guard let metaPrivateKey = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
@@ -235,27 +242,29 @@ class CryptoManager {
     
     // Checks if both private keys are properly initialized
     func keysInitialized() -> Bool {
-        return metaPrivateKeyExists && cryptoFileManager.keyFileExists(.PRIVATE)
+//        return metaPrivateKeyExists && cryptoFileManager.keyFileExists(.PRIVATE)
+        cryptoFileManager.keyFileExists(.PRIVATE)
     }
     
-    func initKeys(_ type: PasswordTypeEnum) throws {
+    func initKeys(_ type: PasswordTypeEnum, password:String) throws {
         debugLog("Creating all-new keys")
         let privateKey = try createPrivateKey()
-        try keyHelper(privateKey, type)
+        try keyHelper(privateKey, type, password: password)
+        self.passwordType = type
     }
     
-    func updateKeys(_ privateKey: SecKey, _ type: PasswordTypeEnum) throws {
+    func updateKeys(_ privateKey: SecKey, _ type: PasswordTypeEnum, password:String) throws {
         guard let keyID = keyID else {
             throw RuntimeError("Could not find key ID")
         }
-        try keyHelper(privateKey, type)
-        deleteMetaKeypair(keyID)
+        try keyHelper(privateKey, type, password: password)
+        deleteMetaKeypair(keyID, password:password)
     }
     
-    func keyHelper(_ privateKey: SecKey, _ type: PasswordTypeEnum) throws {
+    func keyHelper(_ privateKey: SecKey, _ type: PasswordTypeEnum, password:String) throws {
         let newKeyID = UUID().uuidString
         let newAppTag = metaPrivateKeyTag(newKeyID)
-        let metaPrivateKey = try createMetaPrivateKey(type, newAppTag)
+        let metaPrivateKey = try createMetaPrivateKey(type, newAppTag, password: password)
         try saveKeypair(privateKey, metaPrivateKey, newKeyID)
 
         if let keyID = keyID {
@@ -305,7 +314,12 @@ extension CryptoManager: CryptoManagerInterface {
     }
     
     func decrypt(_ data: Data) -> Data? {
-        return data
+
+        guard let privateKey = self.privateKey else {
+            debugLog("Failed to recover private key", space: .crypto)
+            return nil
+        }
+        return decrypt(data, privateKey)
     }
     
 }

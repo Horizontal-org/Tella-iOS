@@ -17,3 +17,26 @@ struct UserDefaultsProperty<T> {
         set { UserDefaults.standard.set(newValue, forKey: key) }
     }
 }
+
+@propertyWrapper
+struct RawValueUserDefaultsProperty<T: RawRepresentable> {
+    let key: String
+    let defaultValue: T
+
+    init(_ key: String, defaultValue: T) {
+        self.key = key
+        self.defaultValue = defaultValue
+    }
+
+    var wrappedValue: T {
+        get {
+            guard let rawValue = UserDefaults.standard.object(forKey: key) as? T.RawValue, let value = T(rawValue: rawValue) else {
+                 return defaultValue
+            }
+            return value
+        }
+        set {
+            UserDefaults.standard.set(newValue.rawValue, forKey: key)
+        }
+    }
+}

@@ -36,7 +36,10 @@
 	<string>Allow Tella to export files to your photos</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>open-sans.regular.tt</string>
+		<string>OpenSans-Regular.ttf</string>
+		<string>OpenSans-Bold.ttf</string>
+		<string>OpenSans-Light.ttf</string>
+		<string>Roboto-Light.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

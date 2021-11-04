@@ -32,7 +32,7 @@ enum ImageEnum: String {
 }
 
 enum MainViewEnum {
-    case MAIN, AUTH
+    case MAIN, AUTH, LOCK, UNLOCK
 }
 
 enum SettingsEnum{
@@ -68,17 +68,18 @@ enum FileTypeEnum: String {
 }
 
 
-enum PasswordTypeEnum: CaseIterable {
-    case PASSWORD
+enum PasswordTypeEnum: String, CaseIterable {
+    case TELLA_PASSWORD
+    case TELLA_PIN
     case PASSCODE
     case BIOMETRIC
 
     public func toFlag() -> SecAccessControlCreateFlags {
         switch(self) {
+        case .TELLA_PASSWORD, .TELLA_PIN:
+            return .applicationPassword
         case .BIOMETRIC:
             return .biometryAny
-        case .PASSWORD:
-            return .applicationPassword
         case .PASSCODE:
             return .devicePasscode
         }
@@ -86,7 +87,7 @@ enum PasswordTypeEnum: CaseIterable {
 
     var buttonText: String {
         switch self {
-        case .PASSWORD: return "Password"
+        case .TELLA_PASSWORD, .TELLA_PIN: return "Password"
         case .PASSCODE: return " Phone Passcode"
         case .BIOMETRIC: return "Phone Biometrics"
         }

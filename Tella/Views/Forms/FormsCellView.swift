@@ -28,11 +28,11 @@ struct FormsCellView: View {
             .padding()
             VStack(alignment : .leading,spacing: 0){
                 Text(formModel.details.title)
-                    .font(Font.custom("open-sans.regular", size: 14))
+                    .font(Font.custom("OpenSans-Regular", size: 14))
                     .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                     .foregroundColor(Color.white)
                 Text(formModel.details.description)
-                    .font(Font.custom("open-sans.regular", size: 12))
+                    .font(Font.custom("OpenSans-Regular", size: 12))
                     .fontWeight(.regular)
                     .foregroundColor(Color.white)
                     .padding(.top, 4)

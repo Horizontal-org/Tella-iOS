@@ -27,7 +27,7 @@ struct EditBottomSheet: View {
         VStack(alignment: .leading, content: {
             Text(self.titleText)
                 .foregroundColor(.white)
-                .font(Font.custom("open-sans.regular", size: 20))
+                .font(Font.custom("OpenSans-Regular", size: 20))
                 .fontWeight(.regular)
                 .padding(.top, 20)
                 
@@ -35,7 +35,7 @@ struct EditBottomSheet: View {
             VStack{
                 TextField("name", text : self.$filename)
                     .foregroundColor(.white)
-                    .font(Font.custom("open-sans.regular", size: 20))
+                    .font(Font.custom("OpenSans-Regular", size: 20))
                 Divider()
                     .frame(height: 1)
                     .padding(.horizontal, 30)

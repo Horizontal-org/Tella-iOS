@@ -9,10 +9,13 @@
 import SwiftUI
 
 final class AppViewState: ObservableObject {
-    var homeViewModel = MainAppModel()
+    var homeViewModel : MainAppModel?
 
     @Published private var viewStack = [MainViewEnum]()
+    init() {
+        CryptoManager.shared.keysInitialized() ? self.resetToUnlock() : self.resetToLock()
 
+    }
     var currentView: MainViewEnum {
         return viewStack.last ?? .AUTH
     }
@@ -28,8 +31,18 @@ final class AppViewState: ObservableObject {
     func resetToAuth() {
         viewStack = [.AUTH]
     }
+    
+    func resetToLock() {
+        viewStack = [.LOCK]
+    }
+
+    func resetToUnlock() {
+        viewStack = [.UNLOCK]
+    }
+
 
     func resetToMain() {
+        homeViewModel = MainAppModel()
         viewStack = [.MAIN]
     }
 }

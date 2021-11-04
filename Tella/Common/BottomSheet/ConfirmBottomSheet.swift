@@ -17,14 +17,14 @@ struct ConfirmBottomSheet : View {
             Spacer()
             Text(self.titleText)
                 .foregroundColor(.white)
-                .font(Font.custom("open-sans.regular", size: 20))
+                .font(Font.custom("OpenSans-Regular", size: 20))
                 .fontWeight(.regular)
                 .padding(.top, 20)
                 .padding(.horizontal, 20)
             
             Text(self.msgText)
                 .foregroundColor(.white)
-                .font(Font.custom("open-sans.regular", size: 14))
+                .font(Font.custom("OpenSans-Regular", size: 14))
                 .fontWeight(.light)
                 .padding(20)
             

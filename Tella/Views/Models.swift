@@ -23,7 +23,7 @@ class MainAppModel: ObservableObject {
     }
     
     @Published var settings: SettingsModel = SettingsModel()
-    @Published var vaultManager: VaultManager = VaultManager(cryptoManager: DummyCryptoManager(), fileManager: DefaultFileManager(), rootFileName: "root", containerPath: "Containers")
+    @Published var vaultManager: VaultManager = VaultManager(cryptoManager: CryptoManager.shared, fileManager: DefaultFileManager(), rootFileName: "root", containerPath: "Containers")
 
     @Published var selectedTab: Tabs = .home
     
