@@ -141,7 +141,9 @@ class CryptoManager {
             debugLog("Error: \(error?.takeRetainedValue().localizedDescription ?? "")", space: .crypto)
             return nil
         }
-        self.privateKey = key
+        if type == .PRIVATE {
+            self.privateKey = key
+        }
 
         return key
     }

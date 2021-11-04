@@ -50,19 +50,35 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
     var iconImage: UIImage {
         switch type {
         case .audio:
-           return #imageLiteral(resourceName: "filetype.audio")
+           return #imageLiteral(resourceName: "filetype.small_audio")
         case .document:
-            return #imageLiteral(resourceName: "filetype.document")
+            return #imageLiteral(resourceName: "filetype.small_document")
         case .folder:
             return #imageLiteral(resourceName: "filetype.folder")
         case .video:
-            return #imageLiteral(resourceName: "filetype.video")
+            return #imageLiteral(resourceName: "filetype.small_video")
         case .image:
             return UIImage()
         case .unknown:
-            return #imageLiteral(resourceName: "filetype.document")
+            return #imageLiteral(resourceName: "filetype.small_document")
         }
     }
+    
+    var bigIconImage: UIImage {
+        switch type {
+        case .audio:
+           return #imageLiteral(resourceName: "filetype.big_audio")
+        case .document,.folder:
+            return #imageLiteral(resourceName: "filetype.big_document")
+        case .video:
+            return #imageLiteral(resourceName: "filetype.big_video")
+        case .image:
+            return UIImage()
+        case .unknown:
+            return #imageLiteral(resourceName: "filetype.big_document")
+        }
+    }
+
     
     func add(file: VaultFile) {
         files.append(file)

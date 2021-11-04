@@ -26,7 +26,8 @@ struct RecentFilesListView: View {
             HStack(spacing: 7) {
                 if (!shouldShowMore && appModel.vaultManager.recentFiles.count > 3) {
                     ForEach(0..<3) { i in
-                        NavigationLink(destination: FileDetailView(file: appModel.vaultManager.recentFiles[i])) {
+                        NavigationLink(destination: FileDetailView(appModel: appModel,
+                                                                   file: appModel.vaultManager.recentFiles[i])) {
                             RecentFileCell(recentFile: appModel.vaultManager.recentFiles[i])
                         }
                         Divider()
@@ -36,7 +37,8 @@ struct RecentFilesListView: View {
                     }
                 } else {
                     ForEach(appModel.vaultManager.recentFiles, id: \.self) { file in
-                        NavigationLink(destination: FileDetailView(file: file)) {
+                        NavigationLink(destination: FileDetailView(appModel: appModel,
+                                                                   file: file)) {
                             RecentFileCell(recentFile: file)
                         }
                         Divider()
