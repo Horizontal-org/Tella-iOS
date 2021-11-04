@@ -9,10 +9,12 @@ protocol FileManagerInterface {
     func copyItem(at srcURL: URL, to dstURL: URL) throws
     func contents(atPath path: URL) -> Data?
     func contentsOfDirectory(atPath path: URL) -> [URL]
-
+    func contentsOfDirectory(atPath path: String) -> [String]
+    
     @discardableResult
     func createFile(atPath path: URL, contents data: Data?) -> Bool
     func removeItem(at path: URL)
+    func removeItem(at path: String)
 }
 
 class DefaultFileManager: FileManagerInterface {
@@ -36,6 +38,15 @@ class DefaultFileManager: FileManagerInterface {
         return []
     }
     
+    func contentsOfDirectory(atPath path: String) -> [String] {
+        do {
+            return try fileManager.contentsOfDirectory(atPath: path)
+        } catch let error {
+            debugLog(error)
+        }
+        return []
+    }
+
     func removeItem(at path: URL) {
         debugLog("removing \(path.path)")
         do {
@@ -44,7 +55,16 @@ class DefaultFileManager: FileManagerInterface {
             debugLog(error)
         }
     }
- 
+    
+    func removeItem(at path: String) {
+        debugLog("removing \(path)")
+        do {
+            try fileManager.removeItem(atPath: path )
+        } catch let error {
+            debugLog(error)
+        }
+    }
+
     func createFile(atPath path: URL, contents data: Data?) -> Bool {
         debugLog("creating \(path.path)")
         do {

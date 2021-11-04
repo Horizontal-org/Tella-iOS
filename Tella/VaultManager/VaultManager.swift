@@ -120,10 +120,10 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         let videoData = self.load(file: vaultFile)
 
         let tmpFileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(vaultFile.fileName)
-        do {
-            try videoData?.write(to: tmpFileURL, options: [.atomic])
-        } catch let error {
-            debugLog("\(error)")
+        
+        guard (fileManager.createFile(atPath: tmpFileURL, contents: videoData))
+
+        else {
             return nil
         }
        return tmpFileURL
@@ -195,6 +195,14 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
         let fileURL = containerURL(for: file.containerName)
         fileManager.removeItem(at: fileURL)
+    }
+    
+    func clearTmpDirectory() {
+        let tmpDirectory =  fileManager.contentsOfDirectory(atPath: NSTemporaryDirectory())
+        tmpDirectory.forEach {[unowned self] file in
+            let path = String.init(format: "%@%@", NSTemporaryDirectory(), file)
+            fileManager.removeItem(at: path)
+        }
     }
 
     private func containerURL(for containerName: String) -> URL {

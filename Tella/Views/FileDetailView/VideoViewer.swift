@@ -8,11 +8,16 @@ import AVKit
 
 struct VideoViewer: View {
     var videoURL: URL?
-    
+    @ObservedObject var appModel: MainAppModel
+
     var body: some View {
         if let url = videoURL {
             if #available(iOS 14.0, *) {
                 VideoPlayer(player: AVPlayer(url: url))
+                    .onDisappear {
+                        appModel.vaultManager.clearTmpDirectory()
+                    }
+
             } else {
                 VideoPlayerController(videoURL: url)
             }
@@ -24,6 +29,6 @@ struct VideoViewer: View {
 
 struct VideoViewer_Previews: PreviewProvider {
     static var previews: some View {
-        VideoViewer()
+        VideoViewer(appModel: MainAppModel())
     }
 }

@@ -18,7 +18,8 @@ struct FileDetailView: View {
             case .document:
                 WebViewer(url: file.containerName)
             case .video:
-                VideoViewer(videoURL: appModel.vaultManager.loadVideo(file: file))
+                VideoViewer(videoURL: appModel.vaultManager.loadVideo(file: file),
+                            appModel: appModel)
             case .image:
                 ImageViewer(imageData: appModel.vaultManager.load(file: file))
             case .folder:
@@ -29,19 +30,4 @@ struct FileDetailView: View {
         }
     }
     
-    func get(videoData:Data?) -> URL? {
-        let tmpFileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent("video").appendingPathExtension("mp4")
-        let wasFileWritten = (try? videoData?.write(to: tmpFileURL, options: [.atomic])) != nil
-
-        if !wasFileWritten{
-            print("File was NOT Written")
-        }
-        
-       return tmpFileURL
-
-    }
-
 }
-
-
-
