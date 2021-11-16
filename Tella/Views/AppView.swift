@@ -32,41 +32,64 @@ struct AppView: View {
     }
     
     private var tabbar: some View{
-        TabView(selection: $appModel.selectedTab) {
-            HomeView(appModel: appModel, hideAll: $hideAll)
-                .tabItem {
-                    Image("tab.home")
-                    Text("Home")
-                }.tag(MainAppModel.Tabs.home)
+        NavigationView {
+            TabView(selection: $appModel.selectedTab) {
+                HomeView(appModel: appModel, hideAll: $hideAll)
+                    .tabItem {
+                        Image("tab.home")
+                        Text("Home")
+                    }.tag(MainAppModel.Tabs.home)
 #if DEBUG
-            ReportsView()
-                .tabItem {
-                    Image("tab.reports")
-                    Text("Reports")
-                }.tag(MainAppModel.Tabs.reports)
-            FormsView()
-                .tabItem {
-                    Image("tab.forms")
-                    Text("Forms")
-                }.tag(MainAppModel.Tabs.forms)
+                ReportsView()
+                    .tabItem {
+                        Image("tab.reports")
+                        Text("Reports")
+                    }.tag(MainAppModel.Tabs.reports)
+                FormsView()
+                    .tabItem {
+                        Image("tab.forms")
+                        Text("Forms")
+                    }.tag(MainAppModel.Tabs.forms)
 #endif
-            CustomCameraView(completion: { image in
-                if let image = image {
-                    self.appModel.add(image: image, to: appModel.vaultManager.root, type: .image)
+                CustomCameraView(completion: { image in
+                    if let image = image {
+                        self.appModel.add(image: image, to: appModel.vaultManager.root, type: .image)
+                    }
+                })
+                    .tabItem {
+                        Image("tab.camera")
+                        Text("Camera")
+                    }.tag(MainAppModel.Tabs.camera)
+                AudioRecordView()
+                    .tabItem {
+                        Image("tab.mic")
+                        Text("Mic")
+                    }.tag(MainAppModel.Tabs.mic)
+            }
+            
+            
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    leadingView
                 }
-            })
-                .tabItem {
-                    Image("tab.camera")
-                    Text("Camera")
-                }.tag(MainAppModel.Tabs.camera)
-            AudioRecordView()
-                .tabItem {
-                    Image("tab.mic")
-                    Text("Mic")
-                }.tag(MainAppModel.Tabs.mic)
-        }
-        .accentColor(.white)
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    trailingView
+                }
+            }
+            
+            
+//            .navigationBarItems(
+//                leading:
+//                    leadingView
+//                , trailing:
+//                    trailingView
+//            )
+        }.navigationViewStyle(.stack)
+        
+            .accentColor(.white)
     }
+    
+    
     
     private func setupApperance() {
         
@@ -89,10 +112,35 @@ struct AppView: View {
         UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
         
         UIBarButtonItem.appearance().setTitleTextAttributes([
-                                                                .foregroundColor: UIColor.white,
-                                                                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18)], for: .normal)
+            .foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18)], for: .normal)
         
     }
+    
+    @ViewBuilder
+    private var leadingView : some View {
+        
+        if appModel.selectedTab == .home {
+            Image("home.settings")
+                .frame(width: 19, height: 20)
+                .aspectRatio(contentMode: .fit)
+                .navigateTo(destination: SettingsView(appModel: appModel))
+        }
+    }
+    
+    @ViewBuilder
+    private var trailingView : some View {
+        
+        if appModel.selectedTab == .home {
+            Button {
+                hideAll = true
+            } label: {
+                Image("home.close")
+                    .imageScale(.large)
+            }
+        }
+    }
+    
 }
 
 struct AppView_Previews: PreviewProvider {

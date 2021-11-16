@@ -39,7 +39,10 @@ struct DragView<Content: View> : View {
         let dragThreshold = modalHeight * (2/3)
         if drag.predictedEndTranslation.height > dragThreshold || drag.translation.height > dragThreshold{
             isShown = false
+            UIApplication.shared.endEditing()
+
         }
+        
     }
     
     var content: () -> Content
@@ -50,12 +53,19 @@ struct DragView<Content: View> : View {
             }
             .onEnded(onDragEnded)
         return Group {
+            GeometryReader { geometry in
             ZStack {
                 //Background
                 Spacer()
                     .edgesIgnoringSafeArea(.all)
-                    .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height+20)
-                    .background(isShown ? Color.black.opacity( 0.5 * fraction_progress(lowerLimit: 0, upperLimit: Double(modalHeight), current: Double(dragState.translation.height), inverted: true)) : Color.clear)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .background(isShown ?
+                                Color.black.opacity( 0.5 * fraction_progress(lowerLimit: 0,
+                                                                                       upperLimit: Double(modalHeight),
+                                                                                       current: Double(dragState.translation.height),
+                                                                                       inverted: true)
+                                                   )
+                                : Color.clear)
                     .animation(.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0))
                     .gesture(
                         TapGesture()
@@ -71,7 +81,7 @@ struct DragView<Content: View> : View {
                     ZStack{
                         color.opacity(1.0)
                             .frame(width: UIScreen.main.bounds.size.width, height:modalHeight)
-                            .cornerRadius(25)
+                            .cornerRadius(25, corners: [.topLeft, .topRight])
                             .shadow(radius: 25)
                         self.content()
                             
@@ -79,19 +89,21 @@ struct DragView<Content: View> : View {
                             .frame(width: UIScreen.main.bounds.size.width, height:modalHeight)
                             .clipped()
                     }
-                    .offset(y: isShown ? ((self.dragState.isDragging && dragState.translation.height >= 1) ? dragState.translation.height : 0) : modalHeight)
+                    .offset(y: isShown ? ((self.dragState.isDragging && dragState.translation.height >= 1) ? dragState.translation.height - self.value : -self.value) : modalHeight)
                     .animation(.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0))
                     .gesture(drag)
                 }
-            }.edgesIgnoringSafeArea(.all)
-            .zIndex(.infinity).offset(y: -self.value)
+            }}.edgesIgnoringSafeArea(.all)
             .animation(.spring())
             .onAppear{
                 NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) {(noti) in
-                    self.value = modalHeight
+                    if isShown {
+                        let keyboardFrame = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
+                        self.value = keyboardFrame?.height ?? 0
+                    }
                 }
                 NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) {(noti) in
-                    self.value = 0
+                        self.value = 0
                 }
             }
             

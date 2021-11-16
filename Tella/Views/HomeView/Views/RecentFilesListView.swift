@@ -32,9 +32,11 @@ struct RecentFilesListView: View {
                         }
                         Divider()
                     }
-                    LoadMoreCell {
-                        shouldShowMore = true
-                    }
+                    LoadMoreCell(fileNumber: appModel.vaultManager.recentFiles.count)
+                        .navigateTo(destination: FileListView(appModel: appModel,
+                                                              files: appModel.vaultManager.recentFiles,
+                                                              rootFile: appModel.vaultManager.root,
+                                                              title: "Recent files"))
                 } else {
                     ForEach(appModel.vaultManager.recentFiles, id: \.self) { file in
                         NavigationLink(destination: FileDetailView(appModel: appModel,

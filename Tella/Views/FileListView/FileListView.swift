@@ -13,7 +13,6 @@ extension VaultFile {
                     .aspectRatio(1, contentMode: .fill)
                 Image(uiImage: iconImage)
             }
-            .background(Color.gray)
         )
     }
 }
@@ -26,36 +25,41 @@ class FileListViewModel: ObservableObject {
     
     @Published var sortBy: FileSortOptions = FileSortOptions.nameAZ
     @Published var viewType: FileViewType = FileViewType.list
+    
+    @Published var folderArray: [VaultFile] = []
 }
 
 struct FileListView: View {
     
     @ObservedObject var appModel: MainAppModel
-    @ObservedObject var viewModel = FileListViewModel()
-
-    var rootFile: VaultFile
-    var fileType: [FileType]?
+    @StateObject var viewModel = FileListViewModel()
+    @State var rootFile: VaultFile
+   
     var files: [VaultFile]
-    
-    init(appModel: MainAppModel, files: [VaultFile], fileType: [FileType]? = nil, rootFile: VaultFile) {
-        self.files = files.filtered(with: fileType, includeFolders: true)
+    var fileType: FileType?
+    var title : String = ""
+
+    init(appModel: MainAppModel, files: [VaultFile], fileType: FileType? = nil, rootFile: VaultFile, title : String = "") {
+        self.files = files
         self.fileType = fileType
         self.appModel = appModel
         self.rootFile = rootFile
+        self.title = title
     }
     
-    func setupView() {
-        UITableView.appearance().separatorStyle = .none
-        UITableView.appearance().tableFooterView = UIView()
-        UITableView.appearance().separatorColor = .clear
-        UITableView.appearance().allowsSelection = false
-        UITableViewCell.appearance().selectedBackgroundView = UIView()
-    }
-
+    //    func setupView() {
+    //        UITableView.appearance().separatorStyle = .none
+    //        UITableView.appearance().tableFooterView = UIView()
+    //        UITableView.appearance().separatorColor = .clear
+    //        UITableView.appearance().allowsSelection = false
+    //        UITableViewCell.appearance().selectedBackgroundView = UIView()
+    //    }
+    
     var body: some View {
         ZStack(alignment: .top) {
             Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
             VStack {
+                folderListView
                 topBarButtons
                 if #available(iOS 14.0, *) {
                     if viewModel.viewType == .list {
@@ -68,27 +72,85 @@ struct FileListView: View {
                 }
             }
             AddFileButtonView(appModel: appModel, rootFile: rootFile)
+            
+            FileSortMenu(showingSortFilesActionSheet: $viewModel.showingSortFilesActionSheet,
+                         sortBy: $viewModel.sortBy)
+            
         }
-        .navigationBarTitle("\(rootFile.fileName)")
+        // .navigationBarTitle("\(rootFile.fileName)")
+        .toolbar {
+            LeadingTitleToolbar(title: title)
+        }
     }
-
+    
+    private var folderListView : some View {
+        HStack(spacing: 5) {
+            
+            if viewModel.folderArray.count > 0 {
+                Button() {
+                    rootFile = appModel.vaultManager.root
+                    viewModel.folderArray.removeAll()
+                } label: {
+                    Image("files.folder")
+                        .resizable()
+                        .frame(width: 20, height: 16)
+                }
+                
+            }
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 2) {
+                    ForEach(viewModel.folderArray, id:\.self) { file in
+                        Text(file.fileName)
+                            .foregroundColor(.white).opacity(0.72)
+                            .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                            .onTapGesture {
+                                rootFile = file
+                                if let index = viewModel.folderArray.firstIndex(of: file) {
+                                    viewModel.folderArray.removeSubrange(index + 1..<viewModel.folderArray.endIndex)
+                                }
+                            }
+                        if let index = viewModel.folderArray.firstIndex(of: file), index < viewModel.folderArray.count  - 1 {
+                            Image("files.arrow_right")
+                                .resizable()
+                                .frame(width: 16, height: 16)
+                        }
+                    }
+                }
+            }
+            
+        }.padding(EdgeInsets(top: 12, leading: 18, bottom: 15, trailing: 18))
+        
+    }
+    
     @available(iOS 14.0, *)
     private var gridLayout: [GridItem] {
-        [GridItem(.adaptive(minimum: 87))]
+        [GridItem(.fixed(80),spacing: 6),
+         GridItem(.fixed(80),spacing: 6),
+         GridItem(.fixed(80),spacing: 6),
+         GridItem(.fixed(80),spacing: 6)]
     }
     
     @available(iOS 14.0, *)
     var itemsGridView: some View {
         ScrollView {
             LazyVGrid(columns: gridLayout, alignment: .center, spacing: 6) {
-                ForEach(files.sorted(by: viewModel.sortBy), id: \.self) { file in
-                    NavigationLink(
-                        destination: FileDetailView(appModel: appModel, file: file)) {
-                        file.gridImage
-                            .frame(minWidth: 0, maxWidth: .infinity)
-                            .frame(maxHeight: 300)
-                            .cornerRadius(5)
-                            .background(Styles.Colors.backgroundMain)
+                ForEach(files.sorted(by: viewModel.sortBy, folderArray: viewModel.folderArray, root: self.appModel.vaultManager.root, fileType: self.fileType), id: \.self) { file in
+                    
+                    switch file.type {
+                    case .folder:
+                        file.recentGridImage
+                            .background(Color.white.opacity(0.2))
+                            .onTapGesture {
+                                rootFile = file
+                                viewModel.folderArray.append(file)
+                            }
+                    default:
+                        file.recentGridImage
+                            .background(Color.white.opacity(0.2))
+                            .navigateTo(destination: FileDetailView(appModel: appModel,
+                                                                    file: file,
+                                                                    fileType: fileType))
                     }
                 }
             }.padding(EdgeInsets(top: 0, leading: 6, bottom: 0, trailing: 6))
@@ -98,18 +160,35 @@ struct FileListView: View {
     @State private var selection: String? = nil
     var itemsListView: some View {
         List {
-            ForEach(files.sorted(by: viewModel.sortBy), id: \.self) { file in
+            ForEach(files.sorted(by: viewModel.sortBy, folderArray: viewModel.folderArray, root: self.appModel.vaultManager.root, fileType: self.fileType), id: \.self) { file in
                 VStack(alignment: .leading) {
-                    NavigationLink(destination: FileDetailView(appModel: appModel, file: file), tag: file.containerName, selection: $selection) {
-                        EmptyView()
+                    
+                    switch file.type {
+                    case .folder:
+                        FileListItem(file: file,
+                                     parentFile: rootFile,
+                                     appModel: appModel,
+                                     selectingFile: $viewModel.selectingFiles,
+                                     isSelected: .constant(false))
+                            .background(Styles.Colors.backgroundMain)
+                            .onTapGesture {
+                                rootFile = file
+                                viewModel.folderArray.append(file)
+                            }
+                    default:
+                        FileListItem(file: file,
+                                     parentFile: rootFile,
+                                     appModel: appModel,
+                                     selectingFile: $viewModel.selectingFiles,
+                                     isSelected: .constant(false) )
+//                    isSelected: $files[(files.firstIndex(of: file)!)].isSelected)
+
+                            .background(Styles.Colors.backgroundMain)
+                            .navigateTo(destination: FileDetailView(appModel: appModel,
+                                                                    file: file,
+                                                                    fileType: fileType))
                     }
-                    FileListItem(file: file, parentFile: rootFile, appModel: appModel).background(
-                        Styles.Colors.backgroundMain
-                    ).onTapGesture {
-                        self.selection = file.containerName
-                    }
-                }
-                .frame(height: 50)
+                }.frame(height: 50)
             }
             .listRowBackground(Styles.Colors.backgroundMain)
         }
@@ -120,8 +199,6 @@ struct FileListView: View {
     var topBarButtons: some View {
         HStack(spacing: 0) {
             sortFilesButton
-            FileSortMenu(showingSortFilesActionSheet: $viewModel.showingSortFilesActionSheet,
-                         sortBy: $viewModel.sortBy)
             Spacer()
             selectingFilesButton
             if #available(iOS 14.0, *) {
@@ -131,7 +208,7 @@ struct FileListView: View {
         .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
         .background(Styles.Colors.backgroundMain)
     }
-
+    
     var sortFilesButton: some View {
         Button {
             viewModel.showingSortFilesActionSheet = true
@@ -155,7 +232,7 @@ struct FileListView: View {
                     .frame(width: 24, height: 24)
             }
         }
-            .frame(width: 44, height: 44)
+        .frame(width: 44, height: 44)
     }
     
     var viewTypeButton: some View {

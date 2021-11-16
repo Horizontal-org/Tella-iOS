@@ -8,19 +8,20 @@ import SwiftUI
 protocol VaultManagerInterface {
     
     var containerPath: String { get }
-
+    
     func load(name: String) -> VaultFile?
     func load(file: VaultFile) -> Data?
     func save(_ data: Data, type: FileType, name: String, parent: VaultFile?) -> VaultFile?
     func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?) -> VaultFile?
-
+    func createNewFolder( name: String, parent: VaultFile?)
     func delete(file: VaultFile, parent: VaultFile?)
     func removeAllFiles()
-
+    
 }   
 
 class VaultManager: VaultManagerInterface, ObservableObject {
-
+    
+    
     let containerPath: String
     private let rootFileName: String
     
@@ -28,16 +29,16 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     private let decoder = JSONDecoder()
     private let cryptoManager: CryptoManagerInterface
     private let fileManager: FileManagerInterface
-
+    
     @Published var root: VaultFile
     @Published var recentFiles: [VaultFile] = []
-
+    
     init(cryptoManager: CryptoManagerInterface, fileManager: FileManagerInterface, rootFileName: String, containerPath: String) {
         self.cryptoManager = cryptoManager
         self.fileManager = fileManager
         self.rootFileName = rootFileName
         self.containerPath = containerPath
-
+        
         root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
         if let root = load(name: rootFileName) {
             self.root = root
@@ -51,7 +52,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
             debugLog(error)
         }
     }
-
+    
     func importFile(image: UIImage, to parentFolder: VaultFile?, type: FileType) {
         debugLog("\(image)", space: .files)
         guard let data = image.fixedOrientation() else {
@@ -72,6 +73,10 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         for filePath in files {
             debugLog("\(filePath)", space: .files)
             do {
+                
+                let _ = filePath.startAccessingSecurityScopedResource()
+                defer { filePath.stopAccessingSecurityScopedResource() }
+                
                 let data = try Data(contentsOf: filePath)
                 let fileName = filePath.lastPathComponent
                 
@@ -79,11 +84,20 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                     newFile.thumbnail = filePath.thumbnail?.pngData()
                     addRecentFile(file: newFile)
                 }
+                
             }
             catch  let error {
                 debugLog(error)
             }
         }
+        save(file: root)
+    }
+    
+    func createNewFolder(name: String, parent: VaultFile?)  {
+        
+        let vaultFile = VaultFile(type: .folder, fileName: name, files: nil)
+        parent?.add(file: vaultFile)
+        addRecentFile(file: vaultFile)
         save(file: root)
     }
     
@@ -104,10 +118,10 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
         return nil
     }
-
+    
     func load(file vaultFile: VaultFile) -> Data? {
         debugLog("\(vaultFile)", space: .files)
-
+        
         let fileURL = containerURL(for: vaultFile.containerName)
         guard let encryptedData = fileManager.contents(atPath: fileURL) else {
             return nil
@@ -118,17 +132,17 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     func loadVideo(file vaultFile: VaultFile) -> URL? {
         
         let videoData = self.load(file: vaultFile)
-
+        
         let tmpFileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(vaultFile.fileName)
         
         guard (fileManager.createFile(atPath: tmpFileURL, contents: videoData))
-
+                
         else {
             return nil
         }
-       return tmpFileURL
+        return tmpFileURL
     }
-
+    
     func save(file vaultFile: VaultFile) {
         debugLog("\(vaultFile)", space: .files)
         
@@ -152,16 +166,16 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         let containerName = UUID().uuidString
         let fileURL = containerURL(for: containerName)
         guard let encrypted = cryptoManager.encrypt(data),
-                fileManager.createFile(atPath: fileURL, contents: encrypted) else {
-            debugLog("encryption failed \(String(describing: name))", level: .debug, space: .crypto)
-            return nil
-        }
+              fileManager.createFile(atPath: fileURL, contents: encrypted) else {
+                  debugLog("encryption failed \(String(describing: name))", level: .debug, space: .crypto)
+                  return nil
+              }
         
         let vaultFile = VaultFile(type: type, fileName: name, containerName: containerName, files: nil)
         parent?.add(file: vaultFile)
         return vaultFile
     }
-
+    
     func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?) -> VaultFile? {
         guard let data = object.data else {
             return nil
@@ -176,10 +190,10 @@ class VaultManager: VaultManagerInterface, ObservableObject {
             delete(file: file, parent: root)
         }
         
-//        let files = fileManager.contentsOfDirectory(atPath: containerURL)
-//        for fileURL in files {
-//            fileManager.removeItem(at: fileURL)
-//        }
+        //        let files = fileManager.contentsOfDirectory(atPath: containerURL)
+        //        for fileURL in files {
+        //            fileManager.removeItem(at: fileURL)
+        //        }
         root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
         save(file: root)
         recentFiles = []
@@ -204,7 +218,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
             fileManager.removeItem(at: path)
         }
     }
-
+    
     private func containerURL(for containerName: String) -> URL {
         return containerURL.appendingPathComponent(containerName)
     }

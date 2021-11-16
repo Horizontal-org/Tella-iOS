@@ -32,13 +32,13 @@ struct FileGroupsView: View {
                             .navigateTo(destination: FileListView(appModel: appModel,
                                                                   files: appModel.vaultManager.root.files,
                                                                   fileType: homeFileItem.fileType,
-                                                                  rootFile: appModel.vaultManager.root))
+                                                                  rootFile: appModel.vaultManager.root,
+                                                                  title: homeFileItem.title))
                     }
                 }
             }
         }
         .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-        
         .background(Styles.Colors.backgroundMain)
         
     }

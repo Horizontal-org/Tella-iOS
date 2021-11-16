@@ -13,10 +13,13 @@ struct FileListItem: View {
     @ObservedObject var appModel: MainAppModel
     @State var showFileInfoActive = false
 
+    @Binding var selectingFile : Bool
+    @Binding var isSelected : Bool
+
     var body: some View {
         HStack(spacing: 0){
             RoundedRectangle(cornerRadius: 5)
-                .fill(Styles.Colors.fileIconBackground)
+                .fill(Color.white.opacity(0.2))
                 .frame(width: 35, height: 35, alignment: .center)
                 .overlay(
                     file.gridImage
@@ -43,15 +46,32 @@ struct FileListItem: View {
             }
             .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 0))
             Spacer()
-            HStack{
-                Image("files.more")
-                    .resizable()
-                    .frame(width: 20, height: 20)
+            
+            if selectingFile {
+                HStack {
+                    Image(isSelected ? "files.selected" : "files.unselected")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                }
+                .frame(width: 40, height: 40)
+                .onTapGesture {
+                    
+                    isSelected = !isSelected
+                }
+
+            } else {
+                HStack{
+                    Image("files.more")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                }
+                .frame(width: 40, height: 40)
+                .onTapGesture {
+                    showingActionSheet = true
+                }
+
             }
-            .frame(width: 40, height: 40)
-            .onTapGesture {
-                showingActionSheet = true
-            }
+            
             FileActionMenu(selectedFile: file,
                            parentFile: parentFile,
                            showingActionSheet: $showingActionSheet,

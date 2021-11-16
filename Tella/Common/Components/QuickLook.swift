@@ -18,9 +18,8 @@ import QuickLook
 struct QuickLookView: UIViewControllerRepresentable {
 //  Properties: the file name (without extension), and whether we'll let
 //  the user scale the preview content.
-    var name: String
     var allowScaling: Bool = true
-    var file: NSURL
+    var file: URL
       
     func makeCoordinator() -> QuickLookView.Coordinator {
     //  The coordinator object implements the mechanics of dealing with
@@ -43,15 +42,14 @@ struct QuickLookView: UIViewControllerRepresentable {
       
     class Coordinator: NSObject, QLPreviewControllerDataSource {
         let parent: QuickLookView
-        let file: NSURL
+        let file: URL
         
         func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        //  NSURL objects can be returned as QLPreviewItems
-            return file
+            return file as QLPreviewItem
         }
 
           
-        init(_ parent: QuickLookView, file: NSURL) {
+        init(_ parent: QuickLookView, file: URL) {
             self.parent = parent
             self.file = file
             super.init()

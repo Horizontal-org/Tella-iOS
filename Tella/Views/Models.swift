@@ -8,11 +8,11 @@ protocol AppModelFileManagerProtocol {
     
     func add(files: [URL], to parentFolder: VaultFile?, type: FileType)
     func add(image: UIImage, to parentFolder: VaultFile?, type: FileType)
-    func delete(file: VaultFile)
-    
+    func add(folder: String, to parentFolder: VaultFile?)
+    func delete(file: VaultFile, from parentFolder: VaultFile?)
 }
 
-class MainAppModel: ObservableObject {
+class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     
     enum Tabs: Hashable {
        case home
@@ -67,6 +67,14 @@ class MainAppModel: ObservableObject {
             self.vaultManager.importFile(image: image, to: parentFolder ?? self.vaultManager.root, type: type)
             self.publishUpdates()
         }
+    }
+    
+    func add(folder: String, to parentFolder: VaultFile?) {
+        DispatchQueue.global(qos: .background).async {
+            self.vaultManager.createNewFolder(name: folder, parent: parentFolder)
+            self.publishUpdates()
+        }
+
     }
 
     func delete(file: VaultFile, from parentFolder: VaultFile?) {

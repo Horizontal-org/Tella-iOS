@@ -22,7 +22,7 @@ struct VideoViewer: View {
                 VideoPlayerController(videoURL: url)
             }
         } else {
-            Text("Video URL not available!")
+//            Text("Video URL not available!")
         }
     }
 }

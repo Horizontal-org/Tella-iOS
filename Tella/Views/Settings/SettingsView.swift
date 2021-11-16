@@ -37,12 +37,10 @@ struct SettingsView : View {
         .onDisappear(perform: {
             appModel.saveSettings()
         })
-         .navigationBarItems(
-            leading:
-                Text("Settings")
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 16))
-                .foregroundColor(Color.white)
-        )
+         .toolbar {
+             LeadingTitleToolbar(title: "Settings")
+         }
+
         .onDisappear {
             appModel.publishUpdates()
         }
