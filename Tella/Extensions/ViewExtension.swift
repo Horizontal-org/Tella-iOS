@@ -15,5 +15,13 @@ extension View {
             self
         }
     }
+    func listItemnavigateTo<Destination: View>( destination: Destination) ->  some View   {
+        ZStack {
+            self
+            NavigationLink(destination: destination) {
+                EmptyView()
+            }.buttonStyle(PlainButtonStyle())
+        }
+    }
 }
 

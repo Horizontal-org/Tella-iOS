@@ -125,7 +125,7 @@ extension Array where Element == VaultFile {
         if let fileType = fileType {
 
             var vaultFileResult : [VaultFile] = []
-            gett(root: root, vaultFileResult: &vaultFileResult, fileType: fileType)
+            getFiles(root: root, vaultFileResult: &vaultFileResult, fileType: fileType)
             filteredFiles = vaultFileResult
             
         } else {
@@ -165,11 +165,11 @@ extension Array where Element == VaultFile {
         }
     }
 
-    func gett(root: VaultFile, vaultFileResult: inout [VaultFile], fileType:FileType) {
+    func getFiles(root: VaultFile, vaultFileResult: inout [VaultFile], fileType:FileType) {
         root.files.forEach { file in
             switch file.type {
             case .folder:
-                gett(root: file, vaultFileResult: &vaultFileResult, fileType: fileType)
+                getFiles(root: file, vaultFileResult: &vaultFileResult, fileType: fileType)
             default:
                 if file.type == fileType {
                     vaultFileResult.append(file )
@@ -177,4 +177,5 @@ extension Array where Element == VaultFile {
             }
         }
     }
+    
 }

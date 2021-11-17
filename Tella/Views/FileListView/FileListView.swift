@@ -17,28 +17,17 @@ extension VaultFile {
     }
 }
 
-class FileListViewModel: ObservableObject {
-    @Published var showingSortFilesActionSheet = false
-    @Published var showingFileActionMenu = false
-    @Published var showingFilesSelectionMenu = false
-    @Published var selectingFiles = false
-    
-    @Published var sortBy: FileSortOptions = FileSortOptions.nameAZ
-    @Published var viewType: FileViewType = FileViewType.list
-    
-    @Published var folderArray: [VaultFile] = []
-}
 
 struct FileListView: View {
     
     @ObservedObject var appModel: MainAppModel
     @StateObject var viewModel = FileListViewModel()
     @State var rootFile: VaultFile
-   
+    
     var files: [VaultFile]
     var fileType: FileType?
     var title : String = ""
-
+    
     init(appModel: MainAppModel, files: [VaultFile], fileType: FileType? = nil, rootFile: VaultFile, title : String = "") {
         self.files = files
         self.fileType = fileType
@@ -59,6 +48,7 @@ struct FileListView: View {
         ZStack(alignment: .top) {
             Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
             VStack {
+                selectingFilesHeaderView
                 folderListView
                 topBarButtons
                 if #available(iOS 14.0, *) {
@@ -80,6 +70,67 @@ struct FileListView: View {
         // .navigationBarTitle("\(rootFile.fileName)")
         .toolbar {
             LeadingTitleToolbar(title: title)
+        }.onAppear {
+            viewModel.filesArray = rootFile.files
+        }
+        .navigationBarHidden(viewModel.selectingFiles)
+    }
+    @ViewBuilder
+    private var selectingFilesHeaderView : some View {
+        
+        if  viewModel.selectingFiles {
+            HStack{
+                Button {
+                    viewModel.selectingFiles = false
+                } label: {
+                    Image("close")
+                }
+                
+                .frame(width: 24, height: 24)
+                
+                Spacer()
+                    .frame(width: 12)
+                if viewModel.selectedItems > 0 {
+                    
+                    Text(selectedItemsTitle)
+                        .foregroundColor(.white).opacity(0.8)
+                        .font(.custom(Styles.Fonts.semiBoldFontName, size: 16))
+                }
+                Spacer(minLength: 15)
+                
+                
+                Button {
+                    
+                } label: {
+                    Image("add-to-library")
+                }
+                .frame(width: 24, height: 24)
+                
+                
+                Spacer()
+                    .frame(width:15)
+                
+                
+                Button {
+                    
+                } label: {
+                    Image("share-icon")
+                }
+                .frame(width: 24, height: 24)
+                
+                
+                Spacer()
+                    .frame(width:15)
+                
+                Button {
+                    
+                } label: {
+                    Image("files.more")
+                }
+                .frame(width: 24, height: 24)
+                
+                
+            }.padding(EdgeInsets(top: 10, leading: 16, bottom: 4, trailing: 23))
         }
     }
     
@@ -89,6 +140,7 @@ struct FileListView: View {
             if viewModel.folderArray.count > 0 {
                 Button() {
                     rootFile = appModel.vaultManager.root
+                    viewModel.filesArray = appModel.vaultManager.root.files
                     viewModel.folderArray.removeAll()
                 } label: {
                     Image("files.folder")
@@ -106,6 +158,7 @@ struct FileListView: View {
                             .font(.custom(Styles.Fonts.regularFontName, size: 14))
                             .onTapGesture {
                                 rootFile = file
+                                viewModel.filesArray = file.files
                                 if let index = viewModel.folderArray.firstIndex(of: file) {
                                     viewModel.folderArray.removeSubrange(index + 1..<viewModel.folderArray.endIndex)
                                 }
@@ -143,6 +196,7 @@ struct FileListView: View {
                             .background(Color.white.opacity(0.2))
                             .onTapGesture {
                                 rootFile = file
+                                viewModel.filesArray = file.files
                                 viewModel.folderArray.append(file)
                             }
                     default:
@@ -162,35 +216,37 @@ struct FileListView: View {
         List {
             ForEach(files.sorted(by: viewModel.sortBy, folderArray: viewModel.folderArray, root: self.appModel.vaultManager.root, fileType: self.fileType), id: \.self) { file in
                 VStack(alignment: .leading) {
-                    
                     switch file.type {
                     case .folder:
                         FileListItem(file: file,
                                      parentFile: rootFile,
                                      appModel: appModel,
                                      selectingFile: $viewModel.selectingFiles,
-                                     isSelected: .constant(false))
-                            .background(Styles.Colors.backgroundMain)
+                                     isSelected: ($viewModel.filesArray[viewModel.filesArray.firstIndex{$0 == file}!].isSelected))
                             .onTapGesture {
                                 rootFile = file
+                                viewModel.filesArray = file.files
                                 viewModel.folderArray.append(file)
                             }
+                        
                     default:
                         FileListItem(file: file,
                                      parentFile: rootFile,
                                      appModel: appModel,
                                      selectingFile: $viewModel.selectingFiles,
-                                     isSelected: .constant(false) )
-//                    isSelected: $files[(files.firstIndex(of: file)!)].isSelected)
-
-                            .background(Styles.Colors.backgroundMain)
-                            .navigateTo(destination: FileDetailView(appModel: appModel,
-                                                                    file: file,
-                                                                    fileType: fileType))
+                                     isSelected: ($viewModel.filesArray[viewModel.filesArray.firstIndex{$0 == file}!].isSelected))
+                        
+                            .listItemnavigateTo(destination: FileDetailView(appModel: appModel,
+                                                                            file: file,
+                                                                            fileType: fileType))
                     }
-                }.frame(height: 50)
+                }
+                .frame(height: 65)
+                
             }
             .listRowBackground(Styles.Colors.backgroundMain)
+            .listRowInsets(.init())
+            
         }
         .listStyle(PlainListStyle())
         .background(Styles.Colors.backgroundMain)
@@ -247,6 +303,9 @@ struct FileListView: View {
         .frame(width: 44, height: 44)
     }
     
+    var selectedItemsTitle : String {
+        return viewModel.selectedItems == 1 ? "\(viewModel.selectedItems) item" : "\(viewModel.selectedItems) items"
+    }
 }
 
 struct FileListView_Previews: PreviewProvider {
