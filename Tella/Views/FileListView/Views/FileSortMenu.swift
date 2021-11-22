@@ -1,4 +1,8 @@
 //
+//  FileSortSheet.swift
+//  Tella
+//
+//  Created by Amine Info on 21/11/2021.
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
@@ -75,43 +79,8 @@ struct RadioButtonField: View {
     }
 }
 
-struct FileActionMenu: View {
-    
-    var selectedFile: VaultFile
-    var parentFile: VaultFile?
-    @Binding var showingActionSheet: Bool
-    @Binding var showFileInfoActive: Bool
-    @ObservedObject var appModel: MainAppModel
-    
-    
-    var body: some View {
-        HStack{
-        }
-        .actionSheet(isPresented: $showingActionSheet, content: {
-            menuActionSheet
-        })
+struct FileSortSheet_Previews: PreviewProvider {
+    static var previews: some View {
+        FileSortMenu(showingSortFilesActionSheet: .constant(true), sortBy: .constant(FileSortOptions.nameAZ))
     }
-    
-    var menuActionSheet: ActionSheet {
-        ActionSheet(title: Text("\(selectedFile.fileName)"),  buttons: [
-            //            .default(Text("Upload")) {
-            //            },
-            //            .default(Text("Share")) {
-            //            },
-            //            .default(Text("Move")) {
-            //            },
-            //            .default(Text("Rename")) {
-            //            },
-            //            .default(Text("Save to device")) {
-            //            },
-            .default(Text("File information")) {
-                showFileInfoActive = true
-            },
-            .destructive(Text("Delete")) {
-                appModel.delete(file: selectedFile, from: parentFile)
-            },
-            .cancel()
-        ])
-    }
-    
 }

@@ -9,13 +9,14 @@ struct FileListItem: View {
     var file: VaultFile
     var parentFile: VaultFile?
     
-    @State var showingActionSheet: Bool = false
     @ObservedObject var appModel: MainAppModel
     @State var showFileInfoActive = false
     
     @Binding var selectingFile : Bool
     @Binding var isSelected : Bool
-    
+    @Binding var showingActionSheet: Bool
+    @Binding var fileActionMenuType : FileActionMenuType
+    @Binding var currentSelectedFile : VaultFile?
     
     var body: some View {
         GeometryReader { geometry in
@@ -44,14 +45,15 @@ struct FileListItem: View {
                             TextDate(date: file.created)
                             // Fallback on earlier versions
                         }
-
-//                        NavigationLink(destination:
-//                                        FileInfoView(file: file),
-//                                       isActive: $showFileInfoActive) {
-//                            EmptyView()
-//                        }.hidden()
-                         Spacer()
-
+                        
+                        NavigationLink(destination:
+                                        FileInfoView(file: file),
+                                       isActive: $showFileInfoActive) {
+                            EmptyView()
+                        }.frame(width: 0, height: 0)
+                            .hidden()
+                        Spacer()
+                        
                     }
                     .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 0))
                     Spacer()
@@ -72,15 +74,11 @@ struct FileListItem: View {
                         }
                         .frame(width: 40, height: 40)
                         .onTapGesture {
+                            fileActionMenuType = .single
                             showingActionSheet = true
+                            currentSelectedFile = file
                         }
                     }
-                    
-                    FileActionMenu(selectedFile: file,
-                                   parentFile: parentFile,
-                                   showingActionSheet: $showingActionSheet,
-                                   showFileInfoActive: $showFileInfoActive,
-                                   appModel: appModel)
                 }
                 .padding(EdgeInsets(top: 12, leading: 17, bottom: 12, trailing: 20))
                 
@@ -95,9 +93,6 @@ struct FileListItem: View {
             }
             .listRowBackground((isSelected && selectingFile)  ? Color.white.opacity(0.16) : Styles.Colors.backgroundMain)
             .background((isSelected && selectingFile) ? Color.white.opacity(0.16) : Styles.Colors.backgroundMain)
-
-            .frame(height: 60)
-            
         }
     }
 }

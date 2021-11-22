@@ -16,6 +16,7 @@ struct AddFileButtonView: View {
     @State var showingDocumentPicker = false
     @State var showingImagePicker = false
     @State var showingAddFileSheet = false
+    @Binding var selectingFiles : Bool
 
     var body: some View {
         ZStack {
@@ -73,6 +74,7 @@ struct AddFileButtonView: View {
         ZStack(alignment: .top) {
             AddFileYellowButton(action: {
                 showingAddFileSheet = true
+                selectingFiles = false
             })
             AddFileBottomSheetFileActions(isPresented: $showingAddFileSheet,
                                           showingDocumentPicker: $showingDocumentPicker,
@@ -86,6 +88,6 @@ struct AddFileButtonView: View {
 }
 struct AddFileButtonView_Previews: PreviewProvider {
     static var previews: some View {
-        AddFileButtonView(appModel: MainAppModel())
+        AddFileButtonView(appModel: MainAppModel(), selectingFiles: .constant(false))
     }
 }

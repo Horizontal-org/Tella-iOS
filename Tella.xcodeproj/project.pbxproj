@@ -20,7 +20,6 @@
 		0D4D7518266470A700D7A635 /* SettingsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7517266470A700D7A635 /* SettingsViews.swift */; };
 		0DA213C526801EA700526995 /* ViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213C426801EA700526995 /* ViewHelpers.swift */; };
 		0DA213C72680286F00526995 /* FileListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213C62680286F00526995 /* FileListItem.swift */; };
-		0DA213C92680288B00526995 /* FileActionSheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213C82680288B00526995 /* FileActionSheets.swift */; };
 		0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213CA268028A200526995 /* FileSortOptions.swift */; };
 		0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC267A5267AED7C00E55AFA /* VaultFile.swift */; };
 		0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */; };
@@ -83,6 +82,8 @@
 		125D2328271F8B6600250FBB /* LockConfirmPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2327271F8B6600250FBB /* LockConfirmPinView.swift */; };
 		125EDDAD271DBD5200E2789A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65B023E3207D000F93E5 /* ContentView.swift */; };
 		125EDDB1271E40CA00E2789A /* LockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125EDDB0271E40CA00E2789A /* LockViewModel.swift */; };
+		125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125EFACC274A447000D93DF6 /* FileSortMenu.swift */; };
+		125EFACE274A834300D93DF6 /* FileActionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213C82680288B00526995 /* FileActionMenu.swift */; };
 		126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */; };
 		12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */; };
 		1283C257272AA6F6009180CA /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */; };
@@ -206,7 +207,7 @@
 		0D4D75192664738800D7A635 /* HostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingController.swift; sourceTree = "<group>"; };
 		0DA213C426801EA700526995 /* ViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHelpers.swift; sourceTree = "<group>"; };
 		0DA213C62680286F00526995 /* FileListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListItem.swift; sourceTree = "<group>"; };
-		0DA213C82680288B00526995 /* FileActionSheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileActionSheets.swift; sourceTree = "<group>"; };
+		0DA213C82680288B00526995 /* FileActionMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileActionMenu.swift; sourceTree = "<group>"; };
 		0DA213CA268028A200526995 /* FileSortOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSortOptions.swift; sourceTree = "<group>"; };
 		0DC267A5267AED7C00E55AFA /* VaultFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFile.swift; sourceTree = "<group>"; };
 		0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultFileManager.swift; sourceTree = "<group>"; };
@@ -264,6 +265,7 @@
 		125D2325271F896400250FBB /* CustomPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPinView.swift; sourceTree = "<group>"; };
 		125D2327271F8B6600250FBB /* LockConfirmPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockConfirmPinView.swift; sourceTree = "<group>"; };
 		125EDDB0271E40CA00E2789A /* LockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockViewModel.swift; sourceTree = "<group>"; };
+		125EFACC274A447000D93DF6 /* FileSortMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSortMenu.swift; sourceTree = "<group>"; };
 		126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtension.swift; sourceTree = "<group>"; };
 		12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeadingTitleToolbar.swift; sourceTree = "<group>"; };
 		1283C254272A7484009180CA /* CustomNavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationContainerView.swift; sourceTree = "<group>"; };
@@ -501,7 +503,6 @@
 				0E78B3A52656B03500F9BDBC /* DragView.swift */,
 				0E78B3A62656B03500F9BDBC /* ConfirmBottomSheet.swift */,
 				0E230E2C265BE05A00465F07 /* EditBottomSheet.swift */,
-				0E64C6A5265E7625005A7934 /* ActionsBottomSheetFileActions.swift */,
 			);
 			path = BottomSheet;
 			sourceTree = "<group>";
@@ -659,6 +660,27 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		1288BFE4274C40CA0051E23D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D5DA7F9A2648D05400B00FDA /* FileListView.swift */,
+				12A2DB02273576D50094B856 /* AddFileButtonView.swift */,
+				0DA213C62680286F00526995 /* FileListItem.swift */,
+				0DA213C82680288B00526995 /* FileActionMenu.swift */,
+				125EFACC274A447000D93DF6 /* FileSortMenu.swift */,
+				0DA213CA268028A200526995 /* FileSortOptions.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1288BFE5274C40E00051E23D /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				128C7BC32745AB0100A680B3 /* FileListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		12A1488D27209EF200A1ADDC /* Lock */ = {
 			isa = PBXGroup;
 			children = (
@@ -707,6 +729,7 @@
 				12D37A952721A49D00E43BDB /* NavigationContainerView.swift */,
 				125A0AEE2726F0A000F6E77F /* ContainerView.swift */,
 				1283C254272A7484009180CA /* CustomNavigationContainerView.swift */,
+				0E64C6A5265E7625005A7934 /* ActionsBottomSheetFileActions.swift */,
 				12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */,
 				1EAE6BF424146C2100114244 /* QuickLook.swift */,
 			);
@@ -825,12 +848,8 @@
 		D5DA7F992648D02C00B00FDA /* FileListView */ = {
 			isa = PBXGroup;
 			children = (
-				12A2DB02273576D50094B856 /* AddFileButtonView.swift */,
-				D5DA7F9A2648D05400B00FDA /* FileListView.swift */,
-				0DA213C62680286F00526995 /* FileListItem.swift */,
-				0DA213C82680288B00526995 /* FileActionSheets.swift */,
-				0DA213CA268028A200526995 /* FileSortOptions.swift */,
-				128C7BC32745AB0100A680B3 /* FileListViewModel.swift */,
+				1288BFE4274C40CA0051E23D /* Views */,
+				1288BFE5274C40E00051E23D /* ViewModel */,
 			);
 			path = FileListView;
 			sourceTree = "<group>";
@@ -1219,6 +1238,7 @@
 				0F3DC3E52523951C0024B4A0 /* BundleInfo.swift in Sources */,
 				0E27899D266F76D500B130C4 /* FormsView.swift in Sources */,
 				0DEFD54C268946600014EADE /* Components.swift in Sources */,
+				125EFACE274A834300D93DF6 /* FileActionMenu.swift in Sources */,
 				D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */,
 				1224DAEA27197578001C0ED0 /* ConfirmLockPasswordView.swift in Sources */,
 				0D4D7516266466C500D7A635 /* SettingsDocumentation.swift in Sources */,
@@ -1295,11 +1315,11 @@
 				0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */,
 				0DA213C72680286F00526995 /* FileListItem.swift in Sources */,
 				CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */,
+				125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */,
 				12567FFC27178EE200A2D356 /* LockButton.swift in Sources */,
 				D5DA7F9B2648D05400B00FDA /* FileListView.swift in Sources */,
 				D516397C2631113B003A11B5 /* Styles.swift in Sources */,
 				6DD4C03A240F547300491438 /* Util.swift in Sources */,
-				0DA213C92680288B00526995 /* FileActionSheets.swift in Sources */,
 				12A148982720B47100A1ADDC /* LockDescriptionView.swift in Sources */,
 				0E87C879268C8F8F00EB5E34 /* VideoViewer.swift in Sources */,
 				129533C227399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift in Sources */,

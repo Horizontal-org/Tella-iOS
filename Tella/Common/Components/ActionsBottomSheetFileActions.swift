@@ -76,6 +76,7 @@ struct ListActionSheetItem {
     let imageName: String
     let content: String
     let action: () -> ()
+    var isActive : Bool = true
 }
 
 struct FileActionsBottomSheet_Previews: PreviewProvider {
