@@ -67,17 +67,16 @@ struct FileListItem: View {
                         
                         
                     } else {
-                        HStack{
-                            Image("files.more")
-                                .resizable()
-                                .frame(width: 20, height: 20)
-                        }
-                        .frame(width: 40, height: 40)
-                        .onTapGesture {
+                        Button {
                             fileActionMenuType = .single
                             showingActionSheet = true
                             currentSelectedFile = file
-                        }
+                        } label: {
+                            Image("files.more")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+
+                        }.frame(width: 40, height: 40)
                     }
                 }
                 .padding(EdgeInsets(top: 12, leading: 17, bottom: 12, trailing: 20))
@@ -91,7 +90,6 @@ struct FileListItem: View {
                         }
                 }
             }
-            .listRowBackground((isSelected && selectingFile)  ? Color.white.opacity(0.16) : Styles.Colors.backgroundMain)
             .background((isSelected && selectingFile) ? Color.white.opacity(0.16) : Styles.Colors.backgroundMain)
         }
     }

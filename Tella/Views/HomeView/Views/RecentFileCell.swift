@@ -24,7 +24,7 @@ extension RecentFileProtocol {
                     .frame(width: 33, height: 33)
                     .aspectRatio(contentMode: .fit)
                 
-            }
+            }.background(Color.white.opacity(0.2))
         )
     }
 }

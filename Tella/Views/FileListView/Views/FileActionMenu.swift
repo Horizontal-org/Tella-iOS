@@ -45,7 +45,7 @@ struct FileActionMenu: View {
     }
     
     var modalHeight : CGFloat {
-        CGFloat((firstItems.filter{$0.isActive}.count + secondItems.filter{$0.isActive}.count) * 40 + 85 )
+       return CGFloat(firstItems.filter{$0.isActive}.count + secondItems.filter{$0.isActive}.count * 40 + 85 )
     }
     
     var secondItems : [ListActionSheetItem] {

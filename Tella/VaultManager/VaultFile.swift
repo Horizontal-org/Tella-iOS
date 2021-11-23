@@ -70,12 +70,14 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
         switch type {
         case .audio:
             return #imageLiteral(resourceName: "filetype.big_audio")
-        case .document,.folder:
+        case .document:
             return #imageLiteral(resourceName: "filetype.big_document")
         case .video:
             return #imageLiteral(resourceName: "filetype.big_video")
         case .image:
             return UIImage()
+        case .folder:
+            return #imageLiteral(resourceName: "filetype.small_folder")
         case .unknown:
             return #imageLiteral(resourceName: "filetype.big_document")
         }

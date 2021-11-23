@@ -134,7 +134,7 @@ struct FileListView: View {
                 }.disabled(viewModel.selectedItemsNumber == 0)
                     .frame(width: 24, height: 24)
                 
-            }.padding(EdgeInsets(top: 10, leading: 16, bottom: 4, trailing: 23))
+            }.padding(EdgeInsets(top: 8, leading: 16, bottom: 4, trailing: 23))
         }
     }
     
@@ -194,18 +194,45 @@ struct FileListView: View {
                     
                     switch file.type {
                     case .folder:
-                        file.recentGridImage
-                            .background(Color.white.opacity(0.2))
+                        
+                        FileGridItem(file: file,
+                                     parentFile: rootFile,
+                                     appModel: appModel,
+                                     selectingFile: $viewModel.selectingFiles,
+                                     isSelected: getStatus(for: file),
+                                     showingActionSheet: $viewModel.showingFileActionMenu,
+                                     fileActionMenuType: $viewModel.fileActionMenuType,
+                                     currentSelectedFile: $viewModel.currentSelectedVaultFile)
+
                             .onTapGesture {
                                 rootFile = file
                                 viewModel.folderArray.append(file)
                             }
                     default:
-                        file.recentGridImage
-                            .background(Color.white.opacity(0.2))
-                            .navigateTo(destination: FileDetailView(appModel: appModel,
-                                                                    file: file,
-                                                                    fileType: fileType))
+                        ZStack {
+                            FileGridItem(file: file,
+                                         parentFile: rootFile,
+                                         appModel: appModel,
+                                         selectingFile: $viewModel.selectingFiles,
+                                         isSelected: getStatus(for: file),
+                                         showingActionSheet: $viewModel.showingFileActionMenu,
+                                         fileActionMenuType: $viewModel.fileActionMenuType,
+                                         currentSelectedFile: $viewModel.currentSelectedVaultFile)
+                            
+                                .onTapGesture {
+                                    viewModel.showFileDetails = true
+                                    rootFile = file
+                                }
+                            
+                            NavigationLink(destination:
+                                            FileDetailView(appModel: appModel,
+                                                           file: file,
+                                                           fileType: fileType),
+                                           isActive: $viewModel.showFileDetails) {
+                                EmptyView()
+                            }.frame(width: 0, height: 0)
+                                .hidden()
+                        }
                     }
                 }
             }.padding(EdgeInsets(top: 0, leading: 6, bottom: 0, trailing: 6))
@@ -233,17 +260,33 @@ struct FileListView: View {
                                 }
                             
                         default:
-                            FileListItem(file: file,
-                                         parentFile: rootFile,
-                                         appModel: appModel,
-                                         selectingFile: $viewModel.selectingFiles,
-                                         isSelected: getStatus(for: file),
-                                         showingActionSheet: $viewModel.showingFileActionMenu,
-                                         fileActionMenuType: $viewModel.fileActionMenuType,
-                                         currentSelectedFile: $viewModel.currentSelectedVaultFile)
-                                .listItemnavigateTo(destination: FileDetailView(appModel: appModel,
-                                                                                file: file,
-                                                                                fileType: fileType))
+                            
+                            ZStack {
+                                FileListItem(file: file,
+                                             parentFile: rootFile,
+                                             appModel: appModel,
+                                             selectingFile: $viewModel.selectingFiles,
+                                             isSelected: getStatus(for: file),
+                                             showingActionSheet: $viewModel.showingFileActionMenu,
+                                             fileActionMenuType: $viewModel.fileActionMenuType,
+                                             currentSelectedFile: $viewModel.currentSelectedVaultFile)
+                                
+                                    .onTapGesture {
+                                        viewModel.showFileDetails = true
+                                        rootFile = file
+                                    }
+                                
+                                NavigationLink(destination:
+                                                FileDetailView(appModel: appModel,
+                                                               file: file,
+                                                               fileType: fileType),
+                                               isActive: $viewModel.showFileDetails) {
+                                    EmptyView()
+                                }.frame(width: 0, height: 0)
+                                    .hidden()
+                            }
+                            
+                            
                         }
                     }
                     .frame(height: 60)

@@ -19,7 +19,9 @@ class FileListViewModel: ObservableObject {
     @Published var fileActionMenuType: FileActionMenuType = FileActionMenuType.single
     @Published var vaultFileStatusArray : [VaultFileStatus] = []
     @Published var currentSelectedVaultFile : VaultFile?
-    
+
+    @Published var showFileDetails = false
+
     @Published var showFileInfoActive = false
     
     @Published var viewType: FileViewType = FileViewType.list
