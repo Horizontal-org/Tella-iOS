@@ -33,7 +33,7 @@ struct AddFileButtonView: View {
         } else {
             HStack{}
             .sheet(isPresented: $showingDocumentPicker, content: {
-                DocumentPickerView { urls in
+                DocumentPickerView(documentPickerType: .forImport) { urls in
                     appModel.add(files: urls ?? [], to: rootFile, type: .document)
                 }
             })
@@ -43,13 +43,13 @@ struct AddFileButtonView: View {
     var imagePickerView: some View {
         HStack{}
         .sheet(isPresented: $showingImagePicker, content: {
-            ImagePickerView { image, url in
+            ImagePickerView { image, url, pathExtension in
                 showingImagePicker = false
                 if let url = url {
                     appModel.add(files: [url], to: rootFile, type: .video)
                 }
                 if let image = image {
-                    appModel.add(image: image, to: rootFile, type: .image)
+                    appModel.add(image: image, to: rootFile, type: .image, pathExtension: pathExtension ?? "png")
                 }
             }
         })

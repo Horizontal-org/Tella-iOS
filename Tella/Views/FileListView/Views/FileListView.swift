@@ -70,7 +70,9 @@ struct FileListView: View {
                            fileActionMenuType: viewModel.fileActionMenuType,
                            showingActionSheet: $viewModel.showingFileActionMenu,
                            showFileInfoActive: $viewModel.showFileInfoActive,
-                           appModel: appModel                           )
+                           appModel: appModel)
+            showFileDetailsLink
+            
         }
         // .navigationBarTitle("\(rootFile.fileName)")
         .toolbar {
@@ -175,7 +177,6 @@ struct FileListView: View {
             }
             
         }.padding(EdgeInsets(top: 12, leading: 18, bottom: 15, trailing: 18))
-        
     }
     
     @available(iOS 14.0, *)
@@ -203,7 +204,7 @@ struct FileListView: View {
                                      showingActionSheet: $viewModel.showingFileActionMenu,
                                      fileActionMenuType: $viewModel.fileActionMenuType,
                                      currentSelectedFile: $viewModel.currentSelectedVaultFile)
-
+                        
                             .onTapGesture {
                                 rootFile = file
                                 viewModel.folderArray.append(file)
@@ -221,17 +222,8 @@ struct FileListView: View {
                             
                                 .onTapGesture {
                                     viewModel.showFileDetails = true
-                                    rootFile = file
+                                    self.viewModel.currentSelectedVaultFile = file
                                 }
-                            
-                            NavigationLink(destination:
-                                            FileDetailView(appModel: appModel,
-                                                           file: file,
-                                                           fileType: fileType),
-                                           isActive: $viewModel.showFileDetails) {
-                                EmptyView()
-                            }.frame(width: 0, height: 0)
-                                .hidden()
                         }
                     }
                 }
@@ -260,7 +252,6 @@ struct FileListView: View {
                                 }
                             
                         default:
-                            
                             ZStack {
                                 FileListItem(file: file,
                                              parentFile: rootFile,
@@ -273,20 +264,9 @@ struct FileListView: View {
                                 
                                     .onTapGesture {
                                         viewModel.showFileDetails = true
-                                        rootFile = file
+                                        self.viewModel.currentSelectedVaultFile = file
                                     }
-                                
-                                NavigationLink(destination:
-                                                FileDetailView(appModel: appModel,
-                                                               file: file,
-                                                               fileType: fileType),
-                                               isActive: $viewModel.showFileDetails) {
-                                    EmptyView()
-                                }.frame(width: 0, height: 0)
-                                    .hidden()
                             }
-                            
-                            
                         }
                     }
                     .frame(height: 60)
@@ -355,6 +335,20 @@ struct FileListView: View {
         } else {
             viewModel.vaultFileStatusArray.append(VaultFileStatus(file:file,isSelected:false))
             return  $viewModel.vaultFileStatusArray[viewModel.vaultFileStatusArray.count - 1].isSelected
+        }
+    }
+    
+    @ViewBuilder
+    private var showFileDetailsLink: some View {
+        if let currentSelectedVaultFile = self.viewModel.currentSelectedVaultFile {
+            NavigationLink(destination:
+                            FileDetailView(appModel: appModel,
+                                           file: currentSelectedVaultFile,
+                                           fileType: fileType),
+                           isActive: $viewModel.showFileDetails) {
+                EmptyView()
+            }.frame(width: 0, height: 0)
+                .hidden()
         }
     }
 }

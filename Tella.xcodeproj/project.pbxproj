@@ -36,7 +36,6 @@
 		0E170255267910CC0069072A /* OutBoxFormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E170254267910CC0069072A /* OutBoxFormsView.swift */; };
 		0E170257267910DE0069072A /* DraftFormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E170256267910DE0069072A /* DraftFormsView.swift */; };
 		0E170259267913160069072A /* FormsCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E170258267913160069072A /* FormsCellView.swift */; };
-		0E230E2D265BE05A00465F07 /* EditBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E230E2C265BE05A00465F07 /* EditBottomSheet.swift */; };
 		0E27899D266F76D500B130C4 /* FormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E27899C266F76D500B130C4 /* FormsView.swift */; };
 		0E64C6A6265E7625005A7934 /* ActionsBottomSheetFileActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E64C6A5265E7625005A7934 /* ActionsBottomSheetFileActions.swift */; };
 		0E78B3A72656B03600F9BDBC /* DragView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E78B3A52656B03500F9BDBC /* DragView.swift */; };
@@ -84,6 +83,7 @@
 		125EDDB1271E40CA00E2789A /* LockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125EDDB0271E40CA00E2789A /* LockViewModel.swift */; };
 		125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125EFACC274A447000D93DF6 /* FileSortMenu.swift */; };
 		125EFACE274A834300D93DF6 /* FileActionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213C82680288B00526995 /* FileActionMenu.swift */; };
+		12690CB62755020C00A758D2 /* DeleteFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A9C902750FC7800405376 /* DeleteFileView.swift */; };
 		126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */; };
 		12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */; };
 		1283C257272AA6F6009180CA /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */; };
@@ -91,7 +91,7 @@
 		128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C7BC32745AB0100A680B3 /* FileListViewModel.swift */; };
 		1290743B274CEB9B00F38A81 /* FileGridItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1290743A274CEB9B00F38A81 /* FileGridItem.swift */; };
 		129533C227399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129533C127399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift */; };
-		129533C42739D5BC0053FA4B /* CreateNewFolderBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129533C32739D5BC0053FA4B /* CreateNewFolderBottomSheet.swift */; };
+		129533C42739D5BC0053FA4B /* TextFieldBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129533C32739D5BC0053FA4B /* TextFieldBottomSheet.swift */; };
 		12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A1488E27209F2800A1ADDC /* ViewExtension.swift */; };
 		12A148922720A32000A1ADDC /* LockPinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148912720A32000A1ADDC /* LockPinData.swift */; };
 		12A148942720A89E00A1ADDC /* BottomLockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148932720A89E00A1ADDC /* BottomLockView.swift */; };
@@ -222,7 +222,6 @@
 		0E170254267910CC0069072A /* OutBoxFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutBoxFormsView.swift; sourceTree = "<group>"; };
 		0E170256267910DE0069072A /* DraftFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftFormsView.swift; sourceTree = "<group>"; };
 		0E170258267913160069072A /* FormsCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormsCellView.swift; sourceTree = "<group>"; };
-		0E230E2C265BE05A00465F07 /* EditBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBottomSheet.swift; sourceTree = "<group>"; };
 		0E27899C266F76D500B130C4 /* FormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormsView.swift; sourceTree = "<group>"; };
 		0E64C6A5265E7625005A7934 /* ActionsBottomSheetFileActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsBottomSheetFileActions.swift; sourceTree = "<group>"; };
 		0E78B3A52656B03500F9BDBC /* DragView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragView.swift; sourceTree = "<group>"; };
@@ -259,6 +258,7 @@
 		125A0AEA2726CBD900F6E77F /* UnlockPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockPasswordView.swift; sourceTree = "<group>"; };
 		125A0AEC2726CBF000F6E77F /* UnlockPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockPinView.swift; sourceTree = "<group>"; };
 		125A0AEE2726F0A000F6E77F /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
+		125A9C902750FC7800405376 /* DeleteFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteFileView.swift; sourceTree = "<group>"; };
 		125D231B271F119D00250FBB /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRegularExpressionExtension.swift; sourceTree = "<group>"; };
 		125D2320271F823100250FBB /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
@@ -275,7 +275,7 @@
 		128C7BC32745AB0100A680B3 /* FileListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListViewModel.swift; sourceTree = "<group>"; };
 		1290743A274CEB9B00F38A81 /* FileGridItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGridItem.swift; sourceTree = "<group>"; };
 		129533C127399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoVideoBottomSheet.swift; sourceTree = "<group>"; };
-		129533C32739D5BC0053FA4B /* CreateNewFolderBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewFolderBottomSheet.swift; sourceTree = "<group>"; };
+		129533C32739D5BC0053FA4B /* TextFieldBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldBottomSheet.swift; sourceTree = "<group>"; };
 		12A1488E27209F2800A1ADDC /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		12A148912720A32000A1ADDC /* LockPinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPinData.swift; sourceTree = "<group>"; };
 		12A148932720A89E00A1ADDC /* BottomLockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLockView.swift; sourceTree = "<group>"; };
@@ -302,7 +302,6 @@
 		6D14AAD123FB08D60094D71D /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CameraView.swift; path = Tella/TellaV1/CameraView.swift; sourceTree = SOURCE_ROOT; };
 		6D14AAD523FB0B120094D71D /* CollectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectView.swift; sourceTree = "<group>"; };
 		6D14AAD723FB0B310094D71D /* GalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
-		6D14AAD92405AC1A0094D71D /* TellaFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaFileManager.swift; sourceTree = "<group>"; };
 		6D848FA22416D12D004896E0 /* CryptoManagerV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoManagerV1.swift; sourceTree = "<group>"; };
 		6DC2ABC8245029BC004579DF /* PasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordView.swift; sourceTree = "<group>"; };
 		6DC2ABCA24502D08004579DF /* ChangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeView.swift; sourceTree = "<group>"; };
@@ -504,7 +503,6 @@
 			children = (
 				0E78B3A52656B03500F9BDBC /* DragView.swift */,
 				0E78B3A62656B03500F9BDBC /* ConfirmBottomSheet.swift */,
-				0E230E2C265BE05A00465F07 /* EditBottomSheet.swift */,
 			);
 			path = BottomSheet;
 			sourceTree = "<group>";
@@ -639,7 +637,7 @@
 				D5DA7F972646220100B00FDA /* FileGroupButtonView.swift */,
 				0D4BC3C9267646CA00DCDC30 /* AddFileBottomSheetFileActions.swift */,
 				129533C127399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift */,
-				129533C32739D5BC0053FA4B /* CreateNewFolderBottomSheet.swift */,
+				129533C32739D5BC0053FA4B /* TextFieldBottomSheet.swift */,
 				0D4BC3CD267668D600DCDC30 /* AddFileYellowButton.swift */,
 				12AB30D1272C33D90020FFBF /* Home */,
 			);
@@ -672,6 +670,7 @@
 				0DA213C82680288B00526995 /* FileActionMenu.swift */,
 				125EFACC274A447000D93DF6 /* FileSortMenu.swift */,
 				0DA213CA268028A200526995 /* FileSortOptions.swift */,
+				125A9C902750FC7800405376 /* DeleteFileView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -809,7 +808,6 @@
 				D53B77002601CA3A0001CD34 /* VaultManager.swift */,
 				D5B823EF262775D80008E04B /* CryptoManager.swift */,
 				D538C8AB264CE8D300D457B0 /* CryptoFileManager.swift */,
-				6D14AAD92405AC1A0094D71D /* TellaFileManager.swift */,
 				1E67B39123FC9067001F3D64 /* ImagePickerView.swift */,
 				0DEFD547268943CC0014EADE /* DocumentPickerView.swift */,
 			);
@@ -1263,7 +1261,7 @@
 				125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */,
 				125D2324271F891500250FBB /* PinView.swift in Sources */,
 				0DEFD54B268946460014EADE /* Enums.swift in Sources */,
-				129533C42739D5BC0053FA4B /* CreateNewFolderBottomSheet.swift in Sources */,
+				129533C42739D5BC0053FA4B /* TextFieldBottomSheet.swift in Sources */,
 				D5163985263113B7003A11B5 /* AudioRecordView.swift in Sources */,
 				0DC6FC54269BCDDE001B0D34 /* FileInfoView.swift in Sources */,
 				1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */,
@@ -1310,7 +1308,6 @@
 				0DEFD54F2689467A0014EADE /* ModelStubs.swift in Sources */,
 				125EDDAD271DBD5200E2789A /* ContentView.swift in Sources */,
 				12A148962720B2B400A1ADDC /* PasswordTextFieldView.swift in Sources */,
-				0E230E2D265BE05A00465F07 /* EditBottomSheet.swift in Sources */,
 				D50727BF2625561400BBC370 /* KeychainManager.swift in Sources */,
 				D7CFC37F254260D300CCB352 /* RecordView.swift in Sources */,
 				0DC411E12668469C00BF0DE1 /* SettingsView.swift in Sources */,
@@ -1324,6 +1321,7 @@
 				D5DA7F9B2648D05400B00FDA /* FileListView.swift in Sources */,
 				D516397C2631113B003A11B5 /* Styles.swift in Sources */,
 				6DD4C03A240F547300491438 /* Util.swift in Sources */,
+				12690CB62755020C00A758D2 /* DeleteFileView.swift in Sources */,
 				12A148982720B47100A1ADDC /* LockDescriptionView.swift in Sources */,
 				0E87C879268C8F8F00EB5E34 /* VideoViewer.swift in Sources */,
 				129533C227399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift in Sources */,

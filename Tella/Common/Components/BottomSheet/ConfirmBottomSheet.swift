@@ -9,72 +9,61 @@ struct ConfirmBottomSheet : View {
     var msgText = ""
     var cancelText = ""
     var actionText = ""
+    var destructive : Bool = false
+    var modalHeight : CGFloat
+    
     @Binding var isPresented: Bool
     var didConfirmAction : () -> ()
+    
     var body: some View {
         
-        VStack(alignment: .leading, content: {
-            Spacer()
-            Text(self.titleText)
-                .foregroundColor(.white)
-                .font(Font.custom("OpenSans-Regular", size: 20))
-                .fontWeight(.regular)
-                .padding(.top, 20)
-                .padding(.horizontal, 20)
+        DragView(modalHeight: modalHeight, color: Styles.Colors.backgroundTab,
+                 isShown: $isPresented){
             
-            Text(self.msgText)
-                .foregroundColor(.white)
-                .font(Font.custom("OpenSans-Regular", size: 14))
-                .fontWeight(.light)
-                .padding(20)
-            
-            HStack(alignment: .lastTextBaseline ){
+            VStack(alignment: .leading, spacing: 9) {
+                
+                Text(self.titleText)
+                    .foregroundColor(.white)
+                    .font(Font.custom(Styles.Fonts.boldFontName, size: 16))
+                
+                Text(self.msgText)
+                    .foregroundColor(.white)
+                    .font(Font.custom(Styles.Fonts.regularFontName, size: 14))
                 Spacer()
-                Button(action: {self.isPresented = false}){
-                    Text(self.cancelText)
-                }.buttonStyle(ButtonSheetStyle())
-                
-                Button(action: {self.didConfirmAction()}){
-                    Text(self.actionText)
-                }.buttonStyle(ButtonSheetStyle())
-                
-            }
-            .padding(.trailing, 20)
-            .padding(.bottom, 40)
-        })
-        .background(Color("PrimaryColor"))
-        .cornerRadius(25)
+                HStack(alignment: .lastTextBaseline ){
+                    Spacer()
+                    Button(action: {self.isPresented = false}){
+                        Text(self.cancelText)
+                    }.buttonStyle(ButtonSheetStyle())
+                    
+                    Button(action: {self.didConfirmAction()}){
+                        Text(self.actionText)
+                            .foregroundColor(destructive ? Color.red : Color.white)
+                    }.buttonStyle(ButtonSheetStyle())
+                }
+            } .padding(EdgeInsets(top: 28, leading: 24, bottom: 24, trailing: 20))
+        }
     }
 }
 
 struct ButtonSheetStyle: ButtonStyle {
-
-  func makeBody(configuration: Self.Configuration) -> some View {
-    configuration.label
-      .foregroundColor(configuration.isPressed ? Color.red : Color.white)
-      .padding(.leading, 20)
-  }
-}
-
-private struct TestView: View {
-    @State var show = true
     
-    var body: some View {
-        
-        ZStack {
-            Button(action: {
-                    self.show.toggle()}){
-                Text("Action sheet")
-            }
-            DragView(modalHeight: 220, color: Styles.Colors.backgroundTab, isShown: $show){
-                ConfirmBottomSheet(titleText: "Delete file?", msgText: "The selected file will be permanenetly delated from your vault.",cancelText: "CANCEL",actionText: "DELETE",isPresented: $show,didConfirmAction: {})
-            }
-        }
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .foregroundColor(Color.white)
+            .font(Font.custom(Styles.Fonts.semiBoldFontName, size: 14))
     }
 }
 
 struct ConfirmBottomSheet_Previews: PreviewProvider {
     static var previews: some View {
-        TestView()
+        ConfirmBottomSheet(titleText: "Test",
+                           msgText: "Test",
+                           cancelText: "Test",
+                           actionText: "Test",
+                           destructive: true,
+                           modalHeight: 150,
+                           isPresented: .constant(true),
+                           didConfirmAction: {})
     }
 }

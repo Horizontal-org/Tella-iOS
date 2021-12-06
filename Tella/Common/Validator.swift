@@ -10,7 +10,8 @@ import Foundation
 
 struct Regex {
     static let passwordLength = "^.{6,}"
-    static let textLength = "^.{3,}"
+    static let textLength = "^.{1,}"
+//  static let fileName = "^[a-zA-Z0-9_]*$"
 }
 
 func validateRegex(value: String, pattern:String) -> Bool {
@@ -32,9 +33,7 @@ extension String {
         }
         return true
     }
-}
 
-extension String {
     func textValidator() -> Bool {
         guard !self.isEmpty else {
             return false

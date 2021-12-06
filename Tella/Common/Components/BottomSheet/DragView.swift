@@ -82,7 +82,7 @@ struct DragView<Content: View> : View {
                         color.opacity(1.0)
                             .frame(width: UIScreen.main.bounds.size.width, height:modalHeight)
                             .cornerRadius(25, corners: [.topLeft, .topRight])
-                            .shadow(radius: 25)
+                            .edgesIgnoringSafeArea(.all)
                         self.content()
                             
                             .padding(.bottom, 0)

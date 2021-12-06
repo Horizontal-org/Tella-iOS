@@ -13,8 +13,7 @@ struct AddPhotoVideoBottomSheet: View {
     @Binding var isPresented: Bool
     @Binding var showingDocumentPicker: Bool
     @Binding var showingImagePicker: Bool
-    
-    @ObservedObject var appModel: MainAppModel
+
     var parent : VaultFile?
     
     
@@ -51,7 +50,6 @@ struct AddPhotoVideoBottomSheet_Previews: PreviewProvider {
         AddPhotoVideoBottomSheet(isPresented: .constant(true),
                                  showingDocumentPicker: .constant(false),
                                  showingImagePicker: .constant(false),
-                                 appModel: MainAppModel(),
                                  parent: nil)
     }
 }

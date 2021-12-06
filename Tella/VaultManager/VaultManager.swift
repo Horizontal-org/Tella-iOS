@@ -11,15 +11,21 @@ protocol VaultManagerInterface {
     
     func load(name: String) -> VaultFile?
     func load(file: VaultFile) -> Data?
-    func save(_ data: Data, type: FileType, name: String, parent: VaultFile?) -> VaultFile?
-    func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?) -> VaultFile?
-    func createNewFolder( name: String, parent: VaultFile?)
+    func load(files vaultFiles: [VaultFile]) -> [URL]
+    func save(_ data: Data, type: FileType, name: String, parent: VaultFile?, fileExtension: String) -> VaultFile?
+    func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?, fileExtension: String) -> VaultFile?
+    func createNewFolder(name: String, parent: VaultFile?)
+    func rename(file : VaultFile, parent: VaultFile?)
     func delete(file: VaultFile, parent: VaultFile?)
     func removeAllFiles()
     
 }   
 
 class VaultManager: VaultManagerInterface, ObservableObject {
+    
+    func rename(file: VaultFile, parent: VaultFile?) {
+        save(file: root)
+    }
     
     
     let containerPath: String
@@ -53,14 +59,14 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
     }
     
-    func importFile(image: UIImage, to parentFolder: VaultFile?, type: FileType) {
+    func importFile(image: UIImage, to parentFolder: VaultFile?, type: FileType, pathExtension: String) {
         debugLog("\(image)", space: .files)
         guard let data = image.fixedOrientation() else {
             return
         }
         
         let fileName = "\(type)_new"
-        if let newFile = save(data, type: type, name: fileName, parent: parentFolder) {
+        if let newFile = save(data, type: type, name: fileName, parent: parentFolder, fileExtension: pathExtension) {
             if type == .image {
                 newFile.thumbnail = image.getThumbnail()?.pngData()
             }
@@ -79,8 +85,9 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                 
                 let data = try Data(contentsOf: filePath)
                 let fileName = filePath.lastPathComponent
+                let fileExtension = filePath.pathExtension
                 
-                if let newFile = save(data, type: type, name: fileName, parent: parentFolder) {
+                if let newFile = save(data, type: type, name: fileName, parent: parentFolder, fileExtension: fileExtension) {
                     newFile.thumbnail = filePath.thumbnail?.pngData()
                     addRecentFile(file: newFile)
                 }
@@ -143,6 +150,25 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         return tmpFileURL
     }
     
+    
+    func load(files vaultFiles: [VaultFile]) -> [URL] {
+        
+        var tmpUrlArray : [URL] = []
+        
+        vaultFiles.forEach { vaultFile in
+            if vaultFile.type != .folder {
+                let data = self.load(file: vaultFile)
+                
+                let tmpFileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(vaultFile.fileName).appendingPathExtension(vaultFile.fileExtension)
+                
+                if fileManager.createFile(atPath: tmpFileURL, contents: data) {
+                    tmpUrlArray.append(tmpFileURL)
+                }
+            }
+        }
+        return tmpUrlArray
+    }
+
     func save(file vaultFile: VaultFile) {
         debugLog("\(vaultFile)", space: .files)
         
@@ -160,7 +186,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         debugLog("saved: \(fileURL) \(vaultFile.containerName)")
     }
     
-    func save(_ data: Data, type: FileType, name: String, parent: VaultFile?) -> VaultFile? {
+    func save(_ data: Data, type: FileType, name: String, parent: VaultFile?, fileExtension: String) -> VaultFile? {
         debugLog("\(data.count); \(type); \(name); \nparent:\(String(describing: parent))", space: .files)
         
         let containerName = UUID().uuidString
@@ -171,16 +197,16 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                   return nil
               }
         
-        let vaultFile = VaultFile(type: type, fileName: name, containerName: containerName, files: nil)
+        let vaultFile = VaultFile(type: type, fileName: name, containerName: containerName, files: nil, fileExtension: fileExtension)
         parent?.add(file: vaultFile)
         return vaultFile
     }
     
-    func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?) -> VaultFile? {
+    func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?, fileExtension: String) -> VaultFile? {
         guard let data = object.data else {
             return nil
         }
-        return save(data, type: type, name: name, parent: parent)
+        return save(data, type: type, name: name, parent: parent, fileExtension: fileExtension)
     }
     
     func removeAllFiles() {
@@ -209,6 +235,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
         let fileURL = containerURL(for: file.containerName)
         fileManager.removeItem(at: fileURL)
+        save(file: root)
     }
     
     func clearTmpDirectory() {

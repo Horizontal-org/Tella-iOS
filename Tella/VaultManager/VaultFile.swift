@@ -26,20 +26,22 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
     var files: [VaultFile]
     var thumbnail: Data?
     var created: Date
-    
+    var fileExtension : String
+
     var isSelected: Bool = false
     
     static func rootFile(fileName: String, containerName: String) -> VaultFile {
         return VaultFile(type: .folder, fileName: fileName, containerName: containerName, files: [])
     }
     
-    init(type: FileType, fileName: String, containerName: String = "", files: [VaultFile]? = nil, thumbnail: Data? = nil) {
+    init(type: FileType, fileName: String, containerName: String = "", files: [VaultFile]? = nil, thumbnail: Data? = nil, fileExtension : String = "") {
         self.type = type
         self.fileName = fileName
         self.containerName = containerName
         self.files = files ?? []
         self.created = Date()
         self.thumbnail = thumbnail
+        self.fileExtension = fileExtension
     }
     
     var thumbnailImage: UIImage {

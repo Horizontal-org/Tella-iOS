@@ -15,10 +15,10 @@ struct PasswordTextFieldView : View {
     @Binding var isValid : Bool
     @Binding var shouldShowErrorMessage : Bool
     @Binding var shouldShowError : Bool
-   
+    
     var disabled : Bool = false
     var onCommit : (() -> Void)? =  ({})
-
+    
     var body: some View {
         
         VStack(spacing: 13) {
@@ -52,7 +52,6 @@ struct PasswordTextFieldView : View {
                 Button {
                     shouldShowPassword.toggle()
                 } label: {
-                    
                     Image(shouldShowPassword ? "lock.hide" : "lock.show")
                         .frame(width: 22, height: 20)
                         .aspectRatio(contentMode: .fit)
@@ -77,6 +76,7 @@ struct PasswordStyle: TextFieldStyle {
             .multilineTextAlignment(.center)
             .disableAutocorrection(true)
             .textContentType(UITextContentType.oneTimeCode)
+            .keyboardType(.alphabet)
     }
 }
 

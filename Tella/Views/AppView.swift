@@ -53,7 +53,7 @@ struct AppView: View {
 #endif
                 CustomCameraView(completion: { image in
                     if let image = image {
-                        self.appModel.add(image: image, to: appModel.vaultManager.root, type: .image)
+                        self.appModel.add(image: image, to: appModel.vaultManager.root, type: .image, pathExtension: "png")
                     }
                 })
                     .tabItem {

@@ -7,8 +7,9 @@ import SwiftUI
 
 struct AddFileBottomSheetFileActions: View {
     
-    @State var showingAddPhotoVideoSheet = false
-    @State var showingCreateNewFolderSheet = false
+    @State private var showingAddPhotoVideoSheet = false
+    @State private var showingCreateNewFolderSheet = false
+    @State private var fieldContent: String = ""
 
     @Binding var isPresented: Bool
     @Binding var showingDocumentPicker: Bool
@@ -62,13 +63,15 @@ struct AddFileBottomSheetFileActions: View {
             AddPhotoVideoBottomSheet(isPresented: $showingAddPhotoVideoSheet,
                                      showingDocumentPicker: $showingDocumentPicker,
                                      showingImagePicker: $showingImagePicker,
-                                     appModel: appModel,
                                      parent: parent)
             
-            CreateNewFolderBottomSheet(isPresented: $showingCreateNewFolderSheet,
-                                       appModel: appModel,
-                                       parent: parent)
-
+            TextFieldBottomSheet(titleText: "Create new folder",
+                                 validateButtonText: "CREATE",
+                                       isPresented: $showingCreateNewFolderSheet,
+                                 fieldContent: $fieldContent,
+                                 fieldType: .text) {
+                appModel.add(folder: fieldContent , to: parent)
+            }
         }
     }
 }
