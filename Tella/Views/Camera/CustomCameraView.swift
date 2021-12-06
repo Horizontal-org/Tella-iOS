@@ -159,7 +159,8 @@ class CustomCameraController: UIViewController {
     
     func setupInputOutput() {
         do {
-            let captureDeviceInput = try AVCaptureDeviceInput(device: currentCamera!)
+            guard let currentCamera = currentCamera else { return  }
+            let captureDeviceInput = try AVCaptureDeviceInput(device: currentCamera)
             captureSession.addInput(captureDeviceInput)
             photoOutput = AVCapturePhotoOutput()
             photoOutput?.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])], completionHandler: nil)

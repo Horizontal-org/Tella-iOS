@@ -5,20 +5,37 @@
 import UIKit
 import SwiftUI
 
+enum DocumentPickerType{
+    case forExport
+    case forImport
+    
+}
+
 //  Setting up wrapper for UIDocumentPickerViewController
 struct DocumentPickerView: UIViewControllerRepresentable {
     
+    var documentPickerType : DocumentPickerType
+    var URLs: [URL] = []
     let completion: ([URL]?) -> ()
-
+    
     func makeCoordinator() -> DocumentCoordinator {
         return DocumentCoordinator(completion)
     }
-
+    
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
-        //  this allows any filetype to be imported
-        let docPicker = UIDocumentPickerViewController(documentTypes: ["public.item"], in: .import)
-        docPicker.delegate = context.coordinator
-        return docPicker
+        var picker : UIDocumentPickerViewController
+        
+        switch documentPickerType {
+            
+        case .forExport:
+            picker = UIDocumentPickerViewController(forExporting: URLs, asCopy: true)
+            
+        case .forImport:
+            picker = UIDocumentPickerViewController()
+        }
+        picker.delegate = context.coordinator
+        
+        return picker
     }
 
     func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: UIViewControllerRepresentableContext<DocumentPickerView>) {}
@@ -26,7 +43,7 @@ struct DocumentPickerView: UIViewControllerRepresentable {
 
 //  Coordinator acts as the go between for swiftui and uikit
 class DocumentCoordinator: NSObject, UINavigationControllerDelegate, UIDocumentPickerDelegate {
-
+    
     let completion: ([URL]?) -> ()
     
     init(_ completion: @escaping ([URL]?) -> ()) {
@@ -40,17 +57,16 @@ class DocumentCoordinator: NSObject, UINavigationControllerDelegate, UIDocumentP
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         completion(nil)
     }
-
 }
 
 struct ActivityViewController: UIViewControllerRepresentable {
-    var fileData: Data
+    var fileData: [Any]
     var applicationActivities: [UIActivity]? = nil
-
+    
     func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityViewController>) -> UIActivityViewController {
-        let controller = UIActivityViewController(activityItems: [fileData], applicationActivities: applicationActivities)
+        let controller = UIActivityViewController(activityItems: fileData, applicationActivities: applicationActivities)
         return controller
     }
-
+    
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityViewController>) {}
 }

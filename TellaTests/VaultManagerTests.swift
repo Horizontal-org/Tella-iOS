@@ -49,7 +49,7 @@ class VaultManagerTests: XCTestCase {
 
     func test_save_load_string() {
         let string = UUID().uuidString
-        let file = vault.save(string, type: .document, name: "My Document", parent: nil)
+        let file = vault.save(string, type: .document, name: "My Document", parent: nil, fileExtension: "")
         XCTAssertNotNil(file)
         XCTAssertEqual(vault.load(file: file!), string.data)
     }

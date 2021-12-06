@@ -12,7 +12,7 @@ import SwiftUI
 struct HomeFileItem : Hashable {
     var title : String
     var imageName : String
-    var fileType: [FileType]?
+    var fileType: FileType?
 }
 
 var homeFileItems : [HomeFileItem] = [ HomeFileItem(title: LocalizableHome.allFilesItem.localized,
@@ -20,17 +20,17 @@ var homeFileItems : [HomeFileItem] = [ HomeFileItem(title: LocalizableHome.allFi
                                                     fileType: nil),
                                        HomeFileItem(title: LocalizableHome.imagesItem.localized,
                                                     imageName: "files.gallery",
-                                                    fileType: [.image]),
+                                                    fileType: .image),
                                        HomeFileItem(title: LocalizableHome.videosItem.localized,
                                                     imageName: "files.gallery",
-                                                    fileType: [.video]),
+                                                    fileType: .video),
                                        HomeFileItem(title: LocalizableHome.audioItem.localized,
                                                     imageName: "files.audio",
-                                                    fileType: [.audio]),
+                                                    fileType: .audio),
                                        HomeFileItem(title: LocalizableHome.documentsItem.localized,
                                                     imageName: "files.documents",
-                                                    fileType: [.document]),
+                                                    fileType: .document),
                                        HomeFileItem(title: LocalizableHome.othersItem.localized,
                                                     imageName: "files.others",
-                                                    fileType: [.unknown]),
+                                                    fileType: .unknown),
 ]

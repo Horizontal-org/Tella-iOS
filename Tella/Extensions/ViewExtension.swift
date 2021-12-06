@@ -13,7 +13,6 @@ extension View {
     func navigateTo<Destination: View>( destination: Destination) ->  some View   {
         return  NavigationLink(destination: destination) {
             self
-        }
+        }.buttonStyle(PlainButtonStyle())
     }
 }
-
