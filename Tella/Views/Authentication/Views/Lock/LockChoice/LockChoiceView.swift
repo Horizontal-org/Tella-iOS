@@ -47,29 +47,28 @@ struct LockButtonView<Destination:View> : View {
     var destination : Destination
     
     var body: some View {
-        Button {
+        
+        HStack(spacing: 20) {
             
-        } label: {
-            HStack(spacing: 20) {
+            Image(lockButtonProtocol.imageName)
+                .frame(width: 42, height: 42)
+                .aspectRatio(contentMode: .fit)
+            
+            VStack(alignment:.leading, spacing: 3 ) {
+                Text(lockButtonProtocol.title)
+                    .font(.custom(Styles.Fonts.boldFontName, size: 16))
+                    .foregroundColor(.white)
                 
-                Image(lockButtonProtocol.imageName)
-                    .frame(width: 42, height: 42)
-                    .aspectRatio(contentMode: .fit)
-                
-                VStack(alignment:.leading, spacing: 3 ) {
-                    Text(lockButtonProtocol.title)
-                        .font(.custom(Styles.Fonts.boldFontName, size: 16))
-                        .foregroundColor(.white)
-                    
-                    Text(lockButtonProtocol.description)
-                        .font(.custom(Styles.Fonts.regularFontName, size: 11))
-                        .foregroundColor(.white)
-                }
-                Spacer()
-            } .padding(16)
-        }
-        .buttonStyle(LockButtonStyle())
-        .navigateTo(destination: destination)
+                Text(lockButtonProtocol.description)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 11))
+                    .foregroundColor(.white)
+            }
+            Spacer()
+        } .padding(16)
+            .background( Color.white.opacity(0.16))
+            .cornerRadius(20)
+            .buttonStyle(LockButtonStyle())
+            .navigateTo(destination: destination)
     }
 }
 
