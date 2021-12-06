@@ -47,30 +47,29 @@ struct LockButtonView<Destination:View> : View {
     var destination : Destination
     
     var body: some View {
-        
-        HStack(spacing: 20) {
+        Button {
             
-            Image(lockButtonProtocol.imageName)
-                .frame(width: 42, height: 42)
-                .aspectRatio(contentMode: .fit)
-            
-            VStack(alignment:.leading, spacing: 3 ) {
-                Text(lockButtonProtocol.title)
-                    .font(.custom(Styles.Fonts.boldFontName, size: 16))
-                    .foregroundColor(.white)
+        } label: {
+            HStack(spacing: 20) {
                 
-                Text(lockButtonProtocol.description)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 11))
-                    .foregroundColor(.white)
-            }
-            Spacer()
-            
-        }.padding(16)
-            .cornerRadius(20)
-            .navigateTo(destination: destination)
-        
-            .cornerRadius(20)
-            .buttonStyle(LockButtonStyle())
+                Image(lockButtonProtocol.imageName)
+                    .frame(width: 42, height: 42)
+                    .aspectRatio(contentMode: .fit)
+                
+                VStack(alignment:.leading, spacing: 3 ) {
+                    Text(lockButtonProtocol.title)
+                        .font(.custom(Styles.Fonts.boldFontName, size: 16))
+                        .foregroundColor(.white)
+                    
+                    Text(lockButtonProtocol.description)
+                        .font(.custom(Styles.Fonts.regularFontName, size: 11))
+                        .foregroundColor(.white)
+                }
+                Spacer()
+            } .padding(16)
+        }
+        .buttonStyle(LockButtonStyle())
+        .navigateTo(destination: destination)
     }
 }
 
@@ -79,6 +78,7 @@ struct LockButtonStyle : ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .background(configuration.isPressed ? Color.white.opacity(0.32) : Color.white.opacity(0.16))
+            .cornerRadius(20)
             .overlay(
                 configuration.isPressed ? RoundedRectangle(cornerRadius: 20).stroke(Color.white.opacity(0.8), lineWidth: 3) :  RoundedRectangle(cornerRadius: 20).stroke(Color.clear, lineWidth: 0)
             )
