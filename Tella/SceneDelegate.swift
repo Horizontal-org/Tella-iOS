@@ -15,16 +15,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var appViewState = AppViewState()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        if CryptoManager.keysInitialized() {
+        
+        
+        
+
+        
+        if CryptoManager.shared.keysInitialized() {
             appViewState.resetToMain()
         } else {
             appViewState.resetToAuth()
         }
         
-        // Create the SwiftUI view that provides the window contents.
         let contentView = ContentView().environmentObject(appViewState)
         
         // override incorrect defaults
@@ -34,7 +35,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = UIHostingController(rootView: contentView)
+            window.rootViewController = HostingController(rootView: contentView)
             self.window = window
             window.makeKeyAndVisible()
         }
@@ -50,31 +51,41 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+        removeSplashscreen()
     }
     
     func sceneWillResignActive(_ scene: UIScene) {
         // Called when the scene will move from an active state to an inactive state.
         // This may occur due to temporary interruptions (ex. an incoming phone call).
+        addSplashscreen()
     }
     
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
-        if let imageView : UIImageView = UIApplication.shared.keyWindow?.subviews.last?.viewWithTag(101) as? UIImageView {
-            imageView.removeFromSuperview()
-        }
+        removeSplashscreen()
     }
     
     func sceneDidEnterBackground(_ scene: UIScene) {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
-        let imageView = UIImageView(frame: UIScreen.main.bounds)
-        imageView.tag = 101
-        imageView.backgroundColor = UIColor.white
-        imageView.contentMode = .center
-        imageView.image = UIImage (named: "splash")
-        UIApplication.shared.keyWindow?.subviews.last?.addSubview(imageView)
+        appViewState.homeViewModel.saveSettings()
+        addSplashscreen()
     }
-}
 
+    func removeSplashscreen() {
+        if let splashView = UIApplication.shared.windows.first?.subviews.last?.viewWithTag(101) {
+            splashView.removeFromSuperview()
+        }
+    }
+    
+    func addSplashscreen() {
+        let splashView = UIImageView(frame: UIScreen.main.bounds)
+        splashView.tag = 101
+        splashView.backgroundColor = Styles.uiColor.backgroundMain
+        splashView.contentMode = .center
+        UIApplication.shared.windows.first?.subviews.last?.addSubview(splashView)
+    }
+    
+}
