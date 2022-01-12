@@ -1,0 +1,26 @@
+//
+//  DateExtension.swift
+//  Tella
+//
+//  Created by Amine Info on 12/1/2022.
+//  Copyright © 2022 INTERNEWS. All rights reserved.
+//
+
+import Foundation
+
+enum DateFormat : String {
+    case short = "DD MMM YYYY"
+    case fileInfo = "dd-MM-yyyy HH:mm:ss Z"
+}
+
+extension Date{
+    
+    func getFormattedDateString(format: String = DateFormat.short.rawValue , locale: Locale = Language.english.locale) -> String? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = format
+        formatter.locale = locale
+        return formatter.string(from: self)
+    }
+    
+}
+

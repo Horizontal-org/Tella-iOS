@@ -72,7 +72,7 @@ struct FileListView: View {
                            showFileInfoActive: $viewModel.showFileInfoActive,
                            appModel: appModel)
             showFileDetailsLink
-            
+            showFileInfoLink
         }
         // .navigationBarTitle("\(rootFile.fileName)")
         .toolbar {
@@ -241,6 +241,8 @@ struct FileListView: View {
                             FileListItem(file: file,
                                          parentFile: rootFile,
                                          appModel: appModel,
+                                         viewModel: self.viewModel,
+                                         showFileInfoActive: $viewModel.showFileInfoActive,
                                          selectingFile: $viewModel.selectingFiles,
                                          isSelected: getStatus(for: file),
                                          showingActionSheet: $viewModel.showingFileActionMenu,
@@ -256,6 +258,8 @@ struct FileListView: View {
                                 FileListItem(file: file,
                                              parentFile: rootFile,
                                              appModel: appModel,
+                                             viewModel: self.viewModel,
+                                             showFileInfoActive: $viewModel.showFileInfoActive,
                                              selectingFile: $viewModel.selectingFiles,
                                              isSelected: getStatus(for: file),
                                              showingActionSheet: $viewModel.showingFileActionMenu,
@@ -351,6 +355,22 @@ struct FileListView: View {
                 .hidden()
         }
     }
+    
+    @ViewBuilder
+    private var showFileInfoLink : some View{
+        if let currentSelectedVaultFile = viewModel.currentSelectedVaultFile {
+            NavigationLink(destination:
+                            FileInfoView(viewModel: self.viewModel, file: currentSelectedVaultFile),
+                           isActive: $viewModel.showFileInfoActive) {
+                EmptyView()
+            }.frame(width: 0, height: 0)
+                .hidden()
+
+        }
+
+    }
+    
+    
 }
 
 struct FileListView_Previews: PreviewProvider {

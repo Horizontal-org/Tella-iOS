@@ -24,6 +24,18 @@ enum LocalizableHome: String, LocalizableDelegate {
     case  documentsItem = "HomeDocumentsItem"
     case  othersItem = "HomeOthersItem"
     
+    
+    // File Info
+    
+    case  fileInfo = "HomeFileInfoTitle"
+    case  fileName = "HomeFileName"
+    case  size = "HomeFileSize"
+    case  format = "HomeFileFormat"
+    case  created = "HomeFileCreated"
+    case  resolution = "HomeFileResolution"
+    case  length = "HomeFileLength"
+    case  filePath = "HomeFilePath"
+
     var tableName: String? {
         return "Home"
     }

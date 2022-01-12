@@ -41,6 +41,11 @@ class FileListViewModel: ObservableObject {
         }
     }
     
+    var filePath : String {
+        let rootPath = "Tella" + (folderArray.count > 0 ? "/" : "")
+        return  rootPath + self.folderArray.compactMap{$0.fileName}.joined(separator: "/")
+    }
+    
     func resetSelectedItems() {
         _ = vaultFileStatusArray.compactMap{$0.isSelected = false}
     }

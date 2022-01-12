@@ -22,4 +22,12 @@
 "HomeOthersItem" = "Others";
 
 
-
+// File Info
+"HomeFileInfoTitle" = "File info";
+"HomeFileName" = "File name";
+"HomeFileSize" = "Size";
+"HomeFileFormat" = "Format";
+"HomeFileCreated" = "Created";
+"HomeFileResolution" = "Resolution";
+"HomeFileLength" = "Length";
+"HomeFilePath" = "File path";

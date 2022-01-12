@@ -10,7 +10,9 @@ struct FileListItem: View {
     var parentFile: VaultFile?
     
     @ObservedObject var appModel: MainAppModel
-    @State var showFileInfoActive = false
+    @ObservedObject var viewModel: FileListViewModel
+
+    @Binding var showFileInfoActive : Bool
     
     @Binding var selectingFile : Bool
     @Binding var isSelected : Bool
@@ -33,25 +35,17 @@ struct FileListItem: View {
                     VStack(alignment: .leading, spacing: 0){
                         Spacer()
                         Text(file.fileName)
-                            .font(Font(UIFont.boldSystemFont(ofSize: 14)))
+                            .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                             .foregroundColor(Color.white)
                             .lineLimit(1)
-                        
-                        if #available(iOS 14.0, *) {
-                            Text(file.created, style: .date)
-                                .font(Font(UIFont.systemFont(ofSize: 10)))
-                                .foregroundColor(Color(white: 0.8))
-                        } else {
-                            TextDate(date: file.created)
-                            // Fallback on earlier versions
-                        }
-                        
-                        NavigationLink(destination:
-                                        FileInfoView(file: file),
-                                       isActive: $showFileInfoActive) {
-                            EmptyView()
-                        }.frame(width: 0, height: 0)
-                            .hidden()
+                       
+                        Spacer()
+                            .frame(height: 2)
+
+                        Text(file.formattedCreationDate)
+                            .font(.custom(Styles.Fonts.regularFontName, size: 10))
+                            .foregroundColor(Color.white)
+
                         Spacer()
                         
                     }

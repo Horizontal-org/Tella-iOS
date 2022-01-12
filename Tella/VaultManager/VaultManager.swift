@@ -12,8 +12,8 @@ protocol VaultManagerInterface {
     func load(name: String) -> VaultFile?
     func load(file: VaultFile) -> Data?
     func load(files vaultFiles: [VaultFile]) -> [URL]
-    func save(_ data: Data, type: FileType, name: String, parent: VaultFile?, fileExtension: String) -> VaultFile?
-    func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?, fileExtension: String) -> VaultFile?
+    func save(_ data: Data, type: FileType, name: String, parent: VaultFile?, fileExtension: String, size:Int64, resolution:CGSize?, duration : Double?) -> VaultFile?
+    func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?, fileExtension: String, size:Int64, resolution:CGSize?, duration : Double?) -> VaultFile?
     func createNewFolder(name: String, parent: VaultFile?)
     func rename(file : VaultFile, parent: VaultFile?)
     func delete(file: VaultFile, parent: VaultFile?)
@@ -64,9 +64,13 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         guard let data = image.fixedOrientation() else {
             return
         }
+
+        let width = image.size.width * image.scale
+        let height = image.size.height * image.scale
+        let resolution = CGSize(width: width, height: height)
         
         let fileName = "\(type)_new"
-        if let newFile = save(data, type: type, name: fileName, parent: parentFolder, fileExtension: pathExtension) {
+        if let newFile = save(data, type: type, name: fileName, parent: parentFolder, fileExtension: pathExtension, size: Int64(data.data?.count ?? 0), resolution: resolution, duration: nil) {
             if type == .image {
                 newFile.thumbnail = image.getThumbnail()?.pngData()
             }
@@ -86,8 +90,11 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                 let data = try Data(contentsOf: filePath)
                 let fileName = filePath.lastPathComponent
                 let fileExtension = filePath.pathExtension
+                let path = filePath.path
                 
-                if let newFile = save(data, type: type, name: fileName, parent: parentFolder, fileExtension: fileExtension) {
+                let resolution = filePath.resolutionForVideo()
+
+                if let newFile = save(data, type: type, name: fileName, parent: parentFolder, fileExtension: fileExtension, size: FileManager.default.sizeOfFile(atPath: path) ?? 0, resolution: resolution, duration: filePath.getDuration()) {
                     newFile.thumbnail = filePath.thumbnail?.pngData()
                     addRecentFile(file: newFile)
                 }
@@ -186,7 +193,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         debugLog("saved: \(fileURL) \(vaultFile.containerName)")
     }
     
-    func save(_ data: Data, type: FileType, name: String, parent: VaultFile?, fileExtension: String) -> VaultFile? {
+    func save(_ data: Data, type: FileType, name: String, parent: VaultFile?, fileExtension: String, size:Int64, resolution:CGSize?, duration : Double?) -> VaultFile? {
         debugLog("\(data.count); \(type); \(name); \nparent:\(String(describing: parent))", space: .files)
         
         let containerName = UUID().uuidString
@@ -197,16 +204,16 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                   return nil
               }
         
-        let vaultFile = VaultFile(type: type, fileName: name, containerName: containerName, files: nil, fileExtension: fileExtension)
+        let vaultFile = VaultFile(type: type, fileName: name, containerName: containerName, files: nil, fileExtension: fileExtension,size:size, resolution: resolution, duration: duration)
         parent?.add(file: vaultFile)
         return vaultFile
     }
     
-    func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?, fileExtension: String) -> VaultFile? {
+    func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?, fileExtension: String, size:Int64, resolution:CGSize?, duration : Double?) -> VaultFile? {
         guard let data = object.data else {
             return nil
         }
-        return save(data, type: type, name: name, parent: parent, fileExtension: fileExtension)
+        return save(data, type: type, name: name, parent: parent, fileExtension: fileExtension, size: size, resolution: resolution, duration: duration)
     }
     
     func removeAllFiles() {

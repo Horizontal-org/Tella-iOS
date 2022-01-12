@@ -4,6 +4,7 @@
 
 import UIKit
 import SwiftUI
+import AVFoundation
 
 enum FileType: String, Codable {
     case video
@@ -27,6 +28,9 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
     var thumbnail: Data?
     var created: Date
     var fileExtension : String
+    var size : Int64
+    var resolution : CGSize?
+    var duration : Double?
 
     var isSelected: Bool = false
     
@@ -34,7 +38,7 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
         return VaultFile(type: .folder, fileName: fileName, containerName: containerName, files: [])
     }
     
-    init(type: FileType, fileName: String, containerName: String = "", files: [VaultFile]? = nil, thumbnail: Data? = nil, fileExtension : String = "") {
+    init(type: FileType, fileName: String, containerName: String = "", files: [VaultFile]? = nil, thumbnail: Data? = nil, fileExtension : String = "", size : Int64 = 0, resolution : CGSize? = nil, duration : Double? = nil) {
         self.type = type
         self.fileName = fileName
         self.containerName = containerName
@@ -42,6 +46,10 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
         self.created = Date()
         self.thumbnail = thumbnail
         self.fileExtension = fileExtension
+        
+        self.size = size
+        self.duration = duration
+        self.resolution = resolution
     }
     
     var thumbnailImage: UIImage {
@@ -182,4 +190,42 @@ extension Array where Element == VaultFile {
         }
     }
     
+}
+
+extension VaultFile {
+
+    var formattedCreationDate : String {
+        get {
+            return created.getFormattedDateString(format: DateFormat.short.rawValue) ?? ""
+        }
+    }
+}
+
+extension VaultFile {
+
+    var longFormattedCreationDate : String {
+        get {
+            return created.getFormattedDateString(format: DateFormat.fileInfo.rawValue) ?? ""
+        }
+    }
+}
+
+extension VaultFile {
+    
+    var formattedResolution : String? {
+        get {
+            guard let resolution = resolution else {return nil}
+            return "\(Int(resolution.width)):\(Int(resolution.height))"
+        }
+    }
+}
+
+extension VaultFile {
+    
+    var formattedDuration : String? {
+        get {
+            guard let duration = duration else {return nil}
+            return  duration.timeString()
+        }
+    }
 }
