@@ -37,7 +37,7 @@ struct ListActionSheet: View {
             Text(self.headerTitle)
                 .padding(EdgeInsets(top: 5, leading: 0, bottom: 20, trailing: 0))
                 .foregroundColor(.white)
-                .font(Font.system(size: 14))
+                .font(.custom(Styles.Fonts.boldFontName, size: 16))
             ForEach(items, id: \.content) { item in
                 ListActionSheetRow(item: item, isPresented: $isPresented)
             }

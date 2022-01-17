@@ -151,7 +151,11 @@ extension Array where Element == VaultFile {
             filteredFiles = currentRootFile.files
         }
         
-        return filteredFiles.sorted { file1, file2  in
+        return filteredFiles.sorted(by: sortOrder)
+    }
+    
+    func sorted(by sortOrder: FileSortOptions) -> [VaultFile] {
+        return self.sorted { file1, file2  in
             
             if file1.type == .folder && file2.type == .folder {
                 return file1.fileName > file2.fileName
@@ -189,7 +193,13 @@ extension Array where Element == VaultFile {
             }
         }
     }
-    
+}
+
+extension VaultFile {
+    func getVideos() ->  [VaultFile] {
+        return self.files.filter{$0.type == .video}
+    }
+
 }
 
 extension VaultFile {
@@ -225,7 +235,7 @@ extension VaultFile {
     var formattedDuration : String? {
         get {
             guard let duration = duration else {return nil}
-            return  duration.timeString()
+            return  duration.shortTimeString()
         }
     }
 }

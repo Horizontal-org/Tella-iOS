@@ -348,6 +348,7 @@ struct FileListView: View {
             NavigationLink(destination:
                             FileDetailView(appModel: appModel,
                                            file: currentSelectedVaultFile,
+                                           videoFilesArray: rootFile.getVideos().sorted(by: viewModel.sortBy),
                                            fileType: fileType),
                            isActive: $viewModel.showFileDetails) {
                 EmptyView()
@@ -365,12 +366,8 @@ struct FileListView: View {
                 EmptyView()
             }.frame(width: 0, height: 0)
                 .hidden()
-
         }
-
     }
-    
-    
 }
 
 struct FileListView_Previews: PreviewProvider {

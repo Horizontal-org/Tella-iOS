@@ -10,6 +10,7 @@ struct FileDetailView: View {
     @ObservedObject var appModel: MainAppModel
     
     var file: VaultFile
+    var videoFilesArray: [VaultFile]?
     var fileType : FileType?
     
     var body: some View {
@@ -22,8 +23,9 @@ struct FileDetailView: View {
                     QuickLookView(file: file)
                 }
             case .video:
-                VideoViewer(videoURL: appModel.vaultManager.loadVideo(file: file),
-                            appModel: appModel)
+                if let videoFilesArray = videoFilesArray   {
+                    VideoViewer(appModel: appModel, playlist: videoFilesArray)
+                }
             case .image:
                 ImageViewer(imageData: appModel.vaultManager.load(file: file))
             case .folder:
