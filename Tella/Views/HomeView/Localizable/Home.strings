@@ -21,7 +21,6 @@
 "HomeDocumentsItem" = "Documents";
 "HomeOthersItem" = "Others";
 
-
 // File Info
 "HomeFileInfoTitle" = "File info";
 "HomeFileName" = "File name";
@@ -31,3 +30,13 @@
 "HomeFileResolution" = "Resolution";
 "HomeFileLength" = "Length";
 "HomeFilePath" = "File path";
+
+// Import Progress
+"HomeImportProgressTitle" = "Importing and encrypting";
+"HomeImportProgressFileImported" = "file imported";
+
+// Cancel Import File
+"HomeCancelImportFileTitle" = "Are you sure you want to cancel?";
+"HomeCancelImportFileMessage" = "Your file will not be imported.";
+"HomeCancelImportFileBack" = "BACK";
+"HomeCancelImportFileCancelImport" = "CANCEL IMPORT";

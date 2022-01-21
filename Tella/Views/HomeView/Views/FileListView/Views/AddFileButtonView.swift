@@ -17,6 +17,7 @@ struct AddFileButtonView: View {
     @State var showingImagePicker = false
     @State var showingAddFileSheet = false
     @Binding var selectingFiles : Bool
+    @Binding var showingProgressView : Bool
 
     var body: some View {
         ZStack {
@@ -34,6 +35,7 @@ struct AddFileButtonView: View {
             HStack{}
             .sheet(isPresented: $showingDocumentPicker, content: {
                 DocumentPickerView(documentPickerType: .forImport) { urls in
+                    showingProgressView = true
                     appModel.add(files: urls ?? [], to: rootFile, type: .document)
                 }
             })
@@ -44,11 +46,15 @@ struct AddFileButtonView: View {
         HStack{}
         .sheet(isPresented: $showingImagePicker, content: {
             ImagePickerView { image, url, pathExtension in
+               
                 showingImagePicker = false
+
                 if let url = url {
+                    showingProgressView = true
                     appModel.add(files: [url], to: rootFile, type: .video)
                 }
                 if let image = image {
+                    showingProgressView = true
                     appModel.add(image: image, to: rootFile, type: .image, pathExtension: pathExtension ?? "png")
                 }
             }
@@ -64,6 +70,7 @@ struct AddFileButtonView: View {
             allowsMultipleSelection: true,
             onCompletion: { result in
                 if let urls = try? result.get() {
+                    showingProgressView = true
                     appModel.add(files: urls, to: rootFile, type: .document)
                 }
             }
@@ -88,6 +95,6 @@ struct AddFileButtonView: View {
 }
 struct AddFileButtonView_Previews: PreviewProvider {
     static var previews: some View {
-        AddFileButtonView(appModel: MainAppModel(), selectingFiles: .constant(false))
+        AddFileButtonView(appModel: MainAppModel(), selectingFiles: .constant(false), showingProgressView: .constant(true))
     }
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 enum LocalizableHome: String, LocalizableDelegate {
-
+    
     // Recent files
     case  recentFiles = "HomeRecentFiles"
     
@@ -35,7 +35,19 @@ enum LocalizableHome: String, LocalizableDelegate {
     case  resolution = "HomeFileResolution"
     case  length = "HomeFileLength"
     case  filePath = "HomeFilePath"
-
+    
+    // Import Progress
+    
+    case  importProgressTitle = "HomeImportProgressTitle"
+    case  importProgressFileImported = "HomeImportProgressFileImported"
+    
+    // Cancel Import File
+    
+    case  cancelImportFileTitle = "HomeCancelImportFileTitle"
+    case  cancelImportFileMessage = "HomeCancelImportFileMessage"
+    case  cancelImportFileBack = "HomeCancelImportFileBack"
+    case  cancelImportFileCancelImport = "HomeCancelImportFileCancelImport"
+    
     var tableName: String? {
         return "Home"
     }

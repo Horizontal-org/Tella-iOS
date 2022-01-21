@@ -24,6 +24,8 @@ class FileListViewModel: ObservableObject {
 
     @Published var showFileInfoActive = false
     
+    @Published var showingProgressView = false
+
     @Published var viewType: FileViewType = FileViewType.list
     
     @Published var folderArray: [VaultFile] = []

@@ -60,7 +60,10 @@ struct FileListView: View {
                     itemsListView
                 }
             }
-            AddFileButtonView(appModel: appModel, rootFile: rootFile, selectingFiles: $viewModel.selectingFiles)
+            AddFileButtonView(appModel: appModel,
+                              rootFile: rootFile,
+                              selectingFiles: $viewModel.selectingFiles,
+                              showingProgressView: $viewModel.showingProgressView)
             
             FileSortMenu(showingSortFilesActionSheet: $viewModel.showingSortFilesActionSheet,
                          sortBy: $viewModel.sortBy)
@@ -73,6 +76,10 @@ struct FileListView: View {
                            appModel: appModel)
             showFileDetailsLink
             showFileInfoLink
+
+            ImportFilesProgressView(showingProgressView: $viewModel.showingProgressView,
+                                    appModel: appModel)
+            
         }
         // .navigationBarTitle("\(rootFile.fileName)")
         .toolbar {

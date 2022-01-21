@@ -36,6 +36,9 @@ struct ConfirmBottomSheet : View {
                         Text(self.cancelText)
                     }.buttonStyle(ButtonSheetStyle())
                     
+                    Spacer()
+                        .frame(width: 20)
+
                     Button(action: {self.didConfirmAction()}){
                         Text(self.actionText)
                             .foregroundColor(destructive ? Color.red : Color.white)

@@ -78,6 +78,7 @@
 		125D2324271F891500250FBB /* PinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2323271F891500250FBB /* PinView.swift */; };
 		125D2326271F896400250FBB /* CustomPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2325271F896400250FBB /* CustomPinView.swift */; };
 		125D2328271F8B6600250FBB /* LockConfirmPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2327271F8B6600250FBB /* LockConfirmPinView.swift */; };
+		125DD9C92796CB090053619D /* ImportFilesProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DD9C82796CB090053619D /* ImportFilesProgressView.swift */; };
 		125EDDAD271DBD5200E2789A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65B023E3207D000F93E5 /* ContentView.swift */; };
 		125EDDB1271E40CA00E2789A /* LockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125EDDB0271E40CA00E2789A /* LockViewModel.swift */; };
 		125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125EFACC274A447000D93DF6 /* FileSortMenu.swift */; };
@@ -92,9 +93,11 @@
 		12690CB62755020C00A758D2 /* DeleteFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A9C902750FC7800405376 /* DeleteFileView.swift */; };
 		126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */; };
 		12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */; };
+		127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127B56D4279AC28200F902C9 /* CancelImportView.swift */; };
 		1283C257272AA6F6009180CA /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */; };
 		128777C52718D25E000624E2 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 128777C42718D25D000624E2 /* OpenSans-Light.ttf */; };
 		128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C7BC32745AB0100A680B3 /* FileListViewModel.swift */; };
+		128F979A2799AF0100E63DA5 /* CircularActivityIndicatory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128F97962799983800E63DA5 /* CircularActivityIndicatory.swift */; };
 		1290743B274CEB9B00F38A81 /* FileGridItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1290743A274CEB9B00F38A81 /* FileGridItem.swift */; };
 		129533C227399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129533C127399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift */; };
 		129533C42739D5BC0053FA4B /* TextFieldBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129533C32739D5BC0053FA4B /* TextFieldBottomSheet.swift */; };
@@ -115,6 +118,7 @@
 		12D37A942721752B00E43BDB /* TellaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A932721752B00E43BDB /* TellaApp.swift */; };
 		12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A952721A49D00E43BDB /* NavigationContainerView.swift */; };
 		12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */; };
+		12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC0CE2799FF230068EC2B /* ImportProgress.swift */; };
 		12FDEDD3272AF5A2005C17AC /* Home.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12FDEDD2272AF5A2005C17AC /* Home.strings */; };
 		12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */; };
 		1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerView.swift */; };
@@ -272,6 +276,7 @@
 		125D2323271F891500250FBB /* PinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinView.swift; sourceTree = "<group>"; };
 		125D2325271F896400250FBB /* CustomPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPinView.swift; sourceTree = "<group>"; };
 		125D2327271F8B6600250FBB /* LockConfirmPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockConfirmPinView.swift; sourceTree = "<group>"; };
+		125DD9C82796CB090053619D /* ImportFilesProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesProgressView.swift; sourceTree = "<group>"; };
 		125EDDB0271E40CA00E2789A /* LockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockViewModel.swift; sourceTree = "<group>"; };
 		125EFACC274A447000D93DF6 /* FileSortMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSortMenu.swift; sourceTree = "<group>"; };
 		125FA6D5278DE49A004B9D06 /* URLExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
@@ -283,10 +288,12 @@
 		12607D5D27904F5300E2B8CC /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtension.swift; sourceTree = "<group>"; };
 		12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeadingTitleToolbar.swift; sourceTree = "<group>"; };
+		127B56D4279AC28200F902C9 /* CancelImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelImportView.swift; sourceTree = "<group>"; };
 		1283C254272A7484009180CA /* CustomNavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationContainerView.swift; sourceTree = "<group>"; };
 		1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		128777C42718D25D000624E2 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		128C7BC32745AB0100A680B3 /* FileListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListViewModel.swift; sourceTree = "<group>"; };
+		128F97962799983800E63DA5 /* CircularActivityIndicatory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularActivityIndicatory.swift; sourceTree = "<group>"; };
 		1290743A274CEB9B00F38A81 /* FileGridItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGridItem.swift; sourceTree = "<group>"; };
 		129533C127399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoVideoBottomSheet.swift; sourceTree = "<group>"; };
 		129533C32739D5BC0053FA4B /* TextFieldBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldBottomSheet.swift; sourceTree = "<group>"; };
@@ -303,6 +310,7 @@
 		12D37A932721752B00E43BDB /* TellaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaApp.swift; sourceTree = "<group>"; };
 		12D37A952721A49D00E43BDB /* NavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContainerView.swift; sourceTree = "<group>"; };
 		12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinKeyboardModel.swift; sourceTree = "<group>"; };
+		12FAC0CE2799FF230068EC2B /* ImportProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportProgress.swift; sourceTree = "<group>"; };
 		12FDEDD2272AF5A2005C17AC /* Home.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Home.strings; sourceTree = "<group>"; };
 		12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableHome.swift; sourceTree = "<group>"; };
 		1E67B39123FC9067001F3D64 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
@@ -706,6 +714,9 @@
 				125EFACC274A447000D93DF6 /* FileSortMenu.swift */,
 				0DA213CA268028A200526995 /* FileSortOptions.swift */,
 				125A9C902750FC7800405376 /* DeleteFileView.swift */,
+				125DD9C82796CB090053619D /* ImportFilesProgressView.swift */,
+				127B56D4279AC28200F902C9 /* CancelImportView.swift */,
+				128F97962799983800E63DA5 /* CircularActivityIndicatory.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -842,6 +853,7 @@
 				D538C8AB264CE8D300D457B0 /* CryptoFileManager.swift */,
 				1E67B39123FC9067001F3D64 /* ImagePickerView.swift */,
 				0DEFD547268943CC0014EADE /* DocumentPickerView.swift */,
+				12FAC0CE2799FF230068EC2B /* ImportProgress.swift */,
 			);
 			path = VaultManager;
 			sourceTree = "<group>";
@@ -1244,6 +1256,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */,
+				128F979A2799AF0100E63DA5 /* CircularActivityIndicatory.swift in Sources */,
 				0ECC7814267A328900A2ACF2 /* FormsModel.swift in Sources */,
 				0E78B3BA2656B0BC00F9BDBC /* VideoPlayerUI.swift in Sources */,
 				125D2328271F8B6600250FBB /* LockConfirmPinView.swift in Sources */,
@@ -1291,6 +1304,7 @@
 				D5163985263113B7003A11B5 /* AudioRecordView.swift in Sources */,
 				1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
+				127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				0E170255267910CC0069072A /* OutBoxFormsView.swift in Sources */,
 				0E170259267913160069072A /* FormsCellView.swift in Sources */,
@@ -1327,9 +1341,11 @@
 				12A2DB03273576D50094B856 /* AddFileButtonView.swift in Sources */,
 				D572EAC5263A383100CE191A /* RecentFilesListView.swift in Sources */,
 				D75F9E9C25342539006F6212 /* RecordViewModel.swift in Sources */,
+				12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */,
 				12607D5A2790457600E2B8CC /* VideoViewer.swift in Sources */,
 				125A0AED2726CBF000F6E77F /* UnlockPinView.swift in Sources */,
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
+				125DD9C92796CB090053619D /* ImportFilesProgressView.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */,
 				12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */,
 				12607D5327903E9E00E2B8CC /* CustomVideoControlsView.swift in Sources */,

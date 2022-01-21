@@ -4,6 +4,7 @@
 
 import UIKit
 import SwiftUI
+import Combine
 
 protocol VaultManagerInterface {
     
@@ -38,12 +39,14 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     
     @Published var root: VaultFile
     @Published var recentFiles: [VaultFile] = []
+    var progress :  ImportProgress
     
-    init(cryptoManager: CryptoManagerInterface, fileManager: FileManagerInterface, rootFileName: String, containerPath: String) {
+    init(cryptoManager: CryptoManagerInterface, fileManager: FileManagerInterface, rootFileName: String, containerPath: String, progress :  ImportProgress) {
         self.cryptoManager = cryptoManager
         self.fileManager = fileManager
         self.rootFileName = rootFileName
         self.containerPath = containerPath
+        self.progress = progress
         
         root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
         if let root = load(name: rootFileName) {
@@ -60,28 +63,39 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
     
     func importFile(image: UIImage, to parentFolder: VaultFile?, type: FileType, pathExtension: String) {
+        
+        self.progress.start(currentFile: 0, totalFiles: 1, totalSize: Double(image.data?.count ?? 0))
+        
         debugLog("\(image)", space: .files)
         guard let data = image.fixedOrientation() else {
             return
         }
-
+        
         let width = image.size.width * image.scale
         let height = image.size.height * image.scale
         let resolution = CGSize(width: width, height: height)
+        let size = Int64(data.data?.count ?? 0)
         
         let fileName = "\(type)_new"
-        if let newFile = save(data, type: type, name: fileName, parent: parentFolder, fileExtension: pathExtension, size: Int64(data.data?.count ?? 0), resolution: resolution, duration: nil) {
+        if let newFile = save(data, type: type, name: fileName, parent: parentFolder, fileExtension: pathExtension, size: size, resolution: resolution, duration: nil) {
             if type == .image {
                 newFile.thumbnail = image.getThumbnail()?.pngData()
             }
             addRecentFile(file: newFile)
             save(file: root)
+            self.progress.finish()
         }
     }
     
     func importFile(files: [URL], to parentFolder: VaultFile?, type: FileType) {
-        for filePath in files {
+        
+        self.startImportFileProgress(files: files)
+        
+        for (index, filePath) in files.enumerated() {
             debugLog("\(filePath)", space: .files)
+            
+            self.progress.currentFile = index
+            
             do {
                 
                 let _ = filePath.startAccessingSecurityScopedResource()
@@ -93,7 +107,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                 let path = filePath.path
                 
                 let resolution = filePath.resolutionForVideo()
-
+                
                 if let newFile = save(data, type: type, name: fileName, parent: parentFolder, fileExtension: fileExtension, size: FileManager.default.sizeOfFile(atPath: path) ?? 0, resolution: resolution, duration: filePath.getDuration()) {
                     newFile.thumbnail = filePath.thumbnail?.pngData()
                     addRecentFile(file: newFile)
@@ -105,6 +119,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
             }
         }
         save(file: root)
+        self.progress.finish()
     }
     
     func createNewFolder(name: String, parent: VaultFile?)  {
@@ -175,7 +190,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
         return tmpUrlArray
     }
-
+    
     func save(file vaultFile: VaultFile) {
         debugLog("\(vaultFile)", space: .files)
         
@@ -274,4 +289,19 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         recentFiles = recentFiles.filter({ $0.containerName != file.containerName })
     }
     
+    private func startImportFileProgress(files: [URL]) {
+        var totalSizeArray : [Double] = []
+        
+        files.forEach { filePath in
+            let _ = filePath.startAccessingSecurityScopedResource()
+            defer { filePath.stopAccessingSecurityScopedResource() }
+            
+            let size = FileManager.default.sizeOfFile(atPath:filePath.path)
+            totalSizeArray.append(Double(size ?? Int64(0.0)))
+        }
+        
+        let totalSize = totalSizeArray.reduce(0.0, +)
+        
+        self.progress.start(totalFiles: files.count, totalSize: totalSize)
+    }
 }
