@@ -20,13 +20,6 @@ struct ImportFilesProgressView: View {
                      isShown: $showingProgressView) {
                 ImportFilesProgressContentView
             }
-            
-            CancelImportView(showingCancelImportConfirmationSheet: $showingCancelImportConfirmationSheet,
-                             appModel: appModel) {
-                
-                appModel.vaultManager.progress.finish()
-                
-            }
         }
     }
     
@@ -66,10 +59,10 @@ struct ImportFilesProgressView: View {
                 HStack {
                     Spacer()
                     Button("CANCEL") {
-//                        showingProgressView = false
-                        
-                        showingCancelImportConfirmationSheet = true
-                        
+                        appModel.cancelImportAndEncryption()
+                        appModel.vaultManager.progress.stop()
+                        showingProgressView = false
+
                     }
                     .foregroundColor(Color.white)
                     .font(Font.custom(Styles.Fonts.semiBoldFontName, size: 14))

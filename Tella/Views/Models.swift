@@ -10,6 +10,7 @@ protocol AppModelFileManagerProtocol {
     func add(files: [URL], to parentFolder: VaultFile?, type: FileType)
     func add(image: UIImage, to parentFolder: VaultFile?, type: FileType, pathExtension:String)
     func add(folder: String, to parentFolder: VaultFile?)
+    func cancelImportAndEncryption()
     func delete(file: VaultFile, from parentFolder: VaultFile?)
     func rename(file : VaultFile, parent: VaultFile?)
     func getFilesForShare(files: [VaultFile]) -> [Any]
@@ -29,6 +30,8 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     @Published var vaultManager: VaultManager = VaultManager(cryptoManager: CryptoManager.shared, fileManager: DefaultFileManager(), rootFileName: "root", containerPath: "Containers", progress: ImportProgress())
     
     @Published var selectedTab: Tabs = .home
+
+    var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
 
     private var cancellable: Set<AnyCancellable> = []
     
@@ -65,12 +68,9 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         vaultManager.progress.progress.sink { value in
             self.publishUpdates()
         }.store(in: &cancellable)
-        
-        
-        DispatchQueue.global(qos: .background).async {
-            self.vaultManager.importFile(files: files, to: parentFolder, type: type)
-            self.publishUpdates()
-        }
+
+        self.vaultManager.importFile(files: files, to: parentFolder, type: type)
+        self.publishUpdates()
     }
     
     func add(image: UIImage, to parentFolder: VaultFile?, type: FileType, pathExtension:String) {
@@ -92,6 +92,10 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
             self.publishUpdates()
         }
     }
+    
+    func cancelImportAndEncryption() {
+        self.vaultManager.shouldCancelImportAndEncryption.send(true)
+     }
     
     func delete(file: VaultFile, from parentFolder: VaultFile?) {
         DispatchQueue.global(qos: .background).async {

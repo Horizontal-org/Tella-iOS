@@ -17,8 +17,7 @@ class ImportProgress {
             self.progressFile = "\(self.currentFile)/\(self.totalFiles)"
         }
     }
-    
-    private var timerIsOn = false
+
     private var totalTime : Double = 0.0
     private var timeRemaining : Double = 0.0
     private var timer = Timer()
@@ -38,17 +37,26 @@ class ImportProgress {
             self.totalTime =  Double(self.totalSize) / Double(self.sizeImportedPerSecond)
             self.timeRemaining = self.totalTime
             
-            if !self.timerIsOn {
-                self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.timerRunning), userInfo: nil, repeats: true)
-                self.timerIsOn = true
-            }
+            self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.timerRunning), userInfo: nil, repeats: true)
         }
     }
+    
+    func stop() {
+        DispatchQueue.main.async {
+            self.timer.invalidate()
+            self.timeRemaining = 0.0
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.progress.send(0)
+        }
+    }
+    
     
     func finish() {
         DispatchQueue.main.async {
             self.timeRemaining = 0.0
-            self.timerIsOn = false
+            //            self.timerIsOn = false
             self.timer.invalidate()
             self.progress.send(1)
         }
