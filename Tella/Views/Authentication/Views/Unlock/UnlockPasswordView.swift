@@ -8,24 +8,33 @@
 
 import SwiftUI
 
+enum UnlockType {
+    case new
+    case update
+}
+
 struct UnlockPasswordView: View {
     
-    @StateObject var viewModel = LockViewModel()
+    @EnvironmentObject private var viewModel: LockViewModel
+
     @EnvironmentObject private var appViewState: AppViewState
+    @State private var presentingLockChoice : Bool = false
     
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
     var body: some View {
         ContainerView {
             VStack(alignment: .center) {
                 Spacer(minLength: 56)
                 
-                Image("lock.tella.logo")
+                Image("tella.logo")
                     .frame(width: 65, height: 72)
                     .aspectRatio(contentMode: .fit)
                 
                 Spacer()
                     .frame(height: 50)
                 
-                Text(viewModel.shouldShowUnlockError ? LocalizableLock.unlockPasswordError.localized : LocalizableLock.unlockPasswordTitle.localized)
+                Text(titleString)
                     .font(.custom(Styles.Fonts.regularFontName, size: 18))
                     .foregroundColor(.white)
                     .lineSpacing(7)
@@ -35,19 +44,51 @@ struct UnlockPasswordView: View {
                 Spacer()
                     .frame(height: 73)
                 
-                PasswordTextFieldView(fieldContent: $viewModel.password,
+                PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
                                       isValid: .constant(true),
                                       shouldShowErrorMessage: .constant(false),
                                       shouldShowError: $viewModel.shouldShowUnlockError) {
                     viewModel.login()
                     if !viewModel.shouldShowUnlockError {
-                        appViewState.resetToMain()
+                        if viewModel.unlockType == .new {
+                            appViewState.resetToMain()
+                        } else {
+                            presentingLockChoice = true
+                        }
                     }
                 }
                 Spacer()
             }
+            
+            .fullScreenCover(isPresented: $presentingLockChoice) {
+                self.presentationMode.wrappedValue.dismiss()
+            } content: {
+                LockChoiceView( isPresented: $presentingLockChoice)
+            }
+            
         }
-    }}
+        .onReceive(viewModel.shouldDismiss) { shouldDismiss in
+            if shouldDismiss {
+                self.presentingLockChoice = false
+                self.presentationMode.wrappedValue.dismiss()
+            }
+        }
+        .onAppear {
+            viewModel.initData()
+        }
+    }
+    
+    var titleString : String {
+        if viewModel.shouldShowUnlockError {
+            return  LocalizableLock.unlockPasswordError.localized
+        } else {
+            return viewModel.unlockType == .new ? LocalizableLock.unlockPasswordTitle.localized : LocalizableLock.unlockUpdatePasswordTitle.localized
+        }
+        
+    }
+}
+
+
 
 struct UnlockPasswordView_Previews: PreviewProvider {
     static var previews: some View {
