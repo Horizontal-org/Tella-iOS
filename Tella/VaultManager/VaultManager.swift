@@ -4,6 +4,7 @@
 
 import UIKit
 import SwiftUI
+import Combine
 
 protocol VaultManagerInterface {
     
@@ -12,8 +13,8 @@ protocol VaultManagerInterface {
     func load(name: String) -> VaultFile?
     func load(file: VaultFile) -> Data?
     func load(files vaultFiles: [VaultFile]) -> [URL]
-    func save(_ data: Data, type: FileType, name: String, parent: VaultFile?, fileExtension: String) -> VaultFile?
-    func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?, fileExtension: String) -> VaultFile?
+    func save(_ data: Data, type: FileType, name: String, parent: VaultFile?, fileExtension: String, size:Int64, resolution:CGSize?, duration : Double?) -> VaultFile?
+    func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?, fileExtension: String, size:Int64, resolution:CGSize?, duration : Double?) -> VaultFile?
     func createNewFolder(name: String, parent: VaultFile?)
     func rename(file : VaultFile, parent: VaultFile?)
     func delete(file: VaultFile, parent: VaultFile?)
@@ -38,12 +39,17 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     
     @Published var root: VaultFile
     @Published var recentFiles: [VaultFile] = []
-    
-    init(cryptoManager: CryptoManagerInterface, fileManager: FileManagerInterface, rootFileName: String, containerPath: String) {
+    var progress :  ImportProgress
+    var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
+
+    private var cancellable: Set<AnyCancellable> = []
+
+    init(cryptoManager: CryptoManagerInterface, fileManager: FileManagerInterface, rootFileName: String, containerPath: String, progress :  ImportProgress) {
         self.cryptoManager = cryptoManager
         self.fileManager = fileManager
         self.rootFileName = rootFileName
         self.containerPath = containerPath
+        self.progress = progress
         
         root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
         if let root = load(name: rootFileName) {
@@ -60,44 +66,92 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
     
     func importFile(image: UIImage, to parentFolder: VaultFile?, type: FileType, pathExtension: String) {
+        
+        self.progress.start(currentFile: 0, totalFiles: 1, totalSize: Double(image.data?.count ?? 0))
+        
         debugLog("\(image)", space: .files)
         guard let data = image.fixedOrientation() else {
             return
         }
         
+        let width = image.size.width * image.scale
+        let height = image.size.height * image.scale
+        let resolution = CGSize(width: width, height: height)
+        let size = Int64(data.data?.count ?? 0)
+        
         let fileName = "\(type)_new"
-        if let newFile = save(data, type: type, name: fileName, parent: parentFolder, fileExtension: pathExtension) {
+        if let newFile = save(data, type: type, name: fileName, parent: parentFolder, fileExtension: pathExtension, size: size, resolution: resolution, duration: nil) {
             if type == .image {
                 newFile.thumbnail = image.getThumbnail()?.pngData()
             }
             addRecentFile(file: newFile)
             save(file: root)
+            self.progress.finish()
         }
     }
-    
+
     func importFile(files: [URL], to parentFolder: VaultFile?, type: FileType) {
-        for filePath in files {
-            debugLog("\(filePath)", space: .files)
-            do {
+        
+        self.startImportFileProgress(files: files)
+        
+        let queue = DispatchQueue.global(qos: .background)
+        
+        var backgroundWorkItem : DispatchWorkItem?
+        backgroundWorkItem = DispatchWorkItem {
+            
+            for (index, filePath) in files.enumerated() {
                 
-                let _ = filePath.startAccessingSecurityScopedResource()
-                defer { filePath.stopAccessingSecurityScopedResource() }
-                
-                let data = try Data(contentsOf: filePath)
-                let fileName = filePath.lastPathComponent
-                let fileExtension = filePath.pathExtension
-                
-                if let newFile = save(data, type: type, name: fileName, parent: parentFolder, fileExtension: fileExtension) {
-                    newFile.thumbnail = filePath.thumbnail?.pngData()
-                    addRecentFile(file: newFile)
+                if (backgroundWorkItem?.isCancelled)! {
+                    break
                 }
-                
+                self.progress.currentFile = index
+                self.importFileAndEncrypt(filePath : filePath, parentFolder: parentFolder, type: type)
             }
-            catch  let error {
-                debugLog(error)
+            
+            self.save(file: self.root)
+            self.progress.finish()
+            
+        }
+        queue.async(execute: backgroundWorkItem!)
+        
+        self.shouldCancelImportAndEncryption.sink(receiveValue: { value in
+            if value {
+                backgroundWorkItem?.cancel()
+                self.progress.stop()
+                self.shouldCancelImportAndEncryption.value = false
+            }
+            
+        }).store(in: &self.cancellable)
+
+
+    }
+    
+    private func importFileAndEncrypt(filePath: URL, parentFolder :VaultFile?, type: FileType) {
+        debugLog("\(filePath)", space: .files)
+
+        do {
+            
+            let _ = filePath.startAccessingSecurityScopedResource()
+            defer { filePath.stopAccessingSecurityScopedResource() }
+            
+            let data = try Data(contentsOf: filePath)
+            let fileName = filePath.lastPathComponent
+            let fileExtension = filePath.pathExtension
+            let path = filePath.path
+            
+            let resolution = filePath.resolutionForVideo()
+            let duration =  filePath.getDuration()
+            let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
+
+
+            if let newFile = self.save(data, type: type, name: fileName, parent: parentFolder, fileExtension: fileExtension, size: size, resolution: resolution, duration: duration) {
+                newFile.thumbnail = filePath.thumbnail?.pngData()
+                self.addRecentFile(file: newFile)
             }
         }
-        save(file: root)
+        catch  let error {
+            debugLog(error)
+        }
     }
     
     func createNewFolder(name: String, parent: VaultFile?)  {
@@ -168,7 +222,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
         return tmpUrlArray
     }
-
+    
     func save(file vaultFile: VaultFile) {
         debugLog("\(vaultFile)", space: .files)
         
@@ -186,7 +240,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         debugLog("saved: \(fileURL) \(vaultFile.containerName)")
     }
     
-    func save(_ data: Data, type: FileType, name: String, parent: VaultFile?, fileExtension: String) -> VaultFile? {
+    func save(_ data: Data, type: FileType, name: String, parent: VaultFile?, fileExtension: String, size:Int64, resolution:CGSize?, duration : Double?) -> VaultFile? {
         debugLog("\(data.count); \(type); \(name); \nparent:\(String(describing: parent))", space: .files)
         
         let containerName = UUID().uuidString
@@ -197,16 +251,16 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                   return nil
               }
         
-        let vaultFile = VaultFile(type: type, fileName: name, containerName: containerName, files: nil, fileExtension: fileExtension)
+        let vaultFile = VaultFile(type: type, fileName: name, containerName: containerName, files: nil, fileExtension: fileExtension,size:size, resolution: resolution, duration: duration)
         parent?.add(file: vaultFile)
         return vaultFile
     }
     
-    func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?, fileExtension: String) -> VaultFile? {
+    func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?, fileExtension: String, size:Int64, resolution:CGSize?, duration : Double?) -> VaultFile? {
         guard let data = object.data else {
             return nil
         }
-        return save(data, type: type, name: name, parent: parent, fileExtension: fileExtension)
+        return save(data, type: type, name: name, parent: parent, fileExtension: fileExtension, size: size, resolution: resolution, duration: duration)
     }
     
     func removeAllFiles() {
@@ -267,4 +321,19 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         recentFiles = recentFiles.filter({ $0.containerName != file.containerName })
     }
     
+    private func startImportFileProgress(files: [URL]) {
+        var totalSizeArray : [Double] = []
+        
+        files.forEach { filePath in
+            let _ = filePath.startAccessingSecurityScopedResource()
+            defer { filePath.stopAccessingSecurityScopedResource() }
+            
+            let size = FileManager.default.sizeOfFile(atPath:filePath.path)
+            totalSizeArray.append(Double(size ?? Int64(0.0)))
+        }
+        
+        let totalSize = totalSizeArray.reduce(0.0, +)
+        
+        self.progress.start(totalFiles: files.count, totalSize: totalSize)
+    }
 }

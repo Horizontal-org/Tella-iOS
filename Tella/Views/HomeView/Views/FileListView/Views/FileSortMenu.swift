@@ -1,8 +1,4 @@
 //
-//  FileSortSheet.swift
-//  Tella
-//
-//  Created by Amine Info on 21/11/2021.
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 

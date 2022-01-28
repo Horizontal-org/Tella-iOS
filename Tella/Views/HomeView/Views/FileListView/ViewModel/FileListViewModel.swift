@@ -24,6 +24,8 @@ class FileListViewModel: ObservableObject {
 
     @Published var showFileInfoActive = false
     
+    @Published var showingProgressView = false
+
     @Published var viewType: FileViewType = FileViewType.list
     
     @Published var folderArray: [VaultFile] = []
@@ -39,6 +41,11 @@ class FileListViewModel: ObservableObject {
         } else {
             return vaultFileStatusArray.filter{$0.isSelected}.compactMap{$0.file}
         }
+    }
+    
+    var filePath : String {
+        let rootPath = "Tella" + (folderArray.count > 0 ? "/" : "")
+        return  rootPath + self.folderArray.compactMap{$0.fileName}.joined(separator: "/")
     }
     
     func resetSelectedItems() {

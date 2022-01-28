@@ -87,6 +87,7 @@ struct FileActionMenu: View {
             ListActionSheetItem(imageName: "info-icon",
                                 content: "File information",
                                 action: {
+                                    showingActionSheet = false
                                     showFileInfoActive = true
                                 }),
             

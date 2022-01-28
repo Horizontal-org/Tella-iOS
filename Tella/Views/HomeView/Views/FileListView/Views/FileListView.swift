@@ -60,7 +60,10 @@ struct FileListView: View {
                     itemsListView
                 }
             }
-            AddFileButtonView(appModel: appModel, rootFile: rootFile, selectingFiles: $viewModel.selectingFiles)
+            AddFileButtonView(appModel: appModel,
+                              rootFile: rootFile,
+                              selectingFiles: $viewModel.selectingFiles,
+                              showingProgressView: $viewModel.showingProgressView)
             
             FileSortMenu(showingSortFilesActionSheet: $viewModel.showingSortFilesActionSheet,
                          sortBy: $viewModel.sortBy)
@@ -72,6 +75,10 @@ struct FileListView: View {
                            showFileInfoActive: $viewModel.showFileInfoActive,
                            appModel: appModel)
             showFileDetailsLink
+            showFileInfoLink
+
+            ImportFilesProgressView(showingProgressView: $viewModel.showingProgressView,
+                                    appModel: appModel)
             
         }
         // .navigationBarTitle("\(rootFile.fileName)")
@@ -241,6 +248,8 @@ struct FileListView: View {
                             FileListItem(file: file,
                                          parentFile: rootFile,
                                          appModel: appModel,
+                                         viewModel: self.viewModel,
+                                         showFileInfoActive: $viewModel.showFileInfoActive,
                                          selectingFile: $viewModel.selectingFiles,
                                          isSelected: getStatus(for: file),
                                          showingActionSheet: $viewModel.showingFileActionMenu,
@@ -256,6 +265,8 @@ struct FileListView: View {
                                 FileListItem(file: file,
                                              parentFile: rootFile,
                                              appModel: appModel,
+                                             viewModel: self.viewModel,
+                                             showFileInfoActive: $viewModel.showFileInfoActive,
                                              selectingFile: $viewModel.selectingFiles,
                                              isSelected: getStatus(for: file),
                                              showingActionSheet: $viewModel.showingFileActionMenu,
@@ -344,8 +355,21 @@ struct FileListView: View {
             NavigationLink(destination:
                             FileDetailView(appModel: appModel,
                                            file: currentSelectedVaultFile,
+                                           videoFilesArray: rootFile.getVideos().sorted(by: viewModel.sortBy),
                                            fileType: fileType),
                            isActive: $viewModel.showFileDetails) {
+                EmptyView()
+            }.frame(width: 0, height: 0)
+                .hidden()
+        }
+    }
+    
+    @ViewBuilder
+    private var showFileInfoLink : some View{
+        if let currentSelectedVaultFile = viewModel.currentSelectedVaultFile {
+            NavigationLink(destination:
+                            FileInfoView(viewModel: self.viewModel, file: currentSelectedVaultFile),
+                           isActive: $viewModel.showFileInfoActive) {
                 EmptyView()
             }.frame(width: 0, height: 0)
                 .hidden()
