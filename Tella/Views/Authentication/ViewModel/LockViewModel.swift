@@ -8,19 +8,40 @@
 
 import Foundation
 import SwiftUI
-
+import Combine
 class LockViewModel: ObservableObject {
     
+    @Published var loginPassword : String = ""
     @Published var password : String = ""
     @Published var confirmPassword : String = ""
+    @Published var oldPassword : String = ""
+    @Published var shouldShowUnlockError : Bool = false
+    
+    var privateKey : SecKey?
+    var unlockType : UnlockType = .new
+    var shouldDismiss = CurrentValueSubject<Bool, Never>(false)
     
     var shouldShowErrorMessage : Bool {
         return password != confirmPassword
     }
-    @Published var shouldShowUnlockError : Bool = false
+    
+    init() {
+    }
+    
+    init(unlockType: UnlockType) {
+        self.unlockType = unlockType
+    }
     
     func login() {
-        let privateKey = CryptoManager.shared.recoverKey(.PRIVATE, password: password)
+        self.privateKey = CryptoManager.shared.recoverKey(.PRIVATE, password: loginPassword)
         shouldShowUnlockError = privateKey == nil
+    }
+    
+    func initData() {
+        loginPassword = ""
+        password = ""
+        confirmPassword = ""
+        shouldShowUnlockError = false
+        self.shouldDismiss.send(false)
     }
 }

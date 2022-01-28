@@ -10,36 +10,69 @@ import SwiftUI
 import CoreMIDI
 
 struct LockChoiceView: View {
+
+    @Binding var isPresented : Bool
+    @EnvironmentObject var lockViewModel : LockViewModel
     var body: some View {
         
         NavigationContainerView {
-            
-            VStack(alignment: .center, spacing: 24) {
-                Spacer()
-                Image("lock.phone")
-                    .frame(width: 60, height: 100)
-                    .aspectRatio(contentMode: .fit)
-                
-                Text(LocalizableLock.title.localized)
-                    .font(.custom(Styles.Fonts.boldFontName, size: 18))
-                    .foregroundColor(.white)
-                
-                VStack(spacing: 15) {
-                    
-                    LockButtonView(lockButtonProtocol: PasswordLockButton(),
-                                   destination: LockPasswordView())
-                    
-                    LockButtonView(lockButtonProtocol: PINLockButton(),
-                                   destination: LockPinView())
+            VStack {
+                if lockViewModel.unlockType == .update {
+                    LockChoiceHeaderView(isPresented: $isPresented)
                 }
-                Spacer()
+
+                VStack(alignment: .center, spacing: 24) {
+                    Spacer()
+                    Image("lock.phone")
+                        .frame(width: 60, height: 100)
+                        .aspectRatio(contentMode: .fit)
+                    
+                    Text(LocalizableLock.title.localized)
+                        .font(.custom(Styles.Fonts.boldFontName, size: 18))
+                        .foregroundColor(.white)
+                    
+                    VStack(spacing: 15) {
+                        
+                        LockButtonView(lockButtonProtocol: PasswordLockButton(),
+                                       destination: LockPasswordView())
+                        
+                        LockButtonView(lockButtonProtocol: PINLockButton(),
+                                       destination: LockPinView())
+                    }
+                    Spacer()
+                }
+                .padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
             }
-            .padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
+            
+            
         }
         .navigationBarTitle("")
         .navigationBarHidden(true)
     }
 }
+
+struct LockChoiceHeaderView : View {
+    
+    @Binding var isPresented : Bool
+    
+    var body: some View {
+        
+        HStack {
+            Button {
+                isPresented = false
+            } label: {
+                Image("close")
+            }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 12))
+            
+            Text(LocalizableLock.lockChoiceHeaderTitle.localized)
+                .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
+                .foregroundColor(Color.white)
+            Spacer()
+        }.padding(.top, 15)
+        
+    }
+}
+
 
 struct LockButtonView<Destination:View> : View {
     
@@ -86,6 +119,6 @@ struct LockButtonStyle : ButtonStyle {
 
 struct LockChoiceView_Previews: PreviewProvider {
     static var previews: some View {
-        LockChoiceView()
+        LockChoiceView(isPresented: .constant(true))
     }
 }

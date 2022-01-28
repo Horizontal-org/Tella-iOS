@@ -18,7 +18,7 @@ struct FileGroupView: View {
         ZStack(alignment: .trailing){
             VStack(alignment: .trailing, spacing: 0){
                 Text(groupName)
-                    .font(Font(UIFont.systemFont(ofSize: 14)))
+                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(.white)
                     .background(Color.clear)
                     .frame(maxWidth: .infinity, maxHeight: 80, alignment: .bottomLeading)

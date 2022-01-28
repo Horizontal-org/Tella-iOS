@@ -12,6 +12,8 @@
 "LockChoicePasswordButtonDescription" = "The most secure option";
 "LockChoicePINButtonTitle" = "PIN";
 "LockChoicePINButtonDescription" = "Moderately secure";
+"LockChoiceHeaderTitle" = "Lock";
+
 
 // Lock Password view
 "LockPasswordTitle" = "Enter your password";
@@ -31,7 +33,10 @@
 // Unlock Password view
 "UnlockPasswordError" = "Incorrect password, please try again";
 "UnlockPasswordTitle" = "Enter your password to unlock";
+"UnlockUpdatePasswordTitle" = "Enter your password to change your lock method";
+
 
 // Unlock Pin view
 "UnlockPinTitle" = "Enter your PIN to unlock Tella";
 "UnlockPinError" = "Incorrect PIN, please try again";
+"UnlockUpdatePinTitle" = "Enter your PIN to change your lock method";

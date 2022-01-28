@@ -11,7 +11,7 @@ enum DateFormat : String {
 
 extension Date{
     
-    func getFormattedDateString(format: String = DateFormat.short.rawValue , locale: Locale = Language.english.locale) -> String? {
+    func getFormattedDateString(format: String = DateFormat.short.rawValue , locale: Locale = Language.english.localeLanguage) -> String? {
         let formatter = DateFormatter()
         formatter.dateFormat = format
         formatter.locale = locale

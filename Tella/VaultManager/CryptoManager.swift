@@ -255,12 +255,12 @@ class CryptoManager {
         self.passwordType = type
     }
     
-    func updateKeys(_ privateKey: SecKey, _ type: PasswordTypeEnum, password:String) throws {
+    func updateKeys(_ privateKey: SecKey, _ type: PasswordTypeEnum, newPassword:String, oldPassword:String) throws {
         guard let keyID = keyID else {
             throw RuntimeError("Could not find key ID")
         }
-        try keyHelper(privateKey, type, password: password)
-        deleteMetaKeypair(keyID, password:password)
+        try keyHelper(privateKey, type, password: newPassword)
+        deleteMetaKeypair(keyID, password:oldPassword)
     }
     
     func keyHelper(_ privateKey: SecKey, _ type: PasswordTypeEnum, password:String) throws {

@@ -30,6 +30,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     @Published var vaultManager: VaultManager = VaultManager(cryptoManager: CryptoManager.shared, fileManager: DefaultFileManager(), rootFileName: "root", containerPath: "Containers", progress: ImportProgress())
     
     @Published var selectedTab: Tabs = .home
+     var shouldUpdateLanguage = CurrentValueSubject<Bool, Never>(false)
 
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
 

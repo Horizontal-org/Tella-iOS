@@ -31,8 +31,10 @@ struct SettingsView : View {
         }.onAppear() {
             UITableView.appearance().backgroundColor = UIColor.clear
             UITableView.appearance().separatorStyle = .singleLine
-            UITableView.appearance().separatorColor = .white
+            UITableView.appearance().separatorColor = .green
             UISwitch.appearance().onTintColor = .green
+            UITableView.appearance().separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+
         }
         .onDisappear(perform: {
             appModel.saveSettings()

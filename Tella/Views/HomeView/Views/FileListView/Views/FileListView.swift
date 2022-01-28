@@ -307,9 +307,10 @@ struct FileListView: View {
         } label: {
             HStack{
                 Text(viewModel.sortBy.displayName)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 14) )
                     .foregroundColor(.white)
                 viewModel.sortBy.image
-                    .frame(width: 14, height: 14)
+                    .frame(width: 20, height: 20)
             }
         }
         .frame(height: 44)

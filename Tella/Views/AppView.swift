@@ -66,8 +66,7 @@ struct AppView: View {
                         Text("Mic")
                     }.tag(MainAppModel.Tabs.mic)
             }
-            
-            
+
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     leadingView
@@ -77,26 +76,24 @@ struct AppView: View {
                 }
             }
             
-            
-//            .navigationBarItems(
-//                leading:
-//                    leadingView
-//                , trailing:
-//                    trailingView
-//            )
         }.navigationViewStyle(.stack)
         
             .accentColor(.white)
+            .onAppear {
+                print(LocalizableHome.allFilesItem.localized)
+            }
     }
-    
-    
-    
+
     private func setupApperance() {
         
-        UITableView.appearance().separatorStyle = .none
-        UITabBar.appearance().barTintColor =  Styles.uiColor.backgroundTab
-        UITabBar.appearance().unselectedItemTintColor = UIColor.gray
-        UINavigationBar.appearance().backgroundColor = Styles.uiColor.backgroundMain
+        UITabBar.appearance().unselectedItemTintColor = UIColor.init(hexValue: 0x918FAC)
+        UITabBar.appearance().shadowImage = UIImage()
+        UITabBar.appearance().backgroundImage = UIImage()
+        UITabBar.appearance().isTranslucent = true
+        UITabBar.appearance().backgroundColor = UIColor.init(hexValue: 0x3D3771)
+        UITabBarItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white,
+                                                          
+                                                          NSAttributedString.Key.font: UIFont.init(name: Styles.Fonts.regularFontName, size: 12)!],for: .normal)
         
         let coloredAppearance = UINavigationBarAppearance()
         coloredAppearance.configureWithTransparentBackground()
@@ -110,11 +107,7 @@ struct AppView: View {
         UINavigationBar.appearance().standardAppearance = coloredAppearance
         UINavigationBar.appearance().compactAppearance = coloredAppearance
         UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
-        
-        UIBarButtonItem.appearance().setTitleTextAttributes([
-            .foregroundColor: UIColor.white,
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18)], for: .normal)
-        
+        UINavigationBar.appearance().backgroundColor = Styles.uiColor.backgroundMain
     }
     
     @ViewBuilder
@@ -124,7 +117,7 @@ struct AppView: View {
             Image("home.settings")
                 .frame(width: 19, height: 20)
                 .aspectRatio(contentMode: .fit)
-                .navigateTo(destination: SettingsView(appModel: appModel))
+                .navigateTo(destination: SettingsMainView(appModel: appModel))
         }
     }
     
