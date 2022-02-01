@@ -32,5 +32,5 @@ var homeFileItems : [HomeFileItem] { return [ HomeFileItem(title: LocalizableHom
                                                     fileType: .document),
                                        HomeFileItem(title: LocalizableHome.othersItem.localized,
                                                     imageName: "files.others",
-                                                    fileType: .unknown),
+                                                    fileType: .other),
 ]}

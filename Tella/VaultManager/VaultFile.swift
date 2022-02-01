@@ -11,7 +11,7 @@ enum FileType: String, Codable {
     case audio
     case document
     case image
-    case unknown
+    case other
     case folder
 }
 
@@ -71,7 +71,7 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
             return #imageLiteral(resourceName: "filetype.small_video")
         case .image:
             return UIImage()
-        case .unknown:
+        case .other:
             return #imageLiteral(resourceName: "filetype.small_document")
         }
     }
@@ -88,7 +88,7 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
             return UIImage()
         case .folder:
             return #imageLiteral(resourceName: "filetype.small_folder")
-        case .unknown:
+        case .other:
             return #imageLiteral(resourceName: "filetype.big_document")
         }
     }

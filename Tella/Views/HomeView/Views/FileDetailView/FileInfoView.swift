@@ -20,7 +20,7 @@ struct FileInfoView: View {
                 
                 if file.type != .folder {
                     FileInfoItem(title: LocalizableHome.size.localized, content: file.size.getFormattedFileSize())
-                    FileInfoItem(title: LocalizableHome.format.localized, content: file.type.rawValue)
+                    FileInfoItem(title: LocalizableHome.format.localized, content: file.fileExtension)
                 }
                 
                 FileInfoItem(title: LocalizableHome.created.localized, content: "\(file.longFormattedCreationDate)")

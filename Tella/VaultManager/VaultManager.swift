@@ -13,8 +13,8 @@ protocol VaultManagerInterface {
     func load(name: String) -> VaultFile?
     func load(file: VaultFile) -> Data?
     func load(files vaultFiles: [VaultFile]) -> [URL]
-    func save(_ data: Data, type: FileType, name: String, parent: VaultFile?, fileExtension: String, size:Int64, resolution:CGSize?, duration : Double?) -> VaultFile?
-    func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?, fileExtension: String, size:Int64, resolution:CGSize?, duration : Double?) -> VaultFile?
+    func save(_ data: Data, vaultFile: VaultFile, parent: VaultFile?) -> Bool?
+    func save<T: Datable>(_ object: T, vaultFile: VaultFile, parent: VaultFile? ) -> Bool?
     func createNewFolder(name: String, parent: VaultFile?)
     func rename(file : VaultFile, parent: VaultFile?)
     func delete(file: VaultFile, parent: VaultFile?)
@@ -41,9 +41,9 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     @Published var recentFiles: [VaultFile] = []
     var progress :  ImportProgress
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
-
+    
     private var cancellable: Set<AnyCancellable> = []
-
+    
     init(cryptoManager: CryptoManagerInterface, fileManager: FileManagerInterface, rootFileName: String, containerPath: String, progress :  ImportProgress) {
         self.cryptoManager = cryptoManager
         self.fileManager = fileManager
@@ -78,40 +78,49 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         let height = image.size.height * image.scale
         let resolution = CGSize(width: width, height: height)
         let size = Int64(data.data?.count ?? 0)
-        
+        let thumbnail = image.getThumbnail()?.pngData()
         let fileName = "\(type)_new"
-        if let newFile = save(data, type: type, name: fileName, parent: parentFolder, fileExtension: pathExtension, size: size, resolution: resolution, duration: nil) {
-            if type == .image {
-                newFile.thumbnail = image.getThumbnail()?.pngData()
-            }
-            addRecentFile(file: newFile)
+        let containerName = UUID().uuidString
+
+        let vaultFile = VaultFile(type: .image,
+                                  fileName: fileName,
+                                  containerName: containerName,
+                                  files: nil,
+                                  thumbnail: thumbnail,
+                                  fileExtension: "png",
+                                  size:size,
+                                  resolution: resolution,
+                                  duration: nil)
+
+        if let _ = save(data, vaultFile: vaultFile, parent: parentFolder) {
+            addRecentFile(file: vaultFile)
             save(file: root)
             self.progress.finish()
         }
     }
-
+    
     func importFile(files: [URL], to parentFolder: VaultFile?, type: FileType) {
         
-        self.startImportFileProgress(files: files)
+        let filesInfo = self.getFilesInfo(files: files)
         
+        self.progress.start(totalFiles: files.count, totalSize: filesInfo.1)
+
         let queue = DispatchQueue.global(qos: .background)
         
         var backgroundWorkItem : DispatchWorkItem?
         backgroundWorkItem = DispatchWorkItem {
-            
-            for (index, filePath) in files.enumerated() {
-                
+            for (index, item) in filesInfo.0.enumerated() {
                 if (backgroundWorkItem?.isCancelled)! {
                     break
                 }
                 self.progress.currentFile = index
-                self.importFileAndEncrypt(filePath : filePath, parentFolder: parentFolder, type: type)
+                self.importFileAndEncrypt(data: item.0, vaultFile: item.1, parentFolder: parentFolder, type: type)
             }
             
             self.save(file: self.root)
             self.progress.finish()
-            
         }
+        
         queue.async(execute: backgroundWorkItem!)
         
         self.shouldCancelImportAndEncryption.sink(receiveValue: { value in
@@ -122,35 +131,12 @@ class VaultManager: VaultManagerInterface, ObservableObject {
             }
             
         }).store(in: &self.cancellable)
-
-
     }
     
-    private func importFileAndEncrypt(filePath: URL, parentFolder :VaultFile?, type: FileType) {
-        debugLog("\(filePath)", space: .files)
-
-        do {
-            
-            let _ = filePath.startAccessingSecurityScopedResource()
-            defer { filePath.stopAccessingSecurityScopedResource() }
-            
-            let data = try Data(contentsOf: filePath)
-            let fileName = filePath.lastPathComponent
-            let fileExtension = filePath.pathExtension
-            let path = filePath.path
-            
-            let resolution = filePath.resolutionForVideo()
-            let duration =  filePath.getDuration()
-            let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
-
-
-            if let newFile = self.save(data, type: type, name: fileName, parent: parentFolder, fileExtension: fileExtension, size: size, resolution: resolution, duration: duration) {
-                newFile.thumbnail = filePath.thumbnail?.pngData()
-                self.addRecentFile(file: newFile)
-            }
-        }
-        catch  let error {
-            debugLog(error)
+    private func importFileAndEncrypt(data : Data, vaultFile:VaultFile, parentFolder :VaultFile?, type: FileType) {
+        
+        if let _ = self.save(data, vaultFile: vaultFile, parent: parentFolder) {
+            self.addRecentFile(file: vaultFile)
         }
     }
     
@@ -239,29 +225,27 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
         debugLog("saved: \(fileURL) \(vaultFile.containerName)")
     }
-    
-    func save(_ data: Data, type: FileType, name: String, parent: VaultFile?, fileExtension: String, size:Int64, resolution:CGSize?, duration : Double?) -> VaultFile? {
-        debugLog("\(data.count); \(type); \(name); \nparent:\(String(describing: parent))", space: .files)
+
+    func save(_ data: Data, vaultFile: VaultFile, parent: VaultFile?) -> Bool? {
+        debugLog("\(data.count); \(vaultFile.type); \(vaultFile.fileName); \nparent:\(String(describing: parent))", space: .files)
         
-        let containerName = UUID().uuidString
-        let fileURL = containerURL(for: containerName)
+        let fileURL = containerURL(for: vaultFile.containerName)
         guard let encrypted = cryptoManager.encrypt(data),
               fileManager.createFile(atPath: fileURL, contents: encrypted) else {
-                  debugLog("encryption failed \(String(describing: name))", level: .debug, space: .crypto)
+                  debugLog("encryption failed \(String(describing: vaultFile.fileName))", level: .debug, space: .crypto)
                   return nil
               }
-        
-        let vaultFile = VaultFile(type: type, fileName: name, containerName: containerName, files: nil, fileExtension: fileExtension,size:size, resolution: resolution, duration: duration)
         parent?.add(file: vaultFile)
-        return vaultFile
+        return true
     }
-    
-    func save<T: Datable>(_ object: T, type: FileType, name: String, parent: VaultFile?, fileExtension: String, size:Int64, resolution:CGSize?, duration : Double?) -> VaultFile? {
+
+    func save<T: Datable>(_ object: T, vaultFile: VaultFile, parent: VaultFile? ) -> Bool? {
         guard let data = object.data else {
             return nil
         }
-        return save(data, type: type, name: name, parent: parent, fileExtension: fileExtension, size: size, resolution: resolution, duration: duration)
+        return save(data, vaultFile: vaultFile, parent: parent)
     }
+
     
     func removeAllFiles() {
         debugLog("", space: .files)
@@ -321,19 +305,47 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         recentFiles = recentFiles.filter({ $0.containerName != file.containerName })
     }
     
-    private func startImportFileProgress(files: [URL]) {
+    private func getFilesInfo(files: [URL]) ->([(Data,VaultFile)], Double) {
         var totalSizeArray : [Double] = []
+        var vaultFileArray : [(Data,VaultFile)] = []
         
         files.forEach { filePath in
-            let _ = filePath.startAccessingSecurityScopedResource()
-            defer { filePath.stopAccessingSecurityScopedResource() }
-            
-            let size = FileManager.default.sizeOfFile(atPath:filePath.path)
-            totalSizeArray.append(Double(size ?? Int64(0.0)))
+            do {
+                debugLog("\(filePath)", space: .files)
+
+                let _ = filePath.startAccessingSecurityScopedResource()
+                defer { filePath.stopAccessingSecurityScopedResource() }
+                
+                let data = try Data(contentsOf: filePath)
+                let fileName = filePath.lastPathComponent
+                let fileExtension = filePath.pathExtension
+                let path = filePath.path
+                
+                let resolution = filePath.resolution()
+                let duration =  filePath.getDuration()
+                let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
+                let containerName = UUID().uuidString
+
+                let vaultFile = VaultFile(type: filePath.fileType,
+                                          fileName: fileName,
+                                          containerName: containerName,
+                                          files: nil,
+                                          thumbnail: filePath.thumbnail,
+                                          fileExtension: fileExtension,
+                                          size:size,
+                                          resolution: resolution,
+                                          duration: duration)
+                
+                vaultFileArray.append((data,vaultFile))
+                totalSizeArray.append(Double(size))
+            }
+            catch  let error {
+                debugLog(error)
+            }
         }
         
         let totalSize = totalSizeArray.reduce(0.0, +)
         
-        self.progress.start(totalFiles: files.count, totalSize: totalSize)
+        return(vaultFileArray, totalSize)
     }
 }
