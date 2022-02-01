@@ -10,6 +10,7 @@ struct VideoViewer: View {
     @ObservedObject var appModel: MainAppModel
     @StateObject private var playerVM = PlayerViewModel()
     
+    var currentFile : VaultFile
     var playlist: [VaultFile?]
     
     var body: some View {
@@ -22,6 +23,9 @@ struct VideoViewer: View {
         }
         .onAppear {
             playerVM.appModel = appModel
+            if let index = playlist.firstIndex(of: currentFile) {
+                playerVM.currentItemIndex = index
+            }
             playerVM.playList = playlist
         }
         .onDisappear {

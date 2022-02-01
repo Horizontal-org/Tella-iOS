@@ -5,7 +5,7 @@
 import Foundation
 
 enum DateFormat : String {
-    case short = "DD MMM YYYY"
+    case short = "dd MMM yyyy"
     case fileInfo = "dd-MM-yyyy HH:mm:ss Z"
 }
 

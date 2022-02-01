@@ -24,7 +24,7 @@ struct FileDetailView: View {
                 }
             case .video:
                 if let videoFilesArray = videoFilesArray   {
-                    VideoViewer(appModel: appModel, playlist: videoFilesArray)
+                    VideoViewer(appModel: appModel, currentFile: file, playlist: videoFilesArray)
                 }
             case .image:
                 ImageViewer(imageData: appModel.vaultManager.load(file: file))

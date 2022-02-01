@@ -24,9 +24,8 @@ final class PlayerViewModel: ObservableObject {
     
     var playList : [VaultFile?] = [] {
         didSet {
-            guard let firstItem = playList.first, let item = firstItem  else {return}
+            guard let item = playList[currentItemIndex]  else {return}
             self.setCurrentItem(item)
-            self.currentItemIndex = 0
         }
     }
     
