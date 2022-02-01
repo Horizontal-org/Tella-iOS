@@ -14,7 +14,8 @@ struct ConfirmBottomSheet : View {
     
     @Binding var isPresented: Bool
     var didConfirmAction : () -> ()
-    
+    var didCancelAction : (() -> ())? = nil
+
     var body: some View {
         
         DragView(modalHeight: modalHeight, color: Styles.Colors.backgroundTab,
@@ -32,10 +33,15 @@ struct ConfirmBottomSheet : View {
                 Spacer()
                 HStack(alignment: .lastTextBaseline ){
                     Spacer()
-                    Button(action: {self.isPresented = false}){
+                    Button(action: {self.isPresented = false
+                        didCancelAction?()
+                    }){
                         Text(self.cancelText)
                     }.buttonStyle(ButtonSheetStyle())
                     
+                    Spacer()
+                        .frame(width: 20)
+
                     Button(action: {self.didConfirmAction()}){
                         Text(self.actionText)
                             .foregroundColor(destructive ? Color.red : Color.white)

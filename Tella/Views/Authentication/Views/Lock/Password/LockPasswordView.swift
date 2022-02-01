@@ -10,14 +10,18 @@ import SwiftUI
 
 struct LockPasswordView: View {
     
-    @StateObject var viewModel = LockViewModel()
+    @EnvironmentObject var lockViewModel: LockViewModel
 
     var body: some View {
         PasswordView(lockViewData: LockPasswordData(),
                      nextButtonAction: .destination,
-                     fieldContent: $viewModel.password,
+                     fieldContent: $lockViewModel.password,
                      shouldShowErrorMessage: .constant(false),
-                     destination: ConfirmLockPasswordView(viewModel: viewModel))
+                     destination: ConfirmLockPasswordView())
+            .onAppear {
+                lockViewModel.initLockData()
+            }
+
     }
 }
 

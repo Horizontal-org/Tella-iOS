@@ -32,6 +32,7 @@ struct DocumentPickerView: UIViewControllerRepresentable {
             
         case .forImport:
             picker = UIDocumentPickerViewController()
+            picker.allowsMultipleSelection = true
         }
         picker.delegate = context.coordinator
         

@@ -19,13 +19,13 @@ struct AddPhotoVideoBottomSheet: View {
     
     var items : [ListActionSheetItem] { return [
         
-        ListActionSheetItem(imageName: "upload-icon",
+        ListActionSheetItem(imageName: "photo-library",
                             content: "Photo Library",
                             action: {
                                 showingImagePicker = true
                             }),
         
-        ListActionSheetItem(imageName: "upload-icon",
+        ListActionSheetItem(imageName: "document",
                             content: "Document",
                             action: {
                                 showingDocumentPicker = true

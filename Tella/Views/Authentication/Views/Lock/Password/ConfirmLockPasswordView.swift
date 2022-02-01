@@ -11,34 +11,52 @@ import SwiftUI
 struct ConfirmLockPasswordView: View {
     
     @EnvironmentObject private var appViewState: AppViewState
-    @ObservedObject var viewModel : LockViewModel
     @State var shouldShowErrorMessage : Bool = false
+    @EnvironmentObject var lockViewModel: LockViewModel
+    
     
     var body: some View {
         
         PasswordView(lockViewData: LockConfirmPasswordData(),
                      nextButtonAction: .action,
-                     fieldContent: $viewModel.confirmPassword,
+                     fieldContent: $lockViewModel.confirmPassword,
                      shouldShowErrorMessage: $shouldShowErrorMessage,
                      destination: EmptyView()) {
             
-            if viewModel.shouldShowErrorMessage {
+            if lockViewModel.shouldShowErrorMessage {
                 shouldShowErrorMessage = true
             } else {
-                do {
-                    try CryptoManager.shared.initKeys(.TELLA_PASSWORD, password: viewModel.password)
-                   _ = CryptoManager.shared.recoverKey(.PRIVATE, password: viewModel.password)
-                    self.appViewState.resetToMain()
-                } catch {
-
-                }
+                lockViewModel.unlockType == .new ? lockWithPassword() :  updatePassword()
             }
         }
     }
+
+    func lockWithPassword() {
+        do {
+            try CryptoManager.shared.initKeys(.TELLA_PASSWORD, password: lockViewModel.password)
+            _ = CryptoManager.shared.recoverKey(.PRIVATE, password: lockViewModel.password)
+            self.appViewState.resetToMain()
+        } catch {
+            
+        }
+    }
+    
+    func updatePassword() {
+        do {
+            print(lockViewModel.password)
+            guard let privateKey = lockViewModel.privateKey else { return }
+            try CryptoManager.shared.updateKeys(privateKey, .TELLA_PASSWORD, newPassword: lockViewModel.password, oldPassword: lockViewModel.loginPassword)
+            lockViewModel.shouldDismiss.send(true)
+            
+        } catch {
+            
+        }
+    }
+    
 }
 
 struct ConfirmLPasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        ConfirmLockPasswordView(viewModel: LockViewModel())
+        ConfirmLockPasswordView()
     }
 }

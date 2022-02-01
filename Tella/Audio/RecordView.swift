@@ -20,6 +20,8 @@ struct RecordView: View {
     }
     
     var body: some View {
+        ContainerView {
+
         HStack {
             VStack {
                 VStack(alignment: .leading) {
@@ -31,6 +33,7 @@ struct RecordView: View {
                 self.getContentView()
                 Spacer()
             }
+        }
         }
     }
     

@@ -3,12 +3,14 @@
 //
 
 import SwiftUI
+import Combine
 
 protocol AppModelFileManagerProtocol {
     
     func add(files: [URL], to parentFolder: VaultFile?, type: FileType)
     func add(image: UIImage, to parentFolder: VaultFile?, type: FileType, pathExtension:String)
     func add(folder: String, to parentFolder: VaultFile?)
+    func cancelImportAndEncryption()
     func delete(file: VaultFile, from parentFolder: VaultFile?)
     func rename(file : VaultFile, parent: VaultFile?)
     func getFilesForShare(files: [VaultFile]) -> [Any]
@@ -25,9 +27,14 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     }
     
     @Published var settings: SettingsModel = SettingsModel()
-    @Published var vaultManager: VaultManager = VaultManager(cryptoManager: CryptoManager.shared, fileManager: DefaultFileManager(), rootFileName: "root", containerPath: "Containers")
+    @Published var vaultManager: VaultManager = VaultManager(cryptoManager: CryptoManager.shared, fileManager: DefaultFileManager(), rootFileName: "root", containerPath: "Containers", progress: ImportProgress())
     
     @Published var selectedTab: Tabs = .home
+     var shouldUpdateLanguage = CurrentValueSubject<Bool, Never>(false)
+
+    var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
+
+    private var cancellable: Set<AnyCancellable> = []
     
     init() {
         loadData()
@@ -58,13 +65,22 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     }
     
     func add(files: [URL], to parentFolder: VaultFile?, type: FileType) {
-        DispatchQueue.global(qos: .background).async {
-            self.vaultManager.importFile(files: files, to: parentFolder, type: type)
+        
+        vaultManager.progress.progress.sink { value in
             self.publishUpdates()
-        }
+        }.store(in: &cancellable)
+
+        self.vaultManager.importFile(files: files, to: parentFolder, type: type)
+        self.publishUpdates()
     }
     
     func add(image: UIImage, to parentFolder: VaultFile?, type: FileType, pathExtension:String) {
+        
+        vaultManager.progress.progress.sink { value in
+            self.publishUpdates()
+        }.store(in: &cancellable)
+        
+        
         DispatchQueue.global(qos: .background).async {
             self.vaultManager.importFile(image: image, to: parentFolder ?? self.vaultManager.root, type: type, pathExtension: pathExtension)
             self.publishUpdates()
@@ -77,6 +93,10 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
             self.publishUpdates()
         }
     }
+    
+    func cancelImportAndEncryption() {
+        self.vaultManager.shouldCancelImportAndEncryption.send(true)
+     }
     
     func delete(file: VaultFile, from parentFolder: VaultFile?) {
         DispatchQueue.global(qos: .background).async {

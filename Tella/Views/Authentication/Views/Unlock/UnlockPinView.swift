@@ -10,22 +10,26 @@ import SwiftUI
 
 struct UnlockPinView: View {
     
-    @StateObject var viewModel = LockViewModel()
+     @State private var presentingLockChoice : Bool = false
+
     @EnvironmentObject private var appViewState: AppViewState
+    @EnvironmentObject private var viewModel: LockViewModel
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
     
     var body: some View {
         ContainerView {
             VStack(alignment: .center) {
                 Spacer(minLength: 56)
                 
-                Image("lock.tella.logo")
+                Image("tella.logo")
                     .frame(width: 65, height: 72)
                     .aspectRatio(contentMode: .fit)
                 
                 Spacer()
                     .frame(height: 50)
                 
-                Text(viewModel.shouldShowUnlockError ? LocalizableLock.unlockPinError.localized : LocalizableLock.unlockPinTitle.localized)
+                Text(titleString)
                     .font(.custom(Styles.Fonts.regularFontName, size: 18))
                     .foregroundColor(.white)
                     .lineSpacing(7)
@@ -35,7 +39,7 @@ struct UnlockPinView: View {
                 Spacer()
                     .frame(height: 53)
                 
-                PasswordTextFieldView(fieldContent: $viewModel.password,
+                PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
                                       isValid: .constant(true),
                                       shouldShowErrorMessage: .constant(false),
                                       shouldShowError: $viewModel.shouldShowUnlockError,
@@ -43,19 +47,51 @@ struct UnlockPinView: View {
                 
                 Spacer(minLength: 20)
                 
-                PinView(fieldContent: $viewModel.password,
+                PinView(fieldContent: $viewModel.loginPassword,
                         keyboardNumbers: UnlockKeyboardNumbers) {
                     viewModel.login()
                     if !viewModel.shouldShowUnlockError {
-                        appViewState.resetToMain()
+                        if viewModel.unlockType == .new   {
+                            appViewState.resetToMain()
+                        } else {
+                            presentingLockChoice = true
+                         }
                     }
-                    
                 }
                 
                 Spacer()
             }
         }
-    }}
+        .fullScreenCover(isPresented: $presentingLockChoice) {
+            self.presentationMode.wrappedValue.dismiss()
+
+        } content: {
+            LockChoiceView( isPresented: $presentingLockChoice)
+        }
+        
+        .onReceive(viewModel.shouldDismiss) { shouldDismiss in
+            if shouldDismiss {
+                self.presentingLockChoice = false
+                self.presentationMode.wrappedValue.dismiss()
+            }
+        }
+        .onAppear {
+            viewModel.initUnlockData()
+        }
+
+
+    }
+    
+    var titleString : String {
+        if viewModel.shouldShowUnlockError {
+          return  LocalizableLock.unlockPinError.localized
+        } else {
+            return viewModel.unlockType == .new ? LocalizableLock.unlockPinTitle.localized : LocalizableLock.unlockUpdatePinTitle.localized
+        }
+
+    }
+
+}
 
 struct UnlockPinView_Previews: PreviewProvider {
     static var previews: some View {

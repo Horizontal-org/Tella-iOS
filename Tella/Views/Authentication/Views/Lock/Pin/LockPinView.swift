@@ -9,15 +9,20 @@
 import SwiftUI
 
 struct LockPinView: View {
-    @StateObject var viewModel = LockViewModel()
-    
+    @EnvironmentObject var lockViewModel: LockViewModel
+
     var body: some View {
         
         CustomPinView(lockViewData: LockPinData(),
                       nextButtonAction: .destination,
-                      fieldContent: $viewModel.password,
+                      fieldContent: $lockViewModel.password,
                       shouldShowErrorMessage: .constant(false),
-                      destination: LockConfirmPinView(viewModel: viewModel))
+                      destination: LockConfirmPinView())
+            .onAppear {
+                lockViewModel.initLockData()
+
+            }
+
     }
 }
 

@@ -15,7 +15,7 @@ struct HomeFileItem : Hashable {
     var fileType: FileType?
 }
 
-var homeFileItems : [HomeFileItem] = [ HomeFileItem(title: LocalizableHome.allFilesItem.localized,
+var homeFileItems : [HomeFileItem] { return [ HomeFileItem(title: LocalizableHome.allFilesItem.localized,
                                                     imageName: "files.all_files",
                                                     fileType: nil),
                                        HomeFileItem(title: LocalizableHome.imagesItem.localized,
@@ -32,5 +32,5 @@ var homeFileItems : [HomeFileItem] = [ HomeFileItem(title: LocalizableHome.allFi
                                                     fileType: .document),
                                        HomeFileItem(title: LocalizableHome.othersItem.localized,
                                                     imageName: "files.others",
-                                                    fileType: .unknown),
-]
+                                                    fileType: .other),
+]}
