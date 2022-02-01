@@ -11,7 +11,6 @@ struct SettingsMainView: View {
     
     @ObservedObject var appModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
     var body: some View {
         ContainerView {
             VStack() {
@@ -36,7 +35,9 @@ struct GenaralSettingsView : View {
     @State private var presentingLanguage = false
     @ObservedObject var appModel : MainAppModel
     @StateObject var lockViewModel = LockViewModel(unlockType: .update)
-    
+    @State var passwordTypeString : String = ""
+
+
     var body : some View {
         
         VStack(spacing: 0) {
@@ -73,11 +74,11 @@ struct GenaralSettingsView : View {
             }
             .onAppear {
                 lockViewModel.shouldDismiss.send(false)
-                
+                let passwordType = CryptoManager.shared.passwordType
+                passwordTypeString = passwordType == .TELLA_PASSWORD ? LocalizableLock.passwordButtonTitle.localized : LocalizableLock.pinButtonTitle.localized
             }
     }
-    
-    
+
     var unlockView : some View {
         let passwordType = CryptoManager.shared.passwordType
         return passwordType == .TELLA_PASSWORD ?
@@ -92,10 +93,6 @@ struct GenaralSettingsView : View {
         
     }
     
-    var passwordTypeString : String {
-        let passwordType = CryptoManager.shared.passwordType
-        return passwordType == .TELLA_PASSWORD ? LocalizableLock.passwordButtonTitle.localized : LocalizableLock.pinButtonTitle.localized
-    }
 }
 
 struct DividerView : View {
