@@ -76,7 +76,7 @@ struct UnlockPinView: View {
             }
         }
         .onAppear {
-            viewModel.initData()
+            viewModel.initUnlockData()
         }
 
 

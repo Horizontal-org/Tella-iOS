@@ -19,7 +19,7 @@ struct LockPasswordView: View {
                      shouldShowErrorMessage: .constant(false),
                      destination: ConfirmLockPasswordView())
             .onAppear {
-                lockViewModel.initData()
+                lockViewModel.initLockData()
             }
 
     }

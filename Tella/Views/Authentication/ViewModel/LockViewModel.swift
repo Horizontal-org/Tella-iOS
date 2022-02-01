@@ -37,11 +37,17 @@ class LockViewModel: ObservableObject {
         shouldShowUnlockError = privateKey == nil
     }
     
-    func initData() {
+    func initUnlockData() {
         loginPassword = ""
         password = ""
         confirmPassword = ""
         shouldShowUnlockError = false
         self.shouldDismiss.send(false)
     }
+    
+    func initLockData() {
+        password = ""
+        confirmPassword = ""
+        shouldShowUnlockError = false
+     }
 }

@@ -19,7 +19,8 @@ struct LockPinView: View {
                       shouldShowErrorMessage: .constant(false),
                       destination: LockConfirmPinView())
             .onAppear {
-                lockViewModel.initData()
+                lockViewModel.initLockData()
+
             }
 
     }

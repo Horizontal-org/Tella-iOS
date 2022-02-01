@@ -74,7 +74,7 @@ struct UnlockPasswordView: View {
             }
         }
         .onAppear {
-            viewModel.initData()
+            viewModel.initUnlockData()
         }
     }
     

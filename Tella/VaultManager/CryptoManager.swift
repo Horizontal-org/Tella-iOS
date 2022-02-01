@@ -260,6 +260,7 @@ class CryptoManager {
             throw RuntimeError("Could not find key ID")
         }
         try keyHelper(privateKey, type, password: newPassword)
+        self.passwordType = type
         deleteMetaKeypair(keyID, password:oldPassword)
     }
     
