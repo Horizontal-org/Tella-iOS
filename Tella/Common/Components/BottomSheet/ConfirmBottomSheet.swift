@@ -11,6 +11,8 @@ struct ConfirmBottomSheet : View {
     var actionText = ""
     var destructive : Bool = false
     var modalHeight : CGFloat
+    var withDrag : Bool = true
+
     
     @Binding var isPresented: Bool
     var didConfirmAction : () -> ()
@@ -18,38 +20,50 @@ struct ConfirmBottomSheet : View {
 
     var body: some View {
         
-        DragView(modalHeight: modalHeight, color: Styles.Colors.backgroundTab,
-                 isShown: $isPresented){
-            
-            VStack(alignment: .leading, spacing: 9) {
+        if withDrag  {
+            DragView(modalHeight: modalHeight, color: Styles.Colors.backgroundTab,
+                     isShown: $isPresented){
                 
-                Text(self.titleText)
-                    .foregroundColor(.white)
-                    .font(Font.custom(Styles.Fonts.boldFontName, size: 16))
-                
-                Text(self.msgText)
-                    .foregroundColor(.white)
-                    .font(Font.custom(Styles.Fonts.regularFontName, size: 14))
-                Spacer()
-                HStack(alignment: .lastTextBaseline ){
-                    Spacer()
-                    Button(action: {self.isPresented = false
-                        didCancelAction?()
-                    }){
-                        Text(self.cancelText)
-                    }.buttonStyle(ButtonSheetStyle())
-                    
-                    Spacer()
-                        .frame(width: 20)
-
-                    Button(action: {self.didConfirmAction()}){
-                        Text(self.actionText)
-                            .foregroundColor(destructive ? Color.red : Color.white)
-                    }.buttonStyle(ButtonSheetStyle())
-                }
-            } .padding(EdgeInsets(top: 28, leading: 24, bottom: 24, trailing: 20))
+                contentView
+            }
+        }
+        else {
+            contentView
         }
     }
+    
+    var contentView: some View {
+         
+        VStack(alignment: .leading, spacing: 9) {
+            
+            Text(self.titleText)
+                .foregroundColor(.white)
+                .font(Font.custom(Styles.Fonts.boldFontName, size: 16))
+            
+            Text(self.msgText)
+                .foregroundColor(.white)
+                .font(Font.custom(Styles.Fonts.regularFontName, size: 14))
+            Spacer()
+            HStack(alignment: .lastTextBaseline ){
+                Spacer()
+                Button(action: {self.isPresented = false
+                    didCancelAction?()
+                }){
+                    Text(self.cancelText)
+                }.buttonStyle(ButtonSheetStyle())
+                
+                Spacer()
+                    .frame(width: 20)
+
+                Button(action: {self.didConfirmAction()}){
+                    Text(self.actionText)
+                        .foregroundColor(destructive ? Color.red : Color.white)
+                }.buttonStyle(ButtonSheetStyle())
+            }
+        } .padding(EdgeInsets(top: 28, leading: 24, bottom: 24, trailing: 20))
+    }
+    
+    
 }
 
 struct ButtonSheetStyle: ButtonStyle {

@@ -4,11 +4,11 @@
 
 import AVFoundation
 
-class RecordingAudioManager: AudioManager {
+class RecordingAudioManager: AudioRecorderManager {
     
     private var audioPlayer = AudioPlayer()
     private var recorder: AVAudioRecorder!
-    private var currentFileName: URL?
+     var currentFileName: URL?
     
     let settings = [
         AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
@@ -41,6 +41,10 @@ class RecordingAudioManager: AudioManager {
         self.recorder.stop()
     }
     
+    func pauseRecording() {
+        self.recorder.pause()
+    }
+
     func saveRecord() {
         guard
             let audioData = self.getCurrentAudio()
@@ -48,6 +52,7 @@ class RecordingAudioManager: AudioManager {
         
         //TODO: fix
 //        TellaFileManager.saveAudio(audioData)
+        
         self.discardRecord()
     }
     

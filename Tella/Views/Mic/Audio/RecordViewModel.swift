@@ -9,9 +9,15 @@ class RecordViewModel: ObservableObject {
     
     @Published var state: RecordState = .ready
     
-    private var audioBackend: AudioManager = RecordingAudioManager()
+    private var audioBackend: RecordingAudioManager = RecordingAudioManager()
+//
+    var url : URL? {
+        return audioBackend.currentFileName
+    }
+    
     
     func onStartRecording() {
+
         self.state = .recording
         
         self.audioBackend.startRecording()
@@ -42,8 +48,16 @@ class RecordViewModel: ObservableObject {
     }
     
     func onPauseRecord() {
-        self.audioBackend.stopRecord()
+//        self.audioBackend.pauseRecording()
+        self.audioBackend.stopRecording()
+
+        
+        self.state = .paused
+        self.updateView()
+
     }
+    
+    
     
     fileprivate func resetRecording() {
         self.state = .ready

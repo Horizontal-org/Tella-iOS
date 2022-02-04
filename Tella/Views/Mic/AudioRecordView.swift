@@ -5,12 +5,12 @@
 import SwiftUI
 
 struct AudioRecordView: View {
+    @ObservedObject var appModel : MainAppModel
 
-    init() {
-    }
-    
     var body: some View {
         RecordView()
             .edgesIgnoringSafeArea(.all)
+            .navigationBarHidden(appModel.selectedTab == .home ? false : true)
+
     }
 }

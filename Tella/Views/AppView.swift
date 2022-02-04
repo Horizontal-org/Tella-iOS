@@ -4,7 +4,25 @@
 
 import SwiftUI
 
-struct AppView: View {
+class DragViewData  {
+
+   var modalHeight : CGFloat = 0.0
+     var isPresented :  Binding<Bool> = .constant(false)
+     var content : AnyView? = nil
+    init() {
+        
+    }
+    init(modalHeight : CGFloat = 0.0,
+         isPresented :  Binding<Bool>  = .constant(false) ,
+           content : AnyView? = nil) {
+        
+        self.modalHeight =  modalHeight
+        self.isPresented  =  isPresented
+        self.content  =  content
+    }
+}
+
+struct AppView: View  {
     
     @State private var hideAll = false
     @State private var hideTabBar = false
@@ -12,17 +30,29 @@ struct AppView: View {
     
     @State private var inputImage: UIImage?
     
+    
     init() {
         setDebugLevel(level: .debug, for: .app)
         setDebugLevel(level: .debug, for: .crypto)
         setupApperance()
+        
+        
     }
     
     var body: some View {
         if hideAll {
             emptyView
         } else {
-            tabbar
+            ZStack {
+                tabbar
+                
+                DragView(modalHeight: self.appModel.content.modalHeight,
+                         color: Styles.Colors.backgroundTab,
+                         isShown: self.appModel.content.isPresented) {
+                    self.appModel.content.content
+                }
+            }
+
         }
     }
     
@@ -60,7 +90,7 @@ struct AppView: View {
                         Image("tab.camera")
                         Text("Camera")
                     }.tag(MainAppModel.Tabs.camera)
-                AudioRecordView()
+                AudioRecordView(appModel: appModel)
                     .tabItem {
                         Image("tab.mic")
                         Text("Mic")
@@ -76,13 +106,20 @@ struct AppView: View {
                 }
             }
             
-        }.navigationViewStyle(.stack)
+        }
+        .navigationViewStyle(.stack)
         
-            .accentColor(.white)
+          
+        .accentColor(.white)
             .onAppear {
                 print(LocalizableHome.allFilesItem.localized)
             }
-    }
+        
+            .navigationBarTitle("Tella", displayMode: .inline)
+            .navigationBarHidden(appModel.selectedTab == .home ? false : true)
+            
+     }
+    
 
     private func setupApperance() {
         
@@ -136,12 +173,12 @@ struct AppView: View {
     
 }
 
-struct AppView_Previews: PreviewProvider {
-    static var previews: some View {
-        AppView()
-            .preferredColorScheme(.light)
-            .previewLayout(.device)
-            .previewDevice("iPhone Xʀ")
-            .environmentObject(MainAppModel())
-    }
-}
+//struct AppView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AppView()
+//            .preferredColorScheme(.light)
+//            .previewLayout(.device)
+//            .previewDevice("iPhone Xʀ")
+//            .environmentObject(MainAppModel())
+//    }
+//}
