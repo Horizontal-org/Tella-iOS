@@ -111,9 +111,7 @@ struct AppView: View  {
         
           
         .accentColor(.white)
-            .onAppear {
-                print(LocalizableHome.allFilesItem.localized)
-            }
+
         
             .navigationBarTitle("Tella", displayMode: .inline)
             .navigationBarHidden(appModel.selectedTab == .home ? false : true)

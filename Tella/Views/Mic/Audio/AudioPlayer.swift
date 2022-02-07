@@ -25,9 +25,9 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
     @Published var currentTime = CurrentValueSubject<TimeInterval, Never>(0.0)
     @Published var duration = CurrentValueSubject<TimeInterval, Never>(0.0)
     @Published var audioPlayerDidFinishPlaying = CurrentValueSubject<Bool, Never>(false)
-
     
-
+    
+    
     func initPlayer(audio: Data) {
         
         let playbackSession = AVAudioSession.sharedInstance()
@@ -38,7 +38,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
             try playbackSession.setActive(true)
             
         } catch let error{
-            print(error.localizedDescription)
+            debugLog(error.localizedDescription)
         }
         
         do {
@@ -47,17 +47,13 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
             audioPlayer = try AVAudioPlayer.init(data: audio)
             audioPlayer.delegate = self
             
-             audioPlayer.currentTime = 0
+            audioPlayer.currentTime = 0
             
             duration.send(audioPlayer.duration)
             
-             initialiseTimerRunning()
-         } catch  let error {
-            print("Playback failed.")
-            print(error)
-            
-            print(error.localizedDescription)
-            
+            initialiseTimerRunning()
+        } catch  let error {
+            debugLog(error.localizedDescription)
         }
     }
     func startPlayback (audio: Data) {
@@ -70,7 +66,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
             try playbackSession.setActive(true)
             
         } catch let error{
-            print(error.localizedDescription)
+            debugLog(error.localizedDescription)
         }
         
         do {
@@ -79,28 +75,24 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
             audioPlayer = try AVAudioPlayer.init(data: audio)
             audioPlayer.delegate = self
             
-             audioPlayer.currentTime = 0
+            audioPlayer.currentTime = 0
             
-            duration.send(audioPlayer.duration) 
+            duration.send(audioPlayer.duration)
             
             audioPlayer.play()
             initialiseTimerRunning()
             playStatus = true
         } catch  let error {
-            print("Playback failed.")
-            print(error)
-            
-            print(error.localizedDescription)
-            
+            debugLog(error.localizedDescription)
         }
     }
     
     
     func startPlaying () {
         
-             audioPlayer.play()
-             playStatus = true
-     }
+        audioPlayer.play()
+        playStatus = true
+    }
     //  pauses the playback
     func stopPlayback() {
         audioPlayer.pause()
@@ -126,13 +118,12 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
         
         timeForward += 15.0
         if (timeForward > audioPlayer.duration) {
-            audioPlayer.currentTime = timeForward
-        } else {
             audioPlayer.currentTime = audioPlayer.duration
+        } else {
+            audioPlayer.currentTime = timeForward
         }
-        
-        
     }
+    
     func rewindBackRecord() {
         var timeBack = audioPlayer.currentTime
         

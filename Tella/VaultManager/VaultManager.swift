@@ -317,7 +317,8 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                 defer { filePath.stopAccessingSecurityScopedResource() }
                 
                 let data = try Data(contentsOf: filePath)
-                let fileName = filePath.lastPathComponent
+                let fileName = filePath.deletingPathExtension().lastPathComponent
+ 
                 let fileExtension = filePath.pathExtension
                 let path = filePath.path
                 

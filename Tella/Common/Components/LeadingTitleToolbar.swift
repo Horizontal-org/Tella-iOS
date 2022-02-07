@@ -17,6 +17,7 @@ struct LeadingTitleToolbar: ToolbarContent {
             Text(title)
             .font(.custom(Styles.Fonts.semiBoldFontName, size: 16))
             .foregroundColor(Color.white)
+            .frame(width: 260,height:25,alignment:.leading)
         }
     }
  }
