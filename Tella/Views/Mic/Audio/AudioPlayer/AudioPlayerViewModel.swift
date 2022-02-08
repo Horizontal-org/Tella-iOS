@@ -64,10 +64,10 @@ class AudioPlayerViewModel: ObservableObject {
         self.updateView()
     }
     
-    func onStopPlaying() {
+    func onPausePlaying() {
         self.state = .ready
         
-        self.audioPlayerManager.stopRecord()
+        self.audioPlayerManager.pauseRecord()
         
         shouldDisableFastForwardButton = true
         shouldDisableRewindBackButton = true
@@ -76,7 +76,11 @@ class AudioPlayerViewModel: ObservableObject {
         self.updateView()
     }
     
-    
+    func onStopPlaying() {
+
+        self.audioPlayerManager.stopRecord()
+    }
+
     func onFastForward() {
         self.audioPlayerManager.fastForwardRecord()
     }

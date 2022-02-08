@@ -22,9 +22,9 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
     var audioPlayer: AVAudioPlayer!
     private var timer = Timer()
     
-    @Published var currentTime = CurrentValueSubject<TimeInterval, Never>(0.0)
-    @Published var duration = CurrentValueSubject<TimeInterval, Never>(0.0)
-    @Published var audioPlayerDidFinishPlaying = CurrentValueSubject<Bool, Never>(false)
+     var currentTime = CurrentValueSubject<TimeInterval, Never>(0.0)
+     var duration = CurrentValueSubject<TimeInterval, Never>(0.0)
+      var audioPlayerDidFinishPlaying = CurrentValueSubject<Bool, Never>(false)
     
     
     
@@ -94,10 +94,17 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
         playStatus = true
     }
     //  pauses the playback
-    func stopPlayback() {
+  
+    func pausePlayback() {
         audioPlayer.pause()
         playStatus = false
     }
+    
+    func stopPlayback() {
+        audioPlayer.stop()
+        playStatus = false
+    }
+
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         if flag {

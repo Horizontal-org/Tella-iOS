@@ -12,7 +12,7 @@ protocol AudioManager {
 
     func initPlayer()
     func playRecord()
-    func stopRecord()
+    func pauseRecord()
     
     func fastForwardRecord()
     func rewindBackRecord()
@@ -39,9 +39,12 @@ class AudioPlayerManager: AudioManager {
         self.audioPlayer.startPlaying()
         
     }
-    
+    func pauseRecord() {
+        self.audioPlayer.pausePlayback()
+    }
+
     func stopRecord() {
-        self.audioPlayer.stopPlayback()
+        self.audioPlayer.pausePlayback()
     }
     
     func fastForwardRecord() {

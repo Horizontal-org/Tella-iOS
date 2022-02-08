@@ -41,6 +41,9 @@ struct AudioPlayerView: View {
         .toolbar {
             LeadingTitleToolbar(title: vaultFile.fileName)
         }
+        .onDisappear {
+            self.viewModel.onStopPlaying()
+        }
         
     }
     
@@ -92,7 +95,7 @@ struct AudioPlayerView: View {
             }
             
             Button(action: {
-                self.viewModel.onStopPlaying()
+                self.viewModel.onPausePlaying()
             }) {
                 Image("mic.pause-audio")
                     .frame(width: 75, height: 75)

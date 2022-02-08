@@ -8,5 +8,4 @@ enum RecordState {
     case ready
     case recording
     case paused
-    case done
 }

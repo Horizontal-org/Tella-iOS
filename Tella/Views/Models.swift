@@ -8,6 +8,8 @@ import Combine
 protocol AppModelFileManagerProtocol {
     
     func add(files: [URL], to parentFolder: VaultFile?, type: FileType)
+    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String)
+
     func add(image: UIImage, to parentFolder: VaultFile?, type: FileType, pathExtension:String)
     func add(folder: String, to parentFolder: VaultFile?)
     func cancelImportAndEncryption()
@@ -82,6 +84,11 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         self.publishUpdates()
     }
     
+    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String) {
+        self.vaultManager.importFile(audioFilePath: audioFilePath, to: parentFolder, type: type, fileName: fileName)
+        self.publishUpdates()
+    }
+
     func add(image: UIImage, to parentFolder: VaultFile?, type: FileType, pathExtension:String) {
         
         vaultManager.progress.progress.sink { value in

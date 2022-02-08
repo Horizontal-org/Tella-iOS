@@ -11,12 +11,11 @@ import Foundation
 protocol AudioRecorderManager {
     func startRecording()
     func pauseRecording()
-
-    func stopRecording()
-    func saveRecord() 
-    func discardRecord()
+    func stopRecording(fileName:String)
+//    func saveRecord()
+//    func discardRecord()
     func resetRecorder()
     
     func playRecord()
-    func stopRecord()
+    func pauseRecord()
 }

@@ -206,7 +206,7 @@ extension VaultFile {
 
     var formattedCreationDate : String {
         get {
-            return created.getFormattedDateString(format: DateFormat.short.rawValue) ?? ""
+            return created.getFormattedDateString(format: DateFormat.short.rawValue) 
         }
     }
 }
@@ -215,7 +215,7 @@ extension VaultFile {
 
     var longFormattedCreationDate : String {
         get {
-            return created.getFormattedDateString(format: DateFormat.fileInfo.rawValue) ?? ""
+            return created.getFormattedDateString(format: DateFormat.fileInfo.rawValue)
         }
     }
 }

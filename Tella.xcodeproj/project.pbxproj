@@ -997,7 +997,6 @@
 			isa = PBXGroup;
 			children = (
 				1209FD2C27AD896A00D8C17E /* AudioPlayer */,
-				12E0882527AD32D400CEB198 /* Localizable */,
 				1EBF3CB4246649DC0004E331 /* AudioPlayer.swift */,
 				12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */,
 				D7F55FCC25348FB80028739E /* AudioRecorderManager.swift */,
@@ -1005,6 +1004,7 @@
 				D7CFC37E254260D300CCB352 /* RecordView.swift */,
 				D75F9E9B25342539006F6212 /* RecordViewModel.swift */,
 				D7F55FD9253490BE0028739E /* RecordingAudioManager.swift */,
+				12E0882527AD32D400CEB198 /* Localizable */,
 			);
 			path = Audio;
 			sourceTree = "<group>";

@@ -132,6 +132,44 @@ class VaultManager: VaultManagerInterface, ObservableObject {
             
         }).store(in: &self.cancellable)
     }
+
+    func importFile(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName: String) {
+        
+        debugLog("\(audioFilePath)", space: .files)
+
+        let _ = audioFilePath.startAccessingSecurityScopedResource()
+        defer { audioFilePath.stopAccessingSecurityScopedResource() }
+        do {
+        
+        let data = try Data(contentsOf: audioFilePath)
+
+        let fileExtension = audioFilePath.pathExtension
+        let path = audioFilePath.path
+            let duration =  audioFilePath.getDuration()
+        let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
+        let containerName = UUID().uuidString
+
+        let vaultFile = VaultFile(type: audioFilePath.fileType,
+                                  fileName: fileName,
+                                  containerName: containerName,
+                                  files: nil,
+                                  thumbnail: nil,
+                                  fileExtension: fileExtension,
+                                  size:size,
+                                  resolution: nil,
+                                  duration: duration)
+
+
+        
+        if let _ = save(data, vaultFile: vaultFile, parent: parentFolder) {
+            addRecentFile(file: vaultFile)
+            save(file: root)
+         }
+        } catch let error {
+            debugLog(error)
+        }
+
+    }
     
     private func importFileAndEncrypt(data : Data, vaultFile:VaultFile, parentFolder :VaultFile?, type: FileType) {
         
