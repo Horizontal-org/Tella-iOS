@@ -30,7 +30,8 @@ struct AppView: View  {
     
     @State private var inputImage: UIImage?
     
-    
+    @State private var showingRecoredrView : Bool = false
+
     init() {
         setDebugLevel(level: .debug, for: .app)
         setDebugLevel(level: .debug, for: .crypto)
@@ -63,6 +64,8 @@ struct AppView: View  {
     
     private var tabbar: some View{
         NavigationView {
+            ZStack {
+            
             TabView(selection: $appModel.selectedTab) {
                 HomeView(appModel: appModel, hideAll: $hideAll)
                     .tabItem {
@@ -90,11 +93,18 @@ struct AppView: View  {
                         Image("tab.camera")
                         Text("Camera")
                     }.tag(MainAppModel.Tabs.camera)
-                AudioRecordView(appModel: appModel)
+
+                ContainerView{}
                     .tabItem {
                         Image("tab.mic")
                         Text("Mic")
                     }.tag(MainAppModel.Tabs.mic)
+            }
+              
+                if appModel.selectedTab == .mic   {
+                    RecordView( showingRecoredrView: $showingRecoredrView)
+                 }
+                
             }
 
             .toolbar {

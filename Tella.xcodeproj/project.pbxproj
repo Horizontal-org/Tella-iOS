@@ -105,6 +105,7 @@
 		12730E67279F11C300DC0135 /* LanguageListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12730E66279F11C200DC0135 /* LanguageListView.swift */; };
 		12730E69279F420400DC0135 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12730E68279F420400DC0135 /* SettingsViewModel.swift */; };
 		12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */; };
+		127369E327B3C4DA00CF7BE5 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127369E227B3C4DA00CF7BE5 /* UIDeviceExtension.swift */; };
 		127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127B56D4279AC28200F902C9 /* CancelImportView.swift */; };
 		1283C257272AA6F6009180CA /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */; };
 		128777C52718D25E000624E2 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 128777C42718D25D000624E2 /* OpenSans-Light.ttf */; };
@@ -154,7 +155,6 @@
 		D51639762631091E003A11B5 /* NewAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D51639752631091E003A11B5 /* NewAssets.xcassets */; };
 		D516397C2631113B003A11B5 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D516397B2631113B003A11B5 /* Styles.swift */; };
 		D51639802631130E003A11B5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50727CB2625573200BBC370 /* HomeView.swift */; };
-		D5163985263113B7003A11B5 /* AudioRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D56979262747F700C45416 /* AudioRecordView.swift */; };
 		D538C8AC264CE8D300D457B0 /* CryptoFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D538C8AB264CE8D300D457B0 /* CryptoFileManager.swift */; };
 		D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B77002601CA3A0001CD34 /* VaultManager.swift */; };
 		D572EAC5263A383100CE191A /* RecentFilesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC4263A383100CE191A /* RecentFilesListView.swift */; };
@@ -316,6 +316,7 @@
 		12730E66279F11C200DC0135 /* LanguageListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageListView.swift; sourceTree = "<group>"; };
 		12730E68279F420400DC0135 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeadingTitleToolbar.swift; sourceTree = "<group>"; };
+		127369E227B3C4DA00CF7BE5 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
 		127B56D4279AC28200F902C9 /* CancelImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelImportView.swift; sourceTree = "<group>"; };
 		1283C254272A7484009180CA /* CustomNavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationContainerView.swift; sourceTree = "<group>"; };
 		1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
@@ -394,7 +395,6 @@
 		D59E9EAF260C5A51006D9F8E /* VaultManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManagerTests.swift; sourceTree = "<group>"; };
 		D5B823EF262775D80008E04B /* CryptoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoManager.swift; sourceTree = "<group>"; };
 		D5D5696C262747E100C45416 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
-		D5D56979262747F700C45416 /* AudioRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecordView.swift; sourceTree = "<group>"; };
 		D5DA7F972646220100B00FDA /* FileGroupButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGroupButtonView.swift; sourceTree = "<group>"; };
 		D5DA7F9A2648D05400B00FDA /* FileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListView.swift; sourceTree = "<group>"; };
 		D5DAFDCD265384C4002F3942 /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
@@ -460,7 +460,6 @@
 			isa = PBXGroup;
 			children = (
 				D75F9E9A253424F7006F6212 /* Audio */,
-				D5D56979262747F700C45416 /* AudioRecordView.swift */,
 			);
 			path = Mic;
 			sourceTree = "<group>";
@@ -688,6 +687,7 @@
 				12619B8A27A01F6600999FDA /* BundleExtension.swift */,
 				12E6772E27A9719F00DC1E1C /* UIImageExtension.swift */,
 				1209FD3127ADBDDE00D8C17E /* TimeIntervalExtension.swift */,
+				127369E227B3C4DA00CF7BE5 /* UIDeviceExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1374,6 +1374,7 @@
 				0D4BC3C4267577F900DCDC30 /* NewReportView.swift in Sources */,
 				D5B823EB262774E00008E04B /* AppView.swift in Sources */,
 				125FA6D6278DE49A004B9D06 /* URLExtension.swift in Sources */,
+				127369E327B3C4DA00CF7BE5 /* UIDeviceExtension.swift in Sources */,
 				12A148922720A32000A1ADDC /* LockPinData.swift in Sources */,
 				0DD99E072692DD01009327B3 /* CustomCameraView.swift in Sources */,
 				D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */,
@@ -1409,7 +1410,6 @@
 				12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */,
 				12730E67279F11C300DC0135 /* LanguageListView.swift in Sources */,
 				0ECC7817267A533E00A2ACF2 /* PageViewCell.swift in Sources */,
-				D5163985263113B7003A11B5 /* AudioRecordView.swift in Sources */,
 				1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
 				127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */,
@@ -1422,7 +1422,6 @@
 				0DEFD54B268946460014EADE /* Enums.swift in Sources */,
 				125FA6D8278E2828004B9D06 /* DoubleExtension.swift in Sources */,
 				129533C42739D5BC0053FA4B /* TextFieldBottomSheet.swift in Sources */,
-				D5163985263113B7003A11B5 /* AudioRecordView.swift in Sources */,
 				0DC6FC54269BCDDE001B0D34 /* FileInfoView.swift in Sources */,
 				1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,

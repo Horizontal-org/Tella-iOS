@@ -29,7 +29,7 @@ struct FileInfoView: View {
                     FileInfoItem(title: LocalizableHome.resolution.localized, content: file.formattedResolution ?? "")
                 }
                 
-                if file.type == .video {
+                if file.type == .video || file.type == .audio {
                     FileInfoItem(title: LocalizableHome.length.localized, content: file.formattedDuration ?? "")
                 }
                 

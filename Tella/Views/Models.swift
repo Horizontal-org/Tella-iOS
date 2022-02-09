@@ -36,10 +36,8 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     @Published var selectedType: FileType = .other
     @Published var showFilesList: Bool = false
 //    
-    @Published     var content = DragViewData()
+    @Published var content = DragViewData()
 
-//    
-//
     var shouldUpdateLanguage = CurrentValueSubject<Bool, Never>(false)
 
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)

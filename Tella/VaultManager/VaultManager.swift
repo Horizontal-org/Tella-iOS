@@ -81,7 +81,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         let thumbnail = image.getThumbnail()?.pngData()
         let fileName = "\(type)_new"
         let containerName = UUID().uuidString
-
+        
         let vaultFile = VaultFile(type: .image,
                                   fileName: fileName,
                                   containerName: containerName,
@@ -91,7 +91,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                                   size:size,
                                   resolution: resolution,
                                   duration: nil)
-
+        
         if let _ = save(data, vaultFile: vaultFile, parent: parentFolder) {
             addRecentFile(file: vaultFile)
             save(file: root)
@@ -104,7 +104,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         let filesInfo = self.getFilesInfo(files: files)
         
         self.progress.start(totalFiles: files.count, totalSize: filesInfo.1)
-
+        
         let queue = DispatchQueue.global(qos: .background)
         
         var backgroundWorkItem : DispatchWorkItem?
@@ -132,43 +132,45 @@ class VaultManager: VaultManagerInterface, ObservableObject {
             
         }).store(in: &self.cancellable)
     }
-
+    
     func importFile(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName: String) {
         
         debugLog("\(audioFilePath)", space: .files)
-
+        
         let _ = audioFilePath.startAccessingSecurityScopedResource()
         defer { audioFilePath.stopAccessingSecurityScopedResource() }
         do {
-        
-        let data = try Data(contentsOf: audioFilePath)
-
-        let fileExtension = audioFilePath.pathExtension
-        let path = audioFilePath.path
+            
+            let data = try Data(contentsOf: audioFilePath)
+            
+            let fileExtension = audioFilePath.pathExtension
+            
+            let path = audioFilePath.path
+            
             let duration =  audioFilePath.getDuration()
-        let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
-        let containerName = UUID().uuidString
-
-        let vaultFile = VaultFile(type: audioFilePath.fileType,
-                                  fileName: fileName,
-                                  containerName: containerName,
-                                  files: nil,
-                                  thumbnail: nil,
-                                  fileExtension: fileExtension,
-                                  size:size,
-                                  resolution: nil,
-                                  duration: duration)
-
-
-        
-        if let _ = save(data, vaultFile: vaultFile, parent: parentFolder) {
-            addRecentFile(file: vaultFile)
-            save(file: root)
-         }
+            let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
+            let containerName = UUID().uuidString
+            
+            let vaultFile = VaultFile(type: audioFilePath.fileType,
+                                      fileName: fileName,
+                                      containerName: containerName,
+                                      files: nil,
+                                      thumbnail: nil,
+                                      fileExtension: fileExtension,
+                                      size:size,
+                                      resolution: nil,
+                                      duration: duration)
+            
+            
+            
+            if let _ = save(data, vaultFile: vaultFile, parent: parentFolder) {
+                addRecentFile(file: vaultFile)
+                save(file: root)
+            }
         } catch let error {
             debugLog(error)
         }
-
+        
     }
     
     private func importFileAndEncrypt(data : Data, vaultFile:VaultFile, parentFolder :VaultFile?, type: FileType) {
@@ -263,7 +265,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
         debugLog("saved: \(fileURL) \(vaultFile.containerName)")
     }
-
+    
     func save(_ data: Data, vaultFile: VaultFile, parent: VaultFile?) -> Bool? {
         debugLog("\(data.count); \(vaultFile.type); \(vaultFile.fileName); \nparent:\(String(describing: parent))", space: .files)
         
@@ -276,14 +278,14 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         parent?.add(file: vaultFile)
         return true
     }
-
+    
     func save<T: Datable>(_ object: T, vaultFile: VaultFile, parent: VaultFile? ) -> Bool? {
         guard let data = object.data else {
             return nil
         }
         return save(data, vaultFile: vaultFile, parent: parent)
     }
-
+    
     
     func removeAllFiles() {
         debugLog("", space: .files)
@@ -350,21 +352,19 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         files.forEach { filePath in
             do {
                 debugLog("\(filePath)", space: .files)
-
+                
                 let _ = filePath.startAccessingSecurityScopedResource()
                 defer { filePath.stopAccessingSecurityScopedResource() }
                 
                 let data = try Data(contentsOf: filePath)
                 let fileName = filePath.deletingPathExtension().lastPathComponent
- 
                 let fileExtension = filePath.pathExtension
                 let path = filePath.path
-                
                 let resolution = filePath.resolution()
                 let duration =  filePath.getDuration()
                 let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
                 let containerName = UUID().uuidString
-
+                
                 let vaultFile = VaultFile(type: filePath.fileType,
                                           fileName: fileName,
                                           containerName: containerName,
