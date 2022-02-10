@@ -1,8 +1,4 @@
 //
-//  AudioViewModel.swift
-//  Tella
-//
-//  Created by Amine Info on 4/2/2022.
 //  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 
@@ -48,8 +44,6 @@ class AudioPlayerViewModel: ObservableObject {
 
             
         }.store(in: &self.cancellable)
-
-        
     }
     
     func onStartPlaying() {

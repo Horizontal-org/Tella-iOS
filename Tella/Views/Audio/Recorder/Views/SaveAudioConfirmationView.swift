@@ -1,7 +1,4 @@
 //
-//  SaveAudioConfirmationView.swift
-//  Tella
-//
 //  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 
@@ -10,7 +7,6 @@ import SwiftUI
 struct SaveAudioConfirmationView: View {
     
     @Binding var showingSaveAudioConfirmationView : Bool
-    @EnvironmentObject var appModel: MainAppModel
 
     let didConfirm : (() -> Void)?
     let didCancel : (() -> Void)?
@@ -36,8 +32,10 @@ struct SaveAudioConfirmationView: View {
         }
  }
 
-//struct SaveAudioConfirmationView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SaveAudioConfirmationView(showingSaveAudioConfirmationView: <#Binding<Bool>#>, appModel: <#MainAppModel#>, didConfirm: <#(() -> Void)?#>, didCancel: <#(() -> Void)?#>)
-//    }
-//}
+struct SaveAudioConfirmationView_Previews: PreviewProvider {
+    static var previews: some View {
+        SaveAudioConfirmationView(showingSaveAudioConfirmationView: .constant(true),
+                                  didConfirm: nil,
+                                  didCancel: nil)
+    }
+}

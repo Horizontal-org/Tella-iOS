@@ -1,7 +1,4 @@
 //
-//  AudioPlayerView.swift
-//  Tella
-//
 //  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 

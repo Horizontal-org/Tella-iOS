@@ -59,8 +59,12 @@ class RecordViewModel: ObservableObject {
         self.updateView()
     }
 
-
     func onStopRecording() {
+        
+        if self.state == .recording {
+            self.audioBackend.pauseRecording()
+        }
+        
         self.state = .ready
         
         self.audioBackend.stopRecording(fileName: fileName)
@@ -75,9 +79,6 @@ class RecordViewModel: ObservableObject {
  
      }
 
-    
-    
-    
     // Play audio
     func onPlayRecord() {
         self.audioBackend.playRecord()

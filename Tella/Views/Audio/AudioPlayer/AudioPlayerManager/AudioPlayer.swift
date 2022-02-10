@@ -29,21 +29,9 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
     
     
     func initPlayer(audio: Data) {
-        
-        let playbackSession = AVAudioSession.sharedInstance()
-        
+
         do {
-            // the category of playback allows for sound to be played over iPhone speakers, even when the phone is in silent mode
-            try playbackSession.setCategory(.playback)
-            try playbackSession.setActive(true)
-            
-        } catch let error{
-            debugLog(error.localizedDescription)
-        }
-        
-        do {
-            //  the audioplayer is initialized using data rather than a url since decrypting files only gives data
-            //  this allows a user to listen to files in a secure way
+
             audioPlayer = try AVAudioPlayer.init(data: audio)
             audioPlayer.delegate = self
             
@@ -56,44 +44,12 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
             debugLog(error.localizedDescription)
         }
     }
-    func startPlayback (audio: Data) {
-        
-        let playbackSession = AVAudioSession.sharedInstance()
-        
-        do {
-            // the category of playback allows for sound to be played over iPhone speakers, even when the phone is in silent mode
-            try playbackSession.setCategory(.playback)
-            try playbackSession.setActive(true)
-            
-        } catch let error{
-            debugLog(error.localizedDescription)
-        }
-        
-        do {
-            //  the audioplayer is initialized using data rather than a url since decrypting files only gives data
-            //  this allows a user to listen to files in a secure way
-            audioPlayer = try AVAudioPlayer.init(data: audio)
-            audioPlayer.delegate = self
-            
-            audioPlayer.currentTime = 0
-            
-            duration.send(audioPlayer.duration)
-            
-            audioPlayer.play()
-            initialiseTimerRunning()
-            playStatus = true
-        } catch  let error {
-            debugLog(error.localizedDescription)
-        }
-    }
-    
-    
+
     func startPlaying () {
         
         audioPlayer.play()
         playStatus = true
     }
-    //  pauses the playback
   
     func pausePlayback() {
         audioPlayer.pause()
@@ -105,20 +61,17 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
         playStatus = false
     }
 
-    
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         if flag {
             playStatus = false
             audioPlayerDidFinishPlaying.send(true)
         }
     }
-    
-    //  not implemented yet, but could be used in a UI implementation where a play or pause button is displayed based on the status of the audiio player
+
     func isPlaying() -> Bool {
         return playStatus
     }
-    
-    
+
     func fastForwardRecord() {
         
         var timeForward = audioPlayer.currentTime

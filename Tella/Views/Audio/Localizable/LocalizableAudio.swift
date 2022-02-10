@@ -1,8 +1,4 @@
 //
-//  LocalizableAudio.swift
-//  Tella
-//
-//  Created by Amine Info on 4/2/2022.
 //  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 
@@ -14,7 +10,12 @@ enum LocalizableAudio: String, LocalizableDelegate {
     
     case  saveRecordingTitle = "AudioSaveRecordingTitle"
     case  saveRecordingMessage = "AudioSaveRecordingMessage"
+    
+    case  renameFileTitle = "AudioRenameFileTitle"
 
+    case  recordingSavedMessage = "AudioRecordingSavedMessage"
+
+    
     var tableName: String? {
         return "Audio"
     }

@@ -8,23 +8,23 @@
 
 import SwiftUI
 import Foundation
-import Combine
-import UIKit
 
 struct RecordView: View {
     
     @ObservedObject var viewModel = RecordViewModel()
     
+    @Binding  var showingRecoredrView : Bool
+
     @EnvironmentObject private var mainAppModel: MainAppModel
     @EnvironmentObject private var appViewState: AppViewState
     
-    @Binding  var showingRecoredrView : Bool
-    
     @State private var showingSaveAudioConfirmationView : Bool = false
+    @State private var showingSaveSuccessView : Bool = false
     
     @State private var showingRenameFileConfirmationSheet : Bool = false
     @State private var fileName : String = ""
-    
+
+
     let modalHeight = 173.0
     
     func goBack() {
@@ -54,11 +54,15 @@ struct RecordView: View {
             
             renameFileView
             
+            
             DragView(modalHeight: modalHeight,
                      color: Styles.Colors.backgroundTab,
                      isShown: $showingSaveAudioConfirmationView) {
                 saveAudioConfirmationView
             }
+            
+            saveSuccessView
+
             
         }.onAppear {
             self.viewModel.mainAppModel = mainAppModel
@@ -177,7 +181,7 @@ struct RecordView: View {
                 .font(.custom(Styles.Fonts.lightFontName, size: 50))
                 .foregroundColor(.white)
             
-            Text("2 hours 46 min (452 MB) left")
+            Text(DiskStatus().getRemainingTime())
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
         }
@@ -210,7 +214,17 @@ struct RecordView: View {
     private var saveAudioConfirmationView : some View {
         
         return SaveAudioConfirmationView(showingSaveAudioConfirmationView: $showingSaveAudioConfirmationView ) {
+           
             self.viewModel.onStopRecording()
+           
+            DispatchQueue.main.async {
+                showingSaveSuccessView = true
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                showingSaveSuccessView = false
+            }
+            
         } didCancel: {
             self.viewModel.onResetRecording()
             mainAppModel.selectedTab = .home
@@ -218,7 +232,7 @@ struct RecordView: View {
     }
     
     private var renameFileView : some View {
-        TextFieldBottomSheet(titleText: "Rename file",
+        TextFieldBottomSheet(titleText: LocalizableAudio.renameFileTitle.localized,
                              validateButtonText: "SAVE",
                              isPresented: $showingRenameFileConfirmationSheet,
                              fieldContent: $fileName,
@@ -228,4 +242,22 @@ struct RecordView: View {
             viewModel.fileName =  fileName
         })
     }
+    
+    @ViewBuilder
+    private var saveSuccessView : some View {
+        if showingSaveSuccessView {
+                VStack {
+                    Spacer()
+
+                    Text(LocalizableAudio.recordingSavedMessage.localized)
+                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                        .foregroundColor(.black)
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(4)
+                }
+
+        }
+    }
+    
 }

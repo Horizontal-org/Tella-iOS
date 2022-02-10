@@ -1,28 +1,24 @@
 //
-//  AudioPlayerManager.swift
-//  Tella
-//
-//  Created by Amine Info on 4/2/2022.
 //  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 
 import AVFoundation
 
 protocol AudioManager {
-
+    
     func initPlayer()
     func playRecord()
     func pauseRecord()
     
     func fastForwardRecord()
     func rewindBackRecord()
-
+    
 }
 
 class AudioPlayerManager: AudioManager {
     
-      var audioPlayer = AudioPlayer()
-
+    var audioPlayer = AudioPlayer()
+    
     var currentAudioData: Data?
     
     func initPlayer()    {
@@ -31,7 +27,6 @@ class AudioPlayerManager: AudioManager {
         else { return }
         
         self.audioPlayer.initPlayer(audio: audioData)
-
     }
     
     func playRecord() {
@@ -42,7 +37,7 @@ class AudioPlayerManager: AudioManager {
     func pauseRecord() {
         self.audioPlayer.pausePlayback()
     }
-
+    
     func stopRecord() {
         self.audioPlayer.pausePlayback()
     }
@@ -53,10 +48,5 @@ class AudioPlayerManager: AudioManager {
     
     func rewindBackRecord() {
         self.audioPlayer.rewindBackRecord()
-
     }
-
-    
-
-    
 }
