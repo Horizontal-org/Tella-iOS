@@ -8,6 +8,8 @@ import Combine
 protocol AppModelFileManagerProtocol {
     
     func add(files: [URL], to parentFolder: VaultFile?, type: FileType)
+    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String)
+
     func add(image: UIImage, to parentFolder: VaultFile?, type: FileType, pathExtension:String)
     func add(folder: String, to parentFolder: VaultFile?)
     func cancelImportAndEncryption()
@@ -30,7 +32,13 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     @Published var vaultManager: VaultManager = VaultManager(cryptoManager: CryptoManager.shared, fileManager: DefaultFileManager(), rootFileName: "root", containerPath: "Containers", progress: ImportProgress())
     
     @Published var selectedTab: Tabs = .home
-     var shouldUpdateLanguage = CurrentValueSubject<Bool, Never>(false)
+    
+    @Published var selectedType: FileType = .other
+    @Published var showFilesList: Bool = false
+//    
+    @Published var content = DragViewData()
+
+    var shouldUpdateLanguage = CurrentValueSubject<Bool, Never>(false)
 
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
 
@@ -74,6 +82,11 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         self.publishUpdates()
     }
     
+    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String) {
+        self.vaultManager.importFile(audioFilePath: audioFilePath, to: parentFolder, type: type, fileName: fileName)
+        self.publishUpdates()
+    }
+
     func add(image: UIImage, to parentFolder: VaultFile?, type: FileType, pathExtension:String) {
         
         vaultManager.progress.progress.sink { value in

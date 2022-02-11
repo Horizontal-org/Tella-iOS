@@ -1,8 +1,4 @@
 //
-//  UIImageExtension.swift
-//  Tella
-//
-//  Created by Amine Info on 1/2/2022.
 //  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 

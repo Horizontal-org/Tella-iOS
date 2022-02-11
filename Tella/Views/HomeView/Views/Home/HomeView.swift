@@ -46,6 +46,8 @@ struct HomeView: View {
                         appModel.removeAllFiles()
                     })
                 }
+                
+                fileListWithTypeView
             }
             
             
@@ -80,6 +82,18 @@ struct HomeView: View {
             }.padding(EdgeInsets(top: 12, leading: 17, bottom: 21, trailing: 17))
         }
     }
+    
+    var  fileListWithTypeView : some View {
+        NavigationLink(destination: FileListView(appModel: appModel,
+                                                 files: appModel.vaultManager.root.files,
+                                                 fileType: appModel.selectedType,
+                                                 rootFile: appModel.vaultManager.root,
+                                                 title: LocalizableHome.audioItem.localized), isActive: $appModel.showFilesList) {
+            EmptyView()
+        }
+        
+    }
+
 }
 
 struct HomeView_Previews: PreviewProvider {
