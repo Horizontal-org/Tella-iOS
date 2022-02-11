@@ -7,6 +7,9 @@
 
 
 "AudioRecorderTitle" = "Recorder";
+"AudioSuffixRecordingName" = "Recording";
+
+
 "AudioSaveRecordingTitle" = "Save recording?";
 "AudioSaveRecordingMessage" = "Your recording is not saved. Would you like to save it before exiting?";
      

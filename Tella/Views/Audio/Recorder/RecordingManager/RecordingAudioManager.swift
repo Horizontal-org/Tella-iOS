@@ -24,16 +24,21 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
         AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
     ]
     
+    init() {
+        guard
+            self.configureSession()
+        else {
+            return
+        }
+        
+    }
+    
     func startRecording() {
         
         self.queuePlayer.pauseAudio()
         
-        guard
-            self.configureSession(),
-            let fileName = self.getFileName()
-        else {
-            return
-        }
+        guard let fileName = self.getFileName()
+        else { return }
         
         do {
             self.recorder = try AVAudioRecorder(url: fileName, settings: settings)

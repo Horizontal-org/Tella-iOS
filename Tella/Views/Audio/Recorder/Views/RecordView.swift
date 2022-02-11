@@ -225,6 +225,8 @@ struct RecordView: View {
                 showingSaveSuccessView = false
             }
             
+            mainAppModel.selectedTab = .home
+            
         } didCancel: {
             self.viewModel.onResetRecording()
             mainAppModel.selectedTab = .home

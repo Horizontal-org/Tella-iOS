@@ -7,7 +7,8 @@ import Foundation
 enum LocalizableAudio: String, LocalizableDelegate {
     
     case recorderTitle = "AudioRecorderTitle"
-    
+    case suffixRecordingName = "AudioSuffixRecordingName"
+
     case  saveRecordingTitle = "AudioSaveRecordingTitle"
     case  saveRecordingMessage = "AudioSaveRecordingMessage"
     

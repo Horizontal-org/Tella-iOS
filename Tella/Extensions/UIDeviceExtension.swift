@@ -5,8 +5,7 @@
 import UIKit
 
 class DiskStatus: NSObject {
-    
-    
+
     func MBFormatter(_ bytes: Int64) -> String {
         let formatter = ByteCountFormatter()
         formatter.allowedUnits =  [.useBytes,.useKB, .useMB, .useGB]
@@ -14,8 +13,8 @@ class DiskStatus: NSObject {
         return formatter.string(fromByteCount: bytes) as String
     }
     
-    //MARK: Get String Value : 2 hours 46 min (452 MB) left
-    
+    ///  Get the remaining time in the device
+    /// - Returns:  2 hours 46 min (452 MB) left
     func getRemainingTime() -> String {
         
         let timeMinutes = Double(deviceRemainingFreeSpaceInBytes ?? 0) / 262144.0 // 4 minutes --> 1MB  approximation/1024*256
@@ -42,7 +41,8 @@ class DiskStatus: NSObject {
     var usedDiskSpaceInMB:String {
         return MBFormatter(deviceRemainingFreeSpaceInBytes ?? 0)
     }
-
+    
+    /// Get the remaining free space in the device
     var deviceRemainingFreeSpaceInBytes : Int64? {
         let documentDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last!
         guard
