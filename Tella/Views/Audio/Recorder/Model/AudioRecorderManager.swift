@@ -8,13 +8,12 @@
 
 import Foundation
 
-protocol AudioManager {
+protocol AudioRecorderManager {
     func startRecording()
-    func stopRecording()
-    func saveRecord()
-    func discardRecord()
+    func pauseRecording()
+    func stopRecording(fileName:String)
     func resetRecorder()
     
     func playRecord()
-    func stopRecord()
+    func pauseRecord()
 }

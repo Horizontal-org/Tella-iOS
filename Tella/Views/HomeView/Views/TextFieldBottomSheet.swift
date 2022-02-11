@@ -85,11 +85,9 @@ struct TextFieldBottomSheet: View {
                         errorMessage = "Please enter a file name that is not currently in use"
                     } else {
                         isPresented = false
-                        DispatchQueue.global().async {
-                            didConfirmAction()
-                            fieldContent = ""
-
-                        }
+                        didConfirmAction()
+                        fieldContent = ""
+                        
                     }
                 }
             }

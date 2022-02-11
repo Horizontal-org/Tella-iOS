@@ -45,4 +45,14 @@ final class AppViewState: ObservableObject {
         homeViewModel = MainAppModel()
         viewStack = [.MAIN]
     }
+    
+    func resetToAudio() {
+        viewStack = [.MAIN]
+        
+        homeViewModel?.selectedType = .audio
+        homeViewModel?.showFilesList = true
+
+    }
+
 }
+

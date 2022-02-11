@@ -1,0 +1,20 @@
+/* 
+  LocalizableAudio.strings
+  Tella
+
+  Copyright © 2022 INTERNEWS. All rights reserved.
+*/
+
+
+"AudioRecorderTitle" = "Recorder";
+"AudioSuffixRecordingName" = "Recording";
+
+
+"AudioSaveRecordingTitle" = "Save recording?";
+"AudioSaveRecordingMessage" = "Your recording is not saved. Would you like to save it before exiting?";
+     
+
+"AudioRenameFileTitle" = "Rename file";
+"AudioRecordingSavedMessage" = "The audio recording was saved to your Tella files.";
+
+

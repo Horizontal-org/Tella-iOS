@@ -17,6 +17,8 @@ class ImportProgress {
             self.progressFile = "\(self.currentFile)/\(self.totalFiles)"
         }
     }
+    var isFinishing = PassthroughSubject<Bool, Never>()
+    
 
     private var totalTime : Double = 0.0
     private var timeRemaining : Double = 0.0
@@ -59,6 +61,7 @@ class ImportProgress {
             //            self.timerIsOn = false
             self.timer.invalidate()
             self.progress.send(1)
+            self.isFinishing.send(true)
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {

@@ -14,10 +14,11 @@ struct FileDetailView: View {
     var fileType : FileType?
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            switch file.type {
+             switch file.type {
+                
             case .audio:
-                WebViewer(url: file.containerName)
+                AudioPlayerView(vaultFile: file)
+                
             case .document:
                 if let file = appModel.vaultManager.loadVideo(file: file) {
                     QuickLookView(file: file)
@@ -37,7 +38,5 @@ struct FileDetailView: View {
             default:
                 WebViewer(url: file.containerName)
             }
-        }
-    }
-    
+     }
 }
