@@ -14,8 +14,7 @@ struct FileSortMenu: View {
     var body: some View {
         ZStack{
             DragView(modalHeight: 226,
-                     color: Styles.Colors.backgroundTab,
-                     isShown: $showingSortFilesActionSheet) {
+                      isShown: $showingSortFilesActionSheet) {
                 FileSortContentView
             }
         }

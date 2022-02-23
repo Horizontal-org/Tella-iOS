@@ -28,13 +28,18 @@ enum DragState {
 }
 
 struct DragView<Content: View> : View {
+  
     var modalHeight:CGFloat
-    var color:Color
+    var shouldHideOnTap : Bool = true
+
+    @Binding var isShown:Bool
+
+    private let color:Color = Styles.Colors.backgroundTab
 
     @GestureState private var dragState = DragState.inactive
-    @Binding var isShown:Bool
-    @State var value: CGFloat = 0
+    @State private var value: CGFloat = 0
     
+
     private func onDragEnded(drag: DragGesture.Value) {
         let dragThreshold = modalHeight * (2/3)
         if drag.predictedEndTranslation.height > dragThreshold || drag.translation.height > dragThreshold{
@@ -68,10 +73,16 @@ struct DragView<Content: View> : View {
                                 : Color.clear)
                     .animation(.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0))
                     .gesture(
+                        
+                        
                         TapGesture()
                             .onEnded { _ in
-                                UIApplication.shared.endEditing()
-                                self.isShown = false
+                                if shouldHideOnTap {
+                                    UIApplication.shared.endEditing()
+                                    self.isShown = false
+
+                                }
+
                             }
                     )
                 
@@ -91,7 +102,9 @@ struct DragView<Content: View> : View {
                     }
                     .offset(y: isShown ? ((self.dragState.isDragging && dragState.translation.height >= 1) ? dragState.translation.height - self.value : -self.value) : modalHeight)
                     .animation(.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0))
-                    .gesture(drag)
+                    .if (shouldHideOnTap) {
+                        $0.gesture(drag)
+                    }
                 }
             }}.edgesIgnoringSafeArea(.all)
             .animation(.spring())
@@ -141,8 +154,3 @@ struct RoundedCorner: Shape {
     }
 }
 
-extension View {
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape( RoundedCorner(radius: radius, corners: corners) )
-    }
-}

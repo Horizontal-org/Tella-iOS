@@ -19,8 +19,7 @@ protocol VaultManagerInterface {
     func rename(file : VaultFile, parent: VaultFile?)
     func delete(file: VaultFile, parent: VaultFile?)
     func removeAllFiles()
-    
-}   
+}
 
 class VaultManager: VaultManagerInterface, ObservableObject {
     
@@ -39,7 +38,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     
     @Published var root: VaultFile
     @Published var recentFiles: [VaultFile] = []
-    var progress :  ImportProgress
+    @Published var progress :  ImportProgress
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
     
     private var cancellable: Set<AnyCancellable> = []
@@ -69,34 +68,39 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         
         self.progress.start(currentFile: 0, totalFiles: 1, totalSize: Double(image.data?.count ?? 0))
         
-        debugLog("\(image)", space: .files)
-        guard let data = image.fixedOrientation() else {
-            return
+        DispatchQueue.global(qos: .background).async {
+            
+            debugLog("\(image)", space: .files)
+            guard let data = image.fixedOrientation() else {
+                return
+            }
+            
+            let width = image.size.width * image.scale
+            let height = image.size.height * image.scale
+            let resolution = CGSize(width: width, height: height)
+            let size = Int64(data.data?.count ?? 0)
+            let thumbnail = image.getThumbnail()?.pngData()
+            let fileName = "\(type)_new"
+            let containerName = UUID().uuidString
+
+            let vaultFile = VaultFile(type: .image,
+                                      fileName: fileName,
+                                      containerName: containerName,
+                                      files: nil,
+                                      thumbnail: thumbnail,
+                                      fileExtension: "png",
+                                      size:size,
+                                      resolution: resolution,
+                                      duration: nil)
+            
+            if let _ = self.save(data, vaultFile: vaultFile, parent: parentFolder) {
+                self.addRecentFile(file: vaultFile)
+                self.save(file: self.root)
+                self.progress.finish()
+            }
         }
         
-        let width = image.size.width * image.scale
-        let height = image.size.height * image.scale
-        let resolution = CGSize(width: width, height: height)
-        let size = Int64(data.data?.count ?? 0)
-        let thumbnail = image.getThumbnail()?.pngData()
-        let fileName = "\(type)_new"
-        let containerName = UUID().uuidString
         
-        let vaultFile = VaultFile(type: .image,
-                                  fileName: fileName,
-                                  containerName: containerName,
-                                  files: nil,
-                                  thumbnail: thumbnail,
-                                  fileExtension: "png",
-                                  size:size,
-                                  resolution: resolution,
-                                  duration: nil)
-        
-        if let _ = save(data, vaultFile: vaultFile, parent: parentFolder) {
-            addRecentFile(file: vaultFile)
-            save(file: root)
-            self.progress.finish()
-        }
     }
     
     func importFile(files: [URL], to parentFolder: VaultFile?, type: FileType) {
@@ -220,7 +224,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         
         let videoData = self.load(file: vaultFile)
         
-        let tmpFileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(vaultFile.fileName)
+        let tmpFileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(vaultFile.fileName).appendingPathExtension(vaultFile.fileExtension)
         
         guard (fileManager.createFile(atPath: tmpFileURL, contents: videoData))
                 

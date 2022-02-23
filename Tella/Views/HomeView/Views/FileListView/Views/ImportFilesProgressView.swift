@@ -4,26 +4,35 @@
 
 import SwiftUI
 
+
+enum ProgressType {
+    case percentage
+    case number
+}
+
 struct ImportFilesProgressView: View {
     
     @Binding var showingProgressView : Bool
-    @ObservedObject var appModel: MainAppModel
     @State var showingCancelImportConfirmationSheet : Bool = false
+    @EnvironmentObject var mainAppModel : MainAppModel
     
     var modalHeight : CGFloat = 179
+    
+    var progressType : ProgressType = .number
+    
     
     var body: some View {
         
         ZStack{
             DragView(modalHeight: modalHeight,
-                     color: Styles.Colors.backgroundTab,
+                     shouldHideOnTap: false,
                      isShown: $showingProgressView) {
                 ImportFilesProgressContentView
             }
             
-            CancelImportView(showingCancelImportConfirmationSheet: $showingCancelImportConfirmationSheet, appModel: appModel) {
-                appModel.cancelImportAndEncryption()
-                appModel.vaultManager.progress.stop()
+            CancelImportView(showingCancelImportConfirmationSheet: $showingCancelImportConfirmationSheet, appModel: mainAppModel) {
+                mainAppModel.cancelImportAndEncryption()
+                mainAppModel.vaultManager.progress.stop()
                 showingProgressView = false
                 showingCancelImportConfirmationSheet = false
             } didCancel: {
@@ -52,14 +61,21 @@ struct ImportFilesProgressView: View {
                 Spacer()
                     .frame(height: 8)
                 
-                Text("\(appModel.vaultManager.progress.progressFile) \(LocalizableHome.importProgressFileImported.localized)")
-                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                    .foregroundColor(.white)
+                if progressType == .number {
+                    Text("\(mainAppModel.vaultManager.progress.progressFile.value) \(LocalizableHome.importProgressFileImported.localized)")
+                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                        .foregroundColor(.white)
+                    
+                } else {
+                    Text("\(Int(mainAppModel.vaultManager.progress.progress.value * 100))% complete  ")
+                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                        .foregroundColor(.white)
+                }
                 
                 Spacer()
                     .frame(height: 24)
                 
-                ProgressView("", value: appModel.vaultManager.progress.progress.value, total: 1)
+                ProgressView("", value: mainAppModel.vaultManager.progress.progress.value, total: 1)
                     .accentColor(.green)
                 
                 Spacer()
@@ -69,8 +85,6 @@ struct ImportFilesProgressView: View {
                     Spacer()
                     Button("CANCEL") {
                         showingCancelImportConfirmationSheet = true
-                        
-
                     }
                     .foregroundColor(Color.white)
                     .font(Font.custom(Styles.Fonts.semiBoldFontName, size: 14))
@@ -78,21 +92,19 @@ struct ImportFilesProgressView: View {
             }
         }
         .padding(EdgeInsets(top: 21, leading: 24, bottom: 30, trailing: 24))
-        .onReceive(appModel.vaultManager.progress.progress) { value in
+        .onReceive(mainAppModel.vaultManager.progress.progress) { value in
             if value == 1 {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     showingProgressView = false
                 }
             }
         }
-        
     }
 }
 
 struct ImportFilesProgressView_Previews: PreviewProvider {
     static var previews: some View {
         ImportFilesProgressView(showingProgressView: .constant(true),
-                                appModel: MainAppModel(),
                                 showingCancelImportConfirmationSheet: true)
     }
 }

@@ -102,7 +102,6 @@ struct FileActionMenu: View {
     var body: some View {
         ZStack{
             DragView(modalHeight: modalHeight,
-                     color: Styles.Colors.backgroundTab,
                      isShown: $showingActionSheet) {
                 FileActionMenuContentView
             }

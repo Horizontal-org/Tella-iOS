@@ -77,8 +77,7 @@ struct FileListView: View {
             showFileDetailsLink
             showFileInfoLink
 
-            ImportFilesProgressView(showingProgressView: $viewModel.showingProgressView,
-                                    appModel: appModel)
+            ImportFilesProgressView(showingProgressView: $viewModel.showingProgressView)
             
         }
         // .navigationBarTitle("\(rootFile.fileName)")

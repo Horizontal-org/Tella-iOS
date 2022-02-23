@@ -4,24 +4,6 @@
 
 import SwiftUI
 
-class DragViewData  {
-
-   var modalHeight : CGFloat = 0.0
-     var isPresented :  Binding<Bool> = .constant(false)
-     var content : AnyView? = nil
-    init() {
-        
-    }
-    init(modalHeight : CGFloat = 0.0,
-         isPresented :  Binding<Bool>  = .constant(false) ,
-           content : AnyView? = nil) {
-        
-        self.modalHeight =  modalHeight
-        self.isPresented  =  isPresented
-        self.content  =  content
-    }
-}
-
 struct AppView: View  {
     
     @State private var hideAll = false
@@ -36,8 +18,6 @@ struct AppView: View  {
         setDebugLevel(level: .debug, for: .app)
         setDebugLevel(level: .debug, for: .crypto)
         setupApperance()
-        
-        
     }
     
     var body: some View {
@@ -46,12 +26,6 @@ struct AppView: View  {
         } else {
             ZStack {
                 tabbar
-                
-                DragView(modalHeight: self.appModel.content.modalHeight,
-                         color: Styles.Colors.backgroundTab,
-                         isShown: self.appModel.content.isPresented) {
-                    self.appModel.content.content
-                }
             }
 
         }
@@ -66,45 +40,44 @@ struct AppView: View  {
         NavigationView {
             ZStack {
             
-            TabView(selection: $appModel.selectedTab) {
-                HomeView(appModel: appModel, hideAll: $hideAll)
-                    .tabItem {
-                        Image("tab.home")
-                        Text("Home")
-                    }.tag(MainAppModel.Tabs.home)
+                TabView(selection: $appModel.selectedTab) {
+                    HomeView(appModel: appModel, hideAll: $hideAll)
+                        .tabItem {
+                            Image("tab.home")
+                            Text("Home")
+                        }.tag(MainAppModel.Tabs.home)
 #if DEBUG
-                ReportsView()
-                    .tabItem {
-                        Image("tab.reports")
-                        Text("Reports")
-                    }.tag(MainAppModel.Tabs.reports)
-                FormsView()
-                    .tabItem {
-                        Image("tab.forms")
-                        Text("Forms")
-                    }.tag(MainAppModel.Tabs.forms)
+                    ReportsView()
+                        .tabItem {
+                            Image("tab.reports")
+                            Text("Reports")
+                        }.tag(MainAppModel.Tabs.reports)
+                    FormsView()
+                        .tabItem {
+                            Image("tab.forms")
+                            Text("Forms")
+                        }.tag(MainAppModel.Tabs.forms)
 #endif
-                CustomCameraView(completion: { image in
-                    if let image = image {
-                        self.appModel.add(image: image, to: appModel.vaultManager.root, type: .image, pathExtension: "png")
-                    }
-                })
+                    ContainerView{}
                     .tabItem {
                         Image("tab.camera")
                         Text("Camera")
                     }.tag(MainAppModel.Tabs.camera)
-
-                ContainerView{}
+                    
+                    ContainerView{}
                     .tabItem {
                         Image("tab.mic")
                         Text("Mic")
                     }.tag(MainAppModel.Tabs.mic)
-            }
-              
+                }
+                
                 if appModel.selectedTab == .mic   {
                     RecordView( showingRecoredrView: $showingRecoredrView)
-                 }
+                }
                 
+                if appModel.selectedTab == .camera   {
+                    CameraView(cameraViewModel: CameraViewModel(mainAppModel: appModel))
+                }
             }
 
             .toolbar {
