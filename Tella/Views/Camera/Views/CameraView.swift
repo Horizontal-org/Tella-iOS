@@ -37,7 +37,7 @@ struct CameraView: View {
             
             getCameraHeaderView()
             
-            ImportFilesProgressView(showingProgressView: $showingProgressView,
+            CameraFileProgressView(showingProgressView: $showingProgressView,
                                     progressType: .percentage)
         }
         
@@ -64,7 +64,7 @@ struct CameraView: View {
             
             showingProgressView = true
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                 cameraViewModel.saveImage()
             }
         }

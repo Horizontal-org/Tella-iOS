@@ -4,19 +4,15 @@
 
 import SwiftUI
 
-
-enum ProgressType {
-    case percentage
-    case number
-}
-
-struct ImportFilesProgressView: View {
+struct CameraFileProgressView: View {
     
     @Binding var showingProgressView : Bool
     @State var showingCancelImportConfirmationSheet : Bool = false
     @EnvironmentObject var mainAppModel : MainAppModel
     
-    var modalHeight : CGFloat = 179
+    @State var progresssss : Double = 0.0
+    
+    var modalHeight : CGFloat = 180
     
     var progressType : ProgressType = .number
     
@@ -30,16 +26,16 @@ struct ImportFilesProgressView: View {
                 ImportFilesProgressContentView
             }
             
-            CancelImportView(showingCancelImportConfirmationSheet: $showingCancelImportConfirmationSheet, appModel: mainAppModel) {
-                mainAppModel.vaultManager.progress.resume()
-
+            CancelCapturedFileView(showingCancelImportConfirmationSheet: $showingCancelImportConfirmationSheet, appModel: mainAppModel) {
+                
                 mainAppModel.cancelImportAndEncryption()
+                mainAppModel.vaultManager.progress.resume()
                 
                 showingCancelImportConfirmationSheet = false
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                     mainAppModel.vaultManager.progress.stop()
-
+                    
                     showingProgressView = false
                 })
                 
@@ -64,22 +60,15 @@ struct ImportFilesProgressView: View {
             
             VStack(alignment: .leading) {
                 
-                Text(LocalizableHome.importProgressTitle.localized)
+                Text(LocalizableCamera.cancelAddFileTitle.localized)
                     .font(.custom(Styles.Fonts.boldFontName, size: 16))
                     .foregroundColor(.white)
                 Spacer()
                     .frame(height: 8)
                 
-                if progressType == .number {
-                    Text("\(mainAppModel.vaultManager.progress.progressFile.value) \(LocalizableHome.importProgressFileImported.localized)")
-                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                        .foregroundColor(.white)
-                    
-                } else {
-                    Text("\(Int(mainAppModel.vaultManager.progress.progress.value * 100))% complete  ")
-                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                        .foregroundColor(.white)
-                }
+                Text("\(Int(mainAppModel.vaultManager.progress.progress.value * 100))% \(LocalizableCamera.addFileProgressComplete.localized) ")
+                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                    .foregroundColor(.white)
                 
                 Spacer()
                     .frame(height: 24)
@@ -112,9 +101,9 @@ struct ImportFilesProgressView: View {
     }
 }
 
-struct ImportFilesProgressView_Previews: PreviewProvider {
+
+struct CameraFileProgressView_Previews: PreviewProvider {
     static var previews: some View {
-        ImportFilesProgressView(showingProgressView: .constant(true),
-                                showingCancelImportConfirmationSheet: true)
+        CameraFileProgressView(showingProgressView: .constant(true))
     }
 }

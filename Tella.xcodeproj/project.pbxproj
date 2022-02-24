@@ -94,6 +94,10 @@
 		12607D5E27904F5300E2B8CC /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12607D5D27904F5300E2B8CC /* PlayerView.swift */; };
 		12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12619B8A27A01F6600999FDA /* BundleExtension.swift */; };
 		12690CB62755020C00A758D2 /* DeleteFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A9C902750FC7800405376 /* DeleteFileView.swift */; };
+		126AD14427C69D8200081CC9 /* CameraFileProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126AD14327C69D8200081CC9 /* CameraFileProgressView.swift */; };
+		126AD14627C6B25400081CC9 /* CancelCapturedFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126AD14527C6B25400081CC9 /* CancelCapturedFileView.swift */; };
+		126AD14827C6D0EC00081CC9 /* Camera.strings in Resources */ = {isa = PBXBuildFile; fileRef = 126AD14727C6D0EC00081CC9 /* Camera.strings */; };
+		126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */; };
 		126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */; };
 		126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ECFE927C57FA600ED5161 /* CameraState.swift */; };
 		126FE4CD27A41D5500AE4188 /* Lock.strings in Resources */ = {isa = PBXBuildFile; fileRef = 126FE4CF27A41D5500AE4188 /* Lock.strings */; };
@@ -313,6 +317,10 @@
 		12607D592790457600E2B8CC /* VideoViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewer.swift; sourceTree = "<group>"; };
 		12607D5D27904F5300E2B8CC /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		12619B8A27A01F6600999FDA /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
+		126AD14327C69D8200081CC9 /* CameraFileProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFileProgressView.swift; sourceTree = "<group>"; };
+		126AD14527C6B25400081CC9 /* CancelCapturedFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelCapturedFileView.swift; sourceTree = "<group>"; };
+		126AD14727C6D0EC00081CC9 /* Camera.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Camera.strings; sourceTree = "<group>"; };
+		126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCamera.swift; sourceTree = "<group>"; };
 		126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtension.swift; sourceTree = "<group>"; };
 		126ECFE927C57FA600ED5161 /* CameraState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraState.swift; sourceTree = "<group>"; };
 		126FE4CE27A41D5500AE4188 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Lock.strings; sourceTree = "<group>"; };
@@ -733,14 +741,6 @@
 			path = Video;
 			sourceTree = "<group>";
 		};
-		12776A9327BA760200CDC5DC /* CustomCameraController */ = {
-			isa = PBXGroup;
-			children = (
-				12776A9427BA761C00CDC5DC /* CustomCameraController.swift */,
-			);
-			path = CustomCameraController;
-			sourceTree = "<group>";
-		};
 		12776A9627BAC86200CDC5DC /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -817,7 +817,9 @@
 				128548DA27B697B6000FF00A /* CameraView.swift */,
 				12776A8F27BA742700CDC5DC /* CameraControlsView.swift */,
 				1289B98A27C53C2400315FCE /* CameraTypeItemView.swift */,
-				12776A9327BA760200CDC5DC /* CustomCameraController */,
+				12776A9427BA761C00CDC5DC /* CustomCameraController.swift */,
+				126AD14327C69D8200081CC9 /* CameraFileProgressView.swift */,
+				126AD14527C6B25400081CC9 /* CancelCapturedFileView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -825,6 +827,8 @@
 		1289B98527C5391A00315FCE /* Localizable */ = {
 			isa = PBXGroup;
 			children = (
+				126AD14727C6D0EC00081CC9 /* Camera.strings */,
+				126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */,
 			);
 			path = Localizable;
 			sourceTree = "<group>";
@@ -1383,6 +1387,7 @@
 				F66E65B323E32080000F93E5 /* Assets.xcassets in Resources */,
 				0E78B3AE2656B04B00F9BDBC /* open-sans.regular.ttf in Resources */,
 				126FE4D327A41D5F00AE4188 /* Home.strings in Resources */,
+				126AD14827C6D0EC00081CC9 /* Camera.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1509,6 +1514,7 @@
 				1237A71E278F5F8B00D7BC0F /* LanguageManager.swift in Sources */,
 				D5DAFDCF265384C4002F3942 /* Models.swift in Sources */,
 				1289B98B27C53C2400315FCE /* CameraTypeItemView.swift in Sources */,
+				126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */,
 				125680002717907900A2D356 /* LockPasswordView.swift in Sources */,
 				1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */,
 				D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */,
@@ -1557,6 +1563,7 @@
 				1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
 				12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */,
+				126AD14627C6B25400081CC9 /* CancelCapturedFileView.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				0E87C875268BDDFB00EB5E34 /* ImageViewer.swift in Sources */,
 				0D4BC3C6267577F900DCDC30 /* DocumentPicker.swift in Sources */,
@@ -1576,6 +1583,7 @@
 				1289B98727C5397200315FCE /* ScreenExtension.swift in Sources */,
 				0D4D7512266316DC00D7A635 /* SettingsSecurity.swift in Sources */,
 				0D4D7514266316E500D7A635 /* SettingsAboutHelp.swift in Sources */,
+				126AD14427C69D8200081CC9 /* CameraFileProgressView.swift in Sources */,
 				12730E69279F420400DC0135 /* SettingsViewModel.swift in Sources */,
 				12567FF9271742C500A2D356 /* Localizable.swift in Sources */,
 				0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */,

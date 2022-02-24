@@ -28,8 +28,8 @@ class ImportProgress: ObservableObject {
     private let sizeImportedPerSecond = 20563727
     
     func start(currentFile : Int = 0, totalFiles : Int = 1, totalSize : Double = 0.0) {
-        
-        
+        self.progress.send(0)
+
         self.totalFiles = totalFiles
         self.currentFile = currentFile
         
@@ -49,8 +49,16 @@ class ImportProgress: ObservableObject {
             self.progress.send(0)
         }
     }
+
+    func pause() {
+        self.timer.invalidate()
+    }
     
-    
+    func resume() {
+        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.timerRunning), userInfo: nil, repeats: true)
+    }
+
+
     func finish() {
         DispatchQueue.main.async {
             self.timeRemaining = 0.0

@@ -68,9 +68,18 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         
         self.progress.start(currentFile: 0, totalFiles: 1, totalSize: Double(image.data?.count ?? 0))
         
-        DispatchQueue.global(qos: .background).async {
+        let queue = DispatchQueue.global(qos: .background)
+        
+        var backgroundWorkItem : DispatchWorkItem?
+        
+        backgroundWorkItem = DispatchWorkItem { [weak self]  in
+            
+            if (backgroundWorkItem?.isCancelled)! {
+                return
+            }
             
             debugLog("\(image)", space: .files)
+            
             guard let data = image.fixedOrientation() else {
                 return
             }
@@ -82,7 +91,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
             let thumbnail = image.getThumbnail()?.pngData()
             let fileName = "\(type)_new"
             let containerName = UUID().uuidString
-
+            
             let vaultFile = VaultFile(type: .image,
                                       fileName: fileName,
                                       containerName: containerName,
@@ -93,14 +102,32 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                                       resolution: resolution,
                                       duration: nil)
             
-            if let _ = self.save(data, vaultFile: vaultFile, parent: parentFolder) {
-                self.addRecentFile(file: vaultFile)
-                self.save(file: self.root)
-                self.progress.finish()
+            if (backgroundWorkItem?.isCancelled)! {
+                return
+            }
+            
+            if let _ = self?.save(data, vaultFile: vaultFile, parent: parentFolder) {
+                self?.addRecentFile(file: vaultFile)
+                if let root = self?.root {
+                    self?.save(file: root)
+                }
+                self?.progress.finish()
+                
+                backgroundWorkItem?.cancel()
+                backgroundWorkItem = nil
             }
         }
         
+        queue.async(execute: backgroundWorkItem!)
         
+        self.shouldCancelImportAndEncryption.sink(receiveValue: { [weak self] value in
+            if value {
+                backgroundWorkItem?.cancel()
+                self?.progress.stop()
+                self?.shouldCancelImportAndEncryption.value = false
+            }
+            
+        }).store(in: &self.cancellable)
     }
     
     func importFile(files: [URL], to parentFolder: VaultFile?, type: FileType) {
@@ -112,26 +139,32 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         let queue = DispatchQueue.global(qos: .background)
         
         var backgroundWorkItem : DispatchWorkItem?
-        backgroundWorkItem = DispatchWorkItem {
+        
+        backgroundWorkItem = DispatchWorkItem { [weak self]  in
             for (index, item) in filesInfo.0.enumerated() {
                 if (backgroundWorkItem?.isCancelled)! {
                     break
                 }
-                self.progress.currentFile = index
-                self.importFileAndEncrypt(data: item.0, vaultFile: item.1, parentFolder: parentFolder, type: type)
+                self?.progress.currentFile = index
+                self?.importFileAndEncrypt(data: item.0, vaultFile: item.1, parentFolder: parentFolder, type: type)
             }
+            if let root = self?.root {
+                self?.save(file: root)
+                
+            }
+            self?.progress.finish()
             
-            self.save(file: self.root)
-            self.progress.finish()
+            backgroundWorkItem?.cancel()
+            backgroundWorkItem = nil
         }
         
         queue.async(execute: backgroundWorkItem!)
         
-        self.shouldCancelImportAndEncryption.sink(receiveValue: { value in
+        self.shouldCancelImportAndEncryption.sink(receiveValue: { [weak self] value in
             if value {
                 backgroundWorkItem?.cancel()
-                self.progress.stop()
-                self.shouldCancelImportAndEncryption.value = false
+                self?.progress.stop()
+                self?.shouldCancelImportAndEncryption.value = false
             }
             
         }).store(in: &self.cancellable)

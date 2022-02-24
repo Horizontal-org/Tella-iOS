@@ -72,8 +72,8 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     
     func add(files: [URL], to parentFolder: VaultFile?, type: FileType) {
         
-        vaultManager.progress.progress.sink { value in
-            self.publishUpdates()
+        vaultManager.progress.progress.sink { [weak self] value in
+            self?.publishUpdates()
         }.store(in: &cancellable)
         
         self.vaultManager.importFile(files: files, to: parentFolder, type: type)
