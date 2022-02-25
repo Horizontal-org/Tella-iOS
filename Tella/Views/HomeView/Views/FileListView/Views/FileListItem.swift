@@ -11,7 +11,7 @@ struct FileListItem: View {
     
     @ObservedObject var appModel: MainAppModel
     @ObservedObject var viewModel: FileListViewModel
-
+    
     @Binding var showFileInfoActive : Bool
     
     @Binding var selectingFile : Bool
@@ -38,14 +38,14 @@ struct FileListItem: View {
                             .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                             .foregroundColor(Color.white)
                             .lineLimit(1)
-                       
+                        
                         Spacer()
                             .frame(height: 2)
-
+                        
                         Text(file.formattedCreationDate)
                             .font(.custom(Styles.Fonts.regularFontName, size: 10))
                             .foregroundColor(Color.white)
-
+                        
                         Spacer()
                         
                     }
@@ -69,11 +69,11 @@ struct FileListItem: View {
                             Image("files.more")
                                 .resizable()
                                 .frame(width: 20, height: 20)
-
                         }.frame(width: 40, height: 40)
                     }
                 }
                 .padding(EdgeInsets(top: 12, leading: 17, bottom: 12, trailing: 20))
+                .frame(height: 60)
                 
                 if selectingFile {
                     Rectangle()

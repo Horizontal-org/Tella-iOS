@@ -29,7 +29,6 @@ struct TextFieldBottomSheet: View {
     var body: some View {
         ZStack{
             DragView(modalHeight: 165,
-                     color: Styles.Colors.backgroundTab,
                      isShown: $isPresented) {
                 CreateNewFolderContentView
             }

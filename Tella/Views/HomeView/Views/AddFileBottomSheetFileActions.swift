@@ -10,11 +10,11 @@ struct AddFileBottomSheetFileActions: View {
     @State private var showingAddPhotoVideoSheet = false
     @State private var showingCreateNewFolderSheet = false
     @State private var fieldContent: String = ""
-
+    
     @Binding var isPresented: Bool
     @Binding var showingDocumentPicker: Bool
     @Binding var showingImagePicker: Bool
-
+    
     @ObservedObject var appModel: MainAppModel
     var parent : VaultFile?
     
@@ -24,6 +24,8 @@ struct AddFileBottomSheetFileActions: View {
         ListActionSheetItem(imageName: "camera-icon",
                             content: "Take photo/video",
                             action: {
+                                isPresented = false
+                                
                                 appModel.selectedTab = .camera
                                 self.presentationMode.wrappedValue.dismiss()
                             }),
@@ -32,6 +34,8 @@ struct AddFileBottomSheetFileActions: View {
                             action: {
                                 isPresented = false
                                 appModel.changeTab(to: .mic)
+                                self.presentationMode.wrappedValue.dismiss()
+                                
                             }),
         ListActionSheetItem(imageName: "upload-icon",
                             content: "Import from device",
@@ -39,11 +43,6 @@ struct AddFileBottomSheetFileActions: View {
                                 isPresented = false
                                 showingAddPhotoVideoSheet = true
                             }),
-        //        ListActionSheetItem(imageName: "import_delete-icon",
-        //                            content: "Import and delete original file",
-        //                            action: {
-        //
-        //                            }),
         
         ListActionSheetItem(imageName: "new_folder-icon",
                             content: "Create a new folder",
@@ -56,7 +55,8 @@ struct AddFileBottomSheetFileActions: View {
     
     var body: some View {
         ZStack{
-            DragView(modalHeight: CGFloat(items.count * 40 + 100), color: Styles.Colors.backgroundTab, isShown: $isPresented){
+            DragView(modalHeight: CGFloat(items.count * 40 + 100),
+                     isShown: $isPresented){
                 ListActionSheet(items: items, headerTitle: "Manage files", isPresented: $isPresented)
             }
             
@@ -67,7 +67,7 @@ struct AddFileBottomSheetFileActions: View {
             
             TextFieldBottomSheet(titleText: "Create new folder",
                                  validateButtonText: "CREATE",
-                                       isPresented: $showingCreateNewFolderSheet,
+                                 isPresented: $showingCreateNewFolderSheet,
                                  fieldContent: $fieldContent,
                                  fieldType: .text) {
                 appModel.add(folder: fieldContent , to: parent)

@@ -56,7 +56,6 @@ struct RecordView: View {
             
             
             DragView(modalHeight: modalHeight,
-                     color: Styles.Colors.backgroundTab,
                      isShown: $showingSaveAudioConfirmationView) {
                 saveAudioConfirmationView
             }

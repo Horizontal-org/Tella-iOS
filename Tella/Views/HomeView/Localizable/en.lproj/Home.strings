@@ -33,7 +33,7 @@
 
 // Import Progress
 "HomeImportProgressTitle" = "Importing and encrypting";
-"HomeImportProgressFileImported" = "file imported";
+"HomeImportProgressFileImported" = "%@ file imported";
 
 // Cancel Import File
 "HomeCancelImportFileTitle" = "Are you sure you want to cancel?";

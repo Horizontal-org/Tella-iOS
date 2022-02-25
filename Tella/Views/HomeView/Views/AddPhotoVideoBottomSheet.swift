@@ -35,7 +35,6 @@ struct AddPhotoVideoBottomSheet: View {
     var body: some View {
         ZStack{
             DragView(modalHeight: CGFloat(items.count * 40 + 100),
-                     color: Styles.Colors.backgroundTab,
                      isShown: $isPresented) {
                 ListActionSheet(items: items,
                                 headerTitle: "Import from device",

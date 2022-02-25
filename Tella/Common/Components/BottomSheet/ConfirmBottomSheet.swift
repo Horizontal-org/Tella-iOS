@@ -21,7 +21,9 @@ struct ConfirmBottomSheet : View {
     var body: some View {
         
         if withDrag  {
-            DragView(modalHeight: modalHeight, color: Styles.Colors.backgroundTab,
+            
+            DragView(modalHeight: modalHeight,
+                     showWithAnimation: false,
                      isShown: $isPresented){
                 
                 contentView
