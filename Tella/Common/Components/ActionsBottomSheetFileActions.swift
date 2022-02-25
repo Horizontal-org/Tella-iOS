@@ -20,7 +20,8 @@ struct ActionsBottomSheetFileActions: View {
     
     var body: some View {
         VStack{
-            DragView(modalHeight: CGFloat(items.count * 40 + 100), color: Styles.Colors.backgroundTab, isShown: $isPresented){
+            DragView(modalHeight: CGFloat(items.count * 40 + 100),
+                     isShown: $isPresented){
                 ListActionSheet(items: items, headerTitle: "filname.jpg", isPresented: $isPresented)
             }
         }

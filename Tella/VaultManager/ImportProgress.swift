@@ -6,41 +6,37 @@ import Foundation
 
 import Combine
 
-class ImportProgress {
-    
-    var progressFile : String = ""
+class ImportProgress: ObservableObject {
+
+    var progressFile = CurrentValueSubject<String, Never>("")
     var progress = CurrentValueSubject<Double, Never>(0.0)
     var totalFiles : Int = 1
-    var totalSize : Double = 0.0
+    var isFinishing = PassthroughSubject<Bool, Never>()
+
     var currentFile : Int = 0 {
         didSet {
-            self.progressFile = "\(self.currentFile)/\(self.totalFiles)"
+            DispatchQueue.main.async {
+            self.progressFile.send("\(self.currentFile)/\(self.totalFiles)")
+            }
         }
     }
-    var isFinishing = PassthroughSubject<Bool, Never>()
     
-
+    
     private var totalTime : Double = 0.0
     private var timeRemaining : Double = 0.0
     private var timer = Timer()
-    
     private let sizeImportedPerSecond = 20563727
     
     func start(currentFile : Int = 0, totalFiles : Int = 1, totalSize : Double = 0.0) {
-        
-        self.currentFile = currentFile
+        self.progress.send(0)
+
         self.totalFiles = totalFiles
-        self.totalSize = totalSize
+        self.currentFile = currentFile
         
-        DispatchQueue.main.async {
-            
-            self.progress.send(0.0)
-            self.progressFile = "\(self.currentFile)/\(self.totalFiles)"
-            self.totalTime =  Double(self.totalSize) / Double(self.sizeImportedPerSecond)
-            self.timeRemaining = self.totalTime
-            
-            self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.timerRunning), userInfo: nil, repeats: true)
-        }
+        self.totalTime =  Double(totalSize) / Double(self.sizeImportedPerSecond)
+        self.timeRemaining = self.totalTime
+        
+        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.timerRunning), userInfo: nil, repeats: true)
     }
     
     func stop() {
@@ -53,8 +49,16 @@ class ImportProgress {
             self.progress.send(0)
         }
     }
+
+    func pause() {
+        self.timer.invalidate()
+    }
     
-    
+    func resume() {
+        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.timerRunning), userInfo: nil, repeats: true)
+    }
+
+
     func finish() {
         DispatchQueue.main.async {
             self.timeRemaining = 0.0
@@ -64,7 +68,7 @@ class ImportProgress {
             self.isFinishing.send(true)
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
             self.progress.send(0)
         }
     }

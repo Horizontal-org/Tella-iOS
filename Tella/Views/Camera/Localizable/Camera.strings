@@ -1,0 +1,20 @@
+/* 
+  Camera.strings
+  Tella
+
+  Copyright © 2022 INTERNEWS. All rights reserved.
+*/
+
+
+// Import Progress
+
+"CameraAddFileProgressTitle" = "Encrypting file...";
+"CameraAddFileProgressComplete" = "%i%% complete";
+
+"CameraCancelAddFileTitle" = "Cancel encryption and delete file?";
+"CameraCancelAddFileMessage" = "If you cancel, your file will be lost.";
+
+"CameraCancelAddFileButtonTitle" = "DELETE FILE";
+"CamerCancelAddFileBackButtonTitle" = "BACK";
+
+
