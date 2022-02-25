@@ -4,42 +4,38 @@
 
 import SwiftUI
 
-
-enum ProgressType {
-    case percentage
-    case number
-}
-
 struct ImportFilesProgressView: View {
     
     @Binding var showingProgressView : Bool
     @State var showingCancelImportConfirmationSheet : Bool = false
     @EnvironmentObject var mainAppModel : MainAppModel
     
+    var importFilesProgressProtocol : ImportFilesProgressProtocol
+    
     var modalHeight : CGFloat = 179
-    
-    var progressType : ProgressType = .number
-    
     
     var body: some View {
         
         ZStack{
             DragView(modalHeight: modalHeight,
                      shouldHideOnTap: false,
+                     showWithAnimation: false,
                      isShown: $showingProgressView) {
                 ImportFilesProgressContentView
             }
             
-            CancelImportView(showingCancelImportConfirmationSheet: $showingCancelImportConfirmationSheet, appModel: mainAppModel) {
+            CancelImportView(showingCancelImportConfirmationSheet: $showingCancelImportConfirmationSheet,
+                             appModel: mainAppModel,
+                             importFilesProgressProtocol: importFilesProgressProtocol) {
+                
                 mainAppModel.vaultManager.progress.resume()
-
                 mainAppModel.cancelImportAndEncryption()
                 
                 showingCancelImportConfirmationSheet = false
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                     mainAppModel.vaultManager.progress.stop()
-
+                    
                     showingProgressView = false
                 })
                 
@@ -64,19 +60,20 @@ struct ImportFilesProgressView: View {
             
             VStack(alignment: .leading) {
                 
-                Text(LocalizableHome.importProgressTitle.localized)
+                Text(importFilesProgressProtocol.title)
                     .font(.custom(Styles.Fonts.boldFontName, size: 16))
                     .foregroundColor(.white)
                 Spacer()
                     .frame(height: 8)
                 
-                if progressType == .number {
-                    Text("\(mainAppModel.vaultManager.progress.progressFile.value) \(LocalizableHome.importProgressFileImported.localized)")
+                if importFilesProgressProtocol.progressType == .number {
+                    Text(String.init(format:importFilesProgressProtocol.progressMessage ,  mainAppModel.vaultManager.progress.progressFile.value))
                         .font(.custom(Styles.Fonts.regularFontName, size: 14))
                         .foregroundColor(.white)
                     
                 } else {
-                    Text("\(Int(mainAppModel.vaultManager.progress.progress.value * 100))% complete  ")
+                    Text(String.init(format:importFilesProgressProtocol.progressMessage + " " , Int(mainAppModel.vaultManager.progress.progress.value * 100)))
+                    
                         .font(.custom(Styles.Fonts.regularFontName, size: 14))
                         .foregroundColor(.white)
                 }
@@ -102,10 +99,11 @@ struct ImportFilesProgressView: View {
             }
         }
         .padding(EdgeInsets(top: 21, leading: 24, bottom: 30, trailing: 24))
-        .onReceive(mainAppModel.vaultManager.progress.progress) { value in
-            if value == 1 {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        .onReceive(mainAppModel.vaultManager.progress.isFinishing) { isFinishing in
+            if isFinishing {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                     showingProgressView = false
+                    showingCancelImportConfirmationSheet = false
                 }
             }
         }
@@ -115,6 +113,7 @@ struct ImportFilesProgressView: View {
 struct ImportFilesProgressView_Previews: PreviewProvider {
     static var previews: some View {
         ImportFilesProgressView(showingProgressView: .constant(true),
-                                showingCancelImportConfirmationSheet: true)
+                                showingCancelImportConfirmationSheet: true,
+                                importFilesProgressProtocol: ImportFilesProgress())
     }
 }

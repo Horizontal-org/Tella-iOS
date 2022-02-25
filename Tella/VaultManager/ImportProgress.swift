@@ -68,7 +68,7 @@ class ImportProgress: ObservableObject {
             self.isFinishing.send(true)
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
             self.progress.send(0)
         }
     }

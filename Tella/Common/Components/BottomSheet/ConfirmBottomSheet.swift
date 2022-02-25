@@ -23,6 +23,7 @@ struct ConfirmBottomSheet : View {
         if withDrag  {
             
             DragView(modalHeight: modalHeight,
+                     showWithAnimation: false,
                      isShown: $isPresented){
                 
                 contentView

@@ -9,7 +9,7 @@
 // Import Progress
 
 "CameraAddFileProgressTitle" = "Encrypting file...";
-"CameraAddFileProgressComplete" = "complete";
+"CameraAddFileProgressComplete" = "%i%% complete";
 
 "CameraCancelAddFileTitle" = "Cancel encryption and delete file?";
 "CameraCancelAddFileMessage" = "If you cancel, your file will be lost.";

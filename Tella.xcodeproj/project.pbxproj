@@ -94,8 +94,6 @@
 		12607D5E27904F5300E2B8CC /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12607D5D27904F5300E2B8CC /* PlayerView.swift */; };
 		12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12619B8A27A01F6600999FDA /* BundleExtension.swift */; };
 		12690CB62755020C00A758D2 /* DeleteFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A9C902750FC7800405376 /* DeleteFileView.swift */; };
-		126AD14427C69D8200081CC9 /* CameraFileProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126AD14327C69D8200081CC9 /* CameraFileProgressView.swift */; };
-		126AD14627C6B25400081CC9 /* CancelCapturedFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126AD14527C6B25400081CC9 /* CancelCapturedFileView.swift */; };
 		126AD14827C6D0EC00081CC9 /* Camera.strings in Resources */ = {isa = PBXBuildFile; fileRef = 126AD14727C6D0EC00081CC9 /* Camera.strings */; };
 		126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */; };
 		126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */; };
@@ -104,6 +102,9 @@
 		126FE4D027A41D5A00AE4188 /* Settings.strings in Resources */ = {isa = PBXBuildFile; fileRef = 126FE4D227A41D5A00AE4188 /* Settings.strings */; };
 		126FE4D327A41D5F00AE4188 /* Home.strings in Resources */ = {isa = PBXBuildFile; fileRef = 126FE4D527A41D5F00AE4188 /* Home.strings */; };
 		126FE4D727A427E200AE4188 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FE4D627A427E200AE4188 /* Constants.swift */; };
+		1272F25D27C91ACD0054F2E2 /* ImportFileProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1272F25C27C91ACD0054F2E2 /* ImportFileProgress.swift */; };
+		1272F25F27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1272F25E27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift */; };
+		1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1272F26027C91CD90054F2E2 /* ImportFilesProgressModels.swift */; };
 		12730E65279EAB9200DC0135 /* SettingsMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12730E64279EAB9200DC0135 /* SettingsMainView.swift */; };
 		12730E67279F11C300DC0135 /* LanguageListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12730E66279F11C200DC0135 /* LanguageListView.swift */; };
 		12730E69279F420400DC0135 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12730E68279F420400DC0135 /* SettingsViewModel.swift */; };
@@ -317,8 +318,6 @@
 		12607D592790457600E2B8CC /* VideoViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewer.swift; sourceTree = "<group>"; };
 		12607D5D27904F5300E2B8CC /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		12619B8A27A01F6600999FDA /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
-		126AD14327C69D8200081CC9 /* CameraFileProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFileProgressView.swift; sourceTree = "<group>"; };
-		126AD14527C6B25400081CC9 /* CancelCapturedFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelCapturedFileView.swift; sourceTree = "<group>"; };
 		126AD14727C6D0EC00081CC9 /* Camera.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Camera.strings; sourceTree = "<group>"; };
 		126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCamera.swift; sourceTree = "<group>"; };
 		126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtension.swift; sourceTree = "<group>"; };
@@ -327,6 +326,9 @@
 		126FE4D127A41D5A00AE4188 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Settings.strings; sourceTree = "<group>"; };
 		126FE4D427A41D5F00AE4188 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Home.strings; sourceTree = "<group>"; };
 		126FE4D627A427E200AE4188 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		1272F25C27C91ACD0054F2E2 /* ImportFileProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFileProgress.swift; sourceTree = "<group>"; };
+		1272F25E27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesFromCameraProgress.swift; sourceTree = "<group>"; };
+		1272F26027C91CD90054F2E2 /* ImportFilesProgressModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesProgressModels.swift; sourceTree = "<group>"; };
 		12730E64279EAB9200DC0135 /* SettingsMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMainView.swift; sourceTree = "<group>"; };
 		12730E66279F11C200DC0135 /* LanguageListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageListView.swift; sourceTree = "<group>"; };
 		12730E68279F420400DC0135 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
@@ -741,6 +743,24 @@
 			path = Video;
 			sourceTree = "<group>";
 		};
+		1272F25A27C919E40054F2E2 /* ImportFilesProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				125DD9C82796CB090053619D /* ImportFilesProgressView.swift */,
+				127B56D4279AC28200F902C9 /* CancelImportView.swift */,
+				1272F26027C91CD90054F2E2 /* ImportFilesProgressModels.swift */,
+			);
+			path = ImportFilesProgressView;
+			sourceTree = "<group>";
+		};
+		1272F25B27C91A730054F2E2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1272F25C27C91ACD0054F2E2 /* ImportFileProgress.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		12776A9627BAC86200CDC5DC /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -787,8 +807,6 @@
 				125EFACC274A447000D93DF6 /* FileSortMenu.swift */,
 				0DA213CA268028A200526995 /* FileSortOptions.swift */,
 				125A9C902750FC7800405376 /* DeleteFileView.swift */,
-				125DD9C82796CB090053619D /* ImportFilesProgressView.swift */,
-				127B56D4279AC28200F902C9 /* CancelImportView.swift */,
 				128F97962799983800E63DA5 /* CircularActivityIndicatory.swift */,
 			);
 			path = Views;
@@ -807,6 +825,7 @@
 			children = (
 				1289B98827C53A9C00315FCE /* CameraType.swift */,
 				126ECFE927C57FA600ED5161 /* CameraState.swift */,
+				1272F25E27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -818,8 +837,6 @@
 				12776A8F27BA742700CDC5DC /* CameraControlsView.swift */,
 				1289B98A27C53C2400315FCE /* CameraTypeItemView.swift */,
 				12776A9427BA761C00CDC5DC /* CustomCameraController.swift */,
-				126AD14327C69D8200081CC9 /* CameraFileProgressView.swift */,
-				126AD14527C6B25400081CC9 /* CancelCapturedFileView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -953,6 +970,7 @@
 		12D7F5F52743F28700EBA3A2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				1272F25A27C919E40054F2E2 /* ImportFilesProgressView */,
 				0E99854E266E56A80019FDF4 /* Widgets */,
 				0E78B3A42656B03500F9BDBC /* BottomSheet */,
 				0ECC7815267A532B00A2ACF2 /* Tabs */,
@@ -1124,6 +1142,7 @@
 		D5DA7F992648D02C00B00FDA /* FileListView */ = {
 			isa = PBXGroup;
 			children = (
+				1272F25B27C91A730054F2E2 /* Models */,
 				1288BFE4274C40CA0051E23D /* Views */,
 				1288BFE5274C40E00051E23D /* ViewModel */,
 			);
@@ -1519,6 +1538,7 @@
 				1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */,
 				D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */,
 				D5DA7F982646220100B00FDA /* FileGroupButtonView.swift in Sources */,
+				1272F25F27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift in Sources */,
 				12D37A942721752B00E43BDB /* TellaApp.swift in Sources */,
 				125A0AEF2726F0A000F6E77F /* ContainerView.swift in Sources */,
 				125D231C271F119D00250FBB /* Validator.swift in Sources */,
@@ -1563,8 +1583,8 @@
 				1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
 				12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */,
-				126AD14627C6B25400081CC9 /* CancelCapturedFileView.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
+				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
 				0E87C875268BDDFB00EB5E34 /* ImageViewer.swift in Sources */,
 				0D4BC3C6267577F900DCDC30 /* DocumentPicker.swift in Sources */,
 				0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */,
@@ -1583,7 +1603,6 @@
 				1289B98727C5397200315FCE /* ScreenExtension.swift in Sources */,
 				0D4D7512266316DC00D7A635 /* SettingsSecurity.swift in Sources */,
 				0D4D7514266316E500D7A635 /* SettingsAboutHelp.swift in Sources */,
-				126AD14427C69D8200081CC9 /* CameraFileProgressView.swift in Sources */,
 				12730E69279F420400DC0135 /* SettingsViewModel.swift in Sources */,
 				12567FF9271742C500A2D356 /* Localizable.swift in Sources */,
 				0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */,
@@ -1640,6 +1659,7 @@
 				129533C227399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift in Sources */,
 				12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */,
 				0DEFD548268943CC0014EADE /* DocumentPickerView.swift in Sources */,
+				1272F25D27C91ACD0054F2E2 /* ImportFileProgress.swift in Sources */,
 				125EDDB1271E40CA00E2789A /* LockViewModel.swift in Sources */,
 				D5B823F0262775D80008E04B /* CryptoManager.swift in Sources */,
 				0E170253267910B90069072A /* BlankFormsView.swift in Sources */,

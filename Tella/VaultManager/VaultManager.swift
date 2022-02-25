@@ -66,7 +66,6 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     
     func importFile(image: UIImage, to parentFolder: VaultFile?, type: FileType, pathExtension: String) {
         
-        self.progress.start(currentFile: 0, totalFiles: 1, totalSize: Double(image.data?.count ?? 0))
         
         let queue = DispatchQueue.global(qos: .background)
         
@@ -128,6 +127,9 @@ class VaultManager: VaultManagerInterface, ObservableObject {
             }
             
         }).store(in: &self.cancellable)
+        
+        self.progress.start(currentFile: 0, totalFiles: 1, totalSize: Double(image.data?.count ?? 0))
+
     }
     
     func importFile(files: [URL], to parentFolder: VaultFile?, type: FileType) {

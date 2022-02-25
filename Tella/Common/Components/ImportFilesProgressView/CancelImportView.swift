@@ -9,6 +9,8 @@ struct CancelImportView: View {
     @Binding var showingCancelImportConfirmationSheet : Bool
     @ObservedObject var appModel: MainAppModel
     
+    var importFilesProgressProtocol : ImportFilesProgressProtocol
+    
     let modalHeight = 152
     let didConfirm : (() -> Void)?
     let didCancel : (() -> Void)?
@@ -16,10 +18,10 @@ struct CancelImportView: View {
     var body: some View {
         ZStack{
             
-            ConfirmBottomSheet(titleText: LocalizableHome.cancelImportFileTitle.localized,
-                               msgText: LocalizableHome.cancelImportFileMessage.localized,
-                               cancelText: LocalizableHome.cancelImportFileBack.localized,
-                               actionText: LocalizableHome.cancelImportFileCancelImport.localized,
+            ConfirmBottomSheet(titleText: importFilesProgressProtocol.cancelTitle,
+                               msgText: importFilesProgressProtocol.cancelMessage,
+                               cancelText: "BACK",
+                               actionText: importFilesProgressProtocol.cancelButtonTitle,
                                modalHeight: 161,
                                isPresented: $showingCancelImportConfirmationSheet) {
                 didConfirm?()
@@ -33,7 +35,7 @@ struct CancelImportView: View {
 
 struct CancelImportView_Previews: PreviewProvider {
     static var previews: some View {
-        CancelImportView(showingCancelImportConfirmationSheet: .constant(true), appModel: MainAppModel()) {
+        CancelImportView(showingCancelImportConfirmationSheet: .constant(true), appModel: MainAppModel(), importFilesProgressProtocol: ImportFilesProgress()) {
             
         } didCancel: {
             

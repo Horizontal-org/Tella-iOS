@@ -76,8 +76,9 @@ struct FileListView: View {
                            appModel: appModel)
             showFileDetailsLink
             showFileInfoLink
-
-            ImportFilesProgressView(showingProgressView: $viewModel.showingProgressView)
+            
+            ImportFilesProgressView(showingProgressView: $viewModel.showingProgressView,
+                                    importFilesProgressProtocol: ImportFilesProgress())
             
         }
         // .navigationBarTitle("\(rootFile.fileName)")
@@ -239,49 +240,45 @@ struct FileListView: View {
     
     private var itemsListView: some View {
         ScrollView {
-            LazyVStack {
+            LazyVStack(spacing: 1) {
                 ForEach(files.sorted(by: viewModel.sortBy, folderArray: viewModel.folderArray, root: self.appModel.vaultManager.root, fileType: self.fileType), id: \.self) { file in
-                    VStack(alignment: .leading) {
-                        switch file.type {
-                        case .folder:
-                            FileListItem(file: file,
-                                         parentFile: rootFile,
-                                         appModel: appModel,
-                                         viewModel: self.viewModel,
-                                         showFileInfoActive: $viewModel.showFileInfoActive,
-                                         selectingFile: $viewModel.selectingFiles,
-                                         isSelected: getStatus(for: file),
-                                         showingActionSheet: $viewModel.showingFileActionMenu,
-                                         fileActionMenuType: $viewModel.fileActionMenuType,
-                                         currentSelectedFile: $viewModel.currentSelectedVaultFile)
-                                .onTapGesture {
-                                    rootFile = file
-                                    viewModel.folderArray.append(file)
-                                }
-                            
-                        default:
-                            ZStack {
-                                FileListItem(file: file,
-                                             parentFile: rootFile,
-                                             appModel: appModel,
-                                             viewModel: self.viewModel,
-                                             showFileInfoActive: $viewModel.showFileInfoActive,
-                                             selectingFile: $viewModel.selectingFiles,
-                                             isSelected: getStatus(for: file),
-                                             showingActionSheet: $viewModel.showingFileActionMenu,
-                                             fileActionMenuType: $viewModel.fileActionMenuType,
-                                             currentSelectedFile: $viewModel.currentSelectedVaultFile)
-                                
-                                    .onTapGesture {
-                                        viewModel.showFileDetails = true
-                                        self.viewModel.currentSelectedVaultFile = file
-                                    }
+                    switch file.type {
+                    case .folder:
+                        FileListItem(file: file,
+                                     parentFile: rootFile,
+                                     appModel: appModel,
+                                     viewModel: self.viewModel,
+                                     showFileInfoActive: $viewModel.showFileInfoActive,
+                                     selectingFile: $viewModel.selectingFiles,
+                                     isSelected: getStatus(for: file),
+                                     showingActionSheet: $viewModel.showingFileActionMenu,
+                                     fileActionMenuType: $viewModel.fileActionMenuType,
+                                     currentSelectedFile: $viewModel.currentSelectedVaultFile)
+                            .frame(height: 60)
+                            .onTapGesture {
+                                rootFile = file
+                                viewModel.folderArray.append(file)
                             }
-                        }
+                        
+                    default:
+                        FileListItem(file: file,
+                                     parentFile: rootFile,
+                                     appModel: appModel,
+                                     viewModel: self.viewModel,
+                                     showFileInfoActive: $viewModel.showFileInfoActive,
+                                     selectingFile: $viewModel.selectingFiles,
+                                     isSelected: getStatus(for: file),
+                                     showingActionSheet: $viewModel.showingFileActionMenu,
+                                     fileActionMenuType: $viewModel.fileActionMenuType,
+                                     currentSelectedFile: $viewModel.currentSelectedVaultFile)
+                            .frame(height: 60)
+                            .onTapGesture {
+                                viewModel.showFileDetails = true
+                                self.viewModel.currentSelectedVaultFile = file
+                            }
                     }
-                    .frame(height: 60)
                 }
-                .listRowBackground(Styles.Colors.backgroundMain)
+                .listRowBackground(Color.green)
             }
         }
         .background(Styles.Colors.backgroundMain)
