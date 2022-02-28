@@ -58,6 +58,7 @@
 		1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224DAEF2719C71B001C0ED0 /* LockPasswordData.swift */; };
 		1224DAF12719DFB5001C0ED0 /* VideoRecordingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E78B3B62656B0BC00F9BDBC /* VideoRecordingView.swift */; };
 		1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE64FA282505542E00B03CEC /* AppViewState.swift */; };
+		1230BE4727CD6D440055F854 /* AudioAuthorizationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230BE4627CD6D440055F854 /* AudioAuthorizationStatus.swift */; };
 		1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C876268C792000EB5E34 /* NSUIImage.swift */; };
 		1237A71A278F18C000D7BC0F /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C87C268CCA3500EB5E34 /* WebView.swift */; };
 		1237A71C278F5B2E00D7BC0F /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1237A71B278F5B2E00D7BC0F /* DateExtension.swift */; };
@@ -286,6 +287,7 @@
 		1224DAE927197577001C0ED0 /* ConfirmLockPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmLockPasswordView.swift; sourceTree = "<group>"; };
 		1224DAEB271975D2001C0ED0 /* PasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordView.swift; sourceTree = "<group>"; };
 		1224DAEF2719C71B001C0ED0 /* LockPasswordData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPasswordData.swift; sourceTree = "<group>"; };
+		1230BE4627CD6D440055F854 /* AudioAuthorizationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAuthorizationStatus.swift; sourceTree = "<group>"; };
 		1237A71B278F5B2E00D7BC0F /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		1237A71D278F5F8B00D7BC0F /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
 		123CE54E272028D1005BF386 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
@@ -883,6 +885,7 @@
 			children = (
 				D7F55FC725348FA50028739E /* RecordState.swift */,
 				D7F55FCC25348FB80028739E /* AudioRecorderManager.swift */,
+				1230BE4627CD6D440055F854 /* AudioAuthorizationStatus.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1654,6 +1657,7 @@
 				D516397C2631113B003A11B5 /* Styles.swift in Sources */,
 				6DD4C03A240F547300491438 /* Utils.swift in Sources */,
 				12F5D28D27A326EB00BF3309 /* AboutAndHelpView.swift in Sources */,
+				1230BE4727CD6D440055F854 /* AudioAuthorizationStatus.swift in Sources */,
 				12690CB62755020C00A758D2 /* DeleteFileView.swift in Sources */,
 				12A148982720B47100A1ADDC /* LockDescriptionView.swift in Sources */,
 				129533C227399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift in Sources */,

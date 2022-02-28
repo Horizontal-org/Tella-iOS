@@ -67,7 +67,7 @@ struct AppView: View  {
                     ContainerView{}
                     .tabItem {
                         Image("tab.mic")
-                        Text("Mic")
+                        Text("Rec")
                     }.tag(MainAppModel.Tabs.mic)
                 }
                 

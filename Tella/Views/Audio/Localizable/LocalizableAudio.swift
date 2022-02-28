@@ -15,6 +15,9 @@ enum LocalizableAudio: String, LocalizableDelegate {
     case  renameFileTitle = "AudioRenameFileTitle"
 
     case  recordingSavedMessage = "AudioRecordingSavedMessage"
+    
+    case  deniedPermissionMessage = "AudioDeniedPermissionMessage"
+    case  deniedPermissionButtonTitle = "AudioDeniedPermissionButtonTitle"
 
     
     var tableName: String? {

@@ -4,13 +4,15 @@
 
 import Foundation
 import Combine
+import AVFoundation
 
 class RecordViewModel: ObservableObject {
     
     @Published var state: RecordState = .ready
     @Published var fileName: String = ""
     @Published var time: String = ""
-    
+    @Published var shouldShowSettingsAlert: Bool = false
+
     private var audioBackend: RecordingAudioManager = RecordingAudioManager()
     private var cancellable: Set<AnyCancellable> = []
     
@@ -27,9 +29,25 @@ class RecordViewModel: ObservableObject {
         }.store(in: &cancellable)
         
         self.fileName = self.initialFileName
+        
+        audioBackend.$audioPermission.sink { permission in
+            switch permission {
+            case .notDetermined:
+                break
+            case .authorized:
+                self.onStartRecording()
+            case .denied:
+                self.shouldShowSettingsAlert = true
+            case .restricted:
+                self.shouldShowSettingsAlert = true
+            }
+        }.store(in: &cancellable)
     }
     
     // Record audio
+    func checkCameraAccess() {
+        audioBackend.checkCameraAccess()
+    }
     
     func onStartRecording() {
         
@@ -98,5 +116,4 @@ class RecordViewModel: ObservableObject {
     var initialFileName: String {
         return  LocalizableAudio.suffixRecordingName.localized + " " + Date().getFormattedDateString(format: DateFormat.fileName.rawValue)
     }
-    
 }
