@@ -49,22 +49,16 @@ final class AppViewState: ObservableObject {
     func resetToAudio() {
         viewStack = [.MAIN]
         
-        homeViewModel?.selectedType = .audio
+        homeViewModel?.selectedType = [.audio]
         homeViewModel?.showFilesList = true
     }
     
-    func resetToImage() {
+    func resetToImageAndVideo() {
         viewStack = [.MAIN]
         
-        homeViewModel?.selectedType = .image
+        homeViewModel?.selectedType = [.image,.video]
         homeViewModel?.showFilesList = true
     }
     
-    func resetToVideo() {
-        viewStack = [.MAIN]
-        
-        homeViewModel?.selectedType = .video
-        homeViewModel?.showFilesList = true
-    }
 }
 

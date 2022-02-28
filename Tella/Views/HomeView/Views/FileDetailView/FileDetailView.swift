@@ -11,7 +11,7 @@ struct FileDetailView: View {
     
     var file: VaultFile
     var videoFilesArray: [VaultFile]?
-    var fileType : FileType?
+    var fileType : [FileType]?
     
     var body: some View {
              switch file.type {

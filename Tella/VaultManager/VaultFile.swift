@@ -130,12 +130,12 @@ extension Array where Element == VaultFile {
         return self.filter({ filter == ($0.type) || (includeFolders && $0.type == .folder)})
     }
     
-    func sorted(by sortOrder: FileSortOptions, folderArray:[VaultFile], root:VaultFile, fileType:FileType?) -> [VaultFile] {
+    func sorted(by sortOrder: FileSortOptions, folderArray:[VaultFile], root:VaultFile, fileType:[FileType]?) -> [VaultFile] {
         
         var filteredFiles : [VaultFile] = []
         
         if let fileType = fileType {
-
+            
             var vaultFileResult : [VaultFile] = []
             getFiles(root: root, vaultFileResult: &vaultFileResult, fileType: fileType)
             filteredFiles = vaultFileResult
@@ -180,14 +180,14 @@ extension Array where Element == VaultFile {
             }
         }
     }
-
-    func getFiles(root: VaultFile, vaultFileResult: inout [VaultFile], fileType:FileType) {
+    
+    func getFiles(root: VaultFile, vaultFileResult: inout [VaultFile], fileType:[FileType]) {
         root.files.forEach { file in
             switch file.type {
             case .folder:
                 getFiles(root: file, vaultFileResult: &vaultFileResult, fileType: fileType)
             default:
-                if file.type == fileType {
+                if fileType.contains(file.type) {
                     vaultFileResult.append(file )
                 }
             }
@@ -212,7 +212,7 @@ extension VaultFile {
 }
 
 extension VaultFile {
-
+    
     var longFormattedCreationDate : String {
         get {
             return created.getFormattedDateString(format: DateFormat.fileInfo.rawValue)

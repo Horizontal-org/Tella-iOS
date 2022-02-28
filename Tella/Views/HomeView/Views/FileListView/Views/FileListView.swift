@@ -24,7 +24,7 @@ struct FileListView: View {
     @State var rootFile: VaultFile
     
     var files: [VaultFile]
-    var fileType: FileType?
+    var fileType: [FileType]?
     var title : String = ""
     
     private var selectedItemsTitle : String {
@@ -35,7 +35,7 @@ struct FileListView: View {
         return files.sorted(by: viewModel.sortBy, folderArray: viewModel.folderArray, root: self.appModel.vaultManager.root, fileType: self.fileType)
     }
     
-    init(appModel: MainAppModel, files: [VaultFile], fileType: FileType? = nil, rootFile: VaultFile, title : String = "") {
+    init(appModel: MainAppModel, files: [VaultFile], fileType: [FileType]? = nil, rootFile: VaultFile, title : String = "") {
         self.files = files
         self.fileType = fileType
         self.appModel = appModel
