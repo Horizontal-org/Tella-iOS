@@ -35,6 +35,8 @@ final class CustomCameraController: UIViewController {
         }
     }
     
+    @Published var flashIsOn : Bool = false
+
     // MARK: - Overrides
 
     override func viewDidLoad() {
@@ -118,6 +120,7 @@ final class CustomCameraController: UIViewController {
                 }
                 avDevice.torchMode =  avDevice.torchMode == . on ? .off : .on
                 avDevice.unlockForConfiguration()
+                flashIsOn = avDevice.torchMode == . on
             }
         }
     }
@@ -250,12 +253,12 @@ final class CustomCameraRepresentable: UIViewControllerRepresentable,ObservableO
     var videoURLCompletion: ((URL) -> Void)
     
     @Published var isRecording : Bool?
-    @Published var currentTime : TimeInterval = 0.0
     
     @Published var imageData : Data?
     @Published var videoURL : URL?
     @Published var image : UIImage?
-    
+    @Published var flashIsOn : Bool?
+
     private var cancellable: Set<AnyCancellable> = []
     
     var cameraType : CameraType = .image {

@@ -20,6 +20,8 @@ struct CameraView: View {
     // MARK: - Private properties
     
     @State private var image: UIImage?
+    @State private var flashIsOn: Bool = false
+
     @EnvironmentObject private var mainAppModel : MainAppModel
     
     
@@ -98,8 +100,9 @@ struct CameraView: View {
                 // Flash button
                 Button {
                     customCameraRepresentable.toggleFlash()
+                    flashIsOn.toggle()
                 } label: {
-                    Image("camera.flash")
+                    flashIsOn ? Image("camera.flash-on") : Image("camera.flash-off")
                 }
                 .frame(width: 30, height: 30)
                 .padding(EdgeInsets(top: 15, leading: 16, bottom: 0, trailing: 12))
