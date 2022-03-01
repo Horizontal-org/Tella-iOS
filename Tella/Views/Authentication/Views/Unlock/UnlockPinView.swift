@@ -20,7 +20,7 @@ struct UnlockPinView: View {
     var body: some View {
         ContainerView {
             VStack(alignment: .center) {
-                Spacer(minLength: 56)
+                Spacer(minLength: 30)
                 
                 Image("tella.logo")
                     .frame(width: 65, height: 72)
