@@ -61,7 +61,7 @@ struct RecordView: View {
             }
             
             saveSuccessView
-
+            
         }.onAppear {
             self.viewModel.mainAppModel = mainAppModel
         }
@@ -81,7 +81,7 @@ struct RecordView: View {
         }))
         
     }
-
+    
     private func getContentView() -> AnyView {
         
         switch self.viewModel.state {
@@ -99,7 +99,7 @@ struct RecordView: View {
         HStack(spacing: 35) {
             
             Rectangle()
-                .frame(width: 40, height: 40)
+                .frame(width: 52, height: 52)
                 .hidden()
             
             Button(action: {
@@ -114,7 +114,8 @@ struct RecordView: View {
                 self.listenAudiFiles()
             }) {
                 Image("mic.listen")
-                    .frame(width: 40, height: 40)
+                    .resizable()
+                    .frame(width: 52, height: 52)
             }
         }
     }
@@ -127,7 +128,8 @@ struct RecordView: View {
                 self.viewModel.onPauseRecord()
             }) {
                 Image("mic.pause")
-                    .frame(width: 40, height: 40)
+                    .resizable()
+                    .frame(width: 52, height: 52)
             }
             
             Button(action: {
@@ -138,7 +140,8 @@ struct RecordView: View {
             }
             
             Rectangle()
-                .frame(width: 40, height: 40)
+            
+                .frame(width: 52, height: 52)
                 .hidden()
         }
     }
@@ -151,7 +154,8 @@ struct RecordView: View {
                 self.viewModel.onPlayRecord()
             }) {
                 Image("mic.play")
-                    .frame(width: 40, height: 40)
+                    .resizable()
+                    .frame(width: 52, height: 52)
             }
             
             Button(action: {
@@ -165,10 +169,10 @@ struct RecordView: View {
                 self.listenAudiFiles()
             }) {
                 Image("mic.listen")
-                    .frame(width: 40, height: 40)
+                    .resizable()
+                    .frame(width: 52, height: 52)
             }
         }
-        .padding()
     }
     
     private func getTimeView() -> some View {
