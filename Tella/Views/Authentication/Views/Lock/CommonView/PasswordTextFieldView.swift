@@ -23,32 +23,35 @@ struct PasswordTextFieldView : View {
         
         VStack(spacing: 13) {
             HStack {
+                Spacer()
+                    .frame(width: 32)
+                
                 if shouldShowPassword {
                     TextField("", text: $fieldContent,onCommit: {
                         self.onCommit?()
                     })
                         .textFieldStyle(PasswordStyle(shouldShowError: shouldShowError))
                         .onChange(of: fieldContent, perform: { value in
-                            self.isValid = value.passwordValidator()
-                            shouldShowErrorMessage = false
-                            self.shouldShowError = false
+                            validateField(value: value)
                         })
                         .disabled(disabled)
+                        .frame( height: 22)
+                    
                 } else {
                     SecureField("", text: $fieldContent,onCommit: {
                         self.onCommit?()
-                        
                     })
-                        .textFieldStyle(PasswordStyle(shouldShowError: shouldShowError))
+                        .textFieldStyle(SecurePasswordStyle(shouldShowError: shouldShowError))
                         .onChange(of: fieldContent, perform: { value in
-                            self.isValid = value.passwordValidator()
-                            self.shouldShowErrorMessage = false
-                            self.shouldShowError = false
+                            validateField(value: value)
                         })
                         .disabled(disabled)
+                        .frame( height: 22)
                 }
                 
                 Spacer()
+                    .frame(width: 10)
+                
                 Button {
                     shouldShowPassword.toggle()
                 } label: {
@@ -62,6 +65,12 @@ struct PasswordTextFieldView : View {
                 .background(Styles.Colors.buttonAdd)
         }.padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
     }
+    private func validateField(value:String) {
+        self.isValid = value.passwordValidator()
+        shouldShowErrorMessage = false
+        self.shouldShowError = false
+        
+    }
 }
 
 struct PasswordStyle: TextFieldStyle {
@@ -70,7 +79,7 @@ struct PasswordStyle: TextFieldStyle {
     
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
-            .font(.custom(Styles.Fonts.regularFontName, size: 18))
+            .font(.custom(Styles.Fonts.regularFontName, size: 20))
             .foregroundColor(shouldShowError ? Color.red : Color.white)
             .accentColor(Styles.Colors.buttonAdd)
             .multilineTextAlignment(.center)
@@ -79,6 +88,24 @@ struct PasswordStyle: TextFieldStyle {
             .keyboardType(.alphabet)
     }
 }
+
+struct SecurePasswordStyle: TextFieldStyle {
+    
+    var shouldShowError : Bool = false
+    
+    func _body(configuration: TextField<Self._Label>) -> some View {
+        configuration
+            .font(.custom(Styles.Fonts.regularFontName, size: 26))
+            .foregroundColor(shouldShowError ? Color.red : Color.white)
+            .accentColor(Styles.Colors.buttonAdd)
+            .multilineTextAlignment(.center)
+            .disableAutocorrection(true)
+            .textContentType(UITextContentType.oneTimeCode)
+            .keyboardType(.alphabet)
+        
+    }
+}
+
 
 struct PasswordTextFieldView_Previews: PreviewProvider {
     static var previews: some View {
