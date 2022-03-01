@@ -17,4 +17,6 @@
 "CameraCancelAddFileButtonTitle" = "DELETE FILE";
 "CamerCancelAddFileBackButtonTitle" = "BACK";
 
+"CameraDeniedPermissionMessage" = "The Tella app does not have permission to access the Camera and the Microphone.\n\nIf you want to take a picture or a video, proceed in the following way:\n1. Navigate to Tella app settings.\n2. Enable permissions for Camera and Microphone.\n3. Open the Tella app.\n";
+"CameraDeniedPermissionButtonTitle" = "Settings";
 

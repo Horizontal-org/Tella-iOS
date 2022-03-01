@@ -194,7 +194,7 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
         currentTime.send(currentTime.value + 1)
     }
     
-    func checkCameraAccess() {
+    func checkMicrophonePermission() {
         switch AVCaptureDevice.authorizationStatus(for: .audio) {
         case .denied:
             audioPermission = .denied
@@ -204,12 +204,9 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
         case .authorized:
             audioPermission = .authorized
         case .notDetermined:
-            AVCaptureDevice.requestAccess(for: .video) { success in
+            AVCaptureDevice.requestAccess(for: .audio) { success in
                 if success {
                     self.audioPermission = .authorized
-                    
-                } else {
-                    self.audioPermission = .denied
                 }
             }
         @unknown default:

@@ -36,9 +36,7 @@ class RecordViewModel: ObservableObject {
                 break
             case .authorized:
                 self.onStartRecording()
-            case .denied:
-                self.shouldShowSettingsAlert = true
-            case .restricted:
+            case .denied, .restricted:
                 self.shouldShowSettingsAlert = true
             }
         }.store(in: &cancellable)
@@ -46,7 +44,7 @@ class RecordViewModel: ObservableObject {
     
     // Record audio
     func checkCameraAccess() {
-        audioBackend.checkCameraAccess()
+        audioBackend.checkMicrophonePermission()
     }
     
     func onStartRecording() {
