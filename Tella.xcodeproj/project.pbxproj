@@ -35,7 +35,7 @@
 		0E170257267910DE0069072A /* DraftFormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E170256267910DE0069072A /* DraftFormsView.swift */; };
 		0E170259267913160069072A /* FormsCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E170258267913160069072A /* FormsCellView.swift */; };
 		0E27899D266F76D500B130C4 /* FormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E27899C266F76D500B130C4 /* FormsView.swift */; };
-		0E64C6A6265E7625005A7934 /* ActionsBottomSheetFileActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E64C6A5265E7625005A7934 /* ActionsBottomSheetFileActions.swift */; };
+		0E64C6A6265E7625005A7934 /* ActionListBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E64C6A5265E7625005A7934 /* ActionListBottomSheet.swift */; };
 		0E78B3A72656B03600F9BDBC /* DragView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E78B3A52656B03500F9BDBC /* DragView.swift */; };
 		0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E78B3A62656B03500F9BDBC /* ConfirmBottomSheet.swift */; };
 		0E78B3AE2656B04B00F9BDBC /* open-sans.regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0E78B3AD2656B04B00F9BDBC /* open-sans.regular.ttf */; };
@@ -114,6 +114,7 @@
 		12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A8F27BA742700CDC5DC /* CameraControlsView.swift */; };
 		12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9427BA761C00CDC5DC /* CustomCameraController.swift */; };
 		12776A9827BAC87A00CDC5DC /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */; };
+		127964B227CF9F58003DD7DF /* AddFilesBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127964B127CF9F58003DD7DF /* AddFilesBottomSheet.swift */; };
 		127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127B56D4279AC28200F902C9 /* CancelImportView.swift */; };
 		1283C257272AA6F6009180CA /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */; };
 		128548DB27B697B6000FF00A /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128548DA27B697B6000FF00A /* CameraView.swift */; };
@@ -264,7 +265,7 @@
 		0E170256267910DE0069072A /* DraftFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftFormsView.swift; sourceTree = "<group>"; };
 		0E170258267913160069072A /* FormsCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormsCellView.swift; sourceTree = "<group>"; };
 		0E27899C266F76D500B130C4 /* FormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormsView.swift; sourceTree = "<group>"; };
-		0E64C6A5265E7625005A7934 /* ActionsBottomSheetFileActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsBottomSheetFileActions.swift; sourceTree = "<group>"; };
+		0E64C6A5265E7625005A7934 /* ActionListBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionListBottomSheet.swift; sourceTree = "<group>"; };
 		0E78B3A52656B03500F9BDBC /* DragView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragView.swift; sourceTree = "<group>"; };
 		0E78B3A62656B03500F9BDBC /* ConfirmBottomSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmBottomSheet.swift; sourceTree = "<group>"; };
 		0E78B3AD2656B04B00F9BDBC /* open-sans.regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "open-sans.regular.ttf"; sourceTree = "<group>"; };
@@ -339,6 +340,7 @@
 		12776A8F27BA742700CDC5DC /* CameraControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlsView.swift; sourceTree = "<group>"; };
 		12776A9427BA761C00CDC5DC /* CustomCameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraController.swift; sourceTree = "<group>"; };
 		12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
+		127964B127CF9F58003DD7DF /* AddFilesBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFilesBottomSheet.swift; sourceTree = "<group>"; };
 		127B56D4279AC28200F902C9 /* CancelImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelImportView.swift; sourceTree = "<group>"; };
 		1283C254272A7484009180CA /* CustomNavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationContainerView.swift; sourceTree = "<group>"; };
 		1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
@@ -771,6 +773,19 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		127964B327CFA8AF003DD7DF /* Add files */ = {
+			isa = PBXGroup;
+			children = (
+				12A2DB02273576D50094B856 /* AddFileButtonView.swift */,
+				127964B127CF9F58003DD7DF /* AddFilesBottomSheet.swift */,
+				0D4BC3C9267646CA00DCDC30 /* AddFileBottomSheetFileActions.swift */,
+				129533C127399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift */,
+				129533C32739D5BC0053FA4B /* TextFieldBottomSheet.swift */,
+				0D4BC3CD267668D600DCDC30 /* AddFileYellowButton.swift */,
+			);
+			path = "Add files";
+			sourceTree = "<group>";
+		};
 		1283C258272AABC9009180CA /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -778,10 +793,7 @@
 				D572EAC6263A383900CE191A /* RecentFileCell.swift */,
 				D572EAC8263A384B00CE191A /* FileGroupsView.swift */,
 				D5DA7F972646220100B00FDA /* FileGroupButtonView.swift */,
-				0D4BC3C9267646CA00DCDC30 /* AddFileBottomSheetFileActions.swift */,
-				129533C127399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift */,
-				129533C32739D5BC0053FA4B /* TextFieldBottomSheet.swift */,
-				0D4BC3CD267668D600DCDC30 /* AddFileYellowButton.swift */,
+				127964B327CFA8AF003DD7DF /* Add files */,
 				0DA213CC268028AC00526995 /* FileDetailView */,
 				D5DA7F992648D02C00B00FDA /* FileListView */,
 				12AB30D1272C33D90020FFBF /* Home */,
@@ -802,7 +814,6 @@
 			isa = PBXGroup;
 			children = (
 				D5DA7F9A2648D05400B00FDA /* FileListView.swift */,
-				12A2DB02273576D50094B856 /* AddFileButtonView.swift */,
 				0DA213C62680286F00526995 /* FileListItem.swift */,
 				1290743A274CEB9B00F38A81 /* FileGridItem.swift */,
 				0DA213C82680288B00526995 /* FileActionMenu.swift */,
@@ -980,7 +991,7 @@
 				12D37A952721A49D00E43BDB /* NavigationContainerView.swift */,
 				125A0AEE2726F0A000F6E77F /* ContainerView.swift */,
 				1283C254272A7484009180CA /* CustomNavigationContainerView.swift */,
-				0E64C6A5265E7625005A7934 /* ActionsBottomSheetFileActions.swift */,
+				0E64C6A5265E7625005A7934 /* ActionListBottomSheet.swift */,
 				12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */,
 				1EAE6BF424146C2100114244 /* QuickLook.swift */,
 			);
@@ -1564,7 +1575,7 @@
 				1291F4F627B54300006A34D3 /* AudioPlayer.swift in Sources */,
 				12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */,
 				126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */,
-				0E64C6A6265E7625005A7934 /* ActionsBottomSheetFileActions.swift in Sources */,
+				0E64C6A6265E7625005A7934 /* ActionListBottomSheet.swift in Sources */,
 				D5077A40260D300600D72947 /* DebugLogging.swift in Sources */,
 				0ECC781D267AADA500A2ACF2 /* PageViewCellNotification.swift in Sources */,
 				12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */,
@@ -1658,6 +1669,7 @@
 				6DD4C03A240F547300491438 /* Utils.swift in Sources */,
 				12F5D28D27A326EB00BF3309 /* AboutAndHelpView.swift in Sources */,
 				1230BE4727CD6D440055F854 /* AudioAuthorizationStatus.swift in Sources */,
+				127964B227CF9F58003DD7DF /* AddFilesBottomSheet.swift in Sources */,
 				12690CB62755020C00A758D2 /* DeleteFileView.swift in Sources */,
 				12A148982720B47100A1ADDC /* LockDescriptionView.swift in Sources */,
 				129533C227399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift in Sources */,

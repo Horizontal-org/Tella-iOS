@@ -1,26 +1,20 @@
 //
-//  Copyright © 2021 INTERNEWS. All rights reserved.
+//  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 
-import UIKit
 import SwiftUI
 
-struct AddFileBottomSheetFileActions: View {
-    
-    @State private var showingAddPhotoVideoSheet = false
-    @State private var showingCreateNewFolderSheet = false
-    @State private var fieldContent: String = ""
+struct AddFilesBottomSheet: View {
     
     @Binding var isPresented: Bool
-    @Binding var showingDocumentPicker: Bool
-    @Binding var showingImagePicker: Bool
+    @Binding var showingAddPhotoVideoSheet : Bool
+    @Binding var showingCreateNewFolderSheet : Bool
     
-    @ObservedObject var appModel: MainAppModel
-    var parent : VaultFile?
-    
+    @EnvironmentObject var appModel: MainAppModel
+
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
-    var items : [ListActionSheetItem] { return [
+
+    private var items : [ListActionSheetItem] { return [
         ListActionSheetItem(imageName: "camera-icon",
                             content: "Take photo/video",
                             action: {
@@ -52,26 +46,18 @@ struct AddFileBottomSheetFileActions: View {
                                 showingAddPhotoVideoSheet = false
                             })
     ]}
-    
     var body: some View {
-        ZStack{
-            DragView(modalHeight: CGFloat(items.count * 40 + 100),
-                     isShown: $isPresented){
-                ListActionSheet(items: items, headerTitle: "Manage files", isPresented: $isPresented)
-            }
-            
-            AddPhotoVideoBottomSheet(isPresented: $showingAddPhotoVideoSheet,
-                                     showingDocumentPicker: $showingDocumentPicker,
-                                     showingImagePicker: $showingImagePicker,
-                                     parent: parent)
-            
-            TextFieldBottomSheet(titleText: "Create new folder",
-                                 validateButtonText: "CREATE",
-                                 isPresented: $showingCreateNewFolderSheet,
-                                 fieldContent: $fieldContent,
-                                 fieldType: .text) {
-                appModel.add(folder: fieldContent , to: parent)
-            }
+        DragView(modalHeight: CGFloat(items.count * 50 + 90),
+                 isShown: $isPresented){
+            ActionListBottomSheet(items: items, headerTitle: "Manage files", isPresented: $isPresented)
         }
+    }
+}
+
+struct AddFilesBottomSheet_Previews: PreviewProvider {
+    static var previews: some View {
+        AddFilesBottomSheet(isPresented: .constant(true),
+                            showingAddPhotoVideoSheet: .constant(false),
+                            showingCreateNewFolderSheet: .constant(false))
     }
 }
