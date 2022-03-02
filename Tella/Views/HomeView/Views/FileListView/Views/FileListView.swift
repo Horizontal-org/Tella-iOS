@@ -50,16 +50,13 @@ struct FileListView: View {
                 selectingFilesHeaderView
                 folderListView
                 topBarButtons
-                if #available(iOS 14.0, *) {
-                    if viewModel.viewType == .list {
-                        itemsListView
-                    } else {
-                        itemsGridView
-                    }
-                } else {
+                
+                if viewModel.viewType == .list {
                     itemsListView
+                } else {
+                    itemsGridView
                 }
-            }
+             }
             AddFileView(appModel: appModel,
                               rootFile: rootFile,
                               selectingFiles: $viewModel.selectingFiles)
@@ -283,13 +280,18 @@ struct FileListView: View {
     
     private var topBarButtons: some View {
         HStack(spacing: 0) {
+            
             sortFilesButton
+            
             Spacer()
+           
             selectingFilesButton
-            if #available(iOS 14.0, *) {
-                viewTypeButton
-            }
-        }
+            
+            Spacer()
+                .frame(width: 5)
+            
+            viewTypeButton
+         }
         .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
         .background(Styles.Colors.backgroundMain)
     }
@@ -315,11 +317,12 @@ struct FileListView: View {
             viewModel.resetSelectedItems()
         } label: {
             HStack{
-                Image("files.selectingFiles")
+                Image(viewModel.selectingFiles ? "files.selected" : "files.unselected")
+                
                     .frame(width: 24, height: 24)
             }
         }
-        .frame(width: 44, height: 44)
+        .frame(width: 50, height: 50)
     }
     
     private var viewTypeButton: some View {
@@ -331,7 +334,7 @@ struct FileListView: View {
                     .frame(width: 24, height: 24)
             }
         }
-        .frame(width: 44, height: 44)
+        .frame(width: 50, height: 50)
     }
     
     private func getStatus(for file:VaultFile) -> Binding<Bool> {
