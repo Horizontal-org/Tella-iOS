@@ -60,7 +60,7 @@ struct FileListView: View {
                     itemsListView
                 }
             }
-            AddFileButtonView(appModel: appModel,
+            AddFileView(appModel: appModel,
                               rootFile: rootFile,
                               selectingFiles: $viewModel.selectingFiles)
             
