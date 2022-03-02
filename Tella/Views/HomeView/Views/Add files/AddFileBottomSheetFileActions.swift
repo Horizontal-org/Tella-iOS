@@ -12,12 +12,10 @@ struct AddFileBottomSheetFileActions: View {
     @State private var fieldContent: String = ""
     
     @Binding var isPresented: Bool
-    @Binding var showingDocumentPicker: Bool
-    @Binding var showingImagePicker: Bool
+
+    @EnvironmentObject var appModel: MainAppModel
     
-    @ObservedObject var appModel: MainAppModel
-    
-    var parent : VaultFile?
+    var rootFile : VaultFile?
     
     var body: some View {
         
@@ -28,16 +26,14 @@ struct AddFileBottomSheetFileActions: View {
                                 showingCreateNewFolderSheet: $showingCreateNewFolderSheet)
             
             AddPhotoVideoBottomSheet(isPresented: $showingAddPhotoVideoSheet,
-                                     showingDocumentPicker: $showingDocumentPicker,
-                                     showingImagePicker: $showingImagePicker,
-                                     parent: parent)
+                                     rootFile: rootFile)
             
             TextFieldBottomSheet(titleText: "Create new folder",
                                  validateButtonText: "CREATE",
                                  isPresented: $showingCreateNewFolderSheet,
                                  fieldContent: $fieldContent,
                                  fieldType: .text) {
-                appModel.add(folder: fieldContent , to: parent)
+                appModel.add(folder: fieldContent , to: rootFile)
             }
         }
     }

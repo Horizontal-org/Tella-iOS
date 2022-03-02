@@ -777,8 +777,8 @@
 			isa = PBXGroup;
 			children = (
 				12A2DB02273576D50094B856 /* AddFileButtonView.swift */,
-				127964B127CF9F58003DD7DF /* AddFilesBottomSheet.swift */,
 				0D4BC3C9267646CA00DCDC30 /* AddFileBottomSheetFileActions.swift */,
+				127964B127CF9F58003DD7DF /* AddFilesBottomSheet.swift */,
 				129533C127399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift */,
 				129533C32739D5BC0053FA4B /* TextFieldBottomSheet.swift */,
 				0D4BC3CD267668D600DCDC30 /* AddFileYellowButton.swift */,
