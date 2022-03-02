@@ -62,7 +62,7 @@ struct PasswordTextFieldView : View {
             }
             Divider()
                 .frame(height: 2)
-                .background(Styles.Colors.buttonAdd)
+                .background(Styles.Colors.yellow)
         }.padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
     }
     private func validateField(value:String) {
@@ -81,7 +81,7 @@ struct PasswordStyle: TextFieldStyle {
         configuration
             .font(.custom(Styles.Fonts.regularFontName, size: 20))
             .foregroundColor(shouldShowError ? Color.red : Color.white)
-            .accentColor(Styles.Colors.buttonAdd)
+            .accentColor(Styles.Colors.yellow)
             .multilineTextAlignment(.center)
             .disableAutocorrection(true)
             .textContentType(UITextContentType.oneTimeCode)
@@ -97,7 +97,7 @@ struct SecurePasswordStyle: TextFieldStyle {
         configuration
             .font(.custom(Styles.Fonts.regularFontName, size: 26))
             .foregroundColor(shouldShowError ? Color.red : Color.white)
-            .accentColor(Styles.Colors.buttonAdd)
+            .accentColor(Styles.Colors.yellow)
             .multilineTextAlignment(.center)
             .disableAutocorrection(true)
             .textContentType(UITextContentType.oneTimeCode)

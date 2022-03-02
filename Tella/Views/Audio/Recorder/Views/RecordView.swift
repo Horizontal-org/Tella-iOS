@@ -186,7 +186,7 @@ struct RecordView: View {
                 HStack {
                     Text(viewModel.fileName)
                         .font(.custom(Styles.Fonts.boldFontName, size: 16))
-                        .foregroundColor(Styles.Colors.buttonAdd)
+                        .foregroundColor(Styles.Colors.yellow)
                     
                     Image("mic.edit")
                         .frame(width: 24, height: 24)

@@ -65,7 +65,7 @@ struct SwipeToActionView: View {
         Image("arrow-right")
             .frame(width: 45, height: 45, alignment: .center)
             .padding(.zero)
-            .background(Styles.Colors.backgroundFileButton)
+            .background(Color.white.opacity(0.4))
             .cornerRadius(25)
     }
     

@@ -8,19 +8,15 @@ import SwiftUI
 struct Styles {
     
     struct uiColor {
-        static let backgroundFileButton = UIColor(hexValue: 0x4e4a74)
         static let backgroundMain = UIColor(hexValue: 0x2C275A)
-        static let backgroundTab = UIColor(hexValue: 0x46407D)
-        static let buttonAdd = UIColor(hexValue: 0xD6933B)
-        static let fileIconBackground = UIColor(hexValue: 0x57527b)
+        static let backgroundTab = UIColor(hexValue: 0x3D3867)
+        static let yellow = UIColor(hexValue: 0xD6933B)
     }
     
     struct Colors {
-        static let backgroundFileButton = Color(uiColor.backgroundFileButton)
         static let backgroundMain = Color(uiColor.backgroundMain)
         static let backgroundTab = Color(uiColor.backgroundTab)
-        static let buttonAdd = Color(uiColor.buttonAdd)
-        static let fileIconBackground = Color(uiColor.fileIconBackground)
+        static let yellow = Color(uiColor.yellow)
     }
     
     struct Stroke {

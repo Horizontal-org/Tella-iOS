@@ -104,11 +104,11 @@ struct AppView: View  {
 
     private func setupApperance() {
         
-        UITabBar.appearance().unselectedItemTintColor = UIColor.init(hexValue: 0x918FAC)
+        UITabBar.appearance().unselectedItemTintColor = UIColor.white.withAlphaComponent(0.38)
         UITabBar.appearance().shadowImage = UIImage()
         UITabBar.appearance().backgroundImage = UIImage()
         UITabBar.appearance().isTranslucent = true
-        UITabBar.appearance().backgroundColor = UIColor.init(hexValue: 0x3D3771)
+        UITabBar.appearance().backgroundColor = Styles.uiColor.backgroundTab
         UITabBarItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white,
                                                           
                                                           NSAttributedString.Key.font: UIFont.init(name: Styles.Fonts.regularFontName, size: 12)!],for: .normal)
