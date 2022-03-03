@@ -36,7 +36,7 @@ struct HomeView: View {
                 VStack(spacing: 15) {
                     Spacer()
                         .frame( height: appModel.vaultManager.recentFiles.count > 0 ? 15 : 0 )
-                    RecentFilesListView(appModel: appModel)
+                    RecentFilesListView()
                 }
                 
                 FileGroupsView(appModel: appModel)
@@ -49,8 +49,6 @@ struct HomeView: View {
                 
                 fileListWithTypeView
             }
-            
-            
         }
         .navigationBarTitle("Tella", displayMode: .inline)
 

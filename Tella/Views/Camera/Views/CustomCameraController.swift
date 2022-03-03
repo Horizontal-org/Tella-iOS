@@ -134,6 +134,9 @@ final class CustomCameraController: UIViewController {
     // MARK: - Private functions
     
     private func setup() {
+        stopRunningCaptureSession()
+        releasePreview()
+
         setupCaptureSession()
         cameraType == .video ? setupVideoInputOutput() : setupPhotoInputOutput()
     }

@@ -317,7 +317,7 @@ struct FileListView: View {
             viewModel.resetSelectedItems()
         } label: {
             HStack{
-                Image(viewModel.selectingFiles ? "files.selected" : "files.unselected")
+                Image(viewModel.selectingFiles ? "files.selected" : "files.unselected-empty")
                 
                     .frame(width: 24, height: 24)
             }
