@@ -27,32 +27,45 @@ struct RecentFilesListView: View {
     
     var recentFilesView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 7) {
-                
-                if (appModel.vaultManager.recentFiles.count > 3) { // More recent files are loaded
-                    ForEach(0..<number, id: \.self) { i in
-                        RecentFileCell(recentFile: appModel.vaultManager.recentFiles[i])
-                            .navigateTo(destination: FileDetailView(appModel: appModel,
-                                                                    file: appModel.vaultManager.recentFiles[i]))
-                    }
-                    
-                    if !moreRecentFilesLoaded {
-                        Button {
-                            moreRecentFilesLoaded = true
-                        } label: {
-                            LoadMoreCell(fileNumber: appModel.vaultManager.recentFiles.count)
-                        }
-                    }
-                } else { // More recent files are not loaded
-                    ForEach(appModel.vaultManager.recentFiles, id: \.self) { file in
-                        
-                        RecentFileCell(recentFile: file)
-                            .navigateTo(destination: FileDetailView(appModel: appModel,file: file))
-                    }
-                }
-            }.padding(.trailing, 17)
+            
+            if (appModel.vaultManager.recentFiles.count > 3) {
+                allFilesItems
+            } else {
+                firstFilesItems
+            }
         }.frame(height: 75)
             .padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+    }
+    
+    var allFilesItems : some View {
+        HStack(spacing: 7) {
+            // The 3 first or all items
+            ForEach(0..<number, id: \.self) { i in
+                RecentFileCell(recentFile: appModel.vaultManager.recentFiles[i])
+                    .navigateTo(destination: FileDetailView(appModel: appModel,
+                                                            file: appModel.vaultManager.recentFiles[i]))
+            }
+            // More button
+            if !moreRecentFilesLoaded &&  appModel.vaultManager.recentFiles.count >  3 {
+                Button {
+                    moreRecentFilesLoaded = true
+                } label: {
+                    LoadMoreCell(fileNumber: appModel.vaultManager.recentFiles.count)
+                }
+            }
+        }.padding(.trailing, 17)
+    }
+    
+    var firstFilesItems : some View {
+        HStack(spacing: 7) {
+            
+            ForEach(appModel.vaultManager.recentFiles, id: \.self) { file in
+                
+                RecentFileCell(recentFile: file)
+                    .navigateTo(destination: FileDetailView(appModel: appModel,file: file))
+            }
+        }.padding(.trailing, 17)
+        
     }
 }
 
