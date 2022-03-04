@@ -30,7 +30,7 @@ struct FileGroupView: View {
             }
         }
         .frame(height: 80)
-        .background(Styles.Colors.backgroundFileButton)
+        .background(Color.white.opacity(0.16))
         .cornerRadius(10)
     }
 }

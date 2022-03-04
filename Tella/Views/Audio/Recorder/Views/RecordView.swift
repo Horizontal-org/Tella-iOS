@@ -14,7 +14,7 @@ struct RecordView: View {
     @ObservedObject var viewModel = RecordViewModel()
     
     @Binding  var showingRecoredrView : Bool
-
+    
     @EnvironmentObject private var mainAppModel: MainAppModel
     @EnvironmentObject private var appViewState: AppViewState
     
@@ -23,8 +23,8 @@ struct RecordView: View {
     
     @State private var showingRenameFileConfirmationSheet : Bool = false
     @State private var fileName : String = ""
-
-
+    
+    
     let modalHeight = 173.0
     
     func goBack() {
@@ -61,12 +61,25 @@ struct RecordView: View {
             }
             
             saveSuccessView
-
             
         }.onAppear {
             self.viewModel.mainAppModel = mainAppModel
         }
         .navigationBarHidden(mainAppModel.selectedTab == .home ? false : true)
+        .alert(isPresented: self.$viewModel.shouldShowSettingsAlert) {
+            getSettingsAlertView()
+        }
+    }
+    
+    private func getSettingsAlertView() -> Alert {
+        Alert(title: Text(""),
+              message: Text(LocalizableAudio.deniedPermissionMessage.localized),
+              primaryButton: .default(Text("Cancel"), action: {
+            self.viewModel.shouldShowSettingsAlert = false
+        }), secondaryButton: .default(Text(LocalizableAudio.deniedPermissionButtonTitle.localized), action: {
+            UIApplication.shared.openSettings()
+        }))
+        
     }
     
     private func getContentView() -> AnyView {
@@ -86,12 +99,12 @@ struct RecordView: View {
         HStack(spacing: 35) {
             
             Rectangle()
-                .frame(width: 40, height: 40)
+                .frame(width: 52, height: 52)
                 .hidden()
             
             Button(action: {
                 self.viewModel.mainAppModel = mainAppModel
-                self.viewModel.onStartRecording()
+                self.viewModel.checkCameraAccess()
             }) {
                 Image("mic.record")
                     .frame(width: 83, height: 83)
@@ -101,7 +114,8 @@ struct RecordView: View {
                 self.listenAudiFiles()
             }) {
                 Image("mic.listen")
-                    .frame(width: 40, height: 40)
+                    .resizable()
+                    .frame(width: 52, height: 52)
             }
         }
     }
@@ -114,7 +128,8 @@ struct RecordView: View {
                 self.viewModel.onPauseRecord()
             }) {
                 Image("mic.pause")
-                    .frame(width: 40, height: 40)
+                    .resizable()
+                    .frame(width: 52, height: 52)
             }
             
             Button(action: {
@@ -125,7 +140,8 @@ struct RecordView: View {
             }
             
             Rectangle()
-                .frame(width: 40, height: 40)
+            
+                .frame(width: 52, height: 52)
                 .hidden()
         }
     }
@@ -138,7 +154,8 @@ struct RecordView: View {
                 self.viewModel.onPlayRecord()
             }) {
                 Image("mic.play")
-                    .frame(width: 40, height: 40)
+                    .resizable()
+                    .frame(width: 52, height: 52)
             }
             
             Button(action: {
@@ -152,10 +169,10 @@ struct RecordView: View {
                 self.listenAudiFiles()
             }) {
                 Image("mic.listen")
-                    .frame(width: 40, height: 40)
+                    .resizable()
+                    .frame(width: 52, height: 52)
             }
         }
-        .padding()
     }
     
     private func getTimeView() -> some View {
@@ -169,7 +186,7 @@ struct RecordView: View {
                 HStack {
                     Text(viewModel.fileName)
                         .font(.custom(Styles.Fonts.boldFontName, size: 16))
-                        .foregroundColor(Styles.Colors.buttonAdd)
+                        .foregroundColor(Styles.Colors.yellow)
                     
                     Image("mic.edit")
                         .frame(width: 24, height: 24)
@@ -213,9 +230,9 @@ struct RecordView: View {
     private var saveAudioConfirmationView : some View {
         
         return SaveAudioConfirmationView(showingSaveAudioConfirmationView: $showingSaveAudioConfirmationView ) {
-           
+            
             self.viewModel.onStopRecording()
-           
+            
             DispatchQueue.main.async {
                 showingSaveSuccessView = true
             }
@@ -247,17 +264,17 @@ struct RecordView: View {
     @ViewBuilder
     private var saveSuccessView : some View {
         if showingSaveSuccessView {
-                VStack {
-                    Spacer()
-
-                    Text(LocalizableAudio.recordingSavedMessage.localized)
-                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                        .foregroundColor(.black)
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(4)
-                }
-
+            VStack {
+                Spacer()
+                
+                Text(LocalizableAudio.recordingSavedMessage.localized)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                    .foregroundColor(.black)
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(4)
+            }
+            
         }
     }
     

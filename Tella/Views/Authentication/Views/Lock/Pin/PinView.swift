@@ -10,9 +10,9 @@ import SwiftUI
 
 struct PinView: View {
     
-    let columns = [GridItem(.flexible()),
-                   GridItem(.flexible()),
-                   GridItem(.flexible())]
+    let columns = [ GridItem(.fixed(70),spacing: 40),
+                    GridItem(.fixed(70),spacing: 40),
+                    GridItem(.fixed(70),spacing: 40)]
     
     @Binding var fieldContent : String
     var keyboardNumbers : [PinKeyboardModel]
@@ -21,7 +21,7 @@ struct PinView: View {
     
     var body: some View {
         
-        LazyVGrid(columns: columns) {
+        LazyVGrid(columns: columns,spacing: 10) {
             
             ForEach(keyboardNumbers, id: \.self) { item in
                 switch item.type {
@@ -32,24 +32,27 @@ struct PinView: View {
                         Image(item.imageName)
                     }.buttonStyle(PinButtonStyle())
                         .disabled(!(self.fieldContent.count>0))
-                        .padding(10)
-
+                        .padding(13)
+                    
                 case .number:
                     Button {
                         self.appendPin(pin: item.text)
                     } label: {
                         Text(item.text)
                     }
-                    .padding(10)
+                    .padding(13)
                     .buttonStyle(PinButtonStyle())
+                    
                 case .done:
                     Button {
                         action?()
                     } label: {
                         Text(item.text)
+                            .foregroundColor(self.fieldContent.passwordValidator() ? .white : .white.opacity(0.24) )
                     }.buttonStyle(PinButtonStyle())
-                        .padding(10)
-
+                        .padding(13)
+                        .disabled(!self.fieldContent.passwordValidator())
+                    
                 default:
                     Text("")
                 }
@@ -72,7 +75,7 @@ struct PinButtonStyle : ButtonStyle {
         configuration.label
             .font(.custom(Styles.Fonts.lightRobotoFontName, size: 32))
             .foregroundColor(configuration.isPressed ? .gray : .white)
-            
+        
     }
 }
 

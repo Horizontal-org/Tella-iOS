@@ -58,7 +58,7 @@ struct FormsCellView: View {
             })
             
         }
-        .background(Styles.Colors.backgroundFileButton
+        .background(Color.white.opacity(0.4)
                         .clipShape(RoundedRectangle(cornerRadius:15)))
         .padding(.horizontal, 16)
     }

@@ -4,16 +4,12 @@
 
 import SwiftUI
 
-
-
 struct FileGroupsView: View {
     
-    @ObservedObject var appModel: MainAppModel
-    //    var homeFileItemss : [HomeFileItem] = homeFileItems
+    @EnvironmentObject var appModel: MainAppModel
     
     let columns = [GridItem(.flexible(),spacing: 16),
                    GridItem(.flexible(),spacing: 16)]
-    
     
     var body: some View {
         ScrollView {
@@ -30,23 +26,20 @@ struct FileGroupsView: View {
                         FileGroupView(groupName: homeFileItem.title,
                                       iconName: homeFileItem.imageName)
                             .navigateTo(destination: FileListView(appModel: appModel,
-                                                                  files: appModel.vaultManager.root.files,
-                                                                  fileType: homeFileItem.fileType,
                                                                   rootFile: appModel.vaultManager.root,
-                                                                  title: homeFileItem.title))
+                                                                  fileType: homeFileItem.fileType,
+                                                                  title: homeFileItem.title ))
                     }
                 }
             }
         }
         .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
         .background(Styles.Colors.backgroundMain)
-        
     }
 }
 
 struct FileGroupsView_Previews: PreviewProvider {
     static var previews: some View {
-        FileGroupsView(appModel: MainAppModel())
+        FileGroupsView()
     }
 }
-

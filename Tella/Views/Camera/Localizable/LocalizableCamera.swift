@@ -13,6 +13,9 @@ enum LocalizableCamera: String, LocalizableDelegate {
     case cancelAddFileButtonTitle = "CameraCancelAddFileButtonTitle"
     case cancelAddFileBackButtonTitle = "CamerCancelAddFileBackButtonTitle"
     
+    case deniedPermissionMessage = "CameraDeniedPermissionMessage"
+    case deniedPermissionButtonTitle = "CameraDeniedPermissionButtonTitle"
+
     var tableName: String? {
         return "Camera"
     }

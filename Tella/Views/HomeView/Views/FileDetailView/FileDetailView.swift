@@ -8,10 +8,11 @@ import QuickLook
 struct FileDetailView: View {
     
     @ObservedObject var appModel: MainAppModel
+
     
     var file: VaultFile
     var videoFilesArray: [VaultFile]?
-    var fileType : FileType?
+    var fileType : [FileType]?
     
     var body: some View {
              switch file.type {
@@ -30,11 +31,7 @@ struct FileDetailView: View {
             case .image:
                 ImageViewer(imageData: appModel.vaultManager.load(file: file))
             case .folder:
-                FileListView(appModel: appModel,
-                             files: file.files,
-                             fileType: fileType,
-                             rootFile: file,
-                             title: file.fileName)
+                 EmptyView()
             default:
                 WebViewer(url: file.containerName)
             }

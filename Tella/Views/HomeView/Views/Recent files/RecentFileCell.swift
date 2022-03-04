@@ -18,8 +18,9 @@ extension RecentFileProtocol {
                 Image(uiImage: thumbnailImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                     .frame(width: 80, height: 80, alignment: .center)
                     .clipped()
+                    .frame(width: 75, height: 75)
+
                 Image(uiImage: bigIconImage)
                     .frame(width: 33, height: 33)
                     .aspectRatio(contentMode: .fit)
@@ -34,8 +35,9 @@ struct RecentFileCell: View {
     var body: some View {
         ZStack{
             recentFile.recentGridImage
-                .frame(width: 70, height: 70)
+                .frame(width: 75, height: 75)
         }
+
     }
 }
 
@@ -56,7 +58,7 @@ struct LoadMoreCell: View {
             }
             Spacer()
         }
-        .frame(width: 70, height: 70)
+        .frame(width: 75, height: 75)
         .background(Color.white.opacity(0.2))
     }
 }

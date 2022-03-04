@@ -10,8 +10,7 @@ class CameraViewModel: ObservableObject {
     
     // MARK: - Public properties
     
-    @Published var lastImageVaultFile :  VaultFile?
-    @Published var lastVideoVaultFile :  VaultFile?
+    @Published var lastImageOrVideoVaultFile :  VaultFile?
     @Published var isRecording : Bool = false
     @Published var formattedCurrentTime : String = "00:00:00"
     @Published var currentTime : TimeInterval = 0.0
@@ -32,11 +31,7 @@ class CameraViewModel: ObservableObject {
         self.mainAppModel = mainAppModel
         
         mainAppModel.vaultManager.$root.sink { file in
-            self.lastImageVaultFile = file.files.sorted(by: .newestToOldest, folderArray: [], root: mainAppModel.vaultManager.root, fileType: .image).first
-            
-            self.lastVideoVaultFile = file.files.sorted(by: .newestToOldest, folderArray: [], root: mainAppModel.vaultManager.root, fileType: .video).first
-            
-            
+            self.lastImageOrVideoVaultFile = file.files.sorted(by: .newestToOldest, folderArray: [], root: mainAppModel.vaultManager.root, fileType: [.image, .video]).first
         }.store(in: &cancellable)
         
         mainAppModel.vaultManager.progress.progress.sink { value in

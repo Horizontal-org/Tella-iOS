@@ -10,6 +10,8 @@ struct CameraView: View {
     // MARK: - Public properties
     
     @State var showingProgressView : Bool = false
+    @State var showingPermissionAlert : Bool = false
+    
     @ObservedObject var cameraViewModel :  CameraViewModel
     
     var customCameraRepresentable = CustomCameraRepresentable(
@@ -20,6 +22,8 @@ struct CameraView: View {
     // MARK: - Private properties
     
     @State private var image: UIImage?
+    @State private var flashIsOn: Bool = false
+    
     @EnvironmentObject private var mainAppModel : MainAppModel
     
     
@@ -39,23 +43,34 @@ struct CameraView: View {
             ImportFilesProgressView(showingProgressView: $showingProgressView,
                                     importFilesProgressProtocol: ImportFilesFromCameraProgress())
             
-        }
+        }.background(Color.black)
         
-        .environmentObject(cameraViewModel)
-        .onAppear {
-            customCameraRepresentable.startRunningCaptureSession()
-        }
-        .onDisappear {
-            customCameraRepresentable.stopRunningCaptureSession()
-        }
-        .navigationBarHidden(mainAppModel.selectedTab == .home ? false : true)
+            .environmentObject(cameraViewModel)
+            .onAppear {
+                customCameraRepresentable.checkCameraPermission()
+            }
+            .onDisappear {
+                customCameraRepresentable.stopRunningCaptureSession()
+            }
+            .navigationBarHidden(mainAppModel.selectedTab == .home ? false : true)
         
-        .onReceive(customCameraRepresentable.$isRecording) { value in
-            cameraViewModel.isRecording = value ?? false
-        }
+            .onReceive(customCameraRepresentable.$isRecording) { value in
+                cameraViewModel.isRecording = value ?? false
+            }
+            .onReceive(customCameraRepresentable.$shouldShowPermission) { value in
+                showingPermissionAlert = value
+            }
+            .onReceive(customCameraRepresentable.$shouldCloseCamera) { value in
+                if value {
+                    mainAppModel.selectedTab = .home
+                }
+            }
+            .alert(isPresented:$showingPermissionAlert) {
+                getSettingsAlertView()
+            }
     }
     
-    private  func cameraView(frame: CGRect) -> CustomCameraRepresentable {
+    private func cameraView(frame: CGRect) -> CustomCameraRepresentable {
         
         customCameraRepresentable.cameraFrame = frame
         
@@ -98,8 +113,9 @@ struct CameraView: View {
                 // Flash button
                 Button {
                     customCameraRepresentable.toggleFlash()
+                    flashIsOn.toggle()
                 } label: {
-                    Image("camera.flash")
+                    flashIsOn ? Image("camera.flash-on") : Image("camera.flash-off")
                 }
                 .frame(width: 30, height: 30)
                 .padding(EdgeInsets(top: 15, leading: 16, bottom: 0, trailing: 12))
@@ -109,7 +125,6 @@ struct CameraView: View {
             .edgesIgnoringSafeArea(.all)
             
             Spacer()
-            
         }
         
     }
@@ -127,5 +142,17 @@ struct CameraView: View {
             .edgesIgnoringSafeArea(.all)
         
     }
+    
+    private func getSettingsAlertView() -> Alert {
+        Alert(title: Text(""),
+              message: Text(LocalizableCamera.deniedPermissionMessage.localized),
+              primaryButton: .default(Text("Cancel"), action: {
+            mainAppModel.selectedTab = .home
+        }), secondaryButton: .default(Text(LocalizableCamera.deniedPermissionButtonTitle.localized), action: {
+            UIApplication.shared.openSettings()
+            mainAppModel.selectedTab = .home
+        }))
+    }
+    
 }
 

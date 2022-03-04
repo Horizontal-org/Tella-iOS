@@ -7,16 +7,18 @@ import UIKit
 import Combine
 
 class RecordingAudioManager: AudioRecorderManager, ObservableObject {
-
+    
     private var recorder: AVAudioRecorder!
     private var queuePlayer = QueuePlayer()
     private var audioChunks = [AVURLAsset]()
     private var currentFileName: URL?
     private var timer = Timer()
-
+    
     var currentTime = CurrentValueSubject<TimeInterval, Never>(0.0)
+    @Published var audioPermission : AudioAuthorizationStatus = .notDetermined
+    
     var mainAppModel: MainAppModel?
-
+    
     private let settings = [
         AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
         AVSampleRateKey: 12000,
@@ -50,13 +52,13 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
             return
         }
     }
-
+    
     func stopRecording(fileName:String) {
         concatChunks(fileName: fileName)
     }
     
     func pauseRecording() {
-
+        
         self.timer.invalidate()
         
         self.recorder.stop()
@@ -102,10 +104,10 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
     func pauseRecord() {
         queuePlayer.pauseAudio()
     }
-
+    
     fileprivate func getFileName() -> URL? {
-        
-        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("\(Int(Date().timeIntervalSince1970)).m4a")
+        let pathURL = URL(fileURLWithPath:NSTemporaryDirectory())
+        return pathURL.appendingPathComponent("\(Int(Date().timeIntervalSince1970)).m4a")
     }
     
     fileprivate func configureSession() -> Bool {
@@ -136,7 +138,6 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
                                                 of: asset,
                                                 at: insertAt.end)
             } catch {
-                NSLog("Unable to compose asset track.")
             }
             
             let nextDuration = insertAt.duration + assetTimeRange.duration
@@ -172,7 +173,7 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
                 }
                 
                 self.resetRecorder()
-
+                
                 self.audioChunks = [AVURLAsset]()
                 exportSession?.cancelExport()
                 
@@ -191,5 +192,25 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
     
     @objc private func timerRunning() {
         currentTime.send(currentTime.value + 1)
+    }
+    
+    func checkMicrophonePermission() {
+        switch AVCaptureDevice.authorizationStatus(for: .audio) {
+        case .denied:
+            audioPermission = .denied
+        case .restricted:
+            audioPermission = .restricted
+            
+        case .authorized:
+            audioPermission = .authorized
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .audio) { success in
+                if success {
+                    self.audioPermission = .authorized
+                }
+            }
+        @unknown default:
+            break
+        }
     }
 }

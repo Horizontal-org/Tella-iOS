@@ -11,7 +11,7 @@ final class CustomCameraController: UIViewController {
     static let shared = CustomCameraController()
     
     // MARK: - Private properties
-
+    
     private var captureSession = AVCaptureSession()
     
     private var backCamera: AVCaptureDevice?
@@ -23,7 +23,7 @@ final class CustomCameraController: UIViewController {
     private var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
     
     // MARK: - Public properties
-
+    
     weak var captureDelegate: AVCapturePhotoCaptureDelegate?
     weak var videoRecordingDelegate: AVCaptureFileOutputRecordingDelegate?
     
@@ -35,15 +35,23 @@ final class CustomCameraController: UIViewController {
         }
     }
     
+    @Published var shouldShowPermission : Bool = false
+    @Published var shouldCloseCamera : Bool = false
+    
     // MARK: - Overrides
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
     }
     
-    // MARK: - Public functions
+    override func viewWillAppear(_ animated : Bool) {
+        super.viewWillAppear(animated)
+        shouldCloseCamera = false
+    }
 
+    
+    // MARK: - Public functions
+    
     func configurePreviewLayer(with frame: CGRect) {
         let cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         
@@ -60,7 +68,8 @@ final class CustomCameraController: UIViewController {
     
     func stopRunningCaptureSession() {
         captureSession.stopRunning()
-        
+        shouldCloseCamera = false
+
     }
     
     func takePhoto() {
@@ -82,7 +91,7 @@ final class CustomCameraController: UIViewController {
             videoOutput?.startRecording(to: outFileUrl, recordingDelegate:delegate )
         }
     }
-
+    
     func toggleCameraType() {
         guard let inputCameraPosition = inputCameraPosition() else {
             return
@@ -107,24 +116,27 @@ final class CustomCameraController: UIViewController {
     }
     
     func toggleFlash( ) {
-
+        
         if let avDevice = (captureSession.inputs.first as? AVCaptureDeviceInput)?.device {
-           
+            
             if avDevice.hasTorch {
                 do {
                     try avDevice.lockForConfiguration()
                 } catch {
-
+                    
                 }
                 avDevice.torchMode =  avDevice.torchMode == . on ? .off : .on
                 avDevice.unlockForConfiguration()
             }
         }
     }
-
+    
     // MARK: - Private functions
-
+    
     private func setup() {
+        stopRunningCaptureSession()
+        releasePreview()
+
         setupCaptureSession()
         cameraType == .video ? setupVideoInputOutput() : setupPhotoInputOutput()
     }
@@ -162,7 +174,7 @@ final class CustomCameraController: UIViewController {
         
         startRunningCaptureSession()
     }
-
+    
     private func setupVideoInputOutput() {
         // Camera Device Input
         if let cameraDeviceInput = cameraDeviceInput(type: .back) {
@@ -184,10 +196,10 @@ final class CustomCameraController: UIViewController {
         if captureSession.canAddOutput(photoOutput) {
             captureSession.addOutput(photoOutput)
         }
-
+        
         startRunningCaptureSession()
     }
-
+    
     private func cameraDeviceInput(type: AVCaptureDevice.Position) -> AVCaptureDeviceInput?  {
         let deviceTypes = [ AVCaptureDevice.DeviceType.builtInDualCamera, AVCaptureDevice.DeviceType.builtInWideAngleCamera ]
         
@@ -227,7 +239,7 @@ final class CustomCameraController: UIViewController {
         captureSession.stopRunning()
         
     }
-
+    
     private func inputCameraPosition() -> AVCaptureDevice.Position? {
         return inputCamera()?.position
     }
@@ -235,10 +247,63 @@ final class CustomCameraController: UIViewController {
     private func inputCamera() -> AVCaptureDevice? {
         return (captureSession.inputs.first as? AVCaptureDeviceInput)?.device
     }
+    
+    func checkCameraPermission() {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            self.checkMicrophonePermission()
+            
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                if granted {
+                    self.checkMicrophonePermission()
+                } else {
+                    self.shouldCloseCamera = true
+                }
+            }
+            
+        case .denied:
+            shouldShowPermission = true
+            self.shouldCloseCamera = false
+
+        case .restricted:
+            shouldShowPermission = true
+            self.shouldCloseCamera = false
+
+            return
+        @unknown default:
+            break
+        }
+        
+    }
+    
+    func checkMicrophonePermission() {
+        switch AVCaptureDevice.authorizationStatus(for: .audio) {
+        case .denied:
+            shouldShowPermission = true
+
+        case .restricted:
+            shouldShowPermission = true
+
+        case .authorized:
+            self.setup()
+            
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .audio) { success in
+                if success {
+                    self.setup()
+                } else {
+                    self.shouldCloseCamera = true
+                }
+            }
+        @unknown default:
+            break
+        }
+    }
 }
 
 final class CustomCameraRepresentable: UIViewControllerRepresentable,ObservableObject {
-
+    
     init(cameraFrame: CGRect, imageCompletion: @escaping ((UIImage, Data) -> Void), videoURLCompletion:@escaping ((URL) -> Void)) {
         self.cameraFrame = cameraFrame
         self.imageCompletion = imageCompletion
@@ -250,12 +315,13 @@ final class CustomCameraRepresentable: UIViewControllerRepresentable,ObservableO
     var videoURLCompletion: ((URL) -> Void)
     
     @Published var isRecording : Bool?
-    @Published var currentTime : TimeInterval = 0.0
     
     @Published var imageData : Data?
     @Published var videoURL : URL?
     @Published var image : UIImage?
-    
+    @Published var shouldShowPermission : Bool = false
+    @Published var shouldCloseCamera : Bool = false
+
     private var cancellable: Set<AnyCancellable> = []
     
     var cameraType : CameraType = .image {
@@ -272,10 +338,27 @@ final class CustomCameraRepresentable: UIViewControllerRepresentable,ObservableO
         CustomCameraController.shared.configurePreviewLayer(with: cameraFrame)
         CustomCameraController.shared.captureDelegate = context.coordinator
         CustomCameraController.shared.videoRecordingDelegate = context.coordinator
+        
+        CustomCameraController.shared.$shouldShowPermission.sink { value in
+            DispatchQueue.main.async {
+                self.shouldShowPermission = value
+            }
+        }.store(in: &cancellable)
+        
+        CustomCameraController.shared.$shouldCloseCamera.sink { value in
+            DispatchQueue.main.async {
+                self.shouldCloseCamera = value
+            }
+        }.store(in: &cancellable)
+        
         return CustomCameraController.shared
     }
     
     func updateUIViewController(_ cameraViewController: CustomCameraController, context: Context) {}
+    
+    func checkCameraPermission() {
+        CustomCameraController.shared.checkCameraPermission()
+    }
     
     func takePhoto() {
         CustomCameraController.shared.takePhoto()
@@ -303,7 +386,7 @@ final class CustomCameraRepresentable: UIViewControllerRepresentable,ObservableO
 }
 
 extension CustomCameraRepresentable {
-   
+    
     final class Coordinator: NSObject, AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate {
         
         private let parent: CustomCameraRepresentable

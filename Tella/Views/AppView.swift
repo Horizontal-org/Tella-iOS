@@ -41,7 +41,7 @@ struct AppView: View  {
             ZStack {
             
                 TabView(selection: $appModel.selectedTab) {
-                    HomeView(appModel: appModel, hideAll: $hideAll)
+                    HomeView(hideAll: $hideAll)
                         .tabItem {
                             Image("tab.home")
                             Text("Home")
@@ -67,7 +67,7 @@ struct AppView: View  {
                     ContainerView{}
                     .tabItem {
                         Image("tab.mic")
-                        Text("Mic")
+                        Text("Rec")
                     }.tag(MainAppModel.Tabs.mic)
                 }
                 
@@ -104,22 +104,17 @@ struct AppView: View  {
 
     private func setupApperance() {
         
-        UITabBar.appearance().unselectedItemTintColor = UIColor.init(hexValue: 0x918FAC)
+        UITabBar.appearance().unselectedItemTintColor = UIColor.white.withAlphaComponent(0.38)
         UITabBar.appearance().shadowImage = UIImage()
         UITabBar.appearance().backgroundImage = UIImage()
         UITabBar.appearance().isTranslucent = true
-        UITabBar.appearance().backgroundColor = UIColor.init(hexValue: 0x3D3771)
-        UITabBarItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white,
-                                                          
-                                                          NSAttributedString.Key.font: UIFont.init(name: Styles.Fonts.regularFontName, size: 12)!],for: .normal)
-        
+        UITabBar.appearance().backgroundColor = Styles.uiColor.backgroundTab
+
         let coloredAppearance = UINavigationBarAppearance()
         coloredAppearance.configureWithTransparentBackground()
         coloredAppearance.backgroundColor = Styles.uiColor.backgroundMain
         coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white,
                                                  .font: UIFont(name: Styles.Fonts.boldFontName, size: 24)!]
-        coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white,
-                                                      .font: UIFont(name: Styles.Fonts.boldFontName, size: 24)!]
         coloredAppearance.setBackIndicatorImage(UIImage(named: "back"), transitionMaskImage: UIImage(named: "back"))
         
         UINavigationBar.appearance().standardAppearance = coloredAppearance

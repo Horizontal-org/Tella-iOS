@@ -9,17 +9,12 @@ struct FileListItem: View {
     var file: VaultFile
     var parentFile: VaultFile?
     
-    @ObservedObject var appModel: MainAppModel
-    @ObservedObject var viewModel: FileListViewModel
-    
-    @Binding var showFileInfoActive : Bool
-    
-    @Binding var selectingFile : Bool
+    @EnvironmentObject var appModel: MainAppModel
+
     @Binding var isSelected : Bool
-    @Binding var showingActionSheet: Bool
-    @Binding var fileActionMenuType : FileActionMenuType
-    @Binding var currentSelectedFile : VaultFile?
-    
+
+    @EnvironmentObject var viewModel : FileListViewModel
+  
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -51,7 +46,8 @@ struct FileListItem: View {
                     }
                     .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 0))
                     Spacer()
-                    if selectingFile {
+                    
+                    if viewModel.selectingFiles {
                         HStack {
                             Image(isSelected ? "files.selected" : "files.unselected")
                                 .resizable()
@@ -62,9 +58,9 @@ struct FileListItem: View {
                         
                     } else {
                         Button {
-                            fileActionMenuType = .single
-                            showingActionSheet = true
-                            currentSelectedFile = file
+                            viewModel.fileActionMenuType = .single
+                            viewModel.showingFileActionMenu = true
+                            viewModel.currentSelectedVaultFile = file
                         } label: {
                             Image("files.more")
                                 .resizable()
@@ -75,7 +71,7 @@ struct FileListItem: View {
                 .padding(EdgeInsets(top: 12, leading: 17, bottom: 12, trailing: 20))
                 .frame(height: 60)
                 
-                if selectingFile {
+                if viewModel.selectingFiles {
                     Rectangle()
                         .fill(Color.white.opacity(0.001))
                         .frame(width: geometry.size.width, height: geometry.size.height)
@@ -84,7 +80,7 @@ struct FileListItem: View {
                         }
                 }
             }
-            .background((isSelected && selectingFile) ? Color.white.opacity(0.16) : Styles.Colors.backgroundMain)
+            .background((isSelected && viewModel.selectingFiles) ? Color.white.opacity(0.16) : Styles.Colors.backgroundMain)
         }
     }
 }
