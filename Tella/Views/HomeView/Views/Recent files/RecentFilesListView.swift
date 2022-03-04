@@ -7,7 +7,7 @@ import SwiftUI
 struct RecentFilesListView: View {
     
     @EnvironmentObject var appModel: MainAppModel
-    
+
     @State private var moreRecentFilesLoaded = false
     private var number : Int {
         return moreRecentFilesLoaded ? appModel.vaultManager.recentFiles.count : 3
@@ -62,7 +62,7 @@ struct RecentFilesListView: View {
             ForEach(appModel.vaultManager.recentFiles, id: \.self) { file in
                 
                 RecentFileCell(recentFile: file)
-                    .navigateTo(destination: FileDetailView(appModel: appModel,file: file))
+                    .navigateTo(destination: FileDetailView(appModel: appModel, file: file))
             }
         }.padding(.trailing, 17)
         

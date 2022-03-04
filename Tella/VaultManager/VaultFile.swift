@@ -104,6 +104,19 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
     
 }
 
+extension VaultFile {
+    var gridImage: AnyView {
+        AnyView(
+            ZStack{
+                Image(uiImage: thumbnailImage)
+                    .resizable()
+                    .aspectRatio(1, contentMode: .fill)
+                Image(uiImage: iconImage)
+            }
+        )
+    }
+}
+
 extension VaultFile: CustomDebugStringConvertible {
     
     var debugDescription: String {

@@ -41,7 +41,7 @@ struct AppView: View  {
             ZStack {
             
                 TabView(selection: $appModel.selectedTab) {
-                    HomeView(appModel: appModel, hideAll: $hideAll)
+                    HomeView(hideAll: $hideAll)
                         .tabItem {
                             Image("tab.home")
                             Text("Home")
