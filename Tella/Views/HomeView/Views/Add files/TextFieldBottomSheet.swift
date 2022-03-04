@@ -55,13 +55,13 @@ struct TextFieldBottomSheet: View {
             
             Divider()
                 .frame(height: 2)
-                .background(Styles.Colors.buttonAdd)
+                .background(Styles.Colors.yellow)
             Spacer()
                 .frame(height:4)
             
             if !errorMessage.isEmpty {
                 Text(errorMessage)
-                    .foregroundColor(Styles.Colors.buttonAdd)
+                    .foregroundColor(Styles.Colors.yellow)
                     .font(.custom(Styles.Fonts.regularFontName, size: 12))
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true)
@@ -100,7 +100,7 @@ struct FileNameStyle: TextFieldStyle {
         configuration
             .font(.custom(Styles.Fonts.regularFontName, size: 14))
             .foregroundColor(Color.white)
-            .accentColor(Styles.Colors.buttonAdd)
+            .accentColor(Styles.Colors.yellow)
             .multilineTextAlignment(.leading)
             .disableAutocorrection(true)
             .textContentType(UITextContentType.oneTimeCode)

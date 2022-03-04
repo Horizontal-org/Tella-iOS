@@ -4,45 +4,23 @@
 
 import SwiftUI
 
-struct ActionsBottomSheetFileActions: View {
-    @State var isPresented = true
+struct ActionListBottomSheet: View {
     
-    let items = [
-        ListActionSheetItem(imageName: "upload-icon", content: "Upload", action: {
-        }),
-        ListActionSheetItem(imageName: "share-icon", content: "Share", action: {}),
-        ListActionSheetItem(imageName: "move-icon", content: "Move", action: {}),
-        ListActionSheetItem(imageName: "edit-icon", content: "Rename", action: {}),
-        ListActionSheetItem(imageName: "save-icon", content: "Save to device", action: {}),
-        ListActionSheetItem(imageName: "info-icon", content: "File information", action: {}),
-        ListActionSheetItem(imageName: "delete-icon", content: "Delete", action: {})
-    ]
-    
-    var body: some View {
-        VStack{
-            DragView(modalHeight: CGFloat(items.count * 40 + 100),
-                     isShown: $isPresented){
-                ListActionSheet(items: items, headerTitle: "filname.jpg", isPresented: $isPresented)
-            }
-        }
-    }
-}
-
-struct ListActionSheet: View {
     let items: [ListActionSheetItem]
     var headerTitle : String
+    
     @Binding var isPresented: Bool
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0){
             Text(self.headerTitle)
-                .padding(EdgeInsets(top: 5, leading: 0, bottom: 20, trailing: 0))
+                .padding(.bottom, 10)
                 .foregroundColor(.white)
-                .font(.custom(Styles.Fonts.boldFontName, size: 16))
+                .font(.custom(Styles.Fonts.boldFontName, size: 18))
             ForEach(items, id: \.content) { item in
                 ListActionSheetRow(item: item, isPresented: $isPresented)
             }
-        }.padding()
+        }.padding(.all, 25)
     }
 }
 
@@ -68,8 +46,8 @@ struct ListActionSheetRow: View {
                 Spacer()
             }
             .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-        }).frame(height: 40, alignment: .center)
-        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+        }).frame(height: 50, alignment: .center)
+            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
     }
 }
 
@@ -82,6 +60,10 @@ struct ListActionSheetItem {
 
 struct FileActionsBottomSheet_Previews: PreviewProvider {
     static var previews: some View {
-        ActionsBottomSheetFileActions()
+        ActionListBottomSheet(items: [ListActionSheetItem(imageName: "camera-icon",
+                                                          content: "Take photo/video",
+                                                          action: {})],
+                              headerTitle: "Test",
+                              isPresented: .constant(true))
     }
 }

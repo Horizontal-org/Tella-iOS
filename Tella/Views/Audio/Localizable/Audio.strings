@@ -18,3 +18,5 @@
 "AudioRecordingSavedMessage" = "The audio recording was saved to your Tella files.";
 
 
+"AudioDeniedPermissionMessage" = "The Tella app does not have permission to access Microphone.\n\nIf you want to record a voice, proceed in the following way:\n1. Navigate to Tella app settings.\n2. Enable permissions for Microphone.\n3. Open the Tella app.\n";
+"AudioDeniedPermissionButtonTitle" = "Settings";

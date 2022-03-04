@@ -74,7 +74,7 @@ struct CustomVideoControlsView: View {
                         Slider(value: $playerVM.currentPosition, in: 0...(playerVM.videoDuration ?? 0), onEditingChanged: { isEditing in
                             playerVM.isSeekInProgress = true
                             playerVM.shouldSeekVideo = isEditing
-                        }).accentColor(Styles.Colors.buttonAdd)
+                        }).accentColor(Styles.Colors.yellow)
                         
                         Spacer()
                             .frame(width: 12)

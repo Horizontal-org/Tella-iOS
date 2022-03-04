@@ -1,30 +1,62 @@
 //
-//  AddFileButtonView.swift
+//  AddPhotoVideoBottomSheet.swift
 //  Tella
 //
-// 
+//
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
 import SwiftUI
 
-struct AddFileButtonView: View {
+struct AddPhotoVideoBottomSheet: View {
     
-    @ObservedObject var appModel: MainAppModel
-    var rootFile: VaultFile?
-
-    @State var showingDocumentPicker = false
-    @State var showingImagePicker = false
-    @State var showingAddFileSheet = false
-    @Binding var selectingFiles : Bool
-    @Binding var showingProgressView : Bool
-
+    @Binding var isPresented: Bool
+    var rootFile : VaultFile?
+    
+    @State private var showingDocumentPicker = false
+    @State private var showingImagePicker = false
+    @State private var showingProgressView : Bool = false
+    
+    @EnvironmentObject private var appModel: MainAppModel
+    
+    var items : [ListActionSheetItem] { return [
+        
+        ListActionSheetItem(imageName: "photo-library",
+                            content: "Photo Library",
+                            action: {
+                                showingImagePicker = true
+                            }),
+        
+        ListActionSheetItem(imageName: "document",
+                            content: "Document",
+                            action: {
+                                showingDocumentPicker = true
+                            }),
+    ]}
+    
     var body: some View {
-        ZStack {
-            importFileActionSheet
+        
+        ZStack{
+            
+            actionListBottomSheet
+            
             documentPickerView
+            
             imagePickerView
+            
+            ImportFilesProgressView(showingProgressView: $showingProgressView,
+                                    importFilesProgressProtocol: ImportFilesProgress())
         }
+    }
+    
+    var actionListBottomSheet: some View {
+        DragView(modalHeight: CGFloat(items.count * 40 + 100),
+                 isShown: $isPresented) {
+            ActionListBottomSheet(items: items,
+                                  headerTitle: "Import from device",
+                                  isPresented: $isPresented)
+        }
+        
     }
     
     @ViewBuilder
@@ -46,9 +78,9 @@ struct AddFileButtonView: View {
         HStack{}
         .sheet(isPresented: $showingImagePicker, content: {
             ImagePickerView { image, url, pathExtension in
-               
+                
                 showingImagePicker = false
-
+                
                 if let url = url {
                     showingProgressView = true
                     appModel.add(files: [url], to: rootFile, type: .video)
@@ -77,24 +109,11 @@ struct AddFileButtonView: View {
         )
     }
     
-    var importFileActionSheet: some View {
-        ZStack(alignment: .top) {
-            AddFileYellowButton(action: {
-                showingAddFileSheet = true
-                selectingFiles = false
-            })
-            AddFileBottomSheetFileActions(isPresented: $showingAddFileSheet,
-                                          showingDocumentPicker: $showingDocumentPicker,
-                                          showingImagePicker: $showingImagePicker,
-                                          appModel: appModel,
-                                          parent: rootFile)
-            
-        }
-    }
-
 }
-struct AddFileButtonView_Previews: PreviewProvider {
+
+struct AddPhotoVideoBottomSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddFileButtonView(appModel: MainAppModel(), selectingFiles: .constant(false), showingProgressView: .constant(true))
+        AddPhotoVideoBottomSheet(isPresented: .constant(true),
+                                 rootFile: nil)
     }
 }

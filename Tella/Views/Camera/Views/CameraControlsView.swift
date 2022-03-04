@@ -62,7 +62,7 @@ struct CameraControlsView: View {
                         Image("camera.capture")
                     }.frame(width: 57, height: 57)
                     
-                    previewLastImage
+                    previewImageAndVideodFile
                     
                     Spacer()
                 }
@@ -105,7 +105,7 @@ struct CameraControlsView: View {
                     }.frame(width: 57, height: 57)
                     
                     
-                    previewLastVideo
+                    previewImageAndVideodFile
                     
                     Spacer()
                 }
@@ -153,31 +153,13 @@ struct CameraControlsView: View {
     }
     
     @ViewBuilder
-    var previewLastImage : some View {
+    var previewImageAndVideodFile : some View {
         
-        if let file = cameraViewModel.lastImageVaultFile,
-           let data = mainAppModel.vaultManager.load(file: file) {
-            
-            Button {
-                appViewState.resetToImage()
-            } label: {
-                UIImage.image(fromData:data).rounded()
-            }
-        } else {
-            Spacer()
-        }
-        
-    }
-    
-    @ViewBuilder
-    var previewLastVideo : some View {
-        
-        if let file = cameraViewModel.lastVideoVaultFile,
+        if let file = cameraViewModel.lastImageOrVideoVaultFile,
            let data = file.thumbnail {
             
             Button {
-                appViewState.resetToVideo()
-                
+                appViewState.resetToImageAndVideo()
             } label: {
                 UIImage.image(fromData:data).rounded()
             }
@@ -186,7 +168,7 @@ struct CameraControlsView: View {
         }
         
     }
-    
+
     var bottomMenu : some View {
         
         HStack(spacing: 15) {

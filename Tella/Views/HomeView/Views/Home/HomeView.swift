@@ -14,13 +14,11 @@ struct HomeView: View {
     
     @Binding var hideAll: Bool
     
-    @ObservedObject var appModel: MainAppModel
+    @EnvironmentObject var appModel: MainAppModel
     @StateObject var viewModel = HomeViewModel()
     
-    init(appModel: MainAppModel, hideAll: Binding<Bool>) {
-        self.appModel = appModel
+    init( hideAll: Binding<Bool>) {
         self._hideAll = hideAll
-        //        quickDelete =
         setupView()
     }
     
@@ -36,10 +34,10 @@ struct HomeView: View {
                 VStack(spacing: 15) {
                     Spacer()
                         .frame( height: appModel.vaultManager.recentFiles.count > 0 ? 15 : 0 )
-                    RecentFilesListView(appModel: appModel)
+                    RecentFilesListView()
                 }
                 
-                FileGroupsView(appModel: appModel)
+                FileGroupsView()
                 
                 if appModel.settings.quickDelete {
                     SwipeToActionView(completion: {
@@ -49,11 +47,8 @@ struct HomeView: View {
                 
                 fileListWithTypeView
             }
-            
-            
         }
         .navigationBarTitle("Tella", displayMode: .inline)
-
     }
     
     var TopBarView: some View {
@@ -85,22 +80,19 @@ struct HomeView: View {
     
     var  fileListWithTypeView : some View {
         NavigationLink(destination: FileListView(appModel: appModel,
-                                                 files: appModel.vaultManager.root.files,
-                                                 fileType: appModel.selectedType,
                                                  rootFile: appModel.vaultManager.root,
-                                                 title: LocalizableHome.audioItem.localized), isActive: $appModel.showFilesList) {
+                                                 fileType: appModel.selectedType,
+                                                 title: LocalizableHome.audioItem.localized)
+                       , isActive: $appModel.showFilesList) {
             EmptyView()
         }
-        
     }
-
 }
 
 struct HomeView_Previews: PreviewProvider {
     
     @State static var hideAll = true
     static var previews: some View {
-        HomeView(appModel: MainAppModel(), hideAll: HomeView_Previews.$hideAll)
+        HomeView(hideAll: HomeView_Previews.$hideAll)
     }
 }
-

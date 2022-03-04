@@ -12,7 +12,7 @@ struct ImportFilesProgressView: View {
     
     var importFilesProgressProtocol : ImportFilesProgressProtocol
     
-    var modalHeight : CGFloat = 179
+    var modalHeight : CGFloat = 215
     
     var body: some View {
         
@@ -64,7 +64,7 @@ struct ImportFilesProgressView: View {
                     .font(.custom(Styles.Fonts.boldFontName, size: 16))
                     .foregroundColor(.white)
                 Spacer()
-                    .frame(height: 8)
+                    .frame(height: 15)
                 
                 if importFilesProgressProtocol.progressType == .number {
                     Text(String.init(format:importFilesProgressProtocol.progressMessage ,  mainAppModel.vaultManager.progress.progressFile.value))
@@ -85,7 +85,6 @@ struct ImportFilesProgressView: View {
                     .accentColor(.green)
                 
                 Spacer()
-                    .frame(height: 40)
                 
                 HStack {
                     Spacer()
@@ -98,7 +97,7 @@ struct ImportFilesProgressView: View {
                 }
             }
         }
-        .padding(EdgeInsets(top: 21, leading: 24, bottom: 30, trailing: 24))
+        .padding(EdgeInsets(top: 25, leading: 25, bottom: 35, trailing: 25))
         .onReceive(mainAppModel.vaultManager.progress.isFinishing) { isFinishing in
             if isFinishing {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {

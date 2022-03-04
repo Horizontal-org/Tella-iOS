@@ -33,7 +33,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     
     @Published var selectedTab: Tabs = .home
     
-    @Published var selectedType: FileType = .other
+    @Published var selectedType: [FileType] = [.other]
     @Published var showFilesList: Bool = false
 
     var shouldUpdateLanguage = CurrentValueSubject<Bool, Never>(false)

@@ -16,7 +16,7 @@ struct AddFileYellowButton: View {
                     self.action()
                 }) {
                     Circle()
-                        .fill(Color.yellow)
+                        .fill(Styles.Colors.yellow)
                         .frame(width: 50, height: 50, alignment: .center)
                         .overlay(Image("home.add"))
                 }

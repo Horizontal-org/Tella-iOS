@@ -20,17 +20,16 @@ struct UnlockPinView: View {
     var body: some View {
         ContainerView {
             VStack(alignment: .center) {
-                Spacer(minLength: 56)
+                Spacer(minLength: 30)
                 
                 Image("tella.logo")
                     .frame(width: 65, height: 72)
                     .aspectRatio(contentMode: .fit)
                 
-                Spacer()
-                    .frame(height: 50)
-                
+                Spacer(minLength: 23)
+
                 Text(titleString)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 18))
+                    .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                     .foregroundColor(.white)
                     .lineSpacing(7)
                     .multilineTextAlignment(.center)

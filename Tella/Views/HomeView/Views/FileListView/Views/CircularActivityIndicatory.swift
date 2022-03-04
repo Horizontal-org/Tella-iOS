@@ -18,7 +18,7 @@ struct CircularActivityIndicatory: View {
             
             Circle()
                 .trim(from: 0.5, to: 1)
-                .stroke(Styles.Colors.buttonAdd, lineWidth:4)
+                .stroke(Styles.Colors.yellow, lineWidth:4)
                 .frame(width:20,height: 20)
                 .rotationEffect(.degrees(spinCircle ? 0 : -360), anchor: .center)
                 .animation(Animation.linear(duration: 1).repeatForever(autoreverses: false))
