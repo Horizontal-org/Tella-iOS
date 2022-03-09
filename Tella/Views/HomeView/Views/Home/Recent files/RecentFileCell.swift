@@ -17,16 +17,16 @@ extension RecentFileProtocol {
             ZStack{
                 Image(uiImage: thumbnailImage)
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
                     .clipped()
-                    .frame(width: 75, height: 75)
-
                 Image(uiImage: bigIconImage)
                     .frame(width: 33, height: 33)
                     .aspectRatio(contentMode: .fit)
                 
             }.background(Color.white.opacity(0.2))
+               
+
         )
+            
     }
 }
 

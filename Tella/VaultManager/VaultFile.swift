@@ -110,7 +110,7 @@ extension VaultFile {
             ZStack{
                 Image(uiImage: thumbnailImage)
                     .resizable()
-                    .aspectRatio(1, contentMode: .fill)
+                    .clipped()
                 Image(uiImage: iconImage)
             }
         )
