@@ -12,11 +12,14 @@ struct CameraControlsView: View {
     var recordVideoAction: (() -> Void)
     var toggleCamera: (() -> Void)
     var updateCameraTypeAction: ((CameraType) -> Void)
-    
+    var toggleFlash: (() -> Void)
+ 
     // MARK: - Private properties
 
     @State private var selectedOption: CameraType = .image
     @State private var state : CameraState = .readyTakingImage
+    @State private var flashIsOn: Bool = false
+    @State private var shouldHideCloseButton: Bool = false
 
     @EnvironmentObject var cameraViewModel: CameraViewModel
     @EnvironmentObject var mainAppModel: MainAppModel
@@ -25,6 +28,9 @@ struct CameraControlsView: View {
     var body: some View {
         
         VStack {
+           
+            cameraHeaderView()
+            
             Spacer()
             
             switch state {
@@ -39,6 +45,46 @@ struct CameraControlsView: View {
                 recordingVideoControllers
             }
         }
+        .onDisappear {
+            flashIsOn = false
+        }
+    }
+    
+    private func cameraHeaderView() -> some View {
+        VStack {
+            
+            HStack() {
+                
+                // Close button
+                if !shouldHideCloseButton {
+                    Button {
+                        mainAppModel.vaultManager.clearTmpDirectory()
+                        mainAppModel.selectedTab = .home
+                    } label: {
+                        Image("close")
+                    }
+                    .frame(width: 30, height: 30)
+                    .padding(EdgeInsets(top: 15, leading: 16, bottom: 0, trailing: 12))
+                }
+                Spacer()
+                
+                // Flash button
+                Button {
+                    toggleFlash()
+                    flashIsOn.toggle()
+                } label: {
+                    flashIsOn ? Image("camera.flash-on") : Image("camera.flash-off")
+                }
+                .frame(width: 30, height: 30)
+                .padding(EdgeInsets(top: 15, leading: 16, bottom: 0, trailing: 12))
+            }
+            .frame(height: 90)
+            .background(Color.black.opacity(0.8))
+            .edgesIgnoringSafeArea(.all)
+            
+            Spacer()
+        }
+        
     }
     
     var capturePhotoControllers : some View {
@@ -97,6 +143,7 @@ struct CameraControlsView: View {
                     }.frame(width: 40, height: 40)
                     
                     Button {
+                        shouldHideCloseButton = true
                         state = .recordingVideo
                         recordVideoAction()
                         cameraViewModel.initialiseTimerRunning()
@@ -134,6 +181,7 @@ struct CameraControlsView: View {
                     Spacer()
                     
                     Button {
+                        shouldHideCloseButton = false
                         state = .readyRecordingVideo
                         recordVideoAction()
                         cameraViewModel.invalidateTimerRunning()
@@ -216,6 +264,8 @@ struct CameraControlsView_Previews: PreviewProvider {
              
         } updateCameraTypeAction: { value in
              
+        } toggleFlash: {
+            
         }
     }
 }

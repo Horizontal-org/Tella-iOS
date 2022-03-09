@@ -50,7 +50,7 @@ struct HomeView: View {
         NavigationLink(destination: FileListView(appModel: appModel,
                                                  rootFile: appModel.vaultManager.root,
                                                  fileType: appModel.selectedType,
-                                                 title: LocalizableHome.audioItem.localized)
+                                                 title: appModel.selectedType.getTitle())
                        , isActive: $appModel.showFilesList) {
             EmptyView()
         }
