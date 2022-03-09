@@ -14,7 +14,7 @@ struct CameraView: View {
     
     @ObservedObject var cameraViewModel :  CameraViewModel
     
-    var customCameraRepresentable = CustomCameraRepresentable(
+     var customCameraRepresentable = CustomCameraRepresentable(
         cameraFrame: .zero,
         imageCompletion: {_,_   in }, videoURLCompletion: { _  in }
     )
@@ -51,6 +51,7 @@ struct CameraView: View {
             }
             .onDisappear {
                 customCameraRepresentable.stopRunningCaptureSession()
+                flashIsOn = false
             }
             .navigationBarHidden(mainAppModel.selectedTab == .home ? false : true)
         

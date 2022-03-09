@@ -33,4 +33,6 @@ var homeFileItems : [HomeFileItem] { return [ HomeFileItem(title: LocalizableHom
                                        HomeFileItem(title: LocalizableHome.othersItem.localized,
                                                     imageName: "files.others",
                                                     fileType: [.other]),
-]}
+]
+    
+}
