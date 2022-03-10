@@ -46,6 +46,7 @@
 		0ECC781B267A542300A2ACF2 /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC781A267A542300A2ACF2 /* Pages.swift */; };
 		0ECC781D267AADA500A2ACF2 /* PageViewCellNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC781C267AADA500A2ACF2 /* PageViewCellNotification.swift */; };
 		0F3DC3E52523951C0024B4A0 /* BundleInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F3DC3E42523951C0024B4A0 /* BundleInfo.swift */; };
+		1204F64327D928C9006E40EE /* FileTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204F64227D928C8006E40EE /* FileTypeExtension.swift */; };
 		1209FD2927AD7DA500D8C17E /* OldAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DF3A512269BE0C800B907D5 /* OldAssets.xcassets */; };
 		1209FD2B27AD851E00D8C17E /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD2A27AD851E00D8C17E /* AudioPlayerView.swift */; };
 		1209FD2E27AD89C800D8C17E /* AudioPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD2D27AD89C800D8C17E /* AudioPlayerViewModel.swift */; };
@@ -94,7 +95,6 @@
 		1268553E27D2572100385E18 /* FileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC6FC53269BCDDE001B0D34 /* FileInfoView.swift */; };
 		1268554027D2994500385E18 /* VaultFileStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1268553F27D2994500385E18 /* VaultFileStatus.swift */; };
 		1268554127D2ACB200385E18 /* RecentFilesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC4263A383100CE191A /* RecentFilesListView.swift */; };
-		12690CB62755020C00A758D2 /* DeleteFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A9C902750FC7800405376 /* DeleteFileView.swift */; };
 		126AD14827C6D0EC00081CC9 /* Camera.strings in Resources */ = {isa = PBXBuildFile; fileRef = 126AD14727C6D0EC00081CC9 /* Camera.strings */; };
 		126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */; };
 		126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */; };
@@ -123,6 +123,10 @@
 		1289B98927C53A9C00315FCE /* CameraType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289B98827C53A9C00315FCE /* CameraType.swift */; };
 		1289B98B27C53C2400315FCE /* CameraTypeItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289B98A27C53C2400315FCE /* CameraTypeItemView.swift */; };
 		1289B98D27C53C8400315FCE /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289B98C27C53C8400315FCE /* ImageExtension.swift */; };
+		128B929727D7920300E92ACF /* SelectingFilesHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128B929627D7920300E92ACF /* SelectingFilesHeaderView.swift */; };
+		128B929927D796E800E92ACF /* FolderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128B929827D796E800E92ACF /* FolderListView.swift */; };
+		128B929B27D798E200E92ACF /* ManageFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128B929A27D798E200E92ACF /* ManageFileView.swift */; };
+		128B929D27D7A08700E92ACF /* FileItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128B929C27D7A08700E92ACF /* FileItemsView.swift */; };
 		128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C7BC32745AB0100A680B3 /* FileListViewModel.swift */; };
 		128F979A2799AF0100E63DA5 /* CircularActivityIndicatory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128F97962799983800E63DA5 /* CircularActivityIndicatory.swift */; };
 		1290743B274CEB9B00F38A81 /* FileGridItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1290743A274CEB9B00F38A81 /* FileGridItem.swift */; };
@@ -279,6 +283,7 @@
 		0ECC781A267A542300A2ACF2 /* Pages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pages.swift; sourceTree = "<group>"; };
 		0ECC781C267AADA500A2ACF2 /* PageViewCellNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewCellNotification.swift; sourceTree = "<group>"; };
 		0F3DC3E42523951C0024B4A0 /* BundleInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleInfo.swift; sourceTree = "<group>"; };
+		1204F64227D928C8006E40EE /* FileTypeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTypeExtension.swift; sourceTree = "<group>"; };
 		1209FD2A27AD851E00D8C17E /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
 		1209FD2D27AD89C800D8C17E /* AudioPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerViewModel.swift; sourceTree = "<group>"; };
 		1209FD2F27AD8AC400D8C17E /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
@@ -301,7 +306,6 @@
 		125A0AEA2726CBD900F6E77F /* UnlockPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockPasswordView.swift; sourceTree = "<group>"; };
 		125A0AEC2726CBF000F6E77F /* UnlockPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockPinView.swift; sourceTree = "<group>"; };
 		125A0AEE2726F0A000F6E77F /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
-		125A9C902750FC7800405376 /* DeleteFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteFileView.swift; sourceTree = "<group>"; };
 		125D231B271F119D00250FBB /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRegularExpressionExtension.swift; sourceTree = "<group>"; };
 		125D2320271F823100250FBB /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
@@ -349,6 +353,10 @@
 		1289B98827C53A9C00315FCE /* CameraType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraType.swift; sourceTree = "<group>"; };
 		1289B98A27C53C2400315FCE /* CameraTypeItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraTypeItemView.swift; sourceTree = "<group>"; };
 		1289B98C27C53C8400315FCE /* ImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
+		128B929627D7920300E92ACF /* SelectingFilesHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectingFilesHeaderView.swift; sourceTree = "<group>"; };
+		128B929827D796E800E92ACF /* FolderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListView.swift; sourceTree = "<group>"; };
+		128B929A27D798E200E92ACF /* ManageFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageFileView.swift; sourceTree = "<group>"; };
+		128B929C27D7A08700E92ACF /* FileItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItemsView.swift; sourceTree = "<group>"; };
 		128C7BC32745AB0100A680B3 /* FileListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListViewModel.swift; sourceTree = "<group>"; };
 		128F97962799983800E63DA5 /* CircularActivityIndicatory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularActivityIndicatory.swift; sourceTree = "<group>"; };
 		1290743A274CEB9B00F38A81 /* FileGridItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGridItem.swift; sourceTree = "<group>"; };
@@ -616,6 +624,14 @@
 			path = Tabs;
 			sourceTree = "<group>";
 		};
+		1204F64427D928D0006E40EE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1204F64227D928C8006E40EE /* FileTypeExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		1209FD2C27AD896A00D8C17E /* AudioPlayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -751,6 +767,7 @@
 			children = (
 				125DD9C82796CB090053619D /* ImportFilesProgressView.swift */,
 				127B56D4279AC28200F902C9 /* CancelImportView.swift */,
+				128F97962799983800E63DA5 /* CircularActivityIndicatory.swift */,
 				1272F26027C91CD90054F2E2 /* ImportFilesProgressModels.swift */,
 			);
 			path = ImportFilesProgressView;
@@ -779,7 +796,6 @@
 				12A2DB02273576D50094B856 /* AddFileView.swift */,
 				127964B127CF9F58003DD7DF /* AddFilesBottomSheet.swift */,
 				129533C127399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift */,
-				129533C32739D5BC0053FA4B /* TextFieldBottomSheet.swift */,
 				0D4BC3CD267668D600DCDC30 /* AddFileYellowButton.swift */,
 			);
 			path = "Add files";
@@ -788,12 +804,9 @@
 		1283C258272AABC9009180CA /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				128A82DB27D113230027699F /* Recent files */,
-				128A82DC27D1136B0027699F /* File groups */,
-				127964B327CFA8AF003DD7DF /* Add files */,
-				0DA213CC268028AC00526995 /* FileDetailView */,
-				D5DA7F992648D02C00B00FDA /* FileListView */,
 				12AB30D1272C33D90020FFBF /* Home */,
+				D5DA7F992648D02C00B00FDA /* FileListView */,
+				0DA213CC268028AC00526995 /* FileDetailView */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -805,21 +818,6 @@
 				12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */,
 			);
 			path = Localizable;
-			sourceTree = "<group>";
-		};
-		1288BFE4274C40CA0051E23D /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				D5DA7F9A2648D05400B00FDA /* FileListView.swift */,
-				0DA213C62680286F00526995 /* FileListItem.swift */,
-				1290743A274CEB9B00F38A81 /* FileGridItem.swift */,
-				0DA213C82680288B00526995 /* FileActionMenu.swift */,
-				125EFACC274A447000D93DF6 /* FileSortMenu.swift */,
-				0DA213CA268028A200526995 /* FileSortOptions.swift */,
-				125A9C902750FC7800405376 /* DeleteFileView.swift */,
-				128F97962799983800E63DA5 /* CircularActivityIndicatory.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		1288BFE5274C40E00051E23D /* ViewModel */ = {
@@ -876,6 +874,23 @@
 				D5DA7F972646220100B00FDA /* FileGroupButtonView.swift */,
 			);
 			path = "File groups";
+			sourceTree = "<group>";
+		};
+		128B929527D77FF000E92ACF /* File list */ = {
+			isa = PBXGroup;
+			children = (
+				D5DA7F9A2648D05400B00FDA /* FileListView.swift */,
+				128B929C27D7A08700E92ACF /* FileItemsView.swift */,
+				128B929627D7920300E92ACF /* SelectingFilesHeaderView.swift */,
+				128B929827D796E800E92ACF /* FolderListView.swift */,
+				128B929A27D798E200E92ACF /* ManageFileView.swift */,
+				0DA213C62680286F00526995 /* FileListItem.swift */,
+				1290743A274CEB9B00F38A81 /* FileGridItem.swift */,
+				0DA213C82680288B00526995 /* FileActionMenu.swift */,
+				125EFACC274A447000D93DF6 /* FileSortMenu.swift */,
+				0DA213CA268028A200526995 /* FileSortOptions.swift */,
+			);
+			path = "File list";
 			sourceTree = "<group>";
 		};
 		1291F4E927B52298006A34D3 /* Recorder */ = {
@@ -984,6 +999,8 @@
 			children = (
 				D50727CB2625573200BBC370 /* HomeView.swift */,
 				12AB30D2272C36500020FFBF /* HomeData.swift */,
+				128A82DB27D113230027699F /* Recent files */,
+				128A82DC27D1136B0027699F /* File groups */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -1008,6 +1025,7 @@
 				1283C254272A7484009180CA /* CustomNavigationContainerView.swift */,
 				0E64C6A5265E7625005A7934 /* ActionListBottomSheet.swift */,
 				12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */,
+				129533C32739D5BC0053FA4B /* TextFieldBottomSheet.swift */,
 				1EAE6BF424146C2100114244 /* QuickLook.swift */,
 			);
 			path = Components;
@@ -1154,7 +1172,10 @@
 		D572EAC3263A381400CE191A /* HomeView */ = {
 			isa = PBXGroup;
 			children = (
+				1204F64427D928D0006E40EE /* Extensions */,
 				1283C258272AABC9009180CA /* Views */,
+				1288BFE5274C40E00051E23D /* ViewModel */,
+				1272F25B27C91A730054F2E2 /* Models */,
 				1283C259272AAC61009180CA /* Localizable */,
 			);
 			path = HomeView;
@@ -1171,9 +1192,8 @@
 		D5DA7F992648D02C00B00FDA /* FileListView */ = {
 			isa = PBXGroup;
 			children = (
-				1272F25B27C91A730054F2E2 /* Models */,
-				1288BFE4274C40CA0051E23D /* Views */,
-				1288BFE5274C40E00051E23D /* ViewModel */,
+				128B929527D77FF000E92ACF /* File list */,
+				127964B327CFA8AF003DD7DF /* Add files */,
 			);
 			path = FileListView;
 			sourceTree = "<group>";
@@ -1588,6 +1608,7 @@
 				12A148942720A89E00A1ADDC /* BottomLockView.swift in Sources */,
 				1291F4F627B54300006A34D3 /* AudioPlayer.swift in Sources */,
 				12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */,
+				128B929927D796E800E92ACF /* FolderListView.swift in Sources */,
 				126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */,
 				0E64C6A6265E7625005A7934 /* ActionListBottomSheet.swift in Sources */,
 				D5077A40260D300600D72947 /* DebugLogging.swift in Sources */,
@@ -1595,6 +1616,7 @@
 				12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */,
 				12730E67279F11C300DC0135 /* LanguageListView.swift in Sources */,
 				0ECC7817267A533E00A2ACF2 /* PageViewCell.swift in Sources */,
+				128B929727D7920300E92ACF /* SelectingFilesHeaderView.swift in Sources */,
 				1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
 				127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */,
@@ -1618,6 +1640,7 @@
 				1289B98927C53A9C00315FCE /* CameraType.swift in Sources */,
 				0E78B3A72656B03600F9BDBC /* DragView.swift in Sources */,
 				12607D562790416400E2B8CC /* PlayerViewModel.swift in Sources */,
+				128B929B27D798E200E92ACF /* ManageFileView.swift in Sources */,
 				1237A71A278F18C000D7BC0F /* WebView.swift in Sources */,
 				12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */,
 				12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */,
@@ -1643,6 +1666,7 @@
 				12607D5A2790457600E2B8CC /* VideoViewer.swift in Sources */,
 				125A0AED2726CBF000F6E77F /* UnlockPinView.swift in Sources */,
 				12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */,
+				128B929D27D7A08700E92ACF /* FileItemsView.swift in Sources */,
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
 				1268554127D2ACB200385E18 /* RecentFilesListView.swift in Sources */,
 				12776A9827BAC87A00CDC5DC /* CameraViewModel.swift in Sources */,
@@ -1672,6 +1696,7 @@
 				0ECC781B267A542300A2ACF2 /* Pages.swift in Sources */,
 				0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */,
 				126FE4D727A427E200AE4188 /* Constants.swift in Sources */,
+				1204F64327D928C9006E40EE /* FileTypeExtension.swift in Sources */,
 				0DA213C72680286F00526995 /* FileListItem.swift in Sources */,
 				CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */,
 				125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */,
@@ -1684,7 +1709,6 @@
 				12F5D28D27A326EB00BF3309 /* AboutAndHelpView.swift in Sources */,
 				1230BE4727CD6D440055F854 /* AudioAuthorizationStatus.swift in Sources */,
 				127964B227CF9F58003DD7DF /* AddFilesBottomSheet.swift in Sources */,
-				12690CB62755020C00A758D2 /* DeleteFileView.swift in Sources */,
 				12A148982720B47100A1ADDC /* LockDescriptionView.swift in Sources */,
 				129533C227399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift in Sources */,
 				12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */,

@@ -13,7 +13,7 @@ struct AppView: View  {
     @State private var inputImage: UIImage?
     
     @State private var showingRecoredrView : Bool = false
-
+    
     init() {
         setDebugLevel(level: .debug, for: .app)
         setDebugLevel(level: .debug, for: .crypto)
@@ -27,7 +27,7 @@ struct AppView: View  {
             ZStack {
                 tabbar
             }
-
+            
         }
     }
     
@@ -39,7 +39,7 @@ struct AppView: View  {
     private var tabbar: some View{
         NavigationView {
             ZStack {
-            
+                
                 TabView(selection: $appModel.selectedTab) {
                     HomeView(hideAll: $hideAll)
                         .tabItem {
@@ -79,7 +79,7 @@ struct AppView: View  {
                     CameraView(cameraViewModel: CameraViewModel(mainAppModel: appModel))
                 }
             }
-
+            
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     leadingView
@@ -92,16 +92,16 @@ struct AppView: View  {
         }
         .navigationViewStyle(.stack)
         
-          
-        .accentColor(.white)
-
         
-            .navigationBarTitle("Tella", displayMode: .inline)
-            .navigationBarHidden(appModel.selectedTab == .home ? false : true)
-            
-     }
+        .accentColor(.white)
+        
+        
+        .navigationBarTitle("Tella", displayMode: .inline)
+        .navigationBarHidden(appModel.selectedTab == .home ? false : true)
+        
+    }
     
-
+    
     private func setupApperance() {
         
         UITabBar.appearance().unselectedItemTintColor = UIColor.white.withAlphaComponent(0.38)
@@ -109,7 +109,7 @@ struct AppView: View  {
         UITabBar.appearance().backgroundImage = UIImage()
         UITabBar.appearance().isTranslucent = true
         UITabBar.appearance().backgroundColor = Styles.uiColor.backgroundTab
-
+        
         let coloredAppearance = UINavigationBarAppearance()
         coloredAppearance.configureWithTransparentBackground()
         coloredAppearance.backgroundColor = Styles.uiColor.backgroundMain
@@ -127,10 +127,14 @@ struct AppView: View  {
     private var leadingView : some View {
         
         if appModel.selectedTab == .home {
-            Image("home.settings")
-                .frame(width: 19, height: 20)
-                .aspectRatio(contentMode: .fit)
-                .navigateTo(destination: SettingsMainView(appModel: appModel))
+            Button() {
+                
+            } label: {
+                Image("home.settings")
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 35, height: 35)
+                    .navigateTo(destination: SettingsMainView(appModel: appModel))
+            }
         }
     }
     
@@ -142,19 +146,19 @@ struct AppView: View  {
                 hideAll = true
             } label: {
                 Image("home.close")
-                    .imageScale(.large)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 35, height: 35)
             }
         }
     }
-    
 }
 
-//struct AppView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AppView()
-//            .preferredColorScheme(.light)
-//            .previewLayout(.device)
-//            .previewDevice("iPhone Xʀ")
-//            .environmentObject(MainAppModel())
-//    }
-//}
+struct AppView_Previews: PreviewProvider {
+    static var previews: some View {
+        AppView()
+            .preferredColorScheme(.light)
+            .previewLayout(.device)
+            .previewDevice("iPhone Xʀ")
+            .environmentObject(MainAppModel())
+    }
+}

@@ -11,17 +11,11 @@ import SwiftUI
 struct FileGridItem: View {
     
     var file: VaultFile
-    var parentFile: VaultFile?
-    
-    @ObservedObject var appModel: MainAppModel
-    @State var showFileInfoActive = false
-    
-    @Binding var selectingFile : Bool
-    @Binding var isSelected : Bool
-    @Binding var showingActionSheet: Bool
-    @Binding var fileActionMenuType : FileActionMenuType
-    @Binding var currentSelectedFile : VaultFile?
-    
+//    @State var isSelected : Bool = false
+
+    @EnvironmentObject var appModel: MainAppModel
+    @EnvironmentObject var fileListViewModel : FileListViewModel
+
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -36,9 +30,9 @@ struct FileGridItem: View {
                         Spacer()
                         
                         Button {
-                            fileActionMenuType = .single
-                            showingActionSheet = true
-                            currentSelectedFile = file
+                            fileListViewModel.fileActionMenuType = .single
+                            fileListViewModel.showingFileActionMenu = true
+                            fileListViewModel.currentSelectedVaultFile = file
                             
                         } label: {
                             Image("files.more")
@@ -49,29 +43,29 @@ struct FileGridItem: View {
                     }
                 }
                 
-                if selectingFile {
+                if fileListViewModel.selectingFiles {
                     Color.black.opacity(0.32)
                         .frame(width: 80, height: 80)
                         .onTapGesture {
-                            isSelected = !isSelected
+                            fileListViewModel.updateSelection(for: file)
                         }
                     HStack() {
                         
                         VStack(alignment: .leading) {
-                            Image(isSelected ? "files.selected" : "files.unselected")
+                            Image(fileListViewModel.getStatus(for: file) ? "files.selected" : "files.unselected")
                                 .resizable()
                                 .frame(width: 15, height: 15)
                                 .padding(EdgeInsets(top: 6, leading: 6, bottom: 0, trailing: 0))
                             Spacer()
                             
                         }.onTapGesture {
-                            isSelected = !isSelected
+                            fileListViewModel.updateSelection(for: file)
                         }
                         Spacer()
                     }
                 }
             }
-            .background((isSelected && selectingFile) ? Color.white.opacity(0.16) : Styles.Colors.backgroundMain)
+            .background((fileListViewModel.getStatus(for: file) && fileListViewModel.selectingFiles) ? Color.white.opacity(0.16) : Styles.Colors.backgroundMain)
             
         } .frame(width: 80, height: 80)
     }
@@ -80,13 +74,10 @@ struct FileGridItem: View {
 
 struct FileGridItem_Previews: PreviewProvider {
     static var previews: some View {
-        FileGridItem(file: VaultFile(type: FileType.folder, fileName: "test"),
-                     appModel: MainAppModel(),
-                     selectingFile: .constant(false) ,
-                     isSelected: .constant(false),
-                     showingActionSheet: .constant(false),
-                     fileActionMenuType: .constant(.single) ,
-                     currentSelectedFile: .constant(VaultFile(type: FileType.folder, fileName: "test")))
+        FileGridItem(file: VaultFile.stub(type: .folder))
+            .environmentObject(MainAppModel())
+            .environmentObject(FileListViewModel.stub())
+
     }
 }
 

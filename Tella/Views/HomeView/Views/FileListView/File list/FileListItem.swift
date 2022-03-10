@@ -7,14 +7,11 @@ import SwiftUI
 struct FileListItem: View {
     
     var file: VaultFile
-    var parentFile: VaultFile?
-    
+//     @State var isSelected : Bool = false
+
     @EnvironmentObject var appModel: MainAppModel
+    @EnvironmentObject var fileListViewModel : FileListViewModel
 
-    @Binding var isSelected : Bool
-
-    @EnvironmentObject var viewModel : FileListViewModel
-  
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -47,9 +44,9 @@ struct FileListItem: View {
                     .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 0))
                     Spacer()
                     
-                    if viewModel.selectingFiles {
+                    if fileListViewModel.selectingFiles {
                         HStack {
-                            Image(isSelected ? "files.selected" : "files.unselected")
+                            Image(fileListViewModel.getStatus(for: file) ? "files.selected" : "files.unselected")
                                 .resizable()
                                 .frame(width: 24, height: 24)
                         }
@@ -58,9 +55,9 @@ struct FileListItem: View {
                         
                     } else {
                         Button {
-                            viewModel.fileActionMenuType = .single
-                            viewModel.showingFileActionMenu = true
-                            viewModel.currentSelectedVaultFile = file
+                            fileListViewModel.fileActionMenuType = .single
+                            fileListViewModel.showingFileActionMenu = true
+                            fileListViewModel.currentSelectedVaultFile = file
                         } label: {
                             Image("files.more")
                                 .resizable()
@@ -71,16 +68,26 @@ struct FileListItem: View {
                 .padding(EdgeInsets(top: 12, leading: 17, bottom: 12, trailing: 20))
                 .frame(height: 60)
                 
-                if viewModel.selectingFiles {
+                if fileListViewModel.selectingFiles {
                     Rectangle()
                         .fill(Color.white.opacity(0.001))
                         .frame(width: geometry.size.width, height: geometry.size.height)
                         .onTapGesture {
-                            isSelected = !isSelected
+                            fileListViewModel.updateSelection(for: file)
+                            
                         }
                 }
             }
-            .background((isSelected && viewModel.selectingFiles) ? Color.white.opacity(0.16) : Styles.Colors.backgroundMain)
+            .background((fileListViewModel.getStatus(for: file) && fileListViewModel.selectingFiles) ? Color.white.opacity(0.16) : Styles.Colors.backgroundMain)
         }
     }
 }
+
+struct FileListItem_Previews: PreviewProvider {
+    static var previews: some View {
+        FileListItem(file: VaultFile.stub(type: .folder))
+            .environmentObject(MainAppModel())
+            .environmentObject(FileListViewModel.stub())
+    }
+}
+

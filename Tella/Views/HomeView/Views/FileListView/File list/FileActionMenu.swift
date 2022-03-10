@@ -11,42 +11,19 @@ enum FileActionMenuType {
 
 struct FileActionMenu: View {
     
-    var selectedFiles: [VaultFile]
-    var parentFile: VaultFile?
     var fileActionMenuType : FileActionMenuType
     
-    @Binding var showingActionSheet: Bool
-    @Binding var showFileInfoActive: Bool
-    @ObservedObject var appModel: MainAppModel
+    @EnvironmentObject var appModel: MainAppModel
+    @EnvironmentObject var fileListViewModel: FileListViewModel
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     @State var isPresented = true
     @State var showingDocumentPicker = false
     @State var showingDeleteConfirmationSheet = false
     @State var showingSaveConfirmationSheet = false
     @State var showingRenameFileConfirmationSheet = false
     @State var showingShareFileSheet = false
-    
     @State var fileName : String = ""
-    
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
-    var firstItems : [ListActionSheetItem] { return [
-        //        ListActionSheetItem(imageName: "upload-icon",
-        //                            content: "Upload",
-        //                            action: {
-        //                                self.presentationMode.wrappedValue.dismiss()
-        //                            }),
-        ListActionSheetItem(imageName: "share-icon",
-                            content: "Share",
-                            action: {
-                                showingActionSheet = false
-                                showingShareFileSheet = true
-                            },isActive: shouldActivateShare)
-    ]}
-    
-    var shouldActivateShare : Bool {
-        (fileActionMenuType == .single && (selectedFiles.count == 1 && selectedFiles[0].type != .folder)) ||
-        (fileActionMenuType == .multiple && !selectedFiles.contains{$0.type == .folder})
-    }
     
     var shouldShowDivider : Bool {
         (firstItems.contains(where: {$0.isActive}))
@@ -57,6 +34,17 @@ struct FileActionMenu: View {
         return CGFloat((itemsNumber * 50) + 90)
     }
     
+    var firstItems : [ListActionSheetItem] { return [
+        
+        ListActionSheetItem(imageName: "share-icon",
+                            content: "Share",
+                            action: {
+                                fileListViewModel.showingFileActionMenu = false
+                                showingShareFileSheet = true
+                            },isActive: fileListViewModel.shouldActivateShare)
+    ]
+        
+    }
     var secondItems : [ListActionSheetItem] {
         
         return [
@@ -69,41 +57,41 @@ struct FileActionMenu: View {
             ListActionSheetItem(imageName: "edit-icon",
                                 content: "Rename",
                                 action: {
-                                    if selectedFiles.count == 1 {
-                                        showingActionSheet = false
-                                        fileName = selectedFiles[0].fileName
+                                    if fileListViewModel.selectedFiles.count == 1 {
+                                        fileListViewModel.showingFileActionMenu = false
+                                        fileName = fileListViewModel.selectedFiles[0].fileName
                                         showingRenameFileConfirmationSheet = true
                                     }
-                                },
-                                isActive: fileActionMenuType == .single ? true : false )  ,
+                                }, isActive: fileListViewModel.shouldActivateRename),
             
             ListActionSheetItem(imageName: "save-icon",
                                 content: "Save to device",
                                 action: {
-                                    showingActionSheet = false
+                                    fileListViewModel.showingFileActionMenu = false
                                     showingSaveConfirmationSheet = true
-                                }),
+                                },isActive: fileListViewModel.shouldActivateShare),
             
             ListActionSheetItem(imageName: "info-icon",
                                 content: "File information",
                                 action: {
-                                    showingActionSheet = false
-                                    showFileInfoActive = true
-                                }),
+                                    fileListViewModel.showingFileActionMenu = false
+                                    fileListViewModel.showFileInfoActive = true
+                                }, isActive: fileListViewModel.shouldActivateFileInformation),
             
             ListActionSheetItem(imageName: "delete-icon",
                                 content: "Delete",
                                 action: {
-                                    showingActionSheet = false
+                                    fileListViewModel.showingFileActionMenu = false
                                     showingDeleteConfirmationSheet = true
                                 })
-        ]}
+        ]
+    }
     
     var body: some View {
         ZStack{
             DragView(modalHeight: modalHeight,
-                     isShown: $showingActionSheet) {
-                FileActionMenuContentView
+                     isShown: $fileListViewModel.showingFileActionMenu) {
+                fileActionMenuContentView
             }
         }
         
@@ -113,9 +101,9 @@ struct FileActionMenu: View {
         shareFileView
     }
     
-    var FileActionMenuContentView : some View {
+    var fileActionMenuContentView : some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text( (fileActionMenuType == .single && selectedFiles.count == 1) ?  selectedFiles[0].fileName : "\(selectedFiles.count) items")
+            Text(fileListViewModel.fileActionsTitle)
                 .foregroundColor(.white)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                 .padding(EdgeInsets(top: 8, leading: 8 , bottom: 15, trailing: 0))
@@ -157,7 +145,7 @@ struct FileActionMenu: View {
                 appModel.vaultManager.clearTmpDirectory()
             }, content: {
                 DocumentPickerView(documentPickerType: .forExport,
-                                   URLs: appModel.vaultManager.load(files: selectedFiles)) { _ in
+                                   URLs: appModel.vaultManager.load(files: fileListViewModel.selectedFiles)) { _ in
                 }
             })
     }
@@ -172,8 +160,8 @@ struct FileActionMenu: View {
                            isPresented: $showingDeleteConfirmationSheet,
                            didConfirmAction:{
             showingDeleteConfirmationSheet = false
-            selectedFiles.forEach { vaultFile in
-                appModel.delete(file: vaultFile, from: parentFile)
+            fileListViewModel.selectedFiles.forEach { vaultFile in
+                appModel.delete(file: vaultFile, from: fileListViewModel.rootFile)
             }
         })
     }
@@ -183,11 +171,11 @@ struct FileActionMenu: View {
                              validateButtonText: "SAVE",
                              isPresented: $showingRenameFileConfirmationSheet,
                              fieldContent: $fileName,
-                             fileName: selectedFiles.count == 1 ? selectedFiles[0].fileName : "",
+                             fileName: fileListViewModel.selectedFiles.count == 1 ? fileListViewModel.selectedFiles[0].fileName : "",
                              fieldType: FieldType.fileName,
                              didConfirmAction: {
-            selectedFiles[0].fileName = fileName
-            appModel.rename(file: selectedFiles[0], parent: parentFile)
+            fileListViewModel.selectedFiles[0].fileName = fileName
+            appModel.rename(file: fileListViewModel.selectedFiles[0], parent: fileListViewModel.rootFile)
         })
     }
     
@@ -196,18 +184,15 @@ struct FileActionMenu: View {
         .sheet(isPresented: $showingShareFileSheet, onDismiss: {
             appModel.vaultManager.clearTmpDirectory()
         }, content: {
-            ActivityViewController(fileData: appModel.getFilesForShare(files: selectedFiles))
+            ActivityViewController(fileData: appModel.getFilesForShare(files: fileListViewModel.selectedFiles))
         })
     }
 }
 
 struct FileActionMenu_Previews: PreviewProvider {
     static var previews: some View {
-        FileActionMenu(selectedFiles: [VaultFile(type: FileType.folder, fileName: "test")],
-                       parentFile: VaultFile(type: FileType.folder, fileName: "test"),
-                       fileActionMenuType: FileActionMenuType.multiple,
-                       showingActionSheet: .constant(true),
-                       showFileInfoActive: .constant(true),
-                       appModel: MainAppModel())
+        FileActionMenu(fileActionMenuType: FileActionMenuType.multiple)
+            .environmentObject(MainAppModel())
+            .environmentObject(FileListViewModel.stub())
     }
 }

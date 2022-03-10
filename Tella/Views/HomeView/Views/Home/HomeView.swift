@@ -19,13 +19,8 @@ struct HomeView: View {
     
     init( hideAll: Binding<Bool>) {
         self._hideAll = hideAll
-        setupView()
     }
-    
-    private func setupView() {
-        
-    }
-    
+
     var body: some View {
         
         ContainerView {
@@ -50,39 +45,12 @@ struct HomeView: View {
         }
         .navigationBarTitle("Tella", displayMode: .inline)
     }
-    
-    var TopBarView: some View {
-        
-        HStack {
-            NavigationLink(destination: SettingsView(appModel: appModel)) {
-                Image("home.settings")
-                    .frame(width: 19, height: 20)
-                    .aspectRatio(contentMode: .fit)
-                    .padding(EdgeInsets(top: 12, leading: 17, bottom: 10, trailing: 17))
-            }
-            
-            Spacer()
-            
-            Text("Tella")
-                .font(.custom(Styles.Fonts.boldFontName, size: 24))
-                .foregroundColor(Color.white)
-            
-            Spacer()
-            
-            Button {
-                hideAll = true
-            } label: {
-                Image("home.close")
-                    .imageScale(.large)
-            }.padding(EdgeInsets(top: 12, leading: 17, bottom: 21, trailing: 17))
-        }
-    }
-    
+
     var  fileListWithTypeView : some View {
         NavigationLink(destination: FileListView(appModel: appModel,
                                                  rootFile: appModel.vaultManager.root,
                                                  fileType: appModel.selectedType,
-                                                 title: LocalizableHome.audioItem.localized)
+                                                 title: appModel.selectedType.getTitle())
                        , isActive: $appModel.showFilesList) {
             EmptyView()
         }

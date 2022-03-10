@@ -40,20 +40,17 @@ struct LanguageHeaderView : View {
                 isPresented = false
             } label: {
                 Image("close")
-            }
-            
-            padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12))
+            }.padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12))
             
             Text(LocalizableSettings.language.localized)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 20))
                 .foregroundColor(Color.white)
             
             Spacer()
+            
         }.padding(EdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0))
-        
     }
 }
-
 
 struct LanguageItemView : View {
     
@@ -80,6 +77,7 @@ struct LanguageItemView : View {
                 }
                 
                 Spacer()
+                
                 if languageItem.code == Language.currentLanguage.code {
                     Image("settings.done")
                 }
