@@ -9,6 +9,7 @@ struct LockConfirmPinView: View {
     @EnvironmentObject private var appViewState: AppViewState
     @State var shouldShowErrorMessage : Bool = false
     @EnvironmentObject var lockViewModel: LockViewModel
+    @State var shouldShowOnboarding : Bool = false
     
     var body: some View {
         
@@ -24,13 +25,18 @@ struct LockConfirmPinView: View {
                 lockViewModel.unlockType == .new ? self.lockWithPin() : self.updatePin()
             }
         }
+        
+        onboardingLink
     }
     
     func lockWithPin() {
         do {
             try CryptoManager.shared.initKeys(.TELLA_PIN,
                                               password: lockViewModel.password)
-            self.appViewState.resetToMain()
+            _ = CryptoManager.shared.recoverKey(.PRIVATE, password: lockViewModel.password)
+
+            shouldShowOnboarding = true
+
         } catch {
             
         }
@@ -47,6 +53,15 @@ struct LockConfirmPinView: View {
             
         }
     }
+    
+    private var onboardingLink: some View {
+        NavigationLink(destination: OnboardingEndView() ,
+                       isActive: $shouldShowOnboarding) {
+            EmptyView()
+        }.frame(width: 0, height: 0)
+            .hidden()
+    }
+    
 }
 
 struct LockConfirmPinView_Previews: PreviewProvider {

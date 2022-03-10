@@ -20,7 +20,7 @@ struct ContentView: View {
         }
         
         if appViewState.currentView == .LOCK {
-            return LockChoiceView( isPresented: .constant(false))
+            return WelcomeView()
                 .environmentObject(LockViewModel(unlockType: .new))
                 .eraseToAnyView()
         }
