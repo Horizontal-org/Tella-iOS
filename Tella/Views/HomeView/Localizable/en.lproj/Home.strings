@@ -40,3 +40,7 @@
 "HomeCancelImportFileMessage" = "Your file will not be imported.";
 "HomeCancelImportFileBack" = "BACK";
 "HomeCancelImportFileCancelImport" = "CANCEL IMPORT";
+
+
+"HomeEmptyAllFilesMessage" = "You don’t have any files in Tella yet.\n\nTap the “+” button below to import your first file, or go to the Camera or Recorder to create one. You can also create folders to keep your files organized.";
+"HomeEmptyFolderMessage" = "This folder is empty! Tap the + button below to import a file or create a folder.";

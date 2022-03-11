@@ -7,22 +7,26 @@ import SwiftUI
 struct LockConfirmPinView: View {
     
     @EnvironmentObject private var appViewState: AppViewState
-    @State var shouldShowErrorMessage : Bool = false
     @EnvironmentObject var lockViewModel: LockViewModel
     
+    @State var shouldShowOnboarding : Bool = false
+    @State var shouldShowErrorMessage : Bool = false
+    
     var body: some View {
-        
-        CustomPinView(lockViewData: LockConfirmPinData(),
-                      nextButtonAction: .action,
-                      fieldContent: $lockViewModel.confirmPassword,
-                      shouldShowErrorMessage: $shouldShowErrorMessage,
-                      destination: EmptyView()) {
-            
-            if lockViewModel.shouldShowErrorMessage {
-                shouldShowErrorMessage = true
-            } else {
-                lockViewModel.unlockType == .new ? self.lockWithPin() : self.updatePin()
+        ZStack {
+            CustomPinView(lockViewData: LockConfirmPinData(),
+                          nextButtonAction: .action,
+                          fieldContent: $lockViewModel.confirmPassword,
+                          shouldShowErrorMessage: $shouldShowErrorMessage,
+                          destination: EmptyView()) {
+                
+                if lockViewModel.shouldShowErrorMessage {
+                    shouldShowErrorMessage = true
+                } else {
+                    lockViewModel.unlockType == .new ? self.lockWithPin() : self.updatePin()
+                }
             }
+            onboardingLink
         }
     }
     
@@ -30,7 +34,10 @@ struct LockConfirmPinView: View {
         do {
             try CryptoManager.shared.initKeys(.TELLA_PIN,
                                               password: lockViewModel.password)
-            self.appViewState.resetToMain()
+            _ = CryptoManager.shared.recoverKey(.PRIVATE, password: lockViewModel.password)
+            
+            shouldShowOnboarding = true
+            
         } catch {
             
         }
@@ -47,6 +54,15 @@ struct LockConfirmPinView: View {
             
         }
     }
+    
+    private var onboardingLink: some View {
+        NavigationLink(destination: OnboardingEndView() ,
+                       isActive: $shouldShowOnboarding) {
+            EmptyView()
+        }.frame(width: 0, height: 0)
+            .hidden()
+    }
+    
 }
 
 struct LockConfirmPinView_Previews: PreviewProvider {

@@ -23,11 +23,22 @@ struct FileListView: View {
             VStack {
                 SelectingFilesHeaderView()
                 
-                FolderListView()
                 
-                ManageFileView()
-                
-                FileItemsView(files: fileListViewModel.getFiles())
+                if appModel.vaultManager.root.files.isEmpty {
+                    EmptyFileListView(emptyListType: .allFiles)
+                    
+                } else {
+                    
+                    FolderListView()
+                    
+                    if fileListViewModel.rootFile.files.isEmpty {
+                        EmptyFileListView(emptyListType: .folder)
+                        
+                    } else {
+                        ManageFileView()
+                        FileItemsView(files: fileListViewModel.getFiles())
+                    }
+                }
             }
             
             AddFileView()

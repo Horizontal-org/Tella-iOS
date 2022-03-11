@@ -18,7 +18,6 @@ enum LocalizableLock: String, LocalizableDelegate {
     case  pinButtonDescription = "LockChoicePINButtonDescription"
     case  lockChoiceHeaderTitle = "LockChoiceHeaderTitle"
 
-    
     // Lock Password view
     case  passwordTitle = "LockPasswordTitle"
     case  passwordDescription = "LockPasswordDescription"
@@ -26,6 +25,16 @@ enum LocalizableLock: String, LocalizableDelegate {
     case  confirmPasswordDescription = "LockConfirmPasswordDescription"
     case  confirmPasswordError = "LockConfirmPasswordError"
     
+    // Welcome view
+    case welcomeTitle = "LockWelcomeTitle"
+    case welcomeDescription = "LockWelcomeDescription"
+    case welcomeButtonTitle = "LockWelcomeButtonTitle"
+    
+    // Onboarding End view
+    case onboardingEndTitle = "LockOnboardingEndTitle"
+    case onboardingEndDescription = "LockOnboardingEndDescription"
+    case onboardingEndButtonTitle = "LockOnboardingEndButtonTitle"
+
     // Lock Pin view
     case  pinTitle = "LockPinTitle"
     case  pinDescription = "LockPinDescription"

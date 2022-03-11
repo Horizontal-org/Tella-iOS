@@ -48,6 +48,9 @@ enum LocalizableHome: String, LocalizableDelegate {
     case  cancelImportFileBack = "HomeCancelImportFileBack"
     case  cancelImportFileCancelImport = "HomeCancelImportFileCancelImport"
     
+    case emptyAllFilesMessage = "HomeEmptyAllFilesMessage"
+    case emptyFolderMessage = "HomeEmptyFolderMessage"
+
     var tableName: String? {
         return "Home"
     }
