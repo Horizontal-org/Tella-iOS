@@ -23,8 +23,8 @@ struct EmptyFileListView: View {
             
             Spacer()
                 .frame(height: 20)
-            
-            Text("You don’t have any files in Tella yet.\n\nTap the “+” button below to import your first file, or go to the Camera or Recorder to create one. You can also create folders to keep your files organized.")
+
+            Text(emptyListType == .allFiles ? LocalizableHome.emptyAllFilesMessage.localized :  LocalizableHome.emptyFolderMessage.localized)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
