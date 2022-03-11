@@ -9,15 +9,14 @@ struct FileItemsView: View {
     @EnvironmentObject var fileListViewModel : FileListViewModel
     var files : [VaultFile]
     
-    
-    @available(iOS 14.0, *)
     private var gridLayout: [GridItem] {
-        [GridItem(.fixed(80),spacing: 6),
-         GridItem(.fixed(80),spacing: 6),
-         GridItem(.fixed(80),spacing: 6),
-         GridItem(.fixed(80),spacing: 6)]
+        [GridItem(.adaptive(minimum: 80),spacing: 6)]
     }
-
+    
+    private var maxHeight: CGFloat {
+        return (UIScreen.screenWidth / 4) - 6
+    }
+    
     var body: some View {
         if fileListViewModel.viewType == .list {
             itemsListView
@@ -36,7 +35,7 @@ struct FileItemsView: View {
                     case .folder:
                         
                         FileGridItem(file: file)
-                        
+                            .frame( minHeight: maxHeight)
                             .onTapGesture {
                                 fileListViewModel.rootFile = file
                                 fileListViewModel.folderArray.append(file)
@@ -44,7 +43,7 @@ struct FileItemsView: View {
                     default:
                         ZStack {
                             FileGridItem(file: file)
-                            
+                                .frame( minHeight: maxHeight)
                                 .onTapGesture {
                                     fileListViewModel.showFileDetails = true
                                     self.fileListViewModel.currentSelectedVaultFile = file
@@ -87,6 +86,9 @@ struct FileItemsView: View {
 
 struct FileItemsView_Previews: PreviewProvider {
     static var previews: some View {
-        FileItemsView(files: [VaultFile.stub(type: .folder)])
+        FileItemsView(files: [VaultFile.stub(type: .folder),
+                              VaultFile.stub(type: .folder)])
+            .environmentObject(FileListViewModel.stub())
+        
     }
 }
