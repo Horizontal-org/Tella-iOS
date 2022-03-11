@@ -14,31 +14,32 @@ struct ConfirmLockPasswordView: View {
     @State var shouldShowErrorMessage : Bool = false
     @EnvironmentObject var lockViewModel: LockViewModel
     @State var shouldShowOnboarding : Bool = false
-
+    
     
     var body: some View {
-        
-        PasswordView(lockViewData: LockConfirmPasswordData(),
-                     nextButtonAction: .action,
-                     fieldContent: $lockViewModel.confirmPassword,
-                     shouldShowErrorMessage: $shouldShowErrorMessage,
-                     destination: EmptyView()) {
-            
-            if lockViewModel.shouldShowErrorMessage {
-                shouldShowErrorMessage = true
-            } else {
-                lockViewModel.unlockType == .new ? lockWithPassword() :  updatePassword()
+        ZStack {
+            PasswordView(lockViewData: LockConfirmPasswordData(),
+                         nextButtonAction: .action,
+                         fieldContent: $lockViewModel.confirmPassword,
+                         shouldShowErrorMessage: $shouldShowErrorMessage,
+                         destination: EmptyView()) {
+                
+                if lockViewModel.shouldShowErrorMessage {
+                    shouldShowErrorMessage = true
+                } else {
+                    lockViewModel.unlockType == .new ? lockWithPassword() :  updatePassword()
+                }
             }
+            
+            onboardingLink
         }
-        
-        onboardingLink
     }
-
+    
     func lockWithPassword() {
         do {
             try CryptoManager.shared.initKeys(.TELLA_PASSWORD, password: lockViewModel.password)
             _ = CryptoManager.shared.recoverKey(.PRIVATE, password: lockViewModel.password)
-
+            
             shouldShowOnboarding = true
             
         } catch {
@@ -58,15 +59,15 @@ struct ConfirmLockPasswordView: View {
         }
     }
     
-     private var onboardingLink: some View {
-             NavigationLink(destination:
-                             
-                            OnboardingEndView() ,
-                           isActive: $shouldShowOnboarding) {
-                EmptyView()
-            }.frame(width: 0, height: 0)
-                .hidden()
-     }
+    private var onboardingLink: some View {
+        NavigationLink(destination:
+                        
+                        OnboardingEndView() ,
+                       isActive: $shouldShowOnboarding) {
+            EmptyView()
+        }.frame(width: 0, height: 0)
+            .hidden()
+    }
 }
 
 struct ConfirmLPasswordView_Previews: PreviewProvider {

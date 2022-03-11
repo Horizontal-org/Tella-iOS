@@ -25,8 +25,9 @@ struct UnlockPasswordView: View {
     var body: some View {
         ContainerView {
             VStack(alignment: .center) {
-                Spacer(minLength: 56)
-                
+
+                Spacer()
+
                 Image("tella.logo")
                     .frame(width: 65, height: 72)
                     .aspectRatio(contentMode: .fit)

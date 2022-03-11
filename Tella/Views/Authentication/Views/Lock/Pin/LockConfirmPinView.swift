@@ -7,26 +7,27 @@ import SwiftUI
 struct LockConfirmPinView: View {
     
     @EnvironmentObject private var appViewState: AppViewState
-    @State var shouldShowErrorMessage : Bool = false
     @EnvironmentObject var lockViewModel: LockViewModel
+    
     @State var shouldShowOnboarding : Bool = false
+    @State var shouldShowErrorMessage : Bool = false
     
     var body: some View {
-        
-        CustomPinView(lockViewData: LockConfirmPinData(),
-                      nextButtonAction: .action,
-                      fieldContent: $lockViewModel.confirmPassword,
-                      shouldShowErrorMessage: $shouldShowErrorMessage,
-                      destination: EmptyView()) {
-            
-            if lockViewModel.shouldShowErrorMessage {
-                shouldShowErrorMessage = true
-            } else {
-                lockViewModel.unlockType == .new ? self.lockWithPin() : self.updatePin()
+        ZStack {
+            CustomPinView(lockViewData: LockConfirmPinData(),
+                          nextButtonAction: .action,
+                          fieldContent: $lockViewModel.confirmPassword,
+                          shouldShowErrorMessage: $shouldShowErrorMessage,
+                          destination: EmptyView()) {
+                
+                if lockViewModel.shouldShowErrorMessage {
+                    shouldShowErrorMessage = true
+                } else {
+                    lockViewModel.unlockType == .new ? self.lockWithPin() : self.updatePin()
+                }
             }
+            onboardingLink
         }
-        
-        onboardingLink
     }
     
     func lockWithPin() {
@@ -34,9 +35,9 @@ struct LockConfirmPinView: View {
             try CryptoManager.shared.initKeys(.TELLA_PIN,
                                               password: lockViewModel.password)
             _ = CryptoManager.shared.recoverKey(.PRIVATE, password: lockViewModel.password)
-
+            
             shouldShowOnboarding = true
-
+            
         } catch {
             
         }

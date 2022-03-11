@@ -36,8 +36,7 @@ struct UnlockPinView: View {
                     .padding(EdgeInsets(top: 0, leading: 67, bottom: 0, trailing: 67))
                 
                 Spacer()
-                    .frame(height: 53)
-                
+
                 PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
                                       isValid: .constant(true),
                                       shouldShowErrorMessage: .constant(false),
