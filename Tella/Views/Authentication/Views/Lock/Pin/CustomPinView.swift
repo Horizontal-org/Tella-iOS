@@ -30,7 +30,6 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
                     .aspectRatio(contentMode: .fit)
                 
                 Spacer()
-                    .frame(height: 25)
                 
                 LockDescriptionView(title: lockViewData.title,
                                     description: lockViewData.description)

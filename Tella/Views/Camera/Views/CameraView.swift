@@ -14,7 +14,7 @@ struct CameraView: View {
     
     @ObservedObject var cameraViewModel :  CameraViewModel
     
-    var customCameraRepresentable = CustomCameraRepresentable(
+     var customCameraRepresentable = CustomCameraRepresentable(
         cameraFrame: .zero,
         imageCompletion: {_,_   in }, videoURLCompletion: { _  in }
     )
@@ -22,7 +22,6 @@ struct CameraView: View {
     // MARK: - Private properties
     
     @State private var image: UIImage?
-    @State private var flashIsOn: Bool = false
     
     @EnvironmentObject private var mainAppModel : MainAppModel
     
@@ -37,9 +36,7 @@ struct CameraView: View {
                 .edgesIgnoringSafeArea(.all)
             
             getCameraControlsView()
-            
-            getCameraHeaderView()
-            
+
             ImportFilesProgressView(showingProgressView: $showingProgressView,
                                     importFilesProgressProtocol: ImportFilesFromCameraProgress())
             
@@ -47,7 +44,9 @@ struct CameraView: View {
         
             .environmentObject(cameraViewModel)
             .onAppear {
-                customCameraRepresentable.checkCameraPermission()
+                DispatchQueue.main.async {
+                    customCameraRepresentable.checkCameraPermission()
+                }
             }
             .onDisappear {
                 customCameraRepresentable.stopRunningCaptureSession()
@@ -56,6 +55,8 @@ struct CameraView: View {
         
             .onReceive(customCameraRepresentable.$isRecording) { value in
                 cameraViewModel.isRecording = value ?? false
+                
+                
             }
             .onReceive(customCameraRepresentable.$shouldShowPermission) { value in
                 showingPermissionAlert = value
@@ -93,41 +94,7 @@ struct CameraView: View {
         return customCameraRepresentable
     }
     
-    private func getCameraHeaderView() -> some View {
-        VStack {
-            
-            HStack() {
-                
-                // Close button
-                Button {
-                    mainAppModel.vaultManager.clearTmpDirectory()
-                    mainAppModel.selectedTab = .home
-                } label: {
-                    Image("close")
-                }
-                .frame(width: 30, height: 30)
-                .padding(EdgeInsets(top: 15, leading: 16, bottom: 0, trailing: 12))
-                
-                Spacer()
-                
-                // Flash button
-                Button {
-                    customCameraRepresentable.toggleFlash()
-                    flashIsOn.toggle()
-                } label: {
-                    flashIsOn ? Image("camera.flash-on") : Image("camera.flash-off")
-                }
-                .frame(width: 30, height: 30)
-                .padding(EdgeInsets(top: 15, leading: 16, bottom: 0, trailing: 12))
-            }
-            .frame(height: 90)
-            .background(Color.black.opacity(0.8))
-            .edgesIgnoringSafeArea(.all)
-            
-            Spacer()
-        }
-        
-    }
+    
     private func getCameraControlsView() -> some View {
         
         CameraControlsView(captureButtonAction: {
@@ -138,6 +105,8 @@ struct CameraView: View {
             customCameraRepresentable.toggleCameraType()
         }, updateCameraTypeAction: { cameraType in
             customCameraRepresentable.cameraType = cameraType
+        }, toggleFlash: {
+            customCameraRepresentable.toggleFlash()
         } )
             .edgesIgnoringSafeArea(.all)
         

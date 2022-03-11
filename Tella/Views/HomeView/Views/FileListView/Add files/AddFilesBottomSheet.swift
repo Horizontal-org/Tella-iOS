@@ -45,7 +45,9 @@ struct AddFilesBottomSheet: View {
                                 showingCreateNewFolderSheet = true
                                 showingAddPhotoVideoSheet = false
                             })
-    ]}
+    ]
+        
+    }
     var body: some View {
         DragView(modalHeight: CGFloat(items.count * 50 + 90),
                  isShown: $isPresented){
@@ -59,5 +61,8 @@ struct AddFilesBottomSheet_Previews: PreviewProvider {
         AddFilesBottomSheet(isPresented: .constant(true),
                             showingAddPhotoVideoSheet: .constant(false),
                             showingCreateNewFolderSheet: .constant(false))
+            .environmentObject(MainAppModel())
+            .environmentObject(FileListViewModel.stub())
+
     }
 }

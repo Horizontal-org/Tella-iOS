@@ -6,15 +6,14 @@ import SwiftUI
 
 struct FileSortMenu: View {
     
-    @Binding var showingSortFilesActionSheet: Bool
-    @Binding var sortBy: FileSortOptions
-    
+    @EnvironmentObject var fileListViewModel : FileListViewModel
+
     var items : [FileSortOptions] = [.nameAZ, .nameZA, .newestToOldest, .oldestToNewest]
     
     var body: some View {
         ZStack{
             DragView(modalHeight: 226,
-                      isShown: $showingSortFilesActionSheet) {
+                     isShown: $fileListViewModel.showingSortFilesActionSheet) {
                 FileSortContentView
             }
         }
@@ -32,9 +31,9 @@ struct FileSortMenu: View {
                 ForEach(items, id : \.self) { item in
                     RadioButtonField(id: item,
                                      label: item.name,
-                                     isMarked: item == sortBy) { result in
-                        sortBy = result
-                        showingSortFilesActionSheet = false
+                                     isMarked: item == fileListViewModel.sortBy) { result in
+                        fileListViewModel.sortBy = result
+                        fileListViewModel.showingSortFilesActionSheet = false
                     }
                 }
             }.padding(EdgeInsets(top: 0, leading: 15, bottom: 27, trailing: 15))
@@ -76,6 +75,8 @@ struct RadioButtonField: View {
 
 struct FileSortSheet_Previews: PreviewProvider {
     static var previews: some View {
-        FileSortMenu(showingSortFilesActionSheet: .constant(true), sortBy: .constant(FileSortOptions.nameAZ))
+        FileSortMenu()
+            .environmentObject(MainAppModel())
+            .environmentObject(FileListViewModel.stub())
     }
 }

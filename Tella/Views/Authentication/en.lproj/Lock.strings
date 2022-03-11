@@ -29,6 +29,18 @@
 "LockConfirmPinTitle" = "Confirm your PIN";
 "LockConfirmPinDescription" = "Please enter your PIN one more time, just to be sure.";
 
+// Welcome view
+
+"LockWelcomeTitle" = "Welcome to Tella";
+"LockWelcomeDescription" = "Document & Protect";
+"LockWelcomeButtonTitle" = "GET STARTED";
+
+// Onboarding End view
+
+"LockOnboardingEndTitle" = "You’re all done!";
+"LockOnboardingEndDescription" = "You can always continue changing your preferences in Settings.";
+"LockOnboardingEndButtonTitle" = "GO TO TELLA";
+
 
 // Unlock Password view
 "UnlockPasswordError" = "Incorrect password, please try again";
@@ -40,3 +52,4 @@
 "UnlockPinTitle" = "Enter your PIN to unlock Tella";
 "UnlockPinError" = "Incorrect PIN, please try again";
 "UnlockUpdatePinTitle" = "Enter your PIN to change your lock method";
+

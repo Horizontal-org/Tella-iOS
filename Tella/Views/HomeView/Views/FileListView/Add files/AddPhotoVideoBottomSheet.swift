@@ -11,14 +11,14 @@ import SwiftUI
 struct AddPhotoVideoBottomSheet: View {
     
     @Binding var isPresented: Bool
-    var rootFile : VaultFile?
     
     @State private var showingDocumentPicker = false
     @State private var showingImagePicker = false
     @State private var showingProgressView : Bool = false
     
     @EnvironmentObject private var appModel: MainAppModel
-    
+    @EnvironmentObject private var fileListViewModel: FileListViewModel
+
     var items : [ListActionSheetItem] { return [
         
         ListActionSheetItem(imageName: "photo-library",
@@ -31,8 +31,10 @@ struct AddPhotoVideoBottomSheet: View {
                             content: "Document",
                             action: {
                                 showingDocumentPicker = true
-                            }),
-    ]}
+                            })
+    ]
+        
+    }
     
     var body: some View {
         
@@ -68,7 +70,7 @@ struct AddPhotoVideoBottomSheet: View {
             .sheet(isPresented: $showingDocumentPicker, content: {
                 DocumentPickerView(documentPickerType: .forImport) { urls in
                     showingProgressView = true
-                    appModel.add(files: urls ?? [], to: rootFile, type: .document)
+                    fileListViewModel.add(files: urls ?? [], type: .document)
                 }
             })
         }
@@ -83,11 +85,11 @@ struct AddPhotoVideoBottomSheet: View {
                 
                 if let url = url {
                     showingProgressView = true
-                    appModel.add(files: [url], to: rootFile, type: .video)
+                    fileListViewModel.add(files: [url], type: .video)
                 }
                 if let image = image {
                     showingProgressView = true
-                    appModel.add(image: image, to: rootFile, type: .image, pathExtension: pathExtension ?? "png")
+                    fileListViewModel.add(image: image, type: .image, pathExtension: pathExtension ?? "png")
                 }
             }
         })
@@ -103,17 +105,18 @@ struct AddPhotoVideoBottomSheet: View {
             onCompletion: { result in
                 if let urls = try? result.get() {
                     showingProgressView = true
-                    appModel.add(files: urls, to: rootFile, type: .document)
+                    fileListViewModel.add(files: urls, type: .document)
                 }
             }
         )
     }
-    
 }
 
 struct AddPhotoVideoBottomSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddPhotoVideoBottomSheet(isPresented: .constant(true),
-                                 rootFile: nil)
+        AddPhotoVideoBottomSheet(isPresented: .constant(true))
+            .environmentObject(MainAppModel())
+            .environmentObject(FileListViewModel.stub())
+
     }
 }

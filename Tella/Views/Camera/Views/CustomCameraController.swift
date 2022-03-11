@@ -48,8 +48,13 @@ final class CustomCameraController: UIViewController {
         super.viewWillAppear(animated)
         shouldCloseCamera = false
     }
-
     
+    override func viewWillDisappear(_ animated : Bool) {
+        super.viewWillDisappear(animated)
+        stopRunningCaptureSession()
+        releasePreview()
+     }
+
     // MARK: - Public functions
     
     func configurePreviewLayer(with frame: CGRect) {
