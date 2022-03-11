@@ -83,17 +83,6 @@ struct FileItemsView: View {
         }
         .background(Styles.Colors.backgroundMain)
     }
-
-//    private func getStatus(for file:VaultFile) -> Binding<Bool> {
-//        if let index = fileListViewModel.vaultFileStatusArray.firstIndex(where: {$0.file == file }) {
-//            return  $fileListViewModel.vaultFileStatusArray[index].isSelected
-//        } else {
-//            fileListViewModel.vaultFileStatusArray.append(VaultFileStatus(file:file,isSelected:false))
-//            return  $fileListViewModel.vaultFileStatusArray[fileListViewModel.vaultFileStatusArray.count - 1].isSelected
-//        }
-//    }
-    
-
 }
 
 struct FileItemsView_Previews: PreviewProvider {
