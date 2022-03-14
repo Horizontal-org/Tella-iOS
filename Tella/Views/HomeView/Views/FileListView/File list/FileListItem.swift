@@ -42,30 +42,14 @@ struct FileListItem: View {
                         
                     }
                     .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 0))
+                    
                     Spacer()
                     
-                    if fileListViewModel.selectingFiles {
-                        HStack {
-                            Image(fileListViewModel.getStatus(for: file) ? "files.selected" : "files.unselected")
-                                .resizable()
-                                .frame(width: 24, height: 24)
-                        }
-                        .frame(width: 40, height: 40)
-                        
-                        
-                    } else {
-                        Button {
-                            fileListViewModel.fileActionMenuType = .single
-                            fileListViewModel.showingFileActionMenu = true
-                            fileListViewModel.currentSelectedVaultFile = file
-                        } label: {
-                            Image("files.more")
-                                .resizable()
-                                .frame(width: 20, height: 20)
-                        }.frame(width: 40, height: 40)
+                    if !fileListViewModel.showingMoveFileView {
+                        selectionButton
                     }
                 }
-                .padding(EdgeInsets(top: 12, leading: 17, bottom: 12, trailing: 20))
+                .padding(EdgeInsets(top: 12, leading: fileListViewModel.showingMoveFileView ? 8 : 16, bottom: 12, trailing: fileListViewModel.showingMoveFileView ? 8 : 16))
                 .frame(height: 60)
                 
                 if fileListViewModel.selectingFiles {
@@ -78,9 +62,39 @@ struct FileListItem: View {
                         }
                 }
             }
-            .background((fileListViewModel.getStatus(for: file) && fileListViewModel.selectingFiles) ? Color.white.opacity(0.16) : Styles.Colors.backgroundMain)
+            .background((fileListViewModel.getStatus(for: file) && fileListViewModel.selectingFiles) ? Color.white.opacity(0.16) : Color.white.opacity(0.001))
         }
     }
+    
+    @ViewBuilder
+    var selectionButton : some View {
+        
+        if fileListViewModel.selectingFiles {
+            HStack {
+                Image(fileListViewModel.getStatus(for: file) ? "files.selected" : "files.unselected")
+                    .resizable()
+                    .frame(width: 24, height: 24)
+            }
+            .frame(width: 40, height: 40)
+            
+            
+        } else {
+            Button {
+                fileListViewModel.fileActionMenuType = .single
+                fileListViewModel.showingFileActionMenu = true
+                fileListViewModel.currentSelectedVaultFile = file
+            } label: {
+                Image("files.more")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+            }.frame(width: 40, height: 40)
+        }
+        
+        
+        
+
+    }
+
 }
 
 struct FileListItem_Previews: PreviewProvider {

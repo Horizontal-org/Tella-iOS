@@ -161,6 +161,8 @@
 		12E0882427AD31F600CEB198 /* LocalizableAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0882327AD31F500CEB198 /* LocalizableAudio.swift */; };
 		12E6772F27A9719F00DC1E1C /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E6772E27A9719F00DC1E1C /* UIImageExtension.swift */; };
 		12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */; };
+		12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9DD9827DF65E70002FD00 /* MoveFilesView.swift */; };
+		12E9DD9B27DF7DA50002FD00 /* CreateNewFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9DD9A27DF7DA50002FD00 /* CreateNewFolderView.swift */; };
 		12F5D28D27A326EB00BF3309 /* AboutAndHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */; };
 		12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC0CE2799FF230068EC2B /* ImportProgress.swift */; };
 		12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */; };
@@ -392,6 +394,8 @@
 		12E0882327AD31F500CEB198 /* LocalizableAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableAudio.swift; sourceTree = "<group>"; };
 		12E6772E27A9719F00DC1E1C /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableSettings.swift; sourceTree = "<group>"; };
+		12E9DD9827DF65E70002FD00 /* MoveFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveFilesView.swift; sourceTree = "<group>"; };
+		12E9DD9A27DF7DA50002FD00 /* CreateNewFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewFolderView.swift; sourceTree = "<group>"; };
 		12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAndHelpView.swift; sourceTree = "<group>"; };
 		12FAC0CE2799FF230068EC2B /* ImportProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportProgress.swift; sourceTree = "<group>"; };
 		12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableHome.swift; sourceTree = "<group>"; };
@@ -909,6 +913,8 @@
 			isa = PBXGroup;
 			children = (
 				D5DA7F9A2648D05400B00FDA /* FileListView.swift */,
+				12E9DD9827DF65E70002FD00 /* MoveFilesView.swift */,
+				12E9DD9A27DF7DA50002FD00 /* CreateNewFolderView.swift */,
 				127C155D27DA6C2E009EC15B /* EmptyFileListView.swift */,
 				128B929C27D7A08700E92ACF /* FileItemsView.swift */,
 				128B929627D7920300E92ACF /* SelectingFilesHeaderView.swift */,
@@ -1621,6 +1627,7 @@
 				1272F25F27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift in Sources */,
 				12D37A942721752B00E43BDB /* TellaApp.swift in Sources */,
 				125A0AEF2726F0A000F6E77F /* ContainerView.swift in Sources */,
+				12E9DD9B27DF7DA50002FD00 /* CreateNewFolderView.swift in Sources */,
 				125D231C271F119D00250FBB /* Validator.swift in Sources */,
 				0D4D7510266316D200D7A635 /* SettingsGeneral.swift in Sources */,
 				D51639802631130E003A11B5 /* HomeView.swift in Sources */,
@@ -1655,6 +1662,7 @@
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				0E170255267910CC0069072A /* OutBoxFormsView.swift in Sources */,
 				0E170259267913160069072A /* FormsCellView.swift in Sources */,
+				12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */,
 				0ECC7819267A53A700A2ACF2 /* PageView.swift in Sources */,
 				125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */,
 				125D2324271F891500250FBB /* PinView.swift in Sources */,

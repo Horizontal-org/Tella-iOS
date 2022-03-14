@@ -23,6 +23,7 @@ struct FileActionMenu: View {
     @State var showingSaveConfirmationSheet = false
     @State var showingRenameFileConfirmationSheet = false
     @State var showingShareFileSheet = false
+
     @State var fileName : String = ""
     
     var shouldShowDivider : Bool {
@@ -52,6 +53,8 @@ struct FileActionMenu: View {
             ListActionSheetItem(imageName: "move-icon",
                                 content: "Move to another folder",
                                 action: {
+                                    fileListViewModel.showingMoveFileView = true
+                                    fileListViewModel.showingFileActionMenu = false
                                 }),
             
             ListActionSheetItem(imageName: "edit-icon",
@@ -99,6 +102,9 @@ struct FileActionMenu: View {
         deleteFileView
         renameFileView
         shareFileView
+        if fileListViewModel.showingMoveFileView {
+            moveFilesView
+        }
     }
     
     var fileActionMenuContentView : some View {
@@ -186,6 +192,11 @@ struct FileActionMenu: View {
         }, content: {
             ActivityViewController(fileData: appModel.getFilesForShare(files: fileListViewModel.selectedFiles))
         })
+    }
+    
+    
+    var moveFilesView : some View {
+        MoveFilesView(title: fileListViewModel.fileActionsTitle)
     }
 }
 

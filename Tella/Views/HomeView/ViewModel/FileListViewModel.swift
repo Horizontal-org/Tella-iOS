@@ -30,9 +30,12 @@ class FileListViewModel: ObservableObject {
     
     @Published var showingProgressView = false
     
+    @Published var showingMoveFileView = false
+
     @Published var viewType: FileViewType = FileViewType.list
     
     @Published var folderArray: [VaultFile] = []
+   
 
     
     var selectedFiles : [VaultFile] {
@@ -80,6 +83,11 @@ class FileListViewModel: ObservableObject {
         (fileActionMenuType == .single) ||
         (fileActionMenuType == .multiple && selectedFiles.count == 1)
     }
+    
+    var shouldHideNavigationBar : Bool {
+        return selectingFiles || showingMoveFileView
+    }
+    
 
     init(appModel:MainAppModel, fileType:[FileType]?, rootFile:VaultFile) {
         self.appModel = appModel

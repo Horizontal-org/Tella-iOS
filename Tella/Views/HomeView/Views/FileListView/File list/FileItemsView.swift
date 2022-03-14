@@ -77,10 +77,8 @@ struct FileItemsView: View {
                             }
                     }
                 }
-                .listRowBackground(Color.green)
             }
         }
-        .background(Styles.Colors.backgroundMain)
     }
 }
 
