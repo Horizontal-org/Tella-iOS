@@ -14,7 +14,8 @@ class FileListViewModel: ObservableObject {
     var appModel: MainAppModel
     var fileType: [FileType]?
     var rootFile : VaultFile
-    
+    var oldRootFile : VaultFile
+
     @Published var showingSortFilesActionSheet = false
     @Published var sortBy: FileSortOptions = FileSortOptions.nameAZ
     
@@ -93,6 +94,7 @@ class FileListViewModel: ObservableObject {
         self.appModel = appModel
         self.fileType = fileType
         self.rootFile = rootFile
+        self.oldRootFile = rootFile
         initVaultFileStatusArray()
     }
     
@@ -128,6 +130,11 @@ class FileListViewModel: ObservableObject {
         return false
     }
     
+    func initSelectedFiles()  {
+        self.currentSelectedVaultFile = nil
+        _ = self.vaultFileStatusArray.compactMap{$0.isSelected = false}
+    }
+    
     func add(files: [URL], type: FileType) {
         appModel.add(files: files, to: self.rootFile, type: type)
     }
@@ -140,6 +147,9 @@ class FileListViewModel: ObservableObject {
         appModel.add(folder: folder , to: self.rootFile)
     }
 
+    func moveFiles() {
+        appModel.move(files: selectedFiles, from: oldRootFile, to: rootFile)
+    }
 }
 
 extension FileListViewModel {

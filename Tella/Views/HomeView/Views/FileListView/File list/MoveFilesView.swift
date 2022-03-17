@@ -11,7 +11,7 @@ struct MoveFilesView: View {
     
     var title : String = ""
     
-    init( title : String = "") {
+    init(title : String = "") {
         self.title = title
     }
     
@@ -42,8 +42,6 @@ struct MoveFilesView: View {
             AddNewFolderView()
             
             FileSortMenu()
-            
-            
         }
     }
     
@@ -63,15 +61,17 @@ struct MoveFilesView: View {
             
             Button("CANCEL") {
                 fileListViewModel.showingMoveFileView  = false
+                fileListViewModel.initSelectedFiles()
             } .buttonStyle(MoveFileButtonStyle())
             
                 .foregroundColor(.white)
             
-            
             Button("MOVE HERE") {
                 fileListViewModel.showingMoveFileView  = false
-            }.foregroundColor(.white.opacity(0.4))
-            
+                fileListViewModel.moveFiles()
+                fileListViewModel.initSelectedFiles()
+            }.foregroundColor( fileListViewModel.oldRootFile == fileListViewModel.rootFile ? .white.opacity(0.4) : .white)
+                .disabled(fileListViewModel.oldRootFile == fileListViewModel.rootFile)
                 .buttonStyle(MoveFileButtonStyle())
         }.frame(height: 50)
     }

@@ -54,38 +54,49 @@ struct FileActionMenu: View {
                                 content: "Move to another folder",
                                 action: {
                                     fileListViewModel.showingMoveFileView = true
-                                    fileListViewModel.showingFileActionMenu = false
+                                    fileListViewModel.oldRootFile = fileListViewModel.rootFile
+                                    
+                                    self.hideMenu()
+
                                 }),
             
             ListActionSheetItem(imageName: "edit-icon",
                                 content: "Rename",
                                 action: {
                                     if fileListViewModel.selectedFiles.count == 1 {
-                                        fileListViewModel.showingFileActionMenu = false
                                         fileName = fileListViewModel.selectedFiles[0].fileName
                                         showingRenameFileConfirmationSheet = true
+                                       
+                                        self.hideMenu()
+
+
                                     }
                                 }, isActive: fileListViewModel.shouldActivateRename),
             
             ListActionSheetItem(imageName: "save-icon",
                                 content: "Save to device",
                                 action: {
-                                    fileListViewModel.showingFileActionMenu = false
                                     showingSaveConfirmationSheet = true
+                                    
+                                    self.hideMenu()
+
                                 },isActive: fileListViewModel.shouldActivateShare),
             
             ListActionSheetItem(imageName: "info-icon",
                                 content: "File information",
                                 action: {
-                                    fileListViewModel.showingFileActionMenu = false
                                     fileListViewModel.showFileInfoActive = true
+                                    
+                                    self.hideMenu()
+
                                 }, isActive: fileListViewModel.shouldActivateFileInformation),
             
             ListActionSheetItem(imageName: "delete-icon",
                                 content: "Delete",
                                 action: {
-                                    fileListViewModel.showingFileActionMenu = false
                                     showingDeleteConfirmationSheet = true
+                                    
+                                    self.hideMenu()
                                 })
         ]
     }
@@ -197,6 +208,11 @@ struct FileActionMenu: View {
     
     var moveFilesView : some View {
         MoveFilesView(title: fileListViewModel.fileActionsTitle)
+    }
+    
+    private func hideMenu() {
+        fileListViewModel.selectingFiles = false
+        fileListViewModel.showingFileActionMenu = false
     }
 }
 

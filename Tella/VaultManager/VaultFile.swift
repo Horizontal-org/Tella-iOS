@@ -15,7 +15,7 @@ enum FileType: String, Codable {
     case folder
 }
 
-class VaultFile: Codable, RecentFileProtocol, Hashable {
+class VaultFile: Codable, Hashable {
     
     func hash(into hasher: inout Hasher){
         hasher.combine(containerName.hashValue)
@@ -38,7 +38,7 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
         return VaultFile(type: .folder, fileName: fileName, containerName: containerName, files: [])
     }
     
-    init(type: FileType, fileName: String, containerName: String = "", files: [VaultFile]? = nil, thumbnail: Data? = nil, fileExtension : String = "", size : Int64 = 0, resolution : CGSize? = nil, duration : Double? = nil) {
+    init(type: FileType, fileName: String, containerName: String = UUID().uuidString, files: [VaultFile]? = nil, thumbnail: Data? = nil, fileExtension : String = "", size : Int64 = 0, resolution : CGSize? = nil, duration : Double? = nil) {
         self.type = type
         self.fileName = fileName
         self.containerName = containerName
@@ -104,18 +104,6 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
     
 }
 
-extension VaultFile {
-    var gridImage: AnyView {
-        AnyView(
-            ZStack{
-                Image(uiImage: thumbnailImage)
-                    .resizable()
-                    .clipped()
-                Image(uiImage: iconImage)
-            }
-        )
-    }
-}
 
 extension VaultFile: CustomDebugStringConvertible {
     

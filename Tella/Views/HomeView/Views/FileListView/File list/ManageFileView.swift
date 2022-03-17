@@ -24,7 +24,7 @@ struct ManageFileView: View {
             
             viewTypeButton
         }
-        .padding(EdgeInsets(top: 0, leading: fileListViewModel.showingMoveFileView ? 16 : 8, bottom: 0, trailing: fileListViewModel.showingMoveFileView ? 12 : 8))
+        .padding(EdgeInsets(top: 0, leading: fileListViewModel.showingMoveFileView ? 8 : 16 , bottom: 0, trailing: fileListViewModel.showingMoveFileView ? 8 : 12))
 
     }
     

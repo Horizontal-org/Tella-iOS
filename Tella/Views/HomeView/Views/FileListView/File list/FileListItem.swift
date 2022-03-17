@@ -20,7 +20,7 @@ struct FileListItem: View {
                         .fill(Color.white.opacity(0.2))
                         .frame(width: 35, height: 35, alignment: .center)
                         .overlay(
-                            file.gridImage
+                            file.listImage
                                 .frame(width: 35, height: 35)
                                 .cornerRadius(5)
                         )

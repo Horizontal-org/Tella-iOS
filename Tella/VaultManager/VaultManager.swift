@@ -220,10 +220,20 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
     
     func createNewFolder(name: String, parent: VaultFile?)  {
-        
+        debugLog("\(name)", space: .files)
         let vaultFile = VaultFile(type: .folder, fileName: name, files: nil)
         parent?.add(file: vaultFile)
-        addRecentFile(file: vaultFile)
+        save(file: root)
+    }
+    
+    func move(files: [VaultFile], from originalParentFolder: VaultFile?, to newParentFolder: VaultFile?) {
+        debugLog("moving files")
+
+        files.forEach { file in
+            debugLog("\(file.fileName)", space: .files)
+            newParentFolder?.add(file: file)
+            originalParentFolder?.remove(file: file)
+        }
         save(file: root)
     }
     
