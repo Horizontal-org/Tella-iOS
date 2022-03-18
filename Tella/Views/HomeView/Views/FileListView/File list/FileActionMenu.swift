@@ -4,15 +4,13 @@
 
 import SwiftUI
 
-enum FileActionMenuType {
-    case single
-    case multiple
-}
+//enum FileActionMenuType {
+//    case single
+//    case multiple
+//}
 
 struct FileActionMenu: View {
-    
-    var fileActionMenuType : FileActionMenuType
-    
+
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var fileListViewModel: FileListViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -120,7 +118,7 @@ struct FileActionMenu: View {
         VStack(alignment: .leading, spacing: 0) {
             Text(fileListViewModel.fileActionsTitle)
                 .foregroundColor(.white)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
+                .font(.custom(Styles.Fonts.boldFontName, size: 16))
                 .padding(EdgeInsets(top: 8, leading: 8 , bottom: 15, trailing: 0))
             
             ForEach(firstItems, id: \.content) { item in
@@ -206,7 +204,7 @@ struct FileActionMenu: View {
 
 struct FileActionMenu_Previews: PreviewProvider {
     static var previews: some View {
-        FileActionMenu(fileActionMenuType: FileActionMenuType.multiple)
+        FileActionMenu()
             .environmentObject(MainAppModel())
             .environmentObject(FileListViewModel.stub())
     }

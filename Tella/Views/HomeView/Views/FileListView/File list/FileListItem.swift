@@ -80,9 +80,8 @@ struct FileListItem: View {
             
         } else {
             Button {
-                fileListViewModel.fileActionMenuType = .single
                 fileListViewModel.showingFileActionMenu = true
-                fileListViewModel.currentSelectedVaultFile = file
+                fileListViewModel.updateSingleSelection(for: file)
             } label: {
                 Image("files.more")
                     .resizable()

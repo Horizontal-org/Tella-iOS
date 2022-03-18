@@ -46,7 +46,7 @@ struct FileListView: View {
             
             FileSortMenu()
             
-            FileActionMenu(fileActionMenuType: fileListViewModel.fileActionMenuType)
+            FileActionMenu()
             
             ShareFileView()
 

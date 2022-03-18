@@ -50,7 +50,7 @@ struct FileItemsView: View {
                                 .onTapGesture {
                                     if !fileListViewModel.showingMoveFileView {
                                         fileListViewModel.showFileDetails = true
-                                        self.fileListViewModel.currentSelectedVaultFile = file
+                                        fileListViewModel.updateSingleSelection(for: file)
                                     }
                                 }
                         }
@@ -81,7 +81,7 @@ struct FileItemsView: View {
                             .onTapGesture {
                                 if !fileListViewModel.showingMoveFileView {
                                     fileListViewModel.showFileDetails = true
-                                    self.fileListViewModel.currentSelectedVaultFile = file
+                                    fileListViewModel.updateSingleSelection(for: file)
                                 }
                             }
                     }

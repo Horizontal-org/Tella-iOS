@@ -49,7 +49,6 @@ struct ManageFileView: View {
             
             Button {
                 
-                fileListViewModel.fileActionMenuType = .multiple
                 
                 if fileListViewModel.selectingFiles {
                     fileListViewModel.filesAreAllSelected ? fileListViewModel.resetSelectedItems() :  fileListViewModel.selectAll()
