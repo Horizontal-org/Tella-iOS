@@ -15,7 +15,7 @@ enum FileType: String, Codable {
     case folder
 }
 
-class VaultFile: Codable, RecentFileProtocol, Hashable {
+class VaultFile: Codable, Hashable {
     
     func hash(into hasher: inout Hasher){
         hasher.combine(containerName.hashValue)
@@ -38,7 +38,7 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
         return VaultFile(type: .folder, fileName: fileName, containerName: containerName, files: [])
     }
     
-    init(type: FileType, fileName: String, containerName: String = "", files: [VaultFile]? = nil, thumbnail: Data? = nil, fileExtension : String = "", size : Int64 = 0, resolution : CGSize? = nil, duration : Double? = nil) {
+    init(type: FileType, fileName: String, containerName: String = UUID().uuidString, files: [VaultFile]? = nil, thumbnail: Data? = nil, fileExtension : String = "", size : Int64 = 0, resolution : CGSize? = nil, duration : Double? = nil) {
         self.type = type
         self.fileName = fileName
         self.containerName = containerName
@@ -87,7 +87,7 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
         case .image:
             return UIImage()
         case .folder:
-            return #imageLiteral(resourceName: "filetype.small_folder")
+            return #imageLiteral(resourceName: "filetype.big_folder")
         case .other:
             return #imageLiteral(resourceName: "filetype.big_document")
         }
@@ -104,18 +104,6 @@ class VaultFile: Codable, RecentFileProtocol, Hashable {
     
 }
 
-extension VaultFile {
-    var gridImage: AnyView {
-        AnyView(
-            ZStack{
-                Image(uiImage: thumbnailImage)
-                    .resizable()
-                    .clipped()
-                Image(uiImage: iconImage)
-            }
-        )
-    }
-}
 
 extension VaultFile: CustomDebugStringConvertible {
     
@@ -169,18 +157,7 @@ extension Array where Element == VaultFile {
     
     func sorted(by sortOrder: FileSortOptions) -> [VaultFile] {
         return self.sorted { file1, file2  in
-            
-            if file1.type == .folder && file2.type == .folder {
-                return file1.fileName > file2.fileName
-            }
-            
-            if file1.type == .folder {
-                return true
-            }
-            if file2.type == .folder {
-                return false
-            }
-            
+
             switch sortOrder {
             case .nameAZ:
                 return file1.fileName > file2.fileName

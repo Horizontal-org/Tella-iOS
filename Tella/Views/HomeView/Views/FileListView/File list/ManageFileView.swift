@@ -7,7 +7,7 @@ import SwiftUI
 struct ManageFileView: View {
     
     @EnvironmentObject var fileListViewModel : FileListViewModel
-
+    
     var body: some View {
         HStack(spacing: 0) {
             
@@ -22,9 +22,8 @@ struct ManageFileView: View {
             
             viewTypeButton
         }
-        .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
-        .background(Styles.Colors.backgroundMain)
-
+        .padding(EdgeInsets(top: 0, leading: fileListViewModel.showingMoveFileView ? 8 : 16 , bottom: 0, trailing: fileListViewModel.showingMoveFileView ? 8 : 12))
+        
     }
     
     
@@ -43,23 +42,34 @@ struct ManageFileView: View {
         .frame(height: 44)
     }
     
+    @ViewBuilder
     private var selectingFilesButton: some View {
-        Button {
-
-            fileListViewModel.selectingFiles = !fileListViewModel.selectingFiles
-            if fileListViewModel.selectingFiles {
-                fileListViewModel.initVaultFileStatusArray()
-            }
-                fileListViewModel.resetSelectedItems()
- 
-        } label: {
-            HStack{
-                Image(fileListViewModel.selectingFiles ? "files.selected" : "files.unselected-empty")
+        
+        if !fileListViewModel.showingMoveFileView {
+            
+            Button {
                 
-                    .frame(width: 24, height: 24)
+                
+                if fileListViewModel.selectingFiles {
+                    fileListViewModel.filesAreAllSelected ? fileListViewModel.resetSelectedItems() :  fileListViewModel.selectAll()
+                } else {
+                    fileListViewModel.selectingFiles = !fileListViewModel.selectingFiles
+                    fileListViewModel.initVaultFileStatusArray()
+                }
+                
+            } label: {
+                
+                HStack {
+                    
+                    if fileListViewModel.selectingFiles {
+                        Image(fileListViewModel.filesAreAllSelected ? "files.selected" : "files.unselected-empty")
+                    } else {
+                        Image("files.select")
+                    }
+                }
             }
+            .frame(width: 50, height: 50)
         }
-        .frame(width: 50, height: 50)
     }
     
     private var viewTypeButton: some View {
@@ -73,7 +83,7 @@ struct ManageFileView: View {
         }
         .frame(width: 50, height: 50)
     }
-
+    
 }
 
 struct ManageFileView_Previews: PreviewProvider {

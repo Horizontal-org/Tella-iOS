@@ -16,6 +16,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash.screen-gradient" translatesAutoresizingMaskIntoConstraints="NO" id="qSj-5B-wiE">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tella_Logo" translatesAutoresizingMaskIntoConstraints="NO" id="3m1-1F-7gW">
                                 <rect key="frame" x="174.66666666666666" y="332" width="65" height="72"/>
                                 <constraints>
@@ -25,10 +28,16 @@
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" red="0.17254901960784313" green="0.15294117647058825" blue="0.3529411764705882" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="qSj-5B-wiE" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="0SI-og-wZm"/>
+                            <constraint firstItem="qSj-5B-wiE" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="N4M-3T-tEd"/>
+                            <constraint firstItem="qSj-5B-wiE" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="YrV-Cn-Hhf"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="qSj-5B-wiE" secondAttribute="trailing" id="eD2-DY-KjW"/>
                             <constraint firstItem="3m1-1F-7gW" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="jhL-x4-Frh"/>
+                            <constraint firstItem="qSj-5B-wiE" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="u9E-TV-Nk0"/>
                             <constraint firstItem="3m1-1F-7gW" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="vcR-Zu-ZwF"/>
+                            <constraint firstItem="qSj-5B-wiE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="vst-9d-SZ3"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -38,6 +47,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="splash.screen-gradient" width="360" height="740"/>
         <image name="tella_Logo" width="65" height="72"/>
     </resources>
 </document>

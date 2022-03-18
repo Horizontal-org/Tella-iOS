@@ -22,13 +22,10 @@ extension Date{
     }
 
     func fileCreationDate() -> String {
-        let secondsAgo = Int(Date().timeIntervalSince(self))
-        
-        let minute = 60
-        let hour = 60 * minute
-        let day = 24 * hour
-        
-        if secondsAgo < day {
+
+        let calendar = Calendar.current
+
+        if calendar.isDateInToday(self) {
             return getFormattedDateString(format: DateFormat.time.rawValue)
         } else   {
             return  getFormattedDateString()

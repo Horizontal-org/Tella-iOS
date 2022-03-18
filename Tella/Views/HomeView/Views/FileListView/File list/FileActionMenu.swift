@@ -4,15 +4,13 @@
 
 import SwiftUI
 
-enum FileActionMenuType {
-    case single
-    case multiple
-}
+//enum FileActionMenuType {
+//    case single
+//    case multiple
+//}
 
 struct FileActionMenu: View {
-    
-    var fileActionMenuType : FileActionMenuType
-    
+
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var fileListViewModel: FileListViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -22,7 +20,7 @@ struct FileActionMenu: View {
     @State var showingDeleteConfirmationSheet = false
     @State var showingSaveConfirmationSheet = false
     @State var showingRenameFileConfirmationSheet = false
-    @State var showingShareFileSheet = false
+
     @State var fileName : String = ""
     
     var shouldShowDivider : Bool {
@@ -40,7 +38,7 @@ struct FileActionMenu: View {
                             content: "Share",
                             action: {
                                 fileListViewModel.showingFileActionMenu = false
-                                showingShareFileSheet = true
+                                fileListViewModel.showingShareFileView = true
                             },isActive: fileListViewModel.shouldActivateShare)
     ]
         
@@ -52,37 +50,50 @@ struct FileActionMenu: View {
             ListActionSheetItem(imageName: "move-icon",
                                 content: "Move to another folder",
                                 action: {
+                                    fileListViewModel.showingMoveFileView = true
+                                    fileListViewModel.oldRootFile = fileListViewModel.rootFile
+                                    
+                                    self.hideMenu()
+
                                 }),
             
             ListActionSheetItem(imageName: "edit-icon",
                                 content: "Rename",
                                 action: {
                                     if fileListViewModel.selectedFiles.count == 1 {
-                                        fileListViewModel.showingFileActionMenu = false
                                         fileName = fileListViewModel.selectedFiles[0].fileName
                                         showingRenameFileConfirmationSheet = true
+                                       
+                                        self.hideMenu()
+
+
                                     }
                                 }, isActive: fileListViewModel.shouldActivateRename),
             
             ListActionSheetItem(imageName: "save-icon",
                                 content: "Save to device",
                                 action: {
-                                    fileListViewModel.showingFileActionMenu = false
                                     showingSaveConfirmationSheet = true
+                                    
+                                    self.hideMenu()
+
                                 },isActive: fileListViewModel.shouldActivateShare),
             
             ListActionSheetItem(imageName: "info-icon",
                                 content: "File information",
                                 action: {
-                                    fileListViewModel.showingFileActionMenu = false
                                     fileListViewModel.showFileInfoActive = true
+                                    
+                                    self.hideMenu()
+
                                 }, isActive: fileListViewModel.shouldActivateFileInformation),
             
             ListActionSheetItem(imageName: "delete-icon",
                                 content: "Delete",
                                 action: {
-                                    fileListViewModel.showingFileActionMenu = false
                                     showingDeleteConfirmationSheet = true
+                                    
+                                    self.hideMenu()
                                 })
         ]
     }
@@ -98,14 +109,16 @@ struct FileActionMenu: View {
         fileDocumentExporter
         deleteFileView
         renameFileView
-        shareFileView
+        if fileListViewModel.showingMoveFileView {
+            moveFilesView
+        }
     }
     
     var fileActionMenuContentView : some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(fileListViewModel.fileActionsTitle)
                 .foregroundColor(.white)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
+                .font(.custom(Styles.Fonts.boldFontName, size: 16))
                 .padding(EdgeInsets(top: 8, leading: 8 , bottom: 15, trailing: 0))
             
             ForEach(firstItems, id: \.content) { item in
@@ -178,20 +191,20 @@ struct FileActionMenu: View {
             appModel.rename(file: fileListViewModel.selectedFiles[0], parent: fileListViewModel.rootFile)
         })
     }
+
+    var moveFilesView : some View {
+        MoveFilesView(title: fileListViewModel.fileActionsTitle)
+    }
     
-    var shareFileView : some View {
-        ZStack {}
-        .sheet(isPresented: $showingShareFileSheet, onDismiss: {
-            appModel.vaultManager.clearTmpDirectory()
-        }, content: {
-            ActivityViewController(fileData: appModel.getFilesForShare(files: fileListViewModel.selectedFiles))
-        })
+    private func hideMenu() {
+        fileListViewModel.selectingFiles = false
+        fileListViewModel.showingFileActionMenu = false
     }
 }
 
 struct FileActionMenu_Previews: PreviewProvider {
     static var previews: some View {
-        FileActionMenu(fileActionMenuType: FileActionMenuType.multiple)
+        FileActionMenu()
             .environmentObject(MainAppModel())
             .environmentObject(FileListViewModel.stub())
     }

@@ -13,7 +13,7 @@ struct FileItemsView: View {
         [GridItem(.adaptive(minimum: 80),spacing: 6)]
     }
     
-    private var maxHeight: CGFloat {
+    private var minHeight: CGFloat {
         return (UIScreen.screenWidth / 4) - 6
     }
     
@@ -35,18 +35,23 @@ struct FileItemsView: View {
                     case .folder:
                         
                         FileGridItem(file: file)
-                            .frame( minHeight: maxHeight)
+                            .frame(minHeight: minHeight)
                             .onTapGesture {
+                                if !fileListViewModel.selectedFiles.contains(file){
+
                                 fileListViewModel.rootFile = file
                                 fileListViewModel.folderArray.append(file)
+                                }
                             }
                     default:
                         ZStack {
                             FileGridItem(file: file)
-                                .frame( minHeight: maxHeight)
+                                .frame( minHeight: minHeight)
                                 .onTapGesture {
-                                    fileListViewModel.showFileDetails = true
-                                    self.fileListViewModel.currentSelectedVaultFile = file
+                                    if !fileListViewModel.showingMoveFileView {
+                                        fileListViewModel.showFileDetails = true
+                                        fileListViewModel.updateSingleSelection(for: file)
+                                    }
                                 }
                         }
                     }
@@ -64,23 +69,25 @@ struct FileItemsView: View {
                         FileListItem(file: file)
                             .frame(height: 60)
                             .onTapGesture {
-                                fileListViewModel.rootFile = file
-                                fileListViewModel.folderArray.append(file)
+                                if !fileListViewModel.selectedFiles.contains(file){
+                                    fileListViewModel.rootFile = file
+                                    fileListViewModel.folderArray.append(file)
+                                }
                             }
                         
                     default:
                         FileListItem(file: file)
                             .frame(height: 60)
                             .onTapGesture {
-                                fileListViewModel.showFileDetails = true
-                                self.fileListViewModel.currentSelectedVaultFile = file
+                                if !fileListViewModel.showingMoveFileView {
+                                    fileListViewModel.showFileDetails = true
+                                    fileListViewModel.updateSingleSelection(for: file)
+                                }
                             }
                     }
                 }
-                .listRowBackground(Color.green)
             }
         }
-        .background(Styles.Colors.backgroundMain)
     }
 }
 
