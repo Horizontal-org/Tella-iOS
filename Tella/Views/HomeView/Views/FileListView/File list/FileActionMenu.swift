@@ -4,15 +4,13 @@
 
 import SwiftUI
 
-enum FileActionMenuType {
-    case single
-    case multiple
-}
+//enum FileActionMenuType {
+//    case single
+//    case multiple
+//}
 
 struct FileActionMenu: View {
-    
-    var fileActionMenuType : FileActionMenuType
-    
+
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var fileListViewModel: FileListViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -22,7 +20,6 @@ struct FileActionMenu: View {
     @State var showingDeleteConfirmationSheet = false
     @State var showingSaveConfirmationSheet = false
     @State var showingRenameFileConfirmationSheet = false
-    @State var showingShareFileSheet = false
 
     @State var fileName : String = ""
     
@@ -41,7 +38,7 @@ struct FileActionMenu: View {
                             content: "Share",
                             action: {
                                 fileListViewModel.showingFileActionMenu = false
-                                showingShareFileSheet = true
+                                fileListViewModel.showingShareFileView = true
                             },isActive: fileListViewModel.shouldActivateShare)
     ]
         
@@ -112,7 +109,6 @@ struct FileActionMenu: View {
         fileDocumentExporter
         deleteFileView
         renameFileView
-        shareFileView
         if fileListViewModel.showingMoveFileView {
             moveFilesView
         }
@@ -122,7 +118,7 @@ struct FileActionMenu: View {
         VStack(alignment: .leading, spacing: 0) {
             Text(fileListViewModel.fileActionsTitle)
                 .foregroundColor(.white)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
+                .font(.custom(Styles.Fonts.boldFontName, size: 16))
                 .padding(EdgeInsets(top: 8, leading: 8 , bottom: 15, trailing: 0))
             
             ForEach(firstItems, id: \.content) { item in
@@ -195,17 +191,7 @@ struct FileActionMenu: View {
             appModel.rename(file: fileListViewModel.selectedFiles[0], parent: fileListViewModel.rootFile)
         })
     }
-    
-    var shareFileView : some View {
-        ZStack {}
-        .sheet(isPresented: $showingShareFileSheet, onDismiss: {
-            appModel.vaultManager.clearTmpDirectory()
-        }, content: {
-            ActivityViewController(fileData: appModel.getFilesForShare(files: fileListViewModel.selectedFiles))
-        })
-    }
-    
-    
+
     var moveFilesView : some View {
         MoveFilesView(title: fileListViewModel.fileActionsTitle)
     }
@@ -218,7 +204,7 @@ struct FileActionMenu: View {
 
 struct FileActionMenu_Previews: PreviewProvider {
     static var previews: some View {
-        FileActionMenu(fileActionMenuType: FileActionMenuType.multiple)
+        FileActionMenu()
             .environmentObject(MainAppModel())
             .environmentObject(FileListViewModel.stub())
     }

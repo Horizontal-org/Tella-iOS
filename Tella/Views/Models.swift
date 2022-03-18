@@ -20,10 +20,11 @@ protocol AppModelFileManagerProtocol {
     func delete(file: VaultFile, from parentFolder: VaultFile?)
     func rename(file : VaultFile, parent: VaultFile?)
     func getFilesForShare(files: [VaultFile]) -> [Any]
+    func clearTmpDirectory()
 }
 
 class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
-    
+
     enum Tabs: Hashable {
         case home
         case forms
@@ -137,6 +138,10 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         return vaultManager.load(files: files)
     }
     
+    func clearTmpDirectory() {
+        vaultManager.clearTmpDirectory()
+    }
+
     func publishUpdates() {
         DispatchQueue.main.async {
             self.objectWillChange.send()

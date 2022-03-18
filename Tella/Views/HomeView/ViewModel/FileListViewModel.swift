@@ -15,37 +15,32 @@ class FileListViewModel: ObservableObject {
     var fileType: [FileType]?
     var rootFile : VaultFile
     var oldRootFile : VaultFile
-
-    @Published var showingSortFilesActionSheet = false
+    
     @Published var sortBy: FileSortOptions = FileSortOptions.nameAZ
-    
-    @Published var showingFileActionMenu = false
-    @Published var selectingFiles = false
-    @Published var fileActionMenuType: FileActionMenuType = FileActionMenuType.single
-    @Published var vaultFileStatusArray : [VaultFileStatus] = []
-    @Published var currentSelectedVaultFile : VaultFile?
-    
-    @Published var showFileDetails = false
-    
-    @Published var showFileInfoActive = false
-    
-    @Published var showingProgressView = false
-    
-    @Published var showingMoveFileView = false
-
     @Published var viewType: FileViewType = FileViewType.list
     
+    @Published var vaultFileStatusArray : [VaultFileStatus] = []
     @Published var folderArray: [VaultFile] = []
-   
-
+    
+    @Published var showingSortFilesActionSheet = false
+    @Published var selectingFiles = false
+    @Published var showingFileActionMenu = false
+    @Published var showFileDetails = false
+    @Published var showFileInfoActive = false
+    @Published var showingProgressView = false
+    @Published var showingMoveFileView = false
+    @Published var showingShareFileView = false
     
     var selectedFiles : [VaultFile] {
-        if fileActionMenuType == .single {
-            guard let currentSelectedVaultFile = currentSelectedVaultFile else { return [] }
-            return [currentSelectedVaultFile]
-        } else {
-            return vaultFileStatusArray.filter{$0.isSelected}.compactMap{$0.file}
+        return vaultFileStatusArray.filter{$0.isSelected}.compactMap{$0.file}
+    }
+    
+    var currentSelectedVaultFile : VaultFile? {
+        let files = vaultFileStatusArray.filter({$0.isSelected})
+        if files.count > 0 {
+            return files[0].file
         }
+        return nil
     }
     
     var filePath : String {
@@ -58,39 +53,39 @@ class FileListViewModel: ObservableObject {
     }
     
     var selectedItemsTitle : String {
-        return selectedItemsNumber == 1 ? "\(selectedItemsNumber) item" : "\(selectedItemsNumber) items"
+        return "\(selectedItemsNumber) items"
     }
     
     var fileActionsTitle: String {
-        (fileActionMenuType == .single && selectedFiles.count == 1) ? selectedFiles[0].fileName : selectedItemsTitle
+        selectedFiles.count == 1 ? selectedFiles[0].fileName : selectedItemsTitle
     }
-
+    
     var shouldActivateShare : Bool {
-        (fileActionMenuType == .single && (selectedFiles.count == 1 && selectedFiles[0].type != .folder)) ||
-        (fileActionMenuType == .multiple && !selectedFiles.contains{$0.type == .folder})
+        (!selectedFiles.contains{$0.type == .folder})
     }
     
     var shouldActivateSaveToDevice : Bool {
-        (fileActionMenuType == .single && (selectedFiles.count == 1 && selectedFiles[0].type != .folder)) ||
-        (fileActionMenuType == .multiple && !selectedFiles.contains{$0.type == .folder})
+        !selectedFiles.contains{$0.type == .folder}
     }
-
+    
     var shouldActivateRename : Bool {
-        (fileActionMenuType == .single) ||
-        (fileActionMenuType == .multiple && selectedFiles.count == 1)
+        selectedFiles.count == 1
     }
     
     var shouldActivateFileInformation : Bool {
-        (fileActionMenuType == .single) ||
-        (fileActionMenuType == .multiple && selectedFiles.count == 1)
+        selectedFiles.count == 1
     }
     
     var shouldHideNavigationBar : Bool {
         return selectingFiles || showingMoveFileView
     }
     
-
+    var filesAreAllSelected : Bool {
+        return vaultFileStatusArray.filter{$0.isSelected == true}.count == vaultFileStatusArray.count
+    }
+    
     init(appModel:MainAppModel, fileType:[FileType]?, rootFile:VaultFile) {
+        
         self.appModel = appModel
         self.fileType = fileType
         self.rootFile = rootFile
@@ -100,6 +95,7 @@ class FileListViewModel: ObservableObject {
     
     func resetSelectedItems() {
         _ = vaultFileStatusArray.compactMap{$0.isSelected = false}
+        self.objectWillChange.send()
     }
     
     func selectAll() {
@@ -122,7 +118,15 @@ class FileListViewModel: ObservableObject {
             self.objectWillChange.send()
         }
     }
-
+    
+    func updateSingleSelection(for file:VaultFile) {
+        self.resetSelectedItems()
+        
+        if let index = self.vaultFileStatusArray.firstIndex(where: {$0.file == file }) {
+            vaultFileStatusArray[index].isSelected = !vaultFileStatusArray[index].isSelected
+        }
+    }
+    
     func getStatus(for file:VaultFile) -> Bool   {
         if let index = self.vaultFileStatusArray.firstIndex(where: {$0.file == file }) {
             return vaultFileStatusArray[index].isSelected
@@ -131,7 +135,6 @@ class FileListViewModel: ObservableObject {
     }
     
     func initSelectedFiles()  {
-        self.currentSelectedVaultFile = nil
         _ = self.vaultFileStatusArray.compactMap{$0.isSelected = false}
     }
     
@@ -146,10 +149,19 @@ class FileListViewModel: ObservableObject {
     func add(folder: String) {
         appModel.add(folder: folder , to: self.rootFile)
     }
-
+    
     func moveFiles() {
         appModel.move(files: selectedFiles, from: oldRootFile, to: rootFile)
     }
+    
+    func clearTmpDirectory() {
+        appModel.clearTmpDirectory()
+    }
+    
+    func getDataToShare() -> [Any] {
+        appModel.getFilesForShare(files: selectedFiles)
+    }
+    
 }
 
 extension FileListViewModel {

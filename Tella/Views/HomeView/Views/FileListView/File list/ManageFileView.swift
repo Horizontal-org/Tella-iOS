@@ -15,9 +15,7 @@ struct ManageFileView: View {
             
             Spacer()
             
-            if !fileListViewModel.showingMoveFileView {
-                selectingFilesButton
-            }
+            selectingFilesButton
             
             Spacer()
                 .frame(width: 5)
@@ -25,7 +23,7 @@ struct ManageFileView: View {
             viewTypeButton
         }
         .padding(EdgeInsets(top: 0, leading: fileListViewModel.showingMoveFileView ? 8 : 16 , bottom: 0, trailing: fileListViewModel.showingMoveFileView ? 8 : 12))
-
+        
     }
     
     
@@ -44,23 +42,34 @@ struct ManageFileView: View {
         .frame(height: 44)
     }
     
+    @ViewBuilder
     private var selectingFilesButton: some View {
-        Button {
+        
+        if !fileListViewModel.showingMoveFileView {
             
-            fileListViewModel.selectingFiles = !fileListViewModel.selectingFiles
-            if fileListViewModel.selectingFiles {
-                fileListViewModel.initVaultFileStatusArray()
-            }
-            fileListViewModel.resetSelectedItems()
-            
-        } label: {
-            HStack{
-                Image(fileListViewModel.selectingFiles ? "files.selected" : "files.unselected-empty")
+            Button {
                 
-                    .frame(width: 24, height: 24)
+                
+                if fileListViewModel.selectingFiles {
+                    fileListViewModel.filesAreAllSelected ? fileListViewModel.resetSelectedItems() :  fileListViewModel.selectAll()
+                } else {
+                    fileListViewModel.selectingFiles = !fileListViewModel.selectingFiles
+                    fileListViewModel.initVaultFileStatusArray()
+                }
+                
+            } label: {
+                
+                HStack {
+                    
+                    if fileListViewModel.selectingFiles {
+                        Image(fileListViewModel.filesAreAllSelected ? "files.selected" : "files.unselected-empty")
+                    } else {
+                        Image("files.select")
+                    }
+                }
             }
+            .frame(width: 50, height: 50)
         }
-        .frame(width: 50, height: 50)
     }
     
     private var viewTypeButton: some View {
