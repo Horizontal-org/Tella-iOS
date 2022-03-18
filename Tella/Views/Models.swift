@@ -12,6 +12,10 @@ protocol AppModelFileManagerProtocol {
     
     func add(image: UIImage, to parentFolder: VaultFile?, type: FileType, pathExtension:String)
     func add(folder: String, to parentFolder: VaultFile?)
+    
+    func move(files: [VaultFile], from originalParentFolder: VaultFile?, to newParentFolder: VaultFile?)
+
+    
     func cancelImportAndEncryption()
     func delete(file: VaultFile, from parentFolder: VaultFile?)
     func rename(file : VaultFile, parent: VaultFile?)
@@ -107,6 +111,10 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         }
     }
     
+    func move( files: [VaultFile], from originalParentFolder: VaultFile?, to newParentFolder: VaultFile?) {
+        self.vaultManager.move(files: files, from: originalParentFolder, to: newParentFolder)
+    }
+
     func cancelImportAndEncryption() {
         self.vaultManager.shouldCancelImportAndEncryption.send(true)
     }

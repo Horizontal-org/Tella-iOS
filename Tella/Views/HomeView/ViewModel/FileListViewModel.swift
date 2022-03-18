@@ -14,7 +14,8 @@ class FileListViewModel: ObservableObject {
     var appModel: MainAppModel
     var fileType: [FileType]?
     var rootFile : VaultFile
-    
+    var oldRootFile : VaultFile
+
     @Published var showingSortFilesActionSheet = false
     @Published var sortBy: FileSortOptions = FileSortOptions.nameAZ
     
@@ -30,9 +31,12 @@ class FileListViewModel: ObservableObject {
     
     @Published var showingProgressView = false
     
+    @Published var showingMoveFileView = false
+
     @Published var viewType: FileViewType = FileViewType.list
     
     @Published var folderArray: [VaultFile] = []
+   
 
     
     var selectedFiles : [VaultFile] {
@@ -80,11 +84,17 @@ class FileListViewModel: ObservableObject {
         (fileActionMenuType == .single) ||
         (fileActionMenuType == .multiple && selectedFiles.count == 1)
     }
+    
+    var shouldHideNavigationBar : Bool {
+        return selectingFiles || showingMoveFileView
+    }
+    
 
     init(appModel:MainAppModel, fileType:[FileType]?, rootFile:VaultFile) {
         self.appModel = appModel
         self.fileType = fileType
         self.rootFile = rootFile
+        self.oldRootFile = rootFile
         initVaultFileStatusArray()
     }
     
@@ -120,6 +130,11 @@ class FileListViewModel: ObservableObject {
         return false
     }
     
+    func initSelectedFiles()  {
+        self.currentSelectedVaultFile = nil
+        _ = self.vaultFileStatusArray.compactMap{$0.isSelected = false}
+    }
+    
     func add(files: [URL], type: FileType) {
         appModel.add(files: files, to: self.rootFile, type: type)
     }
@@ -132,6 +147,9 @@ class FileListViewModel: ObservableObject {
         appModel.add(folder: folder , to: self.rootFile)
     }
 
+    func moveFiles() {
+        appModel.move(files: selectedFiles, from: oldRootFile, to: rootFile)
+    }
 }
 
 extension FileListViewModel {

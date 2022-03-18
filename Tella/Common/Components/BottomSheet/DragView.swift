@@ -32,10 +32,10 @@ struct DragView<Content: View> : View {
     var modalHeight:CGFloat
     var shouldHideOnTap : Bool = true
     var showWithAnimation : Bool = true
-    
+    var backgroundColor: Color = Styles.Colors.backgroundTab
+
     @Binding var isShown:Bool
     
-    private let color:Color = Styles.Colors.backgroundTab
     
     @GestureState private var dragState = DragState.inactive
     @State private var value: CGFloat = 0
@@ -93,7 +93,7 @@ struct DragView<Content: View> : View {
                     VStack{
                         Spacer()
                         ZStack{
-                            color.opacity(1.0)
+                            backgroundColor.opacity(1.0)
                                 .frame(width: UIScreen.main.bounds.size.width, height:modalHeight)
                                 .cornerRadius(25, corners: [.topLeft, .topRight])
                                 .edgesIgnoringSafeArea(.all)

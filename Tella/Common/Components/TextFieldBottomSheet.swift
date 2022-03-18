@@ -21,15 +21,17 @@ struct TextFieldBottomSheet: View {
     @Binding var fieldContent : String
     var fileName : String = ""
     var fieldType : FieldType
+    var backgroundColor: Color = Styles.Colors.backgroundTab
     var didConfirmAction : (() -> ())
-    
+
     @State private var isValid : Bool = false
     @State private var errorMessage : String = ""
     
     var body: some View {
         ZStack{
-            DragView(modalHeight: 165,
-                     isShown: $isPresented) {
+            DragView( modalHeight: 165,
+                      backgroundColor: backgroundColor,
+                      isShown: $isPresented) {
                 CreateNewFolderContentView
             }
         }

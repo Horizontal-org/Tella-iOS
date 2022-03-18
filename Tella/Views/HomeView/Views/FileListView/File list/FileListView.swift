@@ -17,12 +17,13 @@ struct FileListView: View {
     }
     
     var body: some View {
+        
         ZStack(alignment: .top) {
+            
             Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
             
             VStack {
                 SelectingFilesHeaderView()
-                
                 
                 if appModel.vaultManager.root.files.isEmpty {
                     EmptyFileListView(emptyListType: .allFiles)
@@ -55,7 +56,7 @@ struct FileListView: View {
             LeadingTitleToolbar(title: title)
         }
         
-        .navigationBarHidden(fileListViewModel.selectingFiles)
+        .navigationBarHidden(fileListViewModel.shouldHideNavigationBar)
         .environmentObject(fileListViewModel)
     }
     

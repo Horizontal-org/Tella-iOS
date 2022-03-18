@@ -7,7 +7,7 @@ import SwiftUI
 struct ManageFileView: View {
     
     @EnvironmentObject var fileListViewModel : FileListViewModel
-
+    
     var body: some View {
         HStack(spacing: 0) {
             
@@ -15,15 +15,16 @@ struct ManageFileView: View {
             
             Spacer()
             
-            selectingFilesButton
+            if !fileListViewModel.showingMoveFileView {
+                selectingFilesButton
+            }
             
             Spacer()
                 .frame(width: 5)
             
             viewTypeButton
         }
-        .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
-        .background(Styles.Colors.backgroundMain)
+        .padding(EdgeInsets(top: 0, leading: fileListViewModel.showingMoveFileView ? 8 : 16 , bottom: 0, trailing: fileListViewModel.showingMoveFileView ? 8 : 12))
 
     }
     
@@ -45,13 +46,13 @@ struct ManageFileView: View {
     
     private var selectingFilesButton: some View {
         Button {
-
+            
             fileListViewModel.selectingFiles = !fileListViewModel.selectingFiles
             if fileListViewModel.selectingFiles {
                 fileListViewModel.initVaultFileStatusArray()
             }
-                fileListViewModel.resetSelectedItems()
- 
+            fileListViewModel.resetSelectedItems()
+            
         } label: {
             HStack{
                 Image(fileListViewModel.selectingFiles ? "files.selected" : "files.unselected-empty")
@@ -73,7 +74,7 @@ struct ManageFileView: View {
         }
         .frame(width: 50, height: 50)
     }
-
+    
 }
 
 struct ManageFileView_Previews: PreviewProvider {
