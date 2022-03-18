@@ -35,7 +35,7 @@ struct FileItemsView: View {
                     case .folder:
                         
                         FileGridItem(file: file)
-                            .frame( minHeight: minHeight)
+                            .frame(minHeight: minHeight)
                             .onTapGesture {
                                 if !fileListViewModel.selectedFiles.contains(file){
 

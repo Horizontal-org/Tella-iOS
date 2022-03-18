@@ -33,18 +33,16 @@ struct FileGridItem: View {
                         Button {
                             fileListViewModel.showingFileActionMenu = true
                             fileListViewModel.updateSingleSelection(for: file)
-
+                            
                         } label: {
                             Image("files.more")
-                                .resizable()
-                                .frame(width: 20, height: 20)
-                                .padding(EdgeInsets(top: 0, leading: 0, bottom: 6, trailing: 0))
-                        }
+                                .padding(EdgeInsets(top: 0, leading: 0, bottom: -6, trailing: -12))
+                        }.frame(width: 35, height: 35)
                     }
                 }
                 
                 if fileListViewModel.selectingFiles {
-                    Color.black.opacity(0.64)
+                    Color.black.opacity(0.32)
                         .onTapGesture {
                             fileListViewModel.updateSelection(for: file)
                         }
