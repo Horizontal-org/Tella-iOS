@@ -22,7 +22,6 @@ struct FileActionMenu: View {
     @State var showingDeleteConfirmationSheet = false
     @State var showingSaveConfirmationSheet = false
     @State var showingRenameFileConfirmationSheet = false
-    @State var showingShareFileSheet = false
 
     @State var fileName : String = ""
     
@@ -41,7 +40,7 @@ struct FileActionMenu: View {
                             content: "Share",
                             action: {
                                 fileListViewModel.showingFileActionMenu = false
-                                showingShareFileSheet = true
+                                fileListViewModel.showingShareFileView = true
                             },isActive: fileListViewModel.shouldActivateShare)
     ]
         
@@ -112,7 +111,6 @@ struct FileActionMenu: View {
         fileDocumentExporter
         deleteFileView
         renameFileView
-        shareFileView
         if fileListViewModel.showingMoveFileView {
             moveFilesView
         }
@@ -195,17 +193,7 @@ struct FileActionMenu: View {
             appModel.rename(file: fileListViewModel.selectedFiles[0], parent: fileListViewModel.rootFile)
         })
     }
-    
-    var shareFileView : some View {
-        ZStack {}
-        .sheet(isPresented: $showingShareFileSheet, onDismiss: {
-            appModel.vaultManager.clearTmpDirectory()
-        }, content: {
-            ActivityViewController(fileData: appModel.getFilesForShare(files: fileListViewModel.selectedFiles))
-        })
-    }
-    
-    
+
     var moveFilesView : some View {
         MoveFilesView(title: fileListViewModel.fileActionsTitle)
     }

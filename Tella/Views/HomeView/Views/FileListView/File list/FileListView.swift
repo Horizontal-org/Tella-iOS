@@ -48,6 +48,8 @@ struct FileListView: View {
             
             FileActionMenu(fileActionMenuType: fileListViewModel.fileActionMenuType)
             
+            ShareFileView()
+
             showFileDetailsLink
             
             showFileInfoLink

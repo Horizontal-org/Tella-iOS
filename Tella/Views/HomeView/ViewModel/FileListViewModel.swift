@@ -32,6 +32,8 @@ class FileListViewModel: ObservableObject {
     @Published var showingProgressView = false
     
     @Published var showingMoveFileView = false
+   
+    @Published var showingShareFileView = false
 
     @Published var viewType: FileViewType = FileViewType.list
     
@@ -89,8 +91,12 @@ class FileListViewModel: ObservableObject {
         return selectingFiles || showingMoveFileView
     }
     
+    var filesAreAllSelected : Bool {
+        return vaultFileStatusArray.filter{$0.isSelected == true}.count == vaultFileStatusArray.count
+    }
 
     init(appModel:MainAppModel, fileType:[FileType]?, rootFile:VaultFile) {
+        
         self.appModel = appModel
         self.fileType = fileType
         self.rootFile = rootFile
@@ -100,6 +106,7 @@ class FileListViewModel: ObservableObject {
     
     func resetSelectedItems() {
         _ = vaultFileStatusArray.compactMap{$0.isSelected = false}
+        self.objectWillChange.send()
     }
     
     func selectAll() {
@@ -150,6 +157,15 @@ class FileListViewModel: ObservableObject {
     func moveFiles() {
         appModel.move(files: selectedFiles, from: oldRootFile, to: rootFile)
     }
+    
+    func clearTmpDirectory() {
+        appModel.clearTmpDirectory()
+    }
+
+    func getDataToShare() -> [Any] {
+        appModel.getFilesForShare(files: selectedFiles)
+    }
+
 }
 
 extension FileListViewModel {

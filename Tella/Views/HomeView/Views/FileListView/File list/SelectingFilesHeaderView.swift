@@ -7,52 +7,81 @@ import SwiftUI
 struct SelectingFilesHeaderView: View {
     
     @EnvironmentObject var fileListViewModel : FileListViewModel
-
+    
     var body: some View {
         if  fileListViewModel.selectingFiles {
             HStack{
-                Button {
-                    fileListViewModel.selectingFiles = false
-                    fileListViewModel.resetSelectedItems()
-                } label: {
-                    Image("close")
-                }
                 
-                .frame(width: 24, height: 24)
+                closeButton
                 
                 Spacer()
                     .frame(width: 12)
-                if fileListViewModel.selectedItemsNumber > 0 {
-                    
-                    Text(fileListViewModel.selectedItemsTitle)
-                        .foregroundColor(.white).opacity(0.8)
-                        .font(.custom(Styles.Fonts.semiBoldFontName, size: 16))
-                }
+                
+                itemsTitle
+                
                 Spacer(minLength: 15)
                 
-                Button {
-                     fileListViewModel.selectAll()
-                } label: {
-                    Image("add-to-library")
-                }
-                .frame(width: 24, height: 24)
-                
-                Spacer()
-                    .frame(width:30)
-                
-                Button {
-                    fileListViewModel.fileActionMenuType = .multiple
-                    fileListViewModel.showingFileActionMenu = true
-                } label: {
-                    Image("files.more")
-                        .renderingMode(.template)
-                        .foregroundColor((fileListViewModel.selectedItemsNumber == 0) ? .white.opacity(0.5) : .white)
+                if fileListViewModel.selectedItemsNumber > 0 {
                     
-                }.disabled(fileListViewModel.selectedItemsNumber == 0)
-                    .frame(width: 24, height: 24)
+                    shareButton
+                    
+                    Spacer()
+                        .frame(width:30)
+                    moreButton
+                }
                 
             }.padding(EdgeInsets(top: 8, leading: 16, bottom: 4, trailing: 23))
-        }    }
+        }
+    }
+    
+    var closeButton: some View {
+        Button {
+            fileListViewModel.selectingFiles = false
+            fileListViewModel.resetSelectedItems()
+        } label: {
+            Image("close")
+        }
+        
+        .frame(width: 24, height: 24)
+        
+    }
+    
+    @ViewBuilder
+    var itemsTitle: some View {
+        if fileListViewModel.selectedItemsNumber > 0 {
+            
+            Text(fileListViewModel.selectedItemsTitle)
+                .foregroundColor(.white).opacity(0.8)
+                .font(.custom(Styles.Fonts.semiBoldFontName, size: 16))
+        }
+        
+    }
+    
+    @ViewBuilder
+    var shareButton: some View {
+        if fileListViewModel.shouldActivateShare {
+            
+            Button {
+                fileListViewModel.showingShareFileView = true
+            } label: {
+                Image("share-icon")
+            }
+            .frame(width: 24, height: 24)
+        }
+        
+    }
+    
+    var moreButton: some View {
+        Button {
+            fileListViewModel.showingFileActionMenu = true
+        } label: {
+            Image("files.more")
+                .renderingMode(.template)
+                .foregroundColor((fileListViewModel.selectedItemsNumber == 0) ? .white.opacity(0.5) : .white)
+            
+        } .frame(width: 24, height: 24)
+        
+    }
 }
 
 struct SelectingFilesHeaderView_Previews: PreviewProvider {
