@@ -87,7 +87,7 @@ class VaultFile: Codable, Hashable {
         case .image:
             return UIImage()
         case .folder:
-            return #imageLiteral(resourceName: "filetype.small_folder")
+            return #imageLiteral(resourceName: "filetype.big_folder")
         case .other:
             return #imageLiteral(resourceName: "filetype.big_document")
         }
@@ -157,18 +157,7 @@ extension Array where Element == VaultFile {
     
     func sorted(by sortOrder: FileSortOptions) -> [VaultFile] {
         return self.sorted { file1, file2  in
-            
-            if file1.type == .folder && file2.type == .folder {
-                return file1.fileName > file2.fileName
-            }
-            
-            if file1.type == .folder {
-                return true
-            }
-            if file2.type == .folder {
-                return false
-            }
-            
+
             switch sortOrder {
             case .nameAZ:
                 return file1.fileName > file2.fileName
