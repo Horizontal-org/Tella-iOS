@@ -33,6 +33,7 @@ struct LockConfirmPinView: View {
     func lockWithPin() {
         do {
             try CryptoManager.shared.initKeys(.TELLA_PIN,
+            try CryptoManager.shared.initKeys(.tellaPin,
                                               password: lockViewModel.password)
             _ = CryptoManager.shared.recoverKey(.PRIVATE, password: lockViewModel.password)
             
