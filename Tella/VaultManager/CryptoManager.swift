@@ -50,7 +50,7 @@ class CryptoManager {
     
     private var metaPrivateKey: SecKey?
     
-    @RawValueUserDefaultsProperty("PasswordType", defaultValue: PasswordTypeEnum.TELLA_PASSWORD)
+    @RawValueUserDefaultsProperty("PasswordType", defaultValue: PasswordTypeEnum.tellaPassword)
      var passwordType: PasswordTypeEnum
 
     init(cryptoFileManager: CryptoFileManagerProtocol) {

@@ -74,13 +74,14 @@ struct GenaralSettingsView : View {
             }
             .onAppear {
                 lockViewModel.shouldDismiss.send(false)
-                let passwordType = appModel.getPasswordType()
+                let passwordType = CryptoManager.shared.passwordType
                 passwordTypeString = passwordType == .tellaPassword ? LocalizableLock.passwordButtonTitle.localized : LocalizableLock.pinButtonTitle.localized
             }
     }
 
     var unlockView : some View {
-        let passwordType = appModel.getPasswordType()
+        
+        let passwordType = CryptoManager.shared.passwordType
         return passwordType == .tellaPassword ?
         
         UnlockPasswordView()

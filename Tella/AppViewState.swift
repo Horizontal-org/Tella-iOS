@@ -17,7 +17,7 @@ final class AppViewState: ObservableObject {
 
     }
     var currentView: MainViewEnum {
-        return viewStack.last ?? .AUTH
+        return viewStack.last ?? .LOCK
     }
 
     func navigateBack() {
@@ -28,10 +28,6 @@ final class AppViewState: ObservableObject {
         viewStack.append(view)
     }
 
-    func resetToAuth() {
-        viewStack = [.AUTH]
-    }
-    
     func resetToLock() {
         viewStack = [.LOCK]
     }

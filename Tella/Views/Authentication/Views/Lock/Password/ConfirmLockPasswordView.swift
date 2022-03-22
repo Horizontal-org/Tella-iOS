@@ -37,7 +37,7 @@ struct ConfirmLockPasswordView: View {
     
     func lockWithPassword() {
         do {
-            try CryptoManager.shared.initKeys(.TELLA_PASSWORD, password: lockViewModel.password)
+            try CryptoManager.shared.initKeys(.tellaPassword, password: lockViewModel.password)
             _ = CryptoManager.shared.recoverKey(.PRIVATE, password: lockViewModel.password)
             
             shouldShowOnboarding = true
@@ -51,7 +51,7 @@ struct ConfirmLockPasswordView: View {
         do {
             print(lockViewModel.password)
             guard let privateKey = lockViewModel.privateKey else { return }
-            try CryptoManager.shared.updateKeys(privateKey, .TELLA_PASSWORD, newPassword: lockViewModel.password, oldPassword: lockViewModel.loginPassword)
+            try CryptoManager.shared.updateKeys(privateKey, .tellaPassword, newPassword: lockViewModel.password, oldPassword: lockViewModel.loginPassword)
             lockViewModel.shouldDismiss.send(true)
             
         } catch {
