@@ -22,7 +22,7 @@ struct ContentView: View {
         }
         
         if appViewState.currentView == .UNLOCK {
-            let passwordType = CryptoManager.shared.passwordType
+            let passwordType = AuthenticationManager().getPasswordType()
             return passwordType == .tellaPassword ?
             UnlockPasswordView()
                 .environmentObject(LockViewModel(unlockType: .new))

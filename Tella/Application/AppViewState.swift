@@ -8,14 +8,20 @@
 
 import SwiftUI
 
+enum MainViewEnum {
+    case MAIN, LOCK, UNLOCK
+}
+
 final class AppViewState: ObservableObject {
+   
     var homeViewModel : MainAppModel?
 
     @Published private var viewStack = [MainViewEnum]()
+    
     init() {
-        CryptoManager.shared.keysInitialized() ? self.resetToUnlock() : self.resetToLock()
-
+        AuthenticationManager().keysInitialized() ? self.resetToUnlock() : self.resetToLock()
     }
+    
     var currentView: MainViewEnum {
         return viewStack.last ?? .LOCK
     }

@@ -11,9 +11,6 @@
 
 import Foundation
 
-enum MainViewEnum {
-    case MAIN, LOCK, UNLOCK
-}
 
 enum PasswordTypeEnum: String, CaseIterable {
     
