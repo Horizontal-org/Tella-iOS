@@ -52,6 +52,7 @@
 		1224DAEC271975D3001C0ED0 /* PasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224DAEB271975D2001C0ED0 /* PasswordView.swift */; };
 		1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224DAEF2719C71B001C0ED0 /* LockPasswordData.swift */; };
 		1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE64FA282505542E00B03CEC /* AppViewState.swift */; };
+		1228DDE227EBC52900D6B7D0 /* Lock.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1228DDE027EBC52900D6B7D0 /* Lock.strings */; };
 		1230BE4727CD6D440055F854 /* AudioAuthorizationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230BE4627CD6D440055F854 /* AudioAuthorizationStatus.swift */; };
 		1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C876268C792000EB5E34 /* NSUIImage.swift */; };
 		1237A71A278F18C000D7BC0F /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C87C268CCA3500EB5E34 /* WebView.swift */; };
@@ -97,7 +98,6 @@
 		126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */; };
 		126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */; };
 		126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ECFE927C57FA600ED5161 /* CameraState.swift */; };
-		126FE4CD27A41D5500AE4188 /* Lock.strings in Resources */ = {isa = PBXBuildFile; fileRef = 126FE4CF27A41D5500AE4188 /* Lock.strings */; };
 		126FE4D027A41D5A00AE4188 /* Settings.strings in Resources */ = {isa = PBXBuildFile; fileRef = 126FE4D227A41D5A00AE4188 /* Settings.strings */; };
 		126FE4D327A41D5F00AE4188 /* Home.strings in Resources */ = {isa = PBXBuildFile; fileRef = 126FE4D527A41D5F00AE4188 /* Home.strings */; };
 		126FE4D727A427E200AE4188 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FE4D627A427E200AE4188 /* Constants.swift */; };
@@ -297,6 +297,7 @@
 		1224DAE927197577001C0ED0 /* ConfirmLockPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmLockPasswordView.swift; sourceTree = "<group>"; };
 		1224DAEB271975D2001C0ED0 /* PasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordView.swift; sourceTree = "<group>"; };
 		1224DAEF2719C71B001C0ED0 /* LockPasswordData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPasswordData.swift; sourceTree = "<group>"; };
+		1228DDE127EBC52900D6B7D0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Tella/Scenes/Authentication/en.lproj/Lock.strings; sourceTree = SOURCE_ROOT; };
 		1230BE4627CD6D440055F854 /* AudioAuthorizationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAuthorizationStatus.swift; sourceTree = "<group>"; };
 		1237A71B278F5B2E00D7BC0F /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		1237A71D278F5F8B00D7BC0F /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
@@ -336,7 +337,6 @@
 		126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCamera.swift; sourceTree = "<group>"; };
 		126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtension.swift; sourceTree = "<group>"; };
 		126ECFE927C57FA600ED5161 /* CameraState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraState.swift; sourceTree = "<group>"; };
-		126FE4CE27A41D5500AE4188 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Lock.strings; sourceTree = "<group>"; };
 		126FE4D127A41D5A00AE4188 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Settings.strings; sourceTree = "<group>"; };
 		126FE4D427A41D5F00AE4188 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Home.strings; sourceTree = "<group>"; };
 		126FE4D627A427E200AE4188 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -661,7 +661,7 @@
 		12567FFD27178FBF00A2D356 /* Localizable */ = {
 			isa = PBXGroup;
 			children = (
-				126FE4CF27A41D5500AE4188 /* Lock.strings */,
+				1228DDE027EBC52900D6B7D0 /* Lock.strings */,
 				12567FF62717426000A2D356 /* LocalizableLock.swift */,
 			);
 			path = Localizable;
@@ -1462,7 +1462,7 @@
 				12567FF32716E33500A2D356 /* OpenSans-Regular.ttf in Resources */,
 				D51639762631091E003A11B5 /* NewAssets.xcassets in Resources */,
 				128777C52718D25E000624E2 /* OpenSans-Light.ttf in Resources */,
-				126FE4CD27A41D5500AE4188 /* Lock.strings in Resources */,
+				1228DDE227EBC52900D6B7D0 /* Lock.strings in Resources */,
 				1209FD2927AD7DA500D8C17E /* OldAssets.xcassets in Resources */,
 				12E0882227AD2A2900CEB198 /* Audio.strings in Resources */,
 				F66E65B323E32080000F93E5 /* Assets.xcassets in Resources */,
@@ -1789,14 +1789,13 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		126FE4CF27A41D5500AE4188 /* Lock.strings */ = {
+		1228DDE027EBC52900D6B7D0 /* Lock.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				126FE4CE27A41D5500AE4188 /* en */,
+				1228DDE127EBC52900D6B7D0 /* en */,
 			);
 			name = Lock.strings;
-			path = Tella/Views/Authentication;
-			sourceTree = SOURCE_ROOT;
+			sourceTree = "<group>";
 		};
 		126FE4D227A41D5A00AE4188 /* Settings.strings */ = {
 			isa = PBXVariantGroup;
@@ -2016,7 +2015,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Tella/Preview Content\"";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = Tella/Info.plist;
+				INFOPLIST_FILE = "Tella/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2043,7 +2042,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Tella/Preview Content\"";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = Tella/Info.plist;
+				INFOPLIST_FILE = "Tella/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
