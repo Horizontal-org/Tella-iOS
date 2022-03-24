@@ -14,11 +14,7 @@ struct ContentView: View {
                 .environment(\.layoutDirection, Language.currentLanguage.layoutDirection)
                 .eraseToAnyView()
         }
-        
-        if appViewState.currentView == .AUTH {
-            return LockChoiceView( isPresented: .constant(false)).eraseToAnyView()
-        }
-        
+                
         if appViewState.currentView == .LOCK {
             return WelcomeView()
                 .environmentObject(LockViewModel(unlockType: .new))
@@ -26,8 +22,8 @@ struct ContentView: View {
         }
         
         if appViewState.currentView == .UNLOCK {
-            let passwordType = CryptoManager.shared.passwordType
-            return passwordType == .TELLA_PASSWORD ?
+            let passwordType = AuthenticationManager().getPasswordType()
+            return passwordType == .tellaPassword ?
             UnlockPasswordView()
                 .environmentObject(LockViewModel(unlockType: .new))
                 .eraseToAnyView() :
