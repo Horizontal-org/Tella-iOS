@@ -19,7 +19,7 @@ final class AppViewState: ObservableObject {
     @Published private var viewStack = [MainViewEnum]()
     
     init() {
-        AuthenticationManager().keysInitialized() ? self.resetToUnlock() : self.resetToLock()
+        self.resetApp()
     }
     
     var currentView: MainViewEnum {
@@ -39,6 +39,7 @@ final class AppViewState: ObservableObject {
     }
 
     func resetToUnlock() {
+        homeViewModel = nil
         viewStack = [.UNLOCK]
     }
 
@@ -62,5 +63,8 @@ final class AppViewState: ObservableObject {
         homeViewModel?.showFilesList = true
     }
     
+    func resetApp() {
+        AuthenticationManager().keysInitialized() ? self.resetToUnlock() : self.resetToLock()
+    }
 }
 

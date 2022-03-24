@@ -193,7 +193,7 @@
 		D57F5EA4261569C300C1DA47 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D57F5EA3261569C300C1DA47 /* Media.xcassets */; };
 		D57F5EAD26156C5200C1DA47 /* MockCryptoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57F5EAC26156C5200C1DA47 /* MockCryptoManager.swift */; };
 		D59E9EB0260C5A51006D9F8E /* VaultManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59E9EAF260C5A51006D9F8E /* VaultManagerTests.swift */; };
-		D5B823EB262774E00008E04B /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D5696C262747E100C45416 /* AppView.swift */; };
+		D5B823EB262774E00008E04B /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D5696C262747E100C45416 /* MainView.swift */; };
 		D5B823F0262775D80008E04B /* CryptoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B823EF262775D80008E04B /* CryptoManager.swift */; };
 		D5DA7F982646220100B00FDA /* FileGroupButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DA7F972646220100B00FDA /* FileGroupButtonView.swift */; };
 		D5DA7F9B2648D05400B00FDA /* FileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DA7F9A2648D05400B00FDA /* FileListView.swift */; };
@@ -437,7 +437,7 @@
 		D57F5EAC26156C5200C1DA47 /* MockCryptoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCryptoManager.swift; sourceTree = "<group>"; };
 		D59E9EAF260C5A51006D9F8E /* VaultManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManagerTests.swift; sourceTree = "<group>"; };
 		D5B823EF262775D80008E04B /* CryptoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoManager.swift; sourceTree = "<group>"; };
-		D5D5696C262747E100C45416 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
+		D5D5696C262747E100C45416 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		D5DA7F972646220100B00FDA /* FileGroupButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGroupButtonView.swift; sourceTree = "<group>"; };
 		D5DA7F9A2648D05400B00FDA /* FileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListView.swift; sourceTree = "<group>"; };
 		D5DAFDCD265384C4002F3942 /* MainAppModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainAppModel.swift; sourceTree = "<group>"; };
@@ -1173,8 +1173,8 @@
 		D53B76DA2601C9E50001CD34 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				D5D5696C262747E100C45416 /* MainView.swift */,
 				12781F4827EA28D600FE9609 /* ContentView */,
-				D5D5696C262747E100C45416 /* AppView.swift */,
 				12567FED2716B24700A2D356 /* Authentication */,
 				0D4D750E2662D14F00D7A635 /* Settings */,
 				D572EAC3263A381400CE191A /* HomeView */,
@@ -1587,7 +1587,7 @@
 				12E0882427AD31F600CEB198 /* LocalizableAudio.swift in Sources */,
 				12E6772F27A9719F00DC1E1C /* UIImageExtension.swift in Sources */,
 				0D4BC3C4267577F900DCDC30 /* NewReportView.swift in Sources */,
-				D5B823EB262774E00008E04B /* AppView.swift in Sources */,
+				D5B823EB262774E00008E04B /* MainView.swift in Sources */,
 				125FA6D6278DE49A004B9D06 /* URLExtension.swift in Sources */,
 				127369E327B3C4DA00CF7BE5 /* UIDeviceExtension.swift in Sources */,
 				12A148922720A32000A1ADDC /* LockPinData.swift in Sources */,
@@ -2012,7 +2012,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 7;
-				DEVELOPMENT_ASSET_PATHS = "\"Tella/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Tella/Supporting Files/Info.plist";
@@ -2039,7 +2039,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 7;
-				DEVELOPMENT_ASSET_PATHS = "\"Tella/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Tella/Supporting Files/Info.plist";

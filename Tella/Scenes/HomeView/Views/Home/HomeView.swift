@@ -11,15 +11,9 @@ class HomeViewModel: ObservableObject {
 }
 
 struct HomeView: View {
-    
-    @Binding var hideAll: Bool
-    
+
     @EnvironmentObject var appModel: MainAppModel
     @StateObject var viewModel = HomeViewModel()
-    
-    init( hideAll: Binding<Bool>) {
-        self._hideAll = hideAll
-    }
 
     var body: some View {
         
@@ -59,8 +53,7 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
     
-    @State static var hideAll = true
     static var previews: some View {
-        HomeView(hideAll: HomeView_Previews.$hideAll)
+        HomeView()
     }
 }

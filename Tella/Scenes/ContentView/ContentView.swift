@@ -9,7 +9,7 @@ struct ContentView: View {
     var body: some View {
         
         if appViewState.currentView == .MAIN {
-            return AppView()
+            return MainView()
                 .environmentObject((appViewState.homeViewModel)!)
                 .environment(\.layoutDirection, Language.currentLanguage.layoutDirection)
                 .eraseToAnyView()

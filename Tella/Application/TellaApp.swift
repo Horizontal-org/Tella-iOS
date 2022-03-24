@@ -20,10 +20,15 @@ struct TellaApp: App {
         }.onChange(of: scenePhase) { phase in
             switch phase {
             case .background:
-                appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
+                self.resetApp()
             default:
                 break
             }
         }
+    }
+    
+    func resetApp() {
+        appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
+        appViewState.resetApp()
     }
 }
