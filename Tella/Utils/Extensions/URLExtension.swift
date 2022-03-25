@@ -5,6 +5,7 @@
 
 import AVFoundation
 import UIKit
+import QuickLook
 
 extension URL {
     
@@ -25,16 +26,16 @@ extension URL {
     }
     
     func resolutionForImage() -> CGSize? {
-
+        
         guard let image = UIImage(contentsOfFile: path) else {
             return nil
         }
-
+        
         let width = image.size.width * image.scale
         let height = image.size.height * image.scale
         return CGSize(width: width, height: height)
     }
-
+    
     
     func getDuration() -> Double? {
         let asset = AVAsset(url: self)
@@ -67,27 +68,27 @@ extension URL {
         }
         return fileType
     }
-    
-    //TODO: add it for all files
-    var thumbnail: Data? {
+
+    func thumbnail() async -> Data? {
+        
+        let thumbnailSize = CGSize(width: 350, height: 350)
+        
         let thumbnail: UIImage?
-        switch fileType {
-        case .video:
-            thumbnail = generateVideoThumbnail()
-        default:
-            thumbnail = UIImage(contentsOfFile: path)?.getThumbnail()
+        do {
+            thumbnail = try await getThumbnail(for: self, size: thumbnailSize, scale: UIScreen.screenScale)
+        }catch {
+            thumbnail = nil
         }
         return thumbnail?.pngData()
+        
     }
-    
-    //TODO: not working for files from File
+
     func generateVideoThumbnail() -> UIImage? {
         do {
             let asset = AVURLAsset(url: self)
             let imageGenerator = AVAssetImageGenerator(asset: asset)
             imageGenerator.appliesPreferredTrackTransform = true
-            // Select the right one based on which version you are using
-            // Swift 4.2
+            
             let cgImage = try imageGenerator.copyCGImage(at: .zero,
                                                          actualTime: nil)
             return UIImage(cgImage: cgImage)
@@ -97,4 +98,22 @@ extension URL {
         }
     }
     
+    private func getThumbnail(for fileURL: URL, size: CGSize, scale: CGFloat) async throws -> UIImage? {
+
+        let request = QLThumbnailGenerator.Request(fileAt: fileURL,
+                                                   size: size,
+                                                   scale: scale,
+                                                   representationTypes: .thumbnail)
+        
+        let generator = QLThumbnailGenerator.shared
+        
+        do {
+            let generated = try await generator.generateBestRepresentation(for: request)
+            return generated.uiImage
+        }
+        catch {
+            return nil
+        }
+    }
 }
+

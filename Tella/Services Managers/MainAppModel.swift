@@ -9,21 +9,19 @@ protocol AppModelFileManagerProtocol {
     
     func add(files: [URL], to parentFolder: VaultFile?, type: FileType)
     func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String)
-    
-    func add(image: UIImage, to parentFolder: VaultFile?, type: FileType, pathExtension:String)
     func add(folder: String, to parentFolder: VaultFile?)
     
     func move(files: [VaultFile], from originalParentFolder: VaultFile?, to newParentFolder: VaultFile?)
-
-    
     func cancelImportAndEncryption()
     func delete(file: VaultFile, from parentFolder: VaultFile?)
     func rename(file : VaultFile, parent: VaultFile?)
     func getFilesForShare(files: [VaultFile]) -> [Any]
     func clearTmpDirectory()
+    func saveDataToTempFile(data:Data, pathExtension:String) -> URL? 
 }
 
 class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
+    
 
     enum Tabs: Hashable {
         case home
@@ -89,22 +87,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         self.vaultManager.importFile(audioFilePath: audioFilePath, to: parentFolder, type: type, fileName: fileName)
         self.publishUpdates()
     }
-    
-    func add(image: UIImage, to parentFolder: VaultFile?, type: FileType, pathExtension:String) {
-        
-        vaultManager.progress.progress.sink { value in
-            self.objectWillChange.send()
 
-        }.store(in: &cancellable)
-
-        vaultManager.progress.progressFile.sink { value in
-            self.objectWillChange.send()
-        }.store(in: &cancellable)
-        
-        self.vaultManager.importFile(image: image, to: parentFolder ?? self.vaultManager.root, type: type, pathExtension: pathExtension)
-        self.publishUpdates()
-    }
-    
     func add(folder: String, to parentFolder: VaultFile?) {
         DispatchQueue.global(qos: .background).async {
             self.vaultManager.createNewFolder(name: folder, parent: parentFolder)
@@ -136,6 +119,10 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     
     func getFilesForShare(files: [VaultFile]) -> [Any] {
         return vaultManager.load(files: files)
+    }
+    
+    func saveDataToTempFile(data:Data, pathExtension:String) -> URL? {
+      return vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension)
     }
     
     func clearTmpDirectory() {

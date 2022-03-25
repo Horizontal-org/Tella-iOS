@@ -83,13 +83,13 @@ struct AddPhotoVideoBottomSheet: View {
                 
                 showingImagePicker = false
                 
-                if let url = url {
+                 if let url = url {
                     showingProgressView = true
                     fileListViewModel.add(files: [url], type: .video)
-                }
+                 }
                 if let image = image {
                     showingProgressView = true
-                    fileListViewModel.add(image: image, type: .image, pathExtension: pathExtension ?? "png")
+                    fileListViewModel.add(image: image, type: .image, pathExtension: pathExtension)
                 }
             }
         })

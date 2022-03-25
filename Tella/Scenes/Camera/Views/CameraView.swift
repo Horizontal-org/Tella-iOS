@@ -64,6 +64,7 @@ struct CameraView: View {
             .onReceive(customCameraRepresentable.$shouldCloseCamera) { value in
                 if value {
                     mainAppModel.selectedTab = .home
+                    mainAppModel.clearTmpDirectory()
                 }
             }
             .alert(isPresented:$showingPermissionAlert) {
@@ -76,13 +77,11 @@ struct CameraView: View {
         customCameraRepresentable.cameraFrame = frame
         
         customCameraRepresentable.imageCompletion = {image , data in
-            cameraViewModel.image = image
-            
+
+            cameraViewModel.imageData = data
+
             showingProgressView = true
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                cameraViewModel.saveImage()
-            }
+            cameraViewModel.saveImage()
         }
         
         customCameraRepresentable.videoURLCompletion = {videoURL in

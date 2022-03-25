@@ -143,7 +143,9 @@ class FileListViewModel: ObservableObject {
     }
     
     func add(image: UIImage , type: FileType, pathExtension:String?) {
-        appModel.add(image: image, to: self.rootFile, type: type, pathExtension: pathExtension ?? "png")
+        guard let data = image.pngData() else { return }
+        guard let url = appModel.vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension ?? "png") else { return  }
+        appModel.add(files: [url], to: self.rootFile, type: type)
     }
     
     func add(folder: String) {
