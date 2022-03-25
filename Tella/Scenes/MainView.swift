@@ -4,15 +4,15 @@
 
 import SwiftUI
 
-struct AppView: View  {
+struct MainView: View  {
     
-    @State private var hideAll = false
-    @State private var hideTabBar = false
-    @EnvironmentObject private var appModel: MainAppModel
-    
-    @State private var inputImage: UIImage?
+
     
     @State private var showingRecoredrView : Bool = false
+
+    @EnvironmentObject private var appModel: MainAppModel
+    @EnvironmentObject private var appViewState: AppViewState
+    
     
     init() {
         setDebugLevel(level: .debug, for: .app)
@@ -21,14 +21,7 @@ struct AppView: View  {
     }
     
     var body: some View {
-        if hideAll {
-            emptyView
-        } else {
-            ZStack {
-                tabbar
-            }
-            
-        }
+        tabbar
     }
     
     private var emptyView: some View{
@@ -41,7 +34,7 @@ struct AppView: View  {
             ZStack {
                 
                 TabView(selection: $appModel.selectedTab) {
-                    HomeView(hideAll: $hideAll)
+                    HomeView()
                         .tabItem {
                             Image("tab.home")
                             Text("Home")
@@ -91,17 +84,12 @@ struct AppView: View  {
             
         }
         .navigationViewStyle(.stack)
-        
-        
         .accentColor(.white)
-        
-        
         .navigationBarTitle("Tella", displayMode: .inline)
         .navigationBarHidden(appModel.selectedTab == .home ? false : true)
         
     }
-    
-    
+
     private func setupApperance() {
         
         UITabBar.appearance().unselectedItemTintColor = UIColor.white.withAlphaComponent(0.38)
@@ -143,7 +131,7 @@ struct AppView: View  {
         
         if appModel.selectedTab == .home {
             Button {
-                hideAll = true
+                appViewState.resetToUnlock()
             } label: {
                 Image("home.close")
                     .aspectRatio(contentMode: .fit)
@@ -155,7 +143,7 @@ struct AppView: View  {
 
 struct AppView_Previews: PreviewProvider {
     static var previews: some View {
-        AppView()
+        MainView()
             .preferredColorScheme(.light)
             .previewLayout(.device)
             .previewDevice("iPhone Xʀ")

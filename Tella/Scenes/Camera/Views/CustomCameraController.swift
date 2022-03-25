@@ -153,7 +153,7 @@ final class CustomCameraController: UIViewController {
     private func createTempFileURL() -> URL {
         let pathURL = URL(fileURLWithPath:NSTemporaryDirectory())
         
-        return pathURL.appendingPathComponent("movie-\(NSDate.timeIntervalSinceReferenceDate).mov")
+        return pathURL.appendingPathComponent("movie-\(Int(Date().timeIntervalSince1970)).mov")
     }
     
     private func setupPhotoInputOutput() {
@@ -316,7 +316,7 @@ final class CustomCameraRepresentable: UIViewControllerRepresentable,ObservableO
     }
     
     var cameraFrame: CGRect
-    var imageCompletion: ((UIImage, Data) -> Void)
+    var imageCompletion: ((UIImage,Data) -> Void)
     var videoURLCompletion: ((URL) -> Void)
     
     @Published var isRecording : Bool?
@@ -415,6 +415,9 @@ extension CustomCameraRepresentable {
                         error: Error?) {
             
             parent.videoURLCompletion(outputFileURL)
+            
+            print("outputFileURL", outputFileURL)
+            
             parent.isRecording = false
         }
         

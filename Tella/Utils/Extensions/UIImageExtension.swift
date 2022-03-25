@@ -4,6 +4,7 @@
 
 import Foundation
 import UIKit
+import QuickLook
 
 // Taken from here:
 // https://iosdevcenters.blogspot.com/2019/08/ios-image-orientation-before-upload-on.html
@@ -71,23 +72,4 @@ extension UIImage {
         guard let newCGImage = ctx.makeImage() else { return nil }
         return UIImage.init(cgImage: newCGImage, scale: 1, orientation: .up)
     }
-}
-
-extension UIImage {
-
-  func getThumbnail() -> UIImage? {
-
-    guard let imageData = self.pngData() else { return nil }
-
-    let options = [
-        kCGImageSourceCreateThumbnailWithTransform: true,
-        kCGImageSourceCreateThumbnailFromImageAlways: true,
-        kCGImageSourceThumbnailMaxPixelSize: 300] as CFDictionary
-
-    guard let source = CGImageSourceCreateWithData(imageData as CFData, nil) else { return nil }
-    guard let imageReference = CGImageSourceCreateThumbnailAtIndex(source, 0, options) else { return nil }
-
-    return UIImage(cgImage: imageReference)
-
-  }
 }
