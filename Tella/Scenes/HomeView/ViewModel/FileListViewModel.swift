@@ -120,8 +120,8 @@ class FileListViewModel: ObservableObject {
     }
     
     func updateSingleSelection(for file:VaultFile) {
-        self.resetSelectedItems()
-        
+        initVaultFileStatusArray()
+
         if let index = self.vaultFileStatusArray.firstIndex(where: {$0.file == file }) {
             vaultFileStatusArray[index].isSelected = !vaultFileStatusArray[index].isSelected
         }
@@ -143,7 +143,7 @@ class FileListViewModel: ObservableObject {
     }
     
     func add(image: UIImage , type: FileType, pathExtension:String?) {
-        guard let data = image.pngData() else { return }
+        guard let data = image.fixedOrientation()?.pngData() else { return }
         guard let url = appModel.vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension ?? "png") else { return  }
         appModel.add(files: [url], to: self.rootFile, type: type)
     }

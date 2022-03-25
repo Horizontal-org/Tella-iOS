@@ -79,6 +79,10 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
             self?.publishUpdates()
         }.store(in: &cancellable)
         
+        vaultManager.progress.progressFile.sink { [weak self] value in
+            self?.publishUpdates()
+        }.store(in: &cancellable)
+
         self.vaultManager.importFile(files: files, to: parentFolder, type: type)
         self.publishUpdates()
     }

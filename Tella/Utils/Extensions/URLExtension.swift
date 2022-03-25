@@ -70,8 +70,14 @@ extension URL {
     }
 
     func thumbnail() async -> Data? {
+        let resolutionForImage = resolutionForImage()
         
-        let thumbnailSize = CGSize(width: 350, height: 350)
+        let width = CGFloat( resolutionForImage?.width ?? 350)
+        let height = CGFloat( resolutionForImage?.height ?? 350)
+
+        let aspectRatio = width/height
+
+        let thumbnailSize = CGSize(width: 350, height: 350*aspectRatio)
         
         let thumbnail: UIImage?
         do {

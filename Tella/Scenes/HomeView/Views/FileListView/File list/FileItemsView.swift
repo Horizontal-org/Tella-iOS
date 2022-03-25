@@ -49,8 +49,8 @@ struct FileItemsView: View {
                                 .frame( minHeight: minHeight)
                                 .onTapGesture {
                                     if !fileListViewModel.showingMoveFileView {
-                                        fileListViewModel.showFileDetails = true
                                         fileListViewModel.updateSingleSelection(for: file)
+                                        fileListViewModel.showFileDetails = true
                                     }
                                 }
                         }
@@ -80,8 +80,8 @@ struct FileItemsView: View {
                             .frame(height: 60)
                             .onTapGesture {
                                 if !fileListViewModel.showingMoveFileView {
-                                    fileListViewModel.showFileDetails = true
                                     fileListViewModel.updateSingleSelection(for: file)
+                                    fileListViewModel.showFileDetails = true
                                 }
                             }
                     }

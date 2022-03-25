@@ -7,16 +7,16 @@ import Foundation
 import Combine
 
 class ImportProgress: ObservableObject {
-
+    
     var progressFile = CurrentValueSubject<String, Never>("")
     var progress = CurrentValueSubject<Double, Never>(0.0)
     var totalFiles : Int = 1
     var isFinishing = PassthroughSubject<Bool, Never>()
-
+    
     var currentFile : Int = 0 {
         didSet {
             DispatchQueue.main.async {
-            self.progressFile.send("\(self.currentFile)/\(self.totalFiles)")
+                self.progressFile.send("\(self.currentFile)/\(self.totalFiles)")
             }
         }
     }
@@ -28,15 +28,18 @@ class ImportProgress: ObservableObject {
     private let sizeImportedPerSecond = 20563727
     
     func start(currentFile : Int = 0, totalFiles : Int = 1, totalSize : Double = 0.0) {
-        self.progress.send(0)
-
-        self.totalFiles = totalFiles
-        self.currentFile = currentFile
-        
-        self.totalTime =  Double(totalSize) / Double(self.sizeImportedPerSecond)
-        self.timeRemaining = self.totalTime
-        
-        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.timerRunning), userInfo: nil, repeats: true)
+        DispatchQueue.main.async {
+            self.progress.send(0)
+            
+            self.totalFiles = totalFiles
+            self.currentFile = currentFile
+            
+            self.totalTime =  Double(totalSize) / Double(self.sizeImportedPerSecond)
+            self.timeRemaining = self.totalTime
+            
+            self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.timerRunning), userInfo: nil, repeats: true)
+            
+        }
     }
     
     func stop() {
@@ -49,7 +52,7 @@ class ImportProgress: ObservableObject {
             self.progress.send(0)
         }
     }
-
+    
     func pause() {
         self.timer.invalidate()
     }
@@ -57,8 +60,8 @@ class ImportProgress: ObservableObject {
     func resume() {
         self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.timerRunning), userInfo: nil, repeats: true)
     }
-
-
+    
+    
     func finish() {
         DispatchQueue.main.async {
             self.timeRemaining = 0.0

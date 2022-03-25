@@ -40,7 +40,6 @@ extension VaultFile {
                     .frame(height: 6)
             }.padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 18))
         }
-
     }
 }
 
@@ -50,8 +49,7 @@ extension VaultFile {
             ZStack{
                 Image(uiImage: thumbnailImage)
                     .resizable()
-//                    .clipped()
-                    .aspectRatio(1, contentMode: .fill)
+                    .aspectRatio(contentMode: .fill)
                 Image(uiImage: iconImage)
             }
         )
