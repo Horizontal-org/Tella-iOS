@@ -38,7 +38,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     private let fileManager: FileManagerInterface
     
     @Published var root: VaultFile
-    @Published var recentFiles: [VaultFile] = []
+    @Published var recentFiles: [RecentFile] = []
     @Published var progress :  ImportProgress
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
     
@@ -65,7 +65,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
     }
     
-    func importFile(files: [URL], to parentFolder: VaultFile?, type: FileType) {
+    func importFile(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray : [VaultFile]?) {
         Task {
             do{
                 let filesInfo = try await self.getFilesInfo(files: files)
@@ -82,7 +82,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                             break
                         }
                         self?.progress.currentFile = index
-                        self?.importFileAndEncrypt(data: item.0, vaultFile: item.1, parentFolder: parentFolder, type: type)
+                        self?.importFileAndEncrypt(data: item.0, vaultFile: item.1, parentFolder: parentFolder, type: type, folderPathArray: folderPathArray)
                     }
                     if let root = self?.root {
                         self?.save(file: root)
@@ -110,7 +110,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
     }
     
-    func importFile(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName: String) {
+    func importFile(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName: String, folderPathArray : [VaultFile]?) {
         
         debugLog("\(audioFilePath)", space: .files)
         
@@ -141,7 +141,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
             
             
             if let _ = save(data, vaultFile: vaultFile, parent: parentFolder) {
-                addRecentFile(file: vaultFile)
+                addRecentFile(file: vaultFile, rootFile: parentFolder, folderPathArray: folderPathArray)
                 save(file: root)
             }
         } catch let error {
@@ -150,10 +150,10 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         
     }
     
-    private func importFileAndEncrypt(data : Data, vaultFile:VaultFile, parentFolder :VaultFile?, type: FileType) {
+    private func importFileAndEncrypt(data : Data, vaultFile:VaultFile, parentFolder :VaultFile?, type: FileType, folderPathArray : [VaultFile]?) {
         
         if let _ = self.save(data, vaultFile: vaultFile, parent: parentFolder) {
-            self.addRecentFile(file: vaultFile)
+            self.addRecentFile(file: vaultFile, rootFile: parentFolder, folderPathArray: folderPathArray)
         }
     }
     
@@ -333,13 +333,14 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
     
     //MARK: recent file
-    private func addRecentFile(file: VaultFile) {
+    private func addRecentFile(file: VaultFile, rootFile:VaultFile?, folderPathArray : [VaultFile]?) {
         debugLog("\(file)", space: .files)
-        recentFiles.append(file)
+        guard let rootFile = rootFile else { return  }
+        recentFiles.append(RecentFile(file: file, rootFile: rootFile, folderPathArray: folderPathArray))
     }
     
     private func removeRecentFile(file: VaultFile) {
-        recentFiles = recentFiles.filter({ $0.containerName != file.containerName })
+        recentFiles = recentFiles.filter({ $0.file.containerName != file.containerName })
     }
     
     private func getFilesInfo(files: [URL]) async throws ->([(Data,VaultFile)], Double)  {

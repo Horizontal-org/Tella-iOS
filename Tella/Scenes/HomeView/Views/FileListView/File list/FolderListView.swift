@@ -12,10 +12,10 @@ struct FolderListView: View {
     var body: some View {
         HStack(spacing: 5) {
             
-            if fileListViewModel.folderArray.count > 0 {
+            if fileListViewModel.folderPathArray.count > 0 {
                 Button() {
                     fileListViewModel.rootFile = appModel.vaultManager.root
-                    fileListViewModel.folderArray.removeAll()
+                    fileListViewModel.folderPathArray.removeAll()
                 } label: {
                     Image("files.folder")
                         .resizable()
@@ -26,21 +26,19 @@ struct FolderListView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 2) {
                     
-                    if !fileListViewModel.folderArray.isEmpty {
+                    if !fileListViewModel.folderPathArray.isEmpty {
                         Image("files.arrow_right")
                             .resizable()
                             .frame(width: 7, height: 11)
                     }
                     
-                    ForEach(fileListViewModel.folderArray, id:\.self) { file in
+                    ForEach(fileListViewModel.folderPathArray, id:\.self) { file in
                         
                         Button {
                             fileListViewModel.rootFile = file
                             
                             // Remove the next folders after the selected folder
-                            if let index = fileListViewModel.folderArray.firstIndex(of: file) {
-                                fileListViewModel.folderArray.removeSubrange(index + 1..<fileListViewModel.folderArray.endIndex)
-                            }
+                            fileListViewModel.initFolderPathArray(for: file)
                             
                         } label: {
                             Text(file.fileName)
@@ -49,7 +47,7 @@ struct FolderListView: View {
                         }
                         .padding(7)
                         
-                        if let index = fileListViewModel.folderArray.firstIndex(of: file), index < fileListViewModel.folderArray.count  - 1 {
+                        if let index = fileListViewModel.folderPathArray.firstIndex(of: file), index < fileListViewModel.folderPathArray.count  - 1 {
                             Image("files.arrow_right")
                                 .resizable()
                                 .frame(width: 7, height: 11)

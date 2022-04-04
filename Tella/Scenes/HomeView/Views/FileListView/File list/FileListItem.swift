@@ -7,7 +7,6 @@ import SwiftUI
 struct FileListItem: View {
     
     var file: VaultFile
-//     @State var isSelected : Bool = false
 
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var fileListViewModel : FileListViewModel
@@ -84,16 +83,10 @@ struct FileListItem: View {
                 fileListViewModel.updateSingleSelection(for: file)
             } label: {
                 Image("files.more")
-                    .resizable()
-                    .frame(width: 20, height: 20)
-            }.frame(width: 40, height: 40)
+                    .frame(width: 40, height: 40)
+            } .frame(width: 40, height: 40)
         }
-        
-        
-        
-
     }
-
 }
 
 struct FileListItem_Previews: PreviewProvider {

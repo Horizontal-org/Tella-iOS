@@ -9,18 +9,24 @@
 import Foundation
 import SwiftUI
 
+enum FileActionSource {
+    case details
+    case listView
+}
+
 class FileListViewModel: ObservableObject {
     
     var appModel: MainAppModel
     var fileType: [FileType]?
     var rootFile : VaultFile
     var oldRootFile : VaultFile
-    
+    var fileActionSource : FileActionSource = .listView
+
     @Published var sortBy: FileSortOptions = FileSortOptions.nameAZ
     @Published var viewType: FileViewType = FileViewType.list
     
     @Published var vaultFileStatusArray : [VaultFileStatus] = []
-    @Published var folderArray: [VaultFile] = []
+    @Published var folderPathArray: [VaultFile] = []
     
     @Published var showingSortFilesActionSheet = false
     @Published var selectingFiles = false
@@ -44,8 +50,8 @@ class FileListViewModel: ObservableObject {
     }
     
     var filePath : String {
-        let rootPath = "Tella" + (folderArray.count > 0 ? "/" : "")
-        return  rootPath + self.folderArray.compactMap{$0.fileName}.joined(separator: "/")
+        let rootPath = "Tella" + (folderPathArray.count > 0 ? "/" : "")
+        return  rootPath + self.folderPathArray.compactMap{$0.fileName}.joined(separator: "/")
     }
     
     var selectedItemsNumber : Int {
@@ -84,12 +90,14 @@ class FileListViewModel: ObservableObject {
         return vaultFileStatusArray.filter{$0.isSelected == true}.count == vaultFileStatusArray.count
     }
     
-    init(appModel:MainAppModel, fileType:[FileType]?, rootFile:VaultFile) {
+    init(appModel:MainAppModel, fileType:[FileType]?, rootFile:VaultFile, folderPathArray:[VaultFile]?,fileActionSource : FileActionSource = .listView) {
         
         self.appModel = appModel
         self.fileType = fileType
         self.rootFile = rootFile
         self.oldRootFile = rootFile
+        self.folderPathArray = folderPathArray ?? []
+        self.fileActionSource = fileActionSource
         initVaultFileStatusArray()
     }
     
@@ -109,7 +117,7 @@ class FileListViewModel: ObservableObject {
     }
     
     func getFiles() -> [VaultFile]  {
-        return appModel.vaultManager.root.files.sorted(by: self.sortBy, folderArray: folderArray, root: self.appModel.vaultManager.root, fileType: self.fileType)
+        return appModel.vaultManager.root.files.sorted(by: self.sortBy, folderPathArray: folderPathArray, root: self.appModel.vaultManager.root, fileType: self.fileType)
     }
     
     func updateSelection(for file:VaultFile) {
@@ -120,11 +128,9 @@ class FileListViewModel: ObservableObject {
     }
     
     func updateSingleSelection(for file:VaultFile) {
-        initVaultFileStatusArray()
-
-        if let index = self.vaultFileStatusArray.firstIndex(where: {$0.file == file }) {
-            vaultFileStatusArray[index].isSelected = !vaultFileStatusArray[index].isSelected
-        }
+        vaultFileStatusArray.removeAll()
+        vaultFileStatusArray.append(VaultFileStatus(file: file, isSelected: true))
+        
     }
     
     func getStatus(for file:VaultFile) -> Bool   {
@@ -134,18 +140,32 @@ class FileListViewModel: ObservableObject {
         return false
     }
     
-    func initSelectedFiles()  {
+    func initSelectedFiles() {
         _ = self.vaultFileStatusArray.compactMap{$0.isSelected = false}
     }
     
+    func initFolderPathArray(for file:VaultFile) {
+        if let index = self.folderPathArray.firstIndex(of: file) {
+            self.folderPathArray.removeSubrange(index + 1..<self.folderPathArray.endIndex)
+        }
+    }
+
+    func initFolderPathArray() {
+        if let index = self.folderPathArray.firstIndex(of: self.oldRootFile) {
+            self.folderPathArray.removeSubrange(index + 1..<self.folderPathArray.endIndex)
+        } else {
+            self.folderPathArray.removeAll()
+        }
+    }
+    
     func add(files: [URL], type: FileType) {
-        appModel.add(files: files, to: self.rootFile, type: type)
+        appModel.add(files: files, to: self.rootFile, type: type, folderPathArray: folderPathArray)
     }
     
     func add(image: UIImage , type: FileType, pathExtension:String?) {
         guard let data = image.fixedOrientation()?.pngData() else { return }
         guard let url = appModel.vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension ?? "png") else { return  }
-        appModel.add(files: [url], to: self.rootFile, type: type)
+        appModel.add(files: [url], to: self.rootFile, type: type, folderPathArray: folderPathArray)
     }
     
     func add(folder: String) {
@@ -168,6 +188,6 @@ class FileListViewModel: ObservableObject {
 
 extension FileListViewModel {
     static func stub() -> FileListViewModel {
-        return FileListViewModel(appModel: MainAppModel(), fileType: [.folder], rootFile: VaultFile.stub(type: .folder))
+        return FileListViewModel(appModel: MainAppModel(), fileType: [.folder], rootFile: VaultFile.stub(type: .folder), folderPathArray: [])
     }
 }

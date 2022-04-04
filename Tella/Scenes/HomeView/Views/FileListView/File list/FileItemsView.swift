@@ -37,10 +37,10 @@ struct FileItemsView: View {
                         FileGridItem(file: file)
                             .frame(minHeight: minHeight)
                             .onTapGesture {
-                                if !fileListViewModel.selectedFiles.contains(file){
-
-                                fileListViewModel.rootFile = file
-                                fileListViewModel.folderArray.append(file)
+                                
+                                if (fileListViewModel.showingMoveFileView && !fileListViewModel.selectedFiles.contains(file)) || !(fileListViewModel.showingMoveFileView) {
+                                    fileListViewModel.rootFile = file
+                                    fileListViewModel.folderPathArray.append(file)
                                 }
                             }
                     default:
@@ -69,9 +69,9 @@ struct FileItemsView: View {
                         FileListItem(file: file)
                             .frame(height: 60)
                             .onTapGesture {
-                                if !fileListViewModel.selectedFiles.contains(file){
+                                if (fileListViewModel.showingMoveFileView && !fileListViewModel.selectedFiles.contains(file)) || !(fileListViewModel.showingMoveFileView) {
                                     fileListViewModel.rootFile = file
-                                    fileListViewModel.folderArray.append(file)
+                                    fileListViewModel.folderPathArray.append(file)
                                 }
                             }
                         

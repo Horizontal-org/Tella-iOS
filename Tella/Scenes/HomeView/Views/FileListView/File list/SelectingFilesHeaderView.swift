@@ -75,12 +75,8 @@ struct SelectingFilesHeaderView: View {
         Button {
             fileListViewModel.showingFileActionMenu = true
         } label: {
-            Image("files.more")
-                .renderingMode(.template)
-                .foregroundColor((fileListViewModel.selectedItemsNumber == 0) ? .white.opacity(0.5) : .white)
-            
-        } .frame(width: 24, height: 24)
-        
+            Image("files.more-top")            
+        }.frame(width: 40, height: 40)
     }
 }
 

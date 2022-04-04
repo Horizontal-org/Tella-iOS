@@ -7,8 +7,8 @@ import Combine
 
 protocol AppModelFileManagerProtocol {
     
-    func add(files: [URL], to parentFolder: VaultFile?, type: FileType)
-    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String)
+    func add(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray:[VaultFile]? )
+    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String, folderPathArray:[VaultFile]?)
     func add(folder: String, to parentFolder: VaultFile?)
     
     func move(files: [VaultFile], from originalParentFolder: VaultFile?, to newParentFolder: VaultFile?)
@@ -73,7 +73,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         selectedTab = newTab
     }
     
-    func add(files: [URL], to parentFolder: VaultFile?, type: FileType) {
+    func add(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray:[VaultFile]? = nil) {
         
         vaultManager.progress.progress.sink { [weak self] value in
             self?.publishUpdates()
@@ -83,12 +83,12 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
             self?.publishUpdates()
         }.store(in: &cancellable)
 
-        self.vaultManager.importFile(files: files, to: parentFolder, type: type)
+        self.vaultManager.importFile(files: files, to: parentFolder, type: type, folderPathArray: folderPathArray)
         self.publishUpdates()
     }
     
-    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String) {
-        self.vaultManager.importFile(audioFilePath: audioFilePath, to: parentFolder, type: type, fileName: fileName)
+    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String, folderPathArray:[VaultFile]? = nil) {
+        self.vaultManager.importFile(audioFilePath: audioFilePath, to: parentFolder, type: type, fileName: fileName, folderPathArray: folderPathArray)
         self.publishUpdates()
     }
 
