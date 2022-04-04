@@ -217,7 +217,7 @@ struct RecordView: View {
             }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 12))
             
             Text(LocalizableAudio.recorderTitle.localized)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 16))
+                .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                 .foregroundColor(Color.white)
             Spacer()
         }.frame(height: 56)

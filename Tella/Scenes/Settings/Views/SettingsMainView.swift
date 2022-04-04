@@ -14,9 +14,8 @@ struct SettingsMainView: View {
     var body: some View {
         ContainerView {
             VStack() {
-                
                 GenaralSettingsView(appModel: appModel)
-                
+                RecentFilesSettingsView()
                 Spacer()
             }
         }.onReceive(appModel.shouldUpdateLanguage) {  vv in
@@ -27,6 +26,14 @@ struct SettingsMainView: View {
         .toolbar {
             LeadingTitleToolbar(title: LocalizableSettings.title.localized)
         }
+        
+        .onDisappear(perform: {
+            appModel.saveSettings()
+        })
+        
+        .onDisappear {
+            appModel.publishUpdates()
+        }
     }
 }
 
@@ -36,8 +43,8 @@ struct GenaralSettingsView : View {
     @ObservedObject var appModel : MainAppModel
     @StateObject var lockViewModel = LockViewModel(unlockType: .update)
     @State var passwordTypeString : String = ""
-
-
+    
+    
     var body : some View {
         
         VStack(spacing: 0) {
@@ -78,7 +85,7 @@ struct GenaralSettingsView : View {
                 passwordTypeString = passwordType == .tellaPassword ? LocalizableLock.passwordButtonTitle.localized : LocalizableLock.pinButtonTitle.localized
             }
     }
-
+    
     var unlockView : some View {
         
         let passwordType = AuthenticationManager().getPasswordType()
@@ -94,6 +101,23 @@ struct GenaralSettingsView : View {
         
     }
     
+}
+
+struct RecentFilesSettingsView : View {
+    
+    @EnvironmentObject var appModel : MainAppModel
+    
+    var body : some View {
+        
+        VStack(spacing: 0) {
+            
+            SettingToggleItem(title: "Recent files",
+                              description: "Gives you quick access to your recent files on Tella’s homescreen. ",
+                              toggle: $appModel.settings.showRecentFiles)
+        }.background(Color.white.opacity(0.08))
+            .cornerRadius(15)
+            .padding()
+    }
 }
 
 struct DividerView : View {

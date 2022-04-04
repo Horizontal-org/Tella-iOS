@@ -93,7 +93,7 @@ struct LockButtonView<Destination:View> : View {
                     .foregroundColor(.white)
                 
                 Text(lockButtonProtocol.description)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 11))
+                    .font(.custom(Styles.Fonts.regularFontName, size: 13.5))
                     .foregroundColor(.white)
             }
             Spacer()

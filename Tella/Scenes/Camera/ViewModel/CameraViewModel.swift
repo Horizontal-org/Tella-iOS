@@ -32,7 +32,7 @@ class CameraViewModel: ObservableObject {
         self.mainAppModel = mainAppModel
         
         mainAppModel.vaultManager.$root.sink { file in
-            self.lastImageOrVideoVaultFile = file.files.sorted(by: .newestToOldest, folderArray: [], root: mainAppModel.vaultManager.root, fileType: [.image, .video]).first
+            self.lastImageOrVideoVaultFile = file.files.sorted(by: .newestToOldest, folderPathArray: [], root: mainAppModel.vaultManager.root, fileType: [.image, .video]).first
         }.store(in: &cancellable)
         
         mainAppModel.vaultManager.progress.progress.sink { value in

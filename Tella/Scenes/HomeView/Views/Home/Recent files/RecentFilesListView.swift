@@ -41,9 +41,11 @@ struct RecentFilesListView: View {
         HStack(spacing: 7) {
             // The 3 first or all items
             ForEach(0..<number, id: \.self) { i in
-                RecentFileCell(recentFile: appModel.vaultManager.recentFiles[i])
+                RecentFileCell(recentFile: appModel.vaultManager.recentFiles[i].file)
                     .navigateTo(destination: FileDetailView(appModel: appModel,
-                                                            file: appModel.vaultManager.recentFiles[i]))
+                                                            file: appModel.vaultManager.recentFiles[i].file,
+                                                            rootFile: appModel.vaultManager.recentFiles[i].rootFile,
+                                                            folderPathArray: appModel.vaultManager.recentFiles[i].folderPathArray))
             }
             // More button
             if !moreRecentFilesLoaded &&  appModel.vaultManager.recentFiles.count >  3 {
@@ -59,10 +61,12 @@ struct RecentFilesListView: View {
     var firstFilesItems : some View {
         HStack(spacing: 7) {
             
-            ForEach(appModel.vaultManager.recentFiles, id: \.self) { file in
+            ForEach(appModel.vaultManager.recentFiles, id: \.self) { recentFile in
                 
-                RecentFileCell(recentFile: file)
-                    .navigateTo(destination: FileDetailView(appModel: appModel, file: file))
+                RecentFileCell(recentFile: recentFile.file)
+                    .navigateTo(destination: FileDetailView(appModel: appModel,
+                                                            file: recentFile.file,
+                                                            rootFile: recentFile.rootFile, folderPathArray: recentFile.folderPathArray))
             }
         }.padding(.trailing, 17)
         

@@ -56,14 +56,13 @@ struct MoveFilesView: View {
     
     private var bottomView : some View {
         HStack {
-            
-            
-            
+
             Button("CANCEL") {
                 fileListViewModel.showingMoveFileView  = false
                 fileListViewModel.initSelectedFiles()
+                fileListViewModel.initFolderPathArray()
+                fileListViewModel.rootFile = fileListViewModel.oldRootFile
             } .buttonStyle(MoveFileButtonStyle())
-            
                 .foregroundColor(.white)
             
             Button("MOVE HERE") {
@@ -75,7 +74,6 @@ struct MoveFilesView: View {
                 .buttonStyle(MoveFileButtonStyle())
         }.frame(height: 50)
     }
-    
 }
 
 struct MoveFileButtonStyle : ButtonStyle {

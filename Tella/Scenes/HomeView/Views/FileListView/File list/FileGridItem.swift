@@ -30,14 +30,9 @@ struct FileGridItem: View {
                         
                         Spacer()
                         
-                        Button {
-                            fileListViewModel.showingFileActionMenu = true
-                            fileListViewModel.updateSingleSelection(for: file)
-                            
-                        } label: {
-                            Image("files.more")
-                                .padding(EdgeInsets(top: 0, leading: 0, bottom: -6, trailing: -12))
-                        }.frame(width: 35, height: 35)
+                        if !fileListViewModel.showingMoveFileView {
+                            selectionButton
+                        }
                     }
                 }
                 
@@ -65,6 +60,19 @@ struct FileGridItem: View {
                 }
             }
         }
+    }
+    
+    var selectionButton: some View {
+        Button {
+            fileListViewModel.showingFileActionMenu = true
+            fileListViewModel.updateSingleSelection(for: file)
+            
+        } label: {
+            Image("files.more")
+                .frame(width: 35, height: 35)
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: -6, trailing: -12))
+        }.frame(width: 35, height: 35)
+
     }
 }
 

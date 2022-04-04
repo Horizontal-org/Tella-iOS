@@ -12,7 +12,7 @@ struct FileListView: View {
     var title : String = ""
     
     init(appModel: MainAppModel, rootFile: VaultFile , fileType: [FileType]? , title : String = "") {
-        _fileListViewModel = StateObject(wrappedValue: FileListViewModel(appModel: appModel,fileType:fileType, rootFile: rootFile ))
+        _fileListViewModel = StateObject(wrappedValue: FileListViewModel(appModel: appModel,fileType:fileType, rootFile: rootFile, folderPathArray: [] ))
         self.title = title
     }
     
@@ -32,7 +32,7 @@ struct FileListView: View {
                     
                     FolderListView()
                     
-                    if fileListViewModel.rootFile.files.isEmpty {
+                    if fileListViewModel.getFiles().isEmpty {
                         EmptyFileListView(emptyListType: .folder)
                         
                     } else {
@@ -47,12 +47,8 @@ struct FileListView: View {
             FileSortMenu()
             
             FileActionMenu()
-            
-            ShareFileView()
 
             showFileDetailsLink
-            
-            showFileInfoLink
         }
         .toolbar {
             LeadingTitleToolbar(title: title)
@@ -68,20 +64,10 @@ struct FileListView: View {
             NavigationLink(destination:
                             FileDetailView(appModel: appModel ,
                                            file: currentSelectedVaultFile,
-                                           videoFilesArray: fileListViewModel.rootFile.getVideos().sorted(by: fileListViewModel.sortBy)),
+                                           videoFilesArray: fileListViewModel.rootFile.getVideos().sorted(by: fileListViewModel.sortBy),
+                                           rootFile: fileListViewModel.rootFile, folderPathArray: fileListViewModel.folderPathArray
+                                          ),
                            isActive: $fileListViewModel.showFileDetails) {
-                EmptyView()
-            }.frame(width: 0, height: 0)
-                .hidden()
-        }
-    }
-    
-    @ViewBuilder
-    private var showFileInfoLink : some View{
-        if let currentSelectedVaultFile = fileListViewModel.currentSelectedVaultFile {
-            NavigationLink(destination:
-                            FileInfoView(viewModel: self.fileListViewModel, file: currentSelectedVaultFile),
-                           isActive: $fileListViewModel.showFileInfoActive) {
                 EmptyView()
             }.frame(width: 0, height: 0)
                 .hidden()

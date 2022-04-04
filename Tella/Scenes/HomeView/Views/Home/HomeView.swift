@@ -21,9 +21,11 @@ struct HomeView: View {
             VStack(spacing: 30) {
                 
                 VStack(spacing: 15) {
-                    Spacer()
-                        .frame( height: appModel.vaultManager.recentFiles.count > 0 ? 15 : 0 )
-                    RecentFilesListView()
+                    if appModel.settings.showRecentFiles {
+                        Spacer()
+                            .frame( height: appModel.vaultManager.recentFiles.count > 0 ? 15 : 0 )
+                        RecentFilesListView()
+                    }
                 }
                 
                 FileGroupsView()

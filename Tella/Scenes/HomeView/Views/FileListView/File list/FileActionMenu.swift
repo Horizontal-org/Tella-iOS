@@ -10,7 +10,7 @@ import SwiftUI
 //}
 
 struct FileActionMenu: View {
-
+    
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var fileListViewModel: FileListViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -20,7 +20,7 @@ struct FileActionMenu: View {
     @State var showingDeleteConfirmationSheet = false
     @State var showingSaveConfirmationSheet = false
     @State var showingRenameFileConfirmationSheet = false
-
+    
     @State var fileName : String = ""
     
     var shouldShowDivider : Bool {
@@ -54,7 +54,7 @@ struct FileActionMenu: View {
                                     fileListViewModel.oldRootFile = fileListViewModel.rootFile
                                     
                                     self.hideMenu()
-
+                                    
                                 }),
             
             ListActionSheetItem(imageName: "edit-icon",
@@ -63,10 +63,10 @@ struct FileActionMenu: View {
                                     if fileListViewModel.selectedFiles.count == 1 {
                                         fileName = fileListViewModel.selectedFiles[0].fileName
                                         showingRenameFileConfirmationSheet = true
-                                       
+                                        
                                         self.hideMenu()
-
-
+                                        
+                                        
                                     }
                                 }, isActive: fileListViewModel.shouldActivateRename),
             
@@ -76,7 +76,7 @@ struct FileActionMenu: View {
                                     showingSaveConfirmationSheet = true
                                     
                                     self.hideMenu()
-
+                                    
                                 },isActive: fileListViewModel.shouldActivateShare),
             
             ListActionSheetItem(imageName: "info-icon",
@@ -85,7 +85,7 @@ struct FileActionMenu: View {
                                     fileListViewModel.showFileInfoActive = true
                                     
                                     self.hideMenu()
-
+                                    
                                 }, isActive: fileListViewModel.shouldActivateFileInformation),
             
             ListActionSheetItem(imageName: "delete-icon",
@@ -112,6 +112,8 @@ struct FileActionMenu: View {
         if fileListViewModel.showingMoveFileView {
             moveFilesView
         }
+        ShareFileView()
+        showFileInfoLink
     }
     
     var fileActionMenuContentView : some View {
@@ -119,7 +121,7 @@ struct FileActionMenu: View {
             Text(fileListViewModel.fileActionsTitle)
                 .foregroundColor(.white)
                 .font(.custom(Styles.Fonts.boldFontName, size: 16))
-                .padding(EdgeInsets(top: 8, leading: 8 , bottom: 15, trailing: 0))
+                .padding(EdgeInsets(top: 8, leading: 1 , bottom: 15, trailing: 0))
             
             ForEach(firstItems, id: \.content) { item in
                 if item.isActive {
@@ -175,6 +177,9 @@ struct FileActionMenu: View {
             showingDeleteConfirmationSheet = false
             fileListViewModel.selectedFiles.forEach { vaultFile in
                 appModel.delete(file: vaultFile, from: fileListViewModel.rootFile)
+                if fileListViewModel.fileActionSource == .details {
+                    self.presentationMode.wrappedValue.dismiss()
+                }
             }
         })
     }
@@ -191,7 +196,21 @@ struct FileActionMenu: View {
             appModel.rename(file: fileListViewModel.selectedFiles[0], parent: fileListViewModel.rootFile)
         })
     }
-
+    
+    
+    @ViewBuilder
+    private var showFileInfoLink : some View{
+        if let currentSelectedVaultFile = fileListViewModel.currentSelectedVaultFile {
+            NavigationLink(destination:
+                            FileInfoView(viewModel: self.fileListViewModel, file: currentSelectedVaultFile),
+                           isActive: $fileListViewModel.showFileInfoActive) {
+                EmptyView()
+            }.frame(width: 0, height: 0)
+                .hidden()
+        }
+    }
+    
+    
     var moveFilesView : some View {
         MoveFilesView(title: fileListViewModel.fileActionsTitle)
     }

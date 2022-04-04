@@ -1,8 +1,4 @@
 //
-//  LoginManager.swift
-//  Tella
-//
-//  Created by Dhekra Rouatbi on 22/3/2022.
 //  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 
