@@ -32,7 +32,7 @@ struct FileListView: View {
                     
                     FolderListView()
                     
-                    if fileListViewModel.rootFile.files.isEmpty {
+                    if fileListViewModel.getFiles().isEmpty {
                         EmptyFileListView(emptyListType: .folder)
                         
                     } else {
