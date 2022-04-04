@@ -41,7 +41,7 @@ struct SettingToggleItem: View {
                     .foregroundColor(Color.white)
                     .font(.custom(Styles.Fonts.regularFontName, size: 12))
             }
-            Toggle( "", isOn: $toggle)
+            Toggle("", isOn: $toggle)
                 .labelsHidden()
         }
         .padding()

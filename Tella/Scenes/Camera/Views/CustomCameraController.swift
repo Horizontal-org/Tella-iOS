@@ -143,7 +143,7 @@ final class CustomCameraController: UIViewController {
         releasePreview()
 
         setupCaptureSession()
-        cameraType == .video ? setupVideoInputOutput() : setupPhotoInputOutput()
+        setupPhotoInputOutput()
     }
     
     private func setupCaptureSession() {

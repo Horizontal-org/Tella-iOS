@@ -1104,6 +1104,7 @@
 				12730E64279EAB9200DC0135 /* SettingsMainView.swift */,
 				12730E66279F11C200DC0135 /* LanguageListView.swift */,
 				12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */,
+				0D4D7517266470A700D7A635 /* SettingsViews.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1120,7 +1121,6 @@
 			isa = PBXGroup;
 			children = (
 				0DC411E02668469C00BF0DE1 /* SettingsView.swift */,
-				0D4D7517266470A700D7A635 /* SettingsViews.swift */,
 				0D4D750F266316D200D7A635 /* SettingsGeneral.swift */,
 				0D4D7511266316DC00D7A635 /* SettingsSecurity.swift */,
 				0D4D7515266466C500D7A635 /* SettingsDocumentation.swift */,
