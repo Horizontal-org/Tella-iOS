@@ -22,7 +22,7 @@ protocol AppModelFileManagerProtocol {
 
 class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     
-
+    
     enum Tabs: Hashable {
         case home
         case forms
@@ -38,7 +38,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     
     @Published var selectedType: [FileType] = [.other]
     @Published var showFilesList: Bool = false
-
+    
     var shouldUpdateLanguage = CurrentValueSubject<Bool, Never>(false)
     
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
@@ -82,7 +82,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         vaultManager.progress.progressFile.sink { [weak self] value in
             self?.publishUpdates()
         }.store(in: &cancellable)
-
+        
         self.vaultManager.importFile(files: files, to: parentFolder, type: type, folderPathArray: folderPathArray)
         self.publishUpdates()
     }
@@ -91,7 +91,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         self.vaultManager.importFile(audioFilePath: audioFilePath, to: parentFolder, type: type, fileName: fileName, folderPathArray: folderPathArray)
         self.publishUpdates()
     }
-
+    
     func add(folder: String, to parentFolder: VaultFile?) {
         DispatchQueue.global(qos: .background).async {
             self.vaultManager.createNewFolder(name: folder, parent: parentFolder)
@@ -102,7 +102,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     func move( files: [VaultFile], from originalParentFolder: VaultFile?, to newParentFolder: VaultFile?) {
         self.vaultManager.move(files: files, from: originalParentFolder, to: newParentFolder)
     }
-
+    
     func cancelImportAndEncryption() {
         self.vaultManager.shouldCancelImportAndEncryption.send(true)
     }
@@ -126,13 +126,13 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     }
     
     func saveDataToTempFile(data:Data, pathExtension:String) -> URL? {
-      return vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension)
+        return vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension)
     }
     
     func clearTmpDirectory() {
         vaultManager.clearTmpDirectory()
     }
-
+    
     func publishUpdates() {
         DispatchQueue.main.async {
             self.objectWillChange.send()
@@ -148,6 +148,7 @@ class SettingsModel: ObservableObject, Codable {
     @Published var deleteVault: Bool = false
     @Published var deleteForms: Bool = false
     @Published var deleteServerSettings: Bool = false
+    @Published var showRecentFiles: Bool = false
     
     enum CodingKeys: CodingKey {
         case offLineMode
@@ -155,6 +156,7 @@ class SettingsModel: ObservableObject, Codable {
         case deleteVault
         case deleteForms
         case deleteServerSettings
+        case showRecentFiles
     }
     
     init() {
@@ -168,6 +170,8 @@ class SettingsModel: ObservableObject, Codable {
         deleteVault = try container.decode(Bool.self, forKey: .deleteVault)
         deleteForms = try container.decode(Bool.self, forKey: .deleteForms)
         deleteServerSettings = try container.decode(Bool.self, forKey: .deleteServerSettings)
+        showRecentFiles = try container.decode(Bool.self, forKey: .showRecentFiles)
+        
     }
     
     func encode(to encoder: Encoder) throws {
@@ -177,6 +181,7 @@ class SettingsModel: ObservableObject, Codable {
         try container.encode(deleteVault, forKey: .deleteVault)
         try container.encode(deleteForms, forKey: .deleteForms)
         try container.encode(deleteServerSettings, forKey: .deleteServerSettings)
+        try container.encode(showRecentFiles, forKey: .showRecentFiles)
     }
     
 }

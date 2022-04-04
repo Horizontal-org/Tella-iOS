@@ -5,7 +5,7 @@
 import SwiftUI
 
 struct SettingItem: View {
-
+    
     let name: String
     let image: Image
     
@@ -25,7 +25,7 @@ struct SettingItem: View {
 }
 
 struct SettingToggleItem: View {
-
+    
     let title: String
     let description: String
     @Binding var toggle: Bool
@@ -34,15 +34,16 @@ struct SettingToggleItem: View {
         HStack{
             VStack(alignment: .leading){
                 Text(title)
-                    .fontWeight(.semibold)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(Color.white).padding(.bottom, -5)
                 
-                Toggle(description, isOn: $toggle)
+                Text(description)
                     .foregroundColor(Color.white)
-                    .font(Font(UIFont.systemFont(ofSize: 11)))
-                    .minimumScaleFactor(0.5)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 12))
             }
-            .padding()
+            Toggle( "", isOn: $toggle)
+                .labelsHidden()
         }
+        .padding()
     }
 }
