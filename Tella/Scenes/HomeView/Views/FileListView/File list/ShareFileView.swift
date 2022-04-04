@@ -1,8 +1,4 @@
 //
-//  ShareView.swift
-//  Tella
-//
-//  Created by Dhekra Rouatbi on 18/3/2022.
 //  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 

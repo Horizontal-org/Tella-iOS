@@ -138,6 +138,7 @@
 		128B929D27D7A08700E92ACF /* FileItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128B929C27D7A08700E92ACF /* FileItemsView.swift */; };
 		128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C7BC32745AB0100A680B3 /* FileListViewModel.swift */; };
 		128F979A2799AF0100E63DA5 /* CircularActivityIndicatory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128F97962799983800E63DA5 /* CircularActivityIndicatory.swift */; };
+		128FD0B427F774FB00B24915 /* RecentFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128FD0B327F774FB00B24915 /* RecentFile.swift */; };
 		1290743B274CEB9B00F38A81 /* FileGridItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1290743A274CEB9B00F38A81 /* FileGridItem.swift */; };
 		1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291F4F127B52BF9006A34D3 /* QueuePlayer.swift */; };
 		1291F4F627B54300006A34D3 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291F4F527B54300006A34D3 /* AudioPlayer.swift */; };
@@ -375,6 +376,7 @@
 		128B929C27D7A08700E92ACF /* FileItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItemsView.swift; sourceTree = "<group>"; };
 		128C7BC32745AB0100A680B3 /* FileListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListViewModel.swift; sourceTree = "<group>"; };
 		128F97962799983800E63DA5 /* CircularActivityIndicatory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularActivityIndicatory.swift; sourceTree = "<group>"; };
+		128FD0B327F774FB00B24915 /* RecentFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentFile.swift; sourceTree = "<group>"; };
 		1290743A274CEB9B00F38A81 /* FileGridItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGridItem.swift; sourceTree = "<group>"; };
 		1291F4F127B52BF9006A34D3 /* QueuePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueuePlayer.swift; sourceTree = "<group>"; };
 		1291F4F527B54300006A34D3 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
@@ -1102,6 +1104,7 @@
 				12730E64279EAB9200DC0135 /* SettingsMainView.swift */,
 				12730E66279F11C200DC0135 /* LanguageListView.swift */,
 				12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */,
+				0D4D7517266470A700D7A635 /* SettingsViews.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1118,7 +1121,6 @@
 			isa = PBXGroup;
 			children = (
 				0DC411E02668469C00BF0DE1 /* SettingsView.swift */,
-				0D4D7517266470A700D7A635 /* SettingsViews.swift */,
 				0D4D750F266316D200D7A635 /* SettingsGeneral.swift */,
 				0D4D7511266316DC00D7A635 /* SettingsSecurity.swift */,
 				0D4D7515266466C500D7A635 /* SettingsDocumentation.swift */,
@@ -1198,6 +1200,7 @@
 				12FAC0CE2799FF230068EC2B /* ImportProgress.swift */,
 				12781F4327E9FCE200FE9609 /* PasswordTypeEnum.swift */,
 				D57F5E8F26152A4800C1DA47 /* Datable.swift */,
+				128FD0B327F774FB00B24915 /* RecentFile.swift */,
 			);
 			path = VaultManager;
 			sourceTree = "<group>";
@@ -1693,6 +1696,7 @@
 				12781F4627EA10AA00FE9609 /* LoginManager.swift in Sources */,
 				125DD9C92796CB090053619D /* ImportFilesProgressView.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */,
+				128FD0B427F774FB00B24915 /* RecentFile.swift in Sources */,
 				12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */,
 				12607D5327903E9E00E2B8CC /* CustomVideoControlsView.swift in Sources */,
 				1268553E27D2572100385E18 /* FileInfoView.swift in Sources */,

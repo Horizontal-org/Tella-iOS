@@ -30,7 +30,8 @@ struct SelectingFilesHeaderView: View {
                     moreButton
                 }
                 
-            }.padding(EdgeInsets(top: 8, leading: 16, bottom: 4, trailing: 23))
+            }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 23))
+                .frame( height: 45)
         }
     }
     
@@ -52,7 +53,7 @@ struct SelectingFilesHeaderView: View {
             
             Text(fileListViewModel.selectedItemsTitle)
                 .foregroundColor(.white).opacity(0.8)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 16))
+                .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
         }
         
     }
@@ -75,12 +76,9 @@ struct SelectingFilesHeaderView: View {
         Button {
             fileListViewModel.showingFileActionMenu = true
         } label: {
-            Image("files.more")
-                .renderingMode(.template)
-                .foregroundColor((fileListViewModel.selectedItemsNumber == 0) ? .white.opacity(0.5) : .white)
-            
-        } .frame(width: 24, height: 24)
-        
+            Image("files.more-top")
+                .frame(width: 40, height: 40)
+        }.frame(width: 40, height: 40)
     }
 }
 

@@ -99,11 +99,11 @@ class VaultFile: Codable, Hashable {
     }
     
     func remove(file: VaultFile) {
-        files = files.filter({ $0.containerName != file.containerName })
+        if files.count > 0 {
+            files = files.filter({ $0.containerName != file.containerName })
+        }
     }
-    
 }
-
 
 extension VaultFile: CustomDebugStringConvertible {
     
@@ -131,7 +131,7 @@ extension Array where Element == VaultFile {
         return self.filter({ filter == ($0.type) || (includeFolders && $0.type == .folder)})
     }
     
-    func sorted(by sortOrder: FileSortOptions, folderArray:[VaultFile], root:VaultFile, fileType:[FileType]?) -> [VaultFile] {
+    func sorted(by sortOrder: FileSortOptions, folderPathArray:[VaultFile], root:VaultFile, fileType:[FileType]?) -> [VaultFile] {
         
         var filteredFiles : [VaultFile] = []
         
@@ -143,8 +143,8 @@ extension Array where Element == VaultFile {
             
         } else {
             var currentRootFile = root
-            if !folderArray.isEmpty  {
-                for file in folderArray {
+            if !folderPathArray.isEmpty {
+                for file in folderPathArray {
                     guard let rootFile = (currentRootFile.files.first {$0 == file}) else { return [] }
                     currentRootFile =  rootFile
                 }
@@ -160,9 +160,9 @@ extension Array where Element == VaultFile {
 
             switch sortOrder {
             case .nameAZ:
-                return file1.fileName > file2.fileName
-            case .nameZA:
                 return file1.fileName < file2.fileName
+            case .nameZA:
+                return file1.fileName > file2.fileName
             case .newestToOldest:
                 return file1.created > file2.created
             case .oldestToNewest:
