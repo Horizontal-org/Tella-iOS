@@ -121,7 +121,7 @@ struct FileActionMenu: View {
             Text(fileListViewModel.fileActionsTitle)
                 .foregroundColor(.white)
                 .font(.custom(Styles.Fonts.boldFontName, size: 16))
-                .padding(EdgeInsets(top: 8, leading: 8 , bottom: 15, trailing: 0))
+                .padding(EdgeInsets(top: 8, leading: 1 , bottom: 15, trailing: 0))
             
             ForEach(firstItems, id: \.content) { item in
                 if item.isActive {
