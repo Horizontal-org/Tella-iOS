@@ -79,7 +79,6 @@ struct SelectingFilesHeaderView: View {
             Image("files.more-top")
                 .frame(width: 40, height: 40)
         }.frame(width: 40, height: 40)
-            .background(Color.gray)
     }
 }
 

@@ -99,11 +99,11 @@ class VaultFile: Codable, Hashable {
     }
     
     func remove(file: VaultFile) {
-        files = files.filter({ $0.containerName != file.containerName })
+        if files.count > 0 {
+            files = files.filter({ $0.containerName != file.containerName })
+        }
     }
-    
 }
-
 
 extension VaultFile: CustomDebugStringConvertible {
     
