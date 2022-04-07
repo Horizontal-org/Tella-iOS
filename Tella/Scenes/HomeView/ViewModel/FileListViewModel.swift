@@ -37,6 +37,7 @@ class FileListViewModel: ObservableObject {
     @Published var showingMoveFileView = false
     @Published var showingShareFileView = false
     @Published var showingCamera = false
+    @Published var showingMicrophone = false
 
     var selectedFiles : [VaultFile] {
         return vaultFileStatusArray.filter{$0.isSelected}.compactMap{$0.file}
@@ -84,7 +85,7 @@ class FileListViewModel: ObservableObject {
     }
     
     var shouldHideNavigationBar : Bool {
-        return selectingFiles || showingMoveFileView || showingCamera
+        return selectingFiles || showingMoveFileView || showingCamera || showingMicrophone
     }
     
     var filesAreAllSelected : Bool {

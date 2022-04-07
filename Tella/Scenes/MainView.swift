@@ -65,11 +65,11 @@ struct MainView: View  {
                 }
                 
                 if appModel.selectedTab == .mic   {
-                    RecordView( showingRecoredrView: $showingRecoredrView)
+                    RecordView(sourceView:.tab, showingRecoredrView: $showingRecoredrView)
                 }
                 
                 if appModel.selectedTab == .camera {
-                    CameraView(cameraSourceView: .tab,
+                    CameraView(sourceView: .tab,
                                showingCameraView: .constant(false),
                                cameraViewModel: CameraViewModel(mainAppModel: appModel,
                                                                 rootFile: appModel.vaultManager.root))

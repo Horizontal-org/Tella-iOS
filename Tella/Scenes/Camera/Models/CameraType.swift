@@ -9,7 +9,7 @@ public enum CameraType: Hashable {
     case video
 }
 
-public enum CameraSourceView: Hashable {
+public enum SourceView: Hashable {
     case tab
     case addFile
 }

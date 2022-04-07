@@ -22,8 +22,7 @@ struct AddFileView: View {
                 fileListViewModel.selectingFiles = false
             })
             
-            AddFilesBottomSheet(showingCamera: $fileListViewModel.showingCamera,
-                                isPresented: $showingAddFileSheet,
+            AddFilesBottomSheet(isPresented: $showingAddFileSheet,
                                 showingAddPhotoVideoSheet: $showingAddPhotoVideoSheet,
                                 showingCreateNewFolderSheet: $showingCreateNewFolderSheet)
             

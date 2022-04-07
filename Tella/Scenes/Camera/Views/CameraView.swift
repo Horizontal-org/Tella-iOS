@@ -9,7 +9,7 @@ import Combine
 struct CameraView: View {
     
     // MARK: - Public properties
-    var cameraSourceView : CameraSourceView
+    var sourceView : SourceView
 
     @State var showingProgressView : Bool = false
     @State var showingPermissionAlert : Bool = false
@@ -67,7 +67,7 @@ struct CameraView: View {
             }
             .onReceive(customCameraRepresentable.$shouldCloseCamera) { value in
                 if value {
-                    if cameraSourceView == .tab {
+                    if sourceView == .tab {
                         mainAppModel.selectedTab = .home
                     } else {
                         showingCameraView = false
@@ -107,7 +107,7 @@ struct CameraView: View {
     private func getCameraControlsView() -> some View {
         
         CameraControlsView(showingCameraView: $showingCameraView,
-                           cameraSourceView: cameraSourceView,
+                           sourceView: sourceView,
                            captureButtonAction: {
             customCameraRepresentable.takePhoto()
         }, recordVideoAction: {

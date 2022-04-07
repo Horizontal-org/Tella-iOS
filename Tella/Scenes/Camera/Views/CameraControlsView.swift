@@ -9,7 +9,7 @@ struct CameraControlsView: View {
     // MARK: - Public properties
     
     @Binding var showingCameraView : Bool
-    var cameraSourceView : CameraSourceView
+    var sourceView : SourceView
     
     var captureButtonAction: (() -> Void)
     var recordVideoAction: (() -> Void)
@@ -63,7 +63,7 @@ struct CameraControlsView: View {
                     Button {
                         mainAppModel.vaultManager.clearTmpDirectory()
                         
-                        if cameraSourceView == .tab {
+                        if sourceView == .tab {
                             mainAppModel.selectedTab = .home
                         } else {
                             showingCameraView = false
@@ -266,7 +266,7 @@ struct CameraControlsView: View {
 struct CameraControlsView_Previews: PreviewProvider {
     static var previews: some View {
         CameraControlsView (showingCameraView:.constant(false),
-                            cameraSourceView: .tab) {
+                            sourceView: .tab) {
              
         } recordVideoAction: {
              

@@ -6,7 +6,7 @@ import SwiftUI
 
 struct AddFilesBottomSheet: View {
     
-    @Binding var showingCamera : Bool 
+//    @Binding var showingCamera : Bool
     
     @Binding var isPresented: Bool
     @Binding var showingAddPhotoVideoSheet : Bool
@@ -22,15 +22,14 @@ struct AddFilesBottomSheet: View {
                             content: "Take photo/video",
                             action: {
                                 isPresented = false
-                                showingCamera = true
+                                fileListViewModel.showingCamera = true
                             }),
         ListActionSheetItem(imageName: "mic-icon",
                             content: "Record audio",
                             action: {
                                 isPresented = false
-                                appModel.changeTab(to: .mic)
-                                self.presentationMode.wrappedValue.dismiss()
-                                
+                                fileListViewModel.showingMicrophone = true
+
                             }),
         ListActionSheetItem(imageName: "upload-icon",
                             content: "Import from device",
@@ -56,17 +55,19 @@ struct AddFilesBottomSheet: View {
                 ActionListBottomSheet(items: items, headerTitle: "Manage files", isPresented: $isPresented)
             }
         }
-        .overlay(showingCamera ? CameraView(cameraSourceView: .addFile,
-                                             showingCameraView: $showingCamera,
+        .overlay(fileListViewModel.showingCamera ? CameraView(sourceView: .addFile,
+                                            showingCameraView: $fileListViewModel.showingCamera,
                                              cameraViewModel: CameraViewModel(mainAppModel: appModel,
                                                                               rootFile: fileListViewModel.rootFile)) : nil)
+    
+        .overlay(fileListViewModel.showingMicrophone ? RecordView(sourceView:.addFile, showingRecoredrView: $fileListViewModel.showingMicrophone) : nil)
+
     }
 }
 
 struct AddFilesBottomSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddFilesBottomSheet(showingCamera: .constant(true),
-                            isPresented: .constant(true),
+        AddFilesBottomSheet(isPresented: .constant(true),
                             showingAddPhotoVideoSheet: .constant(false),
                             showingCreateNewFolderSheet: .constant(false))
             .environmentObject(MainAppModel())

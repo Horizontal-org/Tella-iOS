@@ -12,7 +12,9 @@ import Foundation
 struct RecordView: View {
     
     @ObservedObject var viewModel = RecordViewModel()
-    
+  
+    var sourceView : SourceView
+
     @Binding  var showingRecoredrView : Bool
     
     @EnvironmentObject private var mainAppModel: MainAppModel
@@ -210,7 +212,11 @@ struct RecordView: View {
                     showingSaveAudioConfirmationView = true
                     
                 } else {
-                    mainAppModel.selectedTab = .home
+                    if sourceView == .tab {
+                        mainAppModel.selectedTab = .home
+                    } else {
+                        showingRecoredrView = false
+                    }
                 }
             } label: {
                 Image("close")
