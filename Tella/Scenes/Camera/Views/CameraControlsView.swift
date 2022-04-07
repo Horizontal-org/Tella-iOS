@@ -8,6 +8,9 @@ import SwiftUI
 struct CameraControlsView: View {
     // MARK: - Public properties
     
+    @Binding var showingCameraView : Bool
+    var cameraSourceView : CameraSourceView
+    
     var captureButtonAction: (() -> Void)
     var recordVideoAction: (() -> Void)
     var toggleCamera: (() -> Void)
@@ -59,7 +62,13 @@ struct CameraControlsView: View {
                 if !shouldHideCloseButton {
                     Button {
                         mainAppModel.vaultManager.clearTmpDirectory()
-                        mainAppModel.selectedTab = .home
+                        
+                        if cameraSourceView == .tab {
+                            mainAppModel.selectedTab = .home
+                        } else {
+                            showingCameraView = false
+                        }
+
                     } label: {
                         Image("close")
                     }
@@ -256,7 +265,8 @@ struct CameraControlsView: View {
 
 struct CameraControlsView_Previews: PreviewProvider {
     static var previews: some View {
-        CameraControlsView {
+        CameraControlsView (showingCameraView:.constant(false),
+                            cameraSourceView: .tab) {
              
         } recordVideoAction: {
              

@@ -5,13 +5,17 @@
 import SwiftUI
 import Combine
 
+
 struct CameraView: View {
     
     // MARK: - Public properties
-    
+    var cameraSourceView : CameraSourceView
+
     @State var showingProgressView : Bool = false
     @State var showingPermissionAlert : Bool = false
     
+    @Binding var showingCameraView : Bool
+
     @ObservedObject var cameraViewModel :  CameraViewModel
     
      var customCameraRepresentable = CustomCameraRepresentable(
@@ -63,13 +67,19 @@ struct CameraView: View {
             }
             .onReceive(customCameraRepresentable.$shouldCloseCamera) { value in
                 if value {
-                    mainAppModel.selectedTab = .home
+                    if cameraSourceView == .tab {
+                        mainAppModel.selectedTab = .home
+                    } else {
+                        showingCameraView = false
+                    }
                     mainAppModel.clearTmpDirectory()
                 }
             }
             .alert(isPresented:$showingPermissionAlert) {
                 getSettingsAlertView()
             }
+            .edgesIgnoringSafeArea(.all)
+
     }
     
     private func cameraView(frame: CGRect) -> CustomCameraRepresentable {
@@ -96,7 +106,9 @@ struct CameraView: View {
     
     private func getCameraControlsView() -> some View {
         
-        CameraControlsView(captureButtonAction: {
+        CameraControlsView(showingCameraView: $showingCameraView,
+                           cameraSourceView: cameraSourceView,
+                           captureButtonAction: {
             customCameraRepresentable.takePhoto()
         }, recordVideoAction: {
             customCameraRepresentable.startCaptureVideo()

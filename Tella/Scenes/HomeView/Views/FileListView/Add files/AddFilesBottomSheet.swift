@@ -6,22 +6,23 @@ import SwiftUI
 
 struct AddFilesBottomSheet: View {
     
+    @Binding var showingCamera : Bool 
+    
     @Binding var isPresented: Bool
     @Binding var showingAddPhotoVideoSheet : Bool
     @Binding var showingCreateNewFolderSheet : Bool
     
     @EnvironmentObject var appModel: MainAppModel
-
+    @EnvironmentObject var fileListViewModel: FileListViewModel
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-
+    
     private var items : [ListActionSheetItem] { return [
         ListActionSheetItem(imageName: "camera-icon",
                             content: "Take photo/video",
                             action: {
                                 isPresented = false
-                                
-                                appModel.selectedTab = .camera
-                                self.presentationMode.wrappedValue.dismiss()
+                                showingCamera = true
                             }),
         ListActionSheetItem(imageName: "mic-icon",
                             content: "Record audio",
@@ -49,20 +50,27 @@ struct AddFilesBottomSheet: View {
         
     }
     var body: some View {
-        DragView(modalHeight: CGFloat(items.count * 50 + 90),
-                 isShown: $isPresented){
-            ActionListBottomSheet(items: items, headerTitle: "Manage files", isPresented: $isPresented)
+        ZStack {
+            DragView(modalHeight: CGFloat(items.count * 50 + 90),
+                     isShown: $isPresented){
+                ActionListBottomSheet(items: items, headerTitle: "Manage files", isPresented: $isPresented)
+            }
         }
+        .overlay(showingCamera ? CameraView(cameraSourceView: .addFile,
+                                             showingCameraView: $showingCamera,
+                                             cameraViewModel: CameraViewModel(mainAppModel: appModel,
+                                                                              rootFile: fileListViewModel.rootFile)) : nil)
     }
 }
 
 struct AddFilesBottomSheet_Previews: PreviewProvider {
     static var previews: some View {
-        AddFilesBottomSheet(isPresented: .constant(true),
+        AddFilesBottomSheet(showingCamera: .constant(true),
+                            isPresented: .constant(true),
                             showingAddPhotoVideoSheet: .constant(false),
                             showingCreateNewFolderSheet: .constant(false))
             .environmentObject(MainAppModel())
             .environmentObject(FileListViewModel.stub())
-
+        
     }
 }

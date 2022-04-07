@@ -20,6 +20,8 @@ class CameraViewModel: ObservableObject {
     var videoURL : URL?
     var mainAppModel: MainAppModel?
     
+    var rootFile: VaultFile
+
     // MARK: - Private properties
     
     private var cancellable: Set<AnyCancellable> = []
@@ -27,10 +29,11 @@ class CameraViewModel: ObservableObject {
     
     // MARK: - Public functions
     
-    init(mainAppModel: MainAppModel) {
+    init(mainAppModel: MainAppModel, rootFile: VaultFile ) {
         
         self.mainAppModel = mainAppModel
-        
+        self.rootFile = rootFile
+
         mainAppModel.vaultManager.$root.sink { file in
             self.lastImageOrVideoVaultFile = file.files.sorted(by: .newestToOldest, folderPathArray: [], root: mainAppModel.vaultManager.root, fileType: [.image, .video]).first
         }.store(in: &cancellable)
@@ -49,14 +52,14 @@ class CameraViewModel: ObservableObject {
         guard let url = mainAppModel?.saveDataToTempFile(data: imageData, pathExtension: "png") else { return  }
 
         mainAppModel?.add(files: [url],
-                          to: mainAppModel?.vaultManager.root,
+                          to: rootFile,
                           type: .image)
     }
 
     func saveVideo() {
         guard let videoURL = videoURL else { return  }
         mainAppModel?.add(files: [videoURL],
-                          to: mainAppModel?.vaultManager.root,
+                          to: rootFile,
                           type: .video)
     }
     
