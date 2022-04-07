@@ -6,10 +6,10 @@ import SwiftUI
 
 struct MainView: View  {
     
-
+    
     
     @State private var showingRecoredrView : Bool = false
-
+    
     @EnvironmentObject private var appModel: MainAppModel
     @EnvironmentObject private var appViewState: AppViewState
     
@@ -65,8 +65,6 @@ struct MainView: View  {
                 }
                 
                 if appModel.selectedTab == .mic   {
-//                    RecordView(sourceView:.tab, showingRecoredrView: $showingRecoredrView)
-                    
                     RecordView(appModel: appModel,
                                rootFile: appModel.vaultManager.root,
                                sourceView: .tab,
@@ -89,15 +87,13 @@ struct MainView: View  {
                     trailingView
                 }
             }
-            
+            .navigationViewStyle(.stack)
+            .navigationBarTitle("Tella", displayMode: .inline)
+            .navigationBarHidden(appModel.selectedTab == .home ? false : true)
         }
-        .navigationViewStyle(.stack)
         .accentColor(.white)
-        .navigationBarTitle("Tella", displayMode: .inline)
-        .navigationBarHidden(appModel.selectedTab == .home ? false : true)
-        
     }
-
+    
     private func setupApperance() {
         
         UITabBar.appearance().unselectedItemTintColor = UIColor.white.withAlphaComponent(0.38)
@@ -123,13 +119,15 @@ struct MainView: View  {
     private var leadingView : some View {
         
         if appModel.selectedTab == .home {
-            Button() {
+            NavigationLink(destination: SettingsMainView(appModel: appModel)) {
                 
-            } label: {
-                Image("home.settings")
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 35, height: 35)
-                    .navigateTo(destination: SettingsMainView(appModel: appModel))
+                Button() {
+                    
+                } label: {
+                    Image("home.settings")
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 35, height: 35)
+                }
             }
         }
     }
