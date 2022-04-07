@@ -11,11 +11,10 @@ import Foundation
 
 struct RecordView: View {
     
-    @ObservedObject var viewModel = RecordViewModel()
+    @StateObject var viewModel : RecordViewModel
   
     var sourceView : SourceView
-
-    @Binding  var showingRecoredrView : Bool
+    var showingRecoredrView : Binding<Bool>
     
     @EnvironmentObject private var mainAppModel: MainAppModel
     @EnvironmentObject private var appViewState: AppViewState
@@ -29,6 +28,13 @@ struct RecordView: View {
     
     let modalHeight = 173.0
     
+    init(appModel: MainAppModel, rootFile: VaultFile, sourceView : SourceView, showingRecoredrView: Binding<Bool> ) {
+        _viewModel = StateObject(wrappedValue: RecordViewModel(mainAppModel: appModel, rootFile: rootFile))
+        self.sourceView = sourceView
+        self.showingRecoredrView = showingRecoredrView
+    }
+    
+
     func goBack() {
         self.appViewState.navigateBack()
     }
@@ -65,7 +71,7 @@ struct RecordView: View {
             saveSuccessView
             
         }.onAppear {
-            self.viewModel.mainAppModel = mainAppModel
+//            self.viewModel.mainAppModel = mainAppModel
         }
         .navigationBarHidden(mainAppModel.selectedTab == .home ? false : true)
         .alert(isPresented: self.$viewModel.shouldShowSettingsAlert) {
@@ -105,7 +111,7 @@ struct RecordView: View {
                 .hidden()
             
             Button(action: {
-                self.viewModel.mainAppModel = mainAppModel
+//                self.viewModel.mainAppModel = mainAppModel
                 self.viewModel.checkCameraAccess()
             }) {
                 Image("mic.record")
@@ -215,7 +221,7 @@ struct RecordView: View {
                     if sourceView == .tab {
                         mainAppModel.selectedTab = .home
                     } else {
-                        showingRecoredrView = false
+                        showingRecoredrView.wrappedValue = false
                     }
                 }
             } label: {

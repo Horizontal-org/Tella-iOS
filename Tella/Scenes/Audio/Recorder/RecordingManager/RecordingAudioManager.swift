@@ -17,8 +17,9 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
     var currentTime = CurrentValueSubject<TimeInterval, Never>(0.0)
     @Published var audioPermission : AudioAuthorizationStatus = .notDetermined
     
-    var mainAppModel: MainAppModel?
-    
+    var mainAppModel: MainAppModel
+    var rootFile: VaultFile
+
     private let settings = [
         AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
         AVSampleRateKey: 12000,
@@ -26,7 +27,11 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
         AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
     ]
     
-    init() {
+    init(mainAppModel: MainAppModel, rootFile: VaultFile) {
+       
+        self.mainAppModel = mainAppModel
+        self.rootFile = rootFile
+
         guard
             self.configureSession()
         else {
@@ -55,6 +60,7 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
     
     func stopRecording(fileName:String) {
         concatChunks(fileName: fileName)
+        currentTime.send(0)
     }
     
     func pauseRecording() {
@@ -169,7 +175,7 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
                 self.currentFileName = exportSession?.outputURL
                 
                 if let url = exportSession?.outputURL {
-                    self.mainAppModel?.add(audioFilePath: url, to: self.mainAppModel?.vaultManager.root, type: .audio, fileName: fileName)
+                    self.mainAppModel.add(audioFilePath: url, to: self.rootFile, type: .audio, fileName: fileName)
                 }
                 
                 self.resetRecorder()

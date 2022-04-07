@@ -6,7 +6,7 @@ import SwiftUI
 
 struct AddFilesBottomSheet: View {
     
-//    @Binding var showingCamera : Bool
+    //    @Binding var showingCamera : Bool
     
     @Binding var isPresented: Bool
     @Binding var showingAddPhotoVideoSheet : Bool
@@ -29,7 +29,7 @@ struct AddFilesBottomSheet: View {
                             action: {
                                 isPresented = false
                                 fileListViewModel.showingMicrophone = true
-
+                                
                             }),
         ListActionSheetItem(imageName: "upload-icon",
                             content: "Import from device",
@@ -56,12 +56,16 @@ struct AddFilesBottomSheet: View {
             }
         }
         .overlay(fileListViewModel.showingCamera ? CameraView(sourceView: .addFile,
-                                            showingCameraView: $fileListViewModel.showingCamera,
-                                             cameraViewModel: CameraViewModel(mainAppModel: appModel,
-                                                                              rootFile: fileListViewModel.rootFile)) : nil)
-    
-        .overlay(fileListViewModel.showingMicrophone ? RecordView(sourceView:.addFile, showingRecoredrView: $fileListViewModel.showingMicrophone) : nil)
-
+                                                              showingCameraView: $fileListViewModel.showingCamera,
+                                                              cameraViewModel: CameraViewModel(mainAppModel: appModel,
+                                                                                               rootFile: fileListViewModel.rootFile)) : nil)
+        
+        .overlay(fileListViewModel.showingMicrophone ?
+                 RecordView(appModel: appModel,
+                            rootFile: fileListViewModel.rootFile,
+                            sourceView: .addFile,
+                            showingRecoredrView: $fileListViewModel.showingMicrophone) : nil)
+        
     }
 }
 
