@@ -32,8 +32,8 @@ struct CameraView: View {
     
     var body: some View {
         
-        ZStack {
-            
+        NavigationContainerView {
+
             let frame = CGRect(x: 0, y: 0, width: UIScreen.screenWidth, height: UIScreen.screenHeight)
             
             cameraView(frame: frame)
@@ -45,7 +45,7 @@ struct CameraView: View {
                                     importFilesProgressProtocol: ImportFilesFromCameraProgress())
             
         }.background(Color.black)
-        
+            .accentColor(.white)
             .environmentObject(cameraViewModel)
             .onAppear {
                 DispatchQueue.main.async {
@@ -118,7 +118,9 @@ struct CameraView: View {
             customCameraRepresentable.cameraType = cameraType
         }, toggleFlash: {
             customCameraRepresentable.toggleFlash()
-        } )
+        }, close: {
+            customCameraRepresentable.stopRunningCaptureSession()
+        })
             .edgesIgnoringSafeArea(.all)
         
     }

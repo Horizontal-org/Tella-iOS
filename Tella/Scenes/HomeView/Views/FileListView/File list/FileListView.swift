@@ -53,7 +53,6 @@ struct FileListView: View {
         .toolbar {
             LeadingTitleToolbar(title: title)
         }
-        
         .navigationBarHidden(fileListViewModel.shouldHideNavigationBar)
         .environmentObject(fileListViewModel)
     }

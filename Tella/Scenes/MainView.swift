@@ -30,8 +30,13 @@ struct MainView: View  {
     }
     
     private var tabbar: some View{
-        NavigationView {
-            ZStack {
+        
+        ZStack {
+            
+            
+            
+            
+            NavigationView {
                 
                 TabView(selection: $appModel.selectedTab) {
                     HomeView()
@@ -64,34 +69,34 @@ struct MainView: View  {
                     }.tag(MainAppModel.Tabs.mic)
                 }
                 
-                if appModel.selectedTab == .mic   {
-                    RecordView(appModel: appModel,
-                               rootFile: appModel.vaultManager.root,
-                               sourceView: .tab,
-                               showingRecoredrView: $showingRecoredrView)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        leadingView
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        trailingView
+                    }
                 }
-                
-                if appModel.selectedTab == .camera {
-                    CameraView(sourceView: .tab,
-                               showingCameraView: .constant(false),
-                               cameraViewModel: CameraViewModel(mainAppModel: appModel,
-                                                                rootFile: appModel.vaultManager.root))
-                }
+                .navigationBarTitle("Tella", displayMode: .inline)
+                .navigationBarHidden(appModel.selectedTab == .home ? false : true)
+            }
+            .accentColor(.white)
+            .navigationViewStyle(.stack)
+            
+            if appModel.selectedTab == .mic   {
+                RecordView(appModel: appModel,
+                           rootFile: appModel.vaultManager.root,
+                           sourceView: .tab,
+                           showingRecoredrView: $showingRecoredrView)
             }
             
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    leadingView
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    trailingView
-                }
+            if appModel.selectedTab == .camera {
+                CameraView(sourceView: .tab,
+                           showingCameraView: .constant(false),
+                           cameraViewModel: CameraViewModel(mainAppModel: appModel,
+                                                            rootFile: appModel.vaultManager.root))
             }
-            .navigationBarTitle("Tella", displayMode: .inline)
-            .navigationBarHidden(appModel.selectedTab == .home ? false : true)
         }
-        .accentColor(.white)
-        .navigationViewStyle(.stack)
     }
     
     private func setupApperance() {

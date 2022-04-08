@@ -41,7 +41,7 @@ struct RecordView: View {
     
     var body: some View {
         
-        ContainerView {
+        NavigationContainerView {
             
             VStack {
                 
@@ -62,10 +62,11 @@ struct RecordView: View {
             
             renameFileView
             
-            
-            DragView(modalHeight: modalHeight,
-                     isShown: $showingSaveAudioConfirmationView) {
-                saveAudioConfirmationView
+            if showingSaveAudioConfirmationView {
+                DragView(modalHeight: modalHeight,
+                         isShown: $showingSaveAudioConfirmationView) {
+                    saveAudioConfirmationView
+                }
             }
             
             saveSuccessView
@@ -73,7 +74,6 @@ struct RecordView: View {
         }.onAppear {
 //            self.viewModel.mainAppModel = mainAppModel
         }
-        .navigationBarHidden(mainAppModel.selectedTab == .home ? false : true)
         .alert(isPresented: self.$viewModel.shouldShowSettingsAlert) {
             getSettingsAlertView()
         }
@@ -118,13 +118,27 @@ struct RecordView: View {
                     .frame(width: 83, height: 83)
             }
             
+ 
             Button(action: {
-                self.listenAudiFiles()
+//                self.listenAudiFiles()
             }) {
                 Image("mic.listen")
                     .resizable()
                     .frame(width: 52, height: 52)
+                    .navigateTo(destination:FileListView(appModel: mainAppModel,
+                                                                   rootFile: mainAppModel.vaultManager.root,
+                                                                        fileType: [.audio],
+                                                                        title: "Audio"))
+
             }
+            
+            .navigateTo(destination:FileListView(appModel: mainAppModel,
+                                                           rootFile: mainAppModel.vaultManager.root,
+                                                                fileType: [.audio],
+                                                                title: "Audio")
+            )
+                
+//            }
         }
     }
     
@@ -173,13 +187,24 @@ struct RecordView: View {
                     .frame(width: 83, height: 83)
             }
             
+//            Button(action: {
+//                self.listenAudiFiles()
+//            }) {
+//                Image("mic.listen")
+//                    .resizable()
+//                    .frame(width: 52, height: 52)
+//            }
+            
+            
             Button(action: {
-                self.listenAudiFiles()
+//                self.listenAudiFiles()
             }) {
                 Image("mic.listen")
                     .resizable()
                     .frame(width: 52, height: 52)
+                    .navigateTo(destination:getFileListView()) // For iOS 15
             }
+            .navigateTo(destination:getFileListView()) // For iOS 14
         }
     }
     
@@ -239,6 +264,13 @@ struct RecordView: View {
         appViewState.resetToAudio()
     }
     
+    private func getFileListView() -> some View {
+        FileListView(appModel: mainAppModel,
+                     rootFile: mainAppModel.vaultManager.root,
+                     fileType: [.audio],
+                     title: "Audio")
+    }
+    
     private var saveAudioConfirmationView : some View {
         
         return SaveAudioConfirmationView(showingSaveAudioConfirmationView: $showingSaveAudioConfirmationView ) {
@@ -260,17 +292,20 @@ struct RecordView: View {
             mainAppModel.selectedTab = .home
         }
     }
-    
+    @ViewBuilder
     private var renameFileView : some View {
-        TextFieldBottomSheet(titleText: LocalizableAudio.renameFileTitle.localized,
-                             validateButtonText: "SAVE",
-                             isPresented: $showingRenameFileConfirmationSheet,
-                             fieldContent: $fileName,
-                             fileName: viewModel.fileName,
-                             fieldType: FieldType.fileName,
-                             didConfirmAction: {
-            viewModel.fileName =  fileName
-        })
+        if showingRenameFileConfirmationSheet {
+            TextFieldBottomSheet(titleText: LocalizableAudio.renameFileTitle.localized,
+                                 validateButtonText: "SAVE",
+                                 isPresented: $showingRenameFileConfirmationSheet,
+                                 fieldContent: $fileName,
+                                 fileName: viewModel.fileName,
+                                 fieldType: FieldType.fileName,
+                                 didConfirmAction: {
+                viewModel.fileName =  fileName
+            })
+
+        }
     }
     
     @ViewBuilder

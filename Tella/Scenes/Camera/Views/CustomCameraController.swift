@@ -51,8 +51,8 @@ final class CustomCameraController: UIViewController {
     
     override func viewWillDisappear(_ animated : Bool) {
         super.viewWillDisappear(animated)
-        stopRunningCaptureSession()
-        releasePreview()
+//        stopRunningCaptureSession()
+//        releasePreview()
      }
 
     // MARK: - Public functions
@@ -82,6 +82,7 @@ final class CustomCameraController: UIViewController {
         guard let delegate = captureDelegate else {
             return
         }
+        print(cameraType)
         photoOutput?.capturePhoto(with: settings, delegate: delegate)
     }
     

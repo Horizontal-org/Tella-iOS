@@ -12,8 +12,14 @@ import SwiftUI
 extension View {
     
     func navigateTo<Destination: View>( destination: Destination) ->  some View   {
-       
-        if #available(iOS 14.0, *) {
+        
+        if #available(iOS 15.0, *) {
+            
+            return  AnyView(NavigationLink(destination: destination) {
+                self
+            }.buttonStyle(PlainButtonStyle()))
+            
+        } else {
             return   AnyView(ZStack {
                 NavigationLink(destination: destination) {
                     self
@@ -22,40 +28,38 @@ extension View {
                 NavigationLink(destination: EmptyView()) {
                     EmptyView()
                 }
-
+                
             })
-
-        } else {
-            return  AnyView(NavigationLink(destination: destination) {
-                self
-            }.buttonStyle(PlainButtonStyle()))
+            
+            
         }
     }
-
+    
     func addNavigationLink(isActive:Binding<Bool>) -> some View {
-        if #available(iOS 14.0, *) {
-         return  AnyView(
-            ZStack {
+        if #available(iOS 15.0, *) {
+            return  AnyView(
                 NavigationLink(destination:self,
                                isActive: isActive) {
-                    EmptyView()
-                }.frame(width: 0, height: 0)
-                    .hidden()
-                
-                NavigationLink(destination: EmptyView()) {
-                    EmptyView()
-                }
-            })
+                                   EmptyView()
+                               }.frame(width: 0, height: 0)
+                    .hidden())
         } else {
+            
             return  AnyView(
-                   NavigationLink(destination:self,
-                                  isActive: isActive) {
-                       EmptyView()
-                   }.frame(width: 0, height: 0)
-                       .hidden())
+                ZStack {
+                    NavigationLink(destination:self,
+                                   isActive: isActive) {
+                        EmptyView()
+                    }.frame(width: 0, height: 0)
+                        .hidden()
+                    
+                    NavigationLink(destination: EmptyView()) {
+                        EmptyView()
+                    }
+                })
         }
     }
-
+    
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
         clipShape( RoundedCorner(radius: radius, corners: corners) )
     }
