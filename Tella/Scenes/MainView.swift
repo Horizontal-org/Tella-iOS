@@ -87,11 +87,11 @@ struct MainView: View  {
                     trailingView
                 }
             }
-            .navigationViewStyle(.stack)
             .navigationBarTitle("Tella", displayMode: .inline)
             .navigationBarHidden(appModel.selectedTab == .home ? false : true)
         }
         .accentColor(.white)
+        .navigationViewStyle(.stack)
     }
     
     private func setupApperance() {
@@ -117,18 +117,15 @@ struct MainView: View  {
     
     @ViewBuilder
     private var leadingView : some View {
-        
         if appModel.selectedTab == .home {
-            NavigationLink(destination: SettingsMainView(appModel: appModel)) {
+            Button() {
                 
-                Button() {
-                    
-                } label: {
-                    Image("home.settings")
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 35, height: 35)
-                }
-            }
+            } label: {
+                Image("home.settings")
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 35, height: 35)
+                    .navigateTo(destination: SettingsMainView(appModel: appModel))
+            }.navigateTo(destination: SettingsMainView(appModel: appModel))
         }
     }
     
