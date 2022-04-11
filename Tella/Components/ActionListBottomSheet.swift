@@ -11,27 +11,47 @@ struct ActionListBottomSheet: View {
     
     @Binding var isPresented: Bool
     
+    var action: ((ListActionSheetItem) -> Void)
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 0){
+        VStack(alignment: .leading, spacing: 0) {
+            
+            // Title
             Text(self.headerTitle)
                 .padding(.bottom, 10)
                 .foregroundColor(.white)
                 .font(.custom(Styles.Fonts.boldFontName, size: 18))
+            
+            // Items
             ForEach(items, id: \.content) { item in
-                ListActionSheetRow(item: item, isPresented: $isPresented)
+                
+                switch item.viewType {
+                case .item:
+                    if item.isActive {
+                        ListActionSheetRow(item: item, isPresented: $isPresented, action: {action(item)})
+                    }
+                case .divider:
+                    Divider()
+                        .frame(height: 0.5)
+                        .background(Color.white)
+                        .padding(EdgeInsets(top: 7, leading: -10 , bottom: 7, trailing: -10))
+                }
             }
-        }.padding(.all, 25)
+        }.padding(EdgeInsets(top: 21, leading: 24, bottom: 32, trailing: 24))
     }
 }
+
 
 struct ListActionSheetRow: View {
     var item: ListActionSheetItem
     @Binding var isPresented: Bool
+    var action: (() -> Void)
     
     var body: some View {
         Button(action: {
             isPresented = false
             item.action()
+            action()
         }, label: {
             HStack(spacing: 0){
                 Image(item.imageName)
@@ -42,7 +62,8 @@ struct ListActionSheetRow: View {
                     .frame(alignment: .leading)
                     .padding(.horizontal, 16)
                     .foregroundColor(.white)
-                    .font(Font.system(size: 14))
+                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                
                 Spacer()
             }
             .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
@@ -51,19 +72,20 @@ struct ListActionSheetRow: View {
     }
 }
 
-struct ListActionSheetItem {
-    let imageName: String
-    let content: String
-    let action: () -> ()
-    var isActive : Bool = true
-}
-
 struct FileActionsBottomSheet_Previews: PreviewProvider {
     static var previews: some View {
         ActionListBottomSheet(items: [ListActionSheetItem(imageName: "camera-icon",
                                                           content: "Take photo/video",
-                                                          action: {})],
+                                                          action: {}, type: FileActionType.save)],
                               headerTitle: "Test",
-                              isPresented: .constant(true))
+                              isPresented: .constant(true),
+                              action: {_ in})
+            .background(Styles.Colors.backgroundMain)
     }
+}
+
+
+enum ActionSheetItemType {
+    case item
+    case divider
 }

@@ -18,23 +18,6 @@ struct AddPhotoVideoBottomSheet: View {
     
     @EnvironmentObject private var appModel: MainAppModel
     @EnvironmentObject private var fileListViewModel: FileListViewModel
-
-    var items : [ListActionSheetItem] { return [
-        
-        ListActionSheetItem(imageName: "photo-library",
-                            content: "Photo Library",
-                            action: {
-                                showingImagePicker = true
-                            }),
-        
-        ListActionSheetItem(imageName: "document",
-                            content: "Document",
-                            action: {
-                                showingDocumentPicker = true
-                            })
-    ]
-        
-    }
     
     var body: some View {
         
@@ -52,13 +35,14 @@ struct AddPhotoVideoBottomSheet: View {
     }
     
     var actionListBottomSheet: some View {
-        DragView(modalHeight: CGFloat(items.count * 40 + 100),
+        DragView(modalHeight: CGFloat(AddPhotoVideoItems.count * 40 + 100),
                  isShown: $isPresented) {
-            ActionListBottomSheet(items: items,
+            ActionListBottomSheet(items: AddPhotoVideoItems,
                                   headerTitle: "Import from device",
-                                  isPresented: $isPresented)
+                                  isPresented: $isPresented, action: {item in
+                self.handleActions(item : item)
+            })
         }
-        
     }
     
     @ViewBuilder
@@ -83,10 +67,10 @@ struct AddPhotoVideoBottomSheet: View {
                 
                 showingImagePicker = false
                 
-                 if let url = url {
+                if let url = url {
                     showingProgressView = true
                     fileListViewModel.add(files: [url], type: .video)
-                 }
+                }
                 if let image = image {
                     showingProgressView = true
                     fileListViewModel.add(image: image, type: .image, pathExtension: pathExtension)
@@ -110,6 +94,17 @@ struct AddPhotoVideoBottomSheet: View {
             }
         )
     }
+    
+    private func handleActions(item: ListActionSheetItem) {
+        guard let type = item.type as? AddPhotoVideoType else { return  }
+        
+        switch type {
+        case .photoLibrary:
+            showingImagePicker = true
+        default:
+            showingDocumentPicker = true
+        }
+    }
 }
 
 struct AddPhotoVideoBottomSheet_Previews: PreviewProvider {
@@ -117,6 +112,6 @@ struct AddPhotoVideoBottomSheet_Previews: PreviewProvider {
         AddPhotoVideoBottomSheet(isPresented: .constant(true))
             .environmentObject(MainAppModel())
             .environmentObject(FileListViewModel.stub())
-
+        
     }
 }

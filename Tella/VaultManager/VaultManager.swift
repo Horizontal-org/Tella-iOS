@@ -386,7 +386,6 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         totalSizeArray = vaultFileArray.compactMap{Double($0.1.size)}
 
         let size = totalSizeArray.reduce(0.0, +)
-        print(size)
         
         return (vaultFileArray,size)
     }

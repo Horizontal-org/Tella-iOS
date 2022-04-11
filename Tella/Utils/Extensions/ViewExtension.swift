@@ -10,10 +10,54 @@ import Foundation
 import SwiftUI
 
 extension View {
+    
     func navigateTo<Destination: View>( destination: Destination) ->  some View   {
-        return  NavigationLink(destination: destination) {
-            self
-        }.buttonStyle(PlainButtonStyle())
+        
+        if #available(iOS 15.0, *) {
+            
+            return  AnyView(NavigationLink(destination: destination) {
+                self
+            }.buttonStyle(PlainButtonStyle()))
+            
+        } else {
+            return   AnyView(ZStack {
+                NavigationLink(destination: destination) {
+                    self
+                }.buttonStyle(PlainButtonStyle())
+                
+                NavigationLink(destination: EmptyView()) {
+                    EmptyView()
+                }
+                
+            })
+            
+            
+        }
+    }
+    
+    func addNavigationLink(isActive:Binding<Bool>) -> some View {
+        if #available(iOS 15.0, *) {
+            return  AnyView(
+                NavigationLink(destination:self,
+                               isActive: isActive) {
+                                   EmptyView()
+                               }.frame(width: 0, height: 0)
+                    .hidden())
+        } else {
+            
+            return  AnyView(
+                ZStack {
+                    NavigationLink(destination:self,
+                                   isActive: isActive) {
+                        EmptyView()
+                    }.frame(width: 0, height: 0)
+                        .hidden()
+                    
+                    NavigationLink(destination: EmptyView()) {
+                        EmptyView()
+                    }
+                })
+        }
     }
     
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {

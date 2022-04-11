@@ -11,47 +11,55 @@ struct AddFilesBottomSheet: View {
     @Binding var showingCreateNewFolderSheet : Bool
     
     @EnvironmentObject var appModel: MainAppModel
-
+    @EnvironmentObject var fileListViewModel: FileListViewModel
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-
-    private var items : [ListActionSheetItem] { return [
-        ListActionSheetItem(imageName: "camera-icon",
-                            content: "Take photo/video",
-                            action: {
-                                isPresented = false
-                                
-                                appModel.selectedTab = .camera
-                                self.presentationMode.wrappedValue.dismiss()
-                            }),
-        ListActionSheetItem(imageName: "mic-icon",
-                            content: "Record audio",
-                            action: {
-                                isPresented = false
-                                appModel.changeTab(to: .mic)
-                                self.presentationMode.wrappedValue.dismiss()
-                                
-                            }),
-        ListActionSheetItem(imageName: "upload-icon",
-                            content: "Import from device",
-                            action: {
-                                isPresented = false
-                                showingAddPhotoVideoSheet = true
-                            }),
-        
-        ListActionSheetItem(imageName: "new_folder-icon",
-                            content: "Create a new folder",
-                            action: {
-                                isPresented = false
-                                showingCreateNewFolderSheet = true
-                                showingAddPhotoVideoSheet = false
-                            })
-    ]
-        
-    }
+    
     var body: some View {
-        DragView(modalHeight: CGFloat(items.count * 50 + 90),
-                 isShown: $isPresented){
-            ActionListBottomSheet(items: items, headerTitle: "Manage files", isPresented: $isPresented)
+        ZStack {
+            DragView(modalHeight: CGFloat(manageFilesItems.count * 50 + 90),
+                     isShown: $isPresented){
+                ActionListBottomSheet(items: manageFilesItems, headerTitle: "Manage files", isPresented: $isPresented, action:  {item in
+                    self.handleActions(item : item)
+                    
+                    
+                })
+            }
+        }
+        .overlay(fileListViewModel.showingCamera ?
+                 CameraView(sourceView: .addFile,
+                            showingCameraView: $fileListViewModel.showingCamera,
+                            cameraViewModel: CameraViewModel(mainAppModel: appModel,
+                                                             rootFile: fileListViewModel.rootFile)) : nil)
+        
+        .overlay(fileListViewModel.showingMicrophone ?
+                 RecordView(appModel: appModel,
+                            rootFile: fileListViewModel.rootFile,
+                            sourceView: .addFile,
+                            showingRecoredrView: $fileListViewModel.showingMicrophone) : nil)
+    }
+    
+    private func handleActions(item: ListActionSheetItem) {
+        
+        guard let type = item.type as? ManageFileType else { return }
+        
+        switch type {
+        case .camera:
+            isPresented = false
+            fileListViewModel.showingCamera = true
+            
+        case .recorder:
+            isPresented = false
+            fileListViewModel.showingMicrophone = true
+            
+        case .fromDevice:
+            isPresented = false
+            showingAddPhotoVideoSheet = true
+            
+        default:
+            isPresented = false
+            showingCreateNewFolderSheet = true
+            showingAddPhotoVideoSheet = false
         }
     }
 }
@@ -63,6 +71,6 @@ struct AddFilesBottomSheet_Previews: PreviewProvider {
                             showingCreateNewFolderSheet: .constant(false))
             .environmentObject(MainAppModel())
             .environmentObject(FileListViewModel.stub())
-
+        
     }
 }

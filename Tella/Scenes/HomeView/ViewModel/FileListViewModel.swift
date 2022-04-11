@@ -36,7 +36,9 @@ class FileListViewModel: ObservableObject {
     @Published var showingProgressView = false
     @Published var showingMoveFileView = false
     @Published var showingShareFileView = false
-    
+    @Published var showingCamera = false
+    @Published var showingMicrophone = false
+
     var selectedFiles : [VaultFile] {
         return vaultFileStatusArray.filter{$0.isSelected}.compactMap{$0.file}
     }
@@ -83,11 +85,29 @@ class FileListViewModel: ObservableObject {
     }
     
     var shouldHideNavigationBar : Bool {
-        return selectingFiles || showingMoveFileView
+        return selectingFiles || showingMoveFileView || showingCamera || showingMicrophone
     }
     
     var filesAreAllSelected : Bool {
         return vaultFileStatusArray.filter{$0.isSelected == true}.count == vaultFileStatusArray.count
+    }
+    
+    var fileActionItems: [ListActionSheetItem] {
+        
+        firstFileActionItems.filter{$0.type as! FileActionType == FileActionType.share}.first?.isActive = shouldActivateShare
+        secondFileActionItems.filter{$0.type as! FileActionType == FileActionType.rename}.first?.isActive =  shouldActivateRename
+        secondFileActionItems.filter{$0.type as! FileActionType == FileActionType.save}.first?.isActive =  shouldActivateShare
+        secondFileActionItems.filter{$0.type as! FileActionType == FileActionType.info}.first?.isActive =  shouldActivateFileInformation
+        
+        var items : [ListActionSheetItem] = []
+        items.append(contentsOf: firstFileActionItems.filter{$0.isActive == true})
+        
+        if (firstFileActionItems.contains(where: {$0.isActive})) {
+            items.append(ListActionSheetItem(viewType: .divider, type: FileActionType.none))
+        }
+        
+        items.append(contentsOf: secondFileActionItems.filter{$0.isActive == true})
+        return items
     }
     
     init(appModel:MainAppModel, fileType:[FileType]?, rootFile:VaultFile, folderPathArray:[VaultFile]?,fileActionSource : FileActionSource = .listView) {
@@ -183,6 +203,18 @@ class FileListViewModel: ObservableObject {
     func getDataToShare() -> [Any] {
         appModel.getFilesForShare(files: selectedFiles)
     }
+    
+    var firstFileActionItems : [ListActionSheetItem] =  [
+        
+        ListActionSheetItem(imageName: "share-icon",
+                            content: "Share",
+    //                        action: {
+    //                            fileListViewModel.showingFileActionMenu = false
+    //                            fileListViewModel.showingShareFileView = true
+    //                        },
+                              type: FileActionType.share)
+    ]
+
     
 }
 

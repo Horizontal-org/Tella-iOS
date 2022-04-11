@@ -8,12 +8,16 @@ import SwiftUI
 struct CameraControlsView: View {
     // MARK: - Public properties
     
+    @Binding var showingCameraView : Bool
+    var sourceView : SourceView
+    
     var captureButtonAction: (() -> Void)
     var recordVideoAction: (() -> Void)
     var toggleCamera: (() -> Void)
     var updateCameraTypeAction: ((CameraType) -> Void)
     var toggleFlash: (() -> Void)
- 
+    var close: (() -> Void)
+
     // MARK: - Private properties
 
     @State private var selectedOption: CameraType = .image
@@ -59,7 +63,15 @@ struct CameraControlsView: View {
                 if !shouldHideCloseButton {
                     Button {
                         mainAppModel.vaultManager.clearTmpDirectory()
-                        mainAppModel.selectedTab = .home
+                        
+                        if sourceView == .tab {
+                            mainAppModel.selectedTab = .home
+                        } else {
+                            showingCameraView = false
+                        }
+                        
+                        close()
+
                     } label: {
                         Image("close")
                     }
@@ -207,14 +219,23 @@ struct CameraControlsView: View {
            let data = file.thumbnail {
             
             Button {
-                appViewState.resetToImageAndVideo()
+
             } label: {
                 UIImage.image(fromData:data).rounded()
+                    .navigateTo(destination:getFileListView())
             }
+            .navigateTo(destination:getFileListView())
         } else {
             Spacer()
         }
         
+    }
+    
+    func getFileListView() -> some View {
+        FileListView(appModel: mainAppModel,
+                     rootFile: mainAppModel.vaultManager.root,
+                     fileType: [.image, .video],
+                     title: "Images and Videos")
     }
 
     var bottomMenu : some View {
@@ -256,7 +277,8 @@ struct CameraControlsView: View {
 
 struct CameraControlsView_Previews: PreviewProvider {
     static var previews: some View {
-        CameraControlsView {
+        CameraControlsView (showingCameraView:.constant(false),
+                            sourceView: .tab) {
              
         } recordVideoAction: {
              
@@ -264,9 +286,8 @@ struct CameraControlsView_Previews: PreviewProvider {
              
         } updateCameraTypeAction: { value in
              
-        } toggleFlash: {
-            
-        }
+        } toggleFlash: { 
+        } close: {}
     }
 }
 

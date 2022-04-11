@@ -153,7 +153,7 @@ class CryptoManager {
         let query = metaPrivateKeyQuery(keyID,password: password)
         let status = SecItemDelete(query as CFDictionary)
         if status != errSecSuccess {
-            print("Failed to delete meta private key in enclave")
+            debugLog("Failed to delete meta private key in enclave")
             return false
         }
         return true
@@ -235,7 +235,7 @@ class CryptoManager {
         ]
         var error: Unmanaged<CFError>?
         guard let privateKey = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
-            print("Creating private key failed")
+            debugLog("Creating private key failed")
             let msg = "Error: \(error?.takeRetainedValue().localizedDescription ?? "")"
             throw RuntimeError(msg)
         }

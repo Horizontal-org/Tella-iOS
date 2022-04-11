@@ -5,13 +5,17 @@
 import SwiftUI
 import Combine
 
+
 struct CameraView: View {
     
     // MARK: - Public properties
-    
+    var sourceView : SourceView
+
     @State var showingProgressView : Bool = false
     @State var showingPermissionAlert : Bool = false
     
+    @Binding var showingCameraView : Bool
+
     @ObservedObject var cameraViewModel :  CameraViewModel
     
      var customCameraRepresentable = CustomCameraRepresentable(
@@ -28,8 +32,8 @@ struct CameraView: View {
     
     var body: some View {
         
-        ZStack {
-            
+        NavigationContainerView {
+
             let frame = CGRect(x: 0, y: 0, width: UIScreen.screenWidth, height: UIScreen.screenHeight)
             
             cameraView(frame: frame)
@@ -41,7 +45,7 @@ struct CameraView: View {
                                     importFilesProgressProtocol: ImportFilesFromCameraProgress())
             
         }.background(Color.black)
-        
+            .accentColor(.white)
             .environmentObject(cameraViewModel)
             .onAppear {
                 DispatchQueue.main.async {
@@ -63,13 +67,19 @@ struct CameraView: View {
             }
             .onReceive(customCameraRepresentable.$shouldCloseCamera) { value in
                 if value {
-                    mainAppModel.selectedTab = .home
+                    if sourceView == .tab {
+                        mainAppModel.selectedTab = .home
+                    } else {
+                        showingCameraView = false
+                    }
                     mainAppModel.clearTmpDirectory()
                 }
             }
             .alert(isPresented:$showingPermissionAlert) {
                 getSettingsAlertView()
             }
+            .edgesIgnoringSafeArea(.all)
+
     }
     
     private func cameraView(frame: CGRect) -> CustomCameraRepresentable {
@@ -96,7 +106,9 @@ struct CameraView: View {
     
     private func getCameraControlsView() -> some View {
         
-        CameraControlsView(captureButtonAction: {
+        CameraControlsView(showingCameraView: $showingCameraView,
+                           sourceView: sourceView,
+                           captureButtonAction: {
             customCameraRepresentable.takePhoto()
         }, recordVideoAction: {
             customCameraRepresentable.startCaptureVideo()
@@ -106,7 +118,9 @@ struct CameraView: View {
             customCameraRepresentable.cameraType = cameraType
         }, toggleFlash: {
             customCameraRepresentable.toggleFlash()
-        } )
+        }, close: {
+            customCameraRepresentable.stopRunningCaptureSession()
+        })
             .edgesIgnoringSafeArea(.all)
         
     }

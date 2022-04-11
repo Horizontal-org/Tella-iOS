@@ -13,16 +13,11 @@ class RecordViewModel: ObservableObject {
     @Published var time: String = ""
     @Published var shouldShowSettingsAlert: Bool = false
 
-    private var audioBackend: RecordingAudioManager = RecordingAudioManager()
+    private var audioBackend: RecordingAudioManager
     private var cancellable: Set<AnyCancellable> = []
-    
-    var mainAppModel: MainAppModel? {
-        didSet {
-            audioBackend.mainAppModel = mainAppModel
-        }
-    }
-    
-    init() {
+
+    init(mainAppModel: MainAppModel, rootFile: VaultFile) {
+        audioBackend = RecordingAudioManager(mainAppModel: mainAppModel, rootFile: rootFile)
         
         audioBackend.currentTime.sink { value in
             self.time = value.stringFromTimeInterval()
