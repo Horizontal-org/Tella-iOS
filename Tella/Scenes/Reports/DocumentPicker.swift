@@ -37,7 +37,7 @@ class DocumentPickerCoordinator: NSObject, UIDocumentPickerDelegate, UINavigatio
             fileContentPath = try String(contentsOf: fileUrl , encoding: .utf8)
             self.showModel = false
         } catch let error {
-            print(error.localizedDescription)
+
         }
     }
 }

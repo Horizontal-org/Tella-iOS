@@ -29,5 +29,8 @@ struct NavigationContainerView<Content:View>: View {
         }
         .accentColor(.white)
         .navigationViewStyle(.stack)
+        .navigationBarTitle("")
+        .navigationBarHidden(true)
+
     }
 }

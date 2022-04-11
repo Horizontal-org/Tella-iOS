@@ -6,8 +6,6 @@ import SwiftUI
 
 struct AddFilesBottomSheet: View {
     
-    //    @Binding var showingCamera : Bool
-    
     @Binding var isPresented: Bool
     @Binding var showingAddPhotoVideoSheet : Bool
     @Binding var showingCreateNewFolderSheet : Bool
@@ -17,55 +15,52 @@ struct AddFilesBottomSheet: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    private var items : [ListActionSheetItem] { return [
-        ListActionSheetItem(imageName: "camera-icon",
-                            content: "Take photo/video",
-                            action: {
-                                isPresented = false
-                                fileListViewModel.showingCamera = true
-                            }),
-        ListActionSheetItem(imageName: "mic-icon",
-                            content: "Record audio",
-                            action: {
-                                isPresented = false
-                                fileListViewModel.showingMicrophone = true
-                                
-                            }),
-        ListActionSheetItem(imageName: "upload-icon",
-                            content: "Import from device",
-                            action: {
-                                isPresented = false
-                                showingAddPhotoVideoSheet = true
-                            }),
-        
-        ListActionSheetItem(imageName: "new_folder-icon",
-                            content: "Create a new folder",
-                            action: {
-                                isPresented = false
-                                showingCreateNewFolderSheet = true
-                                showingAddPhotoVideoSheet = false
-                            })
-    ]
-        
-    }
     var body: some View {
         ZStack {
-            DragView(modalHeight: CGFloat(items.count * 50 + 90),
+            DragView(modalHeight: CGFloat(manageFilesItems.count * 50 + 90),
                      isShown: $isPresented){
-                ActionListBottomSheet(items: items, headerTitle: "Manage files", isPresented: $isPresented)
+                ActionListBottomSheet(items: manageFilesItems, headerTitle: "Manage files", isPresented: $isPresented, action:  {item in
+                    self.handleActions(item : item)
+                    
+                    
+                })
             }
         }
-        .overlay(fileListViewModel.showingCamera ? CameraView(sourceView: .addFile,
-                                                              showingCameraView: $fileListViewModel.showingCamera,
-                                                              cameraViewModel: CameraViewModel(mainAppModel: appModel,
-                                                                                               rootFile: fileListViewModel.rootFile)) : nil)
+        .overlay(fileListViewModel.showingCamera ?
+                 CameraView(sourceView: .addFile,
+                            showingCameraView: $fileListViewModel.showingCamera,
+                            cameraViewModel: CameraViewModel(mainAppModel: appModel,
+                                                             rootFile: fileListViewModel.rootFile)) : nil)
         
         .overlay(fileListViewModel.showingMicrophone ?
                  RecordView(appModel: appModel,
                             rootFile: fileListViewModel.rootFile,
                             sourceView: .addFile,
                             showingRecoredrView: $fileListViewModel.showingMicrophone) : nil)
+    }
+    
+    private func handleActions(item: ListActionSheetItem) {
         
+        guard let type = item.type as? ManageFileType else { return }
+        
+        switch type {
+        case .camera:
+            isPresented = false
+            fileListViewModel.showingCamera = true
+            
+        case .recorder:
+            isPresented = false
+            fileListViewModel.showingMicrophone = true
+            
+        case .fromDevice:
+            isPresented = false
+            showingAddPhotoVideoSheet = true
+            
+        default:
+            isPresented = false
+            showingCreateNewFolderSheet = true
+            showingAddPhotoVideoSheet = false
+        }
     }
 }
 

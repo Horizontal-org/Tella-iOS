@@ -20,7 +20,7 @@ enum FileViewType {
 
 }
 
-enum FileSortOptions {
+enum FileSortOptions : ActionType {
     case nameAZ
     case nameZA
     case newestToOldest

@@ -17,7 +17,7 @@ extension Data {
         if result == errSecSuccess {
             self = keyData
         } else {
-            print("Problem generating random bytes")
+            debugLog("Problem generating random bytes")
             return nil
         }
     }

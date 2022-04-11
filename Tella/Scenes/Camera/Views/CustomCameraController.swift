@@ -82,7 +82,6 @@ final class CustomCameraController: UIViewController {
         guard let delegate = captureDelegate else {
             return
         }
-        print(cameraType)
         photoOutput?.capturePhoto(with: settings, delegate: delegate)
     }
     
@@ -416,9 +415,6 @@ extension CustomCameraRepresentable {
                         error: Error?) {
             
             parent.videoURLCompletion(outputFileURL)
-            
-            print("outputFileURL", outputFileURL)
-            
             parent.isRecording = false
         }
         
