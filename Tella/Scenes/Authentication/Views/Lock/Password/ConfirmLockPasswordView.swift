@@ -48,7 +48,6 @@ struct ConfirmLockPasswordView: View {
     
     func updatePassword() {
         do {
-            print(lockViewModel.password)
             guard let privateKey = lockViewModel.privateKey else { return }
             try AuthenticationManager().updateKeys(privateKey, .tellaPassword, newPassword: lockViewModel.password, oldPassword: lockViewModel.loginPassword)
             lockViewModel.shouldDismiss.send(true)

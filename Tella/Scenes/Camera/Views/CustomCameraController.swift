@@ -51,8 +51,8 @@ final class CustomCameraController: UIViewController {
     
     override func viewWillDisappear(_ animated : Bool) {
         super.viewWillDisappear(animated)
-        stopRunningCaptureSession()
-        releasePreview()
+//        stopRunningCaptureSession()
+//        releasePreview()
      }
 
     // MARK: - Public functions
@@ -415,9 +415,6 @@ extension CustomCameraRepresentable {
                         error: Error?) {
             
             parent.videoURLCompletion(outputFileURL)
-            
-            print("outputFileURL", outputFileURL)
-            
             parent.isRecording = false
         }
         

@@ -25,8 +25,12 @@ struct NavigationContainerView<Content:View>: View {
             }
             .navigationBarTitle("")
             .navigationBarHidden(true)
+            .navigationBarTitle("", displayMode: .inline)
         }
+        .accentColor(.white)
+        .navigationViewStyle(.stack)
         .navigationBarTitle("")
         .navigationBarHidden(true)
+
     }
 }

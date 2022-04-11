@@ -7,69 +7,41 @@ import SwiftUI
 struct FileSortMenu: View {
     
     @EnvironmentObject var fileListViewModel : FileListViewModel
-
-    var items : [FileSortOptions] = [.nameAZ, .nameZA, .newestToOldest, .oldestToNewest]
+    
+    var fileSortOptions : [FileSortOptions] = [.nameAZ, .nameZA, .newestToOldest, .oldestToNewest]
+    
+    var items : [ListActionSheetItem] {
+        
+        var iteeeems : [ListActionSheetItem] = []
+        fileSortOptions.forEach { item in
+            iteeeems.append(ListActionSheetItem(imageName: fileListViewModel.sortBy == item ? "radio_selected" : "radio_unselected",
+                                                content: item.name,
+                                                type: item))
+            
+        }
+        return iteeeems
+        
+        
+    }
     
     var body: some View {
         ZStack{
-            DragView(modalHeight: 226,
-                     isShown: $fileListViewModel.showingSortFilesActionSheet) {
-                FileSortContentView
+            
+            DragView(modalHeight: 300,
+                     isShown: $fileListViewModel.showingSortFilesActionSheet){
+                ActionListBottomSheet(items: items, headerTitle: "Sort by",
+                                      isPresented: $fileListViewModel.showingSortFilesActionSheet,
+                                      action:  {item in
+                    self.handleActions(item : item)
+                })
             }
         }
     }
     
-    var FileSortContentView : some View {
-        
-        VStack(alignment: .leading, spacing: 20) {
-            Text("Sort by")
-                .foregroundColor(.white)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                .padding(EdgeInsets(top: 21, leading: 21, bottom: 0, trailing: 21))
-            
-            VStack(alignment: .leading, spacing: 20) {
-                ForEach(items, id : \.self) { item in
-                    RadioButtonField(id: item,
-                                     label: item.name,
-                                     isMarked: item == fileListViewModel.sortBy) { result in
-                        fileListViewModel.sortBy = result
-                        fileListViewModel.showingSortFilesActionSheet = false
-                    }
-                }
-            }.padding(EdgeInsets(top: 0, leading: 15, bottom: 27, trailing: 15))
-        }
-    }
-}
-
-struct RadioButtonField: View {
-    let id: FileSortOptions
-    let label: String
-    let isMarked:Bool
-    let callback: (FileSortOptions)->()
-    
-    init( id: FileSortOptions, label:String, isMarked: Bool = false, callback: @escaping (FileSortOptions)->()) {
-        self.id = id
-        self.label = label
-        self.isMarked = isMarked
-        self.callback = callback
-    }
-    
-    var body: some View {
-        Button(action:{
-            self.callback(self.id)
-        }) {
-            HStack(alignment: .center, spacing: 10) {
-                Image(self.isMarked ? "radio_selected" : "radio_unselected")
-                    .renderingMode(.original)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 13, height: 13)
-                Text(label)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                Spacer()
-            }.foregroundColor(.white)
-        }
-        .foregroundColor(Color.white)
+    private func handleActions(item: ListActionSheetItem) {
+        fileListViewModel.showingSortFilesActionSheet = false
+        guard let type = item.type as? FileSortOptions else { return }
+        fileListViewModel.sortBy = type
     }
 }
 

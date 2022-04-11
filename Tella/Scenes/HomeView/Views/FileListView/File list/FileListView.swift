@@ -53,7 +53,6 @@ struct FileListView: View {
         .toolbar {
             LeadingTitleToolbar(title: title)
         }
-        
         .navigationBarHidden(fileListViewModel.shouldHideNavigationBar)
         .environmentObject(fileListViewModel)
     }
@@ -61,16 +60,12 @@ struct FileListView: View {
     @ViewBuilder
     private var showFileDetailsLink: some View {
         if let currentSelectedVaultFile = self.fileListViewModel.currentSelectedVaultFile {
-            NavigationLink(destination:
-                            FileDetailView(appModel: appModel ,
-                                           file: currentSelectedVaultFile,
-                                           videoFilesArray: fileListViewModel.rootFile.getVideos().sorted(by: fileListViewModel.sortBy),
-                                           rootFile: fileListViewModel.rootFile, folderPathArray: fileListViewModel.folderPathArray
-                                          ),
-                           isActive: $fileListViewModel.showFileDetails) {
-                EmptyView()
-            }.frame(width: 0, height: 0)
-                .hidden()
+          
+            FileDetailView(appModel: appModel ,
+                           file: currentSelectedVaultFile,
+                           videoFilesArray: fileListViewModel.rootFile.getVideos().sorted(by: fileListViewModel.sortBy),
+                           rootFile: fileListViewModel.rootFile,
+                           folderPathArray: fileListViewModel.folderPathArray).addNavigationLink(isActive: $fileListViewModel.showFileDetails)
         }
     }
 }

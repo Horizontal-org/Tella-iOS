@@ -4,11 +4,6 @@
 
 import SwiftUI
 
-//enum FileActionMenuType {
-//    case single
-//    case multiple
-//}
-
 struct FileActionMenu: View {
     
     @EnvironmentObject var appModel: MainAppModel
@@ -23,89 +18,15 @@ struct FileActionMenu: View {
     
     @State var fileName : String = ""
     
-    var shouldShowDivider : Bool {
-        (firstItems.contains(where: {$0.isActive}))
-    }
-    
     var modalHeight : CGFloat {
-        let itemsNumber = firstItems.filter{$0.isActive}.count + secondItems.filter{$0.isActive}.count
-        return CGFloat((itemsNumber * 50) + 90)
-    }
-    
-    var firstItems : [ListActionSheetItem] { return [
         
-        ListActionSheetItem(imageName: "share-icon",
-                            content: "Share",
-                            action: {
-                                fileListViewModel.showingFileActionMenu = false
-                                fileListViewModel.showingShareFileView = true
-                            },isActive: fileListViewModel.shouldActivateShare)
-    ]
-        
-    }
-    var secondItems : [ListActionSheetItem] {
-        
-        return [
-            
-            ListActionSheetItem(imageName: "move-icon",
-                                content: "Move to another folder",
-                                action: {
-                                    fileListViewModel.showingMoveFileView = true
-                                    fileListViewModel.oldRootFile = fileListViewModel.rootFile
-                                    
-                                    self.hideMenu()
-                                    
-                                }),
-            
-            ListActionSheetItem(imageName: "edit-icon",
-                                content: "Rename",
-                                action: {
-                                    if fileListViewModel.selectedFiles.count == 1 {
-                                        fileName = fileListViewModel.selectedFiles[0].fileName
-                                        showingRenameFileConfirmationSheet = true
-                                        
-                                        self.hideMenu()
-                                        
-                                        
-                                    }
-                                }, isActive: fileListViewModel.shouldActivateRename),
-            
-            ListActionSheetItem(imageName: "save-icon",
-                                content: "Save to device",
-                                action: {
-                                    showingSaveConfirmationSheet = true
-                                    
-                                    self.hideMenu()
-                                    
-                                },isActive: fileListViewModel.shouldActivateShare),
-            
-            ListActionSheetItem(imageName: "info-icon",
-                                content: "File information",
-                                action: {
-                                    fileListViewModel.showFileInfoActive = true
-                                    
-                                    self.hideMenu()
-                                    
-                                }, isActive: fileListViewModel.shouldActivateFileInformation),
-            
-            ListActionSheetItem(imageName: "delete-icon",
-                                content: "Delete",
-                                action: {
-                                    showingDeleteConfirmationSheet = true
-                                    
-                                    self.hideMenu()
-                                })
-        ]
+        let dividerHeight = fileListViewModel.fileActionItems.filter{$0.viewType == ActionSheetItemType.divider}.count * 20
+        return CGFloat((fileListViewModel.fileActionItems.count * 50) - dividerHeight  + 90)
     }
     
     var body: some View {
-        ZStack{
-            DragView(modalHeight: modalHeight,
-                     isShown: $fileListViewModel.showingFileActionMenu) {
-                fileActionMenuContentView
-            }
-        }
         
+        fileActionMenuContentView
         fileDocumentExporter
         deleteFileView
         renameFileView
@@ -117,33 +38,18 @@ struct FileActionMenu: View {
     }
     
     var fileActionMenuContentView : some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text(fileListViewModel.fileActionsTitle)
-                .foregroundColor(.white)
-                .font(.custom(Styles.Fonts.boldFontName, size: 16))
-                .padding(EdgeInsets(top: 8, leading: 1 , bottom: 15, trailing: 0))
-            
-            ForEach(firstItems, id: \.content) { item in
-                if item.isActive {
-                    ListActionSheetRow(item: item, isPresented: $isPresented)
-                }
+        ZStack{
+            DragView(modalHeight: modalHeight,
+                     isShown: $fileListViewModel.showingFileActionMenu) {
+                ActionListBottomSheet(items: fileListViewModel.fileActionItems,
+                                      headerTitle: fileListViewModel.fileActionsTitle,
+                                      isPresented: $isPresented, action: {item in
+                    
+                    self.handleActions(item : item)
+                })
             }
-            
-            if shouldShowDivider {
-                Divider()
-                    .frame(height: 0.5)
-                    .background(Color.white)
-                    .padding(EdgeInsets(top: 7, leading: -10 , bottom: 7, trailing: -10))
-            }
-            
-            ForEach(secondItems, id: \.content) { item in
-                if item.isActive {
-                    ListActionSheetRow(item: item, isPresented: $isPresented)
-                }
-            }
-        }.padding(EdgeInsets(top: 21, leading: 24, bottom: 32, trailing: 24))
+        }
     }
-    
     
     var fileDocumentExporter: some View {
         ConfirmBottomSheet(titleText: "Save to device gallery?",
@@ -219,6 +125,46 @@ struct FileActionMenu: View {
         fileListViewModel.selectingFiles = false
         fileListViewModel.showingFileActionMenu = false
     }
+    
+    private func handleActions(item: ListActionSheetItem) {
+        
+        guard let type = item.type as? FileActionType else { return }
+        
+        switch type {
+            
+        case .share:
+            fileListViewModel.showingFileActionMenu = false
+            fileListViewModel.showingShareFileView = true
+            
+        case .move:
+            fileListViewModel.showingMoveFileView = true
+            fileListViewModel.oldRootFile = fileListViewModel.rootFile
+            self.hideMenu()
+            
+        case .rename:
+            if fileListViewModel.selectedFiles.count == 1 {
+                fileName = fileListViewModel.selectedFiles[0].fileName
+                showingRenameFileConfirmationSheet = true
+                self.hideMenu()
+            }
+            
+        case .save:
+            showingSaveConfirmationSheet = true
+            self.hideMenu()
+            
+        case .info:
+            fileListViewModel.showFileInfoActive = true
+            self.hideMenu()
+            
+        case .delete:
+            showingDeleteConfirmationSheet = true
+            self.hideMenu()
+            
+        default:
+            break
+        }
+    }
+    
 }
 
 struct FileActionMenu_Previews: PreviewProvider {
