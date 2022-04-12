@@ -14,6 +14,12 @@ enum FileActionSource {
     case listView
 }
 
+enum FileListType {
+    case cameraGallery
+    case recordList
+    case fileList
+}
+
 class FileListViewModel: ObservableObject {
     
     var appModel: MainAppModel
@@ -21,7 +27,8 @@ class FileListViewModel: ObservableObject {
     var rootFile : VaultFile
     var oldRootFile : VaultFile
     var fileActionSource : FileActionSource = .listView
-
+    var fileListType : FileListType = .fileList
+    
     @Published var sortBy: FileSortOptions = FileSortOptions.nameAZ
     @Published var viewType: FileViewType = FileViewType.list
     
@@ -38,7 +45,7 @@ class FileListViewModel: ObservableObject {
     @Published var showingShareFileView = false
     @Published var showingCamera = false
     @Published var showingMicrophone = false
-
+    
     var selectedFiles : [VaultFile] {
         return vaultFileStatusArray.filter{$0.isSelected}.compactMap{$0.file}
     }
@@ -91,6 +98,9 @@ class FileListViewModel: ObservableObject {
     var filesAreAllSelected : Bool {
         return vaultFileStatusArray.filter{$0.isSelected == true}.count == vaultFileStatusArray.count
     }
+    var shouldHideViewsForGallery: Bool {
+        return (fileListType == .cameraGallery || fileListType == .recordList)
+    }
     
     var fileActionItems: [ListActionSheetItem] {
         
@@ -110,7 +120,7 @@ class FileListViewModel: ObservableObject {
         return items
     }
     
-    init(appModel:MainAppModel, fileType:[FileType]?, rootFile:VaultFile, folderPathArray:[VaultFile]?,fileActionSource : FileActionSource = .listView) {
+    init(appModel:MainAppModel, fileType:[FileType]?, rootFile:VaultFile, folderPathArray:[VaultFile]?,fileActionSource : FileActionSource = .listView,fileListType : FileListType = .fileList) {
         
         self.appModel = appModel
         self.fileType = fileType
@@ -118,7 +128,9 @@ class FileListViewModel: ObservableObject {
         self.oldRootFile = rootFile
         self.folderPathArray = folderPathArray ?? []
         self.fileActionSource = fileActionSource
+        self.fileListType = fileListType
         initVaultFileStatusArray()
+        updateViewType()
     }
     
     func resetSelectedItems() {
@@ -169,12 +181,23 @@ class FileListViewModel: ObservableObject {
             self.folderPathArray.removeSubrange(index + 1..<self.folderPathArray.endIndex)
         }
     }
-
+    
     func initFolderPathArray() {
         if let index = self.folderPathArray.firstIndex(of: self.oldRootFile) {
             self.folderPathArray.removeSubrange(index + 1..<self.folderPathArray.endIndex)
         } else {
             self.folderPathArray.removeAll()
+        }
+    }
+    
+    func updateViewType()  {
+        switch fileListType {
+        case .cameraGallery:
+            viewType = .grid
+        case .recordList:
+            viewType = .list
+        case .fileList:
+            break
         }
     }
     
@@ -203,19 +226,6 @@ class FileListViewModel: ObservableObject {
     func getDataToShare() -> [Any] {
         appModel.getFilesForShare(files: selectedFiles)
     }
-    
-    var firstFileActionItems : [ListActionSheetItem] =  [
-        
-        ListActionSheetItem(imageName: "share-icon",
-                            content: "Share",
-    //                        action: {
-    //                            fileListViewModel.showingFileActionMenu = false
-    //                            fileListViewModel.showingShareFileView = true
-    //                        },
-                              type: FileActionType.share)
-    ]
-
-    
 }
 
 extension FileListViewModel {

@@ -12,7 +12,7 @@ import Foundation
 struct RecordView: View {
     
     @StateObject var viewModel : RecordViewModel
-  
+    
     var sourceView : SourceView
     var showingRecoredrView : Binding<Bool>
     
@@ -34,7 +34,7 @@ struct RecordView: View {
         self.showingRecoredrView = showingRecoredrView
     }
     
-
+    
     func goBack() {
         self.appViewState.navigateBack()
     }
@@ -71,9 +71,8 @@ struct RecordView: View {
             
             saveSuccessView
             
-        }.onAppear {
-//            self.viewModel.mainAppModel = mainAppModel
         }
+        
         .alert(isPresented: self.$viewModel.shouldShowSettingsAlert) {
             getSettingsAlertView()
         }
@@ -111,34 +110,21 @@ struct RecordView: View {
                 .hidden()
             
             Button(action: {
-//                self.viewModel.mainAppModel = mainAppModel
                 self.viewModel.checkCameraAccess()
             }) {
                 Image("mic.record")
                     .frame(width: 83, height: 83)
             }
             
- 
             Button(action: {
-//                self.listenAudiFiles()
+                
             }) {
                 Image("mic.listen")
                     .resizable()
                     .frame(width: 52, height: 52)
-                    .navigateTo(destination:FileListView(appModel: mainAppModel,
-                                                                   rootFile: mainAppModel.vaultManager.root,
-                                                                        fileType: [.audio],
-                                                                        title: "Audio"))
-
+                    .navigateTo(destination:getFileListView())
             }
-            
-            .navigateTo(destination:FileListView(appModel: mainAppModel,
-                                                           rootFile: mainAppModel.vaultManager.root,
-                                                                fileType: [.audio],
-                                                                title: "Audio")
-            )
-                
-//            }
+            .navigateTo(destination:getFileListView())
         }
     }
     
@@ -187,17 +173,17 @@ struct RecordView: View {
                     .frame(width: 83, height: 83)
             }
             
-//            Button(action: {
-//                self.listenAudiFiles()
-//            }) {
-//                Image("mic.listen")
-//                    .resizable()
-//                    .frame(width: 52, height: 52)
-//            }
+            //            Button(action: {
+            //                self.listenAudiFiles()
+            //            }) {
+            //                Image("mic.listen")
+            //                    .resizable()
+            //                    .frame(width: 52, height: 52)
+            //            }
             
             
             Button(action: {
-//                self.listenAudiFiles()
+                //                self.listenAudiFiles()
             }) {
                 Image("mic.listen")
                     .resizable()
@@ -260,15 +246,12 @@ struct RecordView: View {
         }.frame(height: 56)
     }
     
-    private func listenAudiFiles() {
-        appViewState.resetToAudio()
-    }
-    
     private func getFileListView() -> some View {
         FileListView(appModel: mainAppModel,
                      rootFile: mainAppModel.vaultManager.root,
                      fileType: [.audio],
-                     title: "Audio")
+                     title: "Audio",
+                     fileListType: .recordList)
     }
     
     private var saveAudioConfirmationView : some View {
@@ -304,7 +287,7 @@ struct RecordView: View {
                                  didConfirmAction: {
                 viewModel.fileName =  fileName
             })
-
+            
         }
     }
     

@@ -17,7 +17,7 @@ protocol AppModelFileManagerProtocol {
     func rename(file : VaultFile, parent: VaultFile?)
     func getFilesForShare(files: [VaultFile]) -> [Any]
     func clearTmpDirectory()
-    func saveDataToTempFile(data:Data, pathExtension:String) -> URL? 
+    func saveDataToTempFile(data:Data, pathExtension:String) -> URL?
 }
 
 class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
@@ -35,9 +35,6 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     @Published var vaultManager: VaultManager = VaultManager(cryptoManager: CryptoManager.shared, fileManager: DefaultFileManager(), rootFileName: "root", containerPath: "Containers", progress: ImportProgress())
     
     @Published var selectedTab: Tabs = .home
-    
-    @Published var selectedType: [FileType] = [.other]
-    @Published var showFilesList: Bool = false
     
     var shouldUpdateLanguage = CurrentValueSubject<Bool, Never>(false)
     

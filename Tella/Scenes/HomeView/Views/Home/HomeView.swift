@@ -11,10 +11,10 @@ class HomeViewModel: ObservableObject {
 }
 
 struct HomeView: View {
-
+    
     @EnvironmentObject var appModel: MainAppModel
     @StateObject var viewModel = HomeViewModel()
-
+    
     var body: some View {
         
         ContainerView {
@@ -35,21 +35,9 @@ struct HomeView: View {
                         appModel.removeAllFiles()
                     })
                 }
-                
-                fileListWithTypeView
             }
         }
         .navigationBarTitle("Tella", displayMode: .inline)
-    }
-
-    var  fileListWithTypeView : some View {
-        NavigationLink(destination: FileListView(appModel: appModel,
-                                                 rootFile: appModel.vaultManager.root,
-                                                 fileType: appModel.selectedType,
-                                                 title: appModel.selectedType.getTitle())
-                       , isActive: $appModel.showFilesList) {
-            EmptyView()
-        }
     }
 }
 
