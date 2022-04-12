@@ -10,7 +10,7 @@ import SwiftUI
 
 struct PasswordTextFieldView : View {
     
-    @State var shouldShowPassword : Bool = false
+    @State var shouldHidePassword : Bool = true
     @Binding var fieldContent : String
     @Binding var isValid : Bool
     @Binding var shouldShowErrorMessage : Bool
@@ -26,36 +26,24 @@ struct PasswordTextFieldView : View {
                 Spacer()
                     .frame(width: 32)
                 
-                if shouldShowPassword {
-                    TextField("", text: $fieldContent,onCommit: {
-                        self.onCommit?()
+                PasswordTextField(text: $fieldContent,
+                                isFirstResponder: .constant(true),
+                                shouldShowError: $shouldShowError,
+                                isSecure : $shouldHidePassword)
+                    .textFieldStyle(PasswordStyle(shouldShowError: shouldShowError))
+                    .onChange(of: fieldContent, perform: { value in
+                        validateField(value: value)
                     })
-                        .textFieldStyle(PasswordStyle(shouldShowError: shouldShowError))
-                        .onChange(of: fieldContent, perform: { value in
-                            validateField(value: value)
-                        })
-                        .disabled(disabled)
-                        .frame( height: 22)
-                    
-                } else {
-                    SecureField("", text: $fieldContent,onCommit: {
-                        self.onCommit?()
-                    })
-                        .textFieldStyle(SecurePasswordStyle(shouldShowError: shouldShowError))
-                        .onChange(of: fieldContent, perform: { value in
-                            validateField(value: value)
-                        })
-                        .disabled(disabled)
-                        .frame( height: 22)
-                }
+                    .disabled(disabled)
+                    .frame( height: 22)
                 
                 Spacer()
                     .frame(width: 10)
                 
                 Button {
-                    shouldShowPassword.toggle()
+                    shouldHidePassword.toggle()
                 } label: {
-                    Image(shouldShowPassword ? "lock.hide" : "lock.show")
+                    Image(shouldHidePassword ? "lock.hide" : "lock.show")
                         .frame(width: 22, height: 20)
                         .aspectRatio(contentMode: .fit)
                 }
