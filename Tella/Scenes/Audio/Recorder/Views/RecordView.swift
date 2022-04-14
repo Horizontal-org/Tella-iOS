@@ -278,7 +278,7 @@ struct RecordView: View {
     @ViewBuilder
     private var renameFileView : some View {
         if showingRenameFileConfirmationSheet {
-            TextFieldBottomSheet(titleText: LocalizableAudio.renameFileTitle.localized,
+            TextFieldBottomSheetView(titleText: LocalizableAudio.renameFileTitle.localized,
                                  validateButtonText: "SAVE",
                                  isPresented: $showingRenameFileConfirmationSheet,
                                  fieldContent: $fileName,

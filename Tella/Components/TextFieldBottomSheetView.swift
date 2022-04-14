@@ -7,13 +7,14 @@
 //
 
 import SwiftUI
+import Combine
 
 enum FieldType {
     case text
     case fileName
 }
 
-struct TextFieldBottomSheet: View {
+struct TextFieldBottomSheetView: View {
     
     var titleText = ""
     var validateButtonText = ""
@@ -23,7 +24,7 @@ struct TextFieldBottomSheet: View {
     var fieldType : FieldType
     var backgroundColor: Color = Styles.Colors.backgroundTab
     var didConfirmAction : (() -> ())
-
+    
     @State private var isValid : Bool = false
     @State private var errorMessage : String = ""
     
@@ -46,11 +47,16 @@ struct TextFieldBottomSheet: View {
             Spacer()
                 .frame(height:12)
             
-            TextField("", text: $fieldContent)
-                .textFieldStyle(FileNameStyle())
-                .onChange(of: fieldContent, perform: { value in
-                    self.isValid = fieldContent.textValidator()
-                })
+            if #available(iOS 15.0, *) {
+                
+                FocusedTextFieldBottomSheet(fieldContent: $fieldContent,
+                                            isValid: $isValid, shouldFocus: $isPresented)
+                
+            } else {
+                TextFieldBottomSheet(fieldContent: $fieldContent,
+                                     isValid: $isValid)
+                
+            }
             
             Spacer()
                 .frame(height:8)
@@ -96,6 +102,45 @@ struct TextFieldBottomSheet: View {
     }
 }
 
+@available(iOS 15.0, *)
+struct FocusedTextFieldBottomSheet : View {
+    
+    @Binding var fieldContent : String
+    @Binding var isValid : Bool
+    @Binding var shouldFocus : Bool
+
+    @FocusState private var isFocused : Bool
+    
+    var body: some View {
+        ZStack{
+            TextField("", text: $fieldContent)
+                .textFieldStyle(FileNameStyle())
+                .onChange(of: fieldContent, perform: { value in
+                    self.isValid = fieldContent.textValidator()
+                })
+                .focused($isFocused)
+        }
+        .onReceive(Just(shouldFocus)) { value in
+            isFocused = value
+        }
+    }
+}
+
+struct TextFieldBottomSheet : View {
+    
+    @Binding var fieldContent : String
+    @Binding var isValid : Bool
+    
+    var body: some View {
+        
+        TextField("", text: $fieldContent)
+            .textFieldStyle(FileNameStyle())
+            .onChange(of: fieldContent, perform: { value in
+                self.isValid = fieldContent.textValidator()
+            })
+    }
+}
+
 struct FileNameStyle: TextFieldStyle {
     
     func _body(configuration: TextField<Self._Label>) -> some View {
@@ -131,12 +176,12 @@ struct BottomButtonActionSheetView : View  {
 
 struct CreateNewFolderBottomSheet_Previews: PreviewProvider {
     static var previews: some View {
-        TextFieldBottomSheet(titleText: "Test",
-                             validateButtonText: "OK",
-                             isPresented: .constant(true),
-                             fieldContent: .constant("Test"),
-                             fileName: "name",
-                             fieldType: FieldType.fileName,
-                             didConfirmAction: {})
+        TextFieldBottomSheetView(titleText: "Test",
+                                 validateButtonText: "OK",
+                                 isPresented: .constant(true),
+                                 fieldContent: .constant("Test"),
+                                 fileName: "name",
+                                 fieldType: FieldType.fileName,
+                                 didConfirmAction: {})
     }
 }
