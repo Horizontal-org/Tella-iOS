@@ -141,6 +141,8 @@
 		128D6E1A28045C090082AB18 /* manageFilesItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E1928045C090082AB18 /* manageFilesItems.swift */; };
 		128D6E1C280480500082AB18 /* FileActionItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E1B280480500082AB18 /* FileActionItems.swift */; };
 		128D6E1E2804DA2A0082AB18 /* ListActionSheetItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E1D2804DA2A0082AB18 /* ListActionSheetItem.swift */; };
+		128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128EDB91280980DB00747B98 /* SequenceExtension.swift */; };
+		128EDB942809897C00747B98 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128EDB932809897C00747B98 /* HomeViewModel.swift */; };
 		128F979A2799AF0100E63DA5 /* CircularActivityIndicatory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128F97962799983800E63DA5 /* CircularActivityIndicatory.swift */; };
 		128FD0B427F774FB00B24915 /* RecentFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128FD0B327F774FB00B24915 /* RecentFile.swift */; };
 		1290743B274CEB9B00F38A81 /* FileGridItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1290743A274CEB9B00F38A81 /* FileGridItem.swift */; };
@@ -383,6 +385,8 @@
 		128D6E1928045C090082AB18 /* manageFilesItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = manageFilesItems.swift; sourceTree = "<group>"; };
 		128D6E1B280480500082AB18 /* FileActionItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileActionItems.swift; sourceTree = "<group>"; };
 		128D6E1D2804DA2A0082AB18 /* ListActionSheetItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListActionSheetItem.swift; sourceTree = "<group>"; };
+		128EDB91280980DB00747B98 /* SequenceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceExtension.swift; sourceTree = "<group>"; };
+		128EDB932809897C00747B98 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		128F97962799983800E63DA5 /* CircularActivityIndicatory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularActivityIndicatory.swift; sourceTree = "<group>"; };
 		128FD0B327F774FB00B24915 /* RecentFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentFile.swift; sourceTree = "<group>"; };
 		1290743A274CEB9B00F38A81 /* FileGridItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGridItem.swift; sourceTree = "<group>"; };
@@ -713,6 +717,7 @@
 				127369E227B3C4DA00CF7BE5 /* UIDeviceExtension.swift */,
 				1289B98627C5397200315FCE /* ScreenExtension.swift */,
 				1289B98C27C53C8400315FCE /* ImageExtension.swift */,
+				128EDB91280980DB00747B98 /* SequenceExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -874,6 +879,7 @@
 				128D6E172804531B0082AB18 /* AddPhotoVideoItems.swift */,
 				128D6E1928045C090082AB18 /* manageFilesItems.swift */,
 				128D6E1B280480500082AB18 /* FileActionItems.swift */,
+				128EDB932809897C00747B98 /* HomeViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1687,6 +1693,7 @@
 				128D6E1A28045C090082AB18 /* manageFilesItems.swift in Sources */,
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,
+				128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */,
 				1289B98727C5397200315FCE /* ScreenExtension.swift in Sources */,
 				0D4D7512266316DC00D7A635 /* SettingsSecurity.swift in Sources */,
 				0D4D7514266316E500D7A635 /* SettingsAboutHelp.swift in Sources */,
@@ -1758,6 +1765,7 @@
 				1272F25D27C91ACD0054F2E2 /* ImportFileProgress.swift in Sources */,
 				125EDDB1271E40CA00E2789A /* LockViewModel.swift in Sources */,
 				D5B823F0262775D80008E04B /* CryptoManager.swift in Sources */,
+				128EDB942809897C00747B98 /* HomeViewModel.swift in Sources */,
 				0E170253267910B90069072A /* BlankFormsView.swift in Sources */,
 				0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */,
 				0D4D7518266470A700D7A635 /* SettingsViews.swift in Sources */,

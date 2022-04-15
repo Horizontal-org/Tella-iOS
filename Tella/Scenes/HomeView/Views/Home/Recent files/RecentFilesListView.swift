@@ -7,14 +7,16 @@ import SwiftUI
 struct RecentFilesListView: View {
     
     @EnvironmentObject var appModel: MainAppModel
-
     @State private var moreRecentFilesLoaded = false
+    
+    var recentFiles : [RecentFile]
+    
     private var number : Int {
-        return moreRecentFilesLoaded ? appModel.vaultManager.recentFiles.count : 3
+        return moreRecentFilesLoaded ? recentFiles.count : 3
     }
     
     var body: some View {
-        if appModel.vaultManager.recentFiles.count > 0 {
+        if recentFiles.count > 0 {
             VStack(alignment: .leading, spacing: 15){
                 Text(LocalizableHome.recentFiles.localized)
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
@@ -28,7 +30,7 @@ struct RecentFilesListView: View {
     var recentFilesView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             
-            if (appModel.vaultManager.recentFiles.count > 3) {
+            if (recentFiles.count > 3) {
                 allFilesItems
             } else {
                 firstFilesItems
@@ -41,18 +43,18 @@ struct RecentFilesListView: View {
         HStack(spacing: 7) {
             // The 3 first or all items
             ForEach(0..<number, id: \.self) { i in
-                RecentFileCell(recentFile: appModel.vaultManager.recentFiles[i].file)
+                RecentFileCell(recentFile: recentFiles[i].file)
                     .navigateTo(destination: FileDetailView(appModel: appModel,
-                                                            file: appModel.vaultManager.recentFiles[i].file,
-                                                            rootFile: appModel.vaultManager.recentFiles[i].rootFile,
-                                                            folderPathArray: appModel.vaultManager.recentFiles[i].folderPathArray))
+                                                            file: recentFiles[i].file,
+                                                            rootFile: recentFiles[i].rootFile,
+                                                            folderPathArray: recentFiles[i].folderPathArray))
             }
             // More button
-            if !moreRecentFilesLoaded &&  appModel.vaultManager.recentFiles.count >  3 {
+            if !moreRecentFilesLoaded && recentFiles.count >  3 {
                 Button {
                     moreRecentFilesLoaded = true
                 } label: {
-                    LoadMoreCell(fileNumber: appModel.vaultManager.recentFiles.count)
+                    LoadMoreCell(fileNumber: recentFiles.count - 3)
                 }
             }
         }.padding(.trailing, 17)
@@ -61,7 +63,7 @@ struct RecentFilesListView: View {
     var firstFilesItems : some View {
         HStack(spacing: 7) {
             
-            ForEach(appModel.vaultManager.recentFiles, id: \.self) { recentFile in
+            ForEach(recentFiles, id: \.self) { recentFile in
                 
                 RecentFileCell(recentFile: recentFile.file)
                     .navigateTo(destination: FileDetailView(appModel: appModel,
@@ -69,12 +71,11 @@ struct RecentFilesListView: View {
                                                             rootFile: recentFile.rootFile, folderPathArray: recentFile.folderPathArray))
             }
         }.padding(.trailing, 17)
-        
     }
 }
 
 struct ReventFilesListView_Previews: PreviewProvider {
     static var previews: some View {
-        RecentFilesListView()
+        RecentFilesListView(recentFiles: [])
     }
 }

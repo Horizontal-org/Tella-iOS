@@ -5,16 +5,15 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-class HomeViewModel: ObservableObject {
-    @Published var showingDocumentPicker = false
-    @Published var showingAddFileSheet = false
-}
-
 struct HomeView: View {
     
     @EnvironmentObject var appModel: MainAppModel
-    @StateObject var viewModel = HomeViewModel()
+    @StateObject var viewModel : HomeViewModel
     
+    init(appModel: MainAppModel) {
+        _viewModel = StateObject(wrappedValue: HomeViewModel(appModel: appModel))
+    }
+
     var body: some View {
         
         ContainerView {
@@ -23,12 +22,12 @@ struct HomeView: View {
                 VStack(spacing: 15) {
                     if appModel.settings.showRecentFiles {
                         Spacer()
-                            .frame( height: appModel.vaultManager.recentFiles.count > 0 ? 15 : 0 )
-                        RecentFilesListView()
+                            .frame( height: viewModel.getFiles().count > 0 ? 15 : 0 )
+                        RecentFilesListView(recentFiles: viewModel.getFiles())
                     }
                 }
                 
-                FileGroupsView()
+                FileGroupsView(shouldShowFilesTitle: viewModel.showingFilesTitle)
                 
                 if appModel.settings.quickDelete {
                     SwipeToActionView(completion: {
@@ -44,6 +43,6 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     
     static var previews: some View {
-        HomeView()
+        HomeView(appModel: MainAppModel())
     }
 }

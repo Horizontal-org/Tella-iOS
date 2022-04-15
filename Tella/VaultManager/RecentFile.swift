@@ -20,7 +20,6 @@ class RecentFile : Hashable {
     init(file : VaultFile, rootFile : VaultFile, folderPathArray : [VaultFile]?) {
         self.file = file
         self.rootFile = rootFile
-        self.rootFile = rootFile
         self.folderPathArray = folderPathArray
     }
 }

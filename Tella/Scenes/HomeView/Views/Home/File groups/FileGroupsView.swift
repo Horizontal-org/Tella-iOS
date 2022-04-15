@@ -7,6 +7,8 @@ import SwiftUI
 struct FileGroupsView: View {
     
     @EnvironmentObject var appModel: MainAppModel
+
+    var shouldShowFilesTitle : Bool
     
     let columns = [GridItem(.flexible(),spacing: 16),
                    GridItem(.flexible(),spacing: 16)]
@@ -14,7 +16,7 @@ struct FileGroupsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16 ) {
-                if appModel.vaultManager.recentFiles.count > 0 {
+                if shouldShowFilesTitle {
                     
                     Text(LocalizableHome.tellaFiles.localized)
                         .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
@@ -40,6 +42,6 @@ struct FileGroupsView: View {
 
 struct FileGroupsView_Previews: PreviewProvider {
     static var previews: some View {
-        FileGroupsView()
+        FileGroupsView(shouldShowFilesTitle: true)
     }
 }

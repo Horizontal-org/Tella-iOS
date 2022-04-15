@@ -15,7 +15,7 @@ protocol VaultManagerInterface {
     func load(files vaultFiles: [VaultFile]) -> [URL]
     func save(_ data: Data, vaultFile: VaultFile, parent: VaultFile?) -> Bool?
     func save<T: Datable>(_ object: T, vaultFile: VaultFile, parent: VaultFile? ) -> Bool?
-    func createNewFolder(name: String, parent: VaultFile?)
+    func createNewFolder(name: String, parent: VaultFile?, folderPathArray : [VaultFile])
     func rename(file : VaultFile, parent: VaultFile?)
     func delete(file: VaultFile, parent: VaultFile?)
     func removeAllFiles()
@@ -38,7 +38,6 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     private let fileManager: FileManagerInterface
     
     @Published var root: VaultFile
-    @Published var recentFiles: [RecentFile] = []
     @Published var progress :  ImportProgress
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
     
@@ -65,10 +64,10 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
     }
     
-    func importFile(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray : [VaultFile]?) {
+    func importFile(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray : [VaultFile]) {
         Task {
             do{
-                let filesInfo = try await self.getFilesInfo(files: files)
+                let filesInfo = try await self.getFilesInfo(files: files, folderPathArray: folderPathArray)
                 
                 self.progress.start(totalFiles: files.count, totalSize: filesInfo.1)
                 
@@ -110,7 +109,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
     }
     
-    func importFile(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName: String, folderPathArray : [VaultFile]?) {
+    func importFile(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName: String, folderPathArray : [VaultFile]) {
         
         debugLog("\(audioFilePath)", space: .files)
         
@@ -127,6 +126,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
             let duration =  audioFilePath.getDuration()
             let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
             let containerName = UUID().uuidString
+            let pathArray = folderPathArray.compactMap{$0.containerName}
             
             let vaultFile = VaultFile(type: audioFilePath.fileType,
                                       fileName: fileName,
@@ -136,12 +136,12 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                                       fileExtension: fileExtension,
                                       size:size,
                                       resolution: nil,
-                                      duration: duration)
+                                      duration: duration,
+                                      pathArray: pathArray)
             
             
             
             if let _ = save(data, vaultFile: vaultFile, parent: parentFolder) {
-                addRecentFile(file: vaultFile, rootFile: parentFolder, folderPathArray: folderPathArray)
                 save(file: root)
             }
         } catch let error {
@@ -153,13 +153,13 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     private func importFileAndEncrypt(data : Data, vaultFile:VaultFile, parentFolder :VaultFile?, type: FileType, folderPathArray : [VaultFile]?) {
         
         if let _ = self.save(data, vaultFile: vaultFile, parent: parentFolder) {
-            self.addRecentFile(file: vaultFile, rootFile: parentFolder, folderPathArray: folderPathArray)
         }
     }
     
-    func createNewFolder(name: String, parent: VaultFile?)  {
+    func createNewFolder(name: String, parent: VaultFile?, folderPathArray : [VaultFile])  {
         debugLog("\(name)", space: .files)
-        let vaultFile = VaultFile(type: .folder, fileName: name, files: nil)
+        let pathArray = folderPathArray.compactMap{$0.containerName}
+        let vaultFile = VaultFile(type: .folder, fileName: name, files: nil, pathArray: pathArray)
         parent?.add(file: vaultFile)
         save(file: root)
     }
@@ -297,13 +297,11 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         //        }
         root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
         save(file: root)
-        recentFiles = []
     }
     
     func delete(file: VaultFile, parent: VaultFile?) {
         debugLog("\(file)", space: .files)
         parent?.remove(file: file)
-        removeRecentFile(file: file)
         
         for aFile in file.files {
             delete(file: aFile, parent: parent)
@@ -331,19 +329,8 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                                               in: .userDomainMask)[0].appendingPathComponent(containerPath)
         return url
     }
-    
-    //MARK: recent file
-    private func addRecentFile(file: VaultFile, rootFile:VaultFile?, folderPathArray : [VaultFile]?) {
-        debugLog("\(file)", space: .files)
-        guard let rootFile = rootFile else { return  }
-        recentFiles.append(RecentFile(file: file, rootFile: rootFile, folderPathArray: folderPathArray))
-    }
-    
-    private func removeRecentFile(file: VaultFile) {
-        recentFiles = recentFiles.filter({ $0.file.containerName != file.containerName })
-    }
-    
-    private func getFilesInfo(files: [URL]) async throws ->([(Data,VaultFile)], Double)  {
+        
+    private func getFilesInfo(files: [URL], folderPathArray:[VaultFile]) async throws ->([(Data,VaultFile)], Double)  {
         
         var totalSizeArray : [Double] = []
         var vaultFileArray : [(Data,VaultFile)] = []
@@ -365,6 +352,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                     let duration =  filePath.getDuration()
                     let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
                     let containerName = UUID().uuidString
+                    let pathArray = folderPathArray.compactMap({$0.containerName})
                     
                     let vaultFile = await VaultFile(type: filePath.fileType,
                                                     fileName: fileName,
@@ -374,7 +362,8 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                                                     fileExtension: fileExtension,
                                                     size:size,
                                                     resolution: resolution,
-                                                    duration: duration)
+                                                    duration: duration,
+                                                    pathArray: pathArray)
                     return (data,vaultFile)
                 }
             }

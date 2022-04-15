@@ -7,9 +7,9 @@ import Combine
 
 protocol AppModelFileManagerProtocol {
     
-    func add(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray:[VaultFile]? )
-    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String, folderPathArray:[VaultFile]?)
-    func add(folder: String, to parentFolder: VaultFile?)
+    func add(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray:[VaultFile] )
+    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String, folderPathArray:[VaultFile])
+    func add(folder: String, to parentFolder: VaultFile?, folderPathArray:[VaultFile])
     
     func move(files: [VaultFile], from originalParentFolder: VaultFile?, to newParentFolder: VaultFile?)
     func cancelImportAndEncryption()
@@ -70,7 +70,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         selectedTab = newTab
     }
     
-    func add(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray:[VaultFile]? = nil) {
+    func add(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray:[VaultFile] = []) {
         
         vaultManager.progress.progress.sink { [weak self] value in
             self?.publishUpdates()
@@ -84,14 +84,14 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         self.publishUpdates()
     }
     
-    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String, folderPathArray:[VaultFile]? = nil) {
+    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String, folderPathArray:[VaultFile] = []) {
         self.vaultManager.importFile(audioFilePath: audioFilePath, to: parentFolder, type: type, fileName: fileName, folderPathArray: folderPathArray)
         self.publishUpdates()
     }
     
-    func add(folder: String, to parentFolder: VaultFile?) {
+    func add(folder: String, to parentFolder: VaultFile?,  folderPathArray:[VaultFile] = []) {
         DispatchQueue.global(qos: .background).async {
-            self.vaultManager.createNewFolder(name: folder, parent: parentFolder)
+            self.vaultManager.createNewFolder(name: folder, parent: parentFolder, folderPathArray: folderPathArray)
             self.publishUpdates()
         }
     }
