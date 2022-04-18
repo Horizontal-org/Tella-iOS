@@ -24,7 +24,7 @@ struct AddNewFolderView: View {
                     .frame(height: 50)
             }
             
-            TextFieldBottomSheet(titleText: "Create new folder",
+            TextFieldBottomSheetView(titleText: "Create new folder",
                                  validateButtonText: "CREATE",
                                  isPresented: $showingCreateNewFolderSheet,
                                  fieldContent: $fieldContent,

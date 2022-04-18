@@ -39,7 +39,7 @@ struct MainView: View  {
             NavigationView {
                 
                 TabView(selection: $appModel.selectedTab) {
-                    HomeView()
+                    HomeView(appModel: appModel)
                         .tabItem {
                             Image("tab.home")
                             Text("Home")

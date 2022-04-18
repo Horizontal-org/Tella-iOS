@@ -91,7 +91,7 @@ struct FileActionMenu: View {
     }
     
     var renameFileView : some View {
-        TextFieldBottomSheet(titleText: "Rename file",
+        TextFieldBottomSheetView(titleText: "Rename file",
                              validateButtonText: "SAVE",
                              isPresented: $showingRenameFileConfirmationSheet,
                              fieldContent: $fileName,

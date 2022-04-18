@@ -4,7 +4,6 @@
 
 import SwiftUI
 
-
 extension Image {
     func rounded() -> some View  {
       return  self.resizable()

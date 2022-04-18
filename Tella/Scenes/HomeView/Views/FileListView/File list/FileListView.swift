@@ -8,11 +8,12 @@ struct FileListView: View {
     
     @EnvironmentObject var appModel: MainAppModel
     @StateObject var fileListViewModel : FileListViewModel
+    @State var showFileDetails : Bool = false
     
     var title : String = ""
     
-    init(appModel: MainAppModel, rootFile: VaultFile , fileType: [FileType]? , title : String = "") {
-        _fileListViewModel = StateObject(wrappedValue: FileListViewModel(appModel: appModel,fileType:fileType, rootFile: rootFile, folderPathArray: [] ))
+    init(appModel: MainAppModel, rootFile: VaultFile , fileType: [FileType]? , title : String = "", fileListType : FileListType = .fileList) {
+        _fileListViewModel = StateObject(wrappedValue: FileListViewModel(appModel: appModel,fileType:fileType, rootFile: rootFile, folderPathArray: [], fileListType :  fileListType))
         self.title = title
     }
     
@@ -42,12 +43,14 @@ struct FileListView: View {
                 }
             }
             
-            AddFileView()
+            if !fileListViewModel.shouldHideViewsForGallery {
+                AddFileView()
+            }
             
             FileSortMenu()
             
             FileActionMenu()
-
+            
             showFileDetailsLink
         }
         .toolbar {
@@ -60,12 +63,13 @@ struct FileListView: View {
     @ViewBuilder
     private var showFileDetailsLink: some View {
         if let currentSelectedVaultFile = self.fileListViewModel.currentSelectedVaultFile {
-          
+            
             FileDetailView(appModel: appModel ,
                            file: currentSelectedVaultFile,
                            videoFilesArray: fileListViewModel.rootFile.getVideos().sorted(by: fileListViewModel.sortBy),
                            rootFile: fileListViewModel.rootFile,
-                           folderPathArray: fileListViewModel.folderPathArray).addNavigationLink(isActive: $fileListViewModel.showFileDetails)
+                           folderPathArray: fileListViewModel.folderPathArray)
+                .addNavigationLink(isActive: $fileListViewModel.showFileDetails)
         }
     }
 }

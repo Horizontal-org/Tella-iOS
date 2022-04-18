@@ -72,16 +72,19 @@ struct ManageFileView: View {
         }
     }
     
+    @ViewBuilder
     private var viewTypeButton: some View {
-        Button {
-            fileListViewModel.viewType = fileListViewModel.viewType == .list ? FileViewType.grid : FileViewType.list
-        } label: {
-            HStack{
-                fileListViewModel.viewType.image
-                    .frame(width: 24, height: 24)
+        if !fileListViewModel.shouldHideViewsForGallery {
+            Button {
+                fileListViewModel.viewType = fileListViewModel.viewType == .list ? FileViewType.grid : FileViewType.list
+            } label: {
+                HStack{
+                    fileListViewModel.viewType.image
+                        .frame(width: 24, height: 24)
+                }
             }
+            .frame(width: 50, height: 50)
         }
-        .frame(width: 50, height: 50)
     }
     
 }
