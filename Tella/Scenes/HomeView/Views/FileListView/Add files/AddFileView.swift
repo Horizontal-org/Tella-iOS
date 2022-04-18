@@ -28,7 +28,7 @@ struct AddFileView: View {
             
             AddPhotoVideoBottomSheet(isPresented: $showingAddPhotoVideoSheet)
             
-            TextFieldBottomSheet(titleText: "Create new folder",
+            TextFieldBottomSheetView(titleText: "Create new folder",
                                  validateButtonText: "CREATE",
                                  isPresented: $showingCreateNewFolderSheet,
                                  fieldContent: $fieldContent,

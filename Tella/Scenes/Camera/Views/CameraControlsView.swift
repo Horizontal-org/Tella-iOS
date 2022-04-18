@@ -17,14 +17,14 @@ struct CameraControlsView: View {
     var updateCameraTypeAction: ((CameraType) -> Void)
     var toggleFlash: (() -> Void)
     var close: (() -> Void)
-
+    
     // MARK: - Private properties
-
+    
     @State private var selectedOption: CameraType = .image
     @State private var state : CameraState = .readyTakingImage
     @State private var flashIsOn: Bool = false
     @State private var shouldHideCloseButton: Bool = false
-
+    
     @EnvironmentObject var cameraViewModel: CameraViewModel
     @EnvironmentObject var mainAppModel: MainAppModel
     @EnvironmentObject var appViewState: AppViewState
@@ -32,7 +32,7 @@ struct CameraControlsView: View {
     var body: some View {
         
         VStack {
-           
+            
             cameraHeaderView()
             
             Spacer()
@@ -71,7 +71,7 @@ struct CameraControlsView: View {
                         }
                         
                         close()
-
+                        
                     } label: {
                         Image("close")
                     }
@@ -219,7 +219,7 @@ struct CameraControlsView: View {
            let data = file.thumbnail {
             
             Button {
-
+                
             } label: {
                 UIImage.image(fromData:data).rounded()
                     .navigateTo(destination:getFileListView())
@@ -235,9 +235,10 @@ struct CameraControlsView: View {
         FileListView(appModel: mainAppModel,
                      rootFile: mainAppModel.vaultManager.root,
                      fileType: [.image, .video],
-                     title: "Images and Videos")
+                     title: "Images and Videos",
+                     fileListType: .cameraGallery)
     }
-
+    
     var bottomMenu : some View {
         
         HStack(spacing: 15) {
@@ -279,13 +280,13 @@ struct CameraControlsView_Previews: PreviewProvider {
     static var previews: some View {
         CameraControlsView (showingCameraView:.constant(false),
                             sourceView: .tab) {
-             
+            
         } recordVideoAction: {
-             
+            
         } toggleCamera: {
-             
+            
         } updateCameraTypeAction: { value in
-             
+            
         } toggleFlash: { 
         } close: {}
     }

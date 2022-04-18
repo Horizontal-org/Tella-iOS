@@ -31,14 +31,14 @@ class VaultFile: Codable, Hashable {
     var size : Int64
     var resolution : CGSize?
     var duration : Double?
-
+    var pathArray : [String]
     var isSelected: Bool = false
     
     static func rootFile(fileName: String, containerName: String) -> VaultFile {
-        return VaultFile(type: .folder, fileName: fileName, containerName: containerName, files: [])
+        return VaultFile(type: .folder, fileName: fileName, containerName: containerName, files: [], pathArray: [])
     }
     
-    init(type: FileType, fileName: String, containerName: String = UUID().uuidString, files: [VaultFile]? = nil, thumbnail: Data? = nil, fileExtension : String = "", size : Int64 = 0, resolution : CGSize? = nil, duration : Double? = nil) {
+    init(type: FileType, fileName: String, containerName: String = UUID().uuidString, files: [VaultFile]? = nil, thumbnail: Data? = nil, fileExtension : String = "", size : Int64 = 0, resolution : CGSize? = nil, duration : Double? = nil, pathArray :[String]) {
         self.type = type
         self.fileName = fileName
         self.containerName = containerName
@@ -50,6 +50,7 @@ class VaultFile: Codable, Hashable {
         self.size = size
         self.duration = duration
         self.resolution = resolution
+        self.pathArray = pathArray
     }
     
     var thumbnailImage: UIImage {
@@ -131,7 +132,7 @@ extension Array where Element == VaultFile {
         return self.filter({ filter == ($0.type) || (includeFolders && $0.type == .folder)})
     }
     
-    func sorted(by sortOrder: FileSortOptions, folderPathArray:[VaultFile], root:VaultFile, fileType:[FileType]?) -> [VaultFile] {
+    func sorted(by sortOrder: FileSortOptions, folderPathArray:[VaultFile] = [], root:VaultFile, fileType:[FileType]? = nil) -> [VaultFile] {
         
         var filteredFiles : [VaultFile] = []
         
@@ -155,9 +156,10 @@ extension Array where Element == VaultFile {
         return filteredFiles.sorted(by: sortOrder)
     }
     
+    
     func sorted(by sortOrder: FileSortOptions) -> [VaultFile] {
         return self.sorted { file1, file2  in
-
+            
             switch sortOrder {
             case .nameAZ:
                 return file1.fileName < file2.fileName
@@ -189,11 +191,11 @@ extension VaultFile {
     func getVideos() ->  [VaultFile] {
         return self.files.filter{$0.type == .video}
     }
-
+    
 }
 
 extension VaultFile {
-
+    
     var formattedCreationDate : String {
         get {
             return created.fileCreationDate()
@@ -229,3 +231,30 @@ extension VaultFile {
         }
     }
 }
+
+extension VaultFile {
+    
+    func getRecentFile() -> [RecentFile] {
+        
+        var vaultFileResult : [RecentFile] = []
+        var rootFile = self
+        var folderPathArray : [VaultFile] = []
+        
+        getRecentFile(root: self, vaultFileResult: &vaultFileResult,rootFile: &rootFile, folderPathArray: &folderPathArray)
+        return vaultFileResult.limit(10)
+    }
+    
+    func getRecentFile(root: VaultFile, vaultFileResult: inout [RecentFile], rootFile: inout VaultFile, folderPathArray:inout [VaultFile]) {
+        
+        root.files.forEach { file in
+            switch file.type {
+            case .folder:
+                getRecentFile(root: file, vaultFileResult: &vaultFileResult, rootFile: &rootFile, folderPathArray:&folderPathArray)
+            default:
+                let recentFile = RecentFile(file: file, rootFile: rootFile, folderPathArray:  folderPathArray)
+                vaultFileResult.append(recentFile)
+            }
+        }
+    }
+}
+

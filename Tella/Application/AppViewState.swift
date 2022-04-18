@@ -43,26 +43,11 @@ final class AppViewState: ObservableObject {
         viewStack = [.UNLOCK]
     }
 
-
     func resetToMain() {
         homeViewModel = MainAppModel()
         viewStack = [.MAIN]
     }
-    
-    func resetToAudio() {
-        viewStack = [.MAIN]
-        
-        homeViewModel?.selectedType = [.audio]
-        homeViewModel?.showFilesList = true
-    }
-    
-    func resetToImageAndVideo() {
-        viewStack = [.MAIN]
-        
-        homeViewModel?.selectedType = [.image,.video]
-        homeViewModel?.showFilesList = true
-    }
-    
+
     func resetApp() {
         AuthenticationManager().keysInitialized() ? self.resetToUnlock() : self.resetToLock()
     }

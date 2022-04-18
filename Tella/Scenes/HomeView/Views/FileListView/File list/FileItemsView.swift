@@ -30,31 +30,8 @@ struct FileItemsView: View {
         ScrollView {
             LazyVGrid(columns: gridLayout, alignment: .center, spacing: 6) {
                 ForEach(files, id: \.self) { file in
-                    
-                    switch file.type {
-                    case .folder:
-                        
-                        FileGridItem(file: file)
-                            .frame(minHeight: minHeight)
-                            .onTapGesture {
-                                
-                                if (fileListViewModel.showingMoveFileView && !fileListViewModel.selectedFiles.contains(file)) || !(fileListViewModel.showingMoveFileView) {
-                                    fileListViewModel.rootFile = file
-                                    fileListViewModel.folderPathArray.append(file)
-                                }
-                            }
-                    default:
-                        ZStack {
-                            FileGridItem(file: file)
-                                .frame( minHeight: minHeight)
-                                .onTapGesture {
-                                    if !fileListViewModel.showingMoveFileView {
-                                        fileListViewModel.updateSingleSelection(for: file)
-                                        fileListViewModel.showFileDetails = true
-                                    }
-                                }
-                        }
-                    }
+                    FileGridItem(file: file)
+                        .frame(minHeight: minHeight)
                 }
             }.padding(EdgeInsets(top: 0, leading: 6, bottom: 0, trailing: 6))
         }
@@ -64,27 +41,8 @@ struct FileItemsView: View {
         ScrollView {
             LazyVStack(spacing: 1) {
                 ForEach(files, id: \.self) { file in
-                    switch file.type {
-                    case .folder:
-                        FileListItem(file: file)
-                            .frame(height: 60)
-                            .onTapGesture {
-                                if (fileListViewModel.showingMoveFileView && !fileListViewModel.selectedFiles.contains(file)) || !(fileListViewModel.showingMoveFileView) {
-                                    fileListViewModel.rootFile = file
-                                    fileListViewModel.folderPathArray.append(file)
-                                }
-                            }
-                        
-                    default:
-                        FileListItem(file: file)
-                            .frame(height: 60)
-                            .onTapGesture {
-                                if !fileListViewModel.showingMoveFileView {
-                                    fileListViewModel.updateSingleSelection(for: file)
-                                    fileListViewModel.showFileDetails = true
-                                }
-                            }
-                    }
+                    FileListItem(file: file)
+                        .frame(height: 60)
                 }
             }
         }

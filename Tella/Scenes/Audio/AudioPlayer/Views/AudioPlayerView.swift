@@ -146,7 +146,7 @@ struct AudioPlayerView: View {
 
 struct AudioPlayerView_Previews: PreviewProvider {
     static var previews: some View {
-        AudioPlayerView(vaultFile: VaultFile(type: .folder, fileName: "folder"))
+        AudioPlayerView(vaultFile: VaultFile(type: .folder, fileName: "folder", pathArray: []))
     }
 }
 
