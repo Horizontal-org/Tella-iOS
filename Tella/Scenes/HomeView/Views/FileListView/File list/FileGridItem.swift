@@ -17,6 +17,15 @@ struct FileGridItem: View {
     
     var body: some View {
         
+        Button {
+            fileListViewModel.showFileDetails(file: file)
+        } label: {
+            fileGridView
+        }
+    }
+
+    var fileGridView : some View {
+        
         ZStack {
             
             file.gridImage
@@ -34,11 +43,9 @@ struct FileGridItem: View {
                     }
                 }
             }
-            
             self.fileNameText
             
             selectingFilesView
-            
         }
     }
     

@@ -201,6 +201,22 @@ class FileListViewModel: ObservableObject {
         }
     }
     
+    func showFileDetails(file:VaultFile) {
+        if file.type == .folder {
+            if (showingMoveFileView && !selectedFiles.contains(file)) || !(showingMoveFileView) {
+                 rootFile = file
+                 folderPathArray.append(file)
+            }
+            
+        } else {
+            if !showingMoveFileView {
+                 updateSingleSelection(for: file)
+                 showFileDetails = true
+            }
+        }
+
+    }
+    
     func add(files: [URL], type: FileType) {
         appModel.add(files: files, to: self.rootFile, type: type, folderPathArray: folderPathArray)
     }

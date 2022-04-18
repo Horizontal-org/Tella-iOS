@@ -8,6 +8,7 @@ struct FileListView: View {
     
     @EnvironmentObject var appModel: MainAppModel
     @StateObject var fileListViewModel : FileListViewModel
+    @State var showFileDetails : Bool = false
     
     var title : String = ""
     
