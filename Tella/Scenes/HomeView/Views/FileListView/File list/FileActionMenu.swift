@@ -81,23 +81,23 @@ struct FileActionMenu: View {
                            isPresented: $showingDeleteConfirmationSheet,
                            didConfirmAction:{
             showingDeleteConfirmationSheet = false
-            fileListViewModel.selectedFiles.forEach { vaultFile in
-                appModel.delete(file: vaultFile, from: fileListViewModel.rootFile)
-                if fileListViewModel.fileActionSource == .details {
-                    self.presentationMode.wrappedValue.dismiss()
-                }
+            
+            appModel.delete(files: fileListViewModel.selectedFiles, from: fileListViewModel.rootFile)
+            
+            if fileListViewModel.fileActionSource == .details {
+                self.presentationMode.wrappedValue.dismiss()
             }
         })
     }
     
     var renameFileView : some View {
         TextFieldBottomSheetView(titleText: "Rename file",
-                             validateButtonText: "SAVE",
-                             isPresented: $showingRenameFileConfirmationSheet,
-                             fieldContent: $fileName,
-                             fileName: fileListViewModel.selectedFiles.count == 1 ? fileListViewModel.selectedFiles[0].fileName : "",
-                             fieldType: FieldType.fileName,
-                             didConfirmAction: {
+                                 validateButtonText: "SAVE",
+                                 isPresented: $showingRenameFileConfirmationSheet,
+                                 fieldContent: $fileName,
+                                 fileName: fileListViewModel.selectedFiles.count == 1 ? fileListViewModel.selectedFiles[0].fileName : "",
+                                 fieldType: FieldType.fileName,
+                                 didConfirmAction: {
             fileListViewModel.selectedFiles[0].fileName = fileName
             appModel.rename(file: fileListViewModel.selectedFiles[0], parent: fileListViewModel.rootFile)
         })

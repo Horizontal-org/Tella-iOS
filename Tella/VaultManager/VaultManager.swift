@@ -17,9 +17,9 @@ protocol VaultManagerInterface {
     func save<T: Datable>(_ object: T, vaultFile: VaultFile, parent: VaultFile? ) -> Bool?
     func createNewFolder(name: String, parent: VaultFile?, folderPathArray : [VaultFile])
     func rename(file : VaultFile, parent: VaultFile?)
-    func delete(file: VaultFile, parent: VaultFile?)
+    func delete(files: [VaultFile], parent: VaultFile?)
     func removeAllFiles()
-    func saveDataToTempFile(data: Data, pathExtension:String) -> URL? 
+    func saveDataToTempFile(data: Data, pathExtension:String) -> URL?
 }
 
 class VaultManager: VaultManagerInterface, ObservableObject {
@@ -283,32 +283,34 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
         return tmpFileURL
     }
-
+    
     func removeAllFiles() {
         debugLog("", space: .files)
-        
-        for file in root.files {
-            delete(file: file, parent: root)
-        }
-        
-        //        let files = fileManager.contentsOfDirectory(atPath: containerURL)
-        //        for fileURL in files {
-        //            fileManager.removeItem(at: fileURL)
-        //        }
+        delete(files: root.files, parent: root)
         root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
         save(file: root)
     }
     
+    func delete(files: [VaultFile], parent: VaultFile?) {
+        for file in files {
+            debugLog("\(file)", space: .files)
+            if file.type == .folder {
+                if file.files.count > 0 {
+                    delete(files: file.files, parent: file)
+                }
+                parent?.remove(file: file)
+            } else {
+                delete(file: file, parent: parent)
+            }
+        }
+        save(file: root)
+    }
+    
     func delete(file: VaultFile, parent: VaultFile?) {
-        debugLog("\(file)", space: .files)
         parent?.remove(file: file)
         
-        for aFile in file.files {
-            delete(file: aFile, parent: parent)
-        }
         let fileURL = containerURL(for: file.containerName)
         fileManager.removeItem(at: fileURL)
-        save(file: root)
     }
     
     func clearTmpDirectory() {
@@ -329,7 +331,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                                               in: .userDomainMask)[0].appendingPathComponent(containerPath)
         return url
     }
-        
+    
     private func getFilesInfo(files: [URL], folderPathArray:[VaultFile]) async throws ->([(Data,VaultFile)], Double)  {
         
         var totalSizeArray : [Double] = []
@@ -373,7 +375,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         })
         
         totalSizeArray = vaultFileArray.compactMap{Double($0.1.size)}
-
+        
         let size = totalSizeArray.reduce(0.0, +)
         
         return (vaultFileArray,size)
