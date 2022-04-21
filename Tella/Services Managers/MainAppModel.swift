@@ -13,7 +13,7 @@ protocol AppModelFileManagerProtocol {
     
     func move(files: [VaultFile], from originalParentFolder: VaultFile?, to newParentFolder: VaultFile?)
     func cancelImportAndEncryption()
-    func delete(file: VaultFile, from parentFolder: VaultFile?)
+    func delete(files: [VaultFile], from parentFolder: VaultFile?)
     func rename(file : VaultFile, parent: VaultFile?)
     func getFilesForShare(files: [VaultFile]) -> [Any]
     func clearTmpDirectory()
@@ -103,10 +103,10 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     func cancelImportAndEncryption() {
         self.vaultManager.shouldCancelImportAndEncryption.send(true)
     }
-    
-    func delete(file: VaultFile, from parentFolder: VaultFile?) {
+
+    func delete(files: [VaultFile], from parentFolder: VaultFile?) {
         DispatchQueue.global(qos: .background).async {
-            self.vaultManager.delete(file: file, parent: parentFolder)
+            self.vaultManager.delete(files: files, parent: parentFolder)
             self.publishUpdates()
         }
     }
