@@ -10,10 +10,10 @@ class SettingsViewModel: ObservableObject {
     @Published var languageItems : [Language]
     
     var aboutAndHelpItems : [AboutAndHelpItem] = {
-        return [AboutAndHelpItem(title: LocalizableSettings.contactUs.localized,
+        return [AboutAndHelpItem(title: Localizable.Settings.contactUs,
                                  imageName: "settings.contact-us",
                                  url: TellaUrls.contactURL),
-                AboutAndHelpItem(title: LocalizableSettings.privacyPolicy.localized,
+                AboutAndHelpItem(title: Localizable.Settings.privacyPolicy,
                                  imageName: "settings.privacy",
                                  url: TellaUrls.privacyURL)
         ]

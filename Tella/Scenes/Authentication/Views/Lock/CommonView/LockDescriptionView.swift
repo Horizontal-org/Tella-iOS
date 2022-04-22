@@ -33,7 +33,7 @@ struct LockDescriptionView : View {
 
 struct LockDescriptionView_Previews: PreviewProvider {
     static var previews: some View {
-        LockDescriptionView(title: LocalizableLock.passwordTitle.localized,
-                            description: LocalizableLock.passwordDescription.localized)
+        LockDescriptionView(title: Localizable.Lock.passwordTitle,
+                            description: Localizable.Lock.passwordDescription)
     }
 }

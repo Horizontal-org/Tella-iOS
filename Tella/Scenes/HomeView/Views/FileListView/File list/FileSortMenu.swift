@@ -12,14 +12,14 @@ struct FileSortMenu: View {
     
     var items : [ListActionSheetItem] {
         
-        var iteeeems : [ListActionSheetItem] = []
+        var items : [ListActionSheetItem] = []
         fileSortOptions.forEach { item in
-            iteeeems.append(ListActionSheetItem(imageName: fileListViewModel.sortBy == item ? "radio_selected" : "radio_unselected",
-                                                content: item.name,
-                                                type: item))
+            items.append(ListActionSheetItem(imageName: fileListViewModel.sortBy == item ? "radio_selected" : "radio_unselected",
+                                             content: item.name,
+                                             type: item))
             
         }
-        return iteeeems
+        return items
         
         
     }
@@ -29,7 +29,7 @@ struct FileSortMenu: View {
             
             DragView(modalHeight: 300,
                      isShown: $fileListViewModel.showingSortFilesActionSheet){
-                ActionListBottomSheet(items: items, headerTitle: "Sort by",
+                ActionListBottomSheet(items: items, headerTitle: Localizable.Home.sortByTitle,
                                       isPresented: $fileListViewModel.showingSortFilesActionSheet,
                                       action:  {item in
                     self.handleActions(item : item)

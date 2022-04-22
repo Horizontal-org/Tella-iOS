@@ -4,19 +4,21 @@
 
 import Foundation
 
-enum LocalizableSettings: String, LocalizableDelegate {
+extension Localizable {
     
-    case  title = "SettingsTitle"
-    case  language = "SettingsLanguage"
-    case  lock = "SettingsLock"
-    case  aboutAndHelp = "SettingsAboutAndHelp"
-    
-    // About & Help
-    case  version = "SettingsVersion"
-    case  contactUs = "SettingsContactUs"
-    case  privacyPolicy = "SettingsPrivacyPolicy"
-    
-    var tableName: String? {
-        return "Settings"
+    struct Settings {
+        static var title = "SettingsTitle".localized
+        static var language = "SettingsLanguage".localized
+        static var lock = "SettingsLock".localized
+        static var aboutAndHelp = "SettingsAboutAndHelp".localized
+        
+        static var recentFilesTitle = "SettingsRecentFilesTitle".localized
+        static var recentFilesDescription = "SettingsRecentFilesDescription".localized
+        
+        // About & Help
+        static var version = "SettingsVersion".localized
+        static var contactUs = "SettingsContactUs".localized
+        static var privacyPolicy = "SettingsPrivacyPolicy".localized
+        
     }
 }

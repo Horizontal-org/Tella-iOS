@@ -8,51 +8,70 @@
 
 import Foundation
 
-enum LocalizableLock: String, LocalizableDelegate {
+
+extension Localizable {
     
-    // Lock Choice view
-    case  title = "LockChoiceTitle"
-    case  passwordButtonTitle = "LockChoicePasswordButtonTitle"
-    case  passwordButtonDescription = "LockChoicePasswordButtonDescription"
-    case  pinButtonTitle = "LockChoicePINButtonTitle"
-    case  pinButtonDescription = "LockChoicePINButtonDescription"
-    case  lockChoiceHeaderTitle = "LockChoiceHeaderTitle"
+    struct Lock  {
+        
+        static var backButtonTitle = "LockBackButtonTitle".localized
+        static var nextButtonTitle = "LockNextButtonTitle".localized
+
+        // Lock Choice view
+        static var choiceTitle = "LockChoiceTitle".localized
+        static var passwordButtonTitle = "LockChoicePasswordButtonTitle".localized
+        static var passwordButtonDescription = "LockChoicePasswordButtonDescription".localized
+        static var pinButtonTitle = "LockChoicePINButtonTitle".localized
+        static var pinButtonDescription = "LockChoicePINButtonDescription".localized
+        static var lockChoiceHeaderTitle = "LockChoiceHeaderTitle".localized
 
     // Lock Password view
-    case  passwordTitle = "LockPasswordTitle"
-    case  passwordDescription = "LockPasswordDescription"
-    case  confirmPasswordTitle = "LockConfirmPasswordTitle"
-    case  confirmPasswordDescription = "LockConfirmPasswordDescription"
-    case  confirmPasswordError = "LockConfirmPasswordError"
+        static var passwordTitle = "LockPasswordTitle".localized
+        static var passwordDescription = "LockPasswordDescription".localized
+        static var confirmPasswordTitle = "LockConfirmPasswordTitle".localized
+        static var confirmPasswordDescription = "LockConfirmPasswordDescription".localized
+        static var confirmPasswordError = "LockConfirmPasswordError".localized
     
     // Welcome view
-    case welcomeTitle = "LockWelcomeTitle"
-    case welcomeDescription = "LockWelcomeDescription"
-    case welcomeButtonTitle = "LockWelcomeButtonTitle"
+        static var welcomeTitle = "LockWelcomeTitle".localized
+        static var welcomeDescription = "LockWelcomeDescription".localized
+        static var welcomeButtonTitle = "LockWelcomeButtonTitle".localized
     
     // Onboarding End view
-    case onboardingEndTitle = "LockOnboardingEndTitle"
-    case onboardingEndDescription = "LockOnboardingEndDescription"
-    case onboardingEndButtonTitle = "LockOnboardingEndButtonTitle"
+        static var onboardingEndTitle = "LockOnboardingEndTitle".localized
+        static var onboardingEndDescription = "LockOnboardingEndDescription".localized
+        static var onboardingEndButtonTitle = "LockOnboardingEndButtonTitle".localized
 
     // Lock Pin view
-    case  pinTitle = "LockPinTitle"
-    case  pinDescription = "LockPinDescription"
-    case  confirmPinTitle = "LockConfirmPinTitle"
-    case  confirmPinDescription = "LockConfirmPinDescription"
+        static var pinTitle = "LockPinTitle".localized
+        static var pinDescription = "LockPinDescription".localized
+        static var confirmPinTitle = "LockConfirmPinTitle".localized
+        static var confirmPinDescription = "LockConfirmPinDescription".localized
     
     // Unlock Password view
-    case  unlockPasswordTitle = "UnlockPasswordTitle"
-    case  unlockPasswordError = "UnlockPasswordError"
-    case  unlockUpdatePasswordTitle = "UnlockUpdatePasswordTitle"
+        static var unlockPasswordTitle = "UnlockPasswordTitle".localized
+        static var unlockPasswordError = "UnlockPasswordError".localized
+        static var unlockUpdatePasswordTitle = "UnlockUpdatePasswordTitle".localized
 
     
     // Unlock Pin view
-    case  unlockPinTitle = "UnlockPinTitle"
-    case  unlockPinError = "UnlockPinError"
-    case  unlockUpdatePinTitle = "UnlockUpdatePinTitle"
+        static var unlockPinTitle = "UnlockPinTitle".localized
+        static var unlockPinError = "UnlockPinError".localized
+        static var unlockUpdatePinTitle = "UnlockUpdatePinTitle".localized
+    }
 
-    var tableName: String? {
-        return "Lock"
+}
+
+struct Localizable {
+ 
+}
+
+extension String {
+    var bundle: Bundle {
+        return Bundle.main
+    }
+
+    var localized: String {
+        return bundle.localizedString(forKey: self, value: nil, table: "Localizable")
     }
 }
+ 

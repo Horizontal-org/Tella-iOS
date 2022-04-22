@@ -80,10 +80,10 @@ struct RecordView: View {
     
     private func getSettingsAlertView() -> Alert {
         Alert(title: Text(""),
-              message: Text(LocalizableAudio.deniedPermissionMessage.localized),
+              message: Text(Localizable.Audio.deniedPermissionMessage),
               primaryButton: .default(Text("Cancel"), action: {
             self.viewModel.shouldShowSettingsAlert = false
-        }), secondaryButton: .default(Text(LocalizableAudio.deniedPermissionButtonTitle.localized), action: {
+        }), secondaryButton: .default(Text(Localizable.Audio.deniedPermissionButtonTitle), action: {
             UIApplication.shared.openSettings()
         }))
         
@@ -239,7 +239,7 @@ struct RecordView: View {
                 Image("close")
             }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 12))
             
-            Text(LocalizableAudio.recorderTitle.localized)
+            Text(Localizable.Audio.recorderTitle)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                 .foregroundColor(Color.white)
             Spacer()
@@ -278,7 +278,7 @@ struct RecordView: View {
     @ViewBuilder
     private var renameFileView : some View {
         if showingRenameFileConfirmationSheet {
-            TextFieldBottomSheetView(titleText: LocalizableAudio.renameFileTitle.localized,
+            TextFieldBottomSheetView(titleText: Localizable.Audio.renameFileTitle,
                                  validateButtonText: "SAVE",
                                  isPresented: $showingRenameFileConfirmationSheet,
                                  fieldContent: $fileName,
@@ -297,7 +297,7 @@ struct RecordView: View {
             VStack {
                 Spacer()
                 
-                Text(LocalizableAudio.recordingSavedMessage.localized)
+                Text(Localizable.Audio.recordingSavedMessage)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(.black)
                     .padding()

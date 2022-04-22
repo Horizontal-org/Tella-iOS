@@ -4,20 +4,19 @@
 
 import Foundation
 
-enum LocalizableCamera: String, LocalizableDelegate {
+extension Localizable {
+   
+    struct Camera {
 
-    case addFileProgressTitle = "CameraAddFileProgressTitle"
-    case addFileProgressComplete = "CameraAddFileProgressComplete"
-    case cancelAddFileTitle = "CameraCancelAddFileTitle"
-    case cancelAddFileMessage = "CameraCancelAddFileMessage"
-    case cancelAddFileButtonTitle = "CameraCancelAddFileButtonTitle"
-    case cancelAddFileBackButtonTitle = "CamerCancelAddFileBackButtonTitle"
+        static var addFileProgressTitle = "CameraAddFileProgressTitle".localized
+        static var addFileProgressComplete = "CameraAddFileProgressComplete".localized
+        static var cancelAddFileTitle = "CameraCancelAddFileTitle".localized
+        static var cancelAddFileMessage = "CameraCancelAddFileMessage".localized
+        static var cancelAddFileButtonTitle = "CameraCancelAddFileButtonTitle".localized
+        static var cancelAddFileBackButtonTitle = "CamerCancelAddFileBackButtonTitle".localized
     
-    case deniedPermissionMessage = "CameraDeniedPermissionMessage"
-    case deniedPermissionButtonTitle = "CameraDeniedPermissionButtonTitle"
+        static var deniedPermissionMessage = "CameraDeniedPermissionMessage".localized
+        static var deniedPermissionButtonTitle = "CameraDeniedPermissionButtonTitle".localized
 
-    var tableName: String? {
-        return "Camera"
     }
-    
 }

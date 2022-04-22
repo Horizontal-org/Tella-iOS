@@ -38,7 +38,7 @@ struct AddPhotoVideoBottomSheet: View {
         DragView(modalHeight: CGFloat(AddPhotoVideoItems.count * 40 + 100),
                  isShown: $isPresented) {
             ActionListBottomSheet(items: AddPhotoVideoItems,
-                                  headerTitle: "Import from device",
+                                  headerTitle: Localizable.Home.importFromDevice,
                                   isPresented: $isPresented, action: {item in
                 self.handleActions(item : item)
             })

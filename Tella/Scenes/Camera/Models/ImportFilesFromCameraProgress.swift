@@ -11,23 +11,23 @@ struct ImportFilesFromCameraProgress : ImportFilesProgressProtocol {
     }
     
     var title: String {
-        return LocalizableCamera.addFileProgressTitle.localized
+        return Localizable.Camera.addFileProgressTitle
     }
     
     var progressMessage: String {
-        return LocalizableCamera.addFileProgressComplete.localized
+        return Localizable.Camera.addFileProgressComplete
     }
 
     var cancelTitle: String {
-        return LocalizableCamera.cancelAddFileTitle.localized
+        return Localizable.Camera.cancelAddFileTitle
     }
     
     var cancelMessage: String {
-        return LocalizableCamera.cancelAddFileMessage.localized
+        return Localizable.Camera.cancelAddFileMessage
     }
     
     var cancelButtonTitle: String {
-        return LocalizableCamera.cancelAddFileButtonTitle.localized
+        return Localizable.Camera.cancelAddFileButtonTitle
     }
 }
 

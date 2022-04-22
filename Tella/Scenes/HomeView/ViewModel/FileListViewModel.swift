@@ -59,7 +59,7 @@ class FileListViewModel: ObservableObject {
     }
     
     var filePath : String {
-        let rootPath = "Tella" + (folderPathArray.count > 0 ? "/" : "")
+        let rootPath = Localizable.Common.tellaTitle + (folderPathArray.count > 0 ? "/" : "")
         return  rootPath + self.folderPathArray.compactMap{$0.fileName}.joined(separator: "/")
     }
     
@@ -68,7 +68,8 @@ class FileListViewModel: ObservableObject {
     }
     
     var selectedItemsTitle : String {
-        return "\(selectedItemsNumber) items"
+        let itemString = selectedItemsNumber == 1 ? Localizable.Home.fileItem : Localizable.Home.fileItems
+        return String.init(format: itemString, selectedItemsNumber)
     }
     
     var fileActionsTitle: String {

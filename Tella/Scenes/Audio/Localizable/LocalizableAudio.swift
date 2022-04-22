@@ -4,25 +4,22 @@
 
 import Foundation
 
-enum LocalizableAudio: String, LocalizableDelegate {
-    
-    case recorderTitle = "AudioRecorderTitle"
-    case suffixRecordingName = "AudioSuffixRecordingName"
+extension Localizable {
+   
+    struct Audio {
 
-    case  saveRecordingTitle = "AudioSaveRecordingTitle"
-    case  saveRecordingMessage = "AudioSaveRecordingMessage"
-    
-    case  renameFileTitle = "AudioRenameFileTitle"
+        static var recorderTitle = "AudioRecorderTitle".localized
+        static var suffixRecordingName = "AudioSuffixRecordingName".localized
 
-    case  recordingSavedMessage = "AudioRecordingSavedMessage"
+        static var saveRecordingTitle = "AudioSaveRecordingTitle".localized
+        static var saveRecordingMessage = "AudioSaveRecordingMessage".localized
     
-    case  deniedPermissionMessage = "AudioDeniedPermissionMessage"
-    case  deniedPermissionButtonTitle = "AudioDeniedPermissionButtonTitle"
+        static var renameFileTitle = "AudioRenameFileTitle".localized
 
+        static var recordingSavedMessage = "AudioRecordingSavedMessage".localized
     
-    var tableName: String? {
-        return "Audio"
+        static var deniedPermissionMessage = "AudioDeniedPermissionMessage".localized
+        static var deniedPermissionButtonTitle = "AudioDeniedPermissionButtonTitle".localized
+
     }
 }
-
-
