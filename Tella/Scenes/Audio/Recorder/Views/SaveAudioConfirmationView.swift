@@ -17,8 +17,8 @@ struct SaveAudioConfirmationView: View {
  
         ConfirmBottomSheet(titleText: Localizable.Audio.saveRecordingTitle,
                            msgText: Localizable.Audio.saveRecordingMessage,
-                               cancelText: "Discard",
-                               actionText: "Save",
+                           cancelText: Localizable.Common.discard,
+                           actionText: Localizable.Common.save,
                                modalHeight: modalHeight,
                                withDrag: false,
                                isPresented: $showingSaveAudioConfirmationView) {

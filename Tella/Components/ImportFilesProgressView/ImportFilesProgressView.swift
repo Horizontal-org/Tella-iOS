@@ -88,7 +88,7 @@ struct ImportFilesProgressView: View {
                 
                 HStack {
                     Spacer()
-                    Button("CANCEL") {
+                    Button(Localizable.Common.cancel) {
                         mainAppModel.vaultManager.progress.pause()
                         showingCancelImportConfirmationSheet = true
                     }

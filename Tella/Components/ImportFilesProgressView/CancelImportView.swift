@@ -20,7 +20,7 @@ struct CancelImportView: View {
             
             ConfirmBottomSheet(titleText: importFilesProgressProtocol.cancelTitle,
                                msgText: importFilesProgressProtocol.cancelMessage,
-                               cancelText: "BACK",
+                               cancelText: Localizable.Common.back.uppercased(),
                                actionText: importFilesProgressProtocol.cancelButtonTitle,
                                modalHeight: 161,
                                isPresented: $showingCancelImportConfirmationSheet) {

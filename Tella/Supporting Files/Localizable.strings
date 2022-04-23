@@ -19,14 +19,21 @@
 "CommonCancel" = "CANCEL";
 "CommonCreate" = "CREATE";
 "CommonSave" = "SAVE";
+"CommonDiscard" = "DISCARD";
+"CommonDelete" = "DELETE";
 
 "CommonRenameFile" = "Rename file";
 
+"CommonBack" = "Back";
+"CommonNext" = "Next";
+
+
+"CommonSameFileNameError" = "Please enter a file name that is not currently in use"
 /******Lock*******/
 //
-
-"LockBackButtonTitle" = "Back";
-"LockNextButtonTitle" = "Next";
+//
+//"LockBackButtonTitle" = "Back";
+//"LockNextButtonTitle" = "Next";
 
 
 // Lock Choice view
@@ -170,7 +177,10 @@
 "AudioRecorderTitle" = "Recorder";
 "AudioSuffixRecordingName" = "Recording";
 
+"AudioFileListTitle" = "Audio";
 
+"AudioUpdateSecondTime" = "%@s";
+ 
 "AudioSaveRecordingTitle" = "Save recording?";
 "AudioSaveRecordingMessage" = "Your recording is not saved. Would you like to save it before exiting?";
      
@@ -185,6 +195,12 @@
 
 /**** Camera ****/
 // Import Progress
+
+"CameraImagesAndVideosTitle" = "Images and Videos";
+"CameraPhotoMenuItem" = "Photo";
+"CameraVideoMenuItem" = "Video";
+
+
 
 "CameraAddFileProgressTitle" = "Encrypting file...";
 "CameraAddFileProgressComplete" = "%i%% complete";

@@ -8,6 +8,10 @@ extension Localizable {
    
     struct Camera {
 
+        static var imagesAndVideosTitle = "CameraImagesAndVideosTitle".localized
+        static var photoMenuItem = "CameraPhotoMenuItem".localized
+        static var videoMenuItem = "CameraVideoMenuItem".localized
+        
         static var addFileProgressTitle = "CameraAddFileProgressTitle".localized
         static var addFileProgressComplete = "CameraAddFileProgressComplete".localized
         static var cancelAddFileTitle = "CameraCancelAddFileTitle".localized

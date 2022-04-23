@@ -25,9 +25,13 @@ extension Localizable {
         static var cancel = "CommonCancel".localized
         static var create = "CommonCreate".localized
         static var save = "CommonSave".localized
+        static var discard = "CommonDiscard".localized
+        static var back = "CommonBack".localized
+        static var next = "CommonNext".localized
         static var delete = "CommonDelete".localized
-
+        
         static var renameFile = "CommonRenameFile".localized
+        static var sameFileNameError = "CommonSameFileNameError".localized
 
         
     }

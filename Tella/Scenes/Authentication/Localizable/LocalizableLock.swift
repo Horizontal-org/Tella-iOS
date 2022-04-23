@@ -13,8 +13,8 @@ extension Localizable {
     
     struct Lock  {
         
-        static var backButtonTitle = "LockBackButtonTitle".localized
-        static var nextButtonTitle = "LockNextButtonTitle".localized
+//        static var backButtonTitle = "LockBackButtonTitle".localized
+//        static var nextButtonTitle = "LockNextButtonTitle".localized
 
         // Lock Choice view
         static var choiceTitle = "LockChoiceTitle".localized

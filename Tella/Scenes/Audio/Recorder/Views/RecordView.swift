@@ -81,7 +81,7 @@ struct RecordView: View {
     private func getSettingsAlertView() -> Alert {
         Alert(title: Text(""),
               message: Text(Localizable.Audio.deniedPermissionMessage),
-              primaryButton: .default(Text("Cancel"), action: {
+              primaryButton: .default(Text(Localizable.Common.cancel), action: {
             self.viewModel.shouldShowSettingsAlert = false
         }), secondaryButton: .default(Text(Localizable.Audio.deniedPermissionButtonTitle), action: {
             UIApplication.shared.openSettings()
@@ -172,18 +172,9 @@ struct RecordView: View {
                 Image("mic.record")
                     .frame(width: 83, height: 83)
             }
-            
-            //            Button(action: {
-            //                self.listenAudiFiles()
-            //            }) {
-            //                Image("mic.listen")
-            //                    .resizable()
-            //                    .frame(width: 52, height: 52)
-            //            }
-            
-            
+
             Button(action: {
-                //                self.listenAudiFiles()
+
             }) {
                 Image("mic.listen")
                     .resizable()
@@ -250,7 +241,7 @@ struct RecordView: View {
         FileListView(appModel: mainAppModel,
                      rootFile: mainAppModel.vaultManager.root,
                      fileType: [.audio],
-                     title: "Audio",
+                     title: Localizable.Audio.fileListTitle,
                      fileListType: .recordList)
     }
     
@@ -279,12 +270,12 @@ struct RecordView: View {
     private var renameFileView : some View {
         if showingRenameFileConfirmationSheet {
             TextFieldBottomSheetView(titleText: Localizable.Audio.renameFileTitle,
-                                 validateButtonText: "SAVE",
-                                 isPresented: $showingRenameFileConfirmationSheet,
-                                 fieldContent: $fileName,
-                                 fileName: viewModel.fileName,
-                                 fieldType: FieldType.fileName,
-                                 didConfirmAction: {
+                                     validateButtonText: Localizable.Common.save,
+                                     isPresented: $showingRenameFileConfirmationSheet,
+                                     fieldContent: $fileName,
+                                     fileName: viewModel.fileName,
+                                     fieldType: FieldType.fileName,
+                                     didConfirmAction: {
                 viewModel.fileName =  fileName
             })
             
