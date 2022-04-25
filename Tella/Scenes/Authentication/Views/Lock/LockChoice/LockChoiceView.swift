@@ -27,7 +27,7 @@ struct LockChoiceView: View {
                         .frame(width: 60, height: 100)
                         .aspectRatio(contentMode: .fit)
                     
-                    Text(LocalizableLock.title.localized)
+                    Text(Localizable.Lock.choiceTitle)
                         .font(.custom(Styles.Fonts.boldFontName, size: 18))
                         .foregroundColor(.white)
                     
@@ -64,7 +64,7 @@ struct LockChoiceHeaderView : View {
                 Image("close")
             }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 12))
             
-            Text(LocalizableLock.lockChoiceHeaderTitle.localized)
+            Text(Localizable.Lock.lockChoiceHeaderTitle)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                 .foregroundColor(Color.white)
             Spacer()

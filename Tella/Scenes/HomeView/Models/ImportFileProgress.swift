@@ -11,22 +11,22 @@ struct  ImportFilesProgress : ImportFilesProgressProtocol {
     }
     
     var title: String {
-        return LocalizableHome.importProgressTitle.localized
+        return Localizable.Home.importProgressTitle
     }
     
     var progressMessage: String {
-        return LocalizableHome.importProgressFileImported.localized
+        return Localizable.Home.importProgressFileImported
     }
     
     var cancelTitle: String {
-        return LocalizableHome.cancelImportFileTitle.localized
+        return Localizable.Home.cancelImportFileTitle
     }
     
     var cancelMessage: String {
-        return LocalizableHome.cancelImportFileMessage.localized
+        return Localizable.Home.cancelImportFileMessage
     }
     
     var cancelButtonTitle: String {
-        return LocalizableHome.cancelImportFileCancelImport.localized
+        return Localizable.Home.cancelImportFileCancelImport
     }
 }

@@ -1,0 +1,235 @@
+/* 
+ Localizable.strings
+ Tella
+ 
+ Copyright © 2022 INTERNEWS. All rights reserved.
+ */
+
+/******* Common *******/
+/**********************/
+
+// Menu
+"CommonMenuHome" = "Home";
+"CommonMenuReports" = "Reports";
+"CommonMenuForms" = "Forms";
+"CommonMenuCamera" = "Camera";
+"CommonMenuRecorder" = "Rec";
+
+"CommonTellaTitle" = "Tella";
+"CommonOK" = "OK";
+"CommonCancel" = "CANCEL";
+"CommonCreate" = "CREATE";
+"CommonSave" = "SAVE";
+"CommonDiscard" = "DISCARD";
+"CommonDelete" = "DELETE";
+
+"CommonRenameFile" = "Rename file";
+
+"CommonBack" = "Back";
+"CommonNext" = "Next";
+
+
+"CommonSameFileNameError" = "Please enter a file name that is not currently in use";
+
+/******** Lock ********/
+/**********************/
+
+// Lock Choice view
+"LockChoiceTitle" = "How would you like to lock Tella?";
+"LockChoicePasswordButtonTitle" = "PASSWORD";
+"LockChoicePasswordButtonDescription" = "The most secure option";
+"LockChoicePINButtonTitle" = "PIN";
+"LockChoicePINButtonDescription" = "Moderately secure";
+"LockChoiceHeaderTitle" = "Lock";
+
+
+// Lock Password view
+"LockPasswordTitle" = "Enter your password";
+"LockPasswordDescription" = "Use at least 6 characters and avoid using passwords that can be guessed easily, such as “password.” The longer your password, the more secure it is." ;
+"LockConfirmPasswordTitle" = "Confirm your password";
+"LockConfirmPasswordDescription" = "Please enter your password one more time, just to be sure.";
+"LockConfirmPasswordError" = "Please try again. Your passwords do not match.";
+
+// Lock Pin view
+
+"LockPinTitle" = "Enter your PIN";
+"LockPinDescription" = "Use at least 6 digits and avoid using numbers that can be guessed easily, such as your birthday." ;
+"LockConfirmPinTitle" = "Confirm your PIN";
+"LockConfirmPinDescription" = "Please enter your PIN one more time, just to be sure.";
+
+// Welcome view
+
+"LockWelcomeTitle" = "Welcome to Tella";
+"LockWelcomeDescription" = "Document & Protect";
+"LockWelcomeButtonTitle" = "GET STARTED";
+
+// Onboarding End view
+
+"LockOnboardingEndTitle" = "You’re all done!";
+"LockOnboardingEndDescription" = "You can always continue changing your preferences in Settings.";
+"LockOnboardingEndButtonTitle" = "GO TO TELLA";
+
+
+// Unlock Password view
+"UnlockPasswordError" = "Incorrect password, please try again";
+"UnlockPasswordTitle" = "Enter your password to unlock";
+"UnlockUpdatePasswordTitle" = "Enter your password to change your lock method";
+
+
+// Unlock Pin view
+"UnlockPinTitle" = "Enter your PIN to unlock Tella";
+"UnlockPinError" = "Incorrect PIN, please try again";
+"UnlockUpdatePinTitle" = "Enter your PIN to change your lock method";
+
+
+/****** Home ******/
+// Recent files
+"HomeRecentFiles" = "Recent files";
+"HomeRecentFilesMoreFiles" = "%i more files";
+
+// Tella files
+"HomeTellaFiles" = "Tella files";
+"HomeAllFilesItem" = "All files";
+"HomeImagesItem" = "Images";
+"HomeVideosItem" = "Videos";
+"HomeAudioItem" = "Audio";
+"HomeDocumentsItem" = "Documents";
+"HomeOthersItem" = "Others";
+
+// File list
+"HomeSortByTitle" = "Sort by";
+"HomeSortByName" = "Name";
+"HomeSortByDate" = "Date";
+"HomeSortByAscendingName" = "Name A > Z";
+"HomeSortByDescendingName" = "Name Z > A";
+"HomeSortByAscendingDate" = "Newest to oldest";
+"HomeSortByDescendingDate" = "Oldest to newest";
+
+"HomeFileItems" = "%i items";
+"HomeFileItem" = "%i item";
+
+// Add files
+
+"HomeManagefilesTitle" = "Manage files";
+
+"HomeCreateNewFolder" = "Create new folder";
+"HomeImportFromDevice" = "Import from device";
+
+"HomePhotoLibrary" = "Photo Library";
+"HomeDocument" = "Document";
+
+"HomeTakePhotoVideo" = "Take photo/video";
+"HomeRecordAudio" = "Record audio";
+
+
+
+// File actions
+
+"HomeShareFile" = "Share";
+"HomeMoveFile" = "Move to another folder";
+"HomeRenameFile" = "Rename";
+"HomeSaveFile" = "Save to device";
+"HomeFileInformation" = "File information";
+"HomeDeleteFile" = "Delete";
+
+
+"HomeDeleteFileTitle" = "Delete file?";
+"HomeDeleteFileDescription" = "The selected files will be permanently delated from Tella.";
+
+"HomeSaveToDeviceTitle" = "Save to device gallery?";
+"HomeSaveToDeviceDescription" = "This will make your files accessible from outside Tella, in your device’s gallery and by other apps.";
+
+
+
+// File Info
+"HomeFileInfoTitle" = "File info";
+"HomeFileName" = "File name";
+"HomeFileSize" = "Size";
+"HomeFileFormat" = "Format";
+"HomeFileCreated" = "Created";
+"HomeFileResolution" = "Resolution";
+"HomeFileLength" = "Length";
+"HomeFilePath" = "File path";
+
+// Move File
+
+"HomeMoveFileTitle" = "Move %@";
+"HomeMoveFileHere" = "MOVE HERE";
+
+// Import Progress
+"HomeImportProgressTitle" = "Importing and encrypting";
+"HomeImportProgressFileImported" = "%@ file imported";
+
+// Cancel Import File
+"HomeCancelImportFileTitle" = "Are you sure you want to cancel?";
+"HomeCancelImportFileMessage" = "Your file will not be imported.";
+"HomeCancelImportFileBack" = "BACK";
+"HomeCancelImportFileCancelImport" = "CANCEL IMPORT";
+
+
+"HomeEmptyAllFilesMessage" = "You don’t have any files in Tella yet.\n\nTap the “+” button below to import your first file, or go to the Camera or Recorder to create one. You can also create folders to keep your files organized.";
+"HomeEmptyFolderMessage" = "This folder is empty! Tap the + button below to import a file or create a folder.";
+
+
+/****** Audio ******/
+/*******************/
+
+"AudioRecorderTitle" = "Recorder";
+"AudioSuffixRecordingName" = "Recording";
+
+"AudioFileListTitle" = "Audio";
+
+"AudioUpdateSecondTime" = "%@s";
+
+"AudioSaveRecordingTitle" = "Save recording?";
+"AudioSaveRecordingMessage" = "Your recording is not saved. Would you like to save it before exiting?";
+
+
+"AudioRenameFileTitle" = "Rename file";
+"AudioRecordingSavedMessage" = "The audio recording was saved to your Tella files.";
+
+
+"AudioDeniedPermissionMessage" = "The Tella app does not have permission to access Microphone.\n\nIf you want to record a voice, proceed in the following way:\n1. Navigate to Tella app settings.\n2. Enable permissions for Microphone.\n3. Open the Tella app.\n";
+"AudioDeniedPermissionButtonTitle" = "Settings";
+
+
+/***** Camera *****/
+/*******************/
+
+// Import Progress
+
+"CameraImagesAndVideosTitle" = "Images and Videos";
+"CameraPhotoMenuItem" = "Photo";
+"CameraVideoMenuItem" = "Video";
+
+
+
+"CameraAddFileProgressTitle" = "Encrypting file...";
+"CameraAddFileProgressComplete" = "%i%% complete";
+
+"CameraCancelAddFileTitle" = "Cancel encryption and delete file?";
+"CameraCancelAddFileMessage" = "If you cancel, your file will be lost.";
+
+"CameraCancelAddFileButtonTitle" = "DELETE FILE";
+"CamerCancelAddFileBackButtonTitle" = "BACK";
+
+"CameraDeniedPermissionMessage" = "The Tella app does not have permission to access the Camera and the Microphone.\n\nIf you want to take a picture or a video, proceed in the following way:\n1. Navigate to Tella app settings.\n2. Enable permissions for Camera and Microphone.\n3. Open the Tella app.\n";
+"CameraDeniedPermissionButtonTitle" = "Settings";
+
+
+/****** Settings *******/
+/*******************/
+
+"SettingsTitle" = "Settings" ;
+"SettingsLanguage" = "Language";
+"SettingsLock" = "Lock";
+"SettingsAboutAndHelp" = "About & Help";
+
+"SettingsRecentFilesTitle" = "Recent files";
+"SettingsRecentFilesDescription" = "Gives you quick access to your recent files on Tella’s homescreen. ";
+
+
+// About & Help
+"SettingsVersion" = "Version";
+"SettingsContactUs" = "Contact us";
+"SettingsPrivacyPolicy" = "Privacy policy";

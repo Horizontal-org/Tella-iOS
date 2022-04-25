@@ -16,29 +16,29 @@ struct FileInfoView: View {
             Styles.Colors.backgroundMain
                 .edgesIgnoringSafeArea(.all)
             VStack(alignment: .leading, spacing: 12){
-                FileInfoItem(title: LocalizableHome.fileName.localized, content: file.fileName)
+                FileInfoItem(title: Localizable.Home.fileName, content: file.fileName)
                 
                 if file.type != .folder {
-                    FileInfoItem(title: LocalizableHome.size.localized, content: file.size.getFormattedFileSize())
-                    FileInfoItem(title: LocalizableHome.format.localized, content: file.fileExtension)
+                    FileInfoItem(title: Localizable.Home.size, content: file.size.getFormattedFileSize())
+                    FileInfoItem(title: Localizable.Home.format, content: file.fileExtension)
                 }
                 
-                FileInfoItem(title: LocalizableHome.created.localized, content: "\(file.longFormattedCreationDate)")
+                FileInfoItem(title: Localizable.Home.created, content: "\(file.longFormattedCreationDate)")
                 
                 if (file.type == .video) || (file.type == .image)  {
-                    FileInfoItem(title: LocalizableHome.resolution.localized, content: file.formattedResolution ?? "")
+                    FileInfoItem(title: Localizable.Home.resolution, content: file.formattedResolution ?? "")
                 }
                 
                 if file.type == .video || file.type == .audio {
-                    FileInfoItem(title: LocalizableHome.length.localized, content: file.formattedDuration ?? "")
+                    FileInfoItem(title: Localizable.Home.length, content: file.formattedDuration ?? "")
                 }
                 
-                FileInfoItem(title: LocalizableHome.filePath.localized, content: viewModel.filePath)
+                FileInfoItem(title: Localizable.Home.filePath.localized, content: viewModel.filePath)
                 Spacer()
             } .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
         }
         .toolbar {
-            LeadingTitleToolbar(title: LocalizableHome.fileInfo.localized)
+            LeadingTitleToolbar(title: Localizable.Home.fileInfoTitle)
         }
     }
 }

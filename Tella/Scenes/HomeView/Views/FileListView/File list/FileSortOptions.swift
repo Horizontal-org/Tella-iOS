@@ -17,7 +17,7 @@ enum FileViewType {
             return AnyView(Image("files.list"))
         }
     }
-
+    
 }
 
 enum FileSortOptions : ActionType {
@@ -25,7 +25,7 @@ enum FileSortOptions : ActionType {
     case nameZA
     case newestToOldest
     case oldestToNewest
-
+    
     var image: AnyView {
         switch self {
         case .nameAZ:
@@ -42,30 +42,30 @@ enum FileSortOptions : ActionType {
             )
         }
     }
-
+    
     var displayName: String {
         switch self {
         case .nameAZ:
-            return NSLocalizedString("Name", comment: "File sort menu")
+            return Localizable.Home.sortByName
         case .nameZA:
-            return NSLocalizedString("Name", comment: "File sort menu")
+            return Localizable.Home.sortByName
         case .newestToOldest:
-            return NSLocalizedString("Date", comment: "File sort menu")
+            return Localizable.Home.sortByDate
         case .oldestToNewest:
-            return NSLocalizedString("Date", comment: "File sort menu")
+            return Localizable.Home.sortByDate
         }
     }
-
+    
     var name: String {
         switch self {
         case .nameAZ:
-            return NSLocalizedString("Name A > Z", comment: "File sort menu")
+            return Localizable.Home.sortByAscendingName
         case .nameZA:
-            return NSLocalizedString("Name Z > A", comment: "File sort menu")
+            return Localizable.Home.sortByDescendingName
         case .newestToOldest:
-            return NSLocalizedString("Newest to oldest", comment: "File sort menu")
+            return Localizable.Home.sortByAscendingDate
         case .oldestToNewest:
-            return NSLocalizedString("Oldest to newest", comment: "File sort menu")
+            return Localizable.Home.sortByDescendingDate
         }
     }
 }

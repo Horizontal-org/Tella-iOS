@@ -19,7 +19,7 @@ struct AddFilesBottomSheet: View {
         ZStack {
             DragView(modalHeight: CGFloat(manageFilesItems.count * 50 + 90),
                      isShown: $isPresented){
-                ActionListBottomSheet(items: manageFilesItems, headerTitle: "Manage files", isPresented: $isPresented, action:  {item in
+                ActionListBottomSheet(items: manageFilesItems, headerTitle: Localizable.Home.managefilesTitle, isPresented: $isPresented, action:  {item in
                     self.handleActions(item : item)
                     
                     

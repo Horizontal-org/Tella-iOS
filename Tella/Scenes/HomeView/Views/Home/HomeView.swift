@@ -36,7 +36,7 @@ struct HomeView: View {
                 }
             }
         }
-        .navigationBarTitle("Tella", displayMode: .inline)
+        .navigationBarTitle(Localizable.Common.tellaTitle, displayMode: .inline)
     }
 }
 

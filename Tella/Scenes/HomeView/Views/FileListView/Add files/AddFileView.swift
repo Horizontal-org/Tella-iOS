@@ -28,8 +28,8 @@ struct AddFileView: View {
             
             AddPhotoVideoBottomSheet(isPresented: $showingAddPhotoVideoSheet)
             
-            TextFieldBottomSheetView(titleText: "Create new folder",
-                                 validateButtonText: "CREATE",
+            TextFieldBottomSheetView(titleText: Localizable.Home.createNewFolder,
+                                 validateButtonText: Localizable.Common.create,
                                  isPresented: $showingCreateNewFolderSheet,
                                  fieldContent: $fieldContent,
                                  fieldType: .text) {

@@ -24,7 +24,7 @@ struct SettingsMainView: View {
             }
         }
         .toolbar {
-            LeadingTitleToolbar(title: LocalizableSettings.title.localized)
+            LeadingTitleToolbar(title: Localizable.Settings.title)
         }
         
         .onDisappear(perform: {
@@ -50,7 +50,7 @@ struct GenaralSettingsView : View {
         VStack(spacing: 0) {
             
             SettingsItemView(imageName: "settings.language",
-                             title: LocalizableSettings.language.localized,
+                             title: Localizable.Settings.language,
                              value: Language.currentLanguage.name)
                 .onTapGesture {
                     presentingLanguage = true
@@ -59,7 +59,7 @@ struct GenaralSettingsView : View {
             DividerView()
             
             SettingsItemView(imageName: "settings.lock",
-                             title: LocalizableSettings.lock.localized,
+                             title: Localizable.Settings.lock,
                              value: passwordTypeString)
             
                 .navigateTo(destination: unlockView)
@@ -67,7 +67,7 @@ struct GenaralSettingsView : View {
             DividerView()
             
             SettingsItemView(imageName: "settings.help",
-                             title: LocalizableSettings.aboutAndHelp.localized,
+                             title: Localizable.Settings.aboutAndHelp,
                              value: "")
                 .navigateTo(destination: AboutAndHelpView())
             
@@ -82,7 +82,7 @@ struct GenaralSettingsView : View {
             .onAppear {
                 lockViewModel.shouldDismiss.send(false)
                 let passwordType = AuthenticationManager().getPasswordType()
-                passwordTypeString = passwordType == .tellaPassword ? LocalizableLock.passwordButtonTitle.localized : LocalizableLock.pinButtonTitle.localized
+                passwordTypeString = passwordType == .tellaPassword ? Localizable.Lock.passwordButtonTitle : Localizable.Lock.pinButtonTitle
             }
     }
     
@@ -111,8 +111,8 @@ struct RecentFilesSettingsView : View {
         
         VStack(spacing: 0) {
             
-            SettingToggleItem(title: "Recent files",
-                              description: "Gives you quick access to your recent files on Tella’s homescreen. ",
+            SettingToggleItem(title: Localizable.Settings.recentFilesTitle,
+                              description: Localizable.Settings.recentFilesDescription,
                               toggle: $appModel.settings.showRecentFiles)
         }.background(Color.white.opacity(0.08))
             .cornerRadius(15)

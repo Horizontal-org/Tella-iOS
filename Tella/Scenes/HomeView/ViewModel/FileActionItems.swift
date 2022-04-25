@@ -20,29 +20,29 @@ enum FileActionType: ActionType {
 var firstFileActionItems : [ListActionSheetItem] = [
     
     ListActionSheetItem(imageName: "share-icon",
-                        content: "Share",
+                        content: Localizable.Home.shareFile,
                         type: FileActionType.share)
 ]
 
 var secondFileActionItems : [ListActionSheetItem] = [
     
     ListActionSheetItem(imageName: "move-icon",
-                        content: "Move to another folder",
+                        content: Localizable.Home.moveFile,
                         type: FileActionType.move),
     
     ListActionSheetItem(imageName: "edit-icon",
-                        content: "Rename",
+                        content: Localizable.Home.renameFile,
                         type: FileActionType.rename),
     
     ListActionSheetItem(imageName: "save-icon",
-                        content: "Save to device",
+                        content: Localizable.Home.saveFile,
                         type: FileActionType.save),
     
     ListActionSheetItem(imageName: "info-icon",
-                        content: "File information",
+                        content: Localizable.Home.fileInformation,
                         type: FileActionType.info),
     
     ListActionSheetItem(imageName: "delete-icon",
-                        content: "Delete",
+                        content: Localizable.Home.deleteFile,
                         type: FileActionType.delete)
 ]
