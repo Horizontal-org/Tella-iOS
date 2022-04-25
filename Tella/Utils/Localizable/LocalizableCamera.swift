@@ -5,9 +5,9 @@
 import Foundation
 
 extension Localizable {
-   
+    
     struct Camera {
-
+        
         static var imagesAndVideosTitle = "CameraImagesAndVideosTitle".localized
         static var photoMenuItem = "CameraPhotoMenuItem".localized
         static var videoMenuItem = "CameraVideoMenuItem".localized
@@ -18,9 +18,9 @@ extension Localizable {
         static var cancelAddFileMessage = "CameraCancelAddFileMessage".localized
         static var cancelAddFileButtonTitle = "CameraCancelAddFileButtonTitle".localized
         static var cancelAddFileBackButtonTitle = "CamerCancelAddFileBackButtonTitle".localized
-    
+        
         static var deniedPermissionMessage = "CameraDeniedPermissionMessage".localized
         static var deniedPermissionButtonTitle = "CameraDeniedPermissionButtonTitle".localized
-
+        
     }
 }

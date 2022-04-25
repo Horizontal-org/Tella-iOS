@@ -1,8 +1,5 @@
-//
-//  LocalizableCommon.swift
 //  Tella
 //
-//  Created by Dhekra Rouatbi on 22/4/2022.
 //  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 
@@ -32,7 +29,5 @@ extension Localizable {
         
         static var renameFile = "CommonRenameFile".localized
         static var sameFileNameError = "CommonSameFileNameError".localized
-
-        
     }
 }

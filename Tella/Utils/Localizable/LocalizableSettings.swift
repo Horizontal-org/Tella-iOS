@@ -7,6 +7,7 @@ import Foundation
 extension Localizable {
     
     struct Settings {
+        
         static var title = "SettingsTitle".localized
         static var language = "SettingsLanguage".localized
         static var lock = "SettingsLock".localized

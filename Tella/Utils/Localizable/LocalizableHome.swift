@@ -28,7 +28,6 @@ extension Localizable {
         // File list
         
         static var sortByTitle = "HomeSortByTitle".localized
-        
         static var sortByName = "HomeSortByName".localized
         static var sortByDate = "HomeSortByDate".localized
         static var sortByAscendingName = "HomeSortByAscendingName".localized
@@ -43,15 +42,13 @@ extension Localizable {
         // Add files
         
         static var managefilesTitle = "HomeManagefilesTitle".localized
-        
         static var createNewFolder = "HomeCreateNewFolder".localized
         static var importFromDevice = "HomeImportFromDevice".localized
         static var photoLibrary = "HomePhotoLibrary".localized
         static var document = "HomeDocument".localized
         static var takePhotoVideo = "HomeTakePhotoVideo".localized
         static var recordAudio = "HomeRecordAudio".localized
-        
-        
+
         // File actions
         
         static var shareFile = "HomeShareFile".localized
@@ -89,8 +86,7 @@ extension Localizable {
         static var cancelImportFileMessage = "HomeCancelImportFileMessage".localized
         static var cancelImportFileBack = "HomeCancelImportFileBack".localized
         static var cancelImportFileCancelImport = "HomeCancelImportFileCancelImport".localized
-        
-        
+
         static var emptyAllFilesMessage = "HomeEmptyAllFilesMessage".localized
         static var emptyFolderMessage = "HomeEmptyFolderMessage".localized
     }

@@ -520,7 +520,6 @@
 			children = (
 				12E8129627A15692007DDDC0 /* Views */,
 				12E8129F27A19E67007DDDC0 /* ViewModel */,
-				12E8129527A1567E007DDDC0 /* Localizable */,
 				12E812A027A19E7A007DDDC0 /* SettingsV1 */,
 			);
 			path = Settings;
@@ -544,7 +543,6 @@
 			children = (
 				1289B98427C5390000315FCE /* Views */,
 				12776A9627BAC86200CDC5DC /* ViewModel */,
-				1289B98527C5391A00315FCE /* Localizable */,
 				1289B98327C536F400315FCE /* Models */,
 			);
 			path = Camera;
@@ -660,17 +658,8 @@
 				125D2322271F863200250FBB /* Views */,
 				127C155A27DA69DD009EC15B /* Models */,
 				125EDDAE271E402600E2789A /* ViewModel */,
-				12567FFD27178FBF00A2D356 /* Localizable */,
 			);
 			path = Authentication;
-			sourceTree = "<group>";
-		};
-		12567FFD27178FBF00A2D356 /* Localizable */ = {
-			isa = PBXGroup;
-			children = (
-				12567FF62717426000A2D356 /* LocalizableLock.swift */,
-			);
-			path = Localizable;
 			sourceTree = "<group>";
 		};
 		12567FFE2717901E00A2D356 /* LockChoice */ = {
@@ -803,6 +792,7 @@
 				12567FF8271742C500A2D356 /* Localizable.swift */,
 				126FE4D627A427E200AE4188 /* Constants.swift */,
 				D516397B2631113B003A11B5 /* Styles.swift */,
+				12BCB2E62816972200889E5A /* Localizable */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -857,14 +847,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		1283C259272AAC61009180CA /* Localizable */ = {
-			isa = PBXGroup;
-			children = (
-				12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */,
-			);
-			path = Localizable;
-			sourceTree = "<group>";
-		};
 		1288BFE5274C40E00051E23D /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -896,14 +878,6 @@
 				12776A9427BA761C00CDC5DC /* CustomCameraController.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		1289B98527C5391A00315FCE /* Localizable */ = {
-			isa = PBXGroup;
-			children = (
-				126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */,
-			);
-			path = Localizable;
 			sourceTree = "<group>";
 		};
 		128A82DB27D113230027699F /* Recent files */ = {
@@ -1059,6 +1033,19 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		12BCB2E62816972200889E5A /* Localizable */ = {
+			isa = PBXGroup;
+			children = (
+				12AE80032812A30300F14DB8 /* LocalizableCommon.swift */,
+				12567FF62717426000A2D356 /* LocalizableLock.swift */,
+				12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */,
+				12E0882327AD31F500CEB198 /* LocalizableAudio.swift */,
+				126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */,
+				12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */,
+			);
+			path = Localizable;
+			sourceTree = "<group>";
+		};
 		12D37A922721736F00E43BDB /* Application */ = {
 			isa = PBXGroup;
 			children = (
@@ -1088,22 +1075,6 @@
 				1244141827E35D120037D469 /* VaultFileImages.swift */,
 			);
 			path = Components;
-			sourceTree = "<group>";
-		};
-		12E0882527AD32D400CEB198 /* Localizable */ = {
-			isa = PBXGroup;
-			children = (
-				12E0882327AD31F500CEB198 /* LocalizableAudio.swift */,
-			);
-			path = Localizable;
-			sourceTree = "<group>";
-		};
-		12E8129527A1567E007DDDC0 /* Localizable */ = {
-			isa = PBXGroup;
-			children = (
-				12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */,
-			);
-			path = Localizable;
 			sourceTree = "<group>";
 		};
 		12E8129627A15692007DDDC0 /* Views */ = {
@@ -1184,7 +1155,6 @@
 			isa = PBXGroup;
 			children = (
 				D5D5696C262747E100C45416 /* MainView.swift */,
-				12AE80032812A30300F14DB8 /* LocalizableCommon.swift */,
 				12781F4827EA28D600FE9609 /* ContentView */,
 				12567FED2716B24700A2D356 /* Authentication */,
 				0D4D750E2662D14F00D7A635 /* Settings */,
@@ -1221,7 +1191,6 @@
 				1288BFE5274C40E00051E23D /* ViewModel */,
 				1272F25B27C91A730054F2E2 /* Models */,
 				1204F64427D928D0006E40EE /* Extensions */,
-				1283C259272AAC61009180CA /* Localizable */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -1248,7 +1217,6 @@
 			children = (
 				1291F4E927B52298006A34D3 /* Recorder */,
 				1209FD2C27AD896A00D8C17E /* AudioPlayer */,
-				12E0882527AD32D400CEB198 /* Localizable */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
