@@ -114,7 +114,7 @@ struct AudioPlayerView: View {
             Image("mic.rewind-back")
                 .frame(width: 40, height: 40)
             
-            Text("-15s")
+            Text(String.init(format: Localizable.Audio.updateSecondTime, "-15"))
                 .font(.custom(Styles.Fonts.regularFontName, size: 11))
                 .foregroundColor(self.viewModel.shouldDisableRewindBackButton ? .gray : .white)
         }
@@ -125,9 +125,9 @@ struct AudioPlayerView: View {
             Spacer()
             Image("mic.fast-forward")
                 .frame(width: 40, height: 40)
-            Text("+15s")
+            Text(String.init(format: Localizable.Audio.updateSecondTime, "+15"))
                 .font(.custom(Styles.Fonts.regularFontName, size: 11))
-                .foregroundColor(self.viewModel.shouldDisableRewindBackButton ? .gray : .white)
+                .foregroundColor(self.viewModel.shouldDisableFastForwardButton ? .gray : .white)
         }
     }
     

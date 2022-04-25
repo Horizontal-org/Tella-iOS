@@ -18,12 +18,14 @@ struct FileGridItem: View {
     var body: some View {
         
         Button {
-            fileListViewModel.showFileDetails(file: file)
+            if !fileListViewModel.selectingFiles {
+                fileListViewModel.showFileDetails(file: file)
+            }
         } label: {
             fileGridView
         }
     }
-
+    
     var fileGridView : some View {
         
         ZStack {
@@ -70,7 +72,7 @@ struct FileGridItem: View {
     
     @ViewBuilder
     var selectionButton: some View {
-        if fileListViewModel.shouldHideNavigationBar {
+        if !fileListViewModel.selectingFiles && !fileListViewModel.shouldHideViewsForGallery {
             Button {
                 fileListViewModel.showingFileActionMenu = true
                 fileListViewModel.updateSingleSelection(for: file)

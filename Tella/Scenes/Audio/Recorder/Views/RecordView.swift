@@ -80,10 +80,10 @@ struct RecordView: View {
     
     private func getSettingsAlertView() -> Alert {
         Alert(title: Text(""),
-              message: Text(LocalizableAudio.deniedPermissionMessage.localized),
-              primaryButton: .default(Text("Cancel"), action: {
+              message: Text(Localizable.Audio.deniedPermissionMessage),
+              primaryButton: .default(Text(Localizable.Common.cancel), action: {
             self.viewModel.shouldShowSettingsAlert = false
-        }), secondaryButton: .default(Text(LocalizableAudio.deniedPermissionButtonTitle.localized), action: {
+        }), secondaryButton: .default(Text(Localizable.Audio.deniedPermissionButtonTitle), action: {
             UIApplication.shared.openSettings()
         }))
         
@@ -172,18 +172,9 @@ struct RecordView: View {
                 Image("mic.record")
                     .frame(width: 83, height: 83)
             }
-            
-            //            Button(action: {
-            //                self.listenAudiFiles()
-            //            }) {
-            //                Image("mic.listen")
-            //                    .resizable()
-            //                    .frame(width: 52, height: 52)
-            //            }
-            
-            
+
             Button(action: {
-                //                self.listenAudiFiles()
+
             }) {
                 Image("mic.listen")
                     .resizable()
@@ -239,7 +230,7 @@ struct RecordView: View {
                 Image("close")
             }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 12))
             
-            Text(LocalizableAudio.recorderTitle.localized)
+            Text(Localizable.Audio.recorderTitle)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                 .foregroundColor(Color.white)
             Spacer()
@@ -250,7 +241,7 @@ struct RecordView: View {
         FileListView(appModel: mainAppModel,
                      rootFile: mainAppModel.vaultManager.root,
                      fileType: [.audio],
-                     title: "Audio",
+                     title: Localizable.Audio.fileListTitle,
                      fileListType: .recordList)
     }
     
@@ -278,13 +269,13 @@ struct RecordView: View {
     @ViewBuilder
     private var renameFileView : some View {
         if showingRenameFileConfirmationSheet {
-            TextFieldBottomSheetView(titleText: LocalizableAudio.renameFileTitle.localized,
-                                 validateButtonText: "SAVE",
-                                 isPresented: $showingRenameFileConfirmationSheet,
-                                 fieldContent: $fileName,
-                                 fileName: viewModel.fileName,
-                                 fieldType: FieldType.fileName,
-                                 didConfirmAction: {
+            TextFieldBottomSheetView(titleText: Localizable.Audio.renameFileTitle,
+                                     validateButtonText: Localizable.Common.save,
+                                     isPresented: $showingRenameFileConfirmationSheet,
+                                     fieldContent: $fileName,
+                                     fileName: viewModel.fileName,
+                                     fieldType: FieldType.fileName,
+                                     didConfirmAction: {
                 viewModel.fileName =  fileName
             })
             
@@ -297,7 +288,7 @@ struct RecordView: View {
             VStack {
                 Spacer()
                 
-                Text(LocalizableAudio.recordingSavedMessage.localized)
+                Text(Localizable.Audio.recordingSavedMessage)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(.black)
                     .padding()

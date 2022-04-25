@@ -16,17 +16,17 @@ enum ManageFileType: ActionType {
 var manageFilesItems : [ListActionSheetItem] { return [
     
     ListActionSheetItem(imageName: "camera-icon",
-                        content: "Take photo/video",
+                        content: Localizable.Home.takePhotoVideo,
                         type: ManageFileType.camera),
     ListActionSheetItem(imageName: "mic-icon",
-                        content: "Record audio",
+                        content: Localizable.Home.recordAudio,
                         type: ManageFileType.recorder),
     ListActionSheetItem(imageName: "upload-icon",
-                        content: "Import from device",
+                        content: Localizable.Home.importFromDevice,
                         type: ManageFileType.fromDevice),
     
     ListActionSheetItem(imageName: "new_folder-icon",
-                        content: "Create a new folder",
+                        content: Localizable.Home.createNewFolder,
                         type: ManageFileType.folder)
 ]
 }

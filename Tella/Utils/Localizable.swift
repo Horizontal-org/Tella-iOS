@@ -8,24 +8,17 @@
 
 import Foundation
 
-protocol LocalizableDelegate {
-    var rawValue : String  { get }
-    var tableName: String? { get }
-    var localized: String  { get }
+struct Localizable {
+    
 }
 
-// MARK: - Default values of the Localizable protocol properties
-extension LocalizableDelegate {
-    
-    var tableName: String? {
-        return nil
-    }
+extension String {
     
     var bundle: Bundle {
         return Bundle.main
     }
     
     var localized: String {
-        return bundle.localizedString(forKey: rawValue, value: nil, table: tableName)
+        return bundle.localizedString(forKey: self, value: nil, table: "Localizable")
     }
 }

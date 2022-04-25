@@ -36,7 +36,6 @@ struct PasswordTextFieldView : View {
                                                disabled: disabled,
                                                onCommit: onCommit)
         }
-        
     }
     private func validateField(value:String) {
         self.isValid = value.passwordValidator()

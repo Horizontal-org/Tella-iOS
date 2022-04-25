@@ -52,10 +52,10 @@ struct FileActionMenu: View {
     }
     
     var fileDocumentExporter: some View {
-        ConfirmBottomSheet(titleText: "Save to device gallery?",
-                           msgText: "This will make your files accessible from outside Tella, in your device’s gallery and by other apps.",
-                           cancelText: "CANCEL",
-                           actionText: "SAVE",
+        ConfirmBottomSheet(titleText: Localizable.Home.saveToDeviceTitle,
+                           msgText: Localizable.Home.saveToDeviceDescription,
+                           cancelText: Localizable.Common.cancel,
+                           actionText: Localizable.Common.save,
                            modalHeight: 180,
                            isPresented: $showingSaveConfirmationSheet,
                            didConfirmAction: {
@@ -72,32 +72,32 @@ struct FileActionMenu: View {
     }
     
     var deleteFileView: some View {
-        ConfirmBottomSheet(titleText: "Delete file?",
-                           msgText: "The selected files will be permanently delated from Tella.",
-                           cancelText: "CANCEL",
-                           actionText: "DELETE",
+        ConfirmBottomSheet(titleText: Localizable.Home.deleteFileTitle,
+                           msgText: Localizable.Home.deleteFileDescription,
+                           cancelText: Localizable.Common.cancel,
+                           actionText: Localizable.Common.delete,
                            destructive: true,
                            modalHeight: 161,
                            isPresented: $showingDeleteConfirmationSheet,
                            didConfirmAction:{
             showingDeleteConfirmationSheet = false
-            fileListViewModel.selectedFiles.forEach { vaultFile in
-                appModel.delete(file: vaultFile, from: fileListViewModel.rootFile)
-                if fileListViewModel.fileActionSource == .details {
-                    self.presentationMode.wrappedValue.dismiss()
-                }
+            
+            appModel.delete(files: fileListViewModel.selectedFiles, from: fileListViewModel.rootFile)
+            
+            if fileListViewModel.fileActionSource == .details {
+                self.presentationMode.wrappedValue.dismiss()
             }
         })
     }
     
     var renameFileView : some View {
-        TextFieldBottomSheetView(titleText: "Rename file",
-                             validateButtonText: "SAVE",
-                             isPresented: $showingRenameFileConfirmationSheet,
-                             fieldContent: $fileName,
-                             fileName: fileListViewModel.selectedFiles.count == 1 ? fileListViewModel.selectedFiles[0].fileName : "",
-                             fieldType: FieldType.fileName,
-                             didConfirmAction: {
+        TextFieldBottomSheetView(titleText: Localizable.Common.renameFile,
+                                 validateButtonText: Localizable.Common.save,
+                                 isPresented: $showingRenameFileConfirmationSheet,
+                                 fieldContent: $fileName,
+                                 fileName: fileListViewModel.selectedFiles.count == 1 ? fileListViewModel.selectedFiles[0].fileName : "",
+                                 fieldType: FieldType.fileName,
+                                 didConfirmAction: {
             fileListViewModel.selectedFiles[0].fileName = fileName
             appModel.rename(file: fileListViewModel.selectedFiles[0], parent: fileListViewModel.rootFile)
         })

@@ -77,13 +77,18 @@ struct UnlockPasswordView: View {
         .onAppear {
             viewModel.initUnlockData()
         }
+        .onDisappear {
+            if viewModel.unlockType == .update {
+                self.presentationMode.wrappedValue.dismiss()
+            }
+        }
     }
     
     var titleString : String {
         if viewModel.shouldShowUnlockError {
-            return  LocalizableLock.unlockPasswordError.localized
+            return  Localizable.Lock.unlockPasswordError
         } else {
-            return viewModel.unlockType == .new ? LocalizableLock.unlockPasswordTitle.localized : LocalizableLock.unlockUpdatePasswordTitle.localized
+            return viewModel.unlockType == .new ? Localizable.Lock.unlockPasswordTitle : Localizable.Lock.unlockUpdatePasswordTitle
         }
         
     }

@@ -11,7 +11,11 @@ class HomeViewModel: ObservableObject {
     
     @Published var showingDocumentPicker = false
     @Published var showingAddFileSheet = false
-    var showingFilesTitle = false
+    var hasRecentFile = false
+    
+    var showingFilesTitle: Bool {
+        return hasRecentFile && appModel.settings.showRecentFiles
+    }
     
     init(appModel:MainAppModel) {
         self.appModel = appModel
@@ -19,7 +23,7 @@ class HomeViewModel: ObservableObject {
     
     func getFiles() -> [RecentFile] {
         let recentFile = appModel.vaultManager.root.getRecentFile()
-        showingFilesTitle = recentFile.count > 0
+        hasRecentFile = recentFile.count > 0
         return recentFile
     }
 }

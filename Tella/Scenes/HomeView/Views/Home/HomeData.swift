@@ -15,22 +15,22 @@ struct HomeFileItem : Hashable {
     var fileType: [FileType]?
 }
 
-var homeFileItems : [HomeFileItem] { return [ HomeFileItem(title: LocalizableHome.allFilesItem.localized,
+var homeFileItems : [HomeFileItem] { return [ HomeFileItem(title: Localizable.Home.allFilesItem,
                                                     imageName: "files.all_files",
                                                     fileType: nil),
-                                       HomeFileItem(title: LocalizableHome.imagesItem.localized,
+                                              HomeFileItem(title: Localizable.Home.imagesItem,
                                                     imageName: "files.gallery",
                                                     fileType: [.image]),
-                                       HomeFileItem(title: LocalizableHome.videosItem.localized,
+                                              HomeFileItem(title: Localizable.Home.videosItem,
                                                     imageName: "files.gallery",
                                                     fileType: [.video]),
-                                       HomeFileItem(title: LocalizableHome.audioItem.localized,
+                                              HomeFileItem(title: Localizable.Home.audioItem,
                                                     imageName: "files.audio",
                                                     fileType: [.audio]),
-                                       HomeFileItem(title: LocalizableHome.documentsItem.localized,
+                                              HomeFileItem(title: Localizable.Home.documentsItem,
                                                     imageName: "files.documents",
                                                     fileType: [.document]),
-                                       HomeFileItem(title: LocalizableHome.othersItem.localized,
+                                              HomeFileItem(title: Localizable.Home.othersItem,
                                                     imageName: "files.others",
                                                     fileType: [.other]),
 ]

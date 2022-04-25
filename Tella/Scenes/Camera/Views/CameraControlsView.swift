@@ -235,7 +235,7 @@ struct CameraControlsView: View {
         FileListView(appModel: mainAppModel,
                      rootFile: mainAppModel.vaultManager.root,
                      fileType: [.image, .video],
-                     title: "Images and Videos",
+                     title: Localizable.Camera.imagesAndVideosTitle,
                      fileListType: .cameraGallery)
     }
     
@@ -253,7 +253,7 @@ struct CameraControlsView: View {
                     state = .readyTakingImage
                 }
             }, label: {
-                CameraTypeItemView(title: "Photo", width: 140, page: .image, selectedOption: $selectedOption)
+                CameraTypeItemView(title: Localizable.Camera.photoMenuItem, width: 140, page: .image, selectedOption: $selectedOption)
             })
             
             Button(action: {
@@ -267,7 +267,7 @@ struct CameraControlsView: View {
                     
                 }
             }, label: {
-                CameraTypeItemView(title: "Video", width: 140, page: .video, selectedOption: $selectedOption)
+                CameraTypeItemView(title: Localizable.Camera.videoMenuItem, width: 140, page: .video, selectedOption: $selectedOption)
             })
         }
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))

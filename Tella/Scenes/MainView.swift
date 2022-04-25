@@ -6,8 +6,6 @@ import SwiftUI
 
 struct MainView: View  {
     
-    
-    
     @State private var showingRecoredrView : Bool = false
     
     @EnvironmentObject private var appModel: MainAppModel
@@ -33,39 +31,36 @@ struct MainView: View  {
         
         ZStack {
             
-            
-            
-            
             NavigationView {
                 
                 TabView(selection: $appModel.selectedTab) {
                     HomeView(appModel: appModel)
                         .tabItem {
                             Image("tab.home")
-                            Text("Home")
+                            Text(Localizable.Common.menuHome)
                         }.tag(MainAppModel.Tabs.home)
 #if DEBUG
                     ReportsView()
                         .tabItem {
                             Image("tab.reports")
-                            Text("Reports")
+                            Text(Localizable.Common.menuReports)
                         }.tag(MainAppModel.Tabs.reports)
                     FormsView()
                         .tabItem {
                             Image("tab.forms")
-                            Text("Forms")
+                            Text(Localizable.Common.menuForms)
                         }.tag(MainAppModel.Tabs.forms)
 #endif
                     ContainerView{}
                     .tabItem {
                         Image("tab.camera")
-                        Text("Camera")
+                        Text(Localizable.Common.menuCamera)
                     }.tag(MainAppModel.Tabs.camera)
                     
                     ContainerView{}
                     .tabItem {
                         Image("tab.mic")
-                        Text("Rec")
+                        Text(Localizable.Common.menuRecorder)
                     }.tag(MainAppModel.Tabs.mic)
                 }
                 
@@ -77,7 +72,7 @@ struct MainView: View  {
                         trailingView
                     }
                 }
-                .navigationBarTitle("Tella", displayMode: .inline)
+                .navigationBarTitle(Localizable.Common.tellaTitle, displayMode: .inline)
                 .navigationBarHidden(appModel.selectedTab == .home ? false : true)
             }
             .accentColor(.white)

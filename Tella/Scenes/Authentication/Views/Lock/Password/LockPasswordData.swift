@@ -16,15 +16,15 @@ protocol LockViewProtocol {
 }
 
 struct LockPasswordData  : LockViewProtocol {
-    var title = LocalizableLock.passwordTitle.localized
-    var description = LocalizableLock.passwordDescription.localized
+    var title = Localizable.Lock.passwordTitle
+    var description = Localizable.Lock.passwordDescription
     var image = "lock.password.B"
     var action: (() -> Void)?  
 }
 
 struct LockConfirmPasswordData  : LockViewProtocol  {
-    var title = LocalizableLock.confirmPasswordTitle.localized
-    var description = LocalizableLock.confirmPasswordDescription.localized
+    var title = Localizable.Lock.confirmPasswordTitle
+    var description = Localizable.Lock.confirmPasswordDescription
     var image = "lock.password.B"
     var action: (() -> Void)?
 }

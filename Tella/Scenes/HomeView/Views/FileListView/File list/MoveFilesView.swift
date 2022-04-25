@@ -47,17 +47,16 @@ struct MoveFilesView: View {
     
     private var titleView : some View {
         HStack {
-            Text("Move “\(title)”")
+            Text(String.init(format: Localizable.Home.moveFileTitle, title))
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                 .foregroundColor(.white)
             Spacer()
         }.padding(EdgeInsets(top: 10, leading: 16, bottom: 0, trailing: 16))
     }
-    
-    private var bottomView : some View {
+     private var bottomView : some View {
         HStack {
 
-            Button("CANCEL") {
+            Button(Localizable.Common.cancel) {
                 fileListViewModel.showingMoveFileView  = false
                 fileListViewModel.initSelectedFiles()
                 fileListViewModel.initFolderPathArray()
@@ -65,7 +64,7 @@ struct MoveFilesView: View {
             } .buttonStyle(MoveFileButtonStyle())
                 .foregroundColor(.white)
             
-            Button("MOVE HERE") {
+            Button(Localizable.Home.moveFileHere) {
                 fileListViewModel.showingMoveFileView  = false
                 fileListViewModel.moveFiles()
                 fileListViewModel.initSelectedFiles()

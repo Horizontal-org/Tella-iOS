@@ -9,15 +9,15 @@
 import Foundation
 
 struct LockPinData  : LockViewProtocol {
-    var title = LocalizableLock.pinTitle.localized
-    var description = LocalizableLock.pinDescription.localized
+    var title = Localizable.Lock.pinTitle
+    var description = Localizable.Lock.pinDescription
     var image = "lock.password.B"
     var action: (() -> Void)?
 }
 
 struct LockConfirmPinData  : LockViewProtocol  {
-    var title = LocalizableLock.confirmPinTitle.localized
-    var description = LocalizableLock.confirmPinDescription.localized
+    var title = Localizable.Lock.confirmPinTitle
+    var description = Localizable.Lock.confirmPinDescription
     var image = "lock.password.B"
     var action: (() -> Void)?
 }
@@ -46,7 +46,7 @@ var UnlockKeyboardNumbers: [PinKeyboardModel] = [
     PinKeyboardModel(text: "7", type: .number),
     PinKeyboardModel(text: "8",  type: .number),
     PinKeyboardModel(text: "9",  type: .number),
-    PinKeyboardModel( imageName:"lock.backspace", type: .delete),
+    PinKeyboardModel(imageName:"lock.backspace", type: .delete),
     PinKeyboardModel(text: "0",  type: .number),
-    PinKeyboardModel(text: "OK", type: .done)]
+    PinKeyboardModel(text: Localizable.Common.ok, type: .done)]
 

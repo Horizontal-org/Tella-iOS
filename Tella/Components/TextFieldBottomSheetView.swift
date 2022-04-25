@@ -81,7 +81,7 @@ struct TextFieldBottomSheetView: View {
                 
                 Spacer()
                 
-                BottomButtonActionSheetView(title: "CANCEL", shouldEnable: true) {
+                BottomButtonActionSheetView(title: Localizable.Common.cancel, shouldEnable: true) {
                     isPresented = false
                     fieldContent = ""
                 }
@@ -89,7 +89,7 @@ struct TextFieldBottomSheetView: View {
                 BottomButtonActionSheetView(title: validateButtonText, shouldEnable: self.isValid) {
                     
                     if fieldContent == fileName {
-                        errorMessage = "Please enter a file name that is not currently in use"
+                        errorMessage = Localizable.Common.sameFileNameError
                     } else {
                         isPresented = false
                         didConfirmAction()
