@@ -28,6 +28,7 @@ struct TellaApp: App {
     }
     
     func resetApp() {
+        UIApplication.shared.endEditing()
         appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
         appViewState.resetApp()
     }

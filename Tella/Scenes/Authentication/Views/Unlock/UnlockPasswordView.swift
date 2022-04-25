@@ -77,6 +77,11 @@ struct UnlockPasswordView: View {
         .onAppear {
             viewModel.initUnlockData()
         }
+        .onDisappear {
+            if viewModel.unlockType == .update {
+                self.presentationMode.wrappedValue.dismiss()
+            }
+        }
     }
     
     var titleString : String {

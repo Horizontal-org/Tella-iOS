@@ -10,12 +10,12 @@ import SwiftUI
 
 struct UnlockPinView: View {
     
-     @State private var presentingLockChoice : Bool = false
-
+    @State private var presentingLockChoice : Bool = false
+    
     @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject private var viewModel: LockViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-
+    
     
     var body: some View {
         ContainerView {
@@ -27,7 +27,7 @@ struct UnlockPinView: View {
                     .aspectRatio(contentMode: .fit)
                 
                 Spacer(minLength: 23)
-
+                
                 Text(titleString)
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                     .foregroundColor(.white)
@@ -36,7 +36,7 @@ struct UnlockPinView: View {
                     .padding(EdgeInsets(top: 0, leading: 67, bottom: 0, trailing: 67))
                 
                 Spacer()
-
+                
                 PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
                                       isValid: .constant(true),
                                       shouldShowErrorMessage: .constant(false),
@@ -53,7 +53,7 @@ struct UnlockPinView: View {
                             appViewState.resetToMain()
                         } else {
                             presentingLockChoice = true
-                         }
+                        }
                     }
                 }
                 
@@ -62,7 +62,7 @@ struct UnlockPinView: View {
         }
         .fullScreenCover(isPresented: $presentingLockChoice) {
             self.presentationMode.wrappedValue.dismiss()
-
+            
         } content: {
             LockChoiceView( isPresented: $presentingLockChoice)
         }
@@ -76,8 +76,11 @@ struct UnlockPinView: View {
         .onAppear {
             viewModel.initUnlockData()
         }
-
-
+        .onDisappear {
+            if viewModel.unlockType == .update {
+                self.presentationMode.wrappedValue.dismiss()
+            }
+        }
     }
     
     var titleString : String {
