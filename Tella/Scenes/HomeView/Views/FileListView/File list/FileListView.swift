@@ -30,9 +30,9 @@ struct FileListView: View {
                     EmptyFileListView(emptyListType: .allFiles)
                     
                 } else {
-                    
-                    FolderListView()
-                    
+                    if fileListViewModel.folderPathArray.count > 0 {
+                        FolderListView()
+                    }
                     if fileListViewModel.getFiles().isEmpty {
                         EmptyFileListView(emptyListType: .folder)
                         
@@ -69,7 +69,7 @@ struct FileListView: View {
                            videoFilesArray: fileListViewModel.rootFile.getVideos().sorted(by: fileListViewModel.sortBy),
                            rootFile: fileListViewModel.rootFile,
                            folderPathArray: fileListViewModel.folderPathArray)
-                .addNavigationLink(isActive: $fileListViewModel.showFileDetails)
+            .addNavigationLink(isActive: $fileListViewModel.showFileDetails)
         }
     }
 }

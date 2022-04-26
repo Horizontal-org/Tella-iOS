@@ -16,7 +16,6 @@ enum UnlockType {
 struct UnlockPasswordView: View {
     
     @EnvironmentObject private var viewModel: LockViewModel
-
     @EnvironmentObject private var appViewState: AppViewState
     @State private var presentingLockChoice : Bool = false
     
@@ -25,9 +24,9 @@ struct UnlockPasswordView: View {
     var body: some View {
         ContainerView {
             VStack(alignment: .center) {
-
+                
                 Spacer()
-
+                
                 Image("tella.logo")
                     .frame(width: 65, height: 72)
                     .aspectRatio(contentMode: .fit)
@@ -76,11 +75,6 @@ struct UnlockPasswordView: View {
         }
         .onAppear {
             viewModel.initUnlockData()
-        }
-        .onDisappear {
-            if viewModel.unlockType == .update {
-                self.presentationMode.wrappedValue.dismiss()
-            }
         }
     }
     

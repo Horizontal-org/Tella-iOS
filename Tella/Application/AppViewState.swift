@@ -17,7 +17,8 @@ final class AppViewState: ObservableObject {
     var homeViewModel : MainAppModel?
 
     @Published private var viewStack = [MainViewEnum]()
-    
+    @Published var shouldHidePresentedView: Bool = false
+
     init() {
         self.resetApp()
     }
