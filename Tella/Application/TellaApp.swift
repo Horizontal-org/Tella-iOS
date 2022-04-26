@@ -28,8 +28,12 @@ struct TellaApp: App {
     }
     
     func resetApp() {
-        UIApplication.shared.endEditing()
-        appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
-        appViewState.resetApp()
+        DispatchQueue.main.async {
+            appViewState.shouldHidePresentedView = true
+            appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
+            appViewState.resetApp()
+            appViewState.shouldHidePresentedView = false
+            
+        }
     }
 }

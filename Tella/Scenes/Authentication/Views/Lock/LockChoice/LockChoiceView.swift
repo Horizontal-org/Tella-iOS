@@ -13,6 +13,9 @@ struct LockChoiceView: View {
 
     @Binding var isPresented : Bool
     @EnvironmentObject var lockViewModel : LockViewModel
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @EnvironmentObject private var appViewState: AppViewState
+
     var body: some View {
         
         NavigationContainerView {
@@ -43,11 +46,14 @@ struct LockChoiceView: View {
                 }
                 .padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
             }
-            
-            
         }
         .navigationBarTitle("")
         .navigationBarHidden(true)
+        .onReceive(appViewState.$shouldHidePresentedView) { value in
+            if(value) {
+                self.presentationMode.wrappedValue.dismiss()
+            }
+        }
     }
 }
 
