@@ -56,7 +56,7 @@ struct FolderListView: View {
                 }
             }
             
-        }.padding(EdgeInsets(top: 12, leading: 18, bottom: 15, trailing: 18))
+        }.padding(EdgeInsets(top: 12, leading: 10, bottom: 0, trailing: 18))
     }
 }
 

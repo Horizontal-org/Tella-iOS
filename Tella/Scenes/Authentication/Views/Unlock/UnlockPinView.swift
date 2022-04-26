@@ -76,11 +76,6 @@ struct UnlockPinView: View {
         .onAppear {
             viewModel.initUnlockData()
         }
-        .onDisappear {
-            if viewModel.unlockType == .update {
-                self.presentationMode.wrappedValue.dismiss()
-            }
-        }
     }
     
     var titleString : String {
@@ -89,9 +84,7 @@ struct UnlockPinView: View {
         } else {
             return viewModel.unlockType == .new ? Localizable.Lock.unlockPinTitle : Localizable.Lock.unlockUpdatePinTitle
         }
-
     }
-
 }
 
 struct UnlockPinView_Previews: PreviewProvider {
