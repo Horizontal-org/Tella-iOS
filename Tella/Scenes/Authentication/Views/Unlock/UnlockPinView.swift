@@ -13,76 +13,55 @@ struct UnlockPinView: View {
     @State private var presentingLockChoice : Bool = false
     
     @EnvironmentObject private var appViewState: AppViewState
-    @EnvironmentObject private var viewModel: LockViewModel
+    @EnvironmentObject private var lockViewModel: LockViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @State var message = ""
     
     
     var body: some View {
-        ContainerView {
-            VStack(alignment: .center) {
-                Spacer(minLength: 30)
-                
-                Image("tella.logo")
-                    .frame(width: 65, height: 72)
-                    .aspectRatio(contentMode: .fit)
-                
-                Spacer(minLength: 23)
-                
-                Text(titleString)
-                    .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-                    .foregroundColor(.white)
-                    .lineSpacing(7)
-                    .multilineTextAlignment(.center)
-                    .padding(EdgeInsets(top: 0, leading: 67, bottom: 0, trailing: 67))
-                
-                Spacer()
-                
-                PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
-                                      isValid: .constant(true),
-                                      shouldShowErrorMessage: .constant(false),
-                                      shouldShowError: $viewModel.shouldShowUnlockError,
-                                      disabled: true)
-                
-                Spacer(minLength: 20)
-                
-                PinView(fieldContent: $viewModel.loginPassword,
-                        keyboardNumbers: UnlockKeyboardNumbers) {
-                    viewModel.login()
-                    if !viewModel.shouldShowUnlockError {
-                        if viewModel.unlockType == .new   {
-                            appViewState.resetToMain()
-                        } else {
-                            presentingLockChoice = true
-                        }
+        ZStack {
+            CustomPinView(nextButtonAction: .action,
+                          fieldContent: $lockViewModel.loginPassword,
+                          shouldShowErrorMessage: .constant(false),
+                          message: $message,
+                          destination: EmptyView()) {
+
+                lockViewModel.login()
+                updateMessage()
+                if !lockViewModel.shouldShowUnlockError {
+                    if lockViewModel.unlockType == .new   {
+                        appViewState.resetToMain()
+                    } else {
+                        presentingLockChoice = true
                     }
                 }
                 
-                Spacer()
             }
         }
         .fullScreenCover(isPresented: $presentingLockChoice) {
             self.presentationMode.wrappedValue.dismiss()
             
         } content: {
-            LockChoiceView( isPresented: $presentingLockChoice)
+            LockPinView(message: Localizable.Lock.updatePinFirstMessage)
         }
         
-        .onReceive(viewModel.shouldDismiss) { shouldDismiss in
+        .onReceive(lockViewModel.shouldDismiss) { shouldDismiss in
             if shouldDismiss {
                 self.presentingLockChoice = false
                 self.presentationMode.wrappedValue.dismiss()
             }
         }
         .onAppear {
-            viewModel.initUnlockData()
+            updateMessage()
+            lockViewModel.initUnlockData()
         }
     }
     
-    var titleString : String {
-        if viewModel.shouldShowUnlockError {
-            return  Localizable.Lock.unlockPinError
+    func updateMessage()  {
+        if lockViewModel.shouldShowUnlockError {
+            message =  Localizable.Lock.unlockPinError
         } else {
-            return viewModel.unlockType == .new ? Localizable.Lock.unlockPinTitle : Localizable.Lock.unlockUpdatePinTitle
+            message = lockViewModel.unlockType == .new ? "" : Localizable.Lock.unlockUpdatePinFirstMessage
         }
     }
 }

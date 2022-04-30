@@ -11,17 +11,18 @@ struct LockConfirmPinView: View {
     
     @State var shouldShowOnboarding : Bool = false
     @State var shouldShowErrorMessage : Bool = false
+    @State var message : String = Localizable.Lock.confirmPinFirstMessage
     
     var body: some View {
         ZStack {
-            CustomPinView(lockViewData: LockConfirmPinData(),
-                          nextButtonAction: .action,
+            CustomPinView(nextButtonAction: .action,
                           fieldContent: $lockViewModel.confirmPassword,
                           shouldShowErrorMessage: $shouldShowErrorMessage,
+                          message: $message,
                           destination: EmptyView()) {
                 
                 if lockViewModel.shouldShowErrorMessage {
-                    shouldShowErrorMessage = true
+                    message = Localizable.Lock.confirmPinError
                 } else {
                     lockViewModel.unlockType == .new ? self.lockWithPin() : self.updatePin()
                 }
@@ -33,7 +34,7 @@ struct LockConfirmPinView: View {
     func lockWithPin() {
         do {
             try AuthenticationManager().initKeys(.tellaPin,
-                                              password: lockViewModel.password)
+                                                 password: lockViewModel.password)
             shouldShowOnboarding = true
             
         } catch {
@@ -45,8 +46,8 @@ struct LockConfirmPinView: View {
         do {
             guard let privateKey = lockViewModel.privateKey else { return }
             try AuthenticationManager().updateKeys(privateKey, .tellaPin,
-                                                newPassword: lockViewModel.password,
-                                                oldPassword: lockViewModel.loginPassword)
+                                                   newPassword: lockViewModel.password,
+                                                   oldPassword: lockViewModel.loginPassword)
             lockViewModel.shouldDismiss.send(true)
         } catch {
             

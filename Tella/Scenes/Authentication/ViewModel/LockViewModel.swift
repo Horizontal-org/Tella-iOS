@@ -11,9 +11,9 @@ import SwiftUI
 import Combine
 class LockViewModel: ObservableObject {
     
-    @Published var loginPassword : String = ""
-    @Published var password : String = ""
-    @Published var confirmPassword : String = ""
+    @Published var loginPassword : String = "0"
+    @Published var password : String = "0"
+    @Published var confirmPassword : String = "0"
     @Published var oldPassword : String = ""
     @Published var shouldShowUnlockError : Bool = false
     
@@ -39,15 +39,15 @@ class LockViewModel: ObservableObject {
     
     func initUnlockData() {
         loginPassword = ""
-        password = ""
-        confirmPassword = ""
+        password = "0"
+        confirmPassword = "0"
         shouldShowUnlockError = false
         self.shouldDismiss.send(false)
     }
     
     func initLockData() {
-        password = ""
-        confirmPassword = ""
+        password = "0"
+        confirmPassword = "0"
         shouldShowUnlockError = false
      }
 }

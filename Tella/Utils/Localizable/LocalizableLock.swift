@@ -42,15 +42,33 @@ extension Localizable {
         static var pinDescription = "LockPinDescription".localized
         static var confirmPinTitle = "LockConfirmPinTitle".localized
         static var confirmPinDescription = "LockConfirmPinDescription".localized
+        static var updatePinFirstMessage = "LockUpdatePinFirstMessage".localized
+
         
+        // Lock Pin view
+
+        static var pinFirstMessage = "LockPinFirstMessage".localized
+        static var pinDigitsError = "LockPinDigitsError".localized
+        static var pinLengthError = "LockPinLengthError".localized
+
+        static var confirmPinFirstMessage = "LockConfirmPinFirstMessage".localized
+        static var confirmPinError = "LockConfirmPinError".localized
+
         // Unlock Password view
         static var unlockPasswordTitle = "UnlockPasswordTitle".localized
         static var unlockPasswordError = "UnlockPasswordError".localized
         static var unlockUpdatePasswordTitle = "UnlockUpdatePasswordTitle".localized
         
         // Unlock Pin view
-        static var unlockPinTitle = "UnlockPinTitle".localized
+//        static var unlockPinTitle = "UnlockPinTitle".localized
+//        static var unlockPinError = "UnlockPinError".localized
+//        static var unlockUpdatePinTitle = "UnlockUpdatePinTitle".localized
+        
+        
         static var unlockPinError = "UnlockPinError".localized
-        static var unlockUpdatePinTitle = "UnlockUpdatePinTitle".localized
+        static var unlockUpdatePinFirstMessage = "UnlockUpdatePinFirstMessage".localized
+
+ 
+
     }
 }

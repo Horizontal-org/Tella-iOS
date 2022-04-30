@@ -8,71 +8,89 @@
 
 import SwiftUI
 
-struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
+enum NextButtonAction {
+    case action
+    case destination
+    
+}
+
+struct CustomPinView<Destination:View>: View   {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State private var isValid : Bool = false
-
-    var lockViewData : T
+    @State private var shouldShowLockConfirmPinView = false
     var nextButtonAction: NextButtonAction
+    
     @Binding var fieldContent : String
     @Binding var shouldShowErrorMessage : Bool
+    @Binding var message : String
+    
     var destination: Destination?
     var action : (() -> Void)?
     
+    
     var body: some View {
-        NavigationContainerView {
+        NavigationContainerView(backgroundColor: .white) {
+            
             VStack(alignment: .center) {
-                Spacer(minLength: 20)
                 
-                Image("lock.pin.B")
-                    .frame(width: 64, height: 64)
-                    .aspectRatio(contentMode: .fit)
+                Spacer()
+                    .frame( height: 22)
+                
+                if !message.isEmpty {
+                    TopCalculatorMessageView(text: message)
+                        .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                }
                 
                 Spacer()
                 
-                LockDescriptionView(title: lockViewData.title,
-                                    description: lockViewData.description)
+                PasswordTextView(fieldContent: $fieldContent,
+                                 isValid: $isValid,
+                                 shouldShowErrorMessage: $shouldShowErrorMessage,
+                                 shouldShowError: .constant(false),
+                                 disabled: true)
+                .padding(EdgeInsets(top: 0, leading: 13, bottom: 0, trailing: 13))
                 
-                Spacer()
-                PasswordTextFieldView(fieldContent: $fieldContent,
-                                      isValid: $isValid,
-                                      shouldShowErrorMessage: $shouldShowErrorMessage,
-                                      shouldShowError: .constant(false),
-                                      disabled: true)
+                Spacer( )
+                    .frame(height: 25)
                 
-                Spacer(minLength: 20)
-
-                PinView(fieldContent: self.$fieldContent,
-                        keyboardNumbers: LockKeyboardNumbers)
-                
-                Spacer()
-                VStack {
-                    if shouldShowErrorMessage   {
-                        ConfirmPasswordErrorView()
-                        Spacer()
+                PinView(fieldContent: $fieldContent,
+                        message: $message,
+                        isValid: $isValid,
+                        action: {
+                    
+                    if nextButtonAction == .destination {
+                        shouldShowLockConfirmPinView = true
+                    } else {
+                        action?()
                     }
                     
-                    BottomLockView(isValid: $isValid,
-                                   nextButtonAction: nextButtonAction,
-                                   destination:destination,
-                                   nextAction: action, backAction: {
-                        self.presentationMode.wrappedValue.dismiss()
-                    })
-                }
+                })
+                
+                Spacer()
+                    .frame(height: 25)
             }
+            
+            confirmPinViewLink
         }
     }
+    
+    private var confirmPinViewLink: some View {
+        NavigationLink(destination: LockConfirmPinView() ,
+                       isActive: $shouldShowLockConfirmPinView) {
+            EmptyView()
+        }.frame(width: 0, height: 0)
+            .hidden()
+    }
+    
 }
 
 struct CustomPinView_Previews: PreviewProvider {
     static var previews: some View {
-        CustomPinView(lockViewData: LockPinData(),
-                      nextButtonAction: .action,
-                      fieldContent: .constant(""),
+        CustomPinView(nextButtonAction: .action,
+                      fieldContent: .constant("ACn"),
                       shouldShowErrorMessage: .constant(false),
-                      destination: EmptyView()
-        )
+                      message: .constant(Localizable.Lock.pinFirstMessage),
+                      destination: EmptyView())
     }
 }
-

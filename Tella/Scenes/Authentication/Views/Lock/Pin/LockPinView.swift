@@ -9,18 +9,19 @@
 import SwiftUI
 
 struct LockPinView: View {
+    
     @EnvironmentObject var lockViewModel: LockViewModel
-
+    @State var message = Localizable.Lock.pinFirstMessage
+    
     var body: some View {
         
-        CustomPinView(lockViewData: LockPinData(),
-                      nextButtonAction: .destination,
+        CustomPinView(nextButtonAction: .destination,
                       fieldContent: $lockViewModel.password,
                       shouldShowErrorMessage: .constant(false),
+                      message: $message,
                       destination: LockConfirmPinView())
             .onAppear {
                 lockViewModel.initLockData()
-
             }
 
     }
