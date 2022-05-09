@@ -8,40 +8,39 @@
 
 import SwiftUI
 
-var calculatorItemWidth: CGFloat = (UIScreen.screenWidth - 13 * 5) / 4
-var calculatorItemSpace: CGFloat = 13
+let calculatorItemWidth: CGFloat = (UIScreen.screenWidth - calculatorItemSpace * 5) / 4
+let calculatorItemSpace: CGFloat = 13
+let initialCharacter: String = "0"
 
 struct PinView: View {
+
+    let firstColumns = [ GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace),
+                         GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace),
+                         GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace),
+                         GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace)]
     
-    let columns = [ GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace),
-                    GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace),
-                    GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace),
-                    GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace)]
-    
-    let columns2 = [ GridItem(.fixed(calculatorItemWidth * 2 + 13), spacing: calculatorItemSpace),
-                     GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace),
-                     GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace)]
+    let secondColumns = [ GridItem(.fixed(calculatorItemWidth * 2 + calculatorItemSpace), spacing: calculatorItemSpace),
+                          GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace),
+                          GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace)]
     
     @Binding var fieldContent : String
-    
-    var keyboardNumbers : [PinKeyboardModel] = LockKeyboardNumbers
-    var keyboardNumbers2 : [PinKeyboardModel] = UnlockKeyboardNumbers
-    
     @Binding var message : String
     @Binding var isValid : Bool
     
+    var keyboardNumbers : [PinKeyboardModel] = FirstKeyboardItems
+    var keyboardNumbers2 : [PinKeyboardModel] = SecondKeyboardItems
     var action : (() -> Void)?
     
     var body: some View {
         
         VStack(spacing:calculatorItemSpace) {
-            LazyVGrid(columns: columns,spacing: 13) {
+            LazyVGrid(columns: firstColumns,spacing: calculatorItemSpace) {
                 ForEach(keyboardNumbers, id: \.self) { item in
                     getView(item: item)
                 }
             }
             
-            LazyVGrid(columns: columns2,spacing: 13) {
+            LazyVGrid(columns: secondColumns,spacing: calculatorItemSpace) {
                 ForEach(keyboardNumbers2, id: \.self) { item in
                     getView(item: item)
                 }
@@ -55,12 +54,14 @@ struct PinView: View {
             self.buttonAction(item: item)
         } label: {
             self.getButtonView(item: item)
-        }.frame( height: 70)
-            .frame(maxWidth: .infinity)
+        }
             .buttonStyle(PinButtonStyle(enabled: true, item: item)))
     }
     
     func buttonAction(item:PinKeyboardModel)  {
+        
+        isValid = true
+        
         switch item.actionType {
             
         case .delete:
@@ -81,6 +82,7 @@ struct PinView: View {
         switch item.buttonType {
         case .image:
             return AnyView(Image(item.imageName)
+                .frame(maxWidth: .infinity)
                 .padding())
         case .text:
             return AnyView(Text(item.text)

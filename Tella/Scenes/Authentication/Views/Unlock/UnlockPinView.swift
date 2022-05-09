@@ -1,7 +1,4 @@
-//
-//  UnlockPinView.swift
 //  Tella
-//
 //
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
@@ -9,23 +6,23 @@
 import SwiftUI
 
 struct UnlockPinView: View {
-    
-    @State private var presentingLockChoice : Bool = false
-    
+
     @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject private var lockViewModel: LockViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     @State var message = ""
-    
-    
+    @State private var isValid : Bool = true
+    @State private var presentingLockChoice : Bool = false
+
     var body: some View {
         ZStack {
-            CustomPinView(nextButtonAction: .action,
-                          fieldContent: $lockViewModel.loginPassword,
-                          shouldShowErrorMessage: .constant(false),
+            CustomPinView(fieldContent: $lockViewModel.loginPassword,
                           message: $message,
+                          isValid: $isValid,
+                          nextButtonAction: .action,
                           destination: EmptyView()) {
-
+                
                 lockViewModel.login()
                 updateMessage()
                 if !lockViewModel.shouldShowUnlockError {
@@ -35,7 +32,6 @@ struct UnlockPinView: View {
                         presentingLockChoice = true
                     }
                 }
-                
             }
         }
         .fullScreenCover(isPresented: $presentingLockChoice) {

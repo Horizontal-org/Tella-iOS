@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-var LockKeyboardNumbers: [PinKeyboardModel] = [
+var FirstKeyboardItems: [PinKeyboardModel] = [
     PinKeyboardModel(text: "AC", type: .delete, buttonType: .text, buttonViewData: MintButton()),
     PinKeyboardModel(text: "+/_",imageName: "lock.calc.plus-minus", type: .number, buttonType: .image, buttonViewData: MintButton()),
     PinKeyboardModel(text: "%", type: .number, buttonType: .text, buttonViewData: MintButton()),
@@ -31,7 +31,7 @@ var LockKeyboardNumbers: [PinKeyboardModel] = [
     PinKeyboardModel(text: "+", imageName: "lock.calc.plus",  type: .number, buttonType: .image, buttonViewData: DarkGrayButton()),
 ]
 
-var UnlockKeyboardNumbers: [PinKeyboardModel] = [
+var SecondKeyboardItems: [PinKeyboardModel] = [
     PinKeyboardModel(text: "0",  type: .number, buttonType: .text, buttonViewData: LightGrayButton()),
     PinKeyboardModel(text: ",",  type: .number, buttonType: .text, buttonViewData: LightGrayButton()),
     PinKeyboardModel(text: "=",  type: .done, buttonType: .text, buttonViewData: PetrolButton()),

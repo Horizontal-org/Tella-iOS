@@ -11,19 +11,20 @@ import SwiftUI
 struct LockPinView: View {
     
     @EnvironmentObject var lockViewModel: LockViewModel
+    
     @State var message = Localizable.Lock.pinFirstMessage
+    @State private var isValid : Bool = true
     
     var body: some View {
         
-        CustomPinView(nextButtonAction: .destination,
-                      fieldContent: $lockViewModel.password,
-                      shouldShowErrorMessage: .constant(false),
+        CustomPinView(fieldContent: $lockViewModel.password,
                       message: $message,
+                      isValid: $isValid,
+                      nextButtonAction: .destination,
                       destination: LockConfirmPinView())
-            .onAppear {
-                lockViewModel.initLockData()
-            }
-
+        .onAppear {
+            lockViewModel.initLockData()
+        }
     }
 }
 
@@ -32,5 +33,3 @@ struct LockPinView_Previews: PreviewProvider {
         LockPinView()
     }
 }
-
-

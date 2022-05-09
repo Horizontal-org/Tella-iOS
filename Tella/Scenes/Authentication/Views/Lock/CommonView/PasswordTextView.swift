@@ -9,12 +9,9 @@
 import SwiftUI
 
 struct PasswordTextView : View {
-    
-    @State var shouldShowPassword : Bool = false
+
     @Binding var fieldContent : String
     @Binding var isValid : Bool
-    @Binding var shouldShowErrorMessage : Bool
-    @Binding var shouldShowError : Bool
     
     var disabled : Bool = false
     var onCommit : (() -> Void)? =  ({})
@@ -23,7 +20,7 @@ struct PasswordTextView : View {
         Text(fieldContent)
             .frame(maxWidth: .infinity, alignment: .trailing)
             .font(.custom(Styles.Fonts.regularFontName, size: 60))
-            .foregroundColor(shouldShowError ? Styles.Colors.red : Styles.Colors.petrol )
+            .foregroundColor(isValid ? Styles.Colors.petrol : Styles.Colors.red )
             .lineLimit(1)
     }
 }
@@ -31,8 +28,6 @@ struct PasswordTextView : View {
 struct PasswordTextFieldView_Previews: PreviewProvider {
     static var previews: some View {
         PasswordTextView(fieldContent: .constant("hg"),
-                              isValid: .constant(true),
-                              shouldShowErrorMessage: .constant(true),
-                              shouldShowError: .constant(false))
+                              isValid: .constant(true))
     }
 }
