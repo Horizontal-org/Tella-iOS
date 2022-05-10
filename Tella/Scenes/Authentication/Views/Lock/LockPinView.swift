@@ -13,15 +13,13 @@ struct LockPinView: View {
     @EnvironmentObject var lockViewModel: LockViewModel
     
     @State var message = Localizable.Lock.pinFirstMessage
-    @State private var isValid : Bool = true
-    
+
     var body: some View {
-        
         CustomCalculatorView(fieldContent: $lockViewModel.password,
-                      message: $message,
-                      isValid: $isValid,
-                      nextButtonAction: .destination,
-                      destination: LockConfirmPinView())
+                             message: $message,
+                             isValid: $lockViewModel.isValid,
+                             nextButtonAction: .destination,
+                             destination: LockConfirmPinView())
         .onAppear {
             lockViewModel.initLockData()
         }

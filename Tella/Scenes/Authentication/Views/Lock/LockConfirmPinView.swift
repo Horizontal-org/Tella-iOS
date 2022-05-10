@@ -10,17 +10,15 @@ struct LockConfirmPinView: View {
     @EnvironmentObject var lockViewModel: LockViewModel
     
     @State var shouldShowOnboarding : Bool = false
-    @State var shouldShowErrorMessage : Bool = false
     @State var message : String = Localizable.Lock.confirmPinFirstMessage
-    @State private var isValid : Bool = true
     
     var body: some View {
         ZStack {
             CustomCalculatorView(fieldContent: $lockViewModel.confirmPassword,
-                          message: $message,
-                          isValid: $isValid,
-                          nextButtonAction: .action,
-                          destination: EmptyView()) {
+                                 message: $message,
+                                 isValid: $lockViewModel.isValid,
+                                 nextButtonAction: .action,
+                                 destination: EmptyView()) {
                 validateMatchPin()
             }
             onboardingLink
@@ -28,12 +26,11 @@ struct LockConfirmPinView: View {
     }
     
     func validateMatchPin() {
-        if lockViewModel.shouldShowErrorMessage {
-            message = Localizable.Lock.confirmPinError
-            isValid = false
-        } else {
+        lockViewModel.validatePinMatch()
+        if lockViewModel.isValid {
             lockViewModel.unlockType == .new ? self.lockWithPin() : self.updatePin()
-            isValid = true
+        } else {
+            message = Localizable.Lock.confirmPinError
         }
     }
     

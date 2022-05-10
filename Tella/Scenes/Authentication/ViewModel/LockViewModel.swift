@@ -16,13 +16,14 @@ class LockViewModel: ObservableObject {
     @Published var confirmPassword : String = CalculatorData.initialCharacter
     @Published var oldPassword : String = ""
     @Published var shouldShowUnlockError : Bool = false
+    @Published var isValid : Bool = true
     
     var privateKey : SecKey?
     var unlockType : UnlockType = .new
     var shouldDismiss = CurrentValueSubject<Bool, Never>(false)
     
-    var shouldShowErrorMessage : Bool {
-        return password != confirmPassword
+    func validatePinMatch()  {
+        isValid = password == confirmPassword
     }
     
     init() {
@@ -43,11 +44,12 @@ class LockViewModel: ObservableObject {
         confirmPassword = CalculatorData.initialCharacter
         shouldShowUnlockError = false
         self.shouldDismiss.send(false)
+        isValid = true
     }
     
     func initLockData() {
         password = CalculatorData.initialCharacter
         confirmPassword = CalculatorData.initialCharacter
         shouldShowUnlockError = false
-     }
+    }
 }

@@ -6,22 +6,22 @@
 import SwiftUI
 
 struct UnlockPinView: View {
-
+    
     @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject private var lockViewModel: LockViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     @State var message = ""
-    @State private var isValid : Bool = true
-    @State private var presentingLockChoice : Bool = false
 
+    @State private var presentingPinView : Bool = false
+    
     var body: some View {
         ZStack {
             CustomCalculatorView(fieldContent: $lockViewModel.loginPassword,
-                          message: $message,
-                          isValid: $isValid,
-                          nextButtonAction: .action,
-                          destination: EmptyView()) {
+                                 message: $message,
+                                 isValid: $lockViewModel.isValid,
+                                 nextButtonAction: .action,
+                                 destination: EmptyView()) {
                 
                 lockViewModel.login()
                 updateMessage()
@@ -29,12 +29,12 @@ struct UnlockPinView: View {
                     if lockViewModel.unlockType == .new   {
                         appViewState.resetToMain()
                     } else {
-                        presentingLockChoice = true
+                        presentingPinView = true
                     }
                 }
             }
         }
-        .fullScreenCover(isPresented: $presentingLockChoice) {
+        .fullScreenCover(isPresented: $presentingPinView) {
             self.presentationMode.wrappedValue.dismiss()
             
         } content: {
@@ -43,7 +43,7 @@ struct UnlockPinView: View {
         
         .onReceive(lockViewModel.shouldDismiss) { shouldDismiss in
             if shouldDismiss {
-                self.presentingLockChoice = false
+                self.presentingPinView = false
                 self.presentationMode.wrappedValue.dismiss()
             }
         }
