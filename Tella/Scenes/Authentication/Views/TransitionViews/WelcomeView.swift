@@ -6,21 +6,21 @@ import SwiftUI
 
 struct WelcomeView: View {
     
-    @State var shouldShowLockChoice : Bool = false
+    @State var shouldShowLockPinView : Bool = false
     var action: (() -> Void)?
     
     var body: some View {
         NavigationContainerView {
             TransitionView(transitionViewData: WelcomeViewData()) {
-                shouldShowLockChoice = true
+                shouldShowLockPinView = true
             }
             onboardingLink
         }
     }
     
     private var onboardingLink: some View {
-        NavigationLink(destination: LockChoiceView(isPresented: .constant(false)) ,
-                       isActive: $shouldShowLockChoice) {
+        NavigationLink(destination: LockPinView() ,
+                       isActive: $shouldShowLockPinView) {
             EmptyView()
         }.frame(width: 0, height: 0)
             .hidden()

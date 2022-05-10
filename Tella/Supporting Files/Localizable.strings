@@ -34,53 +34,34 @@
 /******** Lock ********/
 /**********************/
 
-// Lock Choice view
-"LockChoiceTitle" = "How would you like to lock Tella?";
-"LockChoicePasswordButtonTitle" = "PASSWORD";
-"LockChoicePasswordButtonDescription" = "The most secure option";
-"LockChoicePINButtonTitle" = "PIN";
-"LockChoicePINButtonDescription" = "Moderately secure";
-"LockChoiceHeaderTitle" = "Lock";
-
-
-// Lock Password view
-"LockPasswordTitle" = "Enter your password";
-"LockPasswordDescription" = "Use at least 6 characters and avoid using passwords that can be guessed easily, such as “password.” The longer your password, the more secure it is." ;
-"LockConfirmPasswordTitle" = "Confirm your password";
-"LockConfirmPasswordDescription" = "Please enter your password one more time, just to be sure.";
-"LockConfirmPasswordError" = "Please try again. Your passwords do not match.";
-
 // Lock Pin view
 
-"LockPinTitle" = "Enter your PIN";
-"LockPinDescription" = "Use at least 6 digits and avoid using numbers that can be guessed easily, such as your birthday." ;
-"LockConfirmPinTitle" = "Confirm your PIN";
-"LockConfirmPinDescription" = "Please enter your PIN one more time, just to be sure.";
+"LockPinFirstMessage" = "Type your PIN on the calculator and press “=”";
+"LockPinDigitsError" = "Your PIN can only include digits. Please try again.";
+"LockPinLengthError" = "Your PIN must use at least 6 digits. Please try again.";
+
+"LockConfirmPinFirstMessage" = "Please enter your PIN one more time, just to be sure.";
+"LockConfirmPinError" = "Please try again. Your PINs do not match.";
+
+
+"LockUpdatePinFirstMessage" = "Now enter your new PIN";
 
 // Welcome view
 
-"LockWelcomeTitle" = "Welcome to Tella";
-"LockWelcomeDescription" = "Document & Protect";
-"LockWelcomeButtonTitle" = "GET STARTED";
+"LockWelcomeTitle" = "Create a PIN";
+"LockWelcomeDescription" = "• Use at least 6 digits\n• Avoid using numbers that can be guessed easily, such as your birthday." ;
+"LockWelcomeButtonTitle" = "CREATE PIN";
 
 // Onboarding End view
 
-"LockOnboardingEndTitle" = "You’re all done!";
-"LockOnboardingEndDescription" = "You can always continue changing your preferences in Settings.";
+"LockOnboardingEndTitle" = "Your PIN is set";
+"LockOnboardingEndDescription" = "To unlock Tella, open the Calculator app on your homescreen and enter your PIN followed by =. You can always change your PIN in Tella’s settings.";
 "LockOnboardingEndButtonTitle" = "GO TO TELLA";
 
 
-// Unlock Password view
-"UnlockPasswordError" = "Incorrect password, please try again";
-"UnlockPasswordTitle" = "Enter your password to unlock";
-"UnlockUpdatePasswordTitle" = "Enter your password to change your lock method";
-
-
 // Unlock Pin view
-"UnlockPinTitle" = "Enter your PIN to unlock Tella";
 "UnlockPinError" = "Incorrect PIN, please try again";
-"UnlockUpdatePinTitle" = "Enter your PIN to change your lock method";
-
+"UnlockUpdatePinFirstMessage" = "Enter your current PIN";
 
 /****** Home ******/
 // Recent files

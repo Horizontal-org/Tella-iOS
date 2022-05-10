@@ -48,9 +48,6 @@
 		1209FD2E27AD89C800D8C17E /* AudioPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD2D27AD89C800D8C17E /* AudioPlayerViewModel.swift */; };
 		1209FD3027AD8AC400D8C17E /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD2F27AD8AC400D8C17E /* AudioPlayerManager.swift */; };
 		1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD3127ADBDDE00D8C17E /* TimeIntervalExtension.swift */; };
-		1224DAEA27197578001C0ED0 /* ConfirmLockPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224DAE927197577001C0ED0 /* ConfirmLockPasswordView.swift */; };
-		1224DAEC271975D3001C0ED0 /* PasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224DAEB271975D2001C0ED0 /* PasswordView.swift */; };
-		1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224DAEF2719C71B001C0ED0 /* LockPasswordData.swift */; };
 		1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE64FA282505542E00B03CEC /* AppViewState.swift */; };
 		1230BE4727CD6D440055F854 /* AudioAuthorizationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230BE4627CD6D440055F854 /* AudioAuthorizationStatus.swift */; };
 		1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C876268C792000EB5E34 /* NSUIImage.swift */; };
@@ -60,22 +57,18 @@
 		123CE54F272028D1005BF386 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 123CE54E272028D1005BF386 /* Roboto-Light.ttf */; };
 		1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141627E357E80037D469 /* LoadMoreCell.swift */; };
 		1244141927E35D120037D469 /* VaultFileImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141827E35D120037D469 /* VaultFileImages.swift */; };
-		12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12567FEE2716B38F00A2D356 /* LockChoiceView.swift */; };
 		12567FF22716E33500A2D356 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12567FF02716E33500A2D356 /* OpenSans-Bold.ttf */; };
 		12567FF32716E33500A2D356 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12567FF12716E33500A2D356 /* OpenSans-Regular.ttf */; };
 		12567FF72717426000A2D356 /* LocalizableLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12567FF62717426000A2D356 /* LocalizableLock.swift */; };
 		12567FF9271742C500A2D356 /* Localizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12567FF8271742C500A2D356 /* Localizable.swift */; };
-		12567FFC27178EE200A2D356 /* LockButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12567FFB27178EE200A2D356 /* LockButton.swift */; };
-		125680002717907900A2D356 /* LockPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12567FFF2717907900A2D356 /* LockPasswordView.swift */; };
 		12568002271790AF00A2D356 /* LockPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12568001271790AF00A2D356 /* LockPinView.swift */; };
-		125A0AEB2726CBDA00F6E77F /* UnlockPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A0AEA2726CBD900F6E77F /* UnlockPasswordView.swift */; };
 		125A0AED2726CBF000F6E77F /* UnlockPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A0AEC2726CBF000F6E77F /* UnlockPinView.swift */; };
 		125A0AEF2726F0A000F6E77F /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A0AEE2726F0A000F6E77F /* ContainerView.swift */; };
 		125D231C271F119D00250FBB /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231B271F119D00250FBB /* Validator.swift */; };
 		125D231F271F12A000250FBB /* NSRegularExpressionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */; };
 		125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2320271F823100250FBB /* UIApplicationExtension.swift */; };
-		125D2324271F891500250FBB /* PinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2323271F891500250FBB /* PinView.swift */; };
-		125D2326271F896400250FBB /* CustomPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2325271F896400250FBB /* CustomPinView.swift */; };
+		125D2324271F891500250FBB /* CalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2323271F891500250FBB /* CalculatorView.swift */; };
+		125D2326271F896400250FBB /* CustomCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2325271F896400250FBB /* CustomCalculatorView.swift */; };
 		125D2328271F8B6600250FBB /* LockConfirmPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2327271F8B6600250FBB /* LockConfirmPinView.swift */; };
 		125DD9C92796CB090053619D /* ImportFilesProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DD9C82796CB090053619D /* ImportFilesProgressView.swift */; };
 		125EDDAD271DBD5200E2789A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65B023E3207D000F93E5 /* ContentView.swift */; };
@@ -134,6 +127,7 @@
 		128B929B27D798E200E92ACF /* ManageFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128B929A27D798E200E92ACF /* ManageFileView.swift */; };
 		128B929D27D7A08700E92ACF /* FileItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128B929C27D7A08700E92ACF /* FileItemsView.swift */; };
 		128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C7BC32745AB0100A680B3 /* FileListViewModel.swift */; };
+		128D3AF9282A966F003DBB83 /* CalculatorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D3AF8282A966F003DBB83 /* CalculatorData.swift */; };
 		128D6E182804531B0082AB18 /* AddPhotoVideoItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E172804531B0082AB18 /* AddPhotoVideoItems.swift */; };
 		128D6E1A28045C090082AB18 /* manageFilesItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E1928045C090082AB18 /* manageFilesItems.swift */; };
 		128D6E1C280480500082AB18 /* FileActionItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E1B280480500082AB18 /* FileActionItems.swift */; };
@@ -149,14 +143,13 @@
 		129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129533C32739D5BC0053FA4B /* TextFieldBottomSheetView.swift */; };
 		12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A1488E27209F2800A1ADDC /* ViewExtension.swift */; };
 		12A148922720A32000A1ADDC /* LockPinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148912720A32000A1ADDC /* LockPinData.swift */; };
-		12A148942720A89E00A1ADDC /* BottomLockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148932720A89E00A1ADDC /* BottomLockView.swift */; };
-		12A148962720B2B400A1ADDC /* PasswordTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148952720B2B400A1ADDC /* PasswordTextFieldView.swift */; };
-		12A148982720B47100A1ADDC /* LockDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148972720B47100A1ADDC /* LockDescriptionView.swift */; };
-		12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148992720B53800A1ADDC /* ConfirmPasswordErrorView.swift */; };
+		12A148962720B2B400A1ADDC /* PasswordTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148952720B2B400A1ADDC /* PasswordTextView.swift */; };
 		12A2DAFD273563BC0094B856 /* VaultFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC267A5267AED7C00E55AFA /* VaultFile.swift */; };
 		12A2DAFE273563E40094B856 /* RecentFileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC6263A383900CE191A /* RecentFileCell.swift */; };
 		12A2DAFF273564090094B856 /* FileSortOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213CA268028A200526995 /* FileSortOptions.swift */; };
 		12A2DB03273576D50094B856 /* AddFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A2DB02273576D50094B856 /* AddFileView.swift */; };
+		12A69209281C68EE00CDB0DD /* UnlockType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A69208281C68EE00CDB0DD /* UnlockType.swift */; };
+		12A6920B281D54D800CDB0DD /* TopCalculatorMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6920A281D54D800CDB0DD /* TopCalculatorMessageView.swift */; };
 		12AB30D3272C36500020FFBF /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB30D2272C36500020FFBF /* HomeData.swift */; };
 		12AE80042812A30300F14DB8 /* LocalizableCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE80032812A30300F14DB8 /* LocalizableCommon.swift */; };
 		12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */; };
@@ -298,31 +291,24 @@
 		1209FD2D27AD89C800D8C17E /* AudioPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerViewModel.swift; sourceTree = "<group>"; };
 		1209FD2F27AD8AC400D8C17E /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
 		1209FD3127ADBDDE00D8C17E /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
-		1224DAE927197577001C0ED0 /* ConfirmLockPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmLockPasswordView.swift; sourceTree = "<group>"; };
-		1224DAEB271975D2001C0ED0 /* PasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordView.swift; sourceTree = "<group>"; };
-		1224DAEF2719C71B001C0ED0 /* LockPasswordData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPasswordData.swift; sourceTree = "<group>"; };
 		1230BE4627CD6D440055F854 /* AudioAuthorizationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAuthorizationStatus.swift; sourceTree = "<group>"; };
 		1237A71B278F5B2E00D7BC0F /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		1237A71D278F5F8B00D7BC0F /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
 		123CE54E272028D1005BF386 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		1244141627E357E80037D469 /* LoadMoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCell.swift; sourceTree = "<group>"; };
 		1244141827E35D120037D469 /* VaultFileImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileImages.swift; sourceTree = "<group>"; };
-		12567FEE2716B38F00A2D356 /* LockChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockChoiceView.swift; sourceTree = "<group>"; };
 		12567FF02716E33500A2D356 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		12567FF12716E33500A2D356 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		12567FF62717426000A2D356 /* LocalizableLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableLock.swift; sourceTree = "<group>"; };
 		12567FF8271742C500A2D356 /* Localizable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localizable.swift; sourceTree = "<group>"; };
-		12567FFB27178EE200A2D356 /* LockButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockButton.swift; sourceTree = "<group>"; };
-		12567FFF2717907900A2D356 /* LockPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPasswordView.swift; sourceTree = "<group>"; };
 		12568001271790AF00A2D356 /* LockPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPinView.swift; sourceTree = "<group>"; };
-		125A0AEA2726CBD900F6E77F /* UnlockPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockPasswordView.swift; sourceTree = "<group>"; };
 		125A0AEC2726CBF000F6E77F /* UnlockPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockPinView.swift; sourceTree = "<group>"; };
 		125A0AEE2726F0A000F6E77F /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		125D231B271F119D00250FBB /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRegularExpressionExtension.swift; sourceTree = "<group>"; };
 		125D2320271F823100250FBB /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
-		125D2323271F891500250FBB /* PinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinView.swift; sourceTree = "<group>"; };
-		125D2325271F896400250FBB /* CustomPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPinView.swift; sourceTree = "<group>"; };
+		125D2323271F891500250FBB /* CalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorView.swift; sourceTree = "<group>"; };
+		125D2325271F896400250FBB /* CustomCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCalculatorView.swift; sourceTree = "<group>"; };
 		125D2327271F8B6600250FBB /* LockConfirmPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockConfirmPinView.swift; sourceTree = "<group>"; };
 		125DD9C82796CB090053619D /* ImportFilesProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesProgressView.swift; sourceTree = "<group>"; };
 		125EDDB0271E40CA00E2789A /* LockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockViewModel.swift; sourceTree = "<group>"; };
@@ -375,6 +361,7 @@
 		128B929A27D798E200E92ACF /* ManageFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageFileView.swift; sourceTree = "<group>"; };
 		128B929C27D7A08700E92ACF /* FileItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItemsView.swift; sourceTree = "<group>"; };
 		128C7BC32745AB0100A680B3 /* FileListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListViewModel.swift; sourceTree = "<group>"; };
+		128D3AF8282A966F003DBB83 /* CalculatorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorData.swift; sourceTree = "<group>"; };
 		128D6E172804531B0082AB18 /* AddPhotoVideoItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoVideoItems.swift; sourceTree = "<group>"; };
 		128D6E1928045C090082AB18 /* manageFilesItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = manageFilesItems.swift; sourceTree = "<group>"; };
 		128D6E1B280480500082AB18 /* FileActionItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileActionItems.swift; sourceTree = "<group>"; };
@@ -390,11 +377,10 @@
 		129533C32739D5BC0053FA4B /* TextFieldBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldBottomSheetView.swift; sourceTree = "<group>"; };
 		12A1488E27209F2800A1ADDC /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		12A148912720A32000A1ADDC /* LockPinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPinData.swift; sourceTree = "<group>"; };
-		12A148932720A89E00A1ADDC /* BottomLockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLockView.swift; sourceTree = "<group>"; };
-		12A148952720B2B400A1ADDC /* PasswordTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextFieldView.swift; sourceTree = "<group>"; };
-		12A148972720B47100A1ADDC /* LockDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockDescriptionView.swift; sourceTree = "<group>"; };
-		12A148992720B53800A1ADDC /* ConfirmPasswordErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordErrorView.swift; sourceTree = "<group>"; };
+		12A148952720B2B400A1ADDC /* PasswordTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextView.swift; sourceTree = "<group>"; };
 		12A2DB02273576D50094B856 /* AddFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileView.swift; sourceTree = "<group>"; };
+		12A69208281C68EE00CDB0DD /* UnlockType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockType.swift; sourceTree = "<group>"; };
+		12A6920A281D54D800CDB0DD /* TopCalculatorMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopCalculatorMessageView.swift; sourceTree = "<group>"; };
 		12AB30D2272C36500020FFBF /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
 		12AE80032812A30300F14DB8 /* LocalizableCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCommon.swift; sourceTree = "<group>"; };
 		12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtension.swift; sourceTree = "<group>"; };
@@ -456,14 +442,14 @@
 		D7F55FD9253490BE0028739E /* RecordingAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingAudioManager.swift; sourceTree = "<group>"; };
 		DC542768D626D09876372818 /* Pods-Tella-TellaUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.release.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E0FADD614621998E34738DDA /* libPods-Tella.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F66E65A923E3207D000F93E5 /* Tella.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tella.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F66E65A923E3207D000F93E5 /* Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65B023E3207D000F93E5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F66E65B223E32080000F93E5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F66E65B823E32080000F93E5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F66E65BA23E32080000F93E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F66E65BF23E32080000F93E5 /* TellaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TellaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F66E65BF23E32080000F93E5 /* CalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalculatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65C523E32080000F93E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F66E65CA23E32080000F93E5 /* TellaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TellaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F66E65CA23E32080000F93E5 /* CalculatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalculatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65CE23E32080000F93E5 /* TellaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaUITests.swift; sourceTree = "<group>"; };
 		F66E65D023E32080000F93E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -629,29 +615,6 @@
 			path = AudioPlayer;
 			sourceTree = "<group>";
 		};
-		1224DAED2719B09F001C0ED0 /* Pin */ = {
-			isa = PBXGroup;
-			children = (
-				12568001271790AF00A2D356 /* LockPinView.swift */,
-				125D2327271F8B6600250FBB /* LockConfirmPinView.swift */,
-				125D2325271F896400250FBB /* CustomPinView.swift */,
-				125D2323271F891500250FBB /* PinView.swift */,
-				12A148912720A32000A1ADDC /* LockPinData.swift */,
-			);
-			path = Pin;
-			sourceTree = "<group>";
-		};
-		1224DAEE2719B0A7001C0ED0 /* Password */ = {
-			isa = PBXGroup;
-			children = (
-				12567FFF2717907900A2D356 /* LockPasswordView.swift */,
-				1224DAE927197577001C0ED0 /* ConfirmLockPasswordView.swift */,
-				1224DAEB271975D2001C0ED0 /* PasswordView.swift */,
-				1224DAEF2719C71B001C0ED0 /* LockPasswordData.swift */,
-			);
-			path = Password;
-			sourceTree = "<group>";
-		};
 		12567FED2716B24700A2D356 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -662,19 +625,9 @@
 			path = Authentication;
 			sourceTree = "<group>";
 		};
-		12567FFE2717901E00A2D356 /* LockChoice */ = {
-			isa = PBXGroup;
-			children = (
-				12567FEE2716B38F00A2D356 /* LockChoiceView.swift */,
-				12567FFB27178EE200A2D356 /* LockButton.swift */,
-			);
-			path = LockChoice;
-			sourceTree = "<group>";
-		};
 		125A0AE92726CACE00F6E77F /* Unlock */ = {
 			isa = PBXGroup;
 			children = (
-				125A0AEA2726CBD900F6E77F /* UnlockPasswordView.swift */,
 				125A0AEC2726CBF000F6E77F /* UnlockPinView.swift */,
 			);
 			path = Unlock;
@@ -706,8 +659,10 @@
 		125D2322271F863200250FBB /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				125A0AE92726CACE00F6E77F /* Unlock */,
 				12A1488D27209EF200A1ADDC /* Lock */,
+				125A0AE92726CACE00F6E77F /* Unlock */,
+				127C155927DA69A8009EC15B /* TransitionViews */,
+				12A148902720A0E500A1ADDC /* CommonView */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -833,6 +788,9 @@
 			children = (
 				12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */,
 				127C155B27DA69FF009EC15B /* TransitionViewData.swift */,
+				12A148912720A32000A1ADDC /* LockPinData.swift */,
+				12A69208281C68EE00CDB0DD /* UnlockType.swift */,
+				128D3AF8282A966F003DBB83 /* CalculatorData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1002,11 +960,8 @@
 		12A1488D27209EF200A1ADDC /* Lock */ = {
 			isa = PBXGroup;
 			children = (
-				127C155927DA69A8009EC15B /* TransitionViews */,
-				12A148902720A0E500A1ADDC /* CommonView */,
-				12567FFE2717901E00A2D356 /* LockChoice */,
-				1224DAEE2719B0A7001C0ED0 /* Password */,
-				1224DAED2719B09F001C0ED0 /* Pin */,
+				12568001271790AF00A2D356 /* LockPinView.swift */,
+				125D2327271F8B6600250FBB /* LockConfirmPinView.swift */,
 			);
 			path = Lock;
 			sourceTree = "<group>";
@@ -1014,10 +969,10 @@
 		12A148902720A0E500A1ADDC /* CommonView */ = {
 			isa = PBXGroup;
 			children = (
-				12A148932720A89E00A1ADDC /* BottomLockView.swift */,
-				12A148952720B2B400A1ADDC /* PasswordTextFieldView.swift */,
-				12A148972720B47100A1ADDC /* LockDescriptionView.swift */,
-				12A148992720B53800A1ADDC /* ConfirmPasswordErrorView.swift */,
+				12A148952720B2B400A1ADDC /* PasswordTextView.swift */,
+				125D2325271F896400250FBB /* CustomCalculatorView.swift */,
+				125D2323271F891500250FBB /* CalculatorView.swift */,
+				12A6920A281D54D800CDB0DD /* TopCalculatorMessageView.swift */,
 			);
 			path = CommonView;
 			sourceTree = "<group>";
@@ -1238,9 +1193,9 @@
 		F66E65AA23E3207D000F93E5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F66E65A923E3207D000F93E5 /* Tella.app */,
-				F66E65BF23E32080000F93E5 /* TellaTests.xctest */,
-				F66E65CA23E32080000F93E5 /* TellaUITests.xctest */,
+				F66E65A923E3207D000F93E5 /* Calculator.app */,
+				F66E65BF23E32080000F93E5 /* CalculatorTests.xctest */,
+				F66E65CA23E32080000F93E5 /* CalculatorUITests.xctest */,
 				D50FA6802613ABC900D6D63B /* VaultManager.framework */,
 			);
 			name = Products;
@@ -1316,9 +1271,9 @@
 			productReference = D50FA6802613ABC900D6D63B /* VaultManager.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		F66E65A823E3207D000F93E5 /* Tella */ = {
+		F66E65A823E3207D000F93E5 /* Calculator */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F66E65D323E32080000F93E5 /* Build configuration list for PBXNativeTarget "Tella" */;
+			buildConfigurationList = F66E65D323E32080000F93E5 /* Build configuration list for PBXNativeTarget "Calculator" */;
 			buildPhases = (
 				D978AA975BF0CEFA7A15EC46 /* [CP] Check Pods Manifest.lock */,
 				F66E65A523E3207D000F93E5 /* Sources */,
@@ -1331,14 +1286,14 @@
 			dependencies = (
 				D50FA6862613ABCA00D6D63B /* PBXTargetDependency */,
 			);
-			name = Tella;
+			name = Calculator;
 			productName = Tella;
-			productReference = F66E65A923E3207D000F93E5 /* Tella.app */;
+			productReference = F66E65A923E3207D000F93E5 /* Calculator.app */;
 			productType = "com.apple.product-type.application";
 		};
-		F66E65BE23E32080000F93E5 /* TellaTests */ = {
+		F66E65BE23E32080000F93E5 /* CalculatorTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F66E65D623E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaTests" */;
+			buildConfigurationList = F66E65D623E32080000F93E5 /* Build configuration list for PBXNativeTarget "CalculatorTests" */;
 			buildPhases = (
 				A2FCC4A49B4A3809DBE2D18D /* [CP] Check Pods Manifest.lock */,
 				F66E65BB23E32080000F93E5 /* Sources */,
@@ -1350,14 +1305,14 @@
 			dependencies = (
 				F66E65C123E32080000F93E5 /* PBXTargetDependency */,
 			);
-			name = TellaTests;
+			name = CalculatorTests;
 			productName = TellaTests;
-			productReference = F66E65BF23E32080000F93E5 /* TellaTests.xctest */;
+			productReference = F66E65BF23E32080000F93E5 /* CalculatorTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		F66E65C923E32080000F93E5 /* TellaUITests */ = {
+		F66E65C923E32080000F93E5 /* CalculatorUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F66E65D923E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaUITests" */;
+			buildConfigurationList = F66E65D923E32080000F93E5 /* Build configuration list for PBXNativeTarget "CalculatorUITests" */;
 			buildPhases = (
 				ED6FF9D4F55738E8FC8C25DF /* [CP] Check Pods Manifest.lock */,
 				F66E65C623E32080000F93E5 /* Sources */,
@@ -1369,9 +1324,9 @@
 			dependencies = (
 				F66E65CC23E32080000F93E5 /* PBXTargetDependency */,
 			);
-			name = TellaUITests;
+			name = CalculatorUITests;
 			productName = TellaUITests;
-			productReference = F66E65CA23E32080000F93E5 /* TellaUITests.xctest */;
+			productReference = F66E65CA23E32080000F93E5 /* CalculatorUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -1400,7 +1355,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F66E65A423E3207D000F93E5 /* Build configuration list for PBXProject "Tella" */;
+			buildConfigurationList = F66E65A423E3207D000F93E5 /* Build configuration list for PBXProject "Calculator" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -1414,9 +1369,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F66E65A823E3207D000F93E5 /* Tella */,
-				F66E65BE23E32080000F93E5 /* TellaTests */,
-				F66E65C923E32080000F93E5 /* TellaUITests */,
+				F66E65A823E3207D000F93E5 /* Calculator */,
+				F66E65BE23E32080000F93E5 /* CalculatorTests */,
+				F66E65C923E32080000F93E5 /* CalculatorUITests */,
 				D50FA67F2613ABC900D6D63B /* VaultManager */,
 			);
 		};
@@ -1546,7 +1501,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */,
 				128F979A2799AF0100E63DA5 /* CircularActivityIndicatory.swift in Sources */,
 				0ECC7814267A328900A2ACF2 /* FormsModel.swift in Sources */,
 				128B15CB27DA30C800E1C1E0 /* OnboardingEndView.swift in Sources */,
@@ -1574,7 +1528,6 @@
 				D5DAFDCF265384C4002F3942 /* MainAppModel.swift in Sources */,
 				1289B98B27C53C2400315FCE /* CameraTypeItemView.swift in Sources */,
 				126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */,
-				125680002717907900A2D356 /* LockPasswordView.swift in Sources */,
 				1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */,
 				D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */,
 				D5DA7F982646220100B00FDA /* FileGroupButtonView.swift in Sources */,
@@ -1590,15 +1543,14 @@
 				1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */,
 				125EFACE274A834300D93DF6 /* FileActionMenu.swift in Sources */,
 				D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */,
-				1224DAEA27197578001C0ED0 /* ConfirmLockPasswordView.swift in Sources */,
 				0D4D7516266466C500D7A635 /* SettingsDocumentation.swift in Sources */,
+				12A6920B281D54D800CDB0DD /* TopCalculatorMessageView.swift in Sources */,
 				12781F4B27EA315600FE9609 /* BundleInfo.swift in Sources */,
 				1244141927E35D120037D469 /* VaultFileImages.swift in Sources */,
 				1289B98D27C53C8400315FCE /* ImageExtension.swift in Sources */,
 				D538C8AC264CE8D300D457B0 /* CryptoFileManager.swift in Sources */,
 				12568002271790AF00A2D356 /* LockPinView.swift in Sources */,
 				1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */,
-				12A148942720A89E00A1ADDC /* BottomLockView.swift in Sources */,
 				1291F4F627B54300006A34D3 /* AudioPlayer.swift in Sources */,
 				12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */,
 				128B929927D796E800E92ACF /* FolderListView.swift in Sources */,
@@ -1622,10 +1574,9 @@
 				1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */,
 				1278B66127EB364500C9AC4D /* Utils.swift in Sources */,
 				125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */,
-				125D2324271F891500250FBB /* PinView.swift in Sources */,
+				125D2324271F891500250FBB /* CalculatorView.swift in Sources */,
 				125FA6D8278E2828004B9D06 /* DoubleExtension.swift in Sources */,
 				129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */,
-				1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
 				12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
@@ -1656,7 +1607,6 @@
 				12730E69279F420400DC0135 /* SettingsViewModel.swift in Sources */,
 				12567FF9271742C500A2D356 /* Localizable.swift in Sources */,
 				0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */,
-				125A0AEB2726CBDA00F6E77F /* UnlockPasswordView.swift in Sources */,
 				128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */,
 				1290743B274CEB9B00F38A81 /* FileGridItem.swift in Sources */,
 				12A2DB03273576D50094B856 /* AddFileView.swift in Sources */,
@@ -1678,21 +1628,19 @@
 				12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */,
 				12607D5327903E9E00E2B8CC /* CustomVideoControlsView.swift in Sources */,
 				1268553E27D2572100385E18 /* FileInfoView.swift in Sources */,
-				125D2326271F896400250FBB /* CustomPinView.swift in Sources */,
+				125D2326271F896400250FBB /* CustomCalculatorView.swift in Sources */,
 				128D6E1E2804DA2A0082AB18 /* ListActionSheetItem.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */,
 				D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */,
 				127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */,
-				12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */,
 				0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */,
 				12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */,
 				12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */,
 				1209FD2E27AD89C800D8C17E /* AudioPlayerViewModel.swift in Sources */,
 				12567FF72717426000A2D356 /* LocalizableLock.swift in Sources */,
-				1224DAEC271975D3001C0ED0 /* PasswordView.swift in Sources */,
 				0DEFD54F2689467A0014EADE /* ModelStubs.swift in Sources */,
 				125EDDAD271DBD5200E2789A /* ContentView.swift in Sources */,
-				12A148962720B2B400A1ADDC /* PasswordTextFieldView.swift in Sources */,
+				12A148962720B2B400A1ADDC /* PasswordTextView.swift in Sources */,
 				D50727BF2625561400BBC370 /* KeychainManager.swift in Sources */,
 				D7CFC37F254260D300CCB352 /* RecordView.swift in Sources */,
 				0DC411E12668469C00BF0DE1 /* SettingsView.swift in Sources */,
@@ -1701,11 +1649,12 @@
 				0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */,
 				126FE4D727A427E200AE4188 /* Constants.swift in Sources */,
 				1204F64327D928C9006E40EE /* FileTypeExtension.swift in Sources */,
+				128D3AF9282A966F003DBB83 /* CalculatorData.swift in Sources */,
 				0DA213C72680286F00526995 /* FileListItem.swift in Sources */,
 				CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */,
+				12A69209281C68EE00CDB0DD /* UnlockType.swift in Sources */,
 				125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */,
 				12607D58279042CE00E2B8CC /* VideoPlayer.swift in Sources */,
-				12567FFC27178EE200A2D356 /* LockButton.swift in Sources */,
 				127C155E27DA6C2E009EC15B /* EmptyFileListView.swift in Sources */,
 				12781F4427E9FCE200FE9609 /* PasswordTypeEnum.swift in Sources */,
 				D5DA7F9B2648D05400B00FDA /* FileListView.swift in Sources */,
@@ -1715,7 +1664,6 @@
 				12F5D28D27A326EB00BF3309 /* AboutAndHelpView.swift in Sources */,
 				1230BE4727CD6D440055F854 /* AudioAuthorizationStatus.swift in Sources */,
 				127964B227CF9F58003DD7DF /* AddFilesBottomSheet.swift in Sources */,
-				12A148982720B47100A1ADDC /* LockDescriptionView.swift in Sources */,
 				129533C227399A1B0053FA4B /* AddPhotoVideoBottomSheet.swift in Sources */,
 				12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */,
 				1272F25D27C91ACD0054F2E2 /* ImportFileProgress.swift in Sources */,
@@ -1762,12 +1710,12 @@
 		};
 		F66E65C123E32080000F93E5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F66E65A823E3207D000F93E5 /* Tella */;
+			target = F66E65A823E3207D000F93E5 /* Calculator */;
 			targetProxy = F66E65C023E32080000F93E5 /* PBXContainerItemProxy */;
 		};
 		F66E65CC23E32080000F93E5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F66E65A823E3207D000F93E5 /* Tella */;
+			target = F66E65A823E3207D000F93E5 /* Calculator */;
 			targetProxy = F66E65CB23E32080000F93E5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1982,7 +1930,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.7.2;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -2009,9 +1957,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.7.2;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Tella (AppStore)";
+				PROVISIONING_PROFILE_SPECIFIER = "Calculator (AppStore)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2036,7 +1984,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tella.app/Tella";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Calculator.app/Calculator";
 			};
 			name = Debug;
 		};
@@ -2059,7 +2007,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tella.app/Tella";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Calculator.app/Calculator";
 			};
 			name = Release;
 		};
@@ -2117,7 +2065,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F66E65A423E3207D000F93E5 /* Build configuration list for PBXProject "Tella" */ = {
+		F66E65A423E3207D000F93E5 /* Build configuration list for PBXProject "Calculator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F66E65D123E32080000F93E5 /* Debug */,
@@ -2126,7 +2074,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F66E65D323E32080000F93E5 /* Build configuration list for PBXNativeTarget "Tella" */ = {
+		F66E65D323E32080000F93E5 /* Build configuration list for PBXNativeTarget "Calculator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F66E65D423E32080000F93E5 /* Debug */,
@@ -2135,7 +2083,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F66E65D623E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaTests" */ = {
+		F66E65D623E32080000F93E5 /* Build configuration list for PBXNativeTarget "CalculatorTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F66E65D723E32080000F93E5 /* Debug */,
@@ -2144,7 +2092,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F66E65D923E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaUITests" */ = {
+		F66E65D923E32080000F93E5 /* Build configuration list for PBXNativeTarget "CalculatorUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F66E65DA23E32080000F93E5 /* Debug */,
