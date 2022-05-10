@@ -11,9 +11,9 @@ import SwiftUI
 import Combine
 class LockViewModel: ObservableObject {
     
-    @Published var loginPassword : String = "0"
-    @Published var password : String = "0"
-    @Published var confirmPassword : String = "0"
+    @Published var loginPassword : String = CalculatorData.initialCharacter
+    @Published var password : String = CalculatorData.initialCharacter
+    @Published var confirmPassword : String = CalculatorData.initialCharacter
     @Published var oldPassword : String = ""
     @Published var shouldShowUnlockError : Bool = false
     
@@ -38,16 +38,16 @@ class LockViewModel: ObservableObject {
     }
     
     func initUnlockData() {
-        loginPassword = ""
-        password = "0"
-        confirmPassword = "0"
+        loginPassword = CalculatorData.initialCharacter
+        password = CalculatorData.initialCharacter
+        confirmPassword = CalculatorData.initialCharacter
         shouldShowUnlockError = false
         self.shouldDismiss.send(false)
     }
     
     func initLockData() {
-        password = "0"
-        confirmPassword = "0"
+        password = CalculatorData.initialCharacter
+        confirmPassword = CalculatorData.initialCharacter
         shouldShowUnlockError = false
      }
 }

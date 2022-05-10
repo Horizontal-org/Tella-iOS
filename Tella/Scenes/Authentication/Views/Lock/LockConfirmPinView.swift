@@ -16,7 +16,7 @@ struct LockConfirmPinView: View {
     
     var body: some View {
         ZStack {
-            CustomPinView(fieldContent: $lockViewModel.confirmPassword,
+            CustomCalculatorView(fieldContent: $lockViewModel.confirmPassword,
                           message: $message,
                           isValid: $isValid,
                           nextButtonAction: .action,

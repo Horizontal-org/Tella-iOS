@@ -1,5 +1,5 @@
 //
-//  CustomPinView.swift
+//  CustomCalculatorView.swift
 //  Tella
 //
 //  
@@ -13,7 +13,7 @@ enum NextButtonAction {
     case destination
 }
 
-struct CustomPinView<Destination:View>: View   {
+struct CustomCalculatorView<Destination:View>: View   {
     
     @State private var shouldShowLockConfirmPinView = false
     
@@ -71,7 +71,7 @@ struct CustomPinView<Destination:View>: View   {
     }
     
     private var pinView : some View {
-        PinView(fieldContent: $fieldContent,
+        CalculatorView(fieldContent: $fieldContent,
                 message: $message,
                 isValid: $isValid,
                 action: {
@@ -95,7 +95,7 @@ struct CustomPinView<Destination:View>: View   {
 
 struct CustomPinView_Previews: PreviewProvider {
     static var previews: some View {
-        CustomPinView(fieldContent: .constant("ACn"),
+        CustomCalculatorView(fieldContent: .constant("ACn"),
                       message: .constant(Localizable.Lock.pinFirstMessage),
                       isValid: .constant(false),
                       nextButtonAction: .action,

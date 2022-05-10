@@ -8,20 +8,7 @@
 
 import SwiftUI
 
-let calculatorItemWidth: CGFloat = (UIScreen.screenWidth - calculatorItemSpace * 5) / 4
-let calculatorItemSpace: CGFloat = 13
-let initialCharacter: String = "0"
-
-struct PinView: View {
-
-    let firstColumns = [ GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace),
-                         GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace),
-                         GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace),
-                         GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace)]
-    
-    let secondColumns = [ GridItem(.fixed(calculatorItemWidth * 2 + calculatorItemSpace), spacing: calculatorItemSpace),
-                          GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace),
-                          GridItem(.fixed(calculatorItemWidth),spacing: calculatorItemSpace)]
+struct CalculatorView: View {
     
     @Binding var fieldContent : String
     @Binding var message : String
@@ -33,14 +20,14 @@ struct PinView: View {
     
     var body: some View {
         
-        VStack(spacing:calculatorItemSpace) {
-            LazyVGrid(columns: firstColumns,spacing: calculatorItemSpace) {
+        VStack(spacing:CalculatorData.calculatorItemSpace) {
+            LazyVGrid(columns: CalculatorData.firstColumns,spacing: CalculatorData.calculatorItemSpace) {
                 ForEach(keyboardNumbers, id: \.self) { item in
                     getView(item: item)
                 }
             }
             
-            LazyVGrid(columns: secondColumns,spacing: calculatorItemSpace) {
+            LazyVGrid(columns: CalculatorData.secondColumns,spacing: CalculatorData.calculatorItemSpace) {
                 ForEach(keyboardNumbers2, id: \.self) { item in
                     getView(item: item)
                 }
@@ -92,7 +79,7 @@ struct PinView: View {
     }
     
     func appendPin(pin:String) {
-        if self.fieldContent == "0"  {
+        if self.fieldContent == CalculatorData.initialCharacter  {
             self.fieldContent = ""
         }
         self.fieldContent.append(pin)
@@ -100,7 +87,7 @@ struct PinView: View {
     
     func delete(pin:String) {
         self.fieldContent.removeAll()
-        self.fieldContent = "0"
+        self.fieldContent = CalculatorData.initialCharacter
     }
     
     private func validateField( ) {
@@ -110,7 +97,7 @@ struct PinView: View {
         if !fieldContent.passwordLengthValidator() {
             message = Localizable.Lock.pinLengthError
             
-        } else if !fieldContent.passwordValidator(){
+        } else if !fieldContent.passwordValidator() {
             message = Localizable.Lock.pinDigitsError
         }
     }
@@ -131,7 +118,7 @@ struct PinButtonStyle : ButtonStyle {
 
 struct PinView_Previews: PreviewProvider {
     static var previews: some View {
-        PinView(fieldContent: .constant(""),
+        CalculatorView(fieldContent: .constant(""),
                 message: .constant("Error"),
                 isValid: .constant(false))
     }

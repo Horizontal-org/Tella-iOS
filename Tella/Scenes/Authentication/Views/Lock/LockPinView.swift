@@ -17,7 +17,7 @@ struct LockPinView: View {
     
     var body: some View {
         
-        CustomPinView(fieldContent: $lockViewModel.password,
+        CustomCalculatorView(fieldContent: $lockViewModel.password,
                       message: $message,
                       isValid: $isValid,
                       nextButtonAction: .destination,
