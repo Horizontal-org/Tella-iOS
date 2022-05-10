@@ -442,14 +442,14 @@
 		D7F55FD9253490BE0028739E /* RecordingAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingAudioManager.swift; sourceTree = "<group>"; };
 		DC542768D626D09876372818 /* Pods-Tella-TellaUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.release.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E0FADD614621998E34738DDA /* libPods-Tella.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F66E65A923E3207D000F93E5 /* Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F66E65A923E3207D000F93E5 /* Tella.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tella.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65B023E3207D000F93E5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F66E65B223E32080000F93E5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F66E65B823E32080000F93E5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F66E65BA23E32080000F93E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F66E65BF23E32080000F93E5 /* CalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalculatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F66E65BF23E32080000F93E5 /* TellaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TellaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65C523E32080000F93E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F66E65CA23E32080000F93E5 /* CalculatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalculatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F66E65CA23E32080000F93E5 /* TellaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TellaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65CE23E32080000F93E5 /* TellaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaUITests.swift; sourceTree = "<group>"; };
 		F66E65D023E32080000F93E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1193,9 +1193,9 @@
 		F66E65AA23E3207D000F93E5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F66E65A923E3207D000F93E5 /* Calculator.app */,
-				F66E65BF23E32080000F93E5 /* CalculatorTests.xctest */,
-				F66E65CA23E32080000F93E5 /* CalculatorUITests.xctest */,
+				F66E65A923E3207D000F93E5 /* Tella.app */,
+				F66E65BF23E32080000F93E5 /* TellaTests.xctest */,
+				F66E65CA23E32080000F93E5 /* TellaUITests.xctest */,
 				D50FA6802613ABC900D6D63B /* VaultManager.framework */,
 			);
 			name = Products;
@@ -1271,9 +1271,9 @@
 			productReference = D50FA6802613ABC900D6D63B /* VaultManager.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		F66E65A823E3207D000F93E5 /* Calculator */ = {
+		F66E65A823E3207D000F93E5 /* Tella */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F66E65D323E32080000F93E5 /* Build configuration list for PBXNativeTarget "Calculator" */;
+			buildConfigurationList = F66E65D323E32080000F93E5 /* Build configuration list for PBXNativeTarget "Tella" */;
 			buildPhases = (
 				D978AA975BF0CEFA7A15EC46 /* [CP] Check Pods Manifest.lock */,
 				F66E65A523E3207D000F93E5 /* Sources */,
@@ -1286,14 +1286,14 @@
 			dependencies = (
 				D50FA6862613ABCA00D6D63B /* PBXTargetDependency */,
 			);
-			name = Calculator;
+			name = Tella;
 			productName = Tella;
-			productReference = F66E65A923E3207D000F93E5 /* Calculator.app */;
+			productReference = F66E65A923E3207D000F93E5 /* Tella.app */;
 			productType = "com.apple.product-type.application";
 		};
-		F66E65BE23E32080000F93E5 /* CalculatorTests */ = {
+		F66E65BE23E32080000F93E5 /* TellaTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F66E65D623E32080000F93E5 /* Build configuration list for PBXNativeTarget "CalculatorTests" */;
+			buildConfigurationList = F66E65D623E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaTests" */;
 			buildPhases = (
 				A2FCC4A49B4A3809DBE2D18D /* [CP] Check Pods Manifest.lock */,
 				F66E65BB23E32080000F93E5 /* Sources */,
@@ -1305,14 +1305,14 @@
 			dependencies = (
 				F66E65C123E32080000F93E5 /* PBXTargetDependency */,
 			);
-			name = CalculatorTests;
+			name = TellaTests;
 			productName = TellaTests;
-			productReference = F66E65BF23E32080000F93E5 /* CalculatorTests.xctest */;
+			productReference = F66E65BF23E32080000F93E5 /* TellaTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		F66E65C923E32080000F93E5 /* CalculatorUITests */ = {
+		F66E65C923E32080000F93E5 /* TellaUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F66E65D923E32080000F93E5 /* Build configuration list for PBXNativeTarget "CalculatorUITests" */;
+			buildConfigurationList = F66E65D923E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaUITests" */;
 			buildPhases = (
 				ED6FF9D4F55738E8FC8C25DF /* [CP] Check Pods Manifest.lock */,
 				F66E65C623E32080000F93E5 /* Sources */,
@@ -1324,9 +1324,9 @@
 			dependencies = (
 				F66E65CC23E32080000F93E5 /* PBXTargetDependency */,
 			);
-			name = CalculatorUITests;
+			name = TellaUITests;
 			productName = TellaUITests;
-			productReference = F66E65CA23E32080000F93E5 /* CalculatorUITests.xctest */;
+			productReference = F66E65CA23E32080000F93E5 /* TellaUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -1355,7 +1355,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F66E65A423E3207D000F93E5 /* Build configuration list for PBXProject "Calculator" */;
+			buildConfigurationList = F66E65A423E3207D000F93E5 /* Build configuration list for PBXProject "Tella" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -1369,9 +1369,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F66E65A823E3207D000F93E5 /* Calculator */,
-				F66E65BE23E32080000F93E5 /* CalculatorTests */,
-				F66E65C923E32080000F93E5 /* CalculatorUITests */,
+				F66E65A823E3207D000F93E5 /* Tella */,
+				F66E65BE23E32080000F93E5 /* TellaTests */,
+				F66E65C923E32080000F93E5 /* TellaUITests */,
 				D50FA67F2613ABC900D6D63B /* VaultManager */,
 			);
 		};
@@ -1710,12 +1710,12 @@
 		};
 		F66E65C123E32080000F93E5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F66E65A823E3207D000F93E5 /* Calculator */;
+			target = F66E65A823E3207D000F93E5 /* Tella */;
 			targetProxy = F66E65C023E32080000F93E5 /* PBXContainerItemProxy */;
 		};
 		F66E65CC23E32080000F93E5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F66E65A823E3207D000F93E5 /* Calculator */;
+			target = F66E65A823E3207D000F93E5 /* Tella */;
 			targetProxy = F66E65CB23E32080000F93E5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1984,7 +1984,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Calculator.app/Calculator";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tella.app/Tella";
 			};
 			name = Debug;
 		};
@@ -2007,7 +2007,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Calculator.app/Calculator";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tella.app/Tella";
 			};
 			name = Release;
 		};
@@ -2065,7 +2065,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F66E65A423E3207D000F93E5 /* Build configuration list for PBXProject "Calculator" */ = {
+		F66E65A423E3207D000F93E5 /* Build configuration list for PBXProject "Tella" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F66E65D123E32080000F93E5 /* Debug */,
@@ -2074,7 +2074,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F66E65D323E32080000F93E5 /* Build configuration list for PBXNativeTarget "Calculator" */ = {
+		F66E65D323E32080000F93E5 /* Build configuration list for PBXNativeTarget "Tella" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F66E65D423E32080000F93E5 /* Debug */,
@@ -2083,7 +2083,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F66E65D623E32080000F93E5 /* Build configuration list for PBXNativeTarget "CalculatorTests" */ = {
+		F66E65D623E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F66E65D723E32080000F93E5 /* Debug */,
@@ -2092,7 +2092,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F66E65D923E32080000F93E5 /* Build configuration list for PBXNativeTarget "CalculatorUITests" */ = {
+		F66E65D923E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F66E65DA23E32080000F93E5 /* Debug */,
