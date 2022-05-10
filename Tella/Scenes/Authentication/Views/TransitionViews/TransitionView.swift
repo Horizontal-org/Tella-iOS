@@ -17,7 +17,6 @@ struct TransitionView: View {
             Spacer()
             
             Image(transitionViewData.image)
-                .frame(width: 97, height: 128)
             
             Spacer()
                 .frame(height: 42)
@@ -32,6 +31,7 @@ struct TransitionView: View {
             Text(transitionViewData.description)
                 .font(.custom(Styles.Fonts.regularFontName, size: 16))
                 .foregroundColor(.white)
+                .multilineTextAlignment(transitionViewData.alignment)
             
             Spacer()
                 .frame(height: 50)

@@ -7,30 +7,41 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct PinKeyboardModel: Hashable {
+    
     var text: String = ""
     var imageName: String = ""
-    var type: PinType = .empty
+    var actionType: PinActionType
+    var buttonType: PinButtonType
+    var buttonViewData : CalculatorButtonViewProtocol
     
-    init(type: PinType) {
-        self.type = type
-    }
-    
-    init(text: String, type: PinType) {
+    init(text: String,imageName: String = "", type: PinActionType, buttonType: PinButtonType, buttonViewData:CalculatorButtonViewProtocol) {
         self.text = text
-        self.type = type
+        self.imageName = imageName
+        self.actionType = type
+        self.buttonType = buttonType
+        self.buttonViewData = buttonViewData
     }
     
-    init(imageName: String, type: PinType) {
-        self.imageName = imageName
-        self.type = type
+    static func == (lhs: PinKeyboardModel, rhs: PinKeyboardModel) -> Bool {
+        lhs.text == rhs.text
     }
+    
+    func hash(into hasher: inout Hasher) {
+        
+    }
+    
 }
 
-enum PinType {
+enum PinActionType {
     case number
     case done
     case delete
-    case empty
+}
+
+enum PinButtonType {
+    case text
+    case image
 }

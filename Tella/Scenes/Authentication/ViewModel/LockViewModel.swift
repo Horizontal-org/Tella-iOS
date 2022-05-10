@@ -11,18 +11,19 @@ import SwiftUI
 import Combine
 class LockViewModel: ObservableObject {
     
-    @Published var loginPassword : String = ""
-    @Published var password : String = ""
-    @Published var confirmPassword : String = ""
+    @Published var loginPassword : String = CalculatorData.initialCharacter
+    @Published var password : String = CalculatorData.initialCharacter
+    @Published var confirmPassword : String = CalculatorData.initialCharacter
     @Published var oldPassword : String = ""
     @Published var shouldShowUnlockError : Bool = false
+    @Published var isValid : Bool = true
     
     var privateKey : SecKey?
     var unlockType : UnlockType = .new
     var shouldDismiss = CurrentValueSubject<Bool, Never>(false)
     
-    var shouldShowErrorMessage : Bool {
-        return password != confirmPassword
+    func validatePinMatch()  {
+        isValid = password == confirmPassword
     }
     
     init() {
@@ -38,16 +39,17 @@ class LockViewModel: ObservableObject {
     }
     
     func initUnlockData() {
-        loginPassword = ""
-        password = ""
-        confirmPassword = ""
+        loginPassword = CalculatorData.initialCharacter
+        password = CalculatorData.initialCharacter
+        confirmPassword = CalculatorData.initialCharacter
         shouldShowUnlockError = false
         self.shouldDismiss.send(false)
+        isValid = true
     }
     
     func initLockData() {
-        password = ""
-        confirmPassword = ""
+        password = CalculatorData.initialCharacter
+        confirmPassword = CalculatorData.initialCharacter
         shouldShowUnlockError = false
-     }
+    }
 }

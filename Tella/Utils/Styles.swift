@@ -12,7 +12,20 @@ struct Styles {
         static let backgroundTab = UIColor(hexValue: 0x3D3867)
         static let yellow = UIColor(hexValue: 0xD6933B)
         static let lightBlue = UIColor(hexValue: 0x2C6C97)
+       
+        static let mint = UIColor(hexValue: 0xE6F4F3)
+        static let lightGray = UIColor(hexValue: 0xF3F3F3)
+        static let darkGray = UIColor(hexValue: 0xA4A2A2)
+        static let petrol = UIColor(hexValue: 0x3C6E72)
+        static let ironGray = UIColor(hexValue: 0x494848)
+        static let red = UIColor(hexValue: 0xCE1515)
 
+        
+        
+      
+
+        
+         
     }
     
     struct Colors {
@@ -20,6 +33,13 @@ struct Styles {
         static let backgroundTab = Color(uiColor.backgroundTab)
         static let yellow = Color(uiColor.yellow)
         static let lightBlue = Color(uiColor.lightBlue)
+
+        static let mint = Color(uiColor.mint)
+        static let lightGray = Color(uiColor.lightGray)
+        static let darkGray = Color(uiColor.darkGray)
+        static let petrol = Color(uiColor.petrol)
+        static let ironGray = Color(uiColor.ironGray)
+        static let red = Color(uiColor.red)
 
     }
     

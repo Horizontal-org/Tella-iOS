@@ -10,30 +10,34 @@ struct LockConfirmPinView: View {
     @EnvironmentObject var lockViewModel: LockViewModel
     
     @State var shouldShowOnboarding : Bool = false
-    @State var shouldShowErrorMessage : Bool = false
+    @State var message : String = Localizable.Lock.confirmPinFirstMessage
     
     var body: some View {
         ZStack {
-            CustomPinView(lockViewData: LockConfirmPinData(),
-                          nextButtonAction: .action,
-                          fieldContent: $lockViewModel.confirmPassword,
-                          shouldShowErrorMessage: $shouldShowErrorMessage,
-                          destination: EmptyView()) {
-                
-                if lockViewModel.shouldShowErrorMessage {
-                    shouldShowErrorMessage = true
-                } else {
-                    lockViewModel.unlockType == .new ? self.lockWithPin() : self.updatePin()
-                }
+            CustomCalculatorView(fieldContent: $lockViewModel.confirmPassword,
+                                 message: $message,
+                                 isValid: $lockViewModel.isValid,
+                                 nextButtonAction: .action,
+                                 destination: EmptyView()) {
+                validateMatchPin()
             }
             onboardingLink
+        }
+    }
+    
+    func validateMatchPin() {
+        lockViewModel.validatePinMatch()
+        if lockViewModel.isValid {
+            lockViewModel.unlockType == .new ? self.lockWithPin() : self.updatePin()
+        } else {
+            message = Localizable.Lock.confirmPinError
         }
     }
     
     func lockWithPin() {
         do {
             try AuthenticationManager().initKeys(.tellaPin,
-                                              password: lockViewModel.password)
+                                                 password: lockViewModel.password)
             shouldShowOnboarding = true
             
         } catch {
@@ -45,8 +49,8 @@ struct LockConfirmPinView: View {
         do {
             guard let privateKey = lockViewModel.privateKey else { return }
             try AuthenticationManager().updateKeys(privateKey, .tellaPin,
-                                                newPassword: lockViewModel.password,
-                                                oldPassword: lockViewModel.loginPassword)
+                                                   newPassword: lockViewModel.password,
+                                                   oldPassword: lockViewModel.loginPassword)
             lockViewModel.shouldDismiss.send(true)
         } catch {
             

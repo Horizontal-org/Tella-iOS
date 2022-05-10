@@ -14,7 +14,7 @@ struct ContentView: View {
                 .environment(\.layoutDirection, Language.currentLanguage.layoutDirection)
                 .eraseToAnyView()
         }
-                
+        
         if appViewState.currentView == .LOCK {
             return WelcomeView()
                 .environmentObject(LockViewModel(unlockType: .new))
@@ -23,11 +23,7 @@ struct ContentView: View {
         
         if appViewState.currentView == .UNLOCK {
             let passwordType = AuthenticationManager().getPasswordType()
-            return passwordType == .tellaPassword ?
-            UnlockPasswordView()
-                .environmentObject(LockViewModel(unlockType: .new))
-                .eraseToAnyView() :
-            UnlockPinView()
+            return UnlockPinView()
                 .environmentObject(LockViewModel(unlockType: .new))
                 .eraseToAnyView()
         }

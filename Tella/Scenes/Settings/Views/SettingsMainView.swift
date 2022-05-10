@@ -42,8 +42,6 @@ struct GenaralSettingsView : View {
     @State private var presentingLanguage = false
     @ObservedObject var appModel : MainAppModel
     @StateObject var lockViewModel = LockViewModel(unlockType: .update)
-    @State var passwordTypeString : String = ""
-    
     
     var body : some View {
         
@@ -52,24 +50,22 @@ struct GenaralSettingsView : View {
             SettingsItemView(imageName: "settings.language",
                              title: Localizable.Settings.language,
                              value: Language.currentLanguage.name)
-                .onTapGesture {
-                    presentingLanguage = true
-                }
+            .onTapGesture {
+                presentingLanguage = true
+            }
             
             DividerView()
             
             SettingsItemView(imageName: "settings.lock",
-                             title: Localizable.Settings.lock,
-                             value: passwordTypeString)
-            
-                .navigateTo(destination: unlockView)
+                             title: Localizable.Settings.lock)
+            .navigateTo(destination: unlockView)
             
             DividerView()
             
             SettingsItemView(imageName: "settings.help",
                              title: Localizable.Settings.aboutAndHelp,
                              value: "")
-                .navigateTo(destination: AboutAndHelpView())
+            .navigateTo(destination: AboutAndHelpView())
             
         }.background(Color.white.opacity(0.08))
             .cornerRadius(15)
@@ -81,24 +77,13 @@ struct GenaralSettingsView : View {
             }
             .onAppear {
                 lockViewModel.shouldDismiss.send(false)
-                let passwordType = AuthenticationManager().getPasswordType()
-                passwordTypeString = passwordType == .tellaPassword ? Localizable.Lock.passwordButtonTitle : Localizable.Lock.pinButtonTitle
             }
     }
     
     var unlockView : some View {
-        
-        let passwordType = AuthenticationManager().getPasswordType()
-        return passwordType == .tellaPassword ?
-        
-        UnlockPasswordView()
-            .environmentObject(lockViewModel)
-            .eraseToAnyView()  :
-        
         UnlockPinView()
             .environmentObject(lockViewModel)
             .eraseToAnyView()
-        
     }
     
 }
