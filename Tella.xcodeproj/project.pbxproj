@@ -43,7 +43,6 @@
 		0ECC781B267A542300A2ACF2 /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC781A267A542300A2ACF2 /* Pages.swift */; };
 		0ECC781D267AADA500A2ACF2 /* PageViewCellNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC781C267AADA500A2ACF2 /* PageViewCellNotification.swift */; };
 		1204F64327D928C9006E40EE /* FileTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204F64227D928C8006E40EE /* FileTypeExtension.swift */; };
-		1209FD2927AD7DA500D8C17E /* OldAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DF3A512269BE0C800B907D5 /* OldAssets.xcassets */; };
 		1209FD2B27AD851E00D8C17E /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD2A27AD851E00D8C17E /* AudioPlayerView.swift */; };
 		1209FD2E27AD89C800D8C17E /* AudioPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD2D27AD89C800D8C17E /* AudioPlayerViewModel.swift */; };
 		1209FD3027AD8AC400D8C17E /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD2F27AD8AC400D8C17E /* AudioPlayerManager.swift */; };
@@ -177,7 +176,7 @@
 		D50FA6842613ABCA00D6D63B /* VaultManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D50FA6822613ABCA00D6D63B /* VaultManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D50FA6872613ABCA00D6D63B /* VaultManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D50FA6802613ABC900D6D63B /* VaultManager.framework */; };
 		D50FA6882613ABCA00D6D63B /* VaultManager.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D50FA6802613ABC900D6D63B /* VaultManager.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D51639762631091E003A11B5 /* NewAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D51639752631091E003A11B5 /* NewAssets.xcassets */; };
+		D51639762631091E003A11B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D51639752631091E003A11B5 /* Assets.xcassets */; };
 		D516397C2631113B003A11B5 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D516397B2631113B003A11B5 /* Styles.swift */; };
 		D51639802631130E003A11B5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50727CB2625573200BBC370 /* HomeView.swift */; };
 		D538C8AC264CE8D300D457B0 /* CryptoFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D538C8AB264CE8D300D457B0 /* CryptoFileManager.swift */; };
@@ -200,7 +199,6 @@
 		D7F55FC825348FA50028739E /* RecordState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FC725348FA50028739E /* RecordState.swift */; };
 		D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FCC25348FB80028739E /* AudioRecorderManager.swift */; };
 		D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FD9253490BE0028739E /* RecordingAudioManager.swift */; };
-		F66E65B323E32080000F93E5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F66E65B223E32080000F93E5 /* Assets.xcassets */; };
 		F66E65B923E32080000F93E5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F66E65B723E32080000F93E5 /* LaunchScreen.storyboard */; };
 		F66E65CF23E32080000F93E5 /* TellaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65CE23E32080000F93E5 /* TellaUITests.swift */; };
 		FFCE58FBB913313F7E36F009 /* libPods-Tella-TellaUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2938945BECA9C7B363FB0E4D /* libPods-Tella-TellaUITests.a */; };
@@ -265,7 +263,6 @@
 		0DC6FC53269BCDDE001B0D34 /* FileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInfoView.swift; sourceTree = "<group>"; };
 		0DD99E042692D24D009327B3 /* SwipeToDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeToDeleteView.swift; sourceTree = "<group>"; };
 		0DEFD547268943CC0014EADE /* DocumentPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPickerView.swift; sourceTree = "<group>"; };
-		0DF3A512269BE0C800B907D5 /* OldAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = OldAssets.xcassets; sourceTree = "<group>"; };
 		0E170252267910B90069072A /* BlankFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankFormsView.swift; sourceTree = "<group>"; };
 		0E170254267910CC0069072A /* OutBoxFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutBoxFormsView.swift; sourceTree = "<group>"; };
 		0E170256267910DE0069072A /* DraftFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftFormsView.swift; sourceTree = "<group>"; };
@@ -416,7 +413,7 @@
 		D50FA6802613ABC900D6D63B /* VaultManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VaultManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D50FA6822613ABCA00D6D63B /* VaultManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VaultManager.h; sourceTree = "<group>"; };
 		D50FA6832613ABCA00D6D63B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D51639752631091E003A11B5 /* NewAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = NewAssets.xcassets; sourceTree = "<group>"; };
+		D51639752631091E003A11B5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D516397B2631113B003A11B5 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		D538C8AB264CE8D300D457B0 /* CryptoFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoFileManager.swift; sourceTree = "<group>"; };
 		D53B77002601CA3A0001CD34 /* VaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManager.swift; sourceTree = "<group>"; };
@@ -444,7 +441,6 @@
 		E0FADD614621998E34738DDA /* libPods-Tella.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65A923E3207D000F93E5 /* Tella.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tella.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65B023E3207D000F93E5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		F66E65B223E32080000F93E5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F66E65B823E32080000F93E5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F66E65BA23E32080000F93E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F66E65BF23E32080000F93E5 /* TellaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TellaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -773,6 +769,15 @@
 			path = "Add files";
 			sourceTree = "<group>";
 		};
+		127A64E6282D16C100A984E8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D51639752631091E003A11B5 /* Assets.xcassets */,
+				0E78B3AC2656B04B00F9BDBC /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		127C155927DA69A8009EC15B /* TransitionViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -1073,17 +1078,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		4CE85B832408B1AF00CF24AF /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				F66E65B223E32080000F93E5 /* Assets.xcassets */,
-				D51639752631091E003A11B5 /* NewAssets.xcassets */,
-				0DF3A512269BE0C800B907D5 /* OldAssets.xcassets */,
-				0E78B3AC2656B04B00F9BDBC /* Fonts */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
 		957DBB46FF2BBCC04C44542A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1211,7 +1205,7 @@
 				D53B76DB2601C9EC0001CD34 /* VaultManager */,
 				12781F4A27EA2C9800FE9609 /* Utils */,
 				12781F4927EA2A8200FE9609 /* Supporting Files */,
-				4CE85B832408B1AF00CF24AF /* Resources */,
+				127A64E6282D16C100A984E8 /* Resources */,
 			);
 			path = Tella;
 			sourceTree = "<group>";
@@ -1394,10 +1388,8 @@
 				123CE54F272028D1005BF386 /* Roboto-Light.ttf in Resources */,
 				12567FF22716E33500A2D356 /* OpenSans-Bold.ttf in Resources */,
 				12567FF32716E33500A2D356 /* OpenSans-Regular.ttf in Resources */,
-				D51639762631091E003A11B5 /* NewAssets.xcassets in Resources */,
+				D51639762631091E003A11B5 /* Assets.xcassets in Resources */,
 				128777C52718D25E000624E2 /* OpenSans-Light.ttf in Resources */,
-				1209FD2927AD7DA500D8C17E /* OldAssets.xcassets in Resources */,
-				F66E65B323E32080000F93E5 /* Assets.xcassets in Resources */,
 				0E78B3AE2656B04B00F9BDBC /* open-sans.regular.ttf in Resources */,
 				1278EE38281172DC00A7EC25 /* Localizable.strings in Resources */,
 			);
@@ -1919,7 +1911,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
@@ -1929,7 +1921,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.8.0;
+				MARKETING_VERSION = 0.8.1;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1946,7 +1938,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
@@ -1956,7 +1948,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.8.0;
+				MARKETING_VERSION = 0.8.1;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Calculator (AppStore)";
