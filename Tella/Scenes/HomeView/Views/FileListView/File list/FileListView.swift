@@ -46,9 +46,7 @@ struct FileListView: View {
             if !fileListViewModel.shouldHideViewsForGallery {
                 AddFileView()
             }
-            
-            FileSortMenu()
-            
+
             FileActionMenu()
             
             showFileDetailsLink

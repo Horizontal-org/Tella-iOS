@@ -73,15 +73,7 @@ struct FileGridItem: View {
     @ViewBuilder
     var selectionButton: some View {
         if !fileListViewModel.selectingFiles && !fileListViewModel.shouldHideViewsForGallery {
-            Button {
-                fileListViewModel.showingFileActionMenu = true
-                fileListViewModel.updateSingleSelection(for: file)
-                
-            } label: {
-                Image("files.more")
-                    .frame(width: 35, height: 35)
-                    .padding(EdgeInsets(top: 0, leading: 0, bottom: -6, trailing: -12))
-            }.frame(width: 35, height: 35)
+            MoreFileActionButton(file: file, moreButtonType: .grid)
         }
     }
     

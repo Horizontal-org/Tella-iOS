@@ -18,27 +18,19 @@ struct TextFieldBottomSheetView: View {
     
     var titleText = ""
     var validateButtonText = ""
-    @Binding var isPresented: Bool
+    
     @Binding var fieldContent : String
+    
     var fileName : String = ""
     var fieldType : FieldType
-    var backgroundColor: Color = Styles.Colors.backgroundTab
     var didConfirmAction : (() -> ())
     
     @State private var isValid : Bool = false
     @State private var errorMessage : String = ""
     
-    var body: some View {
-        ZStack{
-            DragView( modalHeight: 165,
-                      backgroundColor: backgroundColor,
-                      isShown: $isPresented) {
-                CreateNewFolderContentView
-            }
-        }
-    }
+    @EnvironmentObject var sheetManager: SheetManager
     
-    var CreateNewFolderContentView : some View {
+    var body: some View {
         
         VStack(alignment: .leading) {
             Text(titleText)
@@ -50,12 +42,11 @@ struct TextFieldBottomSheetView: View {
             if #available(iOS 15.0, *) {
                 
                 FocusedTextFieldBottomSheet(fieldContent: $fieldContent,
-                                            isValid: $isValid, shouldFocus: $isPresented)
+                                            isValid: $isValid)
                 
             } else {
                 TextFieldBottomSheet(fieldContent: $fieldContent,
                                      isValid: $isValid)
-                
             }
             
             Spacer()
@@ -82,8 +73,8 @@ struct TextFieldBottomSheetView: View {
                 Spacer()
                 
                 BottomButtonActionSheetView(title: Localizable.Common.cancel, shouldEnable: true) {
-                    isPresented = false
                     fieldContent = ""
+                    sheetManager.hide()
                 }
                 
                 BottomButtonActionSheetView(title: validateButtonText, shouldEnable: self.isValid) {
@@ -91,11 +82,10 @@ struct TextFieldBottomSheetView: View {
                     if fieldContent == fileName {
                         errorMessage = Localizable.Common.sameFileNameError
                     } else {
-                        isPresented = false
                         didConfirmAction()
                         fieldContent = ""
-                        
                     }
+                    sheetManager.hide()
                 }
             }
         }.padding(EdgeInsets(top: 21, leading: 24, bottom: 0, trailing: 21))
@@ -107,8 +97,7 @@ struct FocusedTextFieldBottomSheet : View {
     
     @Binding var fieldContent : String
     @Binding var isValid : Bool
-    @Binding var shouldFocus : Bool
-
+    
     @FocusState private var isFocused : Bool
     
     var body: some View {
@@ -120,8 +109,8 @@ struct FocusedTextFieldBottomSheet : View {
                 })
                 .focused($isFocused)
         }
-        .onReceive(Just(shouldFocus)) { value in
-            isFocused = value
+        .onAppear {
+            isFocused = true
         }
     }
 }
@@ -178,7 +167,6 @@ struct CreateNewFolderBottomSheet_Previews: PreviewProvider {
     static var previews: some View {
         TextFieldBottomSheetView(titleText: "Test",
                                  validateButtonText: "OK",
-                                 isPresented: .constant(true),
                                  fieldContent: .constant("Test"),
                                  fileName: "name",
                                  fieldType: FieldType.fileName,

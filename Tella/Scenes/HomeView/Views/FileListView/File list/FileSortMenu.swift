@@ -7,6 +7,7 @@ import SwiftUI
 struct FileSortMenu: View {
     
     @EnvironmentObject var fileListViewModel : FileListViewModel
+    @EnvironmentObject var sheetManager: SheetManager
     
     var fileSortOptions : [FileSortOptions] = [.nameAZ, .nameZA, .newestToOldest, .oldestToNewest]
     
@@ -17,31 +18,39 @@ struct FileSortMenu: View {
             items.append(ListActionSheetItem(imageName: fileListViewModel.sortBy == item ? "radio_selected" : "radio_unselected",
                                              content: item.name,
                                              type: item))
-            
         }
         return items
-        
-        
     }
     
     var body: some View {
-        ZStack{
-            
-            DragView(modalHeight: 300,
-                     isShown: $fileListViewModel.showingSortFilesActionSheet){
-                ActionListBottomSheet(items: items, headerTitle: Localizable.Home.sortByTitle,
-                                      isPresented: $fileListViewModel.showingSortFilesActionSheet,
-                                      action:  {item in
-                    self.handleActions(item : item)
-                })
+        Button {
+            showSortFilesActionSheet()
+        } label: {
+            HStack{
+                Text(fileListViewModel.sortBy.displayName)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 14) )
+                    .foregroundColor(.white)
+                fileListViewModel.sortBy.image
+                    .frame(width: 20, height: 20)
             }
         }
+        .frame(height: 44)
     }
     
     private func handleActions(item: ListActionSheetItem) {
-        fileListViewModel.showingSortFilesActionSheet = false
+        sheetManager.hide()
         guard let type = item.type as? FileSortOptions else { return }
         fileListViewModel.sortBy = type
+    }
+    
+    private func showSortFilesActionSheet() {
+        sheetManager.showBottomSheet( modalHeight: 300, content: {
+            ActionListBottomSheet(items: items, headerTitle: Localizable.Home.sortByTitle,
+                                  action:  {item in
+                self.handleActions(item : item)
+            })
+            
+        }) 
     }
 }
 
