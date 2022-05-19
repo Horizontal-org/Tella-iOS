@@ -6,35 +6,97 @@ import SwiftUI
 
 struct AddFileView: View {
     
-    @State private var showingAddPhotoVideoSheet = false
-    @State private var showingCreateNewFolderSheet = false
     @State private var fieldContent: String = ""
-    @State private var showingAddFileSheet = false
+    @State private var isValid = false
     
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var fileListViewModel: FileListViewModel
-
+    @EnvironmentObject var sheetManager: SheetManager
+    
     var body: some View {
         ZStack(alignment: .top) {
             
             AddFileYellowButton(action: {
-                showingAddFileSheet = true
                 fileListViewModel.selectingFiles = false
+                showAddFileSheet()
             })
             
-            AddFilesBottomSheet(isPresented: $showingAddFileSheet,
-                                showingAddPhotoVideoSheet: $showingAddPhotoVideoSheet,
-                                showingCreateNewFolderSheet: $showingCreateNewFolderSheet)
-            
-            AddPhotoVideoBottomSheet(isPresented: $showingAddPhotoVideoSheet)
-            
+            PhotoVideoPickerView()
+        }
+        .overlay(fileListViewModel.showingCamera ?
+                 CameraView(sourceView: .addFile,
+                            showingCameraView: $fileListViewModel.showingCamera,
+                            cameraViewModel: CameraViewModel(mainAppModel: appModel,
+                                                             rootFile: fileListViewModel.rootFile)) : nil)
+        
+        .overlay(fileListViewModel.showingMicrophone ?
+                 RecordView(appModel: appModel,
+                            rootFile: fileListViewModel.rootFile,
+                            sourceView: .addFile,
+                            showingRecoredrView: $fileListViewModel.showingMicrophone) : nil)
+        
+    }
+    
+    func showAddFileSheet() {
+        sheetManager.showBottomSheet( modalHeight: CGFloat(manageFilesItems.count * 50 + 90), content: {
+            ActionListBottomSheet(items: manageFilesItems,
+                                  headerTitle: Localizable.Home.managefilesTitle,
+                                  action:  {item in
+                self.handleActions(item : item)
+            })
+        })
+    }
+    
+    func showCreateNewFolderSheet() {
+        sheetManager.showBottomSheet( modalHeight: 165, content: {
             TextFieldBottomSheetView(titleText: Localizable.Home.createNewFolder,
-                                 validateButtonText: Localizable.Common.create,
-                                 isPresented: $showingCreateNewFolderSheet,
-                                 fieldContent: $fieldContent,
-                                 fieldType: .text) {
+                                     validateButtonText: Localizable.Common.create,
+                                     fieldContent: $fieldContent,
+                                     fieldType: .text) {
                 fileListViewModel.add(folder: fieldContent)
             }
+        })
+    }
+    
+    func showAddPhotoVideoSheet() {
+        sheetManager.showBottomSheet( modalHeight:  CGFloat(AddPhotoVideoItems.count * 40 + 100), content: {
+            ActionListBottomSheet(items: AddPhotoVideoItems,
+                                  headerTitle: Localizable.Home.importFromDevice, action: {item in
+                self.handleAddPhotoVideoActions(item : item)
+            })
+        })
+    }
+    
+    private func handleActions(item: ListActionSheetItem) {
+        
+        guard let type = item.type as? ManageFileType else { return }
+        
+        switch type {
+            
+        case .camera:
+            sheetManager.hide()
+            fileListViewModel.showingCamera = true
+            
+        case .recorder:
+            sheetManager.hide()
+            fileListViewModel.showingMicrophone = true
+            
+        case .fromDevice:
+            showAddPhotoVideoSheet()
+            
+        default:
+            showCreateNewFolderSheet()
+        }
+    }
+    
+    private func handleAddPhotoVideoActions(item: ListActionSheetItem) {
+        guard let type = item.type as? AddPhotoVideoType else { return  }
+        
+        switch type {
+        case .photoLibrary:
+            fileListViewModel.showingImagePicker = true
+        default:
+            fileListViewModel.showingImportDocumentPicker = true
         }
     }
 }

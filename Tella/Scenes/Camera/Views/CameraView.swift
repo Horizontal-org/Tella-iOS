@@ -10,15 +10,16 @@ struct CameraView: View {
     
     // MARK: - Public properties
     var sourceView : SourceView
-
-    @State var showingProgressView : Bool = false
+    
     @State var showingPermissionAlert : Bool = false
     
     @Binding var showingCameraView : Bool
-
+    
     @ObservedObject var cameraViewModel :  CameraViewModel
     
-     var customCameraRepresentable = CustomCameraRepresentable(
+    @EnvironmentObject var sheetManager: SheetManager
+    
+    var customCameraRepresentable = CustomCameraRepresentable(
         cameraFrame: .zero,
         imageCompletion: {_,_   in }, videoURLCompletion: { _  in }
     )
@@ -32,25 +33,22 @@ struct CameraView: View {
     
     var body: some View {
         
-        NavigationContainerView {
-
+        NavigationContainerView(backgroundColor: Color.black) {
+            
             let frame = CGRect(x: 0, y: 0, width: UIScreen.screenWidth, height: UIScreen.screenHeight)
             
             cameraView(frame: frame)
                 .edgesIgnoringSafeArea(.all)
             
             getCameraControlsView()
-
-            ImportFilesProgressView(showingProgressView: $showingProgressView,
-                                    importFilesProgressProtocol: ImportFilesFromCameraProgress())
             
         }.background(Color.black)
             .accentColor(.white)
             .environmentObject(cameraViewModel)
             .onAppear {
-                DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
                     customCameraRepresentable.checkCameraPermission()
-                }
+                })
             }
             .onDisappear {
                 customCameraRepresentable.stopRunningCaptureSession()
@@ -79,7 +77,7 @@ struct CameraView: View {
                 getSettingsAlertView()
             }
             .edgesIgnoringSafeArea(.all)
-
+        
     }
     
     private func cameraView(frame: CGRect) -> CustomCameraRepresentable {
@@ -87,22 +85,18 @@ struct CameraView: View {
         customCameraRepresentable.cameraFrame = frame
         
         customCameraRepresentable.imageCompletion = {image , data in
-
             cameraViewModel.imageData = data
-
-            showingProgressView = true
+            showProgressView()
             cameraViewModel.saveImage()
         }
         
         customCameraRepresentable.videoURLCompletion = {videoURL in
             cameraViewModel.videoURL = videoURL
-            showingProgressView = true
-            
+            showProgressView()
             cameraViewModel.saveVideo()
         }
         return customCameraRepresentable
     }
-    
     
     private func getCameraControlsView() -> some View {
         
@@ -121,7 +115,7 @@ struct CameraView: View {
         }, close: {
             customCameraRepresentable.stopRunningCaptureSession()
         })
-            .edgesIgnoringSafeArea(.all)
+        .edgesIgnoringSafeArea(.all)
         
     }
     
@@ -136,5 +130,13 @@ struct CameraView: View {
         }))
     }
     
+    func showProgressView() {
+        sheetManager.showBottomSheet( modalHeight: 165,
+                                      shouldHideOnTap: false,
+                                      content: {
+            ImportFilesProgressView(importFilesProgressProtocol: ImportFilesFromCameraProgress())
+            
+        }) 
+    }
 }
 

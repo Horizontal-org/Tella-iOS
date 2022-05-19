@@ -35,16 +35,17 @@ class FileListViewModel: ObservableObject {
     @Published var vaultFileStatusArray : [VaultFileStatus] = []
     @Published var folderPathArray: [VaultFile] = []
     
-    @Published var showingSortFilesActionSheet = false
     @Published var selectingFiles = false
-    @Published var showingFileActionMenu = false
     @Published var showFileDetails = false
     @Published var showFileInfoActive = false
-    @Published var showingProgressView = false
     @Published var showingMoveFileView = false
     @Published var showingShareFileView = false
     @Published var showingCamera = false
     @Published var showingMicrophone = false
+    @Published var showingDocumentPicker = false
+    @Published var showingImportDocumentPicker = false
+    @Published var showingImagePicker = false
+
     
     var selectedFiles : [VaultFile] {
         return vaultFileStatusArray.filter{$0.isSelected}.compactMap{$0.file}

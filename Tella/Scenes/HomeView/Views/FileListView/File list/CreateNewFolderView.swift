@@ -8,8 +8,8 @@ struct AddNewFolderView: View {
     
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var fileListViewModel : FileListViewModel
+    @EnvironmentObject var sheetManager: SheetManager
     
-    @State var showingCreateNewFolderSheet : Bool = false
     @State var fieldContent : String = ""
     
     var body: some View {
@@ -17,23 +17,28 @@ struct AddNewFolderView: View {
         ZStack {
             VStack {
                 AddFileYellowButton(action: {
-                    showingCreateNewFolderSheet = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: {
+                        showCreateNewFolderSheet()
+                    })
                 })
                 
                 Spacer()
                     .frame(height: 50)
             }
-            
+        }
+    }
+    
+    func showCreateNewFolderSheet() {
+        sheetManager.showBottomSheet( modalHeight: 165, backgroundColor: Styles.Colors.lightBlue, content: {
             TextFieldBottomSheetView(titleText: Localizable.Home.createNewFolder,
                                      validateButtonText: Localizable.Common.create,
-                                 isPresented: $showingCreateNewFolderSheet,
-                                 fieldContent: $fieldContent,
-                                 fieldType: .text,
-                                 backgroundColor:Styles.Colors.lightBlue,
-                                 didConfirmAction:  {
+                                     fieldContent: $fieldContent,
+                                     fieldType: .text,
+                                     didConfirmAction:  {
                 fileListViewModel.add(folder: fieldContent)
             })
-        }
+            
+        })
     }
 }
 
