@@ -6,36 +6,47 @@ import SwiftUI
 
 struct SaveAudioConfirmationView: View {
     
-    @Binding var showingSaveAudioConfirmationView : Bool
-
-    let didConfirm : (() -> Void)?
-    let didCancel : (() -> Void)?
+    @ObservedObject var viewModel : RecordViewModel
+    @Binding var showingSaveSuccessView : Bool
     
-    let modalHeight = 173.0
-
+    @EnvironmentObject var sheetManager: SheetManager
+    @EnvironmentObject var mainAppModel : MainAppModel
+    
+    
     var body: some View {
- 
+        
         ConfirmBottomSheet(titleText: Localizable.Audio.saveRecordingTitle,
                            msgText: Localizable.Audio.saveRecordingMessage,
                            cancelText: Localizable.Common.discard,
                            actionText: Localizable.Common.save,
-                               modalHeight: modalHeight,
-                               withDrag: false,
-                               isPresented: $showingSaveAudioConfirmationView) {
-                showingSaveAudioConfirmationView = false
-                didConfirm?()
-                
-            } didCancelAction: {
-                showingSaveAudioConfirmationView = false
-                didCancel?()
+                           withDrag: false) {
+            
+            sheetManager.hide()
+            
+            self.viewModel.onStopRecording()
+            
+            DispatchQueue.main.async {
+                showingSaveSuccessView = true
             }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                showingSaveSuccessView = false
+            }
+            
+            mainAppModel.selectedTab = .home
+            
+        } didCancelAction: {
+            sheetManager.hide()
+            self.viewModel.onResetRecording()
+            mainAppModel.selectedTab = .home
         }
- }
+    }
+}
 
 struct SaveAudioConfirmationView_Previews: PreviewProvider {
     static var previews: some View {
-        SaveAudioConfirmationView(showingSaveAudioConfirmationView: .constant(true),
-                                  didConfirm: nil,
-                                  didCancel: nil)
+        SaveAudioConfirmationView(viewModel: RecordViewModel(mainAppModel: MainAppModel(),
+                                                             rootFile: VaultFile.stub(type: .image)),
+                                  showingSaveSuccessView: .constant(true))
     }
 }

@@ -6,47 +6,13 @@ import SwiftUI
 
 struct ImportFilesProgressView: View {
     
-    @Binding var showingProgressView : Bool
-    @State var showingCancelImportConfirmationSheet : Bool = false
     @EnvironmentObject var mainAppModel : MainAppModel
+    @EnvironmentObject var sheetManager: SheetManager
     
     var importFilesProgressProtocol : ImportFilesProgressProtocol
-    
     var modalHeight : CGFloat = 215
     
     var body: some View {
-        
-        ZStack{
-            DragView(modalHeight: modalHeight,
-                     shouldHideOnTap: false,
-                     showWithAnimation: false,
-                     isShown: $showingProgressView) {
-                ImportFilesProgressContentView
-            }
-            
-            CancelImportView(showingCancelImportConfirmationSheet: $showingCancelImportConfirmationSheet,
-                             appModel: mainAppModel,
-                             importFilesProgressProtocol: importFilesProgressProtocol) {
-                
-                mainAppModel.vaultManager.progress.resume()
-                mainAppModel.cancelImportAndEncryption()
-                
-                showingCancelImportConfirmationSheet = false
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                    mainAppModel.vaultManager.progress.stop()
-                    
-                    showingProgressView = false
-                })
-                
-            } didCancel: {
-                mainAppModel.vaultManager.progress.resume()
-                showingCancelImportConfirmationSheet = false
-            }
-        }
-    }
-    
-    var ImportFilesProgressContentView : some View {
         
         HStack(spacing: 14) {
             VStack{
@@ -90,7 +56,7 @@ struct ImportFilesProgressView: View {
                     Spacer()
                     Button(Localizable.Common.cancel) {
                         mainAppModel.vaultManager.progress.pause()
-                        showingCancelImportConfirmationSheet = true
+                        showCancelImportView()
                     }
                     .foregroundColor(Color.white)
                     .font(Font.custom(Styles.Fonts.semiBoldFontName, size: 14))
@@ -101,18 +67,24 @@ struct ImportFilesProgressView: View {
         .onReceive(mainAppModel.vaultManager.progress.isFinishing) { isFinishing in
             if isFinishing {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                    showingProgressView = false
-                    showingCancelImportConfirmationSheet = false
+                    sheetManager.hide()
                 }
             }
         }
+    }
+    
+    func showCancelImportView() {
+        sheetManager.showBottomSheet( modalHeight: 152,
+                                      shouldHideOnTap: false,
+                                      content: {
+            CancelImportView(mainAppModel: mainAppModel,
+                             importFilesProgressProtocol: importFilesProgressProtocol)
+        })
     }
 }
 
 struct ImportFilesProgressView_Previews: PreviewProvider {
     static var previews: some View {
-        ImportFilesProgressView(showingProgressView: .constant(true),
-                                showingCancelImportConfirmationSheet: true,
-                                importFilesProgressProtocol: ImportFilesProgress())
+        ImportFilesProgressView(importFilesProgressProtocol: ImportFilesProgress())
     }
 }

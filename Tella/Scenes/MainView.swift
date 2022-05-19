@@ -10,8 +10,9 @@ struct MainView: View  {
     
     @EnvironmentObject private var appModel: MainAppModel
     @EnvironmentObject private var appViewState: AppViewState
-    
-    
+    @EnvironmentObject private var sheetManager: SheetManager
+
+ 
     init() {
         setDebugLevel(level: .debug, for: .app)
         setDebugLevel(level: .debug, for: .crypto)
@@ -19,10 +20,19 @@ struct MainView: View  {
     }
     
     var body: some View {
-        tabbar
+        ZStack {
+            tabbar
+            
+            DragView(modalHeight: sheetManager.modalHeight,
+                     shouldHideOnTap: sheetManager.shouldHideOnTap,
+                     backgroundColor: sheetManager.backgroundColor,
+                     isShown: $sheetManager.isPresented) {
+                sheetManager.content
+            }
+        }
     }
     
-    private var emptyView: some View{
+    private var emptyView: some View {
         VStack{
         }.background(Styles.Colors.backgroundMain)
     }
@@ -52,16 +62,16 @@ struct MainView: View  {
                         }.tag(MainAppModel.Tabs.forms)
 #endif
                     ContainerView{}
-                    .tabItem {
-                        Image("tab.camera")
-                        Text(Localizable.Common.menuCamera)
-                    }.tag(MainAppModel.Tabs.camera)
+                        .tabItem {
+                            Image("tab.camera")
+                            Text(Localizable.Common.menuCamera)
+                        }.tag(MainAppModel.Tabs.camera)
                     
                     ContainerView{}
-                    .tabItem {
-                        Image("tab.mic")
-                        Text(Localizable.Common.menuRecorder)
-                    }.tag(MainAppModel.Tabs.mic)
+                        .tabItem {
+                            Image("tab.mic")
+                            Text(Localizable.Common.menuRecorder)
+                        }.tag(MainAppModel.Tabs.mic)
                 }
                 
                 .toolbar {

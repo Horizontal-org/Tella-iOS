@@ -10,6 +10,7 @@ struct SelectingFilesHeaderView: View {
     
     var body: some View {
         if  fileListViewModel.selectingFiles {
+           
             HStack{
                 
                 closeButton
@@ -27,7 +28,8 @@ struct SelectingFilesHeaderView: View {
                     
                     Spacer()
                         .frame(width:30)
-                    moreButton
+                    
+                    MoreFileActionButton(moreButtonType: .navigationBar)
                 }
                 
             }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 23))
@@ -42,9 +44,7 @@ struct SelectingFilesHeaderView: View {
         } label: {
             Image("close")
         }
-        
         .frame(width: 24, height: 24)
-        
     }
     
     @ViewBuilder
@@ -55,7 +55,6 @@ struct SelectingFilesHeaderView: View {
                 .foregroundColor(.white).opacity(0.8)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
         }
-        
     }
     
     @ViewBuilder
@@ -69,16 +68,6 @@ struct SelectingFilesHeaderView: View {
             }
             .frame(width: 24, height: 24)
         }
-        
-    }
-    
-    var moreButton: some View {
-        Button {
-            fileListViewModel.showingFileActionMenu = true
-        } label: {
-            Image("files.more-top")
-                .frame(width: 40, height: 40)
-        }.frame(width: 40, height: 40)
     }
 }
 
