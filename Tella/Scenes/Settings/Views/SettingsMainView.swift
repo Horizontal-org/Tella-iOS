@@ -82,7 +82,7 @@ struct GenaralSettingsView : View {
             .onAppear {
                 lockViewModel.shouldDismiss.send(false)
                 let passwordType = AuthenticationManager().getPasswordType()
-                passwordTypeString = passwordType == .tellaPassword ? Localizable.Lock.passwordButtonTitle : Localizable.Lock.pinButtonTitle
+                passwordTypeString = passwordType == .tellaPassword ? Localizable.Lock.lockSelectActionPassword : Localizable.Lock.lockSelectActionPin
             }
     }
     

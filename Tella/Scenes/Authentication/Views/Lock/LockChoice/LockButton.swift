@@ -15,14 +15,14 @@ protocol LockButtonProtocol {
 }
 
 struct PasswordLockButton : LockButtonProtocol {
-    var title = Localizable.Lock.passwordButtonTitle
-    var description = Localizable.Lock.passwordButtonDescription
+    var title = Localizable.Lock.lockSelectActionPassword
+    var description = Localizable.Lock.lockSelectActionExplPassword
     var imageName = "lock.password"
 }
 
 struct PINLockButton : LockButtonProtocol {
-    var title = Localizable.Lock.pinButtonTitle
-    var description = Localizable.Lock.pinButtonDescription
+    var title = Localizable.Lock.lockSelectActionPin
+    var description = Localizable.Lock.lockSelectActionExplPin
     var imageName = "lock.pin"
     
 }

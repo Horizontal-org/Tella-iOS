@@ -9,15 +9,15 @@
 import Foundation
 
 struct LockPinData  : LockViewProtocol {
-    var title = Localizable.Lock.pinTitle
-    var description = Localizable.Lock.pinDescription
+    var title = Localizable.Lock.lockPinSetSubhead
+    var description = Localizable.Lock.lockPinSetExpl
     var image = "lock.password.B"
     var action: (() -> Void)?
 }
 
-struct LockConfirmPinData  : LockViewProtocol  {
-    var title = Localizable.Lock.confirmPinTitle
-    var description = Localizable.Lock.confirmPinDescription
+struct LockConfirmPinData  : LockViewProtocol {
+    var title = Localizable.Lock.lockPinConfirmSubhead
+    var description = Localizable.Lock.lockPinConfirmExpl
     var image = "lock.password.B"
     var action: (() -> Void)?
 }

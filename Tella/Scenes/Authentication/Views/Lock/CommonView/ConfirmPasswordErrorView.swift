@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ConfirmPasswordErrorView : View {
     var body: some View {
-        Text(Localizable.Lock.confirmPasswordError)
+        Text(Localizable.Lock.lockPasswordConfirmErrorMessage)
             .foregroundColor(Color.black)
             .font(.custom(Styles.Fonts.regularFontName, size: 14))
             .padding(EdgeInsets(top: 12, leading: 15, bottom: 12, trailing: 15))

@@ -80,9 +80,9 @@ struct UnlockPinView: View {
     
     var titleString : String {
         if viewModel.shouldShowUnlockError {
-            return  Localizable.Lock.unlockPinError
+            return  Localizable.Lock.unlockUpdatePinErrorMessage
         } else {
-            return viewModel.unlockType == .new ? Localizable.Lock.unlockPinTitle : Localizable.Lock.unlockUpdatePinTitle
+            return viewModel.unlockType == .new ? Localizable.Lock.unlockPinSubhead : Localizable.Lock.unlockUpdatePinSubhead
         }
     }
 }
