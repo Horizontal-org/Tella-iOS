@@ -14,6 +14,8 @@ struct CalculatorView: View {
     @Binding var message : String
     @Binding var isValid : Bool
     
+    var shouldValidateField : Bool = true
+    
     var keyboardNumbers : [PinKeyboardModel] = FirstKeyboardItems
     var keyboardNumbers2 : [PinKeyboardModel] = SecondKeyboardItems
     var action : (() -> Void)?
@@ -94,11 +96,13 @@ struct CalculatorView: View {
         
         self.isValid = fieldContent.passwordValidator() && fieldContent.passwordLengthValidator()
         
-        if !fieldContent.passwordLengthValidator() {
-            message = Localizable.Lock.pinLengthError
-            
-        } else if !fieldContent.passwordValidator() {
-            message = Localizable.Lock.pinDigitsError
+        if shouldValidateField {
+            if !fieldContent.passwordLengthValidator() {
+                message = Localizable.Lock.pinLengthError
+                
+            } else if !fieldContent.passwordValidator() {
+                message = Localizable.Lock.pinDigitsError
+            }
         }
     }
 }

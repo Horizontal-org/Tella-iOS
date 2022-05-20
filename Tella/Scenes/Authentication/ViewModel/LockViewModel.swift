@@ -22,6 +22,10 @@ class LockViewModel: ObservableObject {
     var unlockType : UnlockType = .new
     var shouldDismiss = CurrentValueSubject<Bool, Never>(false)
     
+    var shouldValidateField : Bool {
+        return unlockType == .update
+    }
+
     func validatePinMatch()  {
         isValid = password == confirmPassword
     }

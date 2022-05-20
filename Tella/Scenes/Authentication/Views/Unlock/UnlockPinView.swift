@@ -21,12 +21,13 @@ struct UnlockPinView: View {
                                  message: $message,
                                  isValid: $lockViewModel.isValid,
                                  nextButtonAction: .action,
-                                 destination: EmptyView()) {
+                                 destination: EmptyView(),
+                                 shouldValidateField: lockViewModel.shouldValidateField) {
                 
                 lockViewModel.login()
                 updateMessage()
                 if !lockViewModel.shouldShowUnlockError {
-                    if lockViewModel.unlockType == .new   {
+                    if lockViewModel.unlockType == .new {
                         appViewState.resetToMain()
                     } else {
                         presentingPinView = true
@@ -54,10 +55,12 @@ struct UnlockPinView: View {
     }
     
     func updateMessage()  {
-        if lockViewModel.shouldShowUnlockError {
-            message =  Localizable.Lock.unlockPinError
-        } else {
-            message = lockViewModel.unlockType == .new ? "" : Localizable.Lock.unlockUpdatePinFirstMessage
+        if lockViewModel.shouldValidateField   {
+            if lockViewModel.shouldShowUnlockError {
+                message = Localizable.Lock.unlockPinError
+            } else {
+                message = Localizable.Lock.unlockUpdatePinFirstMessage
+            }
         }
     }
 }
