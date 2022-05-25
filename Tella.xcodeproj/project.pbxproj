@@ -157,10 +157,10 @@
 		12A2DAFF273564090094B856 /* FileSortOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213CA268028A200526995 /* FileSortOptions.swift */; };
 		12A2DB03273576D50094B856 /* AddFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A2DB02273576D50094B856 /* AddFileView.swift */; };
 		12AB30D3272C36500020FFBF /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB30D2272C36500020FFBF /* HomeData.swift */; };
-		12AE80042812A30300F14DB8 /* LocalizableCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE80032812A30300F14DB8 /* LocalizableCommon.swift */; };
 		12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */; };
 		12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1D278CD4900007C781 /* IntExtension.swift */; };
 		12B6481D28367C1D00CBE541 /* SheetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B6481C28367C1D00CBE541 /* SheetManager.swift */; };
+		12B6AF7D283E4C7200D697F6 /* LocalizableVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B6AF7C283E4C7200D697F6 /* LocalizableVault.swift */; };
 		12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */; };
 		12D37A942721752B00E43BDB /* TellaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A932721752B00E43BDB /* TellaApp.swift */; };
 		12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A952721A49D00E43BDB /* NavigationContainerView.swift */; };
@@ -396,10 +396,10 @@
 		12A148992720B53800A1ADDC /* ConfirmPasswordErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordErrorView.swift; sourceTree = "<group>"; };
 		12A2DB02273576D50094B856 /* AddFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileView.swift; sourceTree = "<group>"; };
 		12AB30D2272C36500020FFBF /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
-		12AE80032812A30300F14DB8 /* LocalizableCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCommon.swift; sourceTree = "<group>"; };
 		12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtension.swift; sourceTree = "<group>"; };
 		12AE8D1D278CD4900007C781 /* IntExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtension.swift; sourceTree = "<group>"; };
 		12B6481C28367C1D00CBE541 /* SheetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetManager.swift; sourceTree = "<group>"; };
+		12B6AF7C283E4C7200D697F6 /* LocalizableVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableVault.swift; sourceTree = "<group>"; };
 		12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreFileActionButton.swift; sourceTree = "<group>"; };
 		12D37A932721752B00E43BDB /* TellaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaApp.swift; sourceTree = "<group>"; };
 		12D37A952721A49D00E43BDB /* NavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContainerView.swift; sourceTree = "<group>"; };
@@ -1039,9 +1039,9 @@
 		12BCB2E62816972200889E5A /* Localizable */ = {
 			isa = PBXGroup;
 			children = (
-				12AE80032812A30300F14DB8 /* LocalizableCommon.swift */,
 				12567FF62717426000A2D356 /* LocalizableLock.swift */,
 				12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */,
+				12B6AF7C283E4C7200D697F6 /* LocalizableVault.swift */,
 				12E0882327AD31F500CEB198 /* LocalizableAudio.swift */,
 				126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */,
 				12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */,
@@ -1607,7 +1607,6 @@
 				12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */,
 				128B929927D796E800E92ACF /* FolderListView.swift in Sources */,
 				126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */,
-				12AE80042812A30300F14DB8 /* LocalizableCommon.swift in Sources */,
 				0E64C6A6265E7625005A7934 /* ActionListBottomSheet.swift in Sources */,
 				D5077A40260D300600D72947 /* DebugLogging.swift in Sources */,
 				0ECC781D267AADA500A2ACF2 /* PageViewCellNotification.swift in Sources */,
@@ -1708,6 +1707,7 @@
 				1204F64327D928C9006E40EE /* FileTypeExtension.swift in Sources */,
 				0DA213C72680286F00526995 /* FileListItem.swift in Sources */,
 				CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */,
+				12B6AF7D283E4C7200D697F6 /* LocalizableVault.swift in Sources */,
 				125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */,
 				12607D58279042CE00E2B8CC /* VideoPlayer.swift in Sources */,
 				12567FFC27178EE200A2D356 /* LockButton.swift in Sources */,
@@ -1975,7 +1975,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
@@ -1985,7 +1985,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.7.3;
+				MARKETING_VERSION = 0.7.4;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2002,7 +2002,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
@@ -2012,7 +2012,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.7.3;
+				MARKETING_VERSION = 0.7.4;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Tella (AppStore)";

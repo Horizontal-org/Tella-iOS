@@ -12,45 +12,53 @@ extension Localizable {
     
     struct Lock {
         
-        // Lock Choice view
-        static var choiceTitle = "LockChoiceTitle".localized
-        static var passwordButtonTitle = "LockChoicePasswordButtonTitle".localized
-        static var passwordButtonDescription = "LockChoicePasswordButtonDescription".localized
-        static var pinButtonTitle = "LockChoicePINButtonTitle".localized
-        static var pinButtonDescription = "LockChoicePINButtonDescription".localized
-        static var lockChoiceHeaderTitle = "LockChoiceHeaderTitle".localized
+        // Onboarding
         
+        // Intro
+        static var onboardingIntroHead = "Onboarding_Intro_Head".localized
+        static var onboardingIntroSubhead = "Onboarding_Intro_Subhead".localized
+        static var onboardingIntroActionGetStarted = "Onboarding_Intro_Action_GetStarted".localized
+        
+        // Done
+        static var onboardingdLockSuccessHead = "Onboarding_LockSuccess_Head".localized
+        static var onboardingLockSuccessSubhead = "Onboarding_LockSuccess_Subhead".localized
+        static var onboardingLockSuccessActionGoToTella = "Onboarding_LockSuccess_Action_GoToTella".localized
+
+        // Lock Select view
+        static var lockSelectSubhead = "LockUnlock_LockSelect_Subhead".localized
+        static var lockSelectActionPassword = "LockUnlock_LockSelect_Action_Password".localized
+        static var lockSelectActionExplPassword = "LockUnlock_LockSelect_ActionExpl_Password".localized
+        static var lockSelectActionPin = "LockUnlock_LockSelect_Action_Pin".localized
+        static var lockSelectActionExplPin = "LockUnlock_LockSelect_ActionExpl_Pin".localized
+        static var lockSelectTitle = "LockUnlock_LockSelect_Title".localized
+
+        static var actionBack = "LockUnlock_Action_Back".localized
+        static var actionNext = "LockUnlock_Action_Next".localized
+
         // Lock Password view
-        static var passwordTitle = "LockPasswordTitle".localized
-        static var passwordDescription = "LockPasswordDescription".localized
-        static var confirmPasswordTitle = "LockConfirmPasswordTitle".localized
-        static var confirmPasswordDescription = "LockConfirmPasswordDescription".localized
-        static var confirmPasswordError = "LockConfirmPasswordError".localized
-        
-        // Welcome view
-        static var welcomeTitle = "LockWelcomeTitle".localized
-        static var welcomeDescription = "LockWelcomeDescription".localized
-        static var welcomeButtonTitle = "LockWelcomeButtonTitle".localized
-        
-        // Onboarding End view
-        static var onboardingEndTitle = "LockOnboardingEndTitle".localized
-        static var onboardingEndDescription = "LockOnboardingEndDescription".localized
-        static var onboardingEndButtonTitle = "LockOnboardingEndButtonTitle".localized
-        
+        static var lockPasswordSetSubhead = "LockUnlock_LockPasswordSet_Subhead".localized
+        static var lockPasswordSetExpl = "LockUnlock_LockPasswordSet_Expl".localized
+        static var lockPasswordConfirmSubhead = "LockUnlock_LockPasswordConfirm_Subhead".localized
+        static var lockPasswordConfirmExpl = "LockUnlock_LockPasswordConfirm_Expl".localized
+        static var lockPasswordConfirmErrorPasswordsDoNotMatch = "LockUnlock_LockPasswordConfirm_Error_PasswordsDoNotMatch".localized
+
         // Lock Pin view
-        static var pinTitle = "LockPinTitle".localized
-        static var pinDescription = "LockPinDescription".localized
-        static var confirmPinTitle = "LockConfirmPinTitle".localized
-        static var confirmPinDescription = "LockConfirmPinDescription".localized
-        
+        static var lockPinSetSubhead = "LockUnlock_LockPinSet_Subhead".localized
+        static var lockPinSetExpl = "LockUnlock_LockPinSet_Expl".localized
+        static var lockPinConfirmSubhead = "LockUnlock_LockPinConfirm_Subhead".localized
+        static var lockPinConfirmExpl = "LockUnlock_LockPinConfirm_Expl".localized
+        static var lockPinConfirmErrorPINsDoNotMatch = "LockUnlock_LockPinConfirm_Error_PINsDoNotMatch".localized
+
         // Unlock Password view
-        static var unlockPasswordTitle = "UnlockPasswordTitle".localized
-        static var unlockPasswordError = "UnlockPasswordError".localized
-        static var unlockUpdatePasswordTitle = "UnlockUpdatePasswordTitle".localized
-        
+        static var unlockPasswordSubhead = "LockUnlock_UnlockPassword_Subhead".localized
+        static var unlockUpdatePasswordSubhead = "LockUnlock_UnlockUpdatePassword_Subhead".localized
+        static var unlockUpdatePasswordErrorIncorrectPassword = "LockUnlock_UnlockUpdatePassword_Error_IncorrectPassword".localized
+
         // Unlock Pin view
-        static var unlockPinTitle = "UnlockPinTitle".localized
-        static var unlockPinError = "UnlockPinError".localized
-        static var unlockUpdatePinTitle = "UnlockUpdatePinTitle".localized
+        static var unlockPinSubhead = "LockUnlock_UnlockPin_Subhead".localized
+        static var unlockUpdatePinErrorIncorrectPIN = "LockUnlock_UnlockUpdatePin_Error_IncorrectPIN".localized
+        static var unlockUpdatePinSubhead = "LockUnlock_UnlockUpdatePin_Subhead".localized
+        static var unlockPinActionOk = "LockUnlock_UnlockPin_Action_Ok".localized
     }
 }
+ 

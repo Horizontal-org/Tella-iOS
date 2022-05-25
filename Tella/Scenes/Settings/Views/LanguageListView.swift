@@ -42,7 +42,7 @@ struct LanguageHeaderView : View {
                 Image("close")
             }.padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12))
             
-            Text(Localizable.Settings.language)
+            Text(Localizable.Settings.settLanguage)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 20))
                 .foregroundColor(Color.white)
             

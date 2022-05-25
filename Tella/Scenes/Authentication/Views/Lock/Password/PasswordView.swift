@@ -38,7 +38,9 @@ struct PasswordView<T:LockViewProtocol, Destination:View>: View   {
                 Spacer()
                     .frame(height: 50)
                 
-                LockDescriptionView(title: lockViewData.title, description: lockViewData.description)
+                LockDescriptionView(title: lockViewData.title,
+                                    description: lockViewData.description,
+                                    alignement: lockViewData.alignement)
                 
                 Spacer()
                 
@@ -48,7 +50,7 @@ struct PasswordView<T:LockViewProtocol, Destination:View>: View   {
                 Spacer()
                 
                 if shouldShowErrorMessage {
-                    ConfirmPasswordErrorView()
+                    ConfirmPasswordErrorView(errorMessage: Localizable.Lock.lockPasswordConfirmErrorPasswordsDoNotMatch)
                 }
                 
                 BottomLockView(isValid: $isValid,

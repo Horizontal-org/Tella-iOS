@@ -19,7 +19,7 @@ struct BottomLockView<Destination:View>:View {
     
     var body: some View {
         HStack {
-            BottomButtonActionView(title: Localizable.Common.back,
+            BottomButtonActionView(title: Localizable.Lock.actionBack,
                                    shouldEnable: true) {
                 self.backAction?()
             }
@@ -27,11 +27,11 @@ struct BottomLockView<Destination:View>:View {
             Spacer()
             
             if  nextButtonAction == .destination {
-                BottomButtonDestinationView(title: Localizable.Common.next,
+                BottomButtonDestinationView(title: Localizable.Lock.actionNext,
                                             shouldEnable: isValid,
                                             destination: destination)
             } else {
-                BottomButtonActionView(title: Localizable.Common.next,
+                BottomButtonActionView(title: Localizable.Lock.actionNext,
                                        shouldEnable: isValid) {
                     self.nextAction?()
                 }
