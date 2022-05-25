@@ -32,6 +32,7 @@ struct TransitionView: View {
             Text(transitionViewData.description)
                 .font(.custom(Styles.Fonts.regularFontName, size: 16))
                 .foregroundColor(.white)
+                .multilineTextAlignment(.center)
             
             Spacer()
                 .frame(height: 50)

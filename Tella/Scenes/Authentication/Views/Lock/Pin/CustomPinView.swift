@@ -32,7 +32,8 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
                 Spacer()
                 
                 LockDescriptionView(title: lockViewData.title,
-                                    description: lockViewData.description)
+                                    description: lockViewData.description,
+                                    alignement: lockViewData.alignement)
                 
                 Spacer()
                 PasswordTextFieldView(fieldContent: $fieldContent,
@@ -49,7 +50,7 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
                 Spacer()
                 VStack {
                     if shouldShowErrorMessage   {
-                        ConfirmPasswordErrorView()
+                        ConfirmPasswordErrorView(errorMessage: Localizable.Lock.lockPinConfirmErrorPINsDoNotMatch)
                         Spacer()
                     }
                     

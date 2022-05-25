@@ -13,7 +13,9 @@ protocol ImportFilesProgressProtocol {
     var progressType: ProgressType {get}
     var title: String {get}
     var progressMessage: String {get}
+    var cancelImportButtonTitle: String {get}
     var cancelTitle: String {get}
     var cancelMessage: String {get}
-    var cancelButtonTitle: String {get}
+    var exitCancelImportButtonTitle: String {get}
+    var confirmCancelImportButtonTitle: String {get}
 }

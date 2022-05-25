@@ -7,18 +7,21 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct LockPinData  : LockViewProtocol {
-    var title = Localizable.Lock.pinTitle
-    var description = Localizable.Lock.pinDescription
+    var title = Localizable.Lock.lockPinSetSubhead
+    var description = Localizable.Lock.lockPinSetExpl
     var image = "lock.password.B"
+    var alignement: TextAlignment = .leading
     var action: (() -> Void)?
 }
 
-struct LockConfirmPinData  : LockViewProtocol  {
-    var title = Localizable.Lock.confirmPinTitle
-    var description = Localizable.Lock.confirmPinDescription
+struct LockConfirmPinData  : LockViewProtocol {
+    var title = Localizable.Lock.lockPinConfirmSubhead
+    var description = Localizable.Lock.lockPinConfirmExpl
     var image = "lock.password.B"
+    var alignement: TextAlignment = .center
     var action: (() -> Void)?
 }
 
@@ -48,5 +51,5 @@ var UnlockKeyboardNumbers: [PinKeyboardModel] = [
     PinKeyboardModel(text: "9",  type: .number),
     PinKeyboardModel(imageName:"lock.backspace", type: .delete),
     PinKeyboardModel(text: "0",  type: .number),
-    PinKeyboardModel(text: Localizable.Common.ok, type: .done)]
+    PinKeyboardModel(text: Localizable.Lock.unlockPinActionOk, type: .done)]
 

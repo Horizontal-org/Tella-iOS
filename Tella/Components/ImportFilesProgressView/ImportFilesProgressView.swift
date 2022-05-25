@@ -54,7 +54,7 @@ struct ImportFilesProgressView: View {
                 
                 HStack {
                     Spacer()
-                    Button(Localizable.Common.cancel) {
+                    Button(importFilesProgressProtocol.cancelImportButtonTitle) {
                         mainAppModel.vaultManager.progress.pause()
                         showCancelImportView()
                     }
