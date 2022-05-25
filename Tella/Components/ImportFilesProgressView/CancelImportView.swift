@@ -6,28 +6,29 @@ import SwiftUI
 
 struct CancelImportView: View {
     
-    @Binding var showingCancelImportConfirmationSheet : Bool
-    @ObservedObject var appModel: MainAppModel
+    @ObservedObject var mainAppModel: MainAppModel
     
     var importFilesProgressProtocol : ImportFilesProgressProtocol
     
-    let modalHeight = 152
-    let didConfirm : (() -> Void)?
-    let didCancel : (() -> Void)?
+    @EnvironmentObject var sheetManager: SheetManager
     
     var body: some View {
         ZStack{
-            
             ConfirmBottomSheet(titleText: importFilesProgressProtocol.cancelTitle,
                                msgText: importFilesProgressProtocol.cancelMessage,
                                cancelText: Localizable.Common.back.uppercased(),
-                               actionText: importFilesProgressProtocol.cancelButtonTitle,
-                               modalHeight: 161,
-                               isPresented: $showingCancelImportConfirmationSheet) {
-                didConfirm?()
+                               actionText: importFilesProgressProtocol.cancelButtonTitle) {
+                mainAppModel.vaultManager.progress.resume()
+                mainAppModel.cancelImportAndEncryption()
+                sheetManager.hide()
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                    mainAppModel.vaultManager.progress.stop()
+                })
                 
             } didCancelAction: {
-                didCancel?()
+                mainAppModel.vaultManager.progress.resume()
+                sheetManager.hide()
             }
         }
     }
@@ -35,10 +36,7 @@ struct CancelImportView: View {
 
 struct CancelImportView_Previews: PreviewProvider {
     static var previews: some View {
-        CancelImportView(showingCancelImportConfirmationSheet: .constant(true), appModel: MainAppModel(), importFilesProgressProtocol: ImportFilesProgress()) {
-            
-        } didCancel: {
-            
-        }
+        CancelImportView( mainAppModel: MainAppModel(),
+                          importFilesProgressProtocol: ImportFilesProgress())
     }
 }

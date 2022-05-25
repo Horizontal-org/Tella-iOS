@@ -10,10 +10,10 @@ import SwiftUI
 
 struct NavigationContainerView<Content:View>: View {
     
-    var backgroundColor : Color
+    var backgroundColor : Color = Styles.Colors.backgroundMain
     var content : () -> Content
     
-    init(backgroundColor : Color = Styles.Colors.backgroundMain, @ViewBuilder content : @escaping () -> Content) {
+    init(backgroundColor: Color = Styles.Colors.backgroundMain, @ViewBuilder content : @escaping () -> Content) {
         self.content = content
         self.backgroundColor = backgroundColor
     }
@@ -21,7 +21,7 @@ struct NavigationContainerView<Content:View>: View {
     var body: some View {
         NavigationView {
             ZStack {
-                backgroundColor
+                self.backgroundColor
                     .edgesIgnoringSafeArea(.all)
                 self.content()
             }
@@ -33,6 +33,5 @@ struct NavigationContainerView<Content:View>: View {
         .navigationViewStyle(.stack)
         .navigationBarTitle("")
         .navigationBarHidden(true)
-
     }
 }

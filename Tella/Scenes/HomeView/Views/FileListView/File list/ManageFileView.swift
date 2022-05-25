@@ -11,7 +11,7 @@ struct ManageFileView: View {
     var body: some View {
         HStack(spacing: 0) {
             
-            sortFilesButton
+            FileSortMenu()
             
             Spacer()
             
@@ -23,23 +23,6 @@ struct ManageFileView: View {
             viewTypeButton
         }
         .padding(EdgeInsets(top: 0, leading: fileListViewModel.showingMoveFileView ? 8 : 16 , bottom: 0, trailing: fileListViewModel.showingMoveFileView ? 8 : 12))
-        
-    }
-    
-    
-    private var sortFilesButton: some View {
-        Button {
-            fileListViewModel.showingSortFilesActionSheet = true
-        } label: {
-            HStack{
-                Text(fileListViewModel.sortBy.displayName)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 14) )
-                    .foregroundColor(.white)
-                fileListViewModel.sortBy.image
-                    .frame(width: 20, height: 20)
-            }
-        }
-        .frame(height: 44)
     }
     
     @ViewBuilder

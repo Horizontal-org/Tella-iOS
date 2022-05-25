@@ -18,11 +18,10 @@ struct RecordView: View {
     
     @EnvironmentObject private var mainAppModel: MainAppModel
     @EnvironmentObject private var appViewState: AppViewState
+    @EnvironmentObject var sheetManager: SheetManager
     
-    @State private var showingSaveAudioConfirmationView : Bool = false
     @State private var showingSaveSuccessView : Bool = false
     
-    @State private var showingRenameFileConfirmationSheet : Bool = false
     @State private var fileName : String = ""
     
     
@@ -60,18 +59,10 @@ struct RecordView: View {
                     .frame(height: 113)
             }
             
-            renameFileView
-            
-            if showingSaveAudioConfirmationView {
-                DragView(modalHeight: modalHeight,
-                         isShown: $showingSaveAudioConfirmationView) {
-                    saveAudioConfirmationView
-                }
-            }
-            
             saveSuccessView
             
         }
+        
         
         .alert(isPresented: self.$viewModel.shouldShowSettingsAlert) {
             getSettingsAlertView()
@@ -172,9 +163,9 @@ struct RecordView: View {
                 Image("mic.record")
                     .frame(width: 83, height: 83)
             }
-
+            
             Button(action: {
-
+                
             }) {
                 Image("mic.listen")
                     .resizable()
@@ -189,8 +180,7 @@ struct RecordView: View {
         VStack {
             
             Button {
-                showingRenameFileConfirmationSheet = true
-                
+                showRenameFileSheet()
             } label: {
                 
                 HStack {
@@ -217,8 +207,7 @@ struct RecordView: View {
         HStack {
             Button {
                 if  viewModel.state == .paused || viewModel.state == .recording  {
-                    showingSaveAudioConfirmationView = true
-                    
+                    showSaveAudioConfirmationView()
                 } else {
                     if sourceView == .tab {
                         mainAppModel.selectedTab = .home
@@ -245,41 +234,25 @@ struct RecordView: View {
                      fileListType: .recordList)
     }
     
-    private var saveAudioConfirmationView : some View {
-        
-        return SaveAudioConfirmationView(showingSaveAudioConfirmationView: $showingSaveAudioConfirmationView ) {
+    func showRenameFileSheet() {
+        sheetManager.showBottomSheet( modalHeight: 165, content: {
             
-            self.viewModel.onStopRecording()
-            
-            DispatchQueue.main.async {
-                showingSaveSuccessView = true
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                showingSaveSuccessView = false
-            }
-            
-            mainAppModel.selectedTab = .home
-            
-        } didCancel: {
-            self.viewModel.onResetRecording()
-            mainAppModel.selectedTab = .home
-        }
-    }
-    @ViewBuilder
-    private var renameFileView : some View {
-        if showingRenameFileConfirmationSheet {
             TextFieldBottomSheetView(titleText: Localizable.Audio.renameFileTitle,
                                      validateButtonText: Localizable.Common.save,
-                                     isPresented: $showingRenameFileConfirmationSheet,
                                      fieldContent: $fileName,
                                      fileName: viewModel.fileName,
                                      fieldType: FieldType.fileName,
                                      didConfirmAction: {
                 viewModel.fileName =  fileName
             })
-            
-        }
+        })
+    }
+    
+    func showSaveAudioConfirmationView() {
+        
+        sheetManager.showBottomSheet( modalHeight: 173.0, content: {
+            SaveAudioConfirmationView(viewModel: viewModel, showingSaveSuccessView: $showingSaveSuccessView)
+        })
     }
     
     @ViewBuilder

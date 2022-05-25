@@ -93,13 +93,7 @@ struct FileListItem: View {
             
             
         } else {
-            Button {
-                fileListViewModel.showingFileActionMenu = true
-                fileListViewModel.updateSingleSelection(for: file)
-            } label: {
-                Image("files.more")
-                    .frame(width: 40, height: 40)
-            } .frame(width: 40, height: 40)
+            MoreFileActionButton(file: file, moreButtonType: .list)
         }
     }
 }

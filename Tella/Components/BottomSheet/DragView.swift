@@ -31,24 +31,25 @@ struct DragView<Content: View> : View {
     
     var modalHeight:CGFloat
     var shouldHideOnTap : Bool = true
-    var showWithAnimation : Bool = true
+    var showWithAnimation : Bool = false
     var backgroundColor: Color = Styles.Colors.backgroundTab
-
+    
     @Binding var isShown:Bool
     
     
     @GestureState private var dragState = DragState.inactive
     @State private var value: CGFloat = 0
+    @EnvironmentObject var sheetManager: SheetManager
     
     
     private func onDragEnded(drag: DragGesture.Value) {
         let dragThreshold = modalHeight * (2/3)
         if drag.predictedEndTranslation.height > dragThreshold || drag.translation.height > dragThreshold{
             isShown = false
+            sheetManager.hide()
             UIApplication.shared.endEditing()
             
         }
-        
     }
     
     var content: () -> Content
@@ -70,38 +71,22 @@ struct DragView<Content: View> : View {
                                                                                  upperLimit: Double(modalHeight),
                                                                                  current: Double(dragState.translation.height),
                                                                                  inverted: true)
-                                                       )
-                                    : Color.clear)
+                                    )
+                                    : nil)
                         .if (showWithAnimation) {
                             $0.animation(.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0))
                         }
-                        .gesture(
-                            
-                            
-                            TapGesture()
-                                .onEnded { _ in
-                                    if shouldHideOnTap {
-                                        UIApplication.shared.endEditing()
-                                        self.isShown = false
-                                        
-                                    }
-                                    
-                                }
-                        )
+                    
                     
                     //Foreground
                     VStack{
                         Spacer()
                         ZStack{
-                            backgroundColor.opacity(1.0)
+                            self.content()
                                 .frame(width: UIScreen.main.bounds.size.width, height:modalHeight)
+                                .background(backgroundColor.opacity(1.0))
                                 .cornerRadius(25, corners: [.topLeft, .topRight])
                                 .edgesIgnoringSafeArea(.all)
-                            self.content()
-                            
-                                .padding(.bottom, 0)
-                                .frame(width: UIScreen.main.bounds.size.width, height:modalHeight)
-                                .clipped()
                         }
                         .offset(y: isShown ? ((self.dragState.isDragging && dragState.translation.height >= 1) ? dragState.translation.height - self.value : -self.value) : modalHeight)
                         .if (showWithAnimation) {
@@ -115,7 +100,18 @@ struct DragView<Content: View> : View {
                 .if (showWithAnimation) {
                     $0.animation(.spring())
                 }
-            
+                .gesture(
+                    TapGesture()
+                    
+                        .onEnded { _ in
+                            if shouldHideOnTap {
+                                
+                                self.isShown = false
+                                
+                                UIApplication.shared.endEditing()
+                                
+                            }
+                        })
                 .onAppear{
                     NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) {(noti) in
                         if isShown {

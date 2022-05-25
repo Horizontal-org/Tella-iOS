@@ -57,12 +57,7 @@ struct FileDetailView: View {
     
     func fileActionTrailingView() -> some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button {
-                fileListViewModel.showingFileActionMenu = true
-                fileListViewModel.updateSingleSelection(for: file)
-            } label: {
-                Image("files.more")
-            }.frame(width: 40, height: 40)
+            MoreFileActionButton(file: file, moreButtonType: .navigationBar)
         }
     }
 }

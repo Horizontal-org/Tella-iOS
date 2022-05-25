@@ -40,8 +40,6 @@ struct MoveFilesView: View {
             }
             
             AddNewFolderView()
-            
-            FileSortMenu()
         }
     }
     

@@ -10,32 +10,19 @@ struct ConfirmBottomSheet : View {
     var cancelText = ""
     var actionText = ""
     var destructive : Bool = false
-    var modalHeight : CGFloat
     var withDrag : Bool = true
-
     
-    @Binding var isPresented: Bool
     var didConfirmAction : () -> ()
     var didCancelAction : (() -> ())? = nil
-
+    
+    @EnvironmentObject var sheetManager: SheetManager
+    
     var body: some View {
-        
-        if withDrag  {
-            
-            DragView(modalHeight: modalHeight,
-                     showWithAnimation: false,
-                     isShown: $isPresented){
-                
-                contentView
-            }
-        }
-        else {
-            contentView
-        }
+        contentView
     }
     
     var contentView: some View {
-         
+        
         VStack(alignment: .leading, spacing: 9) {
             
             Text(self.titleText)
@@ -48,16 +35,21 @@ struct ConfirmBottomSheet : View {
             Spacer()
             HStack(alignment: .lastTextBaseline ){
                 Spacer()
-                Button(action: {self.isPresented = false
+                Button(action: {
                     didCancelAction?()
+                    sheetManager.hide()
+                    
                 }){
                     Text(self.cancelText)
                 }.buttonStyle(ButtonSheetStyle())
                 
                 Spacer()
                     .frame(width: 20)
-
-                Button(action: {self.didConfirmAction()}){
+                
+                Button(action: {
+                    self.didConfirmAction()
+                    sheetManager.hide()
+                }){
                     Text(self.actionText)
                         .foregroundColor(destructive ? Color.red : Color.white)
                 }.buttonStyle(ButtonSheetStyle())
@@ -84,8 +76,6 @@ struct ConfirmBottomSheet_Previews: PreviewProvider {
                            cancelText: "Test",
                            actionText: "Test",
                            destructive: true,
-                           modalHeight: 150,
-                           isPresented: .constant(true),
                            didConfirmAction: {})
     }
 }

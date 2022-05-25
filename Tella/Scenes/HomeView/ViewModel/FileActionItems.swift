@@ -24,25 +24,26 @@ var firstFileActionItems : [ListActionSheetItem] = [
                         type: FileActionType.share)
 ]
 
-var secondFileActionItems : [ListActionSheetItem] = [
+var secondFileActionItems : [ListActionSheetItem] {
     
-    ListActionSheetItem(imageName: "move-icon",
-                        content: Localizable.Home.moveFile,
-                        type: FileActionType.move),
-    
-    ListActionSheetItem(imageName: "edit-icon",
-                        content: Localizable.Home.renameFile,
-                        type: FileActionType.rename),
-    
-    ListActionSheetItem(imageName: "save-icon",
-                        content: Localizable.Home.saveFile,
-                        type: FileActionType.save),
-    
-    ListActionSheetItem(imageName: "info-icon",
-                        content: Localizable.Home.fileInformation,
-                        type: FileActionType.info),
-    
-    ListActionSheetItem(imageName: "delete-icon",
-                        content: Localizable.Home.deleteFile,
-                        type: FileActionType.delete)
-]
+    return [ListActionSheetItem(imageName: "move-icon",
+                                content: Localizable.Home.moveFile,
+                                type: FileActionType.move),
+            
+            ListActionSheetItem(imageName: "edit-icon",
+                                content: Localizable.Home.renameFile,
+                                type: FileActionType.rename),
+            
+            ListActionSheetItem(imageName: "save-icon",
+                                content: Localizable.Home.saveFile,
+                                type: FileActionType.save),
+            
+            ListActionSheetItem(imageName: "info-icon",
+                                content: Localizable.Home.fileInformation,
+                                type: FileActionType.info),
+            
+            ListActionSheetItem(imageName: "delete-icon",
+                                content: Localizable.Home.deleteFile,
+                                type: FileActionType.delete)
+    ]
+}

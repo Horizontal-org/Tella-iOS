@@ -8,9 +8,6 @@ struct ActionListBottomSheet: View {
     
     let items: [ListActionSheetItem]
     var headerTitle : String
-    
-    @Binding var isPresented: Bool
-    
     var action: ((ListActionSheetItem) -> Void)
     
     var body: some View {
@@ -28,7 +25,7 @@ struct ActionListBottomSheet: View {
                 switch item.viewType {
                 case .item:
                     if item.isActive {
-                        ListActionSheetRow(item: item, isPresented: $isPresented, action: {action(item)})
+                        ListActionSheetRow(item: item, action: {action(item)})
                     }
                 case .divider:
                     Divider()
@@ -44,12 +41,10 @@ struct ActionListBottomSheet: View {
 
 struct ListActionSheetRow: View {
     var item: ListActionSheetItem
-    @Binding var isPresented: Bool
     var action: (() -> Void)
     
     var body: some View {
         Button(action: {
-            isPresented = false
             item.action()
             action()
         }, label: {
@@ -78,9 +73,8 @@ struct FileActionsBottomSheet_Previews: PreviewProvider {
                                                           content: "Take photo/video",
                                                           action: {}, type: FileActionType.save)],
                               headerTitle: "Test",
-                              isPresented: .constant(true),
                               action: {_ in})
-            .background(Styles.Colors.backgroundMain)
+        .background(Styles.Colors.backgroundMain)
     }
 }
 

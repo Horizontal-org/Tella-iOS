@@ -25,6 +25,8 @@ struct CustomCalculatorView<Destination:View>: View   {
     
     var nextButtonAction: NextButtonAction
     var destination: Destination?
+    var shouldValidateField: Bool = true
+    
     var action : (() -> Void)?
     
     var body: some View {
@@ -66,15 +68,17 @@ struct CustomCalculatorView<Destination:View>: View   {
     private var passwordTextView : some View {
         PasswordTextView(fieldContent: $fieldContent,
                          isValid: $isValid,
+                         shouldValidateField: shouldValidateField,
                          disabled: true)
         .padding(EdgeInsets(top: 0, leading: 13, bottom: 0, trailing: 13))
     }
     
     private var pinView : some View {
         CalculatorView(fieldContent: $fieldContent,
-                message: $message,
-                isValid: $isValid,
-                action: {
+                       message: $message,
+                       isValid: $isValid,
+                       shouldValidateField: shouldValidateField,
+                       action: {
             
             if nextButtonAction == .destination {
                 shouldShowLockConfirmPinView = true
@@ -96,9 +100,9 @@ struct CustomCalculatorView<Destination:View>: View   {
 struct CustomPinView_Previews: PreviewProvider {
     static var previews: some View {
         CustomCalculatorView(fieldContent: .constant("ACn"),
-                      message: .constant(Localizable.Lock.pinFirstMessage),
-                      isValid: .constant(false),
-                      nextButtonAction: .action,
-                      destination: EmptyView())
+                             message: .constant(Localizable.Lock.pinFirstMessage),
+                             isValid: .constant(false),
+                             nextButtonAction: .action,
+                             destination: EmptyView())
     }
 }
