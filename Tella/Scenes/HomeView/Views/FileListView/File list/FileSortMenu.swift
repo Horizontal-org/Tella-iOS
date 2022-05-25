@@ -45,7 +45,7 @@ struct FileSortMenu: View {
     
     private func showSortFilesActionSheet() {
         sheetManager.showBottomSheet( modalHeight: 300, content: {
-            ActionListBottomSheet(items: items, headerTitle: Localizable.Home.sortByTitle,
+            ActionListBottomSheet(items: items, headerTitle: Localizable.Vault.SortBySheetTitle,
                                   action:  {item in
                 self.handleActions(item : item)
             })

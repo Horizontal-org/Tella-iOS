@@ -8,18 +8,18 @@ extension Localizable {
     
     struct Settings {
         
-        static var title = "SettingsTitle".localized
-        static var language = "SettingsLanguage".localized
-        static var lock = "SettingsLock".localized
-        static var aboutAndHelp = "SettingsAboutAndHelp".localized
-        
-        static var recentFilesTitle = "SettingsRecentFilesTitle".localized
-        static var recentFilesDescription = "SettingsRecentFilesDescription".localized
-        
+        static var appBar = "Settings_AppBar".localized
+        static var settLanguage = "Settings_Sett_Language".localized
+        static var settLock = "Settings_Sett_Lock".localized
+        static var settAbout = "Settings_Sett_About".localized
+
+        static var settRecentFiles = "Settings_Sett_RecentFiles".localized
+        static var settRecentFilesExpl = "Settings_Sett_RecentFiles_Expl".localized
+
         // About & Help
-        static var version = "SettingsVersion".localized
-        static var contactUs = "SettingsContactUs".localized
-        static var privacyPolicy = "SettingsPrivacyPolicy".localized
-        
+        static var settAboutHead = "Settings_SettAbout_Head".localized
+        static var settAboutSubhead = "Settings_SettAbout_Subhead".localized
+        static var settAboutContactUs = "Settings_SettAbout_ContactUs".localized
+        static var settAboutPrivacyPolicy = "Settings_SettAbout_PrivacyPolicy".localized
     }
 }

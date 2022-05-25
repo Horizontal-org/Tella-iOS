@@ -24,7 +24,7 @@ struct SettingsMainView: View {
             }
         }
         .toolbar {
-            LeadingTitleToolbar(title: Localizable.Settings.title)
+            LeadingTitleToolbar(title: Localizable.Settings.appBar)
         }
         
         .onDisappear(perform: {
@@ -50,7 +50,7 @@ struct GenaralSettingsView : View {
         VStack(spacing: 0) {
             
             SettingsItemView(imageName: "settings.language",
-                             title: Localizable.Settings.language,
+                             title: Localizable.Settings.settLanguage,
                              value: Language.currentLanguage.name)
                 .onTapGesture {
                     presentingLanguage = true
@@ -59,7 +59,7 @@ struct GenaralSettingsView : View {
             DividerView()
             
             SettingsItemView(imageName: "settings.lock",
-                             title: Localizable.Settings.lock,
+                             title: Localizable.Settings.settLock,
                              value: passwordTypeString)
             
                 .navigateTo(destination: unlockView)
@@ -67,7 +67,7 @@ struct GenaralSettingsView : View {
             DividerView()
             
             SettingsItemView(imageName: "settings.help",
-                             title: Localizable.Settings.aboutAndHelp,
+                             title: Localizable.Settings.settAbout,
                              value: "")
                 .navigateTo(destination: AboutAndHelpView())
             
@@ -111,8 +111,8 @@ struct RecentFilesSettingsView : View {
         
         VStack(spacing: 0) {
             
-            SettingToggleItem(title: Localizable.Settings.recentFilesTitle,
-                              description: Localizable.Settings.recentFilesDescription,
+            SettingToggleItem(title: Localizable.Settings.settRecentFiles,
+                              description: Localizable.Settings.settRecentFilesExpl,
                               toggle: $appModel.settings.showRecentFiles)
         }.background(Color.white.opacity(0.08))
             .cornerRadius(15)

@@ -14,10 +14,10 @@ enum AddPhotoVideoType: ActionType {
 var AddPhotoVideoItems : [ListActionSheetItem] { return [
     
     ListActionSheetItem(imageName: "photo-library",
-                        content: Localizable.Home.photoLibrary,
+                        content: Localizable.Vault.manageFilesPhotoLibrarySheetSelect,
                         type: AddPhotoVideoType.photoLibrary),
     
     ListActionSheetItem(imageName: "document",
-                        content: Localizable.Home.document,
+                        content: Localizable.Vault.manageFilesDocumentSheetSelect,
                         type: AddPhotoVideoType.document)]
 }

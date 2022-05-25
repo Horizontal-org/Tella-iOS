@@ -40,7 +40,7 @@ struct AddFileView: View {
     func showAddFileSheet() {
         sheetManager.showBottomSheet( modalHeight: CGFloat(manageFilesItems.count * 50 + 90), content: {
             ActionListBottomSheet(items: manageFilesItems,
-                                  headerTitle: Localizable.Home.managefilesTitle,
+                                  headerTitle: Localizable.Vault.manageFilesSheetTitle,
                                   action:  {item in
                 self.handleActions(item : item)
             })
@@ -49,8 +49,9 @@ struct AddFileView: View {
     
     func showCreateNewFolderSheet() {
         sheetManager.showBottomSheet( modalHeight: 165, content: {
-            TextFieldBottomSheetView(titleText: Localizable.Home.createNewFolder,
-                                     validateButtonText: Localizable.Common.create,
+            TextFieldBottomSheetView(titleText: Localizable.Vault.manageFilesCreateNewFolderSheetSelect,
+                                     validateButtonText: Localizable.Vault.createNewFolderCreateSheetAction,
+                                     cancelButtonText: Localizable.Vault.createNewFolderCancelSheetAction,
                                      fieldContent: $fieldContent,
                                      fieldType: .text) {
                 fileListViewModel.add(folder: fieldContent)
@@ -61,7 +62,7 @@ struct AddFileView: View {
     func showAddPhotoVideoSheet() {
         sheetManager.showBottomSheet( modalHeight:  CGFloat(AddPhotoVideoItems.count * 40 + 100), content: {
             ActionListBottomSheet(items: AddPhotoVideoItems,
-                                  headerTitle: Localizable.Home.importFromDevice, action: {item in
+                                  headerTitle: Localizable.Vault.manageFilesImportFromDeviceSheetSelect, action: {item in
                 self.handleAddPhotoVideoActions(item : item)
             })
         })

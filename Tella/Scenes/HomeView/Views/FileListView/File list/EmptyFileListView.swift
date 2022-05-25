@@ -24,7 +24,7 @@ struct EmptyFileListView: View {
             Spacer()
                 .frame(height: 20)
 
-            Text(emptyListType == .allFiles ? Localizable.Home.emptyAllFilesMessage :  Localizable.Home.emptyFolderMessage)
+            Text(emptyListType == .allFiles ? Localizable.Vault.emptyAllFilesExpl :  Localizable.Vault.emptyFolderExpl)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)

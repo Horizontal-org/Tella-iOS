@@ -23,18 +23,18 @@ class DiskStatus: NSObject {
         let hours = Int((timeMinutes - Double(days * 1440)) / 60)
         let minutes = Int((timeMinutes - Double(days * 1440) - Double(hours * 60)))
         
-        let daysString =  days > 1 ? "days" : "day"
+        let daysString =  days > 1 ? Localizable.Recorder.deviceTimeLeftDays : Localizable.Recorder.deviceTimeLeftDay
         let fullDaysString = "\(days) \(daysString)"
         
-        let hoursString =  hours > 1 ? "hours" : "hour"
+        let hoursString =  hours > 1 ? Localizable.Recorder.deviceTimeLeftHours : Localizable.Recorder.deviceTimeLeftHour
         let fullHoursString = "\(hours) \(hoursString)"
         
-        let minutesString = "\(minutes) min"
+        let minutesString = "\(minutes) \(Localizable.Recorder.deviceTimeLeftMinutes)"
         
         if days > 0 {
-            return  "\(fullDaysString) \(fullHoursString) \(minutesString) (\(usedDiskSpaceInMB)) left"
+            return  "\(fullDaysString) \(fullHoursString) \(minutesString) (\(usedDiskSpaceInMB)) \(Localizable.Recorder.deviceTimeLeft)"
         } else {
-            return  " \(fullHoursString) \(minutesString) (\(usedDiskSpaceInMB)) left"
+            return  " \(fullHoursString) \(minutesString) (\(usedDiskSpaceInMB)) \(Localizable.Recorder.deviceTimeLeft)"
         }
     }
     

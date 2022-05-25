@@ -17,11 +17,11 @@ struct AboutAndHelpView: View {
                 Spacer()
                     .frame(height: 19)
                 
-                Text(Localizable.Common.tellaTitle)
+                Text(Localizable.Settings.settAboutHead)
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                     .foregroundColor(.white)
                 
-                Text("\(Localizable.Settings.version) \(Bundle.main.versionNumber)")
+                Text("\(Localizable.Settings.settAboutSubhead) \(Bundle.main.versionNumber)")
 
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(.white)
@@ -35,7 +35,7 @@ struct AboutAndHelpView: View {
             }
         }
         .toolbar {
-            LeadingTitleToolbar(title: Localizable.Settings.aboutAndHelp)
+            LeadingTitleToolbar(title: Localizable.Settings.settAbout)
         }
     }
 }

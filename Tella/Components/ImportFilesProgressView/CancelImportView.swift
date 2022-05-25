@@ -16,8 +16,8 @@ struct CancelImportView: View {
         ZStack{
             ConfirmBottomSheet(titleText: importFilesProgressProtocol.cancelTitle,
                                msgText: importFilesProgressProtocol.cancelMessage,
-                               cancelText: Localizable.Common.back.uppercased(),
-                               actionText: importFilesProgressProtocol.cancelButtonTitle) {
+                               cancelText: importFilesProgressProtocol.exitCancelImportButtonTitle,
+                               actionText: importFilesProgressProtocol.cancelImportButtonTitle) {
                 mainAppModel.vaultManager.progress.resume()
                 mainAppModel.cancelImportAndEncryption()
                 sheetManager.hide()
