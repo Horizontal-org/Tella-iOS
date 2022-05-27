@@ -46,26 +46,26 @@ enum FileSortOptions : ActionType {
     var displayName: String {
         switch self {
         case .nameAZ:
-            return Localizable.Home.sortByName
+            return Localizable.Vault.sortByName
         case .nameZA:
-            return Localizable.Home.sortByName
+            return Localizable.Vault.sortByName
         case .newestToOldest:
-            return Localizable.Home.sortByDate
+            return Localizable.Vault.sortByDate
         case .oldestToNewest:
-            return Localizable.Home.sortByDate
+            return Localizable.Vault.sortByDate
         }
     }
     
     var name: String {
         switch self {
         case .nameAZ:
-            return Localizable.Home.sortByAscendingName
+            return Localizable.Vault.sortByAscendingNameSheetSelect
         case .nameZA:
-            return Localizable.Home.sortByDescendingName
+            return Localizable.Vault.sortByDescendingNameSheetSelect
         case .newestToOldest:
-            return Localizable.Home.sortByAscendingDate
+            return Localizable.Vault.sortByAscendingDateSheetSelect
         case .oldestToNewest:
-            return Localizable.Home.sortByDescendingDate
+            return Localizable.Vault.sortByDescendingDateSheetSelect
         }
     }
 }

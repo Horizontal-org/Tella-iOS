@@ -30,8 +30,9 @@ struct AddNewFolderView: View {
     
     func showCreateNewFolderSheet() {
         sheetManager.showBottomSheet( modalHeight: 165, backgroundColor: Styles.Colors.lightBlue, content: {
-            TextFieldBottomSheetView(titleText: Localizable.Home.createNewFolder,
-                                     validateButtonText: Localizable.Common.create,
+            TextFieldBottomSheetView(titleText: Localizable.Vault.createNewFolderSheetTitle,
+                                     validateButtonText: Localizable.Vault.createNewFolderCreateSheetAction,
+                                     cancelButtonText: Localizable.Vault.createNewFolderCancelSheetAction,
                                      fieldContent: $fieldContent,
                                      fieldType: .text,
                                      didConfirmAction:  {

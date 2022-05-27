@@ -98,10 +98,10 @@ struct CalculatorView: View {
         
         if shouldValidateField {
             if !fieldContent.passwordLengthValidator() {
-                message = Localizable.Lock.pinLengthError
+                message = Localizable.Lock.errorPinLengthBannerExpl
                 
             } else if !fieldContent.passwordValidator() {
-                message = Localizable.Lock.pinDigitsError
+                message = Localizable.Lock.errorPinDigitsBannerExpl
             }
         }
     }

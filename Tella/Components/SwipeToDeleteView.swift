@@ -17,7 +17,7 @@ struct SwipeToActionView: View {
     //TODO: add DELETE label
     var body: some View {
         return ZStack {
-            Text(Localizable.Common.delete)
+            Text("DELETE")
                 .font(Font.system(size: 16))
                 .bold()
                 .foregroundColor(Color.white)

@@ -18,7 +18,8 @@ struct TextFieldBottomSheetView: View {
     
     var titleText = ""
     var validateButtonText = ""
-    
+    var cancelButtonText = ""
+
     @Binding var fieldContent : String
     
     var fileName : String = ""
@@ -72,19 +73,19 @@ struct TextFieldBottomSheetView: View {
                 
                 Spacer()
                 
-                BottomButtonActionSheetView(title: Localizable.Common.cancel, shouldEnable: true) {
+                BottomButtonActionSheetView(title: cancelButtonText, shouldEnable: true) {
                     fieldContent = ""
                     sheetManager.hide()
                 }
                 
                 BottomButtonActionSheetView(title: validateButtonText, shouldEnable: self.isValid) {
                     
-                    if fieldContent == fileName {
-                        errorMessage = Localizable.Common.sameFileNameError
-                    } else {
+//                    if fieldContent == fileName {
+//                        errorMessage = Localizable.Common.sameFileNameError
+//                    } else {
                         didConfirmAction()
                         fieldContent = ""
-                    }
+//                    }
                     sheetManager.hide()
                 }
             }

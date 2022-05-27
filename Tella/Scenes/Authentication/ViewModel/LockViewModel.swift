@@ -40,6 +40,7 @@ class LockViewModel: ObservableObject {
     func login() {
         self.privateKey = CryptoManager.shared.recoverKey(.PRIVATE, password: loginPassword)
         shouldShowUnlockError = privateKey == nil
+        isValid = !shouldShowUnlockError
     }
     
     func initUnlockData() {

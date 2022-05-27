@@ -100,7 +100,7 @@ struct CustomCalculatorView<Destination:View>: View   {
 struct CustomPinView_Previews: PreviewProvider {
     static var previews: some View {
         CustomCalculatorView(fieldContent: .constant("ACn"),
-                             message: .constant(Localizable.Lock.pinFirstMessage),
+                             message: .constant(Localizable.Lock.lockPinSetBannerExpl),
                              isValid: .constant(false),
                              nextButtonAction: .action,
                              destination: EmptyView())

@@ -71,10 +71,10 @@ struct RecordView: View {
     
     private func getSettingsAlertView() -> Alert {
         Alert(title: Text(""),
-              message: Text(Localizable.Audio.deniedPermissionMessage),
-              primaryButton: .default(Text(Localizable.Common.cancel), action: {
+              message: Text(Localizable.Recorder.deniedAudioPermissionExpl),
+              primaryButton: .default(Text(Localizable.Recorder.deniedAudioPermissionActionCancel), action: {
             self.viewModel.shouldShowSettingsAlert = false
-        }), secondaryButton: .default(Text(Localizable.Audio.deniedPermissionButtonTitle), action: {
+        }), secondaryButton: .default(Text(Localizable.Recorder.deniedAudioPermissionActionSettings), action: {
             UIApplication.shared.openSettings()
         }))
         
@@ -219,7 +219,7 @@ struct RecordView: View {
                 Image("close")
             }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 12))
             
-            Text(Localizable.Audio.recorderTitle)
+            Text(Localizable.Recorder.appBar)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                 .foregroundColor(Color.white)
             Spacer()
@@ -230,15 +230,16 @@ struct RecordView: View {
         FileListView(appModel: mainAppModel,
                      rootFile: mainAppModel.vaultManager.root,
                      fileType: [.audio],
-                     title: Localizable.Audio.fileListTitle,
+                     title: Localizable.Recorder.audioRecordingsAppBar,
                      fileListType: .recordList)
     }
     
     func showRenameFileSheet() {
         sheetManager.showBottomSheet( modalHeight: 165, content: {
             
-            TextFieldBottomSheetView(titleText: Localizable.Audio.renameFileTitle,
-                                     validateButtonText: Localizable.Common.save,
+            TextFieldBottomSheetView(titleText: Localizable.Recorder.renameRecordingSheetTitle,
+                                     validateButtonText: Localizable.Recorder.renameRecordingSaveSheetAction,
+                                     cancelButtonText: Localizable.Recorder.renameRecordingCancelSheetAction,
                                      fieldContent: $fileName,
                                      fileName: viewModel.fileName,
                                      fieldType: FieldType.fileName,
@@ -261,7 +262,7 @@ struct RecordView: View {
             VStack {
                 Spacer()
                 
-                Text(Localizable.Audio.recordingSavedMessage)
+                Text(Localizable.Recorder.audioRecordingSavedToast)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(.black)
                     .padding()

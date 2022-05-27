@@ -5,28 +5,37 @@
 import Foundation
 
 struct  ImportFilesProgress : ImportFilesProgressProtocol {
+    
 
     var progressType: ProgressType {
         return .number
     }
     
     var title: String {
-        return Localizable.Home.importProgressTitle
+        return Localizable.Vault.importProgressSheetTitle
     }
     
     var progressMessage: String {
-        return Localizable.Home.importProgressFileImported
+        return Localizable.Vault.importProgressSheetExpl
     }
     
+    var cancelImportButtonTitle: String {
+        return Localizable.Vault.importProgressCancelSheetAction
+    }
+
     var cancelTitle: String {
-        return Localizable.Home.cancelImportFileTitle
+        return Localizable.Vault.cancelImportFileSheetTitle
     }
     
     var cancelMessage: String {
-        return Localizable.Home.cancelImportFileMessage
+        return Localizable.Vault.cancelImportFileSheetExpl
     }
     
-    var cancelButtonTitle: String {
-        return Localizable.Home.cancelImportFileCancelImport
+    var exitCancelImportButtonTitle: String {
+        return Localizable.Vault.cancelImportFileBackSheetAction
+    }
+
+    var confirmCancelImportButtonTitle: String {
+        return Localizable.Vault.cancelImportFileCancelImportSheetAction
     }
 }
