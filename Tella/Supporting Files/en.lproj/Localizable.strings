@@ -1,7 +1,7 @@
-
 "AppName" = "Tella";
 "Onboarding_Intro_Head" = "Create a PIN";
-"Onboarding_Intro_Expl" = "• Use at least 6 digits\n• Avoid using numbers that can be guessed easily, such as your birthday.";
+"Onboarding_Intro_Expl" = "• Use at least 6 digits\
+• Avoid using numbers that can be guessed easily, such as your birthday.";
 "Onboarding_Intro_Action_GetStarted" = "CREATE PIN";
 "Onboarding_LockSuccess_Head" = "Your PIN is set";
 "Onboarding_LockSuccess_Expl" = "To unlock Tella, open the Calculator app on your homescreen and enter your PIN followed by =. You can always change your PIN in Tella’s settings.";
@@ -12,8 +12,8 @@
 "LockUnlock_UnlockPinUpdate_BannerExpl" = "Enter your current PIN";
 "LockUnlock_Error_PinLength_BannerExpl" = "Your PIN must use at least 6 digits. Please try again.";
 "LockUnlock_Error_PinDigits_BannerExpl" = "Your PIN can only include digits. Please try again.";
-"LockUnlock_Error_PINsDoNotMatch_BannerExpl"  = "Please try again. Your PINs do not match.";
-"LockUnlock_Error_IncorrectPIN_BannerExpl"  = "Incorrect PIN, please try again";
+"LockUnlock_Error_PINsDoNotMatch_BannerExpl" = "Please try again. Your PINs do not match.";
+"LockUnlock_Error_IncorrectPIN_BannerExpl" = "Incorrect PIN, please try again";
 "Home_TabBar" = "Home";
 "Home_AppBar" = "Tella";
 "Home_RecentFiles_Subhead" = "Recent files";
