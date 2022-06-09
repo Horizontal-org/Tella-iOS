@@ -45,7 +45,7 @@ struct MoveFilesView: View {
     
     private var titleView : some View {
         HStack {
-            Text(String.init(format: Localizable.Vault.moveFileAppBar, title))
+            Text(String.init(format: LocalizableVault.moveFileAppBar.localized, title))
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                 .foregroundColor(.white)
             Spacer()
@@ -54,7 +54,7 @@ struct MoveFilesView: View {
      private var bottomView : some View {
         HStack {
 
-            Button(Localizable.Vault.moveFileActionCancel) {
+            Button(LocalizableVault.moveFileActionCancel.localized) {
                 fileListViewModel.showingMoveFileView  = false
                 fileListViewModel.initSelectedFiles()
                 fileListViewModel.initFolderPathArray()
@@ -62,7 +62,7 @@ struct MoveFilesView: View {
             } .buttonStyle(MoveFileButtonStyle())
                 .foregroundColor(.white)
             
-            Button(Localizable.Vault.moveFileActionMove) {
+            Button(LocalizableVault.moveFileActionMove.localized) {
                 fileListViewModel.showingMoveFileView  = false
                 fileListViewModel.moveFiles()
                 fileListViewModel.initSelectedFiles()

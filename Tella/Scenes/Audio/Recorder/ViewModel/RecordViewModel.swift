@@ -107,6 +107,6 @@ class RecordViewModel: ObservableObject {
     
     /// - Returns: "Recording 2020.06.24-16.45"
     var initialFileName: String {
-        return  Localizable.Recorder.suffixRecording + " " + Date().getFormattedDateString(format: DateFormat.fileName.rawValue)
+        return  LocalizableRecorder.suffixRecording.localized + " " + Date().getFormattedDateString(format: DateFormat.fileName.rawValue)
     }
 }

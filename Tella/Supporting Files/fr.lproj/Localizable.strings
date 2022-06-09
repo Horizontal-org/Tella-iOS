@@ -145,3 +145,7 @@
 "Settings_SettAbout_Subhead" = "Version";
 "Settings_SettAbout_ContactUs" = "Nous contacter";
 "Settings_SettAbout_PrivacyPolicy" = "Politique de confidentialité";
+
+"Settings_SettLang_English" = "Anglais";
+"Settings_SettLang_French" = "Français";
+"Settings_SettLang_Spanish" = "Espanol";

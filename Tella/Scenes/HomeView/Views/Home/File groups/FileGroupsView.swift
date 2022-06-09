@@ -18,7 +18,7 @@ struct FileGroupsView: View {
             VStack(alignment: .leading, spacing: 16 ) {
                 if shouldShowFilesTitle {
                     
-                    Text(Localizable.Home.tellaFilesSubhead)
+                    Text(LocalizableHome.tellaFilesSubhead.localized)
                         .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                         .foregroundColor(.white)
                 }

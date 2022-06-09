@@ -18,7 +18,7 @@ struct RecentFilesListView: View {
     var body: some View {
         if recentFiles.count > 0 {
             VStack(alignment: .leading, spacing: 15){
-                Text(Localizable.Home.recentFilesSubhead)
+                Text(LocalizableHome.recentFilesSubhead.localized)
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                     .foregroundColor(.white)
                 recentFilesView

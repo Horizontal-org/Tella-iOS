@@ -20,7 +20,6 @@ struct LanguageListView: View {
                     ForEach(settingsViewModel.languageItems, id:\.self) {item in
                         LanguageItemView(languageItem: item, settingsViewModel: settingsViewModel,
                                          isPresented: $isPresented)
-                        
                     }
                 }
                 .listStyle(.plain)
@@ -42,7 +41,7 @@ struct LanguageHeaderView : View {
                 Image("close")
             }.padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12))
             
-            Text(Localizable.Settings.settLanguage)
+            Text(LocalizableSettings.settLanguage.localized)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 20))
                 .foregroundColor(Color.white)
             
@@ -71,7 +70,7 @@ struct LanguageItemView : View {
                         .font(.custom(Styles.Fonts.regularFontName, size: 15))
                         .foregroundColor(.white)
                     
-                    Text(languageItem.englishName)
+                    Text(languageItem.translatedName)
                         .font(.custom(Styles.Fonts.regularFontName, size: 12))
                         .foregroundColor(.white)
                 }
@@ -86,10 +85,9 @@ struct LanguageItemView : View {
             Button("") {
 
                 Language.currentLanguage = languageItem
-                
-                appViewState.resetToMain()
-                
+
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    appViewState.resetToMain()
                     isPresented = false
                 }
             }

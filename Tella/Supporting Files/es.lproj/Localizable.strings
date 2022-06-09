@@ -148,3 +148,7 @@ por favor inténtalo de nuevo";
 "Settings_SettAbout_Subhead" = "Versión";
 "Settings_SettAbout_ContactUs" = "Contáctanos";
 "Settings_SettAbout_PrivacyPolicy" = "Política de privacidad";
+
+"Settings_SettLang_English" = "Inglés";
+"Settings_SettLang_French" = "Francés";
+"Settings_SettLang_Spanish" = "Éspanol";

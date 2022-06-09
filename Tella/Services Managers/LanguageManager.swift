@@ -12,34 +12,44 @@ let appleLanguages = "AppleLanguages"
 enum Language: String, CaseIterable {
     
     case english = "en"
-    
+    case frensh = "fr"
+    case spanish = "es"
+
     var code : String {
         
         switch self {
-            
         case .english:
             return "en"
+        case .frensh:
+            return "fr"
+        case .spanish:
+            return "es"
+
         }
     }
     
     var name : String {
-        
         switch self {
-            
         case .english:
             return "English"
+        case .frensh:
+            return "Français"
+        case .spanish:
+            return "Español"
         }
     }
     
-    var englishName : String {
-        
+    var translatedName : String {
         switch self {
-            
         case .english:
-            return "English"
+            return LocalizableSettings.settLangEnglish.localized
+        case .frensh:
+            return LocalizableSettings.settLangFrench.localized
+        case .spanish:
+            return LocalizableSettings.settLangSpanish.localized
         }
     }
-    
+
     var layoutDirection: LayoutDirection {
         
         switch self {
@@ -50,11 +60,7 @@ enum Language: String, CaseIterable {
     }
     
     var localeLanguage: Locale {
-        switch self {
-            
-        case .english:
-            return Locale(identifier: "en")
-        }
+        return Locale(identifier: code)
     }
     
     static var currentLanguage : Language {
@@ -89,9 +95,9 @@ func getDefaultLanguage() -> Language {
             
             let preferredLanguage = String(preferredLanguage[0])
             
-            guard let languagee = Language(rawValue: preferredLanguage) else { return Language.english }
+            guard let language = Language(rawValue: preferredLanguage) else { return Language.english }
             
-            return languagee
+            return language
         }
     }
     return Language.english

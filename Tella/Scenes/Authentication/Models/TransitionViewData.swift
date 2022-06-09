@@ -13,14 +13,14 @@ protocol TransitionViewData {
 
 struct WelcomeViewData : TransitionViewData {
     var image = "lock.welcome"
-    var title = Localizable.Lock.onboardingIntroHead
-    var description = Localizable.Lock.onboardingIntroSubhead
-    var buttonTitle = Localizable.Lock.onboardingIntroActionGetStarted
+    var title = LocalizableLock.onboardingIntroHead.localized
+    var description = LocalizableLock.onboardingIntroSubhead.localized
+    var buttonTitle = LocalizableLock.onboardingIntroActionGetStarted.localized
 }
 
 struct OnboardingEndViewData : TransitionViewData {
     var image = "lock.done"
-    var title = Localizable.Lock.onboardingdLockSuccessHead
-    var description = Localizable.Lock.onboardingLockSuccessSubhead
-    var buttonTitle = Localizable.Lock.onboardingLockSuccessActionGoToTella
+    var title = LocalizableLock.onboardingdLockSuccessHead.localized
+    var description = LocalizableLock.onboardingLockSuccessSubhead.localized
+    var buttonTitle = LocalizableLock.onboardingLockSuccessActionGoToTella.localized
 }

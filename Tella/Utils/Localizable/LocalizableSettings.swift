@@ -4,22 +4,44 @@
 
 import Foundation
 
-extension Localizable {
+enum LocalizableSettings: String, LocalizableDelegate {
     
-    struct Settings {
-        
-        static var appBar = "Settings_AppBar".localized
-        static var settLanguage = "Settings_Sett_Language".localized
-        static var settLock = "Settings_Sett_Lock".localized
-        static var settAbout = "Settings_Sett_About".localized
+    case appBar = "Settings_AppBar"
+    case settLanguage = "Settings_Sett_Language"
+    case settLock = "Settings_Sett_Lock"
+    case settAbout = "Settings_Sett_About"
+    
+    case settRecentFiles = "Settings_Sett_RecentFiles"
+    case settRecentFilesExpl = "Settings_Sett_RecentFiles_Expl"
+    
+    // About & Help
+    case settAboutHead = "Settings_SettAbout_Head"
+    case settAboutSubhead = "Settings_SettAbout_Subhead"
+    case settAboutContactUs = "Settings_SettAbout_ContactUs"
+    case settAboutPrivacyPolicy = "Settings_SettAbout_PrivacyPolicy"
+    
+    //Languages
+    
+    case settLangEnglish = "Settings_SettLang_English"
+    case settLangFrench = "Settings_SettLang_French"
+    case settLangSpanish = "Settings_SettLang_Spanish"
+    
+}
 
-        static var settRecentFiles = "Settings_Sett_RecentFiles".localized
-        static var settRecentFilesExpl = "Settings_Sett_RecentFiles_Expl".localized
 
-        // About & Help
-        static var settAboutHead = "Settings_SettAbout_Head".localized
-        static var settAboutSubhead = "Settings_SettAbout_Subhead".localized
-        static var settAboutContactUs = "Settings_SettAbout_ContactUs".localized
-        static var settAboutPrivacyPolicy = "Settings_SettAbout_PrivacyPolicy".localized
+protocol LocalizableDelegate {
+    var rawValue: String { get }
+    var table: String? { get }
+    var localized: String { get }
+}
+
+extension LocalizableDelegate {
+    
+    var localized: String {
+        return Bundle.main.localizedString(forKey: rawValue, value: nil, table: table)
+    }
+    
+    var table: String? {
+        return "Localizable"
     }
 }

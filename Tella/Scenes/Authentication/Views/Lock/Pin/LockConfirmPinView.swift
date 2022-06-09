@@ -32,8 +32,8 @@ struct LockConfirmPinView: View {
     
     func lockWithPin() {
         do {
-            try AuthenticationManager().initKeys(.tellaPin,
-                                              password: lockViewModel.password)
+//            try AuthenticationManager().initKeys(.tellaPin,
+//                                              password: lockViewModel.password)
             shouldShowOnboarding = true
             
         } catch {

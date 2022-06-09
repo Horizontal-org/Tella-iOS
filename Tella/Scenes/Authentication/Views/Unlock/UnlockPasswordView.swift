@@ -80,9 +80,9 @@ struct UnlockPasswordView: View {
     
     var titleString : String {
         if viewModel.shouldShowUnlockError {
-            return  Localizable.Lock.unlockUpdatePasswordErrorIncorrectPassword
+            return  LocalizableLock.unlockUpdatePasswordErrorIncorrectPassword.localized
         } else {
-            return viewModel.unlockType == .new ? Localizable.Lock.unlockPasswordSubhead : Localizable.Lock.unlockUpdatePasswordSubhead
+            return viewModel.unlockType == .new ? LocalizableLock.unlockPasswordSubhead.localized : LocalizableLock.unlockUpdatePasswordSubhead.localized
         }
         
     }
