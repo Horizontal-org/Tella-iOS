@@ -30,6 +30,15 @@ class SettingsViewModel: ObservableObject {
             // remove the default system language from the language list
             languageItems = languageItems.filter{$0 != .systemLanguage}
         }
+
+        languageItems = languageItems.sorted(by: { $0.name < $1.name })
+        
+        if let index = languageItems.firstIndex(where: {$0 == .systemLanguage}) {
+
+            languageItems = languageItems.rearrange(fromIndex: index, toIndex: 0)
+        }
+        
+
     }
 }
 

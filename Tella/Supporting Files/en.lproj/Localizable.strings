@@ -162,6 +162,9 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettAbout_ContactUs" = "Contact us";
 "Settings_SettAbout_PrivacyPolicy" = "Privacy policy";
 
-"Settings_SettLang_English" = "English";
-"Settings_SettLang_French" = "French";
-"Settings_SettLang_Spanish" = "Spanish";
+"Settings_SettLang_DefaultLanguage" = "Default";
+"Settings_SettLang_DefaultLanguage_Expl" = "Keep Tella in the same language as my device";
+
+"Settings_SettLang_English_Expl" = "English";
+"Settings_SettLang_French_Expl" = "French";
+"Settings_SettLang_Spanish_Expl" = "Spanish";

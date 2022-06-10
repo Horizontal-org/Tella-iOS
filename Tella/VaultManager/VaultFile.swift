@@ -185,6 +185,14 @@ extension Array where Element == VaultFile {
             }
         }
     }
+    
+    func rearrange<T>(fromIndex: Int, toIndex: Int) -> Array<T>{
+        var array = self
+        let element = array.remove(at: fromIndex)
+        array.insert(element, at: toIndex)
+
+        return array
+    }
 }
 
 extension VaultFile {

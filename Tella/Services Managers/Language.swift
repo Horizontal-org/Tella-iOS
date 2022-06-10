@@ -10,7 +10,7 @@ let languageKey = "language"
 let appleLanguages = "AppleLanguages"
 
 enum Language: String, CaseIterable {
-   
+    
     case systemLanguage
     case english = "en"
     case spanish = "es"
@@ -32,7 +32,7 @@ enum Language: String, CaseIterable {
     var name : String {
         switch self {
         case .systemLanguage:
-            return "Default"
+            return LocalizableSettings.settLangDefaultLanguage.localized
         case .english:
             return "English"
         case .french:
@@ -45,7 +45,7 @@ enum Language: String, CaseIterable {
     var translatedName : String {
         switch self {
         case .systemLanguage:
-            return "Keep Tella in the same language as my device"
+            return LocalizableSettings.settLangDefaultLanguageExpl.localized
         case .english:
             return LocalizableSettings.settLangEnglish.localized
         case .french:

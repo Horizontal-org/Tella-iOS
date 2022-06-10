@@ -22,9 +22,12 @@ enum LocalizableSettings: String, LocalizableDelegate {
     
     //Languages
     
-    case settLangEnglish = "Settings_SettLang_English"
-    case settLangFrench = "Settings_SettLang_French"
-    case settLangSpanish = "Settings_SettLang_Spanish"
+    case settLangDefaultLanguage = "Settings_SettLang_DefaultLanguage"
+    case settLangDefaultLanguageExpl = "Settings_SettLang_DefaultLanguage_Expl"
+
+    case settLangEnglish = "Settings_SettLang_English_Expl"
+    case settLangFrench = "Settings_SettLang_French_Expl"
+    case settLangSpanish = "Settings_SettLang_Spanish_Expl"
     
 }
 
