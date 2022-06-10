@@ -1,8 +1,5 @@
-//
-//  MoreFileActionButton.swift
 //  Tella
 //
-//  Created by Dhekra Rouatbi on 17/5/2022.
 //  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 

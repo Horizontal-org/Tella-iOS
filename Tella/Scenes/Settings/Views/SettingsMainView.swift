@@ -51,7 +51,7 @@ struct GeneralSettingsView : View {
             
             SettingsItemView(imageName: "settings.language",
                              title: LocalizableSettings.settLanguage.localized,
-                             value: Language.currentLanguage.name)
+                             value: LanguageManager.shared.currentLanguage.name)
                 .onTapGesture {
                     presentingLanguage = true
                 }
