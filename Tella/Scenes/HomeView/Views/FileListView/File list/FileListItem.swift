@@ -63,6 +63,7 @@ struct FileListItem: View {
                     }
                     .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 40))
                     
+                    Spacer()
                 }
                 .padding(EdgeInsets(top: 12, leading: fileListViewModel.showingMoveFileView ? 8 : 16, bottom: 12, trailing: fileListViewModel.showingMoveFileView ? 8 : 16))
                 .frame(height: 60)
