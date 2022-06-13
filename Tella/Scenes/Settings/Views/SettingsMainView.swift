@@ -14,6 +14,8 @@ struct SettingsMainView: View {
     var body: some View {
         ContainerView {
             VStack() {
+                Spacer()
+                    .frame(height: 12)
                 GeneralSettingsView(appModel: appModel)
                 RecentFilesSettingsView()
                 Spacer()
@@ -73,7 +75,7 @@ struct GeneralSettingsView : View {
             
         }.background(Color.white.opacity(0.08))
             .cornerRadius(15)
-            .padding()
+            .padding(EdgeInsets(top: 5, leading: 17, bottom: 5, trailing: 17))
             .fullScreenCover(isPresented: $presentingLanguage) {
                 
             } content: {
@@ -116,7 +118,7 @@ struct RecentFilesSettingsView : View {
                               toggle: $appModel.settings.showRecentFiles)
         }.background(Color.white.opacity(0.08))
             .cornerRadius(15)
-            .padding()
+            .padding(EdgeInsets(top: 5, leading: 17, bottom: 5, trailing: 17))
     }
 }
 
