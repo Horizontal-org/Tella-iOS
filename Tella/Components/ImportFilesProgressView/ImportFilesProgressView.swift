@@ -30,7 +30,7 @@ struct ImportFilesProgressView: View {
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 17))
                     .foregroundColor(.white)
                 Spacer()
-                    .frame(height: 15)
+                    .frame(height: 10)
                 
                 if importFilesProgressProtocol.progressType == .number {
                     Text(String.init(format:importFilesProgressProtocol.progressMessage ,  mainAppModel.vaultManager.progress.progressFile.value))
@@ -45,7 +45,7 @@ struct ImportFilesProgressView: View {
                 }
                 
                 Spacer()
-                    .frame(height: 24)
+                    .frame(height: 8)
                 
                 ProgressView("", value: mainAppModel.vaultManager.progress.progress.value, total: 1)
                     .accentColor(.green)
