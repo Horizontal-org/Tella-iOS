@@ -16,14 +16,19 @@ struct FileListItem: View {
     }
     
     var body: some View {
-        Button {
-            if !fileListViewModel.selectingFiles {
-                fileListViewModel.showFileDetails(file: file)
+        ZStack {
+            
+            Button {
+                if !fileListViewModel.selectingFiles {
+                    fileListViewModel.showFileDetails(file: file)
+                }
+            } label: {
+                fileListView
             }
-        } label: {
-            fileListView
+            .buttonStyle(FileListItemButtonStyle(backgroundColor: backgroundColor))
+            
+            selectionButton
         }
-        .buttonStyle(FileListItemButtonStyle(backgroundColor: backgroundColor))
     }
     
     var fileListView : some View {
@@ -56,13 +61,8 @@ struct FileListItem: View {
                         Spacer()
                         
                     }
-                    .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 0))
+                    .padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 40))
                     
-                    Spacer()
-                    
-                    if !fileListViewModel.showingMoveFileView {
-                        selectionButton
-                    }
                 }
                 .padding(EdgeInsets(top: 12, leading: fileListViewModel.showingMoveFileView ? 8 : 16, bottom: 12, trailing: fileListViewModel.showingMoveFileView ? 8 : 16))
                 .frame(height: 60)
@@ -82,19 +82,23 @@ struct FileListItem: View {
     
     @ViewBuilder
     var selectionButton : some View {
-        
-        if fileListViewModel.selectingFiles {
-            HStack {
-                Image(fileListViewModel.getStatus(for: file) ? "files.selected" : "files.unselected")
-                    .resizable()
-                    .frame(width: 24, height: 24)
+        HStack {
+            Spacer()
+            if !fileListViewModel.showingMoveFileView {
+                if fileListViewModel.selectingFiles {
+                    HStack {
+                        Image(fileListViewModel.getStatus(for: file) ? "files.selected" : "files.unselected")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                    }
+                    .frame(width: 40, height: 40)
+                } else {
+                    MoreFileActionButton(file: file, moreButtonType: .list)
+                }
             }
-            .frame(width: 40, height: 40)
-            
-            
-        } else {
-            MoreFileActionButton(file: file, moreButtonType: .list)
         }
+        .padding(EdgeInsets(top: 12, leading: fileListViewModel.showingMoveFileView ? 8 : 16, bottom: 12, trailing: fileListViewModel.showingMoveFileView ? 8 : 16))
+        .frame(height: 60)
     }
 }
 
