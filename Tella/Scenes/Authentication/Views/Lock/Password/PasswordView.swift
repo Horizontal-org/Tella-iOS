@@ -50,7 +50,7 @@ struct PasswordView<T:LockViewProtocol, Destination:View>: View   {
                 Spacer()
                 
                 if shouldShowErrorMessage {
-                    ConfirmPasswordErrorView(errorMessage: Localizable.Lock.lockPasswordConfirmErrorPasswordsDoNotMatch)
+                    ConfirmPasswordErrorView(errorMessage: LocalizableLock.lockPasswordConfirmErrorPasswordsDoNotMatch.localized)
                 }
                 
                 BottomLockView(isValid: $isValid,

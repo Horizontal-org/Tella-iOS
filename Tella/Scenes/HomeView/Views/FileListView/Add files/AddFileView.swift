@@ -40,7 +40,7 @@ struct AddFileView: View {
     func showAddFileSheet() {
         sheetManager.showBottomSheet( modalHeight: CGFloat(manageFilesItems.count * 50 + 90), content: {
             ActionListBottomSheet(items: manageFilesItems,
-                                  headerTitle: Localizable.Vault.manageFilesSheetTitle,
+                                  headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
                                   action:  {item in
                 self.handleActions(item : item)
             })
@@ -49,9 +49,9 @@ struct AddFileView: View {
     
     func showCreateNewFolderSheet() {
         sheetManager.showBottomSheet( modalHeight: 165, content: {
-            TextFieldBottomSheetView(titleText: Localizable.Vault.manageFilesCreateNewFolderSheetSelect,
-                                     validateButtonText: Localizable.Vault.createNewFolderCreateSheetAction,
-                                     cancelButtonText: Localizable.Vault.createNewFolderCancelSheetAction,
+            TextFieldBottomSheetView(titleText: LocalizableVault.manageFilesCreateNewFolderSheetSelect.localized,
+                                     validateButtonText: LocalizableVault.createNewFolderCreateSheetAction.localized,
+                                     cancelButtonText: LocalizableVault.createNewFolderCancelSheetAction.localized,
                                      fieldContent: $fieldContent,
                                      fieldType: .text) {
                 fileListViewModel.add(folder: fieldContent)
@@ -62,7 +62,7 @@ struct AddFileView: View {
     func showAddPhotoVideoSheet() {
         sheetManager.showBottomSheet( modalHeight:  CGFloat(AddPhotoVideoItems.count * 40 + 100), content: {
             ActionListBottomSheet(items: AddPhotoVideoItems,
-                                  headerTitle: Localizable.Vault.manageFilesImportFromDeviceSheetSelect, action: {item in
+                                  headerTitle: LocalizableVault.manageFilesImportFromDeviceSheetSelect.localized, action: {item in
                 self.handleAddPhotoVideoActions(item : item)
             })
         })

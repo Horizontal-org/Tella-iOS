@@ -121,17 +121,17 @@ struct CameraView: View {
     
     private func getSettingsAlertView() -> Alert {
         Alert(title: Text(""),
-              message: Text(Localizable.Camera.deniedCameraPermissionExpl),
-              primaryButton: .default(Text(Localizable.Camera.deniedCameraPermissionActionCancel), action: {
+              message: Text(LocalizableCamera.deniedCameraPermissionExpl.localized),
+              primaryButton: .default(Text(LocalizableCamera.deniedCameraPermissionActionCancel.localized), action: {
             mainAppModel.selectedTab = .home
-        }), secondaryButton: .default(Text(Localizable.Camera.deniedCameraPermissionActionSettings), action: {
+        }), secondaryButton: .default(Text(LocalizableCamera.deniedCameraPermissionActionSettings.localized), action: {
             UIApplication.shared.openSettings()
             mainAppModel.selectedTab = .home
         }))
     }
     
     func showProgressView() {
-        sheetManager.showBottomSheet( modalHeight: 165,
+        sheetManager.showBottomSheet( modalHeight: 190,
                                       shouldHideOnTap: false,
                                       content: {
             ImportFilesProgressView(importFilesProgressProtocol: ImportFilesFromCameraProgress())

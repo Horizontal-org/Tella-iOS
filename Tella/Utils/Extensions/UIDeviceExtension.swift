@@ -23,18 +23,18 @@ class DiskStatus: NSObject {
         let hours = Int((timeMinutes - Double(days * 1440)) / 60)
         let minutes = Int((timeMinutes - Double(days * 1440) - Double(hours * 60)))
         
-        let daysString =  days > 1 ? Localizable.Recorder.deviceTimeLeftDays : Localizable.Recorder.deviceTimeLeftDay
+        let daysString =  days > 1 ? LocalizableRecorder.deviceTimeLeftDays.localized : LocalizableRecorder.deviceTimeLeftDay.localized
         let fullDaysString = "\(days) \(daysString)"
         
-        let hoursString =  hours > 1 ? Localizable.Recorder.deviceTimeLeftHours : Localizable.Recorder.deviceTimeLeftHour
+        let hoursString =  hours > 1 ? LocalizableRecorder.deviceTimeLeftHours.localized : LocalizableRecorder.deviceTimeLeftHour.localized
         let fullHoursString = "\(hours) \(hoursString)"
         
-        let minutesString = "\(minutes) \(Localizable.Recorder.deviceTimeLeftMinutes)"
+        let minutesString = "\(minutes) \(LocalizableRecorder.deviceTimeLeftMinutes.localized)"
         
         if days > 0 {
-            return  "\(fullDaysString) \(fullHoursString) \(minutesString) (\(usedDiskSpaceInMB)) \(Localizable.Recorder.deviceTimeLeft)"
+            return  "\(fullDaysString) \(fullHoursString) \(minutesString) (\(usedDiskSpaceInMB)) \(LocalizableRecorder.deviceTimeLeft.localized)"
         } else {
-            return  " \(fullHoursString) \(minutesString) (\(usedDiskSpaceInMB)) \(Localizable.Recorder.deviceTimeLeft)"
+            return  " \(fullHoursString) \(minutesString) (\(usedDiskSpaceInMB)) \(LocalizableRecorder.deviceTimeLeft.localized)"
         }
     }
     

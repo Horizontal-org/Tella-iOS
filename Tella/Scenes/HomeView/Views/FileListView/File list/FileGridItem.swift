@@ -16,13 +16,17 @@ struct FileGridItem: View {
     @EnvironmentObject var fileListViewModel : FileListViewModel
     
     var body: some View {
-        
-        Button {
-            if !fileListViewModel.selectingFiles {
-                fileListViewModel.showFileDetails(file: file)
+        ZStack {
+            
+            Button {
+                if !fileListViewModel.selectingFiles {
+                    fileListViewModel.showFileDetails(file: file)
+                }
+            } label: {
+                fileGridView
             }
-        } label: {
-            fileGridView
+            
+            selectionButton
         }
     }
     
@@ -32,19 +36,6 @@ struct FileGridItem: View {
             
             file.gridImage
             
-            VStack(alignment: .trailing) {
-                
-                Spacer()
-                
-                HStack {
-                    
-                    Spacer()
-                    
-                    if !fileListViewModel.showingMoveFileView {
-                        selectionButton
-                    }
-                }
-            }
             self.fileNameText
             
             selectingFilesView
@@ -72,8 +63,17 @@ struct FileGridItem: View {
     
     @ViewBuilder
     var selectionButton: some View {
-        if !fileListViewModel.selectingFiles && !fileListViewModel.shouldHideViewsForGallery {
-            MoreFileActionButton(file: file, moreButtonType: .grid)
+        
+        VStack(alignment: .trailing) {
+            Spacer()
+            HStack {
+                Spacer()
+                if !fileListViewModel.showingMoveFileView {
+                    if !fileListViewModel.selectingFiles && !fileListViewModel.shouldHideViewsForGallery {
+                        MoreFileActionButton(file: file, moreButtonType: .grid)
+                    }
+                }
+            }
         }
     }
     

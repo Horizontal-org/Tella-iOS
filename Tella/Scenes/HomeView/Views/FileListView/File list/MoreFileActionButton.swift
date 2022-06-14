@@ -1,8 +1,5 @@
-//
-//  MoreFileActionButton.swift
 //  Tella
 //
-//  Created by Dhekra Rouatbi on 17/5/2022.
 //  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 
@@ -70,7 +67,9 @@ struct MoreFileActionButton: View {
             showFileActionSheet()
         } label: {
             Image("files.more-top")
-                .frame(width: 40, height: 40)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 5, height: 18)
         }.frame(width: 40, height: 40)
     }
     
@@ -132,9 +131,9 @@ struct MoreFileActionButton: View {
     
     func showRenameFileSheet() {
         sheetManager.showBottomSheet( modalHeight: 165, content: {
-            TextFieldBottomSheetView(titleText: Localizable.Vault.renameFileSheetTitle,
-                                     validateButtonText: Localizable.Vault.renameFileSaveSheetAction,
-                                     cancelButtonText:Localizable.Vault.renameFileCancelSheetAction,
+            TextFieldBottomSheetView(titleText: LocalizableVault.renameFileSheetTitle.localized,
+                                     validateButtonText: LocalizableVault.renameFileSaveSheetAction.localized,
+                                     cancelButtonText:LocalizableVault.renameFileCancelSheetAction.localized,
                                      fieldContent: $fileNameToUpdate,
                                      fileName: fileListViewModel.selectedFiles.count == 1 ? fileListViewModel.selectedFiles[0].fileName : "",
                                      fieldType: FieldType.fileName,
@@ -148,10 +147,10 @@ struct MoreFileActionButton: View {
     
     func showDeleteConfirmationSheet() {
         sheetManager.showBottomSheet( modalHeight: 165, content: {
-            ConfirmBottomSheet(titleText: Localizable.Vault.deleteFileSheetTitle,
-                               msgText: Localizable.Vault.deleteFileSheetExpl,
-                               cancelText: Localizable.Vault.deleteFileCancelSheetAction,
-                               actionText: Localizable.Vault.deleteFileDeleteSheetAction,
+            ConfirmBottomSheet(titleText: LocalizableVault.deleteFileSheetTitle.localized,
+                               msgText: LocalizableVault.deleteFileSheetExpl.localized,
+                               cancelText: LocalizableVault.deleteFileCancelSheetAction.localized,
+                               actionText: LocalizableVault.deleteFileDeleteSheetAction.localized,
                                destructive: true,
                                didConfirmAction:{
                 appModel.delete(files: fileListViewModel.selectedFiles, from: fileListViewModel.rootFile)
@@ -165,10 +164,10 @@ struct MoreFileActionButton: View {
     
     func showSaveConfirmationSheet() {
         sheetManager.showBottomSheet( modalHeight: 180, content: {
-            ConfirmBottomSheet(titleText: Localizable.Vault.saveToDeviceSheetTitle,
-                               msgText: Localizable.Vault.saveToDeviceSheetExpl,
-                               cancelText: Localizable.Vault.saveToDeviceCancelSheetAction,
-                               actionText: Localizable.Vault.saveToDeviceSaveSheetAction.uppercased(),
+            ConfirmBottomSheet(titleText: LocalizableVault.saveToDeviceSheetTitle.localized,
+                               msgText: LocalizableVault.saveToDeviceSheetExpl.localized,
+                               cancelText: LocalizableVault.saveToDeviceCancelSheetAction.localized,
+                               actionText: LocalizableVault.saveToDeviceSaveSheetAction.localized.uppercased(),
                                didConfirmAction: {
                 fileListViewModel.showingDocumentPicker = true
             })
@@ -179,6 +178,7 @@ struct MoreFileActionButton: View {
 
 struct MoreFileActionButton_Previews: PreviewProvider {
     static var previews: some View {
-        MoreFileActionButton( moreButtonType: .list)
+        MoreFileActionButton( moreButtonType: .navigationBar)
+            .background(Color.red)
     }
 }

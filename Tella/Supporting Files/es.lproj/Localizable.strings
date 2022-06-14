@@ -148,3 +148,10 @@ por favor inténtalo de nuevo";
 "Settings_SettAbout_Subhead" = "Versión";
 "Settings_SettAbout_ContactUs" = "Contáctanos";
 "Settings_SettAbout_PrivacyPolicy" = "Política de privacidad";
+
+"Settings_SettLang_DefaultLanguage" = "Default";
+"Settings_SettLang_DefaultLanguage_Expl" = "Keep Tella in the same language as my device";
+
+"Settings_SettLang_English_Expl" = "English";
+"Settings_SettLang_French_Expl" = "French";
+"Settings_SettLang_Spanish_Expl" = "Spanish";
