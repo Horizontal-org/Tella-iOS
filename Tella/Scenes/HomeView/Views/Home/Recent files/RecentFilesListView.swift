@@ -16,11 +16,13 @@ struct RecentFilesListView: View {
     }
     
     var body: some View {
+        
         if recentFiles.count > 0 {
-            VStack(alignment: .leading, spacing: 15){
+            VStack(alignment: .leading, spacing: 16){
                 Text(LocalizableHome.recentFilesSubhead.localized)
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                     .foregroundColor(.white)
+                
                 recentFilesView
             }
             .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0))
@@ -36,7 +38,6 @@ struct RecentFilesListView: View {
                 firstFilesItems
             }
         }.frame(height: 75)
-            .padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
     }
     
     var allFilesItems : some View {
