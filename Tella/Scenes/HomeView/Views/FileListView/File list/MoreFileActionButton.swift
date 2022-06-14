@@ -68,7 +68,9 @@ struct MoreFileActionButton: View {
             showFileActionSheet()
         } label: {
             Image("files.more-top")
-                .frame(width: 40, height: 40)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 5, height: 18)
         }.frame(width: 40, height: 40)
     }
     
@@ -177,6 +179,7 @@ struct MoreFileActionButton: View {
 
 struct MoreFileActionButton_Previews: PreviewProvider {
     static var previews: some View {
-        MoreFileActionButton( moreButtonType: .list)
+        MoreFileActionButton( moreButtonType: .navigationBar)
+            .background(Color.red)
     }
 }
