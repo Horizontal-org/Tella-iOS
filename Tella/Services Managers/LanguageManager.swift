@@ -3,68 +3,14 @@
 //
 
 import Foundation
-import UIKit
-import SwiftUI
 
-let languageKey = "language"
-let appleLanguages = "AppleLanguages"
-
-enum Language: String, CaseIterable {
+class LanguageManager {
     
-    case english = "en"
+    static var shared = LanguageManager()
     
-    var code : String {
-        
-        switch self {
-            
-        case .english:
-            return "en"
-        }
-    }
-    
-    var name : String {
-        
-        switch self {
-            
-        case .english:
-            return "English"
-        }
-    }
-    
-    var englishName : String {
-        
-        switch self {
-            
-        case .english:
-            return "English"
-        }
-    }
-    
-    var layoutDirection: LayoutDirection {
-        
-        switch self {
-            
-        default:
-            return .leftToRight
-        }
-    }
-    
-    var localeLanguage: Locale {
-        switch self {
-            
-        case .english:
-            return Locale(identifier: "en")
-        }
-    }
-    
-    static var currentLanguage : Language {
+    var currentLanguage : Language {
         set {
-            let encoder = JSONEncoder()
-            if let encoded = try? encoder.encode(newValue.code) {
-                UserDefaults.standard.set(encoded, forKey: languageKey)
-            }
-            
-            UserDefaults.standard.set([newValue.code], forKey: appleLanguages)
+            UserDefaults.standard.set(newValue.code, forKey: languageKey)
             UserDefaults.standard.synchronize()
             
             Bundle.setLanguage(newValue.code)
@@ -75,24 +21,28 @@ enum Language: String, CaseIterable {
                let language = Language(rawValue: languageCode) {
                 return language
             } else {
-                
                 return getDefaultLanguage()
             }
         }
     }
-}
-
-func getDefaultLanguage() -> Language {
     
-    if let preferredLanguage = NSLocale.preferredLanguages.first?.split(separator: "-")  {
-        if preferredLanguage.count > 0 {
-            
-            let preferredLanguage = String(preferredLanguage[0])
-            
-            guard let languagee = Language(rawValue: preferredLanguage) else { return Language.english }
-            
-            return languagee
-        }
+    func getSystemLanguage() -> Language? {
+        guard let languageString =  getSystemLanguageString() else { return nil }
+        return Language(rawValue: languageString)
     }
-    return Language.english
+    
+    func getSystemLanguageString() -> String? {
+        
+        if let preferredLanguage = NSLocale.preferredLanguages.first?.split(separator: "-")  {
+            if preferredLanguage.count > 0 {
+                return String(preferredLanguage[0])
+            }
+        }
+        return nil
+    }
+    
+    func getDefaultLanguage() -> Language {
+        guard let systemLanguage = getSystemLanguage() else { return Language.english }
+        return systemLanguage
+    }
 }

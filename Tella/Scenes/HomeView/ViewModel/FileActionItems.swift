@@ -20,30 +20,30 @@ enum FileActionType: ActionType {
 var firstFileActionItems : [ListActionSheetItem] = [
     
     ListActionSheetItem(imageName: "share-icon",
-                        content: Localizable.Vault.moreActionsShareSheetSelect,
+                        content: LocalizableVault.moreActionsShareSheetSelect.localized,
                         type: FileActionType.share)
 ]
 
 var secondFileActionItems : [ListActionSheetItem] {
     
     return [ListActionSheetItem(imageName: "move-icon",
-                                content: Localizable.Vault.moreActionsMoveSheetSelect,
+                                content: LocalizableVault.moreActionsMoveSheetSelect.localized,
                                 type: FileActionType.move),
             
             ListActionSheetItem(imageName: "edit-icon",
-                                content: Localizable.Vault.moreActionsRenameSheetSelect,
+                                content: LocalizableVault.moreActionsRenameSheetSelect.localized,
                                 type: FileActionType.rename),
             
             ListActionSheetItem(imageName: "save-icon",
-                                content: Localizable.Vault.moreActionsSaveSheetSelect,
+                                content: LocalizableVault.moreActionsSaveSheetSelect.localized,
                                 type: FileActionType.save),
             
             ListActionSheetItem(imageName: "info-icon",
-                                content: Localizable.Vault.moreActionsFileInformationSheetSelect,
+                                content: LocalizableVault.moreActionsFileInformationSheetSelect.localized,
                                 type: FileActionType.info),
             
             ListActionSheetItem(imageName: "delete-icon",
-                                content: Localizable.Vault.moreActionsDeleteSheetSelect,
+                                content: LocalizableVault.moreActionsDeleteSheetSelect.localized,
                                 type: FileActionType.delete)
     ]
 }

@@ -36,7 +36,7 @@ struct TextFieldBottomSheetView: View {
         VStack(alignment: .leading) {
             Text(titleText)
                 .foregroundColor(.white)
-                .font(.custom(Styles.Fonts.boldFontName, size: 16))
+                .font(.custom(Styles.Fonts.semiBoldFontName, size: 17))
             Spacer()
                 .frame(height:12)
             

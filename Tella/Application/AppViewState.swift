@@ -21,6 +21,7 @@ final class AppViewState: ObservableObject {
 
     init() {
         self.resetApp()
+        self.initLanguage()
     }
     
     var currentView: MainViewEnum {
@@ -52,5 +53,11 @@ final class AppViewState: ObservableObject {
     func resetApp() {
         AuthenticationManager().keysInitialized() ? self.resetToUnlock() : self.resetToLock()
     }
+    
+    func initLanguage() {
+        let selectedLanguage = LanguageManager.shared.currentLanguage.rawValue
+        Bundle.setLanguage(selectedLanguage)
+    }
+
 }
 

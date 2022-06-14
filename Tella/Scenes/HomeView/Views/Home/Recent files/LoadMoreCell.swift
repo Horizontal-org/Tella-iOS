@@ -15,7 +15,7 @@ struct LoadMoreCell: View {
                 .frame(width: 33, height: 33)
                 .aspectRatio(contentMode: .fit)
             if let fileNumber = fileNumber {
-                Text(String.init(format: Localizable.Home.recentFiles_MoreFiles, fileNumber))   
+                Text(String.init(format: LocalizableHome.recentFiles_MoreFiles.localized, fileNumber))   
                     .font(.custom(Styles.Fonts.regularFontName, size: 9))
                     .foregroundColor(.white)
             }
