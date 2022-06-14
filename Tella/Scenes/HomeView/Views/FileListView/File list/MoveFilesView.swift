@@ -20,7 +20,7 @@ struct MoveFilesView: View {
             
             Styles.Colors.lightBlue.edgesIgnoringSafeArea(.all)
             
-            VStack {
+            VStack(spacing: 0) {
                 
                 titleView
                 
@@ -33,10 +33,7 @@ struct MoveFilesView: View {
                 .background(Color.white.opacity(0.12))
                 .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
                 
-                Spacer()
-                
                 bottomView
-                
             }
             
             AddNewFolderView()
@@ -51,25 +48,48 @@ struct MoveFilesView: View {
             Spacer()
         }.padding(EdgeInsets(top: 10, leading: 16, bottom: 0, trailing: 16))
     }
-     private var bottomView : some View {
+    
+    private var bottomView : some View {
         HStack {
-
-            Button(LocalizableVault.moveFileActionCancel.localized) {
-                fileListViewModel.showingMoveFileView  = false
-                fileListViewModel.initSelectedFiles()
-                fileListViewModel.initFolderPathArray()
-                fileListViewModel.rootFile = fileListViewModel.oldRootFile
-            } .buttonStyle(MoveFileButtonStyle())
-                .foregroundColor(.white)
+            cancelButton
             
-            Button(LocalizableVault.moveFileActionMove.localized) {
-                fileListViewModel.showingMoveFileView  = false
-                fileListViewModel.moveFiles()
-                fileListViewModel.initSelectedFiles()
-            }.foregroundColor( fileListViewModel.oldRootFile == fileListViewModel.rootFile ? .white.opacity(0.4) : .white)
-                .disabled(fileListViewModel.oldRootFile == fileListViewModel.rootFile)
-                .buttonStyle(MoveFileButtonStyle())
+            Spacer()
+            
+            Image("files.move-separator")
+                .frame(height: 50)
+            
+            Spacer()
+            
+            moveButton
+            
         }.frame(height: 50)
+    }
+    
+    var cancelButton: some View {
+        Button {
+            fileListViewModel.showingMoveFileView  = false
+            fileListViewModel.initSelectedFiles()
+            fileListViewModel.initFolderPathArray()
+            fileListViewModel.rootFile = fileListViewModel.oldRootFile
+        } label: {
+            Text(LocalizableVault.moveFileActionCancel.localized)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
+        }.buttonStyle(MoveFileButtonStyle())
+    }
+    
+    var moveButton: some View {
+        Button {
+            fileListViewModel.showingMoveFileView  = false
+            fileListViewModel.moveFiles()
+            fileListViewModel.initSelectedFiles()
+        } label: {
+            Text(LocalizableVault.moveFileActionMove.localized)
+                .foregroundColor( fileListViewModel.oldRootFile == fileListViewModel.rootFile ? .white.opacity(0.4) : .white)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }.disabled(fileListViewModel.oldRootFile == fileListViewModel.rootFile)
+            .buttonStyle(MoveFileButtonStyle())
     }
 }
 
@@ -80,7 +100,6 @@ struct MoveFileButtonStyle : ButtonStyle {
             .frame(maxWidth: .infinity)
     }
 }
-
 
 struct MoveFilesView_Previews: PreviewProvider {
     static var previews: some View {

@@ -162,7 +162,7 @@ struct AppView_Previews: PreviewProvider {
         MainView()
             .preferredColorScheme(.light)
             .previewLayout(.device)
-            .previewDevice("iPhone Xʀ")
+            .previewDevice("iPhone 8")
             .environmentObject(MainAppModel())
     }
 }
