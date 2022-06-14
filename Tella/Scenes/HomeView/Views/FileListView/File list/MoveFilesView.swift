@@ -75,8 +75,8 @@ struct MoveFilesView: View {
             Text(LocalizableVault.moveFileActionCancel.localized)
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-            
-        }.buttonStyle(MoveFileButtonStyle())
+                .font(.custom(Styles.Fonts.boldFontName, size: 16))
+        }
     }
     
     var moveButton: some View {
@@ -87,17 +87,9 @@ struct MoveFilesView: View {
         } label: {
             Text(LocalizableVault.moveFileActionMove.localized)
                 .foregroundColor( fileListViewModel.oldRootFile == fileListViewModel.rootFile ? .white.opacity(0.4) : .white)
+                .font(.custom(Styles.Fonts.boldFontName, size: 16))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }.disabled(fileListViewModel.oldRootFile == fileListViewModel.rootFile)
-            .buttonStyle(MoveFileButtonStyle())
-    }
-}
-
-struct MoveFileButtonStyle : ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.custom(Styles.Fonts.boldFontName, size: 16))
-            .frame(maxWidth: .infinity)
     }
 }
 
