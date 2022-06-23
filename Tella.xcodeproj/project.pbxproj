@@ -112,6 +112,7 @@
 		127C155E27DA6C2E009EC15B /* EmptyFileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155D27DA6C2E009EC15B /* EmptyFileListView.swift */; };
 		127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C4AAE27E4A74B00B1A1D3 /* ShareFileView.swift */; };
 		1283C257272AA6F6009180CA /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */; };
+		12858EB2285CCCD300C946C1 /* TryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 12858EB1285CCCD300C946C1 /* TryCatch.m */; };
 		128777C52718D25E000624E2 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 128777C42718D25D000624E2 /* OpenSans-Light.ttf */; };
 		1289B98727C5397200315FCE /* ScreenExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289B98627C5397200315FCE /* ScreenExtension.swift */; };
 		1289B98927C53A9C00315FCE /* CameraType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289B98827C53A9C00315FCE /* CameraType.swift */; };
@@ -139,7 +140,7 @@
 		129533C227399A1B0053FA4B /* PhotoVideoPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129533C127399A1B0053FA4B /* PhotoVideoPickerView.swift */; };
 		129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129533C32739D5BC0053FA4B /* TextFieldBottomSheetView.swift */; };
 		12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A1488E27209F2800A1ADDC /* ViewExtension.swift */; };
-		12A148922720A32000A1ADDC /* LockPinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148912720A32000A1ADDC /* LockPinData.swift */; };
+		12A148922720A32000A1ADDC /* CalculatorButtonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148912720A32000A1ADDC /* CalculatorButtonType.swift */; };
 		12A148962720B2B400A1ADDC /* PasswordTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148952720B2B400A1ADDC /* PasswordTextView.swift */; };
 		12A2DAFD273563BC0094B856 /* VaultFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC267A5267AED7C00E55AFA /* VaultFile.swift */; };
 		12A2DAFE273563E40094B856 /* RecentFileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC6263A383900CE191A /* RecentFileCell.swift */; };
@@ -151,6 +152,8 @@
 		12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */; };
 		12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1D278CD4900007C781 /* IntExtension.swift */; };
 		12B0981328410FB60076AA78 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12B0981528410FB60076AA78 /* Localizable.strings */; };
+		12B35DD92864C3F400340B2C /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B35DD82864C3F400340B2C /* StringExtension.swift */; };
+		12B35DDB2864CD4300340B2C /* CalculatorButtonViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B35DDA2864CD4300340B2C /* CalculatorButtonViewProtocol.swift */; };
 		12B6481D28367C1D00CBE541 /* SheetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B6481C28367C1D00CBE541 /* SheetManager.swift */; };
 		12B6AF7D283E4C7200D697F6 /* LocalizableVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B6AF7C283E4C7200D697F6 /* LocalizableVault.swift */; };
 		12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */; };
@@ -345,6 +348,9 @@
 		127C4AAE27E4A74B00B1A1D3 /* ShareFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareFileView.swift; sourceTree = "<group>"; };
 		1283C254272A7484009180CA /* CustomNavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationContainerView.swift; sourceTree = "<group>"; };
 		1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
+		12858EAF285CCC6700C946C1 /* TryCatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TryCatch.h; sourceTree = "<group>"; };
+		12858EB0285CCC9F00C946C1 /* Tella-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tella-Bridging-Header.h"; sourceTree = "<group>"; };
+		12858EB1285CCCD300C946C1 /* TryCatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TryCatch.m; sourceTree = "<group>"; };
 		128777C42718D25D000624E2 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		1289B98627C5397200315FCE /* ScreenExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenExtension.swift; sourceTree = "<group>"; };
 		1289B98827C53A9C00315FCE /* CameraType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraType.swift; sourceTree = "<group>"; };
@@ -372,7 +378,7 @@
 		129533C127399A1B0053FA4B /* PhotoVideoPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoVideoPickerView.swift; sourceTree = "<group>"; };
 		129533C32739D5BC0053FA4B /* TextFieldBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldBottomSheetView.swift; sourceTree = "<group>"; };
 		12A1488E27209F2800A1ADDC /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
-		12A148912720A32000A1ADDC /* LockPinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPinData.swift; sourceTree = "<group>"; };
+		12A148912720A32000A1ADDC /* CalculatorButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorButtonType.swift; sourceTree = "<group>"; };
 		12A148952720B2B400A1ADDC /* PasswordTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextView.swift; sourceTree = "<group>"; };
 		12A2DB02273576D50094B856 /* AddFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileView.swift; sourceTree = "<group>"; };
 		12A69208281C68EE00CDB0DD /* UnlockType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockType.swift; sourceTree = "<group>"; };
@@ -383,6 +389,8 @@
 		12B0981428410FB60076AA78 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12B0981628410FDE0076AA78 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12B0981728410FF20076AA78 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		12B35DD82864C3F400340B2C /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		12B35DDA2864CD4300340B2C /* CalculatorButtonViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorButtonViewProtocol.swift; sourceTree = "<group>"; };
 		12B6481C28367C1D00CBE541 /* SheetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetManager.swift; sourceTree = "<group>"; };
 		12B6AF7C283E4C7200D697F6 /* LocalizableVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableVault.swift; sourceTree = "<group>"; };
 		12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreFileActionButton.swift; sourceTree = "<group>"; };
@@ -652,6 +660,7 @@
 				1289B98627C5397200315FCE /* ScreenExtension.swift */,
 				1289B98C27C53C8400315FCE /* ImageExtension.swift */,
 				128EDB91280980DB00747B98 /* SequenceExtension.swift */,
+				12B35DD82864C3F400340B2C /* StringExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -797,7 +806,8 @@
 			children = (
 				12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */,
 				127C155B27DA69FF009EC15B /* TransitionViewData.swift */,
-				12A148912720A32000A1ADDC /* LockPinData.swift */,
+				12A148912720A32000A1ADDC /* CalculatorButtonType.swift */,
+				12B35DDA2864CD4300340B2C /* CalculatorButtonViewProtocol.swift */,
 				12A69208281C68EE00CDB0DD /* UnlockType.swift */,
 				128D3AF8282A966F003DBB83 /* CalculatorData.swift */,
 			);
@@ -983,6 +993,9 @@
 				125D2325271F896400250FBB /* CustomCalculatorView.swift */,
 				125D2323271F891500250FBB /* CalculatorView.swift */,
 				12A6920A281D54D800CDB0DD /* TopCalculatorMessageView.swift */,
+				12858EAF285CCC6700C946C1 /* TryCatch.h */,
+				12858EB1285CCCD300C946C1 /* TryCatch.m */,
+				12858EB0285CCC9F00C946C1 /* Tella-Bridging-Header.h */,
 			);
 			path = CommonView;
 			sourceTree = "<group>";
@@ -1343,6 +1356,7 @@
 					};
 					F66E65A823E3207D000F93E5 = {
 						CreatedOnToolsVersion = 11.1;
+						LastSwiftMigration = 1330;
 					};
 					F66E65BE23E32080000F93E5 = {
 						CreatedOnToolsVersion = 11.1;
@@ -1519,7 +1533,7 @@
 				D5B823EB262774E00008E04B /* MainView.swift in Sources */,
 				125FA6D6278DE49A004B9D06 /* URLExtension.swift in Sources */,
 				127369E327B3C4DA00CF7BE5 /* UIDeviceExtension.swift in Sources */,
-				12A148922720A32000A1ADDC /* LockPinData.swift in Sources */,
+				12A148922720A32000A1ADDC /* CalculatorButtonType.swift in Sources */,
 				D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */,
 				12607D5E27904F5300E2B8CC /* PlayerView.swift in Sources */,
 				1237A71E278F5F8B00D7BC0F /* LanguageManager.swift in Sources */,
@@ -1570,6 +1584,7 @@
 				12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */,
 				0ECC7819267A53A700A2ACF2 /* PageView.swift in Sources */,
 				1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */,
+				12858EB2285CCCD300C946C1 /* TryCatch.m in Sources */,
 				1278B66127EB364500C9AC4D /* Utils.swift in Sources */,
 				125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */,
 				125D2324271F891500250FBB /* CalculatorView.swift in Sources */,
@@ -1580,6 +1595,7 @@
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
 				0E87C875268BDDFB00EB5E34 /* ImageViewer.swift in Sources */,
+				12B35DDB2864CD4300340B2C /* CalculatorButtonViewProtocol.swift in Sources */,
 				0D4BC3C6267577F900DCDC30 /* DocumentPicker.swift in Sources */,
 				0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */,
 				1289B98927C53A9C00315FCE /* CameraType.swift in Sources */,
@@ -1674,6 +1690,7 @@
 				0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */,
 				0D4D7518266470A700D7A635 /* SettingsViews.swift in Sources */,
 				128B15C927DA085A00E1C1E0 /* WelcomeView.swift in Sources */,
+				12B35DD92864C3F400340B2C /* StringExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1926,6 +1943,7 @@
 			baseConfigurationReference = 8D569591EFFEBA5AC67EF44D /* Pods-Tella.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -1943,6 +1961,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tella/Scenes/Authentication/Views/CommonView/Tella-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1953,6 +1973,7 @@
 			baseConfigurationReference = 71F4A03C1E75DFA648FCCB4A /* Pods-Tella.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
@@ -1970,6 +1991,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Calculator (AppStore)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tella/Scenes/Authentication/Views/CommonView/Tella-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

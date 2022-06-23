@@ -2,7 +2,6 @@
 //  LocalizableVault.swift
 //  Tella
 //
-//  Created by Dhekra Rouatbi on 25/5/2022.
 //  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 

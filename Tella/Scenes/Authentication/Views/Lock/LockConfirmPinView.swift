@@ -14,9 +14,11 @@ struct LockConfirmPinView: View {
     
     var body: some View {
         ZStack {
-            CustomCalculatorView(fieldContent: $lockViewModel.confirmPassword,
+            CustomCalculatorView(value: $lockViewModel.calculatorValue,
+                                 result: $lockViewModel.confirmPassword,
                                  message: $message,
                                  isValid: $lockViewModel.isValid,
+                                 calculatorType: .lockCalculator,
                                  nextButtonAction: .action,
                                  destination: EmptyView()) {
                 validateMatchPin()

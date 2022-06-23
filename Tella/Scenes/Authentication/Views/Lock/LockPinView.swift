@@ -15,10 +15,11 @@ struct LockPinView: View {
     @State var message = Localizable.Lock.lockPinSetBannerExpl
 
     var body: some View {
-        CustomCalculatorView(fieldContent: $lockViewModel.password,
+        CustomCalculatorView(value: $lockViewModel.calculatorValue,
+                             result: $lockViewModel.password,
                              message: $message,
                              isValid: $lockViewModel.isValid,
-                             nextButtonAction: .destination,
+                             calculatorType: .lockCalculator, nextButtonAction: .destination,
                              destination: LockConfirmPinView())
         .onAppear {
             lockViewModel.initLockData()

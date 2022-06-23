@@ -17,10 +17,11 @@ struct UnlockPinView: View {
     
     var body: some View {
         ZStack {
-            CustomCalculatorView(fieldContent: $lockViewModel.loginPassword,
+            CustomCalculatorView(value: $lockViewModel.calculatorValue,
+                                 result: $lockViewModel.loginPassword,
                                  message: $message,
                                  isValid: $lockViewModel.isValid,
-                                 nextButtonAction: .action,
+                                 calculatorType: .unlockCalculator, nextButtonAction: .action,
                                  destination: EmptyView(),
                                  shouldValidateField: lockViewModel.shouldValidateField) {
                 

@@ -13,6 +13,7 @@ class LockViewModel: ObservableObject {
     
     @Published var loginPassword : String = CalculatorData.initialCharacter
     @Published var password : String = CalculatorData.initialCharacter
+    @Published var calculatorValue : String = ""
     @Published var confirmPassword : String = CalculatorData.initialCharacter
     @Published var oldPassword : String = ""
     @Published var shouldShowUnlockError : Bool = false

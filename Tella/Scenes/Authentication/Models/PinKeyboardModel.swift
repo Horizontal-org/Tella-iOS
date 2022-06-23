@@ -13,11 +13,11 @@ struct PinKeyboardModel: Hashable {
     
     var text: String = ""
     var imageName: String = ""
-    var actionType: PinActionType
+    var actionType: CalculatorButtonType
     var buttonType: PinButtonType
     var buttonViewData : CalculatorButtonViewProtocol
     
-    init(text: String,imageName: String = "", type: PinActionType, buttonType: PinButtonType, buttonViewData:CalculatorButtonViewProtocol) {
+    init(text: String,imageName: String = "", type: CalculatorButtonType, buttonType: PinButtonType, buttonViewData:CalculatorButtonViewProtocol) {
         self.text = text
         self.imageName = imageName
         self.actionType = type
@@ -35,13 +35,4 @@ struct PinKeyboardModel: Hashable {
     
 }
 
-enum PinActionType {
-    case number
-    case done
-    case delete
-}
 
-enum PinButtonType {
-    case text
-    case image
-}
