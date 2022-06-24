@@ -49,11 +49,11 @@ struct CustomCalculatorView<Destination:View>: View   {
                     .foregroundColor(Color.init(red: 0.331, green: 0.348, blue: 0.339))
                     .frame(maxWidth: .infinity, alignment: .trailing)
                     .padding(EdgeInsets(top: 0, leading: 13, bottom: 0, trailing: 13))
-                    .frame(height: 33)
+                    .lineLimit(3)
 
                 Spacer()
                     .frame(height: 5)
-
+                
                 passwordTextView
                 
                 Spacer()

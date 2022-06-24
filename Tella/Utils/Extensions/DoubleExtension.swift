@@ -26,11 +26,22 @@ extension Double {
     
     /// Gets the decimal value from a double.
     var decimalCount: Int {
-        let decimalCount = string.split(separator: ".").last?.count ?? 0
+        let decimalCount = self.significandWidth
+        
+        //        let decimalCount = string.split(separator: ".").last?.count ?? 0
         return  decimalCount > 5  ? 5 : decimalCount
     }
     
     var string: String {
         String(self)
     }
+    
+    public var digitCount: Int {
+        get {
+            let digits = String(describing: self)
+            return  digits.count
+        }
+    }
 }
+
+

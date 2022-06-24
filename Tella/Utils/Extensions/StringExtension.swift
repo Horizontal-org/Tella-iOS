@@ -56,22 +56,21 @@ extension String {
     }
     
     func formatResult(result: Double) -> String {
-       
-        let maxResultNumberToShow:Double = 9999999999
-        let minResultNumberToShow:Double = 0000000001
-
+        
         let numberFormatter = NumberFormatter()
         numberFormatter.positiveFormat = "00.00E+00"
         let number = NSNumber.init(value: result)
         
+        let digitCount = result.digitCount
+        
         if(result.truncatingRemainder(dividingBy: 1) == 0) {
-            if result < maxResultNumberToShow {
-                return String(format: "%.0f", result)
-            } else {
+            if digitCount > 9 {
                 return numberFormatter.string(from: number) ?? ""
+            } else {
+                return String(format: "%.0f", result)
             }
         } else {
-            if result < minResultNumberToShow {
+            if digitCount > 9 {
                 return numberFormatter.string(from: number) ?? ""
             } else {
                 let fff = "%." + "\(result.decimalCount)" + "f"
