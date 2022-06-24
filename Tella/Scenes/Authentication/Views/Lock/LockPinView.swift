@@ -19,6 +19,7 @@ struct LockPinView: View {
                              result: $lockViewModel.password,
                              message: $message,
                              isValid: $lockViewModel.isValid,
+                             operationArray: $lockViewModel.operationArray,
                              calculatorType: .lockCalculator, nextButtonAction: .destination,
                              destination: LockConfirmPinView())
         .onAppear {

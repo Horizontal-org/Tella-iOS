@@ -19,7 +19,8 @@ class LockViewModel: ObservableObject {
     @Published var oldPassword : String = ""
     @Published var shouldShowUnlockError : Bool = false
     @Published var isValid : Bool = true
-    
+    @Published var operationArray : [String] = []
+
     var privateKey : SecKey?
     var unlockType : UnlockType = .new
     var shouldDismiss = CurrentValueSubject<Bool, Never>(false)

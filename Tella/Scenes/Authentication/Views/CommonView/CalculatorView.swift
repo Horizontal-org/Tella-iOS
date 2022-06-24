@@ -12,9 +12,11 @@ struct CalculatorView: View {
     @Binding var message : String
     @Binding var isValid : Bool
     
-    @State var operationArray : [String] = []
+    @Binding var operationArray : [String]
     @State var equalPressed : Bool = false
     
+    @EnvironmentObject private var appModel: MainAppModel
+
     var shouldValidateField : Bool = true
     var calculatorType : CalculatorType
     var action : (() -> Void)?
@@ -354,6 +356,7 @@ struct PinView_Previews: PreviewProvider {
                        resultToshow: .constant(""),
                        message: .constant("Error"),
                        isValid: .constant(false),
+                       operationArray: .constant(["11 + 3"]),
                        calculatorType: .lockCalculator)
     }
 }

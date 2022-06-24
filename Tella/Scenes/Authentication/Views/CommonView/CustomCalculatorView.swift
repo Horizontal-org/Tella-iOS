@@ -13,7 +13,7 @@ enum NextButtonAction {
     case destination
 }
 
-struct CustomCalculatorView<Destination:View>: View   {
+struct CustomCalculatorView<Destination:View>: View {
     
     @State private var shouldShowLockConfirmPinView = false
     
@@ -21,7 +21,8 @@ struct CustomCalculatorView<Destination:View>: View   {
     @Binding var result : String
     @Binding var message : String
     @Binding var isValid : Bool
-    
+    @Binding var operationArray : [String]
+
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var calculatorType : CalculatorType
@@ -90,6 +91,7 @@ struct CustomCalculatorView<Destination:View>: View   {
                        resultToshow: $result,
                        message: $message,
                        isValid: $isValid,
+                       operationArray: $operationArray,
                        shouldValidateField: shouldValidateField,
                        calculatorType: calculatorType, action: {
             
@@ -116,6 +118,7 @@ struct CustomPinView_Previews: PreviewProvider {
                              result: .constant("0"),
                              message: .constant(Localizable.Lock.lockPinSetBannerExpl),
                              isValid: .constant(false),
+                             operationArray: .constant(["1 + 3"]),
                              calculatorType: .lockCalculator,
                              nextButtonAction: .action,
                              destination: EmptyView())

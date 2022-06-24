@@ -21,6 +21,7 @@ struct UnlockPinView: View {
                                  result: $lockViewModel.loginPassword,
                                  message: $message,
                                  isValid: $lockViewModel.isValid,
+                                 operationArray: $lockViewModel.operationArray,
                                  calculatorType: .unlockCalculator, nextButtonAction: .action,
                                  destination: EmptyView(),
                                  shouldValidateField: lockViewModel.shouldValidateField) {
