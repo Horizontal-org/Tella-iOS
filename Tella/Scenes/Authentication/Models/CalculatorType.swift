@@ -5,7 +5,7 @@
 
 import Foundation
 
-enum UnlockType {
-    case new
-    case update
+enum CalculatorType {
+    case lockCalculator
+    case unlockCalculator
 }

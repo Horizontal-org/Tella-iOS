@@ -216,8 +216,7 @@ struct CalculatorView: View {
             
         case .equal:
             self.login()
-            
-            
+
         case .clear:
             self.resultToshow = CalculatorButtonType.zero.rawValue
             

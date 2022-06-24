@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import Combine
+
 class LockViewModel: ObservableObject {
     
     @Published var loginPassword : String = CalculatorData.initialCharacter
@@ -27,7 +28,7 @@ class LockViewModel: ObservableObject {
         return unlockType == .update
     }
 
-    func validatePinMatch()  {
+    func validatePinMatch() {
         isValid = password == confirmPassword
     }
     

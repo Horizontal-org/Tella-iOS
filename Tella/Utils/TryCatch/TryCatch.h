@@ -12,10 +12,10 @@
 #endif /* TryCatch_h */
 #import <Foundation/Foundation.h>
 
-@interface TryCatch
+@interface TryCatch : NSObject 
 
 + (BOOL)tryBlock:(void(^)(void))tryBlock
-           error:(NSError **)error;
+      catchBlock:(void(^)(NSException*exception))catchBlock;
 
 @end
 

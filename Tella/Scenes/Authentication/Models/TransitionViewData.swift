@@ -27,4 +27,4 @@ struct OnboardingEndViewData : TransitionViewData {
     var description = Localizable.Lock.onboardingLockSuccessSubhead
     var buttonTitle = Localizable.Lock.onboardingLockSuccessActionGoToTella
     var alignment = TextAlignment.center
- }
+}

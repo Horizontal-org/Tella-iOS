@@ -11,11 +11,6 @@ enum PinButtonType {
     case image
 }
 
-enum CalculatorType {
-    case lockCalculator
-    case unlockCalculator
-}
-
 enum CalculatorButtonType:String {
     case one = "1"
     case two = "2"
@@ -38,8 +33,8 @@ enum CalculatorButtonType:String {
     case negative = "-/+"
     
     var buttonViewData: CalculatorButtonViewProtocol {
+        
         switch self {
-            
         case .divide, .mutliply, .subtract, .add :
             return DarkGrayButton()
         case .equal:
@@ -52,8 +47,8 @@ enum CalculatorButtonType:String {
     }
     
     var imageName: String {
+        
         switch self {
-            
         case .add:
             return "lock.calc.plus"
         case .subtract:

@@ -6,7 +6,6 @@
 import UIKit
 import SwiftUI
 
-
 protocol CalculatorButtonViewProtocol {
     var backgroundColor : Color { get }
     var fontColor : Color { get }

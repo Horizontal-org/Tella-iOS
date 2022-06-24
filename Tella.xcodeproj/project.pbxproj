@@ -97,6 +97,7 @@
 		12730E69279F420400DC0135 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12730E68279F420400DC0135 /* SettingsViewModel.swift */; };
 		12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */; };
 		127369E327B3C4DA00CF7BE5 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127369E227B3C4DA00CF7BE5 /* UIDeviceExtension.swift */; };
+		12755D7C2865C31F00969A05 /* CalculatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12755D7B2865C31F00969A05 /* CalculatorType.swift */; };
 		12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A8F27BA742700CDC5DC /* CameraControlsView.swift */; };
 		12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9427BA761C00CDC5DC /* CustomCameraController.swift */; };
 		12776A9827BAC87A00CDC5DC /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */; };
@@ -159,7 +160,6 @@
 		12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */; };
 		12D37A942721752B00E43BDB /* TellaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A932721752B00E43BDB /* TellaApp.swift */; };
 		12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A952721A49D00E43BDB /* NavigationContainerView.swift */; };
-		12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */; };
 		12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */; };
 		12E0882427AD31F600CEB198 /* LocalizableAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0882327AD31F500CEB198 /* LocalizableAudio.swift */; };
 		12E6772F27A9719F00DC1E1C /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E6772E27A9719F00DC1E1C /* UIImageExtension.swift */; };
@@ -335,6 +335,7 @@
 		12730E68279F420400DC0135 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeadingTitleToolbar.swift; sourceTree = "<group>"; };
 		127369E227B3C4DA00CF7BE5 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
+		12755D7B2865C31F00969A05 /* CalculatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorType.swift; sourceTree = "<group>"; };
 		12776A8F27BA742700CDC5DC /* CameraControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlsView.swift; sourceTree = "<group>"; };
 		12776A9427BA761C00CDC5DC /* CustomCameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraController.swift; sourceTree = "<group>"; };
 		12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
@@ -396,7 +397,6 @@
 		12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreFileActionButton.swift; sourceTree = "<group>"; };
 		12D37A932721752B00E43BDB /* TellaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaApp.swift; sourceTree = "<group>"; };
 		12D37A952721A49D00E43BDB /* NavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContainerView.swift; sourceTree = "<group>"; };
-		12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinKeyboardModel.swift; sourceTree = "<group>"; };
 		12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveAudioConfirmationView.swift; sourceTree = "<group>"; };
 		12E0882327AD31F500CEB198 /* LocalizableAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableAudio.swift; sourceTree = "<group>"; };
 		12E6772E27A9719F00DC1E1C /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
@@ -717,6 +717,15 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		12755D7A2865C10800969A05 /* TryCatch */ = {
+			isa = PBXGroup;
+			children = (
+				12858EAF285CCC6700C946C1 /* TryCatch.h */,
+				12858EB1285CCCD300C946C1 /* TryCatch.m */,
+			);
+			path = TryCatch;
+			sourceTree = "<group>";
+		};
 		12776A9627BAC86200CDC5DC /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -739,6 +748,7 @@
 				D53B77022601D5170001CD34 /* Tella.entitlements */,
 				F66E65BA23E32080000F93E5 /* Info.plist */,
 				F66E65B723E32080000F93E5 /* LaunchScreen.storyboard */,
+				12858EB0285CCC9F00C946C1 /* Tella-Bridging-Header.h */,
 				12B0981528410FB60076AA78 /* Localizable.strings */,
 			);
 			path = "Supporting Files";
@@ -747,6 +757,7 @@
 		12781F4A27EA2C9800FE9609 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				12755D7A2865C10800969A05 /* TryCatch */,
 				125D231D271F127D00250FBB /* Extensions */,
 				D5077A3F260D300600D72947 /* DebugLogging.swift */,
 				0F3DC3E42523951C0024B4A0 /* BundleInfo.swift */,
@@ -804,9 +815,9 @@
 		127C155A27DA69DD009EC15B /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */,
 				127C155B27DA69FF009EC15B /* TransitionViewData.swift */,
 				12A148912720A32000A1ADDC /* CalculatorButtonType.swift */,
+				12755D7B2865C31F00969A05 /* CalculatorType.swift */,
 				12B35DDA2864CD4300340B2C /* CalculatorButtonViewProtocol.swift */,
 				12A69208281C68EE00CDB0DD /* UnlockType.swift */,
 				128D3AF8282A966F003DBB83 /* CalculatorData.swift */,
@@ -993,9 +1004,6 @@
 				125D2325271F896400250FBB /* CustomCalculatorView.swift */,
 				125D2323271F891500250FBB /* CalculatorView.swift */,
 				12A6920A281D54D800CDB0DD /* TopCalculatorMessageView.swift */,
-				12858EAF285CCC6700C946C1 /* TryCatch.h */,
-				12858EB1285CCCD300C946C1 /* TryCatch.m */,
-				12858EB0285CCC9F00C946C1 /* Tella-Bridging-Header.h */,
 			);
 			path = CommonView;
 			sourceTree = "<group>";
@@ -1550,6 +1558,7 @@
 				12E9DD9B27DF7DA50002FD00 /* CreateNewFolderView.swift in Sources */,
 				125D231C271F119D00250FBB /* Validator.swift in Sources */,
 				0D4D7510266316D200D7A635 /* SettingsGeneral.swift in Sources */,
+				12755D7C2865C31F00969A05 /* CalculatorType.swift in Sources */,
 				D51639802631130E003A11B5 /* HomeView.swift in Sources */,
 				0E8CEA19266FFE0600926799 /* SentFormsView.swift in Sources */,
 				0E27899D266F76D500B130C4 /* FormsView.swift in Sources */,
@@ -1649,7 +1658,6 @@
 				D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */,
 				127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */,
 				0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */,
-				12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */,
 				12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */,
 				1209FD2E27AD89C800D8C17E /* AudioPlayerViewModel.swift in Sources */,
 				12567FF72717426000A2D356 /* LocalizableLock.swift in Sources */,
