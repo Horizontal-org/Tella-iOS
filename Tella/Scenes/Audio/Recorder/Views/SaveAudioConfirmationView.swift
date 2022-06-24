@@ -15,10 +15,10 @@ struct SaveAudioConfirmationView: View {
     
     var body: some View {
         
-        ConfirmBottomSheet(titleText: Localizable.Audio.saveRecordingTitle,
-                           msgText: Localizable.Audio.saveRecordingMessage,
-                           cancelText: Localizable.Common.discard,
-                           actionText: Localizable.Common.save,
+        ConfirmBottomSheet(titleText: Localizable.Recorder.saveRecordingSheetTitle,
+                           msgText: Localizable.Recorder.saveRecordingSheetExpl,
+                           cancelText: Localizable.Recorder.saveRecordingDiscardSheetAction,
+                           actionText: Localizable.Recorder.saveRecordingSaveSheetAction,
                            withDrag: false) {
             
             sheetManager.hide()

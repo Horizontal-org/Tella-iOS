@@ -5,7 +5,6 @@
 
 import Foundation
 
-
 enum UnlockType {
     case new
     case update

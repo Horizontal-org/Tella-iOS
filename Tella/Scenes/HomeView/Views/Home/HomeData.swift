@@ -15,22 +15,22 @@ struct HomeFileItem : Hashable {
     var fileType: [FileType]?
 }
 
-var homeFileItems : [HomeFileItem] { return [ HomeFileItem(title: Localizable.Home.allFilesItem,
+var homeFileItems : [HomeFileItem] { return [ HomeFileItem(title: Localizable.Home.tellaFilesAllFiles,
                                                     imageName: "files.all_files",
                                                     fileType: nil),
-                                              HomeFileItem(title: Localizable.Home.imagesItem,
+                                              HomeFileItem(title: Localizable.Home.tellaFilesImages,
                                                     imageName: "files.gallery",
                                                     fileType: [.image]),
-                                              HomeFileItem(title: Localizable.Home.videosItem,
+                                              HomeFileItem(title: Localizable.Home.tellaFilesVideos,
                                                     imageName: "files.gallery",
                                                     fileType: [.video]),
-                                              HomeFileItem(title: Localizable.Home.audioItem,
+                                              HomeFileItem(title: Localizable.Home.tellaFilesAudio,
                                                     imageName: "files.audio",
                                                     fileType: [.audio]),
-                                              HomeFileItem(title: Localizable.Home.documentsItem,
+                                              HomeFileItem(title: Localizable.Home.tellaFilesDocuments,
                                                     imageName: "files.documents",
                                                     fileType: [.document]),
-                                              HomeFileItem(title: Localizable.Home.othersItem,
+                                              HomeFileItem(title: Localizable.Home.tellaFilesOthers,
                                                     imageName: "files.others",
                                                     fileType: [.other]),
 ]

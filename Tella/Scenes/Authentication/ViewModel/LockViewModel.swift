@@ -9,15 +9,18 @@
 import Foundation
 import SwiftUI
 import Combine
+
 class LockViewModel: ObservableObject {
     
     @Published var loginPassword : String = CalculatorData.initialCharacter
     @Published var password : String = CalculatorData.initialCharacter
+    @Published var calculatorValue : String = ""
     @Published var confirmPassword : String = CalculatorData.initialCharacter
     @Published var oldPassword : String = ""
     @Published var shouldShowUnlockError : Bool = false
     @Published var isValid : Bool = true
-    
+    @Published var operationArray : [String] = []
+
     var privateKey : SecKey?
     var unlockType : UnlockType = .new
     var shouldDismiss = CurrentValueSubject<Bool, Never>(false)
@@ -26,7 +29,7 @@ class LockViewModel: ObservableObject {
         return unlockType == .update
     }
 
-    func validatePinMatch()  {
+    func validatePinMatch() {
         isValid = password == confirmPassword
     }
     
@@ -40,6 +43,7 @@ class LockViewModel: ObservableObject {
     func login() {
         self.privateKey = CryptoManager.shared.recoverKey(.PRIVATE, password: loginPassword)
         shouldShowUnlockError = privateKey == nil
+        isValid = !shouldShowUnlockError
     }
     
     func initUnlockData() {

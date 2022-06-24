@@ -17,10 +17,12 @@ struct UnlockPinView: View {
     
     var body: some View {
         ZStack {
-            CustomCalculatorView(fieldContent: $lockViewModel.loginPassword,
+            CustomCalculatorView(value: $lockViewModel.calculatorValue,
+                                 result: $lockViewModel.loginPassword,
                                  message: $message,
                                  isValid: $lockViewModel.isValid,
-                                 nextButtonAction: .action,
+                                 operationArray: $lockViewModel.operationArray,
+                                 calculatorType: .unlockCalculator, nextButtonAction: .action,
                                  destination: EmptyView(),
                                  shouldValidateField: lockViewModel.shouldValidateField) {
                 
@@ -39,7 +41,7 @@ struct UnlockPinView: View {
             self.presentationMode.wrappedValue.dismiss()
             
         } content: {
-            LockPinView(message: Localizable.Lock.updatePinFirstMessage)
+            LockPinView(message: Localizable.Lock.lockUnlockLockPinUpdateBannerExpl)
         }
         
         .onReceive(lockViewModel.shouldDismiss) { shouldDismiss in
@@ -57,9 +59,9 @@ struct UnlockPinView: View {
     func updateMessage()  {
         if lockViewModel.shouldValidateField   {
             if lockViewModel.shouldShowUnlockError {
-                message = Localizable.Lock.unlockPinError
+                message = Localizable.Lock.errorIncorrectPINBannerExpl
             } else {
-                message = Localizable.Lock.unlockUpdatePinFirstMessage
+                message = Localizable.Lock.lockUnlockUnlockPinUpdateBannerExpl
             }
         }
     }

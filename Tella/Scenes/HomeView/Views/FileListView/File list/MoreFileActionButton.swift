@@ -2,7 +2,6 @@
 //  MoreFileActionButton.swift
 //  Tella
 //
-//  Created by Dhekra Rouatbi on 17/5/2022.
 //  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 
@@ -28,7 +27,6 @@ struct MoreFileActionButton: View {
     
     var modalHeight : CGFloat {
         let dividerHeight = fileListViewModel.fileActionItems.filter{$0.viewType == ActionSheetItemType.divider}.count * 20
-        print(CGFloat((fileListViewModel.fileActionItems.count * 50) - dividerHeight  + 90))
         return CGFloat((fileListViewModel.fileActionItems.count * 50) - dividerHeight  + 90)
     }
     
@@ -132,8 +130,9 @@ struct MoreFileActionButton: View {
     
     func showRenameFileSheet() {
         sheetManager.showBottomSheet( modalHeight: 165, content: {
-            TextFieldBottomSheetView(titleText: Localizable.Common.renameFile,
-                                     validateButtonText: Localizable.Common.save,
+            TextFieldBottomSheetView(titleText: Localizable.Vault.renameFileSheetTitle,
+                                     validateButtonText: Localizable.Vault.renameFileSaveSheetAction,
+                                     cancelButtonText:Localizable.Vault.renameFileCancelSheetAction,
                                      fieldContent: $fileNameToUpdate,
                                      fileName: fileListViewModel.selectedFiles.count == 1 ? fileListViewModel.selectedFiles[0].fileName : "",
                                      fieldType: FieldType.fileName,
@@ -147,10 +146,10 @@ struct MoreFileActionButton: View {
     
     func showDeleteConfirmationSheet() {
         sheetManager.showBottomSheet( modalHeight: 165, content: {
-            ConfirmBottomSheet(titleText: Localizable.Home.deleteFileTitle,
-                               msgText: Localizable.Home.deleteFileDescription,
-                               cancelText: Localizable.Common.cancel,
-                               actionText: Localizable.Common.delete,
+            ConfirmBottomSheet(titleText: Localizable.Vault.deleteFileSheetTitle,
+                               msgText: Localizable.Vault.deleteFileSheetExpl,
+                               cancelText: Localizable.Vault.deleteFileCancelSheetAction,
+                               actionText: Localizable.Vault.deleteFileDeleteSheetAction,
                                destructive: true,
                                didConfirmAction:{
                 appModel.delete(files: fileListViewModel.selectedFiles, from: fileListViewModel.rootFile)
@@ -164,10 +163,10 @@ struct MoreFileActionButton: View {
     
     func showSaveConfirmationSheet() {
         sheetManager.showBottomSheet( modalHeight: 180, content: {
-            ConfirmBottomSheet(titleText: Localizable.Home.saveToDeviceTitle,
-                               msgText: Localizable.Home.saveToDeviceDescription,
-                               cancelText: Localizable.Common.cancel,
-                               actionText: Localizable.Common.save,
+            ConfirmBottomSheet(titleText: Localizable.Vault.saveToDeviceSheetTitle,
+                               msgText: Localizable.Vault.saveToDeviceSheetExpl,
+                               cancelText: Localizable.Vault.saveToDeviceCancelSheetAction,
+                               actionText: Localizable.Vault.saveToDeviceSaveSheetAction.uppercased(),
                                didConfirmAction: {
                 fileListViewModel.showingDocumentPicker = true
             })

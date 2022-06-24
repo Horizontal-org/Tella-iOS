@@ -121,10 +121,10 @@ struct CameraView: View {
     
     private func getSettingsAlertView() -> Alert {
         Alert(title: Text(""),
-              message: Text(Localizable.Camera.deniedPermissionMessage),
-              primaryButton: .default(Text(Localizable.Common.cancel), action: {
+              message: Text(Localizable.Camera.deniedCameraPermissionExpl),
+              primaryButton: .default(Text(Localizable.Camera.deniedCameraPermissionActionCancel), action: {
             mainAppModel.selectedTab = .home
-        }), secondaryButton: .default(Text(Localizable.Camera.deniedPermissionButtonTitle), action: {
+        }), secondaryButton: .default(Text(Localizable.Camera.deniedCameraPermissionActionSettings), action: {
             UIApplication.shared.openSettings()
             mainAppModel.selectedTab = .home
         }))

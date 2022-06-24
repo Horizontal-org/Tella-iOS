@@ -37,7 +37,8 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     @Published var selectedTab: Tabs = .home
     
     var shouldUpdateLanguage = CurrentValueSubject<Bool, Never>(false)
-    
+    var shouldInitAuthentication = CurrentValueSubject<Bool, Never>(false)
+
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
     
     private var cancellable: Set<AnyCancellable> = []

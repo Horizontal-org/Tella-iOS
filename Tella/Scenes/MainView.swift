@@ -47,30 +47,30 @@ struct MainView: View  {
                     HomeView(appModel: appModel)
                         .tabItem {
                             Image("tab.home")
-                            Text(Localizable.Common.menuHome)
+                            Text(Localizable.Home.tabBar)
                         }.tag(MainAppModel.Tabs.home)
-#if DEBUG
+/*#if DEBUG
                     ReportsView()
                         .tabItem {
                             Image("tab.reports")
-                            Text(Localizable.Common.menuReports)
+                            Text(Localizable.Reports.tabBarTitle)
                         }.tag(MainAppModel.Tabs.reports)
                     FormsView()
                         .tabItem {
                             Image("tab.forms")
-                            Text(Localizable.Common.menuForms)
+                            Text(Localizable.Forms.tabBarTitle)
                         }.tag(MainAppModel.Tabs.forms)
-#endif
+#endif*/
                     ContainerView{}
                         .tabItem {
                             Image("tab.camera")
-                            Text(Localizable.Common.menuCamera)
+                            Text(Localizable.Camera.tabBar)
                         }.tag(MainAppModel.Tabs.camera)
                     
                     ContainerView{}
                         .tabItem {
                             Image("tab.mic")
-                            Text(Localizable.Common.menuRecorder)
+                            Text(Localizable.Recorder.tabBar)
                         }.tag(MainAppModel.Tabs.mic)
                 }
                 
@@ -82,7 +82,7 @@ struct MainView: View  {
                         trailingView
                     }
                 }
-                .navigationBarTitle(Localizable.Common.tellaTitle, displayMode: .inline)
+                .navigationBarTitle(Localizable.Home.appBar, displayMode: .inline)
                 .navigationBarHidden(appModel.selectedTab == .home ? false : true)
             }
             .accentColor(.white)

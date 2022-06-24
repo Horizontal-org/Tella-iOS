@@ -23,4 +23,25 @@ extension Double {
     func timeString() -> String {
         return timeFormatter.string(from: self) ?? ""
     }
+    
+    /// Gets the decimal value from a double.
+    var decimalCount: Int {
+        let decimalCount = self.significandWidth
+        
+        //        let decimalCount = string.split(separator: ".").last?.count ?? 0
+        return  decimalCount > 5  ? 5 : decimalCount
+    }
+    
+    var string: String {
+        String(self)
+    }
+    
+    public var digitCount: Int {
+        get {
+            let digits = String(describing: self)
+            return  digits.count
+        }
+    }
 }
+
+
