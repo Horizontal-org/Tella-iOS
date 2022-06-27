@@ -6,6 +6,6 @@
 import Foundation
 
 enum CalculatorType {
-    case lockCalculator
-    case unlockCalculator
+    case pin
+    case calculator
 }

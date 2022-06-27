@@ -22,13 +22,12 @@ struct CustomCalculatorView<Destination:View>: View {
     @Binding var message : String
     @Binding var isValid : Bool
     @Binding var operationArray : [String]
-
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var calculatorType : CalculatorType
     var nextButtonAction: NextButtonAction
     var destination: Destination?
-    var shouldValidateField: Bool = true
     
     var action : (() -> Void)?
     
@@ -44,13 +43,8 @@ struct CustomCalculatorView<Destination:View>: View {
                 topCalculatorMessageView
                 
                 Spacer()
-
-                Text(value)
-                    .font(.custom(Styles.Fonts.lightFontName, size: 24))
-                    .foregroundColor(Color.init(red: 0.331, green: 0.348, blue: 0.339))
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .padding(EdgeInsets(top: 0, leading: 13, bottom: 0, trailing: 13))
-                    .lineLimit(3)
+                
+                operationText
 
                 Spacer()
                     .frame(height: 5)
@@ -78,10 +72,21 @@ struct CustomCalculatorView<Destination:View>: View {
         }
     }
     
+    @ViewBuilder
+    private var operationText : some View {
+        if calculatorType == .calculator {
+            Text(value)
+                .font(.custom(Styles.Fonts.lightFontName, size: 24))
+                .foregroundColor(Color.init(red: 0.331, green: 0.348, blue: 0.339))
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .padding(EdgeInsets(top: 0, leading: 13, bottom: 0, trailing: 13))
+                .lineLimit(3)
+         }
+    }
+    
     private var passwordTextView : some View {
         PasswordTextView(fieldContent: $result,
-                         isValid: $isValid,
-                         shouldValidateField: shouldValidateField,
+                         isValid: calculatorType == .pin ? $isValid : .constant(true),
                          disabled: true)
         .padding(EdgeInsets(top: 0, leading: 13, bottom: 0, trailing: 13))
     }
@@ -92,7 +97,6 @@ struct CustomCalculatorView<Destination:View>: View {
                        message: $message,
                        isValid: $isValid,
                        operationArray: $operationArray,
-                       shouldValidateField: shouldValidateField,
                        calculatorType: calculatorType, action: {
             
             if nextButtonAction == .destination {
@@ -119,7 +123,7 @@ struct CustomPinView_Previews: PreviewProvider {
                              message: .constant(Localizable.Lock.lockPinSetBannerExpl),
                              isValid: .constant(false),
                              operationArray: .constant(["1 + 3"]),
-                             calculatorType: .lockCalculator,
+                             calculatorType: .pin,
                              nextButtonAction: .action,
                              destination: EmptyView())
     }

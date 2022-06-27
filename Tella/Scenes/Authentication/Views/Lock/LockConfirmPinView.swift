@@ -19,7 +19,7 @@ struct LockConfirmPinView: View {
                                  message: $message,
                                  isValid: $lockViewModel.isValid,
                                  operationArray: $lockViewModel.operationArray,
-                                 calculatorType: .lockCalculator,
+                                 calculatorType: .pin,
                                  nextButtonAction: .action,
                                  destination: EmptyView()) {
                 validateMatchPin()
