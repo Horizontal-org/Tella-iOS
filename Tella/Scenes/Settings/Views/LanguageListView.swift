@@ -8,7 +8,10 @@ struct LanguageListView: View {
     
     @Binding var isPresented : Bool
     @StateObject var settingsViewModel = SettingsViewModel()
-    
+  
+    @EnvironmentObject private var appViewState: AppViewState
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
     var body: some View {
         ContainerView {
             
@@ -25,6 +28,12 @@ struct LanguageListView: View {
                 .listStyle(.plain)
             }
         }
+        .onReceive(appViewState.$shouldHidePresentedView) { value in
+            if(value) {
+                self.presentationMode.wrappedValue.dismiss()
+            }
+        }
+
     }
 }
 
