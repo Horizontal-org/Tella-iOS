@@ -68,7 +68,8 @@ struct LanguageItemView : View {
     @Binding var isPresented : Bool
     
     @EnvironmentObject private var appViewState: AppViewState
-    
+    @EnvironmentObject private var appModel: MainAppModel
+
     var body: some View {
         
         ZStack {
@@ -92,11 +93,10 @@ struct LanguageItemView : View {
                 
             }
             Button("") {
-                
+                appModel.shouldUpdateLanguage = true
                 LanguageManager.shared.currentLanguage = languageItem
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    appViewState.resetToMain()
                     isPresented = false
                 }
             }
