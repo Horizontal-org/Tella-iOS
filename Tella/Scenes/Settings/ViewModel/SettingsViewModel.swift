@@ -21,24 +21,12 @@ class SettingsViewModel: ObservableObject {
     init() {
         
         languageItems = Language.allCases.map {$0}
-        
-        // If the system language is not exist in the list of the language list
-        if let systemLanguage = LanguageManager.shared.getSystemLanguage() {
-            // remove duplication from list
-            languageItems = languageItems.filter{!($0.code == systemLanguage.code && $0 != .systemLanguage)}
-        } else {
-            // remove the default system language from the language list
-            languageItems = languageItems.filter{$0 != .systemLanguage}
-        }
 
         languageItems = languageItems.sorted(by: { $0.name < $1.name })
         
         if let index = languageItems.firstIndex(where: {$0 == .systemLanguage}) {
-
             languageItems = languageItems.rearrange(fromIndex: index, toIndex: 0)
         }
-        
-
     }
 }
 

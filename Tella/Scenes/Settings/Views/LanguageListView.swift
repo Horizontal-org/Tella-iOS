@@ -8,10 +8,10 @@ struct LanguageListView: View {
     
     @Binding var isPresented : Bool
     @StateObject var settingsViewModel = SettingsViewModel()
-  
+    
     @EnvironmentObject private var appViewState: AppViewState
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-
+    
     var body: some View {
         ContainerView {
             
@@ -33,7 +33,7 @@ struct LanguageListView: View {
                 self.presentationMode.wrappedValue.dismiss()
             }
         }
-
+        
     }
 }
 
@@ -69,7 +69,7 @@ struct LanguageItemView : View {
     
     @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject private var appModel: MainAppModel
-
+    
     var body: some View {
         
         ZStack {
@@ -87,7 +87,7 @@ struct LanguageItemView : View {
                 
                 Spacer()
                 
-                if languageItem.code == LanguageManager.shared.currentLanguage.code {
+                if isCurrentLanguage(languageItem: languageItem) {
                     Image("settings.done")
                 }
                 
@@ -103,8 +103,12 @@ struct LanguageItemView : View {
             
         }.padding(EdgeInsets(top: 7, leading: 20, bottom: 11, trailing: 16))
             .frame(height: 52)
-            .listRowBackground(languageItem.code == LanguageManager.shared.currentLanguage.code ? Color.white.opacity(0.15) : Color.clear )
+            .listRowBackground(isCurrentLanguage(languageItem: languageItem) ? Color.white.opacity(0.15) : Color.clear )
             .listRowInsets(EdgeInsets())
+    }
+    
+    func isCurrentLanguage(languageItem:Language) -> Bool {
+        return (languageItem == LanguageManager.shared.currentLanguage)
     }
 }
 

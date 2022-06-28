@@ -11,7 +11,7 @@ let appleLanguages = "AppleLanguages"
 
 enum Language: String, CaseIterable {
     
-    case systemLanguage
+    case systemLanguage = "system"
     case english = "en"
     case spanish = "es"
     case french = "fr"
