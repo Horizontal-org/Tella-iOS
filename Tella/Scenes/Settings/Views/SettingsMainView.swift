@@ -14,15 +14,13 @@ struct SettingsMainView: View {
     var body: some View {
         ContainerView {
             VStack() {
-                Spacer()
-                    .frame(height: 12)
-                GeneralSettingsView(appModel: appModel)
-                RecentFilesSettingsView()
-                Spacer()
-            }
-        }.onReceive(appModel.shouldUpdateLanguage) {  vv in
-            if vv {
-                self.presentationMode.wrappedValue.dismiss()
+                if appModel.shouldUpdateLanguage {
+                    Spacer()
+                        .frame(height: 12)
+                    GeneralSettingsView()
+                    RecentFilesSettingsView()
+                    Spacer()
+                }
             }
         }
         .toolbar {
@@ -42,10 +40,9 @@ struct SettingsMainView: View {
 struct GeneralSettingsView : View {
     
     @State private var presentingLanguage = false
-    @ObservedObject var appModel : MainAppModel
+    @EnvironmentObject var appModel : MainAppModel
     @StateObject var lockViewModel = LockViewModel(unlockType: .update)
     @State var passwordTypeString : String = ""
-    
     
     var body : some View {
         
@@ -54,9 +51,9 @@ struct GeneralSettingsView : View {
             SettingsItemView(imageName: "settings.language",
                              title: LocalizableSettings.settLanguage.localized,
                              value: LanguageManager.shared.currentLanguage.name)
-                .onTapGesture {
-                    presentingLanguage = true
-                }
+            .onTapGesture {
+                presentingLanguage = true
+            }
             
             DividerView()
             
@@ -64,14 +61,14 @@ struct GeneralSettingsView : View {
                              title: LocalizableSettings.settLock.localized,
                              value: passwordTypeString)
             
-                .navigateTo(destination: unlockView)
+            .navigateTo(destination: unlockView)
             
             DividerView()
             
             SettingsItemView(imageName: "settings.help",
                              title: LocalizableSettings.settAbout.localized,
                              value: "")
-                .navigateTo(destination: AboutAndHelpView())
+            .navigateTo(destination: AboutAndHelpView())
             
         }.background(Color.white.opacity(0.08))
             .cornerRadius(15)
