@@ -34,10 +34,8 @@ struct MoreFileActionButton: View {
         switch moreButtonType {
         case .grid:
             return gridMoreButton.eraseToAnyView()
-        case .list:
+        case .list, .navigationBar:
             return listMoreButton.eraseToAnyView()
-        case .navigationBar:
-            return navigationBarMoreButton.eraseToAnyView()
         }
     }
     
@@ -60,20 +58,7 @@ struct MoreFileActionButton: View {
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -6, trailing: -12))
         }.frame(width: 35, height: 35)
     }
-    
-    var navigationBarMoreButton: some View {
-        
-        Button {
-            showFileActionSheet()
-        } label: {
-            Image("files.more-top")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 5, height: 18)
-        }.frame(width: 40, height: 40)
-    }
-    
-    
+
     private func showFileActionSheet() {
         if let file = file {
             fileListViewModel.updateSingleSelection(for: file)
