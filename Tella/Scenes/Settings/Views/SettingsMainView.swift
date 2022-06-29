@@ -14,15 +14,13 @@ struct SettingsMainView: View {
     var body: some View {
         ContainerView {
             VStack() {
-                Spacer()
-                    .frame(height: 12)
-                GeneralSettingsView(appModel: appModel)
-                RecentFilesSettingsView()
-                Spacer()
-            }
-        }.onReceive(appModel.shouldUpdateLanguage) {  vv in
-            if vv {
-                self.presentationMode.wrappedValue.dismiss()
+                if appModel.shouldUpdateLanguage {
+                    Spacer()
+                        .frame(height: 12)
+                    GeneralSettingsView()
+                    RecentFilesSettingsView()
+                    Spacer()
+                }
             }
         }
         .toolbar {
@@ -42,7 +40,7 @@ struct SettingsMainView: View {
 struct GeneralSettingsView : View {
     
     @State private var presentingLanguage = false
-    @ObservedObject var appModel : MainAppModel
+    @EnvironmentObject var appModel : MainAppModel
     @StateObject var lockViewModel = LockViewModel(unlockType: .update)
     
     var body : some View {
@@ -52,16 +50,16 @@ struct GeneralSettingsView : View {
             SettingsItemView(imageName: "settings.language",
                              title: LocalizableSettings.settLanguage.localized,
                              value: LanguageManager.shared.currentLanguage.name)
-                .onTapGesture {
-                    presentingLanguage = true
-                }
+            .onTapGesture {
+                presentingLanguage = true
+            }
             
             DividerView()
             
             SettingsItemView(imageName: "settings.lock",
                              title: LocalizableSettings.settLock.localized)
             
-                .navigateTo(destination: unlockView)
+            .navigateTo(destination: unlockView)
             
             DividerView()
             
