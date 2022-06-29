@@ -60,7 +60,7 @@ class FileListViewModel: ObservableObject {
     }
     
     var filePath : String {
-        let rootPath = Localizable.Vault.rootDirectoryName + (folderPathArray.count > 0 ? "/" : "")
+        let rootPath = LocalizableVault.rootDirectoryName.localized + (folderPathArray.count > 0 ? "/" : "")
         return  rootPath + self.folderPathArray.compactMap{$0.fileName}.joined(separator: "/")
     }
     
@@ -69,7 +69,7 @@ class FileListViewModel: ObservableObject {
     }
     
     var selectedItemsTitle : String {
-        let itemString = selectedItemsNumber == 1 ? Localizable.Vault.itemAppBar : Localizable.Vault.itemsAppBar
+        let itemString = selectedItemsNumber == 1 ? LocalizableVault.itemAppBar.localized : LocalizableVault.itemsAppBar.localized
         return String.init(format: itemString, selectedItemsNumber)
     }
     

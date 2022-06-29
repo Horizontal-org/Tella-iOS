@@ -70,7 +70,7 @@ struct PhotoVideoPickerView: View {
     }
     
     func showProgressView() {
-        sheetManager.showBottomSheet(modalHeight: 165,
+        sheetManager.showBottomSheet(modalHeight: 190,
                                      shouldHideOnTap: false,
                                      content: {
             ImportFilesProgressView(importFilesProgressProtocol: ImportFilesProgress())

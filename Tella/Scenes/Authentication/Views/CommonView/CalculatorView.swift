@@ -17,7 +17,6 @@ struct CalculatorView: View {
     
     @EnvironmentObject private var appModel: MainAppModel
 
-    var shouldValidateField : Bool = true
     var calculatorType : CalculatorType
     var action : (() -> Void)?
     
@@ -46,7 +45,8 @@ struct CalculatorView: View {
     private func getView(item:CalculatorButtonType) -> some View {
         
         return AnyView(Button {
-            calculatorType == .lockCalculator ? self.lockButtonAction(item: item) :  self.unlockButtonAction(item: item)
+            
+            calculatorType == .pin ? self.pinButtonAction(item: item) :  self.calculatorButtonAction(item: item)
         } label: {
             self.getButtonView(item: item)
         }
@@ -73,8 +73,8 @@ struct CalculatorView: View {
         }
         return CalculatorData.calculatorItemWidth
     }
-
-    private func unlockButtonAction(item:CalculatorButtonType) {
+    
+    private func calculatorButtonAction(item:CalculatorButtonType) {
         
         isValid = true
         
@@ -212,13 +212,13 @@ struct CalculatorView: View {
         }
     }
     
-    private func lockButtonAction(item:CalculatorButtonType) {
+    private func pinButtonAction(item:CalculatorButtonType) {
         
         switch item {
             
         case .equal:
             self.login()
-
+            
         case .clear:
             self.resultToshow = CalculatorButtonType.zero.rawValue
             
@@ -289,7 +289,7 @@ struct CalculatorView: View {
             }
         }
     }
-
+    
     private func initOperationArrayWithResult() {
         if self.equalPressed == true {
             self.equalPressed = false
@@ -324,14 +324,15 @@ struct CalculatorView: View {
     }
     
     private func validateField() {
-        self.isValid = resultToshow.passwordValidator() && resultToshow.passwordLengthValidator()
-        
-        if shouldValidateField {
+        if calculatorType == .pin {
+            
+            self.isValid = resultToshow.passwordValidator() && resultToshow.passwordLengthValidator()
+            
             if !resultToshow.passwordLengthValidator() {
-                message = Localizable.Lock.errorPinLengthBannerExpl
+                message = LocalizableLock.errorPinLengthBannerExpl.localized
                 
             } else if !resultToshow.passwordValidator() {
-                message = Localizable.Lock.errorPinDigitsBannerExpl
+                message = LocalizableLock.errorPinDigitsBannerExpl.localized
             }
         }
     }
@@ -357,6 +358,6 @@ struct PinView_Previews: PreviewProvider {
                        message: .constant("Error"),
                        isValid: .constant(false),
                        operationArray: .constant(["11 + 3"]),
-                       calculatorType: .lockCalculator)
+                       calculatorType: .pin)
     }
 }

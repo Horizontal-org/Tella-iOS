@@ -50,7 +50,7 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
                 Spacer()
                 VStack {
                     if shouldShowErrorMessage   {
-                        ConfirmPasswordErrorView(errorMessage: Localizable.Lock.lockPinConfirmErrorPINsDoNotMatch)
+                        ConfirmPasswordErrorView(errorMessage: LocalizableLock.lockPinConfirmErrorPINsDoNotMatch.localized)
                         Spacer()
                     }
                     

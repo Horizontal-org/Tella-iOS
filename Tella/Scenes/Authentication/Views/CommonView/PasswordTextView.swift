@@ -12,7 +12,6 @@ struct PasswordTextView : View {
 
     @Binding var fieldContent : String
     @Binding var isValid : Bool
-    var shouldValidateField : Bool = true
 
     var disabled : Bool = false
     var onCommit : (() -> Void)? =  ({})
@@ -21,7 +20,7 @@ struct PasswordTextView : View {
         Text(fieldContent)
             .frame(maxWidth: .infinity, alignment: .trailing)
             .font(.custom(Styles.Fonts.regularFontName, size: 60))
-            .foregroundColor(!isValid && shouldValidateField ? Styles.Colors.red : Styles.Colors.petrol)
+            .foregroundColor(!isValid ? Styles.Colors.red : Styles.Colors.petrol)
             .lineLimit(1)
     }
 }

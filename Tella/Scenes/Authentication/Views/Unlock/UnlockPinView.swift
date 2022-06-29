@@ -20,11 +20,11 @@ struct UnlockPinView: View {
             CustomCalculatorView(value: $lockViewModel.calculatorValue,
                                  result: $lockViewModel.loginPassword,
                                  message: $message,
-                                 isValid: $lockViewModel.isValid,
+                                 isValid: lockViewModel.unlockType == .update ? $lockViewModel.isValid : .constant(true),
                                  operationArray: $lockViewModel.operationArray,
-                                 calculatorType: .unlockCalculator, nextButtonAction: .action,
-                                 destination: EmptyView(),
-                                 shouldValidateField: lockViewModel.shouldValidateField) {
+                                 calculatorType: lockViewModel.unlockType == .new ? .calculator : .pin,
+                                 nextButtonAction: .action,
+                                 destination: EmptyView()) {
                 
                 lockViewModel.login()
                 updateMessage()
@@ -41,7 +41,7 @@ struct UnlockPinView: View {
             self.presentationMode.wrappedValue.dismiss()
             
         } content: {
-            LockPinView(message: Localizable.Lock.lockUnlockLockPinUpdateBannerExpl)
+            LockPinView(message: LocalizableLock.lockUnlockLockPinUpdateBannerExpl.localized)
         }
         
         .onReceive(lockViewModel.shouldDismiss) { shouldDismiss in
@@ -57,11 +57,11 @@ struct UnlockPinView: View {
     }
     
     func updateMessage()  {
-        if lockViewModel.shouldValidateField   {
+        if lockViewModel.unlockType == .update   {
             if lockViewModel.shouldShowUnlockError {
-                message = Localizable.Lock.errorIncorrectPINBannerExpl
+                message = LocalizableLock.errorIncorrectPINBannerExpl.localized
             } else {
-                message = Localizable.Lock.lockUnlockUnlockPinUpdateBannerExpl
+                message = LocalizableLock.lockUnlockUnlockPinUpdateBannerExpl.localized
             }
         }
     }

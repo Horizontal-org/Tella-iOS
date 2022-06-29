@@ -17,7 +17,7 @@ struct ActionListBottomSheet: View {
             Text(self.headerTitle)
                 .padding(.bottom, 10)
                 .foregroundColor(.white)
-                .font(.custom(Styles.Fonts.boldFontName, size: 18))
+                .font(.custom(Styles.Fonts.semiBoldFontName, size: 17))
             
             // Items
             ForEach(items, id: \.content) { item in

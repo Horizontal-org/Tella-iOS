@@ -9,6 +9,9 @@ struct LanguageListView: View {
     @Binding var isPresented : Bool
     @StateObject var settingsViewModel = SettingsViewModel()
     
+    @EnvironmentObject private var appViewState: AppViewState
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     var body: some View {
         ContainerView {
             
@@ -20,12 +23,17 @@ struct LanguageListView: View {
                     ForEach(settingsViewModel.languageItems, id:\.self) {item in
                         LanguageItemView(languageItem: item, settingsViewModel: settingsViewModel,
                                          isPresented: $isPresented)
-                        
                     }
                 }
                 .listStyle(.plain)
             }
         }
+        .onReceive(appViewState.$shouldHidePresentedView) { value in
+            if(value) {
+                self.presentationMode.wrappedValue.dismiss()
+            }
+        }
+        
     }
 }
 
@@ -42,7 +50,7 @@ struct LanguageHeaderView : View {
                 Image("close")
             }.padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12))
             
-            Text(Localizable.Settings.settLanguage)
+            Text(LocalizableSettings.settLanguage.localized)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 20))
                 .foregroundColor(Color.white)
             
@@ -60,6 +68,7 @@ struct LanguageItemView : View {
     @Binding var isPresented : Bool
     
     @EnvironmentObject private var appViewState: AppViewState
+    @EnvironmentObject private var appModel: MainAppModel
     
     var body: some View {
         
@@ -71,23 +80,21 @@ struct LanguageItemView : View {
                         .font(.custom(Styles.Fonts.regularFontName, size: 15))
                         .foregroundColor(.white)
                     
-                    Text(languageItem.englishName)
+                    Text(languageItem.translatedName)
                         .font(.custom(Styles.Fonts.regularFontName, size: 12))
                         .foregroundColor(.white)
                 }
                 
                 Spacer()
                 
-                if languageItem.code == Language.currentLanguage.code {
+                if isCurrentLanguage(languageItem: languageItem) {
                     Image("settings.done")
                 }
                 
             }
             Button("") {
-
-                Language.currentLanguage = languageItem
-                
-                appViewState.resetToMain()
+                appModel.shouldUpdateLanguage = true
+                LanguageManager.shared.currentLanguage = languageItem
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     isPresented = false
@@ -96,8 +103,12 @@ struct LanguageItemView : View {
             
         }.padding(EdgeInsets(top: 7, leading: 20, bottom: 11, trailing: 16))
             .frame(height: 52)
-            .listRowBackground(languageItem.code == Language.currentLanguage.code ? Color.white.opacity(0.15) : Color.clear )
+            .listRowBackground(isCurrentLanguage(languageItem: languageItem) ? Color.white.opacity(0.15) : Color.clear )
             .listRowInsets(EdgeInsets())
+    }
+    
+    func isCurrentLanguage(languageItem:Language) -> Bool {
+        return (languageItem == LanguageManager.shared.currentLanguage)
     }
 }
 

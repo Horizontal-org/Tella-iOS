@@ -107,6 +107,7 @@
 		12781F4B27EA315600FE9609 /* BundleInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F3DC3E42523951C0024B4A0 /* BundleInfo.swift */; };
 		1278B66127EB364500C9AC4D /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD4C039240F547300491438 /* Utils.swift */; };
 		1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1278B66427EB9C1400C9AC4D /* CameraView.swift */; };
+		127A5B2228538E0800FAAEB0 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127A5B2128538DFB00FAAEB0 /* Language.swift */; };
 		127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127B56D4279AC28200F902C9 /* CancelImportView.swift */; };
 		127C155827DA486A009EC15B /* TransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155727DA486A009EC15B /* TransitionView.swift */; };
 		127C155C27DA69FF009EC15B /* TransitionViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155B27DA69FF009EC15B /* TransitionViewData.swift */; };
@@ -149,6 +150,7 @@
 		12A2DB03273576D50094B856 /* AddFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A2DB02273576D50094B856 /* AddFileView.swift */; };
 		12A69209281C68EE00CDB0DD /* UnlockType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A69208281C68EE00CDB0DD /* UnlockType.swift */; };
 		12A6920B281D54D800CDB0DD /* TopCalculatorMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6920A281D54D800CDB0DD /* TopCalculatorMessageView.swift */; };
+		12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5A3428576E9C00134A9B /* ArrayExtension.swift */; };
 		12AB30D3272C36500020FFBF /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB30D2272C36500020FFBF /* HomeData.swift */; };
 		12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */; };
 		12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1D278CD4900007C781 /* IntExtension.swift */; };
@@ -342,6 +344,7 @@
 		12781F4327E9FCE200FE9609 /* PasswordTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTypeEnum.swift; sourceTree = "<group>"; };
 		12781F4527EA10AA00FE9609 /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
 		1278B66427EB9C1400C9AC4D /* CameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		127A5B2128538DFB00FAAEB0 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		127B56D4279AC28200F902C9 /* CancelImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelImportView.swift; sourceTree = "<group>"; };
 		127C155727DA486A009EC15B /* TransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionView.swift; sourceTree = "<group>"; };
 		127C155B27DA69FF009EC15B /* TransitionViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionViewData.swift; sourceTree = "<group>"; };
@@ -384,6 +387,7 @@
 		12A2DB02273576D50094B856 /* AddFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileView.swift; sourceTree = "<group>"; };
 		12A69208281C68EE00CDB0DD /* UnlockType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockType.swift; sourceTree = "<group>"; };
 		12A6920A281D54D800CDB0DD /* TopCalculatorMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopCalculatorMessageView.swift; sourceTree = "<group>"; };
+		12AA5A3428576E9C00134A9B /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		12AB30D2272C36500020FFBF /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
 		12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtension.swift; sourceTree = "<group>"; };
 		12AE8D1D278CD4900007C781 /* IntExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtension.swift; sourceTree = "<group>"; };
@@ -660,6 +664,7 @@
 				1289B98627C5397200315FCE /* ScreenExtension.swift */,
 				1289B98C27C53C8400315FCE /* ImageExtension.swift */,
 				128EDB91280980DB00747B98 /* SequenceExtension.swift */,
+				12AA5A3428576E9C00134A9B /* ArrayExtension.swift */,
 				12B35DD82864C3F400340B2C /* StringExtension.swift */,
 			);
 			path = Extensions;
@@ -779,6 +784,7 @@
 				D5DAFDCD265384C4002F3942 /* MainAppModel.swift */,
 				12781F4527EA10AA00FE9609 /* LoginManager.swift */,
 				1237A71D278F5F8B00D7BC0F /* LanguageManager.swift */,
+				127A5B2128538DFB00FAAEB0 /* Language.swift */,
 			);
 			path = "Services Managers";
 			sourceTree = "<group>";
@@ -1592,6 +1598,7 @@
 				0E170259267913160069072A /* FormsCellView.swift in Sources */,
 				12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */,
 				0ECC7819267A53A700A2ACF2 /* PageView.swift in Sources */,
+				127A5B2228538E0800FAAEB0 /* Language.swift in Sources */,
 				1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */,
 				12858EB2285CCCD300C946C1 /* TryCatch.m in Sources */,
 				1278B66127EB364500C9AC4D /* Utils.swift in Sources */,
@@ -1668,6 +1675,7 @@
 				D7CFC37F254260D300CCB352 /* RecordView.swift in Sources */,
 				0DC411E12668469C00BF0DE1 /* SettingsView.swift in Sources */,
 				D7F55FC825348FA50028739E /* RecordState.swift in Sources */,
+				12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */,
 				0ECC781B267A542300A2ACF2 /* Pages.swift in Sources */,
 				0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */,
 				126FE4D727A427E200AE4188 /* Constants.swift in Sources */,
@@ -1955,7 +1963,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
@@ -1965,7 +1973,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.8.3;
+				MARKETING_VERSION = v0.8.4;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1985,7 +1993,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
@@ -1995,7 +2003,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.8.3;
+				MARKETING_VERSION = v0.8.4;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Calculator (AppStore)";
