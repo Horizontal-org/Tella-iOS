@@ -20,7 +20,6 @@ struct LanguageListView: View {
                     ForEach(settingsViewModel.languageItems, id:\.self) {item in
                         LanguageItemView(languageItem: item, settingsViewModel: settingsViewModel,
                                          isPresented: $isPresented)
-                        
                     }
                 }
                 .listStyle(.plain)
@@ -42,7 +41,7 @@ struct LanguageHeaderView : View {
                 Image("close")
             }.padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12))
             
-            Text(Localizable.Settings.settLanguage)
+            Text(LocalizableSettings.settLanguage.localized)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 20))
                 .foregroundColor(Color.white)
             
@@ -71,32 +70,31 @@ struct LanguageItemView : View {
                         .font(.custom(Styles.Fonts.regularFontName, size: 15))
                         .foregroundColor(.white)
                     
-                    Text(languageItem.englishName)
+                    Text(languageItem.translatedName)
                         .font(.custom(Styles.Fonts.regularFontName, size: 12))
                         .foregroundColor(.white)
                 }
                 
                 Spacer()
                 
-                if languageItem.code == Language.currentLanguage.code {
+                if languageItem.code == LanguageManager.shared.currentLanguage.code {
                     Image("settings.done")
                 }
                 
             }
             Button("") {
-
-                Language.currentLanguage = languageItem
                 
-                appViewState.resetToMain()
+                LanguageManager.shared.currentLanguage = languageItem
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    appViewState.resetToMain()
                     isPresented = false
                 }
             }
             
         }.padding(EdgeInsets(top: 7, leading: 20, bottom: 11, trailing: 16))
             .frame(height: 52)
-            .listRowBackground(languageItem.code == Language.currentLanguage.code ? Color.white.opacity(0.15) : Color.clear )
+            .listRowBackground(languageItem.code == LanguageManager.shared.currentLanguage.code ? Color.white.opacity(0.15) : Color.clear )
             .listRowInsets(EdgeInsets())
     }
 }

@@ -329,10 +329,10 @@ struct CalculatorView: View {
             self.isValid = resultToshow.passwordValidator() && resultToshow.passwordLengthValidator()
             
             if !resultToshow.passwordLengthValidator() {
-                message = Localizable.Lock.errorPinLengthBannerExpl
+                message = LocalizableLock.errorPinLengthBannerExpl.localized
                 
             } else if !resultToshow.passwordValidator() {
-                message = Localizable.Lock.errorPinDigitsBannerExpl
+                message = LocalizableLock.errorPinDigitsBannerExpl.localized
             }
         }
     }

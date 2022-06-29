@@ -15,22 +15,22 @@ struct HomeFileItem : Hashable {
     var fileType: [FileType]?
 }
 
-var homeFileItems : [HomeFileItem] { return [ HomeFileItem(title: Localizable.Home.tellaFilesAllFiles,
+var homeFileItems : [HomeFileItem] { return [ HomeFileItem(title: LocalizableHome.tellaFilesAllFiles.localized,
                                                     imageName: "files.all_files",
                                                     fileType: nil),
-                                              HomeFileItem(title: Localizable.Home.tellaFilesImages,
+                                              HomeFileItem(title: LocalizableHome.tellaFilesImages.localized,
                                                     imageName: "files.gallery",
                                                     fileType: [.image]),
-                                              HomeFileItem(title: Localizable.Home.tellaFilesVideos,
+                                              HomeFileItem(title: LocalizableHome.tellaFilesVideos.localized,
                                                     imageName: "files.gallery",
                                                     fileType: [.video]),
-                                              HomeFileItem(title: Localizable.Home.tellaFilesAudio,
+                                              HomeFileItem(title: LocalizableHome.tellaFilesAudio.localized,
                                                     imageName: "files.audio",
                                                     fileType: [.audio]),
-                                              HomeFileItem(title: Localizable.Home.tellaFilesDocuments,
+                                              HomeFileItem(title: LocalizableHome.tellaFilesDocuments.localized,
                                                     imageName: "files.documents",
                                                     fileType: [.document]),
-                                              HomeFileItem(title: Localizable.Home.tellaFilesOthers,
+                                              HomeFileItem(title: LocalizableHome.tellaFilesOthers.localized,
                                                     imageName: "files.others",
                                                     fileType: [.other]),
 ]

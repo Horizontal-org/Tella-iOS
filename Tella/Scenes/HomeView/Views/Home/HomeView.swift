@@ -13,19 +13,20 @@ struct HomeView: View {
     init(appModel: MainAppModel) {
         _viewModel = StateObject(wrappedValue: HomeViewModel(appModel: appModel))
     }
-
+    
     var body: some View {
         
         ContainerView {
-            VStack(spacing: 30) {
+            VStack() {
                 
-                VStack(spacing: 15) {
-                    if appModel.settings.showRecentFiles {
-                        Spacer()
-                            .frame( height: viewModel.getFiles().count > 0 ? 15 : 0 )
-                        RecentFilesListView(recentFiles: viewModel.getFiles())
-                    }
+                if appModel.settings.showRecentFiles {
+                    Spacer()
+                        .frame( height: viewModel.getFiles().count > 0 ? 16 : 0 )
+                    RecentFilesListView(recentFiles: viewModel.getFiles())
                 }
+                
+                Spacer()
+                    .frame(height: 30)
                 
                 FileGroupsView(shouldShowFilesTitle: viewModel.showingFilesTitle)
                 
@@ -36,7 +37,7 @@ struct HomeView: View {
                 }
             }
         }
-        .navigationBarTitle(Localizable.Home.appBar, displayMode: .inline)
+        .navigationBarTitle(LocalizableHome.appBar.localized, displayMode: .inline)
     }
 }
 

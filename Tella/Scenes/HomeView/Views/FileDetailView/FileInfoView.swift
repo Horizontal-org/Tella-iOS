@@ -16,29 +16,29 @@ struct FileInfoView: View {
             Styles.Colors.backgroundMain
                 .edgesIgnoringSafeArea(.all)
             VStack(alignment: .leading, spacing: 12){
-                FileInfoItem(title: Localizable.Vault.verifInfoFileName, content: file.fileName)
+                FileInfoItem(title: LocalizableVault.verifInfoFileName.localized, content: file.fileName)
                 
                 if file.type != .folder {
-                    FileInfoItem(title: Localizable.Vault.verifInfoSize, content: file.size.getFormattedFileSize())
-                    FileInfoItem(title: Localizable.Vault.verifInfoFormat, content: file.fileExtension)
+                    FileInfoItem(title: LocalizableVault.verifInfoSize.localized, content: file.size.getFormattedFileSize())
+                    FileInfoItem(title: LocalizableVault.verifInfoFormat.localized, content: file.fileExtension)
                 }
                 
-                FileInfoItem(title: Localizable.Vault.verifInfoCreated, content: "\(file.longFormattedCreationDate)")
+                FileInfoItem(title: LocalizableVault.verifInfoCreated.localized, content: "\(file.longFormattedCreationDate)")
                 
                 if (file.type == .video) || (file.type == .image)  {
-                    FileInfoItem(title: Localizable.Vault.verifInfoResolution, content: file.formattedResolution ?? "")
+                    FileInfoItem(title: LocalizableVault.verifInfoResolution.localized, content: file.formattedResolution ?? "")
                 }
                 
                 if file.type == .video || file.type == .audio {
-                    FileInfoItem(title: Localizable.Vault.verifInfoLength, content: file.formattedDuration ?? "")
+                    FileInfoItem(title: LocalizableVault.verifInfoLength.localized, content: file.formattedDuration ?? "")
                 }
                 
-                FileInfoItem(title: Localizable.Vault.verifInfoFilePath.localized, content: viewModel.filePath)
+                FileInfoItem(title: LocalizableVault.verifInfoFilePath.localized, content: viewModel.filePath)
                 Spacer()
             } .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
         }
         .toolbar {
-            LeadingTitleToolbar(title: Localizable.Vault.verifInfoAppBar)
+            LeadingTitleToolbar(title: LocalizableVault.verifInfoAppBar.localized)
         }
     }
 }

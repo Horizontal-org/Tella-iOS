@@ -12,30 +12,30 @@ struct  ImportFilesProgress : ImportFilesProgressProtocol {
     }
     
     var title: String {
-        return Localizable.Vault.importProgressSheetTitle
+        return LocalizableVault.importProgressSheetTitle.localized
     }
     
     var progressMessage: String {
-        return Localizable.Vault.importProgressSheetExpl
+        return LocalizableVault.importProgressSheetExpl.localized
     }
     
     var cancelImportButtonTitle: String {
-        return Localizable.Vault.importProgressCancelSheetAction
+        return LocalizableVault.importProgressCancelSheetAction.localized
     }
 
     var cancelTitle: String {
-        return Localizable.Vault.cancelImportFileSheetTitle
+        return LocalizableVault.cancelImportFileSheetTitle.localized
     }
     
     var cancelMessage: String {
-        return Localizable.Vault.cancelImportFileSheetExpl
+        return LocalizableVault.cancelImportFileSheetExpl.localized
     }
     
     var exitCancelImportButtonTitle: String {
-        return Localizable.Vault.cancelImportFileBackSheetAction
+        return LocalizableVault.cancelImportFileBackSheetAction.localized
     }
 
     var confirmCancelImportButtonTitle: String {
-        return Localizable.Vault.cancelImportFileCancelImportSheetAction
+        return LocalizableVault.cancelImportFileCancelImportSheetAction.localized
     }
 }

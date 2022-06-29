@@ -41,7 +41,7 @@ struct UnlockPinView: View {
             self.presentationMode.wrappedValue.dismiss()
             
         } content: {
-            LockPinView(message: Localizable.Lock.lockUnlockLockPinUpdateBannerExpl)
+            LockPinView(message: LocalizableLock.lockUnlockLockPinUpdateBannerExpl.localized)
         }
         
         .onReceive(lockViewModel.shouldDismiss) { shouldDismiss in
@@ -59,9 +59,9 @@ struct UnlockPinView: View {
     func updateMessage()  {
         if lockViewModel.unlockType == .update   {
             if lockViewModel.shouldShowUnlockError {
-                message = Localizable.Lock.errorIncorrectPINBannerExpl
+                message = LocalizableLock.errorIncorrectPINBannerExpl.localized
             } else {
-                message = Localizable.Lock.lockUnlockUnlockPinUpdateBannerExpl
+                message = LocalizableLock.lockUnlockUnlockPinUpdateBannerExpl.localized
             }
         }
     }

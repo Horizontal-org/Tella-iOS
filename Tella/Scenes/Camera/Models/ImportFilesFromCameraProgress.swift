@@ -11,31 +11,31 @@ struct ImportFilesFromCameraProgress : ImportFilesProgressProtocol {
     }
     
     var title: String {
-        return Localizable.Camera.encryptingProgressSheetTitle
+        return LocalizableCamera.encryptingProgressSheetTitle.localized
     }
     
     var progressMessage: String {
-        return Localizable.Camera.encryptingProgressSheetExpl
+        return LocalizableCamera.encryptingProgressSheetExpl.localized
     }
     
     var cancelImportButtonTitle: String {
-        return Localizable.Camera.encryptingProgressCancelSheetAction
+        return LocalizableCamera.encryptingProgressCancelSheetAction.localized
     }
 
     var cancelTitle: String {
-        return Localizable.Camera.cancelEncryptingSheetTitle
+        return LocalizableCamera.cancelEncryptingSheetTitle.localized
     }
     
     var cancelMessage: String {
-        return Localizable.Camera.cancelEncryptingSheetExpl
+        return LocalizableCamera.cancelEncryptingSheetExpl.localized
     }
     
     var exitCancelImportButtonTitle: String {
-        return Localizable.Camera.cancelEncryptingBackSheetAction
+        return LocalizableCamera.cancelEncryptingBackSheetAction.localized
     }
     
     var confirmCancelImportButtonTitle: String {
-        return Localizable.Camera.cancelEncryptingDeleteSheetAction
+        return LocalizableCamera.cancelEncryptingDeleteSheetAction.localized
     }
 }
 

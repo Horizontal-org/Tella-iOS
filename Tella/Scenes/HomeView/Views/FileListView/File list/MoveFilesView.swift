@@ -20,7 +20,7 @@ struct MoveFilesView: View {
             
             Styles.Colors.lightBlue.edgesIgnoringSafeArea(.all)
             
-            VStack {
+            VStack(spacing: 0) {
                 
                 titleView
                 
@@ -33,10 +33,7 @@ struct MoveFilesView: View {
                 .background(Color.white.opacity(0.12))
                 .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
                 
-                Spacer()
-                
                 bottomView
-                
             }
             
             AddNewFolderView()
@@ -45,42 +42,56 @@ struct MoveFilesView: View {
     
     private var titleView : some View {
         HStack {
-            Text(String.init(format: Localizable.Vault.moveFileAppBar, title))
+            Text(String.init(format: LocalizableVault.moveFileAppBar.localized, title))
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                 .foregroundColor(.white)
             Spacer()
         }.padding(EdgeInsets(top: 10, leading: 16, bottom: 0, trailing: 16))
     }
-     private var bottomView : some View {
+    
+    private var bottomView : some View {
         HStack {
-
-            Button(Localizable.Vault.moveFileActionCancel) {
-                fileListViewModel.showingMoveFileView  = false
-                fileListViewModel.initSelectedFiles()
-                fileListViewModel.initFolderPathArray()
-                fileListViewModel.rootFile = fileListViewModel.oldRootFile
-            } .buttonStyle(MoveFileButtonStyle())
-                .foregroundColor(.white)
+            cancelButton
             
-            Button(Localizable.Vault.moveFileActionMove) {
-                fileListViewModel.showingMoveFileView  = false
-                fileListViewModel.moveFiles()
-                fileListViewModel.initSelectedFiles()
-            }.foregroundColor( fileListViewModel.oldRootFile == fileListViewModel.rootFile ? .white.opacity(0.4) : .white)
-                .disabled(fileListViewModel.oldRootFile == fileListViewModel.rootFile)
-                .buttonStyle(MoveFileButtonStyle())
+            Spacer()
+            
+            Image("files.move-separator")
+                .frame(height: 50)
+            
+            Spacer()
+            
+            moveButton
+            
         }.frame(height: 50)
     }
-}
-
-struct MoveFileButtonStyle : ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.custom(Styles.Fonts.boldFontName, size: 16))
-            .frame(maxWidth: .infinity)
+    
+    var cancelButton: some View {
+        Button {
+            fileListViewModel.showingMoveFileView  = false
+            fileListViewModel.initSelectedFiles()
+            fileListViewModel.initFolderPathArray()
+            fileListViewModel.rootFile = fileListViewModel.oldRootFile
+        } label: {
+            Text(LocalizableVault.moveFileActionCancel.localized)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .font(.custom(Styles.Fonts.boldFontName, size: 16))
+        }
+    }
+    
+    var moveButton: some View {
+        Button {
+            fileListViewModel.showingMoveFileView  = false
+            fileListViewModel.moveFiles()
+            fileListViewModel.initSelectedFiles()
+        } label: {
+            Text(LocalizableVault.moveFileActionMove.localized)
+                .foregroundColor( fileListViewModel.oldRootFile == fileListViewModel.rootFile ? .white.opacity(0.4) : .white)
+                .font(.custom(Styles.Fonts.boldFontName, size: 16))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }.disabled(fileListViewModel.oldRootFile == fileListViewModel.rootFile)
     }
 }
-
 
 struct MoveFilesView_Previews: PreviewProvider {
     static var previews: some View {

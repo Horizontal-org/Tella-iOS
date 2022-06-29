@@ -4,29 +4,24 @@
 
 import Foundation
 
-extension Localizable {
+enum LocalizableCamera: String, LocalizableDelegate {
     
-    struct Camera {
-        
-        static var tabBar = "Camera_TabBar".localized
-
-        static var appBar = "Camera_AppBar".localized
-        static var tabTitlePhoto = "Camera_TabTitle_Photo".localized
-        static var tabTitleVideo = "Camera_TabTitle_Video".localized
-        
-        static var encryptingProgressSheetTitle = "Camera_EncryptingProgress_SheetTitle".localized
-        static var encryptingProgressSheetExpl = "Camera_EncryptingProgress_SheetExpl".localized
-        static var encryptingProgressCancelSheetAction = "Camera_EncryptingProgress_Cancel_SheetAction".localized
-        
-        static var cancelEncryptingSheetTitle = "Camera_CancelEncrypting_SheetTitle".localized
-        static var cancelEncryptingSheetExpl = "Camera_CancelEncrypting_SheetExpl".localized
-        static var cancelEncryptingDeleteSheetAction = "Camera_CancelEncrypting_Delete_SheetAction".localized
-        static var cancelEncryptingBackSheetAction = "Camera_CancelEncrypting_Back_SheetAction".localized
-
-        static var deniedCameraPermissionExpl = "Camera_DeniedCameraPermission_Expl".localized
-        static var deniedCameraPermissionActionSettings = "Camera_DeniedCameraPermission_Action_Settings".localized
-        static var deniedCameraPermissionActionCancel = "Camera_DeniedCameraPermission_Action_Cancel".localized
-
-        
-    }
+    case tabBar = "Camera_TabBar"
+    
+    case appBar = "Camera_AppBar"
+    case tabTitlePhoto = "Camera_TabTitle_Photo"
+    case tabTitleVideo = "Camera_TabTitle_Video"
+    
+    case encryptingProgressSheetTitle = "Camera_EncryptingProgress_SheetTitle"
+    case encryptingProgressSheetExpl = "Camera_EncryptingProgress_SheetExpl"
+    case encryptingProgressCancelSheetAction = "Camera_EncryptingProgress_Cancel_SheetAction"
+    
+    case cancelEncryptingSheetTitle = "Camera_CancelEncrypting_SheetTitle"
+    case cancelEncryptingSheetExpl = "Camera_CancelEncrypting_SheetExpl"
+    case cancelEncryptingDeleteSheetAction = "Camera_CancelEncrypting_Delete_SheetAction"
+    case cancelEncryptingBackSheetAction = "Camera_CancelEncrypting_Back_SheetAction"
+    
+    case deniedCameraPermissionExpl = "Camera_DeniedCameraPermission_Expl"
+    case deniedCameraPermissionActionSettings = "Camera_DeniedCameraPermission_Action_Settings"
+    case deniedCameraPermissionActionCancel = "Camera_DeniedCameraPermission_Action_Cancel"
 }

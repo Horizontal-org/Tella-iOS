@@ -7,7 +7,7 @@ import SwiftUI
 struct FileGroupsView: View {
     
     @EnvironmentObject var appModel: MainAppModel
-
+    
     var shouldShowFilesTitle : Bool
     
     let columns = [GridItem(.flexible(),spacing: 16),
@@ -17,8 +17,7 @@ struct FileGroupsView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16 ) {
                 if shouldShowFilesTitle {
-                    
-                    Text(Localizable.Home.tellaFilesSubhead)
+                    Text(LocalizableHome.tellaFilesSubhead.localized)
                         .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                         .foregroundColor(.white)
                 }
@@ -27,10 +26,10 @@ struct FileGroupsView: View {
                     ForEach(homeFileItems, id: \.self) { homeFileItem in
                         FileGroupView(groupName: homeFileItem.title,
                                       iconName: homeFileItem.imageName)
-                            .navigateTo(destination: FileListView(appModel: appModel,
-                                                                  rootFile: appModel.vaultManager.root,
-                                                                  fileType: homeFileItem.fileType,
-                                                                  title: homeFileItem.title ))
+                        .navigateTo(destination: FileListView(appModel: appModel,
+                                                              rootFile: appModel.vaultManager.root,
+                                                              fileType: homeFileItem.fileType,
+                                                              title: homeFileItem.title ))
                     }
                 }
             }
