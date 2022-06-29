@@ -12,7 +12,7 @@ struct LockPinView: View {
     
     @EnvironmentObject var lockViewModel: LockViewModel
     
-    @State var message = Localizable.Lock.lockPinSetBannerExpl
+    @State var message = LocalizableLock.lockPinSetBannerExpl.localized
 
     var body: some View {
         CustomCalculatorView(value: $lockViewModel.calculatorValue,

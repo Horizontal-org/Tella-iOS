@@ -27,7 +27,7 @@ struct ConfirmBottomSheet : View {
             
             Text(self.titleText)
                 .foregroundColor(.white)
-                .font(Font.custom(Styles.Fonts.boldFontName, size: 16))
+                .font(Font.custom(Styles.Fonts.semiBoldFontName, size: 17))
             
             Text(self.msgText)
                 .foregroundColor(.white)

@@ -14,7 +14,9 @@ struct SettingsMainView: View {
     var body: some View {
         ContainerView {
             VStack() {
-                GenaralSettingsView(appModel: appModel)
+                Spacer()
+                    .frame(height: 12)
+                GeneralSettingsView(appModel: appModel)
                 RecentFilesSettingsView()
                 Spacer()
             }
@@ -24,7 +26,7 @@ struct SettingsMainView: View {
             }
         }
         .toolbar {
-            LeadingTitleToolbar(title: Localizable.Settings.appBar)
+            LeadingTitleToolbar(title: LocalizableSettings.appBar.localized)
         }
         
         .onDisappear(perform: {
@@ -37,7 +39,7 @@ struct SettingsMainView: View {
     }
 }
 
-struct GenaralSettingsView : View {
+struct GeneralSettingsView : View {
     
     @State private var presentingLanguage = false
     @ObservedObject var appModel : MainAppModel
@@ -48,29 +50,29 @@ struct GenaralSettingsView : View {
         VStack(spacing: 0) {
             
             SettingsItemView(imageName: "settings.language",
-                             title: Localizable.Settings.settLanguage,
-                             value: Language.currentLanguage.name)
-            .onTapGesture {
-                presentingLanguage = true
-            }
+                             title: LocalizableSettings.settLanguage.localized,
+                             value: LanguageManager.shared.currentLanguage.name)
+                .onTapGesture {
+                    presentingLanguage = true
+                }
             
             DividerView()
             
             SettingsItemView(imageName: "settings.lock",
-                             title: Localizable.Settings.settLock)
+                             title: LocalizableSettings.settLock.localized)
             
                 .navigateTo(destination: unlockView)
             
             DividerView()
             
             SettingsItemView(imageName: "settings.help",
-                             title: Localizable.Settings.settAbout,
+                             title: LocalizableSettings.settAbout.localized,
                              value: "")
             .navigateTo(destination: AboutAndHelpView())
             
         }.background(Color.white.opacity(0.08))
             .cornerRadius(15)
-            .padding()
+            .padding(EdgeInsets(top: 5, leading: 17, bottom: 5, trailing: 17))
             .fullScreenCover(isPresented: $presentingLanguage) {
                 
             } content: {
@@ -97,12 +99,12 @@ struct RecentFilesSettingsView : View {
         
         VStack(spacing: 0) {
             
-            SettingToggleItem(title: Localizable.Settings.settRecentFiles,
-                              description: Localizable.Settings.settRecentFilesExpl,
+            SettingToggleItem(title: LocalizableSettings.settRecentFiles.localized,
+                              description: LocalizableSettings.settRecentFilesExpl.localized,
                               toggle: $appModel.settings.showRecentFiles)
         }.background(Color.white.opacity(0.08))
             .cornerRadius(15)
-            .padding()
+            .padding(EdgeInsets(top: 5, leading: 17, bottom: 5, trailing: 17))
     }
 }
 

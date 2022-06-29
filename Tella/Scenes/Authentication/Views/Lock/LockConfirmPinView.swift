@@ -10,7 +10,7 @@ struct LockConfirmPinView: View {
     @EnvironmentObject var lockViewModel: LockViewModel
     
     @State var shouldShowOnboarding : Bool = false
-    @State var message : String = Localizable.Lock.lockPinConfirmBannerExpl
+    @State var message : String = LocalizableLock.lockPinConfirmBannerExpl.localized
     
     var body: some View {
         ZStack {
@@ -33,7 +33,7 @@ struct LockConfirmPinView: View {
         if lockViewModel.isValid {
             lockViewModel.unlockType == .new ? self.lockWithPin() : self.updatePin()
         } else {
-            message = Localizable.Lock.errorPINsDoNotMatchBannerExpl
+            message = LocalizableLock.errorPINsDoNotMatchBannerExpl.localized
         }
     }
     

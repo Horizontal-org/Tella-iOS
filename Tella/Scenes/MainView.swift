@@ -47,7 +47,7 @@ struct MainView: View  {
                     HomeView(appModel: appModel)
                         .tabItem {
                             Image("tab.home")
-                            Text(Localizable.Home.tabBar)
+                            Text(LocalizableHome.tabBar.localized)
                         }.tag(MainAppModel.Tabs.home)
 /*#if DEBUG
                     ReportsView()
@@ -64,13 +64,13 @@ struct MainView: View  {
                     ContainerView{}
                         .tabItem {
                             Image("tab.camera")
-                            Text(Localizable.Camera.tabBar)
+                            Text(LocalizableCamera.tabBar.localized)
                         }.tag(MainAppModel.Tabs.camera)
                     
                     ContainerView{}
                         .tabItem {
                             Image("tab.mic")
-                            Text(Localizable.Recorder.tabBar)
+                            Text(LocalizableRecorder.tabBar.localized)
                         }.tag(MainAppModel.Tabs.mic)
                 }
                 
@@ -82,7 +82,7 @@ struct MainView: View  {
                         trailingView
                     }
                 }
-                .navigationBarTitle(Localizable.Home.appBar, displayMode: .inline)
+                .navigationBarTitle(LocalizableHome.appBar.localized, displayMode: .inline)
                 .navigationBarHidden(appModel.selectedTab == .home ? false : true)
             }
             .accentColor(.white)
@@ -123,6 +123,9 @@ struct MainView: View  {
         UINavigationBar.appearance().compactAppearance = coloredAppearance
         UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
         UINavigationBar.appearance().backgroundColor = Styles.uiColor.backgroundMain
+        
+        UITableView.appearance().backgroundColor = .clear
+        UITableViewCell.appearance().backgroundColor = .clear
     }
     
     @ViewBuilder
@@ -159,7 +162,7 @@ struct AppView_Previews: PreviewProvider {
         MainView()
             .preferredColorScheme(.light)
             .previewLayout(.device)
-            .previewDevice("iPhone Xʀ")
+            .previewDevice("iPhone 8")
             .environmentObject(MainAppModel())
     }
 }

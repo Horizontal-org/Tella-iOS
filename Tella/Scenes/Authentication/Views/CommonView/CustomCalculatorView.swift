@@ -120,7 +120,7 @@ struct CustomPinView_Previews: PreviewProvider {
     static var previews: some View {
         CustomCalculatorView(value: .constant("12 + 45"),
                              result: .constant("0"),
-                             message: .constant(Localizable.Lock.lockPinSetBannerExpl),
+                             message: .constant(LocalizableLock.lockPinSetBannerExpl.localized),
                              isValid: .constant(false),
                              operationArray: .constant(["1 + 3"]),
                              calculatorType: .pin,
