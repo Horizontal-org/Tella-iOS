@@ -77,7 +77,7 @@ struct GeneralSettingsView : View {
             DividerView()
             
             SettingsItemView(imageName: "settings.timeout",
-                             title: "Lock timeout",
+                             title: LocalizableSettings.settLockTimeout.localized,
                              value: appModel.settings.lockTimeout.displayName)
             .onTapGesture {
                 showLockTimeout()

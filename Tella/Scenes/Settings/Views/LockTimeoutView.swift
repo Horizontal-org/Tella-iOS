@@ -36,7 +36,7 @@ struct TitleView : View {
     
     var body: some View {
         
-        Text("Lock timeout")
+        Text(LocalizableSettings.settLockTimeoutSheetTitle.localized)
             .font(.custom(Styles.Fonts.boldFontName, size: 16))
             .multilineTextAlignment(.leading)
             .foregroundColor(.white)
@@ -44,7 +44,7 @@ struct TitleView : View {
         Spacer()
             .frame(height: 10)
         
-        Text("Decide how long it takes for Tella to lock.")
+        Text(LocalizableSettings.settLockTimeoutSheetExpl.localized)
             .font(.custom(Styles.Fonts.regularFontName, size: 14))
             .multilineTextAlignment(.leading)
             .foregroundColor(.white)
@@ -103,7 +103,7 @@ struct BottomButtonsView : View {
             Button {
                 sheetManager.hide()
             } label: {
-                Text("CANCEL")
+                Text(LocalizableSettings.settLockTimeoutCancelSheetAction.localized)
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                     .foregroundColor(.white)
             }.padding()
@@ -112,7 +112,7 @@ struct BottomButtonsView : View {
                 settingsViewModel.saveLockTimeout()
                 sheetManager.hide()
             } label: {
-                Text("SAVE")
+                Text(LocalizableSettings.settLockTimeoutSaveSheetAction.localized)
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.trailing)

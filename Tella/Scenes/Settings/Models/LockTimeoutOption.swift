@@ -17,15 +17,15 @@ enum LockTimeoutOption : String {
         
         switch self {
         case .immediately:
-            return "Immediately"
+            return LocalizableSettings.settLockTimeoutImmediatelySheetSelect.localized
         case .oneMinute:
-            return "1 minute"
+            return LocalizableSettings.settLockTimeoutOneminuteSheetSelect.localized
         case .fiveMinutes:
-            return "5 minutes"
+            return LocalizableSettings.settLockTimeoutFiveMinutesSheetSelect.localized
         case .thirtyMinutes:
-            return "30 minutes"
+            return LocalizableSettings.settLockTimeoutThirtyMinutesSheetSelect.localized
         case .onehour:
-            return "1 hour"
+            return LocalizableSettings.settLockTimeoutOneHourSheetSelect.localized
         }
     }
     
