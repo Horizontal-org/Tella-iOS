@@ -76,8 +76,15 @@ struct DragView<Content: View> : View {
                         .if (showWithAnimation) {
                             $0.animation(.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0))
                         }
-                    
-                    
+                        .gesture(
+                            TapGesture()
+                                .onEnded { _ in
+                                    if shouldHideOnTap {
+                                        self.isShown = false
+                                        UIApplication.shared.endEditing()
+                                    }
+                                })
+
                     //Foreground
                     VStack{
                         Spacer()
@@ -100,18 +107,7 @@ struct DragView<Content: View> : View {
                 .if (showWithAnimation) {
                     $0.animation(.spring())
                 }
-                .gesture(
-                    TapGesture()
-                    
-                        .onEnded { _ in
-                            if shouldHideOnTap {
-                                
-                                self.isShown = false
-                                
-                                UIApplication.shared.endEditing()
-                                
-                            }
-                        })
+              
                 .onAppear{
                     NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) {(noti) in
                         if isShown {

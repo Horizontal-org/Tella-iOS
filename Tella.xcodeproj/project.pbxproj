@@ -161,9 +161,13 @@
 		12AB30D3272C36500020FFBF /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB30D2272C36500020FFBF /* HomeData.swift */; };
 		12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */; };
 		12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1D278CD4900007C781 /* IntExtension.swift */; };
+		12B5257B2848FC2800B3D1C0 /* LockTimeoutOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */; };
+		12B5257E2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257D2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift */; };
+		12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */; };
 		12B6481D28367C1D00CBE541 /* SheetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B6481C28367C1D00CBE541 /* SheetManager.swift */; };
 		12B6AF7D283E4C7200D697F6 /* LocalizableVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B6AF7C283E4C7200D697F6 /* LocalizableVault.swift */; };
 		12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */; };
+		12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C2BDE72847676100488060 /* LockTimeoutView.swift */; };
 		12D37A942721752B00E43BDB /* TellaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A932721752B00E43BDB /* TellaApp.swift */; };
 		12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A952721A49D00E43BDB /* NavigationContainerView.swift */; };
 		12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */; };
@@ -404,9 +408,13 @@
 		12AB30D2272C36500020FFBF /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
 		12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtension.swift; sourceTree = "<group>"; };
 		12AE8D1D278CD4900007C781 /* IntExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtension.swift; sourceTree = "<group>"; };
+		12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutOption.swift; sourceTree = "<group>"; };
+		12B5257D2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutOptionsStatus.swift; sourceTree = "<group>"; };
+		12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAndHelpItem.swift; sourceTree = "<group>"; };
 		12B6481C28367C1D00CBE541 /* SheetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetManager.swift; sourceTree = "<group>"; };
 		12B6AF7C283E4C7200D697F6 /* LocalizableVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableVault.swift; sourceTree = "<group>"; };
 		12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreFileActionButton.swift; sourceTree = "<group>"; };
+		12C2BDE72847676100488060 /* LockTimeoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutView.swift; sourceTree = "<group>"; };
 		12D37A932721752B00E43BDB /* TellaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaApp.swift; sourceTree = "<group>"; };
 		12D37A952721A49D00E43BDB /* NavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContainerView.swift; sourceTree = "<group>"; };
 		12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinKeyboardModel.swift; sourceTree = "<group>"; };
@@ -528,6 +536,7 @@
 			children = (
 				12E8129627A15692007DDDC0 /* Views */,
 				12E8129F27A19E67007DDDC0 /* ViewModel */,
+				12B5257C2848FC5A00B3D1C0 /* Models */,
 				12E812A027A19E7A007DDDC0 /* SettingsV1 */,
 			);
 			path = Settings;
@@ -1044,6 +1053,16 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		12B5257C2848FC5A00B3D1C0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */,
+				12B5257D2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift */,
+				12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		12BCB2E62816972200889E5A /* Localizable */ = {
 			isa = PBXGroup;
 			children = (
@@ -1095,6 +1114,7 @@
 				12730E66279F11C200DC0135 /* LanguageListView.swift */,
 				12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */,
 				0D4D7517266470A700D7A635 /* SettingsViews.swift */,
+				12C2BDE72847676100488060 /* LockTimeoutView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1629,8 +1649,10 @@
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				0E170255267910CC0069072A /* OutBoxFormsView.swift in Sources */,
 				0E170259267913160069072A /* FormsCellView.swift in Sources */,
+				12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */,
 				12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */,
 				0ECC7819267A53A700A2ACF2 /* PageView.swift in Sources */,
+				12B5257B2848FC2800B3D1C0 /* LockTimeoutOption.swift in Sources */,
 				127A5B2228538E0800FAAEB0 /* Language.swift in Sources */,
 				1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */,
 				1278B66127EB364500C9AC4D /* Utils.swift in Sources */,
@@ -1660,6 +1682,7 @@
 				0E170257267910DE0069072A /* DraftFormsView.swift in Sources */,
 				12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */,
 				128D6E1A28045C090082AB18 /* manageFilesItems.swift in Sources */,
+				12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */,
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,
 				128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */,
@@ -1678,6 +1701,7 @@
 				12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */,
 				12607D5A2790457600E2B8CC /* VideoViewer.swift in Sources */,
 				125A0AED2726CBF000F6E77F /* UnlockPinView.swift in Sources */,
+				12B5257E2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift in Sources */,
 				12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */,
 				128B929D27D7A08700E92ACF /* FileItemsView.swift in Sources */,
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
