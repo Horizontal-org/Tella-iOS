@@ -148,12 +148,21 @@
 		12A2DAFE273563E40094B856 /* RecentFileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC6263A383900CE191A /* RecentFileCell.swift */; };
 		12A2DAFF273564090094B856 /* FileSortOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213CA268028A200526995 /* FileSortOptions.swift */; };
 		12A2DB03273576D50094B856 /* AddFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A2DB02273576D50094B856 /* AddFileView.swift */; };
+		12A697B32840C50400BE5E9C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A697B52840C50400BE5E9C /* Localizable.strings */; };
+		12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5A3428576E9C00134A9B /* ArrayExtension.swift */; };
 		12A69209281C68EE00CDB0DD /* UnlockType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A69208281C68EE00CDB0DD /* UnlockType.swift */; };
 		12A6920B281D54D800CDB0DD /* TopCalculatorMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6920A281D54D800CDB0DD /* TopCalculatorMessageView.swift */; };
 		12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5A3428576E9C00134A9B /* ArrayExtension.swift */; };
 		12AB30D3272C36500020FFBF /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB30D2272C36500020FFBF /* HomeData.swift */; };
 		12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */; };
 		12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1D278CD4900007C781 /* IntExtension.swift */; };
+		12B5257B2848FC2800B3D1C0 /* LockTimeoutOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */; };
+		12B5257E2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257D2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift */; };
+		12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */; };
+		12B6481D28367C1D00CBE541 /* SheetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B6481C28367C1D00CBE541 /* SheetManager.swift */; };
+		12B6AF7D283E4C7200D697F6 /* LocalizableVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B6AF7C283E4C7200D697F6 /* LocalizableVault.swift */; };
+		12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */; };
+		12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C2BDE72847676100488060 /* LockTimeoutView.swift */; };
 		12B0981328410FB60076AA78 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12B0981528410FB60076AA78 /* Localizable.strings */; };
 		12B35DD92864C3F400340B2C /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B35DD82864C3F400340B2C /* StringExtension.swift */; };
 		12B35DDB2864CD4300340B2C /* CalculatorButtonViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B35DDA2864CD4300340B2C /* CalculatorButtonViewProtocol.swift */; };
@@ -385,12 +394,23 @@
 		12A148912720A32000A1ADDC /* CalculatorButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorButtonType.swift; sourceTree = "<group>"; };
 		12A148952720B2B400A1ADDC /* PasswordTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextView.swift; sourceTree = "<group>"; };
 		12A2DB02273576D50094B856 /* AddFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileView.swift; sourceTree = "<group>"; };
+		12A697B42840C50400BE5E9C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		12A697B62840C51C00BE5E9C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		12A697B72840C54200BE5E9C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		12AA5A3428576E9C00134A9B /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		12A69208281C68EE00CDB0DD /* UnlockType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockType.swift; sourceTree = "<group>"; };
 		12A6920A281D54D800CDB0DD /* TopCalculatorMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopCalculatorMessageView.swift; sourceTree = "<group>"; };
 		12AA5A3428576E9C00134A9B /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		12AB30D2272C36500020FFBF /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
 		12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtension.swift; sourceTree = "<group>"; };
 		12AE8D1D278CD4900007C781 /* IntExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtension.swift; sourceTree = "<group>"; };
+		12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutOption.swift; sourceTree = "<group>"; };
+		12B5257D2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutOptionsStatus.swift; sourceTree = "<group>"; };
+		12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAndHelpItem.swift; sourceTree = "<group>"; };
+		12B6481C28367C1D00CBE541 /* SheetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetManager.swift; sourceTree = "<group>"; };
+		12B6AF7C283E4C7200D697F6 /* LocalizableVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableVault.swift; sourceTree = "<group>"; };
+		12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreFileActionButton.swift; sourceTree = "<group>"; };
+		12C2BDE72847676100488060 /* LockTimeoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutView.swift; sourceTree = "<group>"; };
 		12B0981428410FB60076AA78 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12B0981628410FDE0076AA78 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12B0981728410FF20076AA78 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -518,6 +538,7 @@
 			children = (
 				12E8129627A15692007DDDC0 /* Views */,
 				12E8129F27A19E67007DDDC0 /* ViewModel */,
+				12B5257C2848FC5A00B3D1C0 /* Models */,
 				12E812A027A19E7A007DDDC0 /* SettingsV1 */,
 			);
 			path = Settings;
@@ -665,6 +686,7 @@
 				1289B98C27C53C8400315FCE /* ImageExtension.swift */,
 				128EDB91280980DB00747B98 /* SequenceExtension.swift */,
 				12AA5A3428576E9C00134A9B /* ArrayExtension.swift */,
+				12AA5A3428576E9C00134A9B /* ArrayExtension.swift */,
 				12B35DD82864C3F400340B2C /* StringExtension.swift */,
 			);
 			path = Extensions;
@@ -753,6 +775,7 @@
 				D53B77022601D5170001CD34 /* Tella.entitlements */,
 				F66E65BA23E32080000F93E5 /* Info.plist */,
 				F66E65B723E32080000F93E5 /* LaunchScreen.storyboard */,
+				12A697B52840C50400BE5E9C /* Localizable.strings */,
 				12858EB0285CCC9F00C946C1 /* Tella-Bridging-Header.h */,
 				12B0981528410FB60076AA78 /* Localizable.strings */,
 			);
@@ -1025,6 +1048,16 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		12B5257C2848FC5A00B3D1C0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */,
+				12B5257D2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift */,
+				12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		12BCB2E62816972200889E5A /* Localizable */ = {
 			isa = PBXGroup;
 			children = (
@@ -1076,6 +1109,7 @@
 				12730E66279F11C200DC0135 /* LanguageListView.swift */,
 				12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */,
 				0D4D7517266470A700D7A635 /* SettingsViews.swift */,
+				12C2BDE72847676100488060 /* LockTimeoutView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1425,6 +1459,7 @@
 				D51639762631091E003A11B5 /* Assets.xcassets in Resources */,
 				128777C52718D25E000624E2 /* OpenSans-Light.ttf in Resources */,
 				0E78B3AE2656B04B00F9BDBC /* open-sans.regular.ttf in Resources */,
+				12A697B32840C50400BE5E9C /* Localizable.strings in Resources */,
 				12B0981328410FB60076AA78 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1596,8 +1631,11 @@
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				0E170255267910CC0069072A /* OutBoxFormsView.swift in Sources */,
 				0E170259267913160069072A /* FormsCellView.swift in Sources */,
+				12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */,
 				12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */,
 				0ECC7819267A53A700A2ACF2 /* PageView.swift in Sources */,
+				12B5257B2848FC2800B3D1C0 /* LockTimeoutOption.swift in Sources */,
+				127A5B2228538E0800FAAEB0 /* Language.swift in Sources */,
 				127A5B2228538E0800FAAEB0 /* Language.swift in Sources */,
 				1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */,
 				12858EB2285CCCD300C946C1 /* TryCatch.m in Sources */,
@@ -1628,6 +1666,7 @@
 				0E170257267910DE0069072A /* DraftFormsView.swift in Sources */,
 				12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */,
 				128D6E1A28045C090082AB18 /* manageFilesItems.swift in Sources */,
+				12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */,
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,
 				128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */,
@@ -1645,6 +1684,7 @@
 				12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */,
 				12607D5A2790457600E2B8CC /* VideoViewer.swift in Sources */,
 				125A0AED2726CBF000F6E77F /* UnlockPinView.swift in Sources */,
+				12B5257E2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift in Sources */,
 				12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */,
 				128B929D27D7A08700E92ACF /* FileItemsView.swift in Sources */,
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
@@ -1683,6 +1723,7 @@
 				128D3AF9282A966F003DBB83 /* CalculatorData.swift in Sources */,
 				0DA213C72680286F00526995 /* FileListItem.swift in Sources */,
 				CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */,
+				12B6AF7D283E4C7200D697F6 /* LocalizableVault.swift in Sources */,
 				12A69209281C68EE00CDB0DD /* UnlockType.swift in Sources */,
 				12B6AF7D283E4C7200D697F6 /* LocalizableVault.swift in Sources */,
 				125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */,
@@ -1695,6 +1736,8 @@
 				D516397C2631113B003A11B5 /* Styles.swift in Sources */,
 				12F5D28D27A326EB00BF3309 /* AboutAndHelpView.swift in Sources */,
 				1230BE4727CD6D440055F854 /* AudioAuthorizationStatus.swift in Sources */,
+				12A148982720B47100A1ADDC /* LockDescriptionView.swift in Sources */,
+				129533C227399A1B0053FA4B /* PhotoVideoPickerView.swift in Sources */,
 				129533C227399A1B0053FA4B /* PhotoVideoPickerView.swift in Sources */,
 				129533C227399A1B0053FA4B /* PhotoVideoPickerView.swift in Sources */,
 				12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */,
@@ -1754,6 +1797,16 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		12A697B52840C50400BE5E9C /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				12A697B42840C50400BE5E9C /* en */,
+				12A697B62840C51C00BE5E9C /* fr */,
+				12A697B72840C54200BE5E9C /* es */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		12B0981528410FB60076AA78 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1963,6 +2016,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 17;
 				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
@@ -1973,6 +2027,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.8.4;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				MARKETING_VERSION = v0.8.4;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1993,6 +2049,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 17;
 				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
@@ -2003,6 +2060,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.8.4;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				MARKETING_VERSION = v0.8.4;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
