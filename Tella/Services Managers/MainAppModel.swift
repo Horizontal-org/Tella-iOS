@@ -20,6 +20,8 @@ protocol AppModelFileManagerProtocol {
     func saveDataToTempFile(data:Data, pathExtension:String) -> URL?
 }
 
+let lockTimeoutStartDateKey = "LockTimeoutStartDate"
+
 class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     
     
@@ -35,6 +37,8 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     @Published var vaultManager: VaultManager = VaultManager(cryptoManager: CryptoManager.shared, fileManager: DefaultFileManager(), rootFileName: "root", containerPath: "Containers", progress: ImportProgress())
     
     @Published var selectedTab: Tabs = .home
+
+    @UserDefaultsProperty(key: lockTimeoutStartDateKey) private var lockTimeoutStartDate: Date?
     
     @Published var shouldUpdateLanguage:Bool = true
     
@@ -59,6 +63,16 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         if let encoded = try? encoder.encode(settings) {
             UserDefaults.standard.set(encoded, forKey: "com.tella.settings")
         }
+    }
+
+    func saveLockTimeoutStartDate()  {
+        lockTimeoutStartDate = Date()
+    }
+    
+    func shouldResetApp() -> Bool {
+        guard let startDate = lockTimeoutStartDate else { return true }
+        let elapsedTime = Date().timeIntervalSince(startDate)
+        return  TimeInterval(self.settings.lockTimeout.time) <  elapsedTime
     }
     
     func removeAllFiles() {
@@ -103,7 +117,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     func cancelImportAndEncryption() {
         self.vaultManager.shouldCancelImportAndEncryption.send(true)
     }
-
+    
     func delete(files: [VaultFile], from parentFolder: VaultFile?) {
         DispatchQueue.global(qos: .background).async {
             self.vaultManager.delete(files: files, parent: parentFolder)
@@ -146,6 +160,7 @@ class SettingsModel: ObservableObject, Codable {
     @Published var deleteForms: Bool = false
     @Published var deleteServerSettings: Bool = false
     @Published var showRecentFiles: Bool = false
+    @Published var lockTimeout: LockTimeoutOption = .immediately
     
     enum CodingKeys: CodingKey {
         case offLineMode
@@ -154,6 +169,7 @@ class SettingsModel: ObservableObject, Codable {
         case deleteForms
         case deleteServerSettings
         case showRecentFiles
+        case lockTimeout
     }
     
     init() {
@@ -169,6 +185,8 @@ class SettingsModel: ObservableObject, Codable {
         deleteServerSettings = try container.decode(Bool.self, forKey: .deleteServerSettings)
         showRecentFiles = try container.decode(Bool.self, forKey: .showRecentFiles)
         
+        let lockTimeoutString = try container.decode(String.self, forKey: .lockTimeout)
+        lockTimeout = LockTimeoutOption(rawValue: lockTimeoutString) ?? .immediately
     }
     
     func encode(to encoder: Encoder) throws {
@@ -179,6 +197,7 @@ class SettingsModel: ObservableObject, Codable {
         try container.encode(deleteForms, forKey: .deleteForms)
         try container.encode(deleteServerSettings, forKey: .deleteServerSettings)
         try container.encode(showRecentFiles, forKey: .showRecentFiles)
+        try container.encode( lockTimeout.rawValue, forKey: .lockTimeout)
     }
     
 }

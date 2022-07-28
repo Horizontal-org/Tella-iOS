@@ -7,8 +7,8 @@ import SwiftUI
 struct LanguageListView: View {
     
     @Binding var isPresented : Bool
-    @StateObject var settingsViewModel = SettingsViewModel()
-    
+    @EnvironmentObject var settingsViewModel: SettingsViewModel
+
     @EnvironmentObject private var appViewState: AppViewState
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
@@ -112,8 +112,8 @@ struct LanguageItemView : View {
     }
 }
 
-struct LanguageListView_Previews: PreviewProvider {
-    static var previews: some View {
-        LanguageListView(isPresented: .constant(true))
-    }
-}
+//struct LanguageListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        LanguageListView(isPresented: .constant(true))
+//    }
+//}

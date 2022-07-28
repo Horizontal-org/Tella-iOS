@@ -28,7 +28,17 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settLangEnglish = "Settings_SettLang_English_Expl"
     case settLangFrench = "Settings_SettLang_French_Expl"
     case settLangSpanish = "Settings_SettLang_Spanish_Expl"
-    
+
+    case settLockTimeout = "Settings_Sett_LockTimeout"
+    case settLockTimeoutSheetTitle = "Settings_SettLockTimeout_SheetTitle"
+    case settLockTimeoutSheetExpl = "Settings_SettLockTimeout_SheetExpl"
+    case settLockTimeoutImmediatelySheetSelect = "Settings_SettLockTimeout_Immediately_SheetSelect"
+    case settLockTimeoutOneminuteSheetSelect = "Settings_SettLockTimeout_Oneminute_SheetSelect"
+    case settLockTimeoutFiveMinutesSheetSelect = "Settings_SettLockTimeout_FiveMinutes_SheetSelect"
+    case settLockTimeoutThirtyMinutesSheetSelect = "Settings_SettLockTimeout_ThirtyMinutes_SheetSelect"
+    case settLockTimeoutOneHourSheetSelect = "Settings_SettLockTimeout_OneHour_SheetSelect"
+    case settLockTimeoutCancelSheetAction = "Settings_SettLockTimeout_Cancel_SheetAction"
+    case settLockTimeoutSaveSheetAction = "Settings_SettLockTimeout_Save_SheetAction"
 }
 
 
