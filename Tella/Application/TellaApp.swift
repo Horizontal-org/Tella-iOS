@@ -20,6 +20,8 @@ struct TellaApp: App {
         }.onChange(of: scenePhase) { phase in
             switch phase {
             case .background:
+                self.saveLockTimeoutStartDate()
+            case .active:
                 self.resetApp()
             default:
                 break
@@ -27,13 +29,19 @@ struct TellaApp: App {
         }
     }
     
+    func saveLockTimeoutStartDate() {
+        appViewState.homeViewModel?.saveLockTimeoutStartDate()
+    }
+    
     func resetApp() {
-        DispatchQueue.main.async {
-            appViewState.shouldHidePresentedView = true
-            appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
-            appViewState.resetApp()
-            appViewState.shouldHidePresentedView = false
-            
+        guard let shouldResetApp = appViewState.homeViewModel?.shouldResetApp() else { return }
+        if shouldResetApp {
+            DispatchQueue.main.async {
+                appViewState.shouldHidePresentedView = true
+                appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
+                appViewState.resetApp()
+                appViewState.shouldHidePresentedView = false
+            }
         }
     }
 }

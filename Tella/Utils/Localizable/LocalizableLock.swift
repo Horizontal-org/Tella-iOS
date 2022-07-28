@@ -35,3 +35,4 @@ enum LocalizableLock: String, LocalizableDelegate {
     case errorPINsDoNotMatchBannerExpl = "LockUnlock_Error_PINsDoNotMatch_BannerExpl"
     case errorIncorrectPINBannerExpl = "LockUnlock_Error_IncorrectPIN_BannerExpl"
 }
+

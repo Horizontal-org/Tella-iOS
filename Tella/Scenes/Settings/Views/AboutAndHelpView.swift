@@ -42,7 +42,7 @@ struct AboutAndHelpView: View {
 
 struct AboutAndHelpItemsView : View {
     
-    @StateObject var settingsViewModel = SettingsViewModel()
+    @EnvironmentObject var settingsViewModel : SettingsViewModel
     
     var body : some View {
         

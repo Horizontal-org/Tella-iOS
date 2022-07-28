@@ -25,6 +25,7 @@ struct MoreFileActionButton: View {
     
     var modalHeight : CGFloat {
         let dividerHeight = fileListViewModel.fileActionItems.filter{$0.viewType == ActionSheetItemType.divider}.count * 20
+        print(CGFloat((fileListViewModel.fileActionItems.count * 50) - dividerHeight  + 90))
         return CGFloat((fileListViewModel.fileActionItems.count * 50) - dividerHeight  + 90)
     }
     
