@@ -11,6 +11,13 @@ struct SettingsMainView: View {
     
     @ObservedObject var appModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @StateObject var settingsViewModel : SettingsViewModel
+    
+    init(appModel:MainAppModel) {
+        _settingsViewModel = StateObject(wrappedValue: SettingsViewModel(appModel: appModel))
+        self.appModel = appModel
+    }
+    
     var body: some View {
         ContainerView {
             VStack() {
@@ -18,6 +25,7 @@ struct SettingsMainView: View {
                     Spacer()
                         .frame(height: 12)
                     GeneralSettingsView()
+                        .environmentObject(settingsViewModel)
                     RecentFilesSettingsView()
                     Spacer()
                 }
@@ -43,6 +51,8 @@ struct GeneralSettingsView : View {
     @EnvironmentObject var appModel : MainAppModel
     @StateObject var lockViewModel = LockViewModel(unlockType: .update)
     @State var passwordTypeString : String = ""
+    @EnvironmentObject private var sheetManager: SheetManager
+    @EnvironmentObject var settingsViewModel: SettingsViewModel
     
     var body : some View {
         
@@ -63,12 +73,23 @@ struct GeneralSettingsView : View {
             
             .navigateTo(destination: unlockView)
             
+            
+            DividerView()
+            
+            SettingsItemView(imageName: "settings.timeout",
+                             title: LocalizableSettings.settLockTimeout.localized,
+                             value: appModel.settings.lockTimeout.displayName)
+            .onTapGesture {
+                showLockTimeout()
+            }
+            
             DividerView()
             
             SettingsItemView(imageName: "settings.help",
                              title: LocalizableSettings.settAbout.localized,
                              value: "")
-            .navigateTo(destination: AboutAndHelpView())
+            .navigateTo(destination: AboutAndHelpView()
+                .environmentObject(settingsViewModel))
             
         }.background(Color.white.opacity(0.08))
             .cornerRadius(15)
@@ -100,6 +121,12 @@ struct GeneralSettingsView : View {
         
     }
     
+    func showLockTimeout() {
+        sheetManager.showBottomSheet(modalHeight: 408) {
+            LockTimeoutView()
+                .environmentObject(settingsViewModel)
+        }
+    }
 }
 
 struct RecentFilesSettingsView : View {

@@ -152,3 +152,14 @@
 "Settings_SettLang_English_Expl" = "English";
 "Settings_SettLang_French_Expl" = "French";
 "Settings_SettLang_Spanish_Expl" = "Spanish";
+
+"Settings_Sett_LockTimeout" = "Lock timeout";
+"Settings_SettLockTimeout_SheetTitle" = "Lock timeout";
+"Settings_SettLockTimeout_SheetExpl" = "Decide how long it takes for Tella to lock.";
+"Settings_SettLockTimeout_Immediately_SheetSelect" = "Immediately";
+"Settings_SettLockTimeout_Oneminute_SheetSelect" = "1 minute";
+"Settings_SettLockTimeout_FiveMinutes_SheetSelect" = "5 minutes";
+"Settings_SettLockTimeout_ThirtyMinutes_SheetSelect" = "30 minutes";
+"Settings_SettLockTimeout_OneHour_SheetSelect" = "1 hour";
+"Settings_SettLockTimeout_Cancel_SheetAction" = "CANCEL";
+"Settings_SettLockTimeout_Save_SheetAction" = "SAVE";
