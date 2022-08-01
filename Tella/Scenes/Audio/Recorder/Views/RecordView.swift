@@ -62,10 +62,11 @@ struct RecordView: View {
             saveSuccessView
             
         }
-        
-        
         .alert(isPresented: self.$viewModel.shouldShowSettingsAlert) {
             getSettingsAlertView()
+        }
+        .onDisappear {
+            mainAppModel.vaultManager.clearTmpDirectory()
         }
     }
     
