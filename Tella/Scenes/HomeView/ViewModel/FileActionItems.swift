@@ -24,9 +24,9 @@ var firstFileActionItems : [ListActionSheetItem] = [
                         type: FileActionType.share)
 ]
 
-var secondFileActionItems : [ListActionSheetItem] {
+var secondFileActionItems : [ListActionSheetItem] = 
     
-    return [ListActionSheetItem(imageName: "move-icon",
+      [ListActionSheetItem(imageName: "move-icon",
                                 content: LocalizableVault.moreActionsMoveSheetSelect.localized,
                                 type: FileActionType.move),
             
@@ -46,4 +46,4 @@ var secondFileActionItems : [ListActionSheetItem] {
                                 content: LocalizableVault.moreActionsDeleteSheetSelect.localized,
                                 type: FileActionType.delete)
     ]
-}
+
