@@ -9,11 +9,16 @@ struct ImageViewer: View {
     
     var body: some View {
         GeometryReader { geometry in
-            UIImage.image(fromData: imageData ?? Data())
-                .resizable()
-                .scaledToFill()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: geometry.size.width)
+            VStack(alignment: .center) {
+                Spacer()
+                UIImage.image(fromData: imageData ?? Data())
+                    .resizable()
+                    .scaledToFill()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: geometry.size.width)
+                    .multilineTextAlignment(.center)
+                Spacer()
+            }
         }
     }
 }
