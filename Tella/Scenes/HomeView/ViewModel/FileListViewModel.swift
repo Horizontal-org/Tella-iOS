@@ -107,6 +107,7 @@ class FileListViewModel: ObservableObject {
     var fileActionItems: [ListActionSheetItem] {
         
         firstFileActionItems.filter{$0.type as! FileActionType == FileActionType.share}.first?.isActive = shouldActivateShare
+        secondFileActionItems.filter{$0.type as! FileActionType == FileActionType.move}.first?.isActive = !shouldHideViewsForGallery
         secondFileActionItems.filter{$0.type as! FileActionType == FileActionType.rename}.first?.isActive =  shouldActivateRename
         secondFileActionItems.filter{$0.type as! FileActionType == FileActionType.save}.first?.isActive =  shouldActivateShare
         secondFileActionItems.filter{$0.type as! FileActionType == FileActionType.info}.first?.isActive =  shouldActivateFileInformation
