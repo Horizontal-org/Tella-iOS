@@ -20,16 +20,18 @@ struct SettingsMainView: View {
     
     var body: some View {
         ContainerView {
-            VStack() {
+            VStack( spacing: 12) {
                 if appModel.shouldUpdateLanguage {
                     Spacer()
                         .frame(height: 12)
                     GeneralSettingsView()
                         .environmentObject(settingsViewModel)
                     RecentFilesSettingsView()
+                    ScreenSecuritySettingsView()
                     Spacer()
                 }
-            }
+            } .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 17))
+            
         }
         .toolbar {
             LeadingTitleToolbar(title: LocalizableSettings.appBar.localized)
@@ -93,7 +95,6 @@ struct GeneralSettingsView : View {
             
         }.background(Color.white.opacity(0.08))
             .cornerRadius(15)
-            .padding(EdgeInsets(top: 5, leading: 17, bottom: 5, trailing: 17))
             .fullScreenCover(isPresented: $presentingLanguage) {
                 
             } content: {
@@ -135,14 +136,28 @@ struct RecentFilesSettingsView : View {
     
     var body : some View {
         
-        VStack(spacing: 0) {
-            
-            SettingToggleItem(title: LocalizableSettings.settRecentFiles.localized,
-                              description: LocalizableSettings.settRecentFilesExpl.localized,
-                              toggle: $appModel.settings.showRecentFiles)
-        }.background(Color.white.opacity(0.08))
-            .cornerRadius(15)
-            .padding(EdgeInsets(top: 5, leading: 17, bottom: 5, trailing: 17))
+        
+        SettingToggleItem(title: LocalizableSettings.settRecentFiles.localized,
+                          description: LocalizableSettings.settRecentFilesExpl.localized,
+                          toggle: $appModel.settings.showRecentFiles)
+        
+        .background(Color.white.opacity(0.08))
+        .cornerRadius(15)
+    }
+}
+
+
+struct ScreenSecuritySettingsView : View {
+    
+    @EnvironmentObject var appModel : MainAppModel
+    
+    var body : some View {
+        
+        SettingToggleItem(title: LocalizableSettings.settScreenSecurity.localized,
+                          description: LocalizableSettings.settScreenSecurityExpl.localized,
+                          toggle: $appModel.settings.screenSecurity)
+        .background(Color.white.opacity(0.08))
+        .cornerRadius(15)
     }
 }
 

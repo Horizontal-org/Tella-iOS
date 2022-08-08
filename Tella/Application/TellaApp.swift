@@ -13,14 +13,19 @@ struct TellaApp: App {
     
     private var appViewState = AppViewState()
     @Environment(\.scenePhase) var scenePhase
-    
+
     var body: some Scene {
         WindowGroup {
             ContentView().environmentObject(appViewState)
+                .onReceive(NotificationCenter.default.publisher(for: UIScreen.capturedDidChangeNotification)) { value in
+                    appViewState.shouldShowSecurityScreen = UIScreen.main.isCaptured
+                }
+
         }.onChange(of: scenePhase) { phase in
             switch phase {
             case .background:
-                self.saveLockTimeoutStartDate()
+                appViewState.shouldShowSecurityScreen = true
+                self.saveData()
             case .active:
                 self.resetApp()
             default:
@@ -29,8 +34,13 @@ struct TellaApp: App {
         }
     }
     
-    func saveLockTimeoutStartDate() {
+    func saveData() {
+        appViewState.homeViewModel?.shouldSaveCurrentData = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+            appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
+        })
         appViewState.homeViewModel?.saveLockTimeoutStartDate()
+        appViewState.homeViewModel?.shouldSaveCurrentData = false
     }
     
     func resetApp() {
@@ -43,5 +53,6 @@ struct TellaApp: App {
                 appViewState.shouldHidePresentedView = false
             }
         }
+        appViewState.shouldShowSecurityScreen = false
     }
 }

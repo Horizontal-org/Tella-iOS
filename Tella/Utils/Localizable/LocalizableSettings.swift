@@ -14,6 +14,9 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settRecentFiles = "Settings_Sett_RecentFiles"
     case settRecentFilesExpl = "Settings_Sett_RecentFiles_Expl"
     
+    case settScreenSecurity = "Settings_Sett_ScreenSecurity"
+    case settScreenSecurityExpl = "Settings_Sett_ScreenSecurity_Expl"
+
     // About & Help
     case settAboutHead = "Settings_SettAbout_Head"
     case settAboutSubhead = "Settings_SettAbout_Subhead"
