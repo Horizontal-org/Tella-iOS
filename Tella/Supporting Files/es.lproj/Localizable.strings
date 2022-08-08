@@ -144,6 +144,9 @@ por favor inténtalo de nuevo";
 "Settings_Sett_About" = "Acerca de y Ayuda";
 "Settings_Sett_RecentFiles" = "Archivos recientes";
 "Settings_Sett_RecentFiles_Expl" = "Te da acceso rápido a tus archivos recientes en la pantalla de inicio de Tella.";
+"Settings_Sett_ScreenSecurity" = "Screen security";
+"Settings_Sett_ScreenSecurity_Expl" = "Block screen recordings inside Tella and screen preview in the list of recent apps";
+
 "Settings_SettAbout_Head" = "Tella";
 "Settings_SettAbout_Subhead" = "Versión";
 "Settings_SettAbout_ContactUs" = "Contáctanos";
