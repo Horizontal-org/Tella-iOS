@@ -52,6 +52,11 @@ struct CameraControlsView: View {
         .onDisappear {
             flashIsOn = false
         }
+        .onReceive(mainAppModel.$shouldSaveCurrentData) { value in
+            if(value && state == .recordingVideo) {
+                stopRecordingVideo()
+            }
+        }
     }
     
     private func cameraHeaderView() -> some View {
@@ -193,10 +198,7 @@ struct CameraControlsView: View {
                     Spacer()
                     
                     Button {
-                        shouldHideCloseButton = false
-                        state = .readyRecordingVideo
-                        recordVideoAction()
-                        cameraViewModel.invalidateTimerRunning()
+                        stopRecordingVideo()
                     } label: {
                         Image( "camera.stop-record-video")
                             .frame(width: 57, height: 57)
@@ -273,8 +275,14 @@ struct CameraControlsView: View {
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
         
     }
+    
+    private func stopRecordingVideo() {
+        shouldHideCloseButton = false
+        state = .readyRecordingVideo
+        recordVideoAction()
+        cameraViewModel.invalidateTimerRunning()
+    }
 }
-
 
 struct CameraControlsView_Previews: PreviewProvider {
     static var previews: some View {
@@ -287,7 +295,7 @@ struct CameraControlsView_Previews: PreviewProvider {
             
         } updateCameraTypeAction: { value in
             
-        } toggleFlash: { 
+        } toggleFlash: {
         } close: {}
     }
 }
