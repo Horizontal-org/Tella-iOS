@@ -32,12 +32,6 @@ struct ContentView: View {
                     .environmentObject(LockViewModel(unlockType: .new))
                     .eraseToAnyView()
             }
-            
-            
-            if appViewState.shouldShowSecurityScreen == true, let screenSecurity = appViewState.homeViewModel?.settings.screenSecurity, screenSecurity == true {
-                Color.white
-                    .edgesIgnoringSafeArea(.all)
-            }
         }
     }
 }
