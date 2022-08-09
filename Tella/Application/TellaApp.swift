@@ -13,21 +13,24 @@ struct TellaApp: App {
     
     private var appViewState = AppViewState()
     @Environment(\.scenePhase) var scenePhase
-
+    @State var appEnterInBackground: Bool = false
+    
     var body: some Scene {
         WindowGroup {
             ContentView().environmentObject(appViewState)
                 .onReceive(NotificationCenter.default.publisher(for: UIScreen.capturedDidChangeNotification)) { value in
-                    appViewState.shouldShowSecurityScreen = UIScreen.main.isCaptured
+                    appViewState.homeViewModel?.shouldShowRecordingSecurityScreen = UIScreen.main.isCaptured
                 }
-
+            
         }.onChange(of: scenePhase) { phase in
             switch phase {
             case .background:
-                appViewState.shouldShowSecurityScreen = true
                 self.saveData()
             case .active:
+                appViewState.homeViewModel?.saveLockTimeoutStartDate()
                 self.resetApp()
+            case .inactive:
+                appViewState.homeViewModel?.shouldShowSecurityScreen = true
             default:
                 break
             }
@@ -35,6 +38,7 @@ struct TellaApp: App {
     }
     
     func saveData() {
+        appEnterInBackground = true
         appViewState.homeViewModel?.shouldSaveCurrentData = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
             appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
@@ -44,8 +48,7 @@ struct TellaApp: App {
     }
     
     func resetApp() {
-        guard let shouldResetApp = appViewState.homeViewModel?.shouldResetApp() else { return }
-        if shouldResetApp {
+        if let shouldResetApp = appViewState.homeViewModel?.shouldResetApp(), shouldResetApp == true, appEnterInBackground == true {
             DispatchQueue.main.async {
                 appViewState.shouldHidePresentedView = true
                 appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
@@ -53,6 +56,7 @@ struct TellaApp: App {
                 appViewState.shouldHidePresentedView = false
             }
         }
-        appViewState.shouldShowSecurityScreen = false
+        appEnterInBackground = false
+        appViewState.homeViewModel?.shouldShowSecurityScreen = false
     }
 }
