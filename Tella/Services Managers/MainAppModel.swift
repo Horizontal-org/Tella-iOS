@@ -44,6 +44,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     @Published var shouldSaveCurrentData: Bool = false
     @Published var shouldShowRecordingSecurityScreen: Bool = UIScreen.main.isCaptured
     @Published var shouldShowSecurityScreen: Bool = false
+    @Published var appEnterInBackground: Bool = false
 
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
     

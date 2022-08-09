@@ -13,7 +13,6 @@ struct TellaApp: App {
     
     private var appViewState = AppViewState()
     @Environment(\.scenePhase) var scenePhase
-    @State var appEnterInBackground: Bool = false
     
     var body: some Scene {
         WindowGroup {
@@ -38,7 +37,7 @@ struct TellaApp: App {
     }
     
     func saveData() {
-        appEnterInBackground = true
+        appViewState.homeViewModel?.appEnterInBackground = true
         appViewState.homeViewModel?.shouldSaveCurrentData = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
             appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
@@ -48,7 +47,7 @@ struct TellaApp: App {
     }
     
     func resetApp() {
-        if let shouldResetApp = appViewState.homeViewModel?.shouldResetApp(), shouldResetApp == true, appEnterInBackground == true {
+        if let shouldResetApp = appViewState.homeViewModel?.shouldResetApp(), shouldResetApp == true, appViewState.homeViewModel?.appEnterInBackground == true {
             DispatchQueue.main.async {
                 appViewState.shouldHidePresentedView = true
                 appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
@@ -56,7 +55,7 @@ struct TellaApp: App {
                 appViewState.shouldHidePresentedView = false
             }
         }
-        appEnterInBackground = false
+        appViewState.homeViewModel?.appEnterInBackground = false
         appViewState.homeViewModel?.shouldShowSecurityScreen = false
     }
 }
