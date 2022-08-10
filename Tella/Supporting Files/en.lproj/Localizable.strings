@@ -138,6 +138,9 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_Sett_About" = "About & Help";
 "Settings_Sett_RecentFiles" = "Recent files";
 "Settings_Sett_RecentFiles_Expl" = "Gives you quick access to your recent files on Tella’s homescreen. ";
+"Settings_Sett_ScreenSecurity" = "Screen security";
+"Settings_Sett_ScreenSecurity_Expl" = "Block screen recordings inside Tella and screen preview in the list of recent apps";
+
 "Settings_SettAbout_Head" = "Tella";
 "Settings_SettAbout_Subhead" = "Version";
 "Settings_SettAbout_ContactUs" = "Contact us";

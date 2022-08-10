@@ -47,6 +47,8 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
         guard let fileName = self.getFileName()
         else { return }
         
+        self.currentFileName = fileName
+
         do {
             self.recorder = try AVAudioRecorder(url: fileName, settings: settings)
             self.recorder.record()

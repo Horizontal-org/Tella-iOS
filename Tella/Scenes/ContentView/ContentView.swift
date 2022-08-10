@@ -23,7 +23,6 @@ struct ContentView: View {
         }
         
         if appViewState.currentView == .UNLOCK {
-            let passwordType = AuthenticationManager().getPasswordType()
             return UnlockPinView()
                 .environmentObject(LockViewModel(unlockType: .new))
                 .eraseToAnyView()

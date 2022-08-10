@@ -62,10 +62,17 @@ struct RecordView: View {
             saveSuccessView
             
         }
-        
-        
+        .onReceive(mainAppModel.$shouldSaveCurrentData) { value in
+            if(value) {
+                self.viewModel.onStopRecording()
+            }
+        }
+
         .alert(isPresented: self.$viewModel.shouldShowSettingsAlert) {
             getSettingsAlertView()
+        }
+        .onDisappear {
+            mainAppModel.vaultManager.clearTmpDirectory()
         }
     }
     
