@@ -26,7 +26,6 @@ struct TellaApp: App {
             case .background:
                 self.saveData()
             case .active:
-                appViewState.homeViewModel?.saveLockTimeoutStartDate()
                 self.resetApp()
             case .inactive:
                 appViewState.homeViewModel?.shouldShowSecurityScreen = true
