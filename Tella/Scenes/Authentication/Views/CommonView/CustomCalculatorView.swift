@@ -24,6 +24,7 @@ struct CustomCalculatorView<Destination:View>: View {
     @Binding var operationArray : [String]
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @EnvironmentObject private var lockViewModel: LockViewModel
     
     var calculatorType : CalculatorType
     var nextButtonAction: NextButtonAction
@@ -40,12 +41,12 @@ struct CustomCalculatorView<Destination:View>: View {
                 Spacer()
                     .frame(height: 22)
                 
-                topCalculatorMessageView
+                topCalculatorView
                 
                 Spacer()
                 
                 operationText
-
+                
                 Spacer()
                     .frame(height: 5)
                 
@@ -63,12 +64,26 @@ struct CustomCalculatorView<Destination:View>: View {
             confirmPinViewLink
         }
     }
+
+    private var topCalculatorView : some View {
+        HStack {
+            if lockViewModel.unlockType == .update {
+                Button {
+                    self.presentationMode.wrappedValue.dismiss()
+                    
+                } label: {
+                    Image("lock.back.black")
+                }.padding()
+            }
+            topCalculatorMessageView
+        }
+    }
     
     @ViewBuilder
     private var topCalculatorMessageView : some View {
         if !message.isEmpty {
             TopCalculatorMessageView(text: message)
-                .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                .padding(EdgeInsets(top: 0, leading: lockViewModel.unlockType == .update ? 0 : 16, bottom: 0, trailing: 16))
         }
     }
     
@@ -81,7 +96,7 @@ struct CustomCalculatorView<Destination:View>: View {
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .padding(EdgeInsets(top: 0, leading: 13, bottom: 0, trailing: 13))
                 .lineLimit(3)
-         }
+        }
     }
     
     private var passwordTextView : some View {

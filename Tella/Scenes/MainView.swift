@@ -11,8 +11,8 @@ struct MainView: View  {
     @EnvironmentObject private var appModel: MainAppModel
     @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject private var sheetManager: SheetManager
-
- 
+    
+    
     init() {
         setDebugLevel(level: .debug, for: .app)
         setDebugLevel(level: .debug, for: .crypto)
@@ -29,6 +29,8 @@ struct MainView: View  {
                      isShown: $sheetManager.isPresented) {
                 sheetManager.content
             }
+            
+            securityScreenView
         }
     }
     
@@ -103,6 +105,16 @@ struct MainView: View  {
             }
         }
     }
+    
+    @ViewBuilder
+    var securityScreenView : some View {
+        if appViewState.homeViewModel?.shouldShowSecurityScreen == true || appViewState.homeViewModel?.shouldShowRecordingSecurityScreen == true , let screenSecurity = appViewState.homeViewModel?.settings.screenSecurity, screenSecurity == true {
+            Color.white
+                .edgesIgnoringSafeArea(.all)
+        }
+
+    }
+    
     
     private func setupApperance() {
         

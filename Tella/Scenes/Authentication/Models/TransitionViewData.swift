@@ -16,7 +16,7 @@ protocol TransitionViewData {
 struct WelcomeViewData : TransitionViewData {
     var image = "lock.welcome"
     var title = LocalizableLock.onboardingIntroHead.localized
-    var description = LocalizableLock.onboardingIntroSubhead.localized
+    var description = LocalizableLock.onboardingIntroExpl.localized
     var buttonTitle = LocalizableLock.onboardingIntroActionGetStarted.localized
     var alignment = TextAlignment.leading
 }
@@ -24,7 +24,7 @@ struct WelcomeViewData : TransitionViewData {
 struct OnboardingEndViewData : TransitionViewData {
     var image = "lock.done"
     var title = LocalizableLock.onboardingdLockSuccessHead.localized
-    var description = LocalizableLock.onboardingLockSuccessSubhead.localized
+    var description = LocalizableLock.onboardingLockSuccessExpl.localized
     var buttonTitle = LocalizableLock.onboardingLockSuccessActionGoToTella.localized
     var alignment = TextAlignment.center
 }

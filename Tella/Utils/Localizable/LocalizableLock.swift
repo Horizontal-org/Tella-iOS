@@ -14,12 +14,12 @@ enum LocalizableLock: String, LocalizableDelegate {
     
     // Intro
     case onboardingIntroHead = "Onboarding_Intro_Head"
-    case onboardingIntroSubhead = "Onboarding_Intro_Subhead"
+    case onboardingIntroExpl = "Onboarding_Intro_Expl"
     case onboardingIntroActionGetStarted = "Onboarding_Intro_Action_GetStarted"
     
     // Done
     case onboardingdLockSuccessHead = "Onboarding_LockSuccess_Head"
-    case onboardingLockSuccessSubhead = "Onboarding_LockSuccess_Subhead"
+    case onboardingLockSuccessExpl = "Onboarding_LockSuccess_Expl"
     case onboardingLockSuccessActionGoToTella = "Onboarding_LockSuccess_Action_GoToTella"
     
     // Lock Pin view
