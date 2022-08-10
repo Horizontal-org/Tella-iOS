@@ -20,7 +20,7 @@ struct TellaApp: App {
         }.onChange(of: scenePhase) { phase in
             switch phase {
             case .background:
-                self.saveLockTimeoutStartDate()
+                self.saveData()
             case .active:
                 self.resetApp()
             default:
@@ -29,8 +29,13 @@ struct TellaApp: App {
         }
     }
     
-    func saveLockTimeoutStartDate() {
+    func saveData() {
+        appViewState.homeViewModel?.shouldSaveCurrentData = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+            appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
+        })
         appViewState.homeViewModel?.saveLockTimeoutStartDate()
+        appViewState.homeViewModel?.shouldSaveCurrentData = false
     }
     
     func resetApp() {

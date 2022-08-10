@@ -41,7 +41,8 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     @UserDefaultsProperty(key: lockTimeoutStartDateKey) private var lockTimeoutStartDate: Date?
     
     @Published var shouldUpdateLanguage:Bool = true
-    
+    @Published var shouldSaveCurrentData: Bool = false
+
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
     
     private var cancellable: Set<AnyCancellable> = []
