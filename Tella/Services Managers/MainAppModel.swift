@@ -71,7 +71,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     }
     
     func shouldResetApp() -> Bool {
-        guard let startDate = lockTimeoutStartDate else { return true }
+        guard let startDate = lockTimeoutStartDate else { return false }
         let elapsedTime = Date().timeIntervalSince(startDate)
         return  TimeInterval(self.settings.lockTimeout.time) <  elapsedTime
     }
@@ -162,7 +162,8 @@ class SettingsModel: ObservableObject, Codable {
     @Published var deleteServerSettings: Bool = false
     @Published var showRecentFiles: Bool = false
     @Published var lockTimeout: LockTimeoutOption = .immediately
-    
+    @Published var screenSecurity: Bool = true
+
     enum CodingKeys: CodingKey {
         case offLineMode
         case quickDelete
@@ -171,6 +172,7 @@ class SettingsModel: ObservableObject, Codable {
         case deleteServerSettings
         case showRecentFiles
         case lockTimeout
+        case screenSecurity
     }
     
     init() {
@@ -188,6 +190,8 @@ class SettingsModel: ObservableObject, Codable {
         
         let lockTimeoutString = try container.decode(String.self, forKey: .lockTimeout)
         lockTimeout = LockTimeoutOption(rawValue: lockTimeoutString) ?? .immediately
+        screenSecurity = try container.decode(Bool.self, forKey: .screenSecurity)
+
     }
     
     func encode(to encoder: Encoder) throws {
@@ -199,6 +203,6 @@ class SettingsModel: ObservableObject, Codable {
         try container.encode(deleteServerSettings, forKey: .deleteServerSettings)
         try container.encode(showRecentFiles, forKey: .showRecentFiles)
         try container.encode( lockTimeout.rawValue, forKey: .lockTimeout)
+        try container.encode(screenSecurity, forKey: .screenSecurity)
     }
-    
 }

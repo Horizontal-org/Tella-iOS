@@ -13,13 +13,18 @@ struct TellaApp: App {
     
     private var appViewState = AppViewState()
     @Environment(\.scenePhase) var scenePhase
-    
+
     var body: some Scene {
         WindowGroup {
             ContentView().environmentObject(appViewState)
+                .onReceive(NotificationCenter.default.publisher(for: UIScreen.capturedDidChangeNotification)) { value in
+                    appViewState.shouldShowSecurityScreen = UIScreen.main.isCaptured
+                }
+
         }.onChange(of: scenePhase) { phase in
             switch phase {
             case .background:
+                appViewState.shouldShowSecurityScreen = true
                 self.saveData()
             case .active:
                 self.resetApp()
@@ -48,5 +53,6 @@ struct TellaApp: App {
                 appViewState.shouldHidePresentedView = false
             }
         }
+        appViewState.shouldShowSecurityScreen = false
     }
 }
