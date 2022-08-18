@@ -8,11 +8,13 @@ struct ConfirmBottomSheet : View {
     var titleText = ""
     var msgText = ""
     var cancelText = ""
+    var discardText : String?
     var actionText = ""
     var destructive : Bool = false
     var withDrag : Bool = true
     
     var didConfirmAction : () -> ()
+    var didDiscardAction :(() -> ())? = nil
     var didCancelAction : (() -> ())? = nil
     
     @EnvironmentObject var sheetManager: SheetManager
@@ -42,7 +44,22 @@ struct ConfirmBottomSheet : View {
                 }){
                     Text(self.cancelText)
                 }.buttonStyle(ButtonSheetStyle())
-                
+
+
+                if let discardText = discardText {
+                    Spacer()
+                        .frame(width: 20)
+                    
+                    Button(action: {
+                        didDiscardAction?()
+                        sheetManager.hide()
+                        
+                    }){
+                        Text(discardText)
+                    }.buttonStyle(ButtonSheetStyle())
+
+                }
+                    
                 Spacer()
                     .frame(width: 20)
                 

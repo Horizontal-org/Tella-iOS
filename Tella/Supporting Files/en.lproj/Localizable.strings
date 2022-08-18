@@ -116,6 +116,7 @@ Tap the “+” button below to import your first file, or go to the Camera or R
 "Recorder_AudioRecordings_AppBar" = "Audio recordings";
 "Recorder_SaveRecording_SheetTitle" = "Save recording?";
 "Recorder_SaveRecording_SheetExpl" = "Your recording is not saved. Would you like to save it before exiting?";
+"Recorder_SaveRecording_Cancel_SheetAction" = "CANCEL";
 "Recorder_SaveRecording_Discard_SheetAction" = "DISCARD";
 "Recorder_SaveRecording_Save_SheetAction" = "SAVE";
 "Recorder_RenameRecording_SheetTitle" = "Rename recording";

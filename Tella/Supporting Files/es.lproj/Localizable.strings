@@ -115,6 +115,7 @@ por favor inténtalo de nuevo";
 "Recorder_AudioRecordings_AppBar" = "Grabaciones de audio";
 "Recorder_SaveRecording_SheetTitle" = "¿Guardar grabación?";
 "Recorder_SaveRecording_SheetExpl" = "Tu grabación no se guardó. ¿Quieres guardarla antes de salir?";
+"Recorder_SaveRecording_Cancel_SheetAction" = "CANCEL";
 "Recorder_SaveRecording_Discard_SheetAction" = "";
 "Recorder_SaveRecording_Save_SheetAction" = "";
 "Recorder_RenameRecording_SheetTitle" = "Renombrar grabación";
