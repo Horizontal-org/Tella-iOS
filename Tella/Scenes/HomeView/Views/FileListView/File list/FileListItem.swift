@@ -89,8 +89,6 @@ struct FileListItem: View {
                 if fileListViewModel.selectingFiles {
                     HStack {
                         Image(fileListViewModel.getStatus(for: file) ? "files.selected" : "files.unselected")
-                            .resizable()
-                            .frame(width: 24, height: 24)
                     }
                     .frame(width: 40, height: 40)
                 } else {
