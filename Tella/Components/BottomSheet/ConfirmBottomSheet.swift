@@ -34,9 +34,13 @@ struct ConfirmBottomSheet : View {
             Text(self.msgText)
                 .foregroundColor(.white)
                 .font(Font.custom(Styles.Fonts.regularFontName, size: 14))
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
             Spacer()
             HStack(alignment: .lastTextBaseline ){
+                
                 Spacer()
+                
                 Button(action: {
                     didCancelAction?()
                     sheetManager.hide()
@@ -44,11 +48,11 @@ struct ConfirmBottomSheet : View {
                 }){
                     Text(self.cancelText)
                 }.buttonStyle(ButtonSheetStyle())
-
-
+                
+                
                 if let discardText = discardText {
                     Spacer()
-                        .frame(width: 20)
+                        .frame(width: 10)
                     
                     Button(action: {
                         didDiscardAction?()
@@ -57,11 +61,11 @@ struct ConfirmBottomSheet : View {
                     }){
                         Text(discardText)
                     }.buttonStyle(ButtonSheetStyle())
-
-                }
                     
+                }
+                
                 Spacer()
-                    .frame(width: 20)
+                    .frame(width: 10)
                 
                 Button(action: {
                     self.didConfirmAction()
@@ -70,8 +74,9 @@ struct ConfirmBottomSheet : View {
                     Text(self.actionText)
                         .foregroundColor(destructive ? Color.red : Color.white)
                 }.buttonStyle(ButtonSheetStyle())
+                
             }
-        } .padding(EdgeInsets(top: 28, leading: 24, bottom: 24, trailing: 20))
+        } .padding(EdgeInsets(top: 28, leading: 24, bottom: 24, trailing: 10))
     }
     
     
@@ -81,8 +86,9 @@ struct ButtonSheetStyle: ButtonStyle {
     
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
-            .foregroundColor(Color.white)
+            .foregroundColor(configuration.isPressed ? Color.white.opacity(0.3) : Color.white)
             .font(Font.custom(Styles.Fonts.semiBoldFontName, size: 14))
+            .padding()
     }
 }
 
