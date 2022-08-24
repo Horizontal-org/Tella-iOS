@@ -29,6 +29,9 @@ struct CameraControlsView: View {
     @EnvironmentObject var mainAppModel: MainAppModel
     @EnvironmentObject var appViewState: AppViewState
     
+    @State private var  deviceOrientation : UIDeviceOrientation = UIDevice.current.orientation
+    @State private var shouldAnimate: Bool = false
+    
     var body: some View {
         
         VStack {
@@ -113,11 +116,7 @@ struct CameraControlsView: View {
                     
                     Spacer()
                     
-                    Button {
-                        toggleCamera()
-                    } label: {
-                        Image("camera.flip-camera")
-                    }.frame(width: 40, height: 40)
+                    flipCamera
                     
                     Button {
                         captureButtonAction()
@@ -136,6 +135,14 @@ struct CameraControlsView: View {
             }
             .background(Color.black.opacity(0.8))
         }
+        
+        .onAppear(perform: {
+            DeviceOrientationHelper().startDeviceOrientationNotifier { deviceOrientation in
+                self.deviceOrientation = deviceOrientation
+                shouldAnimate = true
+            }
+        })
+        
     }
     
     
@@ -153,11 +160,7 @@ struct CameraControlsView: View {
                     
                     Spacer()
                     
-                    Button {
-                        toggleCamera()
-                    } label: {
-                        Image("camera.flip-camera")
-                    }.frame(width: 40, height: 40)
+                    flipCamera
                     
                     Button {
                         shouldHideCloseButton = true
@@ -216,21 +219,33 @@ struct CameraControlsView: View {
     
     @ViewBuilder
     var previewImageAndVideodFile : some View {
-        
-        if let file = cameraViewModel.lastImageOrVideoVaultFile,
-           let data = file.thumbnail {
-            
-            Button {
+        VStack {
+            if let file = cameraViewModel.lastImageOrVideoVaultFile,
+               let data = file.thumbnail {
                 
-            } label: {
-                UIImage.image(fromData:data).rounded()
-                    .navigateTo(destination:getFileListView())
+                Button {
+                    
+                } label: {
+                    UIImage.image(fromData:data)
+                        .rounded()
+                        .navigateTo(destination:getFileListView())
+                }
+                .navigateTo(destination:getFileListView())
+            } else {
+                Spacer()
             }
-            .navigateTo(destination:getFileListView())
-        } else {
-            Spacer()
-        }
-        
+        }.rotate(deviceOrientation: self.deviceOrientation,
+                 shouldAnimate: self.shouldAnimate)
+    }
+    
+    var flipCamera: some View {
+        Button {
+            toggleCamera()
+        } label: {
+            Image("camera.flip-camera")
+        }.frame(width: 40, height: 40)
+            .rotate(deviceOrientation: self.deviceOrientation,
+                    shouldAnimate: self.shouldAnimate)
     }
     
     func getFileListView() -> some View {
@@ -299,4 +314,3 @@ struct CameraControlsView_Previews: PreviewProvider {
         } close: {}
     }
 }
-

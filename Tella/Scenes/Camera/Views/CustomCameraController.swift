@@ -22,6 +22,9 @@ final class CustomCameraController: UIViewController {
     
     private var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
     
+    private var  deviceOrientation : UIDeviceOrientation = UIDevice.current.orientation
+    
+    
     // MARK: - Public properties
     
     weak var captureDelegate: AVCapturePhotoCaptureDelegate?
@@ -47,14 +50,19 @@ final class CustomCameraController: UIViewController {
     override func viewWillAppear(_ animated : Bool) {
         super.viewWillAppear(animated)
         shouldCloseCamera = false
+        
+        DeviceOrientationHelper().startDeviceOrientationNotifier { deviceOrientation in
+            self.deviceOrientation = deviceOrientation
+        }
+        
     }
     
     override func viewWillDisappear(_ animated : Bool) {
         super.viewWillDisappear(animated)
-//        stopRunningCaptureSession()
-//        releasePreview()
-     }
-
+        //        stopRunningCaptureSession()
+        //        releasePreview()
+    }
+    
     // MARK: - Public functions
     
     func configurePreviewLayer(with frame: CGRect) {
@@ -74,13 +82,16 @@ final class CustomCameraController: UIViewController {
     func stopRunningCaptureSession() {
         captureSession.stopRunning()
         shouldCloseCamera = false
-
+        
     }
     
     func takePhoto() {
         let settings = AVCapturePhotoSettings()
         guard let delegate = captureDelegate else {
             return
+        }
+        if let photoOutputConnection = self.photoOutput?.connection(with: .video) {
+            photoOutputConnection.videoOrientation = deviceOrientation.videoOrientation()
         }
         photoOutput?.capturePhoto(with: settings, delegate: delegate)
     }
@@ -141,7 +152,7 @@ final class CustomCameraController: UIViewController {
     private func setup() {
         stopRunningCaptureSession()
         releasePreview()
-
+        
         setupCaptureSession()
         setupPhotoInputOutput()
     }
@@ -270,11 +281,11 @@ final class CustomCameraController: UIViewController {
         case .denied:
             shouldShowPermission = true
             self.shouldCloseCamera = false
-
+            
         case .restricted:
             shouldShowPermission = true
             self.shouldCloseCamera = false
-
+            
             return
         @unknown default:
             break
@@ -286,10 +297,10 @@ final class CustomCameraController: UIViewController {
         switch AVCaptureDevice.authorizationStatus(for: .audio) {
         case .denied:
             shouldShowPermission = true
-
+            
         case .restricted:
             shouldShowPermission = true
-
+            
         case .authorized:
             self.setup()
             
@@ -309,6 +320,8 @@ final class CustomCameraController: UIViewController {
 
 final class CustomCameraRepresentable: UIViewControllerRepresentable,ObservableObject {
     
+    
+    
     init(cameraFrame: CGRect, imageCompletion: @escaping ((UIImage, Data) -> Void), videoURLCompletion:@escaping ((URL) -> Void)) {
         self.cameraFrame = cameraFrame
         self.imageCompletion = imageCompletion
@@ -326,7 +339,7 @@ final class CustomCameraRepresentable: UIViewControllerRepresentable,ObservableO
     @Published var image : UIImage?
     @Published var shouldShowPermission : Bool = false
     @Published var shouldCloseCamera : Bool = false
-
+    
     private var cancellable: Set<AnyCancellable> = []
     
     var cameraType : CameraType = .image {
@@ -403,9 +416,18 @@ extension CustomCameraRepresentable {
         func photoOutput(_ output: AVCapturePhotoOutput,
                          didFinishProcessingPhoto photo: AVCapturePhoto,
                          error: Error?) {
-            if let imageData = photo.fileDataRepresentation() {
-                guard let newImage = UIImage(data: imageData) else { return }
-                parent.imageCompletion(newImage, imageData)
+            
+            if let cgImageRepresentation = photo.cgImageRepresentation(),
+               let orientationInt = photo.metadata[String(kCGImagePropertyOrientation)] as? UInt32,
+               let imageOrientation = UIImage.Orientation.orientation(fromCGOrientationRaw: orientationInt) {
+                
+                // Create image with proper orientation
+                let cgImage = cgImageRepresentation
+                let image = UIImage(cgImage: cgImage,
+                                    scale: 1,
+                                    orientation: imageOrientation)
+                parent.imageCompletion(image, image.data!)
+                
             }
         }
         

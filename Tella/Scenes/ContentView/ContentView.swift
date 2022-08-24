@@ -33,5 +33,7 @@ struct ContentView: View {
                     .eraseToAnyView()
             }
         }
+        .environmentObject(DeviceOrientationHelper())
+
     }
 }
