@@ -104,6 +104,9 @@ final class CustomCameraController: UIViewController {
             guard let delegate = videoRecordingDelegate else {
                 return
             }
+            if let videoOutputConnection = self.videoOutput?.connection(with: .video) {
+                videoOutputConnection.videoOrientation = deviceOrientation.videoOrientation()
+            }
             videoOutput?.startRecording(to: outFileUrl, recordingDelegate:delegate )
         }
     }

@@ -16,7 +16,8 @@ final class PlayerViewModel: ObservableObject {
     @Published var videoDuration: Double?
     @Published var shouldDisableRewind = false
     @Published var shouldDisableFastForward = false
-    
+    @Published var videoSize: CGSize?
+
     private var cancellable: Set<AnyCancellable> = []
     private var timeObserver: Any?
     
@@ -114,6 +115,7 @@ final class PlayerViewModel: ObservableObject {
             .filter({ $0 == .readyToPlay })
             .sink(receiveValue: { [weak self] _ in
                 self?.videoDuration = playerItem.asset.duration.seconds
+                self?.videoSize = playerItem.presentationSize
             })
             .store(in: &cancellable)
     }

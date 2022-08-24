@@ -17,8 +17,24 @@ final class VideoPlayerView: UIView {
             playerLayer.player
         }
         set {
-            playerLayer.videoGravity = .resizeAspectFill
+            playerLayer.videoGravity = .resizeAspect
             playerLayer.player = newValue
+        }
+    }
+    
+    var videoSize: CGSize? {
+        didSet {
+            DispatchQueue.main.async {
+
+                if let videoSize = self.videoSize {
+                if videoSize.width < videoSize.height {
+                    self.playerLayer.videoGravity = .resizeAspectFill
+                    
+                } else {
+                    self.playerLayer.videoGravity = .resizeAspect
+                }
+            }
+        }
         }
     }
 }
