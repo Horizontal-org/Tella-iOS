@@ -85,6 +85,7 @@ struct CameraView: View {
         customCameraRepresentable.cameraFrame = frame
         
         customCameraRepresentable.imageCompletion = {image , data in
+            cameraViewModel.image = image
             cameraViewModel.imageData = data
             showProgressView()
             cameraViewModel.saveImage()

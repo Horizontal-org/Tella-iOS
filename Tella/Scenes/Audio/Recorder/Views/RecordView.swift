@@ -258,7 +258,9 @@ struct RecordView: View {
     
     func showSaveAudioConfirmationView() {
         
-        sheetManager.showBottomSheet( modalHeight: 173.0, content: {
+        sheetManager.showBottomSheet( modalHeight: 180.0,
+                                      shouldHideOnTap: false,
+                                      content: {
             SaveAudioConfirmationView(viewModel: viewModel, showingSaveSuccessView: $showingSaveSuccessView)
         })
     }

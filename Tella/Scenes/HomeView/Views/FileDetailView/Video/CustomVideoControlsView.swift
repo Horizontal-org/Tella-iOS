@@ -97,6 +97,8 @@ struct CustomVideoControlsView: View {
 
 struct CustomVideoControlsView_Previews: PreviewProvider {
     static var previews: some View {
-        CustomVideoControlsView(playerVM: PlayerViewModel())
+        CustomVideoControlsView(playerVM: PlayerViewModel(appModel: MainAppModel(),
+                                                          currentFile: VaultFile.stubFiles().first,
+                                                          playList: VaultFile.stubFiles()))
     }
 }

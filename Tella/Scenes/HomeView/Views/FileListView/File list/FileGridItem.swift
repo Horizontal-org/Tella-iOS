@@ -92,7 +92,6 @@ struct FileGridItem: View {
                     
                     VStack(alignment: .leading) {
                         Image(fileListViewModel.getStatus(for: file) ? "files.selected" : "files.unselected")
-                            .resizable()
                             .frame(width: 25, height: 25)
                             .padding(EdgeInsets(top: 5, leading: 5, bottom: 0, trailing: 0))
                         Spacer()

@@ -102,7 +102,7 @@ struct LanguageItemView : View {
             }
             
         }.padding(EdgeInsets(top: 7, leading: 20, bottom: 11, trailing: 16))
-            .frame(height: 52)
+            .frame(height: 70)
             .listRowBackground(isCurrentLanguage(languageItem: languageItem) ? Color.white.opacity(0.15) : Color.clear )
             .listRowInsets(EdgeInsets())
     }

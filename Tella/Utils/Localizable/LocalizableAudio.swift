@@ -23,6 +23,7 @@ enum LocalizableRecorder: String, LocalizableDelegate {
     
     case saveRecordingSheetTitle = "Recorder_SaveRecording_SheetTitle"
     case saveRecordingSheetExpl = "Recorder_SaveRecording_SheetExpl"
+    case saveRecordingCancelSheetAction = "Recorder_SaveRecording_Cancel_SheetAction"
     case saveRecordingDiscardSheetAction = "Recorder_SaveRecording_Discard_SheetAction"
     case saveRecordingSaveSheetAction = "Recorder_SaveRecording_Save_SheetAction"
     

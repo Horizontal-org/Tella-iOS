@@ -16,6 +16,7 @@ class CameraViewModel: ObservableObject {
     @Published var currentTime : TimeInterval = 0.0
     
     var imageData : Data?
+    var image : UIImage?
 
     var videoURL : URL?
     var mainAppModel: MainAppModel?
@@ -47,8 +48,7 @@ class CameraViewModel: ObservableObject {
     }
 
     func saveImage()   {
-        
-        guard let imageData = imageData else { return  }
+        guard let imageData = image?.fixedOrientation()?.pngData() else { return  }
         guard let url = mainAppModel?.saveDataToTempFile(data: imageData, pathExtension: "png") else { return  }
 
         mainAppModel?.add(files: [url],
