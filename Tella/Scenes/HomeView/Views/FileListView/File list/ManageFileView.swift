@@ -45,7 +45,7 @@ struct ManageFileView: View {
                 HStack {
                     
                     if fileListViewModel.selectingFiles {
-                        Image(fileListViewModel.filesAreAllSelected ? "files.selected" : "files.unselected-empty")
+                        Image(fileListViewModel.filesAreAllSelected ? "files.selected" : "files.unselected")
                     } else {
                         Image("files.select")
                     }

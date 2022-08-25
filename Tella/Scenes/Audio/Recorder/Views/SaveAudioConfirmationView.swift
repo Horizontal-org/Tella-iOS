@@ -17,7 +17,8 @@ struct SaveAudioConfirmationView: View {
         
         ConfirmBottomSheet(titleText: LocalizableRecorder.saveRecordingSheetTitle.localized,
                            msgText: LocalizableRecorder.saveRecordingSheetExpl.localized,
-                           cancelText: LocalizableRecorder.saveRecordingDiscardSheetAction.localized,
+                           cancelText: LocalizableRecorder.saveRecordingCancelSheetAction.localized,
+                           discardText: LocalizableRecorder.saveRecordingDiscardSheetAction .localized,
                            actionText: LocalizableRecorder.saveRecordingSaveSheetAction.localized,
                            withDrag: false) {
             
@@ -35,10 +36,13 @@ struct SaveAudioConfirmationView: View {
             
             mainAppModel.selectedTab = .home
             
-        } didCancelAction: {
+        } didDiscardAction: {
             sheetManager.hide()
             self.viewModel.onResetRecording()
             mainAppModel.selectedTab = .home
+
+        } didCancelAction: {
+            sheetManager.hide()
         }
     }
 }

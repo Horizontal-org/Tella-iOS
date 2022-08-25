@@ -16,5 +16,6 @@ struct CustomVideoPlayer: UIViewRepresentable {
         return view
     }
     
-    func updateUIView(_ uiView: VideoPlayerView, context: Context) { }
+    func updateUIView(_ uiView: VideoPlayerView, context: Context) {
+    }
 }

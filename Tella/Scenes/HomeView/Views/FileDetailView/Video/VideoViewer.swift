@@ -7,29 +7,35 @@ import AVFoundation
 
 struct VideoViewer: View {
     
-    @ObservedObject var appModel: MainAppModel
-    @StateObject private var playerVM = PlayerViewModel()
+    @EnvironmentObject var appModel: MainAppModel
+    @StateObject private var playerVM : PlayerViewModel
     
-    var currentFile : VaultFile
-    var playlist: [VaultFile?]
+    init(appModel: MainAppModel, currentFile : VaultFile, playList: [VaultFile?]) {
+        _playerVM = StateObject(wrappedValue: PlayerViewModel(appModel: appModel,
+                                                              currentFile: currentFile,
+                                                              playList: playList))
+    }
     
     var body: some View {
         VStack {
-            VStack {
-                CustomVideoPlayer(playerVM: playerVM)
-                    .overlay(CustomVideoControlsView(playerVM: playerVM)
-                                ,alignment: .bottom)
-            }
-        }
-        .onAppear {
-            playerVM.appModel = appModel
-            if let index = playlist.firstIndex(of: currentFile) {
-                playerVM.currentItemIndex = index
-            }
-            playerVM.playList = playlist
+            CustomVideoPlayer(playerVM: playerVM)
+                .overlay(CustomVideoControlsView(playerVM: playerVM)
+                         ,alignment: .bottom)
         }
         .onDisappear {
             appModel.vaultManager.clearTmpDirectory()
         }
+        .toolbar {
+            LeadingTitleToolbar(title: playerVM.currentFile?.fileName ?? "")
+            fileActionTrailingView()
+        }
+        .ignoresSafeArea()
     }
+    
+    func fileActionTrailingView() -> some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            MoreFileActionButton(file: playerVM.currentFile, moreButtonType: .navigationBar)
+        }
+    }
+    
 }

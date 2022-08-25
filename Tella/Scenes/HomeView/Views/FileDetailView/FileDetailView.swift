@@ -25,12 +25,10 @@ struct FileDetailView: View {
         ZStack {
             detailsView()
             FileActionMenu()
+            toolbar()
         }
-        .toolbar {
-            LeadingTitleToolbar(title: file.fileName)
-            fileActionTrailingView()
-        }.environmentObject(fileListViewModel)
-            .navigationBarHidden(fileListViewModel.shouldHideNavigationBar)
+        .environmentObject(fileListViewModel)
+        .navigationBarHidden(fileListViewModel.shouldHideNavigationBar)
     }
     
     @ViewBuilder
@@ -44,7 +42,7 @@ struct FileDetailView: View {
                 QuickLookView(file: file)
             }
         case .video:
-            VideoViewer(appModel: appModel, currentFile: file, playlist: videoFilesArray ?? [file] )
+            VideoViewer(appModel: appModel, currentFile: file, playList: videoFilesArray ?? [file])
         case .image:
             ImageViewer(imageData: appModel.vaultManager.load(file: file))
         case .folder:
@@ -59,5 +57,15 @@ struct FileDetailView: View {
         ToolbarItem(placement: .navigationBarTrailing) {
             MoreFileActionButton(file: file, moreButtonType: .navigationBar)
         }
+    }
+    
+    func toolbar() -> some View {
+        ZStack{}
+            .if(file.type != .video, transform: { view in
+                view.toolbar {
+                    LeadingTitleToolbar(title: file.fileName)
+                    fileActionTrailingView()
+                }
+            })
     }
 }

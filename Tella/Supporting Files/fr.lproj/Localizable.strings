@@ -112,6 +112,7 @@
 "Recorder_AudioRecordings_AppBar" = "Enregistrements son";
 "Recorder_SaveRecording_SheetTitle" = "Sauvegarder l'enregistrement ?";
 "Recorder_SaveRecording_SheetExpl" = "Votre enregistrement n'est pas sauvegardé. Voulez-vous le sauvegarder avant de quitter ?";
+"Recorder_SaveRecording_Cancel_SheetAction" = "CANCEL";
 "Recorder_SaveRecording_Discard_SheetAction" = "";
 "Recorder_SaveRecording_Save_SheetAction" = "";
 "Recorder_RenameRecording_SheetTitle" = "Renommer l'enregistrement";
