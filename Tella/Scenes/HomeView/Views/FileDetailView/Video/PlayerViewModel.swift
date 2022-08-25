@@ -17,6 +17,7 @@ final class PlayerViewModel: ObservableObject {
     @Published var shouldDisableRewind = false
     @Published var shouldDisableFastForward = false
     @Published var videoSize: CGSize?
+    @Published var currentFile: VaultFile?
 
     private var cancellable: Set<AnyCancellable> = []
     private var timeObserver: Any?
@@ -52,7 +53,21 @@ final class PlayerViewModel: ObservableObject {
         }
     }
     
-    init() {
+    init(appModel: MainAppModel?, currentFile: VaultFile?, playList: [VaultFile?]) {
+        
+        self.appModel = appModel
+        self.currentFile = currentFile
+        self.playList = playList
+
+        if let index = playList.firstIndex(of: currentFile) {
+             currentItemIndex = index
+        }
+
+        if let item = playList[currentItemIndex]   {
+            self.setCurrentItem(item)
+        }
+
+        
         $shouldSeekVideo
             .dropFirst()
             .filter({ $0 == false })
@@ -115,7 +130,6 @@ final class PlayerViewModel: ObservableObject {
             .filter({ $0 == .readyToPlay })
             .sink(receiveValue: { [weak self] _ in
                 self?.videoDuration = playerItem.asset.duration.seconds
-                self?.videoSize = playerItem.presentationSize
             })
             .store(in: &cancellable)
     }
@@ -133,6 +147,7 @@ final class PlayerViewModel: ObservableObject {
         if playList.count - 1 > currentItemIndex {
             self.currentItemIndex += 1
             self.setCurrentItem(playList[self.currentItemIndex])
+            self.currentFile = playList[self.currentItemIndex]
         }
     }
     
@@ -140,6 +155,7 @@ final class PlayerViewModel: ObservableObject {
         if currentItemIndex > 0 {
             self.currentItemIndex -= 1
             self.setCurrentItem(playList[self.currentItemIndex])
+            self.currentFile = playList[self.currentItemIndex]
         }
     }
     

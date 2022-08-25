@@ -17,8 +17,5 @@ struct CustomVideoPlayer: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: VideoPlayerView, context: Context) {
-        if playerVM.videoSize != nil &&  playerVM.videoSize  != uiView.videoSize  {
-            uiView.videoSize = playerVM.videoSize
-        }
     }
 }

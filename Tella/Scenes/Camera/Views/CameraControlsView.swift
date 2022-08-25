@@ -233,6 +233,7 @@ struct CameraControlsView: View {
                 .navigateTo(destination:getFileListView())
             } else {
                 Spacer()
+                    .frame(width: 40, height: 40)
             }
         }.rotate(deviceOrientation: self.deviceOrientation,
                  shouldAnimate: self.shouldAnimate)
