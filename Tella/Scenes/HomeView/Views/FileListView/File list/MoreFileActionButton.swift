@@ -139,7 +139,10 @@ struct MoreFileActionButton: View {
                                destructive: true,
                                didConfirmAction:{
                 appModel.delete(files: fileListViewModel.selectedFiles, from: fileListViewModel.rootFile)
-                
+
+                fileListViewModel.selectingFiles = false
+                fileListViewModel.resetSelectedItems()
+
                 if fileListViewModel.fileActionSource == .details {
                     self.presentationMode.wrappedValue.dismiss()
                 }
