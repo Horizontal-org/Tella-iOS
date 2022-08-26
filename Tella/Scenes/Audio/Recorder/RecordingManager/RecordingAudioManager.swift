@@ -123,6 +123,8 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
         
         do {
             try session.setCategory(.playAndRecord, mode: .default)
+            try session.setCategory(AVAudioSession.Category.playAndRecord, options: [.defaultToSpeaker])
+
             try session.setActive(true)
         } catch let error {
             debugLog(error)
