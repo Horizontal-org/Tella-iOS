@@ -106,8 +106,7 @@ struct AudioPlayerView: View {
     private func getRewindBackView() -> some View {
         VStack() {
             Spacer()
-            
-            Image("mic.rewind-back")
+            Image(self.viewModel.shouldDisableFastForwardButton ? "mic.rewind-back" : "mic.rewind-back-on")
                 .frame(width: 40, height: 40)
             
             Text(String.init(format: LocalizableVault.fileAudioUpdateSecondTime.localized, "-15"))
@@ -119,7 +118,7 @@ struct AudioPlayerView: View {
     private func getFastForwardView() -> some View {
         VStack {
             Spacer()
-            Image("mic.fast-forward")
+            Image(self.viewModel.shouldDisableFastForwardButton ? "mic.fast-forward" : "mic.fast-forward-on")
                 .frame(width: 40, height: 40)
             Text(String.init(format: LocalizableVault.fileAudioUpdateSecondTime.localized, "+15"))
                 .font(.custom(Styles.Fonts.regularFontName, size: 11))
