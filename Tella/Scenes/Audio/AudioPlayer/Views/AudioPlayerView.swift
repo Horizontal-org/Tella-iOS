@@ -35,13 +35,9 @@ struct AudioPlayerView: View {
             self.viewModel.audioPlayerManager.currentAudioData = homeViewModel.vaultManager.load(file: vaultFile)
             self.viewModel.audioPlayerManager.initPlayer()
         }
-        .toolbar {
-            LeadingTitleToolbar(title: vaultFile.fileName)
-        }
         .onDisappear {
             self.viewModel.onStopPlaying()
         }
-        
     }
     
     private func getContentView() -> AnyView {
