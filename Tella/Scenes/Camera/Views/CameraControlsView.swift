@@ -64,39 +64,10 @@ struct CameraControlsView: View {
     
     private func cameraHeaderView() -> some View {
         VStack {
-            
             HStack() {
-                
-                // Close button
-                if !shouldHideCloseButton {
-                    Button {
-                        mainAppModel.vaultManager.clearTmpDirectory()
-                        
-                        if sourceView == .tab {
-                            mainAppModel.selectedTab = .home
-                        } else {
-                            showingCameraView = false
-                        }
-                        
-                        close()
-                        
-                    } label: {
-                        Image("close")
-                    }
-                    .frame(width: 30, height: 30)
-                    .padding(EdgeInsets(top: 15, leading: 16, bottom: 0, trailing: 12))
-                }
+                closeButton
                 Spacer()
-                
-                // Flash button
-                Button {
-                    toggleFlash()
-                    flashIsOn.toggle()
-                } label: {
-                    flashIsOn ? Image("camera.flash-on") : Image("camera.flash-off")
-                }
-                .frame(width: 30, height: 30)
-                .padding(EdgeInsets(top: 15, leading: 16, bottom: 0, trailing: 12))
+                flashButton
             }
             .frame(height: 90)
             .background(Color.black.opacity(0.8))
@@ -104,6 +75,43 @@ struct CameraControlsView: View {
             
             Spacer()
         }
+    }
+    
+    @ViewBuilder
+    var closeButton: some View {
+        if !shouldHideCloseButton {
+            Button {
+                mainAppModel.vaultManager.clearTmpDirectory()
+                
+                if sourceView == .tab {
+                    mainAppModel.selectedTab = .home
+                } else {
+                    showingCameraView = false
+                }
+                
+                close()
+                
+            } label: {
+                Image("close")
+            }
+            .frame(width: 30, height: 30)
+            .padding(EdgeInsets(top: 15, leading: 16, bottom: 0, trailing: 12))
+            .rotate(deviceOrientation: self.deviceOrientation,
+                    shouldAnimate: self.shouldAnimate)
+        }
+    }
+    
+    var flashButton: some View {
+        Button {
+            toggleFlash()
+            flashIsOn.toggle()
+        } label: {
+            flashIsOn ? Image("camera.flash-on") : Image("camera.flash-off")
+        }
+        .frame(width: 30, height: 30)
+        .padding(EdgeInsets(top: 15, leading: 16, bottom: 0, trailing: 12))
+        .rotate(deviceOrientation: self.deviceOrientation,
+                shouldAnimate: self.shouldAnimate)
         
     }
     
@@ -285,7 +293,10 @@ struct CameraControlsView: View {
                     
                 }
             }, label: {
-                CameraTypeItemView(title: LocalizableCamera.tabTitleVideo.localized, width: 140, page: .video, selectedOption: $selectedOption)
+                CameraTypeItemView(title: LocalizableCamera.tabTitleVideo.localized,
+                                   width: 140,
+                                   page: .video,
+                                   selectedOption: $selectedOption)
             })
         }
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
