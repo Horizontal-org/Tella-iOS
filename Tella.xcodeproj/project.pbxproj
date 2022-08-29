@@ -14,14 +14,12 @@
 		0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3CD267668D600DCDC30 /* AddFileYellowButton.swift */; };
 		0D4D7510266316D200D7A635 /* SettingsGeneral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D750F266316D200D7A635 /* SettingsGeneral.swift */; };
 		0D4D7512266316DC00D7A635 /* SettingsSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7511266316DC00D7A635 /* SettingsSecurity.swift */; };
-		0D4D7514266316E500D7A635 /* SettingsAboutHelp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7513266316E500D7A635 /* SettingsAboutHelp.swift */; };
 		0D4D7516266466C500D7A635 /* SettingsDocumentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7515266466C500D7A635 /* SettingsDocumentation.swift */; };
-		0D4D7518266470A700D7A635 /* SettingsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7517266470A700D7A635 /* SettingsViews.swift */; };
+		0D4D7518266470A700D7A635 /* SettingToggleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7517266470A700D7A635 /* SettingToggleItem.swift */; };
 		0DA213C72680286F00526995 /* FileListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213C62680286F00526995 /* FileListItem.swift */; };
 		0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213CA268028A200526995 /* FileSortOptions.swift */; };
 		0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC267A5267AED7C00E55AFA /* VaultFile.swift */; };
 		0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */; };
-		0DC411E12668469C00BF0DE1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC411E02668469C00BF0DE1 /* SettingsView.swift */; };
 		0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD99E042692D24D009327B3 /* SwipeToDeleteView.swift */; };
 		0DEFD54A268945C60014EADE /* ModelStubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3CB26765B8C00DCDC30 /* ModelStubs.swift */; };
 		0DEFD54F2689467A0014EADE /* ModelStubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3CB26765B8C00DCDC30 /* ModelStubs.swift */; };
@@ -164,6 +162,7 @@
 		12AB30D3272C36500020FFBF /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB30D2272C36500020FFBF /* HomeData.swift */; };
 		12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */; };
 		12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1D278CD4900007C781 /* IntExtension.swift */; };
+		12B1290428AE694700FF41E3 /* CardName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EC94D928ABCE860070E72B /* CardName.swift */; };
 		12B5257B2848FC2800B3D1C0 /* LockTimeoutOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */; };
 		12B5257E2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257D2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift */; };
 		12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */; };
@@ -181,6 +180,12 @@
 		12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */; };
 		12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9DD9827DF65E70002FD00 /* MoveFilesView.swift */; };
 		12E9DD9B27DF7DA50002FD00 /* CreateNewFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9DD9A27DF7DA50002FD00 /* CreateNewFolderView.swift */; };
+		12EC94CF28AA566C0070E72B /* GeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EC94CE28AA566C0070E72B /* GeneralView.swift */; };
+		12EC94D128ABB6FA0070E72B /* SecuritySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EC94D028ABB6FA0070E72B /* SecuritySettingsView.swift */; };
+		12EC94D328ABC9860070E72B /* CardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EC94D228ABC9860070E72B /* CardData.swift */; };
+		12EC94D628ABCA800070E72B /* SettingsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EC94D528ABCA800070E72B /* SettingsCardView.swift */; };
+		12EC94D828ABCCED0070E72B /* SettingsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EC94D728ABCCED0070E72B /* SettingsItemView.swift */; };
+		12EC94DC28ABE5200070E72B /* CardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EC94DB28ABE5200070E72B /* CardType.swift */; };
 		12F5D28D27A326EB00BF3309 /* AboutAndHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */; };
 		12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC0CE2799FF230068EC2B /* ImportProgress.swift */; };
 		12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */; };
@@ -273,7 +278,7 @@
 		0D4D7511266316DC00D7A635 /* SettingsSecurity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSecurity.swift; sourceTree = "<group>"; };
 		0D4D7513266316E500D7A635 /* SettingsAboutHelp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAboutHelp.swift; sourceTree = "<group>"; };
 		0D4D7515266466C500D7A635 /* SettingsDocumentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDocumentation.swift; sourceTree = "<group>"; };
-		0D4D7517266470A700D7A635 /* SettingsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViews.swift; sourceTree = "<group>"; };
+		0D4D7517266470A700D7A635 /* SettingToggleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingToggleItem.swift; sourceTree = "<group>"; };
 		0DA213C62680286F00526995 /* FileListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListItem.swift; sourceTree = "<group>"; };
 		0DA213C82680288B00526995 /* FileActionMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileActionMenu.swift; sourceTree = "<group>"; };
 		0DA213CA268028A200526995 /* FileSortOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSortOptions.swift; sourceTree = "<group>"; };
@@ -432,6 +437,13 @@
 		12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableSettings.swift; sourceTree = "<group>"; };
 		12E9DD9827DF65E70002FD00 /* MoveFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveFilesView.swift; sourceTree = "<group>"; };
 		12E9DD9A27DF7DA50002FD00 /* CreateNewFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewFolderView.swift; sourceTree = "<group>"; };
+		12EC94CE28AA566C0070E72B /* GeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralView.swift; sourceTree = "<group>"; };
+		12EC94D028ABB6FA0070E72B /* SecuritySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsView.swift; sourceTree = "<group>"; };
+		12EC94D228ABC9860070E72B /* CardData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardData.swift; sourceTree = "<group>"; };
+		12EC94D528ABCA800070E72B /* SettingsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCardView.swift; sourceTree = "<group>"; };
+		12EC94D728ABCCED0070E72B /* SettingsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItemView.swift; sourceTree = "<group>"; };
+		12EC94D928ABCE860070E72B /* CardName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardName.swift; sourceTree = "<group>"; };
+		12EC94DB28ABE5200070E72B /* CardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardType.swift; sourceTree = "<group>"; };
 		12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAndHelpView.swift; sourceTree = "<group>"; };
 		12FAC0CE2799FF230068EC2B /* ImportProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportProgress.swift; sourceTree = "<group>"; };
 		12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableHome.swift; sourceTree = "<group>"; };
@@ -848,6 +860,13 @@
 			path = "Add files";
 			sourceTree = "<group>";
 		};
+		127B053F289C0A58008C047D /* Servers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Servers;
+			sourceTree = "<group>";
+		};
 		127C155927DA69A8009EC15B /* TransitionViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -1071,6 +1090,9 @@
 				12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */,
 				12B5257D2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift */,
 				12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */,
+				12EC94D228ABC9860070E72B /* CardData.swift */,
+				12EC94D928ABCE860070E72B /* CardName.swift */,
+				12EC94DB28ABE5200070E72B /* CardType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1123,10 +1145,11 @@
 			isa = PBXGroup;
 			children = (
 				12730E64279EAB9200DC0135 /* SettingsMainView.swift */,
-				12730E66279F11C200DC0135 /* LanguageListView.swift */,
-				12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */,
-				0D4D7517266470A700D7A635 /* SettingsViews.swift */,
-				12C2BDE72847676100488060 /* LockTimeoutView.swift */,
+				12EC94CB28AA559F0070E72B /* General */,
+				12EC94CD28AA55BF0070E72B /* Security */,
+				127B053F289C0A58008C047D /* Servers */,
+				12EC94CC28AA55AE0070E72B /* About&Help */,
+				12EC94D428ABCA5B0070E72B /* Common */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1149,6 +1172,42 @@
 				0D4D7513266316E500D7A635 /* SettingsAboutHelp.swift */,
 			);
 			path = SettingsV1;
+			sourceTree = "<group>";
+		};
+		12EC94CB28AA559F0070E72B /* General */ = {
+			isa = PBXGroup;
+			children = (
+				12EC94CE28AA566C0070E72B /* GeneralView.swift */,
+				12730E66279F11C200DC0135 /* LanguageListView.swift */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
+		12EC94CC28AA55AE0070E72B /* About&Help */ = {
+			isa = PBXGroup;
+			children = (
+				12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */,
+			);
+			path = "About&Help";
+			sourceTree = "<group>";
+		};
+		12EC94CD28AA55BF0070E72B /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				12EC94D028ABB6FA0070E72B /* SecuritySettingsView.swift */,
+				12C2BDE72847676100488060 /* LockTimeoutView.swift */,
+			);
+			path = Security;
+			sourceTree = "<group>";
+		};
+		12EC94D428ABCA5B0070E72B /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				12EC94D528ABCA800070E72B /* SettingsCardView.swift */,
+				12EC94D728ABCCED0070E72B /* SettingsItemView.swift */,
+				0D4D7517266470A700D7A635 /* SettingToggleItem.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		2C7360AA2DCEECE0D3586354 /* Frameworks */ = {
@@ -1636,6 +1695,7 @@
 				1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */,
 				125EFACE274A834300D93DF6 /* FileActionMenu.swift in Sources */,
 				D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */,
+				12EC94D328ABC9860070E72B /* CardData.swift in Sources */,
 				1224DAEA27197578001C0ED0 /* ConfirmLockPasswordView.swift in Sources */,
 				0D4D7516266466C500D7A635 /* SettingsDocumentation.swift in Sources */,
 				12781F4B27EA315600FE9609 /* BundleInfo.swift in Sources */,
@@ -1657,8 +1717,10 @@
 				0ECC7817267A533E00A2ACF2 /* PageViewCell.swift in Sources */,
 				128B929727D7920300E92ACF /* SelectingFilesHeaderView.swift in Sources */,
 				1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */,
+				12EC94D628ABCA800070E72B /* SettingsCardView.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
 				127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */,
+				12EC94D128ABB6FA0070E72B /* SecuritySettingsView.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				0E170255267910CC0069072A /* OutBoxFormsView.swift in Sources */,
 				0E170259267913160069072A /* FormsCellView.swift in Sources */,
@@ -1696,12 +1758,12 @@
 				12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */,
 				128D6E1A28045C090082AB18 /* manageFilesItems.swift in Sources */,
 				12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */,
+				12EC94D828ABCCED0070E72B /* SettingsItemView.swift in Sources */,
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,
 				128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */,
 				1289B98727C5397200315FCE /* ScreenExtension.swift in Sources */,
 				0D4D7512266316DC00D7A635 /* SettingsSecurity.swift in Sources */,
-				0D4D7514266316E500D7A635 /* SettingsAboutHelp.swift in Sources */,
 				12730E69279F420400DC0135 /* SettingsViewModel.swift in Sources */,
 				12567FF9271742C500A2D356 /* Localizable.swift in Sources */,
 				0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */,
@@ -1749,16 +1811,18 @@
 				12A148962720B2B400A1ADDC /* PasswordTextFieldView.swift in Sources */,
 				D50727BF2625561400BBC370 /* KeychainManager.swift in Sources */,
 				D7CFC37F254260D300CCB352 /* RecordView.swift in Sources */,
-				0DC411E12668469C00BF0DE1 /* SettingsView.swift in Sources */,
 				D7F55FC825348FA50028739E /* RecordState.swift in Sources */,
 				12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */,
 				0ECC781B267A542300A2ACF2 /* Pages.swift in Sources */,
 				0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */,
 				126FE4D727A427E200AE4188 /* Constants.swift in Sources */,
+				12EC94CF28AA566C0070E72B /* GeneralView.swift in Sources */,
+				12B1290428AE694700FF41E3 /* CardName.swift in Sources */,
 				1204F64327D928C9006E40EE /* FileTypeExtension.swift in Sources */,
 				0DA213C72680286F00526995 /* FileListItem.swift in Sources */,
 				CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */,
 				12B6AF7D283E4C7200D697F6 /* LocalizableVault.swift in Sources */,
+				12EC94DC28ABE5200070E72B /* CardType.swift in Sources */,
 				125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */,
 				12607D58279042CE00E2B8CC /* VideoPlayer.swift in Sources */,
 				12567FFC27178EE200A2D356 /* LockButton.swift in Sources */,
@@ -1779,7 +1843,7 @@
 				128EDB942809897C00747B98 /* HomeViewModel.swift in Sources */,
 				0E170253267910B90069072A /* BlankFormsView.swift in Sources */,
 				0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */,
-				0D4D7518266470A700D7A635 /* SettingsViews.swift in Sources */,
+				0D4D7518266470A700D7A635 /* SettingToggleItem.swift in Sources */,
 				128B15C927DA085A00E1C1E0 /* WelcomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

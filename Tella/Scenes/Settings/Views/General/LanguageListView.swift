@@ -50,7 +50,7 @@ struct LanguageHeaderView : View {
                 Image("close")
             }.padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12))
             
-            Text(LocalizableSettings.settLanguage.localized)
+            Text(LocalizableSettings.settLangAppBar.localized)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 20))
                 .foregroundColor(Color.white)
             
@@ -93,9 +93,9 @@ struct LanguageItemView : View {
                 
             }
             Button("") {
-                appModel.shouldUpdateLanguage = true
                 LanguageManager.shared.currentLanguage = languageItem
-                
+                appModel.shouldUpdateLanguage = true
+
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     isPresented = false
                 }
@@ -112,8 +112,8 @@ struct LanguageItemView : View {
     }
 }
 
-//struct LanguageListView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        LanguageListView(isPresented: .constant(true))
-//    }
-//}
+struct LanguageListView_Previews: PreviewProvider {
+    static var previews: some View {
+        LanguageListView(isPresented: .constant(true))
+    }
+}

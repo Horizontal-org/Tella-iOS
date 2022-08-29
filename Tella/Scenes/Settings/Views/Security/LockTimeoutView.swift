@@ -101,6 +101,7 @@ struct BottomButtonsView : View {
             Spacer()
             
             Button {
+                settingsViewModel.cancelLockTimeout()
                 sheetManager.hide()
             } label: {
                 Text(LocalizableSettings.settLockTimeoutCancelSheetAction.localized)

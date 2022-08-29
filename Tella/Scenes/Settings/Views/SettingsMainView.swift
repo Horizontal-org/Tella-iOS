@@ -1,5 +1,3 @@
-//
-//  SettingsMainView.swift
 //  Tella
 //
 //  Copyright © 2022 INTERNEWS. All rights reserved.
@@ -9,32 +7,52 @@ import SwiftUI
 
 struct SettingsMainView: View {
     
-    @ObservedObject var appModel : MainAppModel
+    @EnvironmentObject var appModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @StateObject var settingsViewModel : SettingsViewModel
     
+    var cards : [CardData<AnyView>]  { return [CardData(imageName: "settings.general",
+                                                        title: "General",
+                                                        cardType : .display,
+                                                        cardName: MainSettingsCardName.general,
+                                                        destination: GeneralView().eraseToAnyView()),
+                                               CardData(imageName: "settings.lock",
+                                                        title: "Security",
+                                                        cardType : .display,
+                                                        cardName: MainSettingsCardName.security,
+                                                        destination: SecuritySettingsView().eraseToAnyView()),
+                                               CardData(imageName: "settings.servers",
+                                                        title: "Servers",
+                                                        cardType : .display,
+                                                        cardName: MainSettingsCardName.security),
+                                               CardData(imageName: "settings.help",
+                                                        title: LocalizableSettings.settAbout.localized,
+                                                        cardType : .display,
+                                                        cardName: MainSettingsCardName.aboutAndHelp,
+                                                        destination: AboutAndHelpView().eraseToAnyView() )] }
+    
     init(appModel:MainAppModel) {
         _settingsViewModel = StateObject(wrappedValue: SettingsViewModel(appModel: appModel))
-        self.appModel = appModel
     }
     
     var body: some View {
         ContainerView {
             VStack( spacing: 12) {
                 if appModel.shouldUpdateLanguage {
+                    
                     Spacer()
                         .frame(height: 12)
-                    GeneralSettingsView()
-                        .environmentObject(settingsViewModel)
-                    RecentFilesSettingsView()
-                    ScreenSecuritySettingsView()
+                    
+                    SettingsCardView(cardDataArray: cards)
+                    
                     Spacer()
                 }
-            } .padding(EdgeInsets(top: 0, leading: 17, bottom: 0, trailing: 17))
-            
+            }
         }
+        .environmentObject(settingsViewModel)
+        
         .toolbar {
-            LeadingTitleToolbar(title: LocalizableSettings.appBar.localized)
+            LeadingTitleToolbar(title: LocalizableSettings.settAppBar.localized)
         }
         
         .onDisappear(perform: {
@@ -44,154 +62,6 @@ struct SettingsMainView: View {
         .onDisappear {
             appModel.publishUpdates()
         }
-    }
-}
-
-struct GeneralSettingsView : View {
-    
-    @State private var presentingLanguage = false
-    @EnvironmentObject var appModel : MainAppModel
-    @StateObject var lockViewModel = LockViewModel(unlockType: .update)
-    @State var passwordTypeString : String = ""
-    @EnvironmentObject private var sheetManager: SheetManager
-    @EnvironmentObject var settingsViewModel: SettingsViewModel
-    
-    var body : some View {
-        
-        VStack(spacing: 0) {
-            
-            SettingsItemView(imageName: "settings.language",
-                             title: LocalizableSettings.settLanguage.localized,
-                             value: LanguageManager.shared.currentLanguage.name)
-            .onTapGesture {
-                presentingLanguage = true
-            }
-            
-            DividerView()
-            
-            SettingsItemView(imageName: "settings.lock",
-                             title: LocalizableSettings.settLock.localized,
-                             value: passwordTypeString)
-            
-            .navigateTo(destination: unlockView)
-            
-            
-            DividerView()
-            
-            SettingsItemView(imageName: "settings.timeout",
-                             title: LocalizableSettings.settLockTimeout.localized,
-                             value: appModel.settings.lockTimeout.displayName)
-            .onTapGesture {
-                showLockTimeout()
-            }
-            
-            DividerView()
-            
-            SettingsItemView(imageName: "settings.help",
-                             title: LocalizableSettings.settAbout.localized,
-                             value: "")
-            .navigateTo(destination: AboutAndHelpView()
-                .environmentObject(settingsViewModel))
-            
-        }.background(Color.white.opacity(0.08))
-            .cornerRadius(15)
-            .fullScreenCover(isPresented: $presentingLanguage) {
-                
-            } content: {
-                LanguageListView(isPresented: $presentingLanguage)
-            }
-            .onAppear {
-                lockViewModel.shouldDismiss.send(false)
-                let passwordType = AuthenticationManager().getPasswordType()
-                passwordTypeString = passwordType == .tellaPassword ? LocalizableLock.lockSelectActionPassword.localized : LocalizableLock.lockSelectActionPin.localized
-            }
-    }
-    
-    var unlockView : some View {
-        
-        let passwordType = AuthenticationManager().getPasswordType()
-        return passwordType == .tellaPassword ?
-        
-        UnlockPasswordView()
-            .environmentObject(lockViewModel)
-            .eraseToAnyView()  :
-        
-        UnlockPinView()
-            .environmentObject(lockViewModel)
-            .eraseToAnyView()
-        
-    }
-    
-    func showLockTimeout() {
-        sheetManager.showBottomSheet(modalHeight: 408) {
-            LockTimeoutView()
-                .environmentObject(settingsViewModel)
-        }
-    }
-}
-
-struct RecentFilesSettingsView : View {
-    
-    @EnvironmentObject var appModel : MainAppModel
-    
-    var body : some View {
-        
-        
-        SettingToggleItem(title: LocalizableSettings.settRecentFiles.localized,
-                          description: LocalizableSettings.settRecentFilesExpl.localized,
-                          toggle: $appModel.settings.showRecentFiles)
-        
-        .background(Color.white.opacity(0.08))
-        .cornerRadius(15)
-    }
-}
-
-
-struct ScreenSecuritySettingsView : View {
-    
-    @EnvironmentObject var appModel : MainAppModel
-    
-    var body : some View {
-        
-        SettingToggleItem(title: LocalizableSettings.settScreenSecurity.localized,
-                          description: LocalizableSettings.settScreenSecurityExpl.localized,
-                          toggle: $appModel.settings.screenSecurity)
-        .background(Color.white.opacity(0.08))
-        .cornerRadius(15)
-    }
-}
-
-struct DividerView : View {
-    var body: some View {
-        Divider()
-            .frame(height: 1)
-            .background(Color.white.opacity(0.2))
-    }
-    
-}
-
-struct SettingsItemView : View {
-    
-    var imageName : String = ""
-    var title : String = ""
-    var value : String = ""
-    
-    var body : some View {
-        
-        HStack {
-            Image(imageName)
-            Spacer()
-                .frame(width: 10)
-            Text(title)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(.white)
-            Spacer()
-            Text(value)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(.white)
-            
-        }.padding(.all, 18)
-            .contentShape(Rectangle())
     }
 }
 

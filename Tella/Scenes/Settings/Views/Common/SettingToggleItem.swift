@@ -4,31 +4,12 @@
 
 import SwiftUI
 
-struct SettingItem: View {
-    
-    let name: String
-    let image: Image
-    
-    var body: some View {
-        HStack{
-            image
-                .frame(width: 25, height: 25)
-                .foregroundColor(Color.white)
-            Text(name)
-                .font(.callout)
-                .foregroundColor(Color.white)
-        }
-        .frame(height: 56)
-        .listRowBackground(Styles.Colors.backgroundTab)
-        .cornerRadius(25)
-    }
-}
-
 struct SettingToggleItem: View {
     
     let title: String
     let description: String
     @Binding var toggle: Bool
+    @EnvironmentObject var appModel : MainAppModel
     
     var body: some View {
         HStack{
@@ -43,6 +24,9 @@ struct SettingToggleItem: View {
             }
             Spacer()
             Toggle("", isOn: $toggle)
+                .onChange(of: toggle) { value in
+                    appModel.saveSettings()
+                }
                 .labelsHidden()
         }
         .padding()
