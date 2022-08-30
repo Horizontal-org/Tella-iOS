@@ -13,41 +13,19 @@ struct SecuritySettingsView: View {
     @StateObject var lockViewModel = LockViewModel(unlockType: .update)
     @State var passwordTypeString : String = ""
     
-    var cards : [[CardData<AnyView>]] { return [[CardData(imageName: "settings.lock",
-                                                          title: LocalizableSettings.settSecLock.localized,
-                                                          value: passwordTypeString,
-                                                          cardType : .display,
-                                                          cardName: SecurityCardName.lock,
-                                                          destination: unlockView.eraseToAnyView()),
-                                                 CardData(imageName: "settings.timeout",
-                                                          title: LocalizableSettings.settSecLockTimeout.localized,
-                                                          value: appModel.settings.lockTimeout.displayName,
-                                                          cardType : .display,
-                                                          cardName: SecurityCardName.lockTimeout)],
-                                                [CardData(title: LocalizableSettings.settSecScreenSecurity.localized,
-                                                          description: LocalizableSettings.settSecScreenSecurityExpl.localized,
-                                                          cardType : .toggle,
-                                                          cardName: SecurityCardName.screenSecurity,
-                                                          valueToSave: $appModel.settings.screenSecurity)]]}
     
     var body: some View {
         
         ContainerView {
-            VStack( spacing: 12) {
+            VStack(spacing: 0) {
+               
                 Spacer()
-                    .frame(height: 12)
+                    .frame(height: 8)
+
+                SettingsCardView(cardViewArray: [lockView.eraseToAnyView(), lockTimeoutView.eraseToAnyView()])
                 
-                ForEach(cards, id:\.self) { item in
-                    SettingsCardView(cardDataArray: item) { card in
-                        switch card {
-                        case SecurityCardName.lockTimeout:
-                            showLockTimeout()
-                        default:
-                            break
-                        }
-                    }
-                }
-                
+                SettingsCardView(cardViewArray: [screenSecurityView.eraseToAnyView()])
+
                 Spacer()
             }
         }
@@ -64,6 +42,35 @@ struct SecuritySettingsView: View {
         
     }
     
+    var lockView: some View {
+        
+        SettingsItemView<AnyView>(imageName: "settings.lock",
+                                  title: LocalizableSettings.settSecLock.localized,
+                                  value: passwordTypeString,
+                                  destination:unlockView.eraseToAnyView())
+    }
+
+    var lockTimeoutView: some View {
+        
+        SettingsItemView<AnyView>(imageName:"settings.timeout",
+                                  title: LocalizableSettings.settSecLockTimeout.localized,
+                                  value: appModel.settings.lockTimeout.displayName,
+                                  destination:unlockView.eraseToAnyView()) {
+            showLockTimeout()
+
+        }
+    }
+
+ 
+    var screenSecurityView: some View {
+        
+        SettingToggleItem(title: LocalizableSettings.settSecScreenSecurity.localized,
+                          description: LocalizableSettings.settSecScreenSecurityExpl.localized,
+                          toggle: $appModel.settings.screenSecurity)
+        
+        
+    }
+
     var unlockView : some View {
         
         let passwordType = AuthenticationManager().getPasswordType()

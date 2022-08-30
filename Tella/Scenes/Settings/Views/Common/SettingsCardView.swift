@@ -7,59 +7,23 @@ import SwiftUI
 
 struct SettingsCardView<T:View> : View {
     
-    var cardDataArray : [CardData<T>]
-    
-    @EnvironmentObject var settingsViewModel : SettingsViewModel
-    @EnvironmentObject var appModel : MainAppModel
-    
-    var completion : ((CardName) -> ())?
+    var cardViewArray : [T]
     
     var body : some View {
         
         VStack(spacing: 0) {
             
-            ForEach(Array(cardDataArray.enumerated()), id:\.element) { index, cardData in
-
-                switch cardData.cardType {
-                    
-                case .link:
-                    
-                    Link(destination: URL(string: cardData.linkURL)!) {
-                        SettingsItemView(imageName: cardData.imageName,
-                                         title: cardData.title,
-                                         value: cardData.value)
-                    }
-                    
-                case .toggle:
-                    
-                    SettingToggleItem(title: cardData.title,
-                                      description: cardData.description,
-                                      toggle: cardData.valueToSave)
-                    
-                case .display:
-                    
-                    SettingsItemView(imageName: cardData.imageName,
-                                     title: cardData.title,
-                                     value: cardData.value)
-                    
-                    .if((cardData.destination != nil) , transform: { view in
-                        view.navigateTo(destination: cardData.destination
-                            .environmentObject(settingsViewModel))
-                        
-                    })
-                        .onTapGesture {
-                        cardData.action?()
-                        completion?(cardData.cardName)
-                    }
-                }
+            ForEach(0..<cardViewArray.count, id:\.self) { index in
                 
-                if index < cardDataArray.count - 1 {
+                cardViewArray[index].eraseToAnyView()
+                
+                if index < cardViewArray.count - 1 {
                     DividerView()
                 }
             }
         }.background(Color.white.opacity(0.08))
             .cornerRadius(15)
-            .padding(EdgeInsets(top: 5, leading: 17, bottom: 5, trailing: 17))
+            .padding(EdgeInsets(top: 6, leading: 17, bottom: 6, trailing: 17))
     }
 }
 
@@ -73,6 +37,6 @@ struct DividerView : View {
 
 struct SettingsCardView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsCardView<AnyView>(cardDataArray: [])
+        SettingsCardView(cardViewArray: [Text("Hello")])
     }
 }

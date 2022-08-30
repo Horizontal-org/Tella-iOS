@@ -1,0 +1,38 @@
+//  Tella
+//
+//  Copyright © 2022 INTERNEWS. All rights reserved.
+//
+
+import SwiftUI
+
+struct SettingsServerItemView: View {
+    
+    let title: String
+    
+    var body: some View {
+        
+        HStack{
+            VStack(alignment: .leading){
+                Text(title)
+                    .foregroundColor(Color.white)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
+            }
+            
+            Spacer()
+            
+            Button {
+                
+            } label: {
+                Image("settings.more")
+                    .padding()
+            } 
+        }
+        .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 7))
+    }
+}
+
+struct SettingsServerItemView_Previews: PreviewProvider {
+    static var previews: some View {
+        SettingsServerItemView(title: "CLEEN Foundation")
+    }
+}

@@ -6,17 +6,6 @@ import SwiftUI
 
 struct AboutAndHelpView: View {
     
-    var cards: [CardData<AnyView>]  = [CardData(imageName:"settings.contact-us",
-                                                title: LocalizableSettings.settAboutContactUs.localized,
-                                                linkURL: TellaUrls.contactURL,
-                                                cardType : .link,
-                                                cardName: AboutAndHelpCardName.contactUs, destination: nil),
-                                       CardData(imageName: "settings.privacy",
-                                                title: LocalizableSettings.settAboutPrivacyPolicy.localized,
-                                                linkURL: TellaUrls.privacyURL,
-                                                cardType : .link,
-                                                cardName: AboutAndHelpCardName.privacy)]
-    
     var body: some View {
         ContainerView {
             VStack() {
@@ -28,7 +17,8 @@ struct AboutAndHelpView: View {
                 Spacer()
                     .frame(height: 24)
                 
-                SettingsCardView(cardDataArray: cards)
+                SettingsCardView(cardViewArray: [contactusView.eraseToAnyView(),
+                                                 privacyView.eraseToAnyView()])
                 
                 Spacer()
             }
@@ -56,8 +46,19 @@ struct AboutAndHelpView: View {
                 .foregroundColor(.white)
         }
     }
+    
+    var contactusView : some View {
+        SettingsLinkItemView(imageName: "settings.contact-us",
+                             title: LocalizableSettings.settAboutContactUs.localized,
+                             linkURL: TellaUrls.contactURL)
+    }
+    
+    var privacyView : some View {
+        SettingsLinkItemView(imageName: "settings.privacy",
+                             title: LocalizableSettings.settAboutPrivacyPolicy.localized,
+                             linkURL: TellaUrls.privacyURL)
+    }
 }
-
 
 struct AboutAndHelpView_Previews: PreviewProvider {
     static var previews: some View {

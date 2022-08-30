@@ -5,11 +5,13 @@
 
 import SwiftUI
 
-struct SettingsItemView : View {
+struct SettingsItemView<T:View> : View {
     
     var imageName : String = ""
     var title : String = ""
     var value : String = ""
+    var destination : T?
+    var completion : (() -> ())?
     
     var body : some View {
         
@@ -27,11 +29,21 @@ struct SettingsItemView : View {
             
         }.padding(.all, 18)
             .contentShape(Rectangle())
+            .if(( destination != nil) , transform: { view in
+                view.navigateTo(destination:  destination)
+                
+            })
+                .onTapGesture {
+                completion?()
+            }
     }
 }
 
 struct SettingsItemView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsItemView()
+        SettingsItemView<AnyView>(imageName: "settings.timeout",
+                                  title: "Test",
+                                  value: "Test")
+        .background(Styles.Colors.backgroundMain)
     }
 }

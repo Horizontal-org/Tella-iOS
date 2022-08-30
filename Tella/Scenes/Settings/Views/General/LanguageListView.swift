@@ -8,7 +8,7 @@ struct LanguageListView: View {
     
     @Binding var isPresented : Bool
     @EnvironmentObject var settingsViewModel: SettingsViewModel
-
+    
     @EnvironmentObject private var appViewState: AppViewState
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
@@ -95,7 +95,7 @@ struct LanguageItemView : View {
             Button("") {
                 LanguageManager.shared.currentLanguage = languageItem
                 appModel.shouldUpdateLanguage = true
-
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     isPresented = false
                 }

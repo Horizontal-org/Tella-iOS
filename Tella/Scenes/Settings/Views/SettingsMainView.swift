@@ -11,42 +11,24 @@ struct SettingsMainView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @StateObject var settingsViewModel : SettingsViewModel
     
-    var cards : [CardData<AnyView>]  { return [CardData(imageName: "settings.general",
-                                                        title: "General",
-                                                        cardType : .display,
-                                                        cardName: MainSettingsCardName.general,
-                                                        destination: GeneralView().eraseToAnyView()),
-                                               CardData(imageName: "settings.lock",
-                                                        title: "Security",
-                                                        cardType : .display,
-                                                        cardName: MainSettingsCardName.security,
-                                                        destination: SecuritySettingsView().eraseToAnyView()),
-                                               CardData(imageName: "settings.servers",
-                                                        title: "Servers",
-                                                        cardType : .display,
-                                                        cardName: MainSettingsCardName.security),
-                                               CardData(imageName: "settings.help",
-                                                        title: LocalizableSettings.settAbout.localized,
-                                                        cardType : .display,
-                                                        cardName: MainSettingsCardName.aboutAndHelp,
-                                                        destination: AboutAndHelpView().eraseToAnyView() )] }
-    
     init(appModel:MainAppModel) {
         _settingsViewModel = StateObject(wrappedValue: SettingsViewModel(appModel: appModel))
     }
     
     var body: some View {
+        
         ContainerView {
-            VStack( spacing: 12) {
-                if appModel.shouldUpdateLanguage {
-                    
-                    Spacer()
-                        .frame(height: 12)
-                    
-                    SettingsCardView(cardDataArray: cards)
-                    
-                    Spacer()
-                }
+            
+            VStack(spacing:0) {
+                
+                Spacer()
+                    .frame(height: 8)
+                
+                SettingsCardView(cardViewArray: [generalView.eraseToAnyView(),
+                                                 securityView.eraseToAnyView(),
+                                                 serversView.eraseToAnyView(),
+                                                 helpView.eraseToAnyView()])
+                Spacer()
             }
         }
         .environmentObject(settingsViewModel)
@@ -55,13 +37,34 @@ struct SettingsMainView: View {
             LeadingTitleToolbar(title: LocalizableSettings.settAppBar.localized)
         }
         
-        .onDisappear(perform: {
-            appModel.saveSettings()
-        })
-        
         .onDisappear {
             appModel.publishUpdates()
         }
+    }
+    
+    var generalView: some View {
+        SettingsItemView<AnyView>(imageName: "settings.general",
+                                  title: "General",
+                                  destination:
+                                    GeneralView().environmentObject(settingsViewModel) .eraseToAnyView())
+    }
+    
+    var securityView: some View {
+        SettingsItemView<AnyView>(imageName: "settings.lock",
+                                  title: "Security",
+                                  destination:SecuritySettingsView().environmentObject(settingsViewModel) .eraseToAnyView())
+    }
+    
+    var serversView: some View {
+        SettingsItemView<AnyView>(imageName: "settings.servers",
+                                  title: "Servers",
+                                  destination:ServersListView().environmentObject(settingsViewModel) .eraseToAnyView())
+    }
+    
+    var helpView: some View {
+        SettingsItemView<AnyView>(imageName: "settings.help",
+                                  title: LocalizableSettings.settAbout.localized,
+                                  destination:AboutAndHelpView().environmentObject(settingsViewModel) .eraseToAnyView())
     }
 }
 
