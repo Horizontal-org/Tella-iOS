@@ -249,7 +249,6 @@ struct RecordView: View {
                                      cancelButtonText: LocalizableRecorder.renameRecordingCancelSheetAction.localized,
                                      fieldContent: $fileName,
                                      fileName: viewModel.fileName,
-                                     fieldType: FieldType.fileName,
                                      didConfirmAction: {
                 viewModel.fileName =  fileName
             })

@@ -46,7 +46,7 @@ struct PasswordView<T:LockViewProtocol, Destination:View>: View   {
                 
                 PasswordTextFieldView(fieldContent: $fieldContent,
                                       isValid: $isValid,
-                                      shouldShowErrorMessage: $shouldShowErrorMessage, shouldShowError: .constant(false))
+                                       shouldShowError: .constant(false))
                 Spacer()
                 
                 if shouldShowErrorMessage {

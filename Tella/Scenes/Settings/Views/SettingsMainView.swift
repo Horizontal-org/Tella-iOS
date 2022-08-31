@@ -10,9 +10,11 @@ struct SettingsMainView: View {
     @EnvironmentObject var appModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @StateObject var settingsViewModel : SettingsViewModel
-    
+    @StateObject var serversViewModel : ServersViewModel
+
     init(appModel:MainAppModel) {
         _settingsViewModel = StateObject(wrappedValue: SettingsViewModel(appModel: appModel))
+        _serversViewModel = StateObject(wrappedValue: ServersViewModel(mainAppModel: appModel))
     }
     
     var body: some View {
@@ -32,7 +34,8 @@ struct SettingsMainView: View {
             }
         }
         .environmentObject(settingsViewModel)
-        
+        .environmentObject(serversViewModel)
+
         .toolbar {
             LeadingTitleToolbar(title: LocalizableSettings.settAppBar.localized)
         }
@@ -58,7 +61,7 @@ struct SettingsMainView: View {
     var serversView: some View {
         SettingsItemView<AnyView>(imageName: "settings.servers",
                                   title: "Servers",
-                                  destination:ServersListView().environmentObject(settingsViewModel) .eraseToAnyView())
+                                  destination:ServersListView().environmentObject(serversViewModel).eraseToAnyView())
     }
     
     var helpView: some View {

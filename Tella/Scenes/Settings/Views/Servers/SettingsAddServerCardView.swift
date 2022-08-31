@@ -7,6 +7,8 @@ import SwiftUI
 
 struct SettingsAddServerCardView: View {
     
+    @EnvironmentObject var serversViewModel : ServersViewModel
+
     var body: some View {
         ZStack {
             HStack{
@@ -27,9 +29,11 @@ struct SettingsAddServerCardView: View {
                 } label: {
                     Image("settings.add")
                         .padding()
-                } 
+                        .navigateTo(destination: AddServerURLView().environmentObject(serversViewModel))
+                }
             }
         }
+        
         .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 0))
     }
 }

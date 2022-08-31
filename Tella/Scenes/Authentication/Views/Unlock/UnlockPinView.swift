@@ -39,7 +39,6 @@ struct UnlockPinView: View {
                 
                 PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
                                       isValid: .constant(true),
-                                      shouldShowErrorMessage: .constant(false),
                                       shouldShowError: $viewModel.shouldShowUnlockError,
                                       disabled: true)
                 

@@ -150,6 +150,11 @@
 		1291F4F627B54300006A34D3 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291F4F527B54300006A34D3 /* AudioPlayer.swift */; };
 		129533C227399A1B0053FA4B /* PhotoVideoPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129533C127399A1B0053FA4B /* PhotoVideoPickerView.swift */; };
 		129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129533C32739D5BC0053FA4B /* TextFieldBottomSheetView.swift */; };
+		129B844F28BF5E4700F1B344 /* TextfieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B844E28BF5E4700F1B344 /* TextfieldView.swift */; };
+		129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845028BF6C7800F1B344 /* ServersViewModel.swift */; };
+		129B845328BFB7AC00F1B344 /* AddServerAccessChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */; };
+		129B845528BFEC8600F1B344 /* TopServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845428BFEC8600F1B344 /* TopServerView.swift */; };
+		129B845928BFED9700F1B344 /* BlueButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845828BFED9700F1B344 /* BlueButtonView.swift */; };
 		12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A1488E27209F2800A1ADDC /* ViewExtension.swift */; };
 		12A148922720A32000A1ADDC /* LockPinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148912720A32000A1ADDC /* LockPinData.swift */; };
 		12A148942720A89E00A1ADDC /* BottomLockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148932720A89E00A1ADDC /* BottomLockView.swift */; };
@@ -190,6 +195,7 @@
 		12F5D28D27A326EB00BF3309 /* AboutAndHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */; };
 		12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC0CE2799FF230068EC2B /* ImportProgress.swift */; };
 		12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */; };
+		12FFEFA528BE96E00081DDB2 /* AddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */; };
 		1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerView.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
 		896A69AE4EE3738FC80097F4 /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0FADD614621998E34738DDA /* libPods-Tella.a */; };
@@ -410,6 +416,11 @@
 		1291F4F527B54300006A34D3 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		129533C127399A1B0053FA4B /* PhotoVideoPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoVideoPickerView.swift; sourceTree = "<group>"; };
 		129533C32739D5BC0053FA4B /* TextFieldBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldBottomSheetView.swift; sourceTree = "<group>"; };
+		129B844E28BF5E4700F1B344 /* TextfieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldView.swift; sourceTree = "<group>"; };
+		129B845028BF6C7800F1B344 /* ServersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersViewModel.swift; sourceTree = "<group>"; };
+		129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerAccessChoiceView.swift; sourceTree = "<group>"; };
+		129B845428BFEC8600F1B344 /* TopServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopServerView.swift; sourceTree = "<group>"; };
+		129B845828BFED9700F1B344 /* BlueButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueButtonView.swift; sourceTree = "<group>"; };
 		12A1488E27209F2800A1ADDC /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		12A148912720A32000A1ADDC /* LockPinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPinData.swift; sourceTree = "<group>"; };
 		12A148932720A89E00A1ADDC /* BottomLockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLockView.swift; sourceTree = "<group>"; };
@@ -449,6 +460,7 @@
 		12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAndHelpView.swift; sourceTree = "<group>"; };
 		12FAC0CE2799FF230068EC2B /* ImportProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportProgress.swift; sourceTree = "<group>"; };
 		12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableHome.swift; sourceTree = "<group>"; };
+		12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerURLView.swift; sourceTree = "<group>"; };
 		1E67B39123FC9067001F3D64 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		1EAE6BF424146C2100114244 /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
 		2377F430E2D84ACF7E66B891 /* Pods-TellaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.release.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -866,6 +878,13 @@
 			isa = PBXGroup;
 			children = (
 				12ADF98A28BD130C00FA96EB /* ServersListView.swift */,
+				1291A83128BE0086001A6055 /* SettingsAddServerCardView.swift */,
+				12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */,
+				129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */,
+				129B844E28BF5E4700F1B344 /* TextfieldView.swift */,
+				129B845028BF6C7800F1B344 /* ServersViewModel.swift */,
+				129B845428BFEC8600F1B344 /* TopServerView.swift */,
+				129B845828BFED9700F1B344 /* BlueButtonView.swift */,
 			);
 			path = Servers;
 			sourceTree = "<group>";
@@ -1207,7 +1226,6 @@
 				12EC94D728ABCCED0070E72B /* SettingsItemView.swift */,
 				0D4D7517266470A700D7A635 /* SettingToggleItem.swift */,
 				1291A83528BE3947001A6055 /* SettingsLinkItemView.swift */,
-				1291A83128BE0086001A6055 /* SettingsAddServerCardView.swift */,
 				1291A83328BE0D51001A6055 /* SettingsServerItemView.swift */,
 			);
 			path = Common;
@@ -1665,6 +1683,7 @@
 				0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */,
 				12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */,
 				12781F4727EA247500FE9609 /* DocumentPickerView.swift in Sources */,
+				129B845528BFEC8600F1B344 /* TopServerView.swift in Sources */,
 				1209FD2B27AD851E00D8C17E /* AudioPlayerView.swift in Sources */,
 				128D6E182804531B0082AB18 /* AddPhotoVideoItems.swift in Sources */,
 				12730E65279EAB9200DC0135 /* SettingsMainView.swift in Sources */,
@@ -1696,6 +1715,7 @@
 				D51639802631130E003A11B5 /* HomeView.swift in Sources */,
 				0E8CEA19266FFE0600926799 /* SentFormsView.swift in Sources */,
 				0E27899D266F76D500B130C4 /* FormsView.swift in Sources */,
+				129B845928BFED9700F1B344 /* BlueButtonView.swift in Sources */,
 				1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */,
 				125EFACE274A834300D93DF6 /* FileActionMenu.swift in Sources */,
 				D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */,
@@ -1731,12 +1751,14 @@
 				12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */,
 				1291A83628BE3948001A6055 /* SettingsLinkItemView.swift in Sources */,
 				0ECC7819267A53A700A2ACF2 /* PageView.swift in Sources */,
+				12FFEFA528BE96E00081DDB2 /* AddServerURLView.swift in Sources */,
 				12B5257B2848FC2800B3D1C0 /* LockTimeoutOption.swift in Sources */,
 				127A5B2228538E0800FAAEB0 /* Language.swift in Sources */,
 				1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */,
 				1278B66127EB364500C9AC4D /* Utils.swift in Sources */,
 				125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */,
 				125D2324271F891500250FBB /* PinView.swift in Sources */,
+				129B844F28BF5E4700F1B344 /* TextfieldView.swift in Sources */,
 				125FA6D8278E2828004B9D06 /* DoubleExtension.swift in Sources */,
 				129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */,
 				1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */,
@@ -1785,6 +1807,7 @@
 				125A0AED2726CBF000F6E77F /* UnlockPinView.swift in Sources */,
 				12B5257E2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift in Sources */,
 				12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */,
+				129B845328BFB7AC00F1B344 /* AddServerAccessChoiceView.swift in Sources */,
 				128B929D27D7A08700E92ACF /* FileItemsView.swift in Sources */,
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
 				1268554127D2ACB200385E18 /* RecentFilesListView.swift in Sources */,
@@ -1801,6 +1824,7 @@
 				1268553E27D2572100385E18 /* FileInfoView.swift in Sources */,
 				1289B45828B63187005DA687 /* RotationViewModifier.swift in Sources */,
 				125D2326271F896400250FBB /* CustomPinView.swift in Sources */,
+				129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */,
 				128D6E1E2804DA2A0082AB18 /* ListActionSheetItem.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */,
 				D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */,
