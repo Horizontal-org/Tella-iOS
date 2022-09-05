@@ -12,6 +12,7 @@ struct TextfieldView : View {
     @Binding var shouldShowError : Bool
     var errorMessage : String?
     var fieldType : FieldType
+    var title : String?
     var onCommit : (() -> Void)? =  ({})
     
     var body: some View {
@@ -21,6 +22,7 @@ struct TextfieldView : View {
                        shouldShowError: $shouldShowError,
                        errorMessage: errorMessage,
                        fieldType: fieldType,
+                       title:title,
                        onCommit: onCommit)
     }
     private func validateField(value:String) {
@@ -33,28 +35,48 @@ struct TextfieldView : View {
 struct TextFieldView : View {
     
     @State var shouldShowPassword : Bool = false
+    @State var shouldHideTitle : Bool = false
+    
     @Binding var fieldContent : String
     @Binding var isValid : Bool
     @Binding var shouldShowError : Bool
     var errorMessage : String?
     var fieldType : FieldType
+    var title : String?
     
     var onCommit : (() -> Void)? =  ({})
     var body: some View {
         
         VStack(spacing: 13) {
             
-            if fieldType == .password {
-                passwordTextfieldView
-            } else {
-                textfieldView
+            ZStack {
+                
+                
+                if fieldContent.isEmpty, let title = title  {
+                    Text(title)
+                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity,alignment: .leading)
+                        .contentShape(Rectangle())
+                    
+                }
+                
+                
+                if fieldType == .password {
+                    passwordTextfieldView
+                } else {
+                    textfieldView
+                }
+                
+                
             }
             
             dividerView
             
             errorMessageView
             
-        }.padding(EdgeInsets(top: 0, leading: 25, bottom: 0, trailing: 10))
+        }
+        
     }
     
     var textfieldView : some View {
@@ -65,14 +87,13 @@ struct TextFieldView : View {
             .onChange(of: fieldContent, perform: { value in
                 validateField(value: value)
             })
+        
             .frame( height: 22)
         
     }
     
     var passwordTextfieldView : some View {
         HStack {
-            Spacer()
-                .frame(width: 32)
             
             Group {
                 if shouldShowPassword {
@@ -104,16 +125,14 @@ struct TextFieldView : View {
     }
     
     var dividerView : some View {
-        
         Divider()
-            .frame(height: 2)
+            .frame(height: 1)
             .background(shouldShowError ? Color(UIColor(hexValue: 0xFF2D2D)) : Color.white)
-        
     }
-
+    
     @ViewBuilder
     var errorMessageView : some View {
-        if shouldShowError, let errorMessage = errorMessage {
+        if let errorMessage = errorMessage {
             Text(errorMessage)
                 .font(.custom(Styles.Fonts.regularFontName, size: 12))
                 .foregroundColor(Color(UIColor(hexValue: 0xFF2D2D)))

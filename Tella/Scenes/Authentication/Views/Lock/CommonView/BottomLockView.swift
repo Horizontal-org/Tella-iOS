@@ -11,7 +11,8 @@ import SwiftUI
 struct BottomLockView<Destination:View>:View {
     
     @Binding  var isValid : Bool
-    
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
     var nextButtonAction: NextButtonAction
     var destination: Destination?
     var shouldHideNext : Bool = false
@@ -22,6 +23,8 @@ struct BottomLockView<Destination:View>:View {
         HStack {
             BottomButtonActionView(title: LocalizableLock.actionBack.localized, isValid: true) {
                 self.backAction?()
+                self.presentationMode.wrappedValue.dismiss()
+
             }
             
             Spacer()

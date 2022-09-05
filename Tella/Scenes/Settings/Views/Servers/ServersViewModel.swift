@@ -18,7 +18,22 @@ class ServersViewModel: ObservableObject {
     @Published var errorMessage : String = ""
 
     
-    func checkURL() {
+    
+    
+    @Published var username : String = ""
+    @Published var password : String = ""
+
+    @Published var validUsername : Bool = false
+    @Published var validPassword : Bool = false
+
+    @Published var shouldShowLoginError : Bool = true
+    
+    @Published var loginErrorMessage : String = ""
+
+    @Published var popToRoot : Bool = false
+    @Published var popToRoot2 : Bool = false
+
+    func checkURL() { // To test
         
         shouldShowError = serverURL != "https://"
         
@@ -32,6 +47,21 @@ class ServersViewModel: ObservableObject {
             
     }
 
+    func login() { // To test
+        
+//        shouldShowLoginError = (username != "dhekra" && password != "password")
+//        
+//        if username != "dhekra" && password != "password" {
+//            loginErrorMessage = "Error: The server URL is incorrect"
+//            validUsername = false
+//            validPassword = false
+//        } else {
+//            loginErrorMessage = ""
+//            validUsername = true
+//            validPassword = true
+//        }
+
+    }
     
     init(mainAppModel : MainAppModel) {
         self.mainAppModel = mainAppModel

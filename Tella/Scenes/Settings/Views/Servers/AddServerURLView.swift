@@ -51,20 +51,18 @@ struct AddServerURLView: View {
                 })
                 
                 nextViewLink
-            }
+                
+            } .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
         }
         .navigationBarHidden(true)
         
     }
     
     private var nextViewLink: some View {
-        NavigationLink(destination: AddServerAccessChoiceView() ,
-                       isActive: $showNextView) {
-            EmptyView()
-        }.frame(width: 0, height: 0)
-            .hidden()
+        AddServerAccessChoiceView().environmentObject(serversViewModel)
+            .addNavigationLink(isActive: $showNextView)
     }
-
+    
 }
 
 struct AddServerURLView_Previews: PreviewProvider {

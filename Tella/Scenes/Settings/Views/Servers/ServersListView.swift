@@ -6,6 +6,7 @@
 import SwiftUI
 
 struct ServersListView: View {
+    @EnvironmentObject var serversViewModel : ServersViewModel
     
     var body: some View {
         
@@ -14,7 +15,7 @@ struct ServersListView: View {
                 Spacer()
                     .frame(height: 8)
                 
-                SettingsCardView (cardViewArray: [SettingsAddServerCardView().eraseToAnyView(),
+                SettingsCardView (cardViewArray: [SettingsAddServerCardView().environmentObject(serversViewModel).eraseToAnyView(),
                                                   SettingsServerItemView(title: "CLEEN Foundation").eraseToAnyView(),
                                                   SettingsServerItemView(title: "Election monitoring").eraseToAnyView()])
                 Spacer()

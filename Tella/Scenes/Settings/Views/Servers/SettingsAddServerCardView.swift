@@ -25,16 +25,25 @@ struct SettingsAddServerCardView: View {
                 Spacer()
                 
                 Button {
-                    
+                    serversViewModel.popToRoot = true
                 } label: {
-                    Image("settings.add")
-                        .padding()
-                        .navigateTo(destination: AddServerURLView().environmentObject(serversViewModel))
+ 
+                    NavigationLink(destination:AddServerURLView().environmentObject(serversViewModel),
+                                   isActive: $serversViewModel.popToRoot) {
+                        Image("settings.add")
+                            .padding()
+
+                    }
+                    
+//                    Image("settings.add")
+//                        .padding()
+//                        .navigateTo(destination: AddServerURLView().environmentObject(serversViewModel))
                 }
             }
         }
         
         .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 0))
+//        .environmentObject(serversViewModel)
     }
 }
 

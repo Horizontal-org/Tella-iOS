@@ -8,6 +8,7 @@ import SwiftUI
 struct AddServerAccessChoiceView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @EnvironmentObject var serversViewModel : ServersViewModel
     
     var body: some View {
         ContainerView {
@@ -17,21 +18,26 @@ struct AddServerAccessChoiceView: View {
                     Spacer()
                     
                     TopServerView(title: "Do you have a username and password?")
+                        .padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
                     
                     Spacer()
                         .frame(height: 40)
                     
-                    BlueButtonView<AnyView>(title: "YES")
+                    TellaButtonView(title: "YES",
+                                    nextButtonAction: .destination,
+                                   destination: ServerLoginView().environmentObject(serversViewModel) )
                     
                     Spacer()
                         .frame(height: 12)
                     
-                    BlueButtonView<AnyView>(title: "NO")
+                    TellaButtonView (title: "NO",
+                                    nextButtonAction: .destination,
+                                    destination: ServerLoginView().environmentObject(serversViewModel))
                     
                     Spacer()
                     
                 }.padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
-              
+                
                 BottomLockView<AnyView>(isValid: .constant(true),
                                         nextButtonAction: .action,
                                         shouldHideNext: true,
@@ -40,6 +46,7 @@ struct AddServerAccessChoiceView: View {
                 })
             }
         }
+        .navigationBarHidden(true)
     }
 }
 

@@ -50,6 +50,10 @@ final class AppViewState: ObservableObject {
         viewStack = [.MAIN]
     }
 
+    func showMain() {
+        viewStack = [.MAIN]
+    }
+
     func resetApp() {
         AuthenticationManager().keysInitialized() ? self.resetToUnlock() : self.resetToLock()
     }

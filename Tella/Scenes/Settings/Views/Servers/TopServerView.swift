@@ -17,11 +17,11 @@ struct TopServerView : View {
             .frame(height: 24)
         
         Text(title)
-            .font(.custom(Styles.Fonts.regularFontName, size: 18))
+            .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
             .foregroundColor(.white)
+            .multilineTextAlignment(.center)
     }
 }
-
 
 struct TopServerView_Previews: PreviewProvider {
     static var previews: some View {

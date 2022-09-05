@@ -50,6 +50,9 @@
 		1224DAEC271975D3001C0ED0 /* PasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224DAEB271975D2001C0ED0 /* PasswordView.swift */; };
 		1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224DAEF2719C71B001C0ED0 /* LockPasswordData.swift */; };
 		1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE64FA282505542E00B03CEC /* AppViewState.swift */; };
+		122C54BC28C614C2003B2DBC /* TellaButtonStyleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122C54BB28C614C2003B2DBC /* TellaButtonStyleProtocol.swift */; };
+		122C54BE28C6351E003B2DBC /* AdvancedServerSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122C54BD28C6351E003B2DBC /* AdvancedServerSettingsView.swift */; };
+		122C54C028C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122C54BF28C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift */; };
 		1230BE4727CD6D440055F854 /* AudioAuthorizationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230BE4627CD6D440055F854 /* AudioAuthorizationStatus.swift */; };
 		1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C876268C792000EB5E34 /* NSUIImage.swift */; };
 		1237A71A278F18C000D7BC0F /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C87C268CCA3500EB5E34 /* WebView.swift */; };
@@ -154,7 +157,7 @@
 		129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845028BF6C7800F1B344 /* ServersViewModel.swift */; };
 		129B845328BFB7AC00F1B344 /* AddServerAccessChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */; };
 		129B845528BFEC8600F1B344 /* TopServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845428BFEC8600F1B344 /* TopServerView.swift */; };
-		129B845928BFED9700F1B344 /* BlueButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845828BFED9700F1B344 /* BlueButtonView.swift */; };
+		129B845928BFED9700F1B344 /* TellaButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845828BFED9700F1B344 /* TellaButtonView.swift */; };
 		12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A1488E27209F2800A1ADDC /* ViewExtension.swift */; };
 		12A148922720A32000A1ADDC /* LockPinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148912720A32000A1ADDC /* LockPinData.swift */; };
 		12A148942720A89E00A1ADDC /* BottomLockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148932720A89E00A1ADDC /* BottomLockView.swift */; };
@@ -172,6 +175,8 @@
 		12ADF98D28BD16A400FA96EB /* SettingsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADF98C28BD16A400FA96EB /* SettingsCardView.swift */; };
 		12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */; };
 		12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1D278CD4900007C781 /* IntExtension.swift */; };
+		12B3AD8A28C0DD0200AC9AF9 /* ServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B3AD8928C0DD0200AC9AF9 /* ServerLoginView.swift */; };
+		12B3AD8C28C1090700AC9AF9 /* SuccessLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B3AD8B28C1090700AC9AF9 /* SuccessLoginView.swift */; };
 		12B5257B2848FC2800B3D1C0 /* LockTimeoutOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */; };
 		12B5257E2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257D2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift */; };
 		12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */; };
@@ -324,6 +329,9 @@
 		1224DAE927197577001C0ED0 /* ConfirmLockPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmLockPasswordView.swift; sourceTree = "<group>"; };
 		1224DAEB271975D2001C0ED0 /* PasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordView.swift; sourceTree = "<group>"; };
 		1224DAEF2719C71B001C0ED0 /* LockPasswordData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPasswordData.swift; sourceTree = "<group>"; };
+		122C54BB28C614C2003B2DBC /* TellaButtonStyleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaButtonStyleProtocol.swift; sourceTree = "<group>"; };
+		122C54BD28C6351E003B2DBC /* AdvancedServerSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedServerSettingsView.swift; sourceTree = "<group>"; };
+		122C54BF28C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessAdvancedSettingsView.swift; sourceTree = "<group>"; };
 		1230BE4627CD6D440055F854 /* AudioAuthorizationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAuthorizationStatus.swift; sourceTree = "<group>"; };
 		1237A71B278F5B2E00D7BC0F /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		1237A71D278F5F8B00D7BC0F /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
@@ -420,7 +428,7 @@
 		129B845028BF6C7800F1B344 /* ServersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersViewModel.swift; sourceTree = "<group>"; };
 		129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerAccessChoiceView.swift; sourceTree = "<group>"; };
 		129B845428BFEC8600F1B344 /* TopServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopServerView.swift; sourceTree = "<group>"; };
-		129B845828BFED9700F1B344 /* BlueButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueButtonView.swift; sourceTree = "<group>"; };
+		129B845828BFED9700F1B344 /* TellaButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaButtonView.swift; sourceTree = "<group>"; };
 		12A1488E27209F2800A1ADDC /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		12A148912720A32000A1ADDC /* LockPinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPinData.swift; sourceTree = "<group>"; };
 		12A148932720A89E00A1ADDC /* BottomLockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLockView.swift; sourceTree = "<group>"; };
@@ -437,6 +445,8 @@
 		12ADF98C28BD16A400FA96EB /* SettingsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCardView.swift; sourceTree = "<group>"; };
 		12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtension.swift; sourceTree = "<group>"; };
 		12AE8D1D278CD4900007C781 /* IntExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtension.swift; sourceTree = "<group>"; };
+		12B3AD8928C0DD0200AC9AF9 /* ServerLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerLoginView.swift; sourceTree = "<group>"; };
+		12B3AD8B28C1090700AC9AF9 /* SuccessLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessLoginView.swift; sourceTree = "<group>"; };
 		12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutOption.swift; sourceTree = "<group>"; };
 		12B5257D2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutOptionsStatus.swift; sourceTree = "<group>"; };
 		12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAndHelpItem.swift; sourceTree = "<group>"; };
@@ -881,10 +891,15 @@
 				1291A83128BE0086001A6055 /* SettingsAddServerCardView.swift */,
 				12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */,
 				129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */,
+				12B3AD8928C0DD0200AC9AF9 /* ServerLoginView.swift */,
+				12B3AD8B28C1090700AC9AF9 /* SuccessLoginView.swift */,
+				122C54BD28C6351E003B2DBC /* AdvancedServerSettingsView.swift */,
+				122C54BF28C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift */,
 				129B844E28BF5E4700F1B344 /* TextfieldView.swift */,
 				129B845028BF6C7800F1B344 /* ServersViewModel.swift */,
 				129B845428BFEC8600F1B344 /* TopServerView.swift */,
-				129B845828BFED9700F1B344 /* BlueButtonView.swift */,
+				129B845828BFED9700F1B344 /* TellaButtonView.swift */,
+				122C54BB28C614C2003B2DBC /* TellaButtonStyleProtocol.swift */,
 			);
 			path = Servers;
 			sourceTree = "<group>";
@@ -1683,6 +1698,7 @@
 				0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */,
 				12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */,
 				12781F4727EA247500FE9609 /* DocumentPickerView.swift in Sources */,
+				12B3AD8C28C1090700AC9AF9 /* SuccessLoginView.swift in Sources */,
 				129B845528BFEC8600F1B344 /* TopServerView.swift in Sources */,
 				1209FD2B27AD851E00D8C17E /* AudioPlayerView.swift in Sources */,
 				128D6E182804531B0082AB18 /* AddPhotoVideoItems.swift in Sources */,
@@ -1715,7 +1731,7 @@
 				D51639802631130E003A11B5 /* HomeView.swift in Sources */,
 				0E8CEA19266FFE0600926799 /* SentFormsView.swift in Sources */,
 				0E27899D266F76D500B130C4 /* FormsView.swift in Sources */,
-				129B845928BFED9700F1B344 /* BlueButtonView.swift in Sources */,
+				129B845928BFED9700F1B344 /* TellaButtonView.swift in Sources */,
 				1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */,
 				125EFACE274A834300D93DF6 /* FileActionMenu.swift in Sources */,
 				D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */,
@@ -1817,6 +1833,7 @@
 				1289B45628B62A99005DA687 /* DeviceOrientationHelper.swift in Sources */,
 				125DD9C92796CB090053619D /* ImportFilesProgressView.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */,
+				12B3AD8A28C0DD0200AC9AF9 /* ServerLoginView.swift in Sources */,
 				128FD0B427F774FB00B24915 /* RecentFile.swift in Sources */,
 				12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */,
 				12607D5327903E9E00E2B8CC /* CustomVideoControlsView.swift in Sources */,
@@ -1832,6 +1849,8 @@
 				12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */,
 				0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */,
 				12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */,
+				122C54BE28C6351E003B2DBC /* AdvancedServerSettingsView.swift in Sources */,
+				122C54C028C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift in Sources */,
 				12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */,
 				1209FD2E27AD89C800D8C17E /* AudioPlayerViewModel.swift in Sources */,
 				12567FF72717426000A2D356 /* LocalizableLock.swift in Sources */,
@@ -1870,6 +1889,7 @@
 				D5B823F0262775D80008E04B /* CryptoManager.swift in Sources */,
 				128EDB942809897C00747B98 /* HomeViewModel.swift in Sources */,
 				0E170253267910B90069072A /* BlankFormsView.swift in Sources */,
+				122C54BC28C614C2003B2DBC /* TellaButtonStyleProtocol.swift in Sources */,
 				0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */,
 				0D4D7518266470A700D7A635 /* SettingToggleItem.swift in Sources */,
 				128B15C927DA085A00E1C1E0 /* WelcomeView.swift in Sources */,
