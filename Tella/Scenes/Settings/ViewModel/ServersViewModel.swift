@@ -30,8 +30,7 @@ class ServersViewModel: ObservableObject {
     
     @Published var loginErrorMessage : String = ""
 
-    @Published var popToRoot : Bool = false
-    @Published var popToRoot2 : Bool = false
+    @Published var rootLinkIsActive : Bool = false
 
     func checkURL() { // To test
         
@@ -44,7 +43,6 @@ class ServersViewModel: ObservableObject {
             errorMessage = ""
             validURL = true
         }
-            
     }
 
     func login() { // To test

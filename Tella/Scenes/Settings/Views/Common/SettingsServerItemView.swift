@@ -8,6 +8,7 @@ import SwiftUI
 struct SettingsServerItemView: View {
     
     let title: String
+    var action : (() -> ())?
     
     var body: some View {
         
@@ -21,7 +22,7 @@ struct SettingsServerItemView: View {
             Spacer()
             
             Button {
-                
+                action?()
             } label: {
                 Image("settings.more")
                     .padding()

@@ -8,7 +8,7 @@ import SwiftUI
 struct SettingsAddServerCardView: View {
     
     @EnvironmentObject var serversViewModel : ServersViewModel
-
+    
     var body: some View {
         ZStack {
             HStack{
@@ -25,25 +25,20 @@ struct SettingsAddServerCardView: View {
                 Spacer()
                 
                 Button {
-                    serversViewModel.popToRoot = true
+                    serversViewModel.rootLinkIsActive = true
                 } label: {
- 
+                    
                     NavigationLink(destination:AddServerURLView().environmentObject(serversViewModel),
-                                   isActive: $serversViewModel.popToRoot) {
+                                   isActive: $serversViewModel.rootLinkIsActive) {
                         Image("settings.add")
                             .padding()
-
+                        
                     }
-                    
-//                    Image("settings.add")
-//                        .padding()
-//                        .navigateTo(destination: AddServerURLView().environmentObject(serversViewModel))
                 }
             }
         }
         
         .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 0))
-//        .environmentObject(serversViewModel)
     }
 }
 

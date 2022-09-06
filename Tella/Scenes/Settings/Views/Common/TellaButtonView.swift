@@ -62,7 +62,7 @@ struct TellaButtonStyle : ButtonStyle {
     }
 }
 
-struct BlueButtonView_Previews: PreviewProvider {
+struct TellaButtonView_Previews: PreviewProvider {
     static var previews: some View {
         TellaButtonView<AnyView>(title: "Ok", nextButtonAction: .action)
             .background(Color.red)

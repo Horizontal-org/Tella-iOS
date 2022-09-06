@@ -10,10 +10,10 @@ struct SuccessLoginView: View {
     @Binding var isPresented : Bool
     @EnvironmentObject var mainAppModel : MainAppModel
     @EnvironmentObject var serversViewModel : ServersViewModel
-
+    
     var body: some View {
         
-       NavigationContainerView {
+        NavigationContainerView {
             
             VStack {
                 
@@ -28,11 +28,10 @@ struct SuccessLoginView: View {
                                           nextButtonAction: .action,
                                           buttonType: .yellow) {
                     mainAppModel.selectedTab = .reports
-
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         isPresented = false
                     }
-
                 }
                 
                 Spacer()
@@ -44,17 +43,7 @@ struct SuccessLoginView: View {
                 Spacer()
                 
             } .padding(EdgeInsets(top: 0, leading: 26, bottom: 0, trailing: 26))
-       }
-       
-       
-       .onReceive(serversViewModel.$popToRoot2, perform: { value  in
-           if value == true {
-               isPresented = false
-
-           }
-
-       })
-        
+        }
         .navigationBarHidden(true)
         
     }

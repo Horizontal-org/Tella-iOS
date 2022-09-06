@@ -6,7 +6,12 @@
 import SwiftUI
 
 struct ServersListView: View {
+    
     @EnvironmentObject var serversViewModel : ServersViewModel
+    @EnvironmentObject var sheetManager: SheetManager
+    
+    @State var shouldShowEditServer : Bool = false
+    
     
     var body: some View {
         
@@ -16,15 +21,54 @@ struct ServersListView: View {
                     .frame(height: 8)
                 
                 SettingsCardView (cardViewArray: [SettingsAddServerCardView().environmentObject(serversViewModel).eraseToAnyView(),
-                                                  SettingsServerItemView(title: "CLEEN Foundation").eraseToAnyView(),
+                                                  SettingsServerItemView(title: "CLEEN Foundation",action: showServerActionBottomSheet).eraseToAnyView(),
                                                   SettingsServerItemView(title: "Election monitoring").eraseToAnyView()])
                 Spacer()
             }
         }
+        .fullScreenCover(isPresented: $shouldShowEditServer, content: {
+            EditSettingsServerView(isPresented: $shouldShowEditServer)
+        })
+        
         .toolbar {
             LeadingTitleToolbar(title: "Servers")
         }
     }
+    
+    func showServerActionBottomSheet() {
+        sheetManager.showBottomSheet(modalHeight: 176) {
+            ActionListBottomSheet(items: serverActionItems,
+                                  headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
+                                  action:  {item in
+                self.handleActionss(item : item)
+            })
+            
+        }
+    }
+    
+    func showDeleteServerConfirmationView() {
+        sheetManager.showBottomSheet(modalHeight: 200) {
+            ConfirmBottomSheet(titleText: "Delete “Election monitoring” server?",
+                               msgText: "If you delete this server, all draft and submitted forms will be deleted from your device.",
+                               cancelText: "CANCEL",
+                               actionText: "DELETE", didConfirmAction: {
+                // Delete action
+            })
+        }
+    }
+    
+    private func handleActionss(item: ListActionSheetItem) {
+        guard let type = item.type as? ServerActionType else { return  }
+        
+        switch type {
+        case .edit:
+            shouldShowEditServer = true
+        case .delete:
+            showDeleteServerConfirmationView()
+            
+        }
+    }
+    
 }
 
 struct ServersListView_Previews: PreviewProvider {

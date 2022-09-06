@@ -11,6 +11,8 @@ struct AdvancedServerSettingsView: View {
     @State var backgroundUpload : Bool = false
     @State var presentingSuccessAdvancedSettings : Bool = false
     
+    @EnvironmentObject var serversViewModel : ServersViewModel
+    
     var body: some View {
         
         ContainerView {
@@ -30,44 +32,31 @@ struct AdvancedServerSettingsView: View {
                 Spacer()
                     .frame(height: 16)
                 
-                SettingsCardView(cardViewArray: [shareInfoView.eraseToAnyView(), backgroundUploadView.eraseToAnyView()])
+                SettingsCardView(cardViewArray: [ShareInfoView(shareInfo: $shareInfo).eraseToAnyView(),
+                                                 BackgroundUploadView(backgroundUpload: $backgroundUpload).eraseToAnyView()])
                 
                 Spacer()
                 
-//                BottomLockView(isValid:.constant(true),
-//                               nextButtonAction: .destination,
-//                               destination: SuccessAdvancedSettingsView())
-              
                 BottomLockView<AnyView>(isValid:.constant(true),
                                         nextButtonAction: .action,
                                         nextAction:  {
                     presentingSuccessAdvancedSettings = true
                 })
-
+                
                 
             }
+            nextViewLink
         }
-        .fullScreenCover(isPresented: $presentingSuccessAdvancedSettings) {
-            
-        } content: {
-            SuccessAdvancedSettingsView(isPresented: $presentingSuccessAdvancedSettings)
-        }
-
-    }
-
-    var shareInfoView: some View {
+        .navigationBarHidden(true)
         
-        SettingToggleItem(title: "Share verification information",
-                          description: "Include information about your device and location when sending reports, to make your files verifiable. ",
-                          toggle: $shareInfo)
     }
-
-    var backgroundUploadView: some View {
-        
-        SettingToggleItem(title: "Background upload",
-                          description: "Continue uploading reports while doing other tasks or if you exit Tella.\n\nWARNING: If enabled, Tella will remain unlocked until all reports are fully uploaded.",
-                          toggle: $backgroundUpload)
+    
+    
+    private var nextViewLink: some View {
+        SuccessAdvancedSettingsView(isPresented: $presentingSuccessAdvancedSettings).environmentObject(serversViewModel)
+            .addNavigationLink(isActive: $presentingSuccessAdvancedSettings)
     }
+    
 }
 
 struct AdvancedServerSettingsView_Previews: PreviewProvider {
@@ -75,3 +64,6 @@ struct AdvancedServerSettingsView_Previews: PreviewProvider {
         AdvancedServerSettingsView()
     }
 }
+
+
+

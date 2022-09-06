@@ -25,7 +25,6 @@ struct ServerLoginView: View {
                     
                     TopServerView(title: "Log in to access the project")
                     
-                    
                     Spacer()
                         .frame(height: 40)
                     
@@ -54,11 +53,8 @@ struct ServerLoginView: View {
                     TellaButtonView<AnyView>(title: "LOG IN",
                                              nextButtonAction: .action) {
                         UIApplication.shared.endEditing()
-                        
                         serversViewModel.login()
-                        
-                        presentingSuccessLoginView = !serversViewModel.shouldShowLoginError
-//                        showNextView = !serversViewModel.shouldShowLoginError
+                        showNextView = !serversViewModel.shouldShowLoginError
                     }
                     
                     Spacer()
@@ -69,31 +65,20 @@ struct ServerLoginView: View {
                 BottomLockView<AnyView>(isValid: $serversViewModel.validPassword,
                                         nextButtonAction: .action,
                                         shouldHideNext: true)
-                
             }
-//            nextViewLink
+            nextViewLink
         }
-        .fullScreenCover(isPresented: $presentingSuccessLoginView) {
-
-        } content: {
-            SuccessLoginView(isPresented: $presentingSuccessLoginView).environmentObject(serversViewModel)
-        }
-        
         .navigationBarHidden(true)
     }
-    
     
     private var nextViewLink: some View {
         SuccessLoginView(isPresented: $presentingSuccessLoginView).environmentObject(serversViewModel)
             .addNavigationLink(isActive: $showNextView)
     }
-    
 }
 
-
-
-//struct ServerLoginView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ServerLoginView()
-//    }
-//}
+struct ServerLoginView_Previews: PreviewProvider {
+    static var previews: some View {
+        ServerLoginView()
+    }
+}

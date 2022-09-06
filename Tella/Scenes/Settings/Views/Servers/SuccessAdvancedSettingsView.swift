@@ -6,7 +6,7 @@
 import SwiftUI
 
 struct SuccessAdvancedSettingsView: View {
-   
+    
     @EnvironmentObject var serversViewModel : ServersViewModel
     @Binding var isPresented : Bool
     
@@ -25,14 +25,11 @@ struct SuccessAdvancedSettingsView: View {
                 TellaButtonView<AnyView> (title: "OK",
                                           nextButtonAction: .action,
                                           buttonType: .yellow) {
-                    isPresented = false
-                    
-                    serversViewModel.popToRoot = false
-                    serversViewModel.popToRoot2 = true
+                    serversViewModel.rootLinkIsActive = false
                 }
                 
                 Spacer()
-
+                
             } .padding(EdgeInsets(top: 0, leading: 26, bottom: 0, trailing: 26))
         }
         
