@@ -54,6 +54,8 @@ struct ServerLoginView: View {
                                              nextButtonAction: .action) {
                         UIApplication.shared.endEditing()
                         serversViewModel.login()
+                        serversViewModel.addServer()
+                        
                         showNextView = !serversViewModel.shouldShowLoginError
                     }
                     

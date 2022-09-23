@@ -16,22 +16,24 @@ class ServersViewModel: ObservableObject {
     @Published var shouldShowError : Bool = true
     
     @Published var errorMessage : String = ""
-
+    
     
     
     
     @Published var username : String = ""
     @Published var password : String = ""
-
+    
     @Published var validUsername : Bool = false
     @Published var validPassword : Bool = false
-
+    
     @Published var shouldShowLoginError : Bool = true
     
     @Published var loginErrorMessage : String = ""
-
+    
     @Published var rootLinkIsActive : Bool = false
-
+    
+    @Published var servers : [Server]?
+    
     func checkURL() { // To test
         
         shouldShowError = serverURL != "https://"
@@ -44,24 +46,38 @@ class ServersViewModel: ObservableObject {
             validURL = true
         }
     }
-
+    
     func login() { // To test
         
-//        shouldShowLoginError = (username != "dhekra" && password != "password")
-//        
-//        if username != "dhekra" && password != "password" {
-//            loginErrorMessage = "Error: The server URL is incorrect"
-//            validUsername = false
-//            validPassword = false
-//        } else {
-//            loginErrorMessage = ""
-//            validUsername = true
-//            validPassword = true
-//        }
-
+        //        shouldShowLoginError = (username != "dhekra" && password != "password")
+        //
+        //        if username != "dhekra" && password != "password" {
+        //            loginErrorMessage = "Error: The server URL is incorrect"
+        //            validUsername = false
+        //            validPassword = false
+        //        } else {
+        //            loginErrorMessage = ""
+        //            validUsername = true
+        //            validPassword = true
+        //        }
+        
     }
     
     init(mainAppModel : MainAppModel) {
         self.mainAppModel = mainAppModel
+        servers = mainAppModel.vaultManager.tellaData.getServers()
+    }
+    
+    func addServer()  {
+        
+        let serverToAdd = Server(name: "Name", url: serverURL, username: username, password: password)
+        
+        do {
+            let id = try mainAppModel.vaultManager.tellaData.addServer(server: Server(name: "Name", url: serverURL, username: username, password: password))
+            serverToAdd.id = id
+            self.servers?.append(serverToAdd)
+        } catch {
+            
+        }
     }
 }
