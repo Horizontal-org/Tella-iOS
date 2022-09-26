@@ -34,17 +34,20 @@ class ServersViewModel: ObservableObject {
     
     @Published var servers : [Server]?
     
+    var selectedServer : Server?
+
+    
     func checkURL() { // To test
         
-        shouldShowError = serverURL != "https://"
-        
-        if serverURL != "https://" {
-            errorMessage = "Error: The server URL is incorrect"
-            validURL = false
-        } else {
-            errorMessage = ""
-            validURL = true
-        }
+//        shouldShowError = serverURL != "https://"
+//        
+//        if serverURL != "https://" {
+//            errorMessage = "Error: The server URL is incorrect"
+//            validURL = false
+//        } else {
+//            errorMessage = ""
+//            validURL = true
+//        }
     }
     
     func login() { // To test

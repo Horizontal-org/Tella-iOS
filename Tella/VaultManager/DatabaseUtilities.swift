@@ -7,9 +7,7 @@ import Foundation
 import SQLite3
 
 extension TellaDataBase {
-    
-    
-    
+
     func cddl(_ columnName: String, _ columnType: String,  primaryKey : Bool ,  autoIncrement : Bool) -> String {
         return columnName + " " + columnType + (primaryKey ?  " PRIMARY KEY "  : "") +  (autoIncrement ? " AUTOINCREMENT " : "");
     }

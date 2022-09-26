@@ -12,9 +12,7 @@ struct Regex {
     static let passwordRegex = "^.{6,}"
     static let textRegex = "^.{1,}"
     static let usernameRegex = "^.{3,}"
-    static let urlRegex = "^.{1,}"
-
-//  static let fileName = "^[a-zA-Z0-9_]*$"
+    static let urlRegex = #"^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,3}|www\.[^\s]+\.[^\s]{2,3})$"#
 }
 
 func validateRegex(value: String, pattern:String) -> Bool {

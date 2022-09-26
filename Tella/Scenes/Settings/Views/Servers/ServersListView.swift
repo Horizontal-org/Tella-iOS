@@ -40,20 +40,22 @@ struct ServersListView: View {
         var arrayView : [T] = [SettingsAddServerCardView().environmentObject(serversViewModel).eraseToAnyView() as! T]
         
         serversViewModel.servers?.forEach({ server in
-            arrayView.append(SettingsServerItemView(title: server.username,action: showServerActionBottomSheet).eraseToAnyView() as! T)
+            arrayView.append(SettingsServerItemView(title: server.username,action: {showServerActionBottomSheet(server: server)}).eraseToAnyView() as! T)
             
         })
         return arrayView
     }
     
-    func showServerActionBottomSheet() {
+    func showServerActionBottomSheet(server:Server) {
         sheetManager.showBottomSheet(modalHeight: 176) {
             ActionListBottomSheet(items: serverActionItems,
                                   headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
                                   action:  {item in
-                self.handleActionss(item : item)
+                
+                serversViewModel.selectedServer = server
+
+                self.handleActions(item : item)
             })
-            
         }
     }
     
@@ -68,7 +70,7 @@ struct ServersListView: View {
         }
     }
     
-    private func handleActionss(item: ListActionSheetItem) {
+    private func handleActions(item: ListActionSheetItem) {
         guard let type = item.type as? ServerActionType else { return  }
         
         switch type {

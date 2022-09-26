@@ -11,6 +11,7 @@ struct EditSettingsServerView: View {
     
     @State var shareInfo : Bool = false
     @State var backgroundUpload : Bool = false
+    @EnvironmentObject var serversViewModel : ServersViewModel
     
     var body: some View {
         
@@ -35,15 +36,15 @@ struct EditSettingsServerView: View {
     }
     
     var serverNameView: some View {
-        EditServerDisplayItem(title: "Server name", description: "Election monitoring")
+        EditServerDisplayItem(title: "Server name", description: serversViewModel.selectedServer?.name)
     }
     
     var serverURLView: some View {
-        EditServerDisplayItem(title: "Server URL", description: "https://web.tella-app.org")
+        EditServerDisplayItem(title: "Server URL", description: serversViewModel.selectedServer?.url)
     }
     
     var serverUsernameView: some View {
-        EditServerDisplayItem(title: "Username", description: "farahdrums")
+        EditServerDisplayItem(title: "Username", description: serversViewModel.selectedServer?.username)
     }
     
     

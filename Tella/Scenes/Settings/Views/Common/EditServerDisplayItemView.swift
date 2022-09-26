@@ -7,19 +7,19 @@ import SwiftUI
 
 struct EditServerDisplayItem: View {
     
-    let title: String
-    let description: String
+    let title: String?
+    let description: String?
 
     var body: some View {
         HStack {
             
         VStack(alignment: .leading){
-            Text(title)
+            Text(title ?? "")
                 .font(.custom(Styles.Fonts.regularFontName, size: 12))
                 .foregroundColor(Color.white).padding(.bottom, 2)
                 .padding(.bottom, -5)
             
-            Text(description)
+            Text(description ?? "")
                 .foregroundColor(Color.white)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
         }
