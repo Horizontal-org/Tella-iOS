@@ -4,7 +4,7 @@
 
 import SwiftUI
 
-struct CircularActivityIndicatory: View {
+struct CircularLoader: View {
     
     @State var spinCircle : Bool = false
     
@@ -31,8 +31,8 @@ struct CircularActivityIndicatory: View {
     }
 }
 
-struct CircularActivityIndicatory_Previews: PreviewProvider {
+struct CircularLoader_Previews: PreviewProvider {
     static var previews: some View {
-        CircularActivityIndicatory()
+        CircularLoader()
     }
 }

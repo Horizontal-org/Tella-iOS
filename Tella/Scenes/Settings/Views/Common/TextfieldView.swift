@@ -132,12 +132,13 @@ struct TextFieldView : View {
     
     @ViewBuilder
     var errorMessageView : some View {
-        if let errorMessage = errorMessage {
+        if let errorMessage = errorMessage, shouldShowError == true {
             Text(errorMessage)
                 .font(.custom(Styles.Fonts.regularFontName, size: 12))
                 .foregroundColor(Color(UIColor(hexValue: 0xFF2D2D)))
                 .frame(maxWidth: .infinity, alignment: .leading)
-        }
+        }  
+        
     }
     
     private func validateField(value:String) {

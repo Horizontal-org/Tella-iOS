@@ -14,33 +14,36 @@ struct D {
     static let integer = " INTEGER "
     static let text = " TEXT ";
     static let blob = " BLOB ";
-
+    
     
     /* DATABASE TABLES */
-
+    
     static let tServer = "t_server"
     static let tReport = "t_report"
     static let tReportFiles = "t_report_files"
-
+    
     /* DATABASE COLUMNS */
- 
+    
     static let cId = "c_id"
     static let cName = "c_name"
     static let cURL = "c_url"
     static let cUsername = "c_username"
     static let cPassword = "c_password"
-
+    
+    static let cAccessToken = "c_access_token"
+    static let cActivatedMetadata = "c_activated_metadata"
+    static let cBackgroundUpload = "c_background_upload"
+    
     
     static let cTitle = "c_title"
     static let cDescription = "c_description"
     static let cDate = "c_date"
     static let cStatus = "c_Status"
     static let cServerId = "c_server_id"
-
+    
     static let cReportId = "c_report_id"
     static let cVaultFileId = "c_vaultFile_id"
-
-
+    
 }
 
 

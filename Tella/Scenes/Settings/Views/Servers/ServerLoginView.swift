@@ -12,70 +12,87 @@ struct ServerLoginView: View {
     @EnvironmentObject var mainAppModel : MainAppModel
     
     @State var presentingSuccessLoginView : Bool = false
-    @State var showNextView : Bool = false
     
     var body: some View {
         
         ContainerView {
-            VStack(spacing: 0) {
+            
+            ZStack {
                 
                 VStack(spacing: 0) {
                     
-                    Spacer()
-                    
-                    TopServerView(title: "Log in to access the project")
-                    
-                    Spacer()
-                        .frame(height: 40)
-                    
-                    TextfieldView(fieldContent: $serversViewModel.username,
-                                  isValid: $serversViewModel.validUsername,
-                                  shouldShowError: $serversViewModel.shouldShowLoginError,
-                                  errorMessage: nil,
-                                  fieldType: .username,
-                                  title : "Username")
-                    .frame(height: 30)
-                    
-                    Spacer()
-                        .frame(height: 27)
-                    
-                    TextfieldView(fieldContent: $serversViewModel.password,
-                                  isValid: $serversViewModel.validPassword,
-                                  shouldShowError: $serversViewModel.shouldShowLoginError,
-                                  errorMessage: serversViewModel.loginErrorMessage,
-                                  fieldType: .password,
-                                  title : "Password")
-                    .frame(height: 57)
-                    
-                    Spacer()
-                        .frame(height: 32)
-                    
-                    TellaButtonView<AnyView>(title: "LOG IN",
-                                             nextButtonAction: .action) {
-                        UIApplication.shared.endEditing()
-                        serversViewModel.login()
-                        serversViewModel.addServer()
+                    VStack(spacing: 0) {
                         
-                        showNextView = !serversViewModel.shouldShowLoginError
-                    }
+                        Spacer()
+                        
+                        TopServerView(title: "Log in to access the project")
+                        
+                        Spacer()
+                            .frame(height: 40)
+                        
+                        TextfieldView(fieldContent: $serversViewModel.serverToAdd.username,
+                                      isValid: $serversViewModel.validUsername,
+                                      shouldShowError: $serversViewModel.shouldShowLoginError,
+                                      errorMessage: nil,
+                                      fieldType: .username,
+                                      title : "Username")
+                        .frame(height: 30)
+                        
+                        Spacer()
+                            .frame(height: 27)
+                        
+                        TextfieldView(fieldContent: $serversViewModel.serverToAdd.password,
+                                      isValid: $serversViewModel.validPassword,
+                                      shouldShowError: $serversViewModel.shouldShowLoginError,
+                                      errorMessage: serversViewModel.loginErrorMessage,
+                                      fieldType: .password,
+                                      title : "Password")
+                        .frame(height: 57)
+                        
+                        Spacer()
+                            .frame(height: 32)
+                        
+                        TellaButtonView<AnyView>(title: "LOG IN",
+                                                 nextButtonAction: .action) {
+                            UIApplication.shared.endEditing()
+                            serversViewModel.login()
+                        }
+                        
+                        Spacer()
+                        
+                        
+                    }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                     
-                    Spacer()
-                    
-                    
-                }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                    BottomLockView<AnyView>(isValid: $serversViewModel.validPassword,
+                                            nextButtonAction: .action,
+                                            shouldHideNext: true)
+                }
                 
-                BottomLockView<AnyView>(isValid: $serversViewModel.validPassword,
-                                        nextButtonAction: .action,
-                                        shouldHideNext: true)
+                nextViewLink
+                
+                if serversViewModel.isLoading {
+                    CircularActivityIndicatory()
+                }
             }
-            nextViewLink
+            
         }
         .navigationBarHidden(true)
+        .onAppear {
+            
+#if DEBUG
+            serversViewModel.serverToAdd.username = "admin@wearehorizontal.org"
+            serversViewModel.serverToAdd.password = "nadanada"
+#endif
+        }
     }
     
+    @ViewBuilder
     private var nextViewLink: some View {
-        SuccessLoginView(isPresented: $presentingSuccessLoginView).environmentObject(serversViewModel)
-            .addNavigationLink(isActive: $showNextView)
+        
+        if !serversViewModel.shouldShowLoginError {
+            SuccessLoginView(isPresented: $presentingSuccessLoginView).environmentObject(serversViewModel)
+                .addNavigationLink(isActive: $serversViewModel.showNextView)
+        }
     }
 }
 

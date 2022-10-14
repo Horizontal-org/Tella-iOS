@@ -9,8 +9,6 @@ struct EditSettingsServerView: View {
     
     @Binding var isPresented : Bool
     
-    @State var shareInfo : Bool = false
-    @State var backgroundUpload : Bool = false
     @EnvironmentObject var serversViewModel : ServersViewModel
     
     var body: some View {
@@ -24,29 +22,26 @@ struct EditSettingsServerView: View {
                 SettingsCardView(cardViewArray: [serverNameView.eraseToAnyView(),
                                                  serverURLView.eraseToAnyView(),
                                                  serverUsernameView.eraseToAnyView(),
-                                                 ShareInfoView(shareInfo: $shareInfo).eraseToAnyView(),
-                                                 BackgroundUploadView(backgroundUpload: $backgroundUpload).eraseToAnyView()])
+                                                 ShareInfoView(shareInfo: $serversViewModel.serverToAdd.activatedMetadata).eraseToAnyView(),
+                                                 BackgroundUploadView(backgroundUpload: $serversViewModel.serverToAdd.backgroundUpload).eraseToAnyView()])
                 Spacer()
                 
                 bottomView
-                
-                
             }
         }
     }
     
     var serverNameView: some View {
-        EditServerDisplayItem(title: "Server name", description: serversViewModel.selectedServer?.name)
+        EditServerDisplayItem(title: "Server name", description: serversViewModel.serverToAdd.name)
     }
     
     var serverURLView: some View {
-        EditServerDisplayItem(title: "Server URL", description: serversViewModel.selectedServer?.url)
+        EditServerDisplayItem(title: "Server URL", description: serversViewModel.serverToAdd.url)
     }
     
     var serverUsernameView: some View {
-        EditServerDisplayItem(title: "Username", description: serversViewModel.selectedServer?.username)
+        EditServerDisplayItem(title: "Username", description: serversViewModel.serverToAdd.username)
     }
-    
     
     var editServerHeaderView : some View {
         
@@ -72,6 +67,7 @@ struct EditSettingsServerView: View {
         HStack(spacing: 16) {
             Spacer()
             Button {
+                isPresented = false
                 
             } label: {
                 Text("CANCEL")
@@ -80,11 +76,11 @@ struct EditSettingsServerView: View {
                     .padding(EdgeInsets(top: 10, leading: 25, bottom: 10, trailing: 25))
                     .background(Color(UIColor(hexValue: 0xF5F5F5)).opacity(0.16))
                     .cornerRadius(25)
-                
             }
             
             Button {
-                
+                isPresented = false
+                serversViewModel.updateServer()
             } label: {
                 Text("SAVE")
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))

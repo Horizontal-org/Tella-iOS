@@ -4,83 +4,104 @@
 //
 
 import SwiftUI
-
+import Combine
 
 class ServersViewModel: ObservableObject {
     
     var mainAppModel : MainAppModel
     
-    @Published var serverURL : String = "https://"
+    // Add URL
     
     @Published var validURL : Bool = false
     @Published var shouldShowError : Bool = true
-    
     @Published var errorMessage : String = ""
     
-    
-    
-    
-    @Published var username : String = ""
-    @Published var password : String = ""
+    // Login
     
     @Published var validUsername : Bool = false
     @Published var validPassword : Bool = false
-    
     @Published var shouldShowLoginError : Bool = true
-    
     @Published var loginErrorMessage : String = ""
+    @Published var isLoading : Bool = false
+    
+    @Published var serverToAdd : Server = Server()
+    
+    // Server list
+    @Published var servers : [Server]?
+    var selectedServer : Server?
+    
+    private var subscribers = Set<AnyCancellable>()
     
     @Published var rootLinkIsActive : Bool = false
-    
-    @Published var servers : [Server]?
-    
-    var selectedServer : Server?
-
-    
-    func checkURL() { // To test
-        
-//        shouldShowError = serverURL != "https://"
-//        
-//        if serverURL != "https://" {
-//            errorMessage = "Error: The server URL is incorrect"
-//            validURL = false
-//        } else {
-//            errorMessage = ""
-//            validURL = true
-//        }
-    }
-    
-    func login() { // To test
-        
-        //        shouldShowLoginError = (username != "dhekra" && password != "password")
-        //
-        //        if username != "dhekra" && password != "password" {
-        //            loginErrorMessage = "Error: The server URL is incorrect"
-        //            validUsername = false
-        //            validPassword = false
-        //        } else {
-        //            loginErrorMessage = ""
-        //            validUsername = true
-        //            validPassword = true
-        //        }
-        
-    }
+    @Published var showNextView : Bool = false
     
     init(mainAppModel : MainAppModel) {
         self.mainAppModel = mainAppModel
-        servers = mainAppModel.vaultManager.tellaData.getServers()
+        getServers()
     }
     
-    func addServer()  {
+    func addServer(token: String) {
         
-        let serverToAdd = Server(name: "Name", url: serverURL, username: username, password: password)
+        serverToAdd.accessToken = token
         
         do {
-            let id = try mainAppModel.vaultManager.tellaData.addServer(server: Server(name: "Name", url: serverURL, username: username, password: password))
+            let id = try mainAppModel.vaultManager.tellaData.addServer(server: serverToAdd)
             serverToAdd.id = id
-            self.servers?.append(serverToAdd)
+            getServers()
+            
         } catch {
             
         }
+    }
+    
+    func updateServer() {
+        do {
+            _ = try mainAppModel.vaultManager.tellaData.updateServer(server: self.serverToAdd)
+            getServers()
+        } catch {
+        }
+    }
+    
+    func deleteServer() {
+        do {
+            _ = try mainAppModel.vaultManager.tellaData.deleteServer(server: self.serverToAdd)
+            getServers()
+        } catch {
+        }
+    }
+    
+    func getServers() {
+        servers = mainAppModel.vaultManager.tellaData.getServers()
+    }
+    
+    func checkURL() {
+        
+    }
+    
+    func login() {
+        
+        isLoading = true
+        
+        API.Request.Report.publisher(username: serverToAdd.username, password: serverToAdd.password, serverURL: serverToAdd.url)
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { completion in
+                    self.isLoading = false
+                    
+                    switch completion {
+                    case .failure(let error):
+                        self.shouldShowLoginError = true
+                        self.loginErrorMessage = error.message
+                    case .finished:
+                        self.shouldShowLoginError = false
+                        self.loginErrorMessage = ""
+                        self.showNextView = true
+                    }
+                },
+                receiveValue: { wrapper in
+                    self.addServer(token: wrapper.accessToken)
+                }
+            )
+            .store(in: &subscribers)
     }
 }

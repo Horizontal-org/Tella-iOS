@@ -26,6 +26,7 @@ struct SuccessAdvancedSettingsView: View {
                                           nextButtonAction: .action,
                                           buttonType: .yellow) {
                     serversViewModel.rootLinkIsActive = false
+                    
                 }
                 
                 Spacer()

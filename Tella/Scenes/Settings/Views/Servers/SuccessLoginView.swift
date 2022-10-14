@@ -32,6 +32,7 @@ struct SuccessLoginView: View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         isPresented = false
                     }
+                    
                 }
                 
                 Spacer()

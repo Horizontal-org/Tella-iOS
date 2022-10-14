@@ -35,9 +35,9 @@ class DataBaseHelper {
         
         //        guard let key = key else { return }
         
-        if (sqlite3_key(dbPointer, key, Int32(key.count)) != SQLITE_OK) {
-            logDbErr("Error setting key")
-        }
+        //        if (sqlite3_key(dbPointer, key, Int32(key.count)) != SQLITE_OK) {
+        //            logDbErr("Error setting key")
+        //        }
     }
     
     func selectQuery(tableName: String, keyValue: [KeyValue]) throws -> [[String: Any]] {
@@ -192,6 +192,83 @@ class DataBaseHelper {
         
         if let stmt = self.bind(insertStatement: insertStatement, keyValue) {
             let result = self.execute(stmt: stmt, sql: insertSql)
+            
+            if result == 0 {
+                throw SqliteError(message: errorMessage)
+            }
+            
+            return result
+            
+        } else {
+            throw SqliteError(message: errorMessage)
+        }
+    }
+    
+    
+    func update(tableName:String, keyValue: [KeyValue], primarykeyValue : [KeyValue]) throws -> Int {
+        
+        let setColumnNames = keyValue.compactMap{($0.key)}
+        let primaryKeyColumnNames = primarykeyValue.compactMap{($0.key)}
+        
+        let bindValues = keyValue + primarykeyValue
+        
+        
+        var updateSql = "UPDATE '\(tableName)' SET"
+        
+        for (columnIndex, columnName) in setColumnNames.enumerated() {
+            updateSql += "  \(columnName)  = :\(columnName) "
+            if columnIndex < setColumnNames.count - 1 {
+                updateSql += ", "
+            }
+        }
+        updateSql += " WHERE"
+        for (primaryKeyColumnNameIndex, primaryKeyColumnName) in primaryKeyColumnNames.enumerated() {
+            updateSql += "  " + primaryKeyColumnName +  " = :\(primaryKeyColumnName)"
+            if primaryKeyColumnNameIndex < primaryKeyColumnNames.count - 1 {
+                updateSql += " AND"
+            }
+        }
+        
+        debugLog("update: \(updateSql)")
+        
+        guard let updateStatement = try prepareStatement(sql: updateSql) else {
+            throw SqliteError(message: errorMessage)
+        }
+        
+        if let stmt = self.bind(insertStatement: updateStatement, bindValues) {
+            let result = self.execute(stmt: stmt, sql: updateSql)
+            
+            if result == 0 {
+                throw SqliteError(message: errorMessage)
+            }
+            
+            return result
+            
+        } else {
+            throw SqliteError(message: errorMessage)
+        }
+    }
+    
+    func delete(tableName:String, primarykeyValue : [KeyValue]) throws -> Int {
+        
+        let primaryKeyColumnNames = primarykeyValue.compactMap{($0.key)}
+        
+        var deleteSql = "DELETE FROM '\(tableName)' WHERE"
+        for (primaryKeyColumnNameIndex, primaryKeyColumnName) in primaryKeyColumnNames.enumerated() {
+            deleteSql += " " + primaryKeyColumnName + " = :\(primaryKeyColumnName)"
+            if primaryKeyColumnNameIndex < primaryKeyColumnNames.count - 1 {
+                deleteSql += " AND"
+            }
+        }
+        
+        debugLog("delete: \(deleteSql)")
+        
+        guard let deleteStatement = try prepareStatement(sql: deleteSql) else {
+            throw SqliteError(message: errorMessage)
+        }
+        
+        if let stmt = self.bind(insertStatement: deleteStatement, primarykeyValue) {
+            let result = self.execute(stmt: stmt, sql: deleteSql)
             
             if result == 0 {
                 throw SqliteError(message: errorMessage)

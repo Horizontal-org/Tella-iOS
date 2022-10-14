@@ -7,14 +7,14 @@ import SwiftUI
 
 struct SettingsServerItemView: View {
     
-    let title: String
+    let title: String?
     var action : (() -> ())?
     
     var body: some View {
         
         HStack{
             VStack(alignment: .leading){
-                Text(title)
+                Text(title ?? "")
                     .foregroundColor(Color.white)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
             }

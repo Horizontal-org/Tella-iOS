@@ -11,11 +11,11 @@ struct ServersListView: View {
     @EnvironmentObject var sheetManager: SheetManager
     
     @State var shouldShowEditServer : Bool = false
-    
-    
+
     var body: some View {
         
         ContainerView {
+            
             VStack(spacing: 0) {
                 
                 Spacer()
@@ -35,7 +35,7 @@ struct ServersListView: View {
         }
     }
     
-    func serversView<T>() -> [T] {
+    private func serversView<T>() -> [T] {
         
         var arrayView : [T] = [SettingsAddServerCardView().environmentObject(serversViewModel).eraseToAnyView() as! T]
         
@@ -46,26 +46,30 @@ struct ServersListView: View {
         return arrayView
     }
     
-    func showServerActionBottomSheet(server:Server) {
+    private func showServerActionBottomSheet(server:Server) {
         sheetManager.showBottomSheet(modalHeight: 176) {
             ActionListBottomSheet(items: serverActionItems,
                                   headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
                                   action:  {item in
                 
-                serversViewModel.selectedServer = server
-
+                serversViewModel.serverToAdd = server
+                
                 self.handleActions(item : item)
             })
         }
     }
     
-    func showDeleteServerConfirmationView() {
+    private func showDeleteServerConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: 200) {
             ConfirmBottomSheet(titleText: "Delete “Election monitoring” server?",
                                msgText: "If you delete this server, all draft and submitted forms will be deleted from your device.",
                                cancelText: "CANCEL",
                                actionText: "DELETE", didConfirmAction: {
                 // Delete action
+                
+                serversViewModel.deleteServer()
+                sheetManager.hide()
+                
             })
         }
     }
@@ -76,12 +80,11 @@ struct ServersListView: View {
         switch type {
         case .edit:
             shouldShowEditServer = true
+            sheetManager.hide()
         case .delete:
             showDeleteServerConfirmationView()
-            
         }
     }
-    
 }
 
 struct ServersListView_Previews: PreviewProvider {

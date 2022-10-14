@@ -7,8 +7,6 @@ import SwiftUI
 
 struct AdvancedServerSettingsView: View {
     
-    @State var shareInfo : Bool = false
-    @State var backgroundUpload : Bool = false
     @State var presentingSuccessAdvancedSettings : Bool = false
     
     @EnvironmentObject var serversViewModel : ServersViewModel
@@ -32,14 +30,16 @@ struct AdvancedServerSettingsView: View {
                 Spacer()
                     .frame(height: 16)
                 
-                SettingsCardView(cardViewArray: [ShareInfoView(shareInfo: $shareInfo).eraseToAnyView(),
-                                                 BackgroundUploadView(backgroundUpload: $backgroundUpload).eraseToAnyView()])
+                SettingsCardView(cardViewArray: [ShareInfoView(shareInfo: $serversViewModel.serverToAdd.activatedMetadata).eraseToAnyView(),
+                                                 BackgroundUploadView(backgroundUpload: $serversViewModel.serverToAdd.backgroundUpload).eraseToAnyView()])
                 
                 Spacer()
                 
                 BottomLockView<AnyView>(isValid:.constant(true),
                                         nextButtonAction: .action,
                                         nextAction:  {
+                    
+                    serversViewModel.updateServer()
                     presentingSuccessAdvancedSettings = true
                 })
                 
