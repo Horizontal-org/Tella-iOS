@@ -24,7 +24,8 @@ struct SuccessAdvancedSettingsView: View {
                 
                 TellaButtonView<AnyView> (title: "OK",
                                           nextButtonAction: .action,
-                                          buttonType: .yellow) {
+                                          buttonType: .yellow,
+                                          isValid: .constant(true)) {
                     serversViewModel.rootLinkIsActive = false
                     
                 }

@@ -9,7 +9,6 @@ struct AddServerURLView: View {
     
     @EnvironmentObject var serversViewModel : ServersViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @State var showNextView : Bool = false
     
     var action : (() -> Void)?
     var nextButtonAction: NextButtonAction = .action
@@ -38,10 +37,10 @@ struct AddServerURLView: View {
                     Spacer()
                         .frame(height: 40)
                     
-                    TextfieldView(fieldContent: $serversViewModel.serverToAdd.url,
+                    TextfieldView(fieldContent: $serversViewModel.currentServer.url,
                                   isValid: $serversViewModel.validURL,
-                                  shouldShowError: $serversViewModel.shouldShowError,
-                                  errorMessage: serversViewModel.errorMessage,
+                                  shouldShowError: $serversViewModel.shouldShowURLError,
+                                  errorMessage: serversViewModel.urlErrorMessage,
                                   fieldType: .url)
                     Spacer()
                     
@@ -49,7 +48,6 @@ struct AddServerURLView: View {
                                             nextButtonAction: .action,
                                             nextAction: {
                         serversViewModel.checkURL()
-                        showNextView = !serversViewModel.shouldShowError
                     },
                                             backAction: {
                         self.presentationMode.wrappedValue.dismiss()
@@ -67,16 +65,16 @@ struct AddServerURLView: View {
         .navigationBarHidden(true)
         .onAppear {
             
-#if DEBUG
-            serversViewModel.serverToAdd.url = "http://37.218.244.11:3001"
-#endif
+//#if DEBUG
+//            serversViewModel.serverToAdd.url = "http://37.218.244.11:3001" 
+//#endif
         }
     }
     
     private var nextViewLink: some View {
         
         ServerLoginView().environmentObject(serversViewModel)
-            .addNavigationLink(isActive: $showNextView)
+            .addNavigationLink(isActive: $serversViewModel.showNextLoginView)
     }
     
 }

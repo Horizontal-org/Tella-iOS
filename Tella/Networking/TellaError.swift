@@ -23,9 +23,15 @@ public class TellaError: Error {
     }
     
     init(error:Error) {
-        self.message = "url is incorrect"
+        self.message = "The URL is incorrect"
         self.code = (error as NSError).code
     }
+    
+    init(tellaError:TellaError) {
+        self.message = "url is incorrect"
+        self.code = tellaError.code
+    }
+
     
     init() {
         self.message = "General error"

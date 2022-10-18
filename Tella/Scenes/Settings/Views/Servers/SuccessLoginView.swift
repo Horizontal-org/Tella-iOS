@@ -26,7 +26,8 @@ struct SuccessLoginView: View {
                 
                 TellaButtonView<AnyView> (title: "GO TO REPORTS",
                                           nextButtonAction: .action,
-                                          buttonType: .yellow) {
+                                          buttonType: .yellow,
+                                          isValid: .constant(true)) {
                     mainAppModel.selectedTab = .reports
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -40,7 +41,8 @@ struct SuccessLoginView: View {
                 
                 TellaButtonView (title: "Advanced settings",
                                  nextButtonAction: .destination,
-                                 destination: AdvancedServerSettingsView())
+                                 destination: AdvancedServerSettingsView(),
+                                 isValid: .constant(true))
                 Spacer()
                 
             } .padding(EdgeInsets(top: 0, leading: 26, bottom: 0, trailing: 26))

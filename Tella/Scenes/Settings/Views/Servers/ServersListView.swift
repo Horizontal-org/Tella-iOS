@@ -33,6 +33,9 @@ struct ServersListView: View {
         .toolbar {
             LeadingTitleToolbar(title: "Servers")
         }
+        .onAppear {
+            serversViewModel.initServerVM()
+        }
     }
     
     private func serversView<T>() -> [T] {
@@ -52,7 +55,7 @@ struct ServersListView: View {
                                   headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
                                   action:  {item in
                 
-                serversViewModel.serverToAdd = server
+                serversViewModel.currentServer = server
                 
                 self.handleActions(item : item)
             })

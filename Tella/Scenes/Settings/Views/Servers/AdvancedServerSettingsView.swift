@@ -30,8 +30,8 @@ struct AdvancedServerSettingsView: View {
                 Spacer()
                     .frame(height: 16)
                 
-                SettingsCardView(cardViewArray: [ShareInfoView(shareInfo: $serversViewModel.serverToAdd.activatedMetadata).eraseToAnyView(),
-                                                 BackgroundUploadView(backgroundUpload: $serversViewModel.serverToAdd.backgroundUpload).eraseToAnyView()])
+                SettingsCardView(cardViewArray: [ShareInfoView(shareInfo: $serversViewModel.currentServer.activatedMetadata).eraseToAnyView(),
+                                                 BackgroundUploadView(backgroundUpload: $serversViewModel.currentServer.backgroundUpload).eraseToAnyView()])
                 
                 Spacer()
                 

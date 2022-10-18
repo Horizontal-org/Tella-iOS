@@ -7,10 +7,10 @@ import Foundation
 import Combine
 
 extension API.Request {
-    struct Report {}
+    struct Server {}
 }
 
-extension API.Request.Report: APIRequest {
+extension API.Request.Server: APIRequest {
     
     typealias ResultType = LoginResult
 
@@ -24,7 +24,7 @@ extension API.Request.Report: APIRequest {
     static var httpMethod: Request.HTTPMethod {.post}
 }
 
-extension API.Request.Report {
+extension API.Request.Server {
     
     static func publisher(username: String,
                           password: String,
@@ -34,4 +34,10 @@ extension API.Request.Report {
                 .password: password],
             serverURL: serverURL)
     }
+    
+    static func publisher(serverURL: String) -> AnyPublisher<ResultType, TellaError> {
+        publisher(keyValues: nil,
+                  serverURL: serverURL)
+    }
+
 }

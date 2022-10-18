@@ -30,7 +30,7 @@ struct ServerLoginView: View {
                         Spacer()
                             .frame(height: 40)
                         
-                        TextfieldView(fieldContent: $serversViewModel.serverToAdd.username,
+                        TextfieldView(fieldContent: $serversViewModel.currentServer.username,
                                       isValid: $serversViewModel.validUsername,
                                       shouldShowError: $serversViewModel.shouldShowLoginError,
                                       errorMessage: nil,
@@ -41,7 +41,7 @@ struct ServerLoginView: View {
                         Spacer()
                             .frame(height: 27)
                         
-                        TextfieldView(fieldContent: $serversViewModel.serverToAdd.password,
+                        TextfieldView(fieldContent: $serversViewModel.currentServer.password,
                                       isValid: $serversViewModel.validPassword,
                                       shouldShowError: $serversViewModel.shouldShowLoginError,
                                       errorMessage: serversViewModel.loginErrorMessage,
@@ -53,7 +53,8 @@ struct ServerLoginView: View {
                             .frame(height: 32)
                         
                         TellaButtonView<AnyView>(title: "LOG IN",
-                                                 nextButtonAction: .action) {
+                                                 nextButtonAction: .action,
+                                                 isValid: $serversViewModel.validCredentials) {
                             UIApplication.shared.endEditing()
                             serversViewModel.login()
                         }
@@ -79,10 +80,10 @@ struct ServerLoginView: View {
         .navigationBarHidden(true)
         .onAppear {
             
-#if DEBUG
-            serversViewModel.serverToAdd.username = "admin@wearehorizontal.org"
-            serversViewModel.serverToAdd.password = "nadanada"
-#endif
+//#if DEBUG
+//            serversViewModel.serverToAdd.username = "admin@wearehorizontal.org"
+//            serversViewModel.serverToAdd.password = "nadanada" 
+//#endif
         }
     }
     
@@ -91,7 +92,7 @@ struct ServerLoginView: View {
         
         if !serversViewModel.shouldShowLoginError {
             SuccessLoginView(isPresented: $presentingSuccessLoginView).environmentObject(serversViewModel)
-                .addNavigationLink(isActive: $serversViewModel.showNextView)
+                .addNavigationLink(isActive: $serversViewModel.showNextSuccessLoginView)
         }
     }
 }

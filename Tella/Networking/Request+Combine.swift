@@ -36,7 +36,7 @@ private extension APIRequest {
                 debugLog("Response data : \( String(describing: String(data: data, encoding: .utf8)))")
                 
                 if let httpResponse = response as? HTTPURLResponse,
-                   httpResponse.statusCode > 400 {
+                   httpResponse.statusCode >= 400 {
                     throw TellaError.init(httpResponse: httpResponse)
                 }
                 
@@ -44,7 +44,7 @@ private extension APIRequest {
             }
         
             .mapError { error -> TellaError in
-                return TellaError.init(error: error)
+                return error as? TellaError ?? TellaError.init(error: error)
             }
         
             .eraseToAnyPublisher()
@@ -54,8 +54,7 @@ private extension APIRequest {
         dataPublisher(request: request)
             .tryMap(fetched)
             .mapError { error -> TellaError in
-                return TellaError.init(error: error)
-                
+                return error as? TellaError ?? TellaError.init(error: error)
             }
             .eraseToAnyPublisher()
     }
