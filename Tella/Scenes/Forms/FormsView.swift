@@ -8,7 +8,7 @@ struct FormsView: View {
     
     @State var title: String = ""
     @State var description: String = ""
-    @State var selecetedCell = Pages.new
+    @State var selecetedCell = Pages.draft
     @State private var selectedTabIndex = 0
     @State var outBoxCount = 0
     var width = UIScreen.main.bounds.width
@@ -25,13 +25,11 @@ struct FormsView: View {
                         .padding([.leading, .trailing], 10)
                     VStack {
                         switch self.selecetedCell {
-                        case .new:
-                            BlankFormsView()
                         case .draft:
                             DraftFormsView()
                         case .outbox:
                             OutBoxFormsView()
-                        case .sent:
+                        case .submitted:
                             SentFormsView()
                         }
                     }

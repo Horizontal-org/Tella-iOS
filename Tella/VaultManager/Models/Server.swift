@@ -5,7 +5,8 @@
 
 import Foundation
 
-class Server {
+class Server : Hashable{
+    
    
     var id : Int?
     var name : String = "Name"
@@ -38,4 +39,14 @@ class Server {
     init() {
         
     }
+    
+    static func == (lhs: Server, rhs: Server) -> Bool {
+        lhs.id  == rhs.id
+
+    }
+
+    func hash(into hasher: inout Hasher){
+        hasher.combine(id.hashValue)
+    }
+
 }
