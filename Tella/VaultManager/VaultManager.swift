@@ -38,9 +38,11 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     private let fileManager: FileManagerInterface
     
     @Published var root: VaultFile
+    @Published var tellaData : TellaData
+
     @Published var progress :  ImportProgress
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
-    
+
     private var cancellable: Set<AnyCancellable> = []
     
     init(cryptoManager: CryptoManagerInterface, fileManager: FileManagerInterface, rootFileName: String, containerPath: String, progress :  ImportProgress) {
@@ -49,6 +51,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         self.rootFileName = rootFileName
         self.containerPath = containerPath
         self.progress = progress
+        self.tellaData = TellaData(key: CryptoManager.shared.metaPrivateKey?.getString())
         
         root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
         if let root = load(name: rootFileName) {
@@ -259,9 +262,9 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         let fileURL = containerURL(for: vaultFile.containerName)
         guard let encrypted = cryptoManager.encrypt(data),
               fileManager.createFile(atPath: fileURL, contents: encrypted) else {
-                  debugLog("encryption failed \(String(describing: vaultFile.fileName))", level: .debug, space: .crypto)
-                  return nil
-              }
+            debugLog("encryption failed \(String(describing: vaultFile.fileName))", level: .debug, space: .crypto)
+            return nil
+        }
         parent?.add(file: vaultFile)
         return true
     }
@@ -328,7 +331,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     private var containerURL: URL {
         
         let url = FileManager.default.urls(for: .documentDirectory,
-                                              in: .userDomainMask)[0].appendingPathComponent(containerPath)
+                                           in: .userDomainMask)[0].appendingPathComponent(containerPath)
         return url
     }
     

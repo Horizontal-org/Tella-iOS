@@ -38,7 +38,6 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
                 Spacer()
                 PasswordTextFieldView(fieldContent: $fieldContent,
                                       isValid: $isValid,
-                                      shouldShowErrorMessage: $shouldShowErrorMessage,
                                       shouldShowError: .constant(false),
                                       disabled: true)
                 

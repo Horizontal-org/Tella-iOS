@@ -14,8 +14,6 @@ struct MainView: View  {
     
     
     init() {
-        setDebugLevel(level: .debug, for: .app)
-        setDebugLevel(level: .debug, for: .crypto)
         setupApperance()
     }
     
@@ -51,18 +49,17 @@ struct MainView: View  {
                             Image("tab.home")
                             Text(LocalizableHome.tabBar.localized)
                         }.tag(MainAppModel.Tabs.home)
-/*#if DEBUG
                     ReportsView()
                         .tabItem {
                             Image("tab.reports")
-                            Text(Localizable.Reports.tabBarTitle)
+                            Text("Reports")
                         }.tag(MainAppModel.Tabs.reports)
-                    FormsView()
-                        .tabItem {
-                            Image("tab.forms")
-                            Text(Localizable.Forms.tabBarTitle)
-                        }.tag(MainAppModel.Tabs.forms)
-#endif*/
+//                    FormsView()
+//                        .tabItem {
+//                            Image("tab.forms")
+//                            Text(Localizable.Forms.tabBarTitle)
+//                        }.tag(MainAppModel.Tabs.forms)
+
                     ContainerView{}
                         .tabItem {
                             Image("tab.camera")

@@ -52,8 +52,7 @@ struct AddFileView: View {
             TextFieldBottomSheetView(titleText: LocalizableVault.manageFilesCreateNewFolderSheetSelect.localized,
                                      validateButtonText: LocalizableVault.createNewFolderCreateSheetAction.localized,
                                      cancelButtonText: LocalizableVault.createNewFolderCancelSheetAction.localized,
-                                     fieldContent: $fieldContent,
-                                     fieldType: .text) {
+                                     fieldContent: $fieldContent) {
                 fileListViewModel.add(folder: fieldContent)
             }
         })

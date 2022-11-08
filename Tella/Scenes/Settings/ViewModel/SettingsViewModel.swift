@@ -16,17 +16,7 @@ class SettingsViewModel: ObservableObject {
         }
         return languageItems
     }()
-    
-    var aboutAndHelpItems : [AboutAndHelpItem] = {
-        return [AboutAndHelpItem(title: LocalizableSettings.settAboutContactUs.localized,
-                                 imageName: "settings.contact-us",
-                                 url: TellaUrls.contactURL),
-                AboutAndHelpItem(title: LocalizableSettings.settAboutPrivacyPolicy.localized,
-                                 imageName: "settings.privacy",
-                                 url: TellaUrls.privacyURL)
-        ]
-    }()
-    
+        
     var selectedLockTimeoutOption : LockTimeoutOption {
         didSet {
             lockTimeoutOptions.filter{$0.lockTimeoutOption != selectedLockTimeoutOption}.forEach{$0.isSelected = false}
@@ -55,5 +45,10 @@ class SettingsViewModel: ObservableObject {
         appModel.settings.lockTimeout = selectedLockTimeoutOption
         appModel.saveSettings()
     }
+    
+    func cancelLockTimeout() {
+        selectedLockTimeoutOption = appModel.settings.lockTimeout
+    }
+
 }
 

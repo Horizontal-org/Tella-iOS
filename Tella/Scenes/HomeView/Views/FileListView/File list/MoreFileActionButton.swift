@@ -121,7 +121,6 @@ struct MoreFileActionButton: View {
                                      cancelButtonText:LocalizableVault.renameFileCancelSheetAction.localized,
                                      fieldContent: $fileNameToUpdate,
                                      fileName: fileListViewModel.selectedFiles.count == 1 ? fileListViewModel.selectedFiles[0].fileName : "",
-                                     fieldType: FieldType.fileName,
                                      didConfirmAction: {
                 fileListViewModel.selectedFiles[0].fileName = fileNameToUpdate
                 appModel.rename(file: fileListViewModel.selectedFiles[0], parent: fileListViewModel.rootFile)

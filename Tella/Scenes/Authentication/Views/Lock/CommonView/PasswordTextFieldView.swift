@@ -13,7 +13,6 @@ struct PasswordTextFieldView : View {
     @State var shouldShowPassword : Bool = false
     @Binding var fieldContent : String
     @Binding var isValid : Bool
-    @Binding var shouldShowErrorMessage : Bool
     @Binding var shouldShowError : Bool
     
     var disabled : Bool = false
@@ -24,14 +23,12 @@ struct PasswordTextFieldView : View {
         if #available(iOS 15.0, *) {
             PasswordTextFieldViewWithFocus( fieldContent: $fieldContent,
                                             isValid: $isValid,
-                                            shouldShowErrorMessage: $shouldShowErrorMessage,
                                             shouldShowError: $shouldShowError,
                                             disabled: disabled,
                                             onCommit: onCommit)
         } else {
             PasswordTextFieldViewWithoutFocus( fieldContent: $fieldContent,
                                                isValid: $isValid,
-                                               shouldShowErrorMessage: $shouldShowErrorMessage,
                                                shouldShowError: $shouldShowError,
                                                disabled: disabled,
                                                onCommit: onCommit)
@@ -39,13 +36,10 @@ struct PasswordTextFieldView : View {
     }
     private func validateField(value:String) {
         self.isValid = value.passwordValidator()
-        shouldShowErrorMessage = false
         self.shouldShowError = false
         
     }
 }
-
-
 
 @available(iOS 15.0, *)
 struct PasswordTextFieldViewWithFocus : View {
@@ -53,7 +47,6 @@ struct PasswordTextFieldViewWithFocus : View {
     @State var shouldShowPassword : Bool = false
     @Binding var fieldContent : String
     @Binding var isValid : Bool
-    @Binding var shouldShowErrorMessage : Bool
     @Binding var shouldShowError : Bool
     
     var disabled : Bool = false
@@ -112,7 +105,6 @@ struct PasswordTextFieldViewWithFocus : View {
     }
     private func validateField(value:String) {
         self.isValid = value.passwordValidator()
-        shouldShowErrorMessage = false
         self.shouldShowError = false
         
     }
@@ -123,7 +115,6 @@ struct PasswordTextFieldViewWithoutFocus : View {
     @State var shouldShowPassword : Bool = false
     @Binding var fieldContent : String
     @Binding var isValid : Bool
-    @Binding var shouldShowErrorMessage : Bool
     @Binding var shouldShowError : Bool
     
     var disabled : Bool = false
@@ -177,11 +168,11 @@ struct PasswordTextFieldViewWithoutFocus : View {
     }
     private func validateField(value:String) {
         self.isValid = value.passwordValidator()
-        shouldShowErrorMessage = false
         self.shouldShowError = false
         
     }
 }
+
 struct PasswordStyle: TextFieldStyle {
     
     var shouldShowError : Bool = false
@@ -219,7 +210,6 @@ struct PasswordTextFieldView_Previews: PreviewProvider {
     static var previews: some View {
         PasswordTextFieldView(fieldContent: .constant(""),
                               isValid: .constant(true),
-                              shouldShowErrorMessage: .constant(true),
                               shouldShowError: .constant(false))
     }
 }

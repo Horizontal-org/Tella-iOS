@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0807BE8AD7991EBCC67BBF58 /* libPods-Tella-TellaUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BA47B1A745C8D086B482FE /* libPods-Tella-TellaUITests.a */; };
 		0D4BC3C3267577F900DCDC30 /* ReportModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3BF267577F900DCDC30 /* ReportModels.swift */; };
 		0D4BC3C4267577F900DCDC30 /* NewReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3C0267577F900DCDC30 /* NewReportView.swift */; };
 		0D4BC3C5267577F900DCDC30 /* ReportsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3C1267577F900DCDC30 /* ReportsView.swift */; };
@@ -14,14 +15,12 @@
 		0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3CD267668D600DCDC30 /* AddFileYellowButton.swift */; };
 		0D4D7510266316D200D7A635 /* SettingsGeneral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D750F266316D200D7A635 /* SettingsGeneral.swift */; };
 		0D4D7512266316DC00D7A635 /* SettingsSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7511266316DC00D7A635 /* SettingsSecurity.swift */; };
-		0D4D7514266316E500D7A635 /* SettingsAboutHelp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7513266316E500D7A635 /* SettingsAboutHelp.swift */; };
 		0D4D7516266466C500D7A635 /* SettingsDocumentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7515266466C500D7A635 /* SettingsDocumentation.swift */; };
-		0D4D7518266470A700D7A635 /* SettingsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7517266470A700D7A635 /* SettingsViews.swift */; };
+		0D4D7518266470A700D7A635 /* SettingToggleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7517266470A700D7A635 /* SettingToggleItem.swift */; };
 		0DA213C72680286F00526995 /* FileListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213C62680286F00526995 /* FileListItem.swift */; };
 		0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213CA268028A200526995 /* FileSortOptions.swift */; };
 		0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC267A5267AED7C00E55AFA /* VaultFile.swift */; };
 		0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */; };
-		0DC411E12668469C00BF0DE1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC411E02668469C00BF0DE1 /* SettingsView.swift */; };
 		0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD99E042692D24D009327B3 /* SwipeToDeleteView.swift */; };
 		0DEFD54A268945C60014EADE /* ModelStubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3CB26765B8C00DCDC30 /* ModelStubs.swift */; };
 		0DEFD54F2689467A0014EADE /* ModelStubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3CB26765B8C00DCDC30 /* ModelStubs.swift */; };
@@ -42,17 +41,43 @@
 		0ECC7819267A53A700A2ACF2 /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC7818267A53A700A2ACF2 /* PageView.swift */; };
 		0ECC781B267A542300A2ACF2 /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC781A267A542300A2ACF2 /* Pages.swift */; };
 		0ECC781D267AADA500A2ACF2 /* PageViewCellNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC781C267AADA500A2ACF2 /* PageViewCellNotification.swift */; };
+		120451FA28C7525200D572A7 /* EditSettingsServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120451F928C7525200D572A7 /* EditSettingsServerView.swift */; };
+		120451FC28C795DC00D572A7 /* EditServerDisplayItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120451FB28C795DC00D572A7 /* EditServerDisplayItemView.swift */; };
+		120451FE28C7AB8100D572A7 /* AdvancedSettingsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120451FD28C7AB8100D572A7 /* AdvancedSettingsViews.swift */; };
+		1204520028C7AC2800D572A7 /* ServerActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120451FF28C7AC2800D572A7 /* ServerActionType.swift */; };
 		1204F64327D928C9006E40EE /* FileTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204F64227D928C8006E40EE /* FileTypeExtension.swift */; };
+		1206CD4528F59DD100B38539 /* TellaError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1206CD4428F59DD100B38539 /* TellaError.swift */; };
 		1209FD2927AD7DA500D8C17E /* OldAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DF3A512269BE0C800B907D5 /* OldAssets.xcassets */; };
 		1209FD2B27AD851E00D8C17E /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD2A27AD851E00D8C17E /* AudioPlayerView.swift */; };
 		1209FD2E27AD89C800D8C17E /* AudioPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD2D27AD89C800D8C17E /* AudioPlayerViewModel.swift */; };
 		1209FD3027AD8AC400D8C17E /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD2F27AD8AC400D8C17E /* AudioPlayerManager.swift */; };
 		1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD3127ADBDDE00D8C17E /* TimeIntervalExtension.swift */; };
+		1216123C28DE13AC00E6D7B6 /* DatabaseUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1216123B28DE13AC00E6D7B6 /* DatabaseUtilities.swift */; };
+		1216123E28DE142D00E6D7B6 /* JoinItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1216123D28DE142D00E6D7B6 /* JoinItem.swift */; };
+		1216124028DE144200E6D7B6 /* JoinCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1216123F28DE144200E6D7B6 /* JoinCondition.swift */; };
+		1217FCA128F9946A00DD2D70 /* CircularActivityIndicatory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217FCA028F9946A00DD2D70 /* CircularActivityIndicatory.swift */; };
+		1217FCA328F99A7D00DD2D70 /* CircularLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217FCA228F99A7D00DD2D70 /* CircularLoader.swift */; };
+		1218E86328E47B9B00FE2E68 /* Request+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1218E86228E47B9B00FE2E68 /* Request+Combine.swift */; };
+		1218E86528E48AEC00FE2E68 /* LoginResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1218E86428E48AEC00FE2E68 /* LoginResult.swift */; };
+		1221CB6F28DB1B1B0042F15F /* SqliteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1221CB6E28DB1B1B0042F15F /* SqliteError.swift */; };
+		1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1221CB7028DB1B5A0042F15F /* KeyValue.swift */; };
 		1224DAEA27197578001C0ED0 /* ConfirmLockPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224DAE927197577001C0ED0 /* ConfirmLockPasswordView.swift */; };
 		1224DAEC271975D3001C0ED0 /* PasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224DAEB271975D2001C0ED0 /* PasswordView.swift */; };
 		1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224DAEF2719C71B001C0ED0 /* LockPasswordData.swift */; };
 		1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE64FA282505542E00B03CEC /* AppViewState.swift */; };
+		122C54BC28C614C2003B2DBC /* TellaButtonStyleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122C54BB28C614C2003B2DBC /* TellaButtonStyleProtocol.swift */; };
+		122C54BE28C6351E003B2DBC /* AdvancedServerSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122C54BD28C6351E003B2DBC /* AdvancedServerSettingsView.swift */; };
+		122C54C028C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122C54BF28C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift */; };
 		1230BE4727CD6D440055F854 /* AudioAuthorizationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230BE4627CD6D440055F854 /* AudioAuthorizationStatus.swift */; };
+		1233007828E30C7900B8F7BA /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233007728E30C7900B8F7BA /* APIRequest.swift */; };
+		1233007A28E3115500B8F7BA /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233007928E3115500B8F7BA /* Request.swift */; };
+		1233007C28E3184500B8F7BA /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233007B28E3184500B8F7BA /* Key.swift */; };
+		1233007E28E3184D00B8F7BA /* Value.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233007D28E3184D00B8F7BA /* Value.swift */; };
+		12351C1A28D2209400F3CB7C /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12351C1928D2209400F3CB7C /* Report.swift */; };
+		12351C1C28D220BA00F3CB7C /* TellaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12351C1B28D220BA00F3CB7C /* TellaData.swift */; };
+		12351C1E28D267EF00F3CB7C /* DatabaseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12351C1D28D267EF00F3CB7C /* DatabaseConstants.swift */; };
+		1236EE8028E1B40200973EEA /* DataBaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1236EE7F28E1B40200973EEA /* DataBaseHelper.swift */; };
+		1236EE8228E1E1D700973EEA /* DatabaseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1236EE8128E1E1D700973EEA /* DatabaseExtension.swift */; };
 		1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C876268C792000EB5E34 /* NSUIImage.swift */; };
 		1237A71A278F18C000D7BC0F /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C87C268CCA3500EB5E34 /* WebView.swift */; };
 		1237A71C278F5B2E00D7BC0F /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1237A71B278F5B2E00D7BC0F /* DateExtension.swift */; };
@@ -71,6 +96,7 @@
 		125A0AEB2726CBDA00F6E77F /* UnlockPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A0AEA2726CBD900F6E77F /* UnlockPasswordView.swift */; };
 		125A0AED2726CBF000F6E77F /* UnlockPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A0AEC2726CBF000F6E77F /* UnlockPinView.swift */; };
 		125A0AEF2726F0A000F6E77F /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A0AEE2726F0A000F6E77F /* ContainerView.swift */; };
+		125A9E0028CE52C700C0C3C8 /* TellaDataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A9DFF28CE52C700C0C3C8 /* TellaDataBase.swift */; };
 		125D231C271F119D00250FBB /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231B271F119D00250FBB /* Validator.swift */; };
 		125D231F271F12A000250FBB /* NSRegularExpressionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */; };
 		125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2320271F823100250FBB /* UIApplicationExtension.swift */; };
@@ -142,13 +168,20 @@
 		128D6E1E2804DA2A0082AB18 /* ListActionSheetItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E1D2804DA2A0082AB18 /* ListActionSheetItem.swift */; };
 		128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128EDB91280980DB00747B98 /* SequenceExtension.swift */; };
 		128EDB942809897C00747B98 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128EDB932809897C00747B98 /* HomeViewModel.swift */; };
-		128F979A2799AF0100E63DA5 /* CircularActivityIndicatory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128F97962799983800E63DA5 /* CircularActivityIndicatory.swift */; };
 		128FD0B427F774FB00B24915 /* RecentFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128FD0B327F774FB00B24915 /* RecentFile.swift */; };
 		1290743B274CEB9B00F38A81 /* FileGridItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1290743A274CEB9B00F38A81 /* FileGridItem.swift */; };
+		1291A83228BE0086001A6055 /* SettingsAddServerCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291A83128BE0086001A6055 /* SettingsAddServerCardView.swift */; };
+		1291A83428BE0D51001A6055 /* SettingsServerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291A83328BE0D51001A6055 /* SettingsServerItemView.swift */; };
+		1291A83628BE3948001A6055 /* SettingsLinkItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291A83528BE3947001A6055 /* SettingsLinkItemView.swift */; };
 		1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291F4F127B52BF9006A34D3 /* QueuePlayer.swift */; };
 		1291F4F627B54300006A34D3 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291F4F527B54300006A34D3 /* AudioPlayer.swift */; };
 		129533C227399A1B0053FA4B /* PhotoVideoPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129533C127399A1B0053FA4B /* PhotoVideoPickerView.swift */; };
 		129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129533C32739D5BC0053FA4B /* TextFieldBottomSheetView.swift */; };
+		129B844F28BF5E4700F1B344 /* TextfieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B844E28BF5E4700F1B344 /* TextfieldView.swift */; };
+		129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845028BF6C7800F1B344 /* ServersViewModel.swift */; };
+		129B845328BFB7AC00F1B344 /* AddServerAccessChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */; };
+		129B845528BFEC8600F1B344 /* TopServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845428BFEC8600F1B344 /* TopServerView.swift */; };
+		129B845928BFED9700F1B344 /* TellaButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845828BFED9700F1B344 /* TellaButtonView.swift */; };
 		12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A1488E27209F2800A1ADDC /* ViewExtension.swift */; };
 		12A148922720A32000A1ADDC /* LockPinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148912720A32000A1ADDC /* LockPinData.swift */; };
 		12A148942720A89E00A1ADDC /* BottomLockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148932720A89E00A1ADDC /* BottomLockView.swift */; };
@@ -162,8 +195,12 @@
 		12A697B32840C50400BE5E9C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A697B52840C50400BE5E9C /* Localizable.strings */; };
 		12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5A3428576E9C00134A9B /* ArrayExtension.swift */; };
 		12AB30D3272C36500020FFBF /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB30D2272C36500020FFBF /* HomeData.swift */; };
+		12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADF98A28BD130C00FA96EB /* ServersListView.swift */; };
+		12ADF98D28BD16A400FA96EB /* SettingsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADF98C28BD16A400FA96EB /* SettingsCardView.swift */; };
 		12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */; };
 		12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1D278CD4900007C781 /* IntExtension.swift */; };
+		12B3AD8A28C0DD0200AC9AF9 /* ServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B3AD8928C0DD0200AC9AF9 /* ServerLoginView.swift */; };
+		12B3AD8C28C1090700AC9AF9 /* SuccessLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B3AD8B28C1090700AC9AF9 /* SuccessLoginView.swift */; };
 		12B5257B2848FC2800B3D1C0 /* LockTimeoutOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */; };
 		12B5257E2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257D2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift */; };
 		12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */; };
@@ -172,22 +209,30 @@
 		12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */; };
 		12BAFA7728B3B8D300930451 /* UIImageOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BAFA7628B3B8D300930451 /* UIImageOrientation.swift */; };
 		12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C2BDE72847676100488060 /* LockTimeoutView.swift */; };
+		12CCDC5428D8E05300C3BE4E /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CCDC5328D8E05300C3BE4E /* Server.swift */; };
 		12D37A942721752B00E43BDB /* TellaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A932721752B00E43BDB /* TellaApp.swift */; };
 		12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A952721A49D00E43BDB /* NavigationContainerView.swift */; };
 		12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */; };
+		12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7D11B28E3581E008121C8 /* URLRequest.swift */; };
+		12D7D11F28E36123008121C8 /* APIRequestServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7D11E28E36123008121C8 /* APIRequestServer.swift */; };
 		12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */; };
 		12E0882427AD31F600CEB198 /* LocalizableAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0882327AD31F500CEB198 /* LocalizableAudio.swift */; };
+		12E333C328D0A8D300E1DDB7 /* CryptoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B823EF262775D80008E04B /* CryptoManager.swift */; };
 		12E6772F27A9719F00DC1E1C /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E6772E27A9719F00DC1E1C /* UIImageExtension.swift */; };
 		12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */; };
 		12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9DD9827DF65E70002FD00 /* MoveFilesView.swift */; };
 		12E9DD9B27DF7DA50002FD00 /* CreateNewFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9DD9A27DF7DA50002FD00 /* CreateNewFolderView.swift */; };
+		12EC94CF28AA566C0070E72B /* GeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EC94CE28AA566C0070E72B /* GeneralView.swift */; };
+		12EC94D128ABB6FA0070E72B /* SecuritySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EC94D028ABB6FA0070E72B /* SecuritySettingsView.swift */; };
+		12EC94D828ABCCED0070E72B /* SettingsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EC94D728ABCCED0070E72B /* SettingsItemView.swift */; };
 		12F5D28D27A326EB00BF3309 /* AboutAndHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */; };
 		12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC0CE2799FF230068EC2B /* ImportProgress.swift */; };
 		12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */; };
+		12FFEFA528BE96E00081DDB2 /* AddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */; };
 		1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerView.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
-		896A69AE4EE3738FC80097F4 /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0FADD614621998E34738DDA /* libPods-Tella.a */; };
-		C9B13BC456A14143520ACF7D /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7BED502E3A2E8DEAFF55F31 /* libPods-TellaTests.a */; };
+		379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */; };
+		89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */; };
 		CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02ED7E24E42B3900014176 /* UserDefaultsProperty.swift */; };
 		D50727BF2625561400BBC370 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50727BE2625561400BBC370 /* KeychainManager.swift */; };
 		D50727C42625567900BBC370 /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50727C32625567900BBC370 /* KeychainTests.swift */; };
@@ -209,7 +254,6 @@
 		D57F5EAD26156C5200C1DA47 /* MockCryptoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57F5EAC26156C5200C1DA47 /* MockCryptoManager.swift */; };
 		D59E9EB0260C5A51006D9F8E /* VaultManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59E9EAF260C5A51006D9F8E /* VaultManagerTests.swift */; };
 		D5B823EB262774E00008E04B /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D5696C262747E100C45416 /* MainView.swift */; };
-		D5B823F0262775D80008E04B /* CryptoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B823EF262775D80008E04B /* CryptoManager.swift */; };
 		D5DA7F982646220100B00FDA /* FileGroupButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DA7F972646220100B00FDA /* FileGroupButtonView.swift */; };
 		D5DA7F9B2648D05400B00FDA /* FileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DA7F9A2648D05400B00FDA /* FileListView.swift */; };
 		D5DAFDCF265384C4002F3942 /* MainAppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DAFDCD265384C4002F3942 /* MainAppModel.swift */; };
@@ -221,7 +265,6 @@
 		F66E65B323E32080000F93E5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F66E65B223E32080000F93E5 /* Assets.xcassets */; };
 		F66E65B923E32080000F93E5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F66E65B723E32080000F93E5 /* LaunchScreen.storyboard */; };
 		F66E65CF23E32080000F93E5 /* TellaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65CE23E32080000F93E5 /* TellaUITests.swift */; };
-		FFCE58FBB913313F7E36F009 /* libPods-Tella-TellaUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2938945BECA9C7B363FB0E4D /* libPods-Tella-TellaUITests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -273,7 +316,7 @@
 		0D4D7511266316DC00D7A635 /* SettingsSecurity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSecurity.swift; sourceTree = "<group>"; };
 		0D4D7513266316E500D7A635 /* SettingsAboutHelp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAboutHelp.swift; sourceTree = "<group>"; };
 		0D4D7515266466C500D7A635 /* SettingsDocumentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDocumentation.swift; sourceTree = "<group>"; };
-		0D4D7517266470A700D7A635 /* SettingsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViews.swift; sourceTree = "<group>"; };
+		0D4D7517266470A700D7A635 /* SettingToggleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingToggleItem.swift; sourceTree = "<group>"; };
 		0DA213C62680286F00526995 /* FileListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListItem.swift; sourceTree = "<group>"; };
 		0DA213C82680288B00526995 /* FileActionMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileActionMenu.swift; sourceTree = "<group>"; };
 		0DA213CA268028A200526995 /* FileSortOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSortOptions.swift; sourceTree = "<group>"; };
@@ -304,15 +347,42 @@
 		0ECC781A267A542300A2ACF2 /* Pages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pages.swift; sourceTree = "<group>"; };
 		0ECC781C267AADA500A2ACF2 /* PageViewCellNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewCellNotification.swift; sourceTree = "<group>"; };
 		0F3DC3E42523951C0024B4A0 /* BundleInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleInfo.swift; sourceTree = "<group>"; };
+		120451F928C7525200D572A7 /* EditSettingsServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSettingsServerView.swift; sourceTree = "<group>"; };
+		120451FB28C795DC00D572A7 /* EditServerDisplayItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditServerDisplayItemView.swift; sourceTree = "<group>"; };
+		120451FD28C7AB8100D572A7 /* AdvancedSettingsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsViews.swift; sourceTree = "<group>"; };
+		120451FF28C7AC2800D572A7 /* ServerActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerActionType.swift; sourceTree = "<group>"; };
 		1204F64227D928C8006E40EE /* FileTypeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTypeExtension.swift; sourceTree = "<group>"; };
+		1206CD4428F59DD100B38539 /* TellaError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaError.swift; sourceTree = "<group>"; };
 		1209FD2A27AD851E00D8C17E /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
 		1209FD2D27AD89C800D8C17E /* AudioPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerViewModel.swift; sourceTree = "<group>"; };
 		1209FD2F27AD8AC400D8C17E /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
 		1209FD3127ADBDDE00D8C17E /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
+		1216123B28DE13AC00E6D7B6 /* DatabaseUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUtilities.swift; sourceTree = "<group>"; };
+		1216123D28DE142D00E6D7B6 /* JoinItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinItem.swift; sourceTree = "<group>"; };
+		1216123F28DE144200E6D7B6 /* JoinCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinCondition.swift; sourceTree = "<group>"; };
+		1217FCA028F9946A00DD2D70 /* CircularActivityIndicatory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularActivityIndicatory.swift; sourceTree = "<group>"; };
+		1217FCA228F99A7D00DD2D70 /* CircularLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularLoader.swift; sourceTree = "<group>"; };
+		1218E86228E47B9B00FE2E68 /* Request+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Request+Combine.swift"; sourceTree = "<group>"; };
+		1218E86428E48AEC00FE2E68 /* LoginResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResult.swift; sourceTree = "<group>"; };
+		1221CB6E28DB1B1B0042F15F /* SqliteError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqliteError.swift; sourceTree = "<group>"; };
+		1221CB7028DB1B5A0042F15F /* KeyValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValue.swift; sourceTree = "<group>"; };
+		12227E4468563A646AC52A27 /* Pods-Tella-TellaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		1224DAE927197577001C0ED0 /* ConfirmLockPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmLockPasswordView.swift; sourceTree = "<group>"; };
 		1224DAEB271975D2001C0ED0 /* PasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordView.swift; sourceTree = "<group>"; };
 		1224DAEF2719C71B001C0ED0 /* LockPasswordData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPasswordData.swift; sourceTree = "<group>"; };
+		122C54BB28C614C2003B2DBC /* TellaButtonStyleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaButtonStyleProtocol.swift; sourceTree = "<group>"; };
+		122C54BD28C6351E003B2DBC /* AdvancedServerSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedServerSettingsView.swift; sourceTree = "<group>"; };
+		122C54BF28C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessAdvancedSettingsView.swift; sourceTree = "<group>"; };
 		1230BE4627CD6D440055F854 /* AudioAuthorizationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAuthorizationStatus.swift; sourceTree = "<group>"; };
+		1233007728E30C7900B8F7BA /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
+		1233007928E3115500B8F7BA /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		1233007B28E3184500B8F7BA /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
+		1233007D28E3184D00B8F7BA /* Value.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Value.swift; sourceTree = "<group>"; };
+		12351C1928D2209400F3CB7C /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
+		12351C1B28D220BA00F3CB7C /* TellaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaData.swift; sourceTree = "<group>"; };
+		12351C1D28D267EF00F3CB7C /* DatabaseConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseConstants.swift; sourceTree = "<group>"; };
+		1236EE7F28E1B40200973EEA /* DataBaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBaseHelper.swift; sourceTree = "<group>"; };
+		1236EE8128E1E1D700973EEA /* DatabaseExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseExtension.swift; sourceTree = "<group>"; };
 		1237A71B278F5B2E00D7BC0F /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		1237A71D278F5F8B00D7BC0F /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
 		123CE54E272028D1005BF386 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
@@ -329,6 +399,7 @@
 		125A0AEA2726CBD900F6E77F /* UnlockPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockPasswordView.swift; sourceTree = "<group>"; };
 		125A0AEC2726CBF000F6E77F /* UnlockPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockPinView.swift; sourceTree = "<group>"; };
 		125A0AEE2726F0A000F6E77F /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
+		125A9DFF28CE52C700C0C3C8 /* TellaDataBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaDataBase.swift; sourceTree = "<group>"; };
 		125D231B271F119D00250FBB /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRegularExpressionExtension.swift; sourceTree = "<group>"; };
 		125D2320271F823100250FBB /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
@@ -394,13 +465,20 @@
 		128D6E1D2804DA2A0082AB18 /* ListActionSheetItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListActionSheetItem.swift; sourceTree = "<group>"; };
 		128EDB91280980DB00747B98 /* SequenceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceExtension.swift; sourceTree = "<group>"; };
 		128EDB932809897C00747B98 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		128F97962799983800E63DA5 /* CircularActivityIndicatory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularActivityIndicatory.swift; sourceTree = "<group>"; };
 		128FD0B327F774FB00B24915 /* RecentFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentFile.swift; sourceTree = "<group>"; };
 		1290743A274CEB9B00F38A81 /* FileGridItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGridItem.swift; sourceTree = "<group>"; };
+		1291A83128BE0086001A6055 /* SettingsAddServerCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAddServerCardView.swift; sourceTree = "<group>"; };
+		1291A83328BE0D51001A6055 /* SettingsServerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsServerItemView.swift; sourceTree = "<group>"; };
+		1291A83528BE3947001A6055 /* SettingsLinkItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLinkItemView.swift; sourceTree = "<group>"; };
 		1291F4F127B52BF9006A34D3 /* QueuePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueuePlayer.swift; sourceTree = "<group>"; };
 		1291F4F527B54300006A34D3 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		129533C127399A1B0053FA4B /* PhotoVideoPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoVideoPickerView.swift; sourceTree = "<group>"; };
 		129533C32739D5BC0053FA4B /* TextFieldBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldBottomSheetView.swift; sourceTree = "<group>"; };
+		129B844E28BF5E4700F1B344 /* TextfieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldView.swift; sourceTree = "<group>"; };
+		129B845028BF6C7800F1B344 /* ServersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersViewModel.swift; sourceTree = "<group>"; };
+		129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerAccessChoiceView.swift; sourceTree = "<group>"; };
+		129B845428BFEC8600F1B344 /* TopServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopServerView.swift; sourceTree = "<group>"; };
+		129B845828BFED9700F1B344 /* TellaButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaButtonView.swift; sourceTree = "<group>"; };
 		12A1488E27209F2800A1ADDC /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		12A148912720A32000A1ADDC /* LockPinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPinData.swift; sourceTree = "<group>"; };
 		12A148932720A89E00A1ADDC /* BottomLockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLockView.swift; sourceTree = "<group>"; };
@@ -413,8 +491,12 @@
 		12A697B72840C54200BE5E9C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12AA5A3428576E9C00134A9B /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		12AB30D2272C36500020FFBF /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
+		12ADF98A28BD130C00FA96EB /* ServersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersListView.swift; sourceTree = "<group>"; };
+		12ADF98C28BD16A400FA96EB /* SettingsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCardView.swift; sourceTree = "<group>"; };
 		12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtension.swift; sourceTree = "<group>"; };
 		12AE8D1D278CD4900007C781 /* IntExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtension.swift; sourceTree = "<group>"; };
+		12B3AD8928C0DD0200AC9AF9 /* ServerLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerLoginView.swift; sourceTree = "<group>"; };
+		12B3AD8B28C1090700AC9AF9 /* SuccessLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessLoginView.swift; sourceTree = "<group>"; };
 		12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutOption.swift; sourceTree = "<group>"; };
 		12B5257D2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutOptionsStatus.swift; sourceTree = "<group>"; };
 		12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAndHelpItem.swift; sourceTree = "<group>"; };
@@ -423,30 +505,37 @@
 		12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreFileActionButton.swift; sourceTree = "<group>"; };
 		12BAFA7628B3B8D300930451 /* UIImageOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageOrientation.swift; sourceTree = "<group>"; };
 		12C2BDE72847676100488060 /* LockTimeoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutView.swift; sourceTree = "<group>"; };
+		12CCDC5328D8E05300C3BE4E /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		12D37A932721752B00E43BDB /* TellaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaApp.swift; sourceTree = "<group>"; };
 		12D37A952721A49D00E43BDB /* NavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContainerView.swift; sourceTree = "<group>"; };
 		12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinKeyboardModel.swift; sourceTree = "<group>"; };
+		12D7D11B28E3581E008121C8 /* URLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequest.swift; sourceTree = "<group>"; };
+		12D7D11E28E36123008121C8 /* APIRequestServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequestServer.swift; sourceTree = "<group>"; };
 		12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveAudioConfirmationView.swift; sourceTree = "<group>"; };
 		12E0882327AD31F500CEB198 /* LocalizableAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableAudio.swift; sourceTree = "<group>"; };
 		12E6772E27A9719F00DC1E1C /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableSettings.swift; sourceTree = "<group>"; };
 		12E9DD9827DF65E70002FD00 /* MoveFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveFilesView.swift; sourceTree = "<group>"; };
 		12E9DD9A27DF7DA50002FD00 /* CreateNewFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewFolderView.swift; sourceTree = "<group>"; };
+		12EC94CE28AA566C0070E72B /* GeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralView.swift; sourceTree = "<group>"; };
+		12EC94D028ABB6FA0070E72B /* SecuritySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsView.swift; sourceTree = "<group>"; };
+		12EC94D728ABCCED0070E72B /* SettingsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItemView.swift; sourceTree = "<group>"; };
 		12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAndHelpView.swift; sourceTree = "<group>"; };
 		12FAC0CE2799FF230068EC2B /* ImportProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportProgress.swift; sourceTree = "<group>"; };
 		12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableHome.swift; sourceTree = "<group>"; };
+		12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerURLView.swift; sourceTree = "<group>"; };
 		1E67B39123FC9067001F3D64 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		1EAE6BF424146C2100114244 /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
-		2377F430E2D84ACF7E66B891 /* Pods-TellaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.release.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.release.xcconfig"; sourceTree = "<group>"; };
-		2938945BECA9C7B363FB0E4D /* libPods-Tella-TellaUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella-TellaUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		303DB33176195A2170CDEC64 /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
-		64B63145C113BF91C06D0583 /* Pods-Tella-TellaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		21FEB79B83E10A1CBE4AA323 /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		41C55359B3FCA6834440D9D8 /* Pods-Tella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.debug.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.debug.xcconfig"; sourceTree = "<group>"; };
 		6DD4C039240F547300491438 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		71F4A03C1E75DFA648FCCB4A /* Pods-Tella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.release.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.release.xcconfig"; sourceTree = "<group>"; };
-		8D569591EFFEBA5AC67EF44D /* Pods-Tella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.debug.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.debug.xcconfig"; sourceTree = "<group>"; };
-		A7BED502E3A2E8DEAFF55F31 /* libPods-TellaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TellaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F1D442E7CD2D7E314C88BA2 /* Pods-Tella-TellaUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.release.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.release.xcconfig"; sourceTree = "<group>"; };
+		83BA47B1A745C8D086B482FE /* libPods-Tella-TellaUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella-TellaUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TellaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE02ED7E24E42B3900014176 /* UserDefaultsProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsProperty.swift; sourceTree = "<group>"; };
 		CE64FA282505542E00B03CEC /* AppViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewState.swift; sourceTree = "<group>"; };
+		D47E68E3B1AECB3684E49829 /* Pods-Tella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.release.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.release.xcconfig"; sourceTree = "<group>"; };
 		D50727BE2625561400BBC370 /* KeychainManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		D50727C32625567900BBC370 /* KeychainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
 		D50727CB2625573200BBC370 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -478,8 +567,7 @@
 		D7F55FC725348FA50028739E /* RecordState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordState.swift; sourceTree = "<group>"; };
 		D7F55FCC25348FB80028739E /* AudioRecorderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorderManager.swift; sourceTree = "<group>"; };
 		D7F55FD9253490BE0028739E /* RecordingAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingAudioManager.swift; sourceTree = "<group>"; };
-		DC542768D626D09876372818 /* Pods-Tella-TellaUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.release.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.release.xcconfig"; sourceTree = "<group>"; };
-		E0FADD614621998E34738DDA /* libPods-Tella.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F16689EAD5E834B9D4331109 /* Pods-TellaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.release.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.release.xcconfig"; sourceTree = "<group>"; };
 		F66E65A923E3207D000F93E5 /* Tella.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tella.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65B023E3207D000F93E5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F66E65B223E32080000F93E5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -504,8 +592,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				896A69AE4EE3738FC80097F4 /* libPods-Tella.a in Frameworks */,
 				D50FA6872613ABCA00D6D63B /* VaultManager.framework in Frameworks */,
+				89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,7 +601,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9B13BC456A14143520ACF7D /* libPods-TellaTests.a in Frameworks */,
+				379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,7 +609,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FFCE58FBB913313F7E36F009 /* libPods-Tella-TellaUITests.a in Frameworks */,
+				0807BE8AD7991EBCC67BBF58 /* libPods-Tella-TellaUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -654,6 +742,14 @@
 			path = AudioPlayer;
 			sourceTree = "<group>";
 		};
+		1217FCA428F9B19C00DD2D70 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1218E86428E48AEC00FE2E68 /* LoginResult.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		1224DAED2719B09F001C0ED0 /* Pin */ = {
 			isa = PBXGroup;
 			children = (
@@ -675,6 +771,32 @@
 				1224DAEF2719C71B001C0ED0 /* LockPasswordData.swift */,
 			);
 			path = Password;
+			sourceTree = "<group>";
+		};
+		12351C1828D2207600F3CB7C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				12351C1928D2209400F3CB7C /* Report.swift */,
+				12CCDC5328D8E05300C3BE4E /* Server.swift */,
+				1216123D28DE142D00E6D7B6 /* JoinItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		1236EE8328E2226F00973EEA /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				1233007728E30C7900B8F7BA /* APIRequest.swift */,
+				12D7D11B28E3581E008121C8 /* URLRequest.swift */,
+				1233007928E3115500B8F7BA /* Request.swift */,
+				1218E86228E47B9B00FE2E68 /* Request+Combine.swift */,
+				1233007B28E3184500B8F7BA /* Key.swift */,
+				1233007D28E3184D00B8F7BA /* Value.swift */,
+				1206CD4428F59DD100B38539 /* TellaError.swift */,
+				12D7D11D28E35FCE008121C8 /* APIRequests */,
+				1217FCA428F9B19C00DD2D70 /* Models */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		12567FED2716B24700A2D356 /* Authentication */ = {
@@ -765,7 +887,7 @@
 			children = (
 				125DD9C82796CB090053619D /* ImportFilesProgressView.swift */,
 				127B56D4279AC28200F902C9 /* CancelImportView.swift */,
-				128F97962799983800E63DA5 /* CircularActivityIndicatory.swift */,
+				1217FCA228F99A7D00DD2D70 /* CircularLoader.swift */,
 				1272F26027C91CD90054F2E2 /* ImportFilesProgressModels.swift */,
 			);
 			path = ImportFilesProgressView;
@@ -846,6 +968,23 @@
 				0D4BC3CD267668D600DCDC30 /* AddFileYellowButton.swift */,
 			);
 			path = "Add files";
+			sourceTree = "<group>";
+		};
+		127B053F289C0A58008C047D /* Servers */ = {
+			isa = PBXGroup;
+			children = (
+				12ADF98A28BD130C00FA96EB /* ServersListView.swift */,
+				120451F928C7525200D572A7 /* EditSettingsServerView.swift */,
+				1291A83128BE0086001A6055 /* SettingsAddServerCardView.swift */,
+				12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */,
+				129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */,
+				12B3AD8928C0DD0200AC9AF9 /* ServerLoginView.swift */,
+				12B3AD8B28C1090700AC9AF9 /* SuccessLoginView.swift */,
+				122C54BD28C6351E003B2DBC /* AdvancedServerSettingsView.swift */,
+				122C54BF28C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift */,
+				120451FD28C7AB8100D572A7 /* AdvancedSettingsViews.swift */,
+			);
+			path = Servers;
 			sourceTree = "<group>";
 		};
 		127C155927DA69A8009EC15B /* TransitionViews */ = {
@@ -1071,6 +1210,7 @@
 				12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */,
 				12B5257D2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift */,
 				12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */,
+				120451FF28C7AC2800D572A7 /* ServerActionType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1097,6 +1237,14 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
+		12D7D11D28E35FCE008121C8 /* APIRequests */ = {
+			isa = PBXGroup;
+			children = (
+				12D7D11E28E36123008121C8 /* APIRequestServer.swift */,
+			);
+			path = APIRequests;
+			sourceTree = "<group>";
+		};
 		12D7F5F52743F28700EBA3A2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -1115,6 +1263,7 @@
 				129533C32739D5BC0053FA4B /* TextFieldBottomSheetView.swift */,
 				1EAE6BF424146C2100114244 /* QuickLook.swift */,
 				1244141827E35D120037D469 /* VaultFileImages.swift */,
+				1217FCA028F9946A00DD2D70 /* CircularActivityIndicatory.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1123,10 +1272,11 @@
 			isa = PBXGroup;
 			children = (
 				12730E64279EAB9200DC0135 /* SettingsMainView.swift */,
-				12730E66279F11C200DC0135 /* LanguageListView.swift */,
-				12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */,
-				0D4D7517266470A700D7A635 /* SettingsViews.swift */,
-				12C2BDE72847676100488060 /* LockTimeoutView.swift */,
+				12EC94CB28AA559F0070E72B /* General */,
+				12EC94CD28AA55BF0070E72B /* Security */,
+				127B053F289C0A58008C047D /* Servers */,
+				12EC94CC28AA55AE0070E72B /* About&Help */,
+				12EC94D428ABCA5B0070E72B /* Common */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1134,6 +1284,7 @@
 		12E8129F27A19E67007DDDC0 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				129B845028BF6C7800F1B344 /* ServersViewModel.swift */,
 				12730E68279F420400DC0135 /* SettingsViewModel.swift */,
 			);
 			path = ViewModel;
@@ -1151,14 +1302,47 @@
 			path = SettingsV1;
 			sourceTree = "<group>";
 		};
-		2C7360AA2DCEECE0D3586354 /* Frameworks */ = {
+		12EC94CB28AA559F0070E72B /* General */ = {
 			isa = PBXGroup;
 			children = (
-				E0FADD614621998E34738DDA /* libPods-Tella.a */,
-				2938945BECA9C7B363FB0E4D /* libPods-Tella-TellaUITests.a */,
-				A7BED502E3A2E8DEAFF55F31 /* libPods-TellaTests.a */,
+				12EC94CE28AA566C0070E72B /* GeneralView.swift */,
+				12730E66279F11C200DC0135 /* LanguageListView.swift */,
 			);
-			name = Frameworks;
+			path = General;
+			sourceTree = "<group>";
+		};
+		12EC94CC28AA55AE0070E72B /* About&Help */ = {
+			isa = PBXGroup;
+			children = (
+				12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */,
+			);
+			path = "About&Help";
+			sourceTree = "<group>";
+		};
+		12EC94CD28AA55BF0070E72B /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				12EC94D028ABB6FA0070E72B /* SecuritySettingsView.swift */,
+				12C2BDE72847676100488060 /* LockTimeoutView.swift */,
+			);
+			path = Security;
+			sourceTree = "<group>";
+		};
+		12EC94D428ABCA5B0070E72B /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				129B845828BFED9700F1B344 /* TellaButtonView.swift */,
+				122C54BB28C614C2003B2DBC /* TellaButtonStyleProtocol.swift */,
+				129B844E28BF5E4700F1B344 /* TextfieldView.swift */,
+				12ADF98C28BD16A400FA96EB /* SettingsCardView.swift */,
+				12EC94D728ABCCED0070E72B /* SettingsItemView.swift */,
+				0D4D7517266470A700D7A635 /* SettingToggleItem.swift */,
+				1291A83528BE3947001A6055 /* SettingsLinkItemView.swift */,
+				1291A83328BE0D51001A6055 /* SettingsServerItemView.swift */,
+				120451FB28C795DC00D572A7 /* EditServerDisplayItemView.swift */,
+				129B845428BFEC8600F1B344 /* TopServerView.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		4CE85B832408B1AF00CF24AF /* Resources */ = {
@@ -1172,15 +1356,25 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		64C49D17FF3E3ECD4A8833AE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */,
+				83BA47B1A745C8D086B482FE /* libPods-Tella-TellaUITests.a */,
+				C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		957DBB46FF2BBCC04C44542A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				8D569591EFFEBA5AC67EF44D /* Pods-Tella.debug.xcconfig */,
-				71F4A03C1E75DFA648FCCB4A /* Pods-Tella.release.xcconfig */,
-				64B63145C113BF91C06D0583 /* Pods-Tella-TellaUITests.debug.xcconfig */,
-				DC542768D626D09876372818 /* Pods-Tella-TellaUITests.release.xcconfig */,
-				303DB33176195A2170CDEC64 /* Pods-TellaTests.debug.xcconfig */,
-				2377F430E2D84ACF7E66B891 /* Pods-TellaTests.release.xcconfig */,
+				41C55359B3FCA6834440D9D8 /* Pods-Tella.debug.xcconfig */,
+				D47E68E3B1AECB3684E49829 /* Pods-Tella.release.xcconfig */,
+				12227E4468563A646AC52A27 /* Pods-Tella-TellaUITests.debug.xcconfig */,
+				6F1D442E7CD2D7E314C88BA2 /* Pods-Tella-TellaUITests.release.xcconfig */,
+				21FEB79B83E10A1CBE4AA323 /* Pods-TellaTests.debug.xcconfig */,
+				F16689EAD5E834B9D4331109 /* Pods-TellaTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1223,6 +1417,16 @@
 				12781F4327E9FCE200FE9609 /* PasswordTypeEnum.swift */,
 				D57F5E8F26152A4800C1DA47 /* Datable.swift */,
 				128FD0B327F774FB00B24915 /* RecentFile.swift */,
+				12351C1B28D220BA00F3CB7C /* TellaData.swift */,
+				125A9DFF28CE52C700C0C3C8 /* TellaDataBase.swift */,
+				1236EE7F28E1B40200973EEA /* DataBaseHelper.swift */,
+				1236EE8128E1E1D700973EEA /* DatabaseExtension.swift */,
+				1216123B28DE13AC00E6D7B6 /* DatabaseUtilities.swift */,
+				12351C1D28D267EF00F3CB7C /* DatabaseConstants.swift */,
+				1221CB6E28DB1B1B0042F15F /* SqliteError.swift */,
+				1221CB7028DB1B5A0042F15F /* KeyValue.swift */,
+				1216123F28DE144200E6D7B6 /* JoinCondition.swift */,
+				12351C1828D2207600F3CB7C /* Models */,
 			);
 			path = VaultManager;
 			sourceTree = "<group>";
@@ -1273,8 +1477,8 @@
 				D50FA6812613ABC900D6D63B /* VaultManager */,
 				F66E65AA23E3207D000F93E5 /* Products */,
 				957DBB46FF2BBCC04C44542A /* Pods */,
-				2C7360AA2DCEECE0D3586354 /* Frameworks */,
 				1291F4F427B541DD006A34D3 /* Recovered References */,
+				64C49D17FF3E3ECD4A8833AE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1297,6 +1501,7 @@
 				12D7F5F52743F28700EBA3A2 /* Components */,
 				1278B66327EB98F100C9AC4D /* Services Managers */,
 				D53B76DB2601C9EC0001CD34 /* VaultManager */,
+				1236EE8328E2226F00973EEA /* Networking */,
 				12781F4A27EA2C9800FE9609 /* Utils */,
 				12781F4927EA2A8200FE9609 /* Supporting Files */,
 				4CE85B832408B1AF00CF24AF /* Resources */,
@@ -1363,7 +1568,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F66E65D323E32080000F93E5 /* Build configuration list for PBXNativeTarget "Tella" */;
 			buildPhases = (
-				D978AA975BF0CEFA7A15EC46 /* [CP] Check Pods Manifest.lock */,
+				36C5FA1BF18AC473E32B7C1A /* [CP] Check Pods Manifest.lock */,
 				F66E65A523E3207D000F93E5 /* Sources */,
 				F66E65A623E3207D000F93E5 /* Frameworks */,
 				F66E65A723E3207D000F93E5 /* Resources */,
@@ -1383,7 +1588,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F66E65D623E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaTests" */;
 			buildPhases = (
-				A2FCC4A49B4A3809DBE2D18D /* [CP] Check Pods Manifest.lock */,
+				77D93700BCAA439EA3118052 /* [CP] Check Pods Manifest.lock */,
 				F66E65BB23E32080000F93E5 /* Sources */,
 				F66E65BC23E32080000F93E5 /* Frameworks */,
 				F66E65BD23E32080000F93E5 /* Resources */,
@@ -1402,7 +1607,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F66E65D923E32080000F93E5 /* Build configuration list for PBXNativeTarget "TellaUITests" */;
 			buildPhases = (
-				ED6FF9D4F55738E8FC8C25DF /* [CP] Check Pods Manifest.lock */,
+				E862C66ACF881D11B7202E0F /* [CP] Check Pods Manifest.lock */,
 				F66E65C623E32080000F93E5 /* Sources */,
 				F66E65C723E32080000F93E5 /* Frameworks */,
 				F66E65C823E32080000F93E5 /* Resources */,
@@ -1510,29 +1715,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		A2FCC4A49B4A3809DBE2D18D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TellaTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D978AA975BF0CEFA7A15EC46 /* [CP] Check Pods Manifest.lock */ = {
+		36C5FA1BF18AC473E32B7C1A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1554,7 +1737,29 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		ED6FF9D4F55738E8FC8C25DF /* [CP] Check Pods Manifest.lock */ = {
+		77D93700BCAA439EA3118052 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TellaTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E862C66ACF881D11B7202E0F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1591,7 +1796,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */,
-				128F979A2799AF0100E63DA5 /* CircularActivityIndicatory.swift in Sources */,
 				0ECC7814267A328900A2ACF2 /* FormsModel.swift in Sources */,
 				128B15CB27DA30C800E1C1E0 /* OnboardingEndView.swift in Sources */,
 				125D2328271F8B6600250FBB /* LockConfirmPinView.swift in Sources */,
@@ -1602,7 +1806,11 @@
 				D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */,
 				0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */,
 				12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */,
+				12E333C328D0A8D300E1DDB7 /* CryptoManager.swift in Sources */,
+				120451FA28C7525200D572A7 /* EditSettingsServerView.swift in Sources */,
 				12781F4727EA247500FE9609 /* DocumentPickerView.swift in Sources */,
+				12B3AD8C28C1090700AC9AF9 /* SuccessLoginView.swift in Sources */,
+				129B845528BFEC8600F1B344 /* TopServerView.swift in Sources */,
 				1209FD2B27AD851E00D8C17E /* AudioPlayerView.swift in Sources */,
 				128D6E182804531B0082AB18 /* AddPhotoVideoItems.swift in Sources */,
 				12730E65279EAB9200DC0135 /* SettingsMainView.swift in Sources */,
@@ -1622,19 +1830,26 @@
 				125680002717907900A2D356 /* LockPasswordView.swift in Sources */,
 				1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */,
 				D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */,
+				1217FCA128F9946A00DD2D70 /* CircularActivityIndicatory.swift in Sources */,
 				12B6481D28367C1D00CBE541 /* SheetManager.swift in Sources */,
 				D5DA7F982646220100B00FDA /* FileGroupButtonView.swift in Sources */,
+				12351C1C28D220BA00F3CB7C /* TellaData.swift in Sources */,
 				1272F25F27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift in Sources */,
 				12D37A942721752B00E43BDB /* TellaApp.swift in Sources */,
 				125A0AEF2726F0A000F6E77F /* ContainerView.swift in Sources */,
 				12E9DD9B27DF7DA50002FD00 /* CreateNewFolderView.swift in Sources */,
+				12ADF98D28BD16A400FA96EB /* SettingsCardView.swift in Sources */,
 				125D231C271F119D00250FBB /* Validator.swift in Sources */,
 				0D4D7510266316D200D7A635 /* SettingsGeneral.swift in Sources */,
 				D51639802631130E003A11B5 /* HomeView.swift in Sources */,
 				0E8CEA19266FFE0600926799 /* SentFormsView.swift in Sources */,
 				0E27899D266F76D500B130C4 /* FormsView.swift in Sources */,
+				129B845928BFED9700F1B344 /* TellaButtonView.swift in Sources */,
 				1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */,
+				1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */,
 				125EFACE274A834300D93DF6 /* FileActionMenu.swift in Sources */,
+				1233007C28E3184500B8F7BA /* Key.swift in Sources */,
+				12351C1A28D2209400F3CB7C /* Report.swift in Sources */,
 				D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */,
 				1224DAEA27197578001C0ED0 /* ConfirmLockPasswordView.swift in Sources */,
 				0D4D7516266466C500D7A635 /* SettingsDocumentation.swift in Sources */,
@@ -1642,9 +1857,11 @@
 				1244141927E35D120037D469 /* VaultFileImages.swift in Sources */,
 				1289B98D27C53C8400315FCE /* ImageExtension.swift in Sources */,
 				D538C8AC264CE8D300D457B0 /* CryptoFileManager.swift in Sources */,
+				12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */,
 				12568002271790AF00A2D356 /* LockPinView.swift in Sources */,
 				1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */,
 				12A148942720A89E00A1ADDC /* BottomLockView.swift in Sources */,
+				1233007A28E3115500B8F7BA /* Request.swift in Sources */,
 				1291F4F627B54300006A34D3 /* AudioPlayer.swift in Sources */,
 				12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */,
 				128B929927D796E800E92ACF /* FolderListView.swift in Sources */,
@@ -1652,32 +1869,41 @@
 				0E64C6A6265E7625005A7934 /* ActionListBottomSheet.swift in Sources */,
 				D5077A40260D300600D72947 /* DebugLogging.swift in Sources */,
 				0ECC781D267AADA500A2ACF2 /* PageViewCellNotification.swift in Sources */,
+				1216124028DE144200E6D7B6 /* JoinCondition.swift in Sources */,
 				12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */,
 				12730E67279F11C300DC0135 /* LanguageListView.swift in Sources */,
 				0ECC7817267A533E00A2ACF2 /* PageViewCell.swift in Sources */,
 				128B929727D7920300E92ACF /* SelectingFilesHeaderView.swift in Sources */,
+				1236EE8028E1B40200973EEA /* DataBaseHelper.swift in Sources */,
 				1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */,
+				1233007E28E3184D00B8F7BA /* Value.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
 				127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */,
+				12EC94D128ABB6FA0070E72B /* SecuritySettingsView.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				0E170255267910CC0069072A /* OutBoxFormsView.swift in Sources */,
 				0E170259267913160069072A /* FormsCellView.swift in Sources */,
 				12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */,
 				12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */,
+				1291A83628BE3948001A6055 /* SettingsLinkItemView.swift in Sources */,
 				0ECC7819267A53A700A2ACF2 /* PageView.swift in Sources */,
+				12FFEFA528BE96E00081DDB2 /* AddServerURLView.swift in Sources */,
 				12B5257B2848FC2800B3D1C0 /* LockTimeoutOption.swift in Sources */,
 				127A5B2228538E0800FAAEB0 /* Language.swift in Sources */,
 				1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */,
 				1278B66127EB364500C9AC4D /* Utils.swift in Sources */,
 				125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */,
 				125D2324271F891500250FBB /* PinView.swift in Sources */,
+				129B844F28BF5E4700F1B344 /* TextfieldView.swift in Sources */,
 				125FA6D8278E2828004B9D06 /* DoubleExtension.swift in Sources */,
 				129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */,
 				1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
 				12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */,
+				1218E86328E47B9B00FE2E68 /* Request+Combine.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
+				1291A83228BE0086001A6055 /* SettingsAddServerCardView.swift in Sources */,
 				0E87C875268BDDFB00EB5E34 /* ImageViewer.swift in Sources */,
 				0D4BC3C6267577F900DCDC30 /* DocumentPicker.swift in Sources */,
 				0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */,
@@ -1696,36 +1922,46 @@
 				12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */,
 				128D6E1A28045C090082AB18 /* manageFilesItems.swift in Sources */,
 				12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */,
+				1216123E28DE142D00E6D7B6 /* JoinItem.swift in Sources */,
+				12EC94D828ABCCED0070E72B /* SettingsItemView.swift in Sources */,
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,
 				128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */,
 				1289B98727C5397200315FCE /* ScreenExtension.swift in Sources */,
 				0D4D7512266316DC00D7A635 /* SettingsSecurity.swift in Sources */,
-				0D4D7514266316E500D7A635 /* SettingsAboutHelp.swift in Sources */,
 				12730E69279F420400DC0135 /* SettingsViewModel.swift in Sources */,
 				12567FF9271742C500A2D356 /* Localizable.swift in Sources */,
+				1236EE8228E1E1D700973EEA /* DatabaseExtension.swift in Sources */,
 				0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */,
 				125A0AEB2726CBDA00F6E77F /* UnlockPasswordView.swift in Sources */,
+				1216123C28DE13AC00E6D7B6 /* DatabaseUtilities.swift in Sources */,
+				12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */,
 				128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */,
+				12CCDC5428D8E05300C3BE4E /* Server.swift in Sources */,
 				1290743B274CEB9B00F38A81 /* FileGridItem.swift in Sources */,
 				1289B45A28B64221005DA687 /* UIDeviceOrientationExtension.swift in Sources */,
+				125A9E0028CE52C700C0C3C8 /* TellaDataBase.swift in Sources */,
 				12A2DB03273576D50094B856 /* AddFileView.swift in Sources */,
 				128D6E1C280480500082AB18 /* FileActionItems.swift in Sources */,
 				D75F9E9C25342539006F6212 /* RecordViewModel.swift in Sources */,
 				12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */,
+				1291A83428BE0D51001A6055 /* SettingsServerItemView.swift in Sources */,
 				12607D5A2790457600E2B8CC /* VideoViewer.swift in Sources */,
 				125A0AED2726CBF000F6E77F /* UnlockPinView.swift in Sources */,
 				12B5257E2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift in Sources */,
 				12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */,
+				129B845328BFB7AC00F1B344 /* AddServerAccessChoiceView.swift in Sources */,
 				128B929D27D7A08700E92ACF /* FileItemsView.swift in Sources */,
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
 				1268554127D2ACB200385E18 /* RecentFilesListView.swift in Sources */,
 				127C155827DA486A009EC15B /* TransitionView.swift in Sources */,
+				1204520028C7AC2800D572A7 /* ServerActionType.swift in Sources */,
 				12776A9827BAC87A00CDC5DC /* CameraViewModel.swift in Sources */,
 				12781F4627EA10AA00FE9609 /* LoginManager.swift in Sources */,
 				1289B45628B62A99005DA687 /* DeviceOrientationHelper.swift in Sources */,
 				125DD9C92796CB090053619D /* ImportFilesProgressView.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */,
+				12B3AD8A28C0DD0200AC9AF9 /* ServerLoginView.swift in Sources */,
 				128FD0B427F774FB00B24915 /* RecentFile.swift in Sources */,
 				12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */,
 				12607D5327903E9E00E2B8CC /* CustomVideoControlsView.swift in Sources */,
@@ -1733,28 +1969,38 @@
 				1268553E27D2572100385E18 /* FileInfoView.swift in Sources */,
 				1289B45828B63187005DA687 /* RotationViewModifier.swift in Sources */,
 				125D2326271F896400250FBB /* CustomPinView.swift in Sources */,
+				129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */,
 				128D6E1E2804DA2A0082AB18 /* ListActionSheetItem.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */,
 				D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */,
 				127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */,
 				12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */,
 				0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */,
+				120451FC28C795DC00D572A7 /* EditServerDisplayItemView.swift in Sources */,
+				1217FCA328F99A7D00DD2D70 /* CircularLoader.swift in Sources */,
 				12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */,
+				122C54BE28C6351E003B2DBC /* AdvancedServerSettingsView.swift in Sources */,
+				122C54C028C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift in Sources */,
 				12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */,
 				1209FD2E27AD89C800D8C17E /* AudioPlayerViewModel.swift in Sources */,
+				1233007828E30C7900B8F7BA /* APIRequest.swift in Sources */,
 				12567FF72717426000A2D356 /* LocalizableLock.swift in Sources */,
 				1224DAEC271975D3001C0ED0 /* PasswordView.swift in Sources */,
 				0DEFD54F2689467A0014EADE /* ModelStubs.swift in Sources */,
 				125EDDAD271DBD5200E2789A /* ContentView.swift in Sources */,
+				12351C1E28D267EF00F3CB7C /* DatabaseConstants.swift in Sources */,
 				12A148962720B2B400A1ADDC /* PasswordTextFieldView.swift in Sources */,
 				D50727BF2625561400BBC370 /* KeychainManager.swift in Sources */,
+				12D7D11F28E36123008121C8 /* APIRequestServer.swift in Sources */,
 				D7CFC37F254260D300CCB352 /* RecordView.swift in Sources */,
-				0DC411E12668469C00BF0DE1 /* SettingsView.swift in Sources */,
 				D7F55FC825348FA50028739E /* RecordState.swift in Sources */,
 				12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */,
 				0ECC781B267A542300A2ACF2 /* Pages.swift in Sources */,
+				120451FE28C7AB8100D572A7 /* AdvancedSettingsViews.swift in Sources */,
 				0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */,
 				126FE4D727A427E200AE4188 /* Constants.swift in Sources */,
+				12EC94CF28AA566C0070E72B /* GeneralView.swift in Sources */,
+				1218E86528E48AEC00FE2E68 /* LoginResult.swift in Sources */,
 				1204F64327D928C9006E40EE /* FileTypeExtension.swift in Sources */,
 				0DA213C72680286F00526995 /* FileListItem.swift in Sources */,
 				CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */,
@@ -1766,6 +2012,7 @@
 				12781F4427E9FCE200FE9609 /* PasswordTypeEnum.swift in Sources */,
 				D5DA7F9B2648D05400B00FDA /* FileListView.swift in Sources */,
 				1237A71C278F5B2E00D7BC0F /* DateExtension.swift in Sources */,
+				1221CB6F28DB1B1B0042F15F /* SqliteError.swift in Sources */,
 				127C155C27DA69FF009EC15B /* TransitionViewData.swift in Sources */,
 				D516397C2631113B003A11B5 /* Styles.swift in Sources */,
 				12F5D28D27A326EB00BF3309 /* AboutAndHelpView.swift in Sources */,
@@ -1775,11 +2022,12 @@
 				12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */,
 				1272F25D27C91ACD0054F2E2 /* ImportFileProgress.swift in Sources */,
 				125EDDB1271E40CA00E2789A /* LockViewModel.swift in Sources */,
-				D5B823F0262775D80008E04B /* CryptoManager.swift in Sources */,
+				1206CD4528F59DD100B38539 /* TellaError.swift in Sources */,
 				128EDB942809897C00747B98 /* HomeViewModel.swift in Sources */,
 				0E170253267910B90069072A /* BlankFormsView.swift in Sources */,
+				122C54BC28C614C2003B2DBC /* TellaButtonStyleProtocol.swift in Sources */,
 				0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */,
-				0D4D7518266470A700D7A635 /* SettingsViews.swift in Sources */,
+				0D4D7518266470A700D7A635 /* SettingToggleItem.swift in Sources */,
 				128B15C927DA085A00E1C1E0 /* WelcomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2030,7 +2278,7 @@
 		};
 		F66E65D423E32080000F93E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8D569591EFFEBA5AC67EF44D /* Pods-Tella.debug.xcconfig */;
+			baseConfigurationReference = 41C55359B3FCA6834440D9D8 /* Pods-Tella.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
@@ -2057,7 +2305,7 @@
 		};
 		F66E65D523E32080000F93E5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 71F4A03C1E75DFA648FCCB4A /* Pods-Tella.release.xcconfig */;
+			baseConfigurationReference = D47E68E3B1AECB3684E49829 /* Pods-Tella.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
@@ -2084,7 +2332,7 @@
 		};
 		F66E65D723E32080000F93E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 303DB33176195A2170CDEC64 /* Pods-TellaTests.debug.xcconfig */;
+			baseConfigurationReference = 21FEB79B83E10A1CBE4AA323 /* Pods-TellaTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -2107,7 +2355,7 @@
 		};
 		F66E65D823E32080000F93E5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2377F430E2D84ACF7E66B891 /* Pods-TellaTests.release.xcconfig */;
+			baseConfigurationReference = F16689EAD5E834B9D4331109 /* Pods-TellaTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -2130,7 +2378,7 @@
 		};
 		F66E65DA23E32080000F93E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 64B63145C113BF91C06D0583 /* Pods-Tella-TellaUITests.debug.xcconfig */;
+			baseConfigurationReference = 12227E4468563A646AC52A27 /* Pods-Tella-TellaUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -2151,7 +2399,7 @@
 		};
 		F66E65DB23E32080000F93E5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DC542768D626D09876372818 /* Pods-Tella-TellaUITests.release.xcconfig */;
+			baseConfigurationReference = 6F1D442E7CD2D7E314C88BA2 /* Pods-Tella-TellaUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

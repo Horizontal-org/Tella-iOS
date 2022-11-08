@@ -48,7 +48,7 @@ class CryptoManager {
         return "\(Self.metaPrivateKeyTagPrefix).\(keyID)"
     }
     
-    private var metaPrivateKey: SecKey?
+     var metaPrivateKey: SecKey?
     
     @RawValueUserDefaultsProperty("PasswordType", defaultValue: PasswordTypeEnum.tellaPassword)
      var passwordType: PasswordTypeEnum
@@ -325,4 +325,16 @@ extension CryptoManager: CryptoManagerInterface {
         return decrypt(data, metaPrivateKey)
     }
     
+}
+
+
+extension SecKey {
+    func getString() -> String? {
+        var error:Unmanaged<CFError>?
+        if let cfdata = SecKeyCopyExternalRepresentation(self, &error) {
+            let data:Data = cfdata as Data
+            return data.base64EncodedString()
+        }
+        return nil
+    }
 }

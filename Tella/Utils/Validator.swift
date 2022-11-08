@@ -9,9 +9,12 @@
 import Foundation
 
 struct Regex {
-    static let passwordLength = "^.{6,}"
-    static let textLength = "^.{1,}"
-//  static let fileName = "^[a-zA-Z0-9_]*$"
+    static let passwordRegex = "^.{6,}"
+    static let textRegex = "^.{1,}"
+    static let usernameRegex = "^.{3,}"
+//    static let urlRegex = #"^(http|https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,3}|www\.[^\s]+\.[^\s]{2,3})$"#
+    static let urlRegex = "^.{1,}"
+
 }
 
 func validateRegex(value: String, pattern:String) -> Bool {
@@ -24,11 +27,12 @@ func validateRegex(value: String, pattern:String) -> Bool {
 }
 
 extension String {
+    
     func passwordValidator() -> Bool {
         guard !self.isEmpty else {
             return false
         }
-        guard validateRegex(value: self, pattern: Regex.passwordLength) else {
+        guard validateRegex(value: self, pattern: Regex.passwordRegex) else {
             return false
         }
         return true
@@ -38,10 +42,31 @@ extension String {
         guard !self.isEmpty else {
             return false
         }
-        guard validateRegex(value: self, pattern: Regex.textLength) else {
+        guard validateRegex(value: self, pattern: Regex.textRegex) else {
             return false
         }
         return true
     }
+    
+    func urlValidator() -> Bool {
+        guard !self.isEmpty else {
+            return false
+        }
+        guard validateRegex(value: self, pattern: Regex.urlRegex) else {
+            return false
+        }
+        return true
+    }
+
+    func usernameValidator() -> Bool {
+        guard !self.isEmpty else {
+            return false
+        }
+        guard validateRegex(value: self, pattern: Regex.usernameRegex) else {
+            return false
+        }
+        return true
+    }
+
 }
 
