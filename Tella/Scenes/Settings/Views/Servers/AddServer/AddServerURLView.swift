@@ -7,18 +7,25 @@ import SwiftUI
 
 struct AddServerURLView: View {
     
-    @EnvironmentObject var serversViewModel : ServersViewModel
+    //    @EnvironmentObject var serversViewModel : ServersViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    var action : (() -> Void)?
+    //    var action : (() -> Void)?
     var nextButtonAction: NextButtonAction = .action
+    
+    
+    @EnvironmentObject var serversViewModel : ServersViewModel
+    @StateObject var serverViewModel : ServerViewModel
+    
+    init(appModel:MainAppModel, server: Server? = nil) {
+        _serverViewModel = StateObject(wrappedValue: ServerViewModel(mainAppModel: appModel, currentServer: server))
+    }
     
     var body: some View {
         
         ContainerView {
             
             ZStack {
-                
                 
                 VStack(spacing: 0) {
                     Spacer()
@@ -37,17 +44,17 @@ struct AddServerURLView: View {
                     Spacer()
                         .frame(height: 40)
                     
-                    TextfieldView(fieldContent: $serversViewModel.currentServer.url,
-                                  isValid: $serversViewModel.validURL,
-                                  shouldShowError: $serversViewModel.shouldShowURLError,
-                                  errorMessage: serversViewModel.urlErrorMessage,
+                    TextfieldView(fieldContent: $serverViewModel.url,
+                                  isValid: $serverViewModel.validURL,
+                                  shouldShowError: $serverViewModel.shouldShowURLError,
+                                  errorMessage: serverViewModel.urlErrorMessage,
                                   fieldType: .url)
                     Spacer()
                     
-                    BottomLockView<AnyView>(isValid: $serversViewModel.validURL,
+                    BottomLockView<AnyView>(isValid: $serverViewModel.validURL,
                                             nextButtonAction: .action,
                                             nextAction: {
-                        serversViewModel.checkURL()
+                        serverViewModel.checkURL()
                     },
                                             backAction: {
                         self.presentationMode.wrappedValue.dismiss()
@@ -57,7 +64,7 @@ struct AddServerURLView: View {
                     
                 } .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                 
-                if serversViewModel.isLoading {
+                if serverViewModel.isLoading {
                     CircularActivityIndicatory()
                 }
             }
@@ -65,22 +72,24 @@ struct AddServerURLView: View {
         .navigationBarHidden(true)
         .onAppear {
             
-//#if DEBUG
-//            serversViewModel.serverToAdd.url = "http://37.218.244.11:3001" 
-//#endif
+#if DEBUG
+            serverViewModel.url = "http://37.218.244.11:3001"
+#endif
         }
     }
     
     private var nextViewLink: some View {
         
-        ServerLoginView().environmentObject(serversViewModel)
-            .addNavigationLink(isActive: $serversViewModel.showNextLoginView)
+        ServerLoginView()
+            .environmentObject(serverViewModel)
+            .environmentObject(serversViewModel)
+            .addNavigationLink(isActive: $serverViewModel.showNextLoginView)
     }
     
 }
 
 struct AddServerURLView_Previews: PreviewProvider {
     static var previews: some View {
-        AddServerURLView()
+        AddServerURLView(appModel: MainAppModel())
     }
 }

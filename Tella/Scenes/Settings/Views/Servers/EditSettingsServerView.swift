@@ -7,9 +7,14 @@ import SwiftUI
 
 struct EditSettingsServerView: View {
     
-    @Binding var isPresented : Bool
+    var isPresented : Binding<Bool>
     
-    @EnvironmentObject var serversViewModel : ServersViewModel
+    @StateObject private var serverViewModel : ServerViewModel
+    
+    init(appModel:MainAppModel, isPresented : Binding<Bool>, server: Server? = nil) {
+        _serverViewModel = StateObject(wrappedValue: ServerViewModel(mainAppModel: appModel, currentServer: server))
+        self.isPresented = isPresented
+    }
     
     var body: some View {
         
@@ -22,8 +27,8 @@ struct EditSettingsServerView: View {
                 SettingsCardView(cardViewArray: [serverNameView.eraseToAnyView(),
                                                  serverURLView.eraseToAnyView(),
                                                  serverUsernameView.eraseToAnyView(),
-                                                 ShareInfoView(shareInfo: $serversViewModel.currentServer.activatedMetadata).eraseToAnyView(),
-                                                 BackgroundUploadView(backgroundUpload: $serversViewModel.currentServer.backgroundUpload).eraseToAnyView()])
+                                                 ShareInfoView(shareInfo: $serverViewModel.activatedMetadata).eraseToAnyView(),
+                                                 BackgroundUploadView(backgroundUpload: $serverViewModel.backgroundUpload).eraseToAnyView()])
                 Spacer()
                 
                 bottomView
@@ -32,22 +37,22 @@ struct EditSettingsServerView: View {
     }
     
     var serverNameView: some View {
-        EditServerDisplayItem(title: "Server name", description: serversViewModel.currentServer.name)
+        EditServerDisplayItem(title: "Server name", description: serverViewModel.name)
     }
     
     var serverURLView: some View {
-        EditServerDisplayItem(title: "Server URL", description: serversViewModel.currentServer.url)
+        EditServerDisplayItem(title: "Server URL", description: serverViewModel.url)
     }
     
     var serverUsernameView: some View {
-        EditServerDisplayItem(title: "Username", description: serversViewModel.currentServer.username)
+        EditServerDisplayItem(title: "Username", description: serverViewModel.username)
     }
     
     var editServerHeaderView : some View {
         
         HStack {
             Button {
-                isPresented = false
+                isPresented.wrappedValue = false
             } label: {
                 Image("close")
             }.padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12))
@@ -67,7 +72,7 @@ struct EditSettingsServerView: View {
         HStack(spacing: 16) {
             Spacer()
             Button {
-                isPresented = false
+                isPresented.wrappedValue  = false
                 
             } label: {
                 Text("CANCEL")
@@ -79,8 +84,8 @@ struct EditSettingsServerView: View {
             }
             
             Button {
-                isPresented = false
-                serversViewModel.updateServer()
+                isPresented.wrappedValue  = false
+                serverViewModel.updateServer()
             } label: {
                 Text("SAVE")
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
@@ -92,14 +97,13 @@ struct EditSettingsServerView: View {
             }
             
         }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-        
     }
 }
 
 
 struct EditSettingsServerView_Previews: PreviewProvider {
     static var previews: some View {
-        EditSettingsServerView(isPresented: .constant(true))
+        EditSettingsServerView(appModel: MainAppModel(), isPresented: .constant(true))
     }
 }
 

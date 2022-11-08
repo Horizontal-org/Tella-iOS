@@ -24,7 +24,7 @@ struct D {
     
     /* DATABASE COLUMNS */
     
-    static let cId = "c_id"
+//    static let cId = "c_id"
     static let cName = "c_name"
     static let cURL = "c_url"
     static let cUsername = "c_username"

@@ -49,7 +49,7 @@ struct MainView: View  {
                             Image("tab.home")
                             Text(LocalizableHome.tabBar.localized)
                         }.tag(MainAppModel.Tabs.home)
-                    ReportsView()
+                    ReportsView(mainAppModel: appModel)
                         .tabItem {
                             Image("tab.reports")
                             Text("Reports")
@@ -126,6 +126,8 @@ struct MainView: View  {
         coloredAppearance.backgroundColor = Styles.uiColor.backgroundMain
         coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white,
                                                  .font: UIFont(name: Styles.Fonts.boldFontName, size: 24)!]
+        coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white,
+                                                                 .font: UIFont(name: Styles.Fonts.boldFontName, size: 35)!]
         coloredAppearance.setBackIndicatorImage(UIImage(named: "back"), transitionMaskImage: UIImage(named: "back"))
         
         UINavigationBar.appearance().standardAppearance = coloredAppearance
@@ -135,6 +137,8 @@ struct MainView: View  {
         
         UITableView.appearance().backgroundColor = .clear
         UITableViewCell.appearance().backgroundColor = .clear
+        
+
     }
     
     @ViewBuilder

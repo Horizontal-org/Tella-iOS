@@ -33,16 +33,16 @@ class DataBaseHelper {
         
         debugLog("Error opening database at \(dbURL?.absoluteString ?? "")!")
         
-        //        guard let key = key else { return }
-        
-        //        if (sqlite3_key(dbPointer, key, Int32(key.count)) != SQLITE_OK) {
-        //            logDbErr("Error setting key")
-        //        }
+        if (sqlite3_key(dbPointer, key, Int32(key.count)) != SQLITE_OK) {
+            logDbErr("Error setting key")
+        }
     }
     
-    func selectQuery(tableName: String, keyValue: [KeyValue]) throws -> [[String: Any]] {
+    func selectQuery(tableName: String, keyValue: [KeyValue] = [] , joinCondition: [JoinCondition]? = nil) throws -> [[String: Any]] {
         
-        let selectSql = sql(tableName: tableName)
+        let selectSql = sql(tableName: tableName, keyValue: keyValue, joinCondition: joinCondition)
+        
+        debugLog("selectSql \(selectSql)")
         
         guard let selectStatement = try prepareStatement(sql: selectSql) else {
             throw SqliteError(message: errorMessage)
@@ -57,14 +57,26 @@ class DataBaseHelper {
         }
     }
     
-    func sql(tableName:String, filter: String = "", order: String = "", limit: Int = 0) -> String {
+    
+    func sql(tableName:String, keyValue: [KeyValue] , order: String = "", limit: Int = 0, joinCondition: [JoinCondition]? = nil) -> String {
         
         var sql = "SELECT * FROM \(tableName)"
         
-        if !filter.isEmpty {
-            sql += " WHERE \(filter)"
+        if let joinCondition = joinCondition {
+            sql += join(joinCondition: joinCondition)
         }
         
+        if !keyValue.isEmpty{
+            let primaryKeyColumnNames = keyValue.compactMap{($0.key)}
+            
+            sql += " WHERE"
+            for (primaryKeyColumnNameIndex, primaryKeyColumnName) in primaryKeyColumnNames.enumerated() {
+                sql += "  " + primaryKeyColumnName +  " = :\(primaryKeyColumnName)"
+                if primaryKeyColumnNameIndex < primaryKeyColumnNames.count - 1 {
+                    sql += " AND"
+                }
+            }
+        }
         if !order.isEmpty {
             sql += " ORDER BY \(order)"
         }
@@ -76,11 +88,11 @@ class DataBaseHelper {
     
     func join(joinCondition:[JoinCondition]) -> String {
         
-        var joinConditionStr : String = ""
+        var joinConditionStr : String = " "
         
         joinCondition.forEach { joinCondition in
             
-            let condition = "INNER JOIN" + joinCondition.tableName + "ON" + "(" + joinCondition.firstItem.format() + "=" +  joinCondition.secondItem.format() + ")"
+            let condition = "INNER JOIN " + joinCondition.tableName + " ON " + "(" + joinCondition.firstItem.format() + "=" +  joinCondition.secondItem.format() + ")"
             
             joinConditionStr = joinConditionStr + condition
         }
@@ -168,7 +180,6 @@ class DataBaseHelper {
         
         let ret = sqlite3_exec(dbPointer, sqlExpression, nil, nil, nil)
         
-        print("sqlExpression",sqlExpression)
         if (ret != SQLITE_OK) { // corrupt database.
             logDbErr("Error creating db table - Records")
         }

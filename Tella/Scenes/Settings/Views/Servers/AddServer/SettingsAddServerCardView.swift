@@ -8,6 +8,7 @@ import SwiftUI
 struct SettingsAddServerCardView: View {
     
     @EnvironmentObject var serversViewModel : ServersViewModel
+    @EnvironmentObject var mainAppModel : MainAppModel
     
     var body: some View {
         ZStack {
@@ -28,7 +29,7 @@ struct SettingsAddServerCardView: View {
                     serversViewModel.rootLinkIsActive = true
                 } label: {
                     
-                    NavigationLink(destination:AddServerURLView().environmentObject(serversViewModel),
+                    NavigationLink(destination:AddServerURLView(appModel: mainAppModel) .environmentObject(serversViewModel),
                                    isActive: $serversViewModel.rootLinkIsActive) {
                         Image("settings.add")
                             .padding()

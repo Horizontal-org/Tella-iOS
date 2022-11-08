@@ -8,5 +8,5 @@ import Foundation
 
 struct KeyValue {
     var key : String
-    var value : Any
+    var value : Any?
 }

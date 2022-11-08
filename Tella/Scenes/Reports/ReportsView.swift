@@ -5,45 +5,73 @@ import SwiftUI
 
 struct ReportsView: View {
     
-    @State var title: String = ""
-    @State var description: String = ""
-    @State var selecetedCell = Pages.new
-    @State var outBoxCount = 0
+    @EnvironmentObject var mainAppModel : MainAppModel
     
-    init() {
+    @StateObject private var reportsViewModel : ReportsViewModel
+    @State private var selecetedCell = Pages.draft
+    @State private var outBoxCount = 0
+    @State private var shouldShowNewReport = false
+    
+    init(mainAppModel:MainAppModel) {
+        _reportsViewModel = StateObject(wrappedValue: ReportsViewModel(mainAppModel: mainAppModel))
     }
     
     var body: some View {
         NavigationView {
             ZStack(alignment: .top) {
+                
                 Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
-                VStack(alignment: .leading) {
+                
+                VStack(alignment: .center) {
+                    
                     PageView(selectedOption: self.$selecetedCell, outboxCount: self.$outBoxCount)
-                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: 40, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                            .padding([.leading, .trailing], 10)
-                    VStack {
+                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: 40, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                        .padding([.leading, .trailing], 10)
+                    
+                    VStack (spacing: 0) {
+                        Spacer()
+                        
                         switch self.selecetedCell {
-                        case .new:
-                            NewReportView(title: self.$title, description: self.$description)
+                            
                         case .draft:
-                            VStack(alignment: .leading) {
-                                Text("Draft")
-                            }
+                            ReportListView(reportArray: $reportsViewModel.draftReports,
+                                           message: "Your Drafts is currently empty. Reports that you have not submitted will appear here.")
+                            
                         case .outbox:
-                            VStack(alignment: .leading) {
-                                Text("Outbox")
-                            }
-                        case .sent:
-                            VStack(alignment: .leading) {
-                                Text("Sent")
-                            }
+                            
+                            ReportListView(reportArray: $reportsViewModel.outboxedReports,
+                                           message: "Your Outbox is currently empty. Reports that are ready to be sent will appear here.")
+                            
+                        case .submitted:
+                            ReportListView(reportArray: $reportsViewModel.submittedReports,
+                                           message: "You have no submitted reports.")
                         }
+                        
+                        Spacer()
+                        
                     }
+                    
+                    TellaButtonView<AnyView> (title: "NEW REPORT",
+                                              nextButtonAction: .action,
+                                              buttonType: .yellow,
+                                              isValid: .constant(true)) {
+                        shouldShowNewReport = true
+                    }.padding(EdgeInsets(top: 30, leading: 24, bottom: 16, trailing: 24))
+                    
+                    
+                    
+                    
                 }
                 .background(Styles.Colors.backgroundMain)
             }
             .navigationBarTitle("Reports")
             .background(Styles.Colors.backgroundMain)
+            
+            .fullScreenCover(isPresented: $shouldShowNewReport, content: {
+                DraftReportView(mainAppModel: mainAppModel, isPresented: $shouldShowNewReport)
+            })
+            
+            .environmentObject(reportsViewModel)
         }
     }
 }
@@ -51,7 +79,7 @@ struct ReportsView: View {
 struct ReportsView_Previews: PreviewProvider {
     
     static var previews: some View {
-        ReportsView()
+        ReportsView(mainAppModel: MainAppModel())
     }
 }
 

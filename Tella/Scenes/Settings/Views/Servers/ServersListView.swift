@@ -9,9 +9,10 @@ struct ServersListView: View {
     
     @EnvironmentObject var serversViewModel : ServersViewModel
     @EnvironmentObject var sheetManager: SheetManager
+    @EnvironmentObject var mainAppModel : MainAppModel
     
     @State var shouldShowEditServer : Bool = false
-
+    
     var body: some View {
         
         ContainerView {
@@ -27,22 +28,22 @@ struct ServersListView: View {
             }
         }
         .fullScreenCover(isPresented: $shouldShowEditServer, content: {
-            EditSettingsServerView(isPresented: $shouldShowEditServer)
+            EditSettingsServerView(appModel: mainAppModel, isPresented: $shouldShowEditServer, server: serversViewModel.currentServer)
         })
         
         .toolbar {
             LeadingTitleToolbar(title: "Servers")
         }
-        .onAppear {
-            serversViewModel.initServerVM()
-        }
+        .environmentObject(serversViewModel)
+
     }
     
     private func serversView<T>() -> [T] {
         
-        var arrayView : [T] = [SettingsAddServerCardView().environmentObject(serversViewModel).eraseToAnyView() as! T]
+        var arrayView : [T] = [SettingsAddServerCardView()
+            .eraseToAnyView() as! T]
         
-        serversViewModel.servers?.forEach({ server in
+        serversViewModel.serverArray.forEach({ server in
             arrayView.append(SettingsServerItemView(title: server.username,action: {showServerActionBottomSheet(server: server)}).eraseToAnyView() as! T)
             
         })
@@ -68,11 +69,8 @@ struct ServersListView: View {
                                msgText: "If you delete this server, all draft and submitted forms will be deleted from your device.",
                                cancelText: "CANCEL",
                                actionText: "DELETE", didConfirmAction: {
-                // Delete action
-                
                 serversViewModel.deleteServer()
                 sheetManager.hide()
-                
             })
         }
     }

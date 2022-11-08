@@ -7,11 +7,13 @@ import SwiftUI
 
 struct ServerLoginView: View {
     
+    @EnvironmentObject var serverViewModel : ServerViewModel
     @EnvironmentObject var serversViewModel : ServersViewModel
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var mainAppModel : MainAppModel
     
-    @State var presentingSuccessLoginView : Bool = false
+    @State private var presentingSuccessLoginView : Bool = false
     
     var body: some View {
         
@@ -30,23 +32,23 @@ struct ServerLoginView: View {
                         Spacer()
                             .frame(height: 40)
                         
-                        TextfieldView(fieldContent: $serversViewModel.currentServer.username,
-                                      isValid: $serversViewModel.validUsername,
-                                      shouldShowError: $serversViewModel.shouldShowLoginError,
-                                      errorMessage: nil,
+                        TextfieldView(fieldContent: $serverViewModel.username,
+                                      isValid: $serverViewModel.validUsername,
+                                      shouldShowError: $serverViewModel.shouldShowLoginError,
+                                      //                                      errorMessage: nil,
                                       fieldType: .username,
-                                      title : "Username")
+                                      placeholder : "Username")
                         .frame(height: 30)
                         
                         Spacer()
                             .frame(height: 27)
                         
-                        TextfieldView(fieldContent: $serversViewModel.currentServer.password,
-                                      isValid: $serversViewModel.validPassword,
-                                      shouldShowError: $serversViewModel.shouldShowLoginError,
-                                      errorMessage: serversViewModel.loginErrorMessage,
+                        TextfieldView(fieldContent: $serverViewModel.password,
+                                      isValid: $serverViewModel.validPassword,
+                                      shouldShowError: $serverViewModel.shouldShowLoginError,
+                                      errorMessage: serverViewModel.loginErrorMessage,
                                       fieldType: .password,
-                                      title : "Password")
+                                      placeholder : "Password")
                         .frame(height: 57)
                         
                         Spacer()
@@ -54,9 +56,9 @@ struct ServerLoginView: View {
                         
                         TellaButtonView<AnyView>(title: "LOG IN",
                                                  nextButtonAction: .action,
-                                                 isValid: $serversViewModel.validCredentials) {
+                                                 isValid: $serverViewModel.validCredentials) {
                             UIApplication.shared.endEditing()
-                            serversViewModel.login()
+                            serverViewModel.login()
                         }
                         
                         Spacer()
@@ -64,14 +66,14 @@ struct ServerLoginView: View {
                         
                     }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                     
-                    BottomLockView<AnyView>(isValid: $serversViewModel.validPassword,
+                    BottomLockView<AnyView>(isValid: $serverViewModel.validPassword,
                                             nextButtonAction: .action,
                                             shouldHideNext: true)
                 }
                 
                 nextViewLink
                 
-                if serversViewModel.isLoading {
+                if serverViewModel.isLoading {
                     CircularActivityIndicatory()
                 }
             }
@@ -80,19 +82,20 @@ struct ServerLoginView: View {
         .navigationBarHidden(true)
         .onAppear {
             
-//#if DEBUG
-//            serversViewModel.serverToAdd.username = "admin@wearehorizontal.org"
-//            serversViewModel.serverToAdd.password = "nadanada" 
-//#endif
+#if DEBUG
+            serverViewModel.username = "admin@wearehorizontal.org"
+            serverViewModel.password = "nadanada" 
+#endif
         }
     }
     
     @ViewBuilder
     private var nextViewLink: some View {
         
-        if !serversViewModel.shouldShowLoginError {
-            SuccessLoginView(isPresented: $presentingSuccessLoginView).environmentObject(serversViewModel)
-                .addNavigationLink(isActive: $serversViewModel.showNextSuccessLoginView)
+        if !serverViewModel.shouldShowLoginError {
+            SuccessLoginView(isPresented: $presentingSuccessLoginView).environmentObject(serverViewModel)
+                .environmentObject(serversViewModel)
+                .addNavigationLink(isActive: $serverViewModel.showNextSuccessLoginView)
         }
     }
 }

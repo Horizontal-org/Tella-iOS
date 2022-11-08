@@ -5,49 +5,44 @@
 import Foundation
 
 public enum Pages: Hashable {
-    case new
+    
     case draft
     case outbox
-    case sent
+    case submitted
     
     var title: String {
         switch self {
-        case .new:
-            return NSLocalizedString("New", comment: "Forms/Reports tab menu")
+            
         case .draft:
-            return NSLocalizedString("Draft", comment: "Forms/Reports tab menu")
+            return "Drafts"
         case .outbox:
-            return NSLocalizedString("Outbox", comment: "Forms/Reports tab menu")
-        case .sent:
-            return NSLocalizedString("Sent", comment: "Forms/Reports tab menu")
+            return "Outbox"
+        case .submitted:
+            return "Submitted"
         }
     }
     
     static func fromHashValue(hashValue: Pages) -> Int {
         switch hashValue {
-        case .new:
-            return 0
         case .draft:
-            return 1
+            return 0
         case .outbox:
+            return 1
+        case .submitted:
             return 2
-        case .sent:
-            return 3
         }
     }
     
     static func fromValueHash(value: Int) -> Pages {
         switch value {
         case 0:
-            return .new
-        case 1:
             return .draft
-        case 2:
+        case 1:
             return .outbox
-        case 3:
-            return .sent
+        case 2:
+            return .submitted
         default:
-            return .new
+            return .draft
         }
     }
 }

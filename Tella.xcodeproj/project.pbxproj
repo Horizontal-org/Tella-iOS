@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0807BE8AD7991EBCC67BBF58 /* libPods-Tella-TellaUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BA47B1A745C8D086B482FE /* libPods-Tella-TellaUITests.a */; };
-		0D4BC3C3267577F900DCDC30 /* ReportModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3BF267577F900DCDC30 /* ReportModels.swift */; };
-		0D4BC3C4267577F900DCDC30 /* NewReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3C0267577F900DCDC30 /* NewReportView.swift */; };
 		0D4BC3C5267577F900DCDC30 /* ReportsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3C1267577F900DCDC30 /* ReportsView.swift */; };
 		0D4BC3C6267577F900DCDC30 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3C2267577F900DCDC30 /* DocumentPicker.swift */; };
 		0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3CD267668D600DCDC30 /* AddFileYellowButton.swift */; };
@@ -55,12 +53,15 @@
 		1216123C28DE13AC00E6D7B6 /* DatabaseUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1216123B28DE13AC00E6D7B6 /* DatabaseUtilities.swift */; };
 		1216123E28DE142D00E6D7B6 /* JoinItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1216123D28DE142D00E6D7B6 /* JoinItem.swift */; };
 		1216124028DE144200E6D7B6 /* JoinCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1216123F28DE144200E6D7B6 /* JoinCondition.swift */; };
+		1216F8742901823100F5AEA5 /* TextEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1216F8732901823100F5AEA5 /* TextEditorView.swift */; };
 		1217FCA128F9946A00DD2D70 /* CircularActivityIndicatory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217FCA028F9946A00DD2D70 /* CircularActivityIndicatory.swift */; };
 		1217FCA328F99A7D00DD2D70 /* CircularLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217FCA228F99A7D00DD2D70 /* CircularLoader.swift */; };
 		1218E86328E47B9B00FE2E68 /* Request+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1218E86228E47B9B00FE2E68 /* Request+Combine.swift */; };
 		1218E86528E48AEC00FE2E68 /* LoginResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1218E86428E48AEC00FE2E68 /* LoginResult.swift */; };
+		121C945E28FF3DCC00570EB4 /* EmptyReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121C945D28FF3DCC00570EB4 /* EmptyReportView.swift */; };
 		1221CB6F28DB1B1B0042F15F /* SqliteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1221CB6E28DB1B1B0042F15F /* SqliteError.swift */; };
 		1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1221CB7028DB1B5A0042F15F /* KeyValue.swift */; };
+		1221E05C2906CA6A00BC05F5 /* DraftReportVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1221E05B2906CA6A00BC05F5 /* DraftReportVM.swift */; };
 		1224DAEA27197578001C0ED0 /* ConfirmLockPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224DAE927197577001C0ED0 /* ConfirmLockPasswordView.swift */; };
 		1224DAEC271975D3001C0ED0 /* PasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224DAEB271975D2001C0ED0 /* PasswordView.swift */; };
 		1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224DAEF2719C71B001C0ED0 /* LockPasswordData.swift */; };
@@ -76,6 +77,8 @@
 		12351C1A28D2209400F3CB7C /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12351C1928D2209400F3CB7C /* Report.swift */; };
 		12351C1C28D220BA00F3CB7C /* TellaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12351C1B28D220BA00F3CB7C /* TellaData.swift */; };
 		12351C1E28D267EF00F3CB7C /* DatabaseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12351C1D28D267EF00F3CB7C /* DatabaseConstants.swift */; };
+		1236644F28FFECEF00FA839B /* DraftReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1236644E28FFECEF00FA839B /* DraftReportView.swift */; };
+		1236645128FFF23000FA839B /* ReportsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1236645028FFF23000FA839B /* ReportsViewModel.swift */; };
 		1236EE8028E1B40200973EEA /* DataBaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1236EE7F28E1B40200973EEA /* DataBaseHelper.swift */; };
 		1236EE8228E1E1D700973EEA /* DatabaseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1236EE8128E1E1D700973EEA /* DatabaseExtension.swift */; };
 		1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C876268C792000EB5E34 /* NSUIImage.swift */; };
@@ -83,8 +86,12 @@
 		1237A71C278F5B2E00D7BC0F /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1237A71B278F5B2E00D7BC0F /* DateExtension.swift */; };
 		1237A71E278F5F8B00D7BC0F /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1237A71D278F5F8B00D7BC0F /* LanguageManager.swift */; };
 		123CE54F272028D1005BF386 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 123CE54E272028D1005BF386 /* Roboto-Light.ttf */; };
+		123CE84429126B52003C251F /* ServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CE84329126B52003C251F /* ServerViewModel.swift */; };
+		1240E6B02907E14400692232 /* ReportCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1240E6AF2907E14400692232 /* ReportCardView.swift */; };
+		1240E6B22908123900692232 /* ReportListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1240E6B12908123900692232 /* ReportListView.swift */; };
 		1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141627E357E80037D469 /* LoadMoreCell.swift */; };
 		1244141927E35D120037D469 /* VaultFileImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141827E35D120037D469 /* VaultFileImages.swift */; };
+		124F8E0829119E9400FBB7AC /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F8E0729119E9400FBB7AC /* StringExtension.swift */; };
 		12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12567FEE2716B38F00A2D356 /* LockChoiceView.swift */; };
 		12567FF22716E33500A2D356 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12567FF02716E33500A2D356 /* OpenSans-Bold.ttf */; };
 		12567FF32716E33500A2D356 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12567FF12716E33500A2D356 /* OpenSans-Regular.ttf */; };
@@ -360,12 +367,15 @@
 		1216123B28DE13AC00E6D7B6 /* DatabaseUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUtilities.swift; sourceTree = "<group>"; };
 		1216123D28DE142D00E6D7B6 /* JoinItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinItem.swift; sourceTree = "<group>"; };
 		1216123F28DE144200E6D7B6 /* JoinCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinCondition.swift; sourceTree = "<group>"; };
+		1216F8732901823100F5AEA5 /* TextEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditorView.swift; sourceTree = "<group>"; };
 		1217FCA028F9946A00DD2D70 /* CircularActivityIndicatory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularActivityIndicatory.swift; sourceTree = "<group>"; };
 		1217FCA228F99A7D00DD2D70 /* CircularLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularLoader.swift; sourceTree = "<group>"; };
 		1218E86228E47B9B00FE2E68 /* Request+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Request+Combine.swift"; sourceTree = "<group>"; };
 		1218E86428E48AEC00FE2E68 /* LoginResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResult.swift; sourceTree = "<group>"; };
+		121C945D28FF3DCC00570EB4 /* EmptyReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyReportView.swift; sourceTree = "<group>"; };
 		1221CB6E28DB1B1B0042F15F /* SqliteError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SqliteError.swift; sourceTree = "<group>"; };
 		1221CB7028DB1B5A0042F15F /* KeyValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValue.swift; sourceTree = "<group>"; };
+		1221E05B2906CA6A00BC05F5 /* DraftReportVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftReportVM.swift; sourceTree = "<group>"; };
 		12227E4468563A646AC52A27 /* Pods-Tella-TellaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		1224DAE927197577001C0ED0 /* ConfirmLockPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmLockPasswordView.swift; sourceTree = "<group>"; };
 		1224DAEB271975D2001C0ED0 /* PasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordView.swift; sourceTree = "<group>"; };
@@ -381,13 +391,19 @@
 		12351C1928D2209400F3CB7C /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
 		12351C1B28D220BA00F3CB7C /* TellaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaData.swift; sourceTree = "<group>"; };
 		12351C1D28D267EF00F3CB7C /* DatabaseConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseConstants.swift; sourceTree = "<group>"; };
+		1236644E28FFECEF00FA839B /* DraftReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftReportView.swift; sourceTree = "<group>"; };
+		1236645028FFF23000FA839B /* ReportsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsViewModel.swift; sourceTree = "<group>"; };
 		1236EE7F28E1B40200973EEA /* DataBaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBaseHelper.swift; sourceTree = "<group>"; };
 		1236EE8128E1E1D700973EEA /* DatabaseExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseExtension.swift; sourceTree = "<group>"; };
 		1237A71B278F5B2E00D7BC0F /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		1237A71D278F5F8B00D7BC0F /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
 		123CE54E272028D1005BF386 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
+		123CE84329126B52003C251F /* ServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerViewModel.swift; sourceTree = "<group>"; };
+		1240E6AF2907E14400692232 /* ReportCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCardView.swift; sourceTree = "<group>"; };
+		1240E6B12908123900692232 /* ReportListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportListView.swift; sourceTree = "<group>"; };
 		1244141627E357E80037D469 /* LoadMoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCell.swift; sourceTree = "<group>"; };
 		1244141827E35D120037D469 /* VaultFileImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileImages.swift; sourceTree = "<group>"; };
+		124F8E0729119E9400FBB7AC /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		12567FEE2716B38F00A2D356 /* LockChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockChoiceView.swift; sourceTree = "<group>"; };
 		12567FF02716E33500A2D356 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		12567FF12716E33500A2D356 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -620,9 +636,13 @@
 			isa = PBXGroup;
 			children = (
 				0D4BC3C1267577F900DCDC30 /* ReportsView.swift */,
+				1240E6B12908123900692232 /* ReportListView.swift */,
+				121C945C28FF3D6900570EB4 /* Draft */,
 				0D4BC3C0267577F900DCDC30 /* NewReportView.swift */,
 				0D4BC3BF267577F900DCDC30 /* ReportModels.swift */,
 				0D4BC3C2267577F900DCDC30 /* DocumentPicker.swift */,
+				1240E6AF2907E14400692232 /* ReportCardView.swift */,
+				1232EE9A2918F8470094EE3A /* View Model */,
 			);
 			path = Reports;
 			sourceTree = "<group>";
@@ -750,6 +770,30 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		121C945B28FF026200570EB4 /* AddServer */ = {
+			isa = PBXGroup;
+			children = (
+				1291A83128BE0086001A6055 /* SettingsAddServerCardView.swift */,
+				12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */,
+				129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */,
+				12B3AD8928C0DD0200AC9AF9 /* ServerLoginView.swift */,
+				12B3AD8B28C1090700AC9AF9 /* SuccessLoginView.swift */,
+				122C54BD28C6351E003B2DBC /* AdvancedServerSettingsView.swift */,
+				122C54BF28C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift */,
+				120451FD28C7AB8100D572A7 /* AdvancedSettingsViews.swift */,
+			);
+			path = AddServer;
+			sourceTree = "<group>";
+		};
+		121C945C28FF3D6900570EB4 /* Draft */ = {
+			isa = PBXGroup;
+			children = (
+				121C945D28FF3DCC00570EB4 /* EmptyReportView.swift */,
+				1236644E28FFECEF00FA839B /* DraftReportView.swift */,
+			);
+			path = Draft;
+			sourceTree = "<group>";
+		};
 		1224DAED2719B09F001C0ED0 /* Pin */ = {
 			isa = PBXGroup;
 			children = (
@@ -771,6 +815,15 @@
 				1224DAEF2719C71B001C0ED0 /* LockPasswordData.swift */,
 			);
 			path = Password;
+			sourceTree = "<group>";
+		};
+		1232EE9A2918F8470094EE3A /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+				1236645028FFF23000FA839B /* ReportsViewModel.swift */,
+				1221E05B2906CA6A00BC05F5 /* DraftReportVM.swift */,
+			);
+			path = "View Model";
 			sourceTree = "<group>";
 		};
 		12351C1828D2207600F3CB7C /* Models */ = {
@@ -849,6 +902,7 @@
 				12AA5A3428576E9C00134A9B /* ArrayExtension.swift */,
 				12BAFA7628B3B8D300930451 /* UIImageOrientation.swift */,
 				1289B45928B64221005DA687 /* UIDeviceOrientationExtension.swift */,
+				124F8E0729119E9400FBB7AC /* StringExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -975,14 +1029,7 @@
 			children = (
 				12ADF98A28BD130C00FA96EB /* ServersListView.swift */,
 				120451F928C7525200D572A7 /* EditSettingsServerView.swift */,
-				1291A83128BE0086001A6055 /* SettingsAddServerCardView.swift */,
-				12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */,
-				129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */,
-				12B3AD8928C0DD0200AC9AF9 /* ServerLoginView.swift */,
-				12B3AD8B28C1090700AC9AF9 /* SuccessLoginView.swift */,
-				122C54BD28C6351E003B2DBC /* AdvancedServerSettingsView.swift */,
-				122C54BF28C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift */,
-				120451FD28C7AB8100D572A7 /* AdvancedSettingsViews.swift */,
+				121C945B28FF026200570EB4 /* AddServer */,
 			);
 			path = Servers;
 			sourceTree = "<group>";
@@ -1264,6 +1311,7 @@
 				1EAE6BF424146C2100114244 /* QuickLook.swift */,
 				1244141827E35D120037D469 /* VaultFileImages.swift */,
 				1217FCA028F9946A00DD2D70 /* CircularActivityIndicatory.swift */,
+				1216F8732901823100F5AEA5 /* TextEditorView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1285,6 +1333,7 @@
 			isa = PBXGroup;
 			children = (
 				129B845028BF6C7800F1B344 /* ServersViewModel.swift */,
+				123CE84329126B52003C251F /* ServerViewModel.swift */,
 				12730E68279F420400DC0135 /* SettingsViewModel.swift */,
 			);
 			path = ViewModel;
@@ -1795,14 +1844,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1240E6B02907E14400692232 /* ReportCardView.swift in Sources */,
 				12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */,
 				0ECC7814267A328900A2ACF2 /* FormsModel.swift in Sources */,
 				128B15CB27DA30C800E1C1E0 /* OnboardingEndView.swift in Sources */,
 				125D2328271F8B6600250FBB /* LockConfirmPinView.swift in Sources */,
 				125D231F271F12A000250FBB /* NSRegularExpressionExtension.swift in Sources */,
 				1209FD3027AD8AC400D8C17E /* AudioPlayerManager.swift in Sources */,
-				0D4BC3C3267577F900DCDC30 /* ReportModels.swift in Sources */,
 				12BAFA7728B3B8D300930451 /* UIImageOrientation.swift in Sources */,
+				123CE84429126B52003C251F /* ServerViewModel.swift in Sources */,
 				D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */,
 				0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */,
 				12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */,
@@ -1816,7 +1866,6 @@
 				12730E65279EAB9200DC0135 /* SettingsMainView.swift in Sources */,
 				12E0882427AD31F600CEB198 /* LocalizableAudio.swift in Sources */,
 				12E6772F27A9719F00DC1E1C /* UIImageExtension.swift in Sources */,
-				0D4BC3C4267577F900DCDC30 /* NewReportView.swift in Sources */,
 				D5B823EB262774E00008E04B /* MainView.swift in Sources */,
 				125FA6D6278DE49A004B9D06 /* URLExtension.swift in Sources */,
 				127369E327B3C4DA00CF7BE5 /* UIDeviceExtension.swift in Sources */,
@@ -1861,6 +1910,7 @@
 				12568002271790AF00A2D356 /* LockPinView.swift in Sources */,
 				1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */,
 				12A148942720A89E00A1ADDC /* BottomLockView.swift in Sources */,
+				1236645128FFF23000FA839B /* ReportsViewModel.swift in Sources */,
 				1233007A28E3115500B8F7BA /* Request.swift in Sources */,
 				1291F4F627B54300006A34D3 /* AudioPlayer.swift in Sources */,
 				12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */,
@@ -1933,6 +1983,7 @@
 				12567FF9271742C500A2D356 /* Localizable.swift in Sources */,
 				1236EE8228E1E1D700973EEA /* DatabaseExtension.swift in Sources */,
 				0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */,
+				121C945E28FF3DCC00570EB4 /* EmptyReportView.swift in Sources */,
 				125A0AEB2726CBDA00F6E77F /* UnlockPasswordView.swift in Sources */,
 				1216123C28DE13AC00E6D7B6 /* DatabaseUtilities.swift in Sources */,
 				12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */,
@@ -1965,6 +2016,7 @@
 				128FD0B427F774FB00B24915 /* RecentFile.swift in Sources */,
 				12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */,
 				12607D5327903E9E00E2B8CC /* CustomVideoControlsView.swift in Sources */,
+				1216F8742901823100F5AEA5 /* TextEditorView.swift in Sources */,
 				12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */,
 				1268553E27D2572100385E18 /* FileInfoView.swift in Sources */,
 				1289B45828B63187005DA687 /* RotationViewModifier.swift in Sources */,
@@ -1990,6 +2042,7 @@
 				125EDDAD271DBD5200E2789A /* ContentView.swift in Sources */,
 				12351C1E28D267EF00F3CB7C /* DatabaseConstants.swift in Sources */,
 				12A148962720B2B400A1ADDC /* PasswordTextFieldView.swift in Sources */,
+				1236644F28FFECEF00FA839B /* DraftReportView.swift in Sources */,
 				D50727BF2625561400BBC370 /* KeychainManager.swift in Sources */,
 				12D7D11F28E36123008121C8 /* APIRequestServer.swift in Sources */,
 				D7CFC37F254260D300CCB352 /* RecordView.swift in Sources */,
@@ -2000,9 +2053,11 @@
 				0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */,
 				126FE4D727A427E200AE4188 /* Constants.swift in Sources */,
 				12EC94CF28AA566C0070E72B /* GeneralView.swift in Sources */,
+				1240E6B22908123900692232 /* ReportListView.swift in Sources */,
 				1218E86528E48AEC00FE2E68 /* LoginResult.swift in Sources */,
 				1204F64327D928C9006E40EE /* FileTypeExtension.swift in Sources */,
 				0DA213C72680286F00526995 /* FileListItem.swift in Sources */,
+				124F8E0829119E9400FBB7AC /* StringExtension.swift in Sources */,
 				CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */,
 				12B6AF7D283E4C7200D697F6 /* LocalizableVault.swift in Sources */,
 				125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */,
@@ -2018,6 +2073,7 @@
 				12F5D28D27A326EB00BF3309 /* AboutAndHelpView.swift in Sources */,
 				1230BE4727CD6D440055F854 /* AudioAuthorizationStatus.swift in Sources */,
 				12A148982720B47100A1ADDC /* LockDescriptionView.swift in Sources */,
+				1221E05C2906CA6A00BC05F5 /* DraftReportVM.swift in Sources */,
 				129533C227399A1B0053FA4B /* PhotoVideoPickerView.swift in Sources */,
 				12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */,
 				1272F25D27C91ACD0054F2E2 /* ImportFileProgress.swift in Sources */,
