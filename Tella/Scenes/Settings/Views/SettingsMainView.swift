@@ -33,8 +33,6 @@ struct SettingsMainView: View {
                 Spacer()
             }
         }
-        .environmentObject(settingsViewModel)
-        .environmentObject(serversViewModel)
 
         .toolbar {
             LeadingTitleToolbar(title: LocalizableSettings.settAppBar.localized)
@@ -43,6 +41,10 @@ struct SettingsMainView: View {
         .onDisappear {
             appModel.publishUpdates()
         }
+        
+        .environmentObject(settingsViewModel)
+        .environmentObject(serversViewModel)
+
     }
     
     var generalView: some View {

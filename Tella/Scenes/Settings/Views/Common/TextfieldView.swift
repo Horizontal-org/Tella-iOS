@@ -10,69 +10,51 @@ struct TextfieldView : View {
     @Binding var fieldContent : String
     @Binding var isValid : Bool
     @Binding var shouldShowError : Bool
+    
     var errorMessage : String?
     var fieldType : FieldType
-    var title : String?
+    var placeholder : String?
+    var shouldShowTitle : Bool = false
     var onCommit : (() -> Void)? =  ({})
     
-    var body: some View {
-        
-        TextFieldView( fieldContent: $fieldContent,
-                       isValid: $isValid,
-                       shouldShowError: $shouldShowError,
-                       errorMessage: errorMessage,
-                       fieldType: fieldType,
-                       title:title,
-                       onCommit: onCommit)
-    }
-    private func validateField(value:String) {
-        self.isValid = value.passwordValidator()
-        self.shouldShowError = false
-        
-    }
-}
-
-struct TextFieldView : View {
+    @State private var shouldShowPassword : Bool = false
     
-    @State var shouldShowPassword : Bool = false
-    @State var shouldHideTitle : Bool = false
-    
-    @Binding var fieldContent : String
-    @Binding var isValid : Bool
-    @Binding var shouldShowError : Bool
-    var errorMessage : String?
-    var fieldType : FieldType
-    var title : String?
-    
-    var onCommit : (() -> Void)? =  ({})
     var body: some View {
         
         VStack(spacing: 13) {
             
             ZStack {
                 
-                
-                if fieldContent.isEmpty, let title = title  {
-                    Text(title)
-                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity,alignment: .leading)
-                        .contentShape(Rectangle())
+                // Placeholder
+                Group {
+                    if shouldShowTitle {
+                        Text(placeholder ?? "")
+                            .offset(y: fieldContent.isEmpty ? 0 : -20)
+                            .scaleEffect(fieldContent.isEmpty ? 1 : 0.88, anchor: .leading)
+                            .animation(.default)
+                        
+                    } else {
+                        Text(placeholder ?? "")
+                            .opacity(fieldContent.isEmpty ? 1 : 0 )
+                    }
                     
-                }
+                } .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                    .frame(maxWidth: .infinity,alignment: .leading)
+                    .contentShape(Rectangle())
+                    .foregroundColor(fieldContent.isEmpty ? .white : .white.opacity(0.8) )
                 
-                
+                // Textfield
                 if fieldType == .password {
                     passwordTextfieldView
                 } else {
                     textfieldView
                 }
-                
-                
             }
             
+            // Divider view
             dividerView
             
+            // Error message
             errorMessageView
             
         }
@@ -137,7 +119,7 @@ struct TextFieldView : View {
                 .font(.custom(Styles.Fonts.regularFontName, size: 12))
                 .foregroundColor(Color(UIColor(hexValue: 0xFF2D2D)))
                 .frame(maxWidth: .infinity, alignment: .leading)
-        }  
+        }
         
     }
     
@@ -176,12 +158,14 @@ struct TextfieldStyle: TextFieldStyle {
     }
 }
 
-//struct TextfieldView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        TextFieldView(fieldContent: .constant(""),
-//                              isValid: .constant(true),
-//                              shouldShowError: .constant(false))    }
-//}
+struct TextfieldView_Previews: PreviewProvider {
+    static var previews: some View {
+        TextfieldView(fieldContent: .constant(""),
+                      isValid: .constant(true),
+                      shouldShowError: .constant(false),
+                      fieldType: .text)
+    }
+}
 
 
 enum FieldType {

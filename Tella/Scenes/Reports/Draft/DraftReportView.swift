@@ -7,19 +7,22 @@ import SwiftUI
 
 struct DraftReportView: View {
     
-    @Binding var isPresented : Bool
-    @EnvironmentObject var reportViewModel : ReportsViewModel
+    var isPresented : Binding<Bool>
+    @StateObject var reportViewModel : DraftReportVM
     
-    @State var framee : CGRect = CGRectZero
-    @State var shouldShowMenu : Bool = false
+    @State private var menuFrame : CGRect = CGRectZero
+    @State private var shouldShowMenu : Bool = false
     
+    init(mainAppModel: MainAppModel, isPresented : Binding<Bool>, report:Report? = nil) {
+        self.isPresented = isPresented
+        _reportViewModel = StateObject(wrappedValue: DraftReportVM(mainAppModel: mainAppModel,report:report))
+    }
     
     var body: some View {
         
         ContainerView {
             
             ZStack {
-                
                 VStack(alignment: .leading) {
                     
                     draftReportHeaderView
@@ -41,7 +44,7 @@ struct DraftReportView: View {
         
         HStack(spacing: 0) {
             Button {
-                isPresented = false
+                self.isPresented.wrappedValue = false
             } label: {
                 Image("close")
                     .padding(EdgeInsets(top: 16, leading: 12, bottom: 16, trailing: 16))
@@ -54,12 +57,15 @@ struct DraftReportView: View {
             Spacer()
             
             Button {
+                reportViewModel.status = .draft
+                reportViewModel.saveReport()
+                self.isPresented.wrappedValue = false
                 
             } label: {
                 Image("reports.save")
                     .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
-                    .opacity(reportViewModel.currentReportVM.reportIsDraft ? 1 : 0.4)
-            }.disabled(!reportViewModel.currentReportVM.reportIsDraft)
+                    .opacity(reportViewModel.reportIsDraft ? 1 : 0.4)
+            }.disabled(!reportViewModel.reportIsDraft)
             
             
         }.frame(height: 56)
@@ -84,88 +90,102 @@ struct DraftReportView: View {
     var draftContentView: some View {
         
         GeometryReader { geometry in
-            VStack(alignment: .leading) {
+            ScrollView {
                 
-                
-                Text("Send report to:")
-                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                    .foregroundColor(Color.white)
-                
-                Button {
-                    self.framee = geometry.frame(in: CoordinateSpace.global)
-                    shouldShowMenu = true
+                VStack(alignment: .leading) {
                     
-                } label: {
-                    
-                    HStack {
+                    if reportViewModel.hasMoreServer  {
                         
-                        Text("Select your project")
+                        Text("Send report to:")
                             .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                            .foregroundColor(Color.white.opacity(0.87))
-                            .padding()
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundColor(Color.white)
                         
-                        Image("reports.arrow-down")
-                            .padding()
+                        Button {
+                            self.menuFrame = geometry.frame(in: CoordinateSpace.global)
+                            shouldShowMenu = true
+                            
+                        } label: {
+                            HStack {
+                                Text(reportViewModel.serverName)
+                                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                                    .foregroundColor(Color.white.opacity(0.87))
+                                    .padding()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                Image("reports.arrow-down")
+                                    .padding()
+                                
+                            }
+                        }.background(Color.white.opacity(0.08))
+                            .cornerRadius(12)
+                        
+                        Spacer()
+                            .frame(height: 55)
+                        
+                    } else {
+                        Spacer()
+                            .frame(height: 10)
                         
                     }
-                }.background(Color.white.opacity(0.08))
-                    .cornerRadius(12)
-
-                Spacer()
-                    .frame(height: 40)
-
-                TextfieldView(fieldContent: $reportViewModel.currentReportVM.title,
-                              isValid: $reportViewModel.currentReportVM.isValidTitle,
-                              shouldShowError: $reportViewModel.currentReportVM.shouldShowError,
-                              errorMessage: nil,
-                              fieldType: .text,
-                              title : "Title")
-                .frame(height: 30)
-                
-                Spacer()
-                    .frame(height: 24)
-                
-                TextEditorView(placeholder: "Description",
-                               fieldContent: $reportViewModel.currentReportVM.description,
-                               isValid: $reportViewModel.currentReportVM.isValidDescription, shouldShowError: $reportViewModel.currentReportVM.shouldShowError)
-                
-                Spacer()
-                    .frame(height: 24)
-                
-                attachedFile
-                
-                Spacer()
-                
-            }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                    
+                    TextfieldView(fieldContent: $reportViewModel.title,
+                                  isValid: $reportViewModel.isValidTitle,
+                                  shouldShowError: $reportViewModel.shouldShowError,
+                                  fieldType: .text,
+                                  placeholder : "Title",
+                                  shouldShowTitle: reportViewModel.hasMoreServer)
+                    .frame(height: 30)
+                    
+                    Spacer()
+                        .frame(height: 34)
+                    
+                    TextEditorView(placeholder: "Description",
+                                   fieldContent: $reportViewModel.description,
+                                   isValid: $reportViewModel.isValidDescription,
+                                   shouldShowError: $reportViewModel.shouldShowError,
+                                   shouldShowTitle: reportViewModel.hasMoreServer)
+                    
+                    Spacer()
+                        .frame(height: 24)
+                    
+                    attachedFile
+                    
+                    Spacer()
+                    
+                }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+            }
         }
     }
     
     @ViewBuilder
     var serverListMenuView: some View {
+        
         if shouldShowMenu {
             VStack {
                 Spacer()
-                    .frame(height: framee.origin.y +  10)
+                    .frame(height: menuFrame.origin.y +  10)
                 ScrollView {
                     
                     VStack(spacing: 0) {
-                        ForEach(reportViewModel.servers, id: \.self) { server in
+                        
+                        ForEach(reportViewModel.serverArray, id: \.self) { server in
                             
                             Button {
                                 shouldShowMenu = false
+                                reportViewModel.server = server
+                                
                             } label: {
-                                Text(server.name)
+                                Text(server.name ?? "")
                                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .foregroundColor(.white)
                                     .padding(.all, 14)
-                            }.background(server.id == 20 ? Color.white.opacity(0.16) : Color.white.opacity(0.08))
+                            }.background(server.id == reportViewModel.server?.id ? Color.white.opacity(0.16) : Color.white.opacity(0.08))
                         }
-                    }
-                }.frame(maxHeight: 250)
-                    .background(Styles.Colors.backgroundMain)
-                    .cornerRadius(12)
+                    }.frame(minHeight: 40, maxHeight: 250)
+                        .background(Styles.Colors.backgroundMain)
+                        .cornerRadius(12)
+                }
                 Spacer()
             }
             .padding()
@@ -179,17 +199,19 @@ struct DraftReportView: View {
         HStack {
             
             Button {
-                
+                reportViewModel.status = .outbox
+                reportViewModel.saveReport()
+                self.isPresented.wrappedValue = false
             } label: {
                 Image("reports.submit-later")
-                    .opacity(reportViewModel.currentReportVM.reportIsDraft ? 1 : 0.4)
-            }.disabled(!reportViewModel.currentReportVM.reportIsDraft)
+                    .opacity(reportViewModel.reportIsDraft ? 1 : 0.4)
+            }.disabled(!reportViewModel.reportIsDraft)
             
             
             TellaButtonView<AnyView> (title: "SUBMIT",
                                       nextButtonAction: .action,
                                       buttonType: .yellow,
-                                      isValid: $reportViewModel.currentReportVM.reportIsValid) {
+                                      isValid: $reportViewModel.reportIsValid) {
                 
             }.padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
         }
@@ -200,7 +222,7 @@ struct DraftReportView: View {
 struct DraftReportView_Previews: PreviewProvider {
     static var previews: some View {
         
-        DraftReportView(isPresented: .constant(true))
+        DraftReportView(mainAppModel: MainAppModel(), isPresented: .constant(true))
             .environmentObject(ReportsViewModel(mainAppModel: MainAppModel()))
     }
 }

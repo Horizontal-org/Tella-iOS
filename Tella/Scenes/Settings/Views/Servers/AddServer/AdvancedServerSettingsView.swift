@@ -7,10 +7,9 @@ import SwiftUI
 
 struct AdvancedServerSettingsView: View {
     
-    @State var presentingSuccessAdvancedSettings : Bool = false
-    
-    @EnvironmentObject var serversViewModel : ServersViewModel
-    
+    @State private var presentingSuccessAdvancedSettings : Bool = false
+    @EnvironmentObject var serverVM : ServerViewModel
+
     var body: some View {
         
         ContainerView {
@@ -30,8 +29,8 @@ struct AdvancedServerSettingsView: View {
                 Spacer()
                     .frame(height: 16)
                 
-                SettingsCardView(cardViewArray: [ShareInfoView(shareInfo: $serversViewModel.currentServer.activatedMetadata).eraseToAnyView(),
-                                                 BackgroundUploadView(backgroundUpload: $serversViewModel.currentServer.backgroundUpload).eraseToAnyView()])
+                SettingsCardView(cardViewArray: [ShareInfoView(shareInfo: $serverVM.activatedMetadata).eraseToAnyView(),
+                                                 BackgroundUploadView(backgroundUpload: $serverVM.backgroundUpload).eraseToAnyView()])
                 
                 Spacer()
                 
@@ -39,7 +38,7 @@ struct AdvancedServerSettingsView: View {
                                         nextButtonAction: .action,
                                         nextAction:  {
                     
-                    serversViewModel.updateServer()
+                    serverVM.updateServer()
                     presentingSuccessAdvancedSettings = true
                 })
                 
@@ -53,7 +52,7 @@ struct AdvancedServerSettingsView: View {
     
     
     private var nextViewLink: some View {
-        SuccessAdvancedSettingsView(isPresented: $presentingSuccessAdvancedSettings).environmentObject(serversViewModel)
+        SuccessAdvancedSettingsView(isPresented: $presentingSuccessAdvancedSettings)
             .addNavigationLink(isActive: $presentingSuccessAdvancedSettings)
     }
     

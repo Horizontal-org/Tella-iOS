@@ -6,7 +6,7 @@
 import SwiftUI
 
 struct ShareInfoView: View {
-
+    
     @Binding var shareInfo : Bool
     
     var body: some View {

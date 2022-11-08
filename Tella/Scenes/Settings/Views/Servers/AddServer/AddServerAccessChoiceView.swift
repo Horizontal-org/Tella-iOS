@@ -8,7 +8,7 @@ import SwiftUI
 struct AddServerAccessChoiceView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var serversViewModel : ServersViewModel
+    @EnvironmentObject var serversViewModel : ServerViewModel
     
     var body: some View {
         ContainerView {
@@ -32,8 +32,8 @@ struct AddServerAccessChoiceView: View {
                         .frame(height: 12)
                     
                     TellaButtonView (title: "NO",
-                                    nextButtonAction: .destination,
-                                    destination: ServerLoginView().environmentObject(serversViewModel),
+                                     nextButtonAction: .destination,
+                                     destination: ServerLoginView().environmentObject(serversViewModel),
                                      isValid: .constant(true))
                     
                     Spacer()

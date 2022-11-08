@@ -10,11 +10,13 @@ import SwiftUI
 struct TextEditorView : View {
     
     var placeholder : String
+    
     @Binding var fieldContent : String
     @Binding var isValid : Bool
     @Binding var shouldShowError : Bool
     
     var errorMessage : String?
+    var shouldShowTitle : Bool = false
     var onCommit : (() -> Void)? =  ({})
     
     @State var textEditorHeight : CGFloat = 36
@@ -34,33 +36,41 @@ struct TextEditorView : View {
         
         ZStack(alignment: .leading) {
             
-            if fieldContent.isEmpty {
-                Text(placeholder)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                    .foregroundColor(Color.white)
-                Spacer()
-            }
-            
-            Text(fieldContent)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(.clear)
-                .background(GeometryReader {
-                    Color.clear.preference(key: ViewHeightKey.self,
-                                           value: $0.frame(in: .local).size.height)
-                })
-            
-            if #available(iOS 16.0, *) {
-                tellaTextEditor
-                    .scrollContentBackground(.hidden)
-            } else {
-                tellaTextEditor
-                    .onAppear {
-                        UITextView.appearance().backgroundColor = .clear
+            VStack(spacing: -20) {
+                Group {
+                    if shouldShowTitle {
+                        Text(placeholder)
+                            .frame(maxWidth: .infinity,alignment: .leading)
+                        
+                            .padding(.bottom, fieldContent.isEmpty ? 0 : 15)
+                        
+                            .background(Styles.Colors.backgroundMain)
+                            .offset(y: fieldContent.isEmpty ? 0 : -20)
+                            .scaleEffect(fieldContent.isEmpty ? 1 : 0.88, anchor: .leading)
+                            .animation(.default)
+                        
+                    } else {
+                        Text(placeholder)
+                            .opacity(fieldContent.isEmpty ? 1 : 0 )
                     }
+                    
+                } .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                    .frame(maxWidth: .infinity,alignment: .leading)
+                    .contentShape(Rectangle())
+                    .foregroundColor(fieldContent.isEmpty ? .white : .white.opacity(0.8) )
+                
+                if #available(iOS 16.0, *) {
+                    tellaTextEditor
+                        .scrollContentBackground(.hidden)
+                } else {
+                    tellaTextEditor
+                        .onAppear {
+                            UITextView.appearance().backgroundColor = .clear
+                        }
+                }
             }
         }
         
-        .onPreferenceChange(ViewHeightKey.self) { textEditorHeight = $0 }
     }
     
     var tellaTextEditor : some View {
@@ -73,7 +83,7 @@ struct TextEditorView : View {
             .multilineTextAlignment(.leading)
             .disableAutocorrection(true)
             .keyboardType(.alphabet)
-            .frame(height: max(36,textEditorHeight + 15))
+            .frame(height: 65)
             .padding(EdgeInsets(top: -7, leading: -5, bottom: -5, trailing: -5))
             .onChange(of: fieldContent, perform: { value in
                 validateField(value: value)
@@ -114,9 +124,3 @@ struct TextEditorView_Previews: PreviewProvider {
     }
 }
 
-struct ViewHeightKey: PreferenceKey {
-    static var defaultValue: CGFloat { 0 }
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = value + nextValue()
-    }
-}

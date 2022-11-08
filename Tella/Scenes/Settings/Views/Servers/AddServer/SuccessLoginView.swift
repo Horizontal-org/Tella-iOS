@@ -9,7 +9,6 @@ struct SuccessLoginView: View {
     
     @Binding var isPresented : Bool
     @EnvironmentObject var mainAppModel : MainAppModel
-    @EnvironmentObject var serversViewModel : ServersViewModel
     
     var body: some View {
         
