@@ -19,7 +19,7 @@ class TellaDataBase {
     func createTables() {
         createServerTable()
         createReportTable()
-        //        createReportFilesTable()
+        // createReportFilesTable()
     }
     
     func createServerTable() {
@@ -49,15 +49,6 @@ class TellaDataBase {
         ]
         dataBaseHelper.createTable(tableName: D.tReport, columns: columns)
     }
-    
-    //    func createReportFilesTable() {
-    //        // c_id | c_vaultFile_id | c_report_id
-    //        let columns = [
-    //            cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
-    //            cddl(D.cVaultFileId, D.integer),
-    //            cddl(D.cReportId, D.integer, tableName: D.tReport, referenceKey: D.cId)]
-    //        dataBaseHelper.createTable(tableName: D.tReportFiles, columns: columns)
-    //    }
     
     func addServer(server : Server) throws -> Int {
         return try dataBaseHelper.insertInto(tableName: D.tServer,

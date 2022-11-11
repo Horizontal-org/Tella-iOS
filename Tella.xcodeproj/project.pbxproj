@@ -69,6 +69,7 @@
 		122C54BC28C614C2003B2DBC /* TellaButtonStyleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122C54BB28C614C2003B2DBC /* TellaButtonStyleProtocol.swift */; };
 		122C54BE28C6351E003B2DBC /* AdvancedServerSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122C54BD28C6351E003B2DBC /* AdvancedServerSettingsView.swift */; };
 		122C54C028C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122C54BF28C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift */; };
+		122E4D55291ADEB300562EB1 /* AddFilesToDraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122E4D54291ADEB300562EB1 /* AddFilesToDraftView.swift */; };
 		1230BE4727CD6D440055F854 /* AudioAuthorizationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230BE4627CD6D440055F854 /* AudioAuthorizationStatus.swift */; };
 		1233007828E30C7900B8F7BA /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233007728E30C7900B8F7BA /* APIRequest.swift */; };
 		1233007A28E3115500B8F7BA /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233007928E3115500B8F7BA /* Request.swift */; };
@@ -314,7 +315,6 @@
 
 /* Begin PBXFileReference section */
 		0D4BC3BF267577F900DCDC30 /* ReportModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportModels.swift; sourceTree = "<group>"; };
-		0D4BC3C0267577F900DCDC30 /* NewReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewReportView.swift; sourceTree = "<group>"; };
 		0D4BC3C1267577F900DCDC30 /* ReportsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportsView.swift; sourceTree = "<group>"; };
 		0D4BC3C2267577F900DCDC30 /* DocumentPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
 		0D4BC3CB26765B8C00DCDC30 /* ModelStubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelStubs.swift; sourceTree = "<group>"; };
@@ -383,6 +383,7 @@
 		122C54BB28C614C2003B2DBC /* TellaButtonStyleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaButtonStyleProtocol.swift; sourceTree = "<group>"; };
 		122C54BD28C6351E003B2DBC /* AdvancedServerSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedServerSettingsView.swift; sourceTree = "<group>"; };
 		122C54BF28C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessAdvancedSettingsView.swift; sourceTree = "<group>"; };
+		122E4D54291ADEB300562EB1 /* AddFilesToDraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFilesToDraftView.swift; sourceTree = "<group>"; };
 		1230BE4627CD6D440055F854 /* AudioAuthorizationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAuthorizationStatus.swift; sourceTree = "<group>"; };
 		1233007728E30C7900B8F7BA /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		1233007928E3115500B8F7BA /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
@@ -638,7 +639,6 @@
 				0D4BC3C1267577F900DCDC30 /* ReportsView.swift */,
 				1240E6B12908123900692232 /* ReportListView.swift */,
 				121C945C28FF3D6900570EB4 /* Draft */,
-				0D4BC3C0267577F900DCDC30 /* NewReportView.swift */,
 				0D4BC3BF267577F900DCDC30 /* ReportModels.swift */,
 				0D4BC3C2267577F900DCDC30 /* DocumentPicker.swift */,
 				1240E6AF2907E14400692232 /* ReportCardView.swift */,
@@ -790,6 +790,7 @@
 			children = (
 				121C945D28FF3DCC00570EB4 /* EmptyReportView.swift */,
 				1236644E28FFECEF00FA839B /* DraftReportView.swift */,
+				122E4D54291ADEB300562EB1 /* AddFilesToDraftView.swift */,
 			);
 			path = Draft;
 			sourceTree = "<group>";
@@ -815,6 +816,15 @@
 				1224DAEF2719C71B001C0ED0 /* LockPasswordData.swift */,
 			);
 			path = Password;
+			sourceTree = "<group>";
+		};
+		122E4D53291AD99A00562EB1 /* TellaButton */ = {
+			isa = PBXGroup;
+			children = (
+				129B845828BFED9700F1B344 /* TellaButtonView.swift */,
+				122C54BB28C614C2003B2DBC /* TellaButtonStyleProtocol.swift */,
+			);
+			path = TellaButton;
 			sourceTree = "<group>";
 		};
 		1232EE9A2918F8470094EE3A /* View Model */ = {
@@ -1295,6 +1305,7 @@
 		12D7F5F52743F28700EBA3A2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				122E4D53291AD99A00562EB1 /* TellaButton */,
 				1272F25A27C919E40054F2E2 /* ImportFilesProgressView */,
 				0E99854E266E56A80019FDF4 /* Widgets */,
 				0E78B3A42656B03500F9BDBC /* BottomSheet */,
@@ -1311,6 +1322,7 @@
 				1EAE6BF424146C2100114244 /* QuickLook.swift */,
 				1244141827E35D120037D469 /* VaultFileImages.swift */,
 				1217FCA028F9946A00DD2D70 /* CircularActivityIndicatory.swift */,
+				129B844E28BF5E4700F1B344 /* TextfieldView.swift */,
 				1216F8732901823100F5AEA5 /* TextEditorView.swift */,
 			);
 			path = Components;
@@ -1380,9 +1392,6 @@
 		12EC94D428ABCA5B0070E72B /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				129B845828BFED9700F1B344 /* TellaButtonView.swift */,
-				122C54BB28C614C2003B2DBC /* TellaButtonStyleProtocol.swift */,
-				129B844E28BF5E4700F1B344 /* TextfieldView.swift */,
 				12ADF98C28BD16A400FA96EB /* SettingsCardView.swift */,
 				12EC94D728ABCCED0070E72B /* SettingsItemView.swift */,
 				0D4D7517266470A700D7A635 /* SettingToggleItem.swift */,
@@ -2067,6 +2076,7 @@
 				12781F4427E9FCE200FE9609 /* PasswordTypeEnum.swift in Sources */,
 				D5DA7F9B2648D05400B00FDA /* FileListView.swift in Sources */,
 				1237A71C278F5B2E00D7BC0F /* DateExtension.swift in Sources */,
+				122E4D55291ADEB300562EB1 /* AddFilesToDraftView.swift in Sources */,
 				1221CB6F28DB1B1B0042F15F /* SqliteError.swift in Sources */,
 				127C155C27DA69FF009EC15B /* TransitionViewData.swift in Sources */,
 				D516397C2631113B003A11B5 /* Styles.swift in Sources */,

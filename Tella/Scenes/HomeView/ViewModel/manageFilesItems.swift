@@ -11,6 +11,7 @@ enum ManageFileType: ActionType {
     case recorder
     case fromDevice
     case folder
+    case tellaFile
 }
 
 var manageFilesItems : [ListActionSheetItem] { return [

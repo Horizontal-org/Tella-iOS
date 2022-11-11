@@ -82,7 +82,7 @@ struct MainView: View  {
                     }
                 }
                 .navigationBarTitle(LocalizableHome.appBar.localized, displayMode: .inline)
-                .navigationBarHidden(appModel.selectedTab == .home ? false : true)
+//                .navigationBarHidden(appModel.selectedTab == .home ? false : true)
             }
             .accentColor(.white)
             .navigationViewStyle(.stack)

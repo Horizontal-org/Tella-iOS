@@ -17,7 +17,7 @@ enum FileType: String, Codable {
 
 class VaultFile: Codable, Hashable {
     
-    func hash(into hasher: inout Hasher){
+    func hash(into hasher: inout Hasher) {
         hasher.combine(containerName.hashValue)
     }
     

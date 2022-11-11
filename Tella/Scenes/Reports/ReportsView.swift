@@ -17,7 +17,7 @@ struct ReportsView: View {
     }
     
     var body: some View {
-        NavigationView {
+//        NavigationView {
             ZStack(alignment: .top) {
                 
                 Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
@@ -51,15 +51,22 @@ struct ReportsView: View {
                         
                     }
                     
-                    TellaButtonView<AnyView> (title: "NEW REPORT",
-                                              nextButtonAction: .action,
+//                    TellaButtonView<AnyView> (title: "NEW REPORT",
+//                                              nextButtonAction: .action,
+//                                              buttonType: .yellow,
+//                                              isValid: .constant(true)) {
+//                        shouldShowNewReport = true
+//                    }.padding(EdgeInsets(top: 30, leading: 24, bottom: 16, trailing: 24))
+//
+                    
+                    TellaButtonView (title: "NEW REPORT",
+                                              nextButtonAction: .destination,
                                               buttonType: .yellow,
+                                              destination: DraftReportView(mainAppModel: mainAppModel, isPresented: $shouldShowNewReport),
                                               isValid: .constant(true)) {
-                        shouldShowNewReport = true
+//                        shouldShowNewReport = true
                     }.padding(EdgeInsets(top: 30, leading: 24, bottom: 16, trailing: 24))
-                    
-                    
-                    
+
                     
                 }
                 .background(Styles.Colors.backgroundMain)
@@ -67,12 +74,13 @@ struct ReportsView: View {
             .navigationBarTitle("Reports")
             .background(Styles.Colors.backgroundMain)
             
-            .fullScreenCover(isPresented: $shouldShowNewReport, content: {
-                DraftReportView(mainAppModel: mainAppModel, isPresented: $shouldShowNewReport)
-            })
+//            .fullScreenCover(isPresented: $shouldShowNewReport, content: {
+//                DraftReportView(mainAppModel: mainAppModel, isPresented: $shouldShowNewReport)
+//            })
             
             .environmentObject(reportsViewModel)
-        }
+
+//        }
     }
 }
 

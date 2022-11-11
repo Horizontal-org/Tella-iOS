@@ -7,14 +7,20 @@ import SwiftUI
 
 struct DraftReportView: View {
     
-    var isPresented : Binding<Bool>
+//    var isPresented : Binding<Bool>
     @StateObject var reportViewModel : DraftReportVM
     
     @State private var menuFrame : CGRect = CGRectZero
     @State private var shouldShowMenu : Bool = false
+    @State private var shouldShowSelectFiles : Bool = false
+    @State private var shouldShowNavBar : Bool = false
+
+    @EnvironmentObject var mainAppModel : MainAppModel
     
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
     init(mainAppModel: MainAppModel, isPresented : Binding<Bool>, report:Report? = nil) {
-        self.isPresented = isPresented
+//        self.isPresented = isPresented
         _reportViewModel = StateObject(wrappedValue: DraftReportVM(mainAppModel: mainAppModel,report:report))
     }
     
@@ -33,18 +39,29 @@ struct DraftReportView: View {
                 }
                 
                 serverListMenuView
+                
+//                AddFilesToDraftView(shouldShowSelectFiles: $shouldShowSelectFiles)
+
             }
         }
+        .onAppear(perform: {
+            shouldShowNavBar = true
+        })
         .onTapGesture {
             shouldShowMenu = false
         }
+        .navigationBarHidden(true)
+
     }
     
     var draftReportHeaderView: some View {
         
         HStack(spacing: 0) {
             Button {
-                self.isPresented.wrappedValue = false
+//                self.isPresented.wrappedValue = false
+                self.presentationMode.wrappedValue.dismiss()
+                shouldShowNavBar = false
+
             } label: {
                 Image("close")
                     .padding(EdgeInsets(top: 16, leading: 12, bottom: 16, trailing: 16))
@@ -59,7 +76,7 @@ struct DraftReportView: View {
             Button {
                 reportViewModel.status = .draft
                 reportViewModel.saveReport()
-                self.isPresented.wrappedValue = false
+//                self.isPresented.wrappedValue = false
                 
             } label: {
                 Image("reports.save")
@@ -71,21 +88,21 @@ struct DraftReportView: View {
         }.frame(height: 56)
     }
     
-    var attachedFile : some View {
-        
-        VStack {
-            Text("Attach files here")
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.leading)
-            
-            Button {
-                
-            } label: {
-                Image("reports.add")
-            }
-        }
-    }
+//    var attachedFile : some View {
+//        
+//        VStack {
+//            Text("Attach files here")
+//                .font(.custom(Styles.Fonts.regularFontName, size: 14))
+//                .foregroundColor(.white)
+//                .multilineTextAlignment(.leading)
+//            
+//            Button {
+//                shouldShowSelectFiles = true
+//            } label: {
+//                Image("reports.add")
+//            }
+//        }
+//    }
     
     var draftContentView: some View {
         
@@ -148,7 +165,9 @@ struct DraftReportView: View {
                     Spacer()
                         .frame(height: 24)
                     
-                    attachedFile
+                    AddFilesToDraftView(appModel: MainAppModel(),
+                                        rootFile: mainAppModel.vaultManager.root,
+                                        fileType: nil)
                     
                     Spacer()
                     
@@ -201,7 +220,7 @@ struct DraftReportView: View {
             Button {
                 reportViewModel.status = .outbox
                 reportViewModel.saveReport()
-                self.isPresented.wrappedValue = false
+//                self.isPresented.wrappedValue = false
             } label: {
                 Image("reports.submit-later")
                     .opacity(reportViewModel.reportIsDraft ? 1 : 0.4)
