@@ -58,3 +58,4 @@ struct TellaApp: App {
         appViewState.homeViewModel?.shouldShowSecurityScreen = false
     }
 }
+

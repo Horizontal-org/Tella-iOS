@@ -1,8 +1,5 @@
-//
-//  ServerVM.swift
 //  Tella
 //
-//  Created by Dhekra Rouatbi on 2/11/2022.
 //  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 
