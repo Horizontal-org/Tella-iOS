@@ -13,26 +13,27 @@ struct RecordView: View {
     
     @StateObject var viewModel : RecordViewModel
     
-    var sourceView : SourceView
-    var showingRecoredrView : Binding<Bool>
-    
     @EnvironmentObject private var mainAppModel: MainAppModel
     @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject var sheetManager: SheetManager
     
     @State private var showingSaveSuccessView : Bool = false
-    
     @State private var fileName : String = ""
-    
     
     let modalHeight = 173.0
     
-    init(appModel: MainAppModel, rootFile: VaultFile, sourceView : SourceView, showingRecoredrView: Binding<Bool> ) {
-        _viewModel = StateObject(wrappedValue: RecordViewModel(mainAppModel: appModel, rootFile: rootFile))
-        self.sourceView = sourceView
-        self.showingRecoredrView = showingRecoredrView
+    init(appModel: MainAppModel,
+         rootFile: VaultFile,
+         sourceView : SourceView,
+         showingRecoredrView: Binding<Bool>,
+         resultFile : Binding<[VaultFile]?>? = nil) {
+        
+        _viewModel = StateObject(wrappedValue: RecordViewModel(mainAppModel: appModel,
+                                                               rootFile: rootFile,
+                                                               resultFile: resultFile,
+                                                               sourceView: sourceView,
+                                                               showingRecoredrView: showingRecoredrView))
     }
-    
     
     func goBack() {
         self.appViewState.navigateBack()
@@ -67,7 +68,7 @@ struct RecordView: View {
                 self.viewModel.onStopRecording()
             }
         }
-
+        
         .alert(isPresented: self.$viewModel.shouldShowSettingsAlert) {
             getSettingsAlertView()
         }
@@ -139,7 +140,12 @@ struct RecordView: View {
             }
             
             Button(action: {
+                
+                if self.viewModel.sourceView == .addSingleFile{
+                    viewModel.showingRecoredrView.wrappedValue = false
+                }
                 self.viewModel.onStopRecording()
+                
             }) {
                 Image("mic.stop")
                     .frame(width: 83, height: 83)
@@ -216,10 +222,10 @@ struct RecordView: View {
                 if  viewModel.state == .paused || viewModel.state == .recording  {
                     showSaveAudioConfirmationView()
                 } else {
-                    if sourceView == .tab {
+                    if viewModel.sourceView == .tab {
                         mainAppModel.selectedTab = .home
                     } else {
-                        showingRecoredrView.wrappedValue = false
+                        viewModel.showingRecoredrView.wrappedValue = false
                     }
                 }
             } label: {

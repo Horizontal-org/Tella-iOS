@@ -20,7 +20,7 @@ class VaultFile: Codable, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(containerName.hashValue)
     }
-    
+    let id: String
     let type: FileType
     var fileName: String
     let containerName: String
@@ -39,6 +39,7 @@ class VaultFile: Codable, Hashable {
     }
     
     init(type: FileType, fileName: String, containerName: String = UUID().uuidString, files: [VaultFile]? = nil, thumbnail: Data? = nil, fileExtension : String = "", size : Int64 = 0, resolution : CGSize? = nil, duration : Double? = nil, pathArray :[String]) {
+        self.id = UUID().uuidString
         self.type = type
         self.fileName = fileName
         self.containerName = containerName
@@ -46,7 +47,6 @@ class VaultFile: Codable, Hashable {
         self.created = Date()
         self.thumbnail = thumbnail
         self.fileExtension = fileExtension
-        
         self.size = size
         self.duration = duration
         self.resolution = resolution
@@ -253,6 +253,24 @@ extension VaultFile {
             default:
                 let recentFile = RecentFile(file: file, rootFile: rootFile, folderPathArray:  folderPathArray)
                 vaultFileResult.append(recentFile)
+            }
+        }
+    }
+}
+
+
+extension VaultFile {
+    
+    func getFile(root: VaultFile, vaultFileResult: inout Set<VaultFile>, ids: [String])  {
+        
+        root.files.forEach { file in
+            switch file.type {
+            case .folder:
+                getFile(root: file, vaultFileResult: &vaultFileResult, ids: ids)
+            default:
+                if ids.contains(file.id) {
+                    vaultFileResult.insert(file)  
+                }
             }
         }
     }

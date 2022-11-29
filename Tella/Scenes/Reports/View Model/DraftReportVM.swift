@@ -5,6 +5,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 class DraftReportVM: ObservableObject {
     
@@ -14,7 +15,7 @@ class DraftReportVM: ObservableObject {
     @Published var id : Int?
     @Published var title : String = ""
     @Published var description : String = ""
-    @Published var files : [VaultFile] = []
+    @Published var files :  Set <VaultFile> = []
     @Published var server : Server?
     @Published var status : ReportStatus?
     
@@ -24,6 +25,17 @@ class DraftReportVM: ObservableObject {
     @Published var shouldShowError : Bool = false
     @Published var reportIsValid : Bool = false
     @Published var reportIsDraft : Bool = false
+    
+    @Published var resultFile : [VaultFile]?
+
+    
+    @Published var showingSuccessMessage : Bool = false
+    @Published var showingImagePicker : Bool = false
+    @Published var showingImportDocumentPicker : Bool = false
+    @Published var showingFileList : Bool = false
+    @Published var showingRecordView : Bool = false
+    @Published var showingCamera : Bool = false
+
     
     
     var serverArray : [Server] = []
@@ -40,6 +52,8 @@ class DraftReportVM: ObservableObject {
         return serverArray.count > 1
     }
     
+
+    
     init(mainAppModel : MainAppModel, report:Report? = nil) {
         
         self.mainAppModel = mainAppModel
@@ -49,7 +63,9 @@ class DraftReportVM: ObservableObject {
         })
         
         $isValidTitle.combineLatest($isValidDescription, $files).sink(receiveValue: { isValidTitle, isValidDescription, files in
-            self.reportIsDraft = isValidTitle || isValidDescription || !files.isEmpty
+            DispatchQueue.main.async {
+                self.reportIsDraft = isValidTitle || isValidDescription || !files.isEmpty
+            }
         }).store(in: &subscribers)
         
         getServers()
@@ -57,9 +73,21 @@ class DraftReportVM: ObservableObject {
         initcurrentReportVM()
         
         fillReportVM(report: report)
+        
+        $resultFile.sink(receiveValue: { value in
+
+            guard let value else { return  }
+//            DispatchQueue.main.async {
+                
+            self.files.insert(value)
+                print(":)")
+            self.publishUpdates()
+//            }
+
+        }).store(in: &subscribers)
     }
     
-    func getServers()  {
+    func getServers() {
         serverArray = mainAppModel.vaultManager.tellaData.servers.value
     }
     
@@ -71,10 +99,14 @@ class DraftReportVM: ObservableObject {
     
     func fillReportVM(report: Report?) {
         if let report = report {
+            var vaultFileResult : Set<VaultFile> = []
+
             self.id = report.id
             self.title = report.title ?? ""
             self.description = report.description ?? ""
             self.server = report.server
+            mainAppModel.vaultManager.root.getFile(root: mainAppModel.vaultManager.root, vaultFileResult: &vaultFileResult, ids: report.vaultFiles ?? [])
+            self.files = vaultFileResult
         }
     }
     
@@ -82,7 +114,7 @@ class DraftReportVM: ObservableObject {
         
         guard let server = server else { return }
         
-        let report = Report(id: id, title: title, description: description, date: Date(), status: status, server: server)
+        let report = Report(id: id, title: title, description: description, date: Date(), status: status, server: server, vaultFiles: self.files.compactMap{$0.id})
         
         do {
             if let _ = id {
@@ -90,8 +122,28 @@ class DraftReportVM: ObservableObject {
             } else {
                 let _ = try mainAppModel.vaultManager.tellaData.addReport(report: report)
             }
+            
+            
+//            showingSuccessMessage = true
+//            
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//                self.showingSuccessMessage = false
+//            }
+
         } catch {
             
         }
     }
+    
+    func deleteFile(fileId: String) {
+        guard let index = files.firstIndex(where: { $0.id == fileId})  else  {return }
+        files.remove(at: index)
+     }
+    
+    func publishUpdates() {
+        DispatchQueue.main.async {
+            self.objectWillChange.send()
+        }
+    }
+
 }

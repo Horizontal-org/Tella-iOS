@@ -13,19 +13,22 @@ class Report : Hashable {
     @Published var date : Date?
     var status : ReportStatus?
     var server : Server?
-    
+    var vaultFiles : [String]?
+
     init(id : Int? = nil,
          title : String?,
          description : String?,
          date : Date?,
          status : ReportStatus?,
-         server : Server?) {
+         server : Server?,
+         vaultFiles : [String]?) {
         self.id = id
         self.title = title
         self.description = description
         self.date = date
         self.status = status
         self.server = server
+        self.vaultFiles = vaultFiles
     }
     
     static func == (lhs: Report, rhs: Report) -> Bool {

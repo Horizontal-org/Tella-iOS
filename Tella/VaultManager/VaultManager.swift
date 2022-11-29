@@ -67,8 +67,8 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
     }
     
-    func importFile(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray : [VaultFile]) {
-        Task {
+    func importFile(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray : [VaultFile]) async throws -> [VaultFile] {
+//        Task {
             do{
                 let filesInfo = try await self.getFilesInfo(files: files, folderPathArray: folderPathArray)
                 
@@ -106,13 +106,17 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                     }
                     
                 }).store(in: &self.cancellable)
+                
+                return filesInfo.0.compactMap{$0.1}
             }
             catch {
+                return []
+
             }
-        }
+//        }
     }
     
-    func importFile(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName: String, folderPathArray : [VaultFile]) {
+    func importFile(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName: String, folderPathArray : [VaultFile]) async throws -> VaultFile? {
         
         debugLog("\(audioFilePath)", space: .files)
         
@@ -147,8 +151,11 @@ class VaultManager: VaultManagerInterface, ObservableObject {
             if let _ = save(data, vaultFile: vaultFile, parent: parentFolder) {
                 save(file: root)
             }
+            
+            return vaultFile
         } catch let error {
             debugLog(error)
+            return nil
         }
         
     }

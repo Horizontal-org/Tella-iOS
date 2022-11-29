@@ -244,6 +244,10 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     }
     
     func checkCameraPermission() {
+        DispatchQueue.main.async {
+            
+      
+        
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
             self.checkMicrophonePermission()
@@ -258,16 +262,17 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
             }
             
         case .denied:
-            shouldShowPermission = true
+            self.shouldShowPermission = true
             self.shouldCloseCamera = false
             
         case .restricted:
-            shouldShowPermission = true
+            self.shouldShowPermission = true
             self.shouldCloseCamera = false
             
             return
         @unknown default:
             break
+        }
         }
     }
     

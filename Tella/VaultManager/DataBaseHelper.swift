@@ -177,6 +177,7 @@ class DataBaseHelper {
         tableName + " (" +
         columns.joined(separator: ",") +
         ");"
+        print("sqlExpression :::::", sqlExpression)
         
         let ret = sqlite3_exec(dbPointer, sqlExpression, nil, nil, nil)
         

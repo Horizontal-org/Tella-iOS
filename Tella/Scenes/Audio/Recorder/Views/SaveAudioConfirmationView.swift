@@ -34,13 +34,25 @@ struct SaveAudioConfirmationView: View {
                 showingSaveSuccessView = false
             }
             
-            mainAppModel.selectedTab = .home
             
-        } didDiscardAction: {
-            sheetManager.hide()
-            self.viewModel.onResetRecording()
-            mainAppModel.selectedTab = .home
+            
+            switch self.viewModel.sourceView {
+            case .addSingleFile:
+                viewModel.showingRecoredrView.wrappedValue = false
+            default:
+                mainAppModel.selectedTab = .home
+            }
 
+        } didDiscardAction: {
+            switch self.viewModel.sourceView {
+            case .addSingleFile:
+                viewModel.showingRecoredrView.wrappedValue = false
+            default:
+                sheetManager.hide()
+                self.viewModel.onResetRecording()
+                mainAppModel.selectedTab = .home
+
+            }
         } didCancelAction: {
             sheetManager.hide()
         }
@@ -50,7 +62,10 @@ struct SaveAudioConfirmationView: View {
 struct SaveAudioConfirmationView_Previews: PreviewProvider {
     static var previews: some View {
         SaveAudioConfirmationView(viewModel: RecordViewModel(mainAppModel: MainAppModel(),
-                                                             rootFile: VaultFile.stub(type: .image)),
+                                                             rootFile: VaultFile.stub(type: .audio),
+                                                             resultFile: .constant([VaultFile.stub(type: .audio)]),
+                                                             sourceView: .tab,
+                                                             showingRecoredrView: .constant(true)),
                                   showingSaveSuccessView: .constant(true))
     }
 }

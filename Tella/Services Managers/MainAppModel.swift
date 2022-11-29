@@ -7,8 +7,8 @@ import Combine
 
 protocol AppModelFileManagerProtocol {
     
-    func add(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray:[VaultFile] )
-    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String, folderPathArray:[VaultFile])
+    func add(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray:[VaultFile]) async throws -> [VaultFile]
+    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String, folderPathArray:[VaultFile]) async throws -> VaultFile?
     func add(folder: String, to parentFolder: VaultFile?, folderPathArray:[VaultFile])
     
     func move(files: [VaultFile], from originalParentFolder: VaultFile?, to newParentFolder: VaultFile?)
@@ -88,7 +88,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         selectedTab = newTab
     }
     
-    func add(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray:[VaultFile] = []) {
+    func add(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray:[VaultFile] = []) async throws -> [VaultFile] {
         
         vaultManager.progress.progress.sink { [weak self] value in
             self?.publishUpdates()
@@ -98,13 +98,16 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
             self?.publishUpdates()
         }.store(in: &cancellable)
         
-        self.vaultManager.importFile(files: files, to: parentFolder, type: type, folderPathArray: folderPathArray)
+        let files = try await self.vaultManager.importFile(files: files, to: parentFolder, type: type, folderPathArray: folderPathArray)
         self.publishUpdates()
+        return files
     }
     
-    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String, folderPathArray:[VaultFile] = []) {
-        self.vaultManager.importFile(audioFilePath: audioFilePath, to: parentFolder, type: type, fileName: fileName, folderPathArray: folderPathArray)
+    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String, folderPathArray:[VaultFile] = []) async throws -> VaultFile? {
+        let file = try await   self.vaultManager.importFile(audioFilePath: audioFilePath, to: parentFolder, type: type, fileName: fileName, folderPathArray: folderPathArray)
         self.publishUpdates()
+        return file
+
     }
     
     func add(folder: String, to parentFolder: VaultFile?,  folderPathArray:[VaultFile] = []) {

@@ -10,17 +10,32 @@ struct CameraView: View {
     
     // MARK: - Public properties
     var sourceView : SourceView
-    var subscriptions = Set<AnyCancellable>()
+    var showingCameraView : Binding<Bool>
     
-    @State var showingPermissionAlert : Bool = false
-    @Binding var showingCameraView : Bool
-    @ObservedObject var cameraViewModel :  CameraViewModel
-    @StateObject var model = CameraModel()
+    // MARK: - Private properties
     
-    @EnvironmentObject var mainAppModel : MainAppModel
-    @EnvironmentObject var sheetManager: SheetManager
+    private var subscriptions = Set<AnyCancellable>()
+    
+    @State private var showingPermissionAlert : Bool = false
+    @StateObject private var cameraViewModel :  CameraViewModel
+    @StateObject private var model = CameraModel()
+    @EnvironmentObject private var mainAppModel : MainAppModel
+    @EnvironmentObject private var sheetManager: SheetManager
     
     
+    init(sourceView: SourceView,
+         showingCameraView: Binding<Bool>,
+         resultFile: Binding<[VaultFile]?>? = nil,
+         mainAppModel: MainAppModel,
+         rootFile:VaultFile) {
+        
+        self.sourceView = sourceView
+        self.showingCameraView = showingCameraView
+        
+        _cameraViewModel = StateObject(wrappedValue: CameraViewModel(mainAppModel: mainAppModel, rootFile: rootFile, resultFile: resultFile))
+        
+    }
+
     var body: some View {
         
         NavigationContainerView(backgroundColor: Color.black) {
@@ -54,7 +69,7 @@ struct CameraView: View {
                     if sourceView == .tab {
                         mainAppModel.selectedTab = .home
                     } else {
-                        showingCameraView = false
+                        showingCameraView.wrappedValue = false
                     }
                     mainAppModel.clearTmpDirectory()
                 }
@@ -85,7 +100,7 @@ struct CameraView: View {
     
     private func getCameraControlsView() -> some View {
         
-        CameraControlsView(showingCameraView: $showingCameraView,
+        CameraControlsView(showingCameraView: showingCameraView,
                            sourceView: sourceView,
                            captureButtonAction: {
             model.capturePhoto()

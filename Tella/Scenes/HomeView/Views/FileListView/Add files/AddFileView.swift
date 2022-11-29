@@ -9,6 +9,11 @@ struct AddFileView: View {
     @State private var fieldContent: String = ""
     @State private var isValid = false
     
+//    @State var showingImagePicker : Bool = false
+//    @State var showingImportDocumentPicker : Bool = false
+//    @State var showingMicrophone : Bool = false
+//    @State var showingCamera : Bool = false
+
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var fileListViewModel: FileListViewModel
     @EnvironmentObject var sheetManager: SheetManager
@@ -21,13 +26,18 @@ struct AddFileView: View {
                 showAddFileSheet()
             })
             
-            PhotoVideoPickerView()
+            PhotoVideoPickerView(showingImagePicker: $fileListViewModel.showingImagePicker,
+                                 showingImportDocumentPicker: $fileListViewModel.showingImportDocumentPicker,
+                                 appModel: appModel)
         }
         .overlay(fileListViewModel.showingCamera ?
                  CameraView(sourceView: .addFile,
                             showingCameraView: $fileListViewModel.showingCamera,
-                            cameraViewModel: CameraViewModel(mainAppModel: appModel,
-                                                             rootFile: fileListViewModel.rootFile)) : nil)
+                           mainAppModel: appModel,
+                           rootFile: fileListViewModel.rootFile) : nil)
+        
+//        CameraViewModel(mainAppModel: appModel,
+//                                         rootFile: fileListViewModel.rootFile)
         
         .overlay(fileListViewModel.showingMicrophone ?
                  RecordView(appModel: appModel,

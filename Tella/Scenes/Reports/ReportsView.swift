@@ -71,16 +71,12 @@ struct ReportsView: View {
                 }
                 .background(Styles.Colors.backgroundMain)
             }
-            .navigationBarTitle("Reports")
+            .navigationBarTitle("Reports", displayMode: .large)
+
             .background(Styles.Colors.backgroundMain)
-            
-//            .fullScreenCover(isPresented: $shouldShowNewReport, content: {
-//                DraftReportView(mainAppModel: mainAppModel, isPresented: $shouldShowNewReport)
-//            })
-            
+
             .environmentObject(reportsViewModel)
 
-//        }
     }
 }
 

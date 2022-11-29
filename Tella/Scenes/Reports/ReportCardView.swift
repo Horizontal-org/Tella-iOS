@@ -43,17 +43,18 @@ struct ReportCardView : View {
                         .padding()
                 }
             }.padding(.all, 16)
+            
+            nextViewLink
         } .background(Color.white.opacity(0.08))
             .cornerRadius(15)
             .padding(EdgeInsets(top: 6, leading: 11, bottom: 6, trailing: 17))
-        
-        
-            .fullScreenCover(isPresented: $shouldShowEditReport, content: {
-                DraftReportView(mainAppModel: mainAppModel, isPresented: $shouldShowEditReport, report: reportsViewModel.selectedReport)
-            })
-        
+
     }
     
+    private var nextViewLink: some View {
+        DraftReportView(mainAppModel: mainAppModel, isPresented: $shouldShowEditReport, report: reportsViewModel.selectedReport)                .addNavigationLink(isActive: $shouldShowEditReport)
+    }
+
     private func showReportActionBottomSheet() {
         sheetManager.showBottomSheet(modalHeight: 176) {
             ActionListBottomSheet(items: serverActionItems,
@@ -100,7 +101,7 @@ struct ReportCardView_Previews: PreviewProvider {
                                                     description: "Description",
                                                     date: Date(),
                                                     status: .draft,
-                                                    server: Server())))
+                                                    server: Server(), vaultFiles: [])))
         }
     }
 }

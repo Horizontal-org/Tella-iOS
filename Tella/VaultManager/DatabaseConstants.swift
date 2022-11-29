@@ -20,11 +20,11 @@ struct D {
     
     static let tServer = "t_server"
     static let tReport = "t_report"
-    static let tReportFiles = "t_report_files"
-    
+    static let tReportInstanceVaultFile = "t_report_instance_vault_file";
+
     /* DATABASE COLUMNS */
     
-//    static let cId = "c_id"
+    static let cId = "c_id"
     static let cName = "c_name"
     static let cURL = "c_url"
     static let cUsername = "c_username"
@@ -42,8 +42,12 @@ struct D {
     static let cServerId = "c_server_id"
     
     static let cReportId = "c_report_id"
-    static let cVaultFileId = "c_vaultFile_id"
+
     
+    static let  cReportInstanceId = "c_report_instance_id";
+    static let  cVaultFileId = "c_vault_file_id";
+    //    static let  C_REPORT_SERVER_ID = "c_report_server_id";
+    //    static let  C_REPORT_API_ID = "c_report_api_id";
 }
 
 

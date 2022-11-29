@@ -5,15 +5,19 @@
 import Foundation
 import Combine
 import UIKit
+import SwiftUI
 
 class CameraViewModel: ObservableObject {
     
     // MARK: - Public properties
     
+    var resultFile : Binding<[VaultFile]?>?
+
     @Published var lastImageOrVideoVaultFile :  VaultFile?
     @Published var isRecording : Bool = false
     @Published var formattedCurrentTime : String = "00:00:00"
     @Published var currentTime : TimeInterval = 0.0
+    
     
     var imageData : Data?
     var image : UIImage?
@@ -30,7 +34,9 @@ class CameraViewModel: ObservableObject {
     
     // MARK: - Public functions
     
-    init(mainAppModel: MainAppModel, rootFile: VaultFile ) {
+    init(mainAppModel: MainAppModel,
+         rootFile: VaultFile,
+         resultFile : Binding<[VaultFile]?>? = nil ) {
         
         self.mainAppModel = mainAppModel
         self.rootFile = rootFile
@@ -45,22 +51,49 @@ class CameraViewModel: ObservableObject {
                 mainAppModel.vaultManager.clearTmpDirectory()
             }
         }.store(in: &cancellable)
+        
+        self.resultFile = resultFile
     }
 
     func saveImage()   {
         guard let imageData = image?.fixedOrientation()?.pngData() else { return  }
         guard let url = mainAppModel?.saveDataToTempFile(data: imageData, pathExtension: "png") else { return  }
+        Task {
+            
+            do { let file = try await mainAppModel?.add(files: [url],
+                                                 to: rootFile,
+                                                 type: .image)
+                
+                DispatchQueue.main.async {
+                    self.resultFile?.wrappedValue = file
+                }
 
-        mainAppModel?.add(files: [url],
-                          to: rootFile,
-                          type: .image)
+            }
+            catch {
+                
+            }
+        }
     }
 
-    func saveVideo() {
+    func saveVideo()  {
         guard let videoURL = videoURL else { return  }
-        mainAppModel?.add(files: [videoURL],
-                          to: rootFile,
-                          type: .video)
+        
+        Task {
+            
+            do { let file = try await mainAppModel?.add(files: [videoURL],
+                                                 to: rootFile,
+                                                 type: .video)
+                
+                DispatchQueue.main.async {
+                    self.resultFile?.wrappedValue = file
+                }
+
+            }
+            catch {
+                
+            }
+        }
+
     }
     
     func initialiseTimerRunning() {

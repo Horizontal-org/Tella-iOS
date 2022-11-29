@@ -17,7 +17,14 @@ struct HomeView: View {
     var body: some View {
         
         ContainerView {
+          
             VStack() {
+                
+                     
+                Spacer()
+                    .frame( height: !viewModel.serverDataItemArray.isEmpty ? 16 : 0 )
+                ConnectionsView()
+
                 
                 if appModel.settings.showRecentFiles {
                     Spacer()
@@ -37,6 +44,7 @@ struct HomeView: View {
                 }
             }
         }
+        .environmentObject(viewModel)
         .navigationBarTitle(LocalizableHome.appBar.localized, displayMode: .inline)
     }
 }

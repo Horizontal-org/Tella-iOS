@@ -73,7 +73,7 @@ struct AddServerURLView: View {
         .onAppear {
             
 #if DEBUG
-            serverViewModel.url = "http://37.218.244.11:3001"
+            serverViewModel.url = "https://api.beta.web.tella-app.org"
 #endif
         }
     }

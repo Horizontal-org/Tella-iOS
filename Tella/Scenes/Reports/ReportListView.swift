@@ -36,7 +36,7 @@ struct ReportListView_Previews: PreviewProvider {
                                                            description: "Description",
                                                            date: Date(),
                                                            status: ReportStatus.draft,
-                                                           server: Server())]),
+                                                          server: Server(), vaultFiles: [])]),
                            message: "Message")
         }
     }

@@ -9,11 +9,12 @@ struct FileListView: View {
     @EnvironmentObject var appModel: MainAppModel
     @StateObject var fileListViewModel : FileListViewModel
     @State var showFileDetails : Bool = false
-    
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
     var title : String = ""
     
-    init(appModel: MainAppModel, rootFile: VaultFile , fileType: [FileType]? , title : String = "", fileListType : FileListType = .fileList) {
-        _fileListViewModel = StateObject(wrappedValue: FileListViewModel(appModel: appModel,fileType:fileType, rootFile: rootFile, folderPathArray: [], fileListType :  fileListType))
+    init(appModel: MainAppModel, rootFile: VaultFile , fileType: [FileType]? , title : String = "", fileListType : FileListType = .fileList, resultFile: Binding<[VaultFile]?>? = nil) {
+        _fileListViewModel = StateObject(wrappedValue: FileListViewModel(appModel: appModel,fileType:fileType, rootFile: rootFile, folderPathArray: [], fileListType :  fileListType, resultFile: resultFile))
         self.title = title
     }
     
@@ -43,21 +44,36 @@ struct FileListView: View {
                 }
             }
             
-            if !fileListViewModel.shouldHideViewsForGallery {
+            if !fileListViewModel.shouldHideAddFileButton {
                 AddFileView()
             }
-
+            
             FileActionMenu()
             
             showFileDetailsLink
         }
         .toolbar {
             LeadingTitleToolbar(title: title)
+            selectFilesButton()
         }
         .navigationBarHidden(fileListViewModel.shouldHideNavigationBar)
         .environmentObject(fileListViewModel)
     }
-    
+
+    @ToolbarContentBuilder
+    func selectFilesButton() -> some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button {
+                fileListViewModel.attachFiles()
+                presentationMode.wrappedValue.dismiss()
+
+                
+            } label: {
+                Image("report.select-files")
+            }
+        }
+    }
+
     @ViewBuilder
     private var showFileDetailsLink: some View {
         if let currentSelectedVaultFile = self.fileListViewModel.currentSelectedVaultFile {

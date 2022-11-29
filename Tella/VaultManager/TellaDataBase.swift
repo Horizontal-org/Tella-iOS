@@ -19,7 +19,7 @@ class TellaDataBase {
     func createTables() {
         createServerTable()
         createReportTable()
-        // createReportFilesTable()
+        createReportFilesTable()
     }
     
     func createServerTable() {
@@ -48,6 +48,16 @@ class TellaDataBase {
             cddl(D.cServerId, D.integer, tableName: D.tServer, referenceKey: D.cServerId)
         ]
         dataBaseHelper.createTable(tableName: D.tReport, columns: columns)
+    }
+    
+    func createReportFilesTable() {
+        
+        let columns = [
+            cddl(D.cVaultFileId, D.text),
+            cddl(D.cReportInstanceId, D.integer, tableName: D.tReport, referenceKey: D.cReportId)
+            
+        ]
+        dataBaseHelper.createTable(tableName: D.tReportInstanceVaultFile, columns: columns)
     }
     
     func addServer(server : Server) throws -> Int {
@@ -124,7 +134,7 @@ class TellaDataBase {
             let responseDict = try dataBaseHelper.selectQuery(tableName: D.tReport,
                                                               keyValue: [KeyValue(key: D.cStatus, value: reportStatus.rawValue)],
                                                               joinCondition: joinCondition)
-            
+
             responseDict.forEach { dict in
                 
                 let id = dict[D.cServerId] as? Int
@@ -150,13 +160,14 @@ class TellaDataBase {
                                     accessToken: token,
                                     activatedMetadata: activatedMetadata == 0 ? false : true ,
                                     backgroundUpload: backgroundUpload == 0 ? false : true)
-                
+
                 reports.append(Report(id: reportID,
                                       title: title ?? "",
                                       description: description ?? "",
                                       date: date?.getDate() ?? Date(),
                                       status: ReportStatus(rawValue: status ?? 0) ?? .draft,
-                                      server: server))
+                                      server: server,
+                                      vaultFiles: getVaultFileId(reportID: reportID)))
             }
             
             return reports
@@ -166,23 +177,69 @@ class TellaDataBase {
         }
     }
     
+    func getVaultFileId(reportID:Int?) -> [String] {
+       
+        var filesId : [String] = []
+        
+        do {
+            let responseDict = try dataBaseHelper.selectQuery(tableName: D.tReportInstanceVaultFile,
+                                                              keyValue: [KeyValue(key: D.cReportInstanceId, value: reportID)])
+            
+            responseDict.forEach { dict in
+                guard let vaultFileId = dict[D.cVaultFileId] as? String else {return}
+                filesId.append(vaultFileId)
+            }
+            return filesId
+            
+        } catch {
+            return []
+        }
+        
+    }
+    
     func addReport(report : Report) throws -> Int {
-        return try dataBaseHelper.insertInto(tableName: D.tReport,
-                                             keyValue: [KeyValue(key: D.cTitle, value: report.title),
-                                                        KeyValue(key: D.cDescription, value: report.description),
-                                                        KeyValue(key: D.cDate, value: report.date?.getDateString()),
-                                                        KeyValue(key: D.cStatus, value: report.status?.rawValue),
-                                                        KeyValue(key: D.cServerId, value: report.server?.id)])
+        let reportId = try dataBaseHelper.insertInto(tableName: D.tReport,
+                                                     keyValue: [KeyValue(key: D.cTitle, value: report.title),
+                                                                KeyValue(key: D.cDescription, value: report.description),
+                                                                KeyValue(key: D.cDate, value: report.date?.getDateString()),
+                                                                KeyValue(key: D.cStatus, value: report.status?.rawValue),
+                                                                KeyValue(key: D.cServerId, value: report.server?.id)])
+        
+        try report.vaultFiles?.forEach({ vaultFileId in
+            print("vaultFile.id", vaultFileId)
+            _ = try dataBaseHelper.insertInto(tableName: D.tReportInstanceVaultFile,
+                                              keyValue: [KeyValue(key: D.cReportInstanceId, value: reportId),
+                                                         KeyValue(key: D.cVaultFileId, value: vaultFileId)])
+        })
+        
+        
+        
+        return 1
     }
     
     func updateReport(report : Report) throws -> Int {
-        return try dataBaseHelper.update(tableName: D.tReport,
-                                         keyValue: [KeyValue(key: D.cTitle, value: report.title),
-                                                    KeyValue(key: D.cDescription, value: report.description),
-                                                    KeyValue(key: D.cDate, value: report.date?.getDateString()),
-                                                    KeyValue(key: D.cStatus, value: report.status?.rawValue),
-                                                    KeyValue(key: D.cServerId, value: report.server?.id)],
-                                         primarykeyValue: [KeyValue(key: D.cReportId, value: report.id)])
+        _ = try dataBaseHelper.update(tableName: D.tReport,
+                                      keyValue: [KeyValue(key: D.cTitle, value: report.title),
+                                                 KeyValue(key: D.cDescription, value: report.description),
+                                                 KeyValue(key: D.cDate, value: report.date?.getDateString()),
+                                                 KeyValue(key: D.cStatus, value: report.status?.rawValue),
+                                                 KeyValue(key: D.cServerId, value: report.server?.id)],
+                                      primarykeyValue: [KeyValue(key: D.cReportId, value: report.id)])
+        
+        
+        
+        _ = try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
+                                      primarykeyValue: [KeyValue(key: D.cReportInstanceId, value: report.id as Any)])
+        
+        try report.vaultFiles?.forEach({ vaultFileId in
+            print("vaultFile.id", vaultFileId)
+            _ = try dataBaseHelper.insertInto(tableName: D.tReportInstanceVaultFile,
+                                              keyValue: [KeyValue(key: D.cReportInstanceId, value: report.id),
+                                                         KeyValue(key: D.cVaultFileId, value: vaultFileId)])
+        })
+        
+        
+        return 1
     }
     
     func deleteReport(reportId : Int?) throws -> Int {

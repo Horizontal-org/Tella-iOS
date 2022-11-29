@@ -9,58 +9,60 @@ struct AddFilesToDraftView: View {
     
     @State private var fieldContent: String = ""
     @State private var isValid = false
-
+    
     @EnvironmentObject var appModel: MainAppModel
-    @StateObject var fileListViewModel: FileListViewModel
     @EnvironmentObject var sheetManager: SheetManager
+    @EnvironmentObject var draftReportVM: DraftReportVM
     
+    private let gridLayout: [GridItem] = [GridItem(spacing: 12),
+                                          GridItem(spacing: 12),
+                                          GridItem(spacing: 12)]
     
-    init(appModel: MainAppModel, rootFile: VaultFile , fileType: [FileType]? , title : String = "", fileListType : FileListType = .fileList) {
-        _fileListViewModel = StateObject(wrappedValue: FileListViewModel(appModel: appModel,fileType:fileType, rootFile: rootFile, folderPathArray: [], fileListType :  fileListType))
-
-    }
-
+    private let gridItemHeight = (UIScreen.screenWidth - 64.0) / 3
     
     var body: some View {
-        
-        ZStack {
-            attachedFile
+        VStack(alignment: .leading, spacing: 12) {
             
-            PhotoVideoPickerView()
+            attachFilesTextView
+            
+            itemsGridView
+            
+            addButtonView
         }
-        .environmentObject(fileListViewModel)
-        
-//        .overlay(fileListViewModel.showingCamera ?
-//                 CameraView(sourceView: .addFile,
-//                            showingCameraView: $fileListViewModel.showingCamera,
-//                            cameraViewModel: CameraViewModel(mainAppModel: appModel,
-//                                                             rootFile: fileListViewModel.rootFile), customCameraRepresentable: <#CustomCameraRepresentable#> ) : nil)
-        
-        .overlay(fileListViewModel.showingMicrophone ?
-                 RecordView(appModel: appModel,
-                            rootFile: fileListViewModel.rootFile,
-                            sourceView: .addFile,
-                            showingRecoredrView: $fileListViewModel.showingMicrophone) : nil)
-        
     }
     
-    var attachedFile : some View {
-        
-        VStack {
-            Text("Attach files here")
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.leading)
-            
-            Button {
-                showAddFileSheet()
-            } label: {
-                Image("reports.add")
+    var attachFilesTextView: some View {
+        Text("Attach files here")
+            .font(.custom(Styles.Fonts.regularFontName, size: 14))
+            .foregroundColor(.white)
+            .multilineTextAlignment(.leading)
+    }
+    
+    var itemsGridView: some View {
+        LazyVGrid(columns: gridLayout, alignment: .center, spacing: 12) {
+            ForEach(draftReportVM.files.sorted{$0.created < $1.created}, id: \.id) { file in
+                ReportFileGridView(file: file)
+                    .frame(height: (UIScreen.screenWidth - 64) / 3 )
             }
         }
     }
     
+    var addButtonView: some View {
+        Button {
+            showAddFileSheet()
+        } label: {
+            Image("reports.add")
+        }
+    }
     
+    var fileListView : some View {
+        FileListView(appModel: appModel,
+                     rootFile: appModel.vaultManager.root,
+                     fileType: nil,
+                     title: "Select files",
+                     fileListType: .selectFiles,
+                     resultFile: $draftReportVM.resultFile)
+    }
     
     func showAddFileSheet() {
         sheetManager.showBottomSheet( modalHeight: CGFloat(AddFileToDraftItems.count * 50 + 90), content: {
@@ -69,17 +71,6 @@ struct AddFilesToDraftView: View {
                                   action:  {item in
                 self.handleActions(item : item)
             })
-        })
-    }
-    
-    func showCreateNewFolderSheet() {
-        sheetManager.showBottomSheet( modalHeight: 165, content: {
-            TextFieldBottomSheetView(titleText: LocalizableVault.manageFilesCreateNewFolderSheetSelect.localized,
-                                     validateButtonText: LocalizableVault.createNewFolderCreateSheetAction.localized,
-                                     cancelButtonText: LocalizableVault.createNewFolderCancelSheetAction.localized,
-                                     fieldContent: $fieldContent) {
-                fileListViewModel.add(folder: fieldContent)
-            }
         })
     }
     
@@ -100,17 +91,20 @@ struct AddFilesToDraftView: View {
             
         case .camera:
             sheetManager.hide()
-            fileListViewModel.showingCamera = true
+            draftReportVM.showingCamera = true
             
         case .recorder:
             sheetManager.hide()
-            fileListViewModel.showingMicrophone = true
+            draftReportVM.showingRecordView = true
             
         case .fromDevice:
             showAddPhotoVideoSheet()
             
+        case .tellaFile:
+            sheetManager.hide()
+            draftReportVM.showingFileList = true
         default:
-            showCreateNewFolderSheet()
+            break
         }
     }
     
@@ -119,9 +113,9 @@ struct AddFilesToDraftView: View {
         
         switch type {
         case .photoLibrary:
-            fileListViewModel.showingImagePicker = true
+            draftReportVM.showingImagePicker = true
         default:
-            fileListViewModel.showingImportDocumentPicker = true
+            draftReportVM.showingImportDocumentPicker = true
         }
     }
 }
@@ -133,36 +127,3 @@ struct AddFilesToDraftView_Previews: PreviewProvider {
             .environmentObject(FileListViewModel.stub())
     }
 }
-
-
-
-
-var AddFileToDraftItems : [ListActionSheetItem] { return [
-    
-    ListActionSheetItem(imageName: "report.camera-filled",
-                        content: "Take photo or video with camera",
-                        type: ManageFileType.camera),
-    ListActionSheetItem(imageName: "report.mic-filled",
-                        content: "Record audio",
-                        type: ManageFileType.recorder),
-    ListActionSheetItem(imageName: "report.gallery",
-                        content: "Select from Tella files",
-                        type: ManageFileType.tellaFile),
-    ListActionSheetItem(imageName: "report.phone",
-                        content: "Select from your device",
-                        type: ManageFileType.fromDevice)
-]
-}
-
-
-
-//            DragView(modalHeight: CGFloat(AddFileToDraftItems.count * 50 + 90),
-//                     shouldHideOnTap: true,
-//                     isShown: $shouldShowSelectFiles) {
-//                ActionListBottomSheet(items: AddFileToDraftItems,
-//                                      headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
-//                                      action:  {item in
-//                    self.handleActions(item : item)
-//                })
-//
-//            }

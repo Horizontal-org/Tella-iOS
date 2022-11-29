@@ -49,16 +49,6 @@ struct MainView: View  {
                             Image("tab.home")
                             Text(LocalizableHome.tabBar.localized)
                         }.tag(MainAppModel.Tabs.home)
-                    ReportsView(mainAppModel: appModel)
-                        .tabItem {
-                            Image("tab.reports")
-                            Text("Reports")
-                        }.tag(MainAppModel.Tabs.reports)
-//                    FormsView()
-//                        .tabItem {
-//                            Image("tab.forms")
-//                            Text(Localizable.Forms.tabBarTitle)
-//                        }.tag(MainAppModel.Tabs.forms)
 
                     ContainerView{}
                         .tabItem {
@@ -97,12 +87,13 @@ struct MainView: View  {
             if appModel.selectedTab == .camera {
                 CameraView(sourceView: .tab,
                            showingCameraView: .constant(false),
-                           cameraViewModel: CameraViewModel(mainAppModel: appModel,
-                                                            rootFile: appModel.vaultManager.root))
+                           mainAppModel: appModel,
+                           rootFile: appModel.vaultManager.root)
             }
         }
     }
-    
+//    CameraViewModel(mainAppModel: appModel,
+//                                     rootFile: appModel.vaultManager.root)
     @ViewBuilder
     var securityScreenView : some View {
         if appViewState.homeViewModel?.shouldShowSecurityScreen == true || appViewState.homeViewModel?.shouldShowRecordingSecurityScreen == true , let screenSecurity = appViewState.homeViewModel?.settings.screenSecurity, screenSecurity == true {

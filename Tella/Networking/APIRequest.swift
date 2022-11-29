@@ -21,6 +21,8 @@ public protocol APIRequest  {
     static var decoder: JSONDecoder { get }
     
     static func fetched(data: Data) throws -> ResultType
+    
+    
 }
 
 public extension APIRequest where ResultType: Decodable {
