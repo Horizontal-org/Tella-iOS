@@ -28,7 +28,6 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     enum Tabs: Hashable {
         case home
         case forms
-        case reports
         case camera
         case mic
     }

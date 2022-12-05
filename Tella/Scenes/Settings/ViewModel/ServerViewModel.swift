@@ -11,12 +11,12 @@ class ServerViewModel: ObservableObject {
     var mainAppModel : MainAppModel
     
     // Server propreties
-    var name : String = "Name 2"
-    var url : String = "https://"
-    var username : String = ""
-    var password : String = ""
-    var activatedMetadata : Bool = false
-    var backgroundUpload : Bool = false
+    @Published var name : String = "Name 2"
+    @Published var url : String = "https://"
+    @Published var username : String = ""
+    @Published var password : String = ""
+    @Published var activatedMetadata : Bool = false
+    @Published var backgroundUpload : Bool = false
     
     
     // Add URL

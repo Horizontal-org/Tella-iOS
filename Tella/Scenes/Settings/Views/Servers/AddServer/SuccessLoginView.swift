@@ -9,7 +9,9 @@ struct SuccessLoginView: View {
     
     @Binding var isPresented : Bool
     @EnvironmentObject var mainAppModel : MainAppModel
-    
+    @EnvironmentObject var serversViewModel : ServersViewModel
+    @EnvironmentObject private var appViewState: AppViewState
+
     var body: some View {
         
         NavigationContainerView {
@@ -27,10 +29,12 @@ struct SuccessLoginView: View {
                                           nextButtonAction: .action,
                                           buttonType: .yellow,
                                           isValid: .constant(true)) {
-                    mainAppModel.selectedTab = .reports
-                    
+//                    mainAppModel.selectedTab = .mic
+
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         isPresented = false
+                                   mainAppModel.selectedTab = .home
+
                     }
                     
                 }

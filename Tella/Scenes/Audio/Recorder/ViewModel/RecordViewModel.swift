@@ -75,8 +75,9 @@ class RecordViewModel: ObservableObject {
     }
     
     func onStartRecording() {
-        
-        self.state = .recording
+        DispatchQueue.main.async {
+            self.state = .recording
+        }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.002) {
             self.audioBackend.startRecording()

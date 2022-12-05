@@ -65,12 +65,11 @@ struct TextfieldView : View {
         
         TextField("", text: $fieldContent,onCommit: {
             self.onCommit?()
-        }).textFieldStyle(TextfieldStyle(shouldShowError: shouldShowError))
-            .onChange(of: fieldContent, perform: { value in
-                validateField(value: value)
-            })
-        
-            .frame( height: 22)
+        }).onChange(of: fieldContent, perform: { value in
+            validateField(value: value)
+        })
+        .textFieldStyle(TextfieldStyle(shouldShowError: shouldShowError))
+        .frame( height: 22)
         
     }
     
