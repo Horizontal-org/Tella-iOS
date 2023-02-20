@@ -16,7 +16,8 @@ struct AddServerURLView: View {
     
     @EnvironmentObject var serversViewModel : ServersViewModel
     @StateObject var serverViewModel : ServerViewModel
-    
+    @State var showNextLoginView : Bool = false
+
     init(appModel:MainAppModel, server: Server? = nil) {
         _serverViewModel = StateObject(wrappedValue: ServerViewModel(mainAppModel: appModel, currentServer: server))
     }
@@ -44,7 +45,7 @@ struct AddServerURLView: View {
                     Spacer()
                         .frame(height: 40)
                     
-                    TextfieldView(fieldContent: $serverViewModel.url,
+                    TextfieldView(fieldContent: $serverViewModel.projectURL,
                                   isValid: $serverViewModel.validURL,
                                   shouldShowError: $serverViewModel.shouldShowURLError,
                                   errorMessage: serverViewModel.urlErrorMessage,
@@ -54,7 +55,8 @@ struct AddServerURLView: View {
                     BottomLockView<AnyView>(isValid: $serverViewModel.validURL,
                                             nextButtonAction: .action,
                                             nextAction: {
-                        serverViewModel.checkURL()
+//                        serverViewModel.checkURL()
+                        self.showNextLoginView = true
                     },
                                             backAction: {
                         self.presentationMode.wrappedValue.dismiss()
@@ -73,7 +75,7 @@ struct AddServerURLView: View {
         .onAppear {
             
 #if DEBUG
-            serverViewModel.url = "https://api.beta.web.tella-app.org"
+            serverViewModel.projectURL = "https://api.beta.web.tella-app.org/p/organizacion-1"
 #endif
         }
     }
@@ -83,7 +85,7 @@ struct AddServerURLView: View {
         ServerLoginView()
             .environmentObject(serverViewModel)
             .environmentObject(serversViewModel)
-            .addNavigationLink(isActive: $serverViewModel.showNextLoginView)
+            .addNavigationLink(isActive: $showNextLoginView)
     }
     
 }

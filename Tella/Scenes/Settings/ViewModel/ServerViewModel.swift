@@ -11,8 +11,8 @@ class ServerViewModel: ObservableObject {
     var mainAppModel : MainAppModel
     
     // Server propreties
-    @Published var name : String = "Name 2"
-    @Published var url : String = "https://"
+    @Published var name : String?
+    @Published var projectURL : String = "https://"
     @Published var username : String = ""
     @Published var password : String = ""
     @Published var activatedMetadata : Bool = false
@@ -23,7 +23,6 @@ class ServerViewModel: ObservableObject {
     @Published var validURL : Bool = false
     @Published var shouldShowURLError : Bool = false
     @Published var urlErrorMessage : String = ""
-    @Published var showNextLoginView : Bool = false
     
     // Login
     @Published var validUsername : Bool = false
@@ -35,7 +34,8 @@ class ServerViewModel: ObservableObject {
     @Published var showNextSuccessLoginView : Bool = false
     
     private var cancellable: Cancellable? = nil
-    
+    var subscribers = Set<AnyCancellable>()
+
     var currentServer : Server?
     
     init(mainAppModel : MainAppModel, currentServer: Server?) {
@@ -51,15 +51,17 @@ class ServerViewModel: ObservableObject {
         
     }
     
-    func addServer(token: String) {
+    func addServer(token: String, project: ProjectAPI) {
         
-        let server = Server(name: name,
-                            url: url,
+        let server = Server(name: project.name,
+                            serverURL: projectURL.getBaseURL(),
                             username: username,
                             password: password,
                             accessToken: token,
                             activatedMetadata: activatedMetadata,
-                            backgroundUpload: backgroundUpload)
+                            backgroundUpload: backgroundUpload,
+                            projectId: project.id,
+                            slug: project.slug)
         
         do {
             let id = try mainAppModel.vaultManager.tellaData.addServer(server: server)
@@ -89,39 +91,78 @@ class ServerViewModel: ObservableObject {
         
         isLoading = true
         
-        API.Request.Server.publisher(serverURL: url)
+        
+        
+        
+//        API.Request.Server.publisher(serverURL: url)
+//            .receive(on: DispatchQueue.main)
+//            .sink(
+//                receiveCompletion: { completion in
+//                    self.isLoading = false
+//
+//                    switch completion {
+//                    case .failure(let error):
+//
+//                        if error.code == 400 {
+//                            self.shouldShowURLError = false
+//                            self.urlErrorMessage = ""
+//                            self.showNextLoginView = true
+//                        } else {
+//                            self.shouldShowURLError = true
+//                            self.urlErrorMessage = error.message
+//                        }
+//
+//                    case .finished:
+//                        break
+//                    }
+//                },
+//                receiveValue: { wrapper in
+//                }
+//            )
+//            .store(in: &subscribers)
+    }
+    
+    func login() {
+        
+        guard let baseURL = projectURL.getBaseURL() else { return }
+
+        isLoading = true
+        
+        ServerRepository().login(username: username, password: password, serverURL: baseURL)
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { completion in
-                    self.isLoading = false
                     
                     switch completion {
                     case .failure(let error):
-                        
-                        if error.code == 400 {
-                            self.shouldShowURLError = false
-                            self.urlErrorMessage = ""
-                            self.showNextLoginView = true
-                        } else {
-                            self.shouldShowURLError = true
-                            self.urlErrorMessage = error.message
-                        }
-                        
+                        self.shouldShowLoginError = true
+                        self.loginErrorMessage = error.errorDescription ?? ""
+                        self.isLoading = false
+
                     case .finished:
+//                        self.shouldShowLoginError = false
+//                        self.loginErrorMessage = ""
+//                        self.showNextSuccessLoginView = true
                         break
+                        
                     }
                 },
-                receiveValue: { wrapper in
+                receiveValue: { result in
+//
+                    
+                    self.getProjetSlug(token: result.accessToken)
+
                 }
             )
             .store(in: &subscribers)
     }
     
-    func login() {
+    
+    func getProjetSlug(token: String) {
         
-        isLoading = true
-        
-        API.Request.Server.publisher(username: username, password: password, serverURL: url)
+//        isLoading = true
+
+        ServerRepository().getProjetDetails(projectURL: projectURL, token: token)
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { completion in
@@ -130,25 +171,26 @@ class ServerViewModel: ObservableObject {
                     switch completion {
                     case .failure(let error):
                         self.shouldShowLoginError = true
-                        self.loginErrorMessage = error.message
+                        self.loginErrorMessage = error.errorDescription ?? ""
                     case .finished:
                         self.shouldShowLoginError = false
                         self.loginErrorMessage = ""
                         self.showNextSuccessLoginView = true
                     }
                 },
-                receiveValue: { wrapper in
-                    self.addServer(token: wrapper.accessToken)
+                receiveValue: { project in
+                    self.addServer(token: token,project: project)
                 }
             )
             .store(in: &subscribers)
+
     }
     
     
     func fillReportVM() {
         if let server = self.currentServer {
             name =  server.name ?? ""
-            url = server.url ?? ""
+            projectURL = server.url ?? ""
             username = server.username ?? ""
             password = server.password ?? ""
             activatedMetadata = server.activatedMetadata ?? false

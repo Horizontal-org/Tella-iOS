@@ -141,9 +141,9 @@ struct RecordView: View {
             
             Button(action: {
                 
-                if self.viewModel.sourceView == .addSingleFile{
-                    viewModel.showingRecoredrView.wrappedValue = false
-                }
+//                if self.viewModel.sourceView == .addSingleFile{
+//                    viewModel.showingRecoredrView.wrappedValue = false
+//                }
                 self.viewModel.onStopRecording()
                 
             }) {

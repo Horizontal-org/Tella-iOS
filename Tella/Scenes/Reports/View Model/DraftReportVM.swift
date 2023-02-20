@@ -12,12 +12,13 @@ class DraftReportVM: ObservableObject {
     var mainAppModel : MainAppModel
     
     // Report
-    @Published var id : Int?
+    @Published var reportId : Int?
     @Published var title : String = ""
     @Published var description : String = ""
     @Published var files :  Set <VaultFile> = []
-    @Published var server : Server?
+    @Published var server :  Server?
     @Published var status : ReportStatus?
+    @Published var apiID : String?
     
     // Fields validation
     @Published var isValidTitle : Bool = false
@@ -27,7 +28,6 @@ class DraftReportVM: ObservableObject {
     @Published var reportIsDraft : Bool = false
     
     @Published var resultFile : [VaultFile]?
-
     
     @Published var showingSuccessMessage : Bool = false
     @Published var showingImagePicker : Bool = false
@@ -35,8 +35,6 @@ class DraftReportVM: ObservableObject {
     @Published var showingFileList : Bool = false
     @Published var showingRecordView : Bool = false
     @Published var showingCamera : Bool = false
-
-    
     
     var serverArray : [Server] = []
     
@@ -52,84 +50,119 @@ class DraftReportVM: ObservableObject {
         return serverArray.count > 1
     }
     
-
+    var isNewDraft: Bool {
+        return reportId == nil
+    }
     
-    init(mainAppModel : MainAppModel, report:Report? = nil) {
+    var addFileToDraftItems : [ListActionSheetItem] { return [
+        
+        ListActionSheetItem(imageName: "report.camera-filled",
+                            content: "Take photo or video with camera",
+                            type: ManageFileType.camera),
+        ListActionSheetItem(imageName: "report.mic-filled",
+                            content: "Record audio",
+                            type: ManageFileType.recorder),
+        ListActionSheetItem(imageName: "report.gallery",
+                            content: "Select from Tella files",
+                            type: ManageFileType.tellaFile),
+        ListActionSheetItem(imageName: "report.phone",
+                            content: "Select from your device",
+                            type: ManageFileType.fromDevice)
+    ]}
+    
+    init(mainAppModel : MainAppModel, reportId:Int? = nil) {
         
         self.mainAppModel = mainAppModel
         
-        cancellable = $server.combineLatest( $isValidTitle, $isValidDescription).sink(receiveValue: { server, isValidTitle, isValidDescription in
-            self.reportIsValid = (server != nil) && isValidTitle && isValidDescription
-        })
+        self.validateReport()
         
-        $isValidTitle.combineLatest($isValidDescription, $files).sink(receiveValue: { isValidTitle, isValidDescription, files in
-            DispatchQueue.main.async {
-                self.reportIsDraft = isValidTitle || isValidDescription || !files.isEmpty
-            }
-        }).store(in: &subscribers)
+        self.getServers()
         
-        getServers()
+        self.initcurrentReportVM(reportId: reportId)
         
-        initcurrentReportVM()
-        
-        fillReportVM(report: report)
-        
-        $resultFile.sink(receiveValue: { value in
-
-            guard let value else { return  }
-//            DispatchQueue.main.async {
-                
-            self.files.insert(value)
-                print(":)")
-            self.publishUpdates()
-//            }
-
-        }).store(in: &subscribers)
+        self.bindVaultFileTaken()
     }
     
-    func getServers() {
+    private func validateReport() {
+        $server.combineLatest( $isValidTitle, $isValidDescription)
+            .sink(receiveValue: { server, isValidTitle, isValidDescription in
+                self.reportIsValid = (server != nil) && isValidTitle && isValidDescription
+            }).store(in: &subscribers)
+        
+        $isValidTitle.combineLatest($isValidDescription, $files)
+            .sink(receiveValue: { isValidTitle, isValidDescription, files in
+                DispatchQueue.main.async {
+                    self.reportIsDraft = isValidTitle || isValidDescription || !files.isEmpty
+                }
+            }).store(in: &subscribers)
+    }
+    
+    private func getServers() {
         serverArray = mainAppModel.vaultManager.tellaData.servers.value
     }
     
-    func initcurrentReportVM() {
+    private func initcurrentReportVM(reportId:Int?) {
         if serverArray.count == 1 {
             server = serverArray.first
         }
+        self.reportId = reportId
     }
     
-    func fillReportVM(report: Report?) {
-        if let report = report {
+    private func bindVaultFileTaken() {
+        $resultFile.sink(receiveValue: { value in
+            guard let value else { return }
+            self.files.insert(value)
+            self.publishUpdates()
+        }).store(in: &subscribers)
+    }
+    
+    private func publishUpdates() {
+        DispatchQueue.main.async {
+            self.objectWillChange.send()
+        }
+    }
+    
+    func fillReportVM() {
+        if let reportId ,let report = self.mainAppModel.vaultManager.tellaData.getReport(reportId: reportId) {
+            
             var vaultFileResult : Set<VaultFile> = []
-
-            self.id = report.id
+            
             self.title = report.title ?? ""
             self.description = report.description ?? ""
             self.server = report.server
-            mainAppModel.vaultManager.root.getFile(root: mainAppModel.vaultManager.root, vaultFileResult: &vaultFileResult, ids: report.vaultFiles ?? [])
+            mainAppModel.vaultManager.root.getFile(root: mainAppModel.vaultManager.root, vaultFileResult: &vaultFileResult, ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
             self.files = vaultFileResult
+            self.objectWillChange.send()
         }
     }
     
     func saveReport() {
         
-        guard let server = server else { return }
-        
-        let report = Report(id: id, title: title, description: description, date: Date(), status: status, server: server, vaultFiles: self.files.compactMap{$0.id})
+        let report = Report(id: reportId, title: title,
+                            description: description,
+                            date: Date(),
+                            status: status,
+                            server: server,
+                            vaultFiles: self.files.compactMap{ ReportFile(fileId: $0.id,
+                                                                          status: .notSubmitted,
+                                                                          totalBytesSent: 0,
+                                                                          createdDate: Date())},
+                            apiID: apiID)
         
         do {
-            if let _ = id {
+            if !isNewDraft {
                 let _ = try mainAppModel.vaultManager.tellaData.updateReport(report: report)
             } else {
-                let _ = try mainAppModel.vaultManager.tellaData.addReport(report: report)
+                let id = try mainAppModel.vaultManager.tellaData.addReport(report: report)
+                self.reportId = id
             }
             
+            showingSuccessMessage = true
             
-//            showingSuccessMessage = true
-//            
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//                self.showingSuccessMessage = false
-//            }
-
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.showingSuccessMessage = false
+            }
+            
         } catch {
             
         }
@@ -138,12 +171,13 @@ class DraftReportVM: ObservableObject {
     func deleteFile(fileId: String) {
         guard let index = files.firstIndex(where: { $0.id == fileId})  else  {return }
         files.remove(at: index)
-     }
+    }
     
-    func publishUpdates() {
-        DispatchQueue.main.async {
-            self.objectWillChange.send()
+    func deleteReport() {
+        do {
+            try _ = mainAppModel.vaultManager.tellaData.deleteReport(reportId: reportId)
+        } catch {
+            
         }
     }
-
 }

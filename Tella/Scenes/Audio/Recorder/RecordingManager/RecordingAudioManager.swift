@@ -185,8 +185,9 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
 
                 }
                 
-                
-                self.resetRecorder()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                    self.resetRecorder()
+                })
                 
                 self.audioChunks = [AVURLAsset]()
                 exportSession?.cancelExport()

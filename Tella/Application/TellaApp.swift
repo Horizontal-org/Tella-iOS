@@ -13,7 +13,8 @@ struct TellaApp: App {
     
     private var appViewState = AppViewState()
     @Environment(\.scenePhase) var scenePhase
-    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     var body: some Scene {
         WindowGroup {
             ContentView().environmentObject(appViewState)

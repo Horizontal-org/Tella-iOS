@@ -41,7 +41,7 @@ struct EditSettingsServerView: View {
     }
     
     var serverURLView: some View {
-        EditServerDisplayItem(title: "Server URL", description: serverViewModel.url)
+        EditServerDisplayItem(title: "Server URL", description: serverViewModel.projectURL)
     }
     
     var serverUsernameView: some View {

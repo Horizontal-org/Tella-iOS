@@ -5,25 +5,43 @@
 import SwiftUI
 
 struct  PageViewCell: View {
+    
     let title: String
-    let width: CGFloat
+    let number: String
+    
     let page: Pages
+    
     @Binding var selectedOption: Pages
     
     public var body: some View {
-        VStack {
+        
+        Button(action: {
+            withAnimation(.interactiveSpring()){
+                self.selectedOption = page
+            }
+        }, label: {
+            
             let selected: Bool = page == selectedOption
-            Text(title)
-                .font(Font.system(size: 15))
-                .bold()
-                .foregroundColor(selected ? .white : .gray)
-                .minimumScaleFactor(0.5)
-                .lineLimit(1)
-                .padding(.bottom, 1)
-            Rectangle()
-                .fill(selected ?  Color.white : Color.clear)
-                .frame(width: width, height: 4, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-        }
+            VStack {
+                HStack {
+                    
+                    Text(title)
+                        .font(.custom(Styles.Fonts.boldFontName, size: 15))
+                        .foregroundColor(selected ? .white : .white.opacity(0.5))
+                        .padding(.bottom, 1)
+                    if !number.isEmpty {
+                        Text(number)
+                            .font(.custom(Styles.Fonts.boldFontName, size: 15))
+                            .foregroundColor(Styles.Colors.yellow)
+//                            .padding(.bottom, 1)
+                    }
+                }
+                
+                Rectangle()
+                    .fill(selected ?  Color.white : Color.clear)
+                    .frame(height: 4, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+            }.fixedSize()
+        })
     }
 }
 

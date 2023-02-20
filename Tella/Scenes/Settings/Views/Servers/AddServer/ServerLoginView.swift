@@ -13,7 +13,7 @@ struct ServerLoginView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var mainAppModel : MainAppModel
     
-    @State private var presentingSuccessLoginView : Bool = false
+    @State var presentingSuccessLoginView : Bool = false
     
     var body: some View {
         
@@ -93,7 +93,8 @@ struct ServerLoginView: View {
     private var nextViewLink: some View {
         
         if !serverViewModel.shouldShowLoginError {
-            SuccessLoginView(isPresented: $presentingSuccessLoginView).environmentObject(serverViewModel)
+            SuccessLoginView()
+                .environmentObject(serverViewModel)
                 .environmentObject(serversViewModel)
                 .addNavigationLink(isActive: $serverViewModel.showNextSuccessLoginView)
         }

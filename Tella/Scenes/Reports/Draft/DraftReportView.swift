@@ -11,63 +11,45 @@ struct DraftReportView: View {
     
     @State private var menuFrame : CGRect = CGRectZero
     @State private var shouldShowMenu : Bool = false
-    @State private var shouldShowSelectFiles : Bool = false
-    @State private var shouldShowNavBar : Bool = false
-
+    @State var shouldShowOutboxReport : Bool = false
+    
     @EnvironmentObject var mainAppModel : MainAppModel
     @EnvironmentObject var sheetManager : SheetManager
+    @EnvironmentObject var reportsViewModel : ReportsViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    init(mainAppModel: MainAppModel, isPresented : Binding<Bool>, report:Report? = nil) {
-        _reportViewModel = StateObject(wrappedValue: DraftReportVM(mainAppModel: mainAppModel,report:report))
+    init(mainAppModel: MainAppModel, reportId:Int? = nil) {
+        _reportViewModel = StateObject(wrappedValue: DraftReportVM(mainAppModel: mainAppModel,reportId:reportId))
     }
     
     var body: some View {
         
-        ContainerView {
+        NavigationContainerView {
             
-            ZStack {
-                
-                content
-                
-                serverListMenuView
-                
-                PhotoVideoPickerView(showingImagePicker: $reportViewModel.showingImagePicker,
-                                     showingImportDocumentPicker: $reportViewModel.showingImportDocumentPicker,
-                                     appModel: mainAppModel,
-                                     resultFile: $reportViewModel.resultFile)
-                
-                fileListViewLink
-            }
-        }
-        
-        .overlay(reportViewModel.showingRecordView ?
-                 RecordView(appModel: mainAppModel,
-                            rootFile: mainAppModel.vaultManager.root,
-                            sourceView: .addSingleFile,
-                            showingRecoredrView: $reportViewModel.showingRecordView,
-                            resultFile: $reportViewModel.resultFile) : nil)
-        
-        .overlay(reportViewModel.showingCamera ?
-                 CameraView(sourceView: SourceView.addSingleFile,
-                            showingCameraView: $reportViewModel.showingCamera,
-                            resultFile: $reportViewModel.resultFile,
-                            mainAppModel: mainAppModel,
-                            rootFile: mainAppModel.vaultManager.root) : nil)
-        
-        .onAppear(perform: {
-            shouldShowNavBar = true
+            contentView
+                .environmentObject(reportViewModel)
+            
+            serverListMenuView
+            
+            photoVideoPickerView
+            
+            fileListViewLink
+            
+            ReportDetailsViewLink
+            
+        } .onAppear(perform: {
+            reportViewModel.fillReportVM()
         })
         .onTapGesture {
             shouldShowMenu = false
         }
-        .navigationBarHidden(true)
         
-        .environmentObject(reportViewModel)
+        .overlay(recordView)
         
+        .overlay(cameraView)
     }
     
-    var content: some View {
+    var contentView: some View {
         
         VStack(alignment: .leading) {
             
@@ -78,12 +60,12 @@ struct DraftReportView: View {
             
             bottomDraftView
         }
-        
     }
     
     var draftReportHeaderView: some View {
         
         HStack(spacing: 0) {
+            
             Button {
                 showSaveReportConfirmationView()
             } label: {
@@ -97,10 +79,9 @@ struct DraftReportView: View {
             
             Spacer()
             
+            
             Button {
-                reportViewModel.status = .draft
-                reportViewModel.saveReport()
-                
+                saveDraftReport()
             } label: {
                 Image("reports.save")
                     .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
@@ -125,8 +106,10 @@ struct DraftReportView: View {
                             .foregroundColor(Color.white)
                         
                         Button {
-                            self.menuFrame = geometry.frame(in: CoordinateSpace.global)
-                            shouldShowMenu = true
+                            DispatchQueue.main.async {
+                                self.menuFrame = geometry.frame(in: CoordinateSpace.global)
+                                shouldShowMenu = true
+                            }
                             
                         } label: {
                             HStack {
@@ -149,7 +132,6 @@ struct DraftReportView: View {
                     } else {
                         Spacer()
                             .frame(height: 10)
-                        
                     }
                     
                     TextfieldView(fieldContent: $reportViewModel.title,
@@ -173,7 +155,7 @@ struct DraftReportView: View {
                         .frame(height: 24)
                     
                     AddFilesToDraftView()
-
+                    
                     Spacer()
                     
                 }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
@@ -229,31 +211,53 @@ struct DraftReportView: View {
     var bottomDraftView: some View {
         
         HStack {
+            if reportViewModel.isNewDraft {
+                
+                // Submit later button
+                Button {
+                    submitReportLater()
+                } label: {
+                    Image("reports.submit-later")
+                        .opacity(reportViewModel.reportIsValid ? 1 : 0.4)
+                }.disabled(!reportViewModel.reportIsValid)
+                
+            } else {
+                
+                // Delete draft button
+                Button {
+                    reportViewModel.deleteReport()
+                } label: {
+                    Image("report.delete-draft")
+                }
+            }
             
-            Button {
-                reportViewModel.status = .outbox
-                reportViewModel.saveReport()
-            } label: {
-                Image("reports.submit-later")
-                    .opacity(reportViewModel.reportIsDraft ? 1 : 0.4)
-            }.disabled(!reportViewModel.reportIsDraft)
-            
-            
-            TellaButtonView<AnyView> (title: "SUBMIT",
+            // Submit button
+            TellaButtonView<AnyView> (title: reportViewModel.isNewDraft ? "SUBMIT" : "SEND",
                                       nextButtonAction: .action,
                                       buttonType: .yellow,
                                       isValid: $reportViewModel.reportIsValid) {
-                
-            }.padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
+                submitReport()
+            } .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
         }
-        .padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
+        .padding(EdgeInsets(top: 0, leading: 24, bottom: 16, trailing: 24))
     }
     
     @ViewBuilder
     private var fileListViewLink: some View {
+        if reportViewModel.showingFileList {
+            fileListView
+                .addNavigationLink(isActive: $reportViewModel.showingFileList, shouldAddEmptyView: true)
+        }
+    }
+    
+    private var ReportDetailsViewLink: some View {
+        OutboxDetailsView(appModel: mainAppModel,
+                          reportsViewModel: reportsViewModel,
+                          reportId: reportViewModel.reportId,
+                          shouldStartUpload: true)
+        .environmentObject(reportsViewModel)
+        .addNavigationLink(isActive: $shouldShowOutboxReport)
         
-        fileListView
-            .addNavigationLink(isActive: $reportViewModel.showingFileList)
     }
     
     var fileListView : some View {
@@ -265,15 +269,62 @@ struct DraftReportView: View {
                      resultFile: $reportViewModel.resultFile)
     }
     
+    var cameraView : some View {
+        reportViewModel.showingCamera ?
+        CameraView(sourceView: SourceView.addSingleFile,
+                   showingCameraView: $reportViewModel.showingCamera,
+                   resultFile: $reportViewModel.resultFile,
+                   mainAppModel: mainAppModel,
+                   rootFile: mainAppModel.vaultManager.root) : nil
+    }
+    
+    var recordView : some View {
+        reportViewModel.showingRecordView ?
+        RecordView(appModel: mainAppModel,
+                   rootFile: mainAppModel.vaultManager.root,
+                   sourceView: .addSingleFile,
+                   showingRecoredrView: $reportViewModel.showingRecordView,
+                   resultFile: $reportViewModel.resultFile) : nil
+    }
+    
+    var photoVideoPickerView : some View {
+        PhotoVideoPickerView(showingImagePicker: $reportViewModel.showingImagePicker,
+                             showingImportDocumentPicker: $reportViewModel.showingImportDocumentPicker,
+                             appModel: mainAppModel,
+                             resultFile: $reportViewModel.resultFile)
+    }
+    
+    
+    private func submitReport() {
+        reportViewModel.status = .finalized
+        reportViewModel.saveReport()
+        
+        DispatchQueue.main.async {
+            shouldShowOutboxReport = true
+        }
+    }
+    
+    private func submitReportLater() {
+        reportViewModel.status = .finalized
+        reportViewModel.saveReport()
+        reportsViewModel.selectedCell = .outbox
+        dismissViews()
+    }
+    
+    private func saveDraftReport() {
+        reportViewModel.status = .draft
+        reportViewModel.saveReport()
+        reportsViewModel.selectedCell = .draft
+        dismissViews()
+    }
+    
     private func showSaveReportConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: 200) {
             ConfirmBottomSheet(titleText: "Exit report?",
                                msgText: "Your draft will be lost.",
                                cancelText: "Exit anyway".uppercased(),
                                actionText: "save and exit".uppercased(), didConfirmAction: {
-                reportViewModel.status = .draft
-                reportViewModel.saveReport()
-                dismissViews()
+                saveDraftReport()
             }, didCancelAction: {
                 dismissViews()
             })
@@ -281,17 +332,16 @@ struct DraftReportView: View {
     }
     
     private func dismissViews() {
-        self.presentationMode.wrappedValue.dismiss()
-        shouldShowNavBar = false
         sheetManager.hide()
+        reportsViewModel.newReportRootLinkIsActive = false
+        reportsViewModel.editRootLinkIsActive = false
     }
-    
 }
 
 struct DraftReportView_Previews: PreviewProvider {
     static var previews: some View {
         
-        DraftReportView(mainAppModel: MainAppModel(), isPresented: .constant(true))
+        DraftReportView(mainAppModel: MainAppModel())
             .environmentObject(ReportsViewModel(mainAppModel: MainAppModel()))
     }
 }
