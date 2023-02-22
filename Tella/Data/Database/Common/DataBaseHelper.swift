@@ -266,7 +266,7 @@ class DataBaseHelper {
     }
     
     func insertInto(tableName:String, keyValue: [KeyValue?]) throws -> Int {
-        let keyValue = keyValue.compactMap({$0  })
+        let keyValue = keyValue.compactMap({$0})
         
         let keys = keyValue.compactMap{($0.key)}
         let values = keyValue.compactMap{value in (":\(value.key)") }

@@ -15,8 +15,9 @@ class FileToUpload {
     var fileId : String
     var fileSize : Int
     var bytesSent : Int
+    var uploadOnBackground : Bool
 
-    init(idReport: String, fileUrlPath: URL, accessToken: String, serverURL: String, data: Data?, fileName: String, fileExtension: String, fileId: String, fileSize: Int, bytesSent:Int) {
+    init(idReport: String, fileUrlPath: URL, accessToken: String, serverURL: String, data: Data?, fileName: String, fileExtension: String, fileId: String, fileSize: Int, bytesSent:Int, uploadOnBackground : Bool = false) {
         self.idReport = idReport
         self.fileUrlPath = fileUrlPath
         self.accessToken = accessToken
@@ -27,8 +28,6 @@ class FileToUpload {
         self.fileId = fileId
         self.fileSize = fileSize
         self.bytesSent = bytesSent
-
+        self.uploadOnBackground = uploadOnBackground
     }
-    
-    
 }

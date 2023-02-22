@@ -20,7 +20,7 @@ extension ReportRepository:URLSessionTaskDelegate, URLSessionDelegate, URLSessio
         totalBytesExpectedToSend: Int64 ) {
             
             guard let url = task.currentRequest?.url else { return }
-            guard let uploadProgressInfo =  uploadService.activeDownloads[url] else { return }
+            guard let uploadProgressInfo =  UploadService.shared.activeDownloads[url] else { return }
             
             switch uploadProgressInfo.value {
             case .progress(let progressInfo):
@@ -36,7 +36,7 @@ extension ReportRepository:URLSessionTaskDelegate, URLSessionDelegate, URLSessio
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         DispatchQueue.main.async {
-            if let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+            if let appDelegate = AppDelegate.instance,
                let completionHandler = appDelegate.backgroundSessionCompletionHandler {
                 appDelegate.backgroundSessionCompletionHandler = nil
                 completionHandler()
@@ -47,7 +47,7 @@ extension ReportRepository:URLSessionTaskDelegate, URLSessionDelegate, URLSessio
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         
         guard let url = dataTask.currentRequest?.url else { return }
-        guard let uploadProgressInfo =  uploadService.activeDownloads[url] else { return }
+        guard let uploadProgressInfo =  UploadService.shared.activeDownloads[url] else { return }
         
         do {
             debugLog(data.string())
@@ -62,7 +62,7 @@ extension ReportRepository:URLSessionTaskDelegate, URLSessionDelegate, URLSessio
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         
         guard let url = task.currentRequest?.url else { return }
-        guard let uploadProgressInfo = uploadService.activeDownloads[url] else { return }
+        guard let uploadProgressInfo = UploadService.shared.activeDownloads[url] else { return }
         
         switch uploadProgressInfo.value {
         case .progress(let progressInfo):
@@ -72,7 +72,6 @@ extension ReportRepository:URLSessionTaskDelegate, URLSessionDelegate, URLSessio
         default:
             break
         }
-        
         uploadProgressInfo.send(completion: .failure(.unexpectedResponse))
     }
     

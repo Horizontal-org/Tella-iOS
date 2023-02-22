@@ -38,6 +38,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     }
     
     @Published var settings: SettingsModel = SettingsModel()
+    
     @Published var vaultManager: VaultManager = VaultManager(cryptoManager: CryptoManager.shared, fileManager: DefaultFileManager(), rootFileName: "root", containerPath: "Containers", progress: ImportProgress())
     
     @Published var selectedTab: Tabs = .home
@@ -51,7 +52,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     @Published var appEnterInBackground: Bool = false
 
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
-    
+
     private var cancellable: Set<AnyCancellable> = []
     
     init() {

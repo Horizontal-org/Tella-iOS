@@ -5,11 +5,6 @@
 
 import Foundation
 
-enum API {
-    enum Request {}
-    enum Response {}
-}
-
 public protocol APIRequest {
     
     var keyValues : [Key : Value?]? { get }
@@ -24,6 +19,9 @@ public protocol APIRequest {
     var token: String? { get }
     var fileToUpload: FileInfo? { get }
     var url: URL? { get }
+    var uploadsSession: URLSession? { get }
+    var apiSession: URLSession? { get }
+
 }
 
 public extension APIRequest {
@@ -45,6 +43,8 @@ public extension APIRequest {
     var decoder: JSONDecoder { JSONDecoder() }
     var fileToUpload: FileInfo? { nil }
     var url: URL? { return  URL(string: baseURL + path) }
+    var uploadsSession: URLSession? { return nil }
+    var apiSession: URLSession? { return nil }
 }
 
 extension APIRequest {

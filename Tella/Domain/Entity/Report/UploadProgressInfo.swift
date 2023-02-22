@@ -17,12 +17,12 @@ class UploadProgressInfo {
     var fileId: String?
     var url: URL
     var status : FileStatus = .unknown
-    
-    init(fileId: String? = nil, url: URL, status: FileStatus) {
+    var isOnBackground: Bool = false
+
+    init(fileId: String? = nil, url: URL, status: FileStatus, isOnBackground: Bool = false) {
         self.fileId = fileId
         self.url = url
         self.status = status
+        self.isOnBackground = isOnBackground
     }
 }
-
- 

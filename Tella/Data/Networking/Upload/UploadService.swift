@@ -8,18 +8,24 @@ import Combine
 
 class UploadService {
     
-    //
     // MARK: - Variables And Properties
     //
+    static var shared : UploadService = UploadService()
     
     var activeDownloads : [URL: CurrentValueSubject<UploadResponse, APIError>] = [ : ]
     
-    var uploadsSession: URLSession
-    
-    init(uploadsSession: URLSession) {
-        self.uploadsSession = uploadsSession
+    var hasFilesToUploadOnBackground: Bool {
+        let array = activeDownloads.values.filter { item -> Bool in
+            switch item.value {
+            case .progress(let download):
+               return download.isOnBackground == true
+            default:
+                return false
+            }
+        }
+        return array.count > 0
     }
-    
+
     func pauseDownload(endpoint: APIRequest) {
         
         guard let  url = endpoint.url else {
@@ -40,7 +46,7 @@ class UploadService {
         }
     }
     
-    func startDownload(endpoint: APIRequest) {
+    func startDownload(endpoint: APIRequest, isOnBackground: Bool) {
         
         guard let url = URL(string: endpoint.baseURL + endpoint.path) else {
             return
@@ -50,7 +56,7 @@ class UploadService {
             activeDownloads[url] = nil
         }
         
-        let download = UploadProgressInfo( fileId: endpoint.fileToUpload?.fileId, url: url,status: .notSubmitted)
+        let download = UploadProgressInfo(fileId: endpoint.fileToUpload?.fileId, url: url,status: .notSubmitted, isOnBackground: isOnBackground)
         
         do {
             let request = try endpoint.urlRequest()
@@ -58,7 +64,7 @@ class UploadService {
             guard let fileURL = endpoint.fileToUpload?.url else {
                 return
             }
-            download.task = uploadsSession.uploadTask(with: request, fromFile: fileURL)
+            download.task = endpoint.uploadsSession?.uploadTask(with: request, fromFile: fileURL)
             
         } catch {
             
@@ -69,5 +75,9 @@ class UploadService {
         download.isDownloading = true
         
         activeDownloads[url] = CurrentValueSubject(.progress(progressInfo: download))
+    }
+    
+    func clearDownloads() {
+        activeDownloads.removeAll()
     }
 }

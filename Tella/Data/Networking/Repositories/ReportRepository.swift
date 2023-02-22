@@ -7,12 +7,9 @@ import Combine
 
 class ReportRepository:NSObject, WebRepository {
     
-    static var shared : ReportRepository = ReportRepository()
+//    static var shared : ReportRepository = ReportRepository()
     
-    lazy var uploadService : UploadService = UploadService(uploadsSession: URLSession(
-        configuration: .background(withIdentifier: "org.wearehorizontal.tella"),
-        delegate: self,
-        delegateQueue: nil))
+//  var uploadService : UploadService  
     
     func createReport(report:Report) -> AnyPublisher<ReportAPI, APIError> {
         
@@ -31,18 +28,16 @@ class ReportRepository:NSObject, WebRepository {
     }
     
     func putReport(file:FileToUpload) -> AnyPublisher<UploadResponse, APIError> {
-        
-        
-        let api = API.putReportFile((file))
+
+        let api = API.putReportFile((file, self))
         
         guard let url = api.url else {
             return Fail(error: APIError.invalidURL)
                 .eraseToAnyPublisher()
         }
+        UploadService.shared.startDownload(endpoint: api, isOnBackground: file.uploadOnBackground)
         
-        uploadService.startDownload(endpoint: api)
-        
-        guard let progress =  uploadService.activeDownloads[url] else {
+        guard let progress =  UploadService.shared.activeDownloads[url] else {
             return Fail(error: APIError.invalidURL) // to fix the error
                 .eraseToAnyPublisher()
         }
@@ -60,8 +55,8 @@ class ReportRepository:NSObject, WebRepository {
     func pause(_ filesToUpload: [FileToUpload]) {
         
         filesToUpload.forEach { file in
-            let api = API.putReportFile((file))
-            uploadService.pauseDownload(endpoint: api)
+            let api = API.putReportFile((file, self))
+            UploadService.shared.pauseDownload(endpoint: api)
         }
     }
 }
@@ -69,7 +64,7 @@ class ReportRepository:NSObject, WebRepository {
 extension ReportRepository {
     enum API {
         case createReport((Report))
-        case putReportFile((FileToUpload))
+        case putReportFile((FileToUpload, URLSessionDelegate))
         case postReportFile((FileToUpload))
         case headReportFile((FileToUpload))
     }
@@ -83,7 +78,7 @@ extension ReportRepository.API: APIRequest {
         case .createReport((let report)):
             return report.server?.accessToken
             
-        case .putReportFile((let file)), .postReportFile((let file)), .headReportFile((let file)):
+        case .putReportFile((let file, _)), .postReportFile((let file)), .headReportFile((let file)):
             return file.accessToken
         }
     }
@@ -108,7 +103,7 @@ extension ReportRepository.API: APIRequest {
         case .createReport((let report)):
             return report.server?.url ?? ""
             
-        case .putReportFile((let file)), .postReportFile((let file)), .headReportFile((let file)):
+        case .putReportFile((let file, _)), .postReportFile((let file)), .headReportFile((let file)):
             return file.serverURL
         }
     }
@@ -118,7 +113,7 @@ extension ReportRepository.API: APIRequest {
         case .createReport:
             return "/report"
             
-        case .putReportFile((let file)), .postReportFile((let file)), .headReportFile((let file)):
+        case .putReportFile((let file,_)), .postReportFile((let file)), .headReportFile((let file)):
             return "/file/\(file.idReport)/\(file.fileUrlPath.lastPathComponent.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)"
         }
     }
@@ -139,7 +134,7 @@ extension ReportRepository.API: APIRequest {
     var fileToUpload: FileInfo? {
         
         switch self {
-        case .putReportFile((let file)):
+        case .putReportFile((let file, _)):
             
             let mimeType = MIMEType.mime(for: file.fileExtension)
             return FileInfo(withFileURL: file.fileUrlPath, mimeType:mimeType , fileName: "name", name: file.fileName , data: file.data, fileId: file.fileId)
@@ -157,4 +152,17 @@ extension ReportRepository.API: APIRequest {
             return [HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
         }
     }
+    
+    var uploadsSession: URLSession? {
+        switch self {
+        case .putReportFile((let file, let delegate)):
+            return URLSession(
+                configuration: file.uploadOnBackground ? .background(withIdentifier: "org.wearehorizontal.tella") : .default,
+                delegate: delegate,
+                delegateQueue: nil)
+        default:
+            return nil
+        }
+    }
+    
 }

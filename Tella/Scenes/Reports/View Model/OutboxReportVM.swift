@@ -7,12 +7,11 @@ import Combine
 
 class OutboxReportVM: ObservableObject {
     
-    
     var mainAppModel : MainAppModel
     var reportsViewModel : ReportsViewModel
-
+    
     @Published var reportViewModel : ReportViewModel = ReportViewModel()
-
+    
     @Published var progressFileItems : [ProgressFileItemViewModel] = []
     @Published var percentUploaded : Float = 0.0
     @Published var percentUploadedInfo : String = "Waiting for connection"
@@ -25,7 +24,7 @@ class OutboxReportVM: ObservableObject {
     private var subscribers = Set<AnyCancellable>()
     private var filesToUpload : [FileToUpload] = []
     private var uploadProgressInfoArray : [UploadProgressInfo] = []
-    
+    private var reportRepository = ReportRepository()
     
     init(mainAppModel: MainAppModel, reportsViewModel : ReportsViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
         
@@ -71,7 +70,7 @@ class OutboxReportVM: ObservableObject {
         }
         
     }
-
+    
     func initializeProgressionInfos() {
         progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: "0/" + $0.size.getFormattedFileSize())}
         let totalSize = self.reportViewModel.files.reduce(0) { $0 + $1.size}
@@ -129,7 +128,7 @@ class OutboxReportVM: ObservableObject {
         self.isSubmissionInProgress = false
         DispatchQueue.global(qos: .background).async {
             self.updateReportStatus(reportStatus: .submissionPartialParts)
-            ReportRepository.shared.pause(self.filesToUpload)
+            self.reportRepository.pause(self.filesToUpload)
         }
     }
     
@@ -161,8 +160,8 @@ class OutboxReportVM: ObservableObject {
                                                                                          totalBytesSent: 0,
                                                                                          createdDate: Date(),
                                                                                          updatedDate: Date()) })
-
-        ReportRepository.shared.createReport(report: report)
+        
+        self.reportRepository.createReport(report: report)
             .sink(
                 receiveCompletion: { completion in
                     self.isLoading = false
@@ -217,7 +216,8 @@ class OutboxReportVM: ObservableObject {
                                                 fileExtension: reportVaultFile.fileExtension,
                                                 fileId: reportVaultFile.id,
                                                 fileSize: reportVaultFile.size,
-                                                bytesSent: reportVaultFile.totalBytesSent ?? 0)
+                                                bytesSent: reportVaultFile.totalBytesSent ?? 0,
+                                                uploadOnBackground: reportViewModel.server?.backgroundUpload ?? false)
                 
                 self.filesToUpload.append(fileToUpload)
                 self.checkFileSizeOnServer(fileToUpload: fileToUpload)
@@ -229,7 +229,7 @@ class OutboxReportVM: ObservableObject {
         
         if isSubmissionInProgress   {
             
-            ReportRepository.shared.checkFileSizeOnServer(file: fileToUpload)
+            self.reportRepository.checkFileSizeOnServer(file: fileToUpload)
             
                 .sink(receiveCompletion: { completion in
                     
@@ -268,7 +268,7 @@ class OutboxReportVM: ObservableObject {
         
         if isSubmissionInProgress {
             
-            ReportRepository.shared.putReport(file: fileToUpload)
+            self.reportRepository.putReport(file: fileToUpload)
                 .sink(receiveCompletion: { completion in
                     
                     switch completion {
@@ -302,7 +302,7 @@ class OutboxReportVM: ObservableObject {
         
         if isSubmissionInProgress {
             
-            ReportRepository.shared.postReport(file: fileToUpload)
+            self.reportRepository.postReport(file: fileToUpload)
                 .sink(receiveCompletion: { completion in
                     
                     switch completion {

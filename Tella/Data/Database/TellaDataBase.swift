@@ -62,7 +62,7 @@ class TellaDataBase {
             cddl(D.cCreatedDate, D.text),
             cddl(D.cUpdatedDate, D.text),
             cddl(D.cReportInstanceId, D.integer, tableName: D.tReport, referenceKey: D.cReportId)
-
+            
         ]
         dataBaseHelper.createTable(tableName: D.tReportInstanceVaultFile, columns: columns)
         
@@ -99,15 +99,15 @@ class TellaDataBase {
                 let slug = dict[D.cSlug] as? String
                 
                 servers.append(Server(id:id,
-                                       name: name,
-                                       serverURL: url,
-                                       username: username,
-                                       password: password,
-                                       accessToken: token,
-                                       activatedMetadata: activatedMetadata == 0 ? false : true ,
-                                       backgroundUpload: backgroundUpload == 0 ? false : true,
-                                       projectId: apiProjectId,
-                                       slug:slug))
+                                      name: name,
+                                      serverURL: url,
+                                      username: username,
+                                      password: password,
+                                      accessToken: token,
+                                      activatedMetadata: activatedMetadata == 0 ? false : true ,
+                                      backgroundUpload: backgroundUpload == 0 ? false : true,
+                                      projectId: apiProjectId,
+                                      slug:slug))
             }
             
             return servers
@@ -269,7 +269,7 @@ class TellaDataBase {
                 let totalBytesSent = dict[D.cTotalBytesSent] as? Int
                 let createdDate = dict[D.cCreatedDate] as? String
                 let updatedDate = dict[D.cUpdatedDate] as? String
-
+                
                 let reportFile =  ReportFile(id: id,
                                              fileId: vaultFileId,
                                              status: FileStatus(rawValue: status ?? 0),
@@ -324,20 +324,17 @@ class TellaDataBase {
                                       primarykeyValue: [KeyValue(key: D.cReportInstanceId, value: report.id as Any)])
         
         try report.reportFiles?.forEach({ reportFile in
-
-            
             _ = try dataBaseHelper.insertInto(tableName: D.tReportInstanceVaultFile,
                                               keyValue: [
                                                 
                                                 reportFile.id == nil ? KeyValue(key: D.cId, value: report.id) : nil,
                                                 KeyValue(key: D.cReportInstanceId, value: report.id),
-                                                         KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
-                                                         KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
-                                                         KeyValue(key: D.cTotalBytesSent, value: reportFile.totalBytesSent),
-                                                         KeyValue(key: D.cCreatedDate, value: reportFile.createdDate),
-                                                         KeyValue(key: D.cUpdatedDate, value: Date().getDateString())
-                                                        ])
-            
+                                                KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
+                                                KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
+                                                KeyValue(key: D.cTotalBytesSent, value: reportFile.totalBytesSent),
+                                                KeyValue(key: D.cCreatedDate, value: reportFile.createdDate),
+                                                KeyValue(key: D.cUpdatedDate, value: Date().getDateString())
+                                              ])
         })
         return 1
     }
@@ -349,7 +346,7 @@ class TellaDataBase {
                                                     KeyValue(key: D.cDate, value: date.getDateString())],
                                          primarykeyValue: [KeyValue(key: D.cReportId, value: idReport)])
     }
-
+    
     func updateReportFile(reportFile:ReportFile) throws -> Int {
         
         return try dataBaseHelper.update(tableName: D.tReportInstanceVaultFile,
@@ -357,14 +354,20 @@ class TellaDataBase {
                                                     KeyValue(key: D.cTotalBytesSent, value: reportFile.totalBytesSent),
                                                     KeyValue(key: D.cCreatedDate, value: reportFile.createdDate?.getDateString()),
                                                     KeyValue(key: D.cUpdatedDate, value: reportFile.updatedDate?.getDateString()),
-                                                             ],
+                                                   ],
                                          primarykeyValue: [KeyValue(key: D.cId, value: reportFile.id)])
-        
-        
     }
     
     func deleteReport(reportId : Int?) throws -> Int {
+        
+        guard let reportId, let report = self.getReport(reportId: reportId) else { return 0}
+        
+        guard let array = report.reportFiles?.compactMap({ KeyValue(key: D.cReportInstanceId, value: $0.id as Any) } ) else { return 0}
+        
+        _ = try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
+                                      primarykeyValue: array)
+        
         return try dataBaseHelper.delete(tableName: D.tReport,
-                                         primarykeyValue: [KeyValue(key: D.cReportId, value: reportId as Any)])
+                                         primarykeyValue: [KeyValue(key: D.cReportId, value: report.id as Any)])
     }
 }
