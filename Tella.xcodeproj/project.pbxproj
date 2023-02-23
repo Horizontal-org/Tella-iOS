@@ -66,8 +66,8 @@
 		12199C382940E9550041BD38 /* OutboxReportVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12199C372940E9550041BD38 /* OutboxReportVM.swift */; };
 		12199C3A2941260D0041BD38 /* OutboxDetailsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12199C392941260D0041BD38 /* OutboxDetailsItemView.swift */; };
 		121AD8222943A2F00056AC2A /* ReportRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121AD8212943A2F00056AC2A /* ReportRepository.swift */; };
-		121AD8242943CC900056AC2A /* URLRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121AD8232943CC900056AC2A /* URLRequestExtension.swift */; };
 		121AD8262943D52B0056AC2A /* SubmitReportResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121AD8252943D52B0056AC2A /* SubmitReportResult.swift */; };
+		121BAB7F29A7E30600D7E847 /* URLRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121BAB7E29A7E30600D7E847 /* URLRequestExtension.swift */; };
 		121C5D7529422C0800A64123 /* ProjectDetailsResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121C5D7429422C0800A64123 /* ProjectDetailsResult.swift */; };
 		121C5D7729422D6800A64123 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121C5D7629422D6800A64123 /* DataModel.swift */; };
 		121C5D7929422DF400A64123 /* DomainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121C5D7829422DF400A64123 /* DomainModel.swift */; };
@@ -417,8 +417,8 @@
 		12199C372940E9550041BD38 /* OutboxReportVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxReportVM.swift; sourceTree = "<group>"; };
 		12199C392941260D0041BD38 /* OutboxDetailsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxDetailsItemView.swift; sourceTree = "<group>"; };
 		121AD8212943A2F00056AC2A /* ReportRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRepository.swift; sourceTree = "<group>"; };
-		121AD8232943CC900056AC2A /* URLRequestExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLRequestExtension.swift; path = ../../../../../../Downloads/URLRequestExtension.swift; sourceTree = "<group>"; };
 		121AD8252943D52B0056AC2A /* SubmitReportResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitReportResult.swift; sourceTree = "<group>"; };
+		121BAB7E29A7E30600D7E847 /* URLRequestExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLRequestExtension.swift; sourceTree = "<group>"; };
 		121C5D7429422C0800A64123 /* ProjectDetailsResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailsResult.swift; sourceTree = "<group>"; };
 		121C5D7629422D6800A64123 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		121C5D7829422DF400A64123 /* DomainModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainModel.swift; sourceTree = "<group>"; };
@@ -1131,8 +1131,8 @@
 				1289B45928B64221005DA687 /* UIDeviceOrientationExtension.swift */,
 				124F8E0729119E9400FBB7AC /* StringExtension.swift */,
 				122389B6293635790058593B /* SetExtension.swift */,
-				121AD8232943CC900056AC2A /* URLRequestExtension.swift */,
 				12283F9F295C6FB100580EFE /* DataExtension.swift */,
+				121BAB7E29A7E30600D7E847 /* URLRequestExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2104,6 +2104,7 @@
 				125680002717907900A2D356 /* LockPasswordView.swift in Sources */,
 				1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */,
 				D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */,
+				121BAB7F29A7E30600D7E847 /* URLRequestExtension.swift in Sources */,
 				1217FCA128F9946A00DD2D70 /* CircularActivityIndicatory.swift in Sources */,
 				12B6481D28367C1D00CBE541 /* SheetManager.swift in Sources */,
 				D5DA7F982646220100B00FDA /* FileGroupButtonView.swift in Sources */,
@@ -2121,7 +2122,6 @@
 				129B845928BFED9700F1B344 /* TellaButtonView.swift in Sources */,
 				123048D7295F95BB0015CD96 /* SubmittedDetailsItemView.swift in Sources */,
 				1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */,
-				121AD8242943CC900056AC2A /* URLRequestExtension.swift in Sources */,
 				1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */,
 				125EFACE274A834300D93DF6 /* FileActionMenu.swift in Sources */,
 				12351C1A28D2209400F3CB7C /* Report.swift in Sources */,
