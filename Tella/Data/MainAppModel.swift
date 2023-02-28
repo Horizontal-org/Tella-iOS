@@ -217,7 +217,6 @@ class SettingsModel: ObservableObject, Codable {
         deleteVault = try container.decode(Bool.self, forKey: .deleteVault)
         deleteForms = try container.decode(Bool.self, forKey: .deleteForms)
         deleteServerSettings = try container.decode(Bool.self, forKey: .deleteServerSettings)
-        deleteTella = try container.decode(Bool.self, forKey: .deleteTella)
         showRecentFiles = try container.decode(Bool.self, forKey: .showRecentFiles)
         
         let lockTimeoutString = try container.decode(String.self, forKey: .lockTimeout)
