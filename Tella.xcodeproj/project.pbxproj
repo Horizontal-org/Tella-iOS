@@ -280,6 +280,7 @@
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
 		379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */; };
 		89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */; };
+		CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */; };
 		CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02ED7E24E42B3900014176 /* UserDefaultsProperty.swift */; };
 		D50727BF2625561400BBC370 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50727BE2625561400BBC370 /* KeychainManager.swift */; };
 		D50727C42625567900BBC370 /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50727C32625567900BBC370 /* KeychainTests.swift */; };
@@ -629,6 +630,7 @@
 		83BA47B1A745C8D086B482FE /* libPods-Tella-TellaUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella-TellaUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TellaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCheckboxItem.swift; sourceTree = "<group>"; };
 		CE02ED7E24E42B3900014176 /* UserDefaultsProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsProperty.swift; sourceTree = "<group>"; };
 		CE64FA282505542E00B03CEC /* AppViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewState.swift; sourceTree = "<group>"; };
 		D47E68E3B1AECB3684E49829 /* Pods-Tella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.release.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.release.xcconfig"; sourceTree = "<group>"; };
@@ -1631,6 +1633,7 @@
 				1291A83328BE0D51001A6055 /* SettingsServerItemView.swift */,
 				120451FB28C795DC00D572A7 /* EditServerDisplayItemView.swift */,
 				129B845428BFEC8600F1B344 /* TopServerView.swift */,
+				CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2164,6 +2167,7 @@
 				12EC94D128ABB6FA0070E72B /* SecuritySettingsView.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				0E170255267910CC0069072A /* OutBoxFormsView.swift in Sources */,
+				CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */,
 				0E170259267913160069072A /* FormsCellView.swift in Sources */,
 				1293547B294A454900735ED0 /* AppDelegate.swift in Sources */,
 				12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */,
