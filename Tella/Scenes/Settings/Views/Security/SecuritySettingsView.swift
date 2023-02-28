@@ -25,6 +25,8 @@ struct SecuritySettingsView: View {
                 SettingsCardView(cardViewArray: [lockView.eraseToAnyView(), lockTimeoutView.eraseToAnyView()])
                 
                 SettingsCardView(cardViewArray: [screenSecurityView.eraseToAnyView()])
+                
+                SettingsCardView(cardViewArray: [quickDeleteView.eraseToAnyView()])
 
                 Spacer()
             }
@@ -69,6 +71,25 @@ struct SecuritySettingsView: View {
                           toggle: $appModel.settings.screenSecurity)
         
         
+    }
+    
+    var quickDeleteView: some View {
+        
+        Group {
+            SettingToggleItem(title: "Quick Delete",
+                              description: "Shows a sliding button on the homescreen to quicky exit Tella in emergency situations. ",
+                              toggle: $appModel.settings.quickDelete)
+            if appModel.settings.quickDelete {
+                SettingCheckboxItem(
+                    isChecked: $appModel.settings.deleteVault ,
+                    title: "Delete files and folders"
+                )
+                SettingCheckboxItem(
+                    isChecked: $appModel.settings.deleteServerSettings ,
+                    title: "Delete connections"
+                )
+            }
+        }
     }
 
     var unlockView : some View {

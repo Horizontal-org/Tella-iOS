@@ -9,9 +9,11 @@ struct HomeView: View {
     
     @EnvironmentObject var appModel: MainAppModel
     @StateObject var viewModel : HomeViewModel
+    @StateObject var serversViewModel: ServersViewModel
     
     init(appModel: MainAppModel) {
         _viewModel = StateObject(wrappedValue: HomeViewModel(appModel: appModel))
+        _serversViewModel = StateObject(wrappedValue: ServersViewModel(mainAppModel: appModel))
     }
     
     var body: some View {
@@ -39,7 +41,15 @@ struct HomeView: View {
                 
                 if appModel.settings.quickDelete {
                     SwipeToActionView(completion: {
-                        appModel.removeAllFiles()
+                        if(appModel.settings.deleteVault) {
+                            // removes files and folders
+                            appModel.removeAllFiles()
+                        }
+                        
+                        if(appModel.settings.deleteServerSettings) {
+                            // remove servers connections
+                            serversViewModel.deleteServer()
+                        }
                     })
                 }
             }
