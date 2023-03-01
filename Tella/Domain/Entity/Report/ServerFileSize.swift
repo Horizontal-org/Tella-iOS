@@ -12,3 +12,13 @@ class ServerFileSize: DomainModel {
         self.size = Int(size ?? "0")
     }
 }
+
+
+class BoolModel: DomainModel {
+    
+    var success : Bool?
+
+    init(success: Bool?) {
+        self.success = success
+    }
+}

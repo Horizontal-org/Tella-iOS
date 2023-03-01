@@ -4,10 +4,20 @@
 
 import Foundation
 import UIKit
+import Combine
+
+typealias Output = (data: Data?, response: URLResponse)
 
 enum UploadResponse {
+    case initial
     case progress(progressInfo: UploadProgressInfo)
-    case response(data: FileDTO)
+    case response(response: Output?)
+}
+
+enum APIResponse<Value> {
+    case initial
+    case response(response: Value?)
+    case progress(progressInfo: UploadProgressInfo)
 }
 
 extension ReportRepository:URLSessionTaskDelegate, URLSessionDelegate, URLSessionDataDelegate {
@@ -19,8 +29,8 @@ extension ReportRepository:URLSessionTaskDelegate, URLSessionDelegate, URLSessio
         totalBytesSent: Int64,
         totalBytesExpectedToSend: Int64 ) {
             
-            guard let url = task.currentRequest?.url else { return }
-            guard let uploadProgressInfo =  UploadService.shared.activeDownloads[url] else { return }
+            //            guard let url = task.currentRequest?.url else { return }
+            guard let uploadProgressInfo =  UploadService.shared.activeDownloads[task] else { return }
             
             switch uploadProgressInfo.value {
             case .progress(let progressInfo):
@@ -28,7 +38,7 @@ extension ReportRepository:URLSessionTaskDelegate, URLSessionDelegate, URLSessio
                 progressInfo.size = Int(totalBytesExpectedToSend)
                 progressInfo.status = .partialSubmitted
                 uploadProgressInfo.value = .progress(progressInfo: progressInfo)
-                break
+                
             default:
                 break
             }
@@ -46,34 +56,29 @@ extension ReportRepository:URLSessionTaskDelegate, URLSessionDelegate, URLSessio
     
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         
-        guard let url = dataTask.currentRequest?.url else { return }
-        guard let uploadProgressInfo =  UploadService.shared.activeDownloads[url] else { return }
+        guard let uploadProgressInfo =  UploadService.shared.activeDownloads[dataTask] else { return }
+
+        debugLog(data.string())
         
-        do {
-            debugLog(data.string())
-            let response: FileDTO  = try  data.decoded()
-            uploadProgressInfo.value = .response(data: response)
-            uploadProgressInfo.send(completion: .finished)
-        } catch {
-            uploadProgressInfo.send(completion: .failure(.unexpectedResponse))
-        }
+        uploadProgressInfo.value = .response(response: (data ,dataTask.response as! HTTPURLResponse))
+        uploadProgressInfo.send(completion: .finished)
+        UploadService.shared.activeDownloads[dataTask] = nil
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         
-        guard let url = task.currentRequest?.url else { return }
-        guard let uploadProgressInfo = UploadService.shared.activeDownloads[url] else { return }
-        
-        switch uploadProgressInfo.value {
-        case .progress(let progressInfo):
-            progressInfo.status = .notSubmitted
-            uploadProgressInfo.value = .progress(progressInfo: progressInfo)
-            break
-        default:
-            break
+        guard let uploadProgressInfo = UploadService.shared.activeDownloads[task] else { return }
+        if error == nil {
+            uploadProgressInfo.value = .response(response: (nil ,task.response as! HTTPURLResponse))
+            uploadProgressInfo.send(completion: .finished)
+        } else if let code = (error as? NSError)?.code {
+            uploadProgressInfo.send(completion: .failure(APIError.httpCode(code)))
+            
+        } else {
+            uploadProgressInfo.send(completion: .failure(.unexpectedResponse))
         }
-        uploadProgressInfo.send(completion: .failure(.unexpectedResponse))
+
+        UploadService.shared.activeDownloads[task] = nil
     }
-    
 }
 

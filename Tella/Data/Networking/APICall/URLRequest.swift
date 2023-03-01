@@ -4,7 +4,6 @@
 //
 
 import Foundation
-
 import Combine
 
 protocol WebRepository {}
@@ -30,21 +29,18 @@ extension WebRepository {
 
 // MARK: - Helpers
 
-private extension Publisher where Output == URLSession.DataTaskPublisher.Output {
-    func requestJSON<Value>() -> AnyPublisher<Value, APIError> where Value: Decodable {
-        return requestData()
-            .decode(type: Value.self, decoder: JSONDecoder())
-//            .receive(on: DispatchQueue.main)
-            .mapError{ _ in APIError.unexpectedResponse }
-            .eraseToAnyPublisher()
-    }
+extension Publisher where Output == URLSession.DataTaskPublisher.Output {
+func requestJSON<Value>() -> AnyPublisher<Value, APIError> where Value: Decodable {
+    return requestData()
+        .decode(type: Value.self, decoder: JSONDecoder())
+        .mapError{ _ in APIError.unexpectedResponse }
+        .eraseToAnyPublisher()
+}
 }
 
 extension Publisher where Output == URLSession.DataTaskPublisher.Output {
     func requestData() -> AnyPublisher<Data, APIError> {
         return tryMap {
-//            assert(!Thread.isMainThread)
-            
             guard let code = ($0.1 as? HTTPURLResponse)?.statusCode else {
                 throw APIError.unexpectedResponse
             }

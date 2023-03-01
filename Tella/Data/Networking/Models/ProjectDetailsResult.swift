@@ -44,7 +44,12 @@ class FileDTO: Codable {
 
 // MARK: - BoolResponse
 
-class BoolResponse: Codable {
+class BoolResponse: DataModel, Codable {
     let success: Bool?
+    
+    func toDomain() -> DomainModel? {
+        return BoolModel(success: success)
+    }
+
 }
 

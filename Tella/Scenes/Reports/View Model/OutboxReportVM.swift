@@ -144,7 +144,8 @@ class OutboxReportVM: ObservableObject {
         }
     }
     
-    func createReport() {
+    
+    func createReport()   {
         //        DispatchQueue.main.async {
         //            // self.isLoading = true
         //        }
@@ -164,7 +165,7 @@ class OutboxReportVM: ObservableObject {
         self.reportRepository.createReport(report: report)
             .sink(
                 receiveCompletion: { completion in
-                    self.isLoading = false
+                    //                    self.isLoading = false
                     
                     switch completion {
                         
@@ -176,17 +177,25 @@ class OutboxReportVM: ObservableObject {
                     }
                 },
                 receiveValue: { result in
-                    self.reportViewModel.apiID = result.id
-                    if self.reportViewModel.files.isEmpty {
-                        self.reportViewModel.status = .submitted
-                    }
-                    self.saveReport()
                     
-                    if self.reportViewModel.files.isEmpty {
-                        self.showSubmittedReport()
+                    switch result {
+                    case .response(let response):
+                        self.reportViewModel.apiID = response?.id
+                        if self.reportViewModel.files.isEmpty {
+                            self.reportViewModel.status = .submitted
+                        }
+                        self.saveReport()
+                        
+                        if self.reportViewModel.files.isEmpty {
+                            self.showSubmittedReport()
+                        }
+                        
+                        self.uploadReportFiles()
+                        
+                    default:
+                        break
                     }
                     
-                    self.uploadReportFiles()
                 }
             )
             .store(in: &subscribers)
@@ -243,27 +252,38 @@ class OutboxReportVM: ObservableObject {
                     }
                 }, receiveValue: { result in
                     
-                    self.update(fileToUpload: fileToUpload, sizeResult: result)
-                    
+                    switch result {
+                    case .response(let response):
+                        self.update(fileToUpload: fileToUpload, sizeResult: response)
+                        
+                    default:
+                        break
+                    }
                 }) .store(in: &subscribers)
         }
     }
     
-    func update(fileToUpload:FileToUpload,sizeResult : SizeResult? ) {
+    func update(fileToUpload:FileToUpload,sizeResult : ServerFileSize? ) {
         
-        self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})?.totalBytesSent = Int(sizeResult?.size ?? "0") ?? 0
-        
-        let instanceId = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})?.instanceId
-        
-        self.updateReportFile(fileStatus: .partialSubmitted, id: instanceId, totalBytesSent: Int(sizeResult?.size ?? "0") ?? 0)
-        
-        if let fileUrlPath = self.mainAppModel.saveDataToTempFile(data: fileToUpload.data?.extract(size: sizeResult?.size), fileName: fileToUpload.fileName, pathExtension: fileToUpload.fileExtension) {
-            fileToUpload.fileUrlPath = fileUrlPath
+        let file = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})
+        if  let fileSize = file?.size, let sizeResult = sizeResult?.size, sizeResult >= fileSize  {
+            self.postReportFile(fileToUpload: fileToUpload)
+            
+        } else {
+            file?.totalBytesSent = (sizeResult?.size ) ?? 0
+            
+            let instanceId = file?.instanceId
+            
+            self.updateReportFile(fileStatus: .partialSubmitted, id: instanceId, totalBytesSent:  (sizeResult?.size) ?? 0)
+            
+            if let fileUrlPath = self.mainAppModel.saveDataToTempFile(data: fileToUpload.data?.extract(size: sizeResult?.size), fileName: fileToUpload.fileName, pathExtension: fileToUpload.fileExtension) {
+                fileToUpload.fileUrlPath = fileUrlPath
+            }
+            fileToUpload.data = fileToUpload.data?.extract(size: sizeResult?.size)
+            self.putReportFile(fileToUpload: fileToUpload)
         }
-        fileToUpload.data = fileToUpload.data?.extract(size: sizeResult?.size)
-        self.putReportFile(fileToUpload: fileToUpload)
-        
     }
+    
     func putReportFile(fileToUpload:FileToUpload) {
         
         if isSubmissionInProgress {
@@ -276,7 +296,7 @@ class OutboxReportVM: ObservableObject {
                         self.checkFileSizeOnServer(fileToUpload: fileToUpload)
                         
                     case .finished:
-                        self.postReportFile(fileToUpload: fileToUpload)
+                        break
                     }
                 },
                       receiveValue: { result in
@@ -292,6 +312,8 @@ class OutboxReportVM: ObservableObject {
                         self.updateReportFile(fileStatus: .partialSubmitted, id: instanceId, totalBytesSent: Int(uploadProgressInfo.current + (totalBytesSent ?? 0)))
                         
                     case .response:
+                        self.postReportFile(fileToUpload: fileToUpload)
+                    case .initial:
                         break
                     }
                 }).store(in: &subscribers)
@@ -314,14 +336,21 @@ class OutboxReportVM: ObservableObject {
                     }
                 },
                       receiveValue: { result in
-                    if let success = result?.success, success {
-                        if let item = self.uploadProgressInfoArray.filter ({$0.fileId == fileToUpload.fileId}).first {
-                            item.status = .submitted
-                        }
-                        self.checkAllFilesAreUploaded()
+                    switch result {
+                    case .response(let response):
                         
-                    } else  {
-                        self.checkFileSizeOnServer(fileToUpload: fileToUpload)
+                        if let success = response?.success, success {
+                            if let item = self.uploadProgressInfoArray.filter ({$0.fileId == fileToUpload.fileId}).first {
+                                item.status = .submitted
+                            }
+                            self.checkAllFilesAreUploaded()
+                            
+                        } else  {
+                            self.checkFileSizeOnServer(fileToUpload: fileToUpload)
+                        }
+                        
+                    default:
+                        break
                     }
                 }
                 )

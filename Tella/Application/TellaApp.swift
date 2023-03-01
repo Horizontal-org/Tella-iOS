@@ -14,7 +14,7 @@ struct TellaApp: App {
     private var appViewState = AppViewState()
     @Environment(\.scenePhase) var scenePhase
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-
+    
     var body: some Scene {
         WindowGroup {
             ContentView().environmentObject(appViewState)
@@ -32,7 +32,6 @@ struct TellaApp: App {
             case .background:
                 self.saveData()
             case .active:
-//                break
                 self.resetApp()
             case .inactive:
                 appViewState.homeViewModel?.shouldShowSecurityScreen = true
@@ -45,7 +44,7 @@ struct TellaApp: App {
     func saveData() {
         
         appViewState.homeViewModel?.saveLockTimeoutStartDate()
-
+        
         
         guard let shouldResetApp = appViewState.homeViewModel?.shouldResetApp() else { return }
         let hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
@@ -58,16 +57,16 @@ struct TellaApp: App {
                 appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
                 appViewState.resetApp()
             })
-//            appViewState.homeViewModel?.saveLockTimeoutStartDate()
+            //            appViewState.homeViewModel?.saveLockTimeoutStartDate()
             appViewState.homeViewModel?.shouldSaveCurrentData = false
         }
-
+        
     }
     
     func resetApp() {
         if let shouldResetApp = appViewState.homeViewModel?.shouldResetApp(),
-            shouldResetApp == true,
-            appViewState.homeViewModel?.appEnterInBackground == true {
+           shouldResetApp == true,
+           appViewState.homeViewModel?.appEnterInBackground == true {
             DispatchQueue.main.async {
                 appViewState.shouldHidePresentedView = true
                 appViewState.homeViewModel?.vaultManager.clearTmpDirectory()

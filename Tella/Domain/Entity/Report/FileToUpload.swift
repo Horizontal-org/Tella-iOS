@@ -5,6 +5,7 @@
 import Foundation
 
 class FileToUpload {
+    var id : String
     var idReport : String
     var fileUrlPath : URL
     var accessToken : String
@@ -18,6 +19,7 @@ class FileToUpload {
     var uploadOnBackground : Bool
 
     init(idReport: String, fileUrlPath: URL, accessToken: String, serverURL: String, data: Data?, fileName: String, fileExtension: String, fileId: String, fileSize: Int, bytesSent:Int, uploadOnBackground : Bool = false) {
+        self.id = UUID().uuidString
         self.idReport = idReport
         self.fileUrlPath = fileUrlPath
         self.accessToken = accessToken

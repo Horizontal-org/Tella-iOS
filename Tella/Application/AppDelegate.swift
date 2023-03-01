@@ -7,7 +7,7 @@ import Foundation
 import UIKit
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-   
+    
     var backgroundSessionCompletionHandler: (() -> Void)?
     static private(set) var instance: AppDelegate! = nil
     @Published var shouldHandleTimeout : Bool = false
@@ -16,13 +16,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         AppDelegate.instance = self
         return true
     }
-
+    
     func application(
         _ application: UIApplication,
         handleEventsForBackgroundURLSession
-          handleEventsForBackgroundURLSessionidentifier: String,
+        handleEventsForBackgroundURLSessionidentifier: String,
         completionHandler: @escaping () -> Void) {
-          backgroundSessionCompletionHandler = completionHandler
+            backgroundSessionCompletionHandler = completionHandler
             shouldHandleTimeout = true
-      }
+        }
 }

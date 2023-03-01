@@ -14,9 +14,9 @@ extension Data {
         return String(decoding:  self , as: UTF8.self)
     }
     
-    mutating func extract(size: String?) -> Data? {
+    mutating func extract(size: Int?) -> Data? {
         
-        guard let sizeString = size, let size = Int(sizeString),  self.count > size  else {
+        guard let size,  self.count > size  else {
             return nil
         }
         

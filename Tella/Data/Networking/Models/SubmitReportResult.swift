@@ -5,7 +5,7 @@
 import Foundation
 
 // MARK: - SubmitReportResult
-struct SubmitReportResult:DataModel, Codable {
+class SubmitReportResult:DataModel {
     
     let id, title, welcomeDescription, createdAt: String?
     let deviceInfo: String?
