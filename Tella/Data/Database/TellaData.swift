@@ -96,14 +96,14 @@ class TellaData : ObservableObject {
         return id
     }
     
-    func updateReport(report : Report) throws -> Int {
+    func updateReport(report : Report) throws -> Report? {
         
         guard let database = database else {
             throw SqliteError()
         }
-        let id = try database.updateReport(report: report)
+        let report = try database.updateReport(report: report)
         getReports()
-        return id
+        return report
     }
 
     func updateReportStatus(idReport : Int, status: ReportStatus) throws -> Int {

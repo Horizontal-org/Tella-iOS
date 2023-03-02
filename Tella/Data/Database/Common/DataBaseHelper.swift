@@ -297,8 +297,10 @@ class DataBaseHelper {
     }
     
     
-    func update(tableName:String, keyValue: [KeyValue], primarykeyValue : [KeyValue]) throws -> Int {
-        
+    func update(tableName:String, keyValue: [KeyValue?], primarykeyValue : [KeyValue?]) throws -> Int {
+        let keyValue = keyValue.compactMap({$0})
+        let primarykeyValue = primarykeyValue.compactMap({$0})
+
         let setColumnNames = keyValue.compactMap{($0.key)}
         let primaryKeyColumnNames = primarykeyValue.compactMap{($0.key)}
         

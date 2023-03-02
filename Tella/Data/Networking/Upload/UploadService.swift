@@ -34,11 +34,9 @@ class UploadService {
         activeDownloads.forEach({ item in
             
             switch item.value.value {
-                
+
             case .progress(let download):
-                guard download.isDownloading else {
-                    return
-                }
+
                 download.task?.cancel()
                 activeDownloads[item.key] = nil
                 

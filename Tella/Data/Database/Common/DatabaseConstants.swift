@@ -46,6 +46,7 @@ struct D {
     static let cServerId = "c_server_id"
     
     static let cReportId = "c_report_id"
+    static let cApiReportId = "c_api_report_id"
 
     
     static let cReportInstanceId = "c_report_instance_id";

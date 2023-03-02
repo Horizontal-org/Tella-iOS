@@ -43,6 +43,7 @@ class TellaDataBase {
         // c_id | c_title | c_description | c_date | cStatus | c_server_id
         let columns = [
             cddl(D.cReportId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cApiReportId, D.text),
             cddl(D.cTitle, D.text),
             cddl(D.cDescription, D.text),
             cddl(D.cDate, D.text),
@@ -171,7 +172,8 @@ class TellaDataBase {
                 let status = dict[D.cStatus] as? Int
                 let apiProjectId = dict[D.cApiProjectId] as? String
                 let slug = dict[D.cSlug] as? String
-                
+                let apiReportId = dict[D.cApiReportId] as? String
+
                 let server = Server(id:id,
                                     name: name,
                                     serverURL: url,
@@ -189,7 +191,8 @@ class TellaDataBase {
                                       date: date?.getDate() ?? Date(),
                                       status: ReportStatus(rawValue: status ?? 0) ?? .draft,
                                       server: server,
-                                      vaultFiles: getVaultFiles(reportID: reportID)))
+                                      vaultFiles: getVaultFiles(reportID: reportID),
+                                      apiID: apiReportId))
             }
             
             return reports
@@ -227,7 +230,8 @@ class TellaDataBase {
                 let status = dict[D.cStatus] as? Int
                 let apiProjectId = dict[D.cApiProjectId] as? String
                 let slug = dict[D.cSlug] as? String
-                
+                let apiReportId = dict[D.cApiReportId] as? String
+
                 let server = Server(id:id,
                                     name: name,
                                     serverURL: url,
@@ -245,7 +249,8 @@ class TellaDataBase {
                                date: date?.getDate() ?? Date(),
                                status: ReportStatus(rawValue: status ?? 0) ?? .draft,
                                server: server,
-                               vaultFiles: getVaultFiles(reportID: reportID))
+                               vaultFiles: getVaultFiles(reportID: reportID),
+                               apiID: apiReportId)
             }
             
             return nil
@@ -310,33 +315,60 @@ class TellaDataBase {
         return reportId
     }
     
-    func updateReport(report : Report) throws -> Int {
+    func updateReport(report : Report) throws -> Report? {
+        
+        var keyValueArray : [KeyValue]  = []
+        
+        if let title = report.title {
+            keyValueArray.append(KeyValue(key: D.cTitle, value: title))
+        }
+        
+        if let description = report.description {
+            keyValueArray.append(KeyValue(key: D.cDescription, value: description))
+        }
+        
+        if let date = report.date {
+            keyValueArray.append(KeyValue(key: D.cDate, value: date.getDateString()))
+        }
+        
+        if let status = report.status {
+            keyValueArray.append(KeyValue(key: D.cStatus, value: status.rawValue))
+        }
+        
+        if let serverId = report.server?.id {
+            keyValueArray.append(KeyValue(key: D.cServerId, value: serverId))
+        }
+        
+        if let apiID = report.apiID {
+            keyValueArray.append(KeyValue(key: D.cApiReportId, value: apiID))
+        }
+
+
         _ = try dataBaseHelper.update(tableName: D.tReport,
-                                      keyValue: [KeyValue(key: D.cTitle, value: report.title),
-                                                 KeyValue(key: D.cDescription, value: report.description),
-                                                 KeyValue(key: D.cDate, value: report.date?.getDateString()),
-                                                 KeyValue(key: D.cStatus, value: report.status?.rawValue),
-                                                 KeyValue(key: D.cServerId, value: report.server?.id)],
+                                      keyValue: keyValueArray,
                                       primarykeyValue: [KeyValue(key: D.cReportId, value: report.id)])
         
-        
-        _ = try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
-                                      primarykeyValue: [KeyValue(key: D.cReportInstanceId, value: report.id as Any)])
-        
-        try report.reportFiles?.forEach({ reportFile in
-            _ = try dataBaseHelper.insertInto(tableName: D.tReportInstanceVaultFile,
-                                              keyValue: [
-                                                
-                                                reportFile.id == nil ? KeyValue(key: D.cId, value: report.id) : nil,
-                                                KeyValue(key: D.cReportInstanceId, value: report.id),
-                                                KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
-                                                KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
-                                                KeyValue(key: D.cTotalBytesSent, value: reportFile.totalBytesSent),
-                                                KeyValue(key: D.cCreatedDate, value: reportFile.createdDate),
-                                                KeyValue(key: D.cUpdatedDate, value: Date().getDateString())
-                                              ])
-        })
-        return 1
+        if let files = report.reportFiles {
+            _ = try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
+                                          primarykeyValue: [KeyValue(key: D.cReportInstanceId, value: report.id as Any)])
+            
+            try files.forEach({ reportFile in
+                _ = try dataBaseHelper.insertInto(tableName: D.tReportInstanceVaultFile,
+                                                  keyValue: [
+                                                    
+                                                    reportFile.id == nil ? KeyValue(key: D.cId, value: report.id) : nil,
+                                                    KeyValue(key: D.cReportInstanceId, value: report.id),
+                                                    KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
+                                                    KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
+                                                    KeyValue(key: D.cTotalBytesSent, value: reportFile.totalBytesSent),
+                                                    KeyValue(key: D.cCreatedDate, value: reportFile.createdDate),
+                                                    KeyValue(key: D.cUpdatedDate, value: Date().getDateString())
+                                                  ])
+            })
+        }
+
+        guard let reportId = report.id else { return nil }
+        return getReport(reportId: reportId)
     }
     
     func updateReportStatus(idReport : Int, status: ReportStatus, date: Date) throws -> Int {
@@ -349,12 +381,26 @@ class TellaDataBase {
     
     func updateReportFile(reportFile:ReportFile) throws -> Int {
         
+        var keyValueArray : [KeyValue]  = []
+        
+        if let status = reportFile.status {
+            keyValueArray.append(KeyValue(key: D.cStatus, value: status.rawValue))
+        }
+        
+        if let totalBytesSent = reportFile.totalBytesSent {
+            keyValueArray.append(KeyValue(key: D.cTotalBytesSent, value: totalBytesSent))
+        }
+
+        if let createdDate = reportFile.createdDate {
+            keyValueArray.append(KeyValue(key: D.cCreatedDate, value: createdDate.getDateString()))
+        }
+
+        if let updatedDate = reportFile.updatedDate {
+            keyValueArray.append(KeyValue(key: D.cUpdatedDate, value: updatedDate.getDateString()))
+        }
+
         return try dataBaseHelper.update(tableName: D.tReportInstanceVaultFile,
-                                         keyValue: [KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
-                                                    KeyValue(key: D.cTotalBytesSent, value: reportFile.totalBytesSent),
-                                                    KeyValue(key: D.cCreatedDate, value: reportFile.createdDate?.getDateString()),
-                                                    KeyValue(key: D.cUpdatedDate, value: reportFile.updatedDate?.getDateString()),
-                                                   ],
+                                         keyValue: keyValueArray,
                                          primarykeyValue: [KeyValue(key: D.cId, value: reportFile.id)])
     }
     
