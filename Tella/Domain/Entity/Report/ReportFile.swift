@@ -9,20 +9,20 @@ class ReportFile : Hashable {
     var id : Int?
     var fileId : String?
     var status : FileStatus?
-    var totalBytesSent : Int?
+    var bytesSent : Int?
     var createdDate : Date?
     var updatedDate : Date?
 
     init(id: Int? = nil,
          fileId: String? = nil,
          status: FileStatus? = nil,
-         totalBytesSent: Int? = 0,
+         bytesSent: Int? = 0,
          createdDate: Date? = nil,
          updatedDate: Date? = Date()) {
         self.id = id
         self.fileId = fileId
         self.status = status
-        self.totalBytesSent = totalBytesSent
+        self.bytesSent = bytesSent
         self.createdDate = createdDate
         self.updatedDate = updatedDate
     }

@@ -145,7 +145,7 @@ class DraftReportVM: ObservableObject {
                             server: server,
                             vaultFiles: self.files.compactMap{ ReportFile(fileId: $0.id,
                                                                           status: .notSubmitted,
-                                                                          totalBytesSent: 0,
+                                                                          bytesSent: 0,
                                                                           createdDate: Date())},
                             apiID: apiID)
         

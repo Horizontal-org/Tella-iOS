@@ -59,7 +59,7 @@ class TellaDataBase {
             cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
             cddl(D.cVaultFileInstanceId, D.text),
             cddl(D.cStatus, D.integer),
-            cddl(D.cTotalBytesSent, D.integer),
+            cddl(D.cBytesSent, D.integer),
             cddl(D.cCreatedDate, D.text),
             cddl(D.cUpdatedDate, D.text),
             cddl(D.cReportInstanceId, D.integer, tableName: D.tReport, referenceKey: D.cReportId)
@@ -271,14 +271,14 @@ class TellaDataBase {
                 let id = dict[D.cId] as? Int
                 let vaultFileId = dict[D.cVaultFileInstanceId] as? String
                 let status = dict[D.cStatus] as? Int
-                let totalBytesSent = dict[D.cTotalBytesSent] as? Int
+                let bytesSent = dict[D.cBytesSent] as? Int
                 let createdDate = dict[D.cCreatedDate] as? String
                 let updatedDate = dict[D.cUpdatedDate] as? String
                 
                 let reportFile =  ReportFile(id: id,
                                              fileId: vaultFileId,
                                              status: FileStatus(rawValue: status ?? 0),
-                                             totalBytesSent: totalBytesSent,
+                                             bytesSent: bytesSent,
                                              createdDate: createdDate?.getDate(),
                                              updatedDate: updatedDate?.getDate())
                 reportFiles.append(reportFile)
@@ -305,7 +305,7 @@ class TellaDataBase {
                                               keyValue: [KeyValue(key: D.cReportInstanceId, value: reportId),
                                                          KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
                                                          KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
-                                                         KeyValue(key: D.cTotalBytesSent, value: 0),
+                                                         KeyValue(key: D.cBytesSent, value: 0),
                                                          KeyValue(key: D.cCreatedDate, value: Date().getDateString()),
                                                          KeyValue(key: D.cUpdatedDate, value: Date().getDateString())
                                                         ])
@@ -360,7 +360,7 @@ class TellaDataBase {
                                                     KeyValue(key: D.cReportInstanceId, value: report.id),
                                                     KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
                                                     KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
-                                                    KeyValue(key: D.cTotalBytesSent, value: reportFile.totalBytesSent),
+                                                    KeyValue(key: D.cBytesSent, value: reportFile.bytesSent),
                                                     KeyValue(key: D.cCreatedDate, value: reportFile.createdDate),
                                                     KeyValue(key: D.cUpdatedDate, value: Date().getDateString())
                                                   ])
@@ -387,8 +387,8 @@ class TellaDataBase {
             keyValueArray.append(KeyValue(key: D.cStatus, value: status.rawValue))
         }
         
-        if let totalBytesSent = reportFile.totalBytesSent {
-            keyValueArray.append(KeyValue(key: D.cTotalBytesSent, value: totalBytesSent))
+        if let bytesSent = reportFile.bytesSent {
+            keyValueArray.append(KeyValue(key: D.cBytesSent, value: bytesSent))
         }
 
         if let createdDate = reportFile.createdDate {

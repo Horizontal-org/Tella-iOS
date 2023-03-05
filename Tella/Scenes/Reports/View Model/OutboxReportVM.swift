@@ -72,9 +72,29 @@ class OutboxReportVM: ObservableObject {
     }
     
     func initializeProgressionInfos() {
-        progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: "0/" + $0.size.getFormattedFileSize())}
+        
         let totalSize = self.reportViewModel.files.reduce(0) { $0 + $1.size}
-        self.uploadedFiles = " \(self.reportViewModel.files.count) files, 0/\(totalSize.getFormattedFileSize()) uploaded"
+        let bytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent ?? 0)}
+        
+        if totalSize > 0 {
+            
+            // All Files
+            let percentUploaded = Float(bytesSent) / Float(totalSize)
+            let formattedTotalUploaded = bytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
+            let formattedTotalSize = totalSize.getFormattedFileSize()
+            DispatchQueue.main.async {
+                
+                self.percentUploadedInfo = "\(Int(percentUploaded * 100))% uploaded"
+                self.percentUploaded = Float(percentUploaded)
+                self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
+                
+                self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: ($0.bytesSent?.getFormattedFileSize() ?? "0") + "/" + $0.size.getFormattedFileSize())}
+                
+                self.objectWillChange.send()
+                
+            }
+            
+        }
     }
     
     func saveReport() {
@@ -103,13 +123,13 @@ class OutboxReportVM: ObservableObject {
         }
     }
     
-    func updateReportFile(fileStatus:FileStatus, id:Int?, totalBytesSent:Int? = nil ) {
+    func updateReportFile(fileStatus:FileStatus, id:Int?, bytesSent:Int? = nil ) {
         guard let id else { return  }
         
         do {
             let _ = try mainAppModel.vaultManager.tellaData.updateReportFile(reportFile: ReportFile(id: id,
                                                                                                     status: fileStatus,
-                                                                                                    totalBytesSent: totalBytesSent))
+                                                                                                    bytesSent: bytesSent))
             
         } catch {
             
@@ -135,7 +155,7 @@ class OutboxReportVM: ObservableObject {
     }
     
     
-    func createReport()   {
+    func createReport() {
         //        DispatchQueue.main.async {
         //            // self.isLoading = true
         //        }
@@ -148,7 +168,7 @@ class OutboxReportVM: ObservableObject {
                             server: reportViewModel.server,
                             vaultFiles: self.reportViewModel.files.compactMap{ReportFile(fileId: $0.id,
                                                                                          status: .notSubmitted,
-                                                                                         totalBytesSent: 0,
+                                                                                         bytesSent: 0,
                                                                                          createdDate: Date(),
                                                                                          updatedDate: Date()) })
         
@@ -217,7 +237,7 @@ class OutboxReportVM: ObservableObject {
                                                 fileExtension: reportVaultFile.fileExtension,
                                                 fileId: reportVaultFile.id,
                                                 fileSize: reportVaultFile.size,
-                                                bytesSent: reportVaultFile.totalBytesSent ?? 0,
+                                                bytesSent: reportVaultFile.bytesSent ?? 0,
                                                 uploadOnBackground: reportViewModel.server?.backgroundUpload ?? false)
                 
                 self.filesToUpload.append(fileToUpload)
@@ -228,7 +248,7 @@ class OutboxReportVM: ObservableObject {
     
     func checkFileSizeOnServer(fileToUpload:FileToUpload) {
         
-        if isSubmissionInProgress   {
+        if isSubmissionInProgress {
             
             self.reportRepository.checkFileSizeOnServer(file: fileToUpload)
             
@@ -257,24 +277,26 @@ class OutboxReportVM: ObservableObject {
     
     func update(fileToUpload:FileToUpload,sizeResult : ServerFileSize? ) {
         if isSubmissionInProgress {
-            let file = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})
-            //            if  let fileSize = file?.size, let sizeResult = sizeResult?.size, sizeResult >= fileSize  {
-            //                self.postReportFile(fileToUpload: fileToUpload)
-            //
-            //            } else {
-            file?.totalBytesSent = (sizeResult?.size ) ?? 0
-            file?.status = .partialSubmitted
-            let instanceId = file?.instanceId
+            _ =  self.reportViewModel.files.compactMap { _ in
+                let file = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})
+                file?.bytesSent = (sizeResult?.size) ?? 0
+                file?.status = .partialSubmitted
+                return file
+            }
             
-            self.updateReportFile(fileStatus: .partialSubmitted, id: instanceId, totalBytesSent:  (sizeResult?.size) ?? 0)
+            initializeProgressionInfos()
+            
+            let file = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})
+            let instanceId = file?.instanceId
+            self.updateReportFile(fileStatus: .partialSubmitted, id: instanceId, bytesSent:  (sizeResult?.size) ?? 0)
             
             if let fileUrlPath = self.mainAppModel.saveDataToTempFile(data: fileToUpload.data?.extract(size: sizeResult?.size), fileName: fileToUpload.fileName, pathExtension: fileToUpload.fileExtension) {
                 fileToUpload.fileUrlPath = fileUrlPath
             }
             fileToUpload.data = fileToUpload.data?.extract(size: sizeResult?.size)
             self.putReportFile(fileToUpload: fileToUpload)
+            
         }
-        //        }
     }
     
     func putReportFile(fileToUpload:FileToUpload) {
@@ -300,9 +322,9 @@ class OutboxReportVM: ObservableObject {
                         self.updateProgressInfos(uploadProgressInfo: uploadProgressInfo)
                         
                         let instanceId = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})?.instanceId
-                        let totalBytesSent = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})?.totalBytesSent
+                        let totalBytesSent = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})?.bytesSent
                         
-                        self.updateReportFile(fileStatus: .partialSubmitted, id: instanceId, totalBytesSent: Int(uploadProgressInfo.current + (totalBytesSent ?? 0)))
+                        self.updateReportFile(fileStatus: .partialSubmitted, id: instanceId, bytesSent: Int(uploadProgressInfo.current + (totalBytesSent ?? 0)))
                         
                     case .response:
                         self.postReportFile(fileToUpload: fileToUpload)
@@ -360,31 +382,37 @@ class OutboxReportVM: ObservableObject {
     private func updateProgressInfos(uploadProgressInfo : UploadProgressInfo) {
         
         if isSubmissionInProgress {
+            // Update the current upload Progress Info item
             if let index = self.uploadProgressInfoArray.firstIndex(where:({$0.fileId == uploadProgressInfo.fileId})) {
                 self.uploadProgressInfoArray.remove(at: index)
             }
             self.uploadProgressInfoArray.append(uploadProgressInfo)
             
-            // Formatted progress info
-            let totalBytesSent = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId})?.totalBytesSent
-            let totalUploaded = self.uploadProgressInfoArray.reduce(0) { $0 + $1.current} + (totalBytesSent ?? 0)
+            // All Files
+            let bytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent ?? 0)}
+            let totalBytesSent = self.uploadProgressInfoArray.reduce(0) { $0 + $1.current} + (bytesSent)
             let totalSize = self.reportViewModel.files.reduce(0) { $0 + $1.size}
+            
+            // current file
+            let currentFile = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId})
+            let currentFileTotalBytesSent = uploadProgressInfo.current + (currentFile?.bytesSent ?? 0)
             
             if totalSize > 0 {
                 
-                let percentUploaded = Float(totalUploaded) / Float(totalSize)
-                let formattedTotalUploaded = totalUploaded.getFormattedFileSize().getFileSizeWithoutUnit()
+                // All Files
+                let percentUploaded = Float(totalBytesSent) / Float(totalSize)
+                let formattedTotalUploaded = totalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
                 let formattedTotalSize = totalSize.getFormattedFileSize()
                 
                 DispatchQueue.main.async {
-                    // Progress Files Progress
+                    // Progress Files
                     self.percentUploadedInfo = "\(Int(percentUploaded * 100))% uploaded"
                     self.percentUploaded = Float(percentUploaded)
                     self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
                     
-                    //Progress File Items
+                    //Progress File Item
                     if let currentItem = self.progressFileItems.first(where: {$0.file.id == uploadProgressInfo.fileId}) {
-                        currentItem.progression = "\(uploadProgressInfo.current.getFormattedFileSize().getFileSizeWithoutUnit())/\(currentItem.file.size.getFormattedFileSize())"
+                        currentItem.progression = "\(currentFileTotalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit())/\(currentItem.file.size.getFormattedFileSize())"
                     }
                     self.objectWillChange.send()
                 }

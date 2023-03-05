@@ -9,7 +9,7 @@ class ReportVaultFile : VaultFile {
     
     var instanceId : Int?
     var status : FileStatus?
-    var totalBytesSent : Int?
+    var bytesSent : Int?
     var createdDate : Date?
     var updatedDate : Date?
     
@@ -29,7 +29,7 @@ class ReportVaultFile : VaultFile {
 
         self.instanceId = reportFile.id
         self.status = reportFile.status
-        self.totalBytesSent = reportFile.totalBytesSent
+        self.bytesSent = reportFile.bytesSent
         self.createdDate = reportFile.createdDate
         self.updatedDate = reportFile.updatedDate
     }
