@@ -228,8 +228,8 @@ struct CameraControlsView: View {
     @ViewBuilder
     var previewImageAndVideodFile : some View {
         VStack {
-            if let file = cameraViewModel.lastImageOrVideoVaultFile,
-               let data = file.thumbnail {
+            if let file = $cameraViewModel.lastImageOrVideoVaultFile,
+               let data = file.wrappedValue?.thumbnail {
                 
                 Button {
                     
