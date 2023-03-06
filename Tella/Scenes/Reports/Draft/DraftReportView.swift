@@ -67,6 +67,7 @@ struct DraftReportView: View {
         HStack(spacing: 0) {
             
             Button {
+                UIApplication.shared.endEditing()
                 showSaveReportConfirmationView()
             } label: {
                 Image("close")
