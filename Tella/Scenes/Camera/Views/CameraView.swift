@@ -54,7 +54,6 @@ struct CameraView: View {
             .onDisappear {
                 model.stopRunningCaptureSession()
             }
-            .navigationBarHidden(mainAppModel.selectedTab == .home ? false : true)
         
             .onReceive(model.$isRecording) { value in
                 cameraViewModel.isRecording = value
