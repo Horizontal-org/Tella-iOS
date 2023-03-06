@@ -9,7 +9,6 @@ class UploadProgressInfo {
     //
     // MARK: - Variables And Properties
     //
-    var isDownloading = false
     @Published var current : Int = 0
     var task: URLSessionUploadTask?
     var fileId: String?

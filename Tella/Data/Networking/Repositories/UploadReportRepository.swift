@@ -35,7 +35,6 @@ extension ReportRepository:URLSessionTaskDelegate, URLSessionDelegate, URLSessio
             switch uploadProgressInfo.value {
             case .progress(let progressInfo):
                 progressInfo.current = Int(totalBytesSent)
-//                progressInfo.size = Int(totalBytesExpectedToSend)
                 progressInfo.status = .partialSubmitted
                 uploadProgressInfo.value = .progress(progressInfo: progressInfo)
             default:

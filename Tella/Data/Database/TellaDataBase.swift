@@ -408,12 +408,19 @@ class TellaDataBase {
         
         guard let reportId, let report = self.getReport(reportId: reportId) else { return 0}
         
-        guard let array = report.reportFiles?.compactMap({ KeyValue(key: D.cReportInstanceId, value: $0.id as Any) } ) else { return 0}
-        
-        _ = try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
-                                      primarykeyValue: array)
-        
+        deleteReportFiles(report: report)
         return try dataBaseHelper.delete(tableName: D.tReport,
                                          primarykeyValue: [KeyValue(key: D.cReportId, value: report.id as Any)])
+    }
+    
+    func deleteReportFiles(report:Report) {
+        do {
+            if let array = report.reportFiles?.compactMap({ KeyValue(key: D.cReportInstanceId, value: $0.id as Any) } ) {
+                _ = try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
+                                              primarykeyValue: array)
+            }
+        } catch {
+            
+        }
     }
 }

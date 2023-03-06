@@ -23,7 +23,6 @@ class OutboxReportVM: ObservableObject {
     
     private var subscribers = Set<AnyCancellable>()
     private var filesToUpload : [FileToUpload] = []
-    private var uploadProgressInfoArray : [UploadProgressInfo] = []
     private var reportRepository = ReportRepository()
     
     init(mainAppModel: MainAppModel, reportsViewModel : ReportsViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
@@ -74,7 +73,7 @@ class OutboxReportVM: ObservableObject {
     func initializeProgressionInfos() {
         
         let totalSize = self.reportViewModel.files.reduce(0) { $0 + $1.size}
-        let bytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent ?? 0)}
+        let bytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent)}
         
         if totalSize > 0 {
             
@@ -88,7 +87,7 @@ class OutboxReportVM: ObservableObject {
                 self.percentUploaded = Float(percentUploaded)
                 self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
                 
-                self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: ($0.bytesSent?.getFormattedFileSize() ?? "0") + "/" + $0.size.getFormattedFileSize())}
+                self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: ($0.bytesSent.getFormattedFileSize()) + "/" + $0.size.getFormattedFileSize())}
                 
                 self.objectWillChange.send()
                 
@@ -137,21 +136,28 @@ class OutboxReportVM: ObservableObject {
     }
     
     func pauseSubmission() {
-        self.isSubmissionInProgress = false
-        self.updateReportStatus(reportStatus: .submissionPartialParts)
-        self.reportRepository.pause(self.filesToUpload)
+        if isSubmissionInProgress {
+            self.updateReportStatus(reportStatus: .submissionPartialParts)
+            self.reportRepository.pause(self.filesToUpload)
+            self.isSubmissionInProgress = false
+        }
+        
     }
     
     func submitReport() {
-        self.isSubmissionInProgress = true
-        DispatchQueue.global(qos: .background).async {
-            self.updateReportStatus(reportStatus: .submissionInProgress)
-            if self.reportViewModel.apiID == nil {
-                self.createReport()
-            } else {
-                self.uploadReportFiles()
+        if isSubmissionInProgress == false{
+            
+            DispatchQueue.global(qos: .background).async {
+                self.updateReportStatus(reportStatus: .submissionInProgress)
+                if self.reportViewModel.apiID == nil {
+                    self.createReport()
+                } else {
+                    self.uploadReportFiles()
+                }
             }
+            self.isSubmissionInProgress = true
         }
+        
     }
     
     
@@ -217,214 +223,231 @@ class OutboxReportVM: ObservableObject {
     
     func uploadReportFiles() {
         
-        if isSubmissionInProgress {
+        //        if isSubmissionInProgress {
+        
+        guard let apiID = reportViewModel.apiID, let accessToken = reportViewModel.server?.accessToken, let serverUrl = reportViewModel.server?.url else { return }
+        
+        let filesToUpload = self.reportViewModel.files.filter{$0.status != .submitted}
+        
+        filesToUpload.forEach({ reportVaultFile in
             
-            guard let apiID = reportViewModel.apiID, let accessToken = reportViewModel.server?.accessToken, let serverUrl = reportViewModel.server?.url else { return }
+            let vaultFileInfo = mainAppModel.loadFileInfos(file: reportVaultFile)
+            guard let vaultFileInfo else { return }
             
-            let filesToUpload = self.reportViewModel.files.filter{$0.status != .submitted}
+            let fileToUpload = FileToUpload(idReport: apiID,
+                                            fileUrlPath: vaultFileInfo.url,
+                                            accessToken: accessToken,
+                                            serverURL: serverUrl,
+                                            data: vaultFileInfo.data,
+                                            fileName: reportVaultFile.fileName,
+                                            fileExtension: reportVaultFile.fileExtension,
+                                            fileId: reportVaultFile.id,
+                                            fileSize: reportVaultFile.size,
+                                            bytesSent: reportVaultFile.bytesSent ?? 0,
+                                            uploadOnBackground: reportViewModel.server?.backgroundUpload ?? false)
             
-            filesToUpload.forEach({ reportVaultFile in
-                
-                let vaultFileInfo = mainAppModel.loadFileInfos(file: reportVaultFile)
-                guard let vaultFileInfo else { return }
-                
-                let fileToUpload = FileToUpload(idReport: apiID,
-                                                fileUrlPath: vaultFileInfo.url,
-                                                accessToken: accessToken,
-                                                serverURL: serverUrl,
-                                                data: vaultFileInfo.data,
-                                                fileName: reportVaultFile.fileName,
-                                                fileExtension: reportVaultFile.fileExtension,
-                                                fileId: reportVaultFile.id,
-                                                fileSize: reportVaultFile.size,
-                                                bytesSent: reportVaultFile.bytesSent ?? 0,
-                                                uploadOnBackground: reportViewModel.server?.backgroundUpload ?? false)
-                
-                self.filesToUpload.append(fileToUpload)
-                self.checkFileSizeOnServer(fileToUpload: fileToUpload)
-            })
-        }
+            self.filesToUpload.append(fileToUpload)
+            self.checkFileSizeOnServer(fileToUpload: fileToUpload)
+        })
     }
+    //    }
     
     func checkFileSizeOnServer(fileToUpload:FileToUpload) {
         
-        if isSubmissionInProgress {
-            
-            self.reportRepository.checkFileSizeOnServer(file: fileToUpload)
-            
-                .sink(receiveCompletion: { completion in
+        //        if isSubmissionInProgress {
+        
+        self.reportRepository.checkFileSizeOnServer(file: fileToUpload)
+        
+            .sink(receiveCompletion: { completion in
+                
+                switch completion {
                     
-                    switch completion {
-                        
-                    case .failure:
-                        self.checkFileSizeOnServer(fileToUpload: fileToUpload)
-                        
-                    case .finished:
-                        break
-                    }
-                }, receiveValue: { result in
+                case .failure:
+                    self.checkFileSizeOnServer(fileToUpload: fileToUpload)
                     
-                    switch result {
-                    case .response(let response):
-                        self.update(fileToUpload: fileToUpload, sizeResult: response)
-                        
-                    default:
-                        break
-                    }
-                }) .store(in: &subscribers)
-        }
+                case .finished:
+                    break
+                }
+            }, receiveValue: { result in
+                
+                switch result {
+                case .response(let response):
+                    self.update(fileToUpload: fileToUpload, sizeResult: response)
+                    
+                default:
+                    break
+                }
+            }) .store(in: &subscribers)
+        //        }
     }
     
     func update(fileToUpload:FileToUpload,sizeResult : ServerFileSize? ) {
-        if isSubmissionInProgress {
-            _ =  self.reportViewModel.files.compactMap { _ in
-                let file = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})
-                file?.bytesSent = (sizeResult?.size) ?? 0
-                file?.status = .partialSubmitted
-                return file
-            }
-            
-            initializeProgressionInfos()
-            
+        //        if isSubmissionInProgress {
+        _ =  self.reportViewModel.files.compactMap { _ in
             let file = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})
-            let instanceId = file?.instanceId
-            self.updateReportFile(fileStatus: .partialSubmitted, id: instanceId, bytesSent:  (sizeResult?.size) ?? 0)
-            
-            if let fileUrlPath = self.mainAppModel.saveDataToTempFile(data: fileToUpload.data?.extract(size: sizeResult?.size), fileName: fileToUpload.fileName, pathExtension: fileToUpload.fileExtension) {
-                fileToUpload.fileUrlPath = fileUrlPath
-            }
-            fileToUpload.data = fileToUpload.data?.extract(size: sizeResult?.size)
-            self.putReportFile(fileToUpload: fileToUpload)
-            
+            file?.bytesSent = (sizeResult?.size) ?? 0
+            file?.current = 0
+            file?.status = .partialSubmitted
+            return file
         }
+        
+        initializeProgressionInfos()
+        
+        let file = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})
+        let instanceId = file?.instanceId
+        self.updateReportFile(fileStatus: .partialSubmitted, id: instanceId, bytesSent:  (sizeResult?.size) ?? 0)
+        
+        if let fileUrlPath = self.mainAppModel.saveDataToTempFile(data: fileToUpload.data?.extract(size: sizeResult?.size), fileName: fileToUpload.fileName, pathExtension: fileToUpload.fileExtension) {
+            fileToUpload.fileUrlPath = fileUrlPath
+        }
+        fileToUpload.data = fileToUpload.data?.extract(size: sizeResult?.size)
+        self.putReportFile(fileToUpload: fileToUpload)
+        
+        //        }
     }
     
     func putReportFile(fileToUpload:FileToUpload) {
         
-        if isSubmissionInProgress {
-            
-            self.reportRepository.putReport(file: fileToUpload)
-                .sink(receiveCompletion: { completion in
+        //        if isSubmissionInProgress {
+        //        if let file = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId}), file.bytesSent >= file.size {
+        //            self.postReportFile(fileToUpload: fileToUpload)
+        //
+        //        } else {
+        self.reportRepository.putReport(file: fileToUpload)
+            .sink(receiveCompletion: { completion in
+                
+                switch completion {
+                case .failure:
+                    self.checkFileSizeOnServer(fileToUpload: fileToUpload)
                     
-                    switch completion {
-                    case .failure:
-                        self.checkFileSizeOnServer(fileToUpload: fileToUpload)
-                        
-                    case .finished:
-                        break
-                    }
-                },
-                      receiveValue: { result in
+                case .finished:
+                    break
+                }
+            },
+                  receiveValue: { result in
+                
+                switch result {
+                case .progress(let uploadProgressInfo):
                     
-                    switch result {
-                    case .progress(let uploadProgressInfo):
-                        
-                        self.updateProgressInfos(uploadProgressInfo: uploadProgressInfo)
-                        
-                        let instanceId = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})?.instanceId
-                        let totalBytesSent = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})?.bytesSent
-                        
-                        self.updateReportFile(fileStatus: .partialSubmitted, id: instanceId, bytesSent: Int(uploadProgressInfo.current + (totalBytesSent ?? 0)))
-                        
-                    case .response:
-                        self.postReportFile(fileToUpload: fileToUpload)
-                    case .initial:
-                        break
-                    }
-                }).store(in: &subscribers)
-        }
+                    self.updateProgressInfos(uploadProgressInfo: uploadProgressInfo)
+                    
+                    let instanceId = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})?.instanceId
+                    let totalBytesSent = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})?.bytesSent
+                    
+                    self.updateReportFile(fileStatus: .partialSubmitted, id: instanceId, bytesSent: Int(uploadProgressInfo.current + (totalBytesSent ?? 0)))
+                    
+                case .response:
+                    self.postReportFile(fileToUpload: fileToUpload)
+                case .initial:
+                    break
+                }
+            }).store(in: &subscribers)
+        
+        //        }
+        
+        
+        //        }
     }
     
     func postReportFile(fileToUpload:FileToUpload) {
         
-        if isSubmissionInProgress {
-            
-            self.reportRepository.postReport(file: fileToUpload)
-                .sink(receiveCompletion: { completion in
+        //        if isSubmissionInProgress {
+        
+        self.reportRepository.postReport(file: fileToUpload)
+            .sink(receiveCompletion: { completion in
+                
+                switch completion {
+                case .failure:
+                    break
                     
-                    switch completion {
-                    case .failure:
-                        break
-                        
-                    case .finished:
-                        break
-                    }
-                },
-                      receiveValue: { result in
-                    switch result {
-                    case .response(let response):
-                        
-                        if let success = response?.success, success {
-                            
-                            let file = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})
-                            file?.status = .submitted
-                            let instanceId = file?.instanceId
-                            self.updateReportFile(fileStatus: .submitted, id: instanceId )
-                            
-                            if let item = self.uploadProgressInfoArray.filter ({$0.fileId == fileToUpload.fileId}).first {
-                                item.status = .submitted
-                            }
-                            self.checkAllFilesAreUploaded()
-                            
-                        } else  {
-                            self.checkFileSizeOnServer(fileToUpload: fileToUpload)
-                        }
-                        
-                    default:
-                        break
-                    }
+                case .finished:
+                    break
                 }
-                )
-                .store(in: &subscribers)
-        }
+            },
+                  receiveValue: { result in
+                switch result {
+                case .response(let response):
+                    
+                    if let success = response?.success, success {
+                        
+                        let file = self.reportViewModel.files.first(where: {$0.id == fileToUpload.fileId})
+                        file?.status = .submitted
+                        let instanceId = file?.instanceId
+                        self.updateReportFile(fileStatus: .submitted, id: instanceId )
+                        
+                        self.checkAllFilesAreUploaded()
+                        
+                    } else  {
+                        self.checkFileSizeOnServer(fileToUpload: fileToUpload)
+                    }
+                    
+                default:
+                    break
+                }
+            }
+            )
+            .store(in: &subscribers)
+        //        }
     }
     
     private func updateProgressInfos(uploadProgressInfo : UploadProgressInfo) {
         
-        if isSubmissionInProgress {
-            // Update the current upload Progress Info item
-            if let index = self.uploadProgressInfoArray.firstIndex(where:({$0.fileId == uploadProgressInfo.fileId})) {
-                self.uploadProgressInfoArray.remove(at: index)
-            }
-            self.uploadProgressInfoArray.append(uploadProgressInfo)
+        //        if isSubmissionInProgress {
+        // Update the current file bytes Sent
+        
+        //                currentFile.bytesSent += uploadProgressInfo.current
+        
+        print("uploadProgressInfo.current", uploadProgressInfo.current)
+        
+        
+        _ = self.reportViewModel.files.compactMap { _ in
+            let currentFile = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId})
+            currentFile?.current = uploadProgressInfo.current
+            return currentFile
+        }
+        
+        guard  let currentFile = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId}) else { return}
+        
+        
+        // All Files
+        let bytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent)}
+        let totalBytesSent = self.reportViewModel.files.reduce(0) { $0 + $1.current} + (bytesSent)
+        let totalSize = self.reportViewModel.files.reduce(0) { $0 + $1.size}
+        
+        // current file
+        //            let currentFile = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId})
+        let currentFileTotalBytesSent = currentFile.current + currentFile.bytesSent
+        //
+        //                let currentFileTotalBytesSent = currentFile.bytesSent
+        //
+        if totalSize > 0 {
             
             // All Files
-            let bytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent ?? 0)}
-            let totalBytesSent = self.uploadProgressInfoArray.reduce(0) { $0 + $1.current} + (bytesSent)
-            let totalSize = self.reportViewModel.files.reduce(0) { $0 + $1.size}
+            let percentUploaded = Float(totalBytesSent) / Float(totalSize)
+            let formattedTotalUploaded = totalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
+            let formattedTotalSize = totalSize.getFormattedFileSize()
             
-            // current file
-            let currentFile = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId})
-            let currentFileTotalBytesSent = uploadProgressInfo.current + (currentFile?.bytesSent ?? 0)
-            
-            if totalSize > 0 {
+            DispatchQueue.main.async {
+                // Progress Files
+                self.percentUploadedInfo = "\(Int(percentUploaded * 100))% uploaded"
+                self.percentUploaded = Float(percentUploaded)
+                self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
                 
-                // All Files
-                let percentUploaded = Float(totalBytesSent) / Float(totalSize)
-                let formattedTotalUploaded = totalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
-                let formattedTotalSize = totalSize.getFormattedFileSize()
-                
-                DispatchQueue.main.async {
-                    // Progress Files
-                    self.percentUploadedInfo = "\(Int(percentUploaded * 100))% uploaded"
-                    self.percentUploaded = Float(percentUploaded)
-                    self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
-                    
-                    //Progress File Item
-                    if let currentItem = self.progressFileItems.first(where: {$0.file.id == uploadProgressInfo.fileId}) {
-                        currentItem.progression = "\(currentFileTotalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit())/\(currentItem.file.size.getFormattedFileSize())"
-                    }
-                    self.objectWillChange.send()
+                //Progress File Item
+                if let currentItem = self.progressFileItems.first(where: {$0.file.id == uploadProgressInfo.fileId}) {
+                    currentItem.progression = "\(currentFileTotalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit())/\(currentItem.file.size.getFormattedFileSize())"
                 }
+                self.objectWillChange.send()
             }
         }
     }
+    //    }
     
     private func checkAllFilesAreUploaded() {
         
         // Check if all the files are submitted
         
-        let isNotFishUploading = self.uploadProgressInfoArray.filter{$0.status != .submitted}
+        let isNotFishUploading = self.reportViewModel.files.filter{$0.status != .submitted}
         
         if isNotFishUploading.isEmpty {
             

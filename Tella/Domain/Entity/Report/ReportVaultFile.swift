@@ -9,10 +9,11 @@ class ReportVaultFile : VaultFile {
     
     var instanceId : Int?
     var status : FileStatus?
-    var bytesSent : Int?
+    var bytesSent : Int = 0
     var createdDate : Date?
     var updatedDate : Date?
-    
+    var current : Int = 0
+
     init(reportFile: ReportFile, vaultFile : VaultFile) {
         super.init(id:vaultFile.id,
                    type: vaultFile.type,
@@ -29,7 +30,7 @@ class ReportVaultFile : VaultFile {
 
         self.instanceId = reportFile.id
         self.status = reportFile.status
-        self.bytesSent = reportFile.bytesSent
+        self.bytesSent = reportFile.bytesSent ?? 0
         self.createdDate = reportFile.createdDate
         self.updatedDate = reportFile.updatedDate
     }

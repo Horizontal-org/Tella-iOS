@@ -36,7 +36,6 @@ class UploadService {
             switch item.value.value {
 
             case .progress(let download):
-
                 download.task?.cancel()
                 activeDownloads[item.key] = nil
                 
@@ -68,9 +67,7 @@ class UploadService {
         }
         
         download.task?.resume()
-        
-        download.isDownloading = true
-        
+                
         activeDownloads[download.task!] = CurrentValueSubject(.progress(progressInfo: download))
         
         return download.task!
