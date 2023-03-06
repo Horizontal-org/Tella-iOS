@@ -27,7 +27,7 @@ struct EditSettingsServerView: View {
                 SettingsCardView(cardViewArray: [serverNameView.eraseToAnyView(),
                                                  serverURLView.eraseToAnyView(),
                                                  serverUsernameView.eraseToAnyView(),
-                                                 ShareInfoView(shareInfo: $serverViewModel.activatedMetadata).eraseToAnyView(),
+                                                 // ShareInfoView(shareInfo: $serverViewModel.activatedMetadata).eraseToAnyView(),
                                                  BackgroundUploadView(backgroundUpload: $serverViewModel.backgroundUpload).eraseToAnyView()])
                 Spacer()
                 

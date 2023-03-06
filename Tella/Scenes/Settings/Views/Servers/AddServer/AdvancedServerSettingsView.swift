@@ -29,7 +29,7 @@ struct AdvancedServerSettingsView: View {
                 Spacer()
                     .frame(height: 16)
                 
-                SettingsCardView(cardViewArray: [ShareInfoView(shareInfo: $serverVM.activatedMetadata).eraseToAnyView(),
+                SettingsCardView(cardViewArray: [/*ShareInfoView(shareInfo: $serverVM.activatedMetadata).eraseToAnyView(),*/
                                                  BackgroundUploadView(backgroundUpload: $serverVM.backgroundUpload).eraseToAnyView()])
                 
                 Spacer()
