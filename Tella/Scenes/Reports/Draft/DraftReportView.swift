@@ -212,25 +212,14 @@ struct DraftReportView: View {
     var bottomDraftView: some View {
         
         HStack {
-            if reportViewModel.isNewDraft {
-                
-                // Submit later button
-                Button {
-                    submitReportLater()
-                } label: {
-                    Image("reports.submit-later")
-                        .opacity(reportViewModel.reportIsValid ? 1 : 0.4)
-                }.disabled(!reportViewModel.reportIsValid)
-                
-            } else {
-                
-                // Delete draft button
-                Button {
-                    reportViewModel.deleteReport()
-                } label: {
-                    Image("report.delete-draft")
-                }
-            }
+            
+            // Submit later button
+            Button {
+                submitReportLater()
+            } label: {
+                Image("reports.submit-later")
+                    .opacity(reportViewModel.reportIsValid ? 1 : 0.4)
+            }.disabled(!reportViewModel.reportIsValid)
             
             // Submit button
             TellaButtonView<AnyView> (title: reportViewModel.isNewDraft ? "SUBMIT" : "SEND",
