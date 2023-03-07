@@ -96,44 +96,7 @@ class OutboxReportVM: ObservableObject {
         }
     }
     
-    func saveReport() {
-        
-        let report = Report(id: reportViewModel.id,
-                            date: Date(),
-                            status: reportViewModel.status,
-                            apiID: reportViewModel.apiID)
-        
-        do {
-            let report = try mainAppModel.vaultManager.tellaData.updateReport(report: report)
-            
-        } catch {
-            
-        }
-    }
-    
-    func updateReportStatus(reportStatus:ReportStatus) {
-        guard let id = reportViewModel.id else { return  }
-        
-        do {
-            let _ = try mainAppModel.vaultManager.tellaData.updateReportStatus(idReport: id, status: reportStatus)
-            
-        } catch {
-            
-        }
-    }
-    
-    func updateReportFile(fileStatus:FileStatus, id:Int?, bytesSent:Int? = nil ) {
-        guard let id else { return  }
-        
-        do {
-            let _ = try mainAppModel.vaultManager.tellaData.updateReportFile(reportFile: ReportFile(id: id,
-                                                                                                    status: fileStatus,
-                                                                                                    bytesSent: bytesSent))
-            
-        } catch {
-            
-        }
-    }
+
     
     func pauseSubmission() {
         if isSubmissionInProgress {
@@ -458,4 +421,56 @@ class OutboxReportVM: ObservableObject {
             }
         }
     }
+    
+    
+    // MARK: Update Local database
+    
+    func saveReport() {
+        
+        let report = Report(id: reportViewModel.id,
+                            date: Date(),
+                            status: reportViewModel.status,
+                            apiID: reportViewModel.apiID)
+        
+        do {
+            let report = try mainAppModel.vaultManager.tellaData.updateReport(report: report)
+            
+        } catch {
+            
+        }
+    }
+    
+    func updateReportStatus(reportStatus:ReportStatus) {
+        guard let id = reportViewModel.id else { return  }
+        
+        do {
+            let _ = try mainAppModel.vaultManager.tellaData.updateReportStatus(idReport: id, status: reportStatus)
+            
+        } catch {
+            
+        }
+    }
+    
+    func updateReportFile(fileStatus:FileStatus, id:Int?, bytesSent:Int? = nil ) {
+        guard let id else { return  }
+        
+        do {
+            let _ = try mainAppModel.vaultManager.tellaData.updateReportFile(reportFile: ReportFile(id: id,
+                                                                                                    status: fileStatus,
+                                                                                                    bytesSent: bytesSent))
+            
+        } catch {
+            
+        }
+    }
+    
+    func deleteReport() {
+        do {
+            try _ = mainAppModel.vaultManager.tellaData.deleteReport(reportId: reportViewModel.id)
+        } catch {
+            
+        }
+    }
+
+    
 }

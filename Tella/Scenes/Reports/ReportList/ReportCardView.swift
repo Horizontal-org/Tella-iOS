@@ -69,13 +69,10 @@ struct ReportCardView : View {
     
     private func showDeleteReportConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: 200) {
-            ConfirmBottomSheet(titleText: "Delete report",
-                               msgText: "Are you sure you want to delete this draft?",
-                               cancelText: "CANCEL",
-                               actionText: "DELETE", didConfirmAction: {
+            DeleteReportConfirmationView {
                 reportsViewModel.deleteReport()
                 sheetManager.hide()
-            })
+            }
         }
     }
     

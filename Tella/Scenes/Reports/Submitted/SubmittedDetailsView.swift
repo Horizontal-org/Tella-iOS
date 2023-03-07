@@ -11,7 +11,8 @@ struct SubmittedDetailsView: View {
     @EnvironmentObject var reportsViewModel : ReportsViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
+    @EnvironmentObject private var sheetManager: SheetManager
+
     init(appModel: MainAppModel, reportId : Int?) {
         _submittedReportVM = StateObject(wrappedValue: SubmittedReportVM(mainAppModel: appModel, reportId: reportId))
     }
@@ -60,12 +61,11 @@ struct SubmittedDetailsView: View {
             Spacer()
             
             Button {
-                // reportViewModel.deleteReport()
+                showDeleteReportConfirmationView()
             } label: {
                 Image("report.delete-outbox")
                     .padding(.all, 22)
-            }.disabled(true)
-                .opacity(0.2)
+            }
             
         }.frame(height: 56)
     }
@@ -128,6 +128,17 @@ struct SubmittedDetailsView: View {
         reportsViewModel.viewReportLinkIsActive = false
         self.reportsViewModel.selectedCell = .submitted
     }
+    
+    private func showDeleteReportConfirmationView() {
+        sheetManager.showBottomSheet(modalHeight: 200) {
+            DeleteReportConfirmationView {
+                dismissViews()
+                submittedReportVM.deleteReport()
+                sheetManager.hide()
+            }
+        }
+    }
+
 }
 
 //struct ReportDetailsView_Previews: PreviewProvider {

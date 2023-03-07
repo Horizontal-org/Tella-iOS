@@ -120,6 +120,7 @@
 		123CE84429126B52003C251F /* ServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CE84329126B52003C251F /* ServerViewModel.swift */; };
 		1240E6B02907E14400692232 /* ReportCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1240E6AF2907E14400692232 /* ReportCardView.swift */; };
 		1240E6B22908123900692232 /* ReportListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1240E6B12908123900692232 /* ReportListView.swift */; };
+		1242135529B774A40002402D /* DeleteReportConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1242135429B774A40002402D /* DeleteReportConfirmationView.swift */; };
 		1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141627E357E80037D469 /* LoadMoreCell.swift */; };
 		1244141927E35D120037D469 /* VaultFileImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141827E35D120037D469 /* VaultFileImages.swift */; };
 		124F8E0829119E9400FBB7AC /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F8E0729119E9400FBB7AC /* StringExtension.swift */; };
@@ -470,6 +471,7 @@
 		123CE84329126B52003C251F /* ServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerViewModel.swift; sourceTree = "<group>"; };
 		1240E6AF2907E14400692232 /* ReportCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCardView.swift; sourceTree = "<group>"; };
 		1240E6B12908123900692232 /* ReportListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportListView.swift; sourceTree = "<group>"; };
+		1242135429B774A40002402D /* DeleteReportConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteReportConfirmationView.swift; sourceTree = "<group>"; };
 		1244141627E357E80037D469 /* LoadMoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCell.swift; sourceTree = "<group>"; };
 		1244141827E35D120037D469 /* VaultFileImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileImages.swift; sourceTree = "<group>"; };
 		124F8E0729119E9400FBB7AC /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
@@ -718,6 +720,7 @@
 				121C945C28FF3D6900570EB4 /* Draft */,
 				12199C322940936B0041BD38 /* Outbox */,
 				123048D3295F954E0015CD96 /* Submitted */,
+				1242135429B774A40002402D /* DeleteReportConfirmationView.swift */,
 				1232EE9A2918F8470094EE3A /* View Model */,
 			);
 			path = Reports;
@@ -2237,6 +2240,7 @@
 				1291A83428BE0D51001A6055 /* SettingsServerItemView.swift in Sources */,
 				12607D5A2790457600E2B8CC /* VideoViewer.swift in Sources */,
 				125A0AED2726CBF000F6E77F /* UnlockPinView.swift in Sources */,
+				1242135529B774A40002402D /* DeleteReportConfirmationView.swift in Sources */,
 				12B5257E2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift in Sources */,
 				12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */,
 				129B845328BFB7AC00F1B344 /* AddServerAccessChoiceView.swift in Sources */,

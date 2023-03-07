@@ -55,4 +55,13 @@ class SubmittedReportVM: ObservableObject {
             self.uploadedFiles = "\(fileNumber) \(fileString), \(totalSize.getFormattedFileSize())"
         }
     }
+    
+    func deleteReport() {
+        do {
+            try _ = mainAppModel.vaultManager.tellaData.deleteReport(reportId: id)
+        } catch {
+            
+        }
+    }
+
 }

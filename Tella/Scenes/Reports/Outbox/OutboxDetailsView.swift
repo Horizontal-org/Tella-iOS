@@ -10,7 +10,8 @@ struct OutboxDetailsView: View {
     @EnvironmentObject var reportsViewModel : ReportsViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
+    @EnvironmentObject private var sheetManager: SheetManager
+
     init(appModel: MainAppModel,reportsViewModel: ReportsViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
         _outboxReportVM = StateObject(wrappedValue: OutboxReportVM(mainAppModel: appModel, reportsViewModel: reportsViewModel, reportId:reportId, shouldStartUpload: shouldStartUpload))
     }
@@ -58,12 +59,11 @@ struct OutboxDetailsView: View {
             Spacer()
             
             Button {
-                // reportViewModel.deleteReport()
+                showDeleteReportConfirmationView()
             } label: {
                 Image("report.delete-outbox")
                     .padding(.all, 22)
-            }.disabled(true)
-                .opacity(0.2)
+            }
         }.frame(height: 56)
     }
     
@@ -170,6 +170,16 @@ struct OutboxDetailsView: View {
         reportsViewModel.editRootLinkIsActive = false
     }
     
+    private func showDeleteReportConfirmationView() {
+        sheetManager.showBottomSheet(modalHeight: 200) {
+            DeleteReportConfirmationView {
+                outboxReportVM.pauseSubmission()
+                dismissView()
+                outboxReportVM.deleteReport()
+                sheetManager.hide()
+            }
+        }
+    }
 }
 
 //struct ReportDetailsView_Previews: PreviewProvider {
