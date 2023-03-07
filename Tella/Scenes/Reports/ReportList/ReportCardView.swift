@@ -21,7 +21,6 @@ struct ReportCardView : View {
                 reportDetails
                 
                 Spacer()
-                    .frame(minWidth: 20)
                 
                 moreButtonView
                 
@@ -39,6 +38,7 @@ struct ReportCardView : View {
             Text(report.title ?? "")
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                 .foregroundColor(.white)
+                .lineLimit(1)
             
             Text(report.getReportDate)
                 .font(.custom(Styles.Fonts.regularFontName, size: 12))
