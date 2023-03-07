@@ -46,6 +46,15 @@ class ReportsViewModel: ObservableObject {
     var serverLinkIsActive : Binding<Bool> = .constant(false)
     private var subscribers = Set<AnyCancellable>()
     
+    var clickActionType : ReportActionType {
+        switch self.selectedReport?.status {
+        case .submitted:
+            return.view
+        default:
+            return .edit
+        }
+    }
+
     init(mainAppModel : MainAppModel, serverLinkIsActive : Binding<Bool> = .constant(false)) {
         
         self.mainAppModel = mainAppModel

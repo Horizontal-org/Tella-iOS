@@ -13,22 +13,26 @@ struct ReportCardView : View {
     @EnvironmentObject private var sheetManager: SheetManager
     
     var body : some View {
-        
-        VStack(spacing: 0) {
-            
-            HStack {
+        Button {
+            reportsViewModel.selectedReport = report
+            self.handleActions(type: reportsViewModel.clickActionType)
+        } label: {
+            VStack(spacing: 0) {
                 
-                reportDetails
+                HStack {
+                    
+                    reportDetails
+                    
+                    Spacer()
+                    
+                    moreButtonView
+                    
+                }.padding(.all, 16)
                 
-                Spacer()
-                
-                moreButtonView
-                
-            }.padding(.all, 16)
-            
-        } .background(Color.white.opacity(0.08))
-            .cornerRadius(15)
-            .padding(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
+            } .background(Color.white.opacity(0.08))
+                .cornerRadius(15)
+                .padding(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
+        }
     }
     
     private var reportDetails : some View {
@@ -62,7 +66,7 @@ struct ReportCardView : View {
             ActionListBottomSheet(items: report.status == .submitted ? reportsViewModel.submittedReportItems : reportsViewModel.nonSubmittedReportItems,
                                   headerTitle: reportsViewModel.selectedReport?.title ?? "",
                                   action: { item in
-                self.handleActions(item : item)
+                self.handleActions(type : item.type as? ReportActionType)
             })
         }
     }
@@ -76,9 +80,9 @@ struct ReportCardView : View {
         }
     }
     
-    private func handleActions(item: ListActionSheetItem) {
+    private func handleActions(type: ReportActionType?) {
         
-        guard let type = item.type as? ReportActionType else { return  }
+        guard let type else { return  }
         
         switch type {
         case .edit:
