@@ -71,7 +71,7 @@ struct DraftReportView: View {
                 showSaveReportConfirmationView()
             } label: {
                 Image("close")
-                    .padding(EdgeInsets(top: 16, leading: 12, bottom: 16, trailing: 16))
+                    .padding(EdgeInsets(top: 16, leading: 12, bottom: 5, trailing: 16))
             }
             
             Text("Report")
