@@ -37,10 +37,7 @@ struct DraftReportView: View {
             
             ReportDetailsViewLink
             
-        } .onAppear(perform: {
-            reportViewModel.fillReportVM()
-        })
-        .onTapGesture {
+        } .onTapGesture {
             shouldShowMenu = false
         }
         

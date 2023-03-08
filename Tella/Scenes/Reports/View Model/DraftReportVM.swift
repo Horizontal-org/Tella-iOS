@@ -81,12 +81,14 @@ class DraftReportVM: ObservableObject {
         self.initcurrentReportVM(reportId: reportId)
         
         self.bindVaultFileTaken()
+        
+        fillReportVM()
     }
     
     private func validateReport() {
-        $server.combineLatest( $isValidTitle, $isValidDescription)
-            .sink(receiveValue: { server, isValidTitle, isValidDescription in
-                self.reportIsValid = (server != nil) && isValidTitle && isValidDescription
+        $server.combineLatest( $isValidTitle, $isValidDescription, $files)
+            .sink(receiveValue: { server, isValidTitle, isValidDescription, files in
+                self.reportIsValid = ((server != nil) && isValidTitle && isValidDescription) || ((server != nil) && isValidTitle && !files.isEmpty)
             }).store(in: &subscribers)
         
         $isValidTitle.combineLatest($isValidDescription, $files)
@@ -123,16 +125,18 @@ class DraftReportVM: ObservableObject {
     }
     
     func fillReportVM() {
-        if let reportId ,let report = self.mainAppModel.vaultManager.tellaData.getReport(reportId: reportId) {
-            
-            var vaultFileResult : Set<VaultFile> = []
-            
-            self.title = report.title ?? ""
-            self.description = report.description ?? ""
-            self.server = report.server
-            mainAppModel.vaultManager.root.getFile(root: mainAppModel.vaultManager.root, vaultFileResult: &vaultFileResult, ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
-            self.files = vaultFileResult
-            self.objectWillChange.send()
+        DispatchQueue.main.async {
+            if let reportId = self.reportId ,let report = self.mainAppModel.vaultManager.tellaData.getReport(reportId: reportId) {
+                
+                var vaultFileResult : Set<VaultFile> = []
+                
+                self.title = report.title ?? ""
+                self.description = report.description ?? ""
+                self.server = report.server
+                self.mainAppModel.vaultManager.root.getFile(root: self.mainAppModel.vaultManager.root, vaultFileResult: &vaultFileResult, ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
+                self.files = vaultFileResult
+                self.objectWillChange.send()
+            }
         }
     }
     
