@@ -37,7 +37,7 @@ struct LockConfirmPinView: View {
             shouldShowOnboarding = true
             
         } catch {
-            
+
         }
     }
     

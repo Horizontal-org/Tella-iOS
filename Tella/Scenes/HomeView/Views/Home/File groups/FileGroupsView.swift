@@ -22,7 +22,7 @@ struct FileGroupsView: View {
                         .foregroundColor(.white)
                 }
                 
-                LazyVGrid(columns: columns, spacing: 16) {
+                LazyVGrid(columns: columns, spacing: 18) {
                     ForEach(homeFileItems, id: \.self) { homeFileItem in
                         FileGroupView(groupName: homeFileItem.title,
                                       iconName: homeFileItem.imageName)

@@ -1,8 +1,5 @@
-//
-//  ConnectionsView.swift
 //  Tella
 //
-//  Created by Dhekra Rouatbi on 29/11/2022.
 //  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 
@@ -31,7 +28,7 @@ struct ConnectionsView: View {
     var serversView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             serverItems
-        }.frame(height: 75)
+        }
     }
     
     @ViewBuilder

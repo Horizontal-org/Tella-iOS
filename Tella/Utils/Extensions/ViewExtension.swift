@@ -35,9 +35,33 @@ extension View {
         }
     }
     
-    func addNavigationLink(isActive:Binding<Bool>) -> some View {
+    func navigateTo<Destination: View>( destination: Destination, isActive:Binding<Bool>) ->  some View   {
+        
         if #available(iOS 15.0, *) {
-            return  AnyView(
+            
+            return AnyView(NavigationLink(destination: destination,
+                                           isActive: isActive) {
+                self
+            }.buttonStyle(PlainButtonStyle()))
+            
+        } else {
+            return AnyView(ZStack {
+                NavigationLink(destination: destination,
+                               isActive: isActive) {
+                    self
+                }.buttonStyle(PlainButtonStyle())
+                
+                NavigationLink(destination: EmptyView()) {
+                    EmptyView()
+                }
+            })
+        }
+    }
+
+    
+    func addNavigationLink(isActive:Binding<Bool>, shouldAddEmptyView: Bool = false) -> some View {
+        if #available(iOS 15.0, *) {
+            return AnyView(
                 NavigationLink(destination:self,
                                isActive: isActive) {
                                    EmptyView()
@@ -45,7 +69,7 @@ extension View {
                     .hidden())
         } else {
             
-            return  AnyView(
+            return AnyView(
                 ZStack {
                     NavigationLink(destination:self,
                                    isActive: isActive) {
@@ -53,8 +77,10 @@ extension View {
                     }.frame(width: 0, height: 0)
                         .hidden()
                     
-                    NavigationLink(destination: EmptyView()) {
-                        EmptyView()
+                    if shouldAddEmptyView {
+                        NavigationLink(destination: EmptyView()) {
+                            EmptyView()
+                        }
                     }
                 })
         }

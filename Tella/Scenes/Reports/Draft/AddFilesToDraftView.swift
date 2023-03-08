@@ -6,10 +6,7 @@
 import SwiftUI
 
 struct AddFilesToDraftView: View {
-    
-    @State private var fieldContent: String = ""
-    @State private var isValid = false
-    
+
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var sheetManager: SheetManager
     @EnvironmentObject var draftReportVM: DraftReportVM
@@ -49,6 +46,7 @@ struct AddFilesToDraftView: View {
     
     var addButtonView: some View {
         Button {
+            UIApplication.shared.endEditing()
             showAddFileSheet()
         } label: {
             Image("reports.add")
@@ -65,8 +63,9 @@ struct AddFilesToDraftView: View {
     }
     
     func showAddFileSheet() {
-        sheetManager.showBottomSheet( modalHeight: CGFloat(AddFileToDraftItems.count * 50 + 90), content: {
-            ActionListBottomSheet(items: AddFileToDraftItems,
+        
+        sheetManager.showBottomSheet( modalHeight: CGFloat(draftReportVM.addFileToDraftItems.count * 50 + 90), content: {
+            ActionListBottomSheet(items: draftReportVM.addFileToDraftItems,
                                   headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
                                   action:  {item in
                 self.handleActions(item : item)

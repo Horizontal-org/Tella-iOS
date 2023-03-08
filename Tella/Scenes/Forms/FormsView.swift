@@ -20,9 +20,9 @@ struct FormsView: View {
             ZStack(alignment: .top) {
                 Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
                 VStack(alignment: .leading) {
-                    PageView(selectedOption: self.$selecetedCell, outboxCount: self.$outBoxCount, titles: titles)
-                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: 40, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                        .padding([.leading, .trailing], 10)
+//                    PageView(selectedOption: self.$selecetedCell, outboxCount: self.$outBoxCount, titles: titles)
+//                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: 40, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+//                        .padding([.leading, .trailing], 10)
                     VStack {
                         switch self.selecetedCell {
                         case .draft:

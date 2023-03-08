@@ -6,77 +6,104 @@ import SwiftUI
 struct ReportsView: View {
     
     @EnvironmentObject var mainAppModel : MainAppModel
-    
     @StateObject private var reportsViewModel : ReportsViewModel
-    @State private var selecetedCell = Pages.draft
-    @State private var outBoxCount = 0
-    @State private var shouldShowNewReport = false
     
-    init(mainAppModel:MainAppModel) {
-        _reportsViewModel = StateObject(wrappedValue: ReportsViewModel(mainAppModel: mainAppModel))
+    init(mainAppModel:MainAppModel, serverLinkIsActive : Binding<Bool> = .constant(false)) {
+        _reportsViewModel = StateObject(wrappedValue: ReportsViewModel(mainAppModel: mainAppModel, serverLinkIsActive: serverLinkIsActive))
     }
     
     var body: some View {
-//        NavigationView {
-            ZStack(alignment: .top) {
+        
+        contentView
+            .navigationBarTitle("Reports", displayMode: .large)
+            .environmentObject(reportsViewModel)
+        
+        newReportLink
+        editReportViewLink
+    }
+    
+    private var contentView :some View {
+        ContainerView {
+            
+            VStack(alignment: .center) {
                 
-                Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
+                PageView(selectedOption: self.$reportsViewModel.selectedCell, pageViewItems: $reportsViewModel.pageViewItems)
+                    .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
                 
-                VStack(alignment: .center) {
+                VStack (spacing: 0) {
+                    Spacer()
                     
-                    PageView(selectedOption: self.$selecetedCell, outboxCount: self.$outBoxCount)
-                        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: 40, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                        .padding([.leading, .trailing], 10)
-                    
-                    VStack (spacing: 0) {
-                        Spacer()
+                    switch self.reportsViewModel.selectedCell {
                         
-                        switch self.selecetedCell {
-                            
-                        case .draft:
-                            ReportListView(reportArray: $reportsViewModel.draftReports,
-                                           message: "Your Drafts is currently empty. Reports that you have not submitted will appear here.")
-                            
-                        case .outbox:
-                            
-                            ReportListView(reportArray: $reportsViewModel.outboxedReports,
-                                           message: "Your Outbox is currently empty. Reports that are ready to be sent will appear here.")
-                            
-                        case .submitted:
-                            ReportListView(reportArray: $reportsViewModel.submittedReports,
-                                           message: "You have no submitted reports.")
-                        }
+                    case .draft:
+                        ReportListView(reportArray: $reportsViewModel.draftReports,
+                                       message: "Your Drafts is currently empty. Reports that you have not submitted will appear here.")
                         
-                        Spacer()
+                    case .outbox:
                         
+                        ReportListView(reportArray: $reportsViewModel.outboxedReports,
+                                       message: "Your Outbox is currently empty. Reports that are ready to be sent will appear here.")
+                        
+                    case .submitted:
+                        ReportListView(reportArray: $reportsViewModel.submittedReports,
+                                       message: "You have no submitted reports.")
                     }
                     
-//                    TellaButtonView<AnyView> (title: "NEW REPORT",
-//                                              nextButtonAction: .action,
-//                                              buttonType: .yellow,
-//                                              isValid: .constant(true)) {
-//                        shouldShowNewReport = true
-//                    }.padding(EdgeInsets(top: 30, leading: 24, bottom: 16, trailing: 24))
-//
-                    
-                    TellaButtonView (title: "NEW REPORT",
-                                              nextButtonAction: .destination,
-                                              buttonType: .yellow,
-                                              destination: DraftReportView(mainAppModel: mainAppModel, isPresented: $shouldShowNewReport),
-                                              isValid: .constant(true)) {
-//                        shouldShowNewReport = true
-                    }.padding(EdgeInsets(top: 30, leading: 24, bottom: 16, trailing: 24))
-
-                    
+                    Spacer()
                 }
-                .background(Styles.Colors.backgroundMain)
+                
+                TellaButtonView<AnyView> (title: "NEW REPORT",
+                                          nextButtonAction: .action,
+                                          buttonType: .yellow,
+                                          isValid: .constant(true)) {
+                    reportsViewModel.newReportRootLinkIsActive = true
+                } .padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0))
+                
+            }.background(Styles.Colors.backgroundMain)
+                .padding(EdgeInsets(top: 15, leading: 20, bottom: 16, trailing: 20))
+        }
+    }
+    
+    @ViewBuilder
+    private var newReportLink: some View {
+        if reportsViewModel.newReportRootLinkIsActive {
+            DraftReportView(mainAppModel: mainAppModel)
+                .environmentObject(reportsViewModel)
+                .addNavigationLink(isActive: $reportsViewModel.newReportRootLinkIsActive,shouldAddEmptyView: true)
+        }
+    }
+    
+    @ViewBuilder
+    private var editReportViewLink: some View {
+        
+        switch reportsViewModel.selectedReport?.status {
+            
+        case .draft:
+            if reportsViewModel.editRootLinkIsActive {
+                
+                DraftReportView(mainAppModel: mainAppModel,
+                                reportId: reportsViewModel.selectedReport?.id)
+                .environmentObject(reportsViewModel)
+                .addNavigationLink(isActive: $reportsViewModel.editRootLinkIsActive)
             }
-            .navigationBarTitle("Reports", displayMode: .large)
-
-            .background(Styles.Colors.backgroundMain)
-
-            .environmentObject(reportsViewModel)
-
+        case .submitted:
+            if reportsViewModel.viewReportLinkIsActive {
+                
+                SubmittedDetailsView(appModel: mainAppModel,
+                                     reportId: reportsViewModel.selectedReport?.id)
+                .environmentObject(reportsViewModel)
+                .addNavigationLink(isActive: $reportsViewModel.viewReportLinkIsActive)
+            }
+        default:
+            if reportsViewModel.editRootLinkIsActive {
+                
+                OutboxDetailsView(appModel: mainAppModel,
+                                  reportsViewModel: reportsViewModel,
+                                  reportId: reportsViewModel.selectedReport?.id)
+                .environmentObject(reportsViewModel)
+                .addNavigationLink(isActive: $reportsViewModel.editRootLinkIsActive)
+            }
+        }
     }
 }
 

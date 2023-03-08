@@ -39,7 +39,8 @@ struct Styles {
         static var regularFontName = "OpenSans"
         static var semiBoldFontName = "OpenSans-Semibold"
         static var lightFontName = "OpenSans-Light"
-        static var lightRobotoFontName = "Roboto-Light"        
+        static var lightRobotoFontName = "Roboto-Light"
+        static var italicRobotoFontName = "OpenSans-Italic"
     }
 }
 

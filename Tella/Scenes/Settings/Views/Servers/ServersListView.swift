@@ -16,15 +16,16 @@ struct ServersListView: View {
     var body: some View {
         
         ContainerView {
-            
-            VStack(spacing: 0) {
-                
-                Spacer()
-                    .frame(height: 8)
-                
-                SettingsCardView<AnyView> (cardViewArray: serversView())
-                
-                Spacer()
+            ScrollView {
+                VStack(spacing: 0) {
+                    
+                    Spacer()
+                        .frame(height: 8)
+                    
+                    SettingsCardView<AnyView> (cardViewArray: serversView())
+                    
+                    Spacer()
+                }
             }
         }
         .fullScreenCover(isPresented: $shouldShowEditServer, content: {
@@ -44,7 +45,7 @@ struct ServersListView: View {
             .eraseToAnyView() as! T]
         
         serversViewModel.serverArray.forEach({ server in
-            arrayView.append(SettingsServerItemView(title: server.username,action: {showServerActionBottomSheet(server: server)}).eraseToAnyView() as! T)
+            arrayView.append(SettingsServerItemView(title: server.name,action: {showServerActionBottomSheet(server: server)}).eraseToAnyView() as! T)
             
         })
         return arrayView

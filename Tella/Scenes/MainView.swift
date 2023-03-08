@@ -28,7 +28,7 @@ struct MainView: View  {
                 sheetManager.content
             }
             
-            securityScreenView
+//            securityScreenView
         }
     }
     
@@ -77,7 +77,7 @@ struct MainView: View  {
             .accentColor(.white)
             .navigationViewStyle(.stack)
             
-            if appModel.selectedTab == .mic   {
+            if appModel.selectedTab == .mic {
                 RecordView(appModel: appModel,
                            rootFile: appModel.vaultManager.root,
                            sourceView: .tab,

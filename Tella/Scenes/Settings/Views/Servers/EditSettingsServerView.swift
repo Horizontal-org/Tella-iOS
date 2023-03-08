@@ -27,7 +27,7 @@ struct EditSettingsServerView: View {
                 SettingsCardView(cardViewArray: [serverNameView.eraseToAnyView(),
                                                  serverURLView.eraseToAnyView(),
                                                  serverUsernameView.eraseToAnyView(),
-                                                 ShareInfoView(shareInfo: $serverViewModel.activatedMetadata).eraseToAnyView(),
+                                                 // ShareInfoView(shareInfo: $serverViewModel.activatedMetadata).eraseToAnyView(),
                                                  BackgroundUploadView(backgroundUpload: $serverViewModel.backgroundUpload).eraseToAnyView()])
                 Spacer()
                 
@@ -41,7 +41,7 @@ struct EditSettingsServerView: View {
     }
     
     var serverURLView: some View {
-        EditServerDisplayItem(title: "Server URL", description: serverViewModel.url)
+        EditServerDisplayItem(title: "Server URL", description: serverViewModel.projectURL)
     }
     
     var serverUsernameView: some View {

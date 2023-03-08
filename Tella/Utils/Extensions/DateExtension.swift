@@ -7,9 +7,10 @@ import Foundation
 enum DateFormat : String {
     case short = "dd MMM yyyy"
     case fileInfo = "dd-MM-yyyy HH:mm:ss Z"
-    case fileName = "yyyy.MM.dd-HH.mm"
+    case fileName = "yyyy.MM.dd-HH.mm.ss"
     case time = "hh:mm a"
     case dataBase = "yyyy-MM-dd'T'HH:mm:ssZ"
+    case submittedReport = "dd.MM.yyyy, hh:mm a"
 }
 
 extension Date{
@@ -17,7 +18,7 @@ extension Date{
     func getFormattedDateString(format: String = DateFormat.short.rawValue , locale: Locale = Language.english.localeLanguage) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = format
-        formatter.locale = locale
+        formatter.locale = Locale.current
         return formatter.string(from: self)
     }
     
@@ -32,19 +33,6 @@ extension Date{
         }
     }
     
-    //    23 minutes ago
-    //    2 hours ago
-    //    1 day ago
-    //    2 days ago
-    //
-    //    Modified 2 days ago
-    //    Modified 1 week ago
-    //    Modified 2 weeks ago
-    //    Modified 1 month ago
-    
-    
-    
-    
     func getDraftReportTime() -> String {
         return "Modified" + " " + getTimeAgoSinceNow()
     }
@@ -52,7 +40,6 @@ extension Date{
     func getSubmittedReportTime() -> String {
         return getTimeAgoSinceNow()
     }
-    
     
     func getDateString() -> String? {
         let dateFormatter = DateFormatter()

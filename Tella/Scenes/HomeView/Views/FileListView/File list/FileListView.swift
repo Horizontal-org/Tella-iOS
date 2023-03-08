@@ -20,11 +20,16 @@ struct FileListView: View {
     
     var body: some View {
         
-        ZStack(alignment: .top) {
+        NavigationContainerView {
+
+            //        ZStack(alignment: .top) {
             
             Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
             
             VStack {
+                
+                  headerView
+                
                 SelectingFilesHeaderView()
                 
                 if appModel.vaultManager.root.files.isEmpty {
@@ -51,28 +56,78 @@ struct FileListView: View {
             FileActionMenu()
             
             showFileDetailsLink
+//        }
+//        .toolbar {
+//            LeadingTitleToolbar(title: title)
+//            selectFilesButton()
+//        }
+//        .navigationBarHidden(fileListViewModel.shouldHideNavigationBar)
         }
-        .toolbar {
-            LeadingTitleToolbar(title: title)
-            selectFilesButton()
-        }
-        .navigationBarHidden(fileListViewModel.shouldHideNavigationBar)
+        .navigationBarHidden(true)
+
         .environmentObject(fileListViewModel)
     }
-
-    @ToolbarContentBuilder
-    func selectFilesButton() -> some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button {
-                fileListViewModel.attachFiles()
-                presentationMode.wrappedValue.dismiss()
-
+    
+//    @ToolbarContentBuilder
+//    func selectFilesButton() -> some ToolbarContent {
+//        ToolbarItem(placement: .navigationBarTrailing) {
+//            Button {
+//                fileListViewModel.attachFiles()
+//                presentationMode.wrappedValue.dismiss()
+//            } label: {
+//                Image("report.select-files")
+//            }
+//        }
+//    }
+    
+    @ViewBuilder
+    var headerView: some View {
+        if !fileListViewModel.shouldHideNavigationBar {
+            HStack(spacing: 0) {
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                    
+                } label: {
+                    Image("back")
+                        .padding()
+                }
                 
-            } label: {
-                Image("report.select-files")
-            }
+                Text(title)
+                    .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
+                    .foregroundColor(.white)
+                
+                Spacer()
+                
+                if  fileListViewModel.fileListType == .selectFiles {
+                    
+                    Button {
+                        fileListViewModel.attachFiles()
+                        presentationMode.wrappedValue.dismiss()
+                        
+                        
+                    } label: {
+                        Image("report.select-files")
+                    }.padding(.trailing, 15)
+                    
+                }
+            }.frame(height: 56)
         }
+        
     }
+
+//    @ToolbarContentBuilder
+//    func selectFilesButton() -> some ToolbarContent {
+//        ToolbarItem(placement: .navigationBarTrailing) {
+//            Button {
+//                fileListViewModel.attachFiles()
+//                presentationMode.wrappedValue.dismiss()
+//
+//
+//            } label: {
+//                Image("report.select-files")
+//            }
+//        }
+//    }
 
     @ViewBuilder
     private var showFileDetailsLink: some View {

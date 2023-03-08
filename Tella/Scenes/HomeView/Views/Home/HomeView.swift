@@ -24,8 +24,10 @@ struct HomeView: View {
                 Spacer()
                     .frame( height: !viewModel.serverDataItemArray.isEmpty ? 16 : 0 )
                 ConnectionsView()
-
                 
+                Spacer()
+                    .frame( height: (!viewModel.serverDataItemArray.isEmpty && viewModel.getFiles().count > 0) ? 16 : 0 )
+
                 if appModel.settings.showRecentFiles {
                     Spacer()
                         .frame( height: viewModel.getFiles().count > 0 ? 16 : 0 )

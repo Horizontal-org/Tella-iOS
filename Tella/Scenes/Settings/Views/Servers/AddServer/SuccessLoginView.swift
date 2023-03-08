@@ -7,11 +7,12 @@ import SwiftUI
 
 struct SuccessLoginView: View {
     
-    @Binding var isPresented : Bool
+//    @Binding var isPresented : Bool
     @EnvironmentObject var mainAppModel : MainAppModel
     @EnvironmentObject var serversViewModel : ServersViewModel
     @EnvironmentObject private var appViewState: AppViewState
-
+    @State var showNextView : Bool = false
+    
     var body: some View {
         
         NavigationContainerView {
@@ -29,13 +30,14 @@ struct SuccessLoginView: View {
                                           nextButtonAction: .action,
                                           buttonType: .yellow,
                                           isValid: .constant(true)) {
-//                    mainAppModel.selectedTab = .mic
-
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                        isPresented = false
-                                   mainAppModel.selectedTab = .home
-
-                    }
+                    
+                    //                    showNextView = true
+                    
+                    //                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    //                        isPresented = false
+                    //                                   mainAppModel.selectedTab = .home
+                    //
+                    //                    }
                     
                 }
                 
@@ -49,6 +51,7 @@ struct SuccessLoginView: View {
                 Spacer()
                 
             } .padding(EdgeInsets(top: 0, leading: 26, bottom: 0, trailing: 26))
+            nextViewLink
         }
         .navigationBarHidden(true)
         
@@ -76,10 +79,17 @@ struct SuccessLoginView: View {
                 .multilineTextAlignment(.center)
         }
     }
+    
+    private var nextViewLink: some View {
+        
+        ReportsView(mainAppModel: mainAppModel, serverLinkIsActive: $serversViewModel.rootLinkIsActive)
+            .addNavigationLink(isActive: $showNextView)
+    }
+    
 }
 
 struct SuccessLoginView_Previews: PreviewProvider {
     static var previews: some View {
-        SuccessLoginView(isPresented: .constant(false))
+        SuccessLoginView()
     }
 }
