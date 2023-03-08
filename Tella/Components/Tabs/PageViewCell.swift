@@ -24,7 +24,6 @@ struct  PageViewCell: View {
             let selected: Bool = page == selectedOption
             VStack {
                 HStack {
-                    
                     Text(title)
                         .font(.custom(Styles.Fonts.boldFontName, size: 15))
                         .foregroundColor(selected ? .white : .white.opacity(0.5))
@@ -33,10 +32,8 @@ struct  PageViewCell: View {
                         Text(number)
                             .font(.custom(Styles.Fonts.boldFontName, size: 15))
                             .foregroundColor(Styles.Colors.yellow)
-//                            .padding(.bottom, 1)
                     }
-                }
-                
+                } .frame(height: 20)
                 Rectangle()
                     .fill(selected ?  Color.white : Color.clear)
                     .frame(height: 4, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
