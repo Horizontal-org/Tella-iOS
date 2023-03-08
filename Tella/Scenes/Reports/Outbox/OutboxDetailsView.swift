@@ -11,7 +11,7 @@ struct OutboxDetailsView: View {
     @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
-
+    
     init(appModel: MainAppModel,reportsViewModel: ReportsViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
         _outboxReportVM = StateObject(wrappedValue: OutboxReportVM(mainAppModel: appModel, reportsViewModel: reportsViewModel, reportId:reportId, shouldStartUpload: shouldStartUpload))
     }
@@ -76,7 +76,7 @@ struct OutboxDetailsView: View {
                 reportInformations
                 
                 Spacer()
-                    .frame(width: 16)
+                    .frame(height: 16)
                 
                 itemsListView
             }
@@ -103,17 +103,24 @@ struct OutboxDetailsView: View {
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                 .foregroundColor(.white)
             
-            uploadProgressView
+            if outboxReportVM.reportHasFile {
+                uploadProgressView
+            } else {
+                Spacer()
+                    .frame(height: 16)
+            }
             
             Text(outboxReportVM.reportViewModel.description)
                 .font(.custom(Styles.Fonts.regularFontName, size: 13))
                 .foregroundColor(.white)
             
             Spacer()
-                .frame(width: 16)
+                .frame(height: 16)
             
-            Divider()
-                .background(Color.white)
+            if outboxReportVM.reportHasFile {
+                Divider()
+                    .background(Color.white)
+            }
         }
     }
     
@@ -122,13 +129,13 @@ struct OutboxDetailsView: View {
         Group {
             
             Spacer()
-                .frame(width: 8)
+                .frame(height: 8)
             
             Text(outboxReportVM.percentUploadedInfo)
                 .font(.custom(Styles.Fonts.italicRobotoFontName, size: 13))
                 .foregroundColor(.white)
             Spacer()
-                .frame(width: 4)
+                .frame(height: 4)
             
             Text(outboxReportVM.uploadedFiles)
                 .font(.custom(Styles.Fonts.regularFontName, size: 13))
@@ -138,13 +145,15 @@ struct OutboxDetailsView: View {
             if outboxReportVM.percentUploaded > 0.0 {
                 ProgressView("", value: outboxReportVM.percentUploaded, total: 1)
                     .accentColor(.green)
-                
-                Spacer()
-                    .frame(width: 24)
+                if outboxReportVM.reportHasDescription{
+                    Spacer()
+                        .frame(height: 16)
+                }
             } else {
-                
-                Spacer()
-                    .frame(width: 20)
+                if outboxReportVM.reportHasDescription{
+                    Spacer()
+                        .frame(height: 20)
+                }
             }
         }
     }

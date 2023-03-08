@@ -12,7 +12,7 @@ struct SubmittedDetailsView: View {
     @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
-
+    
     init(appModel: MainAppModel, reportId : Int?) {
         _submittedReportVM = StateObject(wrappedValue: SubmittedReportVM(mainAppModel: appModel, reportId: reportId))
     }
@@ -82,18 +82,23 @@ struct SubmittedDetailsView: View {
             
             uploadInfosView
             
-            Spacer()
-                .frame(height: 12)
-            
-            Text(submittedReportVM.description)
-                .font(.custom(Styles.Fonts.regularFontName, size: 13))
-                .foregroundColor(.white)
-            
+            if submittedReportVM.reportHasDescription {
+                
+                Spacer()
+                    .frame(height: 12)
+                
+                Text(submittedReportVM.description)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 13))
+                    .foregroundColor(.white)
+                
+            }
             Spacer()
                 .frame(height: 18)
             
-            Divider()
-                .background(Color.white)
+            if submittedReportVM.reportHasFile {
+                Divider()
+                    .background(Color.white)
+            }
         }
     }
     
@@ -107,9 +112,12 @@ struct SubmittedDetailsView: View {
             Spacer()
                 .frame(height: 2)
             
-            Text(submittedReportVM.uploadedFiles)
-                .font(.custom(Styles.Fonts.regularFontName, size: 13))
-                .foregroundColor(.white)
+            if submittedReportVM.reportHasFile {
+                Text(submittedReportVM.uploadedFiles)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 13))
+                    .foregroundColor(.white)
+            }
+            
         }
     }
     
@@ -138,7 +146,7 @@ struct SubmittedDetailsView: View {
             }
         }
     }
-
+    
 }
 
 //struct ReportDetailsView_Previews: PreviewProvider {

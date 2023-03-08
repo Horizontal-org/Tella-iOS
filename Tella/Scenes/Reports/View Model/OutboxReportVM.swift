@@ -51,6 +51,14 @@ class OutboxReportVM: ObservableObject {
         }
     }
     
+    var reportHasFile: Bool {
+        return !reportViewModel.files.isEmpty
+    }
+    
+    var reportHasDescription: Bool {
+        return !reportViewModel.description.isEmpty
+    }
+    
     func initVaultFile(reportId: Int?) {
         
         if let reportId, let report = self.mainAppModel.vaultManager.tellaData.getReport(reportId: reportId) {

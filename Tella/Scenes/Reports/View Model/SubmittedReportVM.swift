@@ -19,6 +19,14 @@ class SubmittedReportVM: ObservableObject {
     @Published var uploadedDate : String = ""
     @Published var uploadedFiles : String = ""
     
+    var reportHasFile: Bool {
+        return !files.isEmpty
+    }
+    
+    var reportHasDescription: Bool {
+        return !description.isEmpty
+    }
+    
     init(mainAppModel: MainAppModel, shouldStartUpload: Bool = false, reportId: Int?) {
         self.mainAppModel = mainAppModel
         fillReportVM(reportId: reportId)
@@ -63,5 +71,5 @@ class SubmittedReportVM: ObservableObject {
             
         }
     }
-
+    
 }
