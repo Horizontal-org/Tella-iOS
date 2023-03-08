@@ -22,27 +22,17 @@ class ReportsViewModel: ObservableObject {
     @Published var pageViewItems : [PageViewItem] = [PageViewItem(title: "Drafts", page: .draft, number: "") ,
                                                      PageViewItem(title: "Outbox", page: .outbox, number: ""),
                                                      PageViewItem(title: "Submitted", page: .submitted, number: "")]
-    
-    var nonSubmittedReportItems : [ListActionSheetItem] { return [
-        
-        ListActionSheetItem(imageName: "edit-icon",
-                            content: "Edit",
-                            type: ReportActionType.edit),
-        ListActionSheetItem(imageName: "delete-icon-white",
-                            content: "Delete",
-                            type: ReportActionType.delete)
-    ]}
-    
-    var submittedReportItems : [ListActionSheetItem] { return [
+
+    var sheetItems : [ListActionSheetItem] { return [
         
         ListActionSheetItem(imageName: "view-icon",
-                            content: "View",
-                            type: ReportActionType.view),
+                            content: self.selectedReport?.status?.sheetItemTitle ?? "",
+                            type: self.selectedReport?.status?.reportActionType ?? .view),
         ListActionSheetItem(imageName: "delete-icon-white",
                             content: "Delete",
                             type: ReportActionType.delete)
     ]}
-    
+
     var serverLinkIsActive : Binding<Bool> = .constant(false)
     private var subscribers = Set<AnyCancellable>()
     

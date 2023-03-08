@@ -15,3 +15,32 @@ enum  ReportStatus : Int {
     case submissionPartialParts = 7  // some req body parts (files) are not sent
     case submissionInProgress = 8  // Submission launched
 }
+
+extension ReportStatus {
+    
+    var sheetItemTitle : String {
+        switch self {
+        
+        case .submitted:
+            return "View"
+
+        case .draft:
+            return "Edit"
+
+        default:
+            return "Open"
+        }
+    }
+
+    var reportActionType : ReportActionType {
+        switch self {
+        
+        case .submitted:
+            return .view
+
+        default:
+            return .edit
+
+        }
+    }
+}

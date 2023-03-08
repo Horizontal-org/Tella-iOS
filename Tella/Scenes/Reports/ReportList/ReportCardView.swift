@@ -63,7 +63,7 @@ struct ReportCardView : View {
     
     private func showReportActionBottomSheet() {
         sheetManager.showBottomSheet(modalHeight: 176) {
-            ActionListBottomSheet(items: report.status == .submitted ? reportsViewModel.submittedReportItems : reportsViewModel.nonSubmittedReportItems,
+            ActionListBottomSheet(items: reportsViewModel.sheetItems  ,
                                   headerTitle: reportsViewModel.selectedReport?.title ?? "",
                                   action: { item in
                 self.handleActions(type : item.type as? ReportActionType)

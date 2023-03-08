@@ -86,7 +86,7 @@ struct OutboxDetailsView: View {
     private var buttonView :some View {
         VStack {
             Spacer()
-            TellaButtonView<AnyView> (title: outboxReportVM.isSubmissionInProgress ? "Pause" : "Resume",
+            TellaButtonView<AnyView> (title: outboxReportVM.uploadButtonTitle,
                                       nextButtonAction: .action,
                                       buttonType: .yellow,
                                       destination: nil,
