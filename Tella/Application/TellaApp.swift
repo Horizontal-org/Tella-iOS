@@ -22,7 +22,6 @@ struct TellaApp: App {
                     appViewState.homeViewModel?.shouldShowRecordingSecurityScreen = UIScreen.main.isCaptured
                 }.onReceive(appDelegate.$shouldHandleTimeout) { value in
                     if value {
-                        UploadService.shared.clearDownloads()
                         self.saveData()
                     }
                 }
@@ -44,8 +43,9 @@ struct TellaApp: App {
     func saveData() {
         
         appViewState.homeViewModel?.saveLockTimeoutStartDate()
-        
-        
+
+        UploadService.shared.cancelTasksIfNeeded()
+
         guard let shouldResetApp = appViewState.homeViewModel?.shouldResetApp() else { return }
         let hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
         
@@ -54,13 +54,12 @@ struct TellaApp: App {
             appViewState.homeViewModel?.appEnterInBackground = true
             appViewState.homeViewModel?.shouldSaveCurrentData = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
+                appViewState.homeViewModel?.vaultManager.clearTmpDirectory() // TO FIX for server doesn't allow upload in Background
                 appViewState.resetApp()
             })
-            //            appViewState.homeViewModel?.saveLockTimeoutStartDate()
+            // appViewState.homeViewModel?.saveLockTimeoutStartDate()
             appViewState.homeViewModel?.shouldSaveCurrentData = false
         }
-        
     }
     
     func resetApp() {

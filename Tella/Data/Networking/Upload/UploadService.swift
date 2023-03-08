@@ -13,15 +13,17 @@ class UploadService {
     //
     static var shared : UploadService = UploadService()
     
-    var activeDownloads : [URLSessionTask: CurrentValueSubject<(UploadResponse), APIError>] = [ : ]
+    var activeTasks : [URLSessionTask: CurrentValueSubject<(UploadResponse), APIError>] = [ : ]
     
     var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier.invalid
     
     var hasFilesToUploadOnBackground: Bool {
-        let array = activeDownloads.values.filter { item -> Bool in
+        let array = activeTasks.values.filter { item -> Bool in
             switch item.value {
             case .progress(let download):
                 return download.isOnBackground == true
+            case .initial(let isOnBackGround):
+                return isOnBackGround == true
             default:
                 return false
             }
@@ -29,21 +31,43 @@ class UploadService {
         return array.count > 0
     }
     
-    func pauseDownload(endpoint: APIRequest) {
+    func pauseDownload(endpoint: APIRequest) { // TO FIX
         
-        activeDownloads.forEach({ item in
+        activeTasks.forEach({ item in
             
             switch item.value.value {
-
+                
             case .progress(let download):
                 download.task?.cancel()
-                activeDownloads[item.key] = nil
+                activeTasks[item.key] = nil
                 
             default:
                 break
             }
-            
         })
+    }
+    
+    func cancelTasksIfNeeded() {
+        
+        activeTasks.forEach { item in
+            
+            switch item.value.value {
+            case .progress(let download):
+                if !download.isOnBackground {
+                    // TO FIX Update the report status ?
+                    download.task?.cancel()
+                    activeTasks[item.key] = nil
+                }
+            case .initial(let isOnBackground):
+                if !isOnBackground {
+                    let task = item.key
+                    task.cancel()
+                    activeTasks[task] = nil
+                }
+            default:
+                break
+            }
+        }
     }
     
     func startDownload(endpoint: APIRequest, isOnBackground: Bool) -> URLSessionTask? {
@@ -67,16 +91,11 @@ class UploadService {
         }
         
         download.task?.resume()
-                
-        activeDownloads[download.task!] = CurrentValueSubject(.progress(progressInfo: download))
+        
+        activeTasks[download.task!] = CurrentValueSubject(.progress(progressInfo: download))
         
         return download.task!
     }
-    
-    func clearDownloads() {
-        activeDownloads.removeAll()
-    }
-    
     
     func call(endpoint: APIRequest, isOnBackground: Bool) -> URLSessionTask? {
         
@@ -84,7 +103,7 @@ class UploadService {
             let request = try endpoint.urlRequest()
             request.curlRepresentation()
             let task = endpoint.uploadsSession?.dataTask(with: request)
-            activeDownloads[task!] = CurrentValueSubject(.initial)
+            activeTasks[task!] = CurrentValueSubject(.initial(isOnBackground: isOnBackground))
             task?.resume()
             return task
             

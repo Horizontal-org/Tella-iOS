@@ -39,7 +39,7 @@ class ReportRepository:NSObject, WebRepository {
         let api = API.putReportFile((file, self))
         let task =  UploadService.shared.startDownload(endpoint: api, isOnBackground: file.uploadOnBackground)
         
-        guard let progress = UploadService.shared.activeDownloads[task!] else {
+        guard let progress = UploadService.shared.activeTasks[task!] else {
             return Fail(error: APIError.invalidURL) // to fix the error
                 .eraseToAnyPublisher()
         }
@@ -71,7 +71,7 @@ class ReportRepository:NSObject, WebRepository {
     
     func getTaskResponse(api:ReportRepository.API, isOnBackground:Bool) -> AnyPublisher<UploadResponse, APIError> {
         guard let task =  UploadService.shared.call(endpoint: api, isOnBackground: isOnBackground),
-              let data : CurrentValueSubject<UploadResponse, APIError> =  UploadService.shared.activeDownloads[task] else {
+              let data : CurrentValueSubject<UploadResponse, APIError> =  UploadService.shared.activeTasks[task] else {
             return Fail<UploadResponse, APIError>(error: APIError.unexpectedResponse) // to fix the error
                 .eraseToAnyPublisher()
         }
