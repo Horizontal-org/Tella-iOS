@@ -28,7 +28,7 @@ struct ConnectionsView: View {
     var serversView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             serverItems
-        }.frame(height: 75)
+        }
     }
     
     @ViewBuilder
