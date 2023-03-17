@@ -3,9 +3,14 @@
 //
 
 import SwiftUI
-
+// should move this to a separate file
+enum ImportOption {
+    case keepOriginal
+    case deleteOriginal
+}
 struct AddFileView: View {
-    
+    @State private var importOption: ImportOption?
+
     @State private var fieldContent: String = ""
     @State private var isValid = false
     
@@ -77,6 +82,37 @@ struct AddFileView: View {
         })
     }
     
+    func showImportDeleteSheet(itemType: AddPhotoVideoType) {
+        // localize values
+        let importDeleteItems = ["keep original", "delete original"]
+        let headerTitle = "Import and delete original file?"
+        let content = "After importing the file into Tella, do you want to keep the original file on your device or delete it? If you delete it, the file imported into Tella will be the only copy left."
+        
+        let sheetContent = ConfirmationBottomSheet(options: importDeleteItems, headerTitle: headerTitle, content: content) { selectedItem in
+            switch selectedItem {
+            case "keep original":
+                self.importOption = ImportOption.keepOriginal
+            case "delete original":
+                self.importOption = ImportOption.deleteOriginal
+            default:
+                break
+            }
+            switch itemType {
+            case .photoLibrary:
+                print(self.importOption)
+
+                fileListViewModel.showingImagePicker = true
+            default:
+                print(self.importOption)
+                fileListViewModel.showingImportDocumentPicker = true
+            }
+        }
+        
+        sheetManager.showBottomSheet(modalHeight: 400, content: {
+            sheetContent
+        })
+    }
+    
     private func handleActions(item: ListActionSheetItem) {
         
         guard let type = item.type as? ManageFileType else { return }
@@ -99,15 +135,12 @@ struct AddFileView: View {
         }
     }
     
+    
     private func handleAddPhotoVideoActions(item: ListActionSheetItem) {
         guard let type = item.type as? AddPhotoVideoType else { return  }
         
-        switch type {
-        case .photoLibrary:
-            fileListViewModel.showingImagePicker = true
-        default:
-            fileListViewModel.showingImportDocumentPicker = true
-        }
+        
+        showImportDeleteSheet(itemType: type)
     }
 }
 
