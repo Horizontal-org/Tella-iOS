@@ -83,16 +83,20 @@ struct AddFileView: View {
     }
     
     func showImportDeleteSheet(itemType: AddPhotoVideoType) {
-        // localize values
-        let importDeleteItems = ["keep original", "delete original"]
-        let headerTitle = "Import and delete original file?"
-        let content = "After importing the file into Tella, do you want to keep the original file on your device or delete it? If you delete it, the file imported into Tella will be the only copy left."
+        let importDeleteItems = [
+            LocalizableVault.importDeleteKeepOriginal.localized,
+            LocalizableVault.importDeleteDeleteOriginal.localized
+        ]
+        let headerTitle = LocalizableVault.importDeleteTitle.localized
+        let content = LocalizableVault.importDeleteContent.localized
+        let subContent = LocalizableVault.importDeleteSubcontent.localized
         
-        let sheetContent = ConfirmationBottomSheet(options: importDeleteItems, headerTitle: headerTitle, content: content) { selectedItem in
+        let sheetContent = ConfirmationBottomSheet(options: importDeleteItems, headerTitle: headerTitle, content: content, subContent: subContent) {
+            selectedItem in
             switch selectedItem {
-            case "keep original":
+            case LocalizableVault.importDeleteKeepOriginal.localized:
                 self.importOption = ImportOption.keepOriginal
-            case "delete original":
+            case LocalizableVault.importDeleteDeleteOriginal.localized:
                 self.importOption = ImportOption.deleteOriginal
             default:
                 break
@@ -108,7 +112,7 @@ struct AddFileView: View {
             }
         }
         
-        sheetManager.showBottomSheet(modalHeight: 400, content: {
+        sheetManager.showBottomSheet(modalHeight: 300, content: {
             sheetContent
         })
     }
