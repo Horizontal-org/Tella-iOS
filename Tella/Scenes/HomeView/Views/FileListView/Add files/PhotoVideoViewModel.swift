@@ -40,7 +40,7 @@ class PhotoVideoViewModel : ObservableObject {
         }
     }
     
-    func add(image: UIImage , type: FileType, pathExtension:String?) {
+    func add(image: UIImage , type: FileType, pathExtension:String?, originalUrl: URL?) {
         guard let data = image.fixedOrientation()?.pngData() else { return }
         guard let url = mainAppModel.vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension ?? "png") else { return  }
         Task {
@@ -49,6 +49,19 @@ class PhotoVideoViewModel : ObservableObject {
                                                                  to: self.mainAppModel.vaultManager.root,
                                                                  type: type,
                                                                  folderPathArray: self.folderPathArray)
+                
+                //remove originalURL from phone
+                
+                if mainAppModel.importOption == .deleteOriginal {
+                                    if let originalUrl = originalUrl {
+                                        do {
+                                            print("removing file: \(originalUrl)")
+                                            try FileManager.default.removeItem(at: originalUrl)
+                                        } catch {
+                                            print("Error removing file: \(error)")
+                                        }
+                                    }
+                                }
                 DispatchQueue.main.async {
                     self.resultFile?.wrappedValue = vaultFile
                 }

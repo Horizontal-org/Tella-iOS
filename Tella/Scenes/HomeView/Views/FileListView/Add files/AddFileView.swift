@@ -3,13 +3,8 @@
 //
 
 import SwiftUI
-// should move this to a separate file
-enum ImportOption {
-    case keepOriginal
-    case deleteOriginal
-}
+
 struct AddFileView: View {
-    @State private var importOption: ImportOption?
 
     @State private var fieldContent: String = ""
     @State private var isValid = false
@@ -95,19 +90,16 @@ struct AddFileView: View {
             selectedItem in
             switch selectedItem {
             case LocalizableVault.importDeleteKeepOriginal.localized:
-                self.importOption = ImportOption.keepOriginal
+                appModel.importOption = .keepOriginal
             case LocalizableVault.importDeleteDeleteOriginal.localized:
-                self.importOption = ImportOption.deleteOriginal
+                appModel.importOption = .deleteOriginal
             default:
                 break
             }
             switch itemType {
             case .photoLibrary:
-                print(self.importOption)
-
                 fileListViewModel.showingImagePicker = true
             default:
-                print(self.importOption)
                 fileListViewModel.showingImportDocumentPicker = true
             }
         }

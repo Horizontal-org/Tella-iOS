@@ -9,7 +9,7 @@ import MobileCoreServices
 //  SwiftUI wrapper for ImagePickerController for <= iOS 14.0
 struct ImagePickerView: UIViewControllerRepresentable {
     
-    let completion: (UIImage?, URL?, String?) -> ()
+    let completion: (UIImage?, URL?, String?, URL?) -> ()
 
     func makeCoordinator() -> ImageCoordinator {
       return ImageCoordinator(completion)
@@ -32,9 +32,9 @@ struct ImagePickerView: UIViewControllerRepresentable {
 //  Creating the Coordinator (the go between) for the ImagePicker
 class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
-    let completion: (UIImage?, URL?, String?) -> ()
+    let completion: (UIImage?, URL?, String?, URL?) -> ()
     
-    init(_ completion: @escaping (UIImage?, URL?, String?) -> ()) {
+    init(_ completion: @escaping (UIImage?, URL?, String?, URL?) -> ()) {
         self.completion = completion
     }
     
@@ -44,22 +44,23 @@ class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerC
         let mediaType = info[UIImagePickerController.InfoKey.mediaType] as AnyObject
         debugLog("\(mediaType)")
         let mediaURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL
+        let imageURL = info[UIImagePickerController.InfoKey.imageURL] as? URL
 
         if mediaType as! CFString == kUTTypeImage {
             guard let unwrapImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
                 return
             }
-            completion(unwrapImage, nil,mediaURL?.pathExtension)
+            completion(unwrapImage, nil,mediaURL?.pathExtension, imageURL)
         } else if mediaType as! CFString == kUTTypeMovie {
             guard let videoURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {
                 return
             }
-            completion(nil, videoURL, nil)
+            completion(nil, videoURL, nil, nil)
         }
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        completion(nil, nil, nil)
+        completion(nil, nil, nil, nil)
     }
 }
 
