@@ -44,8 +44,7 @@ class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerC
         let mediaType = info[UIImagePickerController.InfoKey.mediaType] as AnyObject
         debugLog("\(mediaType)")
         let mediaURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL
-        let imageURL = info[UIImagePickerController.InfoKey.imageURL] as? URL
-
+        let imageURL = info[UIImagePickerController.InfoKey.referenceURL] as? URL
         if mediaType as! CFString == kUTTypeImage {
             guard let unwrapImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
                 return
