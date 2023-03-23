@@ -10,6 +10,7 @@ struct HomeView: View {
     @EnvironmentObject var appModel: MainAppModel
     @StateObject var viewModel : HomeViewModel
     @StateObject var serversViewModel: ServersViewModel
+    @EnvironmentObject private var appViewState: AppViewState
     
     init(appModel: MainAppModel) {
         _viewModel = StateObject(wrappedValue: HomeViewModel(appModel: appModel))
@@ -52,6 +53,8 @@ struct HomeView: View {
                             // remove servers connections
                             serversViewModel.deleteServer()
                         }
+                        
+                        appViewState.resetToUnlock()
                     })
                 }
             }
