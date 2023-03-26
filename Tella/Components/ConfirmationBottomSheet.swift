@@ -9,11 +9,11 @@
 import SwiftUI
 
 struct ConfirmationBottomSheet: View {
-    let options: [String]
+    let options: [MainAppModel.ImportOption]
     let headerTitle: String
     let content: String
     let subContent: String
-    let action: ((String) -> Void)
+    let action: ((MainAppModel.ImportOption) -> Void)
     
     @State private var selectedOption: String?
     
@@ -36,12 +36,12 @@ struct ConfirmationBottomSheet: View {
                 Spacer()
                 ForEach(options, id: \.self) { option in
                     Button(action: {
-                        selectedOption = option
+                        selectedOption = option.localizedValue
                         action(option)
                     }, label: {
                         HStack(alignment: .center) {
                             Spacer()
-                            Text(option)
+                            Text(option.localizedValue)
                                 .foregroundColor(.white)
                                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 15))
                         }

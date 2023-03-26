@@ -37,9 +37,17 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         case mic
     }
 
-    enum ImportOption {
+    enum ImportOption: CaseIterable {
         case keepOriginal
         case deleteOriginal
+        var localizedValue: String {
+            switch self {
+            case .keepOriginal:
+                return LocalizableVault.importDeleteKeepOriginal.localized
+            case .deleteOriginal:
+                return LocalizableVault.importDeleteDeleteOriginal.localized
+            }
+        }
     }
     
     @Published var settings: SettingsModel = SettingsModel()

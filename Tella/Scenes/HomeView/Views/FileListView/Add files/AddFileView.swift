@@ -78,24 +78,14 @@ struct AddFileView: View {
     }
     
     func showImportDeleteSheet(itemType: AddPhotoVideoType) {
-        let importDeleteItems = [
-            LocalizableVault.importDeleteKeepOriginal.localized,
-            LocalizableVault.importDeleteDeleteOriginal.localized
-        ]
+        let importDeleteItems = MainAppModel.ImportOption.allCases
         let headerTitle = LocalizableVault.importDeleteTitle.localized
         let content = LocalizableVault.importDeleteContent.localized
         let subContent = LocalizableVault.importDeleteSubcontent.localized
         
         let sheetContent = ConfirmationBottomSheet(options: importDeleteItems, headerTitle: headerTitle, content: content, subContent: subContent) {
             selectedItem in
-            switch selectedItem {
-            case LocalizableVault.importDeleteKeepOriginal.localized:
-                appModel.importOption = .keepOriginal
-            case LocalizableVault.importDeleteDeleteOriginal.localized:
-                appModel.importOption = .deleteOriginal
-            default:
-                break
-            }
+            appModel.importOption = selectedItem
             switch itemType {
             case .photoLibrary:
                 fileListViewModel.showingImagePicker = true
@@ -103,7 +93,6 @@ struct AddFileView: View {
                 fileListViewModel.showingImportDocumentPicker = true
             }
         }
-        
         sheetManager.showBottomSheet(modalHeight: 300, content: {
             sheetContent
         })
