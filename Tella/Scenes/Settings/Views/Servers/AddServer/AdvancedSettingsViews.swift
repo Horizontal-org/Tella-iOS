@@ -28,7 +28,30 @@ struct BackgroundUploadView:  View {
     }
 }
 
-
+struct AutoUploadView:  View {
+    
+    @Binding var autoUpload : Bool
+    var isDisabled : Bool
+    
+    var body: some View {
+        
+        SettingToggleItem(title: "Auto-report",
+                          description: "Whenever you take a photo/video/audio recording in Tella, a report will automatically be created with the file and uploaded to this project.",
+                          toggle: $autoUpload,
+                          isDisabled: isDisabled)
+    }
+}
+struct AutoDeleteView:  View {
+    
+    @Binding var autoDelete : Bool
+    
+    var body: some View {
+        
+        SettingToggleItem(title: "Auto-delete",
+                          description: "Automatically delete files from your device once they are uploaded to this project as a report.",
+                          toggle: $autoDelete)
+    }
+}
 
 struct ShareInfoView_Previews: PreviewProvider {
     static var previews: some View {

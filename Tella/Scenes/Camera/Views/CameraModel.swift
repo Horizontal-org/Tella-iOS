@@ -10,14 +10,15 @@ import UIKit
 
 final class CameraModel: ObservableObject {
     
-    private let service = CameraService()
+      let service = CameraService()
     
     @Published var imageCompletion: (UIImage,Data)?
     @Published var videoURLCompletion: URL?
     @Published var shouldShowPermission = false
     @Published var isRecording = false
     @Published var shouldCloseCamera = false
-    
+    @Published var shouldShowProgressView = false
+
     var session: AVCaptureSession
     
     private var subscriptions = Set<AnyCancellable>()

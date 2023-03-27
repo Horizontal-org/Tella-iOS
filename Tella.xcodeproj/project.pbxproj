@@ -63,7 +63,6 @@
 		1218E86528E48AEC00FE2E68 /* LoginResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1218E86428E48AEC00FE2E68 /* LoginResult.swift */; };
 		12199C34294094430041BD38 /* OutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12199C33294094430041BD38 /* OutboxDetailsView.swift */; };
 		12199C362940966E0041BD38 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12199C352940966E0041BD38 /* OpenSans-Italic.ttf */; };
-		12199C382940E9550041BD38 /* OutboxReportVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12199C372940E9550041BD38 /* OutboxReportVM.swift */; };
 		12199C3A2941260D0041BD38 /* OutboxDetailsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12199C392941260D0041BD38 /* OutboxDetailsItemView.swift */; };
 		121AD8222943A2F00056AC2A /* ReportRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121AD8212943A2F00056AC2A /* ReportRepository.swift */; };
 		121AD8262943D52B0056AC2A /* SubmitReportResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121AD8252943D52B0056AC2A /* SubmitReportResult.swift */; };
@@ -94,6 +93,9 @@
 		122C54BC28C614C2003B2DBC /* TellaButtonStyleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122C54BB28C614C2003B2DBC /* TellaButtonStyleProtocol.swift */; };
 		122C54BE28C6351E003B2DBC /* AdvancedServerSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122C54BD28C6351E003B2DBC /* AdvancedServerSettingsView.swift */; };
 		122C54C028C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122C54BF28C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift */; };
+		122DA88F29CB1F21003801CD /* AutoUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122DA88E29CB1F1E003801CD /* AutoUpload.swift */; };
+		122DA89129CB1F45003801CD /* FileAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122DA89029CB1F45003801CD /* FileAPI.swift */; };
+		122DA89729CB2709003801CD /* SettingsBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122DA89629CB2709003801CD /* SettingsBottomView.swift */; };
 		122E4D55291ADEB300562EB1 /* AddFilesToDraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122E4D54291ADEB300562EB1 /* AddFilesToDraftView.swift */; };
 		122E6A5329A3812A00BDACAD /* ReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122E6A5229A3812A00BDACAD /* ReportViewModel.swift */; };
 		122E6A5529A396C400BDACAD /* ServerFileSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122E6A5429A396C400BDACAD /* ServerFileSize.swift */; };
@@ -105,6 +107,8 @@
 		1231A45E294C779D0057DA85 /* ReportStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1231A45D294C779D0057DA85 /* ReportStatus.swift */; };
 		1233007828E30C7900B8F7BA /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233007728E30C7900B8F7BA /* APIRequest.swift */; };
 		1233007A28E3115500B8F7BA /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233007928E3115500B8F7BA /* Request.swift */; };
+		1234179229CD19E6004CFAEA /* BaseUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1234179129CD19E6004CFAEA /* BaseUploadOperation.swift */; };
+		1234179429CD2CFC004CFAEA /* URLSessionTaskResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1234179329CD2CFC004CFAEA /* URLSessionTaskResponse.swift */; };
 		12351C1A28D2209400F3CB7C /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12351C1928D2209400F3CB7C /* Report.swift */; };
 		12351C1C28D220BA00F3CB7C /* TellaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12351C1B28D220BA00F3CB7C /* TellaData.swift */; };
 		12351C1E28D267EF00F3CB7C /* DatabaseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12351C1D28D267EF00F3CB7C /* DatabaseConstants.swift */; };
@@ -116,6 +120,8 @@
 		1237A71A278F18C000D7BC0F /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C87C268CCA3500EB5E34 /* WebView.swift */; };
 		1237A71C278F5B2E00D7BC0F /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1237A71B278F5B2E00D7BC0F /* DateExtension.swift */; };
 		1237A71E278F5F8B00D7BC0F /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1237A71D278F5F8B00D7BC0F /* LanguageManager.swift */; };
+		123AE5A129CFAD7F00814CC7 /* OutboxReportVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123AE5A029CFAD7F00814CC7 /* OutboxReportVM.swift */; };
+		123AE5A329CFB7F000814CC7 /* UploadReportOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123AE5A229CFB7F000814CC7 /* UploadReportOperation.swift */; };
 		123CE54F272028D1005BF386 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 123CE54E272028D1005BF386 /* Roboto-Light.ttf */; };
 		123CE84429126B52003C251F /* ServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CE84329126B52003C251F /* ServerViewModel.swift */; };
 		1240E6B02907E14400692232 /* ReportCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1240E6AF2907E14400692232 /* ReportCardView.swift */; };
@@ -417,7 +423,6 @@
 		1218E86428E48AEC00FE2E68 /* LoginResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResult.swift; sourceTree = "<group>"; };
 		12199C33294094430041BD38 /* OutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxDetailsView.swift; sourceTree = "<group>"; };
 		12199C352940966E0041BD38 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Italic.ttf"; sourceTree = "<group>"; };
-		12199C372940E9550041BD38 /* OutboxReportVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxReportVM.swift; sourceTree = "<group>"; };
 		12199C392941260D0041BD38 /* OutboxDetailsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxDetailsItemView.swift; sourceTree = "<group>"; };
 		121AD8212943A2F00056AC2A /* ReportRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRepository.swift; sourceTree = "<group>"; };
 		121AD8252943D52B0056AC2A /* SubmitReportResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitReportResult.swift; sourceTree = "<group>"; };
@@ -448,6 +453,9 @@
 		122C54BB28C614C2003B2DBC /* TellaButtonStyleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaButtonStyleProtocol.swift; sourceTree = "<group>"; };
 		122C54BD28C6351E003B2DBC /* AdvancedServerSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedServerSettingsView.swift; sourceTree = "<group>"; };
 		122C54BF28C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessAdvancedSettingsView.swift; sourceTree = "<group>"; };
+		122DA88E29CB1F1E003801CD /* AutoUpload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoUpload.swift; sourceTree = "<group>"; };
+		122DA89029CB1F45003801CD /* FileAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileAPI.swift; sourceTree = "<group>"; };
+		122DA89629CB2709003801CD /* SettingsBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBottomView.swift; sourceTree = "<group>"; };
 		122E4D54291ADEB300562EB1 /* AddFilesToDraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFilesToDraftView.swift; sourceTree = "<group>"; };
 		122E6A5229A3812A00BDACAD /* ReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewModel.swift; sourceTree = "<group>"; };
 		122E6A5429A396C400BDACAD /* ServerFileSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerFileSize.swift; sourceTree = "<group>"; };
@@ -460,6 +468,8 @@
 		1233007728E30C7900B8F7BA /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		1233007928E3115500B8F7BA /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		1233007D28E3184D00B8F7BA /* Value.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Value.swift; sourceTree = "<group>"; };
+		1234179129CD19E6004CFAEA /* BaseUploadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUploadOperation.swift; sourceTree = "<group>"; };
+		1234179329CD2CFC004CFAEA /* URLSessionTaskResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionTaskResponse.swift; sourceTree = "<group>"; };
 		12351C1928D2209400F3CB7C /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
 		12351C1B28D220BA00F3CB7C /* TellaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaData.swift; sourceTree = "<group>"; };
 		12351C1D28D267EF00F3CB7C /* DatabaseConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseConstants.swift; sourceTree = "<group>"; };
@@ -469,6 +479,8 @@
 		1236EE8128E1E1D700973EEA /* DatabaseExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseExtension.swift; sourceTree = "<group>"; };
 		1237A71B278F5B2E00D7BC0F /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		1237A71D278F5F8B00D7BC0F /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
+		123AE5A029CFAD7F00814CC7 /* OutboxReportVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxReportVM.swift; sourceTree = "<group>"; };
+		123AE5A229CFB7F000814CC7 /* UploadReportOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadReportOperation.swift; sourceTree = "<group>"; };
 		123CE54E272028D1005BF386 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		123CE84329126B52003C251F /* ServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerViewModel.swift; sourceTree = "<group>"; };
 		1240E6AF2907E14400692232 /* ReportCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCardView.swift; sourceTree = "<group>"; };
@@ -1039,6 +1051,7 @@
 				122E6A5429A396C400BDACAD /* ServerFileSize.swift */,
 				125AAD3029534259002194D6 /* UploadProgressInfo.swift */,
 				1203CDDD298D7C1300D09073 /* FileToUpload.swift */,
+				122DA89029CB1F45003801CD /* FileAPI.swift */,
 				1256A33829490A7A00FE2B5C /* FileInfos.swift */,
 				1203CDDF2991429200D09073 /* FileStatus.swift */,
 				1231A45D294C779D0057DA85 /* ReportStatus.swift */,
@@ -1059,7 +1072,7 @@
 			children = (
 				1236645028FFF23000FA839B /* ReportsViewModel.swift */,
 				1221E05B2906CA6A00BC05F5 /* DraftReportVM.swift */,
-				12199C372940E9550041BD38 /* OutboxReportVM.swift */,
+				123AE5A029CFAD7F00814CC7 /* OutboxReportVM.swift */,
 				121F87A92964383D00E6BA0D /* SubmittedReportVM.swift */,
 				123048D1295F84BD0015CD96 /* ProgressFileItemViewModel.swift */,
 				122E6A5229A3812A00BDACAD /* ReportViewModel.swift */,
@@ -1110,6 +1123,10 @@
 			isa = PBXGroup;
 			children = (
 				125AAD33295348EC002194D6 /* UploadService.swift */,
+				1234179329CD2CFC004CFAEA /* URLSessionTaskResponse.swift */,
+				122DA88E29CB1F1E003801CD /* AutoUpload.swift */,
+				123AE5A229CFB7F000814CC7 /* UploadReportOperation.swift */,
+				1234179129CD19E6004CFAEA /* BaseUploadOperation.swift */,
 			);
 			path = Upload;
 			sourceTree = "<group>";
@@ -1637,6 +1654,7 @@
 				120451FB28C795DC00D572A7 /* EditServerDisplayItemView.swift */,
 				129B845428BFEC8600F1B344 /* TopServerView.swift */,
 				CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */,
+				122DA89629CB2709003801CD /* SettingsBottomView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2083,6 +2101,7 @@
 				1209FD3027AD8AC400D8C17E /* AudioPlayerManager.swift in Sources */,
 				12BAFA7728B3B8D300930451 /* UIImageOrientation.swift in Sources */,
 				123CE84429126B52003C251F /* ServerViewModel.swift in Sources */,
+				122DA88F29CB1F21003801CD /* AutoUpload.swift in Sources */,
 				D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */,
 				0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */,
 				12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */,
@@ -2132,6 +2151,7 @@
 				123048D7295F95BB0015CD96 /* SubmittedDetailsItemView.swift in Sources */,
 				1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */,
 				1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */,
+				1234179229CD19E6004CFAEA /* BaseUploadOperation.swift in Sources */,
 				125EFACE274A834300D93DF6 /* FileActionMenu.swift in Sources */,
 				12351C1A28D2209400F3CB7C /* Report.swift in Sources */,
 				D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */,
@@ -2145,7 +2165,6 @@
 				12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */,
 				12568002271790AF00A2D356 /* LockPinView.swift in Sources */,
 				1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */,
-				12199C382940E9550041BD38 /* OutboxReportVM.swift in Sources */,
 				12A148942720A89E00A1ADDC /* BottomLockView.swift in Sources */,
 				1236645128FFF23000FA839B /* ReportsViewModel.swift in Sources */,
 				1233007A28E3115500B8F7BA /* Request.swift in Sources */,
@@ -2156,7 +2175,9 @@
 				126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */,
 				0E64C6A6265E7625005A7934 /* ActionListBottomSheet.swift in Sources */,
 				D5077A40260D300600D72947 /* DebugLogging.swift in Sources */,
+				1234179429CD2CFC004CFAEA /* URLSessionTaskResponse.swift in Sources */,
 				0ECC781D267AADA500A2ACF2 /* PageViewCellNotification.swift in Sources */,
+				122DA89729CB2709003801CD /* SettingsBottomView.swift in Sources */,
 				1216124028DE144200E6D7B6 /* JoinCondition.swift in Sources */,
 				12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */,
 				12730E67279F11C300DC0135 /* LanguageListView.swift in Sources */,
@@ -2207,6 +2228,7 @@
 				1237A71A278F18C000D7BC0F /* WebView.swift in Sources */,
 				1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */,
 				12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */,
+				123AE5A129CFAD7F00814CC7 /* OutboxReportVM.swift in Sources */,
 				12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */,
 				D572EAC7263A383900CE191A /* RecentFileCell.swift in Sources */,
 				1268554027D2994500385E18 /* VaultFileStatus.swift in Sources */,
@@ -2318,6 +2340,7 @@
 				12935479294A3BFC00735ED0 /* MIMEType.swift in Sources */,
 				126FE4D727A427E200AE4188 /* Constants.swift in Sources */,
 				122389BB293683930058593B /* ServerDataItem.swift in Sources */,
+				123AE5A329CFB7F000814CC7 /* UploadReportOperation.swift in Sources */,
 				12EC94CF28AA566C0070E72B /* GeneralView.swift in Sources */,
 				1240E6B22908123900692232 /* ReportListView.swift in Sources */,
 				1218E86528E48AEC00FE2E68 /* LoginResult.swift in Sources */,
@@ -2337,6 +2360,7 @@
 				D5DA7F9B2648D05400B00FDA /* FileListView.swift in Sources */,
 				1237A71C278F5B2E00D7BC0F /* DateExtension.swift in Sources */,
 				122E4D55291ADEB300562EB1 /* AddFilesToDraftView.swift in Sources */,
+				122DA89129CB1F45003801CD /* FileAPI.swift in Sources */,
 				1221CB6F28DB1B1B0042F15F /* SqliteError.swift in Sources */,
 				127C155C27DA69FF009EC15B /* TransitionViewData.swift in Sources */,
 				D516397C2631113B003A11B5 /* Styles.swift in Sources */,

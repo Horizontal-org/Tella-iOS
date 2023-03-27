@@ -102,7 +102,6 @@ struct ReportCardView_Previews: PreviewProvider {
         ContainerView {
             ReportCardView(report: .constant(Report(title: "Title",
                                                     description: "Description",
-                                                    date: Date(),
                                                     status: .draft,
                                                     server: Server(), vaultFiles: [])))
         }

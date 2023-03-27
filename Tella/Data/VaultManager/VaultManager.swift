@@ -13,7 +13,7 @@ protocol VaultManagerInterface {
     func load(name: String) -> VaultFile?
     func load(file: VaultFile) -> Data?
     func load(files vaultFiles: [VaultFile]) -> [URL]
-    func loadFilesInfos(files vaultFiles: [VaultFile]) -> [VaultFileInfo]
+    func loadFilesInfos(file vaultFile: VaultFile, offsetSize:Int ) -> VaultFileInfo?
     func save(_ data: Data, vaultFile: VaultFile, parent: VaultFile?) -> Bool?
     func save<T: Datable>(_ object: T, vaultFile: VaultFile, parent: VaultFile? ) -> Bool?
     func createNewFolder(name: String, parent: VaultFile?, folderPathArray : [VaultFile])
@@ -41,10 +41,10 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     
     @Published var root: VaultFile
     @Published var tellaData : TellaData
-
+    
     @Published var progress :  ImportProgress
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
-
+    
     private var cancellable: Set<AnyCancellable> = []
     
     init(cryptoManager: CryptoManagerInterface, fileManager: FileManagerInterface, rootFileName: String, containerPath: String, progress :  ImportProgress) {
@@ -54,7 +54,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         self.containerPath = containerPath
         self.progress = progress
         self.tellaData = TellaData(key: CryptoManager.shared.metaPrivateKey?.getString())
-
+        
         root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
         if let root = load(name: rootFileName) {
             self.root = root
@@ -70,52 +70,52 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
     
     func importFile(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray : [VaultFile]) async throws -> [VaultFile] {
-//        Task {
-            do{
-                let filesInfo = try await self.getFilesInfo(files: files, folderPathArray: folderPathArray)
-                
-                self.progress.start(totalFiles: files.count, totalSize: filesInfo.1)
-                
-                let queue = DispatchQueue.global(qos: .background)
-                
-                var backgroundWorkItem : DispatchWorkItem?
-                
-                backgroundWorkItem = DispatchWorkItem { [weak self]  in
-                    for (index, item) in filesInfo.0.enumerated() {
-                        if (backgroundWorkItem?.isCancelled)! {
-                            break
-                        }
-                        self?.progress.currentFile = index
-                        self?.importFileAndEncrypt(data: item.0, vaultFile: item.1, parentFolder: parentFolder, type: type, folderPathArray: folderPathArray)
+        //        Task {
+        do{
+            let filesInfo = try await self.getFilesInfo(files: files, folderPathArray: folderPathArray)
+            
+            self.progress.start(totalFiles: files.count, totalSize: filesInfo.1)
+            
+            let queue = DispatchQueue.global(qos: .background)
+            
+            var backgroundWorkItem : DispatchWorkItem?
+            
+            backgroundWorkItem = DispatchWorkItem { [weak self]  in
+                for (index, item) in filesInfo.0.enumerated() {
+                    if (backgroundWorkItem?.isCancelled)! {
+                        break
                     }
-                    if let root = self?.root {
-                        self?.save(file: root)
-                        
-                    }
-                    self?.progress.finish()
+                    self?.progress.currentFile = index
+                    self?.importFileAndEncrypt(data: item.0, vaultFile: item.1, parentFolder: parentFolder, type: type, folderPathArray: folderPathArray)
+                }
+                if let root = self?.root {
+                    self?.save(file: root)
                     
+                }
+                self?.progress.finish()
+                
+                backgroundWorkItem?.cancel()
+                backgroundWorkItem = nil
+            }
+            
+            queue.async(execute: backgroundWorkItem!)
+            
+            self.shouldCancelImportAndEncryption.sink(receiveValue: { [weak self] value in
+                if value {
                     backgroundWorkItem?.cancel()
-                    backgroundWorkItem = nil
+                    self?.progress.stop()
+                    self?.shouldCancelImportAndEncryption.value = false
                 }
                 
-                queue.async(execute: backgroundWorkItem!)
-                
-                self.shouldCancelImportAndEncryption.sink(receiveValue: { [weak self] value in
-                    if value {
-                        backgroundWorkItem?.cancel()
-                        self?.progress.stop()
-                        self?.shouldCancelImportAndEncryption.value = false
-                    }
-                    
-                }).store(in: &self.cancellable)
-                
-                return filesInfo.0.compactMap{$0.1}
-            }
-            catch {
-                return []
-
-            }
-//        }
+            }).store(in: &self.cancellable)
+            
+            return filesInfo.0.compactMap{$0.1}
+        }
+        catch {
+            return []
+            
+        }
+        //        }
     }
     
     func importFile(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName: String, folderPathArray : [VaultFile]) async throws -> VaultFile? {
@@ -249,24 +249,22 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
     
     
-    func loadFilesInfos(files vaultFiles: [VaultFile]) -> [VaultFileInfo] {
+    func loadFilesInfos(file vaultFile: VaultFile, offsetSize:Int ) -> VaultFileInfo? {
         
-        var tmpUrlArray : [VaultFileInfo] = []
-        
-        vaultFiles.forEach { vaultFile in
-            if vaultFile.type != .folder {
-                guard let data = self.load(file: vaultFile) else {return}
-                
-                let tmpFileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(vaultFile.fileName).appendingPathExtension(vaultFile.fileExtension)
-                
-                if fileManager.createFile(atPath: tmpFileURL, contents: data) {
-                    tmpUrlArray.append(VaultFileInfo(vaultFile: vaultFile,data: data,url: tmpFileURL))
-                }
+        if vaultFile.type != .folder {
+            guard var data = self.load(file: vaultFile) else {return nil }
+            
+            guard let extractedData = (data.extract(size: offsetSize)) else {return nil }
+            
+            let tmpFileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(vaultFile.fileName).appendingPathExtension(vaultFile.fileExtension)
+            
+            if fileManager.createFile(atPath: tmpFileURL, contents: extractedData) {
+                return VaultFileInfo(vaultFile: vaultFile,data: extractedData,url: tmpFileURL)
             }
         }
-        return tmpUrlArray
+        return nil
     }
-
+    
     func save(file vaultFile: VaultFile) {
         debugLog("\(vaultFile)", space: .files)
         
@@ -317,7 +315,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     
     func saveDataToTempFile(data: Data?, fileName: String, pathExtension:String) -> URL? {
         let tmpFileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(fileName).appendingPathExtension(pathExtension)
-
+        
         guard (fileManager.createFile(atPath: tmpFileURL, contents: data))
                 
         else {
@@ -325,7 +323,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
         return tmpFileURL
     }
-
+    
     func removeAllFiles() {
         debugLog("", space: .files)
         delete(files: root.files, parent: root)

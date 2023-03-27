@@ -13,9 +13,11 @@ class Server : Hashable {
     var password : String?
     var accessToken : String?
     var activatedMetadata : Bool?
-    var backgroundUpload : Bool?  
+    var backgroundUpload : Bool?
     var projectId : String?
     var slug : String?
+    var autoUpload: Bool?
+    var autoDelete: Bool?
 
     init(id: Int? = nil,
          name: String? = nil,
@@ -26,7 +28,9 @@ class Server : Hashable {
          activatedMetadata: Bool? = nil,
          backgroundUpload: Bool? = nil,
          projectId: String? = nil,
-         slug: String? = nil) {
+         slug: String? = nil,
+         autoUpload: Bool?,
+         autoDelete: Bool) {
         self.id = id
         self.name = name
         self.url = serverURL
@@ -37,6 +41,8 @@ class Server : Hashable {
         self.backgroundUpload = backgroundUpload
         self.projectId = projectId
         self.slug = slug
+        self.autoUpload = autoUpload
+        self.autoDelete = autoDelete
     }
     
     init() {
@@ -46,9 +52,9 @@ class Server : Hashable {
     static func == (lhs: Server, rhs: Server) -> Bool {
         lhs.id  == rhs.id
     }
-
+    
     func hash(into hasher: inout Hasher){
         hasher.combine(id.hashValue)
     }
-
+    
 }

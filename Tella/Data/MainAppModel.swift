@@ -21,8 +21,8 @@ protocol AppModelFileManagerProtocol {
     func saveDataToTempFile(data: Data?, fileName: String, pathExtension:String) -> URL?
     func load(files vaultFiles: [VaultFile]) -> [URL]
     func load(file vaultFile: VaultFile) -> Data?
-    func loadFilesInfos(files vaultFiles: [VaultFile]) -> [VaultFileInfo]
-    func loadFileInfos(file vaultFile: VaultFile) -> VaultFileInfo?
+    func loadFilesInfos(file vaultFile: VaultFile, offsetSize:Int ) -> VaultFileInfo?
+    func sendAutoReportFile(file: VaultFile)
 }
 
 let lockTimeoutStartDateKey = "LockTimeoutStartDate"
@@ -71,6 +71,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     
     init() {
         loadData()
+        UploadService.shared.initAutoUpload(mainAppModel: self)
     }
     
     private func loadData() {
@@ -121,7 +122,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         self.publishUpdates()
         return files
     }
-    
+
     func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String, folderPathArray:[VaultFile] = []) async throws -> VaultFile? {
         let file = try await   self.vaultManager.importFile(audioFilePath: audioFilePath, to: parentFolder, type: type, fileName: fileName, folderPathArray: folderPathArray)
         self.publishUpdates()
@@ -162,12 +163,12 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         return vaultManager.load(files: files)
     }
     
-    func loadFilesInfos(files vaultFiles: [VaultFile]) -> [VaultFileInfo] {
-        return vaultManager.loadFilesInfos(files: vaultFiles)
-    }
+//    func loadFilesInfos(files vaultFiles: [VaultFile], offsetSize :Int) -> [VaultFileInfo] {
+//        return vaultManager.loadFilesInfos(files: vaultFiles, offsetSize: offsetSize)
+//    }
     
-    func loadFileInfos(file vaultFile: VaultFile) -> VaultFileInfo? {
-        return vaultManager.loadFilesInfos(files: [vaultFile]).first
+    func loadFilesInfos(file vaultFile: VaultFile, offsetSize:Int ) -> VaultFileInfo? {
+        return vaultManager.loadFilesInfos(file: vaultFile, offsetSize: offsetSize)
     }
 
     func saveDataToTempFile(data:Data, pathExtension:String) -> URL? {
@@ -193,6 +194,12 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     func publishUpdates() {
         DispatchQueue.main.async {
             self.objectWillChange.send()
+        }
+    }
+    
+    func sendAutoReportFile(file: VaultFile) {
+        if vaultManager.tellaData.getAutoUploadServer() != nil {
+            UploadService.shared.addAutoUpload(file: file)
         }
     }
     
