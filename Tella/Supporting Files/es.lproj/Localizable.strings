@@ -58,6 +58,11 @@
 "Vault_ManageFiles_TakePhotoVideo_SheetSelect" = "Take photo/video";
 "Vault_ManageFiles_RecordAudio_SheetSelect" = "Record audio";
 "Vault_ManageFiles_ImportFromDevice_SheetSelect" = "Import from device";
+"Vault_ImportDelete_Title" = "¿Importar y eliminar el archivo original?";
+"Vault_ImportDelete_Content" = "Después de importar el archivo a Tella, ¿desea conservar el archivo original en su dispositivo o eliminarlo?";
+"Vault_ImportDelete_SubContent" = "Si lo elimina, el archivo importado a Tella será la única copia que quede.";
+"Vault_ImportDelete_KeepOriginal" = "MANTENER ORIGINAL";
+"Vault_ImportDelete_DeleteOriginal" = "BORRAR ORIGINALES";
 "Vault_ManageFiles_CreateNewFolder_SheetSelect" = "Create new folder";
 "Vault_ManageFiles_PhotoLibrary_SheetSelect" = "Photo Library";
 "Vault_ManageFiles_Document_SheetSelect" = "Document";

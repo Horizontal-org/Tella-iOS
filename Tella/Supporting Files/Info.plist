@@ -4,6 +4,10 @@
 <dict>
 	<key></key>
 	<array/>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -22,6 +26,8 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
@@ -30,6 +36,8 @@
 	<string>Tella requires access to the camera to to take photos and videos inside the app.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Tella requires access to your microphone to record audio inside the app.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Tella requires access to your photo library to delete photos.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>OpenSans-Italic.ttf</string>
@@ -78,11 +86,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>BGTaskSchedulerPermittedIdentifiers</key>
-	<array>
-		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	</array>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 </dict>
 </plist>

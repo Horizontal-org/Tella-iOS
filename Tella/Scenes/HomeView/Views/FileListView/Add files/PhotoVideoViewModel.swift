@@ -6,6 +6,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import Photos
 
 class PhotoVideoViewModel : ObservableObject {
     
@@ -29,6 +30,10 @@ class PhotoVideoViewModel : ObservableObject {
                                                                  to: self.mainAppModel.vaultManager.root,
                                                                  type: type,
                                                                  folderPathArray: self.folderPathArray)
+                
+                if mainAppModel.importOption == .deleteOriginal {
+                    removeFiles(files: files)
+                }
                 DispatchQueue.main.async {
                     
                     self.resultFile?.wrappedValue = vaultFile
@@ -40,7 +45,7 @@ class PhotoVideoViewModel : ObservableObject {
         }
     }
     
-    func add(image: UIImage , type: FileType, pathExtension:String?) {
+    func add(image: UIImage , type: FileType, pathExtension:String?, originalUrl: URL?) {
         guard let data = image.fixedOrientation()?.pngData() else { return }
         guard let url = mainAppModel.vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension ?? "png") else { return  }
         Task {
@@ -49,12 +54,40 @@ class PhotoVideoViewModel : ObservableObject {
                                                                  to: self.mainAppModel.vaultManager.root,
                                                                  type: type,
                                                                  folderPathArray: self.folderPathArray)
+                
+                //remove originalURL from phone
+                
+                if mainAppModel.importOption == .deleteOriginal {
+                    let imageUrls = [originalUrl].compactMap{$0}
+                    removeOriginalImage(imageUrls: imageUrls)
+                    
+                }
                 DispatchQueue.main.async {
                     self.resultFile?.wrappedValue = vaultFile
                 }
             }
             catch {
                 
+            }
+        }
+    }
+    
+    func removeOriginalImage(imageUrls: [URL]) {
+        PHPhotoLibrary.shared().performChanges( {
+            let imageAssetToDelete = PHAsset.fetchAssets(withALAssetURLs: imageUrls, options: nil)
+                PHAssetChangeRequest.deleteAssets(imageAssetToDelete)
+                },
+                completionHandler: { success, error in
+            print("Finished deleting asset. %@", (success ? "Success" : error as Any))
+            })
+    }
+    
+    func removeFiles(files: [URL]) {
+        for file in files {
+            do {
+                try FileManager.default.removeItem(at: file)
+            } catch {
+                print("Error deleting file: \(error.localizedDescription)")
             }
         }
     }

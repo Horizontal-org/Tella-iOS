@@ -5,7 +5,7 @@
 import SwiftUI
 
 struct AddFileView: View {
-    
+
     @State private var fieldContent: String = ""
     @State private var isValid = false
     
@@ -77,6 +77,27 @@ struct AddFileView: View {
         })
     }
     
+    func showImportDeleteSheet(itemType: AddPhotoVideoType) {
+        let importDeleteItems = MainAppModel.ImportOption.allCases
+        let headerTitle = LocalizableVault.importDeleteTitle.localized
+        let content = LocalizableVault.importDeleteContent.localized
+        let subContent = LocalizableVault.importDeleteSubcontent.localized
+        
+        let sheetContent = ConfirmationBottomSheet(options: importDeleteItems, headerTitle: headerTitle, content: content, subContent: subContent) {
+            selectedItem in
+            appModel.importOption = selectedItem
+            switch itemType {
+            case .photoLibrary:
+                fileListViewModel.showingImagePicker = true
+            default:
+                fileListViewModel.showingImportDocumentPicker = true
+            }
+        }
+        sheetManager.showBottomSheet(modalHeight: 300, content: {
+            sheetContent
+        })
+    }
+    
     private func handleActions(item: ListActionSheetItem) {
         
         guard let type = item.type as? ManageFileType else { return }
@@ -99,15 +120,12 @@ struct AddFileView: View {
         }
     }
     
+    
     private func handleAddPhotoVideoActions(item: ListActionSheetItem) {
         guard let type = item.type as? AddPhotoVideoType else { return  }
         
-        switch type {
-        case .photoLibrary:
-            fileListViewModel.showingImagePicker = true
-        default:
-            fileListViewModel.showingImportDocumentPicker = true
-        }
+        
+        showImportDeleteSheet(itemType: type)
     }
 }
 

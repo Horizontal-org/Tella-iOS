@@ -38,7 +38,7 @@ struct PhotoVideoPickerView: View {
     var imagePickerView: some View {
         HStack{}
             .sheet(isPresented:  showingImagePicker, content: {
-                ImagePickerView { image, url, pathExtension in
+                ImagePickerView { image, url, pathExtension, imageURL in
                     
                     self.showingImagePicker.wrappedValue = false
                     
@@ -47,8 +47,8 @@ struct PhotoVideoPickerView: View {
                         viewModel.add(files: [url], type: .video)
                     }
                     if let image = image {
-                        showProgressView()
-                        viewModel.add(image: image, type: .image, pathExtension: pathExtension)
+                         showProgressView()
+                         viewModel.add(image: image, type: .image, pathExtension: pathExtension, originalUrl: imageURL)
                     }
                 }
             })

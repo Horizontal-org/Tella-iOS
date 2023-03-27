@@ -36,6 +36,19 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         case camera
         case mic
     }
+
+    enum ImportOption: CaseIterable {
+        case keepOriginal
+        case deleteOriginal
+        var localizedValue: String {
+            switch self {
+            case .keepOriginal:
+                return LocalizableVault.importDeleteKeepOriginal.localized
+            case .deleteOriginal:
+                return LocalizableVault.importDeleteDeleteOriginal.localized
+            }
+        }
+    }
     
     @Published var settings: SettingsModel = SettingsModel()
     
@@ -50,6 +63,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     @Published var shouldShowRecordingSecurityScreen: Bool = UIScreen.main.isCaptured
     @Published var shouldShowSecurityScreen: Bool = false
     @Published var appEnterInBackground: Bool = false
+    @Published var importOption: ImportOption?
 
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
 
