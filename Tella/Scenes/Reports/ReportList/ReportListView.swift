@@ -33,11 +33,12 @@ struct ReportListView: View {
 struct ReportListView_Previews: PreviewProvider {
     static var previews: some View {
         ContainerView {
-            ReportListView(reportArray: .constant([Report(title: "Title",
-                                                          description: "Description",
+            ReportListView(reportArray: .constant([Report(title: LocalizableReport.reportsListTitle.localized,
+                                                          description: LocalizableReport.reportsListDescription.localized,
+                                                          date: Date(),
                                                           status: ReportStatus.draft,
                                                           server: Server(), vaultFiles: [])]),
-                           message: "Message")
+                           message: LocalizableReport.reportsListMessage.localized)
         }
     }
 }

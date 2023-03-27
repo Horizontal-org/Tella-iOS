@@ -277,6 +277,7 @@
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
 		379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */; };
 		89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */; };
+		CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */; };
 		CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */; };
 		CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */; };
 		CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02ED7E24E42B3900014176 /* UserDefaultsProperty.swift */; };
@@ -622,6 +623,7 @@
 		83BA47B1A745C8D086B482FE /* libPods-Tella-TellaUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella-TellaUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TellaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableReport.swift; sourceTree = "<group>"; };
 		CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationBottomSheet.swift; sourceTree = "<group>"; };
 		CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCheckboxItem.swift; sourceTree = "<group>"; };
 		CE02ED7E24E42B3900014176 /* UserDefaultsProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsProperty.swift; sourceTree = "<group>"; };
@@ -1487,6 +1489,7 @@
 				12E0882327AD31F500CEB198 /* LocalizableAudio.swift */,
 				126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */,
 				12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */,
+				CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */,
 			);
 			path = Localizable;
 			sourceTree = "<group>";
@@ -2068,6 +2071,7 @@
 				12607D5E27904F5300E2B8CC /* PlayerView.swift in Sources */,
 				125AAD34295348EC002194D6 /* UploadService.swift in Sources */,
 				1237A71E278F5F8B00D7BC0F /* LanguageManager.swift in Sources */,
+				CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */,
 				D5DAFDCF265384C4002F3942 /* MainAppModel.swift in Sources */,
 				1289B98B27C53C2400315FCE /* CameraTypeItemView.swift in Sources */,
 				126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */,

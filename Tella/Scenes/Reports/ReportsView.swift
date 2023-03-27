@@ -23,7 +23,7 @@ struct ReportsView: View {
     var body: some View {
         
         contentView
-            .navigationBarTitle("Reports", displayMode: .large)
+            .navigationBarTitle(LocalizableReport.reportsTitle.localized, displayMode: .large)
             .environmentObject(reportsViewModel)
     }
     
@@ -43,22 +43,22 @@ struct ReportsView: View {
                         
                     case .draft:
                         ReportListView(reportArray: $reportsViewModel.draftReports,
-                                       message: "Your Drafts is currently empty. Reports that you have not submitted will appear here.")
+                                       message: LocalizableReport.reportsDraftMessage.localized)
                         
                     case .outbox:
                         
                         ReportListView(reportArray: $reportsViewModel.outboxedReports,
-                                       message: "Your Outbox is currently empty. Reports that are ready to be sent will appear here.")
+                                       message: LocalizableReport.reportsOutboxMessage.localized)
                         
                     case .submitted:
                         ReportListView(reportArray: $reportsViewModel.submittedReports,
-                                       message: "You have no submitted reports.")
+                                       message: LocalizableReport.reportsSubmited.localized)
                     }
                     
                     Spacer()
                 }
                 
-                TellaButtonView<AnyView> (title: "NEW REPORT",
+                TellaButtonView<AnyView> (title: LocalizableReport.reportsCreateNew.localized,
                                           nextButtonAction: .action,
                                           buttonType: .yellow,
                                           isValid: .constant(true)) {

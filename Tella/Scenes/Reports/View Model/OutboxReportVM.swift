@@ -13,7 +13,7 @@ class OutboxReportVM: ObservableObject {
     @Published var reportViewModel : ReportViewModel = ReportViewModel()    
     @Published var progressFileItems : [ProgressFileItemViewModel] = []
     @Published var percentUploaded : Float = 0.0
-    @Published var percentUploadedInfo : String = "Waiting for connection"
+    @Published var percentUploadedInfo : String = LocalizableReport.waitingConnection.localized
     @Published var uploadedFiles : String = ""
     
     @Published var isLoading : Bool = false
