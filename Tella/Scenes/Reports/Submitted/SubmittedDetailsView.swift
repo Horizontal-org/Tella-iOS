@@ -54,7 +54,7 @@ struct SubmittedDetailsView: View {
                     .padding()
             }
             
-            Text("Report")
+            Text(LocalizableReport.reportsText.localized)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                 .foregroundColor(.white)
             

@@ -14,10 +14,10 @@ struct DeleteReportConfirmationView: View {
    
     var body: some View {
             
-        ConfirmBottomSheet(titleText: "Delete report",
-                           msgText: "Are you sure you want to delete this draft?",
-                           cancelText: "CANCEL",
-                           actionText: "DELETE", didConfirmAction: {
+        ConfirmBottomSheet(titleText: LocalizableReport.deleteTitle.localized,
+                           msgText: LocalizableReport.deleteMessage.localized,
+                           cancelText: LocalizableReport.deleteCancel.localized,
+                           actionText: LocalizableReport.deleteConfirm.localized, didConfirmAction: {
             
             confirmAction()
         })

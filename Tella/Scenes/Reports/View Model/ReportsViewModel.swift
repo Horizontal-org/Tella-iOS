@@ -19,9 +19,9 @@ class ReportsViewModel: ObservableObject {
     @Published var viewReportLinkIsActive : Bool = false
     @Published var selectedReport : Report?
     @Published var selectedCell = Pages.draft
-    @Published var pageViewItems : [PageViewItem] = [PageViewItem(title: "Drafts", page: .draft, number: "") ,
-                                                     PageViewItem(title: "Outbox", page: .outbox, number: ""),
-                                                     PageViewItem(title: "Submitted", page: .submitted, number: "")]
+    @Published var pageViewItems : [PageViewItem] = [PageViewItem(title: LocalizableReport.draftTitle.localized, page: .draft, number: "") ,
+                                                     PageViewItem(title: LocalizableReport.outboxTitle.localized, page: .outbox, number: ""),
+                                                     PageViewItem(title: LocalizableReport.submittedTitle.localized, page: .submitted, number: "")]
 
     var sheetItems : [ListActionSheetItem] { return [
         
@@ -29,7 +29,7 @@ class ReportsViewModel: ObservableObject {
                             content: self.selectedReport?.status?.sheetItemTitle ?? "",
                             type: self.selectedReport?.status?.reportActionType ?? .view),
         ListActionSheetItem(imageName: "delete-icon-white",
-                            content: "Delete",
+                            content: LocalizableReport.viewModelDelete.localized,
                             type: ReportActionType.delete)
     ]}
 

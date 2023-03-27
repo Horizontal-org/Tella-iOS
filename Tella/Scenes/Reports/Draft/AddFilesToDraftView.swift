@@ -29,7 +29,7 @@ struct AddFilesToDraftView: View {
     }
     
     var attachFilesTextView: some View {
-        Text("Attach files here")
+        Text(LocalizableReport.attachFiles.localized)
             .font(.custom(Styles.Fonts.regularFontName, size: 14))
             .foregroundColor(.white)
             .multilineTextAlignment(.leading)
@@ -57,7 +57,7 @@ struct AddFilesToDraftView: View {
         FileListView(appModel: appModel,
                      rootFile: appModel.vaultManager.root,
                      fileType: nil,
-                     title: "Select files",
+                     title: LocalizableReport.selectFiles.localized,
                      fileListType: .selectFiles,
                      resultFile: $draftReportVM.resultFile)
     }
