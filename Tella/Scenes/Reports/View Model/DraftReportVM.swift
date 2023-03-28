@@ -144,7 +144,6 @@ class DraftReportVM: ObservableObject {
         
         let report = Report(id: reportId, title: title,
                             description: description,
-                            date: Date(),
                             status: status,
                             server: server,
                             vaultFiles: self.files.compactMap{ ReportFile(fileId: $0.id,

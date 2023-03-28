@@ -9,17 +9,29 @@ class UploadProgressInfo {
     //
     // MARK: - Variables And Properties
     //
-    @Published var current : Int = 0
+     var bytesSent : Int?
+    @Published var current : Int?
+     var total : Int?
+
     var task: URLSessionUploadTask?
     var fileId: String?
-    var url: URL
     var status : FileStatus = .unknown
     var isOnBackground: Bool = false
+    var error: APIError?
 
-    init(fileId: String? = nil, url: URL, status: FileStatus, isOnBackground: Bool = false) {
+    init(fileId: String? = nil, status: FileStatus) {
         self.fileId = fileId
-        self.url = url
         self.status = status
-        self.isOnBackground = isOnBackground
     }
+    
+    init(bytesSent: Int? = nil,current : Int? = nil, fileId: String? = nil, status: FileStatus, error: APIError? = nil, total: Int? = nil) {
+        self.bytesSent = bytesSent
+        self.current = current
+        self.fileId = fileId
+         self.status = status
+        self.status = status
+        self.total = total
+
+     }
+
 }

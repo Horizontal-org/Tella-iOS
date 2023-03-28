@@ -22,6 +22,8 @@ class DefaultFileManager: FileManagerInterface {
     
     func contents(atPath path: URL) -> Data? {
         do {
+            let _ = path.startAccessingSecurityScopedResource()
+            defer { path.stopAccessingSecurityScopedResource() }
             return try Data(contentsOf: path)
         } catch let error {
             debugLog(error)
@@ -68,6 +70,9 @@ class DefaultFileManager: FileManagerInterface {
     func createFile(atPath path: URL, contents data: Data?) -> Bool {
         debugLog("creating \(path.path)")
         do {
+            let _ = path.startAccessingSecurityScopedResource()
+            defer { path.stopAccessingSecurityScopedResource() }
+
             try data?.write(to: path)
         } catch let error {
             debugLog(error)

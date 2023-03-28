@@ -49,11 +49,11 @@ class SubmittedReportVM: ObservableObject {
             self.files = Array(vaultFileResult)
             
             // Initialize progression Infos
-            progressFileItems = self.files.compactMap{ProgressFileItemViewModel(file: $0, progression: "0/" + $0.size.getFormattedFileSize())}
+            progressFileItems = self.files.compactMap{ProgressFileItemViewModel(file: $0, progression:$0.size.getFormattedFileSize() + "/" + $0.size.getFormattedFileSize())}
             let totalSize = self.files.reduce(0) { $0 + $1.size}
             
             // Display "Uploaded on 12.10.2021, 3:45 AM"
-            if let date = report.date {
+            if let date = report.createdDate {
                 self.uploadedDate = "Uploaded on \(date.getFormattedDateString(format: DateFormat.submittedReport.rawValue))"
             }
             

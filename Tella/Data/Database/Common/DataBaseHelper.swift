@@ -38,9 +38,10 @@ class DataBaseHelper {
 //        }
     }
     
-    func selectQuery(tableName: String, andCondition: [KeyValue] = [], orCondition: [KeyValue] = [] , inCondition: [KeyValues] = [] , joinCondition: [JoinCondition]? = nil) throws -> [[String: Any]] {
+    func selectQuery(tableName: String, andCondition: [KeyValue] = [], andDifferentCondition: [KeyValue] = [], orCondition: [KeyValue] = [] , inCondition: [KeyValues] = [], notInCondition: [KeyValues] = [] , joinCondition: [JoinCondition]? = nil) throws -> [[String: Any]] {
+
         
-        let selectSql = sql(tableName: tableName, andCondition: andCondition, ordCondition: orCondition, inCondition: inCondition, joinCondition: joinCondition)
+        let selectSql = sql(tableName: tableName, andCondition: andCondition, andDifferentCondition:andDifferentCondition, ordCondition: orCondition, inCondition: inCondition,notInCondition: notInCondition, joinCondition: joinCondition)
         
         debugLog("selectSql \(selectSql)")
         
@@ -89,7 +90,7 @@ class DataBaseHelper {
         }
     }
     
-    func sql(tableName:String, andCondition: [KeyValue] = [], ordCondition: [KeyValue] = [] , inCondition: [KeyValues] = [] , order: String = "", limit: Int = 0, joinCondition: [JoinCondition]? = nil) -> String {
+    func sql(tableName:String, andCondition: [KeyValue] = [], andDifferentCondition: [KeyValue] = [], ordCondition: [KeyValue] = [] , inCondition: [KeyValues] = [], notInCondition: [KeyValues] = [] , order: String = "", limit: Int = 0, joinCondition: [JoinCondition]? = nil, passedTimeCondition: [KeyValue] = [] ) -> String {
         
         var sql = "SELECT * FROM \(tableName)"
         
@@ -97,9 +98,11 @@ class DataBaseHelper {
             sql += join(joinCondition: joinCondition)
         }
         
-        if !andCondition.isEmpty || !ordCondition.isEmpty || !inCondition.isEmpty {
+        if !andCondition.isEmpty || !andDifferentCondition.isEmpty || !ordCondition.isEmpty || !inCondition.isEmpty || !passedTimeCondition.isEmpty || !notInCondition.isEmpty{
             let andConditionPrimaryKeyColumnNames = andCondition.compactMap{($0.key)}
             let ordConditionPrimaryKeyColumnNames = ordCondition.compactMap{($0.key)}
+            let andDifferentConditionPrimaryKeyColumnNames = andDifferentCondition.compactMap{($0.key)}
+
             
             sql += " WHERE"
             
@@ -117,7 +120,20 @@ class DataBaseHelper {
                 }
             }
             
-            if !andCondition.isEmpty && !ordCondition.isEmpty {
+            for (primaryKeyColumnNameIndex, primaryKeyColumnName) in andDifferentConditionPrimaryKeyColumnNames.enumerated() {
+                if primaryKeyColumnNameIndex == 0 {
+                    sql += " ( "
+                }
+                sql += "  " + primaryKeyColumnName +  " != :\(primaryKeyColumnName)"
+                if primaryKeyColumnNameIndex < andConditionPrimaryKeyColumnNames.count - 1 {
+                    sql += "  AND"
+                } else {
+                    sql += " )"
+                    
+                }
+            }
+
+            if (!andCondition.isEmpty || !andDifferentCondition.isEmpty) && !ordCondition.isEmpty {
                 sql += " AND"
             }
             
@@ -156,6 +172,36 @@ class DataBaseHelper {
                 }
                 
             }
+            
+            for (index, condition) in notInCondition.enumerated() {
+                //
+                sql += "  " + condition.key + " NOT IN " + "( "
+                
+                condition.value.enumerated().forEach({ (index,item) in
+                    
+                    sql += "\(item) "
+                    
+                    if index == condition.value.count - 1 {
+                        sql += "  ) "
+                    } else {
+                        sql += "  , "
+                    }
+                    
+                })
+                
+                
+                if index < inCondition.count - 1 {
+                    sql += "  AND"
+                }
+                
+            }
+
+            
+            if (!andCondition.isEmpty || !ordCondition.isEmpty || !inCondition.isEmpty) && !passedTimeCondition.isEmpty {
+                sql += " AND"
+            }
+            
+
         }
         
         if !order.isEmpty {
@@ -297,14 +343,14 @@ class DataBaseHelper {
     }
     
     
-    func update(tableName:String, keyValue: [KeyValue?], primarykeyValue : [KeyValue?]) throws -> Int {
+    func update(tableName:String, keyValue: [KeyValue?], primarykeyValue : [KeyValue?] ) throws -> Int {
         let keyValue = keyValue.compactMap({$0})
         let primarykeyValue = primarykeyValue.compactMap({$0})
 
         let setColumnNames = keyValue.compactMap{($0.key)}
         let primaryKeyColumnNames = primarykeyValue.compactMap{($0.key)}
         
-        let bindValues = keyValue + primarykeyValue
+        let bindValues = keyValue + (primarykeyValue)
         
         
         var updateSql = "UPDATE '\(tableName)' SET"
@@ -315,11 +361,13 @@ class DataBaseHelper {
                 updateSql += ", "
             }
         }
-        updateSql += " WHERE"
-        for (primaryKeyColumnNameIndex, primaryKeyColumnName) in primaryKeyColumnNames.enumerated() {
-            updateSql += "  " + primaryKeyColumnName +  " = :\(primaryKeyColumnName)"
-            if primaryKeyColumnNameIndex < primaryKeyColumnNames.count - 1 {
-                updateSql += " AND"
+        if !primarykeyValue.isEmpty {
+            updateSql += " WHERE"
+            for (primaryKeyColumnNameIndex, primaryKeyColumnName) in primaryKeyColumnNames.enumerated() {
+                updateSql += "  " + primaryKeyColumnName +  " = :\(primaryKeyColumnName)"
+                if primaryKeyColumnNameIndex < primaryKeyColumnNames.count - 1 {
+                    updateSql += " AND"
+                }
             }
         }
         

@@ -26,9 +26,17 @@ struct EditSettingsServerView: View {
                 
                 SettingsCardView(cardViewArray: [serverNameView.eraseToAnyView(),
                                                  serverURLView.eraseToAnyView(),
-                                                 serverUsernameView.eraseToAnyView(),
-                                                 // ShareInfoView(shareInfo: $serverViewModel.activatedMetadata).eraseToAnyView(),
-                                                 BackgroundUploadView(backgroundUpload: $serverViewModel.backgroundUpload).eraseToAnyView()])
+                                                 serverUsernameView.eraseToAnyView()
+                                                ])
+                
+                SettingsCardView(cardViewArray: [
+//                    AutoUploadView(autoUpload: $serverViewModel.autoUpload,
+//                                   isDisabled: serverViewModel.isAutoUploadServerExist).eraseToAnyView(),
+                    BackgroundUploadView(backgroundUpload: $serverViewModel.backgroundUpload).eraseToAnyView()
+                    // ShareInfoView(shareInfo: $serverViewModel.activatedMetadata).eraseToAnyView()
+                ])
+                
+                
                 Spacer()
                 
                 bottomView
@@ -57,7 +65,7 @@ struct EditSettingsServerView: View {
                 Image("close")
             }.padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12))
             
-            Text("Edit server")
+            Text("Edit connection")
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 20))
                 .foregroundColor(Color.white)
             
@@ -69,34 +77,12 @@ struct EditSettingsServerView: View {
     
     var bottomView : some View {
         
-        HStack(spacing: 16) {
-            Spacer()
-            Button {
-                isPresented.wrappedValue  = false
-                
-            } label: {
-                Text("CANCEL")
-                    .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                    .foregroundColor(.white)
-                    .padding(EdgeInsets(top: 10, leading: 25, bottom: 10, trailing: 25))
-                    .background(Color(UIColor(hexValue: 0xF5F5F5)).opacity(0.16))
-                    .cornerRadius(25)
-            }
-            
-            Button {
-                isPresented.wrappedValue  = false
-                serverViewModel.updateServer()
-            } label: {
-                Text("SAVE")
-                    .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                    .foregroundColor(.white)
-                    .padding(EdgeInsets(top: 10, leading: 25, bottom: 10, trailing: 25))
-                    .background(Styles.Colors.yellow)
-                    .cornerRadius(25)
-                
-            }
-            
-        }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+        SettingsBottomView(cancelAction: {
+            isPresented.wrappedValue  = false
+        }, saveAction: {
+            isPresented.wrappedValue  = false
+            serverViewModel.updateServer()
+        })
     }
 }
 

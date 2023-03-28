@@ -28,6 +28,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     
     @Published var shouldShowPermission : Bool = false
     @Published var shouldCloseCamera : Bool = false
+    @Published var shouldShowProgressView : Bool = false
     @Published var imageCompletion: (UIImage,Data)?
     @Published var videoURLCompletion: URL?
     @Published var isRecording = false
@@ -60,11 +61,13 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
             photoOutputConnection.videoOrientation = deviceOrientation.videoOrientation()
         }
         photoOutput?.capturePhoto(with: settings, delegate: delegate)
+        shouldShowProgressView = true
     }
     
     func startCaptureVideo(){
         if let videoOutput = videoOutput, videoOutput.isRecording {
             videoOutput.stopRecording()
+            shouldShowProgressView = true
         } else {
             let outFileUrl = createTempFileURL()
             guard let delegate = videoRecordingDelegate else {
@@ -310,7 +313,7 @@ extension CameraService  {
         if let cgImageRepresentation = photo.cgImageRepresentation(),
            let orientationInt = photo.metadata[String(kCGImagePropertyOrientation)] as? UInt32,
            let imageOrientation = UIImage.Orientation.orientation(fromCGOrientationRaw: orientationInt) {
-            
+            print("cgImageRepresentation")
             // Create image with proper orientation
             let cgImage = cgImageRepresentation
             let image = UIImage(cgImage: cgImage,

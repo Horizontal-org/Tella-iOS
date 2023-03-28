@@ -65,6 +65,14 @@ class TellaData : ObservableObject {
         servers.value = database.getServer()
     }
     
+    func getAutoUploadServer() -> Server? {
+        guard let database = database else {
+            return nil
+        }
+        
+        return database.getAutoUploadServer()
+    }
+    
     func getReports() {
         guard let database = database else {
             return
@@ -75,7 +83,7 @@ class TellaData : ObservableObject {
                                                                         .submissionPending,
                                                                         .submissionPartialParts,
                                                                         .submissionInProgress])
-
+        
         self.submittedReports.value = database.getReports(reportStatus: [ReportStatus.submitted])
     }
     
@@ -85,6 +93,14 @@ class TellaData : ObservableObject {
         }
         return database.getReport(reportId: reportId)
     }
+    
+    func getCurrentReport() -> Report? {
+        guard let database = database else {
+            return nil
+        }
+        return database.getCurrentReport()
+    }
+    
     
     func addReport(report : Report) throws -> Int {
         
@@ -96,6 +112,18 @@ class TellaData : ObservableObject {
         return id
     }
     
+    func addCurrentUploadReport(report : Report) throws -> Report? {
+        
+        guard let database = database else {
+            throw SqliteError()
+        }
+        
+        _ = try database.resetCurrentUploadReport()
+        let id = try database.addReport(report: report)
+        let report = getReport(reportId: id)
+        return report
+    }
+    
     func updateReport(report : Report) throws -> Report? {
         
         guard let database = database else {
@@ -105,7 +133,7 @@ class TellaData : ObservableObject {
         getReports()
         return report
     }
-
+    
     func updateReportStatus(idReport : Int, status: ReportStatus) throws -> Int {
         
         guard let database = database else {
@@ -117,17 +145,28 @@ class TellaData : ObservableObject {
         
     }
     
+    func addReportFile(fileId: String, reportId : Int) throws -> ReportFile? {
+        
+        guard let database = database else {
+            throw SqliteError()
+        }
+        let id = try database.addReportFile(fileId: fileId , reportId: reportId)
+        
+        return database.getVaultFile(reportFileId: id)
+        
+    }
+    
     func updateReportFile(reportFile: ReportFile) throws -> Int {
         
         guard let database = database else {
             throw SqliteError()
         }
         let id = try database.updateReportFile(reportFile: reportFile)
-
+        
         return id
         
     }
-
+    
     func deleteReport(reportId : Int?) throws -> Int {
         
         guard let database = database else {

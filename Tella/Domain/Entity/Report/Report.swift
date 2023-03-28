@@ -10,32 +10,35 @@ class Report : Hashable {
     var id : Int?
     var title : String?
     var description : String?
-    var date : Date?
-    //    @Published var title : String?
-    //    @Published var description : String?
-    //    @Published var date : Date?
-    
+    var createdDate : Date?
+    var updatedDate : Date?
     var status : ReportStatus?
     var server : Server?
     var reportFiles : [ReportFile]?
     var apiID : String?
-    
+    var currentUpload: Bool?
+
     init(id: Int? = nil,
          title: String? = nil,
          description: String? = nil,
-         date: Date? = nil,
+         createdDate: Date? = nil,
+         updatedDate: Date? = nil,
          status: ReportStatus? = nil,
          server: Server? = nil,
          vaultFiles: [ReportFile]? = nil,
-         apiID: String? = nil) {
+         apiID: String? = nil,
+         currentUpload: Bool? = nil ) {
         self.id = id
         self.title = title
         self.description = description
-        self.date = date
+        self.createdDate = createdDate
+        self.updatedDate = updatedDate
         self.status = status
         self.server = server
         self.reportFiles = vaultFiles
         self.apiID = apiID
+        self.currentUpload = currentUpload
+
     }
     
     static func == (lhs: Report, rhs: Report) -> Bool {
@@ -55,7 +58,7 @@ extension Report {
 //        to do
         switch status {
         case .draft:
-            return self.date?.getDraftReportTime() ?? ""
+            return self.createdDate?.getDraftReportTime() ?? ""
         case .submissionPartialParts:
             return "Paused"
             
@@ -63,7 +66,7 @@ extension Report {
             return ""
 
         case .submitted:
-            return self.date?.getSubmittedReportTime() ?? ""
+            return self.createdDate?.getSubmittedReportTime() ?? ""
         default:
             return ""
             

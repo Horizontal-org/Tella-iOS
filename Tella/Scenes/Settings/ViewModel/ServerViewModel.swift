@@ -17,7 +17,9 @@ class ServerViewModel: ObservableObject {
     @Published var password : String = ""
     @Published var activatedMetadata : Bool = false
     @Published var backgroundUpload : Bool = false
-    
+    @Published var autoUpload : Bool = false
+    @Published var autoDelete : Bool = false
+
     
     // Add URL
     @Published var validURL : Bool = false
@@ -37,6 +39,10 @@ class ServerViewModel: ObservableObject {
     var subscribers = Set<AnyCancellable>()
 
     var currentServer : Server?
+    
+    var isAutoUploadServerExist: Bool {
+        return mainAppModel.vaultManager.tellaData.getAutoUploadServer() != nil && autoUpload == false
+    }
     
     init(mainAppModel : MainAppModel, currentServer: Server?) {
         
@@ -61,7 +67,9 @@ class ServerViewModel: ObservableObject {
                             activatedMetadata: activatedMetadata,
                             backgroundUpload: backgroundUpload,
                             projectId: project.id,
-                            slug: project.slug)
+                            slug: project.slug,
+                            autoUpload: autoUpload,
+                            autoDelete: autoDelete)
         
         do {
             let id = try mainAppModel.vaultManager.tellaData.addServer(server: server)
@@ -80,8 +88,11 @@ class ServerViewModel: ObservableObject {
             guard let currentServer = self.currentServer else { return  }
             currentServer.backgroundUpload = backgroundUpload
             currentServer.activatedMetadata = activatedMetadata
-            
+            currentServer.autoUpload = autoUpload
+            currentServer.autoDelete = autoDelete
+
             _ = try mainAppModel.vaultManager.tellaData.updateServer(server: currentServer)
+      
         } catch {
             
         }
@@ -195,6 +206,10 @@ class ServerViewModel: ObservableObject {
             password = server.password ?? ""
             activatedMetadata = server.activatedMetadata ?? false
             backgroundUpload = server.backgroundUpload ?? false
+            autoUpload = server.autoUpload ?? false
+            autoDelete = server.autoDelete ?? false
+
+
         }
     }
     

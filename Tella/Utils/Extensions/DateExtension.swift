@@ -11,6 +11,8 @@ enum DateFormat : String {
     case time = "hh:mm a"
     case dataBase = "yyyy-MM-dd'T'HH:mm:ssZ"
     case submittedReport = "dd.MM.yyyy, hh:mm a"
+    case autoReportNameName = "yyyy.MM.dd - HH.mm"
+
 }
 
 extension Date{
@@ -41,10 +43,12 @@ extension Date{
         return getTimeAgoSinceNow()
     }
     
-    func getDateString() -> String? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = DateFormat.dataBase.rawValue
-        return dateFormatter.string(from: self)
+    func getDateDouble() -> Double? {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = DateFormat.dataBase.rawValue
+//        return dateFormatter.string(from: self)
+        
+        return self.timeIntervalSince1970
     }
     
     private func getTimeAgoSinceNow() -> String {

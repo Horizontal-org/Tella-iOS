@@ -28,7 +28,7 @@ struct MainView: View  {
                 sheetManager.content
             }
             
-            securityScreenView
+//            securityScreenView
         }
     }
     

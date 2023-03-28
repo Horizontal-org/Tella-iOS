@@ -46,7 +46,7 @@ class CameraViewModel: ObservableObject {
         mainAppModel.vaultManager.progress.progress.sink { value in
             if value == 1 {
                 
-                mainAppModel.vaultManager.clearTmpDirectory()
+// mainAppModel.vaultManager.clearTmpDirectory()
             }
         }.store(in: &cancellable)
         
@@ -66,6 +66,13 @@ class CameraViewModel: ObservableObject {
                     self.resultFile?.wrappedValue = file
                     self.lastImageOrVideoVaultFile = file?.first
                 }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    if let file = file?.first {
+                        self.mainAppModel?.sendAutoReportFile(file: file)
+                    }
+                }
+
             }
             catch {
                 
