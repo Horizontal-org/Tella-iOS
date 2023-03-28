@@ -10,7 +10,8 @@ struct SettingToggleItem: View {
     let description: String
     @Binding var toggle: Bool
     @EnvironmentObject var appModel : MainAppModel
-    
+     var isDisabled: Bool = false
+
     var body: some View {
         HStack{
             VStack(alignment: .leading){
@@ -28,6 +29,7 @@ struct SettingToggleItem: View {
                     appModel.saveSettings()
                 }
                 .labelsHidden()
+                .disabled(isDisabled)
         }
         .padding()
     }

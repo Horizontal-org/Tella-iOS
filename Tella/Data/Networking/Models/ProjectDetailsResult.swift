@@ -37,9 +37,14 @@ class AuthorDTO: Codable {
 }
 
 // MARK: - File
-class FileDTO: Codable {
+class FileDTO: Codable, DataModel {
     let id, fileName, bucket, type: String?
     let fileInfo: String?
+    
+    func toDomain() -> DomainModel? {
+        return FileAPI(id: id, fileName: fileName)
+    }
+
 }
 
 // MARK: - BoolResponse

@@ -57,7 +57,7 @@ struct SecuritySettingsView: View {
         SettingsItemView<AnyView>(imageName:"settings.timeout",
                                   title: LocalizableSettings.settSecLockTimeout.localized,
                                   value: appModel.settings.lockTimeout.displayName,
-                                  destination:unlockView.eraseToAnyView()) {
+                                  destination:nil) {
             showLockTimeout()
 
         }

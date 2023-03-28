@@ -63,6 +63,12 @@ struct CameraView: View {
                 showingPermissionAlert = value
             }
         
+            .onReceive(model.service.$shouldShowProgressView) { value in
+                if value {
+                    showProgressView()
+                }
+            }
+
             .onReceive(model.$shouldCloseCamera) { value in
                 if value {
                     if sourceView == .tab {
@@ -79,7 +85,7 @@ struct CameraView: View {
                 
                 cameraViewModel.image = value.0
                 cameraViewModel.imageData = value.1
-                showProgressView()
+//                showProgressView()
                 cameraViewModel.saveImage()
             }
         

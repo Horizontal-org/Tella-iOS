@@ -14,7 +14,8 @@ struct D {
     static let integer = " INTEGER "
     static let text = " TEXT ";
     static let blob = " BLOB ";
-    
+    static let float = " FLOAT ";
+
     
     /* DATABASE TABLES */
     
@@ -35,6 +36,10 @@ struct D {
     static let cAccessToken = "c_access_token"
     static let cActivatedMetadata = "c_activated_metadata"
     static let cBackgroundUpload = "c_background_upload"
+    
+    static let cAutoUpload = "c_auto_upload"
+    static let cAutoDelete = "c_auto_delete"
+
     static let cApiProjectId = "c_api_project_id"
     static let cSlug = "c_slug"
 
@@ -47,8 +52,8 @@ struct D {
     
     static let cReportId = "c_report_id"
     static let cApiReportId = "c_api_report_id"
+    static let cCurrentUpload = "c_current_upload"
 
-    
     static let cReportInstanceId = "c_report_instance_id";
     static let cVaultFileInstanceId = "c_vault_file_instance_id";
     static let cBytesSent = "c_bytes_Sent"

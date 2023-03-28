@@ -23,4 +23,9 @@ extension Double {
     func timeString() -> String {
         return timeFormatter.string(from: self) ?? ""
     }
+    
+    func getDate() -> Date? {
+      return  Date(timeIntervalSince1970: TimeInterval(self))
+    }
+
 }

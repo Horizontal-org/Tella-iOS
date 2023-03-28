@@ -5,7 +5,7 @@
 import Foundation
 
 // MARK: - SubmitReportResult
-class SubmitReportResult:DataModel {
+class SubmitReportResult: DataModel {
     
     let id, title, welcomeDescription, createdAt: String?
     let deviceInfo: String?

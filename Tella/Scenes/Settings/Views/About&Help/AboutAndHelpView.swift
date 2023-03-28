@@ -41,7 +41,7 @@ struct AboutAndHelpView: View {
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                 .foregroundColor(.white)
             
-            Text("\(LocalizableSettings.settAboutSubhead.localized) \(Bundle.main.versionNumber)")
+            Text("\(LocalizableSettings.settAboutSubhead.localized) \(Bundle.main.versionWithBuildNumber)")
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
         }

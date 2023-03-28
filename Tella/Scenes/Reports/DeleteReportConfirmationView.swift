@@ -1,8 +1,4 @@
 //
-//  DeleteReportConfirmationView.swift
-//  Tella
-//
-//  Created by Dhekra Rouatbi on 7/3/2023.
 //  Copyright © 2023 INTERNEWS. All rights reserved.
 //
 
