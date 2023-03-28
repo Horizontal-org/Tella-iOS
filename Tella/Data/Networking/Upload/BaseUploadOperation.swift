@@ -27,6 +27,16 @@ class BaseUploadOperation : Operation {
         super.init()
     }
     
+    override func cancel() {
+        _ = uploadTasksDict.keys.compactMap({$0.cancel()})
+        super.cancel()
+        updateReport(reportStatus: .submissionPartialParts)
+    }
+    
+    override func main() {
+        handleInialResponse()
+    }
+    
     init(urlSession:URLSession, mainAppModel :MainAppModel, type: OperationType) {
         
         self.urlSession = urlSession
@@ -37,34 +47,34 @@ class BaseUploadOperation : Operation {
     
     func handleInialResponse() {
         self.initialResponse.sink { completion in
-
+            
         } receiveValue: { uploadResponse in
             switch uploadResponse {
             case .progress(let progressInfo):
                 
                 let file = self.reportVaultFiles?.first(where: {$0.id == progressInfo.fileId})
                 let instanceId = file?.instanceId
-
-               let totalByteSent = self.updateReportFile(fileStatus: progressInfo.status, id: instanceId, bytesSent: progressInfo.bytesSent,current: progressInfo.current)
+                
+                let totalByteSent = self.updateReportFile(fileStatus: progressInfo.status, id: instanceId, bytesSent: progressInfo.bytesSent,current: progressInfo.current)
                 
                 if let _ = progressInfo.error {
                     self.updateReport(reportStatus: .submissionError)
-
+                    
                 }
                 
                 self.response.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: progressInfo.fileId, status: progressInfo.status, total: totalByteSent)))
-               
+                
                 
                 
                 if progressInfo.status == .submitted {
                     self.checkAllFilesAreUploaded()
                 }
-
-
+                
+                
             case .createReport(let apiId, let reportStatus, let error):
                 self.updateReport(apiID:apiId, reportStatus: reportStatus)
                 self.response.send(UploadResponse.createReport(apiId: apiId, reportStatus: reportStatus, error: error))
-
+                
             case .initial:
                 break
             case .none:
@@ -94,13 +104,13 @@ class BaseUploadOperation : Operation {
         
         _ =  self.reportVaultFiles?.compactMap { _ in
             let file = self.reportVaultFiles?.first(where: {$0.instanceId == id})
-
+            
             file?.status = fileStatus
-           
+            
             if let bytesSent {
                 file?.bytesSent = bytesSent
             }
-
+            
             if let current {
                 file?.current = current
             }
@@ -110,7 +120,7 @@ class BaseUploadOperation : Operation {
         
         let file = self.reportVaultFiles?.first(where: {$0.instanceId == id})
         let totalBytesSent = (file?.current ?? 0)  + (file?.bytesSent ?? 0)
-
+        
         do {
             let _ = try mainAppModel.vaultManager.tellaData.updateReportFile(reportFile: ReportFile(id: id,
                                                                                                     status: fileStatus,
@@ -145,14 +155,14 @@ class BaseUploadOperation : Operation {
             guard let task = self.urlSession?.dataTask(with: request) else { return}
             task.resume()
             uploadTasksDict[task] = UploadTask(task: task, response: .createReport)
-
+            
             self.updateReport(reportStatus: ReportStatus.submissionInProgress)
             
         } catch {
             
         }
     }
-
+    
     func uploadFiles() {
         
         guard let apiID = self.report?.apiID, let accessToken = report?.server?.accessToken, let serverUrl = report?.server?.url else { return }
@@ -201,14 +211,14 @@ class BaseUploadOperation : Operation {
     
     func putReportFile(fileId: String, size:Int) {
         guard  let fileToUpload = filesToUpload.first(where: {$0.fileId == fileId}) else {return}
-
+        
         if size != 0 {
             if let fileUrlPath = self.mainAppModel.saveDataToTempFile(data: fileToUpload.data?.extract(size:size), fileName: fileToUpload.fileName, pathExtension: fileToUpload.fileExtension) {
                 fileToUpload.fileUrlPath = fileUrlPath
             }
             fileToUpload.data = fileToUpload.data?.extract(size: size)
         }
-
+        
         let api = ReportRepository.API.putReportFile((fileToUpload))
         
         do {
@@ -259,7 +269,7 @@ class BaseUploadOperation : Operation {
             
         case .createReport:
             
-            let result:typee<SubmitReportResult,ReportAPI> = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
+            let result:UploadDecode<SubmitReportResult,ReportAPI> = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
             
             if let error = result.error {
                 self.initialResponse.send(UploadResponse.createReport(apiId: nil, reportStatus: ReportStatus.submissionError, error: error))
@@ -282,11 +292,8 @@ class BaseUploadOperation : Operation {
                 
             case .putReportFile:
                 
-                let file = self.reportVaultFiles?.first(where: {$0.id ==  fileId})
-                let instanceId = file?.instanceId
-                
                 if let data = responseFromDelegate.data , let response = responseFromDelegate.response {
-                    let result:typee<FileDTO,FileAPI> = getAPIResponse(response:response, data: data, error: responseFromDelegate.error)
+                    let result:UploadDecode<FileDTO,FileAPI> = getAPIResponse(response:response, data: data, error: responseFromDelegate.error)
                     
                     if let _ = result.error {
                         self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
@@ -302,10 +309,8 @@ class BaseUploadOperation : Operation {
                 }
                 
             case .headReportFile:
-                let file = self.reportVaultFiles?.first(where: {$0.id ==  fileId})
-                let instanceId = file?.instanceId
                 
-                let result:typee<SizeResult,ServerFileSize>  = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
+                let result:UploadDecode<SizeResult,ServerFileSize>  = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
                 
                 let size = result.domain?.size
                 
@@ -321,10 +326,7 @@ class BaseUploadOperation : Operation {
                 
             case .postReportFile:
                 
-                let file = self.reportVaultFiles?.first(where: {$0.id ==  fileId})
-                let instanceId = file?.instanceId
-                
-                let result:typee<BoolResponse,BoolModel> = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
+                let result:UploadDecode<BoolResponse,BoolModel> = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
                 
                 let success = result.domain?.success ?? false
                 
@@ -346,25 +348,18 @@ class BaseUploadOperation : Operation {
             break
         }
     }
+}
+
+extension BaseUploadOperation {
     
-    override func cancel() {
-        _ = uploadTasksDict.keys.compactMap({$0.cancel()})
-        super.cancel()
-        updateReport(reportStatus: .submissionPartialParts)
-    }
-    
-    override func main() {
-        handleInialResponse()
-    }
-    
-    func getAPIResponse<Value1, Value2> (response:HTTPURLResponse?, data: Data?, error: Error?) -> typee<Value1, Value2> where Value1: DataModel, Value2: DomainModel {
+    func getAPIResponse<Value1, Value2> (response:HTTPURLResponse?, data: Data?, error: Error?) -> UploadDecode<Value1, Value2> where Value1: DataModel, Value2: DomainModel {
         
         guard let code = (response)?.statusCode else {
-            return typee(dto: nil, domain: nil, error: APIError.unexpectedResponse)
+            return UploadDecode(dto: nil, domain: nil, error: APIError.unexpectedResponse)
         }
         guard HTTPCodes.success.contains(code) else {
             debugLog("Error code: \(code)")
-            return typee(dto: nil, domain: nil, error: APIError.httpCode(code))
+            return UploadDecode(dto: nil, domain: nil, error: APIError.httpCode(code))
         }
         
         if let size = (response)?.allHeaderFields.filter({($0.key as? String) == "size"}),
@@ -376,15 +371,15 @@ class BaseUploadOperation : Operation {
                     let dtoResponse  =    result
                     let domainResponse  =   (result.toDomain() as? Value2)
                     
-                    return typee(dto: dtoResponse, domain: domainResponse, error: nil)
+                    return UploadDecode(dto: dtoResponse, domain: domainResponse, error: nil)
                 }
                 catch {
-                    return typee(dto: nil, domain: nil, error: APIError.unexpectedResponse)
+                    return UploadDecode(dto: nil, domain: nil, error: APIError.unexpectedResponse)
                 }
             }
         }
         guard let data = data else {
-            return typee(dto: nil, domain: nil, error: APIError.unexpectedResponse)
+            return UploadDecode(dto: nil, domain: nil, error: APIError.unexpectedResponse)
         }
         
         let dataString = String(decoding:  data  , as: UTF8.self)
@@ -394,24 +389,12 @@ class BaseUploadOperation : Operation {
             let dtoResponse  =   result
             let domainResponse  =   result.toDomain() as? Value2
             
-            return typee(dto: dtoResponse, domain: domainResponse, error: nil)
+            return UploadDecode(dto: dtoResponse, domain: domainResponse, error: nil)
         }
         catch {
-            return typee(dto: nil, domain: nil, error: APIError.unexpectedResponse)
+            return UploadDecode(dto: nil, domain: nil, error: APIError.unexpectedResponse)
         }
     }
     
 }
 
-
-class typee<T,T1>  {
-    var dto : T?
-    var domain : T1?
-    var error : APIError?
-    
-    init(dto: T?, domain: T1?, error: APIError?) {
-        self.dto = dto
-        self.domain = domain
-        self.error = error
-    }
-}

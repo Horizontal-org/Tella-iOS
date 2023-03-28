@@ -145,7 +145,7 @@
 		125A9E0028CE52C700C0C3C8 /* TellaDataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A9DFF28CE52C700C0C3C8 /* TellaDataBase.swift */; };
 		125AAD3129534259002194D6 /* UploadProgressInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD3029534259002194D6 /* UploadProgressInfo.swift */; };
 		125AAD34295348EC002194D6 /* UploadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD33295348EC002194D6 /* UploadService.swift */; };
-		125AAD362953607D002194D6 /* UploadReportRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD352953607D002194D6 /* UploadReportRepository.swift */; };
+		125AAD362953607D002194D6 /* UploadReportModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD352953607D002194D6 /* UploadReportModels.swift */; };
 		125D231C271F119D00250FBB /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231B271F119D00250FBB /* Validator.swift */; };
 		125D231F271F12A000250FBB /* NSRegularExpressionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */; };
 		125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2320271F823100250FBB /* UIApplicationExtension.swift */; };
@@ -504,7 +504,7 @@
 		125A9DFF28CE52C700C0C3C8 /* TellaDataBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaDataBase.swift; sourceTree = "<group>"; };
 		125AAD3029534259002194D6 /* UploadProgressInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProgressInfo.swift; sourceTree = "<group>"; };
 		125AAD33295348EC002194D6 /* UploadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadService.swift; sourceTree = "<group>"; };
-		125AAD352953607D002194D6 /* UploadReportRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadReportRepository.swift; sourceTree = "<group>"; };
+		125AAD352953607D002194D6 /* UploadReportModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadReportModels.swift; sourceTree = "<group>"; };
 		125D231B271F119D00250FBB /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRegularExpressionExtension.swift; sourceTree = "<group>"; };
 		125D2320271F823100250FBB /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
@@ -925,6 +925,8 @@
 				121AD8252943D52B0056AC2A /* SubmitReportResult.swift */,
 				129354762949F04700735ED0 /* SizeResult.swift */,
 				121C5D7629422D6800A64123 /* DataModel.swift */,
+				1234179329CD2CFC004CFAEA /* URLSessionTaskResponse.swift */,
+				125AAD352953607D002194D6 /* UploadReportModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1123,7 +1125,6 @@
 			isa = PBXGroup;
 			children = (
 				125AAD33295348EC002194D6 /* UploadService.swift */,
-				1234179329CD2CFC004CFAEA /* URLSessionTaskResponse.swift */,
 				122DA88E29CB1F1E003801CD /* AutoUpload.swift */,
 				123AE5A229CFB7F000814CC7 /* UploadReportOperation.swift */,
 				1234179129CD19E6004CFAEA /* BaseUploadOperation.swift */,
@@ -1549,7 +1550,6 @@
 			children = (
 				12D7D11E28E36123008121C8 /* ServerRepository.swift */,
 				121AD8212943A2F00056AC2A /* ReportRepository.swift */,
-				125AAD352953607D002194D6 /* UploadReportRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -2206,7 +2206,7 @@
 				1278B66127EB364500C9AC4D /* Utils.swift in Sources */,
 				125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */,
 				125D2324271F891500250FBB /* PinView.swift in Sources */,
-				125AAD362953607D002194D6 /* UploadReportRepository.swift in Sources */,
+				125AAD362953607D002194D6 /* UploadReportModels.swift in Sources */,
 				129B844F28BF5E4700F1B344 /* TextfieldView.swift in Sources */,
 				1203CDE92992C19D00D09073 /* JSONStringEncoder.swift in Sources */,
 				125FA6D8278E2828004B9D06 /* DoubleExtension.swift in Sources */,

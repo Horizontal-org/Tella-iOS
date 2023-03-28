@@ -6,11 +6,6 @@
 import Foundation
 import Combine
 
-enum OperationType{
-    case autoUpload
-    case uploadReport
-    
-}
 class AutoUpload: BaseUploadOperation {
     
     var files : [VaultFile] = []

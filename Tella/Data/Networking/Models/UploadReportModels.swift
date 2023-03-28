@@ -6,19 +6,6 @@ import Foundation
 import UIKit
 import Combine
 
-typealias Output = (data: Data?, response: URLResponse)
-
-//enum UploadResponse {
-//    case initial(isOnBackground:Bool)
-//    case progress(progressInfo: UploadProgressInfo)
-//    case response(response: Output?)
-//}
-
-//enum APIResponse<Value> {
-//    case initial
-//    case response(response: Value?)
-//    case progress(progressInfo: UploadProgressInfo)
-//}
 
 class UploadTask {
     var task: URLSessionTask
@@ -46,4 +33,22 @@ enum UploadReportType {
     case putReportFile
     case postReportFile
     case headReportFile
+}
+
+class UploadDecode<T,T1>  {
+    var dto : T?
+    var domain : T1?
+    var error : APIError?
+    
+    init(dto: T?, domain: T1?, error: APIError?) {
+        self.dto = dto
+        self.domain = domain
+        self.error = error
+    }
+}
+
+enum OperationType{
+    case autoUpload
+    case uploadReport
+    
 }
