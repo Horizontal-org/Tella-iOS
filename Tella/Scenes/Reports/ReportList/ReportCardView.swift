@@ -129,7 +129,6 @@ struct ReportCardView_Previews: PreviewProvider {
         ContainerView {
             ReportCardView(report: .constant(Report(title: LocalizableReport.reportsListTitle.localized,
                                                     description: LocalizableReport.reportsListDescription.localized,
-                                                    date: Date(),
                                                     status: .draft,
                                                     server: Server(), vaultFiles: [])))
         }
