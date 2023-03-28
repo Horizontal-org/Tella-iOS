@@ -35,7 +35,6 @@ struct ReportListView_Previews: PreviewProvider {
         ContainerView {
             ReportListView(reportArray: .constant([Report(title: LocalizableReport.reportsListTitle.localized,
                                                           description: LocalizableReport.reportsListDescription.localized,
-                                                          date: Date(),
                                                           status: ReportStatus.draft,
                                                           server: Server(), vaultFiles: [])]),
                            message: LocalizableReport.reportsListMessage.localized)
