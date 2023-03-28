@@ -33,9 +33,9 @@ class DataBaseHelper {
         
         debugLog("Error opening database at \(dbURL?.absoluteString ?? "")!")
         
-//        if (sqlite3_key(dbPointer, key, Int32(key.count)) != SQLITE_OK) {
-//            logDbErr("Error setting key")
-//        }
+        if (sqlite3_key(dbPointer, key, Int32(key.count)) != SQLITE_OK) {
+            logDbErr("Error setting key")
+        }
     }
     
     func selectQuery(tableName: String, andCondition: [KeyValue] = [], andDifferentCondition: [KeyValue] = [], orCondition: [KeyValue] = [] , inCondition: [KeyValues] = [], notInCondition: [KeyValues] = [] , joinCondition: [JoinCondition]? = nil) throws -> [[String: Any]] {

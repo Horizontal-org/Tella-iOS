@@ -36,7 +36,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         case camera
         case mic
     }
-
+    
     enum ImportOption: CaseIterable {
         case keepOriginal
         case deleteOriginal
@@ -55,7 +55,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     @Published var vaultManager: VaultManager = VaultManager(cryptoManager: CryptoManager.shared, fileManager: DefaultFileManager(), rootFileName: "root", containerPath: "Containers", progress: ImportProgress())
     
     @Published var selectedTab: Tabs = .home
-
+    
     @UserDefaultsProperty(key: lockTimeoutStartDateKey) private var lockTimeoutStartDate: Date?
     
     @Published var shouldUpdateLanguage:Bool = true
@@ -64,14 +64,15 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     @Published var shouldShowSecurityScreen: Bool = false
     @Published var appEnterInBackground: Bool = false
     @Published var importOption: ImportOption?
-
+    
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
-
+    
     private var cancellable: Set<AnyCancellable> = []
     
     init() {
         loadData()
-        UploadService.shared.initAutoUpload(mainAppModel: self)
+        //        UploadService.shared.initAutoUpload(mainAppModel: self)
+        sendUnsentReports()
     }
     
     private func loadData() {
@@ -88,7 +89,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
             UserDefaults.standard.set(encoded, forKey: "com.tella.settings")
         }
     }
-
+    
     func saveLockTimeoutStartDate()  {
         lockTimeoutStartDate = Date()
     }
@@ -122,12 +123,12 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         self.publishUpdates()
         return files
     }
-
+    
     func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String, folderPathArray:[VaultFile] = []) async throws -> VaultFile? {
         let file = try await   self.vaultManager.importFile(audioFilePath: audioFilePath, to: parentFolder, type: type, fileName: fileName, folderPathArray: folderPathArray)
         self.publishUpdates()
         return file
-
+        
     }
     
     func add(folder: String, to parentFolder: VaultFile?,  folderPathArray:[VaultFile] = []) {
@@ -163,14 +164,14 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         return vaultManager.load(files: files)
     }
     
-//    func loadFilesInfos(files vaultFiles: [VaultFile], offsetSize :Int) -> [VaultFileInfo] {
-//        return vaultManager.loadFilesInfos(files: vaultFiles, offsetSize: offsetSize)
-//    }
+    //    func loadFilesInfos(files vaultFiles: [VaultFile], offsetSize :Int) -> [VaultFileInfo] {
+    //        return vaultManager.loadFilesInfos(files: vaultFiles, offsetSize: offsetSize)
+    //    }
     
     func loadFilesInfos(file vaultFile: VaultFile, offsetSize:Int ) -> VaultFileInfo? {
         return vaultManager.loadFilesInfos(file: vaultFile, offsetSize: offsetSize)
     }
-
+    
     func saveDataToTempFile(data:Data, pathExtension:String) -> URL? {
         return vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension)
     }
@@ -190,7 +191,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     func load(file vaultFile: VaultFile) -> Data? {
         vaultManager.load(file: vaultFile)
     }
-
+    
     func publishUpdates() {
         DispatchQueue.main.async {
             self.objectWillChange.send()
@@ -198,11 +199,14 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     }
     
     func sendAutoReportFile(file: VaultFile) {
-        if vaultManager.tellaData.getAutoUploadServer() != nil {
-            UploadService.shared.addAutoUpload(file: file)
-        }
+        //        if vaultManager.tellaData.getAutoUploadServer() != nil {
+        //            UploadService.shared.addAutoUpload(file: file)
+        //        }
     }
     
+    func sendUnsentReports() {
+        UploadService.shared.sendUnsentReports(mainAppModel: self)
+    }
 }
 
 class SettingsModel: ObservableObject, Codable {
@@ -215,7 +219,7 @@ class SettingsModel: ObservableObject, Codable {
     @Published var showRecentFiles: Bool = false
     @Published var lockTimeout: LockTimeoutOption = .immediately
     @Published var screenSecurity: Bool = true
-
+    
     enum CodingKeys: CodingKey {
         case offLineMode
         case quickDelete
@@ -243,7 +247,7 @@ class SettingsModel: ObservableObject, Codable {
         let lockTimeoutString = try container.decode(String.self, forKey: .lockTimeout)
         lockTimeout = LockTimeoutOption(rawValue: lockTimeoutString) ?? .immediately
         screenSecurity = try container.decode(Bool.self, forKey: .screenSecurity)
-
+        
     }
     
     func encode(to encoder: Encoder) throws {
@@ -264,7 +268,7 @@ class VaultFileInfo {
     var vaultFile : VaultFile
     var data : Data
     var url : URL
-
+    
     init(vaultFile: VaultFile, data: Data, url: URL) {
         self.vaultFile = vaultFile
         self.data = data

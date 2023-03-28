@@ -348,7 +348,7 @@ class TellaDataBase {
                 
                 let files = getVaultFiles(reportID: reportID)
                 
-                let filteredFile = files.filter{(Date().timeIntervalSince($0.updatedDate ?? Date())) < 10 }
+                let filteredFile = files.filter{(Date().timeIntervalSince($0.updatedDate ?? Date())) < 1800 }
                
                 if !filteredFile.isEmpty {
 
@@ -394,7 +394,7 @@ class TellaDataBase {
                                    updatedDate: updatedDate?.getDate() ?? Date(),
                                    status: ReportStatus(rawValue: status ?? 0) ?? .draft,
                                    server: server,
-                                   //                               vaultFiles: getVaultFiles(reportID: reportID, notInStatus: [FileStatus.submitted]),
+                                   // vaultFiles: getVaultFiles(reportID: reportID, notInStatus: [FileStatus.submitted]),
                                    vaultFiles:[],
                                    apiID: apiReportId,
                                    currentUpload: currentUpload == 0 ? false : true)

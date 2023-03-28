@@ -171,6 +171,7 @@ class OutboxReportVM: ObservableObject {
     
     func pauseSubmission() {
         if isSubmissionInProgress {
+            self.updateReportStatus(reportStatus: .submissionPartialParts)
             self.reportRepository.pause(reportId: self.reportViewModel.id)
             self.isSubmissionInProgress = false
         }
