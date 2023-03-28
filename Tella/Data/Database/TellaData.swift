@@ -101,6 +101,16 @@ class TellaData : ObservableObject {
         return database.getCurrentReport()
     }
     
+    func getUnsentReports() -> [Report] {
+        guard let database = database else {
+            return []
+        }
+        
+        return database.getReports(reportStatus: [ .submissionError,
+                                                   .submissionPending,
+                                                   .submissionPartialParts,
+                                                   .submissionInProgress])
+    }
     
     func addReport(report : Report) throws -> Int {
         

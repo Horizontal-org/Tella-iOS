@@ -6,9 +6,7 @@ import Foundation
 import Combine
 
 class BaseUploadOperation : Operation {
-    
-    public var tasks: [URLSessionTask] = []
-    
+
     public var report: Report?
     public var urlSession : URLSession!
     public var mainAppModel :MainAppModel!
@@ -86,8 +84,9 @@ class BaseUploadOperation : Operation {
     
     func updateReport(apiID: String? = nil, reportStatus: ReportStatus?) {
         
-        self.report?.apiID = apiID
-        
+        if apiID != nil {
+            self.report?.apiID = apiID
+        }
         let report = Report(id: self.report?.id,
                             status: reportStatus,
                             apiID: apiID)
@@ -188,7 +187,12 @@ class BaseUploadOperation : Operation {
                                             uploadOnBackground: report?.server?.backgroundUpload ?? false)
             
             self.filesToUpload.append(fileToUpload)
-            self.checkFileSizeOnServer(fileToUpload: fileToUpload)
+            
+            if reportVaultFile.status == .uploaded ||  reportVaultFile.size == reportVaultFile.bytesSent{
+                self.postReportFile(fileId: reportVaultFile.id)
+            } else {
+                self.checkFileSizeOnServer(fileToUpload: fileToUpload)
+            }
         })
     }
     
@@ -299,17 +303,20 @@ class BaseUploadOperation : Operation {
                         self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
                     } else {
                         
-                        self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.partialSubmitted)))
+                        self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.uploaded)))
                         
                         postReportFile(fileId: fileId)
                     }
+                    uploadTasksDict[task] = nil
                     
                 } else {
                     self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(current:responseFromDelegate.current  ,fileId: fileId, status: FileStatus.partialSubmitted)))
                 }
                 
             case .headReportFile:
-                
+
+                let file = self.reportVaultFiles?.first(where: {$0.id == fileId})
+
                 let result:UploadDecode<SizeResult,ServerFileSize>  = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
                 
                 let size = result.domain?.size
@@ -321,8 +328,16 @@ class BaseUploadOperation : Operation {
                 } else {
                     
                     self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(bytesSent: size, current:0 ,fileId: fileId, status: FileStatus.partialSubmitted)))
-                    self.putReportFile(fileId: fileId, size:size ?? 0)
+                    
+                    let fileToUpload = filesToUpload.first(where: {$0.fileId == fileId})
+                    if fileToUpload?.fileSize == size {
+                        self.postReportFile(fileId: fileId)
+                    } else {
+                        self.putReportFile(fileId: fileId, size:size ?? 0)
+                    }
+
                 }
+                uploadTasksDict[task] = nil
                 
             case .postReportFile:
                 
@@ -339,6 +354,8 @@ class BaseUploadOperation : Operation {
                         self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
                     }
                 }
+                
+                uploadTasksDict[task] = nil
                 
             default:
                 break

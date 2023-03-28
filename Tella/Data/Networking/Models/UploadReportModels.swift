@@ -50,5 +50,5 @@ class UploadDecode<T,T1>  {
 enum OperationType{
     case autoUpload
     case uploadReport
-    
+    case unsentReport
 }

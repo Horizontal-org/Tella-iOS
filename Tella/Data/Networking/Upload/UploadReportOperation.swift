@@ -24,7 +24,7 @@ class UploadReportOperation: BaseUploadOperation {
         
         self.prepareReportToSend(report: currentReport)
         
-        if report?.apiID != nil { // Has API ID
+        if currentReport.apiID != nil { // Has API ID
             uploadFiles()
             
         } else {
