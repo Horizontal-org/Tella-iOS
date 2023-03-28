@@ -5,7 +5,7 @@
 import Foundation
 
 struct TellaUrls {
-    static let contactURL = "https://tella-app.org/contact/"
+    static let contactURL = "mailto:contact@tella-app.org"
     static let privacyURL = "https://tella-app.org/privacy/"
 
 }
