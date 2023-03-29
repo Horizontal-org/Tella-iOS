@@ -13,7 +13,7 @@ class BaseUploadOperation : Operation {
     
     public var reportVaultFiles: [ReportVaultFile]? = nil
     var initialResponse = CurrentValueSubject<UploadResponse?,APIError>(.initial)
-    public var response = CurrentValueSubject<UploadResponse?,APIError>(.initial)
+    @Published var response = CurrentValueSubject<UploadResponse?,APIError>(.initial)
     
     public var uploadTasksDict : [URLSessionTask: UploadTask] = [:]
     
@@ -27,8 +27,9 @@ class BaseUploadOperation : Operation {
     
     override func cancel() {
         _ = uploadTasksDict.keys.compactMap({$0.cancel()})
-        super.cancel()
         updateReport(reportStatus: .submissionPartialParts)
+        super.cancel()
+
     }
     
     override func main() {
@@ -348,11 +349,11 @@ class BaseUploadOperation : Operation {
                 if let _ = result.error {
                     self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
                 } else {
-                    if success {
+//                    if success {
                         self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submitted)))
-                    } else {
-                        self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
-                    }
+//                    } else {
+//                        self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
+//                    }
                 }
                 
                 uploadTasksDict[task] = nil
