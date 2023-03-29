@@ -18,13 +18,18 @@ class UploadService: NSObject {
     var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier.invalid
     
     var uploadQueue: OperationQueue!
-    
+    private var subscribers = Set<AnyCancellable>()
+
     override init() {
         let queue = OperationQueue()
         queue.qualityOfService = .background
         uploadQueue = queue
     }
     
+    static func reset() {
+        shared = UploadService()
+    }
+
     var hasFilesToUploadOnBackground: Bool {
         let operations = activeOperations.filter({$0.report?.server?.backgroundUpload == true && $0.uploadTasksDict.values.count != 0})
         return !operations.isEmpty
@@ -41,7 +46,7 @@ class UploadService: NSObject {
         _ = operations.compactMap({$0.cancel})
     }
     
-    func initAutoUpload( mainAppModel: MainAppModel )  {
+    func initAutoUpload( mainAppModel: MainAppModel ) {
         
         let urlSession = URLSession(
             configuration: .background(withIdentifier: "org.wearehorizontal.tella") ,
@@ -75,14 +80,11 @@ class UploadService: NSObject {
         let operation: AutoUpload = activeOperations.first(where:{$0.type == .autoUpload }) as! AutoUpload
         operation.addFile(file:file)
     }
-    
-    
-    
+
     func sendUnsentReports(mainAppModel:MainAppModel) {
         
         let unsentReports = mainAppModel.vaultManager.tellaData.getUnsentReports()
-        var array : [CurrentValueSubject<UploadResponse?,APIError> ] = []
-
+        
         unsentReports.forEach { report in
             let urlSession = URLSession(
                 configuration: report.server?.backgroundUpload ?? false ? .background(withIdentifier: "org.wearehorizontal.tella") : .default ,
@@ -91,8 +93,15 @@ class UploadService: NSObject {
             
             let operation = UploadReportOperation(report: report, urlSession: urlSession, mainAppModel: mainAppModel, type: .unsentReport)
             activeOperations.append(operation)
+
+            operation.response.sink(receiveCompletion: { com in
+                 
+            }, receiveValue: { response in
+                 
+            }).store(in: &subscribers)
+
             uploadQueue.addOperation(operation)
-            array.append(operation.response)
+
         }
     }
 }
@@ -141,8 +150,5 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
             operation?.update(responseFromDelegate: URLSessionTaskResponse(task: task , data: nil, response: nil, error: error))
             
         }
-        
     }
 }
-
-
