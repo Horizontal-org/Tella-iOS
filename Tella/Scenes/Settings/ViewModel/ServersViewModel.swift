@@ -35,8 +35,7 @@ class ServersViewModel: ObservableObject {
         }
     }
     
-    func getAllServersConnections() {
-        // call function deleteAllServers
+    func deleteAllServersConnection() {
         do {
             _ = try mainAppModel.vaultManager.tellaData.deleteAllServers()
         } catch {
