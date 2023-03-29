@@ -26,6 +26,10 @@ class UploadService: NSObject {
         uploadQueue = queue
     }
     
+    static func reset() {
+        shared = UploadService()
+    }
+
     var hasFilesToUploadOnBackground: Bool {
         let operations = activeOperations.filter({$0.report?.server?.backgroundUpload == true && $0.uploadTasksDict.values.count != 0})
         return !operations.isEmpty
