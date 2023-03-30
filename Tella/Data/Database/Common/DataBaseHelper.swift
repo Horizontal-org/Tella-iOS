@@ -423,24 +423,30 @@ class DataBaseHelper {
         }
     }
     
-    func deleteAll(tableName:String) throws -> Int {
+    func deleteAll(tableNames: [String]) throws -> Int {
+        var totalDeletedCount = 0
         
-        let deleteSql = "DELETE FROM '\(tableName)'"
-        
-        debugLog("delete: \(deleteSql)")
-        
-        guard let deleteStatement = try prepareStatement(sql: deleteSql) else {
-            throw SqliteError(message: errorMessage)
+        for tableName in tableNames {
+            let deleteSql = "DELETE FROM '\(tableName)'"
+            
+            debugLog("delete: \(deleteSql)")
+            
+            guard let deleteStatement = try prepareStatement(sql: deleteSql) else {
+                throw SqliteError(message: errorMessage)
+            }
+            
+            let deletedCount = self.execute(stmt: deleteStatement, sql: deleteSql)
+            
+            if deletedCount == 0 {
+                throw SqliteError(message: errorMessage)
+            }
+            
+            totalDeletedCount += deletedCount
         }
         
-        let result = self.execute(stmt: deleteStatement, sql: deleteSql)
-        
-        if result == 0 {
-            throw SqliteError(message: errorMessage)
-        }
-        
-        return result
+        return totalDeletedCount
     }
+
     
     
     public func bind(insertStatement: OpaquePointer?, _ values: [KeyValue]) -> OpaquePointer? {
