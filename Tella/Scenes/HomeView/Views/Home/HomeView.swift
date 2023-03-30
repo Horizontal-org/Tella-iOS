@@ -51,7 +51,7 @@ struct HomeView: View {
                         
                         if(appModel.settings.deleteServerSettings) {
                             // remove servers connections
-                            serversViewModel.deleteServer()
+                            serversViewModel.deleteAllServersConnection()
                         }
                         
                         appViewState.resetToUnlock()

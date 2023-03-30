@@ -191,6 +191,10 @@ class TellaDataBase {
         return try dataBaseHelper.delete(tableName: D.tServer,
                                          primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
     }
+
+    func deleteAllServers() throws -> Int {
+        return try dataBaseHelper.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile])
+    }
     
     func getReports(reportStatus:[ReportStatus]) -> [Report] {
         
