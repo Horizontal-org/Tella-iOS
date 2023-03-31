@@ -18,15 +18,21 @@ class UploadService: NSObject {
     var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier.invalid
     
     var uploadQueue: OperationQueue!
-    
+    private var subscribers = Set<AnyCancellable>()
+
     override init() {
         let queue = OperationQueue()
-        queue.qualityOfService = .utility
+        queue.qualityOfService = .background
         uploadQueue = queue
     }
     
+    static func reset() {
+        shared = UploadService()
+    }
+
     var hasFilesToUploadOnBackground: Bool {
-        return false
+        let operations = activeOperations.filter({$0.report?.server?.backgroundUpload == true && $0.uploadTasksDict.values.count != 0})
+        return !operations.isEmpty
     }
     
     func pauseDownload(reportId:Int?) {
@@ -36,10 +42,11 @@ class UploadService: NSObject {
     }
     
     func cancelTasksIfNeeded() {
-        
+        let operations = activeOperations.filter({$0.report?.server?.backgroundUpload == false})
+        _ = operations.compactMap({$0.cancel})
     }
     
-    func initAutoUpload( mainAppModel: MainAppModel )  {
+    func initAutoUpload( mainAppModel: MainAppModel ) {
         
         let urlSession = URLSession(
             configuration: .background(withIdentifier: "org.wearehorizontal.tella") ,
@@ -72,6 +79,30 @@ class UploadService: NSObject {
     func addAutoUpload(file: VaultFile)  {
         let operation: AutoUpload = activeOperations.first(where:{$0.type == .autoUpload }) as! AutoUpload
         operation.addFile(file:file)
+    }
+
+    func sendUnsentReports(mainAppModel:MainAppModel) {
+        
+        let unsentReports = mainAppModel.vaultManager.tellaData.getUnsentReports()
+        
+        unsentReports.forEach { report in
+            let urlSession = URLSession(
+                configuration: report.server?.backgroundUpload ?? false ? .background(withIdentifier: "org.wearehorizontal.tella") : .default ,
+                delegate: self,
+                delegateQueue: nil)
+            
+            let operation = UploadReportOperation(report: report, urlSession: urlSession, mainAppModel: mainAppModel, type: .unsentReport)
+            activeOperations.append(operation)
+
+            operation.response.sink(receiveCompletion: { com in
+                 
+            }, receiveValue: { response in
+                 
+            }).store(in: &subscribers)
+
+            uploadQueue.addOperation(operation)
+
+        }
     }
 }
 
@@ -109,6 +140,7 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
         
         let operation = activeOperations.first{$0.uploadTasksDict[task] != nil}
         if error == nil {
+            
             operation?.update(responseFromDelegate: URLSessionTaskResponse(task: task , data: nil, response: task.response as? HTTPURLResponse))
             
         } else if let code = (error as? NSError)?.code {
@@ -118,8 +150,5 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
             operation?.update(responseFromDelegate: URLSessionTaskResponse(task: task , data: nil, response: nil, error: error))
             
         }
-        
     }
 }
-
-

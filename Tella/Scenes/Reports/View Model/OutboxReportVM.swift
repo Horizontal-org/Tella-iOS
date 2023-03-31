@@ -153,11 +153,14 @@ class OutboxReportVM: ObservableObject {
             
             // All Files
             let percentUploaded = Float(bytesSent) / Float(totalSize)
+            
+            let formattedPercentUploaded = percentUploaded >= 1.0 ? 1.0 : Float(percentUploaded)
+
             let formattedTotalUploaded = bytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
             let formattedTotalSize = totalSize.getFormattedFileSize()
             DispatchQueue.main.async {
                 
-                self.percentUploadedInfo = "\(Int(percentUploaded * 100))% uploaded"
+                self.percentUploadedInfo = "\(Int(formattedPercentUploaded * 100))% uploaded"
                 self.percentUploaded = Float(percentUploaded)
                 self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
                 
@@ -171,6 +174,7 @@ class OutboxReportVM: ObservableObject {
     
     func pauseSubmission() {
         if isSubmissionInProgress {
+            self.updateReportStatus(reportStatus: .submissionPartialParts)
             self.reportRepository.pause(reportId: self.reportViewModel.id)
             self.isSubmissionInProgress = false
         }
@@ -225,13 +229,14 @@ class OutboxReportVM: ObservableObject {
                 
                 // All Files
                 let percentUploaded = Float(totalBytesSent) / Float(totalSize)
+                let formattedPercentUploaded = percentUploaded >= 1.0 ? 1.0 : Float(percentUploaded)
                 let formattedTotalUploaded = totalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
                 let formattedTotalSize = totalSize.getFormattedFileSize()
                 
                 DispatchQueue.main.async {
                     // Progress Files
-                    self.percentUploadedInfo = "\(Int(percentUploaded * 100))% uploaded"
-                    self.percentUploaded = Float(percentUploaded)
+                    self.percentUploadedInfo = "\(Int(formattedPercentUploaded * 100))% uploaded"
+                    self.percentUploaded = Float(formattedPercentUploaded)
                     self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
                     
                     //Progress File Item

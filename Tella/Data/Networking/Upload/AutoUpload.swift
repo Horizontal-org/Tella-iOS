@@ -16,6 +16,7 @@ class AutoUpload: BaseUploadOperation {
     }
     
     override func main() {
+        super.main()
         handleResponse()
     }
     

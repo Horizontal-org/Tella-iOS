@@ -10,9 +10,6 @@
 		0807BE8AD7991EBCC67BBF58 /* libPods-Tella-TellaUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BA47B1A745C8D086B482FE /* libPods-Tella-TellaUITests.a */; };
 		0D4BC3C5267577F900DCDC30 /* ReportsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3C1267577F900DCDC30 /* ReportsView.swift */; };
 		0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3CD267668D600DCDC30 /* AddFileYellowButton.swift */; };
-		0D4D7510266316D200D7A635 /* SettingsGeneral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D750F266316D200D7A635 /* SettingsGeneral.swift */; };
-		0D4D7512266316DC00D7A635 /* SettingsSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7511266316DC00D7A635 /* SettingsSecurity.swift */; };
-		0D4D7516266466C500D7A635 /* SettingsDocumentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7515266466C500D7A635 /* SettingsDocumentation.swift */; };
 		0D4D7518266470A700D7A635 /* SettingToggleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7517266470A700D7A635 /* SettingToggleItem.swift */; };
 		0DA213C72680286F00526995 /* FileListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213C62680286F00526995 /* FileListItem.swift */; };
 		0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213CA268028A200526995 /* FileSortOptions.swift */; };
@@ -21,19 +18,12 @@
 		0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD99E042692D24D009327B3 /* SwipeToDeleteView.swift */; };
 		0DEFD54A268945C60014EADE /* ModelStubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3CB26765B8C00DCDC30 /* ModelStubs.swift */; };
 		0DEFD54F2689467A0014EADE /* ModelStubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3CB26765B8C00DCDC30 /* ModelStubs.swift */; };
-		0E170253267910B90069072A /* BlankFormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E170252267910B90069072A /* BlankFormsView.swift */; };
-		0E170255267910CC0069072A /* OutBoxFormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E170254267910CC0069072A /* OutBoxFormsView.swift */; };
-		0E170257267910DE0069072A /* DraftFormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E170256267910DE0069072A /* DraftFormsView.swift */; };
-		0E170259267913160069072A /* FormsCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E170258267913160069072A /* FormsCellView.swift */; };
-		0E27899D266F76D500B130C4 /* FormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E27899C266F76D500B130C4 /* FormsView.swift */; };
 		0E64C6A6265E7625005A7934 /* ActionListBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E64C6A5265E7625005A7934 /* ActionListBottomSheet.swift */; };
 		0E78B3A72656B03600F9BDBC /* DragView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E78B3A52656B03500F9BDBC /* DragView.swift */; };
 		0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E78B3A62656B03500F9BDBC /* ConfirmBottomSheet.swift */; };
 		0E78B3AE2656B04B00F9BDBC /* open-sans.regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0E78B3AD2656B04B00F9BDBC /* open-sans.regular.ttf */; };
 		0E87C875268BDDFB00EB5E34 /* ImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C874268BDDFB00EB5E34 /* ImageViewer.swift */; };
-		0E8CEA19266FFE0600926799 /* SentFormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8CEA18266FFE0600926799 /* SentFormsView.swift */; };
 		0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E998552266E57FC0019FDF4 /* HeaderView.swift */; };
-		0ECC7814267A328900A2ACF2 /* FormsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC7813267A328900A2ACF2 /* FormsModel.swift */; };
 		0ECC7817267A533E00A2ACF2 /* PageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC7816267A533E00A2ACF2 /* PageViewCell.swift */; };
 		0ECC7819267A53A700A2ACF2 /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC7818267A53A700A2ACF2 /* PageView.swift */; };
 		0ECC781B267A542300A2ACF2 /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC781A267A542300A2ACF2 /* Pages.swift */; };
@@ -365,26 +355,16 @@
 		0D4BC3C1267577F900DCDC30 /* ReportsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportsView.swift; sourceTree = "<group>"; };
 		0D4BC3CB26765B8C00DCDC30 /* ModelStubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelStubs.swift; sourceTree = "<group>"; };
 		0D4BC3CD267668D600DCDC30 /* AddFileYellowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileYellowButton.swift; sourceTree = "<group>"; };
-		0D4D750F266316D200D7A635 /* SettingsGeneral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGeneral.swift; sourceTree = "<group>"; };
-		0D4D7511266316DC00D7A635 /* SettingsSecurity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSecurity.swift; sourceTree = "<group>"; };
-		0D4D7513266316E500D7A635 /* SettingsAboutHelp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAboutHelp.swift; sourceTree = "<group>"; };
-		0D4D7515266466C500D7A635 /* SettingsDocumentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDocumentation.swift; sourceTree = "<group>"; };
 		0D4D7517266470A700D7A635 /* SettingToggleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingToggleItem.swift; sourceTree = "<group>"; };
 		0DA213C62680286F00526995 /* FileListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListItem.swift; sourceTree = "<group>"; };
 		0DA213C82680288B00526995 /* FileActionMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileActionMenu.swift; sourceTree = "<group>"; };
 		0DA213CA268028A200526995 /* FileSortOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSortOptions.swift; sourceTree = "<group>"; };
 		0DC267A5267AED7C00E55AFA /* VaultFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFile.swift; sourceTree = "<group>"; };
 		0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultFileManager.swift; sourceTree = "<group>"; };
-		0DC411E02668469C00BF0DE1 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0DC6FC53269BCDDE001B0D34 /* FileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInfoView.swift; sourceTree = "<group>"; };
 		0DD99E042692D24D009327B3 /* SwipeToDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeToDeleteView.swift; sourceTree = "<group>"; };
 		0DEFD547268943CC0014EADE /* DocumentPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPickerView.swift; sourceTree = "<group>"; };
 		0DF3A512269BE0C800B907D5 /* OldAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = OldAssets.xcassets; sourceTree = "<group>"; };
-		0E170252267910B90069072A /* BlankFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankFormsView.swift; sourceTree = "<group>"; };
-		0E170254267910CC0069072A /* OutBoxFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutBoxFormsView.swift; sourceTree = "<group>"; };
-		0E170256267910DE0069072A /* DraftFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftFormsView.swift; sourceTree = "<group>"; };
-		0E170258267913160069072A /* FormsCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormsCellView.swift; sourceTree = "<group>"; };
-		0E27899C266F76D500B130C4 /* FormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormsView.swift; sourceTree = "<group>"; };
 		0E64C6A5265E7625005A7934 /* ActionListBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionListBottomSheet.swift; sourceTree = "<group>"; };
 		0E78B3A52656B03500F9BDBC /* DragView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragView.swift; sourceTree = "<group>"; };
 		0E78B3A62656B03500F9BDBC /* ConfirmBottomSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmBottomSheet.swift; sourceTree = "<group>"; };
@@ -392,9 +372,7 @@
 		0E87C874268BDDFB00EB5E34 /* ImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
 		0E87C876268C792000EB5E34 /* NSUIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSUIImage.swift; sourceTree = "<group>"; };
 		0E87C87C268CCA3500EB5E34 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
-		0E8CEA18266FFE0600926799 /* SentFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentFormsView.swift; sourceTree = "<group>"; };
 		0E998552266E57FC0019FDF4 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
-		0ECC7813267A328900A2ACF2 /* FormsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormsModel.swift; sourceTree = "<group>"; };
 		0ECC7816267A533E00A2ACF2 /* PageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewCell.swift; sourceTree = "<group>"; };
 		0ECC7818267A53A700A2ACF2 /* PageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageView.swift; sourceTree = "<group>"; };
 		0ECC781A267A542300A2ACF2 /* Pages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pages.swift; sourceTree = "<group>"; };
@@ -750,7 +728,6 @@
 				12E8129627A15692007DDDC0 /* Views */,
 				12E8129F27A19E67007DDDC0 /* ViewModel */,
 				12B5257C2848FC5A00B3D1C0 /* Models */,
-				12E812A027A19E7A007DDDC0 /* SettingsV1 */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -776,28 +753,6 @@
 				1289B98327C536F400315FCE /* Models */,
 			);
 			path = Camera;
-			sourceTree = "<group>";
-		};
-		0E17025C267927670069072A /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				0ECC7813267A328900A2ACF2 /* FormsModel.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		0E278993266F756B00B130C4 /* Forms */ = {
-			isa = PBXGroup;
-			children = (
-				0E17025C267927670069072A /* Models */,
-				0E27899C266F76D500B130C4 /* FormsView.swift */,
-				0E8CEA18266FFE0600926799 /* SentFormsView.swift */,
-				0E170252267910B90069072A /* BlankFormsView.swift */,
-				0E170254267910CC0069072A /* OutBoxFormsView.swift */,
-				0E170256267910DE0069072A /* DraftFormsView.swift */,
-				0E170258267913160069072A /* FormsCellView.swift */,
-			);
-			path = Forms;
 			sourceTree = "<group>";
 		};
 		0E78B3A42656B03500F9BDBC /* BottomSheet */ = {
@@ -1608,18 +1563,6 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		12E812A027A19E7A007DDDC0 /* SettingsV1 */ = {
-			isa = PBXGroup;
-			children = (
-				0DC411E02668469C00BF0DE1 /* SettingsView.swift */,
-				0D4D750F266316D200D7A635 /* SettingsGeneral.swift */,
-				0D4D7511266316DC00D7A635 /* SettingsSecurity.swift */,
-				0D4D7515266466C500D7A635 /* SettingsDocumentation.swift */,
-				0D4D7513266316E500D7A635 /* SettingsAboutHelp.swift */,
-			);
-			path = SettingsV1;
-			sourceTree = "<group>";
-		};
 		12EC94CB28AA559F0070E72B /* General */ = {
 			isa = PBXGroup;
 			children = (
@@ -1715,7 +1658,6 @@
 				D572EAC3263A381400CE191A /* HomeView */,
 				0DD99E0126910378009327B3 /* Camera */,
 				D75F9E9A253424F7006F6212 /* Audio */,
-				0E278993266F756B00B130C4 /* Forms */,
 				0D4BC3BE2675737F00DCDC30 /* Reports */,
 			);
 			path = Scenes;
@@ -2097,7 +2039,6 @@
 			files = (
 				1240E6B02907E14400692232 /* ReportCardView.swift in Sources */,
 				12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */,
-				0ECC7814267A328900A2ACF2 /* FormsModel.swift in Sources */,
 				128B15CB27DA30C800E1C1E0 /* OnboardingEndView.swift in Sources */,
 				125D2328271F8B6600250FBB /* LockConfirmPinView.swift in Sources */,
 				125D231F271F12A000250FBB /* NSRegularExpressionExtension.swift in Sources */,
@@ -2147,10 +2088,7 @@
 				12E9DD9B27DF7DA50002FD00 /* CreateNewFolderView.swift in Sources */,
 				12ADF98D28BD16A400FA96EB /* SettingsCardView.swift in Sources */,
 				125D231C271F119D00250FBB /* Validator.swift in Sources */,
-				0D4D7510266316D200D7A635 /* SettingsGeneral.swift in Sources */,
 				D51639802631130E003A11B5 /* HomeView.swift in Sources */,
-				0E8CEA19266FFE0600926799 /* SentFormsView.swift in Sources */,
-				0E27899D266F76D500B130C4 /* FormsView.swift in Sources */,
 				129B845928BFED9700F1B344 /* TellaButtonView.swift in Sources */,
 				123048D7295F95BB0015CD96 /* SubmittedDetailsItemView.swift in Sources */,
 				1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */,
@@ -2161,7 +2099,6 @@
 				D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */,
 				121C5D7B29424F4E00A64123 /* ReportAPI.swift in Sources */,
 				1224DAEA27197578001C0ED0 /* ConfirmLockPasswordView.swift in Sources */,
-				0D4D7516266466C500D7A635 /* SettingsDocumentation.swift in Sources */,
 				12781F4B27EA315600FE9609 /* BundleInfo.swift in Sources */,
 				1244141927E35D120037D469 /* VaultFileImages.swift in Sources */,
 				1289B98D27C53C8400315FCE /* ImageExtension.swift in Sources */,
@@ -2194,9 +2131,7 @@
 				123048D2295F84BD0015CD96 /* ProgressFileItemViewModel.swift in Sources */,
 				12EC94D128ABB6FA0070E72B /* SecuritySettingsView.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
-				0E170255267910CC0069072A /* OutBoxFormsView.swift in Sources */,
 				CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */,
-				0E170259267913160069072A /* FormsCellView.swift in Sources */,
 				1293547B294A454900735ED0 /* AppDelegate.swift in Sources */,
 				12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */,
 				12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */,
@@ -2237,7 +2172,6 @@
 				D572EAC7263A383900CE191A /* RecentFileCell.swift in Sources */,
 				1268554027D2994500385E18 /* VaultFileStatus.swift in Sources */,
 				0D4BC3C5267577F900DCDC30 /* ReportsView.swift in Sources */,
-				0E170257267910DE0069072A /* DraftFormsView.swift in Sources */,
 				12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */,
 				128D6E1A28045C090082AB18 /* manageFilesItems.swift in Sources */,
 				12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */,
@@ -2248,7 +2182,6 @@
 				128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */,
 				1289B98727C5397200315FCE /* ScreenExtension.swift in Sources */,
 				1227FC8F2922BDBC002FD6FB /* CameraModel.swift in Sources */,
-				0D4D7512266316DC00D7A635 /* SettingsSecurity.swift in Sources */,
 				12730E69279F420400DC0135 /* SettingsViewModel.swift in Sources */,
 				12567FF9271742C500A2D356 /* Localizable.swift in Sources */,
 				1236EE8228E1E1D700973EEA /* DatabaseExtension.swift in Sources */,
@@ -2379,7 +2312,6 @@
 				125EDDB1271E40CA00E2789A /* LockViewModel.swift in Sources */,
 				1206CD4528F59DD100B38539 /* APIError.swift in Sources */,
 				128EDB942809897C00747B98 /* HomeViewModel.swift in Sources */,
-				0E170253267910B90069072A /* BlankFormsView.swift in Sources */,
 				122389BE293698010058593B /* ConnectionsView.swift in Sources */,
 				122C54BC28C614C2003B2DBC /* TellaButtonStyleProtocol.swift in Sources */,
 				0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */,

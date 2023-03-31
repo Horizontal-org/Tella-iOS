@@ -33,9 +33,9 @@ class DataBaseHelper {
         
         debugLog("Error opening database at \(dbURL?.absoluteString ?? "")!")
         
-//        if (sqlite3_key(dbPointer, key, Int32(key.count)) != SQLITE_OK) {
-//            logDbErr("Error setting key")
-//        }
+        if (sqlite3_key(dbPointer, key, Int32(key.count)) != SQLITE_OK) {
+            logDbErr("Error setting key")
+        }
     }
     
     func selectQuery(tableName: String, andCondition: [KeyValue] = [], andDifferentCondition: [KeyValue] = [], orCondition: [KeyValue] = [] , inCondition: [KeyValues] = [], notInCondition: [KeyValues] = [] , joinCondition: [JoinCondition]? = nil) throws -> [[String: Any]] {
@@ -422,6 +422,32 @@ class DataBaseHelper {
             throw SqliteError(message: errorMessage)
         }
     }
+    
+    func deleteAll(tableNames: [String]) throws -> Int {
+        var totalDeletedCount = 0
+        
+        for tableName in tableNames {
+            let deleteSql = "DELETE FROM '\(tableName)'"
+            
+            debugLog("delete: \(deleteSql)")
+            
+            guard let deleteStatement = try prepareStatement(sql: deleteSql) else {
+                throw SqliteError(message: errorMessage)
+            }
+            
+            let deletedCount = self.execute(stmt: deleteStatement, sql: deleteSql)
+            
+            if deletedCount == 0 {
+                throw SqliteError(message: errorMessage)
+            }
+            
+            totalDeletedCount += deletedCount
+        }
+        
+        return totalDeletedCount
+    }
+
+    
     
     public func bind(insertStatement: OpaquePointer?, _ values: [KeyValue]) -> OpaquePointer? {
         

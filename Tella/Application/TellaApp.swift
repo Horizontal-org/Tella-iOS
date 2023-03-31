@@ -22,14 +22,14 @@ struct TellaApp: App {
                     appViewState.homeViewModel?.shouldShowRecordingSecurityScreen = UIScreen.main.isCaptured
                 }.onReceive(appDelegate.$shouldHandleTimeout) { value in
                     if value {
-                        self.saveData()
+                        self.saveData(lockApptype: .finishBackgroundTasks)
                     }
                 }
             
         }.onChange(of: scenePhase) { phase in
             switch phase {
             case .background:
-                self.saveData()
+                self.saveData(lockApptype: .enterInBackground)
             case .active:
                 self.resetApp()
             case .inactive:
@@ -40,16 +40,18 @@ struct TellaApp: App {
         }
     }
     
-    func saveData() {
+    func saveData(lockApptype:LockApptype) {
         
         appViewState.homeViewModel?.saveLockTimeoutStartDate()
-
-        UploadService.shared.cancelTasksIfNeeded()
-
-        guard let shouldResetApp = appViewState.homeViewModel?.shouldResetApp() else { return }
-        let hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
         
-        if shouldResetApp && !hasFileOnBackground {
+        UploadService.shared.cancelTasksIfNeeded()
+        
+        guard let shouldResetApp = appViewState.homeViewModel?.shouldResetApp() else { return }
+//        let hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
+        
+      let  hasFileOnBackground = lockApptype == .enterInBackground ? UploadService.shared.hasFilesToUploadOnBackground : false
+            
+         if shouldResetApp && !hasFileOnBackground {
             
             appViewState.homeViewModel?.appEnterInBackground = true
             appViewState.homeViewModel?.shouldSaveCurrentData = true
@@ -66,6 +68,8 @@ struct TellaApp: App {
         if let shouldResetApp = appViewState.homeViewModel?.shouldResetApp(),
            shouldResetApp == true,
            appViewState.homeViewModel?.appEnterInBackground == true {
+            
+            
             DispatchQueue.main.async {
                 appViewState.shouldHidePresentedView = true
                 appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
@@ -78,3 +82,7 @@ struct TellaApp: App {
     }
 }
 
+enum LockApptype {
+    case enterInBackground
+    case finishBackgroundTasks
+}
