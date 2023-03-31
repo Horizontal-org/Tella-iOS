@@ -43,16 +43,16 @@ struct ReportsView: View {
                         
                     case .draft:
                         ReportListView(reportArray: $reportsViewModel.draftReports,
-                                       message: LocalizableReport.reportsDraftMessage.localized)
+                                       message: LocalizableReport.reportsDraftEmpty.localized)
                         
                     case .outbox:
                         
                         ReportListView(reportArray: $reportsViewModel.outboxedReports,
-                                       message: LocalizableReport.reportsOutboxMessage.localized)
+                                       message: LocalizableReport.reportsOutboxEmpty.localized)
                         
                     case .submitted:
                         ReportListView(reportArray: $reportsViewModel.submittedReports,
-                                       message: LocalizableReport.reportsSubmited.localized)
+                                       message: LocalizableReport.reportsSubmitedEmpty.localized)
                     }
                     
                     Spacer()
