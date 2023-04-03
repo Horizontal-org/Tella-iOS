@@ -76,17 +76,17 @@ struct SecuritySettingsView: View {
     var quickDeleteView: some View {
         
         Group {
-            SettingToggleItem(title: "Quick Delete",
-                              description: "Shows a sliding button on the homescreen to quicky exit Tella in emergency situations. ",
+            SettingToggleItem(title: LocalizableSettings.settQuickDelete.localized,
+                              description: LocalizableSettings.settQuickDeleteExpl.localized,
                               toggle: $appModel.settings.quickDelete)
             if appModel.settings.quickDelete {
                 SettingCheckboxItem(
                     isChecked: $appModel.settings.deleteVault ,
-                    title: "Delete files and folders"
+                    title: LocalizableSettings.settQuickDeleteFilesCheckbox.localized
                 )
                 SettingCheckboxItem(
                     isChecked: $appModel.settings.deleteServerSettings ,
-                    title: "Delete connections"
+                    title: LocalizableSettings.settQuickDeleteConnectionsCheckbox.localized
                 )
             }
         }
