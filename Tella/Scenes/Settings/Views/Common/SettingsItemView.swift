@@ -15,27 +15,29 @@ struct SettingsItemView<T:View> : View {
     
     var body : some View {
         
-        HStack {
-            Image(imageName)
-            Spacer()
-                .frame(width: 10)
-            Text(title)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(.white)
-            Spacer()
-            Text(value)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(.white)
-            
-        }.padding(.all, 18)
-            .contentShape(Rectangle())
-            .if(( destination != nil) , transform: { view in
-                view.navigateTo(destination:  destination)
-                
-            })
-                .onTapGesture {
-                completion?()
+        Button {
+            if (destination != nil) {
+                navigateTo(destination:  destination)
             }
+            
+            completion?()
+        } label: {
+            
+            HStack {
+                Image(imageName)
+                Spacer()
+                    .frame(width: 10)
+                Text(title)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                    .foregroundColor(.white)
+                Spacer()
+                Text(value)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                    .foregroundColor(.white)
+                
+            }.padding(.all, 18)
+                .contentShape(Rectangle())
+        }
     }
 }
 

@@ -16,8 +16,7 @@ struct AddServerURLView: View {
     
     @EnvironmentObject var serversViewModel : ServersViewModel
     @StateObject var serverViewModel : ServerViewModel
-    @State var showNextLoginView : Bool = false
-
+    
     init(appModel:MainAppModel, server: Server? = nil) {
         _serverViewModel = StateObject(wrappedValue: ServerViewModel(mainAppModel: appModel, currentServer: server))
     }
@@ -55,14 +54,15 @@ struct AddServerURLView: View {
                     BottomLockView<AnyView>(isValid: $serverViewModel.validURL,
                                             nextButtonAction: .action,
                                             nextAction: {
-//                        serverViewModel.checkURL()
-                        self.showNextLoginView = true
+                        // serverViewModel.checkURL()
+                        navigateTo(destination: serverLoginView)
+                        
                     },
                                             backAction: {
                         self.presentationMode.wrappedValue.dismiss()
                     })
                     
-                    nextViewLink
+                    
                     
                 } .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                 
@@ -71,6 +71,7 @@ struct AddServerURLView: View {
                 }
             }
         }
+        
         .navigationBarHidden(true)
         .onAppear {
             
@@ -80,12 +81,9 @@ struct AddServerURLView: View {
         }
     }
     
-    private var nextViewLink: some View {
-        
+    private var serverLoginView: some View {
         ServerLoginView()
             .environmentObject(serverViewModel)
-            .environmentObject(serversViewModel)
-            .addNavigationLink(isActive: $showNextLoginView)
     }
     
 }

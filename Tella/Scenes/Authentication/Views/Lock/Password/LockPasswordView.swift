@@ -13,14 +13,15 @@ struct LockPasswordView: View {
     @EnvironmentObject var lockViewModel: LockViewModel
 
     var body: some View {
-        PasswordView(lockViewData: LockPasswordData(),
+        PasswordView(shouldEnableBackButton: false,
+                     lockViewData: LockPasswordData(),
                      nextButtonAction: .destination,
                      fieldContent: $lockViewModel.password,
                      shouldShowErrorMessage: .constant(false),
-                     destination: ConfirmLockPasswordView())
+                     destination: ConfirmLockPasswordView().environmentObject(lockViewModel))
             .onAppear {
                 lockViewModel.initLockData()
-            }
+            }.navigationBarBackButtonHidden(true)
 
     }
 }

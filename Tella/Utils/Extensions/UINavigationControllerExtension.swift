@@ -8,11 +8,19 @@
 
 import UIKit
 
-extension UINavigationController {
-
-  open override func viewWillLayoutSubviews() {
-    navigationBar.topItem?.backButtonDisplayMode = .minimal
-  }
+extension UINavigationController: UIGestureRecognizerDelegate {
     
+    open override func viewWillLayoutSubviews() {
+        navigationBar.topItem?.backButtonDisplayMode = .minimal
+    }
+    
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        interactivePopGestureRecognizer?.delegate = self
+    }
+    
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return viewControllers.count > 1
+    }
 }
 

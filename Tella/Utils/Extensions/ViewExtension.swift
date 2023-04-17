@@ -11,79 +11,70 @@ import SwiftUI
 
 extension View {
     
-    func navigateTo<Destination: View>( destination: Destination) ->  some View   {
-        
-        if #available(iOS 15.0, *) {
-            
-            return  AnyView(NavigationLink(destination: destination) {
-                self
-            }.buttonStyle(PlainButtonStyle()))
-            
+    func navigateTo<Destination: View>( destination: Destination, title: String? = nil, largeTitle:Bool = false) {
+        let hostingView = UIHostingController(rootView: destination)
+        if largeTitle {
+            hostingView.navigationItem.largeTitleDisplayMode = .always
         } else {
-            return   AnyView(ZStack {
-                NavigationLink(destination: destination) {
-                    self
-                }.buttonStyle(PlainButtonStyle())
-                
-                NavigationLink(destination: EmptyView()) {
-                    EmptyView()
-                }
-                
-            })
-            
+            hostingView.navigationItem.largeTitleDisplayMode = .never
+        }
+        if let title {
+            hostingView.title = title
+        } else {
+            hostingView.title = ""
             
         }
-    }
-    
-    func navigateTo<Destination: View>( destination: Destination, isActive:Binding<Bool>) ->  some View   {
         
-        if #available(iOS 15.0, *) {
-            
-            return AnyView(NavigationLink(destination: destination,
-                                           isActive: isActive) {
-                self
-            }.buttonStyle(PlainButtonStyle()))
-            
-        } else {
-            return AnyView(ZStack {
-                NavigationLink(destination: destination,
-                               isActive: isActive) {
-                    self
-                }.buttonStyle(PlainButtonStyle())
-                
-                NavigationLink(destination: EmptyView()) {
-                    EmptyView()
-                }
-            })
-        }
+        UIApplication.shared.topNavigationController()?.pushViewController(hostingView, animated: true)
     }
-
     
-    func addNavigationLink(isActive:Binding<Bool>, shouldAddEmptyView: Bool = false) -> some View {
-        if #available(iOS 15.0, *) {
-            return AnyView(
-                NavigationLink(destination:self,
-                               isActive: isActive) {
-                                   EmptyView()
-                               }.frame(width: 0, height: 0)
-                    .hidden())
-        } else {
+    @ViewBuilder
+    func addNavigationLink<Destination: View>(isActive:Binding<Bool>, shouldAddEmptyView: Bool = false, destination: Destination) -> some View    {
+        
+        if #available(iOS 16.0, *) {
             
-            return AnyView(
-                ZStack {
-                    NavigationLink(destination:self,
+            self.navigationDestination(isPresented: isActive) {
+                destination
+            }
+        } else
+        if #available(iOS 15.0, *) {
+            ZStack {
+                self
+                AnyView(
+                    NavigationLink(destination:destination,
                                    isActive: isActive) {
-                        EmptyView()
-                    }.frame(width: 0, height: 0)
-                        .hidden()
-                    
-                    if shouldAddEmptyView {
-                        NavigationLink(destination: EmptyView()) {
+                                       EmptyView()
+                                   }.frame(width: 0, height: 0)
+                        .hidden())
+            }
+            
+        } else {
+            ZStack {
+                self
+                AnyView(
+                    ZStack {
+                        NavigationLink(destination:destination,
+                                       isActive: isActive) {
                             EmptyView()
+                        }.frame(width: 0, height: 0)
+                            .hidden()
+                        
+                        if shouldAddEmptyView {
+                            NavigationLink(destination: EmptyView()) {
+                                EmptyView()
+                            }
                         }
-                    }
-                })
+                    })
+            }
         }
+    }
+    
+    func popToRoot()  {
+        UIApplication.shared.popToRootView()
+    }
+    
+    func popTo(_ classType: AnyClass)  {
+        UIApplication.shared.popTo(classType)
     }
     
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
@@ -96,5 +87,3 @@ extension View {
         else { self }
     }
 }
-
-

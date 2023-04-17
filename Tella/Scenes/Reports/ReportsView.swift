@@ -3,13 +3,21 @@
 //
 import SwiftUI
 
+
+enum ReportPaths {
+    case reportMain
+    case draft
+    case outbox
+    case submitted
+}
+
 struct ReportsView: View {
     
     @EnvironmentObject var mainAppModel : MainAppModel
     @StateObject private var reportsViewModel : ReportsViewModel
     
-    init(mainAppModel:MainAppModel, serverLinkIsActive : Binding<Bool> = .constant(false)) {
-        _reportsViewModel = StateObject(wrappedValue: ReportsViewModel(mainAppModel: mainAppModel, serverLinkIsActive: serverLinkIsActive))
+    init(mainAppModel:MainAppModel) {
+        _reportsViewModel = StateObject(wrappedValue: ReportsViewModel(mainAppModel: mainAppModel))
     }
     
     var body: some View {
@@ -17,12 +25,10 @@ struct ReportsView: View {
         contentView
             .navigationBarTitle("Reports", displayMode: .large)
             .environmentObject(reportsViewModel)
-        
-        newReportLink
-        editReportViewLink
     }
     
     private var contentView :some View {
+        
         ContainerView {
             
             VStack(alignment: .center) {
@@ -56,55 +62,29 @@ struct ReportsView: View {
                                           nextButtonAction: .action,
                                           buttonType: .yellow,
                                           isValid: .constant(true)) {
-                    reportsViewModel.newReportRootLinkIsActive = true
+                    navigateTo(destination: newDraftReportView)
                 } .padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0))
                 
             }.background(Styles.Colors.backgroundMain)
                 .padding(EdgeInsets(top: 15, leading: 20, bottom: 16, trailing: 20))
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: backButton)
     }
     
-    @ViewBuilder
-    private var newReportLink: some View {
-        if reportsViewModel.newReportRootLinkIsActive {
-            DraftReportView(mainAppModel: mainAppModel)
-                .environmentObject(reportsViewModel)
-                .addNavigationLink(isActive: $reportsViewModel.newReportRootLinkIsActive,shouldAddEmptyView: true)
+    private var newDraftReportView: some View {
+        DraftReportView(mainAppModel: mainAppModel).environmentObject(reportsViewModel)
+    }
+    
+    var backButton : some View {
+        Button {
+            self.popToRoot()
+        } label: {
+            Image("back")
+                .padding(EdgeInsets(top: -3, leading: -8, bottom: 0, trailing: 12))
         }
     }
     
-    @ViewBuilder
-    private var editReportViewLink: some View {
-        
-        switch reportsViewModel.selectedReport?.status {
-            
-        case .draft:
-            if reportsViewModel.editRootLinkIsActive {
-                
-                DraftReportView(mainAppModel: mainAppModel,
-                                reportId: reportsViewModel.selectedReport?.id)
-                .environmentObject(reportsViewModel)
-                .addNavigationLink(isActive: $reportsViewModel.editRootLinkIsActive)
-            }
-        case .submitted:
-            if reportsViewModel.viewReportLinkIsActive {
-                
-                SubmittedDetailsView(appModel: mainAppModel,
-                                     reportId: reportsViewModel.selectedReport?.id)
-                .environmentObject(reportsViewModel)
-                .addNavigationLink(isActive: $reportsViewModel.viewReportLinkIsActive)
-            }
-        default:
-            if reportsViewModel.editRootLinkIsActive {
-                
-                OutboxDetailsView(appModel: mainAppModel,
-                                  reportsViewModel: reportsViewModel,
-                                  reportId: reportsViewModel.selectedReport?.id)
-                .environmentObject(reportsViewModel)
-                .addNavigationLink(isActive: $reportsViewModel.editRootLinkIsActive)
-            }
-        }
-    }
 }
 
 struct ReportsView_Previews: PreviewProvider {
@@ -114,3 +94,6 @@ struct ReportsView_Previews: PreviewProvider {
     }
 }
 
+extension Int: Identifiable {
+    public var id: Int { self }
+}

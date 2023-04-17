@@ -26,25 +26,21 @@ struct SettingsAddServerCardView: View {
                 Spacer()
                 
                 Button {
-                    serversViewModel.rootLinkIsActive = true
+                    navigateTo(destination: AddServerURLView(appModel: mainAppModel)  )
                 } label: {
                     Image("settings.add")
                         .padding(.all, 14)
                 }
             }
-            
-            nextViewLink
         }
         
         .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 0))
+        .environmentObject(serversViewModel)
     }
     
-    private var nextViewLink: some View {
-        
-        AddServerURLView(appModel: mainAppModel) .environmentObject(serversViewModel)
-             .addNavigationLink(isActive: $serversViewModel.rootLinkIsActive)
+    var addServerURLView: some View {
+        AddServerURLView(appModel: mainAppModel)
     }
-
 }
 
 struct SettingsAddServerCardView_Previews: PreviewProvider {

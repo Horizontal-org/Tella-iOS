@@ -95,11 +95,9 @@ struct MoveFilesView: View {
 
 struct MoveFilesView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            ZStack(alignment: .top) {
-                Styles.Colors.lightBlue.edgesIgnoringSafeArea(.all)
-                MoveFilesView(title: "Move “IMG9092.jpg”")
-            }
+        ZStack(alignment: .top) {
+            Styles.Colors.lightBlue.edgesIgnoringSafeArea(.all)
+            MoveFilesView(title: "Move “IMG9092.jpg”")
         }
         .environmentObject(MainAppModel())
         .environmentObject(FileListViewModel.stub())

@@ -44,11 +44,11 @@ struct RecentFilesListView: View {
         HStack(spacing: 7) {
             // The 3 first or all items
             ForEach(0..<number, id: \.self) { i in
-                RecentFileCell(recentFile: recentFiles[i].file)
-                    .navigateTo(destination: FileDetailView(appModel: appModel,
-                                                            file: recentFiles[i].file,
-                                                            rootFile: recentFiles[i].rootFile,
-                                                            folderPathArray: recentFiles[i].folderPathArray))
+                RecentFileCell(recentFile: recentFiles[i].file,
+                               desination: FileDetailView(appModel: appModel,
+                                                          file: recentFiles[i].file,
+                                                          rootFile: recentFiles[i].rootFile,
+                                                          folderPathArray: recentFiles[i].folderPathArray))
             }
             // More button
             if !moreRecentFilesLoaded && recentFiles.count >  3 {
@@ -66,10 +66,11 @@ struct RecentFilesListView: View {
             
             ForEach(recentFiles, id: \.self) { recentFile in
                 
-                RecentFileCell(recentFile: recentFile.file)
-                    .navigateTo(destination: FileDetailView(appModel: appModel,
-                                                            file: recentFile.file,
-                                                            rootFile: recentFile.rootFile, folderPathArray: recentFile.folderPathArray))
+                RecentFileCell(recentFile: recentFile.file,
+                               desination: FileDetailView(appModel: appModel,
+                                                          file: recentFile.file,
+                                                          rootFile: recentFile.rootFile,
+                                                          folderPathArray: recentFile.folderPathArray))
             }
         }.padding(.trailing, 17)
     }

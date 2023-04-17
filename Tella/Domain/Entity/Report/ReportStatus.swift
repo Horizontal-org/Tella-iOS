@@ -36,10 +36,13 @@ extension ReportStatus {
         switch self {
         
         case .submitted:
-            return .view
+            return .viewSubmitted
+       
+        case .draft:
+            return .editDraft
 
         default:
-            return .edit
+            return .editOutbox
 
         }
     }

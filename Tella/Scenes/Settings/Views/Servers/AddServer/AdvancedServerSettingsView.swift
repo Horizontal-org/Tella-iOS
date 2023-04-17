@@ -7,9 +7,9 @@ import SwiftUI
 
 struct AdvancedServerSettingsView: View {
     
-    @State private var presentingSuccessAdvancedSettings : Bool = false
     @EnvironmentObject var serverVM : ServerViewModel
-    
+    @EnvironmentObject var serversVM : ServersViewModel
+
     var body: some View {
         
         ContainerView {
@@ -24,24 +24,24 @@ struct AdvancedServerSettingsView: View {
                 Spacer()
                 
                 SettingsBottomView(cancelAction: {
-                    presentingSuccessAdvancedSettings = true
+                    navigateTo(destination: successAdvancedSettingsView)
                 }, saveAction: {
                     serverVM.updateServer()
-                    presentingSuccessAdvancedSettings = true
+                    navigateTo(destination: successAdvancedSettingsView)
+
                 })
             }
-            nextViewLink
+             
         }
         .toolbar {
             LeadingTitleToolbar(title: "Advanced settings")
         }
     }
-    
-    
-    private var nextViewLink: some View {
-        SuccessAdvancedSettingsView(isPresented: $presentingSuccessAdvancedSettings)
-            .addNavigationLink(isActive: $presentingSuccessAdvancedSettings)
+
+    private var successAdvancedSettingsView: some View {
+        SuccessAdvancedSettingsView()
     }
+
     
 }
 
