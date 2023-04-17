@@ -42,8 +42,7 @@ struct OutboxDetailsView: View {
                 navigateTo(destination: submittedDetailsView)
             }
         })
-        
-        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
     }
     
     var outboxReportHeaderView: some View {

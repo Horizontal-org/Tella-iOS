@@ -41,7 +41,8 @@ struct SubmittedDetailsView: View {
                     }.padding(EdgeInsets(top: 20, leading: 16, bottom: 70, trailing: 16))
                 }
             }
-        }.navigationBarBackButtonHidden(true)
+        }.navigationBarHidden(true)
+
     }
     
     var outboxReportHeaderView: some View {
