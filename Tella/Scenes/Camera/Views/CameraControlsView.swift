@@ -232,13 +232,11 @@ struct CameraControlsView: View {
                let data = file.wrappedValue?.thumbnail {
                 
                 Button {
-                    
+                    navigateTo(destination: getFileListView())
                 } label: {
                     UIImage.image(fromData:data)
                         .rounded()
-                        .navigateTo(destination:getFileListView())
                 }
-                .navigateTo(destination:getFileListView())
             } else {
                 Spacer()
                     .frame(width: 40, height: 40)

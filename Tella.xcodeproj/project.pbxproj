@@ -68,6 +68,7 @@
 		1221CB6F28DB1B1B0042F15F /* SqliteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1221CB6E28DB1B1B0042F15F /* SqliteError.swift */; };
 		1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1221CB7028DB1B5A0042F15F /* KeyValue.swift */; };
 		1221E05C2906CA6A00BC05F5 /* DraftReportVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1221E05B2906CA6A00BC05F5 /* DraftReportVM.swift */; };
+		12234BE029DAEC4A00D6F981 /* CustomNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12234BDF29DAEC4A00D6F981 /* CustomNavigation.swift */; };
 		122389B3293630DA0058593B /* SaveSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122389B2293630DA0058593B /* SaveSuccessView.swift */; };
 		122389B7293635790058593B /* SetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122389B6293635790058593B /* SetExtension.swift */; };
 		122389B929367ABA0058593B /* ServerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122389B829367ABA0058593B /* ServerType.swift */; };
@@ -417,6 +418,7 @@
 		1221CB7028DB1B5A0042F15F /* KeyValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValue.swift; sourceTree = "<group>"; };
 		1221E05B2906CA6A00BC05F5 /* DraftReportVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftReportVM.swift; sourceTree = "<group>"; };
 		12227E4468563A646AC52A27 /* Pods-Tella-TellaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		12234BDF29DAEC4A00D6F981 /* CustomNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigation.swift; sourceTree = "<group>"; };
 		122389B2293630DA0058593B /* SaveSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveSuccessView.swift; sourceTree = "<group>"; };
 		122389B6293635790058593B /* SetExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetExtension.swift; sourceTree = "<group>"; };
 		122389B829367ABA0058593B /* ServerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerType.swift; sourceTree = "<group>"; };
@@ -526,7 +528,6 @@
 		127C155B27DA69FF009EC15B /* TransitionViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionViewData.swift; sourceTree = "<group>"; };
 		127C155D27DA6C2E009EC15B /* EmptyFileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyFileListView.swift; sourceTree = "<group>"; };
 		127C4AAE27E4A74B00B1A1D3 /* ShareFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareFileView.swift; sourceTree = "<group>"; };
-		1283C254272A7484009180CA /* CustomNavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationContainerView.swift; sourceTree = "<group>"; };
 		1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		128777C42718D25D000624E2 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		1289B45528B62A99005DA687 /* DeviceOrientationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceOrientationHelper.swift; sourceTree = "<group>"; };
@@ -1522,7 +1523,6 @@
 				0DEFD547268943CC0014EADE /* DocumentPickerView.swift */,
 				12D37A952721A49D00E43BDB /* NavigationContainerView.swift */,
 				125A0AEE2726F0A000F6E77F /* ContainerView.swift */,
-				1283C254272A7484009180CA /* CustomNavigationContainerView.swift */,
 				0E64C6A5265E7625005A7934 /* ActionListBottomSheet.swift */,
 				12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */,
 				129533C32739D5BC0053FA4B /* TextFieldBottomSheetView.swift */,
@@ -1533,6 +1533,7 @@
 				1216F8732901823100F5AEA5 /* TextEditorView.swift */,
 				122389B2293630DA0058593B /* SaveSuccessView.swift */,
 				CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */,
+				12234BDF29DAEC4A00D6F981 /* CustomNavigation.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2140,6 +2141,7 @@
 				123048D5295F95A40015CD96 /* SubmittedDetailsView.swift in Sources */,
 				1278B66127EB364500C9AC4D /* Utils.swift in Sources */,
 				125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */,
+				12234BE029DAEC4A00D6F981 /* CustomNavigation.swift in Sources */,
 				125D2324271F891500250FBB /* PinView.swift in Sources */,
 				125AAD362953607D002194D6 /* UploadReportModels.swift in Sources */,
 				129B844F28BF5E4700F1B344 /* TextfieldView.swift in Sources */,

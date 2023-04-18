@@ -8,7 +8,6 @@ import SwiftUI
 struct SuccessAdvancedSettingsView: View {
     
     @EnvironmentObject var serversViewModel : ServersViewModel
-    @Binding var isPresented : Bool
     
     var body: some View {
         ContainerView {
@@ -26,7 +25,7 @@ struct SuccessAdvancedSettingsView: View {
                                           nextButtonAction: .action,
                                           buttonType: .yellow,
                                           isValid: .constant(true)) {
-                    serversViewModel.rootLinkIsActive = false
+                    self.popTo(UIHostingController<Optional<ModifiedContent<ServersListView, _EnvironmentKeyWritingModifier<Optional<ServersViewModel>>>>>.self)
                     
                 }
                 
@@ -64,6 +63,6 @@ struct SuccessAdvancedSettingsView: View {
 }
 struct SuccessAdvancedSettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SuccessAdvancedSettingsView(isPresented: .constant(false))
+        SuccessAdvancedSettingsView()
     }
 }

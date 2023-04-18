@@ -71,8 +71,6 @@ struct ServerLoginView: View {
                                             shouldHideNext: true)
                 }
                 
-                nextViewLink
-                
                 if serverViewModel.isLoading {
                     CircularActivityIndicatory()
                 }
@@ -84,21 +82,23 @@ struct ServerLoginView: View {
             
 #if DEBUG
             serverViewModel.username = "admin@wearehorizontal.org"
-            serverViewModel.password = "nadanada" 
+            serverViewModel.password = "nadanada"
 #endif
+        }
+        
+        .onReceive(serverViewModel.$showNextSuccessLoginView) { value in
+            if value {
+                navigateTo(destination: successLoginView)
+            }
         }
     }
     
-    @ViewBuilder
-    private var nextViewLink: some View {
+    private var successLoginView: some View {
         
-        if !serverViewModel.shouldShowLoginError {
-            SuccessLoginView()
-                .environmentObject(serverViewModel)
-                .environmentObject(serversViewModel)
-                .addNavigationLink(isActive: $serverViewModel.showNextSuccessLoginView)
-        }
+        SuccessLoginView()
+            .environmentObject(serverViewModel)
     }
+    
 }
 
 struct ServerLoginView_Previews: PreviewProvider {

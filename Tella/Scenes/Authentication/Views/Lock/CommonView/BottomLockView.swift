@@ -11,8 +11,10 @@ import SwiftUI
 struct BottomLockView<Destination:View>:View {
     
     @Binding  var isValid : Bool
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    var shouldEnableBackButton :  Bool  = true
 
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     var nextButtonAction: NextButtonAction
     var destination: Destination?
     var shouldHideNext : Bool = false
@@ -21,10 +23,10 @@ struct BottomLockView<Destination:View>:View {
     
     var body: some View {
         HStack {
-            BottomButtonActionView(title: LocalizableLock.actionBack.localized, isValid: true) {
+             
+            BottomButtonActionView(title: LocalizableLock.actionBack.localized, isValid: shouldEnableBackButton) {
                 self.backAction?()
                 self.presentationMode.wrappedValue.dismiss()
-
             }
             
             Spacer()
@@ -45,11 +47,12 @@ struct BottomLockView<Destination:View>:View {
                 action?()
             }
             
+            if (nextButtonAction == .destination) {
+                navigateTo(destination: destination)
+            }
+            
         } label: {
             Text(title)
-                .if(nextButtonAction == .destination, transform: { view in
-                    view.navigateTo(destination: destination )
-                })
         }
         .font(.custom(Styles.Fonts.lightFontName, size: 16))
         .foregroundColor(isValid ? Color.white : Color.gray)

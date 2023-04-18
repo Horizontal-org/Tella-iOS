@@ -10,7 +10,6 @@ class ServersViewModel: ObservableObject {
     
     var mainAppModel : MainAppModel
     
-    @Published var rootLinkIsActive : Bool = false
     @Published var currentServer : Server?
     @Published var serverArray : [Server] = []
     

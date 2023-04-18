@@ -6,16 +6,17 @@
 import SwiftUI
 
 struct SuccessLoginView: View {
-    
-//    @Binding var isPresented : Bool
+
     @EnvironmentObject var mainAppModel : MainAppModel
     @EnvironmentObject var serversViewModel : ServersViewModel
+    @EnvironmentObject var serverViewModel : ServerViewModel
+    
     @EnvironmentObject private var appViewState: AppViewState
     @State var showNextView : Bool = false
     
     var body: some View {
         
-        NavigationContainerView {
+        ContainerView {
             
             VStack {
                 
@@ -30,15 +31,7 @@ struct SuccessLoginView: View {
                                           nextButtonAction: .action,
                                           buttonType: .yellow,
                                           isValid: .constant(true)) {
-                    
-                    //                    showNextView = true
-                    
-                    //                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    //                        isPresented = false
-                    //                                   mainAppModel.selectedTab = .home
-                    //
-                    //                    }
-                    
+                    navigateTo(destination: ReportsView(mainAppModel: mainAppModel))
                 }
                 
                 Spacer()
@@ -46,15 +39,14 @@ struct SuccessLoginView: View {
                 
                 TellaButtonView (title: "Advanced settings",
                                  nextButtonAction: .destination,
-                                 destination: AdvancedServerSettingsView(),
+                                 destination: AdvancedServerSettingsView() 
+                    .environmentObject(serverViewModel),
                                  isValid: .constant(true))
                 Spacer()
                 
             } .padding(EdgeInsets(top: 0, leading: 26, bottom: 0, trailing: 26))
-            nextViewLink
         }
         .navigationBarHidden(true)
-        
     }
     
     var topview: some View {
@@ -80,12 +72,9 @@ struct SuccessLoginView: View {
         }
     }
     
-    private var nextViewLink: some View {
-        
-        ReportsView(mainAppModel: mainAppModel, serverLinkIsActive: $serversViewModel.rootLinkIsActive)
-            .addNavigationLink(isActive: $showNextView)
+    private var reportsView: some View {
+        ReportsView(mainAppModel: mainAppModel)
     }
-    
 }
 
 struct SuccessLoginView_Previews: PreviewProvider {

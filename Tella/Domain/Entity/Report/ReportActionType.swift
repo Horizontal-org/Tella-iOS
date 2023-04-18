@@ -5,7 +5,8 @@
 import Foundation
 
 enum ReportActionType: ActionType {
-    case edit
-    case view
+    case editDraft
+    case editOutbox
+    case viewSubmitted
     case delete
 }

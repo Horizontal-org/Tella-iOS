@@ -19,7 +19,7 @@ struct SubmittedDetailsView: View {
     
     var body: some View {
         
-        NavigationContainerView {
+        ContainerView {
             
             VStack {
                 
@@ -41,7 +41,8 @@ struct SubmittedDetailsView: View {
                     }.padding(EdgeInsets(top: 20, leading: 16, bottom: 70, trailing: 16))
                 }
             }
-        }.navigationBarBackButtonHidden(true)
+        }.navigationBarHidden(true)
+
     }
     
     var outboxReportHeaderView: some View {
@@ -131,9 +132,7 @@ struct SubmittedDetailsView: View {
     }
     
     private func dismissViews() {
-        reportsViewModel.newReportRootLinkIsActive = false
-        reportsViewModel.editRootLinkIsActive = false
-        reportsViewModel.viewReportLinkIsActive = false
+        self.popTo(UIHostingController<ReportsView>.self)
         self.reportsViewModel.selectedCell = .submitted
     }
     

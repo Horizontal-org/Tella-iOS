@@ -8,8 +8,6 @@ struct LockConfirmPinView: View {
     
     @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject var lockViewModel: LockViewModel
-    
-    @State var shouldShowOnboarding : Bool = false
     @State var shouldShowErrorMessage : Bool = false
     
     var body: some View {
@@ -26,18 +24,18 @@ struct LockConfirmPinView: View {
                     lockViewModel.unlockType == .new ? self.lockWithPin() : self.updatePin()
                 }
             }
-            onboardingLink
         }
+        .navigationBarBackButtonHidden(true)
     }
     
     func lockWithPin() {
         do {
             try AuthenticationManager().initKeys(.tellaPin,
-                                              password: lockViewModel.password)
-            shouldShowOnboarding = true
+                                                 password: lockViewModel.password)
+            navigateTo(destination: OnboardingEndView())
             
         } catch {
-
+            
         }
     }
     
@@ -45,20 +43,12 @@ struct LockConfirmPinView: View {
         do {
             guard let privateKey = lockViewModel.privateKey else { return }
             try AuthenticationManager().updateKeys(privateKey, .tellaPin,
-                                                newPassword: lockViewModel.password,
-                                                oldPassword: lockViewModel.loginPassword)
+                                                   newPassword: lockViewModel.password,
+                                                   oldPassword: lockViewModel.loginPassword)
             lockViewModel.shouldDismiss.send(true)
         } catch {
             
         }
-    }
-    
-    private var onboardingLink: some View {
-        NavigationLink(destination: OnboardingEndView() ,
-                       isActive: $shouldShowOnboarding) {
-            EmptyView()
-        }.frame(width: 0, height: 0)
-            .hidden()
     }
     
 }

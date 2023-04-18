@@ -19,7 +19,7 @@ struct NavigationContainerView<Content:View>: View {
     }
     
     var body: some View {
-        NavigationView {
+        CustomNavigation() {
             ZStack {
                 self.backgroundColor
                     .edgesIgnoringSafeArea(.all)
@@ -30,7 +30,6 @@ struct NavigationContainerView<Content:View>: View {
             .navigationBarTitle("", displayMode: .inline)
         }
         .accentColor(.white)
-        .navigationViewStyle(.stack)
         .navigationBarTitle("")
         .navigationBarHidden(true)
         

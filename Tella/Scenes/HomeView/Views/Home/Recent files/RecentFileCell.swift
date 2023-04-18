@@ -4,12 +4,22 @@
 
 import SwiftUI
 
-struct RecentFileCell: View {
+struct RecentFileCell<Destination:View>: View {
+    
     let recentFile: VaultFile
+    let desination: Destination
+    
     var body: some View {
-        ZStack{
-            recentFile.gridImage
-                .frame(width: 75, height: 75)
+        Button {
+            navigateTo(destination: desination)
+        } label: {
+            ZStack{
+                recentFile.gridImage
+                    .frame(width: 75, height: 75)
+            }
+            
         }
+        
+        
     }
 }

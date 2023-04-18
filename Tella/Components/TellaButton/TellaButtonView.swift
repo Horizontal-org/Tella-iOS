@@ -32,18 +32,18 @@ struct TellaButtonView<Destination:View> : View {
             if nextButtonAction == .action  {
                 action?()
             }
+            if (destination != nil) {
+                navigateTo(destination: destination)
+            }
         } label: {
             Text(title)
                 .frame(maxWidth:.infinity)
                 .frame(height: 55)
                 .contentShape(Rectangle())
-                .if(destination != nil, transform: { view in
-                    view.navigateTo(destination: destination)
-                })
+            
         }.cornerRadius(20)
             .buttonStyle(TellaButtonStyle(buttonStyle: buttonStyle, isValid: isValid))
             .disabled(isValid == false)
-        
     }
 }
 

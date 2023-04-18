@@ -12,7 +12,6 @@ struct MainView: View  {
     @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject private var sheetManager: SheetManager
     
-    
     init() {
         setupApperance()
     }
@@ -29,19 +28,14 @@ struct MainView: View  {
             }
             
             securityScreenView
-        }
+        }.navigationBarHidden(false)
     }
     
-    private var emptyView: some View {
-        VStack{
-        }.background(Styles.Colors.backgroundMain)
-    }
-    
-    private var tabbar: some View{
+    private var tabbar: some View {
         
         ZStack {
             
-            NavigationView {
+            CustomNavigation() {
                 
                 TabView(selection: $appModel.selectedTab) {
                     HomeView(appModel: appModel)
@@ -72,10 +66,8 @@ struct MainView: View  {
                     }
                 }
                 .navigationBarTitle(LocalizableHome.appBar.localized, displayMode: .inline)
-//                .navigationBarHidden(appModel.selectedTab == .home ? false : true)
             }
             .accentColor(.white)
-            .navigationViewStyle(.stack)
             
             if appModel.selectedTab == .mic {
                 RecordView(appModel: appModel,
@@ -92,18 +84,15 @@ struct MainView: View  {
             }
         }
     }
-//    CameraViewModel(mainAppModel: appModel,
-//                                     rootFile: appModel.vaultManager.root)
+    
     @ViewBuilder
     var securityScreenView : some View {
         if appViewState.homeViewModel?.shouldShowSecurityScreen == true || appViewState.homeViewModel?.shouldShowRecordingSecurityScreen == true , let screenSecurity = appViewState.homeViewModel?.settings.screenSecurity, screenSecurity == true {
             Color.white
                 .edgesIgnoringSafeArea(.all)
         }
-
     }
-    
-    
+
     private func setupApperance() {
         
         UITabBar.appearance().unselectedItemTintColor = UIColor.white.withAlphaComponent(0.38)
@@ -118,7 +107,7 @@ struct MainView: View  {
         coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white,
                                                  .font: UIFont(name: Styles.Fonts.boldFontName, size: 24)!]
         coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white,
-                                                                 .font: UIFont(name: Styles.Fonts.boldFontName, size: 35)!]
+                                                      .font: UIFont(name: Styles.Fonts.boldFontName, size: 35)!]
         coloredAppearance.setBackIndicatorImage(UIImage(named: "back"), transitionMaskImage: UIImage(named: "back"))
         
         UINavigationBar.appearance().standardAppearance = coloredAppearance
@@ -129,20 +118,19 @@ struct MainView: View  {
         UITableView.appearance().backgroundColor = .clear
         UITableViewCell.appearance().backgroundColor = .clear
         
-
+        
     }
     
     @ViewBuilder
     private var leadingView : some View {
         if appModel.selectedTab == .home {
             Button() {
-                
+                navigateTo(destination: SettingsMainView(appModel: appModel))
             } label: {
                 Image("home.settings")
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 35, height: 35)
-                    .navigateTo(destination: SettingsMainView(appModel: appModel))
-            }.navigateTo(destination: SettingsMainView(appModel: appModel))
+            }
         }
     }
     

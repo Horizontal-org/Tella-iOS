@@ -11,11 +11,16 @@ struct ReportCardView : View {
     
     @EnvironmentObject var reportsViewModel : ReportsViewModel
     @EnvironmentObject private var sheetManager: SheetManager
+    @EnvironmentObject var mainAppModel : MainAppModel
     
     var body : some View {
         Button {
             reportsViewModel.selectedReport = report
-            self.handleActions(type: reportsViewModel.clickActionType)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
+                self.handleActions(type: report.status?.reportActionType)
+            }
+            
         } label: {
             VStack(spacing: 0) {
                 
@@ -82,18 +87,40 @@ struct ReportCardView : View {
     
     private func handleActions(type: ReportActionType?) {
         
-        guard let type else { return  }
+        guard let type else { return }
         
         switch type {
-        case .edit:
-            reportsViewModel.editRootLinkIsActive = true
+        case .editDraft:
+            self.navigateTo(destination: editDraftReportView)
+            sheetManager.hide()
+        case .editOutbox:
+            navigateTo(destination: outboxDetailsView)
             sheetManager.hide()
         case .delete:
             showDeleteReportConfirmationView()
-        case .view:
-            reportsViewModel.viewReportLinkIsActive = true
+        case .viewSubmitted:
+            navigateTo(destination: submittedDetailsView)
             sheetManager.hide()
         }
+    }
+    
+    private var editDraftReportView: some View {
+        DraftReportView(mainAppModel: mainAppModel,
+                        reportId: reportsViewModel.selectedReport?.id)
+        .environmentObject(reportsViewModel)
+    }
+    
+    private var submittedDetailsView: some View {
+        SubmittedDetailsView(appModel: mainAppModel,
+                             reportId: reportsViewModel.selectedReport?.id)
+        .environmentObject(reportsViewModel)
+    }
+    
+    private var outboxDetailsView: some View {
+        OutboxDetailsView(appModel: mainAppModel,
+                          reportsViewModel: reportsViewModel,
+                          reportId: reportsViewModel.selectedReport?.id)
+        .environmentObject(reportsViewModel)
     }
 }
 

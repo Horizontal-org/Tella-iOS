@@ -10,7 +10,7 @@ struct ConnectionsView: View {
     
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var homeViewModel: HomeViewModel
-
+    
     var body: some View {
         
         if homeViewModel.serverDataItemArray.count > 0 {
@@ -40,13 +40,12 @@ struct ConnectionsView: View {
                     
                 case .tellaUpload:
                     ConnectionsItemView(title: "Reports",
-                                        image: "home.report")
-                      .navigateTo(destination: ReportsView(mainAppModel: appModel))
-
+                                        image: "home.report",
+                                        destination: ReportsView(mainAppModel: appModel))
                 default:
                     ConnectionsItemView(title: "Reports",
-                                        image: "home.report")
-                      .navigateTo(destination: ReportsView(mainAppModel: appModel))
+                                        image: "home.report",
+                                        destination: ReportsView(mainAppModel: appModel))
                 }
                 
             }
@@ -54,28 +53,29 @@ struct ConnectionsView: View {
     }
 }
 
-
- struct ConnectionsItemView: View {
-     var title : String
-     var image : String
-
-     var body: some View {
-         RoundedRectangle(cornerRadius: 20)
-             .fill(Color.white.opacity(0.2))
-             .frame(width: 92,height: 92)
-             .overlay(
-                 VStack {
-                     Image(image)
-                     Text(title)
-                         .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                         .foregroundColor(.white)
-                 }
-             )
+struct ConnectionsItemView<Destination:View>: View {
+    var title : String
+    var image : String
+    var destination : Destination
+    
+    var body: some View {
+        Button {
+            navigateTo(destination: destination, title: title, largeTitle: true)
+        } label: {
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.white.opacity(0.2))
+                .frame(width: 92,height: 92)
+                .overlay(
+                    VStack {
+                        Image(image)
+                        Text(title)
+                            .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
+                            .foregroundColor(.white)
+                    }
+                )
+        }
     }
 }
-
-
-
 
 struct ConnectionsView_Previews: PreviewProvider {
     static var previews: some View {
