@@ -27,7 +27,7 @@ enum LocalizableHome: String, LocalizableDelegate {
     case tellaFilesOthers = "Home_TellaFiles_Action_Others"
 
     //QuickDelete
-    case quickDeleteSwipeTitle = "Home_QuickDelete_Swipe_Title"
-    case quickDeleteActionTitle = "Home_QuickDelete_Action_Title"
-    case quickDeleteActionCancel = "Home_QuickDelete_Action_Cancel"
+    case quickDeleteSwipeTitle = "Home_QuickDelete_Action_Title"
+    case quickDeleteActionTitle = "Home_QuickDelete_Action_QuickDelete"
+    case quickDeleteActionCancel = "Home_QuickDelete_Action_QuickDeleteDeactivated"
 }
