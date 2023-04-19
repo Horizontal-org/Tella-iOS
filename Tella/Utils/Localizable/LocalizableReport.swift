@@ -11,7 +11,7 @@ import Foundation
 enum LocalizableReport: String, LocalizableDelegate {
 
     case reportsTitle = "Reports_AppBar"
-    case reportsText = "Reports_AppBar_SubHead"
+    case reportsText = "Reports_Report_AppBar"
     case reportsDraftEmpty = "Reports_Draft_EmptyAllFiles_Expl"
     case reportsOutboxEmpty = "Reports_Outbox_EmptyAllFiles_Expl"
     case reportsSubmitedEmpty = "Reports_Submitted_EmptyAllFiles_Expl"

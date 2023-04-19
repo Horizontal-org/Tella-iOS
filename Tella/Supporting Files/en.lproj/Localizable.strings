@@ -220,7 +220,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettAbout_PrivacyPolicy" = "Privacy policy";
 
 "Reports_AppBar" = "Reports";
-"Reports_AppBar_SubHead" = "Report";
+"Reports_Report_AppBar" = "Report";
 "Reports_Draft_EmptyAllFiles_Expl" = "Your Drafts is currently empty. Reports that you have not submitted will appear here.";
 "Reports_Outbox_EmptyAllFiles_Expl" = "Your Outbox is currently empty. Reports that are ready to be sent will appear here.";
 "Reports_Submitted_EmptyAllFiles_Expl" = "You have no submitted reports.";
