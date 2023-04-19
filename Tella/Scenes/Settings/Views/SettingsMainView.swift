@@ -11,7 +11,7 @@ struct SettingsMainView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @StateObject var settingsViewModel : SettingsViewModel
     @StateObject var serversViewModel : ServersViewModel
-
+    
     init(appModel:MainAppModel) {
         _settingsViewModel = StateObject(wrappedValue: SettingsViewModel(appModel: appModel))
         _serversViewModel = StateObject(wrappedValue: ServersViewModel(mainAppModel: appModel))
@@ -33,7 +33,7 @@ struct SettingsMainView: View {
                 Spacer()
             }
         }
-
+        
         .toolbar {
             LeadingTitleToolbar(title: LocalizableSettings.settAppBar.localized)
         }
@@ -41,35 +41,37 @@ struct SettingsMainView: View {
         .onDisappear {
             appModel.publishUpdates()
         }
-        
-        .environmentObject(settingsViewModel)
-        .environmentObject(serversViewModel)
-
     }
     
     var generalView: some View {
-        SettingsItemView<AnyView>(imageName: "settings.general",
-                                  title: "General",
-                                  destination:
-                                    GeneralView().environmentObject(settingsViewModel) .eraseToAnyView())
+        SettingsItemView(imageName: "settings.general",
+                         title: "General",
+                         destination:
+                            GeneralView().environmentObject(settingsViewModel))
     }
     
     var securityView: some View {
-        SettingsItemView<AnyView>(imageName: "settings.lock",
-                                  title: "Security",
-                                  destination:SecuritySettingsView().environmentObject(settingsViewModel) .eraseToAnyView())
+        SettingsItemView(imageName: "settings.lock",
+                         title: "Security",
+                         destination:securitySettingsView)
     }
     
     var serversView: some View {
-        SettingsItemView<AnyView>(imageName: "settings.servers",
-                                  title: "Servers",
-                                  destination:ServersListView().environmentObject(serversViewModel).eraseToAnyView())
+        SettingsItemView(imageName: "settings.servers",
+                         title: "Servers",
+                         destination:ServersListView()
+            .environmentObject(serversViewModel))
     }
     
     var helpView: some View {
-        SettingsItemView<AnyView>(imageName: "settings.help",
-                                  title: LocalizableSettings.settAbout.localized,
-                                  destination:AboutAndHelpView().environmentObject(settingsViewModel) .eraseToAnyView())
+        SettingsItemView(imageName: "settings.help",
+                         title: LocalizableSettings.settAbout.localized,
+                         destination:AboutAndHelpView().environmentObject(settingsViewModel))
+    }
+    
+    var securitySettingsView: some View {
+        SecuritySettingsView()
+            .environmentObject(settingsViewModel)
     }
 }
 

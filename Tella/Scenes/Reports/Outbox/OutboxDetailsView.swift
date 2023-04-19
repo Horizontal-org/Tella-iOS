@@ -18,7 +18,7 @@ struct OutboxDetailsView: View {
     
     var body: some View {
         
-        NavigationContainerView {
+        ContainerView {
             
             VStack {
                 
@@ -32,14 +32,17 @@ struct OutboxDetailsView: View {
                 }
             }
             
-            ReportDetailsViewLink
-            
             if outboxReportVM.isLoading {
                 CircularActivityIndicatory()
             }
         }
         
-        .navigationBarBackButtonHidden(true)
+        .onReceive(outboxReportVM.$shouldShowSubmittedReportView, perform: { value in
+            if value {
+                navigateTo(destination: submittedDetailsView)
+            }
+        })
+        .navigationBarHidden(true)
     }
     
     var outboxReportHeaderView: some View {
@@ -167,16 +170,14 @@ struct OutboxDetailsView: View {
         }
     }
     
-    private var ReportDetailsViewLink: some View {
+    private var submittedDetailsView: some View {
         SubmittedDetailsView(appModel: mainAppModel,
                              reportId: outboxReportVM.reportViewModel.id)
         .environmentObject(reportsViewModel)
-        .addNavigationLink(isActive: $outboxReportVM.shouldShowSubmittedReportView)
     }
     
     private func dismissView() {
-        reportsViewModel.newReportRootLinkIsActive = false
-        reportsViewModel.editRootLinkIsActive = false
+        self.popTo(UIHostingController<ReportsView>.self)
     }
     
     private func showDeleteReportConfirmationView() {

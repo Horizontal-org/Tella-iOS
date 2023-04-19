@@ -25,11 +25,11 @@ struct FileGroupsView: View {
                 LazyVGrid(columns: columns, spacing: 18) {
                     ForEach(homeFileItems, id: \.self) { homeFileItem in
                         FileGroupView(groupName: homeFileItem.title,
-                                      iconName: homeFileItem.imageName)
-                        .navigateTo(destination: FileListView(appModel: appModel,
-                                                              rootFile: appModel.vaultManager.root,
-                                                              fileType: homeFileItem.fileType,
-                                                              title: homeFileItem.title ))
+                                      iconName: homeFileItem.imageName,
+                                      destination: FileListView(appModel: appModel,
+                                                                rootFile: appModel.vaultManager.root,
+                                                                fileType: homeFileItem.fileType,
+                                                                title: homeFileItem.title ))
                     }
                 }
             }

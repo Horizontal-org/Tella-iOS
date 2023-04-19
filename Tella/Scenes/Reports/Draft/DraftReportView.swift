@@ -11,7 +11,6 @@ struct DraftReportView: View {
     
     @State private var menuFrame : CGRect = CGRectZero
     @State private var shouldShowMenu : Bool = false
-    @State var shouldShowOutboxReport : Bool = false
     
     @EnvironmentObject var mainAppModel : MainAppModel
     @EnvironmentObject var sheetManager : SheetManager
@@ -24,7 +23,7 @@ struct DraftReportView: View {
     
     var body: some View {
         
-        NavigationContainerView {
+        ContainerView {
             
             contentView
                 .environmentObject(reportViewModel)
@@ -33,11 +32,9 @@ struct DraftReportView: View {
             
             photoVideoPickerView
             
-            fileListViewLink
-            
-            ReportDetailsViewLink
-            
-        } .onTapGesture {
+        }
+        .navigationBarHidden(true)
+        .onTapGesture {
             shouldShowMenu = false
         }
         
@@ -68,7 +65,7 @@ struct DraftReportView: View {
                 showSaveReportConfirmationView()
             } label: {
                 Image("close")
-                    .padding(EdgeInsets(top: 16, leading: 12, bottom: 5, trailing: 16))
+                    .padding(EdgeInsets(top: 10, leading: 12, bottom: 5, trailing: 16))
             }
             
             Text(LocalizableReport.reportsText.localized)
@@ -229,22 +226,12 @@ struct DraftReportView: View {
         .padding(EdgeInsets(top: 0, leading: 24, bottom: 16, trailing: 24))
     }
     
-    @ViewBuilder
-    private var fileListViewLink: some View {
-        if reportViewModel.showingFileList {
-            fileListView
-                .addNavigationLink(isActive: $reportViewModel.showingFileList, shouldAddEmptyView: true)
-        }
-    }
-    
-    private var ReportDetailsViewLink: some View {
+    var outboxDetailsView: some View {
         OutboxDetailsView(appModel: mainAppModel,
                           reportsViewModel: reportsViewModel,
                           reportId: reportViewModel.reportId,
                           shouldStartUpload: true)
         .environmentObject(reportsViewModel)
-        .addNavigationLink(isActive: $shouldShowOutboxReport)
-        
     }
     
     var fileListView : some View {
@@ -287,7 +274,7 @@ struct DraftReportView: View {
         reportViewModel.saveReport()
         
         DispatchQueue.main.async {
-            shouldShowOutboxReport = true
+            navigateTo(destination: outboxDetailsView)
         }
     }
     
@@ -320,8 +307,7 @@ struct DraftReportView: View {
     
     private func dismissViews() {
         sheetManager.hide()
-        reportsViewModel.newReportRootLinkIsActive = false
-        reportsViewModel.editRootLinkIsActive = false
+        self.presentationMode.wrappedValue.dismiss()
     }
 }
 
@@ -332,3 +318,4 @@ struct DraftReportView_Previews: PreviewProvider {
             .environmentObject(ReportsViewModel(mainAppModel: MainAppModel()))
     }
 }
+

@@ -116,14 +116,12 @@ struct RecordView: View {
             }
             
             Button(action: {
-                
+                navigateTo(destination: getFileListView())
             }) {
                 Image("mic.listen")
                     .resizable()
                     .frame(width: 52, height: 52)
-                    .navigateTo(destination:getFileListView())
             }
-            .navigateTo(destination:getFileListView())
         }
     }
     
@@ -141,9 +139,9 @@ struct RecordView: View {
             
             Button(action: {
                 
-//                if self.viewModel.sourceView == .addSingleFile{
-//                    viewModel.showingRecoredrView.wrappedValue = false
-//                }
+                // if self.viewModel.sourceView == .addSingleFile{
+                // viewModel.showingRecoredrView.wrappedValue = false
+                // }
                 self.viewModel.onStopRecording()
                 
             }) {
@@ -152,7 +150,6 @@ struct RecordView: View {
             }
             
             Rectangle()
-            
                 .frame(width: 52, height: 52)
                 .hidden()
         }
@@ -178,14 +175,12 @@ struct RecordView: View {
             }
             
             Button(action: {
-                
+                navigateTo(destination: getFileListView())
             }) {
                 Image("mic.listen")
                     .resizable()
                     .frame(width: 52, height: 52)
-                    .navigateTo(destination:getFileListView()) // For iOS 15
             }
-            .navigateTo(destination:getFileListView()) // For iOS 14
         }
     }
     

@@ -10,6 +10,8 @@ import SwiftUI
 
 struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
     
+    var shouldEnableBackButton : Bool  = true
+
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State private var isValid : Bool = false
 
@@ -21,7 +23,7 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
     var action : (() -> Void)?
     
     var body: some View {
-        NavigationContainerView {
+        ContainerView {
             VStack(alignment: .center) {
                 Spacer(minLength: 20)
                 
@@ -47,6 +49,7 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
                         keyboardNumbers: LockKeyboardNumbers)
                 
                 Spacer()
+                
                 VStack {
                     if shouldShowErrorMessage   {
                         ConfirmPasswordErrorView(errorMessage: LocalizableLock.lockPinConfirmErrorPINsDoNotMatch.localized)
@@ -54,6 +57,7 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
                     }
                     
                     BottomLockView(isValid: $isValid,
+                                   shouldEnableBackButton: shouldEnableBackButton,
                                    nextButtonAction: nextButtonAction,
                                    destination:destination,
                                    nextAction: action, backAction: {

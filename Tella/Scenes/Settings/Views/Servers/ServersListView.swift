@@ -35,13 +35,11 @@ struct ServersListView: View {
         .toolbar {
             LeadingTitleToolbar(title: "Servers")
         }
-        .environmentObject(serversViewModel)
-
     }
     
     private func serversView<T>() -> [T] {
         
-        var arrayView : [T] = [SettingsAddServerCardView()
+        var arrayView : [T] = [SettingsAddServerCardView().environmentObject(serversViewModel)
             .eraseToAnyView() as! T]
         
         serversViewModel.serverArray.forEach({ server in

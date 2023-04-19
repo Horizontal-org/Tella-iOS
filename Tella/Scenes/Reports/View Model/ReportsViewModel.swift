@@ -14,9 +14,6 @@ class ReportsViewModel: ObservableObject {
     @Published var draftReports : [Report] = []
     @Published var outboxedReports : [Report] = []
     @Published var submittedReports : [Report] = []
-    @Published var newReportRootLinkIsActive : Bool = false
-    @Published var editRootLinkIsActive : Bool = false
-    @Published var viewReportLinkIsActive : Bool = false
     @Published var selectedReport : Report?
     @Published var selectedCell = Pages.draft
     @Published var pageViewItems : [PageViewItem] = [PageViewItem(title: LocalizableReport.draftTitle.localized, page: .draft, number: "") ,
@@ -27,31 +24,19 @@ class ReportsViewModel: ObservableObject {
         
         ListActionSheetItem(imageName: "view-icon",
                             content: self.selectedReport?.status?.sheetItemTitle ?? "",
-                            type: self.selectedReport?.status?.reportActionType ?? .view),
+                            type: self.selectedReport?.status?.reportActionType ?? .viewSubmitted),
         ListActionSheetItem(imageName: "delete-icon-white",
                             content: LocalizableReport.viewModelDelete.localized,
                             type: ReportActionType.delete)
     ]}
 
-    var serverLinkIsActive : Binding<Bool> = .constant(false)
     private var subscribers = Set<AnyCancellable>()
-    
-    var clickActionType : ReportActionType {
-        switch self.selectedReport?.status {
-        case .submitted:
-            return.view
-        default:
-            return .edit
-        }
-    }
 
-    init(mainAppModel : MainAppModel, serverLinkIsActive : Binding<Bool> = .constant(false)) {
+    init(mainAppModel : MainAppModel) {
         
         self.mainAppModel = mainAppModel
         
         self.getReports()
-        
-        self.serverLinkIsActive = serverLinkIsActive
     }
     
     private func getReports() {

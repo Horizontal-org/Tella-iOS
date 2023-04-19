@@ -6,7 +6,7 @@
 import SwiftUI
 
 struct AddFilesToDraftView: View {
-
+    
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var sheetManager: SheetManager
     @EnvironmentObject var draftReportVM: DraftReportVM
@@ -61,7 +61,7 @@ struct AddFilesToDraftView: View {
                      fileListType: .selectFiles,
                      resultFile: $draftReportVM.resultFile)
     }
-    
+
     func showAddFileSheet() {
         
         sheetManager.showBottomSheet( modalHeight: CGFloat(draftReportVM.addFileToDraftItems.count * 50 + 90), content: {
@@ -101,7 +101,8 @@ struct AddFilesToDraftView: View {
             
         case .tellaFile:
             sheetManager.hide()
-            draftReportVM.showingFileList = true
+            navigateTo(destination: fileListView)
+            
         default:
             break
         }

@@ -41,15 +41,21 @@ struct SecuritySettingsView: View {
             let passwordType = AuthenticationManager().getPasswordType()
             passwordTypeString = passwordType == .tellaPassword ? LocalizableLock.lockSelectActionPassword.localized : LocalizableLock.lockSelectActionPin.localized
         }
-        
+        .onReceive(lockViewModel.shouldDismiss) { shouldDismiss in
+            if shouldDismiss {
+                self.popTo(UIHostingController<Optional<ModifiedContent<SecuritySettingsView, _EnvironmentKeyWritingModifier<Optional<SettingsViewModel>>>>>.self)
+            }
+        }
+
     }
     
     var lockView: some View {
         
-        SettingsItemView<AnyView>(imageName: "settings.lock",
+        SettingsItemView(imageName: "settings.lock",
                                   title: LocalizableSettings.settSecLock.localized,
                                   value: passwordTypeString,
                                   destination:unlockView.eraseToAnyView())
+        
     }
 
     var lockTimeoutView: some View {
