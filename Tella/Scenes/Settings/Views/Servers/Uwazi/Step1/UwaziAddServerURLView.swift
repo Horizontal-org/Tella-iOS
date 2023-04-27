@@ -1,96 +1,97 @@
+//
+//  UwaziAddServerURLView.swift
 //  Tella
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Created by Robert Shrestha on 4/18/23.
+//  Copyright © 2023 INTERNEWS. All rights reserved.
 //
 
 import SwiftUI
 
-struct AddServerURLView: View {
-    
+struct UwaziAddServerURLView: View {
     //    @EnvironmentObject var serversViewModel : ServersViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
+
     //    var action : (() -> Void)?
     var nextButtonAction: NextButtonAction = .action
-    
-    
+
+
     @EnvironmentObject var serversViewModel : ServersViewModel
-    @StateObject var serverViewModel : ServerViewModel
-    
-    init(appModel:MainAppModel, server: Server? = nil) {
-        _serverViewModel = StateObject(wrappedValue: ServerViewModel(mainAppModel: appModel, currentServer: server))
-    }
-    
+    @EnvironmentObject var serverViewModel : ServerViewModel
+    @EnvironmentObject var mainAppModel : MainAppModel
+    @State var showNextLoginView : Bool = false
+
     var body: some View {
-        
+
         ContainerView {
-            
+
             ZStack {
-                
+
                 VStack(spacing: 0) {
                     Spacer()
                         .frame(height: 80)
-                    
+
                     Image("settings.server")
-                    
-                    
+
+
                     Spacer()
                         .frame(height: 24)
-                    
-                    Text("Enter the project URL")
+
+                    Text(LocalizableSettings.UwaziServerURL.localized)
                         .font(.custom(Styles.Fonts.regularFontName, size: 18))
                         .foregroundColor(.white)
-                    
+
                     Spacer()
                         .frame(height: 40)
-                    
+
                     TextfieldView(fieldContent: $serverViewModel.projectURL,
                                   isValid: $serverViewModel.validURL,
                                   shouldShowError: $serverViewModel.shouldShowURLError,
                                   errorMessage: serverViewModel.urlErrorMessage,
                                   fieldType: .url)
                     Spacer()
-                    
+
                     BottomLockView<AnyView>(isValid: $serverViewModel.validURL,
                                             nextButtonAction: .action,
                                             nextAction: {
-                        // serverViewModel.checkURL()
-                        navigateTo(destination: serverLoginView)
-                        
+                        //                        serverViewModel.checkURL()
+                        self.showNextLoginView = true
                     },
                                             backAction: {
                         self.presentationMode.wrappedValue.dismiss()
                     })
-                    
-                    
-                    
+
+                    nextViewLink
+
                 } .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-                
+
                 if serverViewModel.isLoading {
                     CircularActivityIndicatory()
                 }
             }
         }
-        
         .navigationBarHidden(true)
         .onAppear {
-            
+
 #if DEBUG
             serverViewModel.projectURL = "https://api.beta.web.tella-app.org/p/dhekra"
 #endif
         }
     }
-    
-    private var serverLoginView: some View {
-        ServerLoginView()
+
+    private var nextViewLink: some View {
+        UwaziServerAccessSelectionView(appModel: mainAppModel)
             .environmentObject(serverViewModel)
+            .environmentObject(serversViewModel)
+            //.addNavigationLink(isActive: $showNextLoginView, destination: <#_#>)
     }
-    
 }
 
-struct AddServerURLView_Previews: PreviewProvider {
+struct UwaziAddServerURLView_Previews: PreviewProvider {
     static var previews: some View {
-        AddServerURLView(appModel: MainAppModel())
+        UwaziAddServerURLView()
+            .environmentObject(MainAppModel())
             .environmentObject(ServersViewModel(mainAppModel: MainAppModel()))
+            .environmentObject(ServerViewModel(mainAppModel: MainAppModel(), currentServer: nil))
     }
 }

@@ -9,6 +9,7 @@ struct SettingsAddServerCardView: View {
     
     @EnvironmentObject var serversViewModel : ServersViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
+    @EnvironmentObject var settingViewModel: SettingsViewModel
     
     var body: some View {
         ZStack {

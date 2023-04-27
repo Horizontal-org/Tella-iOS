@@ -35,7 +35,6 @@
 "LockUnlock_UnlockPin_Action_Ok" = "OK";
 "Home_TabBar" = "Home";
 "Home_AppBar" = "Tella";
-"Home_RecentFiles_Subhead" = "Recent files";
 "Home_RecentFiles_MoreFiles" = "%i more files";
 "Home_TellaFiles_Subhead" = "Tella files";
 "Home_TellaFiles_Action_AllFiles" = "All files";
@@ -197,6 +196,31 @@ If you want to take a picture or a video, proceed in the following way:\
 
 
 "Settings_SettServers_AppBar" = "Servers";
+"Setting_SettServer_Selection_Title" = "What type of server would you like to connect to?";
+"Setting_SettServer_Selection_Message" = "If you are not sure, please ask your organization.";
+"Setting_SettServer_TellaWeb" = "TELLA WEB";
+"Setting_SettServer_Uwazi" = "UWAZI";
+
+"Home_RecentFiles_Subhead" = "Recent files";
+
+
+"Setting_Server_Uwazi_Server_URL" = "Enter the server URL";
+"Setting_Server_Uwazi_Access_Title" = "Log in if you have a username and password, or access the server as a public instance.";
+"Setting_Server_Uwazi_Login" = "LOG IN";
+"Setting_Server_Uwazi_Access_Public" = "ACCESS AS PUBLIC INSTANCE";
+"Setting_Server_Uwazi_Login_Access" = "Log in to access the server";
+"Setting_Server_Uwazi_Username" = "Username";
+"Setting_Server_Uwazi_Password" = "Password";
+"Setting_Server_Uwazi_Two_Step_Title" = "Two-step verification";
+"Setting_Server_Uwazi_Two_Step_Message" = "This Uwazi instance requires two-step verification. Enter here the 6-digit code from your authenticator app.";
+"Setting_Server_Uwazi_Authentication_Placeholder" = "Authentication code";
+"Setting_Server_Uwazi_Authentication_Verify" = "VERIFY";
+"Setting_Server_Uwazi_Language_Title" = "Uwazi language";
+"Setting_Server_Uwazi_Language_Message" = "This Uwazi collection is available in several languages. Please select in which language you would like to download templates.";
+"Setting_Server_Uwazi_Language_Ok" = "OK";
+"Setting_Server_Uwazi_Language_Cancel" = "CANCEL";
+"Setting_Server_Uwazi_Connect_Server" = "Connected to server";
+"Setting_Server_Uwazi_Success_Message" = "You have successfully connected to the server and will be able to share your data.";
 
 "Settings_SettAbout_AppBar" = "About & Help";
 "Settings_SettAbout_Head" = "Tella";
