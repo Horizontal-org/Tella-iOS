@@ -65,9 +65,10 @@ struct ServerSelectionView: View {
                                         shouldHideBack: true,
                                         nextAction: {
                     if istellWebSelected {
-                        showTellaWeb = true
+                        navigateTo(destination: AddServerURLView(appModel: mainAppModel))
                     } else if isUwaziSelected {
-                        showUwazi = true
+                        navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel)
+                            .environmentObject(serverViewModel).environmentObject(serversViewModel))
                     } else {
 
                     }
@@ -76,8 +77,8 @@ struct ServerSelectionView: View {
             .toolbar {
                 LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
             }
-            tellaWebLink
-            UwaziLink
+//            tellaWebLink
+//            UwaziLink
         }
     }
     private var tellaWebLink: some View {
@@ -85,14 +86,6 @@ struct ServerSelectionView: View {
             .environmentObject(serversViewModel)
             //.addNavigationLink(isActive: $showTellaWeb)
     }
-    private var UwaziLink: some View {
-        UwaziAddServerURLView()
-            .environmentObject(serverViewModel)
-            .environmentObject(serversViewModel)
-            //.addNavigationLink(isActive: $showUwazi)
-    }
-
-
 }
 
 struct ServerSelectionView_Previews: PreviewProvider {

@@ -13,15 +13,9 @@ struct UwaziServerAccessSelectionView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var isLoginSelected: Bool = false
     @State var isPublicInstance: Bool = false
-    @State var showLogin: Bool = false
-    @State var showAccess: Bool = false
 
     @EnvironmentObject var serversViewModel : ServersViewModel
-    @StateObject var serverViewModel : ServerViewModel
-
-    init(appModel:MainAppModel, server: Server? = nil) {
-        _serverViewModel = StateObject(wrappedValue: ServerViewModel(mainAppModel: appModel, currentServer: server))
-    }
+    @EnvironmentObject var serverViewModel : UwaziServerViewModel
     var body: some View {
         ContainerView {
             VStack {
@@ -59,9 +53,16 @@ struct UwaziServerAccessSelectionView: View {
                                         nextButtonAction: .action,
                                         nextAction: {
                     if isLoginSelected {
-                        showLogin = true
+                        let loginView = UwaziLoginView()
+                            .environmentObject(serversViewModel)
+                            .environmentObject(serverViewModel)
+                        navigateTo(destination: loginView)
                     } else if isPublicInstance {
-                        showAccess = true
+                        let languageSelection = UwaziLanguageSelectionView(isPresented: .constant(true))
+                            .environmentObject(SettingsViewModel(appModel: MainAppModel()))
+                            .environmentObject(serversViewModel)
+                            .environmentObject(serverViewModel)
+                        navigateTo(destination: languageSelection)
                     } else {
 
                     }
@@ -70,30 +71,15 @@ struct UwaziServerAccessSelectionView: View {
                     self.presentationMode.wrappedValue.dismiss()
                 })
             }
-            loginLink
-            publicLink
         }
         .navigationBarBackButtonHidden(true)
 
-    }
-    private var loginLink: some View {
-        UwaziLoginView()
-            .environmentObject(serversViewModel)
-            .environmentObject(serverViewModel)
-            //.addNavigationLink(isActive: $showLogin)
-    }
-    private var publicLink: some View {
-        UwaziLanguageSelectionView(isPresented: .constant(true))
-            .environmentObject(SettingsViewModel(appModel: MainAppModel()))
-            .environmentObject(serversViewModel)
-            .environmentObject(serverViewModel)
-            //.addNavigationLink(isActive: $showAccess)
     }
 }
 
 struct UwaziServerAccessSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        UwaziServerAccessSelectionView(appModel: MainAppModel())
+        UwaziServerAccessSelectionView()
             .environmentObject(ServersViewModel(mainAppModel: MainAppModel()))
             .environmentObject(ServerViewModel(mainAppModel: MainAppModel(), currentServer: nil))
     }

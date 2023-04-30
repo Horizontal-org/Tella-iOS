@@ -57,25 +57,17 @@ struct UwaziLanguageSelectionView: View {
                     }
                     .buttonStyle(BigButtonStyleForLanguage(color: Color(UIColor(hexValue: 0xF5F5F5).withAlphaComponent(0.16))))
                     Button(LocalizableSettings.UwaziLanguageOk.localized) {
-                        showSuccessView = true
+                       navigateTo(destination: UwaziSuccessView())
                     }
                     .buttonStyle(BigButtonStyleForLanguage(color: Styles.Colors.yellow))
                 }
                 .padding(.trailing, 20)
                 .padding(.top, 12)
-                nextViewLink
             }
 
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: backButton)
-    }
-    @ViewBuilder
-    private var nextViewLink: some View {
-            UwaziSuccessView()
-//                .environmentObject(serverViewModel)
-//                .environmentObject(serversViewModel)
-                //.addNavigationLink(isActive: $showSuccessView)
     }
 }
 struct BigButtonStyleForLanguage: ButtonStyle {

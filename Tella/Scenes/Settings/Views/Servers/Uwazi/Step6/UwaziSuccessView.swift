@@ -26,6 +26,7 @@ struct UwaziSuccessView: View {
                                         shouldHideNext: false,
                                         shouldHideBack: true,
                                         nextAction: {
+                    self.popTo(UIHostingController<Optional<ModifiedContent<ServersListView, _EnvironmentKeyWritingModifier<Optional<ServersViewModel>>>>>.self)
 
                 })
             }.padding(.leading, 23)

@@ -9,17 +9,18 @@
 import SwiftUI
 
 struct UwaziAddServerURLView: View {
-    //    @EnvironmentObject var serversViewModel : ServersViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-
-    //    var action : (() -> Void)?
     var nextButtonAction: NextButtonAction = .action
 
 
     @EnvironmentObject var serversViewModel : ServersViewModel
-    @EnvironmentObject var serverViewModel : ServerViewModel
+    @StateObject var serverViewModel : UwaziServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
-    @State var showNextLoginView : Bool = false
+
+    init(appModel:MainAppModel, server: Server? = nil) {
+        _serverViewModel = StateObject(wrappedValue: UwaziServerViewModel(mainAppModel: appModel, currentServer: server))
+    }
+
 
     var body: some View {
 
@@ -54,15 +55,13 @@ struct UwaziAddServerURLView: View {
                     BottomLockView<AnyView>(isValid: $serverViewModel.validURL,
                                             nextButtonAction: .action,
                                             nextAction: {
-                        //                        serverViewModel.checkURL()
-                        self.showNextLoginView = true
+                        let serverAccess = UwaziServerAccessSelectionView().environmentObject(serverViewModel).environmentObject(serversViewModel)
+                        navigateTo(destination: serverAccess)
+
                     },
                                             backAction: {
                         self.presentationMode.wrappedValue.dismiss()
                     })
-
-                    nextViewLink
-
                 } .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
 
                 if serverViewModel.isLoading {
@@ -78,18 +77,11 @@ struct UwaziAddServerURLView: View {
 #endif
         }
     }
-
-    private var nextViewLink: some View {
-        UwaziServerAccessSelectionView(appModel: mainAppModel)
-            .environmentObject(serverViewModel)
-            .environmentObject(serversViewModel)
-            //.addNavigationLink(isActive: $showNextLoginView, destination: <#_#>)
-    }
 }
 
 struct UwaziAddServerURLView_Previews: PreviewProvider {
     static var previews: some View {
-        UwaziAddServerURLView()
+        UwaziAddServerURLView(appModel: MainAppModel())
             .environmentObject(MainAppModel())
             .environmentObject(ServersViewModel(mainAppModel: MainAppModel()))
             .environmentObject(ServerViewModel(mainAppModel: MainAppModel(), currentServer: nil))

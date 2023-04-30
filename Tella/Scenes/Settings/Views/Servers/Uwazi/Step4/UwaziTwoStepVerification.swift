@@ -9,15 +9,9 @@
 import SwiftUI
 
 struct UwaziTwoStepVerification: View {
-    @State var code = ""
-    @State var validCode = false
-    @State var shouldShowLoginError = false
-    @State var codeErrorMessage = ""
-    @State var validCredentials = true
-    @State var validPassword = true
-    @State var showLanguageView = false
 
-    @EnvironmentObject var serverViewModel : ServerViewModel
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @EnvironmentObject var serverViewModel : UwaziServerViewModel
     @EnvironmentObject var serversViewModel : ServersViewModel
 
     var body: some View {
@@ -32,40 +26,36 @@ struct UwaziTwoStepVerification: View {
                         .multilineTextAlignment(.center)
                     Spacer()
                         .frame(height: 15)
-                    TextfieldView(fieldContent: $code,
-                                  isValid: $validCode,
-                                  shouldShowError: $shouldShowLoginError,
-                                  errorMessage: codeErrorMessage,
+                    TextfieldView(fieldContent: $serverViewModel.code,
+                                  isValid: $serverViewModel.validCode,
+                                  shouldShowError: $serverViewModel.shouldShowAuthenticationError,
+                                  errorMessage: serverViewModel.codeErrorMessage,
                                   fieldType: .code,
-                                  placeholder : LocalizableSettings.UwaziAuthenticationPlaceholder.localized)
+                                  placeholder: LocalizableSettings.UwaziAuthenticationPlaceholder.localized)
+                                .keyboardType(.numberPad)
                     .frame(height: 57)
                     Spacer()
                         .frame(height: 19)
                     TellaButtonView<AnyView>(title: LocalizableSettings.UwaziAuthenticationVerify.localized,
                                              nextButtonAction: .action,
-                                             isValid: $validCredentials) {
+                                             isValid: $serverViewModel.validAuthenticationCode) {
                         UIApplication.shared.endEditing()
-                        showLanguageView = true
+                        let languageView = UwaziLanguageSelectionView(isPresented: .constant(true))
+                            .environmentObject(SettingsViewModel(appModel: MainAppModel()))
+                            .environmentObject(serversViewModel)
+                            .environmentObject(serverViewModel)
+                        navigateTo(destination: languageView)
                     }
                     Spacer()
                 }
                 .padding(.leading, 23)
                 .padding(.trailing,23)
-                nextViewLink
-                BottomLockView<AnyView>(isValid: $validPassword,
+                BottomLockView<AnyView>(isValid: .constant(true),
                                         nextButtonAction: .action,
                                         shouldHideNext: true)
             }
         }
         .navigationBarHidden(true)
-    }
-    @ViewBuilder
-    private var nextViewLink: some View {
-        UwaziLanguageSelectionView(isPresented: .constant(true))
-            .environmentObject(SettingsViewModel(appModel: MainAppModel()))
-            .environmentObject(serversViewModel)
-            .environmentObject(serverViewModel)
-            //.addNavigationLink(isActive: $showLanguageView)
     }
 }
 
