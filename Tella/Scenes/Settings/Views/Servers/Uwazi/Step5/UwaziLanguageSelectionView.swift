@@ -52,14 +52,12 @@ struct UwaziLanguageSelectionView: View {
                 Rectangle().frame(height: 0.4).foregroundColor(.white)
                 HStack{
                     Spacer()
-                    Button(LocalizableSettings.UwaziLanguageCancel.localized) {
+                    LanguageActionButton(type: .cancel) {
                         self.presentationMode.wrappedValue.dismiss()
                     }
-                    .buttonStyle(BigButtonStyleForLanguage(color: Color(UIColor(hexValue: 0xF5F5F5).withAlphaComponent(0.16))))
-                    Button(LocalizableSettings.UwaziLanguageOk.localized) {
-                       navigateTo(destination: UwaziSuccessView())
+                    LanguageActionButton(type: .ok) {
+                        navigateTo(destination: UwaziSuccessView())
                     }
-                    .buttonStyle(BigButtonStyleForLanguage(color: Styles.Colors.yellow))
                 }
                 .padding(.trailing, 20)
                 .padding(.top, 12)
@@ -70,6 +68,37 @@ struct UwaziLanguageSelectionView: View {
         .navigationBarItems(leading: backButton)
     }
 }
+
+struct LanguageActionButton: View {
+    enum ButtonAction {
+        case ok
+        case cancel
+
+        var title: String {
+            switch self {
+            case .ok:
+                return LocalizableSettings.UwaziLanguageOk.localized
+            case .cancel:
+                return LocalizableSettings.UwaziLanguageCancel.localized
+            }
+        }
+        var buttonColor: Color {
+            switch self {
+            case .ok:
+                return Styles.Colors.yellow
+            case .cancel:
+                return Color(UIColor(hexValue: 0xF5F5F5).withAlphaComponent(0.16))
+            }
+        }
+    }
+    let type: ButtonAction
+    var action: () -> Void
+
+    var body: some View {
+        Button(type.title,action: action).buttonStyle(BigButtonStyleForLanguage(color: type.buttonColor))
+    }
+}
+
 struct BigButtonStyleForLanguage: ButtonStyle {
     @State var color: Color = .red
 
