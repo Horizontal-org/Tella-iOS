@@ -45,7 +45,7 @@ struct UwaziAddServerURLView: View {
                     Spacer()
                         .frame(height: 40)
 
-                    TextfieldView(fieldContent: $serverViewModel.projectURL,
+                    TextfieldView(fieldContent: $serverViewModel.serverURL,
                                   isValid: $serverViewModel.validURL,
                                   shouldShowError: $serverViewModel.shouldShowURLError,
                                   errorMessage: serverViewModel.urlErrorMessage,
@@ -73,7 +73,7 @@ struct UwaziAddServerURLView: View {
         .onAppear {
 
 #if DEBUG
-            serverViewModel.projectURL = "https://api.beta.web.tella-app.org/p/dhekra"
+            serverViewModel.serverURL = "https://api.beta.web.tella-app.org/p/dhekra"
 #endif
         }
     }

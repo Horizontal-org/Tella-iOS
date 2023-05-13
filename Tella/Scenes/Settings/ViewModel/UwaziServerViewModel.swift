@@ -14,7 +14,7 @@ class UwaziServerViewModel: ObservableObject {
 
     // Server propreties
     @Published var name : String?
-    @Published var projectURL : String = "https://"
+    @Published var serverURL : String = "https://"
     @Published var username : String = ""
     @Published var password : String = ""
     @Published var code: String = ""
@@ -71,7 +71,7 @@ class UwaziServerViewModel: ObservableObject {
     func addServer(token: String, project: ProjectAPI) {
 
         let server = Server(name: project.name,
-                            serverURL: projectURL.getBaseURL(),
+                            serverURL: serverURL.getBaseURL(),
                             username: username,
                             password: password,
                             accessToken: token,
@@ -146,7 +146,7 @@ class UwaziServerViewModel: ObservableObject {
 
     func login() {
 
-        guard let baseURL = projectURL.getBaseURL() else { return }
+        guard let baseURL = serverURL.getBaseURL() else { return }
 
         isLoading = true
 
@@ -184,7 +184,7 @@ class UwaziServerViewModel: ObservableObject {
 
         //        isLoading = true
 
-        ServerRepository().getProjetDetails(projectURL: projectURL, token: token)
+        ServerRepository().getProjetDetails(projectURL: serverURL, token: token)
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { completion in
@@ -212,7 +212,7 @@ class UwaziServerViewModel: ObservableObject {
     func fillReportVM() {
         if let server = self.currentServer {
             name =  server.name ?? ""
-            projectURL = server.url ?? ""
+            serverURL = server.url ?? ""
             username = server.username ?? ""
             password = server.password ?? ""
             activatedMetadata = server.activatedMetadata ?? false
