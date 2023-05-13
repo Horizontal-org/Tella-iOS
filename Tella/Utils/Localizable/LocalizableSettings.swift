@@ -37,6 +37,9 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settSecLockTimeout = "Settings_SettSec_LockTimeout"
     case settSecScreenSecurity = "Settings_SettSec_ScreenSecurity"
     case settSecScreenSecurityExpl = "Settings_SettSec_ScreenSecurity_Expl"
+    case settSecPreserveMetadata = "Setting_SettSec_PreserveMetadata"
+    case settSecPreserveMetadataExpl = "Setting_SettSec_PreserveMetadata_Expl"
+
     
     // LockTimeout
     case settLockTimeoutSheetTitle = "Settings_SettLockTimeout_SheetTitle"

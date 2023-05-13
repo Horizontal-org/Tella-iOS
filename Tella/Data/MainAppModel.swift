@@ -219,6 +219,7 @@ class SettingsModel: ObservableObject, Codable {
     @Published var showRecentFiles: Bool = false
     @Published var lockTimeout: LockTimeoutOption = .immediately
     @Published var screenSecurity: Bool = true
+    @Published var preserveMetadata: Bool = false
     
     enum CodingKeys: CodingKey {
         case offLineMode
@@ -229,6 +230,7 @@ class SettingsModel: ObservableObject, Codable {
         case showRecentFiles
         case lockTimeout
         case screenSecurity
+        case preserveMetadata
     }
     
     init() {
@@ -247,7 +249,7 @@ class SettingsModel: ObservableObject, Codable {
         let lockTimeoutString = try container.decode(String.self, forKey: .lockTimeout)
         lockTimeout = LockTimeoutOption(rawValue: lockTimeoutString) ?? .immediately
         screenSecurity = try container.decode(Bool.self, forKey: .screenSecurity)
-        
+        preserveMetadata = try container.decode(Bool.self, forKey: .preserveMetadata)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -258,8 +260,10 @@ class SettingsModel: ObservableObject, Codable {
         try container.encode(deleteForms, forKey: .deleteForms)
         try container.encode(deleteServerSettings, forKey: .deleteServerSettings)
         try container.encode(showRecentFiles, forKey: .showRecentFiles)
-        try container.encode( lockTimeout.rawValue, forKey: .lockTimeout)
+        try container.encode(lockTimeout.rawValue, forKey: .lockTimeout)
         try container.encode(screenSecurity, forKey: .screenSecurity)
+        try container.encode(preserveMetadata, forKey: .preserveMetadata)
+
     }
 }
 
