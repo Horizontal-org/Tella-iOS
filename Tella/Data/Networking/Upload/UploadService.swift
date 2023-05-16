@@ -38,7 +38,7 @@ class UploadService: NSObject {
     func pauseDownload(reportId:Int?) {
         let operation = activeOperations.first(where: {$0.report?.id == reportId})
         operation?.pauseSendingReport()
-        activeOperations.removeAll(where: {$0.report?.id == reportId})
+        activeOperations.removeAll(where: {$0.report?.id == reportId && (operation?.type != .autoUpload)})
     }
     
     func cancelTasksIfNeeded() {
@@ -49,7 +49,7 @@ class UploadService: NSObject {
     func cancelSendingReport(reportId:Int?) {
         let operation = activeOperations.first(where: {$0.report?.id == reportId})
         operation?.cancelSendingReport()
-        activeOperations.removeAll(where: {$0.report?.id == reportId})
+        activeOperations.removeAll(where: {$0.report?.id == reportId && (operation?.type != .autoUpload)})
     }
 
     func initAutoUpload( mainAppModel: MainAppModel ) {
