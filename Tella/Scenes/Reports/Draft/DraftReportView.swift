@@ -68,7 +68,7 @@ struct DraftReportView: View {
                     .padding(EdgeInsets(top: 10, leading: 12, bottom: 5, trailing: 16))
             }
             
-            Text("Report")
+            Text(LocalizableReport.reportsText.localized)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                 .foregroundColor(Color.white)
             
@@ -96,7 +96,7 @@ struct DraftReportView: View {
                     
                     if reportViewModel.hasMoreServer  {
                         
-                        Text("Send report to:")
+                        Text(LocalizableReport.reportsSendTo.localized)
                             .font(.custom(Styles.Fonts.regularFontName, size: 14))
                             .foregroundColor(Color.white)
                         
@@ -133,14 +133,14 @@ struct DraftReportView: View {
                                   isValid: $reportViewModel.isValidTitle,
                                   shouldShowError: $reportViewModel.shouldShowError,
                                   fieldType: .text,
-                                  placeholder : "Title",
+                                  placeholder : LocalizableReport.reportsListTitle.localized,
                                   shouldShowTitle: reportViewModel.hasMoreServer)
                     .frame(height: 30)
                     
                     Spacer()
                         .frame(height: 34)
                     
-                    TextEditorView(placeholder: "Description",
+                    TextEditorView(placeholder:  LocalizableReport.reportsListDescription.localized,
                                    fieldContent: $reportViewModel.description,
                                    isValid: $reportViewModel.isValidDescription,
                                    shouldShowError: $reportViewModel.shouldShowError,
@@ -161,7 +161,7 @@ struct DraftReportView: View {
     @ViewBuilder
     var successView: some View {
         if reportViewModel.showingSuccessMessage {
-            SaveSuccessView(text: "The audio recording was saved to your Tella files.",
+            SaveSuccessView(text: LocalizableReport.audioSavedCorrectly.localized,
                             isPresented: $reportViewModel.showingSuccessMessage)
         }
     }
@@ -216,7 +216,7 @@ struct DraftReportView: View {
             }.disabled(!reportViewModel.reportIsValid)
             
             // Submit button
-            TellaButtonView<AnyView> (title: reportViewModel.isNewDraft ? "SUBMIT" : "SEND",
+            TellaButtonView<AnyView> (title: reportViewModel.isNewDraft ? LocalizableReport.reportsSubmit.localized : LocalizableReport.reportsSend.localized,
                                       nextButtonAction: .action,
                                       buttonType: .yellow,
                                       isValid: $reportViewModel.reportIsValid) {
@@ -234,6 +234,14 @@ struct DraftReportView: View {
         .environmentObject(reportsViewModel)
     }
     
+    var fileListView : some View {
+        FileListView(appModel: mainAppModel,
+                     rootFile: mainAppModel.vaultManager.root,
+                     fileType: nil,
+                     title: LocalizableReport.selectFiles.localized,
+                     fileListType: .selectFiles,
+                     resultFile: $reportViewModel.resultFile)
+    }
     
     var cameraView : some View {
         reportViewModel.showingCamera ?
@@ -286,10 +294,10 @@ struct DraftReportView: View {
     
     private func showSaveReportConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: 200) {
-            ConfirmBottomSheet(titleText: "Exit report?",
-                               msgText: "Your draft will be lost.",
-                               cancelText: "Exit anyway".uppercased(),
-                               actionText: "save and exit".uppercased(), didConfirmAction: {
+            ConfirmBottomSheet(titleText: LocalizableReport.exitTitle.localized,
+                               msgText: LocalizableReport.exitMessage.localized,
+                               cancelText: LocalizableReport.exitCancel.localized.uppercased(),
+                               actionText:LocalizableReport.exitSave.localized.uppercased(), didConfirmAction: {
                 saveDraftReport()
             }, didCancelAction: {
                 dismissViews()

@@ -127,8 +127,8 @@ struct ReportCardView : View {
 struct ReportCardView_Previews: PreviewProvider {
     static var previews: some View {
         ContainerView {
-            ReportCardView(report: .constant(Report(title: "Title",
-                                                    description: "Description",
+            ReportCardView(report: .constant(Report(title: LocalizableReport.reportsListTitle.localized,
+                                                    description: LocalizableReport.reportsListDescription.localized,
                                                     status: .draft,
                                                     server: Server(), vaultFiles: [])))
         }

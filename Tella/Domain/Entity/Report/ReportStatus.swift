@@ -22,13 +22,13 @@ extension ReportStatus {
         switch self {
         
         case .submitted:
-            return "View"
+            return LocalizableReport.viewModelView.localized
 
         case .draft:
-            return "Edit"
+            return LocalizableReport.viewModelEdit.localized
 
         default:
-            return "Open"
+            return LocalizableReport.viewModelOpen.localized
         }
     }
 

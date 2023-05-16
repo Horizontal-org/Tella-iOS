@@ -24,7 +24,7 @@ struct EmptyReportView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             Styles.Colors.backgroundMain
-            EmptyReportView(message: "Your Drafts is currently empty. Reports that you have not submitted will appear here.")
+            EmptyReportView(message: LocalizableReport.reportsDraftEmpty.localized)
         }
     }
 }
