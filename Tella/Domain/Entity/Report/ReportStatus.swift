@@ -12,8 +12,10 @@ enum  ReportStatus : Int {
     case submissionError = 4
     case deleted = 5
     case submissionPending = 6 // no connection on sending, or offline mode - form saved
-    case submissionPartialParts = 7  // some req body parts (files) are not sent
+    case submissionPaused = 7  // Submission paused
     case submissionInProgress = 8  // Submission launched
+    case submissionAutoPaused = 9  // Submission paused for auto report
+
 }
 
 extension ReportStatus {

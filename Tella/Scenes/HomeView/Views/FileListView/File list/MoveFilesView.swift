@@ -99,7 +99,7 @@ struct MoveFilesView_Previews: PreviewProvider {
             Styles.Colors.lightBlue.edgesIgnoringSafeArea(.all)
             MoveFilesView(title: "Move “IMG9092.jpg”")
         }
-        .environmentObject(MainAppModel())
+        .environmentObject(MainAppModel.stub())
         .environmentObject(FileListViewModel.stub())
     }
 }

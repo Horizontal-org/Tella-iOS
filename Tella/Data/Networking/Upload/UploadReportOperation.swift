@@ -8,8 +8,20 @@ import Foundation
 class UploadReportOperation: BaseUploadOperation {
     
     init(report:Report, urlSession:URLSession, mainAppModel :MainAppModel,type: OperationType) {
-        super.init(urlSession: urlSession, mainAppModel: mainAppModel, type:.autoUpload)
+        super.init(urlSession: urlSession, mainAppModel: mainAppModel, type:type)
         self.report = report
+        
+        self.mainAppModel.networkMonitor.connexionDidChange.sink(receiveValue: { value in
+            if self.report != nil {
+                if value && self.report?.status == .submissionPending  {
+                    self.startUploadReportAndFiles()
+                } else if value == false && self.report?.status != .submissionPending {
+                    self.updateReport(reportStatus: .submissionPending)
+                    self.stopConnexion()
+                    self.response.send(UploadResponse.initial)
+                }
+            }
+        }).store(in: &subscribers)
     }
     
     override func main() {
@@ -18,17 +30,23 @@ class UploadReportOperation: BaseUploadOperation {
     }
     
     func startUploadReportAndFiles() {
-        guard let currentReport = report else { return  }
+        guard let currentReport = report else { return }
         
-        self.updateReport(reportStatus: .submissionInProgress)
-        
-        self.prepareReportToSend(report: currentReport)
-        
-        if currentReport.apiID != nil { // Has API ID
-            uploadFiles()
+        if mainAppModel.networkMonitor.isConnected {
             
+            self.updateReport(reportStatus: .submissionInProgress)
+            
+            self.prepareReportToSend(report: currentReport)
+            
+            if currentReport.apiID != nil { // Has API ID
+                uploadFiles()
+                
+            } else {
+                self.sendReport()
+            }
         } else {
-            self.sendReport()
+            self.updateReport(reportStatus: .submissionPending)
+
         }
     }
     

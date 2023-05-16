@@ -117,12 +117,12 @@ struct FileListView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack(alignment: .top) {
             Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
-            FileListView(appModel: MainAppModel(),
+            FileListView(appModel: MainAppModel.stub(),
                          rootFile: VaultFile.stub(type: .folder),
                          fileType: [.folder])
         }
         .background(Styles.Colors.backgroundMain)
-        .environmentObject(MainAppModel())
+        .environmentObject(MainAppModel.stub())
         .environmentObject(FileListViewModel.stub())
     }
 }

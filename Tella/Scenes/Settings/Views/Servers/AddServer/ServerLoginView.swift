@@ -81,8 +81,8 @@ struct ServerLoginView: View {
         .onAppear {
             
 #if DEBUG
-            serverViewModel.username = "admin@wearehorizontal.org"
-            serverViewModel.password = "nadanada"
+            serverViewModel.username = "dhekra@wearehorizontal.org"
+            serverViewModel.password = "123456"
 #endif
         }
         

@@ -8,53 +8,53 @@ import Combine
 
 class AutoUpload: BaseUploadOperation {
     
-    var files : [VaultFile] = []
-    fileprivate var file : VaultFile?
-    
     override init(urlSession:URLSession, mainAppModel :MainAppModel,type: OperationType) {
         super.init(urlSession: urlSession, mainAppModel: mainAppModel, type:.autoUpload)
+        
+        mainAppModel.networkMonitor.connexionDidChange.sink(receiveValue: { value in
+            if self.report != nil {
+                if value && self.report?.status == .submissionPending  {
+                    self.checkReport()
+                } else if value == false && self.report?.status != .submissionPending {
+                    self.stopConnexion()
+                }
+            }
+        }).store(in: &subscribers)
     }
     
     override func main() {
-        super.main()
         handleResponse()
+        super.main()
     }
     
     func addFile(file:VaultFile) {
-        self.files.append(file)
-        startUploadReportAndFiles()
+        self.response.send(UploadResponse.initial)
+        self.autoPauseReport()
+        self.filesToUpload.removeAll()
+        startUploadReportAndFiles(file: file)
     }
     
-    func startUploadReportAndFiles() {
+    func startUploadReportAndFiles(file:VaultFile) {
         
-        self.file = files.first
-        
-        if let currentReport = self.mainAppModel.vaultManager.tellaData.getCurrentReport(), let reportId = currentReport.id, let file = self.file {
+        if let currentReport = self.mainAppModel.vaultManager.tellaData.getCurrentReport(), let reportId = currentReport.id {
             
             do {
                 
                 if let reportFile = try self.mainAppModel.vaultManager.tellaData.addReportFile(fileId: file.id, reportId: reportId) {
                     currentReport.reportFiles?.append(reportFile)
                 }
+                self.report = currentReport
+                self.checkReport()
                 
-                if currentReport.apiID != nil { // Has API ID
-                    self.prepareReportToSend(report: currentReport)
-                    uploadFiles()
-                    
-                } else if currentReport.status != .submissionInProgress { //reportFile to ReportVaultFile
-                    self.prepareReportToSend(report: currentReport)
-                    self.sendReport()
-                }
             } catch {
                 
             }
         } else {
-            createNewReport()
+            createNewReport(file: file)
         }
     }
     
-    func createNewReport() {
-        guard let file else { return}
+    func createNewReport(file:VaultFile) {
         
         let reportToAdd = Report(title: "Auto-report" + Date().getFormattedDateString(format: DateFormat.autoReportNameName.rawValue),
                                  description: "",
@@ -70,15 +70,35 @@ class AutoUpload: BaseUploadOperation {
         do {
             // files
             let report = try self.mainAppModel.vaultManager.tellaData.addCurrentUploadReport(report: reportToAdd)
-            self.prepareReportToSend(report: report)
-            self.sendReport()
+            self.report = report
+            self.checkReport()
         } catch {
             
         }
     }
     
+    private func checkReport() {
+        if mainAppModel.networkMonitor.isConnected {
+            
+            if report?.apiID != nil { // Has API ID
+                self.prepareReportToSend(report: report)
+                uploadFiles()
+            } else if report?.status != .submissionInProgress { //reportFile to ReportVaultFile
+                self.prepareReportToSend(report: report)
+                self.sendReport()
+            }
+        } else {
+            self.updateReport(reportStatus: .submissionPending)
+        }
+    }
+    
     func prepareReportToSend(report:Report?) {
-        guard let file else { return}
+        
+        var vaultFileResult : Set<VaultFile> = []
+        
+        mainAppModel.vaultManager.root.getFile(root: mainAppModel.vaultManager.root,
+                                               vaultFileResult: &vaultFileResult,
+                                               ids: report?.reportFiles?.compactMap{$0.fileId} ?? [])
         
         self.report = report
         
@@ -87,8 +107,11 @@ class AutoUpload: BaseUploadOperation {
         var reportVaultFiles : [ReportVaultFile] = []
         
         report?.reportFiles?.forEach({ reportFile in
-            let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: file)
-            reportVaultFiles.append(reportVaultFile)
+            
+            if let vaultFile = vaultFileResult.first(where: {reportFile.fileId == $0.id}) {
+                let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
+                reportVaultFiles.append(reportVaultFile)
+            }
         })
         
         self.reportVaultFiles = reportVaultFiles
@@ -99,17 +122,12 @@ class AutoUpload: BaseUploadOperation {
             
         } receiveValue: { uploadResponse in
             switch uploadResponse {
-            case .progress(let progressInfo):
-                
-                if progressInfo.status == .submitted || progressInfo.status == .submissionError {
-                    self.files.removeAll(where: {$0.id == progressInfo.fileId})
-                    self.startUploadReportAndFiles()
-                }
+            case .progress(_):
+                break
                 
             default:
                 break
             }
         }.store(in: &subscribers)
-        
     }
 }

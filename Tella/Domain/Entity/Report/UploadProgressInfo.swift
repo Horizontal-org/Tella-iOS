@@ -18,19 +18,21 @@ class UploadProgressInfo {
     var status : FileStatus = .unknown
     var isOnBackground: Bool = false
     var error: APIError?
+    var reportStatus: ReportStatus?
 
     init(fileId: String? = nil, status: FileStatus) {
         self.fileId = fileId
         self.status = status
     }
     
-    init(bytesSent: Int? = nil,current : Int? = nil, fileId: String? = nil, status: FileStatus, error: APIError? = nil, total: Int? = nil) {
+    init(bytesSent: Int? = nil,current : Int? = nil, fileId: String? = nil, status: FileStatus, error: APIError? = nil, total: Int? = nil, reportStatus: ReportStatus? = nil) {
         self.bytesSent = bytesSent
         self.current = current
         self.fileId = fileId
          self.status = status
         self.status = status
         self.total = total
+        self.reportStatus = reportStatus
 
      }
 

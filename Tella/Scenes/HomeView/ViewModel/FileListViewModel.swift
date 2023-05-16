@@ -285,6 +285,6 @@ class FileListViewModel: ObservableObject {
 
 extension FileListViewModel {
     static func stub() -> FileListViewModel {
-        return FileListViewModel(appModel: MainAppModel(), fileType: [.folder], rootFile: VaultFile.stub(type: .folder), folderPathArray: [])
+        return FileListViewModel(appModel: MainAppModel.stub(), fileType: [.folder], rootFile: VaultFile.stub(type: .folder), folderPathArray: [])
     }
 }

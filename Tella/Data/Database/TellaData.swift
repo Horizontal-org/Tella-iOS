@@ -46,17 +46,16 @@ class TellaData : ObservableObject {
         return id
     }
     
-    func deleteServer(serverId : Int) throws -> Int {
+    func deleteServer(serverId : Int) throws  {
         
         guard let database = database else {
             throw SqliteError()
         }
-        let id = try database.deleteServer(serverId: serverId)
+        try database.deleteServer(serverId: serverId)
         getServers()
-        return id
         
     }
-
+    
     func deleteAllServers() throws -> Int {
         
         guard let database = database else {
@@ -92,7 +91,7 @@ class TellaData : ObservableObject {
         self.outboxedReports.value = database.getReports(reportStatus: [.finalized,
                                                                         .submissionError,
                                                                         .submissionPending,
-                                                                        .submissionPartialParts,
+                                                                        .submissionPaused,
                                                                         .submissionInProgress])
         
         self.submittedReports.value = database.getReports(reportStatus: [ReportStatus.submitted])
@@ -119,7 +118,6 @@ class TellaData : ObservableObject {
         
         return database.getReports(reportStatus: [ .submissionError,
                                                    .submissionPending,
-                                                   .submissionPartialParts,
                                                    .submissionInProgress])
     }
     

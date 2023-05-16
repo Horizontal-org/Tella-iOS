@@ -123,7 +123,7 @@ struct AddFilesToDraftView: View {
 struct AddFilesToDraftView_Previews: PreviewProvider {
     static var previews: some View {
         AddFileView()
-            .environmentObject(MainAppModel())
+            .environmentObject(MainAppModel.stub())
             .environmentObject(FileListViewModel.stub())
     }
 }

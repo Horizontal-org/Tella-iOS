@@ -114,7 +114,7 @@ struct FileListItemButtonStyle : ButtonStyle {
 struct FileListItem_Previews: PreviewProvider {
     static var previews: some View {
         FileListItem(file: VaultFile.stub(type: .folder))
-            .environmentObject(MainAppModel())
+            .environmentObject(MainAppModel.stub())
             .environmentObject(FileListViewModel.stub())
     }
 }

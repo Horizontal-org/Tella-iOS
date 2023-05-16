@@ -120,6 +120,11 @@ class DataBaseHelper {
                 }
             }
             
+            if (!andCondition.isEmpty && !andDifferentCondition.isEmpty) {
+                sql += " AND"
+            }
+
+            
             for (primaryKeyColumnNameIndex, primaryKeyColumnName) in andDifferentConditionPrimaryKeyColumnNames.enumerated() {
                 if primaryKeyColumnNameIndex == 0 {
                     sql += " ( "
@@ -391,7 +396,7 @@ class DataBaseHelper {
         }
     }
     
-    func delete(tableName:String, primarykeyValue : [KeyValue]) throws -> Int {
+    func delete(tableName:String, primarykeyValue : [KeyValue] = [], inCondition: [KeyValues] = []) throws -> Int {
         
         let primaryKeyColumnNames = primarykeyValue.compactMap{($0.key)}
         
@@ -402,6 +407,28 @@ class DataBaseHelper {
                 deleteSql += " AND"
             }
         }
+        
+        for (index, condition) in inCondition.enumerated() {
+
+            deleteSql += "  " + condition.key + " IN " + "( "
+            
+            condition.value.enumerated().forEach({ (index,item) in
+                
+                deleteSql += "\(item) "
+                
+                if index == condition.value.count - 1 {
+                    deleteSql += "  ) "
+                } else {
+                    deleteSql += "  , "
+                }
+                
+            })
+
+            if index < inCondition.count - 1 {
+                deleteSql += "  AND"
+            }
+        }
+
         
         debugLog("delete: \(deleteSql)")
         

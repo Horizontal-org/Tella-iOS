@@ -187,9 +187,35 @@ class TellaDataBase {
                                          primarykeyValue: [KeyValue(key: D.cServerId, value: server.id)])
     }
     
-    func deleteServer(serverId : Int) throws -> Int {
-        return try dataBaseHelper.delete(tableName: D.tServer,
-                                         primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
+    func deleteServer(serverId : Int) throws {
+
+        var reportIDs : [Int] = []
+
+        do {
+            
+            let responseDict = try dataBaseHelper.selectQuery(tableName: D.tReport,
+                                                              andCondition: [KeyValue(key: D.cServerId, value: serverId)])
+            
+            responseDict.forEach { dict in
+                if let id = dict[D.cReportId] as? Int {
+                    reportIDs.append(id)
+                }
+            }
+        } catch {
+
+        }
+
+        _ =  try dataBaseHelper.delete(tableName: D.tServer,
+                                                 primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
+
+        _ =  try dataBaseHelper.delete(tableName: D.tReport,
+                                        primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
+ 
+        if !reportIDs.isEmpty {
+            _ =  try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
+                                            inCondition: [KeyValues(key: D.cReportInstanceId, value: reportIDs)])
+        }
+
     }
 
     func deleteAllServers() throws -> Int {
@@ -398,8 +424,7 @@ class TellaDataBase {
                                    updatedDate: updatedDate?.getDate() ?? Date(),
                                    status: ReportStatus(rawValue: status ?? 0) ?? .draft,
                                    server: server,
-                                   // vaultFiles: getVaultFiles(reportID: reportID, notInStatus: [FileStatus.submitted]),
-                                   vaultFiles:[],
+                                   vaultFiles: getVaultFiles(reportID: reportID),
                                    apiID: apiReportId,
                                    currentUpload: currentUpload == 0 ? false : true)
                 }
@@ -474,6 +499,9 @@ class TellaDataBase {
     }
     
     func addReport(report : Report) throws -> Int {
+        let currentUpload = ((report.currentUpload == false) || (report.currentUpload == nil)) ? 0 : 1
+        
+        
         let reportId = try dataBaseHelper.insertInto(tableName: D.tReport,
                                                      keyValue: [KeyValue(key: D.cTitle, value: report.title),
                                                                 KeyValue(key: D.cDescription, value: report.description),
@@ -481,7 +509,7 @@ class TellaDataBase {
                                                                 KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()),
                                                                 KeyValue(key: D.cStatus, value: report.status?.rawValue),
                                                                 KeyValue(key: D.cServerId, value: report.server?.id),
-                                                                KeyValue(key: D.cCurrentUpload, value:report.currentUpload == false ? 0 : 1 )
+                                                                KeyValue(key: D.cCurrentUpload, value:currentUpload )
                                                                ])
         
         try report.reportFiles?.forEach({ reportFile in
@@ -626,10 +654,9 @@ class TellaDataBase {
     
     func deleteReportFiles(report:Report) {
         do {
-            if let array = report.reportFiles?.compactMap({ KeyValue(key: D.cReportInstanceId, value: $0.id as Any) } ) {
-                _ = try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
-                                              primarykeyValue: array)
-            }
+              
+            _ = try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
+                                              primarykeyValue: [KeyValue(key: D.cReportInstanceId, value: report.id as Any)])
         } catch {
             
         }

@@ -41,7 +41,7 @@ class ServerViewModel: ObservableObject {
     var currentServer : Server?
     
     var isAutoUploadServerExist: Bool {
-        return mainAppModel.vaultManager.tellaData.getAutoUploadServer() != nil && autoUpload == false
+        return mainAppModel.vaultManager.tellaData.getAutoUploadServer() != nil && self.currentServer?.autoUpload == false
     }
     
     init(mainAppModel : MainAppModel, currentServer: Server?) {
@@ -97,42 +97,7 @@ class ServerViewModel: ObservableObject {
             
         }
     }
-    
-    func checkURL() {
-        
-        isLoading = true
-        
-        
-        
-        
-//        API.Request.Server.publisher(serverURL: url)
-//            .receive(on: DispatchQueue.main)
-//            .sink(
-//                receiveCompletion: { completion in
-//                    self.isLoading = false
-//
-//                    switch completion {
-//                    case .failure(let error):
-//
-//                        if error.code == 400 {
-//                            self.shouldShowURLError = false
-//                            self.urlErrorMessage = ""
-//                            self.showNextLoginView = true
-//                        } else {
-//                            self.shouldShowURLError = true
-//                            self.urlErrorMessage = error.message
-//                        }
-//
-//                    case .finished:
-//                        break
-//                    }
-//                },
-//                receiveValue: { wrapper in
-//                }
-//            )
-//            .store(in: &subscribers)
-    }
-    
+
     func login() {
         
         guard let baseURL = projectURL.getBaseURL() else { return }
@@ -151,9 +116,6 @@ class ServerViewModel: ObservableObject {
                         self.isLoading = false
 
                     case .finished:
-//                        self.shouldShowLoginError = false
-//                        self.loginErrorMessage = ""
-//                        self.showNextSuccessLoginView = true
                         break
                         
                     }
