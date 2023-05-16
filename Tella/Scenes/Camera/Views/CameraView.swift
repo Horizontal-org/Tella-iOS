@@ -4,6 +4,7 @@
 
 import SwiftUI
 import Combine
+import AVFoundation
 
 
 struct CameraView: View {
@@ -86,15 +87,27 @@ struct CameraView: View {
                 cameraViewModel.image = value.0
                 cameraViewModel.imageData = value.1
 //                showProgressView()
-                cameraViewModel.saveImage()
+                if mainAppModel.settings.preserveMetadata {
+                    cameraViewModel.addWithExif(methodExifData: value.2, pathExtension: "png")
+                } else {
+                    cameraViewModel.saveImage()
+                }
+
             }
         
             .onReceive(model.$videoURLCompletion) { videoURL in
                 guard let videoURL = videoURL else { return }
                 
                 cameraViewModel.videoURL = videoURL
+                let asset = AVAsset(url: videoURL)
+                print(asset)
                 showProgressView()
-                cameraViewModel.saveVideo()
+                if mainAppModel.settings.preserveMetadata {
+                        cameraViewModel.saveVideo()
+                } else {
+                        cameraViewModel.addVideoWithoutExif()
+                }
+
             }
         
             .alert(isPresented:$showingPermissionAlert) {

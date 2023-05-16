@@ -28,6 +28,22 @@ class PhotoVideoViewModel : ObservableObject {
     
     func add(files: [URL], type: FileType) {
         Task {
+            let asset: AVAsset = AVAsset(url: files.first!)
+            asset.metadata.forEach { metadata in
+                print(metadata.key)
+                print(metadata.keySpace)
+                
+            }
+            if #available(iOS 15, *) {
+                for format in try await asset.load(.availableMetadataFormats) {
+                    _ = try await asset.loadMetadata(for: format)
+                    // Process the format-specific metadata collection.
+                }
+            } else {
+                // Fallback on earlier versions
+            }
+        }
+        Task {
             
             do { let vaultFile = try await self.mainAppModel.add(files: files,
                                                                  to: self.mainAppModel.vaultManager.root,

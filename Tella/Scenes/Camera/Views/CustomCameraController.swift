@@ -6,7 +6,7 @@ import SwiftUI
 import AVFoundation
 import Combine
 
-public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate {
+public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate, AVCaptureMetadataOutputObjectsDelegate {
     
     // MARK: - Private properties
     
@@ -21,6 +21,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     
     weak private var captureDelegate: AVCapturePhotoCaptureDelegate?
     weak private var videoRecordingDelegate: AVCaptureFileOutputRecordingDelegate?
+    weak private var videoDelegate: AVCaptureMetadataOutputObjectsDelegate?
     
     // MARK: - Public properties
     
@@ -29,7 +30,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     @Published var shouldShowPermission : Bool = false
     @Published var shouldCloseCamera : Bool = false
     @Published var shouldShowProgressView : Bool = false
-    @Published var imageCompletion: (UIImage,Data)?
+    @Published var imageCompletion: (UIImage,Data,[String: Any])?
     @Published var videoURLCompletion: URL?
     @Published var isRecording = false
     
@@ -43,6 +44,11 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     
     func startRunningCaptureSession() {
         sessionQueue.async {
+            if let videoDelegate = self.videoDelegate {
+                let captureMetadataOutput = AVCaptureMetadataOutput()
+                self.captureSession.addOutput(captureMetadataOutput)
+                captureMetadataOutput.setMetadataObjectsDelegate(videoDelegate, queue: .main)
+            }
             self.captureSession.startRunning()
         }
     }
@@ -73,10 +79,17 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
             guard let delegate = videoRecordingDelegate else {
                 return
             }
+
             if let videoOutputConnection = self.videoOutput?.connection(with: .video) {
                 videoOutputConnection.videoOrientation = deviceOrientation.videoOrientation()
             }
-            videoOutput?.startRecording(to: outFileUrl, recordingDelegate:delegate )
+            let metadata = AVMutableMetadataItem()
+            metadata.keySpace = AVMetadataKeySpace.quickTimeMetadata
+            metadata.key = AVMetadataKey.quickTimeMetadataKeyCreationDate as NSString
+            metadata.identifier = AVMetadataIdentifier.quickTimeMetadataCreationDate
+            metadata.value = String(format: "%+09.5f%+010.5f%+.0fCRSWGS_84", "27.700769", "85.300140", "1400") as NSString
+            videoOutput?.metadata = [metadata]
+            videoOutput?.startRecording(to: outFileUrl, recordingDelegate: delegate )
         }
     }
     
@@ -125,6 +138,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         
         captureDelegate = self
         videoRecordingDelegate = self
+        videoDelegate = self
         
         shouldCloseCamera = false
         
@@ -314,25 +328,40 @@ extension CameraService  {
            let orientationInt = photo.metadata[String(kCGImagePropertyOrientation)] as? UInt32,
            let imageOrientation = UIImage.Orientation.orientation(fromCGOrientationRaw: orientationInt) {
             print("cgImageRepresentation")
+            let dataTime = photo.metadata["{Exif}"] as? [String: Any]
             // Create image with proper orientation
             let cgImage = cgImageRepresentation
             let image = UIImage(cgImage: cgImage,
                                 scale: 1,
                                 orientation: imageOrientation)
-            self.imageCompletion = (image, image.data!)
+            self.imageCompletion = (image, image.data!, photo.metadata)
             
         }
     }
-    
+    public func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+        print(metadataObjects)
+    }
     public func fileOutput(_ output: AVCaptureFileOutput,
                            didFinishRecordingTo outputFileURL: URL,
                            from connections: [AVCaptureConnection],
                            error: Error?) {
-        
-        self.videoURLCompletion = outputFileURL
+
+        Task {
+            let asset: AVAsset = AVAsset(url: outputFileURL)
+            if #available(iOS 15, *) {
+                for format in try await asset.load(.availableMetadataFormats) {
+                    _ = try await asset.loadMetadata(for: format)
+                    // Process the format-specific metadata collection.
+                }
+            } else {
+                // Fallback on earlier versions
+            }
+        }
+
+        self.videoURLCompletion =  outputFileURL
         self.isRecording = false
     }
-    
+
     public func fileOutput(_ output: AVCaptureFileOutput, didStartRecordingTo fileURL: URL, from connections: [AVCaptureConnection]) {
         self.isRecording = true
     }

@@ -6,6 +6,9 @@ import Foundation
 import Combine
 import UIKit
 import SwiftUI
+import AVFoundation
+import AVKit
+import AssetsLibrary
 
 class CameraViewModel: ObservableObject {
     
@@ -97,6 +100,100 @@ class CameraViewModel: ObservableObject {
                 
             }
         }
+    }
+    func addVideoWithoutExif() {
+        guard let videoURL = videoURL else { return  }
+            let tmpFileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent("\(Int(Date().timeIntervalSince1970))").appendingPathExtension(videoURL.lastPathComponent)
+            Task {
+                do {
+                    guard let url = await self.exportFile(url: videoURL, destinationURL: tmpFileURL) else { return }
+
+                    do { let file = try await mainAppModel?.add(files: [url],
+                                                                to: rootFile,
+                                                                type: .video)
+                        DispatchQueue.main.async {
+                            self.resultFile?.wrappedValue = file
+                            self.lastImageOrVideoVaultFile = file?.first
+                        }
+                    }
+                }
+                catch {
+
+                }
+            }
+    }
+
+    func addWithExif(methodExifData: [String: Any], pathExtension: String) {
+        guard let imageData = self.imageData else { return  }
+
+        Task {
+            let exifData = await self.saveImageWithImageData(data: imageData, properties: methodExifData as NSDictionary, pathExtension: "png")
+            guard let url = mainAppModel?.saveDataToTempFile(data: exifData as Data, pathExtension: "png") else { return  }
+            do { let file = try await mainAppModel?.add(files: [url],
+                                                        to: rootFile,
+                                                        type: .image)
+
+                DispatchQueue.main.async {
+                    self.resultFile?.wrappedValue = file
+                    self.lastImageOrVideoVaultFile = file?.first
+                }
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    if let file = file?.first {
+                        self.mainAppModel?.sendAutoReportFile(file: file)
+                    }
+                }
+
+            }
+            catch {
+
+            }
+        }
+    }
+    func saveImageWithImageData(data: Data, properties: NSDictionary, pathExtension: String) async -> NSData{
+
+        let imageRef: CGImageSource = CGImageSourceCreateWithData((data as CFData), nil)!
+        let uti: CFString = CGImageSourceGetType(imageRef)!
+        let dataWithEXIF: NSMutableData = NSMutableData(data: data as Data)
+        let destination: CGImageDestination = CGImageDestinationCreateWithData((dataWithEXIF as CFMutableData), uti, 1, nil)!
+
+        CGImageDestinationAddImageFromSource(destination, imageRef, 0, (properties as CFDictionary))
+        CGImageDestinationFinalize(destination)
+        return dataWithEXIF
+    }
+    func exportFile(url: URL, destinationURL: URL) async -> URL? {
+        let asset = AVAsset(url: url)
+        print(asset.metadata)
+        guard let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) else { return nil }
+        exportSession.outputURL = destinationURL
+        var fileType: AVFileType = .mov
+        if  url.pathExtension.lowercased() == "mov" {
+            fileType = .mov
+        } else if url.pathExtension.lowercased() == "mp4" {
+            fileType = .mp4
+        } else {
+            fileType = .mov
+        }
+        exportSession.outputFileType = fileType
+        exportSession.metadata = nil
+        exportSession.metadataItemFilter = .forSharing()
+        await exportSession.export()
+        if exportSession.status == .completed {
+            return destinationURL
+        } else {
+            return nil
+        }
+    }
+    func getEXIFData(url: URL) -> [String: Any] {
+        let fileURL = url
+        if let imageSource = CGImageSourceCreateWithURL(fileURL as CFURL, nil) {
+            let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil)
+            if let dict = imageProperties as? [String: Any] {
+                print(dict)
+                return dict
+            }
+        }
+        return [:]
     }
     
     func initialiseTimerRunning() {
