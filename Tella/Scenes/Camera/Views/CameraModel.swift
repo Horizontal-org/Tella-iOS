@@ -12,7 +12,7 @@ final class CameraModel: ObservableObject {
     
       let service = CameraService()
     
-    @Published var imageCompletion: (UIImage,Data)?
+    @Published var imageCompletion: (UIImage,Data, [String: Any])?
     @Published var videoURLCompletion: URL?
     @Published var shouldShowPermission = false
     @Published var isRecording = false
