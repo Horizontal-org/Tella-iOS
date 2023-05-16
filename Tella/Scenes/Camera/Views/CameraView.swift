@@ -121,6 +121,7 @@ struct CameraView: View {
             model.stopRunningCaptureSession()
         })
         .edgesIgnoringSafeArea(.all)
+        .environmentObject(cameraViewModel)
         
     }
     
