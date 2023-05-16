@@ -3,55 +3,97 @@
 //
 import SwiftUI
 
+
+enum ReportPaths {
+    case reportMain
+    case draft
+    case outbox
+    case submitted
+}
+
 struct ReportsView: View {
     
-    @State var title: String = ""
-    @State var description: String = ""
-    @State var selecetedCell = Pages.new
-    @State var outBoxCount = 0
+    @EnvironmentObject var mainAppModel : MainAppModel
+    @StateObject private var reportsViewModel : ReportsViewModel
     
-    init() {
+    init(mainAppModel:MainAppModel) {
+        _reportsViewModel = StateObject(wrappedValue: ReportsViewModel(mainAppModel: mainAppModel))
     }
     
     var body: some View {
-        NavigationView {
-            ZStack(alignment: .top) {
-                Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
-                VStack(alignment: .leading) {
-                    PageView(selectedOption: self.$selecetedCell, outboxCount: self.$outBoxCount)
-                            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: 40, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                            .padding([.leading, .trailing], 10)
-                    VStack {
-                        switch self.selecetedCell {
-                        case .new:
-                            NewReportView(title: self.$title, description: self.$description)
-                        case .draft:
-                            VStack(alignment: .leading) {
-                                Text("Draft")
-                            }
-                        case .outbox:
-                            VStack(alignment: .leading) {
-                                Text("Outbox")
-                            }
-                        case .sent:
-                            VStack(alignment: .leading) {
-                                Text("Sent")
-                            }
-                        }
+        
+        contentView
+            .navigationBarTitle("Reports", displayMode: .large)
+            .environmentObject(reportsViewModel)
+    }
+    
+    private var contentView :some View {
+        
+        ContainerView {
+            
+            VStack(alignment: .center) {
+                
+                PageView(selectedOption: self.$reportsViewModel.selectedCell, pageViewItems: $reportsViewModel.pageViewItems)
+                    .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
+                
+                VStack (spacing: 0) {
+                    Spacer()
+                    
+                    switch self.reportsViewModel.selectedCell {
+                        
+                    case .draft:
+                        ReportListView(reportArray: $reportsViewModel.draftReports,
+                                       message: "Your Drafts is currently empty. Reports that you have not submitted will appear here.")
+                        
+                    case .outbox:
+                        
+                        ReportListView(reportArray: $reportsViewModel.outboxedReports,
+                                       message: "Your Outbox is currently empty. Reports that are ready to be sent will appear here.")
+                        
+                    case .submitted:
+                        ReportListView(reportArray: $reportsViewModel.submittedReports,
+                                       message: "You have no submitted reports.")
                     }
+                    
+                    Spacer()
                 }
-                .background(Styles.Colors.backgroundMain)
-            }
-            .navigationBarTitle("Reports")
-            .background(Styles.Colors.backgroundMain)
+                
+                TellaButtonView<AnyView> (title: "NEW REPORT",
+                                          nextButtonAction: .action,
+                                          buttonType: .yellow,
+                                          isValid: .constant(true)) {
+                    navigateTo(destination: newDraftReportView)
+                } .padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0))
+                
+            }.background(Styles.Colors.backgroundMain)
+                .padding(EdgeInsets(top: 15, leading: 20, bottom: 16, trailing: 20))
+        }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: backButton)
+    }
+    
+    private var newDraftReportView: some View {
+        DraftReportView(mainAppModel: mainAppModel).environmentObject(reportsViewModel)
+    }
+    
+    var backButton : some View {
+        Button {
+            self.popToRoot()
+        } label: {
+            Image("back")
+                .padding(EdgeInsets(top: -3, leading: -8, bottom: 0, trailing: 12))
         }
     }
+    
 }
 
 struct ReportsView_Previews: PreviewProvider {
     
     static var previews: some View {
-        ReportsView()
+        ReportsView(mainAppModel: MainAppModel())
     }
 }
 
+extension Int: Identifiable {
+    public var id: Int { self }
+}

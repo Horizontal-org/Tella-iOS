@@ -5,6 +5,7 @@
 import Foundation
 import Combine
 import AVFoundation
+import SwiftUI
 
 class RecordViewModel: ObservableObject {
     
@@ -12,19 +13,53 @@ class RecordViewModel: ObservableObject {
     @Published var fileName: String = ""
     @Published var time: String = ""
     @Published var shouldShowSettingsAlert: Bool = false
-
+    //    @Published var showingRecoredrView: Bool = false
+    var showingRecoredrView: Binding<Bool> = .constant(false)
+    
     private var audioBackend: RecordingAudioManager
     private var cancellable: Set<AnyCancellable> = []
-
-    init(mainAppModel: MainAppModel, rootFile: VaultFile) {
-        audioBackend = RecordingAudioManager(mainAppModel: mainAppModel, rootFile: rootFile)
+    var sourceView : SourceView = .tab
+    
+    
+    init(mainAppModel: MainAppModel,
+         rootFile: VaultFile,
+         resultFile : Binding<[VaultFile]?>?,
+         sourceView : SourceView,
+         showingRecoredrView: Binding<Bool> ) {
         
+        audioBackend = RecordingAudioManager()
+        
+        // Update the time
         audioBackend.currentTime.sink { value in
             self.time = value.stringFromTimeInterval()
         }.store(in: &cancellable)
         
+        
+        // Save the audio file and return the recorded file
+        audioBackend.fileURL.sink { value in
+            guard let value else { return }
+            Task {
+                do {
+                    guard let file = try await mainAppModel.add(audioFilePath: value, to: rootFile, type: .audio, fileName: self.fileName) else {return}
+                    DispatchQueue.main.async {
+                        resultFile?.wrappedValue = [file]
+                    }
+                        
+                    mainAppModel.sendAutoReportFile(file: file)
+ 
+                }
+            }
+        }.store(in: &cancellable)
+        
+        
+        // Init the file name
         self.fileName = self.initialFileName
         
+        // Init the source view
+        self.sourceView = sourceView
+        self.showingRecoredrView = showingRecoredrView
+        
+        // Update the view while updating the permission
         audioBackend.$audioPermission.sink { permission in
             switch permission {
             case .notDetermined:
@@ -43,8 +78,9 @@ class RecordViewModel: ObservableObject {
     }
     
     func onStartRecording() {
-        
-        self.state = .recording
+        DispatchQueue.main.async {
+            self.state = .recording
+        }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.002) {
             self.audioBackend.startRecording()

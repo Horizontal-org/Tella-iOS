@@ -25,7 +25,6 @@ struct MoreFileActionButton: View {
     
     var modalHeight : CGFloat {
         let dividerHeight = fileListViewModel.fileActionItems.filter{$0.viewType == ActionSheetItemType.divider}.count * 20
-        print(CGFloat((fileListViewModel.fileActionItems.count * 50) - dividerHeight  + 90))
         return CGFloat((fileListViewModel.fileActionItems.count * 50) - dividerHeight  + 90)
     }
     
@@ -121,7 +120,6 @@ struct MoreFileActionButton: View {
                                      cancelButtonText:LocalizableVault.renameFileCancelSheetAction.localized,
                                      fieldContent: $fileNameToUpdate,
                                      fileName: fileListViewModel.selectedFiles.count == 1 ? fileListViewModel.selectedFiles[0].fileName : "",
-                                     fieldType: FieldType.fileName,
                                      didConfirmAction: {
                 fileListViewModel.selectedFiles[0].fileName = fileNameToUpdate
                 appModel.rename(file: fileListViewModel.selectedFiles[0], parent: fileListViewModel.rootFile)

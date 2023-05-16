@@ -32,7 +32,7 @@ struct ConfirmLockPasswordView: View {
             }
             
             onboardingLink
-        }
+        }.navigationBarBackButtonHidden(true)
     }
     
     func lockWithPassword() {

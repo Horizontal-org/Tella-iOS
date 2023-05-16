@@ -5,24 +5,28 @@
 import Foundation
 import Combine
 import UIKit
+import SwiftUI
 
 class CameraViewModel: ObservableObject {
     
     // MARK: - Public properties
+    
+    var resultFile : Binding<[VaultFile]?>?
     
     @Published var lastImageOrVideoVaultFile :  VaultFile?
     @Published var isRecording : Bool = false
     @Published var formattedCurrentTime : String = "00:00:00"
     @Published var currentTime : TimeInterval = 0.0
     
+    
     var imageData : Data?
     var image : UIImage?
-
+    
     var videoURL : URL?
     var mainAppModel: MainAppModel?
     
     var rootFile: VaultFile
-
+    
     // MARK: - Private properties
     
     private var cancellable: Set<AnyCancellable> = []
@@ -30,37 +34,69 @@ class CameraViewModel: ObservableObject {
     
     // MARK: - Public functions
     
-    init(mainAppModel: MainAppModel, rootFile: VaultFile ) {
+    init(mainAppModel: MainAppModel,
+         rootFile: VaultFile,
+         resultFile : Binding<[VaultFile]?>? = nil ) {
         
         self.mainAppModel = mainAppModel
         self.rootFile = rootFile
-
-        mainAppModel.vaultManager.$root.sink { file in
-            self.lastImageOrVideoVaultFile = file.files.sorted(by: .newestToOldest, folderPathArray: [], root: mainAppModel.vaultManager.root, fileType: [.image, .video]).first
-        }.store(in: &cancellable)
+        
+        self.lastImageOrVideoVaultFile = mainAppModel.vaultManager.root.files.sorted(by: .newestToOldest, folderPathArray: [], root: rootFile, fileType: [.image, .video]).first
         
         mainAppModel.vaultManager.progress.progress.sink { value in
             if value == 1 {
                 
-                mainAppModel.vaultManager.clearTmpDirectory()
+// mainAppModel.vaultManager.clearTmpDirectory()
             }
         }.store(in: &cancellable)
+        
+        self.resultFile = resultFile
     }
-
+    
     func saveImage()   {
         guard let imageData = image?.fixedOrientation()?.pngData() else { return  }
         guard let url = mainAppModel?.saveDataToTempFile(data: imageData, pathExtension: "png") else { return  }
+        Task {
+            
+            do { let file = try await mainAppModel?.add(files: [url],
+                                                        to: rootFile,
+                                                        type: .image)
+                
+                DispatchQueue.main.async {
+                    self.resultFile?.wrappedValue = file
+                    self.lastImageOrVideoVaultFile = file?.first
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    if let file = file?.first {
+                        self.mainAppModel?.sendAutoReportFile(file: file)
+                    }
+                }
 
-        mainAppModel?.add(files: [url],
-                          to: rootFile,
-                          type: .image)
+            }
+            catch {
+                
+            }
+        }
     }
-
-    func saveVideo() {
+    
+    func saveVideo()  {
         guard let videoURL = videoURL else { return  }
-        mainAppModel?.add(files: [videoURL],
-                          to: rootFile,
-                          type: .video)
+        
+        Task {
+            
+            do { let file = try await mainAppModel?.add(files: [videoURL],
+                                                        to: rootFile,
+                                                        type: .video)
+                DispatchQueue.main.async {
+                    self.resultFile?.wrappedValue = file
+                    self.lastImageOrVideoVaultFile = file?.first
+                }
+            }
+            catch {
+                
+            }
+        }
     }
     
     func initialiseTimerRunning() {

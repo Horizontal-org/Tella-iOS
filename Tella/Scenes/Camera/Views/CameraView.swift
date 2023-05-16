@@ -10,34 +10,37 @@ struct CameraView: View {
     
     // MARK: - Public properties
     var sourceView : SourceView
-    
-    @State var showingPermissionAlert : Bool = false
-    
-    @Binding var showingCameraView : Bool
-    
-    @ObservedObject var cameraViewModel :  CameraViewModel
-    
-    @EnvironmentObject var sheetManager: SheetManager
-    
-    var customCameraRepresentable = CustomCameraRepresentable(
-        cameraFrame: .zero,
-        imageCompletion: {_,_   in }, videoURLCompletion: { _  in }
-    )
+    var showingCameraView : Binding<Bool>
     
     // MARK: - Private properties
     
-    @State private var image: UIImage?
+    private var subscriptions = Set<AnyCancellable>()
     
+    @State private var showingPermissionAlert : Bool = false
+    @StateObject private var cameraViewModel :  CameraViewModel
+    @StateObject private var model = CameraModel()
     @EnvironmentObject private var mainAppModel : MainAppModel
+    @EnvironmentObject private var sheetManager: SheetManager
     
     
+    init(sourceView: SourceView,
+         showingCameraView: Binding<Bool>,
+         resultFile: Binding<[VaultFile]?>? = nil,
+         mainAppModel: MainAppModel,
+         rootFile:VaultFile) {
+        
+        self.sourceView = sourceView
+        self.showingCameraView = showingCameraView
+        
+        _cameraViewModel = StateObject(wrappedValue: CameraViewModel(mainAppModel: mainAppModel, rootFile: rootFile, resultFile: resultFile))
+        
+    }
+
     var body: some View {
         
         NavigationContainerView(backgroundColor: Color.black) {
             
-            let frame = CGRect(x: 0, y: 0, width: UIScreen.screenWidth, height: UIScreen.screenHeight)
-            
-            cameraView(frame: frame)
+            CameraPreview(session: model.session)
                 .edgesIgnoringSafeArea(.all)
             
             getCameraControlsView()
@@ -46,77 +49,79 @@ struct CameraView: View {
             .accentColor(.white)
             .environmentObject(cameraViewModel)
             .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
-                    customCameraRepresentable.checkCameraPermission()
-                })
+                model.configure()
             }
             .onDisappear {
-                customCameraRepresentable.stopRunningCaptureSession()
+                model.stopRunningCaptureSession()
             }
-            .navigationBarHidden(mainAppModel.selectedTab == .home ? false : true)
         
-            .onReceive(customCameraRepresentable.$isRecording) { value in
-                cameraViewModel.isRecording = value ?? false
-                
-                
+            .onReceive(model.$isRecording) { value in
+                cameraViewModel.isRecording = value
             }
-            .onReceive(customCameraRepresentable.$shouldShowPermission) { value in
+        
+            .onReceive(model.$shouldShowPermission) { value in
                 showingPermissionAlert = value
             }
-            .onReceive(customCameraRepresentable.$shouldCloseCamera) { value in
+        
+            .onReceive(model.service.$shouldShowProgressView) { value in
+                if value {
+                    showProgressView()
+                }
+            }
+
+            .onReceive(model.$shouldCloseCamera) { value in
                 if value {
                     if sourceView == .tab {
                         mainAppModel.selectedTab = .home
                     } else {
-                        showingCameraView = false
+                        showingCameraView.wrappedValue = false
                     }
                     mainAppModel.clearTmpDirectory()
                 }
             }
+        
+            .onReceive(model.$imageCompletion) { value in
+                guard let value = value else { return }
+                
+                cameraViewModel.image = value.0
+                cameraViewModel.imageData = value.1
+//                showProgressView()
+                cameraViewModel.saveImage()
+            }
+        
+            .onReceive(model.$videoURLCompletion) { videoURL in
+                guard let videoURL = videoURL else { return }
+                
+                cameraViewModel.videoURL = videoURL
+                showProgressView()
+                cameraViewModel.saveVideo()
+            }
+        
             .alert(isPresented:$showingPermissionAlert) {
                 getSettingsAlertView()
             }
             .edgesIgnoringSafeArea(.all)
-        
-    }
-    
-    private func cameraView(frame: CGRect) -> CustomCameraRepresentable {
-        
-        customCameraRepresentable.cameraFrame = frame
-        
-        customCameraRepresentable.imageCompletion = {image , data in
-            cameraViewModel.image = image
-            cameraViewModel.imageData = data
-            showProgressView()
-            cameraViewModel.saveImage()
-        }
-        
-        customCameraRepresentable.videoURLCompletion = {videoURL in
-            cameraViewModel.videoURL = videoURL
-            showProgressView()
-            cameraViewModel.saveVideo()
-        }
-        return customCameraRepresentable
     }
     
     private func getCameraControlsView() -> some View {
         
-        CameraControlsView(showingCameraView: $showingCameraView,
+        CameraControlsView(showingCameraView: showingCameraView,
                            sourceView: sourceView,
                            captureButtonAction: {
-            customCameraRepresentable.takePhoto()
+            model.capturePhoto()
         }, recordVideoAction: {
-            customCameraRepresentable.startCaptureVideo()
+            model.startCaptureVideo()
         }, toggleCamera: {
-            customCameraRepresentable.toggleCameraType()
+            model.toggleCameraType()
         }, updateCameraTypeAction: { cameraType in
-            customCameraRepresentable.cameraType = cameraType
+            model.cameraType = cameraType
         }, toggleFlash: {
-            customCameraRepresentable.toggleFlash()
+            model.toggleFlash()
         }, close: {
-            customCameraRepresentable.stopRunningCaptureSession()
+            model.stopRunningCaptureSession()
         })
         .edgesIgnoringSafeArea(.all)
+        .environmentObject(cameraViewModel)
         
     }
     
@@ -137,7 +142,7 @@ struct CameraView: View {
                                       content: {
             ImportFilesProgressView(importFilesProgressProtocol: ImportFilesFromCameraProgress())
             
-        }) 
+        })
     }
 }
 

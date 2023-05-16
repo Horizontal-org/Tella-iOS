@@ -9,7 +9,7 @@ struct SelectingFilesHeaderView: View {
     @EnvironmentObject var fileListViewModel : FileListViewModel
     
     var body: some View {
-        if  fileListViewModel.selectingFiles {
+        if  fileListViewModel.shouldShowSelectingFilesHeaderView  {
            
             HStack{
                 

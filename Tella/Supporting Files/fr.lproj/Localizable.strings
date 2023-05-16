@@ -58,6 +58,11 @@
 "Vault_ManageFiles_TakePhotoVideo_SheetSelect" = "Take photo/video";
 "Vault_ManageFiles_RecordAudio_SheetSelect" = "Record audio";
 "Vault_ManageFiles_ImportFromDevice_SheetSelect" = "Import from device";
+"Vault_ImportDelete_Title" = "Import and delete original file?";
+"Vault_ImportDelete_Content" = "After importing the file into Tella, do you want to keep the original file on your device or delete it?";
+"Vault_ImportDelete_SubContent" = "If you delete it, the file imported into Tella will be the only copy left.";
+"Vault_ImportDelete_KeepOriginal" = "KEEP ORIGINAL";
+"Vault_ImportDelete_DeleteOriginal" = "DELETE ORIGINAL";
 "Vault_ManageFiles_CreateNewFolder_SheetSelect" = "Create new folder";
 "Vault_ManageFiles_PhotoLibrary_SheetSelect" = "Photo Library";
 "Vault_ManageFiles_Document_SheetSelect" = "Document";
@@ -166,6 +171,8 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettAbout_ContactUs" = "Contact us";
 "Settings_SettAbout_PrivacyPolicy" = "Privacy policy";
 
+
+"Settings_SettLang_AppBar" = "Langue";
 "Settings_SettLang_DefaultLanguage" = "Default";
 "Settings_SettLang_DefaultLanguage_Expl" = "Keep Tella in the same language as my device";
 
@@ -173,7 +180,13 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettLang_French_Expl" = "French";
 "Settings_SettLang_Spanish_Expl" = "Spanish";
 
-"Settings_Sett_LockTimeout" = "Lock timeout";
+"Settings_SettSec_AppBar" = "Security";
+"Settings_SettSec_Lock" = "Lock";
+"Settings_SettSec_LockTimeout" = "Lock timeout";
+"Settings_SettSec_ScreenSecurity" = "Screen security";
+"Settings_SettSec_ScreenSecurity_Expl" = "Block screen recordings inside Tella and screen preview in the list of recent apps";
+
+
 "Settings_SettLockTimeout_SheetTitle" = "Lock timeout";
 "Settings_SettLockTimeout_SheetExpl" = "Decide how long it takes for Tella to lock.";
 "Settings_SettLockTimeout_Immediately_SheetSelect" = "Immediately";
@@ -183,3 +196,15 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettLockTimeout_OneHour_SheetSelect" = "1 hour";
 "Settings_SettLockTimeout_Cancel_SheetAction" = "CANCEL";
 "Settings_SettLockTimeout_Save_SheetAction" = "SAVE";
+
+
+"Settings_SettServers_AppBar" = "Servers";
+
+"Settings_SettAbout_AppBar" = "À propos et Aide";
+"Settings_SettAbout_Head" = "Tella";
+"Settings_SettAbout_Subhead" = "Version";
+"Settings_SettAbout_ContactUs" = "Nous contacter";
+"Settings_SettAbout_PrivacyPolicy" = "Politique de confidentialité";
+
+
+

@@ -68,7 +68,7 @@ struct ImportFilesProgressView: View {
             if isFinishing {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                     sheetManager.hide()
-                    mainAppModel.vaultManager.clearTmpDirectory()
+//                    mainAppModel.vaultManager.clearTmpDirectory()
                 }
             }
         }

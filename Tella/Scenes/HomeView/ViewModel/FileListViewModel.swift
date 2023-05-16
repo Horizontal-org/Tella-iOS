@@ -18,6 +18,7 @@ enum FileListType {
     case cameraGallery
     case recordList
     case fileList
+    case selectFiles
 }
 
 class FileListViewModel: ObservableObject {
@@ -28,6 +29,7 @@ class FileListViewModel: ObservableObject {
     var oldRootFile : VaultFile
     var fileActionSource : FileActionSource = .listView
     var fileListType : FileListType = .fileList
+    var resultFile : Binding<[VaultFile]?>?
     
     @Published var sortBy: FileSortOptions = FileSortOptions.nameAZ
     @Published var viewType: FileViewType = FileViewType.list
@@ -45,7 +47,7 @@ class FileListViewModel: ObservableObject {
     @Published var showingDocumentPicker = false
     @Published var showingImportDocumentPicker = false
     @Published var showingImagePicker = false
-
+    
     
     var selectedFiles : [VaultFile] {
         return vaultFileStatusArray.filter{$0.isSelected}.compactMap{$0.file}
@@ -94,7 +96,11 @@ class FileListViewModel: ObservableObject {
     }
     
     var shouldHideNavigationBar : Bool {
-        return selectingFiles || showingMoveFileView || showingCamera || showingMicrophone
+        return (selectingFiles || showingMoveFileView || showingCamera || showingMicrophone) && fileListType != .selectFiles
+    }
+    
+    var shouldShowSelectingFilesHeaderView: Bool {
+       return selectingFiles && fileListType != .selectFiles
     }
     
     var filesAreAllSelected : Bool {
@@ -104,6 +110,10 @@ class FileListViewModel: ObservableObject {
         return (fileListType == .cameraGallery || fileListType == .recordList)
     }
     
+    var shouldHideAddFileButton: Bool {
+        return fileListType == .cameraGallery || fileListType == .recordList || fileListType == .selectFiles
+    }
+
     var fileActionItems: [ListActionSheetItem] {
         
         firstFileActionItems.filter{$0.type as! FileActionType == FileActionType.share}.first?.isActive = shouldActivateShare
@@ -123,7 +133,7 @@ class FileListViewModel: ObservableObject {
         return items
     }
     
-    init(appModel:MainAppModel, fileType:[FileType]?, rootFile:VaultFile, folderPathArray:[VaultFile]?,fileActionSource : FileActionSource = .listView,fileListType : FileListType = .fileList) {
+    init(appModel:MainAppModel, fileType:[FileType]?, rootFile:VaultFile, folderPathArray:[VaultFile]?,fileActionSource : FileActionSource = .listView,fileListType : FileListType = .fileList, resultFile : Binding<[VaultFile]?>? = nil) {
         
         self.appModel = appModel
         self.fileType = fileType
@@ -132,6 +142,8 @@ class FileListViewModel: ObservableObject {
         self.folderPathArray = folderPathArray ?? []
         self.fileActionSource = fileActionSource
         self.fileListType = fileListType
+        self.resultFile = resultFile
+        
         initVaultFileStatusArray()
         updateViewType()
     }
@@ -199,6 +211,8 @@ class FileListViewModel: ObservableObject {
             viewType = .grid
         case .recordList:
             viewType = .list
+        case .selectFiles:
+            selectingFiles = true
         case .fileList:
             break
         }
@@ -207,27 +221,42 @@ class FileListViewModel: ObservableObject {
     func showFileDetails(file:VaultFile) {
         if file.type == .folder {
             if (showingMoveFileView && !selectedFiles.contains(file)) || !(showingMoveFileView) {
-                 rootFile = file
-                 folderPathArray.append(file)
+                rootFile = file
+                folderPathArray.append(file)
             }
             
         } else {
             if !showingMoveFileView {
-                 updateSingleSelection(for: file)
-                 showFileDetails = true
+                updateSingleSelection(for: file)
+                showFileDetails = true
             }
         }
-
+        
     }
     
     func add(files: [URL], type: FileType) {
-        appModel.add(files: files, to: self.rootFile, type: type, folderPathArray: folderPathArray)
+        Task {
+            
+            do { _ = try await appModel.add(files: files, to: self.rootFile, type: type, folderPathArray: folderPathArray)
+            }
+            catch {
+                
+            }
+        }
     }
     
     func add(image: UIImage , type: FileType, pathExtension:String?) {
         guard let data = image.fixedOrientation()?.pngData() else { return }
         guard let url = appModel.vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension ?? "png") else { return  }
-        appModel.add(files: [url], to: self.rootFile, type: type, folderPathArray: folderPathArray)
+        Task {
+            
+            do { _ = try await appModel.add(files: [url], to: self.rootFile, type: type, folderPathArray: folderPathArray)
+                
+            }
+            catch {
+                
+            }
+        }
     }
     
     func add(folder: String) {
@@ -244,6 +273,13 @@ class FileListViewModel: ObservableObject {
     
     func getDataToShare() -> [Any] {
         appModel.getFilesForShare(files: selectedFiles)
+    }
+    
+    func attachFiles() {
+        DispatchQueue.main.async {
+            self.resultFile?.wrappedValue = self.selectedFiles
+        }
+
     }
 }
 

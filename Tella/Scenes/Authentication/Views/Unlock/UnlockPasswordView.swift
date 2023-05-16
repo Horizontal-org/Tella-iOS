@@ -20,7 +20,7 @@ struct UnlockPasswordView: View {
     @State private var presentingLockChoice : Bool = false
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-
+    
     var body: some View {
         ContainerView {
             VStack(alignment: .center) {
@@ -46,7 +46,6 @@ struct UnlockPasswordView: View {
                 
                 PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
                                       isValid: .constant(true),
-                                      shouldShowErrorMessage: .constant(false),
                                       shouldShowError: $viewModel.shouldShowUnlockError) {
                     viewModel.login()
                     if !viewModel.shouldShowUnlockError {
@@ -59,20 +58,9 @@ struct UnlockPasswordView: View {
                 }
                 Spacer()
             }
-            
-            .fullScreenCover(isPresented: $presentingLockChoice) {
-                self.presentationMode.wrappedValue.dismiss()
-            } content: {
-                LockChoiceView( isPresented: $presentingLockChoice)
-            }
-            
         }
-        .onReceive(viewModel.shouldDismiss) { shouldDismiss in
-            if shouldDismiss {
-                self.presentingLockChoice = false
-                self.presentationMode.wrappedValue.dismiss()
-            }
-        }
+        .overlay(lockChoiceView)
+        
         .onAppear {
             viewModel.initUnlockData()
         }
@@ -86,9 +74,12 @@ struct UnlockPasswordView: View {
         }
         
     }
+    
+    var lockChoiceView : some View {
+        presentingLockChoice ? LockChoiceView( isPresented: $presentingLockChoice) : nil
+    }
+    
 }
-
-
 
 struct UnlockPasswordView_Previews: PreviewProvider {
     static var previews: some View {

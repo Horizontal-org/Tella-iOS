@@ -228,17 +228,15 @@ struct CameraControlsView: View {
     @ViewBuilder
     var previewImageAndVideodFile : some View {
         VStack {
-            if let file = cameraViewModel.lastImageOrVideoVaultFile,
+            if let file = $cameraViewModel.lastImageOrVideoVaultFile.wrappedValue,
                let data = file.thumbnail {
                 
                 Button {
-                    
+                    navigateTo(destination: getFileListView())
                 } label: {
                     UIImage.image(fromData:data)
                         .rounded()
-                        .navigateTo(destination:getFileListView())
                 }
-                .navigateTo(destination:getFileListView())
             } else {
                 Spacer()
                     .frame(width: 40, height: 40)

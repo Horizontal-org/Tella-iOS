@@ -39,7 +39,6 @@ struct UnlockPinView: View {
                 
                 PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
                                       isValid: .constant(true),
-                                      shouldShowErrorMessage: .constant(false),
                                       shouldShowError: $viewModel.shouldShowUnlockError,
                                       disabled: true)
                 
@@ -60,19 +59,9 @@ struct UnlockPinView: View {
                 Spacer()
             }
         }
-        .fullScreenCover(isPresented: $presentingLockChoice) {
-            self.presentationMode.wrappedValue.dismiss()
-            
-        } content: {
-            LockChoiceView( isPresented: $presentingLockChoice)
-        }
         
-        .onReceive(viewModel.shouldDismiss) { shouldDismiss in
-            if shouldDismiss {
-                self.presentingLockChoice = false
-                self.presentationMode.wrappedValue.dismiss()
-            }
-        }
+        .overlay(lockChoiceView)
+        
         .onAppear {
             viewModel.initUnlockData()
         }
@@ -85,6 +74,11 @@ struct UnlockPinView: View {
             return viewModel.unlockType == .new ? LocalizableLock.unlockPinSubhead.localized : LocalizableLock.unlockUpdatePinSubhead.localized
         }
     }
+    
+    var lockChoiceView : some View {
+        presentingLockChoice ? LockChoiceView( isPresented: $presentingLockChoice) : nil
+    }
+    
 }
 
 struct UnlockPinView_Previews: PreviewProvider {

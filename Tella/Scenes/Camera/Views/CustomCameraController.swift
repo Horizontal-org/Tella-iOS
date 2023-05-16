@@ -6,29 +6,32 @@ import SwiftUI
 import AVFoundation
 import Combine
 
-final class CustomCameraController: UIViewController {
-    
-    static let shared = CustomCameraController()
+public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate {
     
     // MARK: - Private properties
-    
-    private var captureSession = AVCaptureSession()
     
     private var backCamera: AVCaptureDevice?
     private var frontCamera: AVCaptureDevice?
     
     private var photoOutput: AVCapturePhotoOutput?
     private var videoOutput: AVCaptureMovieFileOutput?
-    
     private var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
-    
     private var  deviceOrientation : UIDeviceOrientation = UIDevice.current.orientation
+    private let sessionQueue = DispatchQueue(label: "session queue")
     
+    weak private var captureDelegate: AVCapturePhotoCaptureDelegate?
+    weak private var videoRecordingDelegate: AVCaptureFileOutputRecordingDelegate?
     
     // MARK: - Public properties
     
-    weak var captureDelegate: AVCapturePhotoCaptureDelegate?
-    weak var videoRecordingDelegate: AVCaptureFileOutputRecordingDelegate?
+    var captureSession = AVCaptureSession()
+    
+    @Published var shouldShowPermission : Bool = false
+    @Published var shouldCloseCamera : Bool = false
+    @Published var shouldShowProgressView : Bool = false
+    @Published var imageCompletion: (UIImage,Data)?
+    @Published var videoURLCompletion: URL?
+    @Published var isRecording = false
     
     var cameraType : CameraType = .image {
         didSet {
@@ -38,51 +41,15 @@ final class CustomCameraController: UIViewController {
         }
     }
     
-    @Published var shouldShowPermission : Bool = false
-    @Published var shouldCloseCamera : Bool = false
-    
-    // MARK: - Overrides
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated : Bool) {
-        super.viewWillAppear(animated)
-        shouldCloseCamera = false
-        
-        DeviceOrientationHelper().startDeviceOrientationNotifier { deviceOrientation in
-            self.deviceOrientation = deviceOrientation
-        }
-        
-    }
-    
-    override func viewWillDisappear(_ animated : Bool) {
-        super.viewWillDisappear(animated)
-        //        stopRunningCaptureSession()
-        //        releasePreview()
-    }
-    
-    // MARK: - Public functions
-    
-    func configurePreviewLayer(with frame: CGRect) {
-        let cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        
-        cameraPreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        cameraPreviewLayer.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
-        cameraPreviewLayer.frame = frame
-        
-        view.layer.insertSublayer(cameraPreviewLayer, at: 0)
-    }
-    
     func startRunningCaptureSession() {
-        captureSession.startRunning()
+        sessionQueue.async {
+            self.captureSession.startRunning()
+        }
     }
     
     func stopRunningCaptureSession() {
         captureSession.stopRunning()
         shouldCloseCamera = false
-        
     }
     
     func takePhoto() {
@@ -94,11 +61,13 @@ final class CustomCameraController: UIViewController {
             photoOutputConnection.videoOrientation = deviceOrientation.videoOrientation()
         }
         photoOutput?.capturePhoto(with: settings, delegate: delegate)
+        shouldShowProgressView = true
     }
     
     func startCaptureVideo(){
         if let videoOutput = videoOutput, videoOutput.isRecording {
             videoOutput.stopRecording()
+            shouldShowProgressView = true
         } else {
             let outFileUrl = createTempFileURL()
             guard let delegate = videoRecordingDelegate else {
@@ -134,7 +103,7 @@ final class CustomCameraController: UIViewController {
         }
     }
     
-    func toggleFlash( ) {
+    func toggleFlash() {
         
         if let avDevice = (captureSession.inputs.first as? AVCaptureDeviceInput)?.device {
             
@@ -152,7 +121,17 @@ final class CustomCameraController: UIViewController {
     
     // MARK: - Private functions
     
-    private func setup() {
+    func setup() {
+        
+        captureDelegate = self
+        videoRecordingDelegate = self
+        
+        shouldCloseCamera = false
+        
+        DeviceOrientationHelper().startDeviceOrientationNotifier { deviceOrientation in
+            self.deviceOrientation = deviceOrientation
+        }
+        
         stopRunningCaptureSession()
         releasePreview()
         
@@ -268,6 +247,10 @@ final class CustomCameraController: UIViewController {
     }
     
     func checkCameraPermission() {
+        DispatchQueue.main.async {
+            
+      
+        
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
             self.checkMicrophonePermission()
@@ -282,18 +265,18 @@ final class CustomCameraController: UIViewController {
             }
             
         case .denied:
-            shouldShowPermission = true
+            self.shouldShowPermission = true
             self.shouldCloseCamera = false
             
         case .restricted:
-            shouldShowPermission = true
+            self.shouldShowPermission = true
             self.shouldCloseCamera = false
             
             return
         @unknown default:
             break
         }
-        
+        }
     }
     
     func checkMicrophonePermission() {
@@ -321,132 +304,36 @@ final class CustomCameraController: UIViewController {
     }
 }
 
-final class CustomCameraRepresentable: UIViewControllerRepresentable,ObservableObject {
+extension CameraService  {
     
-    
-    
-    init(cameraFrame: CGRect, imageCompletion: @escaping ((UIImage, Data) -> Void), videoURLCompletion:@escaping ((URL) -> Void)) {
-        self.cameraFrame = cameraFrame
-        self.imageCompletion = imageCompletion
-        self.videoURLCompletion = videoURLCompletion
-    }
-    
-    var cameraFrame: CGRect
-    var imageCompletion: ((UIImage,Data) -> Void)
-    var videoURLCompletion: ((URL) -> Void)
-    
-    @Published var isRecording : Bool?
-    
-    @Published var imageData : Data?
-    @Published var videoURL : URL?
-    @Published var image : UIImage?
-    @Published var shouldShowPermission : Bool = false
-    @Published var shouldCloseCamera : Bool = false
-    
-    private var cancellable: Set<AnyCancellable> = []
-    
-    var cameraType : CameraType = .image {
-        didSet {
-            CustomCameraController.shared.cameraType = cameraType
+    public func photoOutput(_ output: AVCapturePhotoOutput,
+                            didFinishProcessingPhoto photo: AVCapturePhoto,
+                            error: Error?) {
+        
+        if let cgImageRepresentation = photo.cgImageRepresentation(),
+           let orientationInt = photo.metadata[String(kCGImagePropertyOrientation)] as? UInt32,
+           let imageOrientation = UIImage.Orientation.orientation(fromCGOrientationRaw: orientationInt) {
+            print("cgImageRepresentation")
+            // Create image with proper orientation
+            let cgImage = cgImageRepresentation
+            let image = UIImage(cgImage: cgImage,
+                                scale: 1,
+                                orientation: imageOrientation)
+            self.imageCompletion = (image, image.data!)
+            
         }
     }
     
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-    
-    func makeUIViewController(context: Context) -> CustomCameraController {
-        CustomCameraController.shared.configurePreviewLayer(with: cameraFrame)
-        CustomCameraController.shared.captureDelegate = context.coordinator
-        CustomCameraController.shared.videoRecordingDelegate = context.coordinator
+    public func fileOutput(_ output: AVCaptureFileOutput,
+                           didFinishRecordingTo outputFileURL: URL,
+                           from connections: [AVCaptureConnection],
+                           error: Error?) {
         
-        CustomCameraController.shared.$shouldShowPermission.sink { value in
-            DispatchQueue.main.async {
-                self.shouldShowPermission = value
-            }
-        }.store(in: &cancellable)
-        
-        CustomCameraController.shared.$shouldCloseCamera.sink { value in
-            DispatchQueue.main.async {
-                self.shouldCloseCamera = value
-            }
-        }.store(in: &cancellable)
-        
-        return CustomCameraController.shared
+        self.videoURLCompletion = outputFileURL
+        self.isRecording = false
     }
     
-    func updateUIViewController(_ cameraViewController: CustomCameraController, context: Context) {}
-    
-    func checkCameraPermission() {
-        CustomCameraController.shared.checkCameraPermission()
-    }
-    
-    func takePhoto() {
-        CustomCameraController.shared.takePhoto()
-    }
-    
-    func startCaptureVideo() {
-        CustomCameraController.shared.startCaptureVideo()
-    }
-    
-    func toggleCameraType() {
-        CustomCameraController.shared.toggleCameraType()
-    }
-    
-    func toggleFlash()  {
-        CustomCameraController.shared.toggleFlash()
-    }
-    
-    func startRunningCaptureSession() {
-        CustomCameraController.shared.startRunningCaptureSession()
-    }
-    
-    func stopRunningCaptureSession() {
-        CustomCameraController.shared.stopRunningCaptureSession()
+    public func fileOutput(_ output: AVCaptureFileOutput, didStartRecordingTo fileURL: URL, from connections: [AVCaptureConnection]) {
+        self.isRecording = true
     }
 }
-
-extension CustomCameraRepresentable {
-    
-    final class Coordinator: NSObject, AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate {
-        
-        private let parent: CustomCameraRepresentable
-        
-        init(_ parent: CustomCameraRepresentable) {
-            self.parent = parent
-        }
-        
-        func photoOutput(_ output: AVCapturePhotoOutput,
-                         didFinishProcessingPhoto photo: AVCapturePhoto,
-                         error: Error?) {
-            
-            if let cgImageRepresentation = photo.cgImageRepresentation(),
-               let orientationInt = photo.metadata[String(kCGImagePropertyOrientation)] as? UInt32,
-               let imageOrientation = UIImage.Orientation.orientation(fromCGOrientationRaw: orientationInt) {
-                
-                // Create image with proper orientation
-                let cgImage = cgImageRepresentation
-                let image = UIImage(cgImage: cgImage,
-                                    scale: 1,
-                                    orientation: imageOrientation)
-                parent.imageCompletion(image, image.data!)
-                
-            }
-        }
-        
-        func fileOutput(_ output: AVCaptureFileOutput,
-                        didFinishRecordingTo outputFileURL: URL,
-                        from connections: [AVCaptureConnection],
-                        error: Error?) {
-            
-            parent.videoURLCompletion(outputFileURL)
-            parent.isRecording = false
-        }
-        
-        func fileOutput(_ output: AVCaptureFileOutput, didStartRecordingTo fileURL: URL, from connections: [AVCaptureConnection]) {
-            parent.isRecording = true
-        }
-    }
-}
-
-

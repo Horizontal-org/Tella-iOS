@@ -50,14 +50,17 @@ final class AppViewState: ObservableObject {
         viewStack = [.MAIN]
     }
 
+    func showMain() {
+        viewStack = [.MAIN]
+    }
+
     func resetApp() {
         AuthenticationManager().keysInitialized() ? self.resetToUnlock() : self.resetToLock()
+        UploadService.reset()
     }
     
     func initLanguage() {
         let selectedLanguage = LanguageManager.shared.currentLanguage.rawValue
         Bundle.setLanguage(selectedLanguage)
     }
-
 }
-

@@ -9,10 +9,7 @@
 import SwiftUI
 import Combine
 
-enum FieldType {
-    case text
-    case fileName
-}
+
 
 struct TextFieldBottomSheetView: View {
     
@@ -23,7 +20,6 @@ struct TextFieldBottomSheetView: View {
     @Binding var fieldContent : String
     
     var fileName : String = ""
-    var fieldType : FieldType
     var didConfirmAction : (() -> ())
     
     @State private var isValid : Bool = false
@@ -170,7 +166,6 @@ struct CreateNewFolderBottomSheet_Previews: PreviewProvider {
                                  validateButtonText: "OK",
                                  fieldContent: .constant("Test"),
                                  fileName: "name",
-                                 fieldType: FieldType.fileName,
                                  didConfirmAction: {})
     }
 }

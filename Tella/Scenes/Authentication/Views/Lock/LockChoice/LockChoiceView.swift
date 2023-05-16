@@ -10,20 +10,20 @@ import SwiftUI
 import CoreMIDI
 
 struct LockChoiceView: View {
-
+    
     @Binding var isPresented : Bool
     @EnvironmentObject var lockViewModel : LockViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var appViewState: AppViewState
-
+    
     var body: some View {
         
-        NavigationContainerView {
+        ContainerView {
             VStack {
                 if lockViewModel.unlockType == .update {
                     LockChoiceHeaderView(isPresented: $isPresented)
                 }
-
+                
                 VStack(alignment: .center, spacing: 24) {
                     Spacer()
                     Image("lock.phone")
@@ -37,10 +37,10 @@ struct LockChoiceView: View {
                     VStack(spacing: 15) {
                         
                         LockButtonView(lockButtonProtocol: PasswordLockButton(),
-                                       destination: LockPasswordView())
+                                       destination: LockPasswordView().environmentObject(lockViewModel))
                         
                         LockButtonView(lockButtonProtocol: PINLockButton(),
-                                       destination: LockPinView())
+                                       destination: LockPinView().environmentObject(lockViewModel))
                     }
                     Spacer()
                 }
@@ -79,7 +79,6 @@ struct LockChoiceHeaderView : View {
     }
 }
 
-
 struct LockButtonView<Destination:View> : View {
     
     var lockButtonProtocol : LockButtonProtocol
@@ -87,27 +86,30 @@ struct LockButtonView<Destination:View> : View {
     
     var body: some View {
         
-        HStack(spacing: 20) {
-            
-            Image(lockButtonProtocol.imageName)
-                .frame(width: 42, height: 42)
-                .aspectRatio(contentMode: .fit)
-            
-            VStack(alignment:.leading, spacing: 3 ) {
-                Text(lockButtonProtocol.title)
-                    .font(.custom(Styles.Fonts.boldFontName, size: 16))
-                    .foregroundColor(.white)
+        Button {
+            navigateTo(destination: destination)
+        } label: {
+            HStack(spacing: 20) {
                 
-                Text(lockButtonProtocol.description)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 13.5))
-                    .foregroundColor(.white)
-            }
-            Spacer()
-        } .padding(16)
-            .background( Color.white.opacity(0.16))
-            .cornerRadius(20)
-            .buttonStyle(LockButtonStyle())
-            .navigateTo(destination: destination)
+                Image(lockButtonProtocol.imageName)
+                    .frame(width: 42, height: 42)
+                    .aspectRatio(contentMode: .fit)
+                
+                VStack(alignment:.leading, spacing: 3 ) {
+                    Text(lockButtonProtocol.title)
+                        .font(.custom(Styles.Fonts.boldFontName, size: 16))
+                        .foregroundColor(.white)
+                    
+                    Text(lockButtonProtocol.description)
+                        .font(.custom(Styles.Fonts.regularFontName, size: 13.5))
+                        .foregroundColor(.white)
+                }
+                Spacer()
+            } .padding(16)
+                .background( Color.white.opacity(0.16))
+                .cornerRadius(20)
+                .buttonStyle(LockButtonStyle())
+        }
     }
 }
 

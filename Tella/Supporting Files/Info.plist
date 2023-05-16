@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key></key>
+	<array/>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -20,6 +26,8 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
@@ -28,8 +36,11 @@
 	<string>Tella requires access to the camera to to take photos and videos inside the app.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Tella requires access to your microphone to record audio inside the app.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Tella requires access to your photo library to delete photos.</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>OpenSans-Italic.ttf</string>
 		<string>OpenSans-Regular.ttf</string>
 		<string>OpenSans-Bold.ttf</string>
 		<string>OpenSans-Light.ttf</string>
@@ -51,6 +62,11 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>processing</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

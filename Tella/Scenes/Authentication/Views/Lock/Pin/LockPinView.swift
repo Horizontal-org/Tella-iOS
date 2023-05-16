@@ -13,15 +13,16 @@ struct LockPinView: View {
 
     var body: some View {
         
-        CustomPinView(lockViewData: LockPinData(),
+        CustomPinView(shouldEnableBackButton: false,
+                      lockViewData: LockPinData(),
                       nextButtonAction: .destination,
                       fieldContent: $lockViewModel.password,
                       shouldShowErrorMessage: .constant(false),
-                      destination: LockConfirmPinView())
+                      destination: LockConfirmPinView().environmentObject(lockViewModel))
             .onAppear {
                 lockViewModel.initLockData()
 
-            }
+            }.navigationBarBackButtonHidden(true)
 
     }
 }

@@ -12,10 +12,7 @@ struct MainView: View  {
     @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject private var sheetManager: SheetManager
     
-    
     init() {
-        setDebugLevel(level: .debug, for: .app)
-        setDebugLevel(level: .debug, for: .crypto)
         setupApperance()
     }
     
@@ -31,19 +28,14 @@ struct MainView: View  {
             }
             
             securityScreenView
-        }
+        }.navigationBarHidden(false)
     }
     
-    private var emptyView: some View {
-        VStack{
-        }.background(Styles.Colors.backgroundMain)
-    }
-    
-    private var tabbar: some View{
+    private var tabbar: some View {
         
         ZStack {
             
-            NavigationView {
+            CustomNavigation() {
                 
                 TabView(selection: $appModel.selectedTab) {
                     HomeView(appModel: appModel)
@@ -51,18 +43,7 @@ struct MainView: View  {
                             Image("tab.home")
                             Text(LocalizableHome.tabBar.localized)
                         }.tag(MainAppModel.Tabs.home)
-/*#if DEBUG
-                    ReportsView()
-                        .tabItem {
-                            Image("tab.reports")
-                            Text(Localizable.Reports.tabBarTitle)
-                        }.tag(MainAppModel.Tabs.reports)
-                    FormsView()
-                        .tabItem {
-                            Image("tab.forms")
-                            Text(Localizable.Forms.tabBarTitle)
-                        }.tag(MainAppModel.Tabs.forms)
-#endif*/
+
                     ContainerView{}
                         .tabItem {
                             Image("tab.camera")
@@ -85,12 +66,10 @@ struct MainView: View  {
                     }
                 }
                 .navigationBarTitle(LocalizableHome.appBar.localized, displayMode: .inline)
-                .navigationBarHidden(appModel.selectedTab == .home ? false : true)
             }
             .accentColor(.white)
-            .navigationViewStyle(.stack)
             
-            if appModel.selectedTab == .mic   {
+            if appModel.selectedTab == .mic {
                 RecordView(appModel: appModel,
                            rootFile: appModel.vaultManager.root,
                            sourceView: .tab,
@@ -100,8 +79,8 @@ struct MainView: View  {
             if appModel.selectedTab == .camera {
                 CameraView(sourceView: .tab,
                            showingCameraView: .constant(false),
-                           cameraViewModel: CameraViewModel(mainAppModel: appModel,
-                                                            rootFile: appModel.vaultManager.root))
+                           mainAppModel: appModel,
+                           rootFile: appModel.vaultManager.root)
             }
         }
     }
@@ -112,10 +91,8 @@ struct MainView: View  {
             Color.white
                 .edgesIgnoringSafeArea(.all)
         }
-
     }
-    
-    
+
     private func setupApperance() {
         
         UITabBar.appearance().unselectedItemTintColor = UIColor.white.withAlphaComponent(0.38)
@@ -129,6 +106,8 @@ struct MainView: View  {
         coloredAppearance.backgroundColor = Styles.uiColor.backgroundMain
         coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white,
                                                  .font: UIFont(name: Styles.Fonts.boldFontName, size: 24)!]
+        coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white,
+                                                      .font: UIFont(name: Styles.Fonts.boldFontName, size: 35)!]
         coloredAppearance.setBackIndicatorImage(UIImage(named: "back"), transitionMaskImage: UIImage(named: "back"))
         
         UINavigationBar.appearance().standardAppearance = coloredAppearance
@@ -138,19 +117,20 @@ struct MainView: View  {
         
         UITableView.appearance().backgroundColor = .clear
         UITableViewCell.appearance().backgroundColor = .clear
+        
+        
     }
     
     @ViewBuilder
     private var leadingView : some View {
         if appModel.selectedTab == .home {
             Button() {
-                
+                navigateTo(destination: SettingsMainView(appModel: appModel))
             } label: {
                 Image("home.settings")
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 35, height: 35)
-                    .navigateTo(destination: SettingsMainView(appModel: appModel))
-            }.navigateTo(destination: SettingsMainView(appModel: appModel))
+            }
         }
     }
     

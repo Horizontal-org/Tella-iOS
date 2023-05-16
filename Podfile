@@ -7,8 +7,8 @@ target 'Tella' do
   use_modular_headers!
 
   # Pods for Tella
+  pod 'SQLCipher', ">= 4.5.2"
 
-  pod 'CryptoSwift', '~> 1.0'
 
   target 'TellaTests' do
     inherit! :search_paths

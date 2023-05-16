@@ -5,10 +5,15 @@
 import SwiftUI
 
 struct AddFileView: View {
-    
+
     @State private var fieldContent: String = ""
     @State private var isValid = false
     
+//    @State var showingImagePicker : Bool = false
+//    @State var showingImportDocumentPicker : Bool = false
+//    @State var showingMicrophone : Bool = false
+//    @State var showingCamera : Bool = false
+
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var fileListViewModel: FileListViewModel
     @EnvironmentObject var sheetManager: SheetManager
@@ -21,13 +26,18 @@ struct AddFileView: View {
                 showAddFileSheet()
             })
             
-            PhotoVideoPickerView()
+            PhotoVideoPickerView(showingImagePicker: $fileListViewModel.showingImagePicker,
+                                 showingImportDocumentPicker: $fileListViewModel.showingImportDocumentPicker,
+                                 appModel: appModel)
         }
         .overlay(fileListViewModel.showingCamera ?
                  CameraView(sourceView: .addFile,
                             showingCameraView: $fileListViewModel.showingCamera,
-                            cameraViewModel: CameraViewModel(mainAppModel: appModel,
-                                                             rootFile: fileListViewModel.rootFile)) : nil)
+                           mainAppModel: appModel,
+                           rootFile: fileListViewModel.rootFile) : nil)
+        
+//        CameraViewModel(mainAppModel: appModel,
+//                                         rootFile: fileListViewModel.rootFile)
         
         .overlay(fileListViewModel.showingMicrophone ?
                  RecordView(appModel: appModel,
@@ -52,8 +62,7 @@ struct AddFileView: View {
             TextFieldBottomSheetView(titleText: LocalizableVault.manageFilesCreateNewFolderSheetSelect.localized,
                                      validateButtonText: LocalizableVault.createNewFolderCreateSheetAction.localized,
                                      cancelButtonText: LocalizableVault.createNewFolderCancelSheetAction.localized,
-                                     fieldContent: $fieldContent,
-                                     fieldType: .text) {
+                                     fieldContent: $fieldContent) {
                 fileListViewModel.add(folder: fieldContent)
             }
         })
@@ -65,6 +74,27 @@ struct AddFileView: View {
                                   headerTitle: LocalizableVault.manageFilesImportFromDeviceSheetSelect.localized, action: {item in
                 self.handleAddPhotoVideoActions(item : item)
             })
+        })
+    }
+    
+    func showImportDeleteSheet(itemType: AddPhotoVideoType) {
+        let importDeleteItems = MainAppModel.ImportOption.allCases
+        let headerTitle = LocalizableVault.importDeleteTitle.localized
+        let content = LocalizableVault.importDeleteContent.localized
+        let subContent = LocalizableVault.importDeleteSubcontent.localized
+        
+        let sheetContent = ConfirmationBottomSheet(options: importDeleteItems, headerTitle: headerTitle, content: content, subContent: subContent) {
+            selectedItem in
+            appModel.importOption = selectedItem
+            switch itemType {
+            case .photoLibrary:
+                fileListViewModel.showingImagePicker = true
+            default:
+                fileListViewModel.showingImportDocumentPicker = true
+            }
+        }
+        sheetManager.showBottomSheet(modalHeight: 300, content: {
+            sheetContent
         })
     }
     
@@ -90,15 +120,12 @@ struct AddFileView: View {
         }
     }
     
+    
     private func handleAddPhotoVideoActions(item: ListActionSheetItem) {
         guard let type = item.type as? AddPhotoVideoType else { return  }
         
-        switch type {
-        case .photoLibrary:
-            fileListViewModel.showingImagePicker = true
-        default:
-            fileListViewModel.showingImportDocumentPicker = true
-        }
+        
+        showImportDeleteSheet(itemType: type)
     }
 }
 

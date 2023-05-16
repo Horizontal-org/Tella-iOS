@@ -60,6 +60,12 @@ enum LocalizableVault: String, LocalizableDelegate {
     case saveToDeviceSaveSheetAction = "Vault_SaveToDevice_Save_SheetAction"
     case saveToDeviceCancelSheetAction = "Vault_SaveToDevice_Cancel_SheetAction"
     
+    case importDeleteTitle = "Vault_ImportDelete_Title"
+    case importDeleteContent = "Vault_ImportDelete_Content"
+    case importDeleteSubcontent = "Vault_ImportDelete_SubContent"
+    case importDeleteKeepOriginal = "Vault_ImportDelete_KeepOriginal"
+    case importDeleteDeleteOriginal = "Vault_ImportDelete_DeleteOriginal"
+    
     // Move File
     case moveFileAppBar = "Vault_MoveFile_AppBar"
     case moveFileActionCancel = "Vault_MoveFile_Action_Cancel"

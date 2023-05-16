@@ -12,5 +12,6 @@ public enum CameraType: Hashable {
 public enum SourceView: Hashable {
     case tab
     case addFile
+    case addSingleFile // For report
 }
 
