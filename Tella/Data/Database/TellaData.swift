@@ -53,7 +53,7 @@ class TellaData : ObservableObject {
         }
         try database.deleteServer(serverId: serverId)
         getServers()
-        
+        getReports()
     }
     
     func deleteAllServers() throws -> Int {
@@ -63,6 +63,7 @@ class TellaData : ObservableObject {
         }
         let id = try database.deleteAllServers()
         getServers()
+        getReports()
         return id
         
     }
