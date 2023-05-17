@@ -95,8 +95,6 @@ struct CameraView: View {
                 guard let videoURL = videoURL else { return }
                 
                 cameraViewModel.videoURL = videoURL
-                let asset = AVAsset(url: videoURL)
-                print(asset)
                 showProgressView()
                 cameraViewModel.saveVideo()
             }
