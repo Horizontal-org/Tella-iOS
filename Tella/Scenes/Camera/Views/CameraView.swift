@@ -87,11 +87,7 @@ struct CameraView: View {
                 cameraViewModel.image = value.0
                 cameraViewModel.imageData = value.1
 //                showProgressView()
-                if mainAppModel.settings.preserveMetadata {
-                    cameraViewModel.addWithExif(methodExifData: value.2, pathExtension: "png")
-                } else {
-                    cameraViewModel.saveImage()
-                }
+                cameraViewModel.saveImage()
 
             }
         
@@ -102,12 +98,7 @@ struct CameraView: View {
                 let asset = AVAsset(url: videoURL)
                 print(asset)
                 showProgressView()
-                if mainAppModel.settings.preserveMetadata {
-                        cameraViewModel.saveVideo()
-                } else {
-                        cameraViewModel.addVideoWithoutExif()
-                }
-
+                cameraViewModel.saveVideo()
             }
         
             .alert(isPresented:$showingPermissionAlert) {

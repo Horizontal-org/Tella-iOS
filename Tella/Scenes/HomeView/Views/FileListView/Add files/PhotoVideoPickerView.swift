@@ -41,10 +41,11 @@ struct PhotoVideoPickerView: View {
                 ImagePickerView { image, url, pathExtension, imageURL, actualURL in
                     
                     self.showingImagePicker.wrappedValue = false
-                    
+                    let isPreserveMetadataOn = viewModel.mainAppModel.settings.preserveMetadata
                     if let url = url {
                         showProgressView()
-                        if viewModel.mainAppModel.settings.preserveMetadata {
+
+                        if isPreserveMetadataOn{
                             viewModel.add(files: [url], type: .video)
                         } else {
                             viewModel.addVideoWithoutExif(files: [url], type: .video)
@@ -53,10 +54,10 @@ struct PhotoVideoPickerView: View {
                     }
                     if let image = image {
                          showProgressView()
-                        if viewModel.mainAppModel.settings.preserveMetadata {
-                            viewModel.addWithExif(image: image, type: .image, pathExtension: pathExtension, originalUrl: imageURL, acturalURL: actualURL)
+                        if isPreserveMetadataOn {
+                            viewModel.addWithExif(image: image, type: .image, pathExtension: pathExtension, originalUrl: imageURL, actualURL: actualURL)
                         } else {
-                            viewModel.add(image: image, type: .image, pathExtension: pathExtension, originalUrl: imageURL, acturalURL: actualURL)
+                            viewModel.add(image: image, type: .image, pathExtension: pathExtension, originalUrl: imageURL)
                         }
                     }
                 }
