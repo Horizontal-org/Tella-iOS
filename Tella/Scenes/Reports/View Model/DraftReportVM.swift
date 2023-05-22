@@ -94,7 +94,7 @@ class DraftReportVM: ObservableObject {
         $isValidTitle.combineLatest($isValidDescription, $files)
             .sink(receiveValue: { isValidTitle, isValidDescription, files in
                 DispatchQueue.main.async {
-                    self.reportIsDraft = isValidTitle || isValidDescription || !files.isEmpty
+                    self.reportIsDraft = isValidTitle 
                 }
             }).store(in: &subscribers)
     }
