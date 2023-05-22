@@ -44,7 +44,6 @@ struct PhotoVideoPickerView: View {
                     let isPreserveMetadataOn = viewModel.mainAppModel.settings.preserveMetadata
                     if let url = url {
                         showProgressView()
-
                         if isPreserveMetadataOn{
                             viewModel.add(files: [url], type: .video)
                         } else {

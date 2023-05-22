@@ -195,11 +195,6 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_Sett_QuickDelete_Files_CheckboxItem" = "Delete files and folders";
 "Settings_Sett_QuickDelete_Connections_CheckboxItem" = "Delete connections";
 
-"Settings_Sett_QuickDelete" = "Quick Delete";
-"Settings_Sett_QuickDelete_Expl" = "Shows a sliding button on the homescreen to quicky exit Tella in emergency situations.";
-"Settings_Sett_QuickDelete_Files_CheckboxItem" = "Delete files and folders";
-"Settings_Sett_QuickDelete_Connections_CheckboxItem" = "Delete connections";
-
 "Settings_SettLockTimeout_SheetTitle" = "Lock timeout";
 "Settings_SettLockTimeout_SheetExpl" = "Decide how long it takes for Tella to lock.";
 "Settings_SettLockTimeout_Immediately_SheetSelect" = "Immediately";
