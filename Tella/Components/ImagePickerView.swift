@@ -9,7 +9,7 @@ import MobileCoreServices
 //  SwiftUI wrapper for ImagePickerController for <= iOS 14.0
 struct ImagePickerView: UIViewControllerRepresentable {
     
-    let completion: (UIImage?, URL?, String?, URL?) -> ()
+    let completion: (UIImage?, URL?, String?, URL?, URL?) -> ()
 
     func makeCoordinator() -> ImageCoordinator {
       return ImageCoordinator(completion)
@@ -32,9 +32,9 @@ struct ImagePickerView: UIViewControllerRepresentable {
 //  Creating the Coordinator (the go between) for the ImagePicker
 class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
-    let completion: (UIImage?, URL?, String?, URL?) -> ()
+    let completion: (UIImage?, URL?, String?, URL?, URL?) -> ()
     
-    init(_ completion: @escaping (UIImage?, URL?, String?, URL?) -> ()) {
+    init(_ completion: @escaping (UIImage?, URL?, String?, URL?, URL?) -> ()) {
         self.completion = completion
     }
     
@@ -45,21 +45,22 @@ class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerC
         debugLog("\(mediaType)")
         let mediaURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL
         let imageURL = info[UIImagePickerController.InfoKey.referenceURL] as? URL
+        let actualURL = info[UIImagePickerController.InfoKey.imageURL] as? URL
         if mediaType as! CFString == kUTTypeImage {
             guard let unwrapImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
                 return
             }
-            completion(unwrapImage, nil,mediaURL?.pathExtension, imageURL)
+            completion(unwrapImage, nil,mediaURL?.pathExtension, imageURL, actualURL)
         } else if mediaType as! CFString == kUTTypeMovie {
             guard let videoURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {
                 return
             }
-            completion(nil, videoURL, nil, nil)
+            completion(nil, videoURL, nil, nil, nil)
         }
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        completion(nil, nil, nil, nil)
+        completion(nil, nil, nil, nil, nil)
     }
 }
 

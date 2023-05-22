@@ -38,17 +38,26 @@ struct PhotoVideoPickerView: View {
     var imagePickerView: some View {
         HStack{}
             .sheet(isPresented:  showingImagePicker, content: {
-                ImagePickerView { image, url, pathExtension, imageURL in
+                ImagePickerView { image, url, pathExtension, imageURL, actualURL in
                     
                     self.showingImagePicker.wrappedValue = false
                     
                     if let url = url {
                         showProgressView()
-                        viewModel.add(files: [url], type: .video)
+                        if viewModel.mainAppModel.settings.preserveMetadata {
+                            viewModel.add(files: [url], type: .video)
+                        } else {
+                            viewModel.addVideoWithoutExif(files: [url], type: .video)
+                        }
+
                     }
                     if let image = image {
                          showProgressView()
-                         viewModel.add(image: image, type: .image, pathExtension: pathExtension, originalUrl: imageURL)
+                        if viewModel.mainAppModel.settings.preserveMetadata {
+                            viewModel.addWithExif(image: image, type: .image, pathExtension: pathExtension, originalUrl: imageURL, acturalURL: actualURL)
+                        } else {
+                            viewModel.add(image: image, type: .image, pathExtension: pathExtension, originalUrl: imageURL, acturalURL: actualURL)
+                        }
                     }
                 }
             })
