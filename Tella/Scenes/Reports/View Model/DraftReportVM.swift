@@ -42,7 +42,7 @@ class DraftReportVM: ObservableObject {
     private var subscribers = Set<AnyCancellable>()
     
     var serverName : String {
-        guard let serverName = server?.name else { return "Select your project" }
+        guard let serverName = server?.name else { return LocalizableReport.selectProject.localized }
         return serverName
     }
     
@@ -57,16 +57,16 @@ class DraftReportVM: ObservableObject {
     var addFileToDraftItems : [ListActionSheetItem] { return [
         
         ListActionSheetItem(imageName: "report.camera-filled",
-                            content: "Take photo or video with camera",
+                            content: LocalizableReport.cameraFilled.localized,
                             type: ManageFileType.camera),
         ListActionSheetItem(imageName: "report.mic-filled",
-                            content: "Record audio",
+                            content: LocalizableReport.micFilled.localized,
                             type: ManageFileType.recorder),
         ListActionSheetItem(imageName: "report.gallery",
-                            content: "Select from Tella files",
+                            content: LocalizableReport.galleryFilled.localized,
                             type: ManageFileType.tellaFile),
         ListActionSheetItem(imageName: "report.phone",
-                            content: "Select from your device",
+                            content: LocalizableReport.phoneFilled.localized,
                             type: ManageFileType.fromDevice)
     ]}
     
