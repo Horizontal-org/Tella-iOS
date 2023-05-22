@@ -207,8 +207,6 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettAbout_ContactUs" = "Contact us";
 "Settings_SettAbout_PrivacyPolicy" = "Privacy policy";
 
-
-
 "Reports_ReportsView_Title" = "Reports";
 "Reports_ReportsView_DraftMessage" = "Your Drafts is currently empty. Reports that you have not submitted will appear here.";
 "Reports_ReportsView_OutboxMessage" = "Your Outbox is currently empty. Reports that are ready to be sent will appear here.";
