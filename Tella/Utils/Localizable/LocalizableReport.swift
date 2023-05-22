@@ -9,45 +9,48 @@
 import Foundation
 
 enum LocalizableReport: String, LocalizableDelegate {
-    
-    case reportsTitle = "Reports_AppBar"
-    case reportsText = "Reports_AppBar_SubHead"
-    case reportsDraftEmpty = "Reports_Draft_EmptyAllFiles_Expl"
-    case reportsOutboxEmpty = "Reports_Outbox_EmptyAllFiles_Expl"
-    case reportsSubmitedEmpty = "Reports_Submitted_EmptyAllFiles_Expl"
-    case reportsCreateNew = "Reports_ReportsView_CreateNew"
 
-    case reportsListTitle = "Reports_ReportsList_Title"
-    case reportsListDescription = "Reports_ReportsList_Description"
-    case reportsListMessage = "Reports_ReportsList_Message"
+    case reportsTitle = "Reports_Title"
+    case reportsText = "Reports_Text"
+    case reportsDraftMessage = "Reports_Draft_Message"
+    case reportsOutboxMessage = "Reports_Outbox_Message"
+    case reportsSubmited = "Reports_Submitted"
+    case reportsCreateNew = "Reports_Create_New"
 
-    case reportsSendTo = "Reports_Draft_SendTo"
-    case audioSavedCorrectly = "Reports_Draft_SuccessMessage"
-    case reportsSubmit = "Reports_Draft_Submit"
-    case reportsSend = "Reports_Draft_Send"
-    case selectFiles = "Reports_Draft_SelectFiles"
+    case reportsListTitle = "Reports_List_Title"
+    case reportsListDescription = "Reports_List_Description"
+    case reportsListMessage = "Reports_List_Message"
+    case reportsSendTo = "Reports_Send_To"
+    case audioSavedCorrectly = "Reports_Audio_Saved_Correctly"
+    case reportsSubmit = "Reports_Submit"
+    case reportsSend = "Reports_Send"
 
-    case exitTitle = "Reports_ExitReport_SheetTitle"
-    case exitMessage = "Reports_ExitReport_SheetExpl"
-    case exitCancel = "Reports_ExitReport_Exit_SheetAction"
-    case exitSave = "Reports_ExitReport_Save_SheetAction"
+    case selectFiles = "Reports_Select_Files"
 
-    case attachFiles = "Reports_Draft_AddFiles"
+    case exitTitle = "Reports_Exit_Title"
+    case exitMessage = "Reports_Exit_Message"
+    case exitCancel = "Reports_Exit_Cancel"
+    case exitSave = "Reports_Exit_Save"
 
-    case deleteTitle = "Reports_DeleteFile_SheetTitle"
-    case deleteMessage = "Reports_DeleteFile_SheetExpl"
-    case deleteCancel = "Reports_DeleteFile_Cancel_SheetAction"
-    case deleteConfirm = "Reports_DeleteFile_Delete_SheetAction"
+    case draftEmptyMessage = "Reports_Draft_Empty_Message"
+    case attachFiles = "Reports_Attach_Files"
 
-    case draftTitle = "Reports_PageViewItem_Draft"
-    case outboxTitle = "Reports_PageViewItem_Outbox"
-    case submittedTitle = "Reports_PageViewItem_Submitted"
-    case viewModelDelete = "Reports_ListItem_Delete_SheetAction"
-    case selectProject = "Reports_Connections_SelectProject"
+    case deleteTitle = "Reports_Delete_Title"
+    case deleteMessage = "Reports_Delete_Message"
+    case deleteCancel = "Reports_Delete_Cancel"
+    case deleteConfirm = "Reports_Delete_Confirm"
 
-    case cameraFilled = "Reports_ManageFiles_TakePhotoVideo_SheetSelect"
-    case micFilled = "Reports_ManageFiles_Record_SheetSelect"
-    case galleryFilled = "Reports_ManageFiles_TellaFiles_SheetSelect"
-    case phoneFilled = "Reports_ManageFiles_ImportFromDevice_SheetSelect"
-    case waitingConnection = "Reports_Outbox_PercentangeUploaded_Expl"
+    case draftTitle = "Reports_Draft_Title"
+    case outboxTitle = "Reports_Outbox_Title"
+    case submittedTitle = "Reports_Submitted_Title"
+
+    case viewModelDelete = "Reports_ViewModel_Delete"
+
+    case selectProject = "Reports_Select_Project"
+    case cameraFilled = "Reports_Camera_Filled"
+    case micFilled = "Reports_Mic_Filled"
+    case galleryFilled = "Reports_Gallery_Filled"
+    case phoneFilled = "Reports_Phone_Filled"
+
+    case waitingConnection = "Reports_Waiting_Connection"
 }

@@ -24,7 +24,7 @@ struct EmptyReportView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             Styles.Colors.backgroundMain
-            EmptyReportView(message: LocalizableReport.reportsDraftEmpty.localized)
+            EmptyReportView(message: LocalizableReport.draftEmptyMessage.localized)
         }
     }
 }
