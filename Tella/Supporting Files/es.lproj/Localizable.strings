@@ -216,6 +216,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettAbout_ContactUs" = "Contact us";
 "Settings_SettAbout_PrivacyPolicy" = "Privacy policy";
 
+<<<<<<< HEAD
 "Reports_AppBar" = "Reports";
 "Reports_Report_AppBar" = "Report";
 "Reports_Draft_EmptyAllFiles_Expl" = "Your Drafts is currently empty. Reports that you have not submitted will appear here.";
@@ -236,9 +237,27 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Draft_ExitReport_SheetExpl" = "Your draft will be lost.";
 "Reports_Draft_ExitReport_Exit_SheetAction" = "Exit anyway";
 "Reports_Draft_ExitReport_Save_SheetAction" = "save and exit";
+=======
 
-"Reports_Draft_AddFiles" = "Attach files here";
+"Reports_Title" = "Reports";
+"Reports_Text" = "Report";
+"Reports_Draft_Message" = "Your Drafts is currently empty. Reports that you have not submitted will appear here.";
+"Reports_Outbox_Message" = "Your Outbox is currently empty. Reports that are ready to be sent will appear here.";
+"Reports_Submitted" = "You have no submitted reports.";
+"Reports_Create_New" = "NEW REPORT";
 
+"Reports_List_Title" = "Title";
+"Reports_List_Description" = "Description";
+"Reports_List_Message" = "Message";
+>>>>>>> f0961db (Conflict resolved)
+
+"Reports_Send_To" = "Send report to:";
+"Reports_Audio_Saved_Correctly" = "The audio recording was saved to your Tella files.";
+"Reports_Submit" = "SUBMIT";
+"Reports_Send" = "Send";
+"Reports_Select_Files" = "Select Files";
+
+<<<<<<< HEAD
 "Reports_DeleteReport_SheetTitle" = "Delete report";
 "Reports_DeleteReport_SheetExpl" = "Are you sure you want to delete this draft?";
 "Reports_DeleteReport_Cancel_SheetAction" = "CANCEL";
@@ -259,3 +278,31 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Draft_SelectFiles_ImportFromDevice_SheetSelect" = "Select from your device";
 "Reports_Outbox_PercentangeUploaded_Expl" = "Waiting for connection";
 
+=======
+"Reports_Exit_Title" = "Exit report?";
+"Reports_Exit_Message" = "Your draft will be lost.";
+"Reports_Exit_Cancel" = "Exit anyway";
+"Reports_Exit_Save" = "save and exit";
+
+"Reports_Draft_Empty_Message" = "Your Drafts is currently empty. Reports that you have not submitted will appear here.";
+"Reports_Attach_Files" = "Attach files here";
+
+"Reports_Delete_Title" = "Delete report";
+"Reports_Delete_Message" = "Are you sure you want to delete this draft?";
+"Reports_Delete_Cancel" = "CANCEL";
+"Reports_Delete_Confirm" = "DELETE";
+
+"Reports_Draft_Title" = "Drafts";
+"Reports_Outbox_Title" = "Outbox";
+"Reports_Submitted_Title" = "Submitted";
+
+"Reports_ViewModel_Delete" = "Delete";
+
+"Reports_Select_Project" = "Select your project";
+"Reports_Camera_Filled" = "Take photo or video with camera";
+"Reports_Mic_Filled" = "Record audio";
+"Reports_Gallery_Filled" = "Select from Tella files";
+"Reports_Phone_Filled" = "Select from your device";
+
+"Reports_Waiting_Connection" = "Waiting for connection";
+>>>>>>> f0961db (Conflict resolved)
