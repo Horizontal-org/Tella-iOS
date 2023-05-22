@@ -216,11 +216,19 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettAbout_ContactUs" = "Contact us";
 "Settings_SettAbout_PrivacyPolicy" = "Privacy policy";
 
+<<<<<<< HEAD
 
 "Reports_ReportsView_Title" = "Reports";
 "Reports_ReportsView_DraftMessage" = "Your Drafts is currently empty. Reports that you have not submitted will appear here.";
 "Reports_ReportsView_OutboxMessage" = "Your Outbox is currently empty. Reports that are ready to be sent will appear here.";
 "Reports_ReportsView_Submitted" = "You have no submitted reports.";
+=======
+"Reports_AppBar" = "Reports";
+"Reports_AppBar_SubHead" = "Report";
+"Reports_Draft_EmptyAllFiles_Expl" = "Your Drafts is currently empty. Reports that you have not submitted will appear here.";
+"Reports_Outbox_EmptyAllFiles_Expl" = "Your Outbox is currently empty. Reports that are ready to be sent will appear here.";
+"Reports_Submitted_EmptyAllFiles_Expl" = "You have no submitted reports.";
+>>>>>>> e8b6f31 (fix localizable strings)
 "Reports_ReportsView_CreateNew" = "NEW REPORT";
 
 "Reports_ReportsList_Title" = "Title";
@@ -228,31 +236,30 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_ReportsList_Message" = "Message";
 
 "Reports_Draft_SendTo" = "Send report to:";
-"Reports_Draft_Title" = "Report";
 "Reports_Draft_SuccessMessage" = "The audio recording was saved to your Tella files.";
 "Reports_Draft_Submit" = "SUBMIT";
 "Reports_Draft_Send" = "Send";
 "Reports_Draft_SelectFiles" = "Select Files";
-"Reports_Draft_ExitTitle" = "Exit report?";
-"Reports_Draft_ExitMessage" = "Your draft will be lost.";
-"Reports_Draft_ExitCancel" = "Exit anyway";
-"Reports_Draft_ExitSave" = "save and exit";
-"Reports_Draft_EmptyMessage" = "Your Drafts is currently empty. Reports that you have not submitted will appear here.";
+"Reports_ExitReport_SheetTitle" = "Exit report?";
+"Reports_ExitReport_SheetExpl" = "Your draft will be lost.";
+"Reports_ExitReport_Exit_SheetAction" = "Exit anyway";
+"Reports_ExitReport_Save_SheetAction" = "save and exit";
+
 "Reports_Draft_AddFiles" = "Attach files here";
 
-"Reports_Submitted_DeleteTitle" = "Delete report";
-"Reports_Submitted_DeleteMessage" = "Are you sure you want to delete this draft?";
-"Reports_Submitted_CancelDelete" = "CANCEL";
-"Reports_Submitted_ConfirmDelete" = "DELETE";
+"Reports_DeleteFile_SheetTitle" = "Delete report";
+"Reports_DeleteFile_SheetExpl" = "Are you sure you want to delete this draft?";
+"Reports_DeleteFile_Cancel_SheetAction" = "CANCEL";
+"Reports_DeleteFile_Delete_SheetAction" = "DELETE";
 
-"Reports_ViewModel_DraftTitle" = "Drafts";
-"Reports_ViewModel_OutboxTitle" = "Outbox";
-"Reports_ViewModel_SubmittedTitle" = "Submitted";
-"Reports_ViewModel_Delete" = "Delete";
+"Reports_PageViewItem_Draft" = "Drafts";
+"Reports_PageViewItem_Outbox" = "Outbox";
+"Reports_PageViewItem_Submitted" = "Submitted";
+"Reports_ListItem_Delete_SheetAction" = "Delete";
+"Reports_Connections_SelectProject" = "Select your project";
 
-"Reports_ViewModel_SelectProject" = "Select your project";
-"Reports_ViewModel_Camera" = "Take photo or video with camera";
-"Reports_ViewModel_Mic" = "Record audio";
-"Reports_ViewModel_Gallery" = "Select from Tella files";
-"Reports_ViewModel_Phone" = "Select from your device";
-"Reports_ViewModel_WaitingConnection" = "Waiting for connection";
+"Reports_ManageFiles_TakePhotoVideo_SheetSelect" = "Take photo or video with camera";
+"Reports_ManageFiles_Record_SheetSelect" = "Record audio";
+"Reports_ManageFiles_TellaFiles_SheetSelect" = "Select from Tella files";
+"Reports_ManageFiles_ImportFromDevice_SheetSelect" = "Select from your device";
+"Reports_Outbox_PercentangeUploaded_Expl" = "Waiting for connection";
