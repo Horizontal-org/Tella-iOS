@@ -218,6 +218,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Draft_EmptyAllFiles_Expl" = "Your Drafts is currently empty. Reports that you have not submitted will appear here.";
 "Reports_Outbox_EmptyAllFiles_Expl" = "Your Outbox is currently empty. Reports that are ready to be sent will appear here.";
 "Reports_Submitted_EmptyAllFiles_Expl" = "You have no submitted reports.";
+
 "Reports_Action_NewReport" = "NEW REPORT";
 
 "Reports_Draft_Select_Title" = "Title";
