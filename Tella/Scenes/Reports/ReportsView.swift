@@ -44,7 +44,6 @@ struct ReportsView: View {
                     case .draft:
                         ReportListView(reportArray: $reportsViewModel.draftReports,
                                        message: LocalizableReport.reportsDraftEmpty.localized)
-                        
                     case .outbox:
                         
                         ReportListView(reportArray: $reportsViewModel.outboxedReports,
