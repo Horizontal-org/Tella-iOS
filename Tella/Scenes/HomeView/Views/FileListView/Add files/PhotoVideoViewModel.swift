@@ -153,7 +153,6 @@ class PhotoVideoViewModel : ObservableObject {
     ///   - properties: The metadata that is need to be written to the image data
     /// - Returns: The image data with metadata
     func saveImageWithImageData(data: Data, properties: NSDictionary) async -> NSData{
-
         let imageRef: CGImageSource = CGImageSourceCreateWithData((data as CFData), nil)!
         let uti: CFString = CGImageSourceGetType(imageRef)!
         let dataWithEXIF: NSMutableData = NSMutableData(data: data as Data)
@@ -163,6 +162,7 @@ class PhotoVideoViewModel : ObservableObject {
         CGImageDestinationFinalize(destination)
         return dataWithEXIF
     }
+
     /// This function take the url of the video from the parameter converts it into AVAsset and exports the video file after removing the metadata to the destination URL and send the destination URL back .
     /// If there is any issue it will return nil
     /// - Parameters:
@@ -225,5 +225,33 @@ class PhotoVideoViewModel : ObservableObject {
                 print("Error deleting file: \(error.localizedDescription)")
             }
         }
+    }
+}
+extension Data {
+    func byRemovingEXIF() -> Data? {
+        guard let source = CGImageSourceCreateWithData(self as NSData, nil),
+              let type = CGImageSourceGetType(source) else
+        {
+            return nil
+        }
+        let count = CGImageSourceGetCount(source)
+        let mutableData = NSMutableData()
+        guard let destination = CGImageDestinationCreateWithData(mutableData, type, count, nil) else {
+            return nil
+        }
+
+        let exifToRemove: CFDictionary = [
+            kCGImagePropertyExifDictionary: kCFNull,
+            kCGImagePropertyGPSDictionary: kCFNull,
+        ] as CFDictionary
+
+        for index in 0 ..< count {
+            CGImageDestinationAddImageFromSource(destination, source, index, exifToRemove)
+            if !CGImageDestinationFinalize(destination) {
+                print("Failed to finalize")
+            }
+        }
+
+        return mutableData as Data
     }
 }
