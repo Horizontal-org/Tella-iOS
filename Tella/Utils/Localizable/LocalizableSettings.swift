@@ -39,6 +39,10 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settSecScreenSecurityExpl = "Settings_SettSec_ScreenSecurity_Expl"
     case settSecPreserveMetadata = "Setting_SettSec_PreserveMetadata"
     case settSecPreserveMetadataExpl = "Setting_SettSec_PreserveMetadata_Expl"
+    case settQuickDelete = "Settings_Sett_QuickDelete"
+    case settQuickDeleteExpl = "Settings_Sett_QuickDelete_Expl"
+    case settQuickDeleteFilesCheckbox = "Settings_Sett_QuickDelete_Files_CheckboxItem"
+    case settQuickDeleteConnectionsCheckbox = "Settings_Sett_QuickDelete_Connections_CheckboxItem"
 
     
     // LockTimeout
