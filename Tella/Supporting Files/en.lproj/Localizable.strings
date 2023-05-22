@@ -44,9 +44,15 @@
 "Home_TellaFiles_Action_Audio" = "Audio";
 "Home_TellaFiles_Action_Documents" = "Documents";
 "Home_TellaFiles_Action_Others" = "Others";
+<<<<<<< HEAD
 "Home_QuickDelete_Action_Title" = "DELETE";
 "Home_QuickDelete_Action_QuickDelete" = "Quick Delete Activated";
 "Home_QuickDelete_Action_QuickDeleteDeactivated" = "Tap anywhere to cancel";
+=======
+"Home_QuickDelete_Swipe_Title" = "DELETE";
+"Home_QuickDelete_Action_Title" = "Quick Delete Activated";
+"Home_QuickDelete_Action_Cancel" = "Tap anywhere to cancel";
+>>>>>>> 19735a5 (Conflict resolve in localization)
 "Vault_RootDirectoryName" = "Tella";
 "Vault_SortBy_SheetTitle" = "Sort by";
 "Vault_SortBy_Name" = "Name";
@@ -194,7 +200,6 @@ If you want to take a picture or a video, proceed in the following way:\
 
 "Setting_SettSec_PreserveMetadata" = "Preserve metadata  when importing";
 "Setting_SettSec_PreserveMetadata_Expl" = "Retain EXIF metadata when importing photos and videos into Tella. This includes data about when the image was created, camera settings, location and your device.";
-
 
 "Settings_SettLockTimeout_SheetTitle" = "Lock timeout";
 "Settings_SettLockTimeout_SheetExpl" = "Decide how long it takes for Tella to lock.";
