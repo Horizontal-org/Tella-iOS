@@ -47,7 +47,7 @@ struct ServerLoginView: View {
                                       isValid: $serverViewModel.validPassword,
                                       shouldShowError: $serverViewModel.shouldShowLoginError,
                                       errorMessage: serverViewModel.loginErrorMessage,
-                                      fieldType: .password,
+                                      fieldType: .text,
                                       placeholder : "Password")
                         .frame(height: 57)
                         
