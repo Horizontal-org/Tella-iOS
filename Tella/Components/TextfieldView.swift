@@ -13,9 +13,7 @@ struct TextfieldView : View {
     
     @Binding var isValid : Bool
     @Binding var shouldShowError : Bool
-    @State private var isAnimated : Bool = false
-    @State private var newIsKeyboardVisible : Bool = false
-    
+
     var errorMessage : String?
     var fieldType : FieldType
     var placeholder : String = ""
@@ -28,29 +26,25 @@ struct TextfieldView : View {
         
         VStack(spacing: 10) {
             
-            Text(placeholder)
-                .font(.custom(Styles.Fonts.regularFontName, size: 12))
-                .frame(maxWidth: .infinity,alignment: .leading)
-                .contentShape(Rectangle())
-                .foregroundColor(.white )
-                .opacity(fieldContent.isEmpty ? 0 : 1)
-                .offset(y: fieldContent.isEmpty ? 20 : 0)
-                .transaction { transaction in
-                    if pfieldContent != fieldContent {
-                        transaction.animation =  .default
-                    } else {
-                        
-                    }
-                }
+            Spacer()
+                .frame(height: 22)
             
             ZStack {
                 Text(placeholder)
-                    .opacity(fieldContent.isEmpty ? 1 : 0)
+                    .offset(y: fieldContent.isEmpty ? 0 : -22)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .frame(maxWidth: .infinity,alignment: .leading)
                     .contentShape(Rectangle())
                     .foregroundColor(fieldContent.isEmpty ? .white : .white.opacity(0.8))
-                
+                    .scaleEffect(fieldContent.isEmpty ? 1 : 0.88, anchor: .leading)
+                    .transaction { transaction in
+                        if pfieldContent != fieldContent {
+                            transaction.animation =  .default
+                        } else {
+                            
+                        }
+                    }
+
                 // Textfield
                 if fieldType == .password {
                     passwordTextfieldView
@@ -76,9 +70,6 @@ struct TextfieldView : View {
         TextField("", text: $fieldContent,onCommit: {
             self.onCommit?()
         }).onChange(of: fieldContent, perform: { value in
-            //            self.isAnimated = pfieldContent != value
-            //            print(self.isAnimated)
-            
             validateField(value: value)
             self.pfieldContent = value
         })
