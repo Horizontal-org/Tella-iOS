@@ -35,24 +35,25 @@ struct ServerLoginView: View {
                         TextfieldView(fieldContent: $serverViewModel.username,
                                       isValid: $serverViewModel.validUsername,
                                       shouldShowError: $serverViewModel.shouldShowLoginError,
-                                      //                                      errorMessage: nil,
                                       fieldType: .username,
-                                      placeholder : "Username")
-                        .frame(height: 30)
+                                      placeholder : "Username",
+                                      shouldShowTitle: true)
+                        
                         
                         Spacer()
-                            .frame(height: 27)
+                            .frame(height: 10)
                         
                         TextfieldView(fieldContent: $serverViewModel.password,
                                       isValid: $serverViewModel.validPassword,
                                       shouldShowError: $serverViewModel.shouldShowLoginError,
                                       errorMessage: serverViewModel.loginErrorMessage,
                                       fieldType: .text,
-                                      placeholder : "Password")
-                        .frame(height: 57)
+                                      placeholder : "Password",
+                                      shouldShowTitle: true)
                         
                         Spacer()
                             .frame(height: 32)
+                        
                         
                         TellaButtonView<AnyView>(title: "LOG IN",
                                                  nextButtonAction: .action,

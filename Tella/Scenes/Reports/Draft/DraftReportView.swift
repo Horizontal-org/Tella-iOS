@@ -133,8 +133,7 @@ struct DraftReportView: View {
                                   shouldShowError: $reportViewModel.shouldShowError,
                                   fieldType: .text,
                                   placeholder : LocalizableReport.reportsListTitle.localized,
-                                  shouldShowTitle: reportViewModel.hasMoreServer)
-                    .frame(height: 30)
+                                  shouldShowTitle: true)
                     
                     Spacer()
                         .frame(height: 34)
@@ -143,7 +142,7 @@ struct DraftReportView: View {
                                    fieldContent: $reportViewModel.description,
                                    isValid: $reportViewModel.isValidDescription,
                                    shouldShowError: $reportViewModel.shouldShowError,
-                                   shouldShowTitle: reportViewModel.hasMoreServer)
+                                   shouldShowTitle: true)
                     
                     Spacer()
                         .frame(height: 24)
