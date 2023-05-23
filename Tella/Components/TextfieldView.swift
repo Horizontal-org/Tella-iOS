@@ -70,9 +70,6 @@ struct TextfieldView : View {
         TextField("", text: $fieldContent,onCommit: {
             self.onCommit?()
         }).onChange(of: fieldContent, perform: { value in
-            //            self.isAnimated = pfieldContent != value
-            //            print(self.isAnimated)
-            
             validateField(value: value)
             self.pfieldContent = value
         })
