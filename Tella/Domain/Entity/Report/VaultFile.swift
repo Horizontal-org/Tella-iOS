@@ -20,7 +20,7 @@ class VaultFile: Codable, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(containerName.hashValue)
     }
-    var id: String
+    var id: String?
     var type: FileType
     var fileName: String
     var containerName: String
@@ -38,7 +38,7 @@ class VaultFile: Codable, Hashable {
         return VaultFile(type: .folder, fileName: fileName, containerName: containerName, files: [], pathArray: [])
     }
     
-    init(id:String = UUID().uuidString, type: FileType, fileName: String, containerName: String = UUID().uuidString, files: [VaultFile]? = nil, thumbnail: Data? = nil, created: Date = Date() , fileExtension : String = "", size : Int = 0, resolution : CGSize? = nil, duration : Double? = nil, pathArray :[String]) {
+    init(id:String? = UUID().uuidString, type: FileType, fileName: String, containerName: String = UUID().uuidString, files: [VaultFile]? = nil, thumbnail: Data? = nil, created: Date = Date() , fileExtension : String = "", size : Int = 0, resolution : CGSize? = nil, duration : Double? = nil, pathArray :[String]) {
         self.id = id
         self.type = type
         self.fileName = fileName
@@ -268,11 +268,28 @@ extension VaultFile {
             case .folder:
                 getFile(root: file, vaultFileResult: &vaultFileResult, ids: ids)
             default:
-                if ids.contains(file.id) {
-                    vaultFileResult.insert(file)  
+                if let id = file.id , ids.contains(id) {
+                    vaultFileResult.insert(file)
                 }
             }
         }
     }
+    
+    
+    func updateIds()  {
+        files.forEach { file in
+            if file.id == nil {
+                file.id = UUID().uuidString
+                switch file.type {
+                case .folder:
+                    updateIds()
+                default:
+                    break
+                    
+                }
+            }
+        }
+    }
+    
 }
 

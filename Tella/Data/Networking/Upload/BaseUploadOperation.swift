@@ -214,7 +214,7 @@ class BaseUploadOperation : Operation {
         }
     }
     
-    func putReportFile(fileId: String, size:Int) {
+    func putReportFile(fileId: String?, size:Int) {
         guard  let fileToUpload = filesToUpload.first(where: {$0.fileId == fileId}) else {return}
         
         if size != 0 {
@@ -246,7 +246,7 @@ class BaseUploadOperation : Operation {
         
     }
     
-    func postReportFile(fileId: String) {
+    func postReportFile(fileId: String?) {
         guard  let fileToUpload = filesToUpload.first(where: {$0.fileId == fileId}) else {return}
         
         let api = ReportRepository.API.postReportFile((fileToUpload))
