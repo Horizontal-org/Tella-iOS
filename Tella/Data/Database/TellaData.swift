@@ -166,7 +166,7 @@ class TellaData : ObservableObject {
         
     }
     
-    func addReportFile(fileId: String, reportId : Int) throws -> ReportFile? {
+    func addReportFile(fileId: String?, reportId : Int) throws -> ReportFile? {
         
         guard let database = database else {
             throw SqliteError()

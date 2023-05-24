@@ -171,7 +171,7 @@ class DraftReportVM: ObservableObject {
         }
     }
     
-    func deleteFile(fileId: String) {
+    func deleteFile(fileId: String?) {
         guard let index = files.firstIndex(where: { $0.id == fileId})  else  {return }
         files.remove(at: index)
     }
