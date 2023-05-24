@@ -602,7 +602,7 @@ class TellaDataBase {
                                          primarykeyValue: [KeyValue(key: D.cId, value: reportFile.id)])
     }
     
-    func addReportFile(fileId:String, reportId:Int) throws -> Int {
+    func addReportFile(fileId:String?, reportId:Int) throws -> Int {
         
         
         return  try dataBaseHelper.insertInto(tableName: D.tReportInstanceVaultFile,

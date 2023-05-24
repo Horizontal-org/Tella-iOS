@@ -24,7 +24,7 @@ enum UploadResponse {
 }
 
 enum UploadType {
-    case progress(fileId: String,type: UploadReportType)
+    case progress(fileId: String?,type: UploadReportType)
     case createReport
 }
 
