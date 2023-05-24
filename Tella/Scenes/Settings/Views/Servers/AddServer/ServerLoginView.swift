@@ -38,10 +38,9 @@ struct ServerLoginView: View {
                                       fieldType: .username,
                                       placeholder : "Username",
                                       shouldShowTitle: true)
-                        
-                        
+
                         Spacer()
-                            .frame(height: 10)
+                            .frame(height: 13)
                         
                         TextfieldView(fieldContent: $serverViewModel.password,
                                       isValid: $serverViewModel.validPassword,
@@ -50,11 +49,10 @@ struct ServerLoginView: View {
                                       fieldType: .text,
                                       placeholder : "Password",
                                       shouldShowTitle: true)
-                        
+
                         Spacer()
                             .frame(height: 32)
-                        
-                        
+
                         TellaButtonView<AnyView>(title: "LOG IN",
                                                  nextButtonAction: .action,
                                                  isValid: $serverViewModel.validCredentials) {

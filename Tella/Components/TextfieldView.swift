@@ -27,7 +27,7 @@ struct TextfieldView : View {
         VStack(spacing: 10) {
             
             Spacer()
-                .frame(height: 22)
+                .frame(height: 10)
             
             ZStack {
                 Text(placeholder)

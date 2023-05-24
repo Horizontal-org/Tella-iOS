@@ -125,7 +125,7 @@ struct DraftReportView: View {
                         
                     } else {
                         Spacer()
-                            .frame(height: 10)
+                            .frame(height: 5)
                     }
                     
                     TextfieldView(fieldContent: $reportViewModel.title,
