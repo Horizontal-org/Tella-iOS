@@ -278,12 +278,14 @@ extension VaultFile {
     
     func updateIds()  {
         files.forEach { file in
-            switch file.type {
-            case .folder:
-                updateIds()
-            default:
-                if file.id == nil {
-                    file.id = UUID().uuidString
+            if file.id == nil {
+                file.id = UUID().uuidString
+                switch file.type {
+                case .folder:
+                    updateIds()
+                default:
+                    break
+                    
                 }
             }
         }
