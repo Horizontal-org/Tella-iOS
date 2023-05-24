@@ -78,7 +78,8 @@ struct ReportCardView : View {
     
     private func showDeleteReportConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: 200) {
-            DeleteReportConfirmationView {
+            DeleteReportConfirmationView(title: report.title,
+                                         message: deleteMessage) {
                 reportsViewModel.deleteReport()
                 sheetManager.hide()
             }
@@ -121,6 +122,17 @@ struct ReportCardView : View {
                           reportsViewModel: reportsViewModel,
                           reportId: reportsViewModel.selectedReport?.id)
         .environmentObject(reportsViewModel)
+    }
+    
+    private var deleteMessage : String {
+        switch report.status {
+        case .draft:
+            return LocalizableReport.deleteDraftReportMessage.localized
+        case .submitted:
+            return LocalizableReport.DeleteSubmittedReportMessage.localized
+        default:
+            return LocalizableReport.deleteOutboxReportMessage.localized
+        }
     }
 }
 
