@@ -285,7 +285,6 @@ extension VaultFile {
                     updateIds()
                 default:
                     break
-                    
                 }
             }
         }
