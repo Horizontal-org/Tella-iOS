@@ -56,34 +56,34 @@ extension Date{
         var interval = getDateComponent(component: .year).year!
         
         if interval > 0 {
-            let string = interval == 1 ?  "%i year" : "%i years"
+            let string = interval == 1 ?  "%i year ago" : "%i years ago"
             return String(format: string, interval)
         }
         
         interval = getDateComponent(component: .month).month!
         if interval > 0 {
-            let string = interval == 1 ?  "%i month" : "%i months"
+            let string = interval == 1 ?  "%i month ago" : "%i months ago"
             return String(format: string, interval)
         }
         
         interval = getDateComponent(component: .day).day!
         
         if interval > 0 {
-            let  string = interval == 1 ?  "%i day" : "%i days"
+            let  string = interval == 1 ?  "%i day ago" : "%i days ago"
             return String(format: string, interval)
         }
         
         interval = getDateComponent(component: .hour).hour!
         
         if interval > 0 {
-            let string = interval == 1 ?  "%i hour" : "%i hours"
+            let string = interval == 1 ?  "%i hour ago" : "%i hours ago"
             return String(format: string, interval)
         }
         
         interval = getDateComponent(component: .minute).minute!
         
         if interval > 0 {
-            let string = interval == 1 ?  "%i minute" : "%i minutes"
+            let string = interval == 1 ?  "%i minute ago" : "%i minutes ago"
             return String(format: string, interval)
         }
         
