@@ -82,7 +82,9 @@
 "Vault_CreateNewFolder_Cancel_SheetAction" = "CANCEL";
 "Vault_CreateNewFolder_Create_SheetAction" = "CREATE";
 "Vault_DeleteFile_SheetTitle" = "Delete file?";
-"Vault_DeleteFile_SheetExpl" = "The selected files will be permanently deleted from Tella.";
+"Vault_DeleteFiles_SheetTitle" = "Delete files?";
+"Vault_DeleteFile_SheetExpl" = "The selected file will be permanently deleted from Tella.";
+"Vault_DeleteFiles_SheetExpl" = "The selected files will be permanently deleted from Tella.";
 "Vault_DeleteFile_Cancel_SheetAction" = "CANCEL";
 "Vault_DeleteFile_Delete_SheetAction" = "DELETE";
 "Vault_SaveToDevice_SheetTitle" = "Save to device gallery?";

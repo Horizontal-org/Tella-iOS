@@ -50,7 +50,9 @@ enum LocalizableVault: String, LocalizableDelegate {
     case createNewFolderCreateSheetAction = "Vault_CreateNewFolder_Create_SheetAction"
     
     case deleteFileSheetTitle = "Vault_DeleteFile_SheetTitle"
+    case deleteFilesSheetTitle = "Vault_DeleteFiles_SheetTitle"
     case deleteFileSheetExpl = "Vault_DeleteFile_SheetExpl"
+    case deleteFilesSheetExpl = "Vault_DeleteFiles_SheetExpl"
     case deleteFileCancelSheetAction = "Vault_DeleteFile_Cancel_SheetAction"
     case deleteFileDeleteSheetAction = "Vault_DeleteFile_Delete_SheetAction"
     
