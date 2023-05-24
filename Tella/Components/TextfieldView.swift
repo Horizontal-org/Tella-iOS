@@ -158,7 +158,7 @@ struct TextfieldStyle: TextFieldStyle {
             .accentColor(.white)
             .multilineTextAlignment(.leading)
             .disableAutocorrection(true)
-            .keyboardType(.alphabet)
+            .autocapitalization(.none)
     }
 }
 
