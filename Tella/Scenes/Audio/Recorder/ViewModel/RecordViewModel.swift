@@ -44,9 +44,12 @@ class RecordViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         resultFile?.wrappedValue = [file]
                     }
-                     
+                    
                     if sourceView != .addReportFile {
                         mainAppModel.sendAutoReportFile(file: file)
+                    }
+                    DispatchQueue.main.async {
+                        self.resetRecording()
                     }
                 }
             }
@@ -114,17 +117,19 @@ class RecordViewModel: ObservableObject {
             self.audioBackend.pauseRecording()
         }
         
-        self.state = .ready
-        
         self.audioBackend.stopRecording(fileName: fileName)
+    }
+    
+    private func resetRecording() {
+        self.state = .ready
         
         self.fileName = self.initialFileName
         
         self.updateView()
     }
     
-    func onResetRecording() {
-        self.audioBackend.resetRecorder()
+    func onDiscardRecording() {
+        self.audioBackend.discardRecord()
         
     }
     
