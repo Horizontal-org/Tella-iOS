@@ -62,10 +62,8 @@ class VaultManager: VaultManagerInterface, ObservableObject {
             save(file: root)
         }
         
-        if Bundle.main.versionNumber == "1.1.0" {
-            root.updateIds()
-            save(file: root)
-        }
+        root.updateIds()
+        save(file: root)
 
         do {
             try FileManager.default.createDirectory(at: containerURL, withIntermediateDirectories: true, attributes: nil)
