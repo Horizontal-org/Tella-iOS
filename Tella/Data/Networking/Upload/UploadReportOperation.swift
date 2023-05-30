@@ -10,7 +10,15 @@ class UploadReportOperation: BaseUploadOperation {
     init(report:Report, urlSession:URLSession, mainAppModel :MainAppModel,type: OperationType) {
         super.init(urlSession: urlSession, mainAppModel: mainAppModel, type:type)
         self.report = report
-        
+        setupNetworkMonitor()
+    }
+    
+    override func main() {
+        super.main()
+        startUploadReportAndFiles()
+    }
+    
+    private func setupNetworkMonitor() {
         self.mainAppModel.networkMonitor.connexionDidChange.sink(receiveValue: { value in
             if self.report != nil {
                 if value && self.report?.status == .submissionPending  {
@@ -22,11 +30,6 @@ class UploadReportOperation: BaseUploadOperation {
                 }
             }
         }).store(in: &subscribers)
-    }
-    
-    override func main() {
-        super.main()
-        startUploadReportAndFiles()
     }
     
     func startUploadReportAndFiles() {

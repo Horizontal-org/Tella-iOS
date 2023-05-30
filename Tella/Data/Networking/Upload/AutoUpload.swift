@@ -11,6 +11,15 @@ class AutoUpload: BaseUploadOperation {
     override init(urlSession:URLSession, mainAppModel :MainAppModel,type: OperationType) {
         super.init(urlSession: urlSession, mainAppModel: mainAppModel, type:.autoUpload)
         
+        setupNetworkMonitor()
+    }
+    
+    override func main() {
+        handleResponse()
+        super.main()
+    }
+    
+   private func setupNetworkMonitor() {
         mainAppModel.networkMonitor.connexionDidChange.sink(receiveValue: { value in
             if self.report != nil {
                 if value && self.report?.status == .submissionPending  {
@@ -20,11 +29,6 @@ class AutoUpload: BaseUploadOperation {
                 }
             }
         }).store(in: &subscribers)
-    }
-    
-    override func main() {
-        handleResponse()
-        super.main()
     }
     
     func addFile(file:VaultFile) {
