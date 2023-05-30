@@ -104,110 +104,63 @@ class DataBaseHelper {
             let andDifferentConditionPrimaryKeyColumnNames = andDifferentCondition.compactMap{($0.key)}
 
             
-            sql += " WHERE"
-            
-            
-            for (primaryKeyColumnNameIndex, primaryKeyColumnName) in andConditionPrimaryKeyColumnNames.enumerated() {
-                if primaryKeyColumnNameIndex == 0 {
-                    sql += " ( "
-                }
-                sql += "  " + primaryKeyColumnName +  " = :\(primaryKeyColumnName)"
-                if primaryKeyColumnNameIndex < andConditionPrimaryKeyColumnNames.count - 1 {
-                    sql += "  AND"
-                } else {
-                    sql += " )"
-                    
-                }
+            sql += " WHERE "
+
+            if !andCondition.isEmpty {
+                let values = andConditionPrimaryKeyColumnNames.map { "\($0) = :\($0)" }.joined(separator: " AND")
+                sql += " (\(values))"
             }
-            
+
             if (!andCondition.isEmpty && !andDifferentCondition.isEmpty) {
                 sql += " AND"
             }
 
-            
-            for (primaryKeyColumnNameIndex, primaryKeyColumnName) in andDifferentConditionPrimaryKeyColumnNames.enumerated() {
-                if primaryKeyColumnNameIndex == 0 {
-                    sql += " ( "
-                }
-                sql += "  " + primaryKeyColumnName +  " != :\(primaryKeyColumnName)"
-                if primaryKeyColumnNameIndex < andConditionPrimaryKeyColumnNames.count - 1 {
-                    sql += "  AND"
-                } else {
-                    sql += " )"
-                    
-                }
+            if !andDifferentCondition.isEmpty {
+                let values = andDifferentConditionPrimaryKeyColumnNames.map { "\($0) != :\($0)" }.joined(separator: " AND")
+                sql += " (\(values))"
             }
 
             if (!andCondition.isEmpty || !andDifferentCondition.isEmpty) && !ordCondition.isEmpty {
                 sql += " AND"
             }
-            
-            for (primaryKeyColumnNameIndex, primaryKeyColumnName) in ordConditionPrimaryKeyColumnNames.enumerated() {
-                if primaryKeyColumnNameIndex == 0 {
-                    sql += " ( "
-                }
-                
-                sql += "  " + primaryKeyColumnName +  " = :\(primaryKeyColumnName)"
-                if primaryKeyColumnNameIndex < ordConditionPrimaryKeyColumnNames.count - 1 {
-                    sql += "  OR"
-                } else {
-                    sql += " ) ;"
-                }
-            }
-            
-            for (index, condition) in inCondition.enumerated() {
-                //
-                sql += "  " + condition.key + " IN " + "( "
-                
-                condition.value.enumerated().forEach({ (index,item) in
-                    
-                    sql += "\(item) "
-                    
-                    if index == condition.value.count - 1 {
-                        sql += "  ) "
-                    } else {
-                        sql += "  , "
-                    }
-                    
-                })
-                
-                
-                if index < inCondition.count - 1 {
-                    sql += "  AND"
-                }
-                
-            }
-            
-            for (index, condition) in notInCondition.enumerated() {
-                //
-                sql += "  " + condition.key + " NOT IN " + "( "
-                
-                condition.value.enumerated().forEach({ (index,item) in
-                    
-                    sql += "\(item) "
-                    
-                    if index == condition.value.count - 1 {
-                        sql += "  ) "
-                    } else {
-                        sql += "  , "
-                    }
-                    
-                })
-                
-                
-                if index < inCondition.count - 1 {
-                    sql += "  AND"
-                }
-                
+
+            if !ordCondition.isEmpty {
+                let values = ordConditionPrimaryKeyColumnNames.map { "\($0) = :\($0)" }.joined(separator: " OR")
+                sql += " (\(values))"
             }
 
-            
-            if (!andCondition.isEmpty || !ordCondition.isEmpty || !inCondition.isEmpty) && !passedTimeCondition.isEmpty {
+            if (!andCondition.isEmpty || !andDifferentCondition.isEmpty || !ordCondition.isEmpty) && !inCondition.isEmpty {
                 sql += " AND"
             }
-            
 
-        }
+            for (index, condition) in inCondition.enumerated() {
+
+                let columnName = condition.key
+                let values = condition.value.map { "\($0)" }.joined(separator: ", ")
+                
+                sql += " \(columnName) IN (\(values))"
+
+                if index < inCondition.count - 1 {
+                    sql += "  AND"
+                }
+            }
+            
+            if (!andCondition.isEmpty || !andDifferentCondition.isEmpty || !ordCondition.isEmpty || !inCondition.isEmpty) && !notInCondition.isEmpty {
+                sql += " AND"
+            }
+
+            for (index, condition) in notInCondition.enumerated() {
+
+                let columnName = condition.key
+                let values = condition.value.map { "\($0)" }.joined(separator: ", ")
+                
+                sql += " \(columnName) NOT IN (\(values))"
+
+                if index < notInCondition.count - 1 {
+                    sql += "  AND"
+                }
+            }
+         }
         
         if !order.isEmpty {
             sql += " ORDER BY \(order)"
@@ -356,24 +309,14 @@ class DataBaseHelper {
         let primaryKeyColumnNames = primarykeyValue.compactMap{($0.key)}
         
         let bindValues = keyValue + (primarykeyValue)
-        
-        
-        var updateSql = "UPDATE '\(tableName)' SET"
-        
-        for (columnIndex, columnName) in setColumnNames.enumerated() {
-            updateSql += "  \(columnName)  = :\(columnName) "
-            if columnIndex < setColumnNames.count - 1 {
-                updateSql += ", "
-            }
-        }
+
+        var updateSql = "UPDATE '\(tableName)' SET "
+
+        updateSql  += setColumnNames.map { "\($0) = :\($0)" }.joined(separator: ", ")
+
         if !primarykeyValue.isEmpty {
-            updateSql += " WHERE"
-            for (primaryKeyColumnNameIndex, primaryKeyColumnName) in primaryKeyColumnNames.enumerated() {
-                updateSql += "  " + primaryKeyColumnName +  " = :\(primaryKeyColumnName)"
-                if primaryKeyColumnNameIndex < primaryKeyColumnNames.count - 1 {
-                    updateSql += " AND"
-                }
-            }
+            updateSql += " WHERE "
+            updateSql += primaryKeyColumnNames.map { "\($0) = :\($0)" }.joined(separator: " AND ")
         }
         
         debugLog("update: \(updateSql)")
@@ -400,36 +343,23 @@ class DataBaseHelper {
         
         let primaryKeyColumnNames = primarykeyValue.compactMap{($0.key)}
         
-        var deleteSql = "DELETE FROM '\(tableName)' WHERE"
-        for (primaryKeyColumnNameIndex, primaryKeyColumnName) in primaryKeyColumnNames.enumerated() {
-            deleteSql += " " + primaryKeyColumnName + " = :\(primaryKeyColumnName)"
-            if primaryKeyColumnNameIndex < primaryKeyColumnNames.count - 1 {
-                deleteSql += " AND"
-            }
-        }
+        var deleteSql = "DELETE FROM '\(tableName)' WHERE "
+
+        deleteSql  += primaryKeyColumnNames.map { "\($0) = :\($0)" }.joined(separator: " AND ")
+
         
         for (index, condition) in inCondition.enumerated() {
 
-            deleteSql += "  " + condition.key + " IN " + "( "
+            let columnName = condition.key
+            let values = condition.value.map { "\($0)" }.joined(separator: ", ")
             
-            condition.value.enumerated().forEach({ (index,item) in
-                
-                deleteSql += "\(item) "
-                
-                if index == condition.value.count - 1 {
-                    deleteSql += "  ) "
-                } else {
-                    deleteSql += "  , "
-                }
-                
-            })
+            deleteSql += " \(columnName) IN (\(values))"
 
             if index < inCondition.count - 1 {
                 deleteSql += "  AND"
             }
         }
 
-        
         debugLog("delete: \(deleteSql)")
         
         guard let deleteStatement = try prepareStatement(sql: deleteSql) else {

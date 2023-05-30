@@ -94,31 +94,7 @@ class TellaDataBase {
             let serversDict = try dataBaseHelper.selectQuery(tableName: D.tServer, andCondition: [])
             
             serversDict.forEach { dict in
-                let id = dict[D.cServerId] as? Int
-                let name = dict[D.cName] as? String
-                let url = dict[D.cURL] as? String
-                let username = dict[D.cUsername] as? String
-                let password = dict[D.cPassword] as? String
-                let token = dict[D.cAccessToken] as? String
-                let activatedMetadata = dict[D.cActivatedMetadata] as? Int
-                let backgroundUpload = dict[D.cBackgroundUpload] as? Int
-                let apiProjectId = dict[D.cApiProjectId] as? String
-                let slug = dict[D.cSlug] as? String
-                let autoUpload = dict[D.cAutoUpload] as? Int
-                let autoDelete = dict[D.cAutoDelete] as? Int
-                
-                servers.append(Server(id:id,
-                                      name: name,
-                                      serverURL: url,
-                                      username: username,
-                                      password: password,
-                                      accessToken: token,
-                                      activatedMetadata: activatedMetadata == 0 ? false : true ,
-                                      backgroundUpload: backgroundUpload == 0 ? false : true,
-                                      projectId: apiProjectId,
-                                      slug:slug,
-                                      autoUpload: autoUpload == 0 ? false : true,
-                                      autoDelete: autoDelete == 0 ? false : true))
+                servers.append(getServer(dictionnary: dict))
             }
             
             return servers
@@ -134,34 +110,8 @@ class TellaDataBase {
             let serversDict = try dataBaseHelper.selectQuery(tableName: D.tServer,
                                                              andCondition: [KeyValue(key: D.cAutoUpload, value: 1)])
             
-            
             if !serversDict.isEmpty, let dict = serversDict.first {
-                
-                let id = dict[D.cServerId] as? Int
-                let name = dict[D.cName] as? String
-                let url = dict[D.cURL] as? String
-                let username = dict[D.cUsername] as? String
-                let password = dict[D.cPassword] as? String
-                let token = dict[D.cAccessToken] as? String
-                let activatedMetadata = dict[D.cActivatedMetadata] as? Int
-                let backgroundUpload = dict[D.cBackgroundUpload] as? Int
-                let apiProjectId = dict[D.cApiProjectId] as? String
-                let slug = dict[D.cSlug] as? String
-                let autoUpload = dict[D.cAutoUpload] as? Int
-                let autoDelete = dict[D.cAutoDelete] as? Int
-                
-                return Server(id:id,
-                              name: name,
-                              serverURL: url,
-                              username: username,
-                              password: password,
-                              accessToken: token,
-                              activatedMetadata: activatedMetadata == 0 ? false : true ,
-                              backgroundUpload: backgroundUpload == 0 ? false : true,
-                              projectId: apiProjectId,
-                              slug:slug,
-                              autoUpload: autoUpload == 0 ? false : true,
-                              autoDelete: autoDelete == 0 ? false : true)
+                return getServer(dictionnary: dict)
             }
             return nil
         } catch {
@@ -188,9 +138,9 @@ class TellaDataBase {
     }
     
     func deleteServer(serverId : Int) throws {
-
+        
         var reportIDs : [Int] = []
-
+        
         do {
             
             let responseDict = try dataBaseHelper.selectQuery(tableName: D.tReport,
@@ -202,22 +152,22 @@ class TellaDataBase {
                 }
             }
         } catch {
-
+            
         }
-
+        
         _ =  try dataBaseHelper.delete(tableName: D.tServer,
-                                                 primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
-
+                                       primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
+        
         _ =  try dataBaseHelper.delete(tableName: D.tReport,
-                                        primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
- 
+                                       primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
+        
         if !reportIDs.isEmpty {
             _ =  try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
-                                            inCondition: [KeyValues(key: D.cReportInstanceId, value: reportIDs)])
+                                           inCondition: [KeyValues(key: D.cReportInstanceId, value: reportIDs)])
         }
-
+        
     }
-
+    
     func deleteAllServers() throws -> Int {
         return try dataBaseHelper.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile])
     }
@@ -239,52 +189,8 @@ class TellaDataBase {
                                                               joinCondition: joinCondition)
             
             responseDict.forEach { dict in
-                
-                let id = dict[D.cServerId] as? Int
-                let name = dict[D.cName] as? String
-                let url = dict[D.cURL] as? String
-                let username = dict[D.cUsername] as? String
-                let password = dict[D.cPassword] as? String
-                let token = dict[D.cAccessToken] as? String
-                let activatedMetadata = dict[D.cActivatedMetadata] as? Int
-                let backgroundUpload = dict[D.cBackgroundUpload] as? Int
-                let autoUpload = dict[D.cAutoUpload] as? Int
-                let autoDelete = dict[D.cAutoDelete] as? Int
-                
-                let reportID = dict[D.cReportId] as? Int
-                let title = dict[D.cTitle] as? String
-                let description = dict[D.cDescription] as? String
-                let createdDate = dict[D.cCreatedDate] as? Double
-                let updatedDate = dict[D.cUpdatedDate] as? Double
-                let status = dict[D.cStatus] as? Int
-                let apiProjectId = dict[D.cApiProjectId] as? String
-                let slug = dict[D.cSlug] as? String
-                let apiReportId = dict[D.cApiReportId] as? String
-                let currentUpload = dict[D.cCurrentUpload] as? Int
-                
-                let server = Server(id:id,
-                                    name: name,
-                                    serverURL: url,
-                                    username: username,
-                                    password: password,
-                                    accessToken: token,
-                                    activatedMetadata: activatedMetadata == 0 ? false : true ,
-                                    backgroundUpload: backgroundUpload == 0 ? false : true,
-                                    projectId: apiProjectId,
-                                    slug:slug,
-                                    autoUpload: autoUpload == 0 ? false : true,
-                                    autoDelete: autoDelete == 0 ? false : true)
-                
-                reports.append(Report(id: reportID,
-                                      title: title ?? "",
-                                      description: description ?? "",
-                                      createdDate: createdDate?.getDate() ?? Date(),
-                                      updatedDate: updatedDate?.getDate() ?? Date(),
-                                      status: ReportStatus(rawValue: status ?? 0) ?? .draft,
-                                      server: server,
-                                      vaultFiles: getVaultFiles(reportID: reportID),
-                                      apiID: apiReportId,
-                                      currentUpload: currentUpload == 0 ? false : true))
+                let server = getServer(dictionnary: dict)
+                reports.append(getReport(dictionnary: dict))
             }
             
             return reports
@@ -306,52 +212,8 @@ class TellaDataBase {
                                                               joinCondition: joinCondition)
             if !responseDict.isEmpty, let dict = responseDict.first  {
                 
-                let id = dict[D.cServerId] as? Int
-                let name = dict[D.cName] as? String
-                let url = dict[D.cURL] as? String
-                let username = dict[D.cUsername] as? String
-                let password = dict[D.cPassword] as? String
-                let token = dict[D.cAccessToken] as? String
-                let activatedMetadata = dict[D.cActivatedMetadata] as? Int
-                let backgroundUpload = dict[D.cBackgroundUpload] as? Int
-                let autoUpload = dict[D.cAutoUpload] as? Int
-                let autoDelete = dict[D.cAutoDelete] as? Int
-                
-                let reportID = dict[D.cReportId] as? Int
-                let title = dict[D.cTitle] as? String
-                let description = dict[D.cDescription] as? String
-                let createdDate = dict[D.cCreatedDate] as? Double
-                let updatedDate = dict[D.cUpdatedDate] as? Double
-                let status = dict[D.cStatus] as? Int
-                let apiProjectId = dict[D.cApiProjectId] as? String
-                let slug = dict[D.cSlug] as? String
-                let apiReportId = dict[D.cApiReportId] as? String
-                let currentUpload = dict[D.cCurrentUpload] as? Int
-                
-                let server = Server(id:id,
-                                    name: name,
-                                    serverURL: url,
-                                    username: username,
-                                    password: password,
-                                    accessToken: token,
-                                    activatedMetadata: activatedMetadata == 0 ? false : true ,
-                                    backgroundUpload: backgroundUpload == 0 ? false : true,
-                                    projectId: apiProjectId,
-                                    slug:slug,
-                                    autoUpload: autoUpload == 0 ? false : true,
-                                    autoDelete: autoDelete == 0 ? false : true)
-                
-                
-                return  Report(id: reportID,
-                               title: title ?? "",
-                               description: description ?? "",
-                               createdDate: createdDate?.getDate() ?? Date(),
-                               updatedDate: updatedDate?.getDate() ?? Date(),
-                               status: ReportStatus(rawValue: status ?? 0) ?? .draft,
-                               server: server,
-                               vaultFiles: getVaultFiles(reportID: reportID),
-                               apiID: apiReportId,
-                               currentUpload: currentUpload == 0 ? false : true)
+                let server = getServer(dictionnary: dict)
+                return  getReport(dictionnary: dict)
             }
             
             return nil
@@ -379,54 +241,11 @@ class TellaDataBase {
                 let files = getVaultFiles(reportID: reportID)
                 
                 let filteredFile = files.filter{(Date().timeIntervalSince($0.updatedDate ?? Date())) < 1800 }
-               
+                
                 if !filteredFile.isEmpty {
-
-                    let id = dict[D.cServerId] as? Int
-                    let name = dict[D.cName] as? String
-                    let url = dict[D.cURL] as? String
-                    let username = dict[D.cUsername] as? String
-                    let password = dict[D.cPassword] as? String
-                    let token = dict[D.cAccessToken] as? String
-                    let activatedMetadata = dict[D.cActivatedMetadata] as? Int
-                    let backgroundUpload = dict[D.cBackgroundUpload] as? Int
-                    let autoUpload = dict[D.cAutoUpload] as? Int
-                    let autoDelete = dict[D.cAutoDelete] as? Int
                     
-                    let title = dict[D.cTitle] as? String
-                    let description = dict[D.cDescription] as? String
-                    let createdDate = dict[D.cCreatedDate] as? Double
-                    let updatedDate = dict[D.cUpdatedDate] as? Double
-                    let status = dict[D.cStatus] as? Int
-                    let apiProjectId = dict[D.cApiProjectId] as? String
-                    let slug = dict[D.cSlug] as? String
-                    let apiReportId = dict[D.cApiReportId] as? String
-                    let currentUpload = dict[D.cCurrentUpload] as? Int
-                    
-                    let server = Server(id:id,
-                                        name: name,
-                                        serverURL: url,
-                                        username: username,
-                                        password: password,
-                                        accessToken: token,
-                                        activatedMetadata: activatedMetadata == 0 ? false : true ,
-                                        backgroundUpload: backgroundUpload == 0 ? false : true,
-                                        projectId: apiProjectId,
-                                        slug:slug,
-                                        autoUpload: autoUpload == 0 ? false : true,
-                                        autoDelete: autoDelete == 0 ? false : true)
-                    
-                    
-                    return  Report(id: reportID,
-                                   title: title ?? "",
-                                   description: description ?? "",
-                                   createdDate: createdDate?.getDate() ?? Date(),
-                                   updatedDate: updatedDate?.getDate() ?? Date(),
-                                   status: ReportStatus(rawValue: status ?? 0) ?? .draft,
-                                   server: server,
-                                   vaultFiles: getVaultFiles(reportID: reportID),
-                                   apiID: apiReportId,
-                                   currentUpload: currentUpload == 0 ? false : true)
+                    let server = getServer(dictionnary: dict)
+                    return getReport(dictionnary: dict)
                 }
                 
             }
@@ -467,7 +286,7 @@ class TellaDataBase {
     }
     
     func getVaultFiles(reportID:Int?) -> [ReportFile] {
-
+        
         var reportFiles : [ReportFile] = []
         
         do {
@@ -600,9 +419,9 @@ class TellaDataBase {
                                                           andCondition: [KeyValue(key: D.cCurrentUpload, value: 1)])
         
         if !responseDict.isEmpty, let dict = responseDict.first  {
-           
+            
             let reportID = dict[D.cReportId] as? Int
-
+            
             return try dataBaseHelper.update(tableName: D.tReport,
                                              keyValue: [KeyValue(key: D.cCurrentUpload, value: 0),
                                                         KeyValue(key: D.cStatus, value: ReportStatus.submitted.rawValue)],
@@ -622,9 +441,9 @@ class TellaDataBase {
         if let bytesSent = reportFile.bytesSent {
             keyValueArray.append(KeyValue(key: D.cBytesSent, value: bytesSent))
         }
-
+        
         keyValueArray.append(KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()))
-
+        
         return try dataBaseHelper.update(tableName: D.tReportInstanceVaultFile,
                                          keyValue: keyValueArray,
                                          primarykeyValue: [KeyValue(key: D.cId, value: reportFile.id)])
@@ -654,11 +473,68 @@ class TellaDataBase {
     
     func deleteReportFiles(report:Report) {
         do {
-              
+            
             _ = try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
-                                              primarykeyValue: [KeyValue(key: D.cReportInstanceId, value: report.id as Any)])
+                                          primarykeyValue: [KeyValue(key: D.cReportInstanceId, value: report.id as Any)])
         } catch {
             
         }
     }
+    
+    
+    private func getServer(dictionnary : [String:Any] ) -> Server {
+        
+        let id = dictionnary[D.cServerId] as? Int
+        let name = dictionnary[D.cName] as? String
+        let url = dictionnary[D.cURL] as? String
+        let username = dictionnary[D.cUsername] as? String
+        let password = dictionnary[D.cPassword] as? String
+        let token = dictionnary[D.cAccessToken] as? String
+        let activatedMetadata = dictionnary[D.cActivatedMetadata] as? Int
+        let backgroundUpload = dictionnary[D.cBackgroundUpload] as? Int
+        let apiProjectId = dictionnary[D.cApiProjectId] as? String
+        let slug = dictionnary[D.cSlug] as? String
+        let autoUpload = dictionnary[D.cAutoUpload] as? Int
+        let autoDelete = dictionnary[D.cAutoDelete] as? Int
+        
+        return Server(id:id,
+                      name: name,
+                      serverURL: url,
+                      username: username,
+                      password: password,
+                      accessToken: token,
+                      activatedMetadata: activatedMetadata == 0 ? false : true ,
+                      backgroundUpload: backgroundUpload == 0 ? false : true,
+                      projectId: apiProjectId,
+                      slug:slug,
+                      autoUpload: autoUpload == 0 ? false : true,
+                      autoDelete: autoDelete == 0 ? false : true)
+        
+    }
+    
+    private func getReport(dictionnary : [String:Any] ) -> Report {
+        
+        let reportID = dictionnary[D.cReportId] as? Int
+        let title = dictionnary[D.cTitle] as? String
+        let description = dictionnary[D.cDescription] as? String
+        let createdDate = dictionnary[D.cCreatedDate] as? Double
+        let updatedDate = dictionnary[D.cUpdatedDate] as? Double
+        let status = dictionnary[D.cStatus] as? Int
+        let apiProjectId = dictionnary[D.cApiProjectId] as? String
+        let slug = dictionnary[D.cSlug] as? String
+        let apiReportId = dictionnary[D.cApiReportId] as? String
+        let currentUpload = dictionnary[D.cCurrentUpload] as? Int
+        
+        return Report(id: reportID,
+                      title: title ?? "",
+                      description: description ?? "",
+                      createdDate: createdDate?.getDate() ?? Date(),
+                      updatedDate: updatedDate?.getDate() ?? Date(),
+                      status: ReportStatus(rawValue: status ?? 0) ?? .draft,
+                      server: getServer(dictionnary: dictionnary),
+                      vaultFiles: getVaultFiles(reportID: reportID),
+                      apiID: apiReportId,
+                      currentUpload: currentUpload == 0 ? false : true)
+    }
+    
 }
