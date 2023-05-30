@@ -29,14 +29,14 @@ class ServersViewModel: ObservableObject {
         guard let serverId = self.currentServer?.id else { return  }
         
         do {
-            _ = try mainAppModel.vaultManager.tellaData.deleteServer(serverId: serverId)
+              try mainAppModel.vaultManager.tellaData.deleteServer(serverId: serverId)
         } catch {
         }
     }
     
     func deleteAllServersConnection() {
         do {
-            _ = try mainAppModel.vaultManager.tellaData.deleteAllServers()
+            try mainAppModel.vaultManager.tellaData.deleteAllServers()
         } catch {
         }
     }

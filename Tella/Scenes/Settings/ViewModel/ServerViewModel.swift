@@ -91,7 +91,7 @@ class ServerViewModel: ObservableObject {
             currentServer.autoUpload = autoUpload
             currentServer.autoDelete = autoDelete
 
-            _ = try mainAppModel.vaultManager.tellaData.updateServer(server: currentServer)
+              try mainAppModel.vaultManager.tellaData.updateServer(server: currentServer)
       
         } catch {
             

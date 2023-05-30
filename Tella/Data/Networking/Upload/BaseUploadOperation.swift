@@ -116,7 +116,7 @@ class BaseUploadOperation : Operation {
                             status: reportStatus,
                             apiID: apiID)
         do {
-            _ = try mainAppModel.vaultManager.tellaData.updateReport(report: report)
+              try mainAppModel.vaultManager.tellaData.updateReport(report: report)
             
         } catch {
             
@@ -145,7 +145,7 @@ class BaseUploadOperation : Operation {
         let totalBytesSent = (file?.current ?? 0)  + (file?.bytesSent ?? 0)
         
         do {
-            let _ = try mainAppModel.vaultManager.tellaData.updateReportFile(reportFile: ReportFile(id: id,
+              try mainAppModel.vaultManager.tellaData.updateReportFile(reportFile: ReportFile(id: id,
                                                                                                     status: fileStatus,
                                                                                                     bytesSent: totalBytesSent))
         } catch {
@@ -179,7 +179,7 @@ class BaseUploadOperation : Operation {
     
     func deleteCurrentAutoReport() {
         do {
-            _ = try mainAppModel.vaultManager.tellaData.deleteReport(reportId: self.report?.id)
+              try mainAppModel.vaultManager.tellaData.deleteReport(reportId: self.report?.id)
         } catch {
             
         }

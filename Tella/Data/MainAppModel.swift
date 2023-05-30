@@ -114,6 +114,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         selectedTab = newTab
     }
     
+    @discardableResult
     func add(files: [URL], to parentFolder: VaultFile?, type: TellaFileType, folderPathArray:[VaultFile] = []) async throws -> [VaultFile] {
         
         vaultManager.progress.progress.sink { [weak self] value in

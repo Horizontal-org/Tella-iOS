@@ -274,7 +274,7 @@ class OutboxReportVM: ObservableObject {
         guard let id = reportViewModel.id else { return  }
         
         do {
-            let _ = try mainAppModel.vaultManager.tellaData.updateReportStatus(idReport: id, status: reportStatus)
+            try mainAppModel.vaultManager.tellaData.updateReportStatus(idReport: id, status: reportStatus)
             
         } catch {
             

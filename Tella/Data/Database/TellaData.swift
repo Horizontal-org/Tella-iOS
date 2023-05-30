@@ -36,6 +36,7 @@ class TellaData : ObservableObject {
         
     }
     
+    @discardableResult
     func updateServer(server : Server) throws -> Int {
         
         guard let database = database else {
@@ -138,12 +139,13 @@ class TellaData : ObservableObject {
             throw SqliteError()
         }
         
-        _ = try database.resetCurrentUploadReport()
+         try database.resetCurrentUploadReport()
         let id = try database.addReport(report: report)
         let report = getReport(reportId: id)
         return report
     }
     
+    @discardableResult
     func updateReport(report : Report) throws -> Report? {
         
         guard let database = database else {
@@ -154,6 +156,7 @@ class TellaData : ObservableObject {
         return report
     }
     
+    @discardableResult
     func updateReportStatus(idReport : Int, status: ReportStatus) throws -> Int {
         
         guard let database = database else {
@@ -176,6 +179,7 @@ class TellaData : ObservableObject {
         
     }
     
+    @discardableResult
     func updateReportFile(reportFile: ReportFile) throws -> Int {
         
         guard let database = database else {
@@ -187,6 +191,7 @@ class TellaData : ObservableObject {
         
     }
     
+    @discardableResult
     func deleteReport(reportId : Int?) throws -> Int {
         
         guard let database = database else {

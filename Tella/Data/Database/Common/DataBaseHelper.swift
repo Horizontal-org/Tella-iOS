@@ -269,6 +269,7 @@ class DataBaseHelper {
         }
     }
     
+    @discardableResult
     func insertInto(tableName:String, keyValue: [KeyValue?]) throws -> Int {
         let keyValue = keyValue.compactMap({$0})
         
@@ -300,7 +301,7 @@ class DataBaseHelper {
         }
     }
     
-    
+    @discardableResult
     func update(tableName:String, keyValue: [KeyValue?], primarykeyValue : [KeyValue?] ) throws -> Int {
         let keyValue = keyValue.compactMap({$0})
         let primarykeyValue = primarykeyValue.compactMap({$0})
@@ -338,7 +339,7 @@ class DataBaseHelper {
             throw SqliteError(message: errorMessage)
         }
     }
-    
+    @discardableResult
     func delete(tableName:String, primarykeyValue : [KeyValue] = [], inCondition: [KeyValues] = []) throws -> Int {
         
         let primaryKeyColumnNames = primarykeyValue.compactMap{($0.key)}
