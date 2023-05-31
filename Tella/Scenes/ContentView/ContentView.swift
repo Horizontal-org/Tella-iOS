@@ -33,10 +33,7 @@ struct ContentView: View {
                     .eraseToAnyView()
             }
         }.onAppear {
-            setDebugLevel(level: .debug, for: .files)
             setDebugLevel(level: .debug, for: .app)
-            setDebugLevel(level: .debug, for: .crypto)
-
         }
         .environmentObject(DeviceOrientationHelper())
 

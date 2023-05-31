@@ -19,7 +19,7 @@ class AutoUpload: BaseUploadOperation {
         super.main()
     }
     
-   private func setupNetworkMonitor() {
+    private func setupNetworkMonitor() {
         mainAppModel.networkMonitor.connexionDidChange.sink(receiveValue: { isConnected in
             if self.report != nil {
                 if isConnected && self.report?.status == .submissionPending  {
@@ -41,21 +41,30 @@ class AutoUpload: BaseUploadOperation {
     
     func startUploadReportAndFiles(file:VaultFile) {
         
-        if let currentReport = self.mainAppModel.vaultManager.tellaData.getCurrentReport(), let reportId = currentReport.id {
-            
-            do {
-                
-                if let reportFile = try self.mainAppModel.vaultManager.tellaData.addReportFile(fileId: file.id, reportId: reportId) {
-                    currentReport.reportFiles?.append(reportFile)
-                }
-                self.report = currentReport
-                self.checkReport()
-                
-            } catch {
-                
-            }
+        let currentReport = self.mainAppModel.vaultManager.tellaData.getCurrentReport()
+        
+        if let currentReport {
+            self.addReportFile(file: file, report: currentReport)
+            self.checkReport()
         } else {
             createNewReport(file: file)
+        }
+    }
+    func getCurrentReport() -> Report? {
+        return self.mainAppModel.vaultManager.tellaData.getCurrentReport()
+    }
+    
+    func addReportFile(file:VaultFile, report:Report) {
+        do {
+            guard let reportId = report.id else { return  }
+            self.report = report
+
+            let reportFile = try self.mainAppModel.vaultManager.tellaData.addReportFile(fileId: file.id, reportId: reportId)
+            
+            if let reportFile {
+                report.reportFiles?.append(reportFile)
+            }
+        } catch {
         }
     }
     
