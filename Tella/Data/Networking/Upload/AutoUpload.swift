@@ -50,19 +50,16 @@ class AutoUpload: BaseUploadOperation {
             createNewReport(file: file)
         }
     }
-    func getCurrentReport() -> Report? {
-        return self.mainAppModel.vaultManager.tellaData.getCurrentReport()
-    }
-    
+
     func addReportFile(file:VaultFile, report:Report) {
         do {
             guard let reportId = report.id else { return  }
             self.report = report
 
-            let reportFile = try self.mainAppModel.vaultManager.tellaData.addReportFile(fileId: file.id, reportId: reportId)
+            let addedReportFile = try self.mainAppModel.vaultManager.tellaData.addReportFile(fileId: file.id, reportId: reportId)
             
-            if let reportFile {
-                report.reportFiles?.append(reportFile)
+            if let addedReportFile {
+                report.reportFiles?.append(addedReportFile)
             }
         } catch {
         }
