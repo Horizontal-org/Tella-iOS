@@ -20,12 +20,13 @@ class AutoUpload: BaseUploadOperation {
     }
     
    private func setupNetworkMonitor() {
-        mainAppModel.networkMonitor.connexionDidChange.sink(receiveValue: { value in
+        mainAppModel.networkMonitor.connexionDidChange.sink(receiveValue: { isConnected in
             if self.report != nil {
-                if value && self.report?.status == .submissionPending  {
+                if isConnected && self.report?.status == .submissionPending  {
                     self.checkReport()
-                } else if value == false && self.report?.status != .submissionPending {
+                } else if !isConnected && self.report?.status != .submissionPending {
                     self.stopConnexion()
+                    debugLog("No internet connexion")
                 }
             }
         }).store(in: &subscribers)
