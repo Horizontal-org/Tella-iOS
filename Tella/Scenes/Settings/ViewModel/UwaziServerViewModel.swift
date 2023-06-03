@@ -13,11 +13,12 @@ class UwaziServerViewModel: ObservableObject {
     var mainAppModel : MainAppModel
 
     // Server propreties
-    @Published var name : String?
     @Published var serverURL : String = "https://"
+
+    
+    @Published var name : String?
     @Published var username : String = ""
     @Published var password : String = ""
-    @Published var code: String = ""
     @Published var activatedMetadata : Bool = false
     @Published var backgroundUpload : Bool = false
     @Published var autoUpload : Bool = false
@@ -28,19 +29,30 @@ class UwaziServerViewModel: ObservableObject {
     @Published var validURL : Bool = false
     @Published var shouldShowURLError : Bool = false
     @Published var urlErrorMessage : String = ""
+    @Published var isPublicInstance: Bool = false
+    @Published var isPrivateInstance: Bool = false
 
     // Login
     @Published var validUsername : Bool = false
     @Published var validPassword : Bool = false
     @Published var validCode: Bool = false
     @Published var validCredentials : Bool = false
-    @Published var validAuthenticationCode: Bool = false
     @Published var shouldShowLoginError : Bool = false
-    @Published var shouldShowAuthenticationError: Bool = false
     @Published var loginErrorMessage : String = ""
-    @Published var codeErrorMessage: String = ""
     @Published var isLoading : Bool = false
     @Published var showNextSuccessLoginView : Bool = false
+    @Published var showNextLanguageSelectionView: Bool = false
+    @Published var showNext2FAView: Bool = false
+
+    // Authentication
+    @Published var validAuthenticationCode: Bool = false
+    @Published var shouldShowAuthenticationError: Bool = false
+    @Published var code: String = ""
+    @Published var codeErrorMessage: String = ""
+    @Published var showLanguageSelectionView: Bool = false
+
+    // Language
+    @Published var languages: [UwaziLanguageRow] = []
 
     private var cancellableLogin: Cancellable? = nil
     private var cancellableAuthenticationCode: Cancellable? = nil
@@ -109,11 +121,52 @@ class UwaziServerViewModel: ObservableObject {
         }
     }
 
+    func getLanguage() {
+        isLoading = true
+        guard let baseURL = serverURL.getBaseURL() else { return }
+        UwaziServerRepository().getLanguage(serverURL: baseURL)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                self.isLoading = false
+
+                switch completion {
+
+                case .finished:
+                    print("Finished")
+                case .failure(let error):
+                    self.isLoading = false
+                }
+
+            }, receiveValue: { wrapper in
+                print("Finished")
+                self.isLoading = false
+                self.languages.append(contentsOf: wrapper.rows ?? [])
+                self.showNextSuccessLoginView = true
+            }).store(in: &subscribers)
+    }
+
     func checkURL() {
 
         isLoading = true
+        guard let baseURL = serverURL.getBaseURL() else { return }
+        UwaziServerRepository().checkServerURL(serverURL: baseURL)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                self.isLoading = false
 
+                switch completion {
 
+                case .finished:
+                    print("Finished")
+                case .failure(let error):
+                    self.isPrivateInstance = true
+                }
+
+            }, receiveValue: { wrapper in
+                print("Finished")
+                self.isLoading = false
+                self.isPublicInstance = true
+            }).store(in: &subscribers)
 
 
         //        API.Request.Server.publisher(serverURL: url)
@@ -150,30 +203,100 @@ class UwaziServerViewModel: ObservableObject {
 
         isLoading = true
 
-        ServerRepository().login(username: username, password: password, serverURL: baseURL)
+        UwaziServerRepository().login(username: username, password: password, serverURL: baseURL)
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { completion in
 
                     switch completion {
                     case .failure(let error):
-                        self.shouldShowLoginError = true
-                        self.loginErrorMessage = error.errorDescription ?? ""
-                        self.isLoading = false
+                        switch error {
+
+                        case .invalidURL:
+                            self.shouldShowLoginError = true
+                            self.loginErrorMessage = error.errorDescription ?? ""
+                            self.isLoading = false
+                        case .httpCode(let code):
+                            if code == 401 {
+                                self.shouldShowLoginError = true
+                                self.loginErrorMessage = "Invalid username or password"
+                                self.isLoading = false
+                            } else if code == 409 {
+                                self.showNext2FAView = true
+                            }
+                            self.isLoading = false
+                        case .unexpectedResponse:
+                            self.shouldShowLoginError = true
+                            self.loginErrorMessage = error.errorDescription ?? ""
+                            self.isLoading = false
+                        }
+
 
                     case .finished:
-                        //                        self.shouldShowLoginError = false
-                        //                        self.loginErrorMessage = ""
-                        //                        self.showNextSuccessLoginView = true
+                        self.shouldShowLoginError = false
+                        self.loginErrorMessage = ""
+                        self.isLoading = false
                         break
 
                     }
                 },
                 receiveValue: { result in
-                    //
+                    self.isLoading = false
+                    if result.success {
+                        self.showNextLanguageSelectionView = true
+                    }
+                }
+            )
+            .store(in: &subscribers)
+    }
 
-                    self.getProjetSlug(token: result.accessToken)
+    func twoFactorAuthentication() {
 
+        guard let baseURL = serverURL.getBaseURL() else { return }
+
+        isLoading = true
+
+        UwaziServerRepository().twoFactorAuthentication(username: username, password: password, token: code, serverURL: baseURL)
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { completion in
+
+                    switch completion {
+                    case .failure(let error):
+                        switch error {
+
+                        case .invalidURL:
+                            self.shouldShowAuthenticationError = true
+                            self.codeErrorMessage = error.errorDescription ?? ""
+                            self.isLoading = false
+                        case .httpCode(let code):
+                            if code == 401 {
+                                self.shouldShowAuthenticationError = true
+                                self.codeErrorMessage = "Two-factor authentication failed."
+                                self.isLoading = false
+                            } else if code == 409 {
+                                self.showNext2FAView = true
+                            }
+                        case .unexpectedResponse:
+                            self.shouldShowAuthenticationError = true
+                            self.codeErrorMessage = error.errorDescription ?? ""
+                            self.isLoading = false
+                        }
+
+
+                    case .finished:
+                        self.shouldShowAuthenticationError = false
+                        self.codeErrorMessage = ""
+                        self.isLoading = false
+                        break
+
+                    }
+                },
+                receiveValue: { result in
+                    self.isLoading = false
+                    if result.success {
+                        self.showLanguageSelectionView = true
+                    }
                 }
             )
             .store(in: &subscribers)

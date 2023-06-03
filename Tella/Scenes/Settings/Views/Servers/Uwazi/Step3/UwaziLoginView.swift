@@ -33,6 +33,7 @@ struct UwaziLoginView: View {
                                       //                                      errorMessage: nil,
                                       fieldType: .username,
                                       placeholder : LocalizableSettings.UwaziUsername.localized)
+                        .autocapitalization(.none)
                         .frame(height: 30)
                         Spacer()
                             .frame(height: 27)
@@ -42,6 +43,7 @@ struct UwaziLoginView: View {
                                       errorMessage: serverViewModel.loginErrorMessage,
                                       fieldType: .password,
                                       placeholder : LocalizableSettings.UwaziPassword.localized)
+                        .autocapitalization(.none)
                         .frame(height: 57)
                         Spacer()
                             .frame(height: 32)
@@ -49,12 +51,13 @@ struct UwaziLoginView: View {
                                                  nextButtonAction: .action,
                                                  isValid: $serverViewModel.validCredentials) {
                             UIApplication.shared.endEditing()
-                            let twoStepVerification =  UwaziTwoStepVerification()
-                                .environmentObject(serversViewModel)
-                                .environmentObject(serverViewModel)
-                            if !serverViewModel.shouldShowLoginError {
-                                navigateTo(destination: twoStepVerification)
-                            }
+//                            let twoStepVerification =  UwaziTwoStepVerification()
+//                                .environmentObject(serversViewModel)
+//                                .environmentObject(serverViewModel)
+//                            if !serverViewModel.shouldShowLoginError {
+//                                navigateTo(destination: twoStepVerification)
+//                            }
+                            self.serverViewModel.login()
                         }
                         Spacer()
                     }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
@@ -69,6 +72,25 @@ struct UwaziLoginView: View {
             }
         }
         .navigationBarHidden(true)
+        .onReceive(serverViewModel.$showNextLanguageSelectionView, perform: { value in
+            if value {
+                let languageView = UwaziLanguageSelectionView(isPresented: .constant(true))
+                    .environmentObject(SettingsViewModel(appModel: MainAppModel()))
+                    .environmentObject(serversViewModel)
+                    .environmentObject(serverViewModel)
+                navigateTo(destination: languageView)
+            }
+        })
+        .onReceive(serverViewModel.$showNext2FAView, perform: { value in
+            if value {
+                let twoStepVerification =  UwaziTwoStepVerification()
+                                        .environmentObject(serversViewModel)
+                                        .environmentObject(serverViewModel)
+                if !serverViewModel.shouldShowLoginError {
+                    navigateTo(destination: twoStepVerification)
+                }
+            }
+        })
         .onAppear {
 
 #if DEBUG

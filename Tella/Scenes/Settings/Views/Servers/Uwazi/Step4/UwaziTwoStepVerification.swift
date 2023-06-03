@@ -40,11 +40,7 @@ struct UwaziTwoStepVerification: View {
                                              nextButtonAction: .action,
                                              isValid: $serverViewModel.validAuthenticationCode) {
                         UIApplication.shared.endEditing()
-                        let languageView = UwaziLanguageSelectionView(isPresented: .constant(true))
-                            .environmentObject(SettingsViewModel(appModel: MainAppModel()))
-                            .environmentObject(serversViewModel)
-                            .environmentObject(serverViewModel)
-                        navigateTo(destination: languageView)
+                        serverViewModel.twoFactorAuthentication()
                     }
                     Spacer()
                 }
@@ -56,6 +52,15 @@ struct UwaziTwoStepVerification: View {
             }
         }
         .navigationBarHidden(true)
+        .onReceive(serverViewModel.$showLanguageSelectionView) { value in
+            if value {
+                let languageView = UwaziLanguageSelectionView(isPresented: .constant(true))
+                    .environmentObject(SettingsViewModel(appModel: MainAppModel()))
+                    .environmentObject(serversViewModel)
+                    .environmentObject(serverViewModel)
+                navigateTo(destination: languageView)
+            }
+        }
     }
 }
 

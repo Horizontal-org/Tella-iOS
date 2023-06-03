@@ -20,7 +20,8 @@ extension WebRepository {
             return URLSession(configuration: configuration)
                 .dataTaskPublisher(for: request)
                 .requestJSON()
-        } catch _ {
+        } catch (let error) {
+            print(error.localizedDescription)
             return Fail<Value, APIError>(error: APIError.invalidURL)
                 .eraseToAnyPublisher()
         }
@@ -33,7 +34,9 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
 func requestJSON<Value>() -> AnyPublisher<Value, APIError> where Value: Decodable {
     return requestData()
         .decode(type: Value.self, decoder: JSONDecoder())
-        .mapError{ _ in APIError.unexpectedResponse }
+        .mapError{ error in
+            return error as! APIError
+        }
         .eraseToAnyPublisher()
 }
 }
@@ -60,7 +63,9 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
             debugLog("Result:\(dataString)")
             return $0.0
         }
-        .mapError{ _ in APIError.unexpectedResponse }
+        .mapError{  error in
+            return error as! APIError
+        }
         .eraseToAnyPublisher()
     }
 }

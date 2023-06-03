@@ -55,8 +55,9 @@ struct UwaziAddServerURLView: View {
                     BottomLockView<AnyView>(isValid: $serverViewModel.validURL,
                                             nextButtonAction: .action,
                                             nextAction: {
-                        let serverAccess = UwaziServerAccessSelectionView().environmentObject(serverViewModel).environmentObject(serversViewModel)
-                        navigateTo(destination: serverAccess)
+                        self.serverViewModel.checkURL()
+//                        let serverAccess = UwaziServerAccessSelectionView().environmentObject(serverViewModel).environmentObject(serversViewModel)
+//                        navigateTo(destination: serverAccess)
 
                     },
                                             backAction: {
@@ -73,8 +74,22 @@ struct UwaziAddServerURLView: View {
         .onAppear {
 
 #if DEBUG
-            serverViewModel.serverURL = "https://api.beta.web.tella-app.org/p/dhekra"
+            serverViewModel.serverURL = "https://horizontal.uwazi.io"
 #endif
+        }
+        .onReceive(serverViewModel.$isPublicInstance) { value in
+            if value {
+                let serverAccess = UwaziServerAccessSelectionView().environmentObject(serverViewModel).environmentObject(serversViewModel)
+                navigateTo(destination: serverAccess)
+            }
+        }
+        .onReceive(serverViewModel.$isPrivateInstance) { value in
+            if value {
+                let loginView = UwaziLoginView()
+                    .environmentObject(serversViewModel)
+                    .environmentObject(serverViewModel)
+                navigateTo(destination: loginView)
+            }
         }
     }
 }
