@@ -75,7 +75,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                     self.root.updateIds()
                     await self.recoverFiles()
                     self.save(file: self.root)
-                    
+                    self.clearTmpDirectory()
                     promise(.success(true))
                 }
             }
@@ -470,8 +470,7 @@ extension VaultManager {
         // return all the content of directory
         let containerURLContent =  fileManager.contentsOfDirectory(atPath: containerURL)
         let allContainerName = containerURLContent.compactMap{$0.lastPathComponent }
-        
-        
+
         let rootContainerNameSet:Set<String> = Set(rootContainerName)
         var allContainerNameSet:Set<String> = Set(allContainerName)
         
