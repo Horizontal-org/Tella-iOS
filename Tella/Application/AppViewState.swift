@@ -45,12 +45,16 @@ final class AppViewState: ObservableObject {
         viewStack = [.UNLOCK]
     }
 
-    func resetToMain() {
+    func initMainAppModel() {
         homeViewModel = MainAppModel()
+     }
+
+    func showMainView() {
         viewStack = [.MAIN]
     }
-
-    func showMain() {
+    
+    func resetToMain() {
+        homeViewModel = MainAppModel()
         viewStack = [.MAIN]
     }
 

@@ -7,8 +7,8 @@ import Combine
 
 protocol AppModelFileManagerProtocol {
     
-    func add(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray:[VaultFile]) async throws -> [VaultFile]
-    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String, folderPathArray:[VaultFile]) async throws -> VaultFile?
+    func add(files: [URL], to parentFolder: VaultFile?, type: TellaFileType, folderPathArray:[VaultFile]) async throws -> [VaultFile]
+    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: TellaFileType, fileName:String, folderPathArray:[VaultFile]) async throws -> VaultFile?
     func add(folder: String, to parentFolder: VaultFile?, folderPathArray:[VaultFile])
     
     func move(files: [VaultFile], from originalParentFolder: VaultFile?, to newParentFolder: VaultFile?)
@@ -23,6 +23,9 @@ protocol AppModelFileManagerProtocol {
     func load(file vaultFile: VaultFile) -> Data?
     func loadFilesInfos(file vaultFile: VaultFile, offsetSize:Int ) -> VaultFileInfo?
     func sendAutoReportFile(file: VaultFile)
+    func initFiles() -> AnyPublisher<Bool,Never>
+    func initRoot()
+
 }
 
 let lockTimeoutStartDateKey = "LockTimeoutStartDate"
@@ -109,7 +112,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         selectedTab = newTab
     }
     
-    func add(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray:[VaultFile] = []) async throws -> [VaultFile] {
+    func add(files: [URL], to parentFolder: VaultFile?, type: TellaFileType, folderPathArray:[VaultFile] = []) async throws -> [VaultFile] {
         
         vaultManager.progress.progress.sink { [weak self] value in
             self?.publishUpdates()
@@ -124,7 +127,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         return files
     }
     
-    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String, folderPathArray:[VaultFile] = []) async throws -> VaultFile? {
+    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: TellaFileType, fileName:String, folderPathArray:[VaultFile] = []) async throws -> VaultFile? {
         let file = try await   self.vaultManager.importFile(audioFilePath: audioFilePath, to: parentFolder, type: type, fileName: fileName, folderPathArray: folderPathArray)
         self.publishUpdates()
         return file
@@ -207,6 +210,16 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     func sendUnsentReports() {
         UploadService.shared.sendUnsentReports(mainAppModel: self)
     }
+    
+    func initFiles() -> AnyPublisher<Bool,Never> {
+       return vaultManager.initFiles()
+    }
+    
+    func initRoot() {
+        vaultManager.initRoot()
+
+    }
+
 }
 
 class SettingsModel: ObservableObject, Codable {
