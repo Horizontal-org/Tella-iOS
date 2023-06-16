@@ -538,11 +538,10 @@ extension VaultManager {
         let resolution = filePath.resolution()
         let duration =  filePath.getDuration()
         let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
-        let containerName = UUID().uuidString
         let pathArray = [""]
         let vaultFile = await VaultFile(type: filePath.fileType,
                                         fileName: fileName,
-                                        containerName: containerName,
+                                        containerName: fileToRestore,
                                         files: nil,
                                         thumbnail: thumnail,
                                         fileExtension: pathExtension,
