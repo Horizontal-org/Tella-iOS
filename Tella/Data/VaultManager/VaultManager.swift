@@ -89,7 +89,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
             self.save(file: self.root)
         }
     }
-
+    
     func importFile(files: [URL], to parentFolder: VaultFile?, type: TellaFileType, folderPathArray : [VaultFile]) async throws -> [VaultFile] {
         //        Task {
         do{
@@ -456,7 +456,7 @@ extension VaultManager {
         }
         return cryptoManager.decrypt(encryptedData)
     }
-
+    
     func recoverFiles() async {
         let filesToRestore = self.getFilesToRestore()
         await self.recoverFiles(filesToRestore: filesToRestore)
@@ -471,7 +471,15 @@ extension VaultManager {
         let containerURLContent =  fileManager.contentsOfDirectory(atPath: containerURL)
         let allContainerName = containerURLContent.compactMap{$0.lastPathComponent }
         
-        return  allContainerName.filter{rootContainerName.contains($0)}
+        
+        let rootContainerNameSet:Set<String> = Set(rootContainerName)
+        var allContainerNameSet:Set<String> = Set(allContainerName)
+        
+        allContainerNameSet.subtract(rootContainerNameSet)
+        
+        return Array(allContainerNameSet)
+        
+        
     }
     
     func saveRetoredFilesToTempFiles(fileToRestore:String) -> URL? {
