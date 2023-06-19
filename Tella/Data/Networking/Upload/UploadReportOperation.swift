@@ -19,15 +19,15 @@ class UploadReportOperation: BaseUploadOperation {
     }
     
     private func setupNetworkMonitor() {
-        self.mainAppModel.networkMonitor.connexionDidChange.sink(receiveValue: { isConnected in
+        self.mainAppModel.networkMonitor.connectionDidChange.sink(receiveValue: { isConnected in
             if self.report != nil {
                 if isConnected && self.report?.status == .submissionPending  {
                     self.startUploadReportAndFiles()
                 } else if !isConnected && self.report?.status != .submissionPending {
                     self.updateReport(reportStatus: .submissionPending)
-                    self.stopConnexion()
+                    self.stopConnection()
                     self.response.send(UploadResponse.initial)
-                    debugLog("No internet connexion")
+                    debugLog("No internet connection")
                 }
             }
         }).store(in: &subscribers)

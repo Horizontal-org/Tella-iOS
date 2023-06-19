@@ -43,7 +43,7 @@ class BaseUploadOperation : Operation {
         self.cancel()
     }
     
-    func stopConnexion() {
+    func stopConnection() {
         _ = uploadTasksDict.keys.compactMap({$0.cancel()})
         uploadTasksDict.removeAll()
         updateReport(reportStatus: .submissionPending)

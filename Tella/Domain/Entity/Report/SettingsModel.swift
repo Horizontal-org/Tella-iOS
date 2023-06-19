@@ -4,23 +4,34 @@
 
 import Foundation
 
-
-class SettingsModel: ObservableObject, Codable {
+//// Represents the settings model for the application
+ class SettingsModel: ObservableObject, Codable {
     
-    @Published var offLineMode = false
+    /// Whether offline mode is enabled
+    @Published var offlineMode = false
+    
+    /// Whether quick delete mode is enabled
     @Published var quickDelete: Bool = false
+    
+    /// Whether delete files and folders is enabled
     @Published var deleteVault: Bool = false
-    @Published var deleteForms: Bool = false
+    
+    /// Whether delete connections is enabled
     @Published var deleteServerSettings: Bool = false
+    
+    /// Whether recent files is enabled
     @Published var showRecentFiles: Bool = false
+    
+    /// Lock timeout option
     @Published var lockTimeout: LockTimeoutOption = .immediately
+    
+    /// Whether screen security is enabled
     @Published var screenSecurity: Bool = true
     
     enum CodingKeys: CodingKey {
-        case offLineMode
+        case offlineMode
         case quickDelete
         case deleteVault
-        case deleteForms
         case deleteServerSettings
         case showRecentFiles
         case lockTimeout
@@ -33,10 +44,9 @@ class SettingsModel: ObservableObject, Codable {
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        offLineMode = try container.decode(Bool.self, forKey: .offLineMode)
+        offlineMode = try container.decode(Bool.self, forKey: .offlineMode)
         quickDelete = try container.decode(Bool.self, forKey: .quickDelete)
         deleteVault = try container.decode(Bool.self, forKey: .deleteVault)
-        deleteForms = try container.decode(Bool.self, forKey: .deleteForms)
         deleteServerSettings = try container.decode(Bool.self, forKey: .deleteServerSettings)
         showRecentFiles = try container.decode(Bool.self, forKey: .showRecentFiles)
         
@@ -48,10 +58,9 @@ class SettingsModel: ObservableObject, Codable {
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(offLineMode, forKey: .offLineMode)
+        try container.encode(offlineMode, forKey: .offlineMode)
         try container.encode(quickDelete, forKey: .quickDelete)
         try container.encode(deleteVault, forKey: .deleteVault)
-        try container.encode(deleteForms, forKey: .deleteForms)
         try container.encode(deleteServerSettings, forKey: .deleteServerSettings)
         try container.encode(showRecentFiles, forKey: .showRecentFiles)
         try container.encode( lockTimeout.rawValue, forKey: .lockTimeout)
