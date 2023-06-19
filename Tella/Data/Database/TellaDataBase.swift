@@ -466,7 +466,7 @@ class TellaDataBase {
                                          primarykeyValue: primarykey)
     }
     
-    func addReportFile(fileId:String, reportId:Int) throws -> Int {
+    func addReportFile(fileId:String?, reportId:Int) throws -> Int {
         let reportFileValues = [KeyValue(key: D.cReportInstanceId, value: reportId),
                                 KeyValue(key: D.cVaultFileInstanceId, value: fileId),
                                 KeyValue(key: D.cStatus, value: FileStatus.notSubmitted.rawValue),

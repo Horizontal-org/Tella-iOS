@@ -279,7 +279,7 @@ class BaseUploadOperation : Operation {
         }
     }
     
-    func putReportFile(fileId: String, size:Int) {
+    func putReportFile(fileId: String?, size:Int) {
         
         //        _ =  self.filesToUpload.compactMap { _ in
         //            let file = self.filesToUpload.first(where: {$0.fileId == fileId})
@@ -335,7 +335,7 @@ class BaseUploadOperation : Operation {
         
     }
     
-    func postReportFile(fileId: String) {
+    func postReportFile(fileId: String?) {
         
         if self.mainAppModel.networkMonitor.isConnected {
             
