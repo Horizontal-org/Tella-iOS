@@ -47,7 +47,7 @@ final class AppViewState: ObservableObject {
     }
 
     func initMainAppModel() {
-        homeViewModel = MainAppModel()
+        homeViewModel = MainAppModel(networkMonitor: networkMonitor)
      }
 
     func showMainView() {
@@ -55,7 +55,7 @@ final class AppViewState: ObservableObject {
     }
     
     func resetToMain() {
-        homeViewModel = MainAppModel()
+        homeViewModel = MainAppModel(networkMonitor: networkMonitor)
         viewStack = [.MAIN]
     }
 

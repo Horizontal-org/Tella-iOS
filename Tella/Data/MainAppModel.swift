@@ -223,10 +223,6 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
 
     }
 
-}
-
-class SettingsModel: ObservableObject, Codable {
-    
     func deleteReport(reportId:Int?) {
         
         UploadService.shared.cancelSendingReport(reportId: reportId)
