@@ -6,10 +6,9 @@ target 'Tella' do
   #use_frameworks!
   use_modular_headers!
 
-  # Pods for Tella
   pod 'SQLCipher', ">= 4.5.2"
-
-
+  pod 'ZIPFoundation'
+  
   target 'TellaTests' do
     inherit! :search_paths
     # Pods for testing

@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Combine
 
 enum UnlockType {
     case new
@@ -18,7 +19,9 @@ struct UnlockPasswordView: View {
     @EnvironmentObject private var viewModel: LockViewModel
     @EnvironmentObject private var appViewState: AppViewState
     @State private var presentingLockChoice : Bool = false
-    
+    @State private var isLoading : Bool = false
+    @State private var cancellable: Set<AnyCancellable> = []
+
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
@@ -50,7 +53,9 @@ struct UnlockPasswordView: View {
                     viewModel.login()
                     if !viewModel.shouldShowUnlockError {
                         if viewModel.unlockType == .new {
-                            appViewState.resetToMain()
+                            isLoading = true
+                            appViewState.initMainAppModel()
+                            initRoot()
                         } else {
                             presentingLockChoice = true
                         }
@@ -79,6 +84,18 @@ struct UnlockPasswordView: View {
         presentingLockChoice ? LockChoiceView( isPresented: $presentingLockChoice) : nil
     }
     
+    private func initRoot() {
+        DispatchQueue.main.async {
+            appViewState.homeViewModel?.initFiles()
+                .receive(on: DispatchQueue.main)
+                .sink { recoverResult in
+                    isLoading = false
+                    appViewState.showMainView()
+                    
+                }.store(in: &self.cancellable)
+        }
+    }
+
 }
 
 struct UnlockPasswordView_Previews: PreviewProvider {

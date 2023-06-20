@@ -44,13 +44,13 @@ extension Date{
     }
     
     func getDateDouble() -> Double? {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = DateFormat.dataBase.rawValue
-//        return dateFormatter.string(from: self)
-        
         return self.timeIntervalSince1970
     }
     
+    func getDate() -> String {
+        return "\(Int(self.timeIntervalSince1970 * 1000))"
+    }
+
     private func getTimeAgoSinceNow() -> String {
         
         var interval = getDateComponent(component: .year).year!
