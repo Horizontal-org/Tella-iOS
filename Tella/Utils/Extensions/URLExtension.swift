@@ -6,6 +6,7 @@
 import AVFoundation
 import UIKit
 import QuickLook
+import ZIPFoundation
 
 extension URL {
     
@@ -45,39 +46,26 @@ extension URL {
     }
     
     
-    var fileType: FileType {
-        
-        let fileType: FileType
-        
-        switch self.pathExtension.lowercased() {
-            
-        case "gif", "jpeg", "jpg", "png", "tif", "tiff", "wbmp", "ico", "jng", "bmp", "svg", "svgz", "webp", "heic" :
-            fileType = .image
-            
-        case "3gpp", "3gp", "ts", "mp4", "mpeg", "mpg", "mov", "webm", "flv", "m4v", "mng", "asx", "asf", "wmv", "avi":
-            fileType = .video
-            
-        case "mid", "midi", "kar", "mp3", "ogg", "m4a", "ra":
-            fileType = .audio
-            
-        case "txt", "doc", "pdf", "rtf", "xls", "ppt", "docx", "xlsx", "pptx":
-            fileType = .document
-            
-        default:
-            fileType = .other
-        }
-        return fileType
+    var fileType: TellaFileType {
+        self.pathExtension.fileType
     }
-
+    
     func thumbnail() async -> Data? {
+        
+        let imageSize = CGFloat(150.0)
+        let compressionQuality = 0.5
+        
         let resolutionForImage = resolutionForImage()
         
-        let width = CGFloat( resolutionForImage?.width ?? 350)
-        let height = CGFloat( resolutionForImage?.height ?? 350)
-
+        var width = CGFloat( resolutionForImage?.width ?? imageSize)
+        var height = CGFloat( resolutionForImage?.height ?? imageSize)
+        
         let aspectRatio = width/height
-
-        let thumbnailSize = CGSize(width: 350, height: 350*aspectRatio)
+        
+        width = aspectRatio > 1 ? imageSize : imageSize * aspectRatio
+        height = aspectRatio < 1 ? imageSize : imageSize * aspectRatio
+        
+        let thumbnailSize = CGSize(width: width, height: height)
         
         let thumbnail: UIImage?
         do {
@@ -85,27 +73,12 @@ extension URL {
         }catch {
             thumbnail = nil
         }
-        return thumbnail?.pngData()
-        
-    }
-
-    func generateVideoThumbnail() -> UIImage? {
-        do {
-            let asset = AVURLAsset(url: self)
-            let imageGenerator = AVAssetImageGenerator(asset: asset)
-            imageGenerator.appliesPreferredTrackTransform = true
-            
-            let cgImage = try imageGenerator.copyCGImage(at: .zero,
-                                                         actualTime: nil)
-            return UIImage(cgImage: cgImage)
-        } catch let error {
-            debugLog(error)
-            return nil
-        }
+        guard let thumbnail else { return nil }
+        return thumbnail.jpegData(compressionQuality: compressionQuality)
     }
     
     private func getThumbnail(for fileURL: URL, size: CGSize, scale: CGFloat) async throws -> UIImage? {
-
+        
         let request = QLThumbnailGenerator.Request(fileAt: fileURL,
                                                    size: size,
                                                    scale: scale,
@@ -121,5 +94,51 @@ extension URL {
             return nil
         }
     }
+    
+    func getOfficeExtension() -> String? {
+        
+        do {
+            var pathExtension : String?
+            
+            let fileName = self.deletingPathExtension().lastPathComponent
+            let tmpFileURL = FileManager().temporaryDirectory.appendingPathComponent(fileName)
+            
+            try FileManager.default.unzipItem(at: self, to: tmpFileURL)
+            
+            let tmpDirectory =  DefaultFileManager().contentsOfDirectory(atPath: tmpFileURL)
+            
+            tmpDirectory.forEach { path in
+                
+                if path.lastPathComponent == "[Content_Types].xml" {
+                    
+                    guard let data = DefaultFileManager().contents(atPath: path) else {return}
+                    
+                    let  contentTypes = OOXMLContentTypeParser().getContentType(from: data).compactMap{$0}
+                    
+                    let documentContentType = contentTypes.filter { $0.contains(OpenXmlFormats.word.rawValue)}
+                    let sheetContentType = contentTypes.filter { $0.contains(OpenXmlFormats.sheet.rawValue)}
+                    let presentationContentType = contentTypes.filter { $0.contains(OpenXmlFormats.presentation.rawValue)  }
+                    
+                    
+                    if !documentContentType.isEmpty {
+                        pathExtension = OpenXmlFormats.word.fileExtension
+                    }
+                    if !sheetContentType.isEmpty {
+                        pathExtension = OpenXmlFormats.sheet.fileExtension
+                    }
+                    if !presentationContentType.isEmpty {
+                        pathExtension = OpenXmlFormats.presentation.fileExtension
+                    }
+                    
+                    DefaultFileManager().removeItem(at: tmpFileURL)
+                }
+            }
+            return pathExtension
+            
+        } catch {
+            return nil
+        }
+    }
+    
 }
 

@@ -16,7 +16,7 @@ extension VaultFile {
                     
                     Image(uiImage: self.bigIconImage)
                         .frame(width: 33, height: 33)
-                        .aspectRatio(contentMode: .fit)
+                        .aspectRatio(contentMode: .fill)
                     
                 }.background(Color.white.opacity(0.2))
                     .frame(width: geometryReader.size.width, height: geometryReader.size.height)
