@@ -44,9 +44,10 @@ class RecordViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         resultFile?.wrappedValue = [file]
                     }
-                        
-                    mainAppModel.sendAutoReportFile(file: file)
- 
+                     
+                    if sourceView != .addReportFile {
+                        mainAppModel.sendAutoReportFile(file: file)
+                    }
                 }
             }
         }.store(in: &cancellable)

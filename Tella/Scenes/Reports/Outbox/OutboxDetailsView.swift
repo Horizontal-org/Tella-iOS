@@ -42,6 +42,13 @@ struct OutboxDetailsView: View {
                 navigateTo(destination: submittedDetailsView)
             }
         })
+        
+        .onReceive(outboxReportVM.$shouldShowMainView, perform: { value in
+            if value {
+                dismissView()
+            }
+        })
+
         .navigationBarHidden(true)
     }
     

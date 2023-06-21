@@ -37,15 +37,21 @@ class UploadService: NSObject {
     
     func pauseDownload(reportId:Int?) {
         let operation = activeOperations.first(where: {$0.report?.id == reportId})
-        operation?.cancel()
-        activeOperations.removeAll(where: {$0.report?.id == reportId})
+        operation?.pauseSendingReport()
+        activeOperations.removeAll(where: {$0.report?.id == reportId && (operation?.type != .autoUpload)})
     }
     
     func cancelTasksIfNeeded() {
         let operations = activeOperations.filter({$0.report?.server?.backgroundUpload == false})
-        _ = operations.compactMap({$0.cancel})
+        _ = operations.compactMap({$0.pauseSendingReport})
     }
     
+    func cancelSendingReport(reportId:Int?) {
+        let operation = activeOperations.first(where: {$0.report?.id == reportId})
+        operation?.cancelSendingReport()
+        activeOperations.removeAll(where: {$0.report?.id == reportId && (operation?.type != .autoUpload)})
+    }
+
     func initAutoUpload( mainAppModel: MainAppModel ) {
         
         let urlSession = URLSession(
@@ -77,8 +83,9 @@ class UploadService: NSObject {
     }
     
     func addAutoUpload(file: VaultFile)  {
-        let operation: AutoUpload = activeOperations.first(where:{$0.type == .autoUpload }) as! AutoUpload
-        operation.addFile(file:file)
+        if let operation: AutoUpload = activeOperations.first(where:{$0.type == .autoUpload }) as? AutoUpload {
+            operation.addFile(file:file)
+        }
     }
 
     func sendUnsentReports(mainAppModel:MainAppModel) {

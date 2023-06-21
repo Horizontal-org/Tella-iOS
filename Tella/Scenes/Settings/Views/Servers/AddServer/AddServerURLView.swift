@@ -73,12 +73,6 @@ struct AddServerURLView: View {
         }
         
         .navigationBarHidden(true)
-        .onAppear {
-            
-#if DEBUG
-            serverViewModel.projectURL = "https://api.beta.web.tella-app.org/p/dhekra"
-#endif
-        }
     }
     
     private var serverLoginView: some View {
@@ -90,6 +84,6 @@ struct AddServerURLView: View {
 
 struct AddServerURLView_Previews: PreviewProvider {
     static var previews: some View {
-        AddServerURLView(appModel: MainAppModel())
+        AddServerURLView(appModel: MainAppModel.stub())
     }
 }

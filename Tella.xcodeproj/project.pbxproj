@@ -99,6 +99,7 @@
 		1231A45E294C779D0057DA85 /* ReportStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1231A45D294C779D0057DA85 /* ReportStatus.swift */; };
 		1233007828E30C7900B8F7BA /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233007728E30C7900B8F7BA /* APIRequest.swift */; };
 		1233007A28E3115500B8F7BA /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233007928E3115500B8F7BA /* Request.swift */; };
+		1233076729F15A290019DF7C /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233076629F15A290019DF7C /* NetworkMonitor.swift */; };
 		1234179229CD19E6004CFAEA /* BaseUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1234179129CD19E6004CFAEA /* BaseUploadOperation.swift */; };
 		1234179429CD2CFC004CFAEA /* URLSessionTaskResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1234179329CD2CFC004CFAEA /* URLSessionTaskResponse.swift */; };
 		12351C1A28D2209400F3CB7C /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12351C1928D2209400F3CB7C /* Report.swift */; };
@@ -176,6 +177,8 @@
 		12730E69279F420400DC0135 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12730E68279F420400DC0135 /* SettingsViewModel.swift */; };
 		12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */; };
 		127369E327B3C4DA00CF7BE5 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127369E227B3C4DA00CF7BE5 /* UIDeviceExtension.swift */; };
+		12751EAA2A13A22100FAD7C6 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12751EA92A13A22100FAD7C6 /* SettingsModel.swift */; };
+		12751EAC2A13B6A100FAD7C6 /* VaultFileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12751EAB2A13B6A100FAD7C6 /* VaultFileInfo.swift */; };
 		12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A8F27BA742700CDC5DC /* CameraControlsView.swift */; };
 		12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9427BA761C00CDC5DC /* CustomCameraController.swift */; };
 		12776A9827BAC87A00CDC5DC /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */; };
@@ -455,6 +458,7 @@
 		1233007728E30C7900B8F7BA /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		1233007928E3115500B8F7BA /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		1233007D28E3184D00B8F7BA /* Value.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Value.swift; sourceTree = "<group>"; };
+		1233076629F15A290019DF7C /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		1234179129CD19E6004CFAEA /* BaseUploadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUploadOperation.swift; sourceTree = "<group>"; };
 		1234179329CD2CFC004CFAEA /* URLSessionTaskResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionTaskResponse.swift; sourceTree = "<group>"; };
 		12351C1928D2209400F3CB7C /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
@@ -526,6 +530,8 @@
 		12730E68279F420400DC0135 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeadingTitleToolbar.swift; sourceTree = "<group>"; };
 		127369E227B3C4DA00CF7BE5 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
+		12751EA92A13A22100FAD7C6 /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
+		12751EAB2A13B6A100FAD7C6 /* VaultFileInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileInfo.swift; sourceTree = "<group>"; };
 		12776A8F27BA742700CDC5DC /* CameraControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlsView.swift; sourceTree = "<group>"; };
 		12776A9427BA761C00CDC5DC /* CustomCameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraController.swift; sourceTree = "<group>"; };
 		12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
@@ -1033,6 +1039,7 @@
 				12623DCB299EA31400E033ED /* ReportVaultFile.swift */,
 				0DC267A5267AED7C00E55AFA /* VaultFile.swift */,
 				128FD0B327F774FB00B24915 /* RecentFile.swift */,
+				12751EA92A13A22100FAD7C6 /* SettingsModel.swift */,
 			);
 			path = Report;
 			sourceTree = "<group>";
@@ -1236,6 +1243,7 @@
 				12B6481C28367C1D00CBE541 /* SheetManager.swift */,
 				12935478294A3BFC00735ED0 /* MIMEType.swift */,
 				1289B45528B62A99005DA687 /* DeviceOrientationHelper.swift */,
+				1233076629F15A290019DF7C /* NetworkMonitor.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1701,6 +1709,7 @@
 				0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */,
 				12FAC0CE2799FF230068EC2B /* ImportProgress.swift */,
 				D57F5E8F26152A4800C1DA47 /* Datable.swift */,
+				12751EAB2A13B6A100FAD7C6 /* VaultFileInfo.swift */,
 				122E0AED2A33B788009B1E33 /* FileDetails.swift */,
 			);
 			path = VaultManager;
@@ -1904,7 +1913,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1110;
 				LastUpgradeCheck = 1250;
-				ORGANIZATIONNAME = INTERNEWS;
+				ORGANIZATIONNAME = HORIZONTAL;
 				TargetAttributes = {
 					D50FA67F2613ABC900D6D63B = {
 						CreatedOnToolsVersion = 12.4;
@@ -2192,6 +2201,7 @@
 				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
 				1291A83228BE0086001A6055 /* SettingsAddServerCardView.swift in Sources */,
 				0E87C875268BDDFB00EB5E34 /* ImageViewer.swift in Sources */,
+				1233076729F15A290019DF7C /* NetworkMonitor.swift in Sources */,
 				0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */,
 				1289B98927C53A9C00315FCE /* CameraType.swift in Sources */,
 				0E78B3A72656B03600F9BDBC /* DragView.swift in Sources */,
@@ -2266,6 +2276,7 @@
 				12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */,
 				1268553E27D2572100385E18 /* FileInfoView.swift in Sources */,
 				1289B45828B63187005DA687 /* RotationViewModifier.swift in Sources */,
+				12751EAC2A13B6A100FAD7C6 /* VaultFileInfo.swift in Sources */,
 				126818BF2A376A0E004606BD /* OOXMLContentTypeParser.swift in Sources */,
 				125D2326271F896400250FBB /* CustomPinView.swift in Sources */,
 				129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */,
@@ -2279,6 +2290,7 @@
 				127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */,
 				12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */,
 				0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */,
+				12751EAA2A13A22100FAD7C6 /* SettingsModel.swift in Sources */,
 				1203CDDE298D7C1300D09073 /* FileToUpload.swift in Sources */,
 				1227FC912922BE24002FD6FB /* CameraPreview.swift in Sources */,
 				121AD8262943D52B0056AC2A /* SubmitReportResult.swift in Sources */,

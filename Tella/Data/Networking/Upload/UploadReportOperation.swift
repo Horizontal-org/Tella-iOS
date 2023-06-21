@@ -8,8 +8,9 @@ import Foundation
 class UploadReportOperation: BaseUploadOperation {
     
     init(report:Report, urlSession:URLSession, mainAppModel :MainAppModel,type: OperationType) {
-        super.init(urlSession: urlSession, mainAppModel: mainAppModel, type:.autoUpload)
+        super.init(urlSession: urlSession, mainAppModel: mainAppModel, type:type)
         self.report = report
+        setupNetworkMonitor()
     }
     
     override func main() {
@@ -17,18 +18,39 @@ class UploadReportOperation: BaseUploadOperation {
         startUploadReportAndFiles()
     }
     
+    private func setupNetworkMonitor() {
+        self.mainAppModel.networkMonitor.connectionDidChange.sink(receiveValue: { isConnected in
+            if self.report != nil {
+                if isConnected && self.report?.status == .submissionPending  {
+                    self.startUploadReportAndFiles()
+                } else if !isConnected && self.report?.status != .submissionPending {
+                    self.updateReport(reportStatus: .submissionPending)
+                    self.stopConnection()
+                    self.response.send(UploadResponse.initial)
+                    debugLog("No internet connection")
+                }
+            }
+        }).store(in: &subscribers)
+    }
+    
     func startUploadReportAndFiles() {
-        guard let currentReport = report else { return  }
+        guard let currentReport = report else { return }
         
-        self.updateReport(reportStatus: .submissionInProgress)
-        
-        self.prepareReportToSend(report: currentReport)
-        
-        if currentReport.apiID != nil { // Has API ID
-            uploadFiles()
+        if mainAppModel.networkMonitor.isConnected {
             
+            self.updateReport(reportStatus: .submissionInProgress)
+            
+            self.prepareReportToSend(report: currentReport)
+            
+            if currentReport.apiID != nil { // Has API ID
+                uploadFiles()
+                
+            } else {
+                self.sendReport()
+            }
         } else {
-            self.sendReport()
+            self.updateReport(reportStatus: .submissionPending)
+
         }
     }
     

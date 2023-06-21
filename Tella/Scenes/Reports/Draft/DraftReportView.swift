@@ -50,7 +50,6 @@ struct DraftReportView: View {
             draftReportHeaderView
             
             draftContentView
-                .overlay(successView)
             
             bottomDraftView
         }
@@ -245,7 +244,7 @@ struct DraftReportView: View {
     
     var cameraView : some View {
         reportViewModel.showingCamera ?
-        CameraView(sourceView: SourceView.addSingleFile,
+        CameraView(sourceView: SourceView.addReportFile,
                    showingCameraView: $reportViewModel.showingCamera,
                    resultFile: $reportViewModel.resultFile,
                    mainAppModel: mainAppModel,
@@ -256,7 +255,7 @@ struct DraftReportView: View {
         reportViewModel.showingRecordView ?
         RecordView(appModel: mainAppModel,
                    rootFile: mainAppModel.vaultManager.root,
-                   sourceView: .addSingleFile,
+                   sourceView: .addReportFile,
                    showingRecoredrView: $reportViewModel.showingRecordView,
                    resultFile: $reportViewModel.resultFile) : nil
     }
@@ -314,8 +313,8 @@ struct DraftReportView: View {
 struct DraftReportView_Previews: PreviewProvider {
     static var previews: some View {
         
-        DraftReportView(mainAppModel: MainAppModel())
-            .environmentObject(ReportsViewModel(mainAppModel: MainAppModel()))
+        DraftReportView(mainAppModel: MainAppModel.stub())
+            .environmentObject(ReportsViewModel(mainAppModel: MainAppModel.stub()))
     }
 }
 

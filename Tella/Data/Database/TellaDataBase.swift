@@ -74,18 +74,20 @@ class TellaDataBase {
     }
     
     func addServer(server : Server) throws -> Int {
+        let valuesToAdd = [KeyValue(key: D.cName, value: server.name),
+                           KeyValue(key: D.cURL, value: server.url),
+                           KeyValue(key: D.cUsername, value: server.username),
+                           KeyValue(key: D.cPassword, value: server.password ),
+                           KeyValue(key: D.cAccessToken, value: server.accessToken),
+                           KeyValue(key: D.cActivatedMetadata, value: server.activatedMetadata == false ? 0 : 1),
+                           KeyValue(key: D.cBackgroundUpload, value: server.backgroundUpload == false ? 0 : 1),
+                           KeyValue(key: D.cApiProjectId, value: server.projectId),
+                           KeyValue(key: D.cSlug, value: server.slug),
+                           KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1),
+                           KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1)]
+        
         return try dataBaseHelper.insertInto(tableName: D.tServer,
-                                             keyValue: [KeyValue(key: D.cName, value: server.name),
-                                                        KeyValue(key: D.cURL, value: server.url),
-                                                        KeyValue(key: D.cUsername, value: server.username),
-                                                        KeyValue(key: D.cPassword, value: server.password ),
-                                                        KeyValue(key: D.cAccessToken, value: server.accessToken),
-                                                        KeyValue(key: D.cActivatedMetadata, value: server.activatedMetadata == false ? 0 : 1),
-                                                        KeyValue(key: D.cBackgroundUpload, value: server.backgroundUpload == false ? 0 : 1),
-                                                        KeyValue(key: D.cApiProjectId, value: server.projectId),
-                                                        KeyValue(key: D.cSlug, value: server.slug),
-                                                        KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1),
-                                                        KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1)])
+                                             keyValue: valuesToAdd)
     }
     
     func getServer() -> [Server] {
@@ -94,31 +96,7 @@ class TellaDataBase {
             let serversDict = try dataBaseHelper.selectQuery(tableName: D.tServer, andCondition: [])
             
             serversDict.forEach { dict in
-                let id = dict[D.cServerId] as? Int
-                let name = dict[D.cName] as? String
-                let url = dict[D.cURL] as? String
-                let username = dict[D.cUsername] as? String
-                let password = dict[D.cPassword] as? String
-                let token = dict[D.cAccessToken] as? String
-                let activatedMetadata = dict[D.cActivatedMetadata] as? Int
-                let backgroundUpload = dict[D.cBackgroundUpload] as? Int
-                let apiProjectId = dict[D.cApiProjectId] as? String
-                let slug = dict[D.cSlug] as? String
-                let autoUpload = dict[D.cAutoUpload] as? Int
-                let autoDelete = dict[D.cAutoDelete] as? Int
-                
-                servers.append(Server(id:id,
-                                      name: name,
-                                      serverURL: url,
-                                      username: username,
-                                      password: password,
-                                      accessToken: token,
-                                      activatedMetadata: activatedMetadata == 0 ? false : true ,
-                                      backgroundUpload: backgroundUpload == 0 ? false : true,
-                                      projectId: apiProjectId,
-                                      slug:slug,
-                                      autoUpload: autoUpload == 0 ? false : true,
-                                      autoDelete: autoDelete == 0 ? false : true))
+                servers.append(getServer(dictionnary: dict))
             }
             
             return servers
@@ -131,37 +109,12 @@ class TellaDataBase {
     func getAutoUploadServer() -> Server? {
         
         do {
+            let serverCondition = [KeyValue(key: D.cAutoUpload, value: 1)]
             let serversDict = try dataBaseHelper.selectQuery(tableName: D.tServer,
-                                                             andCondition: [KeyValue(key: D.cAutoUpload, value: 1)])
-            
+                                                             andCondition:serverCondition )
             
             if !serversDict.isEmpty, let dict = serversDict.first {
-                
-                let id = dict[D.cServerId] as? Int
-                let name = dict[D.cName] as? String
-                let url = dict[D.cURL] as? String
-                let username = dict[D.cUsername] as? String
-                let password = dict[D.cPassword] as? String
-                let token = dict[D.cAccessToken] as? String
-                let activatedMetadata = dict[D.cActivatedMetadata] as? Int
-                let backgroundUpload = dict[D.cBackgroundUpload] as? Int
-                let apiProjectId = dict[D.cApiProjectId] as? String
-                let slug = dict[D.cSlug] as? String
-                let autoUpload = dict[D.cAutoUpload] as? Int
-                let autoDelete = dict[D.cAutoDelete] as? Int
-                
-                return Server(id:id,
-                              name: name,
-                              serverURL: url,
-                              username: username,
-                              password: password,
-                              accessToken: token,
-                              activatedMetadata: activatedMetadata == 0 ? false : true ,
-                              backgroundUpload: backgroundUpload == 0 ? false : true,
-                              projectId: apiProjectId,
-                              slug:slug,
-                              autoUpload: autoUpload == 0 ? false : true,
-                              autoDelete: autoDelete == 0 ? false : true)
+                return getServer(dictionnary: dict)
             }
             return nil
         } catch {
@@ -169,29 +122,58 @@ class TellaDataBase {
         }
     }
     
-    
     func updateServer(server : Server) throws -> Int {
         
+        let valuesToUpdate = [KeyValue(key: D.cName, value: server.name),
+                              KeyValue(key: D.cURL, value: server.url),
+                              KeyValue(key: D.cUsername, value: server.username),
+                              KeyValue(key: D.cPassword, value: server.password),
+                              KeyValue(key: D.cAccessToken, value: server.accessToken),
+                              KeyValue(key: D.cActivatedMetadata, value: server.activatedMetadata == false ? 0 : 1),
+                              KeyValue(key: D.cBackgroundUpload, value: server.backgroundUpload == false ? 0 : 1),
+                              KeyValue(key: D.cApiProjectId, value: server.projectId),
+                              KeyValue(key: D.cSlug, value: server.slug),
+                              KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1 ),
+                              KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1 )]
+        
+        let serverCondition = [KeyValue(key: D.cServerId, value: server.id)]
         return try dataBaseHelper.update(tableName: D.tServer,
-                                         keyValue: [KeyValue(key: D.cName, value: server.name),
-                                                    KeyValue(key: D.cURL, value: server.url),
-                                                    KeyValue(key: D.cUsername, value: server.username),
-                                                    KeyValue(key: D.cPassword, value: server.password),
-                                                    KeyValue(key: D.cAccessToken, value: server.accessToken),
-                                                    KeyValue(key: D.cActivatedMetadata, value: server.activatedMetadata == false ? 0 : 1),
-                                                    KeyValue(key: D.cBackgroundUpload, value: server.backgroundUpload == false ? 0 : 1),
-                                                    KeyValue(key: D.cApiProjectId, value: server.projectId),
-                                                    KeyValue(key: D.cSlug, value: server.slug),
-                                                    KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1 ),
-                                                    KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1 )],
-                                         primarykeyValue: [KeyValue(key: D.cServerId, value: server.id)])
+                                         keyValue: valuesToUpdate,
+                                         primarykeyValue: serverCondition)
     }
     
-    func deleteServer(serverId : Int) throws -> Int {
-        return try dataBaseHelper.delete(tableName: D.tServer,
-                                         primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
+    func deleteServer(serverId : Int) throws {
+        
+        var reportIDs : [Int] = []
+        let serverCondition = [KeyValue(key: D.cServerId, value: serverId)]
+        do {
+            
+            let responseDict = try dataBaseHelper.selectQuery(tableName: D.tReport,
+                                                              andCondition: serverCondition)
+            
+            responseDict.forEach { dict in
+                if let id = dict[D.cReportId] as? Int {
+                    reportIDs.append(id)
+                }
+            }
+        } catch {
+            
+        }
+        
+         try dataBaseHelper.delete(tableName: D.tServer,
+                                       primarykeyValue: serverCondition)
+        
+         try dataBaseHelper.delete(tableName: D.tReport,
+                                       primarykeyValue: serverCondition)
+        
+        if !reportIDs.isEmpty {
+            let reportCondition = [KeyValues(key: D.cReportInstanceId, value: reportIDs)]
+             try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
+                                           inCondition: reportCondition)
+        }
+        
     }
-
+    
     func deleteAllServers() throws -> Int {
         return try dataBaseHelper.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile])
     }
@@ -213,52 +195,7 @@ class TellaDataBase {
                                                               joinCondition: joinCondition)
             
             responseDict.forEach { dict in
-                
-                let id = dict[D.cServerId] as? Int
-                let name = dict[D.cName] as? String
-                let url = dict[D.cURL] as? String
-                let username = dict[D.cUsername] as? String
-                let password = dict[D.cPassword] as? String
-                let token = dict[D.cAccessToken] as? String
-                let activatedMetadata = dict[D.cActivatedMetadata] as? Int
-                let backgroundUpload = dict[D.cBackgroundUpload] as? Int
-                let autoUpload = dict[D.cAutoUpload] as? Int
-                let autoDelete = dict[D.cAutoDelete] as? Int
-                
-                let reportID = dict[D.cReportId] as? Int
-                let title = dict[D.cTitle] as? String
-                let description = dict[D.cDescription] as? String
-                let createdDate = dict[D.cCreatedDate] as? Double
-                let updatedDate = dict[D.cUpdatedDate] as? Double
-                let status = dict[D.cStatus] as? Int
-                let apiProjectId = dict[D.cApiProjectId] as? String
-                let slug = dict[D.cSlug] as? String
-                let apiReportId = dict[D.cApiReportId] as? String
-                let currentUpload = dict[D.cCurrentUpload] as? Int
-                
-                let server = Server(id:id,
-                                    name: name,
-                                    serverURL: url,
-                                    username: username,
-                                    password: password,
-                                    accessToken: token,
-                                    activatedMetadata: activatedMetadata == 0 ? false : true ,
-                                    backgroundUpload: backgroundUpload == 0 ? false : true,
-                                    projectId: apiProjectId,
-                                    slug:slug,
-                                    autoUpload: autoUpload == 0 ? false : true,
-                                    autoDelete: autoDelete == 0 ? false : true)
-                
-                reports.append(Report(id: reportID,
-                                      title: title ?? "",
-                                      description: description ?? "",
-                                      createdDate: createdDate?.getDate() ?? Date(),
-                                      updatedDate: updatedDate?.getDate() ?? Date(),
-                                      status: ReportStatus(rawValue: status ?? 0) ?? .draft,
-                                      server: server,
-                                      vaultFiles: getVaultFiles(reportID: reportID),
-                                      apiID: apiReportId,
-                                      currentUpload: currentUpload == 0 ? false : true))
+                reports.append(getReport(dictionnary: dict))
             }
             
             return reports
@@ -274,58 +211,12 @@ class TellaDataBase {
             let joinCondition = [JoinCondition(tableName: D.tServer,
                                                firstItem: JoinItem(tableName: D.tReport, columnName: D.cServerId),
                                                secondItem: JoinItem(tableName: D.tServer, columnName: D.cServerId))]
-            
+            let reportCondition = [KeyValue(key: D.cReportId, value: reportId)]
             let responseDict = try dataBaseHelper.selectQuery(tableName: D.tReport,
-                                                              andCondition: [KeyValue(key: D.cReportId, value: reportId)],
+                                                              andCondition: reportCondition,
                                                               joinCondition: joinCondition)
             if !responseDict.isEmpty, let dict = responseDict.first  {
-                
-                let id = dict[D.cServerId] as? Int
-                let name = dict[D.cName] as? String
-                let url = dict[D.cURL] as? String
-                let username = dict[D.cUsername] as? String
-                let password = dict[D.cPassword] as? String
-                let token = dict[D.cAccessToken] as? String
-                let activatedMetadata = dict[D.cActivatedMetadata] as? Int
-                let backgroundUpload = dict[D.cBackgroundUpload] as? Int
-                let autoUpload = dict[D.cAutoUpload] as? Int
-                let autoDelete = dict[D.cAutoDelete] as? Int
-                
-                let reportID = dict[D.cReportId] as? Int
-                let title = dict[D.cTitle] as? String
-                let description = dict[D.cDescription] as? String
-                let createdDate = dict[D.cCreatedDate] as? Double
-                let updatedDate = dict[D.cUpdatedDate] as? Double
-                let status = dict[D.cStatus] as? Int
-                let apiProjectId = dict[D.cApiProjectId] as? String
-                let slug = dict[D.cSlug] as? String
-                let apiReportId = dict[D.cApiReportId] as? String
-                let currentUpload = dict[D.cCurrentUpload] as? Int
-                
-                let server = Server(id:id,
-                                    name: name,
-                                    serverURL: url,
-                                    username: username,
-                                    password: password,
-                                    accessToken: token,
-                                    activatedMetadata: activatedMetadata == 0 ? false : true ,
-                                    backgroundUpload: backgroundUpload == 0 ? false : true,
-                                    projectId: apiProjectId,
-                                    slug:slug,
-                                    autoUpload: autoUpload == 0 ? false : true,
-                                    autoDelete: autoDelete == 0 ? false : true)
-                
-                
-                return  Report(id: reportID,
-                               title: title ?? "",
-                               description: description ?? "",
-                               createdDate: createdDate?.getDate() ?? Date(),
-                               updatedDate: updatedDate?.getDate() ?? Date(),
-                               status: ReportStatus(rawValue: status ?? 0) ?? .draft,
-                               server: server,
-                               vaultFiles: getVaultFiles(reportID: reportID),
-                               apiID: apiReportId,
-                               currentUpload: currentUpload == 0 ? false : true)
+                return  getReport(dictionnary: dict)
             }
             
             return nil
@@ -341,9 +232,10 @@ class TellaDataBase {
             let joinCondition = [JoinCondition(tableName: D.tServer,
                                                firstItem: JoinItem(tableName: D.tReport, columnName: D.cServerId),
                                                secondItem: JoinItem(tableName: D.tServer, columnName: D.cServerId))]
+            let reportCondition = [KeyValue(key: D.cCurrentUpload, value: 1)]
             
             let responseDict = try dataBaseHelper.selectQuery(tableName: D.tReport,
-                                                              andCondition: [KeyValue(key: D.cCurrentUpload, value: 1)],
+                                                              andCondition: reportCondition,
                                                               joinCondition: joinCondition)
             
             if !responseDict.isEmpty, let dict = responseDict.first  {
@@ -353,55 +245,9 @@ class TellaDataBase {
                 let files = getVaultFiles(reportID: reportID)
                 
                 let filteredFile = files.filter{(Date().timeIntervalSince($0.updatedDate ?? Date())) < 1800 }
-               
+                
                 if !filteredFile.isEmpty {
-
-                    let id = dict[D.cServerId] as? Int
-                    let name = dict[D.cName] as? String
-                    let url = dict[D.cURL] as? String
-                    let username = dict[D.cUsername] as? String
-                    let password = dict[D.cPassword] as? String
-                    let token = dict[D.cAccessToken] as? String
-                    let activatedMetadata = dict[D.cActivatedMetadata] as? Int
-                    let backgroundUpload = dict[D.cBackgroundUpload] as? Int
-                    let autoUpload = dict[D.cAutoUpload] as? Int
-                    let autoDelete = dict[D.cAutoDelete] as? Int
-                    
-                    let title = dict[D.cTitle] as? String
-                    let description = dict[D.cDescription] as? String
-                    let createdDate = dict[D.cCreatedDate] as? Double
-                    let updatedDate = dict[D.cUpdatedDate] as? Double
-                    let status = dict[D.cStatus] as? Int
-                    let apiProjectId = dict[D.cApiProjectId] as? String
-                    let slug = dict[D.cSlug] as? String
-                    let apiReportId = dict[D.cApiReportId] as? String
-                    let currentUpload = dict[D.cCurrentUpload] as? Int
-                    
-                    let server = Server(id:id,
-                                        name: name,
-                                        serverURL: url,
-                                        username: username,
-                                        password: password,
-                                        accessToken: token,
-                                        activatedMetadata: activatedMetadata == 0 ? false : true ,
-                                        backgroundUpload: backgroundUpload == 0 ? false : true,
-                                        projectId: apiProjectId,
-                                        slug:slug,
-                                        autoUpload: autoUpload == 0 ? false : true,
-                                        autoDelete: autoDelete == 0 ? false : true)
-                    
-                    
-                    return  Report(id: reportID,
-                                   title: title ?? "",
-                                   description: description ?? "",
-                                   createdDate: createdDate?.getDate() ?? Date(),
-                                   updatedDate: updatedDate?.getDate() ?? Date(),
-                                   status: ReportStatus(rawValue: status ?? 0) ?? .draft,
-                                   server: server,
-                                   // vaultFiles: getVaultFiles(reportID: reportID, notInStatus: [FileStatus.submitted]),
-                                   vaultFiles:[],
-                                   apiID: apiReportId,
-                                   currentUpload: currentUpload == 0 ? false : true)
+                    return getReport(dictionnary: dict)
                 }
                 
             }
@@ -414,8 +260,10 @@ class TellaDataBase {
     
     func getVaultFile(reportFileId:Int) -> ReportFile? {
         do {
+            
+            let reportFileCondition = [KeyValue(key: D.cId, value: reportFileId)]
             let responseDict = try dataBaseHelper.selectQuery(tableName: D.tReportInstanceVaultFile,
-                                                              andCondition: [KeyValue(key: D.cId, value: reportFileId)])
+                                                              andCondition: reportFileCondition)
             
             if !responseDict.isEmpty, let dict = responseDict.first {
                 let id = dict[D.cId] as? Int
@@ -442,12 +290,13 @@ class TellaDataBase {
     }
     
     func getVaultFiles(reportID:Int?) -> [ReportFile] {
-
+        
         var reportFiles : [ReportFile] = []
         
         do {
+            let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: reportID)]
             let responseDict = try dataBaseHelper.selectQuery(tableName: D.tReportInstanceVaultFile,
-                                                              andCondition: [KeyValue(key: D.cReportInstanceId, value: reportID)])
+                                                              andCondition: reportFilesCondition)
             
             responseDict.forEach { dict in
                 let id = dict[D.cId] as? Int
@@ -474,26 +323,30 @@ class TellaDataBase {
     }
     
     func addReport(report : Report) throws -> Int {
+        let currentUpload = ((report.currentUpload == false) || (report.currentUpload == nil)) ? 0 : 1
+        
+        let reportValuesToAdd = [KeyValue(key: D.cTitle, value: report.title),
+                                 KeyValue(key: D.cDescription, value: report.description),
+                                 KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
+                                 KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()),
+                                 KeyValue(key: D.cStatus, value: report.status?.rawValue),
+                                 KeyValue(key: D.cServerId, value: report.server?.id),
+                                 KeyValue(key: D.cCurrentUpload, value:currentUpload )]
+        
         let reportId = try dataBaseHelper.insertInto(tableName: D.tReport,
-                                                     keyValue: [KeyValue(key: D.cTitle, value: report.title),
-                                                                KeyValue(key: D.cDescription, value: report.description),
-                                                                KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
-                                                                KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()),
-                                                                KeyValue(key: D.cStatus, value: report.status?.rawValue),
-                                                                KeyValue(key: D.cServerId, value: report.server?.id),
-                                                                KeyValue(key: D.cCurrentUpload, value:report.currentUpload == false ? 0 : 1 )
-                                                               ])
+                                                     keyValue:reportValuesToAdd)
         
         try report.reportFiles?.forEach({ reportFile in
             
-            _ = try dataBaseHelper.insertInto(tableName: D.tReportInstanceVaultFile,
-                                              keyValue: [KeyValue(key: D.cReportInstanceId, value: reportId),
-                                                         KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
-                                                         KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
-                                                         KeyValue(key: D.cBytesSent, value: 0),
-                                                         KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
-                                                         KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())
-                                                        ])
+            let reportFileValuesToAdd = [KeyValue(key: D.cReportInstanceId, value: reportId),
+                                         KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
+                                         KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
+                                         KeyValue(key: D.cBytesSent, value: 0),
+                                         KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
+                                         KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
+            
+              try dataBaseHelper.insertInto(tableName: D.tReportInstanceVaultFile,
+                                              keyValue: reportFileValuesToAdd)
             
             
         })
@@ -531,26 +384,30 @@ class TellaDataBase {
             keyValueArray.append(KeyValue(key: D.cCurrentUpload, value: currentUpload == false ? 0 : 1))
         }
         
-        _ = try dataBaseHelper.update(tableName: D.tReport,
+        let reportCondition = [KeyValue(key: D.cReportId, value: report.id)]
+         try dataBaseHelper.update(tableName: D.tReport,
                                       keyValue: keyValueArray,
-                                      primarykeyValue: [KeyValue(key: D.cReportId, value: report.id)])
+                                      primarykeyValue: reportCondition)
         
         if let files = report.reportFiles {
-            _ = try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
-                                          primarykeyValue: [KeyValue(key: D.cReportInstanceId, value: report.id as Any)])
+            let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: report.id as Any)]
+            
+             try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
+                                          primarykeyValue:reportFilesCondition )
             
             try files.forEach({ reportFile in
-                _ = try dataBaseHelper.insertInto(tableName: D.tReportInstanceVaultFile,
-                                                  keyValue: [
-                                                    
-                                                    reportFile.id == nil ? nil : KeyValue(key: D.cId, value: reportFile.id),
-                                                    KeyValue(key: D.cReportInstanceId, value: report.id),
-                                                    KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
-                                                    KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
-                                                    KeyValue(key: D.cBytesSent, value: reportFile.bytesSent),
-                                                    KeyValue(key: D.cCreatedDate, value: reportFile.createdDate),
-                                                    KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())
-                                                  ])
+                let reportFileValuesToAdd = [
+                    
+                    reportFile.id == nil ? nil : KeyValue(key: D.cId, value: reportFile.id),
+                    KeyValue(key: D.cReportInstanceId, value: report.id),
+                    KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
+                    KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
+                    KeyValue(key: D.cBytesSent, value: reportFile.bytesSent),
+                    KeyValue(key: D.cCreatedDate, value: reportFile.createdDate),
+                    KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
+                
+                  try dataBaseHelper.insertInto(tableName: D.tReportInstanceVaultFile,
+                                                  keyValue: reportFileValuesToAdd)
             })
         }
         
@@ -560,25 +417,31 @@ class TellaDataBase {
     
     func updateReportStatus(idReport : Int, status: ReportStatus, date: Date) throws -> Int {
         
+        let valuesToUpdate = [KeyValue(key: D.cStatus, value: status.rawValue),
+                              KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
+        let reportCondition = [KeyValue(key: D.cReportId, value: idReport)]
+        
         return try dataBaseHelper.update(tableName: D.tReport,
-                                         keyValue: [KeyValue(key: D.cStatus, value: status.rawValue),
-                                                    KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())],
-                                         primarykeyValue: [KeyValue(key: D.cReportId, value: idReport)])
+                                         keyValue: valuesToUpdate,
+                                         primarykeyValue: reportCondition)
     }
     
+    @discardableResult
     func resetCurrentUploadReport() throws -> Int {
-        
+        let reportCondition = [KeyValue(key: D.cCurrentUpload, value: 1)]
         let responseDict = try dataBaseHelper.selectQuery(tableName: D.tReport,
-                                                          andCondition: [KeyValue(key: D.cCurrentUpload, value: 1)])
+                                                          andCondition: reportCondition )
         
         if !responseDict.isEmpty, let dict = responseDict.first  {
-           
+            
             let reportID = dict[D.cReportId] as? Int
-
+            let valuesToUpdate = [KeyValue(key: D.cCurrentUpload, value: 0),
+                                  KeyValue(key: D.cStatus, value: ReportStatus.submitted.rawValue)]
+            let reportCondition = [KeyValue(key: D.cReportId, value: reportID)]
+            
             return try dataBaseHelper.update(tableName: D.tReport,
-                                             keyValue: [KeyValue(key: D.cCurrentUpload, value: 0),
-                                                        KeyValue(key: D.cStatus, value: ReportStatus.submitted.rawValue)],
-                                             primarykeyValue: [KeyValue(key: D.cReportId, value: reportID)])
+                                             keyValue: valuesToUpdate,
+                                             primarykeyValue:reportCondition)
         }
         return 0
     }
@@ -594,25 +457,26 @@ class TellaDataBase {
         if let bytesSent = reportFile.bytesSent {
             keyValueArray.append(KeyValue(key: D.cBytesSent, value: bytesSent))
         }
-
+        
         keyValueArray.append(KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()))
-
+        
+        let primarykey = [KeyValue(key: D.cId, value: reportFile.id)]
         return try dataBaseHelper.update(tableName: D.tReportInstanceVaultFile,
                                          keyValue: keyValueArray,
-                                         primarykeyValue: [KeyValue(key: D.cId, value: reportFile.id)])
+                                         primarykeyValue: primarykey)
     }
     
     func addReportFile(fileId:String?, reportId:Int) throws -> Int {
+        let reportFileValues = [KeyValue(key: D.cReportInstanceId, value: reportId),
+                                KeyValue(key: D.cVaultFileInstanceId, value: fileId),
+                                KeyValue(key: D.cStatus, value: FileStatus.notSubmitted.rawValue),
+                                KeyValue(key: D.cBytesSent, value: 0),
+                                KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
+                                KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
         
         
         return  try dataBaseHelper.insertInto(tableName: D.tReportInstanceVaultFile,
-                                              keyValue: [KeyValue(key: D.cReportInstanceId, value: reportId),
-                                                         KeyValue(key: D.cVaultFileInstanceId, value: fileId),
-                                                         KeyValue(key: D.cStatus, value: FileStatus.notSubmitted.rawValue),
-                                                         KeyValue(key: D.cBytesSent, value: 0),
-                                                         KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
-                                                         KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())
-                                                        ])
+                                              keyValue: reportFileValues)
     }
     
     func deleteReport(reportId : Int?) throws -> Int {
@@ -620,18 +484,74 @@ class TellaDataBase {
         guard let reportId, let report = self.getReport(reportId: reportId) else { return 0}
         
         deleteReportFiles(report: report)
+        
+        let reportCondition = [KeyValue(key: D.cReportId, value: report.id as Any)]
         return try dataBaseHelper.delete(tableName: D.tReport,
-                                         primarykeyValue: [KeyValue(key: D.cReportId, value: report.id as Any)])
+                                         primarykeyValue: reportCondition)
     }
     
     func deleteReportFiles(report:Report) {
         do {
-            if let array = report.reportFiles?.compactMap({ KeyValue(key: D.cReportInstanceId, value: $0.id as Any) } ) {
-                _ = try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
-                                              primarykeyValue: array)
-            }
+            let reportCondition = [KeyValue(key: D.cReportInstanceId, value: report.id as Any)]
+              try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
+                                          primarykeyValue: reportCondition)
         } catch {
             
         }
     }
+    
+    
+    private func getServer(dictionnary : [String:Any] ) -> Server {
+        
+        let id = dictionnary[D.cServerId] as? Int
+        let name = dictionnary[D.cName] as? String
+        let url = dictionnary[D.cURL] as? String
+        let username = dictionnary[D.cUsername] as? String
+        let password = dictionnary[D.cPassword] as? String
+        let token = dictionnary[D.cAccessToken] as? String
+        let activatedMetadata = dictionnary[D.cActivatedMetadata] as? Int
+        let backgroundUpload = dictionnary[D.cBackgroundUpload] as? Int
+        let apiProjectId = dictionnary[D.cApiProjectId] as? String
+        let slug = dictionnary[D.cSlug] as? String
+        let autoUpload = dictionnary[D.cAutoUpload] as? Int
+        let autoDelete = dictionnary[D.cAutoDelete] as? Int
+        
+        return Server(id:id,
+                      name: name,
+                      serverURL: url,
+                      username: username,
+                      password: password,
+                      accessToken: token,
+                      activatedMetadata: activatedMetadata == 0 ? false : true ,
+                      backgroundUpload: backgroundUpload == 0 ? false : true,
+                      projectId: apiProjectId,
+                      slug:slug,
+                      autoUpload: autoUpload == 0 ? false : true,
+                      autoDelete: autoDelete == 0 ? false : true)
+        
+    }
+    
+    private func getReport(dictionnary : [String:Any] ) -> Report {
+        
+        let reportID = dictionnary[D.cReportId] as? Int
+        let title = dictionnary[D.cTitle] as? String
+        let description = dictionnary[D.cDescription] as? String
+        let createdDate = dictionnary[D.cCreatedDate] as? Double
+        let updatedDate = dictionnary[D.cUpdatedDate] as? Double
+        let status = dictionnary[D.cStatus] as? Int
+        let apiReportId = dictionnary[D.cApiReportId] as? String
+        let currentUpload = dictionnary[D.cCurrentUpload] as? Int
+        
+        return Report(id: reportID,
+                      title: title ?? "",
+                      description: description ?? "",
+                      createdDate: createdDate?.getDate() ?? Date(),
+                      updatedDate: updatedDate?.getDate() ?? Date(),
+                      status: ReportStatus(rawValue: status ?? 0) ?? .draft,
+                      server: getServer(dictionnary: dictionnary),
+                      vaultFiles: getVaultFiles(reportID: reportID),
+                      apiID: apiReportId,
+                      currentUpload: currentUpload == 0 ? false : true)
+    }
+    
 }

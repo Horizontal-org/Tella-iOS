@@ -132,7 +132,7 @@ struct AddFileView: View {
 struct AddFileButtonView_Previews: PreviewProvider {
     static var previews: some View {
         AddFileView()
-            .environmentObject(MainAppModel())
+            .environmentObject(MainAppModel.stub())
             .environmentObject(FileListViewModel.stub())
     }
 }

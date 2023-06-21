@@ -237,7 +237,7 @@ class FileListViewModel: ObservableObject {
     func add(files: [URL], type: TellaFileType) {
         Task {
             
-            do { _ = try await appModel.add(files: files, to: self.rootFile, type: type, folderPathArray: folderPathArray)
+            do { try await appModel.add(files: files, to: self.rootFile, type: type, folderPathArray: folderPathArray)
             }
             catch {
                 
@@ -250,7 +250,7 @@ class FileListViewModel: ObservableObject {
         guard let url = appModel.vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension ?? "png") else { return  }
         Task {
             
-            do { _ = try await appModel.add(files: [url], to: self.rootFile, type: type, folderPathArray: folderPathArray)
+            do {   try await appModel.add(files: [url], to: self.rootFile, type: type, folderPathArray: folderPathArray)
                 
             }
             catch {
@@ -285,6 +285,6 @@ class FileListViewModel: ObservableObject {
 
 extension FileListViewModel {
     static func stub() -> FileListViewModel {
-        return FileListViewModel(appModel: MainAppModel(), fileType: [.folder], rootFile: VaultFile.stub(type: .folder), folderPathArray: [])
+        return FileListViewModel(appModel: MainAppModel.stub(), fileType: [.folder], rootFile: VaultFile.stub(type: .folder), folderPathArray: [])
     }
 }

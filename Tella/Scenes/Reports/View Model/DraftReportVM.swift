@@ -154,7 +154,7 @@ class DraftReportVM: ObservableObject {
         
         do {
             if !isNewDraft {
-                let _ = try mainAppModel.vaultManager.tellaData.updateReport(report: report)
+                try mainAppModel.vaultManager.tellaData.updateReport(report: report)
             } else {
                 let id = try mainAppModel.vaultManager.tellaData.addReport(report: report)
                 self.reportId = id
@@ -177,10 +177,6 @@ class DraftReportVM: ObservableObject {
     }
     
     func deleteReport() {
-        do {
-            try _ = mainAppModel.vaultManager.tellaData.deleteReport(reportId: reportId)
-        } catch {
-            
-        }
+        mainAppModel.deleteReport(reportId: reportId)
     }
 }

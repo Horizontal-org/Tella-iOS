@@ -59,7 +59,7 @@ extension Report {
         switch status {
         case .draft:
             return self.createdDate?.getDraftReportTime() ?? ""
-        case .submissionPartialParts:
+        case .submissionPaused:
             return "Paused"
             
         case .submissionInProgress:
