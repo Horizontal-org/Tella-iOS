@@ -120,7 +120,8 @@ class TellaData : ObservableObject {
         
         return database.getReports(reportStatus: [ .submissionError,
                                                    .submissionPending,
-                                                   .submissionInProgress])
+                                                   .submissionInProgress,
+                                                   .submissionAutoPaused])
     }
     
     func addReport(report : Report) throws -> Int {

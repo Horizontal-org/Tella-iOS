@@ -10,6 +10,10 @@ struct D {
     /* DATABASE */
     static let databaseName = "tella_vault.db"
     
+    /* DATABASE VERSIO */
+
+    static let databaseVersion = 1
+
     /* DEFAULT TYPES FOR DATABASE */
     static let integer = " INTEGER "
     static let text = " TEXT ";

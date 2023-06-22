@@ -9,17 +9,43 @@ import SQLCipher
 
 class TellaDataBase {
     
-    var dataBaseHelper = DataBaseHelper()
+    var dataBaseHelper : DataBaseHelper
+    var statementBuilder : SQLiteStatementBuilder
     
     init(key: String?) {
+        
+        dataBaseHelper = DataBaseHelper()
         dataBaseHelper.openDatabases(key: key)
-        createTables()
+        statementBuilder = SQLiteStatementBuilder(dbPointer: dataBaseHelper.dbPointer)
+        checkVersions()
+    }
+    
+    func checkVersions() {
+        do {
+            let oldVersion = try statementBuilder.getCurrentDatabaseVersion()
+            
+            switch oldVersion {
+            case 0:
+                createTables()
+                
+            default :
+                break
+            }
+            
+            try statementBuilder.setNewDatabaseVersion(version: D.databaseVersion)
+            
+        } catch let error {
+            debugLog(error)
+        }
     }
     
     func createTables() {
         createServerTable()
         createReportTable()
         createReportFilesTable()
+    }
+    
+    func update() {
     }
     
     func createServerTable() {
@@ -38,7 +64,7 @@ class TellaDataBase {
             cddl(D.cAutoUpload, D.integer),
             cddl(D.cAutoDelete, D.integer) ]
         
-        dataBaseHelper.createTable(tableName: D.tServer, columns: columns)
+        statementBuilder.createTable(tableName: D.tServer, columns: columns)
     }
     
     func createReportTable() {
@@ -54,7 +80,7 @@ class TellaDataBase {
             cddl(D.cCurrentUpload, D.integer),
             cddl(D.cServerId, D.integer, tableName: D.tServer, referenceKey: D.cServerId)
         ]
-        dataBaseHelper.createTable(tableName: D.tReport, columns: columns)
+        statementBuilder.createTable(tableName: D.tReport, columns: columns)
     }
     
     func createReportFilesTable() {
@@ -69,7 +95,7 @@ class TellaDataBase {
             cddl(D.cReportInstanceId, D.integer, tableName: D.tReport, referenceKey: D.cReportId)
             
         ]
-        dataBaseHelper.createTable(tableName: D.tReportInstanceVaultFile, columns: columns)
+        statementBuilder.createTable(tableName: D.tReportInstanceVaultFile, columns: columns)
         
     }
     
@@ -86,14 +112,14 @@ class TellaDataBase {
                            KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1),
                            KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1)]
         
-        return try dataBaseHelper.insertInto(tableName: D.tServer,
-                                             keyValue: valuesToAdd)
+        return try statementBuilder.insertInto(tableName: D.tServer,
+                                               keyValue: valuesToAdd)
     }
     
     func getServer() -> [Server] {
         var servers : [Server] = []
         do {
-            let serversDict = try dataBaseHelper.selectQuery(tableName: D.tServer, andCondition: [])
+            let serversDict = try statementBuilder.selectQuery(tableName: D.tServer, andCondition: [])
             
             serversDict.forEach { dict in
                 servers.append(getServer(dictionnary: dict))
@@ -110,8 +136,8 @@ class TellaDataBase {
         
         do {
             let serverCondition = [KeyValue(key: D.cAutoUpload, value: 1)]
-            let serversDict = try dataBaseHelper.selectQuery(tableName: D.tServer,
-                                                             andCondition:serverCondition )
+            let serversDict = try statementBuilder.selectQuery(tableName: D.tServer,
+                                                               andCondition:serverCondition )
             
             if !serversDict.isEmpty, let dict = serversDict.first {
                 return getServer(dictionnary: dict)
@@ -137,9 +163,9 @@ class TellaDataBase {
                               KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1 )]
         
         let serverCondition = [KeyValue(key: D.cServerId, value: server.id)]
-        return try dataBaseHelper.update(tableName: D.tServer,
-                                         keyValue: valuesToUpdate,
-                                         primarykeyValue: serverCondition)
+        return try statementBuilder.update(tableName: D.tServer,
+                                           keyValue: valuesToUpdate,
+                                           primarykeyValue: serverCondition)
     }
     
     func deleteServer(serverId : Int) throws {
@@ -148,8 +174,8 @@ class TellaDataBase {
         let serverCondition = [KeyValue(key: D.cServerId, value: serverId)]
         do {
             
-            let responseDict = try dataBaseHelper.selectQuery(tableName: D.tReport,
-                                                              andCondition: serverCondition)
+            let responseDict = try statementBuilder.selectQuery(tableName: D.tReport,
+                                                                andCondition: serverCondition)
             
             responseDict.forEach { dict in
                 if let id = dict[D.cReportId] as? Int {
@@ -160,22 +186,22 @@ class TellaDataBase {
             
         }
         
-         try dataBaseHelper.delete(tableName: D.tServer,
-                                       primarykeyValue: serverCondition)
+        try statementBuilder.delete(tableName: D.tServer,
+                                    primarykeyValue: serverCondition)
         
-         try dataBaseHelper.delete(tableName: D.tReport,
-                                       primarykeyValue: serverCondition)
+        try statementBuilder.delete(tableName: D.tReport,
+                                    primarykeyValue: serverCondition)
         
         if !reportIDs.isEmpty {
             let reportCondition = [KeyValues(key: D.cReportInstanceId, value: reportIDs)]
-             try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
-                                           inCondition: reportCondition)
+            try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
+                                        inCondition: reportCondition)
         }
         
     }
     
     func deleteAllServers() throws -> Int {
-        return try dataBaseHelper.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile])
+        return try statementBuilder.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile])
     }
     
     func getReports(reportStatus:[ReportStatus]) -> [Report] {
@@ -190,9 +216,9 @@ class TellaDataBase {
             //            let statusArray = reportStatus.compactMap{KeyValue(key: D.cStatus, value: $0.rawValue) }
             let statusArray = reportStatus.compactMap{ $0.rawValue }
             
-            let responseDict = try dataBaseHelper.selectQuery(tableName: D.tReport,
-                                                              inCondition: [KeyValues(key:D.cStatus, value: statusArray )],
-                                                              joinCondition: joinCondition)
+            let responseDict = try statementBuilder.selectQuery(tableName: D.tReport,
+                                                                inCondition: [KeyValues(key:D.cStatus, value: statusArray )],
+                                                                joinCondition: joinCondition)
             
             responseDict.forEach { dict in
                 reports.append(getReport(dictionnary: dict))
@@ -212,9 +238,9 @@ class TellaDataBase {
                                                firstItem: JoinItem(tableName: D.tReport, columnName: D.cServerId),
                                                secondItem: JoinItem(tableName: D.tServer, columnName: D.cServerId))]
             let reportCondition = [KeyValue(key: D.cReportId, value: reportId)]
-            let responseDict = try dataBaseHelper.selectQuery(tableName: D.tReport,
-                                                              andCondition: reportCondition,
-                                                              joinCondition: joinCondition)
+            let responseDict = try statementBuilder.selectQuery(tableName: D.tReport,
+                                                                andCondition: reportCondition,
+                                                                joinCondition: joinCondition)
             if !responseDict.isEmpty, let dict = responseDict.first  {
                 return  getReport(dictionnary: dict)
             }
@@ -234,9 +260,9 @@ class TellaDataBase {
                                                secondItem: JoinItem(tableName: D.tServer, columnName: D.cServerId))]
             let reportCondition = [KeyValue(key: D.cCurrentUpload, value: 1)]
             
-            let responseDict = try dataBaseHelper.selectQuery(tableName: D.tReport,
-                                                              andCondition: reportCondition,
-                                                              joinCondition: joinCondition)
+            let responseDict = try statementBuilder.selectQuery(tableName: D.tReport,
+                                                                andCondition: reportCondition,
+                                                                joinCondition: joinCondition)
             
             if !responseDict.isEmpty, let dict = responseDict.first  {
                 
@@ -262,8 +288,8 @@ class TellaDataBase {
         do {
             
             let reportFileCondition = [KeyValue(key: D.cId, value: reportFileId)]
-            let responseDict = try dataBaseHelper.selectQuery(tableName: D.tReportInstanceVaultFile,
-                                                              andCondition: reportFileCondition)
+            let responseDict = try statementBuilder.selectQuery(tableName: D.tReportInstanceVaultFile,
+                                                                andCondition: reportFileCondition)
             
             if !responseDict.isEmpty, let dict = responseDict.first {
                 let id = dict[D.cId] as? Int
@@ -295,8 +321,8 @@ class TellaDataBase {
         
         do {
             let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: reportID)]
-            let responseDict = try dataBaseHelper.selectQuery(tableName: D.tReportInstanceVaultFile,
-                                                              andCondition: reportFilesCondition)
+            let responseDict = try statementBuilder.selectQuery(tableName: D.tReportInstanceVaultFile,
+                                                                andCondition: reportFilesCondition)
             
             responseDict.forEach { dict in
                 let id = dict[D.cId] as? Int
@@ -333,8 +359,8 @@ class TellaDataBase {
                                  KeyValue(key: D.cServerId, value: report.server?.id),
                                  KeyValue(key: D.cCurrentUpload, value:currentUpload )]
         
-        let reportId = try dataBaseHelper.insertInto(tableName: D.tReport,
-                                                     keyValue:reportValuesToAdd)
+        let reportId = try statementBuilder.insertInto(tableName: D.tReport,
+                                                       keyValue:reportValuesToAdd)
         
         try report.reportFiles?.forEach({ reportFile in
             
@@ -345,8 +371,8 @@ class TellaDataBase {
                                          KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
                                          KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
             
-              try dataBaseHelper.insertInto(tableName: D.tReportInstanceVaultFile,
-                                              keyValue: reportFileValuesToAdd)
+            try statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
+                                            keyValue: reportFileValuesToAdd)
             
             
         })
@@ -385,15 +411,15 @@ class TellaDataBase {
         }
         
         let reportCondition = [KeyValue(key: D.cReportId, value: report.id)]
-         try dataBaseHelper.update(tableName: D.tReport,
-                                      keyValue: keyValueArray,
-                                      primarykeyValue: reportCondition)
+        try statementBuilder.update(tableName: D.tReport,
+                                    keyValue: keyValueArray,
+                                    primarykeyValue: reportCondition)
         
         if let files = report.reportFiles {
             let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: report.id as Any)]
             
-             try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
-                                          primarykeyValue:reportFilesCondition )
+            try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
+                                        primarykeyValue:reportFilesCondition )
             
             try files.forEach({ reportFile in
                 let reportFileValuesToAdd = [
@@ -406,8 +432,8 @@ class TellaDataBase {
                     KeyValue(key: D.cCreatedDate, value: reportFile.createdDate),
                     KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
                 
-                  try dataBaseHelper.insertInto(tableName: D.tReportInstanceVaultFile,
-                                                  keyValue: reportFileValuesToAdd)
+                try statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
+                                                keyValue: reportFileValuesToAdd)
             })
         }
         
@@ -421,16 +447,16 @@ class TellaDataBase {
                               KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
         let reportCondition = [KeyValue(key: D.cReportId, value: idReport)]
         
-        return try dataBaseHelper.update(tableName: D.tReport,
-                                         keyValue: valuesToUpdate,
-                                         primarykeyValue: reportCondition)
+        return try statementBuilder.update(tableName: D.tReport,
+                                           keyValue: valuesToUpdate,
+                                           primarykeyValue: reportCondition)
     }
     
     @discardableResult
     func resetCurrentUploadReport() throws -> Int {
         let reportCondition = [KeyValue(key: D.cCurrentUpload, value: 1)]
-        let responseDict = try dataBaseHelper.selectQuery(tableName: D.tReport,
-                                                          andCondition: reportCondition )
+        let responseDict = try statementBuilder.selectQuery(tableName: D.tReport,
+                                                            andCondition: reportCondition )
         
         if !responseDict.isEmpty, let dict = responseDict.first  {
             
@@ -439,9 +465,9 @@ class TellaDataBase {
                                   KeyValue(key: D.cStatus, value: ReportStatus.submitted.rawValue)]
             let reportCondition = [KeyValue(key: D.cReportId, value: reportID)]
             
-            return try dataBaseHelper.update(tableName: D.tReport,
-                                             keyValue: valuesToUpdate,
-                                             primarykeyValue:reportCondition)
+            return try statementBuilder.update(tableName: D.tReport,
+                                               keyValue: valuesToUpdate,
+                                               primarykeyValue:reportCondition)
         }
         return 0
     }
@@ -461,9 +487,9 @@ class TellaDataBase {
         keyValueArray.append(KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()))
         
         let primarykey = [KeyValue(key: D.cId, value: reportFile.id)]
-        return try dataBaseHelper.update(tableName: D.tReportInstanceVaultFile,
-                                         keyValue: keyValueArray,
-                                         primarykeyValue: primarykey)
+        return try statementBuilder.update(tableName: D.tReportInstanceVaultFile,
+                                           keyValue: keyValueArray,
+                                           primarykeyValue: primarykey)
     }
     
     func addReportFile(fileId:String?, reportId:Int) throws -> Int {
@@ -475,8 +501,8 @@ class TellaDataBase {
                                 KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
         
         
-        return  try dataBaseHelper.insertInto(tableName: D.tReportInstanceVaultFile,
-                                              keyValue: reportFileValues)
+        return  try statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
+                                                keyValue: reportFileValues)
     }
     
     func deleteReport(reportId : Int?) throws -> Int {
@@ -486,15 +512,15 @@ class TellaDataBase {
         deleteReportFiles(report: report)
         
         let reportCondition = [KeyValue(key: D.cReportId, value: report.id as Any)]
-        return try dataBaseHelper.delete(tableName: D.tReport,
-                                         primarykeyValue: reportCondition)
+        return try statementBuilder.delete(tableName: D.tReport,
+                                           primarykeyValue: reportCondition)
     }
     
     func deleteReportFiles(report:Report) {
         do {
             let reportCondition = [KeyValue(key: D.cReportInstanceId, value: report.id as Any)]
-              try dataBaseHelper.delete(tableName: D.tReportInstanceVaultFile,
-                                          primarykeyValue: reportCondition)
+            try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
+                                        primarykeyValue: reportCondition)
         } catch {
             
         }

@@ -83,6 +83,14 @@ struct ServerLoginView: View {
                 navigateTo(destination: successLoginView)
             }
         }
+        .onAppear {
+
+        #if DEBUG
+                    serverViewModel.username = "dhekra@wearehorizontal.org"
+                    serverViewModel.password = "123456"
+        #endif
+        }
+
     }
     
     private var successLoginView: some View {
