@@ -6,7 +6,7 @@
 	<array/>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>com.wearehorizontal.tella.process</string>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
