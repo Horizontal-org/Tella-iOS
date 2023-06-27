@@ -14,8 +14,14 @@ enum Language: String, CaseIterable {
     case systemLanguage = "system"
     case english = "en"
     case spanish = "es"
+    case spanishLatinAmerican = "es-419"
     case french = "fr"
-    
+    case arabic = "ar"
+    case belarusian = "be"
+    case persian = "fa"
+    case kurdish = "ku"
+    case burmese = "my"
+
     var code : String {
         switch self {
         case .systemLanguage:
@@ -26,6 +32,18 @@ enum Language: String, CaseIterable {
             return "fr"
         case .spanish:
             return "es"
+        case .spanishLatinAmerican:
+            return "es-419"
+        case .arabic:
+            return "ar"
+        case .belarusian:
+            return "be"
+        case .persian:
+            return "fa"
+        case .kurdish:
+            return "ku"
+        case .burmese:
+            return "my"
         }
     }
     
@@ -39,6 +57,19 @@ enum Language: String, CaseIterable {
             return "Français"
         case .spanish:
             return "Español"
+        case .spanishLatinAmerican:
+            return "Español latinoamericano"
+        case .arabic:
+            return "العربية"
+        case .belarusian:
+            return "беларуская"
+        case .persian:
+            return "فارسی"
+        case .kurdish:
+            return "ku"
+        case .burmese:
+            return "မြန်မာ"
+
         }
     }
     
@@ -52,6 +83,18 @@ enum Language: String, CaseIterable {
             return LocalizableSettings.settLangFrench.localized
         case .spanish:
             return LocalizableSettings.settLangSpanish.localized
+        case .spanishLatinAmerican:
+            return LocalizableSettings.settLangSpanishLatinAmerican.localized
+        case .arabic:
+            return LocalizableSettings.settLangArabic.localized
+        case .belarusian:
+            return LocalizableSettings.settLangBelarusian.localized
+        case .persian:
+            return LocalizableSettings.settLangPersian.localized
+        case .kurdish:
+            return LocalizableSettings.settLangKurdish.localized
+        case .burmese:
+            return LocalizableSettings.settLangBurmese.localized
         }
     }
     
