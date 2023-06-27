@@ -73,13 +73,7 @@ struct AddServerURLView: View {
         }
         
         .navigationBarHidden(true)
-        
-        .onAppear {
-            
-        #if DEBUG
-                    serverViewModel.projectURL = "https://tella.world/p/dhekra"
-         #endif
-        }
+
     }
     
     private var serverLoginView: some View {

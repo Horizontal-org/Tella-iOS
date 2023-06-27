@@ -32,6 +32,19 @@ class AutoUpload: BaseUploadOperation {
         }).store(in: &subscribers)
     }
     
+    
+    func startUploadReportAndFiles() {
+       
+        self.response.send(UploadResponse.initial)
+
+        let currentReport = self.mainAppModel.vaultManager.tellaData.getCurrentReport()
+        
+        if let currentReport  {
+            self.report = currentReport
+            self.checkReport()
+        }
+    }
+
     func addFile(file:VaultFile) {
         self.response.send(UploadResponse.initial)
         self.autoPauseReport()
@@ -94,7 +107,8 @@ class AutoUpload: BaseUploadOperation {
             if report?.apiID != nil { // Has API ID
                 self.prepareReportToSend(report: report)
                 uploadFiles()
-            } else if report?.status != .submissionInProgress { //reportFile to ReportVaultFile
+                // } else if report?.status != .submissionInProgress {
+            } else {
                 self.prepareReportToSend(report: report)
                 self.sendReport()
             }

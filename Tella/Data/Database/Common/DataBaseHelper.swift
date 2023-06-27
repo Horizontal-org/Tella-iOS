@@ -12,8 +12,8 @@ class DataBaseHelper {
     var dbURL: URL?
     
     var dbPointer: OpaquePointer?
-
-    func openDatabases(key: String?) { 
+    
+    func openDatabases(key: String?) {
         
         dbURL =  FileManager.documentDirectory(withPath: D.databaseName)
         
@@ -26,11 +26,11 @@ class DataBaseHelper {
             debugLog("Opening database at \(dbURL?.absoluteString ?? "")")
         }
         
-//        if (sqlite3_key(dbPointer, key, Int32(key.count)) != SQLITE_OK) {
-//            logDbErr("Error setting key")
-//        }
+        if (sqlite3_key(dbPointer, key, Int32(key.count)) != SQLITE_OK) {
+            logDbErr("Error setting key")
+        }
     }
-
+    
     func logDbErr(_ msg: String) {
         let errmsg = String(cString: sqlite3_errmsg(dbPointer)!)
         debugLog("\(msg): \(errmsg)")
