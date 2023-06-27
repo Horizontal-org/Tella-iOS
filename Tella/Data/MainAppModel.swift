@@ -76,8 +76,6 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     init(networkMonitor:NetworkMonitor) {
         self.networkMonitor = networkMonitor
         loadData()
-        UploadService.shared.initAutoUpload(mainAppModel: self)
-        sendUnsentReports()
     }
     
     private func loadData() {
@@ -209,18 +207,30 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
             UploadService.shared.addAutoUpload(file: file)
         }
     }
-    
-    func sendUnsentReports() {
-        UploadService.shared.sendUnsentReports(mainAppModel: self)
-    }
-    
+
     func initFiles() -> AnyPublisher<Bool,Never> {
-       return vaultManager.initFiles()
+        return Deferred {
+            Future <Bool,Never> {  [weak self] promise in
+                guard let self = self else { return }
+                self.vaultManager.initFiles()
+                    .sink(receiveValue: { f in
+                        self.sendReports()
+                        promise(.success(f))
+                    }).store(in: &self.cancellable)
+                
+            }
+        }.eraseToAnyPublisher()
     }
     
     func initRoot() {
         vaultManager.initRoot()
+        UploadService.shared.initAutoUpload(mainAppModel: self)
 
+    }
+    
+    func sendReports() {
+        UploadService.shared.initAutoUpload(mainAppModel: self)
+        UploadService.shared.sendUnsentReports(mainAppModel: self)
     }
 
     func deleteReport(reportId:Int?) {

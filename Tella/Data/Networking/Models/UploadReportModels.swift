@@ -54,3 +54,9 @@ enum OperationType{
     case uploadReport
     case unsentReport
 }
+
+
+enum URLSessionTaskType {
+    case dataTask
+    case uploadTask
+}

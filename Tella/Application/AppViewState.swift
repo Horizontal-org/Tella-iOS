@@ -61,7 +61,7 @@ final class AppViewState: ObservableObject {
 
     func resetApp() {
         AuthenticationManager().keysInitialized() ? self.resetToUnlock() : self.resetToLock()
-        UploadService.reset()
+        
     }
     
     func initLanguage() {

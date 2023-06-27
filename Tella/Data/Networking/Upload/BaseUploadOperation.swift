@@ -4,6 +4,7 @@
 
 import Foundation
 import Combine
+import UIKit
 
 class BaseUploadOperation : Operation {
     
@@ -21,7 +22,8 @@ class BaseUploadOperation : Operation {
     var filesToUpload : [FileToUpload] = []
     var subscribers : Set<AnyCancellable> = []
     var type: OperationType!
-    
+    var taskType: URLSessionTaskType = .dataTask
+
     override init() {
         super.init()
     }
@@ -32,9 +34,9 @@ class BaseUploadOperation : Operation {
     
     func pauseSendingReport() {
         _ = uploadTasksDict.keys.compactMap({$0.cancel()})
+        self.cancel()
         uploadTasksDict.removeAll()
         updateReport(reportStatus: .submissionPaused)
-        self.cancel()
     }
     
     func cancelSendingReport() {
@@ -198,6 +200,8 @@ class BaseUploadOperation : Operation {
                 request.curlRepresentation()
                 guard let task = self.urlSession?.dataTask(with: request) else { return}
                 task.resume()
+                taskType = .dataTask
+
                 uploadTasksDict[task] = UploadTask(task: task, response: .createReport)
                 
                 self.updateReport(reportStatus: ReportStatus.submissionInProgress)
@@ -268,7 +272,7 @@ class BaseUploadOperation : Operation {
                 request.curlRepresentation()
                 guard let task = self.urlSession?.dataTask(with: request) else { return}
                 task.resume()
-                
+                taskType = .dataTask
                 uploadTasksDict[task] = UploadTask(task: task, response: .progress(fileId: fileToUpload.fileId, type: .headReportFile))
             } catch {
                 
@@ -321,7 +325,8 @@ class BaseUploadOperation : Operation {
                 
                 guard let task = self.urlSession?.uploadTask(with: request, fromFile: fileURL!) else { return}
                 task.resume()
-                
+                taskType = .uploadTask
+
                 uploadTasksDict[task] = UploadTask(task: task, response: .progress(fileId: fileToUpload.fileId, type: .putReportFile))
                 
             } catch {
@@ -349,7 +354,8 @@ class BaseUploadOperation : Operation {
                 request.curlRepresentation()
                 guard let task = self.urlSession?.dataTask(with: request) else { return}
                 task.resume()
-                
+                taskType = .dataTask
+
                 uploadTasksDict[task] = UploadTask(task: task,  response: .progress(fileId: fileToUpload.fileId, type: .postReportFile))
                 
             } catch {
