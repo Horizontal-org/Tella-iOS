@@ -69,7 +69,6 @@ enum Language: String, CaseIterable {
             return "ku"
         case .burmese:
             return "မြန်မာ"
-
         }
     }
     
@@ -102,6 +101,17 @@ enum Language: String, CaseIterable {
         
         switch self {
             
+        case .systemLanguage:
+            
+            switch LanguageManager.shared.getSystemLanguageString() {
+            case "ar", "fa", "ku":
+                return .rightToLeft
+            default:
+                return .leftToRight
+            }
+        case .arabic, .kurdish, .persian :
+            return .rightToLeft
+
         default:
             return .leftToRight
         }
