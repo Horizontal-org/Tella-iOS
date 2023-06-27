@@ -50,7 +50,6 @@ struct DraftReportView: View {
             draftReportHeaderView
             
             draftContentView
-                .overlay(successView)
             
             bottomDraftView
         }
@@ -68,7 +67,7 @@ struct DraftReportView: View {
                     .padding(EdgeInsets(top: 10, leading: 12, bottom: 5, trailing: 16))
             }
             
-            Text("Report")
+            Text(LocalizableReport.reportsText.localized)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                 .foregroundColor(Color.white)
             
@@ -96,7 +95,7 @@ struct DraftReportView: View {
                     
                     if reportViewModel.hasMoreServer  {
                         
-                        Text("Send report to:")
+                        Text(LocalizableReport.reportsSendTo.localized)
                             .font(.custom(Styles.Fonts.regularFontName, size: 14))
                             .foregroundColor(Color.white)
                         
@@ -126,25 +125,24 @@ struct DraftReportView: View {
                         
                     } else {
                         Spacer()
-                            .frame(height: 10)
+                            .frame(height: 5)
                     }
                     
                     TextfieldView(fieldContent: $reportViewModel.title,
                                   isValid: $reportViewModel.isValidTitle,
                                   shouldShowError: $reportViewModel.shouldShowError,
                                   fieldType: .text,
-                                  placeholder : "Title",
-                                  shouldShowTitle: reportViewModel.hasMoreServer)
-                    .frame(height: 30)
+                                  placeholder : LocalizableReport.reportsListTitle.localized,
+                                  shouldShowTitle: true)
                     
                     Spacer()
                         .frame(height: 34)
                     
-                    TextEditorView(placeholder: "Description",
+                    TextEditorView(placeholder:  LocalizableReport.reportsListDescription.localized,
                                    fieldContent: $reportViewModel.description,
                                    isValid: $reportViewModel.isValidDescription,
                                    shouldShowError: $reportViewModel.shouldShowError,
-                                   shouldShowTitle: reportViewModel.hasMoreServer)
+                                   shouldShowTitle: true)
                     
                     Spacer()
                         .frame(height: 24)
@@ -161,7 +159,7 @@ struct DraftReportView: View {
     @ViewBuilder
     var successView: some View {
         if reportViewModel.showingSuccessMessage {
-            SaveSuccessView(text: "The audio recording was saved to your Tella files.",
+            SaveSuccessView(text: LocalizableReport.audioSavedCorrectly.localized,
                             isPresented: $reportViewModel.showingSuccessMessage)
         }
     }
@@ -216,7 +214,7 @@ struct DraftReportView: View {
             }.disabled(!reportViewModel.reportIsValid)
             
             // Submit button
-            TellaButtonView<AnyView> (title: reportViewModel.isNewDraft ? "SUBMIT" : "SEND",
+            TellaButtonView<AnyView> (title: reportViewModel.isNewDraft ? LocalizableReport.reportsSubmit.localized : LocalizableReport.reportsSend.localized,
                                       nextButtonAction: .action,
                                       buttonType: .yellow,
                                       isValid: $reportViewModel.reportIsValid) {
@@ -234,10 +232,18 @@ struct DraftReportView: View {
         .environmentObject(reportsViewModel)
     }
     
+    var fileListView : some View {
+        FileListView(appModel: mainAppModel,
+                     rootFile: mainAppModel.vaultManager.root,
+                     fileType: nil,
+                     title: LocalizableReport.selectFiles.localized,
+                     fileListType: .selectFiles,
+                     resultFile: $reportViewModel.resultFile)
+    }
     
     var cameraView : some View {
         reportViewModel.showingCamera ?
-        CameraView(sourceView: SourceView.addSingleFile,
+        CameraView(sourceView: SourceView.addReportFile,
                    showingCameraView: $reportViewModel.showingCamera,
                    resultFile: $reportViewModel.resultFile,
                    mainAppModel: mainAppModel,
@@ -248,7 +254,7 @@ struct DraftReportView: View {
         reportViewModel.showingRecordView ?
         RecordView(appModel: mainAppModel,
                    rootFile: mainAppModel.vaultManager.root,
-                   sourceView: .addSingleFile,
+                   sourceView: .addReportFile,
                    showingRecoredrView: $reportViewModel.showingRecordView,
                    resultFile: $reportViewModel.resultFile) : nil
     }
@@ -286,10 +292,10 @@ struct DraftReportView: View {
     
     private func showSaveReportConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: 200) {
-            ConfirmBottomSheet(titleText: "Exit report?",
-                               msgText: "Your draft will be lost.",
-                               cancelText: "Exit anyway".uppercased(),
-                               actionText: "save and exit".uppercased(), didConfirmAction: {
+            ConfirmBottomSheet(titleText: LocalizableReport.exitTitle.localized,
+                               msgText: LocalizableReport.exitMessage.localized,
+                               cancelText: LocalizableReport.exitCancel.localized.uppercased(),
+                               actionText:LocalizableReport.exitSave.localized.uppercased(), didConfirmAction: {
                 saveDraftReport()
             }, didCancelAction: {
                 dismissViews()
@@ -306,8 +312,8 @@ struct DraftReportView: View {
 struct DraftReportView_Previews: PreviewProvider {
     static var previews: some View {
         
-        DraftReportView(mainAppModel: MainAppModel())
-            .environmentObject(ReportsViewModel(mainAppModel: MainAppModel()))
+        DraftReportView(mainAppModel: MainAppModel.stub())
+            .environmentObject(ReportsViewModel(mainAppModel: MainAppModel.stub()))
     }
 }
 

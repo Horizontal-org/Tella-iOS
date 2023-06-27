@@ -109,7 +109,7 @@ struct FileGridItem: View {
 struct FileGridItem_Previews: PreviewProvider {
     static var previews: some View {
         FileGridItem(file: VaultFile.stub(type: .folder))
-            .environmentObject(MainAppModel())
+            .environmentObject(MainAppModel.stub())
             .environmentObject(FileListViewModel.stub())
         
     }

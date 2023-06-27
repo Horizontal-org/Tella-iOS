@@ -55,7 +55,7 @@ struct SubmittedDetailsView: View {
                     .padding()
             }
             
-            Text("Report")
+            Text(LocalizableReport.reportsText.localized)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                 .foregroundColor(.white)
             
@@ -138,7 +138,8 @@ struct SubmittedDetailsView: View {
     
     private func showDeleteReportConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: 200) {
-            DeleteReportConfirmationView {
+            DeleteReportConfirmationView(title: submittedReportVM.title,
+                                         message: LocalizableReport.DeleteSubmittedReportMessage.localized) {
                 dismissViews()
                 submittedReportVM.deleteReport()
                 sheetManager.hide()

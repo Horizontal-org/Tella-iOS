@@ -21,6 +21,8 @@ enum UploadResponse {
     case initial
     case progress(progressInfo: UploadProgressInfo)
     case createReport(apiId: String?, reportStatus:ReportStatus?, error:APIError?)
+    case finish(shouldShowMainView:Bool)
+
 }
 
 enum UploadType {
@@ -51,4 +53,10 @@ enum OperationType{
     case autoUpload
     case uploadReport
     case unsentReport
+}
+
+
+enum URLSessionTaskType {
+    case dataTask
+    case uploadTask
 }

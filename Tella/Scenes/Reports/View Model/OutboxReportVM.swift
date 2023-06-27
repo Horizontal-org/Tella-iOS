@@ -10,15 +10,19 @@ class OutboxReportVM: ObservableObject {
     var mainAppModel : MainAppModel
     var reportsViewModel : ReportsViewModel
     
-    @Published var reportViewModel : ReportViewModel = ReportViewModel()    
+    @Published var reportViewModel : ReportViewModel = ReportViewModel()
     @Published var progressFileItems : [ProgressFileItemViewModel] = []
     @Published var percentUploaded : Float = 0.0
-    @Published var percentUploadedInfo : String = "Waiting for connection"
+    @Published var percentUploadedInfo : String = LocalizableReport.waitingConnection.localized
     @Published var uploadedFiles : String = ""
     
     @Published var isLoading : Bool = false
-    @Published var isSubmissionInProgress: Bool = false
+    var isSubmissionInProgress: Bool {
+        return reportViewModel.status == .submissionInProgress
+        
+    }
     @Published var shouldShowSubmittedReportView : Bool = false
+    @Published var shouldShowMainView : Bool = false
     
     private var subscribers = Set<AnyCancellable>()
     private var filesToUpload : [FileToUpload] = []
@@ -44,6 +48,11 @@ class OutboxReportVM: ObservableObject {
         return !reportViewModel.description.isEmpty
     }
     
+    var reportIsNotAutoDelete: Bool {
+        return !(reportViewModel.server?.autoDelete ?? true)
+    }
+    
+    
     init(mainAppModel: MainAppModel, reportsViewModel : ReportsViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
         
         self.mainAppModel = mainAppModel
@@ -64,16 +73,8 @@ class OutboxReportVM: ObservableObject {
         uploadResponse?
             .sink { result in
                 
-                switch result {
-                case .finished:
-                    DispatchQueue.main.async {
-                        self.showSubmittedReport()
-                    }
-                    
-                default:
-                    break
-                }
             } receiveValue: { response in
+                
                 switch response {
                     
                 case .createReport(let apiId, let reportStatus, let error):
@@ -99,13 +100,24 @@ class OutboxReportVM: ObservableObject {
                         _ =  self.reportViewModel.files.compactMap { _ in
                             let file = self.reportViewModel.files.first(where: {$0.id == progressInfo.fileId})
                             file?.bytesSent = (progressInfo.total) ?? 0
-                            file?.status = .partialSubmitted
+                            file?.status = progressInfo.status
                             return file
                         }
                         
                         self.updateProgressInfos(uploadProgressInfo: progressInfo)
+                        
+                        if let reportStatus = progressInfo.reportStatus {
+                            self.reportViewModel.status = reportStatus
+                        }
                     }
-                    
+                case .finish(let shouldShowMainView):
+                    DispatchQueue.main.async {
+                        if shouldShowMainView {
+                            self.showMainView()
+                        } else {
+                            self.showSubmittedReport()
+                        }
+                    }
                 default:
                     break
                 }
@@ -130,7 +142,7 @@ class OutboxReportVM: ObservableObject {
                     files.append(reportVaultFile)
                 }
             })
-
+            
             self.reportViewModel = ReportViewModel(id: report.id,
                                                    title: report.title ?? "",
                                                    description: report.description ?? "",
@@ -139,8 +151,6 @@ class OutboxReportVM: ObservableObject {
                                                    server: report.server,
                                                    status: report.status,
                                                    apiID: report.apiID)
-            
-            self.isSubmissionInProgress = report.status == .submissionInProgress
         }
     }
     
@@ -155,7 +165,7 @@ class OutboxReportVM: ObservableObject {
             let percentUploaded = Float(bytesSent) / Float(totalSize)
             
             let formattedPercentUploaded = percentUploaded >= 1.0 ? 1.0 : Float(percentUploaded)
-
+            
             let formattedTotalUploaded = bytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
             let formattedTotalSize = totalSize.getFormattedFileSize()
             DispatchQueue.main.async {
@@ -174,9 +184,9 @@ class OutboxReportVM: ObservableObject {
     
     func pauseSubmission() {
         if isSubmissionInProgress {
-            self.updateReportStatus(reportStatus: .submissionPartialParts)
+            self.updateReportStatus(reportStatus: .submissionPaused)
             self.reportRepository.pause(reportId: self.reportViewModel.id)
-            self.isSubmissionInProgress = false
+            //            self.isSubmissionInProgress = false
         }
         
     }
@@ -194,7 +204,7 @@ class OutboxReportVM: ObservableObject {
         
         if isSubmissionInProgress == false {
             
-            self.isSubmissionInProgress = true
+            //            self.isSubmissionInProgress = true
             self.updateReportStatus(reportStatus: .submissionInProgress)
             
             treat(uploadResponse: self.reportRepository.sendReport(report: report, mainAppModel: mainAppModel))
@@ -204,6 +214,12 @@ class OutboxReportVM: ObservableObject {
     func showSubmittedReport() {
         DispatchQueue.main.async {
             self.shouldShowSubmittedReportView = true
+        }
+    }
+    
+    func showMainView() {
+        DispatchQueue.main.async {
+            self.shouldShowMainView = true
         }
     }
     
@@ -258,7 +274,7 @@ class OutboxReportVM: ObservableObject {
         guard let id = reportViewModel.id else { return  }
         
         do {
-            let _ = try mainAppModel.vaultManager.tellaData.updateReportStatus(idReport: id, status: reportStatus)
+            try mainAppModel.vaultManager.tellaData.updateReportStatus(idReport: id, status: reportStatus)
             
         } catch {
             
@@ -266,10 +282,6 @@ class OutboxReportVM: ObservableObject {
     }
     
     func deleteReport() {
-        do {
-            try _ = mainAppModel.vaultManager.tellaData.deleteReport(reportId: reportViewModel.id)
-        } catch {
-            
-        }
+        mainAppModel.deleteReport(reportId: reportViewModel.id)
     }
 }

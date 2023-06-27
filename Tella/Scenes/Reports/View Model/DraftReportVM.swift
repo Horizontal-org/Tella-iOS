@@ -42,7 +42,7 @@ class DraftReportVM: ObservableObject {
     private var subscribers = Set<AnyCancellable>()
     
     var serverName : String {
-        guard let serverName = server?.name else { return "Select your project" }
+        guard let serverName = server?.name else { return LocalizableReport.selectProject.localized }
         return serverName
     }
     
@@ -57,16 +57,16 @@ class DraftReportVM: ObservableObject {
     var addFileToDraftItems : [ListActionSheetItem] { return [
         
         ListActionSheetItem(imageName: "report.camera-filled",
-                            content: "Take photo or video with camera",
+                            content: LocalizableReport.cameraFilled.localized,
                             type: ManageFileType.camera),
         ListActionSheetItem(imageName: "report.mic-filled",
-                            content: "Record audio",
+                            content: LocalizableReport.micFilled.localized,
                             type: ManageFileType.recorder),
         ListActionSheetItem(imageName: "report.gallery",
-                            content: "Select from Tella files",
+                            content: LocalizableReport.galleryFilled.localized,
                             type: ManageFileType.tellaFile),
         ListActionSheetItem(imageName: "report.phone",
-                            content: "Select from your device",
+                            content: LocalizableReport.phoneFilled.localized,
                             type: ManageFileType.fromDevice)
     ]}
     
@@ -94,7 +94,7 @@ class DraftReportVM: ObservableObject {
         $isValidTitle.combineLatest($isValidDescription, $files)
             .sink(receiveValue: { isValidTitle, isValidDescription, files in
                 DispatchQueue.main.async {
-                    self.reportIsDraft = isValidTitle || isValidDescription || !files.isEmpty
+                    self.reportIsDraft = isValidTitle
                 }
             }).store(in: &subscribers)
     }
@@ -125,18 +125,24 @@ class DraftReportVM: ObservableObject {
     }
     
     func fillReportVM() {
+        if let reportId = self.reportId ,let report = self.mainAppModel.vaultManager.tellaData.getReport(reportId: reportId) {
+            
+            var vaultFileResult : Set<VaultFile> = []
+            
+            self.title = report.title ?? ""
+            self.description = report.description ?? ""
+            self.server = report.server
+            self.mainAppModel.vaultManager.root.getFile(root: self.mainAppModel.vaultManager.root, vaultFileResult: &vaultFileResult, ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
+            self.files = vaultFileResult
+            self.objectWillChange.send()
+        }
+        
         DispatchQueue.main.async {
-            if let reportId = self.reportId ,let report = self.mainAppModel.vaultManager.tellaData.getReport(reportId: reportId) {
-                
-                var vaultFileResult : Set<VaultFile> = []
-                
-                self.title = report.title ?? ""
-                self.description = report.description ?? ""
-                self.server = report.server
-                self.mainAppModel.vaultManager.root.getFile(root: self.mainAppModel.vaultManager.root, vaultFileResult: &vaultFileResult, ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
-                self.files = vaultFileResult
-                self.objectWillChange.send()
-            }
+            self.isValidTitle =  self.title.textValidator()
+            self.isValidDescription = self.description.textValidator()
+            self.reportIsValid = ((self.server != nil) && self.isValidTitle && self.isValidDescription) || ((self.server != nil) && self.isValidTitle && !self.files.isEmpty)
+            self.reportIsDraft = self.isValidTitle
+            self.objectWillChange.send()
         }
     }
     
@@ -154,7 +160,7 @@ class DraftReportVM: ObservableObject {
         
         do {
             if !isNewDraft {
-                let _ = try mainAppModel.vaultManager.tellaData.updateReport(report: report)
+                try mainAppModel.vaultManager.tellaData.updateReport(report: report)
             } else {
                 let id = try mainAppModel.vaultManager.tellaData.addReport(report: report)
                 self.reportId = id
@@ -177,10 +183,6 @@ class DraftReportVM: ObservableObject {
     }
     
     func deleteReport() {
-        do {
-            try _ = mainAppModel.vaultManager.tellaData.deleteReport(reportId: reportId)
-        } catch {
-            
-        }
+        mainAppModel.deleteReport(reportId: reportId)
     }
 }

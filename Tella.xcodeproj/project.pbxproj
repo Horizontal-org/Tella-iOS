@@ -99,6 +99,7 @@
 		1231A45E294C779D0057DA85 /* ReportStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1231A45D294C779D0057DA85 /* ReportStatus.swift */; };
 		1233007828E30C7900B8F7BA /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233007728E30C7900B8F7BA /* APIRequest.swift */; };
 		1233007A28E3115500B8F7BA /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233007928E3115500B8F7BA /* Request.swift */; };
+		1233076729F15A290019DF7C /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233076629F15A290019DF7C /* NetworkMonitor.swift */; };
 		1234179229CD19E6004CFAEA /* BaseUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1234179129CD19E6004CFAEA /* BaseUploadOperation.swift */; };
 		1234179429CD2CFC004CFAEA /* URLSessionTaskResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1234179329CD2CFC004CFAEA /* URLSessionTaskResponse.swift */; };
 		12351C1A28D2209400F3CB7C /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12351C1928D2209400F3CB7C /* Report.swift */; };
@@ -118,6 +119,8 @@
 		123CE84429126B52003C251F /* ServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CE84329126B52003C251F /* ServerViewModel.swift */; };
 		1240E6B02907E14400692232 /* ReportCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1240E6AF2907E14400692232 /* ReportCardView.swift */; };
 		1240E6B22908123900692232 /* ReportListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1240E6B12908123900692232 /* ReportListView.swift */; };
+		124190442A42F3A700E177F3 /* SQLStatementBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124190432A42F3A700E177F3 /* SQLStatementBuilder.swift */; };
+		124190462A43230000E177F3 /* SQLiteStatementBuilderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124190452A43230000E177F3 /* SQLiteStatementBuilderExtension.swift */; };
 		1242135529B774A40002402D /* DeleteReportConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1242135429B774A40002402D /* DeleteReportConfirmationView.swift */; };
 		1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141627E357E80037D469 /* LoadMoreCell.swift */; };
 		1244141927E35D120037D469 /* VaultFileImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141827E35D120037D469 /* VaultFileImages.swift */; };
@@ -176,6 +179,8 @@
 		12730E69279F420400DC0135 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12730E68279F420400DC0135 /* SettingsViewModel.swift */; };
 		12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */; };
 		127369E327B3C4DA00CF7BE5 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127369E227B3C4DA00CF7BE5 /* UIDeviceExtension.swift */; };
+		12751EAA2A13A22100FAD7C6 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12751EA92A13A22100FAD7C6 /* SettingsModel.swift */; };
+		12751EAC2A13B6A100FAD7C6 /* VaultFileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12751EAB2A13B6A100FAD7C6 /* VaultFileInfo.swift */; };
 		12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A8F27BA742700CDC5DC /* CameraControlsView.swift */; };
 		12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9427BA761C00CDC5DC /* CustomCameraController.swift */; };
 		12776A9827BAC87A00CDC5DC /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */; };
@@ -282,6 +287,7 @@
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
 		379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */; };
 		89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */; };
+		CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */; };
 		CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */; };
 		CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */; };
 		CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02ED7E24E42B3900014176 /* UserDefaultsProperty.swift */; };
@@ -454,6 +460,7 @@
 		1233007728E30C7900B8F7BA /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		1233007928E3115500B8F7BA /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		1233007D28E3184D00B8F7BA /* Value.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Value.swift; sourceTree = "<group>"; };
+		1233076629F15A290019DF7C /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		1234179129CD19E6004CFAEA /* BaseUploadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUploadOperation.swift; sourceTree = "<group>"; };
 		1234179329CD2CFC004CFAEA /* URLSessionTaskResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionTaskResponse.swift; sourceTree = "<group>"; };
 		12351C1928D2209400F3CB7C /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
@@ -471,6 +478,8 @@
 		123CE84329126B52003C251F /* ServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerViewModel.swift; sourceTree = "<group>"; };
 		1240E6AF2907E14400692232 /* ReportCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCardView.swift; sourceTree = "<group>"; };
 		1240E6B12908123900692232 /* ReportListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportListView.swift; sourceTree = "<group>"; };
+		124190432A42F3A700E177F3 /* SQLStatementBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLStatementBuilder.swift; sourceTree = "<group>"; };
+		124190452A43230000E177F3 /* SQLiteStatementBuilderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteStatementBuilderExtension.swift; sourceTree = "<group>"; };
 		1242135429B774A40002402D /* DeleteReportConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteReportConfirmationView.swift; sourceTree = "<group>"; };
 		1244141627E357E80037D469 /* LoadMoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCell.swift; sourceTree = "<group>"; };
 		1244141827E35D120037D469 /* VaultFileImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileImages.swift; sourceTree = "<group>"; };
@@ -517,6 +526,12 @@
 		126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtension.swift; sourceTree = "<group>"; };
 		126ECFE927C57FA600ED5161 /* CameraState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraState.swift; sourceTree = "<group>"; };
 		126FE4D627A427E200AE4188 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		1270EA9E2A4B4B07000851BA /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1270EA9F2A4B4B07000851BA /* ku-CKB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ku-CKB"; path = "ku-CKB.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		1270EAA02A4B4B07000851BA /* be */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = be; path = be.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1270EAA12A4B4B07000851BA /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		1270EAA22A4B4B07000851BA /* my */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = my; path = my.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1270EAA32A4B4B07000851BA /* fa-IR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fa-IR"; path = "fa-IR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1272F25C27C91ACD0054F2E2 /* ImportFileProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFileProgress.swift; sourceTree = "<group>"; };
 		1272F25E27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesFromCameraProgress.swift; sourceTree = "<group>"; };
 		1272F26027C91CD90054F2E2 /* ImportFilesProgressModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesProgressModels.swift; sourceTree = "<group>"; };
@@ -525,6 +540,8 @@
 		12730E68279F420400DC0135 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeadingTitleToolbar.swift; sourceTree = "<group>"; };
 		127369E227B3C4DA00CF7BE5 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
+		12751EA92A13A22100FAD7C6 /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
+		12751EAB2A13B6A100FAD7C6 /* VaultFileInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileInfo.swift; sourceTree = "<group>"; };
 		12776A8F27BA742700CDC5DC /* CameraControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlsView.swift; sourceTree = "<group>"; };
 		12776A9427BA761C00CDC5DC /* CustomCameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraController.swift; sourceTree = "<group>"; };
 		12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
@@ -632,6 +649,7 @@
 		83BA47B1A745C8D086B482FE /* libPods-Tella-TellaUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella-TellaUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TellaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableReport.swift; sourceTree = "<group>"; };
 		CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationBottomSheet.swift; sourceTree = "<group>"; };
 		CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCheckboxItem.swift; sourceTree = "<group>"; };
 		CE02ED7E24E42B3900014176 /* UserDefaultsProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsProperty.swift; sourceTree = "<group>"; };
@@ -829,6 +847,8 @@
 			isa = PBXGroup;
 			children = (
 				1236EE7F28E1B40200973EEA /* DataBaseHelper.swift */,
+				124190432A42F3A700E177F3 /* SQLStatementBuilder.swift */,
+				124190452A43230000E177F3 /* SQLiteStatementBuilderExtension.swift */,
 				1236EE8128E1E1D700973EEA /* DatabaseExtension.swift */,
 				1216123B28DE13AC00E6D7B6 /* DatabaseUtilities.swift */,
 				12351C1D28D267EF00F3CB7C /* DatabaseConstants.swift */,
@@ -1031,6 +1051,7 @@
 				12623DCB299EA31400E033ED /* ReportVaultFile.swift */,
 				0DC267A5267AED7C00E55AFA /* VaultFile.swift */,
 				128FD0B327F774FB00B24915 /* RecentFile.swift */,
+				12751EA92A13A22100FAD7C6 /* SettingsModel.swift */,
 			);
 			path = Report;
 			sourceTree = "<group>";
@@ -1234,6 +1255,7 @@
 				12B6481C28367C1D00CBE541 /* SheetManager.swift */,
 				12935478294A3BFC00735ED0 /* MIMEType.swift */,
 				1289B45528B62A99005DA687 /* DeviceOrientationHelper.swift */,
+				1233076629F15A290019DF7C /* NetworkMonitor.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1517,6 +1539,7 @@
 				12E0882327AD31F500CEB198 /* LocalizableAudio.swift */,
 				126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */,
 				12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */,
+				CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */,
 			);
 			path = Localizable;
 			sourceTree = "<group>";
@@ -1698,6 +1721,7 @@
 				0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */,
 				12FAC0CE2799FF230068EC2B /* ImportProgress.swift */,
 				D57F5E8F26152A4800C1DA47 /* Datable.swift */,
+				12751EAB2A13B6A100FAD7C6 /* VaultFileInfo.swift */,
 				122E0AED2A33B788009B1E33 /* FileDetails.swift */,
 			);
 			path = VaultManager;
@@ -1901,7 +1925,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1110;
 				LastUpgradeCheck = 1250;
-				ORGANIZATIONNAME = INTERNEWS;
+				ORGANIZATIONNAME = HORIZONTAL;
 				TargetAttributes = {
 					D50FA67F2613ABC900D6D63B = {
 						CreatedOnToolsVersion = 12.4;
@@ -1928,6 +1952,13 @@
 				Base,
 				fr,
 				es,
+				ar,
+				"ku-CKB",
+				"ku-ckb",
+				be,
+				"es-419",
+				my,
+				"fa-IR",
 			);
 			mainGroup = F66E65A023E3207D000F93E5;
 			productRefGroup = F66E65AA23E3207D000F93E5 /* Products */;
@@ -2099,6 +2130,7 @@
 				12607D5E27904F5300E2B8CC /* PlayerView.swift in Sources */,
 				125AAD34295348EC002194D6 /* UploadService.swift in Sources */,
 				1237A71E278F5F8B00D7BC0F /* LanguageManager.swift in Sources */,
+				CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */,
 				D5DAFDCF265384C4002F3942 /* MainAppModel.swift in Sources */,
 				1289B98B27C53C2400315FCE /* CameraTypeItemView.swift in Sources */,
 				126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */,
@@ -2106,6 +2138,7 @@
 				1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */,
 				D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */,
 				121BAB7F29A7E30600D7E847 /* URLRequestExtension.swift in Sources */,
+				124190442A42F3A700E177F3 /* SQLStatementBuilder.swift in Sources */,
 				1217FCA128F9946A00DD2D70 /* CircularActivityIndicatory.swift in Sources */,
 				12B6481D28367C1D00CBE541 /* SheetManager.swift in Sources */,
 				D5DA7F982646220100B00FDA /* FileGroupButtonView.swift in Sources */,
@@ -2188,6 +2221,7 @@
 				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
 				1291A83228BE0086001A6055 /* SettingsAddServerCardView.swift in Sources */,
 				0E87C875268BDDFB00EB5E34 /* ImageViewer.swift in Sources */,
+				1233076729F15A290019DF7C /* NetworkMonitor.swift in Sources */,
 				0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */,
 				1289B98927C53A9C00315FCE /* CameraType.swift in Sources */,
 				0E78B3A72656B03600F9BDBC /* DragView.swift in Sources */,
@@ -2206,6 +2240,7 @@
 				128D6E1A28045C090082AB18 /* manageFilesItems.swift in Sources */,
 				12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */,
 				1216123E28DE142D00E6D7B6 /* JoinItem.swift in Sources */,
+				124190462A43230000E177F3 /* SQLiteStatementBuilderExtension.swift in Sources */,
 				12EC94D828ABCCED0070E72B /* SettingsItemView.swift in Sources */,
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,
@@ -2262,6 +2297,7 @@
 				12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */,
 				1268553E27D2572100385E18 /* FileInfoView.swift in Sources */,
 				1289B45828B63187005DA687 /* RotationViewModifier.swift in Sources */,
+				12751EAC2A13B6A100FAD7C6 /* VaultFileInfo.swift in Sources */,
 				126818BF2A376A0E004606BD /* OOXMLContentTypeParser.swift in Sources */,
 				125D2326271F896400250FBB /* CustomPinView.swift in Sources */,
 				129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */,
@@ -2275,6 +2311,7 @@
 				127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */,
 				12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */,
 				0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */,
+				12751EAA2A13A22100FAD7C6 /* SettingsModel.swift in Sources */,
 				1203CDDE298D7C1300D09073 /* FileToUpload.swift in Sources */,
 				1227FC912922BE24002FD6FB /* CameraPreview.swift in Sources */,
 				121AD8262943D52B0056AC2A /* SubmitReportResult.swift in Sources */,
@@ -2404,6 +2441,12 @@
 				12A697B42840C50400BE5E9C /* en */,
 				12A697B62840C51C00BE5E9C /* fr */,
 				12A697B72840C54200BE5E9C /* es */,
+				1270EA9E2A4B4B07000851BA /* ar */,
+				1270EA9F2A4B4B07000851BA /* ku-CKB */,
+				1270EAA02A4B4B07000851BA /* be */,
+				1270EAA12A4B4B07000851BA /* es-419 */,
+				1270EAA22A4B4B07000851BA /* my */,
+				1270EAA32A4B4B07000851BA /* fa-IR */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -2616,7 +2659,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2644,7 +2687,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Tella (AppStore)";

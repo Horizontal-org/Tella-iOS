@@ -81,8 +81,7 @@ struct CameraControlsView: View {
     var closeButton: some View {
         if !shouldHideCloseButton {
             Button {
-                mainAppModel.vaultManager.clearTmpDirectory()
-                
+
                 if sourceView == .tab {
                     mainAppModel.selectedTab = .home
                 } else {

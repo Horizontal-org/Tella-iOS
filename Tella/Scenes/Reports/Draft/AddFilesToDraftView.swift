@@ -29,7 +29,7 @@ struct AddFilesToDraftView: View {
     }
     
     var attachFilesTextView: some View {
-        Text("Attach files here")
+        Text(LocalizableReport.attachFiles.localized)
             .font(.custom(Styles.Fonts.regularFontName, size: 14))
             .foregroundColor(.white)
             .multilineTextAlignment(.leading)
@@ -56,8 +56,8 @@ struct AddFilesToDraftView: View {
     var fileListView : some View {
         FileListView(appModel: appModel,
                      rootFile: appModel.vaultManager.root,
-                     fileType: nil,
-                     title: "Select files",
+                     fileType: [.audio,.image,.video],
+                     title: LocalizableReport.selectFiles.localized,
                      fileListType: .selectFiles,
                      resultFile: $draftReportVM.resultFile)
     }
@@ -74,12 +74,7 @@ struct AddFilesToDraftView: View {
     }
     
     func showAddPhotoVideoSheet() {
-        sheetManager.showBottomSheet( modalHeight:  CGFloat(AddPhotoVideoItems.count * 40 + 100), content: {
-            ActionListBottomSheet(items: AddPhotoVideoItems,
-                                  headerTitle: LocalizableVault.manageFilesImportFromDeviceSheetSelect.localized, action: {item in
-                self.handleAddPhotoVideoActions(item : item)
-            })
-        })
+        draftReportVM.showingImagePicker = true
     }
     
     private func handleActions(item: ListActionSheetItem) {
@@ -107,23 +102,12 @@ struct AddFilesToDraftView: View {
             break
         }
     }
-    
-    private func handleAddPhotoVideoActions(item: ListActionSheetItem) {
-        guard let type = item.type as? AddPhotoVideoType else { return  }
-        
-        switch type {
-        case .photoLibrary:
-            draftReportVM.showingImagePicker = true
-        default:
-            draftReportVM.showingImportDocumentPicker = true
-        }
-    }
 }
 
 struct AddFilesToDraftView_Previews: PreviewProvider {
     static var previews: some View {
         AddFileView()
-            .environmentObject(MainAppModel())
+            .environmentObject(MainAppModel.stub())
             .environmentObject(FileListViewModel.stub())
     }
 }

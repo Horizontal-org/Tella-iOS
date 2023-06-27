@@ -36,6 +36,7 @@ class TellaData : ObservableObject {
         
     }
     
+    @discardableResult
     func updateServer(server : Server) throws -> Int {
         
         guard let database = database else {
@@ -46,17 +47,16 @@ class TellaData : ObservableObject {
         return id
     }
     
-    func deleteServer(serverId : Int) throws -> Int {
+    func deleteServer(serverId : Int) throws  {
         
         guard let database = database else {
             throw SqliteError()
         }
-        let id = try database.deleteServer(serverId: serverId)
+        try database.deleteServer(serverId: serverId)
         getServers()
-        return id
-        
+        getReports()
     }
-
+    
     func deleteAllServers() throws -> Int {
         
         guard let database = database else {
@@ -64,6 +64,7 @@ class TellaData : ObservableObject {
         }
         let id = try database.deleteAllServers()
         getServers()
+        getReports()
         return id
         
     }
@@ -92,8 +93,9 @@ class TellaData : ObservableObject {
         self.outboxedReports.value = database.getReports(reportStatus: [.finalized,
                                                                         .submissionError,
                                                                         .submissionPending,
-                                                                        .submissionPartialParts,
-                                                                        .submissionInProgress])
+                                                                        .submissionPaused,
+                                                                        .submissionInProgress,
+                                                                        .submissionAutoPaused])
         
         self.submittedReports.value = database.getReports(reportStatus: [ReportStatus.submitted])
     }
@@ -119,7 +121,6 @@ class TellaData : ObservableObject {
         
         return database.getReports(reportStatus: [ .submissionError,
                                                    .submissionPending,
-                                                   .submissionPartialParts,
                                                    .submissionInProgress])
     }
     
@@ -139,12 +140,13 @@ class TellaData : ObservableObject {
             throw SqliteError()
         }
         
-        _ = try database.resetCurrentUploadReport()
+         try database.resetCurrentUploadReport()
         let id = try database.addReport(report: report)
         let report = getReport(reportId: id)
         return report
     }
     
+    @discardableResult
     func updateReport(report : Report) throws -> Report? {
         
         guard let database = database else {
@@ -155,6 +157,7 @@ class TellaData : ObservableObject {
         return report
     }
     
+    @discardableResult
     func updateReportStatus(idReport : Int, status: ReportStatus) throws -> Int {
         
         guard let database = database else {
@@ -177,6 +180,7 @@ class TellaData : ObservableObject {
         
     }
     
+    @discardableResult
     func updateReportFile(reportFile: ReportFile) throws -> Int {
         
         guard let database = database else {
@@ -188,6 +192,7 @@ class TellaData : ObservableObject {
         
     }
     
+    @discardableResult
     func deleteReport(reportId : Int?) throws -> Int {
         
         guard let database = database else {

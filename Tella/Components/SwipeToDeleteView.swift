@@ -24,7 +24,7 @@ struct SwipeToActionView: View {
         return ZStack {
             if isCountdownActive {
                 VStack {
-                    Text("Quick Delete Activated")
+                    Text(LocalizableHome.quickDeleteActionTitle.localized)
                         .foregroundColor(.white)
                         .padding(.bottom, 60)
                         .padding(.horizontal, 20)
@@ -40,7 +40,7 @@ struct SwipeToActionView: View {
                                     .foregroundColor(.white)
                                     )
                                     .padding(.bottom, 80)
-                    Text("Tap anywhere to cancel")
+                    Text(LocalizableHome.quickDeleteActionCancel.localized)
                         .foregroundColor(.white)
                         .font(.custom(Styles.Fonts.regularFontName, size: 24))
                         .multilineTextAlignment(.center)
@@ -55,7 +55,7 @@ struct SwipeToActionView: View {
                 .zIndex(99)
                 .padding(.top, 250)
             } else {
-                Text("DELETE")
+                Text(LocalizableHome.quickDeleteSwipeTitle.localized)
                     .font(Font.system(size: 16))
                     .bold()
                     .foregroundColor(Color.white)

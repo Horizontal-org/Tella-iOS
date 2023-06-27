@@ -77,12 +77,8 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
         let asset     = AVURLAsset(url: assetURL, options: assetOpts)
         self.audioChunks.append(asset)
     }
-    
-    func resetRecorder() {
-        self.discardRecord()
-    }
-    
-    internal func discardRecord() {
+
+    func discardRecord() {
         for asset in self.audioChunks {
             do {
                 try FileManager.default.removeItem(at: asset.url)
@@ -186,7 +182,7 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
                 }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                    self.resetRecorder()
+                    self.discardRecord()
                 })
                 
                 self.audioChunks = [AVURLAsset]()
