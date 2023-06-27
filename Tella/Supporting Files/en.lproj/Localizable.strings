@@ -82,7 +82,9 @@
 "Vault_CreateNewFolder_Cancel_SheetAction" = "CANCEL";
 "Vault_CreateNewFolder_Create_SheetAction" = "CREATE";
 "Vault_DeleteFile_SheetTitle" = "Delete file?";
-"Vault_DeleteFile_SheetExpl" = "The selected files will be permanently deleted from Tella.";
+"Vault_DeleteFiles_SheetTitle" = "Delete files?";
+"Vault_DeleteFile_SheetExpl" = "The selected file will be permanently deleted from Tella.";
+"Vault_DeleteFiles_SheetExpl" = "The selected files will be permanently deleted from Tella.";
 "Vault_DeleteFile_Cancel_SheetAction" = "CANCEL";
 "Vault_DeleteFile_Delete_SheetAction" = "DELETE";
 "Vault_SaveToDevice_SheetTitle" = "Save to device gallery?";
@@ -232,9 +234,10 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Draft_ExitReport_Save_SheetAction" = "save and exit";
 
 "Reports_Draft_AddFiles" = "Attach files here";
-
-"Reports_DeleteReport_SheetTitle" = "Delete report";
-"Reports_DeleteReport_SheetExpl" = "Are you sure you want to delete this draft?";
+"Reports_DeleteReport_SheetTitle" = "Delete “%@”";
+"Reports_DeleteDraftReport_SheetExpl" = "Are you sure you want to delete this draft?";
+"Reports_DeleteOutboxReport_SheetExpl" = "Are you sure you want to delete this upload?";
+"Reports_DeleteSubmittedReport_SheetExpl" = "Are you sure you want to delete this semt report from your records?";
 "Reports_DeleteReport_Cancel_SheetAction" = "CANCEL";
 "Reports_DeleteReport_Delete_SheetAction" = "DELETE";
 

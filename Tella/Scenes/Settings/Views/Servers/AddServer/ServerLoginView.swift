@@ -35,25 +35,24 @@ struct ServerLoginView: View {
                         TextfieldView(fieldContent: $serverViewModel.username,
                                       isValid: $serverViewModel.validUsername,
                                       shouldShowError: $serverViewModel.shouldShowLoginError,
-                                      //                                      errorMessage: nil,
                                       fieldType: .username,
-                                      placeholder : "Username")
-                        .frame(height: 30)
-                        
+                                      placeholder : "Username",
+                                      shouldShowTitle: true)
+
                         Spacer()
-                            .frame(height: 27)
+                            .frame(height: 13)
                         
                         TextfieldView(fieldContent: $serverViewModel.password,
                                       isValid: $serverViewModel.validPassword,
                                       shouldShowError: $serverViewModel.shouldShowLoginError,
                                       errorMessage: serverViewModel.loginErrorMessage,
-                                      fieldType: .password,
-                                      placeholder : "Password")
-                        .frame(height: 57)
-                        
+                                      fieldType: .text,
+                                      placeholder : "Password",
+                                      shouldShowTitle: true)
+
                         Spacer()
                             .frame(height: 32)
-                        
+
                         TellaButtonView<AnyView>(title: "LOG IN",
                                                  nextButtonAction: .action,
                                                  isValid: $serverViewModel.validCredentials) {
@@ -84,6 +83,14 @@ struct ServerLoginView: View {
                 navigateTo(destination: successLoginView)
             }
         }
+        .onAppear {
+
+        #if DEBUG
+                    serverViewModel.username = "dhekra@wearehorizontal.org"
+                    serverViewModel.password = "123456"
+        #endif
+        }
+
     }
     
     private var successLoginView: some View {

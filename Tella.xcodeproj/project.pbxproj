@@ -119,6 +119,8 @@
 		123CE84429126B52003C251F /* ServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CE84329126B52003C251F /* ServerViewModel.swift */; };
 		1240E6B02907E14400692232 /* ReportCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1240E6AF2907E14400692232 /* ReportCardView.swift */; };
 		1240E6B22908123900692232 /* ReportListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1240E6B12908123900692232 /* ReportListView.swift */; };
+		124190442A42F3A700E177F3 /* SQLStatementBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124190432A42F3A700E177F3 /* SQLStatementBuilder.swift */; };
+		124190462A43230000E177F3 /* SQLiteStatementBuilderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124190452A43230000E177F3 /* SQLiteStatementBuilderExtension.swift */; };
 		1242135529B774A40002402D /* DeleteReportConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1242135429B774A40002402D /* DeleteReportConfirmationView.swift */; };
 		1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141627E357E80037D469 /* LoadMoreCell.swift */; };
 		1244141927E35D120037D469 /* VaultFileImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141827E35D120037D469 /* VaultFileImages.swift */; };
@@ -476,6 +478,8 @@
 		123CE84329126B52003C251F /* ServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerViewModel.swift; sourceTree = "<group>"; };
 		1240E6AF2907E14400692232 /* ReportCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCardView.swift; sourceTree = "<group>"; };
 		1240E6B12908123900692232 /* ReportListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportListView.swift; sourceTree = "<group>"; };
+		124190432A42F3A700E177F3 /* SQLStatementBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLStatementBuilder.swift; sourceTree = "<group>"; };
+		124190452A43230000E177F3 /* SQLiteStatementBuilderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteStatementBuilderExtension.swift; sourceTree = "<group>"; };
 		1242135429B774A40002402D /* DeleteReportConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteReportConfirmationView.swift; sourceTree = "<group>"; };
 		1244141627E357E80037D469 /* LoadMoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCell.swift; sourceTree = "<group>"; };
 		1244141827E35D120037D469 /* VaultFileImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileImages.swift; sourceTree = "<group>"; };
@@ -837,6 +841,8 @@
 			isa = PBXGroup;
 			children = (
 				1236EE7F28E1B40200973EEA /* DataBaseHelper.swift */,
+				124190432A42F3A700E177F3 /* SQLStatementBuilder.swift */,
+				124190452A43230000E177F3 /* SQLiteStatementBuilderExtension.swift */,
 				1236EE8128E1E1D700973EEA /* DatabaseExtension.swift */,
 				1216123B28DE13AC00E6D7B6 /* DatabaseUtilities.swift */,
 				12351C1D28D267EF00F3CB7C /* DatabaseConstants.swift */,
@@ -2119,6 +2125,7 @@
 				1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */,
 				D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */,
 				121BAB7F29A7E30600D7E847 /* URLRequestExtension.swift in Sources */,
+				124190442A42F3A700E177F3 /* SQLStatementBuilder.swift in Sources */,
 				1217FCA128F9946A00DD2D70 /* CircularActivityIndicatory.swift in Sources */,
 				12B6481D28367C1D00CBE541 /* SheetManager.swift in Sources */,
 				D5DA7F982646220100B00FDA /* FileGroupButtonView.swift in Sources */,
@@ -2220,6 +2227,7 @@
 				128D6E1A28045C090082AB18 /* manageFilesItems.swift in Sources */,
 				12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */,
 				1216123E28DE142D00E6D7B6 /* JoinItem.swift in Sources */,
+				124190462A43230000E177F3 /* SQLiteStatementBuilderExtension.swift in Sources */,
 				12EC94D828ABCCED0070E72B /* SettingsItemView.swift in Sources */,
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,

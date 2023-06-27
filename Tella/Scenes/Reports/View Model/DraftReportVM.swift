@@ -94,7 +94,7 @@ class DraftReportVM: ObservableObject {
         $isValidTitle.combineLatest($isValidDescription, $files)
             .sink(receiveValue: { isValidTitle, isValidDescription, files in
                 DispatchQueue.main.async {
-                    self.reportIsDraft = isValidTitle || isValidDescription || !files.isEmpty
+                    self.reportIsDraft = isValidTitle
                 }
             }).store(in: &subscribers)
     }
@@ -125,18 +125,24 @@ class DraftReportVM: ObservableObject {
     }
     
     func fillReportVM() {
+        if let reportId = self.reportId ,let report = self.mainAppModel.vaultManager.tellaData.getReport(reportId: reportId) {
+            
+            var vaultFileResult : Set<VaultFile> = []
+            
+            self.title = report.title ?? ""
+            self.description = report.description ?? ""
+            self.server = report.server
+            self.mainAppModel.vaultManager.root.getFile(root: self.mainAppModel.vaultManager.root, vaultFileResult: &vaultFileResult, ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
+            self.files = vaultFileResult
+            self.objectWillChange.send()
+        }
+        
         DispatchQueue.main.async {
-            if let reportId = self.reportId ,let report = self.mainAppModel.vaultManager.tellaData.getReport(reportId: reportId) {
-                
-                var vaultFileResult : Set<VaultFile> = []
-                
-                self.title = report.title ?? ""
-                self.description = report.description ?? ""
-                self.server = report.server
-                self.mainAppModel.vaultManager.root.getFile(root: self.mainAppModel.vaultManager.root, vaultFileResult: &vaultFileResult, ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
-                self.files = vaultFileResult
-                self.objectWillChange.send()
-            }
+            self.isValidTitle =  self.title.textValidator()
+            self.isValidDescription = self.description.textValidator()
+            self.reportIsValid = ((self.server != nil) && self.isValidTitle && self.isValidDescription) || ((self.server != nil) && self.isValidTitle && !self.files.isEmpty)
+            self.reportIsDraft = self.isValidTitle
+            self.objectWillChange.send()
         }
     }
     

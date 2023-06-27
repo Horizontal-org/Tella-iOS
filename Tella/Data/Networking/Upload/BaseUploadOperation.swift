@@ -51,9 +51,9 @@ class BaseUploadOperation : Operation {
     }
     
     func autoPauseReport() {
+        updateReport(reportStatus: .submissionAutoPaused)
         _ = uploadTasksDict.keys.compactMap({$0.cancel()})
         uploadTasksDict.removeAll()
-        updateReport(reportStatus: .submissionAutoPaused)
     }
     
     override func main() {

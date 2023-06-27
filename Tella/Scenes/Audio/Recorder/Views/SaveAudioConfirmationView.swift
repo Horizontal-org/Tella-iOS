@@ -49,7 +49,7 @@ struct SaveAudioConfirmationView: View {
                 viewModel.showingRecoredrView.wrappedValue = false
             default:
                 sheetManager.hide()
-                self.viewModel.onResetRecording()
+                self.viewModel.onDiscardRecording()
                 mainAppModel.selectedTab = .home
 
             }

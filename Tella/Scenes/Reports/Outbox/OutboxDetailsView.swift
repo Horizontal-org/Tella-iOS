@@ -48,7 +48,7 @@ struct OutboxDetailsView: View {
                 dismissView()
             }
         })
-
+        
         .navigationBarHidden(true)
     }
     
@@ -189,7 +189,8 @@ struct OutboxDetailsView: View {
     
     private func showDeleteReportConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: 200) {
-            DeleteReportConfirmationView {
+            DeleteReportConfirmationView(title: outboxReportVM.reportViewModel.title,
+                                         message: LocalizableReport.deleteOutboxReportMessage.localized) {
                 outboxReportVM.pauseSubmission()
                 dismissView()
                 outboxReportVM.deleteReport()

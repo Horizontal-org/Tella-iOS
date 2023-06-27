@@ -56,7 +56,7 @@ struct AddFilesToDraftView: View {
     var fileListView : some View {
         FileListView(appModel: appModel,
                      rootFile: appModel.vaultManager.root,
-                     fileType: nil,
+                     fileType: [.audio,.image,.video],
                      title: LocalizableReport.selectFiles.localized,
                      fileListType: .selectFiles,
                      resultFile: $draftReportVM.resultFile)
@@ -74,12 +74,7 @@ struct AddFilesToDraftView: View {
     }
     
     func showAddPhotoVideoSheet() {
-        sheetManager.showBottomSheet( modalHeight:  CGFloat(AddPhotoVideoItems.count * 40 + 100), content: {
-            ActionListBottomSheet(items: AddPhotoVideoItems,
-                                  headerTitle: LocalizableVault.manageFilesImportFromDeviceSheetSelect.localized, action: {item in
-                self.handleAddPhotoVideoActions(item : item)
-            })
-        })
+        draftReportVM.showingImagePicker = true
     }
     
     private func handleActions(item: ListActionSheetItem) {
@@ -105,17 +100,6 @@ struct AddFilesToDraftView: View {
             
         default:
             break
-        }
-    }
-    
-    private func handleAddPhotoVideoActions(item: ListActionSheetItem) {
-        guard let type = item.type as? AddPhotoVideoType else { return  }
-        
-        switch type {
-        case .photoLibrary:
-            draftReportVM.showingImagePicker = true
-        default:
-            draftReportVM.showingImportDocumentPicker = true
         }
     }
 }

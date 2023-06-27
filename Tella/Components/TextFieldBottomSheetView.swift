@@ -136,7 +136,6 @@ struct FileNameStyle: TextFieldStyle {
             .accentColor(Styles.Colors.yellow)
             .multilineTextAlignment(.leading)
             .disableAutocorrection(true)
-            .textContentType(UITextContentType.oneTimeCode)
             .keyboardType(.alphabet)
     }
 }
