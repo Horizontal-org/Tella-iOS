@@ -14,7 +14,6 @@ enum Language: String, CaseIterable {
     case systemLanguage = "system"
     case english = "en"
     case spanish = "es"
-    case spanishLatinAmerican = "es-419"
     case french = "fr"
     case arabic = "ar"
     case belarusian = "be"
@@ -33,8 +32,6 @@ enum Language: String, CaseIterable {
             return "fr"
         case .spanish:
             return "es"
-        case .spanishLatinAmerican:
-            return "es-419"
         case .arabic:
             return "ar"
         case .belarusian:
@@ -60,8 +57,6 @@ enum Language: String, CaseIterable {
             return "Français"
         case .spanish:
             return "Español"
-        case .spanishLatinAmerican:
-            return "Español latinoamericano"
         case .arabic:
             return "العربية"
         case .belarusian:
@@ -88,8 +83,6 @@ enum Language: String, CaseIterable {
             return LocalizableSettings.settLangFrench.localized
         case .spanish:
             return LocalizableSettings.settLangSpanish.localized
-        case .spanishLatinAmerican:
-            return LocalizableSettings.settLangSpanishLatinAmerican.localized
         case .arabic:
             return LocalizableSettings.settLangArabic.localized
         case .belarusian:
