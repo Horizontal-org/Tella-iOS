@@ -36,7 +36,7 @@ struct CancelImportView: View {
 
 struct CancelImportView_Previews: PreviewProvider {
     static var previews: some View {
-        CancelImportView( mainAppModel: MainAppModel(),
+        CancelImportView( mainAppModel: MainAppModel.stub(),
                           importFilesProgressProtocol: ImportFilesProgress())
     }
 }

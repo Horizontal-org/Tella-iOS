@@ -7,8 +7,8 @@ import Combine
 
 protocol AppModelFileManagerProtocol {
     
-    func add(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray:[VaultFile]) async throws -> [VaultFile]
-    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String, folderPathArray:[VaultFile]) async throws -> VaultFile?
+    func add(files: [URL], to parentFolder: VaultFile?, type: TellaFileType, folderPathArray:[VaultFile]) async throws -> [VaultFile]
+    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: TellaFileType, fileName:String, folderPathArray:[VaultFile]) async throws -> VaultFile?
     func add(folder: String, to parentFolder: VaultFile?, folderPathArray:[VaultFile])
     
     func move(files: [VaultFile], from originalParentFolder: VaultFile?, to newParentFolder: VaultFile?)
@@ -23,6 +23,9 @@ protocol AppModelFileManagerProtocol {
     func load(file vaultFile: VaultFile) -> Data?
     func loadFilesInfos(file vaultFile: VaultFile, offsetSize:Int ) -> VaultFileInfo?
     func sendAutoReportFile(file: VaultFile)
+    func initFiles() -> AnyPublisher<Bool,Never>
+    func initRoot()
+
 }
 
 let lockTimeoutStartDateKey = "LockTimeoutStartDate"
@@ -64,15 +67,15 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     @Published var shouldShowSecurityScreen: Bool = false
     @Published var appEnterInBackground: Bool = false
     @Published var importOption: ImportOption?
-    
+    var networkMonitor : NetworkMonitor
+
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
     
     private var cancellable: Set<AnyCancellable> = []
-    
-    init() {
+
+    init(networkMonitor:NetworkMonitor) {
+        self.networkMonitor = networkMonitor
         loadData()
-        //        UploadService.shared.initAutoUpload(mainAppModel: self)
-        sendUnsentReports()
     }
     
     private func loadData() {
@@ -109,7 +112,8 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         selectedTab = newTab
     }
     
-    func add(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray:[VaultFile] = []) async throws -> [VaultFile] {
+    @discardableResult
+    func add(files: [URL], to parentFolder: VaultFile?, type: TellaFileType, folderPathArray:[VaultFile] = []) async throws -> [VaultFile] {
         
         vaultManager.progress.progress.sink { [weak self] value in
             self?.publishUpdates()
@@ -124,7 +128,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         return files
     }
     
-    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName:String, folderPathArray:[VaultFile] = []) async throws -> VaultFile? {
+    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: TellaFileType, fileName:String, folderPathArray:[VaultFile] = []) async throws -> VaultFile? {
         let file = try await   self.vaultManager.importFile(audioFilePath: audioFilePath, to: parentFolder, type: type, fileName: fileName, folderPathArray: folderPathArray)
         self.publishUpdates()
         return file
@@ -199,83 +203,48 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     }
     
     func sendAutoReportFile(file: VaultFile) {
-        //        if vaultManager.tellaData.getAutoUploadServer() != nil {
-        //            UploadService.shared.addAutoUpload(file: file)
-        //        }
+        if vaultManager.tellaData.getAutoUploadServer() != nil {
+            UploadService.shared.addAutoUpload(file: file)
+        }
+    }
+
+    func initFiles() -> AnyPublisher<Bool,Never> {
+        return Deferred {
+            Future <Bool,Never> {  [weak self] promise in
+                guard let self = self else { return }
+                self.vaultManager.initFiles()
+                    .sink(receiveValue: { f in
+                        self.sendReports()
+                        promise(.success(f))
+                    }).store(in: &self.cancellable)
+                
+            }
+        }.eraseToAnyPublisher()
     }
     
-    func sendUnsentReports() {
+    func initRoot() {
+        vaultManager.initRoot()
+        UploadService.shared.initAutoUpload(mainAppModel: self)
+
+    }
+    
+    func sendReports() {
+        UploadService.shared.initAutoUpload(mainAppModel: self)
         UploadService.shared.sendUnsentReports(mainAppModel: self)
     }
-}
-
-class SettingsModel: ObservableObject, Codable {
     
-    @Published var offLineMode = false
-    @Published var quickDelete: Bool = false
-    @Published var deleteVault: Bool = false
-    @Published var deleteForms: Bool = false
-    @Published var deleteServerSettings: Bool = false
-    @Published var showRecentFiles: Bool = false
-    @Published var lockTimeout: LockTimeoutOption = .immediately
-    @Published var screenSecurity: Bool = true
-    @Published var preserveMetadata: Bool = false
-    
-    enum CodingKeys: CodingKey {
-        case offLineMode
-        case quickDelete
-        case deleteVault
-        case deleteForms
-        case deleteServerSettings
-        case showRecentFiles
-        case lockTimeout
-        case screenSecurity
-        case preserveMetadata
-    }
-    
-    init() {
-        
-    }
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        offLineMode = try container.decode(Bool.self, forKey: .offLineMode)
-        quickDelete = try container.decode(Bool.self, forKey: .quickDelete)
-        deleteVault = try container.decode(Bool.self, forKey: .deleteVault)
-        deleteForms = try container.decode(Bool.self, forKey: .deleteForms)
-        deleteServerSettings = try container.decode(Bool.self, forKey: .deleteServerSettings)
-        showRecentFiles = try container.decode(Bool.self, forKey: .showRecentFiles)
-        
-        let lockTimeoutString = try container.decode(String.self, forKey: .lockTimeout)
-        lockTimeout = LockTimeoutOption(rawValue: lockTimeoutString) ?? .immediately
-        screenSecurity = try container.decode(Bool.self, forKey: .screenSecurity)
-        preserveMetadata = try container.decode(Bool.self, forKey: .preserveMetadata)
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(offLineMode, forKey: .offLineMode)
-        try container.encode(quickDelete, forKey: .quickDelete)
-        try container.encode(deleteVault, forKey: .deleteVault)
-        try container.encode(deleteForms, forKey: .deleteForms)
-        try container.encode(deleteServerSettings, forKey: .deleteServerSettings)
-        try container.encode(showRecentFiles, forKey: .showRecentFiles)
-        try container.encode(lockTimeout.rawValue, forKey: .lockTimeout)
-        try container.encode(screenSecurity, forKey: .screenSecurity)
-        try container.encode(preserveMetadata, forKey: .preserveMetadata)
-
+    func deleteReport(reportId:Int?) {
+        UploadService.shared.cancelSendingReport(reportId: reportId)
+        do {
+            try _ = vaultManager.tellaData.deleteReport(reportId: reportId)
+        } catch {
+        }
     }
 }
 
-class VaultFileInfo {
-    
-    var vaultFile : VaultFile
-    var data : Data
-    var url : URL
-    
-    init(vaultFile: VaultFile, data: Data, url: URL) {
-        self.vaultFile = vaultFile
-        self.data = data
-        self.url = url
+extension MainAppModel {
+    static func stub() -> MainAppModel {
+        return MainAppModel(networkMonitor: NetworkMonitor())
     }
 }
+

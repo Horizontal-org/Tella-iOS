@@ -5,6 +5,8 @@
 import Foundation
 import AVFoundation
 import AVKit
+import Combine
+
 extension Data {
     
     func decoded<T: Decodable>() throws -> T {
@@ -34,6 +36,7 @@ extension Data {
         // Return the new copy of data
         return self
     }
+
     /// This function takes the image data and metadata as parameter and returns the image data with metadata
     /// - Parameters:
     ///   - data: The original image data
@@ -48,5 +51,10 @@ extension Data {
         CGImageDestinationAddImageFromSource(destination, imageRef, 0, (properties as CFDictionary))
         CGImageDestinationFinalize(destination)
         return dataWithEXIF
+    }
+    
+    func fileExtension(vaultManager:VaultManager) -> String? {
+        let fileTypeHelper = FileTypeHelper(data: self).getFileInformation()
+        return fileTypeHelper?.fileExtension
     }
 }

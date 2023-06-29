@@ -37,7 +37,7 @@ struct SaveAudioConfirmationView: View {
             
             
             switch self.viewModel.sourceView {
-            case .addSingleFile:
+            case .addReportFile:
                 viewModel.showingRecoredrView.wrappedValue = false
             default:
                 mainAppModel.selectedTab = .home
@@ -45,11 +45,11 @@ struct SaveAudioConfirmationView: View {
 
         } didDiscardAction: {
             switch self.viewModel.sourceView {
-            case .addSingleFile:
+            case .addReportFile:
                 viewModel.showingRecoredrView.wrappedValue = false
             default:
                 sheetManager.hide()
-                self.viewModel.onResetRecording()
+                self.viewModel.onDiscardRecording()
                 mainAppModel.selectedTab = .home
 
             }
@@ -61,7 +61,7 @@ struct SaveAudioConfirmationView: View {
 
 struct SaveAudioConfirmationView_Previews: PreviewProvider {
     static var previews: some View {
-        SaveAudioConfirmationView(viewModel: RecordViewModel(mainAppModel: MainAppModel(),
+        SaveAudioConfirmationView(viewModel: RecordViewModel(mainAppModel: MainAppModel.stub(),
                                                              rootFile: VaultFile.stub(type: .audio),
                                                              resultFile: .constant([VaultFile.stub(type: .audio)]),
                                                              sourceView: .tab,

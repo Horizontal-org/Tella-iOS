@@ -16,8 +16,8 @@ struct AdvancedServerSettingsView: View {
             VStack {
                 
                 SettingsCardView(cardViewArray: [/*ShareInfoView(shareInfo: $serverVM.activatedMetadata).eraseToAnyView(),*/
-//                    AutoUploadView(autoUpload: $serverVM.autoUpload, isDisabled: serverVM.isAutoUploadServerExist).eraseToAnyView(),
-//                    AutoDeleteView(autoDelete: $serverVM.autoDelete).eraseToAnyView(),
+                    AutoUploadView(autoUpload: $serverVM.autoUpload, isDisabled: serverVM.isAutoUploadServerExist).eraseToAnyView(),
+                    $serverVM.autoUpload.wrappedValue ? AutoDeleteView(autoDelete: $serverVM.autoDelete).eraseToAnyView() : nil,
                     BackgroundUploadView(backgroundUpload: $serverVM.backgroundUpload).eraseToAnyView()
                                                 ])
                 

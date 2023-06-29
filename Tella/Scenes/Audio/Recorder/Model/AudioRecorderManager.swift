@@ -12,7 +12,7 @@ protocol AudioRecorderManager {
     func startRecording()
     func pauseRecording()
     func stopRecording(fileName:String)
-    func resetRecorder()
+    func discardRecord()
     
     func playRecord()
     func pauseRecord()

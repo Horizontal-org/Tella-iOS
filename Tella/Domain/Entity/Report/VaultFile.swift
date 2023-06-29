@@ -6,7 +6,7 @@ import UIKit
 import SwiftUI
 import AVFoundation
 
-enum FileType: String, Codable {
+enum TellaFileType: String, Codable {
     case video
     case audio
     case document
@@ -20,8 +20,8 @@ class VaultFile: Codable, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(containerName.hashValue)
     }
-    var id: String
-    var type: FileType
+    var id: String?
+    var type: TellaFileType
     var fileName: String
     var containerName: String
     var files: [VaultFile]
@@ -38,7 +38,7 @@ class VaultFile: Codable, Hashable {
         return VaultFile(type: .folder, fileName: fileName, containerName: containerName, files: [], pathArray: [])
     }
     
-    init(id:String = UUID().uuidString, type: FileType, fileName: String, containerName: String = UUID().uuidString, files: [VaultFile]? = nil, thumbnail: Data? = nil, created: Date = Date() , fileExtension : String = "", size : Int = 0, resolution : CGSize? = nil, duration : Double? = nil, pathArray :[String]) {
+    init(id:String? = UUID().uuidString, type: TellaFileType, fileName: String, containerName: String = UUID().uuidString, files: [VaultFile]? = nil, thumbnail: Data? = nil, created: Date = Date() , fileExtension : String = "", size : Int = 0, resolution : CGSize? = nil, duration : Double? = nil, pathArray :[String]) {
         self.id = id
         self.type = type
         self.fileName = fileName
@@ -125,14 +125,14 @@ extension VaultFile: Equatable {
 
 extension Array where Element == VaultFile {
     
-    func filtered(with filter: FileType?, includeFolders: Bool) -> [Element] {
+    func filtered(with filter: TellaFileType?, includeFolders: Bool) -> [Element] {
         guard let filter = filter else {
             return self
         }
         return self.filter({ filter == ($0.type) || (includeFolders && $0.type == .folder)})
     }
     
-    func sorted(by sortOrder: FileSortOptions, folderPathArray:[VaultFile] = [], root:VaultFile, fileType:[FileType]? = nil) -> [VaultFile] {
+    func sorted(by sortOrder: FileSortOptions, folderPathArray:[VaultFile] = [], root:VaultFile, fileType:[TellaFileType]? = nil) -> [VaultFile] {
         
         var filteredFiles : [VaultFile] = []
         
@@ -173,7 +173,7 @@ extension Array where Element == VaultFile {
         }
     }
     
-    func getFiles(root: VaultFile, vaultFileResult: inout [VaultFile], fileType:[FileType]) {
+    func getFiles(root: VaultFile, vaultFileResult: inout [VaultFile], fileType:[TellaFileType]) {
         root.files.forEach { file in
             switch file.type {
             case .folder:
@@ -268,11 +268,39 @@ extension VaultFile {
             case .folder:
                 getFile(root: file, vaultFileResult: &vaultFileResult, ids: ids)
             default:
-                if ids.contains(file.id) {
-                    vaultFileResult.insert(file)  
+                if let id = file.id , ids.contains(id) {
+                    vaultFileResult.insert(file)
                 }
             }
         }
     }
+    
+    
+    func updateIds()  {
+        files.forEach { file in
+            if file.id == nil {
+                file.id = UUID().uuidString
+                switch file.type {
+                case .folder:
+                    updateIds()
+                default:
+                    break
+                }
+            }
+        }
+    }
+    
+    func getAllFiles(vaultFileResult: inout [VaultFile])   {
+        self.files.forEach { file in
+            switch file.type {
+            case .folder:
+                file.getAllFiles(vaultFileResult: &vaultFileResult)
+            default:
+                vaultFileResult.append(file)
+            }
+        }
+    }
+    
+    
 }
 

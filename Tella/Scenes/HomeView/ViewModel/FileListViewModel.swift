@@ -24,7 +24,7 @@ enum FileListType {
 class FileListViewModel: ObservableObject {
     
     var appModel: MainAppModel
-    var fileType: [FileType]?
+    var fileType: [TellaFileType]?
     var rootFile : VaultFile
     var oldRootFile : VaultFile
     var fileActionSource : FileActionSource = .listView
@@ -133,7 +133,7 @@ class FileListViewModel: ObservableObject {
         return items
     }
     
-    init(appModel:MainAppModel, fileType:[FileType]?, rootFile:VaultFile, folderPathArray:[VaultFile]?,fileActionSource : FileActionSource = .listView,fileListType : FileListType = .fileList, resultFile : Binding<[VaultFile]?>? = nil) {
+    init(appModel:MainAppModel, fileType:[TellaFileType]?, rootFile:VaultFile, folderPathArray:[VaultFile]?,fileActionSource : FileActionSource = .listView,fileListType : FileListType = .fileList, resultFile : Binding<[VaultFile]?>? = nil) {
         
         self.appModel = appModel
         self.fileType = fileType
@@ -234,10 +234,10 @@ class FileListViewModel: ObservableObject {
         
     }
     
-    func add(files: [URL], type: FileType) {
+    func add(files: [URL], type: TellaFileType) {
         Task {
             
-            do { _ = try await appModel.add(files: files, to: self.rootFile, type: type, folderPathArray: folderPathArray)
+            do { try await appModel.add(files: files, to: self.rootFile, type: type, folderPathArray: folderPathArray)
             }
             catch {
                 
@@ -245,12 +245,12 @@ class FileListViewModel: ObservableObject {
         }
     }
     
-    func add(image: UIImage , type: FileType, pathExtension:String?) {
+    func add(image: UIImage , type: TellaFileType, pathExtension:String?) {
         guard let data = image.fixedOrientation()?.pngData() else { return }
         guard let url = appModel.vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension ?? "png") else { return  }
         Task {
             
-            do { _ = try await appModel.add(files: [url], to: self.rootFile, type: type, folderPathArray: folderPathArray)
+            do {   try await appModel.add(files: [url], to: self.rootFile, type: type, folderPathArray: folderPathArray)
                 
             }
             catch {
@@ -285,6 +285,6 @@ class FileListViewModel: ObservableObject {
 
 extension FileListViewModel {
     static func stub() -> FileListViewModel {
-        return FileListViewModel(appModel: MainAppModel(), fileType: [.folder], rootFile: VaultFile.stub(type: .folder), folderPathArray: [])
+        return FileListViewModel(appModel: MainAppModel.stub(), fileType: [.folder], rootFile: VaultFile.stub(type: .folder), folderPathArray: [])
     }
 }

@@ -30,7 +30,7 @@ class PhotoVideoViewModel : ObservableObject {
     /// - Parameters:
     ///   - files: Array of the URL of the videos
     ///   - type: Type of file
-    func addVideoWithExif(files: [URL], type: FileType) {
+    func addVideoWithExif(files: [URL], type: TellaFileType) {
         Task {
             
             do { let vaultFile = try await self.mainAppModel.add(files: files,
@@ -50,11 +50,12 @@ class PhotoVideoViewModel : ObservableObject {
             }
         }
     }
+    
     /// This function imports the video file from the user selected video with the without metadata attached to the file
     /// - Parameters:
     ///   - files: Array of the URL of the videos
     ///   - type: Type of file
-    func addVideoWithoutExif(files: [URL], type: FileType) {
+    func addVideoWithoutExif(files: [URL], type: TellaFileType) {
         files.forEach { file in
             let tmpFileURL = self.mainAppModel.vaultManager.createTempFileURL(pathExtension: file.pathExtension)
             Task {
@@ -86,7 +87,7 @@ class PhotoVideoViewModel : ObservableObject {
     ///   - pathExtension: File extension
     ///   - originalUrl: The original URL of the image file
     ///   - acturalURL:  The actual URL of the image file
-    func addImageWithExif(image: UIImage , type: FileType, pathExtension:String?, originalUrl: URL?, actualURL: URL?) {
+    func addImageWithExif(image: UIImage , type: TellaFileType, pathExtension:String?, originalUrl: URL?, actualURL: URL?) {
         guard let data = image.pngData(), let actualURL = actualURL else { return }
         let methodExifData = actualURL.getEXIFData()
         Task {
@@ -120,7 +121,7 @@ class PhotoVideoViewModel : ObservableObject {
     ///   - type: This helps to determine the file type based on enum FileType
     ///   - pathExtension: Pathextension as  file extension
     ///   - originalUrl: The original URL of the image file
-    func addImageWithoutExif(image: UIImage , type: FileType, pathExtension:String?, originalUrl: URL?) {
+    func addImageWithoutExif(image: UIImage , type: TellaFileType, pathExtension:String?, originalUrl: URL?) {
         guard let data = image.fixedOrientation()?.pngData() else { return }
         guard let url = mainAppModel.vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension ?? "png") else { return  }
         Task {

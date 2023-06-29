@@ -7,16 +7,20 @@
 //
 
 import SwiftUI
+import Combine
 
 struct UnlockPinView: View {
     
     @State private var presentingLockChoice : Bool = false
     
     @EnvironmentObject private var appViewState: AppViewState
+    @EnvironmentObject private var mainAppModel: MainAppModel
+    
     @EnvironmentObject private var viewModel: LockViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
-    
+    @State private var cancellable: Set<AnyCancellable> = []
+    @State private var isLoading : Bool = false
+
     var body: some View {
         ContainerView {
             VStack(alignment: .center) {
@@ -49,7 +53,9 @@ struct UnlockPinView: View {
                     viewModel.login()
                     if !viewModel.shouldShowUnlockError {
                         if viewModel.unlockType == .new   {
-                            appViewState.resetToMain()
+                            isLoading = true
+                            appViewState.initMainAppModel()
+                            initRoot()
                         } else {
                             presentingLockChoice = true
                         }
@@ -58,10 +64,14 @@ struct UnlockPinView: View {
                 
                 Spacer()
             }
+            
+            if  isLoading {
+                CircularActivityIndicatory()
+            }
+            
         }
         
         .overlay(lockChoiceView)
-        
         .onAppear {
             viewModel.initUnlockData()
         }
@@ -77,6 +87,18 @@ struct UnlockPinView: View {
     
     var lockChoiceView : some View {
         presentingLockChoice ? LockChoiceView( isPresented: $presentingLockChoice) : nil
+    }
+    
+    private func initRoot() {
+        DispatchQueue.main.async {
+            appViewState.homeViewModel?.initFiles()
+                .receive(on: DispatchQueue.main)
+                .sink { recoverResult in
+                    isLoading = false
+                    appViewState.showMainView()
+                    
+                }.store(in: &self.cancellable)
+        }
     }
     
 }

@@ -15,11 +15,9 @@ class UploadService: NSObject {
     
     fileprivate var activeOperations: [BaseUploadOperation] = []
     
-    var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier.invalid
-    
     var uploadQueue: OperationQueue!
     private var subscribers = Set<AnyCancellable>()
-
+    
     override init() {
         let queue = OperationQueue()
         queue.qualityOfService = .background
@@ -29,33 +27,43 @@ class UploadService: NSObject {
     static func reset() {
         shared = UploadService()
     }
-
+    
     var hasFilesToUploadOnBackground: Bool {
-        let operations = activeOperations.filter({$0.report?.server?.backgroundUpload == true && $0.uploadTasksDict.values.count != 0})
+        let operations = activeOperations.filter({$0.uploadTasksDict.values.count != 0 && $0.taskType == .uploadTask})
         return !operations.isEmpty
     }
     
     func pauseDownload(reportId:Int?) {
         let operation = activeOperations.first(where: {$0.report?.id == reportId})
-        operation?.cancel()
-        activeOperations.removeAll(where: {$0.report?.id == reportId})
+        operation?.pauseSendingReport()
+        activeOperations.removeAll(where: {$0.report?.id == reportId && (operation?.type != .autoUpload)})
     }
     
     func cancelTasksIfNeeded() {
-        let operations = activeOperations.filter({$0.report?.server?.backgroundUpload == false})
-        _ = operations.compactMap({$0.cancel})
+        let operations = activeOperations.filter({$0.report?.server?.backgroundUpload == false || $0.taskType == .dataTask})
+        _ = operations.compactMap({$0.pauseSendingReport})
+        activeOperations.removeAll(where:{$0.report?.server?.backgroundUpload == false || $0.taskType == .dataTask})
+    }
+    
+    func cancelSendingReport(reportId:Int?) {
+        let operation = activeOperations.first(where: {$0.report?.id == reportId})
+        operation?.cancelSendingReport()
+        activeOperations.removeAll(where: {$0.report?.id == reportId && (operation?.type != .autoUpload)})
     }
     
     func initAutoUpload( mainAppModel: MainAppModel ) {
         
+        let autoUploadServer = mainAppModel.vaultManager.tellaData.getAutoUploadServer()
+        
         let urlSession = URLSession(
-            configuration: .background(withIdentifier: "org.wearehorizontal.tella") ,
+            configuration: autoUploadServer?.autoUpload ?? false ? .background(withIdentifier: "org.wearehorizontal.tella") : .default ,
             delegate: self,
             delegateQueue: nil)
         
         let operation = AutoUpload(urlSession: urlSession, mainAppModel: mainAppModel, type: .autoUpload)
         activeOperations.append(operation)
         uploadQueue.addOperation(operation)
+        operation.startUploadReportAndFiles()
     }
     
     func checkUploadReportOperation(reportId:Int?) -> CurrentValueSubject<UploadResponse?,APIError>?  {
@@ -77,10 +85,11 @@ class UploadService: NSObject {
     }
     
     func addAutoUpload(file: VaultFile)  {
-        let operation: AutoUpload = activeOperations.first(where:{$0.type == .autoUpload }) as! AutoUpload
-        operation.addFile(file:file)
+        if let operation: AutoUpload = activeOperations.first(where:{$0.type == .autoUpload }) as? AutoUpload {
+            operation.addFile(file:file)
+        }
     }
-
+    
     func sendUnsentReports(mainAppModel:MainAppModel) {
         
         let unsentReports = mainAppModel.vaultManager.tellaData.getUnsentReports()
@@ -95,13 +104,13 @@ class UploadService: NSObject {
             activeOperations.append(operation)
 
             operation.response.sink(receiveCompletion: { com in
-                 
+                
             }, receiveValue: { response in
-                 
+                
             }).store(in: &subscribers)
-
+            
             uploadQueue.addOperation(operation)
-
+            
         }
     }
 }

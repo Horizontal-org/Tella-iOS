@@ -56,11 +56,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         self.tellaData = TellaData(key: CryptoManager.shared.metaPrivateKey?.getString())
         
         root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
-        if let root = load(name: rootFileName) {
-            self.root = root
-        } else {
-            save(file: root)
-        }
+        
         
         do {
             try FileManager.default.createDirectory(at: containerURL, withIntermediateDirectories: true, attributes: nil)
@@ -69,7 +65,32 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
     }
     
-    func importFile(files: [URL], to parentFolder: VaultFile?, type: FileType, folderPathArray : [VaultFile]) async throws -> [VaultFile] {
+    func initFiles() -> AnyPublisher<Bool,Never> {
+        return Deferred {
+            
+            Future <Bool,Never> {  [weak self] promise in
+                guard let self = self else { return }
+                Task {
+                    self.initRoot()
+                    self.root.updateIds()
+                    await self.recoverFiles()
+                    self.save(file: self.root)
+                    self.clearTmpDirectory()
+                    promise(.success(true))
+                }
+            }
+        }.eraseToAnyPublisher()
+    }
+    
+    func initRoot() {
+        if let root = self.load(name: self.rootFileName) {
+            self.root = root
+        } else {
+            self.save(file: self.root)
+        }
+    }
+    
+    func importFile(files: [URL], to parentFolder: VaultFile?, type: TellaFileType, folderPathArray : [VaultFile]) async throws -> [VaultFile] {
         //        Task {
         do{
             let filesInfo = try await self.getFilesInfo(files: files, folderPathArray: folderPathArray)
@@ -118,7 +139,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         //        }
     }
     
-    func importFile(audioFilePath: URL, to parentFolder: VaultFile?, type: FileType, fileName: String, folderPathArray : [VaultFile]) async throws -> VaultFile? {
+    func importFile(audioFilePath: URL, to parentFolder: VaultFile?, type: TellaFileType, fileName: String, folderPathArray : [VaultFile]) async throws -> VaultFile? {
         
         debugLog("\(audioFilePath)", space: .files)
         
@@ -162,7 +183,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         
     }
     
-    private func importFileAndEncrypt(data : Data, vaultFile:VaultFile, parentFolder :VaultFile?, type: FileType, folderPathArray : [VaultFile]?) {
+    private func importFileAndEncrypt(data : Data, vaultFile:VaultFile, parentFolder :VaultFile?, type: TellaFileType, folderPathArray : [VaultFile]?) {
         
         if let _ = self.save(data, vaultFile: vaultFile, parent: parentFolder) {
         }
@@ -424,4 +445,113 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         return (vaultFileArray,size)
     }
     
+}
+
+//  VaultManager extension contains the methods used to restore files
+
+extension VaultManager {
+    
+    func load(fileURL: URL) -> Data? {
+        debugLog("\(fileURL)", space: .files)
+        
+        guard let encryptedData = fileManager.contents(atPath: fileURL) else {
+            return nil
+        }
+        return cryptoManager.decrypt(encryptedData)
+    }
+    
+    func recoverFiles() async {
+        let filesToRestore = self.getFilesToRestore()
+        await self.recoverFiles(filesToRestore: filesToRestore)
+    }
+    
+    func getFilesToRestore() -> [String] {
+        var vaultFileResult : [VaultFile] = []
+        self.root.getAllFiles(vaultFileResult: &vaultFileResult)
+        let rootContainerName = vaultFileResult.compactMap{$0.containerName }
+        
+        // return all the content of directory
+        let containerURLContent =  fileManager.contentsOfDirectory(atPath: containerURL)
+        let allContainerName = containerURLContent.compactMap{$0.lastPathComponent }
+
+        let rootContainerNameSet:Set<String> = Set(rootContainerName)
+        var allContainerNameSet:Set<String> = Set(allContainerName)
+        
+        allContainerNameSet.subtract(rootContainerNameSet)
+        
+        return Array(allContainerNameSet)
+        
+        
+    }
+    
+    func saveRetoredFilesToTempFiles(fileToRestore:String) -> URL? {
+        
+        let fileURL = containerURL(for: fileToRestore)
+        
+        if fileToRestore != self.rootFileName {
+            
+            guard let fileData = load(fileURL: fileURL) , var fileExtension = fileData.fileExtension(vaultManager: self) else { return nil}
+            
+            if fileExtension == FileType.zip.rawValue {
+                guard let fileTmpPath = saveDataToTempFile(data: fileData, pathExtension: fileExtension) else { return nil}
+                guard let officeExtension =  fileTmpPath.getOfficeExtension() else { return nil }
+                fileExtension = officeExtension
+            }
+            let fileName = fileExtension.getRecoveredFileName()
+            return saveDataToTempFile(data: fileData, fileName: fileName, pathExtension: fileExtension)
+        }
+        
+        return nil
+    }
+    
+    func recoverFiles(filesToRestore: [String]) async {
+        
+        do {
+            for fileToRestore in filesToRestore {
+                
+                guard let fileDetail = try await self.getFilesInfos(fileToRestore: fileToRestore) else {continue}
+                
+                autoreleasepool {
+                    
+                    self.importFileAndEncrypt(data: fileDetail.data, vaultFile: fileDetail.file, parentFolder: self.root, type: .image, folderPathArray: [])
+                    
+                    self.fileManager.removeItem(at: fileDetail.fileUrl)
+                }
+            }
+        }
+        catch {
+            debugLog("Failed to get files infos")
+        }
+    }
+    
+    func getFilesInfos(fileToRestore: String) async throws -> FileDetails?  {
+        
+        guard  let filePath =  self.saveRetoredFilesToTempFiles(fileToRestore: fileToRestore) else { return nil}
+        
+        let _ = filePath.startAccessingSecurityScopedResource()
+        defer { filePath.stopAccessingSecurityScopedResource() }
+        
+        let data = try Data(contentsOf: filePath)
+        
+        async let thumnail = await filePath.thumbnail()
+        let fileName = filePath.deletingPathExtension().lastPathComponent
+        let path = filePath.path
+        let pathExtension = filePath.pathExtension
+        let resolution = filePath.resolution()
+        let duration =  filePath.getDuration()
+        let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
+        let pathArray = [""]
+        let vaultFile = await VaultFile(type: filePath.fileType,
+                                        fileName: fileName,
+                                        containerName: fileToRestore,
+                                        files: nil,
+                                        thumbnail: thumnail,
+                                        fileExtension: pathExtension,
+                                        size:size,
+                                        resolution: resolution,
+                                        duration: duration,
+                                        pathArray: pathArray)
+        
+        return (FileDetails(file: vaultFile, data: data, fileUrl: filePath))
+    }
 }

@@ -30,8 +30,9 @@ struct EditSettingsServerView: View {
                                                 ])
                 
                 SettingsCardView(cardViewArray: [
-//                    AutoUploadView(autoUpload: $serverViewModel.autoUpload,
-//                                   isDisabled: serverViewModel.isAutoUploadServerExist).eraseToAnyView(),
+                    AutoUploadView(autoUpload: $serverViewModel.autoUpload,
+                                   isDisabled: serverViewModel.isAutoUploadServerExist).eraseToAnyView(),
+                    $serverViewModel.autoUpload.wrappedValue ? AutoDeleteView(autoDelete: $serverViewModel.autoDelete).eraseToAnyView() : nil,
                     BackgroundUploadView(backgroundUpload: $serverViewModel.backgroundUpload).eraseToAnyView()
                     // ShareInfoView(shareInfo: $serverViewModel.activatedMetadata).eraseToAnyView()
                 ])
@@ -89,7 +90,7 @@ struct EditSettingsServerView: View {
 
 struct EditSettingsServerView_Previews: PreviewProvider {
     static var previews: some View {
-        EditSettingsServerView(appModel: MainAppModel(), isPresented: .constant(true))
+        EditSettingsServerView(appModel: MainAppModel.stub(), isPresented: .constant(true))
     }
 }
 

@@ -50,7 +50,6 @@ struct DraftReportView: View {
             draftReportHeaderView
             
             draftContentView
-                .overlay(successView)
             
             bottomDraftView
         }
@@ -126,7 +125,7 @@ struct DraftReportView: View {
                         
                     } else {
                         Spacer()
-                            .frame(height: 10)
+                            .frame(height: 5)
                     }
                     
                     TextfieldView(fieldContent: $reportViewModel.title,
@@ -134,8 +133,7 @@ struct DraftReportView: View {
                                   shouldShowError: $reportViewModel.shouldShowError,
                                   fieldType: .text,
                                   placeholder : LocalizableReport.reportsListTitle.localized,
-                                  shouldShowTitle: reportViewModel.hasMoreServer)
-                    .frame(height: 30)
+                                  shouldShowTitle: true)
                     
                     Spacer()
                         .frame(height: 34)
@@ -144,7 +142,7 @@ struct DraftReportView: View {
                                    fieldContent: $reportViewModel.description,
                                    isValid: $reportViewModel.isValidDescription,
                                    shouldShowError: $reportViewModel.shouldShowError,
-                                   shouldShowTitle: reportViewModel.hasMoreServer)
+                                   shouldShowTitle: true)
                     
                     Spacer()
                         .frame(height: 24)
@@ -245,7 +243,7 @@ struct DraftReportView: View {
     
     var cameraView : some View {
         reportViewModel.showingCamera ?
-        CameraView(sourceView: SourceView.addSingleFile,
+        CameraView(sourceView: SourceView.addReportFile,
                    showingCameraView: $reportViewModel.showingCamera,
                    resultFile: $reportViewModel.resultFile,
                    mainAppModel: mainAppModel,
@@ -256,7 +254,7 @@ struct DraftReportView: View {
         reportViewModel.showingRecordView ?
         RecordView(appModel: mainAppModel,
                    rootFile: mainAppModel.vaultManager.root,
-                   sourceView: .addSingleFile,
+                   sourceView: .addReportFile,
                    showingRecoredrView: $reportViewModel.showingRecordView,
                    resultFile: $reportViewModel.resultFile) : nil
     }
@@ -314,8 +312,8 @@ struct DraftReportView: View {
 struct DraftReportView_Previews: PreviewProvider {
     static var previews: some View {
         
-        DraftReportView(mainAppModel: MainAppModel())
-            .environmentObject(ReportsViewModel(mainAppModel: MainAppModel()))
+        DraftReportView(mainAppModel: MainAppModel.stub())
+            .environmentObject(ReportsViewModel(mainAppModel: MainAppModel.stub()))
     }
 }
 
