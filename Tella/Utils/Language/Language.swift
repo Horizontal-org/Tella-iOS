@@ -46,7 +46,7 @@ enum Language: String, CaseIterable {
         case .burmese:
             return "my"
         case .tamil:
-            return "tamil"
+            return "ta"
         }
     }
     
@@ -101,7 +101,7 @@ enum Language: String, CaseIterable {
         case .burmese:
             return LocalizableSettings.settLangBurmese.localized
         case .tamil:
-            "Tamil"
+            return LocalizableSettings.settLangTamil.localized
         }
     }
     
