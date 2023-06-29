@@ -530,9 +530,9 @@
 		1270EAA02A4B4B07000851BA /* be */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = be; path = be.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1270EAA12A4B4B07000851BA /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1270EAA22A4B4B07000851BA /* my */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = my; path = my.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1270EAA62A4DAA06000851BA /* ku-ckb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ku-ckb"; path = "ku-ckb.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1270EAA72A4DAA79000851BA /* fa-IR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fa-IR"; path = "fa-IR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1270EAA82A4DB008000851BA /* ta */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ta; path = ta.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1270EAA92A4DB214000851BA /* ku-ckb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ku-ckb"; path = "ku-ckb.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1272F25C27C91ACD0054F2E2 /* ImportFileProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFileProgress.swift; sourceTree = "<group>"; };
 		1272F25E27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesFromCameraProgress.swift; sourceTree = "<group>"; };
 		1272F26027C91CD90054F2E2 /* ImportFilesProgressModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesProgressModels.swift; sourceTree = "<group>"; };
@@ -1958,9 +1958,9 @@
 				be,
 				"es-419",
 				my,
-				"ku-ckb",
 				"fa-IR",
 				ta,
+				"ku-ckb",
 			);
 			mainGroup = F66E65A023E3207D000F93E5;
 			productRefGroup = F66E65AA23E3207D000F93E5 /* Products */;
@@ -2447,9 +2447,9 @@
 				1270EAA02A4B4B07000851BA /* be */,
 				1270EAA12A4B4B07000851BA /* es-419 */,
 				1270EAA22A4B4B07000851BA /* my */,
-				1270EAA62A4DAA06000851BA /* ku-ckb */,
 				1270EAA72A4DAA79000851BA /* fa-IR */,
 				1270EAA82A4DB008000851BA /* ta */,
+				1270EAA92A4DB214000851BA /* ku-ckb */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
