@@ -6,10 +6,17 @@ import SwiftUI
 import AVFoundation
 import Combine
 
+
+
 public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate, AVCaptureMetadataOutputObjectsDelegate {
+
+    struct CameraImageCompletion {
+        let image: UIImage
+        let imageData: Data
+        // let metaData: [String: Any]
+    }
     
     // MARK: - Private properties
-    
     private var backCamera: AVCaptureDevice?
     private var frontCamera: AVCaptureDevice?
     
@@ -29,7 +36,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     @Published var shouldShowPermission : Bool = false
     @Published var shouldCloseCamera : Bool = false
     @Published var shouldShowProgressView : Bool = false
-    @Published var imageCompletion: (UIImage,Data,[String: Any])?
+    @Published var imageCompletion: CameraImageCompletion?
     @Published var videoURLCompletion: URL?
     @Published var isRecording = false
     
@@ -320,8 +327,9 @@ extension CameraService  {
             let image = UIImage(cgImage: cgImage,
                                 scale: 1,
                                 orientation: imageOrientation)
-            self.imageCompletion = (image, image.data!, photo.metadata)
-            
+            if let data = image.data {
+                self.imageCompletion = CameraImageCompletion(image: image, imageData: data)
+            }
         }
     }
     public func fileOutput(_ output: AVCaptureFileOutput,

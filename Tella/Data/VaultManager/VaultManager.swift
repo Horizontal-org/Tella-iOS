@@ -302,15 +302,18 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         return save(data, vaultFile: vaultFile, parent: parent)
     }
     
-    func saveDataToTempFile(data: Data, pathExtension:String) -> URL? {
-        let tmpFileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent("\(Int(Date().timeIntervalSince1970))").appendingPathExtension(pathExtension)
-        
+    func saveDataToTempFile(data: Data, pathExtension: String) -> URL? {
+        let tmpFileURL = self.createTempFileURL(pathExtension: pathExtension)
         guard (fileManager.createFile(atPath: tmpFileURL, contents: data))
                 
         else {
             return nil
         }
         return tmpFileURL
+    }
+
+    func createTempFileURL(pathExtension: String) -> URL {
+        return URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent("\(Int(Date().timeIntervalSince1970))").appendingPathExtension(pathExtension)
     }
     
     func saveDataToTempFile(data: Data?, fileName: String, pathExtension:String) -> URL? {
