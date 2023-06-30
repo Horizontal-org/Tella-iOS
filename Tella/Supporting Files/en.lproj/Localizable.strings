@@ -161,18 +161,13 @@ If you want to take a picture or a video, proceed in the following way:\
 "Camera_DeniedCameraPermission_Action_Settings" = "Settings";
 "Camera_DeniedCameraPermission_Action_Cancel" = "CANCEL";
 "Settings_Sett_AppBar" = "Settings";
-<<<<<<< HEAD
 
-=======
->>>>>>> develop
 "Settings_Sett_General" = "General";
 "Settings_Sett_Servers" = "Servers";
 "Settings_Sett_Security" = "Security";
 "Settings_Sett_About" = "About & Help";
-<<<<<<< HEAD
 
-=======
->>>>>>> develop
+
 "Settings_SettGen_AppBar" = "General";
 "Settings_SettGen_Language" = "Language";
 "Settings_SettGen_RecentFiles" = "Recent files";
@@ -183,10 +178,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettLang_English_Expl" = "English";
 "Settings_SettLang_French_Expl" = "French";
 "Settings_SettLang_Spanish_Expl" = "Spanish";
-<<<<<<< HEAD
 
-=======
->>>>>>> develop
 "Settings_SettSec_AppBar" = "Security";
 "Settings_SettSec_Lock" = "Lock";
 "Settings_SettSec_LockTimeout" = "Lock timeout";
@@ -251,13 +243,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Draft_SelectFiles_TellaFiles_SheetSelect" = "Select from Tella files";
 "Reports_Draft_SelectFiles_ImportFromDevice_SheetSelect" = "Select from your device";
 "Reports_Outbox_PercentangeUploaded_Expl" = "Waiting for connection";
-<<<<<<< HEAD
 
-"Setting_SettSec_PreserveMetadata" = "Preserve metadata  when importing";
-"Setting_SettSec_PreserveMetadata_Expl" = "Retain EXIF metadata when importing photos and videos into Tella. This includes data about when the image was created, camera settings, location and your device.";
-
-
-=======
 "Vault_DeleteFiles_SheetTitle" = "Delete files?";
 "Vault_DeleteFiles_SheetExpl" = "The selected files will be permanently deleted from Tella.";
 "Reports_DeleteDraftReport_SheetExpl" = "Are you sure you want to delete this draft?";
@@ -269,4 +255,3 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettLang_Persian_Expl" = "Persian";
 "Settings_SettLang_Kurdish_Expl" = "Kurdish";
 "Settings_SettLang_Burmese_Expl" = "Burmese";
->>>>>>> develop

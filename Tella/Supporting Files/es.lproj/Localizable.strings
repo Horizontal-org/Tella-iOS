@@ -268,9 +268,6 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Draft_SelectFiles_TellaFiles_SheetSelect" = "Select from Tella files";
 "Reports_Draft_SelectFiles_ImportFromDevice_SheetSelect" = "Select from your device";
 "Reports_Outbox_PercentangeUploaded_Expl" = "Waiting for connection";
-<<<<<<< HEAD
 
-"Setting_SettSec_PreserveMetadata" = "Preserve metadata  when importing";
+"Setting_SettSec_PreserveMetadata" = "Preserve metadata when importing";
 "Setting_SettSec_PreserveMetadata_Expl" = "Retain EXIF metadata when importing photos and videos into Tella. This includes data about when the image was created, camera settings, location and your device.";
-=======
->>>>>>> develop
