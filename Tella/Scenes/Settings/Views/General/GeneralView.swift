@@ -31,6 +31,8 @@ struct GeneralView: View {
         .toolbar {
             LeadingTitleToolbar(title: LocalizableSettings.settGenAppBar.localized)
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: CustomBackButton())
         .fullScreenCover(isPresented: $presentingLanguage) {
             
         } content: {
@@ -60,5 +62,17 @@ struct GeneralView: View {
 struct GeneralView_Previews: PreviewProvider {
     static var previews: some View {
         GeneralView()
+    }
+}
+struct CustomBackButton: View {
+    @Environment(\.presentationMode) var presentationMode
+
+    var body: some View {
+        Button(action: {
+            presentationMode.wrappedValue.dismiss()
+        }) {
+            Image(systemName: "arrow.backward")
+                .imageScale(.large)
+        }
     }
 }

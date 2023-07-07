@@ -94,9 +94,9 @@ struct LanguageItemView : View {
             }
             Button("") {
                 LanguageManager.shared.currentLanguage = languageItem
-                appModel.shouldUpdateLanguage = true
-                
+
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    appViewState.mainAppLayout = LanguageManager.shared.currentLanguage.layoutDirection
                     isPresented = false
                 }
             }

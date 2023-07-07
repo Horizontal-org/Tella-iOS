@@ -13,7 +13,7 @@ struct ContentView: View {
             if appViewState.currentView == .MAIN {
                 MainView()
                     .environmentObject((appViewState.homeViewModel)!)
-                    .environment(\.layoutDirection, LanguageManager.shared.currentLanguage.layoutDirection)
+                    .environment(\.layoutDirection, appViewState.mainAppLayout)
                     .environmentObject(SheetManager())
             }
             

@@ -61,7 +61,6 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     
     @UserDefaultsProperty(key: lockTimeoutStartDateKey) private var lockTimeoutStartDate: Date?
     
-    @Published var shouldUpdateLanguage:Bool = true
     @Published var shouldSaveCurrentData: Bool = false
     @Published var shouldShowRecordingSecurityScreen: Bool = UIScreen.main.isCaptured
     @Published var shouldShowSecurityScreen: Bool = false

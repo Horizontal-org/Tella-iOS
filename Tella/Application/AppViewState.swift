@@ -18,11 +18,13 @@ final class AppViewState: ObservableObject {
 
     @Published private var viewStack = [MainViewEnum]()
     @Published var shouldHidePresentedView: Bool = false
+    @Published var mainAppLayout: LayoutDirection = .leftToRight
     @Published var networkMonitor = NetworkMonitor()
 
     init() {
         self.resetApp()
         self.initLanguage()
+        self.loadLanguage()
     }
     
     var currentView: MainViewEnum {
@@ -35,6 +37,25 @@ final class AppViewState: ObservableObject {
 
     func navigate(to view: MainViewEnum) {
         viewStack.append(view)
+    }
+
+    func loadLanguage() {
+        switch LanguageManager.shared.currentLanguage {
+
+        case .systemLanguage:
+
+            switch LanguageManager.shared.getSystemLanguageString() {
+            case "ar", "fa", "ku":
+                mainAppLayout = .rightToLeft
+            default:
+                mainAppLayout = .leftToRight
+            }
+        case .arabic, .kurdish, .persian :
+            mainAppLayout = .rightToLeft
+
+        default:
+            mainAppLayout = .leftToRight
+        }
     }
 
     func resetToLock() {
