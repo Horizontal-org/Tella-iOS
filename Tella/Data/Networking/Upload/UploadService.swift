@@ -6,7 +6,6 @@ import Foundation
 import Combine
 import UIKit
 
-
 class UploadService: NSObject {
     
     // MARK: - Variables And Properties
@@ -51,7 +50,7 @@ class UploadService: NSObject {
         activeOperations.removeAll(where: {$0.report?.id == reportId && (operation?.type != .autoUpload)})
     }
     
-    func initAutoUpload( mainAppModel: MainAppModel ) {
+    func initAutoUpload(mainAppModel: MainAppModel ) {
         
         let autoUploadServer = mainAppModel.vaultManager.tellaData.getAutoUploadServer()
         
@@ -64,6 +63,23 @@ class UploadService: NSObject {
         activeOperations.append(operation)
         uploadQueue.addOperation(operation)
         operation.startUploadReportAndFiles()
+
+        // Display information toast
+        operation.response.sink { completion in
+        } receiveValue: { response in
+            switch response {
+            case .finish(let isAutoDelete , let title):
+               Toast.displayToast(message: String(format: LocalizableReport.reportSubmittedToast.localized, title ?? ""))
+                if isAutoDelete {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3 , execute: {
+                       Toast.displayToast(message: String(format: LocalizableReport.reportDeletedToast.localized, title ?? ""))
+                    })
+                }
+            default:
+                break
+            }
+        }.store(in: &subscribers)
+        
     }
     
     func checkUploadReportOperation(reportId:Int?) -> CurrentValueSubject<UploadResponse?,APIError>?  {
@@ -81,6 +97,17 @@ class UploadService: NSObject {
         let operation = UploadReportOperation(report: report, urlSession: urlSession, mainAppModel: mainAppModel, type: .uploadReport)
         activeOperations.append(operation)
         uploadQueue.addOperation(operation)
+        
+        // Display information
+        operation.response.sink { completion in
+        } receiveValue: { response in
+            switch response {
+            case .finish(_ , let title):
+               Toast.displayToast(message: String(format: LocalizableReport.reportSubmittedToast.localized, title ?? ""))
+            default:
+                break
+            }
+        }.store(in: &subscribers)
         return operation.response
     }
     
@@ -102,15 +129,20 @@ class UploadService: NSObject {
             
             let operation = UploadReportOperation(report: report, urlSession: urlSession, mainAppModel: mainAppModel, type: .unsentReport)
             activeOperations.append(operation)
+            uploadQueue.addOperation(operation)
 
-            operation.response.sink(receiveCompletion: { com in
-                
+            // Display information toast
+            operation.response.sink(receiveCompletion: { completion in
             }, receiveValue: { response in
+                switch response {
+                case .finish(_ , let title):
+                   Toast.displayToast(message: String(format: LocalizableReport.reportSubmittedToast.localized, title ?? ""))
+                default:
+                    break
+                    
+                }
                 
             }).store(in: &subscribers)
-            
-            uploadQueue.addOperation(operation)
-            
         }
     }
 }
@@ -161,3 +193,5 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
         }
     }
 }
+
+

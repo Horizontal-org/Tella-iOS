@@ -192,6 +192,7 @@ struct OutboxDetailsView: View {
         sheetManager.showBottomSheet(modalHeight: 200) {
             DeleteReportConfirmationView(title: outboxReportVM.reportViewModel.title,
                                          message: LocalizableReport.deleteOutboxReportMessage.localized) {
+               Toast.displayToast(message: String(format: LocalizableReport.reportDeletedToast.localized, outboxReportVM.reportViewModel.title))
                 outboxReportVM.pauseSubmission()
                 dismissView()
                 outboxReportVM.deleteReport()

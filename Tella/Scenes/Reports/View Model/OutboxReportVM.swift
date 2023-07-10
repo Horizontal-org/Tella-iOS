@@ -110,9 +110,9 @@ class OutboxReportVM: ObservableObject {
                             self.reportViewModel.status = reportStatus
                         }
                     }
-                case .finish(let shouldShowMainView):
+                case .finish(let isAutoDelete, _):
                     DispatchQueue.main.async {
-                        if shouldShowMainView {
+                        if isAutoDelete {
                             self.showMainView()
                         } else {
                             self.showSubmittedReport()

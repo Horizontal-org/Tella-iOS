@@ -202,4 +202,16 @@ class TellaData : ObservableObject {
         getReports()
         return id
     }
+    
+    @discardableResult
+    func deleteSubmittedReport() throws -> Int {
+        
+        guard let database = database else {
+            throw SqliteError()
+        }
+        let id = try database.deleteSubmittedReport()
+        getReports()
+        return id
+    }
+
 }

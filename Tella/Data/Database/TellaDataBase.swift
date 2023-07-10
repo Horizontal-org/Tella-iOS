@@ -509,24 +509,36 @@ class TellaDataBase {
         
         guard let reportId, let report = self.getReport(reportId: reportId) else { return 0}
         
-        deleteReportFiles(report: report)
-        
+        deleteReportFiles(reportIds: [reportId])
+
         let reportCondition = [KeyValue(key: D.cReportId, value: report.id as Any)]
         return try statementBuilder.delete(tableName: D.tReport,
                                            primarykeyValue: reportCondition)
     }
-    
-    func deleteReportFiles(report:Report) {
+
+    func deleteSubmittedReport() throws -> Int {
+
+        let submittedReports = self.getReports(reportStatus: [.submitted])
+        let reportIds = submittedReports.compactMap{$0.id}
+
+        deleteReportFiles(reportIds: reportIds)
+
+        let reportCondition = [KeyValue(key: D.cStatus, value: ReportStatus.submitted.rawValue)]
+        
+        return try statementBuilder.delete(tableName: D.tReport,
+                                           primarykeyValue: reportCondition)
+    }
+
+    func deleteReportFiles(reportIds:[Int]) {
         do {
-            let reportCondition = [KeyValue(key: D.cReportInstanceId, value: report.id as Any)]
+            let reportCondition = [KeyValues(key: D.cReportInstanceId, value: reportIds)]
             try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
-                                        primarykeyValue: reportCondition)
+                                        inCondition: reportCondition)
         } catch {
             
         }
     }
-    
-    
+
     private func getServer(dictionnary : [String:Any] ) -> Server {
         
         let id = dictionnary[D.cServerId] as? Int

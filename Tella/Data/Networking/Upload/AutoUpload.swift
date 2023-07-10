@@ -34,9 +34,9 @@ class AutoUpload: BaseUploadOperation {
     
     
     func startUploadReportAndFiles() {
-       
+        
         self.response.send(UploadResponse.initial)
-
+        
         let currentReport = self.mainAppModel.vaultManager.tellaData.getCurrentReport()
         
         if let currentReport  {
@@ -44,7 +44,7 @@ class AutoUpload: BaseUploadOperation {
             self.checkReport()
         }
     }
-
+    
     func addFile(file:VaultFile) {
         self.response.send(UploadResponse.initial)
         self.autoPauseReport()
@@ -63,12 +63,12 @@ class AutoUpload: BaseUploadOperation {
             createNewReport(file: file)
         }
     }
-
+    
     func addReportFile(file:VaultFile, report:Report) {
         do {
             guard let reportId = report.id else { return  }
             self.report = report
-
+            
             let addedReportFile = try self.mainAppModel.vaultManager.tellaData.addReportFile(fileId: file.id, reportId: reportId)
             
             if let addedReportFile {
@@ -104,13 +104,18 @@ class AutoUpload: BaseUploadOperation {
     private func checkReport() {
         if mainAppModel.networkMonitor.isConnected {
             
-            if report?.apiID != nil { // Has API ID
-                self.prepareReportToSend(report: report)
-                uploadFiles()
-                // } else if report?.status != .submissionInProgress {
-            } else {
-                self.prepareReportToSend(report: report)
-                self.sendReport()
+            guard let isNotFinishUploading = self.report?.reportFiles?.filter({$0.status != .submitted}) else {return}
+            
+            if (!(isNotFinishUploading.isEmpty)) {
+                
+                if report?.apiID != nil { // Has API ID
+                    self.prepareReportToSend(report: report)
+                    uploadFiles()
+                    // } else if report?.status != .submissionInProgress {
+                } else {
+                    self.prepareReportToSend(report: report)
+                    self.sendReport()
+                }
             }
         } else {
             self.updateReport(reportStatus: .submissionPending)

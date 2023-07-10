@@ -15,6 +15,7 @@ struct ReportsView: View {
     
     @EnvironmentObject var mainAppModel : MainAppModel
     @StateObject private var reportsViewModel : ReportsViewModel
+    @EnvironmentObject var sheetManager : SheetManager
     
     init(mainAppModel:MainAppModel) {
         _reportsViewModel = StateObject(wrappedValue: ReportsViewModel(mainAppModel: mainAppModel))
@@ -70,6 +71,16 @@ struct ReportsView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: backButton)
+        
+        .if(self.reportsViewModel.selectedCell == .submitted && self.reportsViewModel.submittedReports.count > 0, transform: { view in
+            view.toolbar {
+                TrailingButtonToolbar(title: LocalizableReport.clearAppBar.localized) {
+                    showDeleteReportConfirmationView()
+                }
+            }
+        })
+            
+            
     }
     
     private var newDraftReportView: some View {
@@ -86,6 +97,20 @@ struct ReportsView: View {
         }
     }
     
+    private func showDeleteReportConfirmationView() {
+        sheetManager.showBottomSheet(modalHeight: 200) {
+            
+            
+            ConfirmBottomSheet(titleText: LocalizableReport.clearSheetTitle.localized,
+                               msgText: LocalizableReport.clearSheetExpl.localized,
+                               cancelText: LocalizableReport.clearCancel.localized,
+                               actionText: LocalizableReport.clearSubmitted.localized, didConfirmAction: {
+                sheetManager.hide()
+                reportsViewModel.deleteSubmittedReport()
+                Toast.displayToast(message: LocalizableReport.allReportDeletedToast.localized)
+            })
+        }
+    }
 }
 
 struct ReportsView_Previews: PreviewProvider {
