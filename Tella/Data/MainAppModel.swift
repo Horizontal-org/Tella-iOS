@@ -67,6 +67,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     @Published var appEnterInBackground: Bool = false
     @Published var importOption: ImportOption?
     var networkMonitor : NetworkMonitor
+    @Published var shouldUpdateLanguage = true
 
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
     

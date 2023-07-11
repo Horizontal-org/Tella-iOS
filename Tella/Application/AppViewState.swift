@@ -40,22 +40,7 @@ final class AppViewState: ObservableObject {
     }
 
     func loadLanguage() {
-        switch LanguageManager.shared.currentLanguage {
-
-        case .systemLanguage:
-
-            switch LanguageManager.shared.getSystemLanguageString() {
-            case "ar", "fa", "ku":
-                mainAppLayout = .rightToLeft
-            default:
-                mainAppLayout = .leftToRight
-            }
-        case .arabic, .kurdish, .persian :
-            mainAppLayout = .rightToLeft
-
-        default:
-            mainAppLayout = .leftToRight
-        }
+        mainAppLayout = LanguageManager.shared.currentLanguage.layoutDirection
     }
 
     func resetToLock() {

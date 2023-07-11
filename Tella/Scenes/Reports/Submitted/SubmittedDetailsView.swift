@@ -52,6 +52,7 @@ struct SubmittedDetailsView: View {
                 dismissViews()
             } label: {
                 Image("back")
+                    .flipsForRightToLeftLayoutDirection(true)
                     .padding()
             }
             

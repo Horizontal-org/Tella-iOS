@@ -59,6 +59,7 @@ struct OutboxDetailsView: View {
                 dismissView()
             } label: {
                 Image("back")
+                    .flipsForRightToLeftLayoutDirection(true)
                     .padding()
             }
             

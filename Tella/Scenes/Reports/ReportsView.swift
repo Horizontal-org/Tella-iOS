@@ -81,6 +81,7 @@ struct ReportsView: View {
             self.popToRoot()
         } label: {
             Image("back")
+                .flipsForRightToLeftLayoutDirection(true)
                 .padding(EdgeInsets(top: -3, leading: -8, bottom: 0, trailing: 12))
         }
     }

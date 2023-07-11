@@ -69,8 +69,8 @@ extension View {
         }
     }
     
-    func popToRoot()  {
-        UIApplication.shared.popToRootView()
+    func popToRoot(animated:Bool = true)  {
+        UIApplication.shared.popToRootView(animated: animated)
     }
     
     func popTo(_ classType: AnyClass)  {
