@@ -1,12 +1,14 @@
+//
+//  DeleteAfterFailView.swift
 //  Tella
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Created by Gustavo on 10/07/2023.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import SwiftUI
 
-struct LockTimeoutView: View {
-    
+struct DeleteAfterFailView: View {
     @EnvironmentObject var sheetManager: SheetManager
     @EnvironmentObject var settingsViewModel : SettingsViewModel
     
@@ -16,30 +18,30 @@ struct LockTimeoutView: View {
             
             VStack(alignment: .leading, spacing: 0) {
                 
-                BottomSheetTitleView(title: LocalizableSettings.settLockTimeoutSheetTitle.localized,
-                          description: LocalizableSettings.settLockTimeoutSheetExpl.localized)
+                BottomSheetTitleView(title: "Delete after failed unlock",
+                          description: "Decide how many failed unlock attempts are allowed before everything inside Tella is deleted.")
                 
                 Spacer()
                     .frame(height: 30)
                 
-                OptionsView()
+                DeleteOptionsView()
                 
             }.padding(EdgeInsets(top: 21, leading: 24, bottom: 0, trailing: 24))
             
             Spacer()
             
             BottomButtonsView(cancelAction: {
-                settingsViewModel.cancelLockTimeout()
+                settingsViewModel.cancelDeleteAfterFail()
                 sheetManager.hide()
             }, cancelLabel: LocalizableSettings.settLockTimeoutCancelSheetAction.localized, saveAction: {
-                settingsViewModel.saveLockTimeout()
+                settingsViewModel.saveDeleteAfterFail()
                 sheetManager.hide()
             }, saveLabel: LocalizableSettings.settLockTimeoutSaveSheetAction.localized)
         }
     }
 }
 
-struct OptionsView : View {
+struct DeleteOptionsView : View {
     
     @EnvironmentObject var sheetManager: SheetManager
     @EnvironmentObject var settingsViewModel : SettingsViewModel
@@ -48,28 +50,28 @@ struct OptionsView : View {
         
         VStack(alignment: .leading, spacing: 30) {
             
-            ForEach(settingsViewModel.lockTimeoutOptions, id:\.self) { item in
+            ForEach(settingsViewModel.deleteAfterFailOptions, id:\.self) { item in
                 
                 Button {
-                    settingsViewModel.selectedLockTimeoutOption = item.lockTimeoutOption
+                    settingsViewModel.selectedDeleteAfterFailOption = item.deleteAfterFailOption
                 } label: {
-                    LockTimeoutOptionView(lockTimeoutOption: item)
+                    DeleteAfterFailOptionView(deleteAfterFailOption: item)
                 }
             }
         }
     }
 }
 
-struct LockTimeoutOptionView : View {
+struct DeleteAfterFailOptionView : View {
     
-    @ObservedObject var lockTimeoutOption: LockTimeoutOptionsStatus
+    @ObservedObject var deleteAfterFailOption: DeleteAfterFailedOptionsStatus
     
     var body: some View {
         HStack(spacing: 15) {
             
-            lockTimeoutOption.isSelected ? Image("radio_selected") : Image("radio_unselected")
+            deleteAfterFailOption.isSelected ? Image("radio_selected") : Image("radio_unselected")
             
-            Text(lockTimeoutOption.lockTimeoutOption.displayName)
+            Text(deleteAfterFailOption.deleteAfterFailOption.displayName)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.leading)
@@ -78,10 +80,8 @@ struct LockTimeoutOptionView : View {
     }
 }
 
-
-struct LockTimeoutView_Previews: PreviewProvider {
+struct DeleteAfterFailView_Previews: PreviewProvider {
     static var previews: some View {
-        LockTimeoutView()
-            .background(Styles.Colors.backgroundMain)
+        DeleteAfterFailView()
     }
 }

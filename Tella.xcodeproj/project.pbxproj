@@ -287,6 +287,11 @@
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
 		379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */; };
 		89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */; };
+		CC1313822A5CB0DB0057271C /* DeleteAfterFailOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1313812A5CB0DB0057271C /* DeleteAfterFailOption.swift */; };
+		CC1313842A5CB3590057271C /* DeleteAfterFailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1313832A5CB3590057271C /* DeleteAfterFailView.swift */; };
+		CC1313882A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1313872A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift */; };
+		CC13138A2A5DB68E0057271C /* BottomSheetTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1313892A5DB68E0057271C /* BottomSheetTitleView.swift */; };
+		CC13138C2A5DB79B0057271C /* BottomButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC13138B2A5DB79B0057271C /* BottomButtonsView.swift */; };
 		CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */; };
 		CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */; };
 		CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */; };
@@ -649,6 +654,11 @@
 		83BA47B1A745C8D086B482FE /* libPods-Tella-TellaUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella-TellaUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TellaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC1313812A5CB0DB0057271C /* DeleteAfterFailOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAfterFailOption.swift; sourceTree = "<group>"; };
+		CC1313832A5CB3590057271C /* DeleteAfterFailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAfterFailView.swift; sourceTree = "<group>"; };
+		CC1313872A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAfterFailOptionsStatus.swift; sourceTree = "<group>"; };
+		CC1313892A5DB68E0057271C /* BottomSheetTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetTitleView.swift; sourceTree = "<group>"; };
+		CC13138B2A5DB79B0057271C /* BottomButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomButtonsView.swift; sourceTree = "<group>"; };
 		CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableReport.swift; sourceTree = "<group>"; };
 		CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationBottomSheet.swift; sourceTree = "<group>"; };
 		CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCheckboxItem.swift; sourceTree = "<group>"; };
@@ -1526,6 +1536,8 @@
 				12B5257D2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift */,
 				12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */,
 				120451FF28C7AC2800D572A7 /* ServerActionType.swift */,
+				CC1313812A5CB0DB0057271C /* DeleteAfterFailOption.swift */,
+				CC1313872A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1636,6 +1648,7 @@
 			children = (
 				12EC94D028ABB6FA0070E72B /* SecuritySettingsView.swift */,
 				12C2BDE72847676100488060 /* LockTimeoutView.swift */,
+				CC1313832A5CB3590057271C /* DeleteAfterFailView.swift */,
 			);
 			path = Security;
 			sourceTree = "<group>";
@@ -1652,6 +1665,8 @@
 				129B845428BFEC8600F1B344 /* TopServerView.swift */,
 				CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */,
 				122DA89629CB2709003801CD /* SettingsBottomView.swift */,
+				CC1313892A5DB68E0057271C /* BottomSheetTitleView.swift */,
+				CC13138B2A5DB79B0057271C /* BottomButtonsView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2097,6 +2112,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC13138A2A5DB68E0057271C /* BottomSheetTitleView.swift in Sources */,
 				1240E6B02907E14400692232 /* ReportCardView.swift in Sources */,
 				12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */,
 				128B15CB27DA30C800E1C1E0 /* OnboardingEndView.swift in Sources */,
@@ -2106,6 +2122,7 @@
 				12BAFA7728B3B8D300930451 /* UIImageOrientation.swift in Sources */,
 				123CE84429126B52003C251F /* ServerViewModel.swift in Sources */,
 				122DA88F29CB1F21003801CD /* AutoUpload.swift in Sources */,
+				CC1313882A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift in Sources */,
 				D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */,
 				0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */,
 				12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */,
@@ -2125,6 +2142,7 @@
 				127369E327B3C4DA00CF7BE5 /* UIDeviceExtension.swift in Sources */,
 				12A148922720A32000A1ADDC /* LockPinData.swift in Sources */,
 				D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */,
+				CC1313822A5CB0DB0057271C /* DeleteAfterFailOption.swift in Sources */,
 				1203CDEB2992C1CB00D09073 /* HTTPCodes.swift in Sources */,
 				122389B7293635790058593B /* SetExtension.swift in Sources */,
 				12607D5E27904F5300E2B8CC /* PlayerView.swift in Sources */,
@@ -2300,6 +2318,7 @@
 				12751EAC2A13B6A100FAD7C6 /* VaultFileInfo.swift in Sources */,
 				126818BF2A376A0E004606BD /* OOXMLContentTypeParser.swift in Sources */,
 				125D2326271F896400250FBB /* CustomPinView.swift in Sources */,
+				CC13138C2A5DB79B0057271C /* BottomButtonsView.swift in Sources */,
 				129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */,
 				1203CDDC298C5B9100D09073 /* ReportActionType.swift in Sources */,
 				12199C3A2941260D0041BD38 /* OutboxDetailsItemView.swift in Sources */,
@@ -2310,6 +2329,7 @@
 				D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */,
 				127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */,
 				12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */,
+				CC1313842A5CB3590057271C /* DeleteAfterFailView.swift in Sources */,
 				0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */,
 				12751EAA2A13A22100FAD7C6 /* SettingsModel.swift in Sources */,
 				1203CDDE298D7C1300D09073 /* FileToUpload.swift in Sources */,

@@ -22,7 +22,7 @@ struct SecuritySettingsView: View {
                 Spacer()
                     .frame(height: 8)
 
-                SettingsCardView(cardViewArray: [lockView.eraseToAnyView(), lockTimeoutView.eraseToAnyView()])
+                SettingsCardView(cardViewArray: [lockView.eraseToAnyView(), lockTimeoutView.eraseToAnyView(), deleteAfterFailView.eraseToAnyView()])
                 
                 SettingsCardView(cardViewArray: [screenSecurityView.eraseToAnyView()])
                 
@@ -67,6 +67,17 @@ struct SecuritySettingsView: View {
             showLockTimeout()
 
         }
+    }
+    
+    var deleteAfterFailView: some View {
+        
+        SettingsItemView<AnyView>(imageName: "settings.lock",
+                                  title: "Delete after failed unlock",
+                                  value: appModel.settings.deleteAfterFail.displayName,
+                         destination:nil) {
+            showDeleteAfterFailedAttempts()
+        }
+        
     }
 
  
@@ -116,6 +127,13 @@ struct SecuritySettingsView: View {
     func showLockTimeout() {
         sheetManager.showBottomSheet(modalHeight: 408) {
             LockTimeoutView()
+                .environmentObject(settingsViewModel)
+        }
+    }
+    
+    func showDeleteAfterFailedAttempts() {
+        sheetManager.showBottomSheet(modalHeight: 408) {
+            DeleteAfterFailView()
                 .environmentObject(settingsViewModel)
         }
     }
