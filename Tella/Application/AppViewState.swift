@@ -24,7 +24,6 @@ final class AppViewState: ObservableObject {
     init() {
         self.resetApp()
         self.initLanguage()
-        self.loadLanguage()
     }
     
     var currentView: MainViewEnum {
@@ -37,10 +36,6 @@ final class AppViewState: ObservableObject {
 
     func navigate(to view: MainViewEnum) {
         viewStack.append(view)
-    }
-
-    func loadLanguage() {
-        mainAppLayout = LanguageManager.shared.currentLanguage.layoutDirection
     }
 
     func resetToLock() {
@@ -72,6 +67,7 @@ final class AppViewState: ObservableObject {
     
     func initLanguage() {
         let selectedLanguage = LanguageManager.shared.currentLanguage.rawValue
+        mainAppLayout = LanguageManager.shared.currentLanguage.layoutDirection
         Bundle.setLanguage(selectedLanguage)
     }
 }
