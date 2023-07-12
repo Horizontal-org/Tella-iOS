@@ -21,9 +21,8 @@ struct UnlockPasswordView: View {
     @State private var presentingLockChoice : Bool = false
     @State private var isLoading : Bool = false
     @State private var cancellable: Set<AnyCancellable> = []
-
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var body: some View {
         ContainerView {
             VStack(alignment: .center) {
@@ -43,7 +42,17 @@ struct UnlockPasswordView: View {
                     .lineSpacing(7)
                     .multilineTextAlignment(.center)
                     .padding(EdgeInsets(top: 0, leading: 67, bottom: 0, trailing: 67))
+                Spacer()
+                    .frame(height: 50)
                 
+                if(viewModel.shouldShowAttemptsWarning) {
+                    Text(viewModel.warningText())
+                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                        .foregroundColor(.white)
+                        .lineSpacing(7)
+                        .multilineTextAlignment(.center)
+                        .padding(EdgeInsets(top: 0, leading: 67, bottom: 0, trailing: 67))
+                }
                 Spacer()
                     .frame(height: 73)
                 
@@ -59,6 +68,8 @@ struct UnlockPasswordView: View {
                         } else {
                             presentingLockChoice = true
                         }
+                    } else {
+                        viewModel.unlockAttempts = viewModel.unlockAttempts + 1
                     }
                 }
                 Spacer()

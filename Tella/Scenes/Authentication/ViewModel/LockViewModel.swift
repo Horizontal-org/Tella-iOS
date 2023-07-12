@@ -9,13 +9,15 @@
 import Foundation
 import SwiftUI
 import Combine
-class LockViewModel: ObservableObject {
+class LockViewModel: ObservableObject {    
     
     @Published var loginPassword : String = ""
     @Published var password : String = ""
     @Published var confirmPassword : String = ""
     @Published var oldPassword : String = ""
     @Published var shouldShowUnlockError : Bool = false
+    @Published var unlockAttempts : Int = 0
+    @Published var maxAttempts : Int = 5 // change this value for appModel.settings.deleteAfterFail
     
     var privateKey : SecKey?
     var unlockType : UnlockType = .new
@@ -25,9 +27,18 @@ class LockViewModel: ObservableObject {
         return password != confirmPassword
     }
     
-    init() {
+    var shouldShowAttemptsWarning : Bool {
+        if(maxAttempts - unlockAttempts <= 3) {
+            return true
+        } else {
+            return false
+        }
     }
     
+    func remainingAttempts () -> Int {
+        return maxAttempts - unlockAttempts
+    }
+        
     init(unlockType: UnlockType) {
         self.unlockType = unlockType
     }
@@ -50,4 +61,11 @@ class LockViewModel: ObservableObject {
         confirmPassword = ""
         shouldShowUnlockError = false
      }
+    
+    func warningText() -> String {
+        if(unlockAttempts >= maxAttempts) {
+            return "You have exceeded the maximum number of incorrect login attempts. All your Tella data has been deleted."
+        }
+        return "You have \(self.remainingAttempts()) attempts remaining until everything in your Tella is deleted."
+    }
 }
