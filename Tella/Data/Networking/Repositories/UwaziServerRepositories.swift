@@ -7,14 +7,15 @@
 //
 
 import Combine
+import Foundation
 
 struct UwaziServerRepository: WebRepository {
 
     func login(username: String,
                password: String,
-               serverURL: String) -> AnyPublisher<UwaziLoginResult, APIError> {
+               serverURL: String) -> AnyPublisher<(UwaziLoginResult,HTTPURLResponse?), APIError> {
 
-        let call : AnyPublisher<UwaziLoginResult, APIError> = call(endpoint: API.login((username: username, password: password, serverURL: serverURL)))
+        let call : AnyPublisher<(UwaziLoginResult,HTTPURLResponse?), APIError> = callNew(endpoint: API.login((username: username, password: password, serverURL: serverURL)))
 
         return call
             .eraseToAnyPublisher()

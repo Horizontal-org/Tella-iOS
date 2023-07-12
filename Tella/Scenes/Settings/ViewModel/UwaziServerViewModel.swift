@@ -242,8 +242,9 @@ class UwaziServerViewModel: ObservableObject {
                 },
                 receiveValue: { result in
                     self.isLoading = false
-                    if result.success {
+                    if result.0.success {
                         self.showNextLanguageSelectionView = true
+                        print(result.1?.value(forHTTPHeaderField: "Set-Cookie"))
                     }
                 }
             )
