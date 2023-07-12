@@ -45,35 +45,16 @@ struct PhotoVideoPickerView: View {
                         showProgressView()
                         switch completion.type {
                         case .video:
-                            handleAddingVideo(completion, isPreserveMetadataOn)
+                            viewModel.handleAddingVideo(completion, isPreserveMetadataOn)
                         case .image:
-                            handleAddingImage(completion, isPreserveMetadataOn)
+                            viewModel.handleAddingImage(completion, isPreserveMetadataOn)
 
                         }
                     }
                 }
             })
     }
-    // TODO: Move to ViewModel
-    fileprivate func handleAddingVideo(_ completion: ImagePickerCompletion, _ isPreserveMetadataOn: Bool) {
-        if let url = completion.videoURL {
-            if isPreserveMetadataOn{
-                viewModel.addVideoWithExif(files: [url], type: .video)
-            } else {
-                viewModel.addVideoWithoutExif(files: [url], type: .video)
-            }
-        }
-    }
-
-    fileprivate func handleAddingImage(_ completion: ImagePickerCompletion, _ isPreserveMetadataOn: Bool) {
-        if let image = completion.image {
-            if isPreserveMetadataOn {
-                viewModel.addImageWithExif(image: image, type: .image, pathExtension: completion.pathExtension, originalUrl: completion.referenceURL, actualURL: completion.imageURL)
-            } else {
-                viewModel.addImageWithoutExif(image: image, type: .image, pathExtension: completion.pathExtension, originalUrl: completion.referenceURL)
-            }
-        }
-    }
+    
     
     var addFileDocumentImporter: some View {
         HStack{}

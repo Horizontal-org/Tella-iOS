@@ -100,7 +100,7 @@ extension URL {
     /// - Parameters:
     ///   - destinationURL: The URL where the file without the metadata is saved
     /// - Returns: The URL in which the file is saved or if there is any issue then it will return nil
-    func exportFile(destinationURL: URL) async -> URL? {
+    func returnVideoURLWithoutMetadata(destinationURL: URL) async -> URL? {
         let asset = AVAsset(url: self)
         guard let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) else { return nil }
         exportSession.outputURL = destinationURL

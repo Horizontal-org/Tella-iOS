@@ -26,125 +26,123 @@ class PhotoVideoViewModel : ObservableObject {
         self.resultFile = resultFile
     }
 
+
+    /// To handle adding the video based on either the user want to preserve the metadata or not
+    /// - Parameters:
+    ///   - completion: Object which contains all the information needed when the user selects a video from Gallery
+    ///   - isPreserveMetadataOn: Flag to check whether the user want to preserve the metadata or not
+    func handleAddingVideo(_ completion: ImagePickerCompletion, _ isPreserveMetadataOn: Bool) {
+        if let url = completion.videoURL {
+            if isPreserveMetadataOn{
+                self.addVideoWithExif(files: [url], type: .video)
+            } else {
+                self.addVideoWithoutExif(files: [url], type: .video)
+            }
+        }
+    }
+    /// To handle adding the image based on either the user want to preserve the metadata or not
+    /// - Parameters:
+    ///   - completion: Object which contains all the information needed when the user selects a image from Gallery
+    ///   - isPreserveMetadataOn: Flag to check whether the user want to preserve the metadata or not
+    func handleAddingImage(_ completion: ImagePickerCompletion, _ isPreserveMetadataOn: Bool) {
+        Task {
+            if isPreserveMetadataOn {
+                await self.addImageWithExif(completion: completion)
+            } else {
+                await self.addImageWithoutExif(completion: completion)
+            }
+        }
+
+    }
+
     /// This function imports the video file from the user selected video with the withmetadata attached to the file
     /// - Parameters:
     ///   - files: Array of the URL of the videos
     ///   - type: Type of file
     func addVideoWithExif(files: [URL], type: TellaFileType) {
         Task {
-            
-            do { let vaultFile = try await self.mainAppModel.add(files: files,
-                                                                 to: self.mainAppModel.vaultManager.root,
-                                                                 type: type,
-                                                                 folderPathArray: self.folderPathArray)
-                
-                if mainAppModel.importOption == .deleteOriginal {
-                    removeFiles(files: files)
-                }
-                DispatchQueue.main.async {
-                    self.resultFile?.wrappedValue = vaultFile
-                }
-            }
-            catch {
-                
-            }
+            await handleAddVideoFile(files: files, type: type)
         }
     }
-    
+
     /// This function imports the video file from the user selected video with the without metadata attached to the file
     /// - Parameters:
     ///   - files: Array of the URL of the videos
     ///   - type: Type of file
     func addVideoWithoutExif(files: [URL], type: TellaFileType) {
-        files.forEach { file in
-            let tmpFileURL = self.mainAppModel.vaultManager.createTempFileURL(pathExtension: file.pathExtension)
-            Task {
-                do {
-                    guard let url = await file.exportFile(destinationURL: tmpFileURL) else { return }
-                    let vaultFile = try await self.mainAppModel.add(files: [url],
-                                                                    to: self.mainAppModel.vaultManager.root,
-                                                                    type: type,
-                                                                    folderPathArray: self.folderPathArray)
+        Task {
+            let urls = await files.asyncMap({ file in
+                let tmpFileURL = self.mainAppModel.vaultManager.createTempFileURL(pathExtension: file.pathExtension)
+                return await file.returnVideoURLWithoutMetadata(destinationURL: tmpFileURL)
+            })
+            await handleAddVideoFile(files: urls.compactMap({$0}), type: type)
+        }
+    }
 
-                    if self.mainAppModel.importOption == .deleteOriginal {
-                        self.removeFiles(files: files)
-                    }
-                    DispatchQueue.main.async {
-                        self.resultFile?.wrappedValue = vaultFile
-                    }
-                }
-                catch {
+    /// The function adds the video file to the vault
+    /// - Parameters:
+    ///   - files:  Array of the URL of the videos
+    ///   - type: Type of file
+    func handleAddVideoFile(files: [URL], type: TellaFileType) async {
 
-                }
+        do { let vaultFile = try await self.mainAppModel.add(files: files,
+                                                             to: self.mainAppModel.vaultManager.root,
+                                                             type: type,
+                                                             folderPathArray: self.folderPathArray)
+
+            if mainAppModel.importOption == .deleteOriginal {
+                removeFiles(files: files)
             }
+            DispatchQueue.main.async {
+                self.resultFile?.wrappedValue = vaultFile
+            }
+        }
+        catch {
+
         }
     }
 
     /// This function imports the image file from the user selected image with the metadata attached to the file
-    /// - Parameters:
-    ///   - image: The UIImage of the image file selected
-    ///   - type: Type of the file that is selected
-    ///   - pathExtension: File extension
-    ///   - originalUrl: The original URL of the image file
-    ///   - acturalURL:  The actual URL of the image file
-    func addImageWithExif(image: UIImage , type: TellaFileType, pathExtension:String?, originalUrl: URL?, actualURL: URL?) {
-        guard let data = image.pngData(), let actualURL = actualURL else { return }
+    /// - Parameter completion: Object which contains all the information needed when the user selects a image from Gallery
+    func addImageWithExif(completion: ImagePickerCompletion) async {
+        guard let data = completion.image, let pngData = data.pngData(), let actualURL = completion.imageURL else { return }
         let methodExifData = actualURL.getEXIFData()
-        Task {
-            let exifData = await data.saveImageWithImageData(properties: methodExifData as NSDictionary)
-            guard let url = mainAppModel.vaultManager.saveDataToTempFile(data: exifData as Data, pathExtension: pathExtension ?? "png") else { return  }
-            do {
-                let vaultFile = try await self.mainAppModel.add(files: [url],
-                                                                to: self.mainAppModel.vaultManager.root,
-                                                                type: type,
-                                                                folderPathArray: self.folderPathArray)
-
-                //remove originalURL from phone
-                if mainAppModel.importOption == .deleteOriginal {
-                    let imageUrls = [originalUrl].compactMap{$0}
-                    removeOriginalImage(imageUrls: imageUrls)
-
-                }
-                DispatchQueue.main.async {
-                    self.resultFile?.wrappedValue = vaultFile
-                }
-            }
-            catch {
-
-            }
-        }
+        let exifData = await pngData.saveImageWithImageData(properties: methodExifData as NSDictionary)
+        guard let url = mainAppModel.vaultManager.saveDataToTempFile(data: exifData as Data, pathExtension: completion.pathExtension ?? "png") else { return  }
+        await self.handleAddingImageFile(files: [url], originalURL: completion.referenceURL)
     }
 
-    /// This function imports the image file from the user selected image without the metadata attached to the file
+    /// This function imports the image file from the user selected image with the without metadata attached to the file
+    /// - Parameter completion: bject which contains all the information needed when the user selects a image from Gallery
+    func addImageWithoutExif(completion: ImagePickerCompletion) async {
+        guard let data = completion.image?.fixedOrientation()?.pngData() else { return }
+        guard let url = mainAppModel.vaultManager.saveDataToTempFile(data: data, pathExtension: completion.pathExtension ?? "png") else { return }
+        await self.handleAddingImageFile(files: [url], originalURL: completion.referenceURL)
+    }
+
+    /// The function adds the image file to the vault
     /// - Parameters:
-    ///   - image: The UIImage of the file
-    ///   - type: This helps to determine the file type based on enum FileType
-    ///   - pathExtension: Pathextension as  file extension
-    ///   - originalUrl: The original URL of the image file
-    func addImageWithoutExif(image: UIImage , type: TellaFileType, pathExtension:String?, originalUrl: URL?) {
-        guard let data = image.fixedOrientation()?.pngData() else { return }
-        guard let url = mainAppModel.vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension ?? "png") else { return  }
-        Task {
-            do {
-                let vaultFile = try await self.mainAppModel.add(files: [url],
-                                                                to: self.mainAppModel.vaultManager.root,
-                                                                type: type,
-                                                                folderPathArray: self.folderPathArray)
+    ///   - files: Array of the URL of the images
+    ///   - originalURL: The actual URL of the image selected
+    func handleAddingImageFile(files: [URL],originalURL: URL?) async {
+        do {
+            let vaultFile = try await self.mainAppModel.add(files: files,
+                                                            to: self.mainAppModel.vaultManager.root,
+                                                            type: .image,
+                                                            folderPathArray: self.folderPathArray)
 
-                //remove originalURL from phone
-
-                if mainAppModel.importOption == .deleteOriginal {
-                    let imageUrls = [originalUrl].compactMap{$0}
-                    removeOriginalImage(imageUrls: imageUrls)
-
-                }
-                DispatchQueue.main.async {
-                    self.resultFile?.wrappedValue = vaultFile
-                }
-            }
-            catch {
+            //remove originalURL from phone
+            if mainAppModel.importOption == .deleteOriginal {
+                let imageUrls = [originalURL].compactMap{$0}
+                removeOriginalImage(imageUrls: imageUrls)
 
             }
+            DispatchQueue.main.async {
+                self.resultFile?.wrappedValue = vaultFile
+            }
+        }
+        catch {
+
         }
     }
 
