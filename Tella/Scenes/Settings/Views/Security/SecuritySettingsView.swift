@@ -10,9 +10,13 @@ struct SecuritySettingsView: View {
     @EnvironmentObject var appModel : MainAppModel
     @EnvironmentObject var settingsViewModel : SettingsViewModel
     @EnvironmentObject private var sheetManager: SheetManager
-    @StateObject var lockViewModel = LockViewModel(unlockType: .update)
+    @StateObject var lockViewModel: LockViewModel
     @State var passwordTypeString : String = ""
     
+    
+    init(appModel: MainAppModel) {
+        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .update, appModel: appModel))
+    }
     
     var body: some View {
         
@@ -141,6 +145,6 @@ struct SecuritySettingsView: View {
 
 struct SecuritySettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SecuritySettingsView()
+        SecuritySettingsView(appModel: MainAppModel.stub())
     }
 }

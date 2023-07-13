@@ -9,7 +9,9 @@
 import Foundation
 import SwiftUI
 import Combine
-class LockViewModel: ObservableObject {    
+class LockViewModel: ObservableObject {
+    
+    var appModel: MainAppModel
     
     @Published var loginPassword : String = ""
     @Published var password : String = ""
@@ -17,7 +19,7 @@ class LockViewModel: ObservableObject {
     @Published var oldPassword : String = ""
     @Published var shouldShowUnlockError : Bool = false
     @Published var unlockAttempts : Int = 0
-    @Published var maxAttempts : Int = 5 // change this value for appModel.settings.deleteAfterFail
+    @Published var maxAttempts : Int
     
     var privateKey : SecKey?
     var unlockType : UnlockType = .new
@@ -28,7 +30,7 @@ class LockViewModel: ObservableObject {
     }
     
     var shouldShowAttemptsWarning : Bool {
-        if(maxAttempts - unlockAttempts <= 3) {
+        if(maxAttempts - unlockAttempts <= 3 && maxAttempts > 0) {
             return true
         } else {
             return false
@@ -39,8 +41,11 @@ class LockViewModel: ObservableObject {
         return maxAttempts - unlockAttempts
     }
         
-    init(unlockType: UnlockType) {
+    init(unlockType: UnlockType, appModel: MainAppModel) {
         self.unlockType = unlockType
+        self.appModel = appModel
+        
+        maxAttempts = appModel.settings.deleteAfterFail.numberOfAttempts
     }
     
     func login() {

@@ -70,7 +70,7 @@ struct SettingsMainView: View {
     }
     
     var securitySettingsView: some View {
-        SecuritySettingsView()
+        SecuritySettingsView(appModel: MainAppModel.stub())
             .environmentObject(settingsViewModel)
     }
 }
