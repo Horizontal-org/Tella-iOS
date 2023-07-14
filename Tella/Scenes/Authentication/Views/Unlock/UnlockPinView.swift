@@ -41,6 +41,18 @@ struct UnlockPinView: View {
                 
                 Spacer()
                 
+                if(viewModel.shouldShowAttemptsWarning) {
+                    Text(viewModel.warningText())
+                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                        .foregroundColor(.white)
+                        .lineSpacing(7)
+                        .multilineTextAlignment(.center)
+                        .padding(EdgeInsets(top: 0, leading: 67, bottom: 0, trailing: 67))
+                    Spacer()
+                }
+
+               
+                
                 PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
                                       isValid: .constant(true),
                                       shouldShowError: $viewModel.shouldShowUnlockError,
@@ -58,6 +70,12 @@ struct UnlockPinView: View {
                             initRoot()
                         } else {
                             presentingLockChoice = true
+                        }
+                    } else {
+                        viewModel.unlockAttempts = viewModel.unlockAttempts + 1
+                                                
+                        if(viewModel.unlockAttempts == viewModel.maxAttempts) {
+                            viewModel.removeFilesAndConnections()
                         }
                     }
                 }
