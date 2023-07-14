@@ -76,7 +76,7 @@ struct SecuritySettingsView: View {
     var deleteAfterFailView: some View {
         
         SettingsItemView<AnyView>(imageName: "settings.lock",
-                                  title: "Delete after failed unlock",
+                                  title: LocalizableSettings.settSecDeleteAfterFail.localized,
                                   value: appModel.settings.deleteAfterFail.displayName,
                          destination:nil) {
             showDeleteAfterFailedAttempts()

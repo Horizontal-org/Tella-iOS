@@ -18,8 +18,8 @@ struct DeleteAfterFailView: View {
             
             VStack(alignment: .leading, spacing: 0) {
                 
-                BottomSheetTitleView(title: "Delete after failed unlock",
-                          description: "Decide how many failed unlock attempts are allowed before everything inside Tella is deleted.")
+                BottomSheetTitleView(title: LocalizableSettings.settDeleteAfterFailSheetTitle.localized,
+                                     description:LocalizableSettings.settDeleteAfterFailSheetExpl.localized)
                 
                 Spacer()
                     .frame(height: 30)

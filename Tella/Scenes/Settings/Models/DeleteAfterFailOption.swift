@@ -17,13 +17,13 @@ enum DeleteAfterFailOption : String {
     var displayName: String {
         switch self {
         case .off:
-            return "off"
+            return LocalizableSettings.settDeleteAfterFailOffSheetSelect.localized
         case .five:
-            return "5 attempts"
+            return LocalizableSettings.settDeleteAfterFailFiveAttemptsSheetSelect.localized
         case .ten:
-            return "10 attempts"
+            return LocalizableSettings.settDeleteAfterFailTenAttemptsSheetSelect.localized
         case .twenty:
-            return "20 attempts"
+            return LocalizableSettings.settDeleteAfterFailTwentyAttemptsSheetSelect.localized
         }
     }
     
