@@ -183,6 +183,10 @@ class DraftReportVM: ObservableObject {
     }
     
     func deleteReport() {
-        mainAppModel.deleteReport(reportId: reportId)
+        do {
+            try mainAppModel.deleteReport(reportId: reportId)
+        } catch let error {
+            debugLog(error)
+        }
     }
 }

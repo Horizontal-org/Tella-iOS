@@ -233,15 +233,12 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         UploadService.shared.sendUnsentReports(mainAppModel: self)
     }
 
-    func deleteReport(reportId:Int?) {
+    func deleteReport(reportId:Int?) throws {
         
         UploadService.shared.cancelSendingReport(reportId: reportId)
-        
-        do {
-            try _ = vaultManager.tellaData.deleteReport(reportId: reportId)
-        } catch {
-        }
-    }
+
+        try vaultManager.tellaData.deleteReport(reportId: reportId)
+     }
 }
 
 extension MainAppModel {

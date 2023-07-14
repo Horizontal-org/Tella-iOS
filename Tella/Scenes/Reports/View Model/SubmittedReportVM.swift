@@ -65,7 +65,11 @@ class SubmittedReportVM: ObservableObject {
     }
     
     func deleteReport() {
-        mainAppModel.deleteReport(reportId: id)
+        do {
+            try mainAppModel.deleteReport(reportId: id)
+            
+        } catch let error {
+            debugLog(error)
+        }
     }
-    
 }

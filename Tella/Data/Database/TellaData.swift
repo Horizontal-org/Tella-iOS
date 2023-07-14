@@ -180,38 +180,17 @@ class TellaData : ObservableObject {
         
     }
     
-    @discardableResult
-    func updateReportFile(reportFile: ReportFile) throws -> Int {
-        
-        guard let database = database else {
-            throw SqliteError()
-        }
-        let id = try database.updateReportFile(reportFile: reportFile)
-        
-        return id
-        
+     func updateReportFile(reportFile: ReportFile) throws   {
+         try database?.updateReportFile(reportFile: reportFile)
+     }
+    
+    func deleteReport(reportId : Int?) throws {
+        try database?.deleteReport(reportId: reportId)
+        getReports()
     }
     
-    @discardableResult
-    func deleteReport(reportId : Int?) throws -> Int {
-        
-        guard let database = database else {
-            throw SqliteError()
-        }
-        let id = try database.deleteReport(reportId: reportId)
+    func deleteSubmittedReport() throws {
+        try database?.deleteSubmittedReport()
         getReports()
-        return id
-    }
-    
-    @discardableResult
-    func deleteSubmittedReport() throws -> Int {
-        
-        guard let database = database else {
-            throw SqliteError()
-        }
-        let id = try database.deleteSubmittedReport()
-        getReports()
-        return id
-    }
-
+     }
 }

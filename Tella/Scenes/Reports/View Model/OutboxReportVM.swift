@@ -276,12 +276,18 @@ class OutboxReportVM: ObservableObject {
         do {
             try mainAppModel.vaultManager.tellaData.updateReportStatus(idReport: id, status: reportStatus)
             
-        } catch {
-            
+        } catch let error {
+            debugLog(error)
         }
     }
     
     func deleteReport() {
-        mainAppModel.deleteReport(reportId: reportViewModel.id)
+        
+        do {
+            try mainAppModel.deleteReport(reportId: reportViewModel.id)
+        } catch let error {
+            debugLog(error)
+        }
+
     }
 }

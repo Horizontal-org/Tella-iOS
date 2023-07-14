@@ -472,6 +472,7 @@ class TellaDataBase {
         return 0
     }
     
+    @discardableResult
     func updateReportFile(reportFile:ReportFile) throws -> Int {
         
         var keyValueArray : [KeyValue]  = []
@@ -505,40 +506,37 @@ class TellaDataBase {
                                                 keyValue: reportFileValues)
     }
     
-    func deleteReport(reportId : Int?) throws -> Int {
+    func deleteReport(reportId : Int?) throws {
         
-        guard let reportId, let report = self.getReport(reportId: reportId) else { return 0}
+        guard let reportId, let report = self.getReport(reportId: reportId) else { return }
         
-        deleteReportFiles(reportIds: [reportId])
-
+        try deleteReportFiles(reportIds: [reportId])
+        
         let reportCondition = [KeyValue(key: D.cReportId, value: report.id as Any)]
-        return try statementBuilder.delete(tableName: D.tReport,
-                                           primarykeyValue: reportCondition)
+        
+        try statementBuilder.delete(tableName: D.tReport,
+                                    primarykeyValue: reportCondition)
     }
-
-    func deleteSubmittedReport() throws -> Int {
-
+    
+    func deleteSubmittedReport() throws {
+        
         let submittedReports = self.getReports(reportStatus: [.submitted])
         let reportIds = submittedReports.compactMap{$0.id}
-
-        deleteReportFiles(reportIds: reportIds)
-
+        
+        try deleteReportFiles(reportIds: reportIds)
+        
         let reportCondition = [KeyValue(key: D.cStatus, value: ReportStatus.submitted.rawValue)]
         
-        return try statementBuilder.delete(tableName: D.tReport,
-                                           primarykeyValue: reportCondition)
+        try statementBuilder.delete(tableName: D.tReport,
+                                    primarykeyValue: reportCondition)
     }
-
-    func deleteReportFiles(reportIds:[Int]) {
-        do {
-            let reportCondition = [KeyValues(key: D.cReportInstanceId, value: reportIds)]
-            try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
-                                        inCondition: reportCondition)
-        } catch {
-            
-        }
+    
+    func deleteReportFiles(reportIds:[Int]) throws {
+        let reportCondition = [KeyValues(key: D.cReportInstanceId, value: reportIds)]
+        try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
+                                    inCondition: reportCondition)
     }
-
+    
     private func getServer(dictionnary : [String:Any] ) -> Server {
         
         let id = dictionnary[D.cServerId] as? Int
