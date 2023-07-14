@@ -69,9 +69,9 @@ class LockViewModel: ObservableObject {
     
     func warningText() -> String {
         if(unlockAttempts >= maxAttempts) {
-            return "You have exceeded the maximum number of incorrect login attempts. All your Tella data has been deleted."
+            return LocalizableLock.unlockDeleteAfterFailContentDeleted.localized
         }
-        return "You have \(self.remainingAttempts()) attempts remaining until everything in your Tella is deleted."
+        return String.init(format: LocalizableLock.unlockDeleterAfterFailRemainingAttempts.localized, self.remainingAttempts())
     }
     
     func removeFilesAndConnections () -> Void {
