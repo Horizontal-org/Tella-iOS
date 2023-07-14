@@ -34,23 +34,15 @@ struct PhotoVideoPickerView: View {
         imagePickerView
     }
 
+
+
     var imagePickerView: some View {
         HStack{}
             .sheet(isPresented:  showingImagePicker, content: {
                 ImagePickerSheet { imagePickerCompletion in
-                    
                     self.showingImagePicker.wrappedValue = false
-                    let isPreserveMetadataOn = viewModel.mainAppModel.settings.preserveMetadata
-                    if let completion = imagePickerCompletion {
-                        showProgressView()
-                        switch completion.type {
-                        case .video:
-                            viewModel.handleAddingVideo(completion, isPreserveMetadataOn)
-                        case .image:
-                            viewModel.handleAddingImage(completion, isPreserveMetadataOn)
-
-                        }
-                    }
+                    showProgressView()
+                    viewModel.handleAddingFile(imagePickerCompletion)
                 }
             })
     }
@@ -65,7 +57,7 @@ struct PhotoVideoPickerView: View {
                 onCompletion: { result in
                     if let urls = try? result.get() {
                         showProgressView()
-                        viewModel.addVideoWithExif(files: urls, type: .document)
+                        viewModel.addDocument(files: urls)
                     }
                 }
             )
