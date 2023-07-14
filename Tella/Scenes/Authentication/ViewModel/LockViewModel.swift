@@ -73,4 +73,9 @@ class LockViewModel: ObservableObject {
         }
         return "You have \(self.remainingAttempts()) attempts remaining until everything in your Tella is deleted."
     }
+    
+    func removeFilesAndConnections () -> Void {
+        appModel.removeAllFiles()
+        appModel.deleteAllServersConnection()
+    }
 }

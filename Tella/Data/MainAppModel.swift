@@ -107,6 +107,14 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         vaultManager.removeAllFiles()
         publishUpdates()
     }
+
+    func deleteAllServersConnection() {
+        do {
+            try vaultManager.tellaData.deleteAllServers()
+        } catch {
+            print("Error deleting all servers connections")
+        }
+    }
     
     func changeTab(to newTab: Tabs) {
         selectedTab = newTab
