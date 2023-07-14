@@ -59,6 +59,7 @@ class UwaziServerViewModel: ObservableObject {
     var subscribers = Set<AnyCancellable>()
 
     var currentServer : Server?
+    var token: String?
 
     var isAutoUploadServerExist: Bool {
         return mainAppModel.vaultManager.tellaData.getAutoUploadServer() != nil && autoUpload == false
@@ -244,7 +245,11 @@ class UwaziServerViewModel: ObservableObject {
                     self.isLoading = false
                     if result.0.success {
                         self.showNextLanguageSelectionView = true
-                        print(result.1?.value(forHTTPHeaderField: "Set-Cookie"))
+                        if let token = result.1?.value(forHTTPHeaderField: "Set-Cookie") {
+                            let filteredToken = token.split(separator: ";")
+                            let connectId = filteredToken.first!.replacingOccurrences(of: "connect.sid=", with: "")
+                            print(connectId)
+                        }
                     }
                 }
             )
