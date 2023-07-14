@@ -506,35 +506,35 @@ class TellaDataBase {
                                                 keyValue: reportFileValues)
     }
     
-    func deleteReport(reportId : Int?) throws {
+    func deleteReport(reportId : Int?) {
         
         guard let reportId, let report = self.getReport(reportId: reportId) else { return }
         
-        try deleteReportFiles(reportIds: [reportId])
+        deleteReportFiles(reportIds: [reportId])
         
         let reportCondition = [KeyValue(key: D.cReportId, value: report.id as Any)]
         
-        try statementBuilder.delete(tableName: D.tReport,
-                                    primarykeyValue: reportCondition)
+        statementBuilder.delete(tableName: D.tReport,
+                                primarykeyValue: reportCondition)
     }
     
-    func deleteSubmittedReport() throws {
+    func deleteSubmittedReport() {
         
         let submittedReports = self.getReports(reportStatus: [.submitted])
         let reportIds = submittedReports.compactMap{$0.id}
         
-        try deleteReportFiles(reportIds: reportIds)
+        deleteReportFiles(reportIds: reportIds)
         
         let reportCondition = [KeyValue(key: D.cStatus, value: ReportStatus.submitted.rawValue)]
         
-        try statementBuilder.delete(tableName: D.tReport,
-                                    primarykeyValue: reportCondition)
+        statementBuilder.delete(tableName: D.tReport,
+                                primarykeyValue: reportCondition)
     }
     
-    func deleteReportFiles(reportIds:[Int]) throws {
+    func deleteReportFiles(reportIds:[Int]) {
         let reportCondition = [KeyValues(key: D.cReportInstanceId, value: reportIds)]
-        try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
-                                    inCondition: reportCondition)
+        statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
+                                inCondition: reportCondition)
     }
     
     private func getServer(dictionnary : [String:Any] ) -> Server {

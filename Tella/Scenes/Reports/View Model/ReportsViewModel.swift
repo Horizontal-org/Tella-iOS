@@ -105,19 +105,11 @@ class ReportsViewModel: ObservableObject {
     }
     
     func deleteReport() {
-        do {
-            try mainAppModel.deleteReport(reportId: selectedReport?.id)
-        } catch let error {
-            debugLog(error)
-        }
+        mainAppModel.deleteReport(reportId: selectedReport?.id)
     }
     
     func deleteSubmittedReport() {
-        do {
-            try mainAppModel.vaultManager.tellaData.deleteSubmittedReport()
-        } catch let error {
-            debugLog(error)
-        }
+        mainAppModel.vaultManager.tellaData.deleteSubmittedReport()
     }
     
 }

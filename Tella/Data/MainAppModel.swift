@@ -25,7 +25,7 @@ protocol AppModelFileManagerProtocol {
     func sendAutoReportFile(file: VaultFile)
     func initFiles() -> AnyPublisher<Bool,Never>
     func initRoot()
-
+    
 }
 
 let lockTimeoutStartDateKey = "LockTimeoutStartDate"
@@ -72,7 +72,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
     
     private var cancellable: Set<AnyCancellable> = []
-
+    
     init(networkMonitor:NetworkMonitor) {
         self.networkMonitor = networkMonitor
         loadData()
@@ -207,7 +207,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
             UploadService.shared.addAutoUpload(file: file)
         }
     }
-
+    
     func initFiles() -> AnyPublisher<Bool,Never> {
         return Deferred {
             Future <Bool,Never> {  [weak self] promise in
@@ -225,20 +225,18 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     func initRoot() {
         vaultManager.initRoot()
         UploadService.shared.initAutoUpload(mainAppModel: self)
-
+        
     }
     
     func sendReports() {
         UploadService.shared.initAutoUpload(mainAppModel: self)
         UploadService.shared.sendUnsentReports(mainAppModel: self)
     }
-
-    func deleteReport(reportId:Int?) throws {
-        
+    
+    func deleteReport(reportId:Int?)  {
         UploadService.shared.cancelSendingReport(reportId: reportId)
-
-        try vaultManager.tellaData.deleteReport(reportId: reportId)
-     }
+        vaultManager.tellaData.deleteReport(reportId: reportId)
+    }
 }
 
 extension MainAppModel {
