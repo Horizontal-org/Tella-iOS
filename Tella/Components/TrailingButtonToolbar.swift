@@ -19,11 +19,8 @@ struct TrailingButtonToolbar: ToolbarContent {
                 Text(title)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(Color.white)
-                .frame(width: 260,height:25,alignment:.trailing)
-
+                .frame(height:25,alignment:.trailing)
             }
-
-            
         }
     }
  }
