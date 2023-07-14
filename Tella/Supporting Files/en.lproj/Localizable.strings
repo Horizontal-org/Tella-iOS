@@ -241,8 +241,10 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_DeleteOutboxReport_SheetExpl" = "Are you sure you want to delete this upload?";
 "Reports_DeleteSubmittedReport_SheetExpl" = "Are you sure you want to delete this sent report from your records?";
 "Settings_SettLang_Arabic_Expl" = "Arabic";
-"Settings_SettLang_SpanishLatinAmerican_Expl" = "Spanish Latin American";
 "Settings_SettLang_Belarusian_Expl" = "Belarusian";
 "Settings_SettLang_Persian_Expl" = "Persian";
 "Settings_SettLang_Kurdish_Expl" = "Kurdish";
 "Settings_SettLang_Burmese_Expl" = "Burmese";
+"Settings_SettLang_Tamil_Expl" = "Tamil";
+
+

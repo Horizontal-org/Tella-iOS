@@ -18,6 +18,7 @@ final class AppViewState: ObservableObject {
 
     @Published private var viewStack = [MainViewEnum]()
     @Published var shouldHidePresentedView: Bool = false
+    @Published var mainAppLayout: LayoutDirection = .leftToRight
     @Published var networkMonitor = NetworkMonitor()
 
     init() {
@@ -66,6 +67,7 @@ final class AppViewState: ObservableObject {
     
     func initLanguage() {
         let selectedLanguage = LanguageManager.shared.currentLanguage.rawValue
+        mainAppLayout = LanguageManager.shared.currentLanguage.layoutDirection
         Bundle.setLanguage(selectedLanguage)
     }
 }

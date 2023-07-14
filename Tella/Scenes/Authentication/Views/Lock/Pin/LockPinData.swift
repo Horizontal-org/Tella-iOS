@@ -25,31 +25,3 @@ struct LockConfirmPinData  : LockViewProtocol {
     var action: (() -> Void)?
 }
 
-var LockKeyboardNumbers: [PinKeyboardModel] = [
-    PinKeyboardModel(text: "1", type: .number),
-    PinKeyboardModel(text: "2", type: .number),
-    PinKeyboardModel(text: "3", type: .number),
-    PinKeyboardModel(text: "4",  type: .number),
-    PinKeyboardModel(text: "5", type: .number),
-    PinKeyboardModel(text: "6",  type: .number),
-    PinKeyboardModel(text: "7", type: .number),
-    PinKeyboardModel(text: "8",  type: .number),
-    PinKeyboardModel(text: "9",  type: .number),
-    PinKeyboardModel(type: .empty),
-    PinKeyboardModel(text: "0",  type: .number),
-    PinKeyboardModel( imageName:"lock.backspace", type: .delete)]
-
-var UnlockKeyboardNumbers: [PinKeyboardModel] = [
-    PinKeyboardModel(text: "1", type: .number),
-    PinKeyboardModel(text: "2", type: .number),
-    PinKeyboardModel(text: "3", type: .number),
-    PinKeyboardModel(text: "4",  type: .number),
-    PinKeyboardModel(text: "5", type: .number),
-    PinKeyboardModel(text: "6",  type: .number),
-    PinKeyboardModel(text: "7", type: .number),
-    PinKeyboardModel(text: "8",  type: .number),
-    PinKeyboardModel(text: "9",  type: .number),
-    PinKeyboardModel(imageName:"lock.backspace", type: .delete),
-    PinKeyboardModel(text: "0",  type: .number),
-    PinKeyboardModel(text: LocalizableLock.unlockPinActionOk.localized, type: .done)]
-
