@@ -21,6 +21,21 @@ class LockViewModel: ObservableObject {
     var unlockType : UnlockType = .new
     var shouldDismiss = CurrentValueSubject<Bool, Never>(false)
     
+
+    var unlockKeyboardNumbers: [PinKeyboardModel] = { return [
+        PinKeyboardModel(text: "1", type: .number),
+        PinKeyboardModel(text: "2", type: .number),
+        PinKeyboardModel(text: "3", type: .number),
+        PinKeyboardModel(text: "4",  type: .number),
+        PinKeyboardModel(text: "5", type: .number),
+        PinKeyboardModel(text: "6",  type: .number),
+        PinKeyboardModel(text: "7", type: .number),
+        PinKeyboardModel(text: "8",  type: .number),
+        PinKeyboardModel(text: "9",  type: .number),
+        PinKeyboardModel(imageName:"lock.backspace", type: .delete),
+        PinKeyboardModel(text: "0",  type: .number),
+        PinKeyboardModel(text: LocalizableLock.unlockPinActionOk.localized, type: .done)] }()
+
     var shouldShowErrorMessage : Bool {
         return password != confirmPassword
     }

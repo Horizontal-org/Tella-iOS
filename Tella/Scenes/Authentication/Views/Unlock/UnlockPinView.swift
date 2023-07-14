@@ -49,10 +49,10 @@ struct UnlockPinView: View {
                 Spacer(minLength: 20)
                 
                 PinView(fieldContent: $viewModel.loginPassword,
-                        keyboardNumbers: UnlockKeyboardNumbers) {
+                        keyboardNumbers: viewModel.unlockKeyboardNumbers) {
                     viewModel.login()
                     if !viewModel.shouldShowUnlockError {
-                        if viewModel.unlockType == .new   {
+                        if viewModel.unlockType == .new {
                             isLoading = true
                             appViewState.initMainAppModel()
                             initRoot()

@@ -25,7 +25,7 @@ protocol AppModelFileManagerProtocol {
     func sendAutoReportFile(file: VaultFile)
     func initFiles() -> AnyPublisher<Bool,Never>
     func initRoot()
-
+    
 }
 
 let lockTimeoutStartDateKey = "LockTimeoutStartDate"
@@ -61,18 +61,18 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     
     @UserDefaultsProperty(key: lockTimeoutStartDateKey) private var lockTimeoutStartDate: Date?
     
-    @Published var shouldUpdateLanguage:Bool = true
     @Published var shouldSaveCurrentData: Bool = false
     @Published var shouldShowRecordingSecurityScreen: Bool = UIScreen.main.isCaptured
     @Published var shouldShowSecurityScreen: Bool = false
     @Published var appEnterInBackground: Bool = false
     @Published var importOption: ImportOption?
     var networkMonitor : NetworkMonitor
+    @Published var shouldUpdateLanguage = true
 
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
     
     private var cancellable: Set<AnyCancellable> = []
-
+    
     init(networkMonitor:NetworkMonitor) {
         self.networkMonitor = networkMonitor
         loadData()
@@ -207,7 +207,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
             UploadService.shared.addAutoUpload(file: file)
         }
     }
-
+    
     func initFiles() -> AnyPublisher<Bool,Never> {
         return Deferred {
             Future <Bool,Never> {  [weak self] promise in
@@ -225,20 +225,17 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     func initRoot() {
         vaultManager.initRoot()
         UploadService.shared.initAutoUpload(mainAppModel: self)
-
+        
     }
     
     func sendReports() {
         UploadService.shared.initAutoUpload(mainAppModel: self)
         UploadService.shared.sendUnsentReports(mainAppModel: self)
     }
-    
-    func deleteReport(reportId:Int?) {
+
+    func deleteReport(reportId:Int?)  {
         UploadService.shared.cancelSendingReport(reportId: reportId)
-        do {
-            try _ = vaultManager.tellaData.deleteReport(reportId: reportId)
-        } catch {
-        }
+        vaultManager.tellaData.deleteReport(reportId: reportId)
     }
 }
 

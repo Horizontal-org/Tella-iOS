@@ -34,10 +34,10 @@ extension UIApplication {
         return window?.rootViewController?.children.last as? UINavigationController
     }
     
-    func popToRootView() {
+    func popToRootView(animated:Bool = true) {
         let window = keyWindow
         let nvc = window?.rootViewController?.children.last as? UINavigationController
-        nvc?.popToRootViewController(animated: true)
+        nvc?.popToRootViewController(animated: animated)
     }
     
     func popTo(_ classType: AnyClass) {

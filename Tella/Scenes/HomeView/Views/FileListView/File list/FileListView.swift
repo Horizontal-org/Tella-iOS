@@ -87,6 +87,7 @@ struct FileListView: View {
                     
                 } label: {
                     Image("back")
+                        .flipsForRightToLeftLayoutDirection(true)
                         .padding()
                 }
                 

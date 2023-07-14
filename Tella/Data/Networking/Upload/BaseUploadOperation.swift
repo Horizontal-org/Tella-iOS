@@ -167,9 +167,9 @@ class BaseUploadOperation : Operation {
             
             if let currentUpload = self.report?.currentUpload, currentUpload , let autoDelete = self.report?.server?.autoDelete, autoDelete {
                 self.deleteCurrentAutoReport()
-                self.response.send(.finish(shouldShowMainView: true))
+                self.response.send(.finish(isAutoDelete: true, title: self.report?.title))
             } else  {
-                self.response.send(.finish(shouldShowMainView: false))
+                self.response.send(.finish(isAutoDelete: false, title: self.report?.title))
             }
             
             self.report = nil

@@ -9,11 +9,10 @@ struct ContentView: View {
     var body: some View {
         
         ZStack {
-            
             if appViewState.currentView == .MAIN {
                 MainView()
                     .environmentObject((appViewState.homeViewModel)!)
-                    .environment(\.layoutDirection, LanguageManager.shared.currentLanguage.layoutDirection)
+                    .environment(\.layoutDirection, appViewState.mainAppLayout)
                     .environmentObject(SheetManager())
             }
             
@@ -27,15 +26,16 @@ struct ContentView: View {
                 passwordType == .tellaPassword ?
                 UnlockPasswordView()
                     .environmentObject(LockViewModel(unlockType: .new))
+                    .environment(\.layoutDirection, appViewState.mainAppLayout)
                     .eraseToAnyView() :
                 UnlockPinView()
                     .environmentObject(LockViewModel(unlockType: .new))
+                    .environment(\.layoutDirection, appViewState.mainAppLayout)
                     .eraseToAnyView()
             }
         }.onAppear {
             setDebugLevel(level: .debug, for: .app)
         }
         .environmentObject(DeviceOrientationHelper())
-
     }
 }

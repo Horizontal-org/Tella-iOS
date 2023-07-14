@@ -19,7 +19,7 @@ class ReportsViewModel: ObservableObject {
     @Published var pageViewItems : [PageViewItem] = [PageViewItem(title: LocalizableReport.draftTitle.localized, page: .draft, number: "") ,
                                                      PageViewItem(title: LocalizableReport.outboxTitle.localized, page: .outbox, number: ""),
                                                      PageViewItem(title: LocalizableReport.submittedTitle.localized, page: .submitted, number: "")]
-
+    
     var sheetItems : [ListActionSheetItem] { return [
         
         ListActionSheetItem(imageName: "view-icon",
@@ -29,9 +29,9 @@ class ReportsViewModel: ObservableObject {
                             content: LocalizableReport.viewModelDelete.localized,
                             type: ReportActionType.delete)
     ]}
-
+    
     private var subscribers = Set<AnyCancellable>()
-
+    
     init(mainAppModel : MainAppModel) {
         
         self.mainAppModel = mainAppModel
@@ -107,4 +107,9 @@ class ReportsViewModel: ObservableObject {
     func deleteReport() {
         mainAppModel.deleteReport(reportId: selectedReport?.id)
     }
+    
+    func deleteSubmittedReport() {
+        mainAppModel.vaultManager.tellaData.deleteSubmittedReport()
+    }
+    
 }

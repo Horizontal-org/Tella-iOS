@@ -26,10 +26,10 @@ class SheetManager: ObservableObject {
     
     /// The backgroundColor of the sheet
     @Published var backgroundColor: Color = Styles.Colors.backgroundTab
-
+    
     
     @Published var shouldHideOnTap: Bool = true
-
+    
     
     init() {
         content = EmptyView().eraseToAnyView()

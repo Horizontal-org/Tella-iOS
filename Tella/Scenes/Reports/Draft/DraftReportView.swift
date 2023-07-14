@@ -16,7 +16,7 @@ struct DraftReportView: View {
     @EnvironmentObject var sheetManager : SheetManager
     @EnvironmentObject var reportsViewModel : ReportsViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
+
     init(mainAppModel: MainAppModel, reportId:Int? = nil) {
         _reportViewModel = StateObject(wrappedValue: DraftReportVM(mainAppModel: mainAppModel,reportId:reportId))
     }
@@ -281,6 +281,8 @@ struct DraftReportView: View {
         reportViewModel.saveReport()
         reportsViewModel.selectedCell = .outbox
         dismissViews()
+       Toast.displayToast(message: LocalizableReport.outboxSavedToast.localized)
+
     }
     
     private func saveDraftReport() {
@@ -288,6 +290,7 @@ struct DraftReportView: View {
         reportViewModel.saveReport()
         reportsViewModel.selectedCell = .draft
         dismissViews()
+       Toast.displayToast(message: LocalizableReport.draftSavedToast.localized)
     }
     
     private func showSaveReportConfirmationView() {

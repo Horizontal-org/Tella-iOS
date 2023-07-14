@@ -44,6 +44,12 @@ enum LocalizableReport: String, LocalizableDelegate {
     case draftTitle = "Reports_PageViewItem_Draft"
     case outboxTitle = "Reports_PageViewItem_Outbox"
     case submittedTitle = "Reports_PageViewItem_Submitted"
+    case clearAppBar = "Reports_Submitted_Clear_AppBar"
+    case clearSheetTitle = "Reports_Submitted_ClearAll_SheetTitle"
+    case clearSheetExpl = "Reports_Submitted_ClearAll_SheetExpl"
+    case clearCancel = "Reports_Submitted_ClearAll_Cancel_SheetAction"
+    case clearSubmitted = "Reports_Submitted_ClearAll_ClearSubmitted_SheetAction"
+
     case viewModelDelete = "Reports_ManageReport_Delete_SheetAction"
     case viewModelEdit = "Reports_ManageReport_Edit_SheetAction"
     case viewModelView = "Reports_ManageReport_View_SheetAction"
@@ -55,4 +61,12 @@ enum LocalizableReport: String, LocalizableDelegate {
     case galleryFilled = "Reports_Draft_SelectFiles_TellaFiles_SheetSelect"
     case phoneFilled = "Reports_Draft_SelectFiles_ImportFromDevice_SheetSelect"
     case waitingConnection = "Reports_Outbox_PercentangeUploaded_Expl"
+
+
+    case draftSavedToast = "Reports_DraftSaved_Toast"
+    case reportDeletedToast = "Reports_ReportDeleted_Toast"
+    case reportSubmittedToast = "Reports_ReportSubmitted_Toast"
+    case outboxSavedToast = "Reports_OutboxSaved_Toast"
+    case allReportDeletedToast = "Reports_AllReportDeleted_Toast"
+    
 }
