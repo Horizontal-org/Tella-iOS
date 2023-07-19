@@ -14,12 +14,16 @@ struct UnlockPinView: View {
     @State private var presentingLockChoice : Bool = false
     
     @EnvironmentObject private var appViewState: AppViewState
-    @EnvironmentObject private var mainAppModel: MainAppModel
+    @EnvironmentObject private var appModel: MainAppModel
     
-    @EnvironmentObject private var viewModel: LockViewModel
+    @StateObject private var viewModel: LockViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State private var cancellable: Set<AnyCancellable> = []
     @State private var isLoading : Bool = false
+    
+    init(appModel:MainAppModel) {
+        _viewModel = StateObject(wrappedValue: LockViewModel(unlockType: .new, appModel: appModel))
+    }
 
     var body: some View {
         ContainerView {
@@ -123,6 +127,6 @@ struct UnlockPinView: View {
 
 struct UnlockPinView_Previews: PreviewProvider {
     static var previews: some View {
-        UnlockPinView()
+        UnlockPinView(appModel: MainAppModel.stub())
     }
 }
