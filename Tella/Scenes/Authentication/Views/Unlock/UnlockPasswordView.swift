@@ -17,16 +17,13 @@ enum UnlockType {
 struct UnlockPasswordView: View {
     @EnvironmentObject private var appViewState: AppViewState
     
-    @StateObject private var viewModel: LockViewModel
+    @EnvironmentObject private var viewModel: LockViewModel
     @State private var presentingLockChoice : Bool = false
     @State private var isLoading : Bool = false
     @State private var cancellable: Set<AnyCancellable> = []
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    init(appModel:MainAppModel) {
-            _viewModel = StateObject(wrappedValue: LockViewModel(unlockType: .new, appModel: appModel))
-        }
     var body: some View {
         ContainerView {
             VStack(alignment: .center) {
@@ -66,9 +63,10 @@ struct UnlockPasswordView: View {
                     viewModel.login()
                     if !viewModel.shouldShowUnlockError {
                         if viewModel.unlockType == .new {
-                            isLoading = true
-                            appViewState.initMainAppModel()
-                            initRoot()
+                            appViewState.resetToMain()
+//                            isLoading = true
+//                            appViewState.initMainAppModel()
+//                            initRoot()
                         } else {
                             presentingLockChoice = true
                         }
@@ -119,6 +117,6 @@ struct UnlockPasswordView: View {
 
 struct UnlockPasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        UnlockPasswordView(appModel: MainAppModel.stub())
+        UnlockPasswordView()
     }
 }

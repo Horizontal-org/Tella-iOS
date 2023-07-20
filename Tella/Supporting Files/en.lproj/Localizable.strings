@@ -199,9 +199,9 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettDeleteAfterFail_SheetTitle" = "Delete after failed unlock";
 "Settings_SettDeleteAfterFail_SheetExpl" = "Decide how many failed unlock attempts are allowed before everything inside Tella is deleted.";
 "Settings_SettDeleteAfterFail_Off_SheetSelect" = "Off";
-"Settings_SettDeleteAfterFail_FiveAttempts_SheetSelect" = "5";
-"Settings_SettDeleteAfterFail_TenAttempts_SheetSelect" = "10";
-"Settings_SettDeleteAfterFail_TwentyAttempts_SheetSelect" = "20";
+"Settings_SettDeleteAfterFail_FiveAttempts_SheetSelect" = "5 attempts";
+"Settings_SettDeleteAfterFail_TenAttempts_SheetSelect" = "10 attempts";
+"Settings_SettDeleteAfterFail_TwentyAttempts_SheetSelect" = "20 attempts";
 "Settings_SettDeleteAfterFail_Cancel_SheetAction" = "CANCEL";
 "Settings_SettDeleteAfterFail_Save_SheetAction" = "SAVE";
 "Settings_SettServers_AppBar" = "Servers";

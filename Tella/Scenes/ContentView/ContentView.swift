@@ -26,11 +26,11 @@ struct ContentView: View {
             if appViewState.currentView == .UNLOCK {
                 let passwordType = AuthenticationManager().getPasswordType()
                 passwordType == .tellaPassword ?
-                UnlockPasswordView(appModel: appModel)
-                    .environmentObject(LockViewModel(unlockType: .new, appModel: appModel))
+                UnlockPasswordView()
+                    .environmentObject(LockViewModel(unlockType: .new, appModel: MainAppModel.stub()))
                     .eraseToAnyView() :
-                UnlockPinView(appModel: appModel)
-                    .environmentObject(LockViewModel(unlockType: .new, appModel: appModel))
+                UnlockPinView()
+                    .environmentObject(LockViewModel(unlockType: .new, appModel: MainAppModel.stub()))
                     .eraseToAnyView()
             }
         }.onAppear {

@@ -118,11 +118,11 @@ struct SecuritySettingsView: View {
         let passwordType = AuthenticationManager().getPasswordType()
         return passwordType == .tellaPassword ?
         
-        UnlockPasswordView(appModel: appModel)
+        UnlockPasswordView()
             .environmentObject(lockViewModel)
             .eraseToAnyView()  :
         
-        UnlockPinView(appModel: appModel)
+        UnlockPinView()
             .environmentObject(lockViewModel)
             .eraseToAnyView()
         
