@@ -56,8 +56,6 @@ struct UwaziAddServerURLView: View {
                                             nextButtonAction: .action,
                                             nextAction: {
                         self.serverViewModel.checkURL()
-//                        let serverAccess = UwaziServerAccessSelectionView().environmentObject(serverViewModel).environmentObject(serversViewModel)
-//                        navigateTo(destination: serverAccess)
 
                     },
                                             backAction: {

@@ -70,6 +70,8 @@ struct UwaziLanguageSelectionView: View {
                             self.presentationMode.wrappedValue.dismiss()
                         }
                         LanguageActionButton(type: .ok) {
+                            serverViewModel.addServer()
+                            print(selectLanguage)
                             navigateTo(destination: UwaziSuccessView())
                         }
                     }

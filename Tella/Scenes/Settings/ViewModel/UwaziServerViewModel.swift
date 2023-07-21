@@ -60,6 +60,7 @@ class UwaziServerViewModel: ObservableObject {
 
     var currentServer : Server?
     var token: String?
+    var setting: UwaziCheckURLResult?
 
     var isAutoUploadServerExist: Bool {
         return mainAppModel.vaultManager.tellaData.getAutoUploadServer() != nil && autoUpload == false
@@ -81,17 +82,16 @@ class UwaziServerViewModel: ObservableObject {
 
     }
 
-    func addServer(token: String, project: ProjectAPI) {
-
-        let server = Server(name: project.name,
+    func addServer() {
+        let server = Server(name: setting?.siteName,
                             serverURL: serverURL.getBaseURL(),
                             username: username,
                             password: password,
-                            accessToken: token,
+                            accessToken: self.token,
                             activatedMetadata: activatedMetadata,
                             backgroundUpload: backgroundUpload,
-                            projectId: project.id,
-                            slug: project.slug,
+                            projectId: setting?.id,
+                            slug: "",
                             autoUpload: autoUpload,
                             autoDelete: autoDelete)
 
@@ -164,38 +164,11 @@ class UwaziServerViewModel: ObservableObject {
                 }
 
             }, receiveValue: { wrapper in
+                self.setting = wrapper
                 print("Finished")
                 self.isLoading = false
                 self.isPublicInstance = true
             }).store(in: &subscribers)
-
-
-        //        API.Request.Server.publisher(serverURL: url)
-        //            .receive(on: DispatchQueue.main)
-        //            .sink(
-        //                receiveCompletion: { completion in
-        //                    self.isLoading = false
-        //
-        //                    switch completion {
-        //                    case .failure(let error):
-        //
-        //                        if error.code == 400 {
-        //                            self.shouldShowURLError = false
-        //                            self.urlErrorMessage = ""
-        //                            self.showNextLoginView = true
-        //                        } else {
-        //                            self.shouldShowURLError = true
-        //                            self.urlErrorMessage = error.message
-        //                        }
-        //
-        //                    case .finished:
-        //                        break
-        //                    }
-        //                },
-        //                receiveValue: { wrapper in
-        //                }
-        //            )
-        //            .store(in: &subscribers)
     }
 
     func login() {
@@ -248,7 +221,7 @@ class UwaziServerViewModel: ObservableObject {
                         if let token = result.1?.value(forHTTPHeaderField: "Set-Cookie") {
                             let filteredToken = token.split(separator: ";")
                             let connectId = filteredToken.first!.replacingOccurrences(of: "connect.sid=", with: "")
-                            print(connectId)
+                            self.token = connectId
                         }
                     }
                 }
@@ -313,27 +286,27 @@ class UwaziServerViewModel: ObservableObject {
 
         //        isLoading = true
 
-        ServerRepository().getProjetDetails(projectURL: serverURL, token: token)
-            .receive(on: DispatchQueue.main)
-            .sink(
-                receiveCompletion: { completion in
-                    self.isLoading = false
-
-                    switch completion {
-                    case .failure(let error):
-                        self.shouldShowLoginError = true
-                        self.loginErrorMessage = error.errorDescription ?? ""
-                    case .finished:
-                        self.shouldShowLoginError = false
-                        self.loginErrorMessage = ""
-                        self.showNextSuccessLoginView = true
-                    }
-                },
-                receiveValue: { project in
-                    self.addServer(token: token,project: project)
-                }
-            )
-            .store(in: &subscribers)
+//        ServerRepository().getProjetDetails(projectURL: serverURL, token: token)
+//            .receive(on: DispatchQueue.main)
+//            .sink(
+//                receiveCompletion: { completion in
+//                    self.isLoading = false
+//
+//                    switch completion {
+//                    case .failure(let error):
+//                        self.shouldShowLoginError = true
+//                        self.loginErrorMessage = error.errorDescription ?? ""
+//                    case .finished:
+//                        self.shouldShowLoginError = false
+//                        self.loginErrorMessage = ""
+//                        self.showNextSuccessLoginView = true
+//                    }
+//                },
+//                receiveValue: { project in
+//                    self.addServer(token: token,project: project)
+//                }
+//            )
+//            .store(in: &subscribers)
 
     }
 

@@ -30,7 +30,6 @@ struct UwaziLoginView: View {
                         TextfieldView(fieldContent: $serverViewModel.username,
                                       isValid: $serverViewModel.validUsername,
                                       shouldShowError: $serverViewModel.shouldShowLoginError,
-                                      //                                      errorMessage: nil,
                                       fieldType: .username,
                                       placeholder : LocalizableSettings.UwaziUsername.localized)
                         .autocapitalization(.none)
@@ -51,12 +50,6 @@ struct UwaziLoginView: View {
                                                  nextButtonAction: .action,
                                                  isValid: $serverViewModel.validCredentials) {
                             UIApplication.shared.endEditing()
-//                            let twoStepVerification =  UwaziTwoStepVerification()
-//                                .environmentObject(serversViewModel)
-//                                .environmentObject(serverViewModel)
-//                            if !serverViewModel.shouldShowLoginError {
-//                                navigateTo(destination: twoStepVerification)
-//                            }
                             self.serverViewModel.login()
                         }
                         Spacer()
