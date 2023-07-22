@@ -15,7 +15,6 @@ struct UwaziLanguageSelectionView: View {
     @EnvironmentObject var serversViewModel: ServersViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var showSuccessView = false
-    @State var selectLanguage: UwaziLanguageRow?
 
     var backButton : some View { Button(action: {
         self.presentationMode.wrappedValue.dismiss()
@@ -48,7 +47,7 @@ struct UwaziLanguageSelectionView: View {
                     List {
                         ForEach(serverViewModel.languages, id:\.self) { item in
                             UwaziLanguageItemView(languageItem: item,
-                                                  selectedLanguage: $selectLanguage,
+                                                  selectedLanguage: $serverViewModel.selectedLanguage,
                                                   settingsViewModel: settingsViewModel,
                                                   isPresented: $isPresented)
                         }.listRowBackground(Color.red)
@@ -71,7 +70,6 @@ struct UwaziLanguageSelectionView: View {
                         }
                         LanguageActionButton(type: .ok) {
                             serverViewModel.addServer()
-                            print(selectLanguage)
                             navigateTo(destination: UwaziSuccessView())
                         }
                     }

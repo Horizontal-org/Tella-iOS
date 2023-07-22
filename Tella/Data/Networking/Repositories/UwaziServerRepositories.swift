@@ -24,9 +24,9 @@ struct UwaziServerRepository: WebRepository {
     func twoFactorAuthentication(username: String,
                                   password: String,
                                   token: String,
-                                  serverURL: String) -> AnyPublisher<UwaziLoginResult, APIError> {
+                                  serverURL: String) -> AnyPublisher<(UwaziLoginResult,HTTPURLResponse?), APIError> {
 
-        let call : AnyPublisher<UwaziLoginResult, APIError> = call(endpoint: API.twoFactorAuthentication((username: username, password: password,token: token, serverURL: serverURL)))
+        let call : AnyPublisher<(UwaziLoginResult,HTTPURLResponse?), APIError> = callNew(endpoint: API.twoFactorAuthentication((username: username, password: password,token: token, serverURL: serverURL)))
 
         return call
             .eraseToAnyPublisher()

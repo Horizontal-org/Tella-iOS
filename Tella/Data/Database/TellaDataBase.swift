@@ -7,7 +7,17 @@ import Foundation
 import SQLite3
 import SQLCipher
 
-class TellaDataBase {
+
+protocol UwaziServerLanguageProtocol {
+    func createLanguageTableForUwazi()
+    func addUwaziLocaleWith(locale: UwaziLocale) throws -> Int
+    func getUwaziLocaleWith(serverId: Int) throws -> UwaziLocale?
+    func getAllUwaziLocale() throws -> [UwaziLocale]
+    func deleteUwaziLocaleWith(serverId : Int) throws -> Int
+    func deleteAllUwaziLocale() throws -> Int
+}
+
+class TellaDataBase: UwaziServerLanguageProtocol {
     
     var dataBaseHelper = DataBaseHelper()
     
@@ -20,6 +30,7 @@ class TellaDataBase {
         createServerTable()
         createReportTable()
         createReportFilesTable()
+        createLanguageTableForUwazi()
     }
     
     func createServerTable() {
@@ -40,6 +51,7 @@ class TellaDataBase {
         
         dataBaseHelper.createTable(tableName: D.tServer, columns: columns)
     }
+
     
     func createReportTable() {
         // c_id | c_title | c_description | c_date | cStatus | c_server_id
@@ -87,6 +99,8 @@ class TellaDataBase {
                                                         KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1),
                                                         KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1)])
     }
+
+
     
     func getServer() -> [Server] {
         var servers : [Server] = []
@@ -193,9 +207,9 @@ class TellaDataBase {
     }
 
     func deleteAllServers() throws -> Int {
-        return try dataBaseHelper.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile])
+        return try dataBaseHelper.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile, D.tUwaziServerLanguage])
     }
-    
+
     func getReports(reportStatus:[ReportStatus]) -> [Report] {
         
         var reports : [Report] = []
@@ -353,7 +367,7 @@ class TellaDataBase {
                 let files = getVaultFiles(reportID: reportID)
                 
                 let filteredFile = files.filter{(Date().timeIntervalSince($0.updatedDate ?? Date())) < 1800 }
-               
+
                 if !filteredFile.isEmpty {
 
                     let id = dict[D.cServerId] as? Int
@@ -572,7 +586,7 @@ class TellaDataBase {
                                                           andCondition: [KeyValue(key: D.cCurrentUpload, value: 1)])
         
         if !responseDict.isEmpty, let dict = responseDict.first  {
-           
+
             let reportID = dict[D.cReportId] as? Int
 
             return try dataBaseHelper.update(tableName: D.tReport,
@@ -634,4 +648,51 @@ class TellaDataBase {
             
         }
     }
+
+    // MARK: CRUD operation for Language table for Uwazu
+    // TODO: Add these thing to a new class and set a protocol for abstraction
+    func createLanguageTableForUwazi() {
+        let columns = [
+            cddl(D.cLocaleId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cServerId, D.integer),
+            cddl(D.cLocale, D.text),
+        ]
+        dataBaseHelper.createTable(tableName: D.tUwaziServerLanguage, columns: columns)
+    }
+
+    func addUwaziLocaleWith(locale: UwaziLocale) throws -> Int {
+        return try dataBaseHelper.insertInto(tableName: D.tUwaziServerLanguage, keyValue: [
+            KeyValue(key: D.cLocale, value: locale.locale),
+            KeyValue(key: D.cServerId, value: locale.serverId)
+        ])
+    }
+
+    func getUwaziLocaleWith(serverId: Int) throws -> UwaziLocale? {
+        let serversDict = try dataBaseHelper.selectQuery(tableName: D.tUwaziServerLanguage,
+                                                         andCondition: [KeyValue(key: D.cServerId, value: serverId)])
+        guard let locale = serversDict.first else { return nil }
+        let data = try JSONSerialization.data(withJSONObject: locale)
+        let locales = try JSONDecoder().decode(UwaziLocale.self, from: data)
+        return locales
+    }
+    func getAllUwaziLocale() throws -> [UwaziLocale] {
+        let serversDict = try dataBaseHelper.selectQuery(tableName: D.tUwaziServerLanguage,
+                                                         andCondition: [])
+        if !serversDict.isEmpty {
+            let data = try JSONSerialization.data(withJSONObject: serversDict)
+            let locales = try JSONDecoder().decode([UwaziLocale].self, from: data)
+            return locales
+        }
+        return []
+    }
+
+    func deleteUwaziLocaleWith(serverId : Int) throws -> Int {
+        return try dataBaseHelper.delete(tableName: D.tUwaziServerLanguage,
+                                         primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
+    }
+
+    func deleteAllUwaziLocale() throws -> Int {
+        return try dataBaseHelper.deleteAll(tableNames: [D.tUwaziServerLanguage])
+    }
 }
+

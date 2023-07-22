@@ -26,6 +26,7 @@ extension WebRepository {
                 .eraseToAnyPublisher()
         }
     }
+    // TODO: Change the name
     func callNew<Value>(endpoint: any APIRequest) -> AnyPublisher<(Value, HTTPURLResponse?), APIError>
     where Value: Decodable {
         let subject = PassthroughSubject<(Value, HTTPURLResponse?), APIError>()

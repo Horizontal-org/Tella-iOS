@@ -53,6 +53,7 @@ class UwaziServerViewModel: ObservableObject {
 
     // Language
     @Published var languages: [UwaziLanguageRow] = []
+    @Published var selectedLanguage: UwaziLanguageRow?
 
     private var cancellableLogin: Cancellable? = nil
     private var cancellableAuthenticationCode: Cancellable? = nil
@@ -98,11 +99,20 @@ class UwaziServerViewModel: ObservableObject {
         do {
             let id = try mainAppModel.vaultManager.tellaData.addServer(server: server)
             server.id = id
-
+            self.addUwaziLocaleFor(serverId: id)
             self.currentServer = server
 
         } catch {
 
+        }
+    }
+
+    func addUwaziLocaleFor(serverId: Int) {
+        do {
+            guard let locale = self.selectedLanguage?.locale else { return }
+            _ = try mainAppModel.vaultManager.tellaData.database?.addUwaziLocaleWith(locale: UwaziLocale(locale: locale, serverId: serverId)) 
+        } catch let error {
+            print(error)
         }
     }
 
@@ -273,43 +283,18 @@ class UwaziServerViewModel: ObservableObject {
                 },
                 receiveValue: { result in
                     self.isLoading = false
-                    if result.success {
-                        self.showLanguageSelectionView = true
+                    if result.0.success {
+                        self.showNextLanguageSelectionView = true
+                        if let token = result.1?.value(forHTTPHeaderField: "Set-Cookie") {
+                            let filteredToken = token.split(separator: ";")
+                            let connectId = filteredToken.first!.replacingOccurrences(of: "connect.sid=", with: "")
+                            self.token = connectId
+                        }
                     }
                 }
             )
             .store(in: &subscribers)
     }
-
-
-    func getProjetSlug(token: String) {
-
-        //        isLoading = true
-
-//        ServerRepository().getProjetDetails(projectURL: serverURL, token: token)
-//            .receive(on: DispatchQueue.main)
-//            .sink(
-//                receiveCompletion: { completion in
-//                    self.isLoading = false
-//
-//                    switch completion {
-//                    case .failure(let error):
-//                        self.shouldShowLoginError = true
-//                        self.loginErrorMessage = error.errorDescription ?? ""
-//                    case .finished:
-//                        self.shouldShowLoginError = false
-//                        self.loginErrorMessage = ""
-//                        self.showNextSuccessLoginView = true
-//                    }
-//                },
-//                receiveValue: { project in
-//                    self.addServer(token: token,project: project)
-//                }
-//            )
-//            .store(in: &subscribers)
-
-    }
-
 
     func fillReportVM() {
         if let server = self.currentServer {
