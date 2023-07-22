@@ -144,6 +144,7 @@ class UwaziServerViewModel: ObservableObject {
 
                 case .finished:
                     print("Finished")
+                    // TODO: Handle this error
                 case .failure(let error):
                     self.isLoading = false
                 }
@@ -169,6 +170,7 @@ class UwaziServerViewModel: ObservableObject {
 
                 case .finished:
                     print("Finished")
+                    // TODO: handle this error
                 case .failure(let error):
                     self.isPrivateInstance = true
                 }
@@ -201,10 +203,12 @@ class UwaziServerViewModel: ObservableObject {
                             self.loginErrorMessage = error.errorDescription ?? ""
                             self.isLoading = false
                         case .httpCode(let code):
+                            // if the status code is 401 then username or password is not matching
                             if code == 401 {
                                 self.shouldShowLoginError = true
                                 self.loginErrorMessage = "Invalid username or password"
                                 self.isLoading = false
+                            // if the status code is 409 then 2FA is needed
                             } else if code == 409 {
                                 self.showNext2FAView = true
                             }
@@ -259,12 +263,15 @@ class UwaziServerViewModel: ObservableObject {
                             self.codeErrorMessage = error.errorDescription ?? ""
                             self.isLoading = false
                         case .httpCode(let code):
+                            // if the status code is 401 then the 2FA code is incorrect
                             if code == 401 {
                                 self.shouldShowAuthenticationError = true
                                 self.codeErrorMessage = "Two-factor authentication failed."
                                 self.isLoading = false
-                            } else if code == 409 {
-                                self.showNext2FAView = true
+                            } else {
+                                self.shouldShowAuthenticationError = true
+                                self.codeErrorMessage = error.errorDescription ?? ""
+                                self.isLoading = false
                             }
                         case .unexpectedResponse:
                             self.shouldShowAuthenticationError = true
