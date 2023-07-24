@@ -17,6 +17,7 @@ struct UwaziServerAccessSelectionView: View {
 
     @EnvironmentObject var serversViewModel : ServersViewModel
     @EnvironmentObject var serverViewModel : UwaziServerViewModel
+    @EnvironmentObject var mainAppModel : MainAppModel
     var body: some View {
         ContainerView {
             VStack {
@@ -60,7 +61,7 @@ struct UwaziServerAccessSelectionView: View {
                         navigateTo(destination: loginView)
                     } else if isPublicInstance {
                         let languageSelection = UwaziLanguageSelectionView(isPresented: .constant(true))
-                            .environmentObject(SettingsViewModel(appModel: MainAppModel()))
+                            //.environmentObject(SettingsViewModel(appModel: mainAppModel))
                             .environmentObject(serversViewModel)
                             .environmentObject(serverViewModel)
                         navigateTo(destination: languageSelection)
@@ -81,7 +82,7 @@ struct UwaziServerAccessSelectionView: View {
 struct UwaziServerAccessSelectionView_Previews: PreviewProvider {
     static var previews: some View {
         UwaziServerAccessSelectionView()
-            .environmentObject(ServersViewModel(mainAppModel: MainAppModel()))
-            .environmentObject(ServerViewModel(mainAppModel: MainAppModel(), currentServer: nil))
+            .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
+            .environmentObject(ServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
     }
 }

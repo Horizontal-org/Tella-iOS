@@ -26,6 +26,7 @@ class CameraViewModel: ObservableObject {
     var mainAppModel: MainAppModel?
     
     var rootFile: VaultFile
+    var sourceView : SourceView
     
     // MARK: - Private properties
     
@@ -36,7 +37,8 @@ class CameraViewModel: ObservableObject {
     
     init(mainAppModel: MainAppModel,
          rootFile: VaultFile,
-         resultFile : Binding<[VaultFile]?>? = nil ) {
+         resultFile : Binding<[VaultFile]?>? = nil,
+         sourceView : SourceView) {
         
         self.mainAppModel = mainAppModel
         self.rootFile = rootFile
@@ -46,11 +48,13 @@ class CameraViewModel: ObservableObject {
         mainAppModel.vaultManager.progress.progress.sink { value in
             if value == 1 {
                 
-// mainAppModel.vaultManager.clearTmpDirectory()
+                // mainAppModel.vaultManager.clearTmpDirectory()
             }
         }.store(in: &cancellable)
         
         self.resultFile = resultFile
+        
+        self.sourceView = sourceView
     }
     
     func saveImage()   {
@@ -67,12 +71,15 @@ class CameraViewModel: ObservableObject {
                     self.lastImageOrVideoVaultFile = file?.first
                 }
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    if let file = file?.first {
-                        self.mainAppModel?.sendAutoReportFile(file: file)
+                if sourceView != .addReportFile {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        if let file = file?.first {
+                            self.mainAppModel?.sendAutoReportFile(file: file)
+                        }
                     }
                 }
-
+                
+                
             }
             catch {
                 
@@ -80,7 +87,7 @@ class CameraViewModel: ObservableObject {
         }
     }
     
-    func saveVideo()  {
+    func saveVideo() {
         guard let videoURL = videoURL else { return  }
         
         Task {
@@ -92,6 +99,14 @@ class CameraViewModel: ObservableObject {
                     self.resultFile?.wrappedValue = file
                     self.lastImageOrVideoVaultFile = file?.first
                 }
+                if sourceView != .addReportFile {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        if let file = file?.first {
+                            self.mainAppModel?.sendAutoReportFile(file: file)
+                        }
+                    }
+                }
+                
             }
             catch {
                 

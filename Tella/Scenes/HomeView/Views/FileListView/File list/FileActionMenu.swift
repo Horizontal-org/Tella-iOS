@@ -54,7 +54,7 @@ struct FileActionMenu: View {
 struct FileActionMenu_Previews: PreviewProvider {
     static var previews: some View {
         FileActionMenu()
-            .environmentObject(MainAppModel())
+            .environmentObject(MainAppModel.stub())
             .environmentObject(FileListViewModel.stub())
     }
 }

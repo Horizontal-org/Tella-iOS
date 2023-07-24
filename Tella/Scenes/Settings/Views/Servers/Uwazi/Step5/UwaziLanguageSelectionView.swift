@@ -10,7 +10,7 @@ import SwiftUI
 
 struct UwaziLanguageSelectionView: View {
     @Binding var isPresented : Bool
-    @EnvironmentObject var settingsViewModel: SettingsViewModel
+    //@EnvironmentObject var settingsViewModel: SettingsViewModel
     @EnvironmentObject var serverViewModel: UwaziServerViewModel
     @EnvironmentObject var serversViewModel: ServersViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -48,7 +48,7 @@ struct UwaziLanguageSelectionView: View {
                         ForEach(serverViewModel.languages, id:\.self) { item in
                             UwaziLanguageItemView(languageItem: item,
                                                   selectedLanguage: $serverViewModel.selectedLanguage,
-                                                  settingsViewModel: settingsViewModel,
+                                                  //settingsViewModel: settingsViewModel,
                                                   isPresented: $isPresented)
                         }.listRowBackground(Color.red)
                     }
@@ -126,7 +126,7 @@ struct UwaziLanguageItemView : View {
 
     var languageItem : UwaziLanguageRow
     @Binding var selectedLanguage: UwaziLanguageRow?
-    @StateObject var settingsViewModel :  SettingsViewModel
+    //@StateObject var settingsViewModel :  SettingsViewModel
 
     @Binding var isPresented : Bool
 
@@ -197,7 +197,7 @@ struct BigButtonStyleForLanguage: ButtonStyle {
 struct UwaziLanguageSelectionView_Previews: PreviewProvider {
     static var previews: some View {
         UwaziLanguageSelectionView(isPresented: .constant(true))
-            .environmentObject(SettingsViewModel(appModel: MainAppModel()))
+            .environmentObject(SettingsViewModel(appModel: MainAppModel.stub()))
     }
 }
 

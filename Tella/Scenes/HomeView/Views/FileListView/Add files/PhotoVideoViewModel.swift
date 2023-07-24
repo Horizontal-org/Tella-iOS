@@ -23,7 +23,7 @@ class PhotoVideoViewModel : ObservableObject {
         self.resultFile = resultFile
     }
     
-    func add(files: [URL], type: FileType) {
+    func add(files: [URL], type: TellaFileType) {
         Task {
             
             do { let vaultFile = try await self.mainAppModel.add(files: files,
@@ -45,7 +45,7 @@ class PhotoVideoViewModel : ObservableObject {
         }
     }
     
-    func add(image: UIImage , type: FileType, pathExtension:String?, originalUrl: URL?) {
+    func add(image: UIImage , type: TellaFileType, pathExtension:String?, originalUrl: URL?) {
         guard let data = image.fixedOrientation()?.pngData() else { return }
         guard let url = mainAppModel.vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension ?? "png") else { return  }
         Task {

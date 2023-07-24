@@ -81,8 +81,7 @@ struct CameraControlsView: View {
     var closeButton: some View {
         if !shouldHideCloseButton {
             Button {
-                mainAppModel.vaultManager.clearTmpDirectory()
-                
+
                 if sourceView == .tab {
                     mainAppModel.selectedTab = .home
                 } else {
@@ -228,8 +227,8 @@ struct CameraControlsView: View {
     @ViewBuilder
     var previewImageAndVideodFile : some View {
         VStack {
-            if let file = $cameraViewModel.lastImageOrVideoVaultFile,
-               let data = file.wrappedValue?.thumbnail {
+            if let file = $cameraViewModel.lastImageOrVideoVaultFile.wrappedValue,
+               let data = file.thumbnail {
                 
                 Button {
                     navigateTo(destination: getFileListView())

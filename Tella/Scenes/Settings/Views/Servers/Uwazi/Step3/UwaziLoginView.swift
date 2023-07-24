@@ -68,7 +68,7 @@ struct UwaziLoginView: View {
         .onReceive(serverViewModel.$showNextLanguageSelectionView, perform: { value in
             if value {
                 let languageView = UwaziLanguageSelectionView(isPresented: .constant(true))
-                    .environmentObject(SettingsViewModel(appModel: MainAppModel()))
+                    //.environmentObject(SettingsViewModel(appModel: MainAppModel()))
                     .environmentObject(serversViewModel)
                     .environmentObject(serverViewModel)
                 navigateTo(destination: languageView)
@@ -97,7 +97,7 @@ struct UwaziLoginView: View {
 struct UwaziLoginView_Previews: PreviewProvider {
     static var previews: some View {
         UwaziLoginView()
-            .environmentObject(ServersViewModel(mainAppModel: MainAppModel()))
-            .environmentObject(ServerViewModel(mainAppModel: MainAppModel(), currentServer: nil))
+            .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
+            .environmentObject(ServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
     }
 }

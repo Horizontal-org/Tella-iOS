@@ -63,7 +63,7 @@ struct FolderListView: View {
 struct FolderListView_Previews: PreviewProvider {
     static var previews: some View {
         FolderListView()
-            .environmentObject(MainAppModel())
+            .environmentObject(MainAppModel.stub())
             .environmentObject(FileListViewModel.stub())
     }
 }

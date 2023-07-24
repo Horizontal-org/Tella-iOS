@@ -90,7 +90,8 @@ struct ServerSelectionView: View {
 
 struct ServerSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ServerSelectionView(appModel: MainAppModel()).environmentObject(MainAppModel())
-            .environmentObject(ServersViewModel(mainAppModel: MainAppModel()))
+        ServerSelectionView(appModel: MainAppModel.stub())
+            .environmentObject(MainAppModel.stub())
+            .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
     }
 }

@@ -12,7 +12,7 @@ import SwiftUI
 struct HomeFileItem : Hashable {
     var title : String
     var imageName : String
-    var fileType: [FileType]?
+    var fileType: [TellaFileType]?
 }
 
 var homeFileItems : [HomeFileItem] { return [ HomeFileItem(title: LocalizableHome.tellaFilesAllFiles.localized,

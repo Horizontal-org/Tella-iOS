@@ -26,9 +26,9 @@ struct ConnectionsView: View {
     }
     
     var serversView: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            serverItems
-        }
+        //        ScrollView(.horizontal, showsIndicators: false) {
+        serverItems
+        //        }
     }
     
     @ViewBuilder
@@ -39,17 +39,20 @@ struct ConnectionsView: View {
                 switch server.serverType {
                     
                 case .tellaUpload:
-                    ConnectionsItemView(title: "Reports",
+                    ConnectionsItemView(title: LocalizableReport.reportsTitle.localized,
                                         image: "home.report",
                                         destination: ReportsView(mainAppModel: appModel))
                 default:
-                    ConnectionsItemView(title: "Reports",
+                    ConnectionsItemView(title: LocalizableReport.reportsTitle.localized,
                                         image: "home.report",
                                         destination: ReportsView(mainAppModel: appModel))
                 }
                 
             }
+            
+            Spacer()
         }.padding(.trailing, 17)
+        
     }
 }
 

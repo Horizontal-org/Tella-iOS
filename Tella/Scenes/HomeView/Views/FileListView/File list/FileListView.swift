@@ -14,7 +14,7 @@ struct FileListView: View {
     
     var title : String = ""
     
-    init(appModel: MainAppModel, rootFile: VaultFile , fileType: [FileType]? , title : String = "", fileListType : FileListType = .fileList, resultFile: Binding<[VaultFile]?>? = nil) {
+    init(appModel: MainAppModel, rootFile: VaultFile , fileType: [TellaFileType]? , title : String = "", fileListType : FileListType = .fileList, resultFile: Binding<[VaultFile]?>? = nil) {
         _fileListViewModel = StateObject(wrappedValue: FileListViewModel(appModel: appModel,fileType:fileType, rootFile: rootFile, folderPathArray: [], fileListType :  fileListType, resultFile: resultFile))
         self.title = title
     }
@@ -87,6 +87,7 @@ struct FileListView: View {
                     
                 } label: {
                     Image("back")
+                        .flipsForRightToLeftLayoutDirection(true)
                         .padding()
                 }
                 
@@ -117,12 +118,12 @@ struct FileListView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack(alignment: .top) {
             Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
-            FileListView(appModel: MainAppModel(),
+            FileListView(appModel: MainAppModel.stub(),
                          rootFile: VaultFile.stub(type: .folder),
                          fileType: [.folder])
         }
         .background(Styles.Colors.backgroundMain)
-        .environmentObject(MainAppModel())
+        .environmentObject(MainAppModel.stub())
         .environmentObject(FileListViewModel.stub())
     }
 }

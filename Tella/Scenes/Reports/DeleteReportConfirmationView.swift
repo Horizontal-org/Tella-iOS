@@ -5,24 +5,26 @@
 import SwiftUI
 
 struct DeleteReportConfirmationView: View {
-  
+    
+    var title : String?
+    var message : String
     var confirmAction : () -> ()
-   
+    
     var body: some View {
-            
-        ConfirmBottomSheet(titleText: "Delete report",
-                           msgText: "Are you sure you want to delete this draft?",
-                           cancelText: "CANCEL",
-                           actionText: "DELETE", didConfirmAction: {
+        
+        ConfirmBottomSheet(titleText: String.init(format: LocalizableReport.deleteTitle.localized, title ?? ""),
+                           msgText: message,
+                           cancelText: LocalizableReport.deleteCancel.localized,
+                           actionText: LocalizableReport.deleteConfirm.localized, didConfirmAction: {
             
             confirmAction()
         })
-     }
+    }
 }
 
 struct DeleteReportConfirmationView_Previews: PreviewProvider {
     static var previews: some View {
-        DeleteReportConfirmationView {
+        DeleteReportConfirmationView(title: "Title", message: "Message") {
             
         }
     }

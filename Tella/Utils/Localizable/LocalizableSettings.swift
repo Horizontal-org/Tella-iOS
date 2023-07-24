@@ -29,7 +29,13 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settLangEnglish = "Settings_SettLang_English_Expl"
     case settLangFrench = "Settings_SettLang_French_Expl"
     case settLangSpanish = "Settings_SettLang_Spanish_Expl"
-    
+    case settLangArabic = "Settings_SettLang_Arabic_Expl"
+    case settLangBelarusian = "Settings_SettLang_Belarusian_Expl"
+    case settLangPersian = "Settings_SettLang_Persian_Expl"
+    case settLangKurdish = "Settings_SettLang_Kurdish_Expl"
+    case settLangBurmese = "Settings_SettLang_Burmese_Expl"
+    case settLangTamil = "Settings_SettLang_Tamil_Expl"
+
     // Security
     
     case settSecAppBar = "Settings_SettSec_AppBar"
@@ -37,6 +43,11 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settSecLockTimeout = "Settings_SettSec_LockTimeout"
     case settSecScreenSecurity = "Settings_SettSec_ScreenSecurity"
     case settSecScreenSecurityExpl = "Settings_SettSec_ScreenSecurity_Expl"
+    case settQuickDelete = "Settings_Sett_QuickDelete"
+    case settQuickDeleteExpl = "Settings_Sett_QuickDelete_Expl"
+    case settQuickDeleteFilesCheckbox = "Settings_Sett_QuickDelete_Files_CheckboxItem"
+    case settQuickDeleteConnectionsCheckbox = "Settings_Sett_QuickDelete_Connections_CheckboxItem"
+
     
     // LockTimeout
     case settLockTimeoutSheetTitle = "Settings_SettLockTimeout_SheetTitle"

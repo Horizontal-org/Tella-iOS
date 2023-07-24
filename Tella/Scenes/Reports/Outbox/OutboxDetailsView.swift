@@ -42,6 +42,13 @@ struct OutboxDetailsView: View {
                 navigateTo(destination: submittedDetailsView)
             }
         })
+        
+        .onReceive(outboxReportVM.$shouldShowMainView, perform: { value in
+            if value {
+                dismissView()
+            }
+        })
+        
         .navigationBarHidden(true)
     }
     
@@ -52,10 +59,11 @@ struct OutboxDetailsView: View {
                 dismissView()
             } label: {
                 Image("back")
+                    .flipsForRightToLeftLayoutDirection(true)
                     .padding()
             }
             
-            Text("Report")
+            Text(LocalizableReport.reportsText.localized)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                 .foregroundColor(.white)
             
@@ -182,7 +190,9 @@ struct OutboxDetailsView: View {
     
     private func showDeleteReportConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: 200) {
-            DeleteReportConfirmationView {
+            DeleteReportConfirmationView(title: outboxReportVM.reportViewModel.title,
+                                         message: LocalizableReport.deleteOutboxReportMessage.localized) {
+               Toast.displayToast(message: String(format: LocalizableReport.reportDeletedToast.localized, outboxReportVM.reportViewModel.title))
                 outboxReportVM.pauseSubmission()
                 dismissView()
                 outboxReportVM.deleteReport()

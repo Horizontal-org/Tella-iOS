@@ -4,16 +4,19 @@
 //
 
 import SwiftUI
+import Combine
 
 struct TextfieldView : View {
     
     @Binding var fieldContent : String
+    @State private var pfieldContent : String = ""
+    
     @Binding var isValid : Bool
     @Binding var shouldShowError : Bool
-    
+
     var errorMessage : String?
     var fieldType : FieldType
-    var placeholder : String?
+    var placeholder : String = ""
     var shouldShowTitle : Bool = false
     var onCommit : (() -> Void)? =  ({})
     
@@ -21,28 +24,27 @@ struct TextfieldView : View {
     
     var body: some View {
         
-        VStack(spacing: 13) {
+        VStack(spacing: 10) {
+            
+            Spacer()
+                .frame(height: 10)
             
             ZStack {
-                
-                // Placeholder
-                Group {
-                    if shouldShowTitle {
-                        Text(placeholder ?? "")
-                            .offset(y: fieldContent.isEmpty ? 0 : -20)
-                            .scaleEffect(fieldContent.isEmpty ? 1 : 0.88, anchor: .leading)
-                            .animation(.default)
-                        
-                    } else {
-                        Text(placeholder ?? "")
-                            .opacity(fieldContent.isEmpty ? 1 : 0 )
-                    }
-                    
-                } .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                Text(placeholder)
+                    .offset(y: fieldContent.isEmpty ? 0 : -22)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .frame(maxWidth: .infinity,alignment: .leading)
                     .contentShape(Rectangle())
-                    .foregroundColor(fieldContent.isEmpty ? .white : .white.opacity(0.8) )
-                
+                    .foregroundColor(fieldContent.isEmpty ? .white : .white.opacity(0.8))
+                    .scaleEffect(fieldContent.isEmpty ? 1 : 0.88, anchor: .leading)
+                    .transaction { transaction in
+                        if pfieldContent != fieldContent {
+                            transaction.animation =  .default
+                        } else {
+                            
+                        }
+                    }
+
                 // Textfield
                 if fieldType == .password || fieldType == .code {
                     passwordTextfieldView
@@ -59,6 +61,8 @@ struct TextfieldView : View {
             
         }
         
+        
+        
     }
     
     var textfieldView : some View {
@@ -67,6 +71,7 @@ struct TextfieldView : View {
             self.onCommit?()
         }).onChange(of: fieldContent, perform: { value in
             validateField(value: value)
+            self.pfieldContent = value
         })
         .textFieldStyle(TextfieldStyle(shouldShowError: shouldShowError))
         .frame( height: 22)
@@ -155,7 +160,7 @@ struct TextfieldStyle: TextFieldStyle {
             .accentColor(.white)
             .multilineTextAlignment(.leading)
             .disableAutocorrection(true)
-            .keyboardType(.alphabet)
+            .autocapitalization(.none)
     }
 }
 

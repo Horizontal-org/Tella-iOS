@@ -15,6 +15,7 @@ struct ReportsView: View {
     
     @EnvironmentObject var mainAppModel : MainAppModel
     @StateObject private var reportsViewModel : ReportsViewModel
+    @EnvironmentObject var sheetManager : SheetManager
     
     init(mainAppModel:MainAppModel) {
         _reportsViewModel = StateObject(wrappedValue: ReportsViewModel(mainAppModel: mainAppModel))
@@ -23,7 +24,7 @@ struct ReportsView: View {
     var body: some View {
         
         contentView
-            .navigationBarTitle("Reports", displayMode: .large)
+            .navigationBarTitle(LocalizableReport.reportsTitle.localized, displayMode: .large)
             .environmentObject(reportsViewModel)
     }
     
@@ -43,22 +44,22 @@ struct ReportsView: View {
                         
                     case .draft:
                         ReportListView(reportArray: $reportsViewModel.draftReports,
-                                       message: "Your Drafts is currently empty. Reports that you have not submitted will appear here.")
+                                       message: LocalizableReport.reportsDraftEmpty.localized)
                         
                     case .outbox:
                         
                         ReportListView(reportArray: $reportsViewModel.outboxedReports,
-                                       message: "Your Outbox is currently empty. Reports that are ready to be sent will appear here.")
+                                       message: LocalizableReport.reportsOutboxEmpty.localized)
                         
                     case .submitted:
                         ReportListView(reportArray: $reportsViewModel.submittedReports,
-                                       message: "You have no submitted reports.")
+                                       message: LocalizableReport.reportsSubmitedEmpty.localized)
                     }
                     
                     Spacer()
                 }
                 
-                TellaButtonView<AnyView> (title: "NEW REPORT",
+                TellaButtonView<AnyView> (title: LocalizableReport.reportsCreateNew.localized,
                                           nextButtonAction: .action,
                                           buttonType: .yellow,
                                           isValid: .constant(true)) {
@@ -70,6 +71,16 @@ struct ReportsView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: backButton)
+        
+        .if(self.reportsViewModel.selectedCell == .submitted && self.reportsViewModel.submittedReports.count > 0, transform: { view in
+            view.toolbar {
+                TrailingButtonToolbar(title: LocalizableReport.clearAppBar.localized) {
+                    showDeleteReportConfirmationView()
+                }
+            }
+        })
+            
+            
     }
     
     private var newDraftReportView: some View {
@@ -81,16 +92,31 @@ struct ReportsView: View {
             self.popToRoot()
         } label: {
             Image("back")
+                .flipsForRightToLeftLayoutDirection(true)
                 .padding(EdgeInsets(top: -3, leading: -8, bottom: 0, trailing: 12))
         }
     }
     
+    private func showDeleteReportConfirmationView() {
+        sheetManager.showBottomSheet(modalHeight: 200) {
+            
+            
+            ConfirmBottomSheet(titleText: LocalizableReport.clearSheetTitle.localized,
+                               msgText: LocalizableReport.clearSheetExpl.localized,
+                               cancelText: LocalizableReport.clearCancel.localized,
+                               actionText: LocalizableReport.clearSubmitted.localized, didConfirmAction: {
+                sheetManager.hide()
+                reportsViewModel.deleteSubmittedReport()
+                Toast.displayToast(message: LocalizableReport.allReportDeletedToast.localized)
+            })
+        }
+    }
 }
 
 struct ReportsView_Previews: PreviewProvider {
     
     static var previews: some View {
-        ReportsView(mainAppModel: MainAppModel())
+        ReportsView(mainAppModel: MainAppModel.stub())
     }
 }
 

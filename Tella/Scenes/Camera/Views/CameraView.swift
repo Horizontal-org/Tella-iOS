@@ -9,7 +9,7 @@ import Combine
 struct CameraView: View {
     
     // MARK: - Public properties
-    var sourceView : SourceView
+//    var sourceView : SourceView
     var showingCameraView : Binding<Bool>
     
     // MARK: - Private properties
@@ -29,11 +29,12 @@ struct CameraView: View {
          mainAppModel: MainAppModel,
          rootFile:VaultFile) {
         
-        self.sourceView = sourceView
         self.showingCameraView = showingCameraView
         
-        _cameraViewModel = StateObject(wrappedValue: CameraViewModel(mainAppModel: mainAppModel, rootFile: rootFile, resultFile: resultFile))
-        
+        _cameraViewModel = StateObject(wrappedValue: CameraViewModel(mainAppModel: mainAppModel,
+                                                                     rootFile: rootFile,
+                                                                     resultFile: resultFile,
+                                                                     sourceView: sourceView))
     }
 
     var body: some View {
@@ -71,7 +72,7 @@ struct CameraView: View {
 
             .onReceive(model.$shouldCloseCamera) { value in
                 if value {
-                    if sourceView == .tab {
+                    if cameraViewModel.sourceView == .tab {
                         mainAppModel.selectedTab = .home
                     } else {
                         showingCameraView.wrappedValue = false
@@ -106,7 +107,7 @@ struct CameraView: View {
     private func getCameraControlsView() -> some View {
         
         CameraControlsView(showingCameraView: showingCameraView,
-                           sourceView: sourceView,
+                           sourceView: cameraViewModel.sourceView,
                            captureButtonAction: {
             model.capturePhoto()
         }, recordVideoAction: {
@@ -121,6 +122,7 @@ struct CameraView: View {
             model.stopRunningCaptureSession()
         })
         .edgesIgnoringSafeArea(.all)
+        .environmentObject(cameraViewModel)
         
     }
     

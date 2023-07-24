@@ -43,7 +43,7 @@ struct MainView: View  {
                             Image("tab.home")
                             Text(LocalizableHome.tabBar.localized)
                         }.tag(MainAppModel.Tabs.home)
-
+                    
                     ContainerView{}
                         .tabItem {
                             Image("tab.camera")
@@ -92,7 +92,7 @@ struct MainView: View  {
                 .edgesIgnoringSafeArea(.all)
         }
     }
-
+    
     private func setupApperance() {
         
         UITabBar.appearance().unselectedItemTintColor = UIColor.white.withAlphaComponent(0.38)
@@ -108,7 +108,10 @@ struct MainView: View  {
                                                  .font: UIFont(name: Styles.Fonts.boldFontName, size: 24)!]
         coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white,
                                                       .font: UIFont(name: Styles.Fonts.boldFontName, size: 35)!]
-        coloredAppearance.setBackIndicatorImage(UIImage(named: "back"), transitionMaskImage: UIImage(named: "back"))
+        let image = UIImage(named: "back")
+        image?.imageFlippedForRightToLeftLayoutDirection()
+        
+        coloredAppearance.setBackIndicatorImage(image, transitionMaskImage: image)
         
         UINavigationBar.appearance().standardAppearance = coloredAppearance
         UINavigationBar.appearance().compactAppearance = coloredAppearance
@@ -155,6 +158,6 @@ struct AppView_Previews: PreviewProvider {
             .preferredColorScheme(.light)
             .previewLayout(.device)
             .previewDevice("iPhone 8")
-            .environmentObject(MainAppModel())
+            .environmentObject(MainAppModel.stub())
     }
 }

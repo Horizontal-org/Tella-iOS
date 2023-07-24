@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import Combine
 
 extension Data {
     
@@ -33,4 +34,10 @@ extension Data {
         // Return the new copy of data
         return self
     }
+    
+    func fileExtension(vaultManager:VaultManager) -> String? {
+        let fileTypeHelper = FileTypeHelper(data: self).getFileInformation()
+        return fileTypeHelper?.fileExtension
+    }
+    
 }

@@ -18,6 +18,8 @@ final class AppViewState: ObservableObject {
 
     @Published private var viewStack = [MainViewEnum]()
     @Published var shouldHidePresentedView: Bool = false
+    @Published var mainAppLayout: LayoutDirection = .leftToRight
+    @Published var networkMonitor = NetworkMonitor()
 
     init() {
         self.resetApp()
@@ -45,22 +47,27 @@ final class AppViewState: ObservableObject {
         viewStack = [.UNLOCK]
     }
 
-    func resetToMain() {
-        homeViewModel = MainAppModel()
+    func initMainAppModel() {
+        homeViewModel = MainAppModel(networkMonitor: networkMonitor)
+     }
+
+    func showMainView() {
         viewStack = [.MAIN]
     }
-
-    func showMain() {
+    
+    func resetToMain() {
+        homeViewModel = MainAppModel(networkMonitor: networkMonitor)
         viewStack = [.MAIN]
     }
 
     func resetApp() {
         AuthenticationManager().keysInitialized() ? self.resetToUnlock() : self.resetToLock()
-        UploadService.reset()
+        
     }
     
     func initLanguage() {
         let selectedLanguage = LanguageManager.shared.currentLanguage.rawValue
+        mainAppLayout = LanguageManager.shared.currentLanguage.layoutDirection
         Bundle.setLanguage(selectedLanguage)
     }
 }

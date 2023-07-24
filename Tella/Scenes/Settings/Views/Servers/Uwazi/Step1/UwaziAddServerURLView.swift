@@ -94,9 +94,9 @@ struct UwaziAddServerURLView: View {
 
 struct UwaziAddServerURLView_Previews: PreviewProvider {
     static var previews: some View {
-        UwaziAddServerURLView(appModel: MainAppModel())
-            .environmentObject(MainAppModel())
-            .environmentObject(ServersViewModel(mainAppModel: MainAppModel()))
-            .environmentObject(ServerViewModel(mainAppModel: MainAppModel(), currentServer: nil))
+        UwaziAddServerURLView(appModel: MainAppModel.stub())
+            .environmentObject(MainAppModel.stub())
+            .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
+            .environmentObject(ServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
     }
 }

@@ -48,7 +48,7 @@ struct SettingsAddServerCardView: View {
 struct SettingsAddServerCardView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsAddServerCardView()
-            .environmentObject(ServerViewModel(mainAppModel: MainAppModel(), currentServer: nil))
-            .environmentObject(ServersViewModel(mainAppModel: MainAppModel()))
+            .environmentObject(ServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
+            .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
     }
 }

@@ -55,7 +55,7 @@ struct UwaziTwoStepVerification: View {
         .onReceive(serverViewModel.$showLanguageSelectionView) { value in
             if value {
                 let languageView = UwaziLanguageSelectionView(isPresented: .constant(true))
-                    .environmentObject(SettingsViewModel(appModel: MainAppModel()))
+                    //.environmentObject(SettingsViewModel(appModel: MainAppModel()))
                     .environmentObject(serversViewModel)
                     .environmentObject(serverViewModel)
                 navigateTo(destination: languageView)
