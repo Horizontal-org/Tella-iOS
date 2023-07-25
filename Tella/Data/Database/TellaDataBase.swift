@@ -73,7 +73,8 @@ class TellaDataBase: UwaziServerLanguageProtocol {
             cddl(D.cApiProjectId, D.text),
             cddl(D.cSlug, D.text),
             cddl(D.cAutoUpload, D.integer),
-            cddl(D.cAutoDelete, D.integer) ]
+            cddl(D.cAutoDelete, D.integer),
+            cddl(D.cServerType, D.text)]
         
         statementBuilder.createTable(tableName: D.tServer, columns: columns)
     }
@@ -112,6 +113,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
     }
     
     func addServer(server : Server) throws -> Int {
+        dump(server)
         let valuesToAdd = [KeyValue(key: D.cName, value: server.name),
                            KeyValue(key: D.cURL, value: server.url),
                            KeyValue(key: D.cUsername, value: server.username),
@@ -122,7 +124,8 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                            KeyValue(key: D.cApiProjectId, value: server.projectId),
                            KeyValue(key: D.cSlug, value: server.slug),
                            KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1),
-                           KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1)]
+                           KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1),
+                           KeyValue(key: D.cServerType, value:server.serverType)]
         
         return try statementBuilder.insertInto(tableName: D.tServer,
                                                keyValue: valuesToAdd)

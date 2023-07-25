@@ -68,6 +68,7 @@ struct D {
     static let cLocale = "c_locale"
     static let cLocaleId = "c_locale_id"
 
+    static let cServerType = "c_server_type"
 }
 
 

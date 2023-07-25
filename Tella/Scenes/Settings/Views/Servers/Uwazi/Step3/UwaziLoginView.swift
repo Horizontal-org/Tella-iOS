@@ -87,8 +87,8 @@ struct UwaziLoginView: View {
         .onAppear {
 
 #if DEBUG
-            serverViewModel.username = "admin@wearehorizontal.org"
-            serverViewModel.password = "nadanada"
+            serverViewModel.username = "test-uwazi"
+            serverViewModel.password = "test-uwazi"
 #endif
         }
     }

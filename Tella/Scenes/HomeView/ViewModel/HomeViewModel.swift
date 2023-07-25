@@ -32,6 +32,9 @@ class HomeViewModel: ObservableObject {
         self.appModel.vaultManager.tellaData.servers.sink { result in
             
         } receiveValue: { serverArray in
+            for server in serverArray {
+                dump(server)
+            }
             self.serverDataItemArray.removeAll()
             if !serverArray.isEmpty {
                 self.serverDataItemArray.append(ServerDataItem(servers: serverArray, serverType: .tellaUpload))
