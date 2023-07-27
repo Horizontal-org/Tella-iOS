@@ -38,7 +38,7 @@ struct ConnectionsView: View {
             ForEach(homeViewModel.serverDataItemArray, id: \.self) { server in
                 switch server.serverType {
                     
-                case .tellaUpload:
+                case .tella:
                     ConnectionsItemView(title: LocalizableReport.reportsTitle.localized,
                                         image: "home.report",
                                         destination: ReportsView(mainAppModel: appModel))
