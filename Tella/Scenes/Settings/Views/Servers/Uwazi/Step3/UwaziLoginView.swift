@@ -85,11 +85,13 @@ struct UwaziLoginView: View {
             }
         })
         .onAppear {
-
-#if DEBUG
-            serverViewModel.username = "admin@wearehorizontal.org"
-            serverViewModel.password = "nadanada"
-#endif
+            if serverViewModel.currentServer != nil {
+                serverViewModel.validCredentials = true
+            }
+//#if DEBUG
+//            serverViewModel.username = "admin@wearehorizontal.org"
+//            serverViewModel.password = "nadanada"
+//#endif
         }
     }
 }

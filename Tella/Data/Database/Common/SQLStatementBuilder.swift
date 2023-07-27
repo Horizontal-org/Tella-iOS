@@ -208,6 +208,14 @@ class SQLiteStatementBuilder {
             logDbErr("Error creating db table - \(tableName)")
         }
     }
+    func alterTable(tableName: String, column: String) {
+        let sqlExpression = "ALTER TABLE " + tableName + " ADD COLUMN " + column
+        let ret = sqlite3_exec(dbPointer, sqlExpression, nil, nil, nil)
+
+        if (ret != SQLITE_OK) { // corrupt database.
+            logDbErr("Error altering db table - \(tableName)")
+        }
+    }
     
     @discardableResult
     func insertInto(tableName:String, keyValue: [KeyValue?]) throws -> Int {

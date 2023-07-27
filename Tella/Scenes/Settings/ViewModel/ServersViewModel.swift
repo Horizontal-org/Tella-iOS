@@ -30,13 +30,16 @@ class ServersViewModel: ObservableObject {
         
         do {
               try mainAppModel.vaultManager.tellaData.deleteServer(serverId: serverId)
+                if currentServer?.slug == "" || currentServer?.slug == nil {
+                    try mainAppModel.vaultManager.tellaData.database?.deleteUwaziLocaleWith(serverId: serverId)
+                }
         } catch {
         }
     }
     
     func deleteAllServersConnection() {
         do {
-            try mainAppModel.vaultManager.tellaData.deleteAllServers()
+            _ = try mainAppModel.vaultManager.tellaData.deleteAllServers()
         } catch {
         }
     }

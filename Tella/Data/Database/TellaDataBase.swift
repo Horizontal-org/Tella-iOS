@@ -37,7 +37,11 @@ class TellaDataBase: UwaziServerLanguageProtocol {
             switch oldVersion {
             case 0:
                 createTables()
-                
+               // alterTable()
+            case 1:
+                alterTable()
+                createTables()
+
             default :
                 break
             }
@@ -57,6 +61,9 @@ class TellaDataBase: UwaziServerLanguageProtocol {
     }
     
     func update() {
+    }
+    func alterTable() {
+        statementBuilder.alterTable(tableName: D.tUwaziServerLanguage, column: cddl(D.cTitle,D.integer, true, 1))
     }
     
     func createServerTable() {
@@ -550,6 +557,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
             cddl(D.cLocaleId, D.integer, primaryKey: true, autoIncrement: true),
             cddl(D.cServerId, D.integer),
             cddl(D.cLocale, D.text),
+           cddl(D.cTitle, D.integer),
         ]
         statementBuilder.createTable(tableName: D.tUwaziServerLanguage, columns: columns)
     }
@@ -557,7 +565,8 @@ class TellaDataBase: UwaziServerLanguageProtocol {
     func addUwaziLocaleWith(locale: UwaziLocale) throws -> Int {
         return try statementBuilder.insertInto(tableName: D.tUwaziServerLanguage, keyValue: [
             KeyValue(key: D.cLocale, value: locale.locale),
-            KeyValue(key: D.cServerId, value: locale.serverId)
+            KeyValue(key: D.cServerId, value: locale.serverId),
+            KeyValue(key: D.cTitle, value: locale.title)
         ])
     }
 

@@ -68,7 +68,8 @@ struct ServerSelectionView: View {
                         navigateTo(destination: AddServerURLView(appModel: mainAppModel))
                     } else if isUwaziSelected {
                         navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel)
-                            .environmentObject(serverViewModel).environmentObject(serversViewModel))
+                            .environmentObject(serverViewModel)
+                            .environmentObject(serversViewModel))
                     } else {
 
                     }
