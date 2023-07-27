@@ -557,7 +557,6 @@ class TellaDataBase: UwaziServerLanguageProtocol {
             cddl(D.cLocaleId, D.integer, primaryKey: true, autoIncrement: true),
             cddl(D.cServerId, D.integer),
             cddl(D.cLocale, D.text),
-           cddl(D.cTitle, D.integer),
         ]
         statementBuilder.createTable(tableName: D.tUwaziServerLanguage, columns: columns)
     }
@@ -566,7 +565,6 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         return try statementBuilder.insertInto(tableName: D.tUwaziServerLanguage, keyValue: [
             KeyValue(key: D.cLocale, value: locale.locale),
             KeyValue(key: D.cServerId, value: locale.serverId),
-            KeyValue(key: D.cTitle, value: locale.title)
         ])
     }
 
@@ -590,9 +588,8 @@ class TellaDataBase: UwaziServerLanguageProtocol {
     }
 
     func deleteUwaziLocaleWith(serverId : Int) throws {
-         try statementBuilder.delete(tableName: D.tUwaziServerLanguage,
+        statementBuilder.delete(tableName: D.tUwaziServerLanguage,
                                          primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
-         try statementBuilder.delete(tableName: D.tUwaziServerLanguage, primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
     }
 
     func deleteAllUwaziLocale() throws -> Int {
