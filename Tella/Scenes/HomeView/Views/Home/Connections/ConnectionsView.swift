@@ -26,9 +26,9 @@ struct ConnectionsView: View {
     }
     
     var serversView: some View {
-        //        ScrollView(.horizontal, showsIndicators: false) {
-        serverItems
-        //        }
+        ScrollView(.horizontal, showsIndicators: false) {
+            serverItems
+        }
     }
     
     @ViewBuilder
@@ -44,7 +44,7 @@ struct ConnectionsView: View {
                                         destination: ReportsView(mainAppModel: appModel))
                 case .uwazi:
                     ConnectionsItemView(title: "Uwazi",
-                                        image: "home.report",
+                                        image: "home.uwazi",
                                         destination: ReportsView(mainAppModel: appModel))
                 default:
                     ConnectionsItemView(title: LocalizableReport.reportsTitle.localized,
