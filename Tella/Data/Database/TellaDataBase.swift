@@ -19,11 +19,12 @@ protocol UwaziServerLanguageProtocol {
 
 class TellaDataBase: UwaziServerLanguageProtocol {
     
-    var dataBaseHelper : DataBaseHelper
-    var statementBuilder : SQLiteStatementBuilder
+    private var dataBaseHelper : DataBaseHelper
+    private var statementBuilder : SQLiteStatementBuilder
     
     init(key: String?) {
-        
+
+        // TODO: inject these thing to the class of that
         dataBaseHelper = DataBaseHelper()
         dataBaseHelper.openDatabases(key: key)
         statementBuilder = SQLiteStatementBuilder(dbPointer: dataBaseHelper.dbPointer)
@@ -553,8 +554,9 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         statementBuilder.delete(tableName: D.tReport,
                                 primarykeyValue: reportCondition)
     }
-    // MARK: CRUD operation for Language table for Uwazu
-    // TODO: Add these thing to a new class and set a protocol for abstraction
+    // MARK: CRUD operation for Language table for Uwazi
+    // TODO: Add these thing to a new class and set a protocol decoupling the dependencies
+    // TODO: Move this fuctions to TellaData for abstraction if needed
     func createLanguageTableForUwazi() {
         let columns = [
             cddl(D.cLocaleId, D.integer, primaryKey: true, autoIncrement: true),
