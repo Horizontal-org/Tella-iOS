@@ -10,3 +10,7 @@ enum ServerType: String {
     case tellaUpload = "TELLA_UPLOAD"
     case uwazi = "UWAZI"
 }
+enum ServerConnectionType: Int {
+    case tella = 0
+    case uwazi = 1
+}

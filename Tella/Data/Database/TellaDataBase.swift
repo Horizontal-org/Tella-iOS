@@ -37,7 +37,9 @@ class TellaDataBase: UwaziServerLanguageProtocol {
             switch oldVersion {
             case 0:
                 createTables()
-                
+            case 1:
+                alterTable()
+
             default :
                 break
             }
@@ -54,6 +56,9 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         createReportTable()
         createReportFilesTable()
         createLanguageTableForUwazi()
+    }
+    func alterTable() {
+        statementBuilder.alterTable(tableName: D.tServer, column: cddl(D.cServerType,D.integer, true, ServerConnectionType.tella.rawValue))
     }
     
     func update() {
@@ -74,7 +79,8 @@ class TellaDataBase: UwaziServerLanguageProtocol {
             cddl(D.cSlug, D.text),
             cddl(D.cAutoUpload, D.integer),
             cddl(D.cAutoDelete, D.integer),
-            cddl(D.cServerType, D.text)]
+            cddl(D.cServerType, D.integer)
+        ]
         
         statementBuilder.createTable(tableName: D.tServer, columns: columns)
     }
@@ -125,7 +131,8 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                            KeyValue(key: D.cSlug, value: server.slug),
                            KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1),
                            KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1),
-                           KeyValue(key: D.cServerType, value:server.serverType)]
+                           KeyValue(key: D.cServerType, value:server.serverType)
+        ]
         
         return try statementBuilder.insertInto(tableName: D.tServer,
                                                keyValue: valuesToAdd)
@@ -613,6 +620,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         let slug = dictionnary[D.cSlug] as? String
         let autoUpload = dictionnary[D.cAutoUpload] as? Int
         let autoDelete = dictionnary[D.cAutoDelete] as? Int
+        let servertType = dictionnary[D.cServerType] as? Int
         
         return Server(id:id,
                       name: name,
@@ -625,7 +633,9 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                       projectId: apiProjectId,
                       slug:slug,
                       autoUpload: autoUpload == 0 ? false : true,
-                      autoDelete: autoDelete == 0 ? false : true)
+                      autoDelete: autoDelete == 0 ? false : true,
+                      serverType: servertType
+        )
         
     }
     

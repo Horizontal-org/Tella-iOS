@@ -95,7 +95,8 @@ class UwaziServerViewModel: ObservableObject {
                             slug: "",
                             autoUpload: autoUpload,
                             autoDelete: autoDelete,
-                            serverType: "UWAZI")
+                            serverType: ServerConnectionType.uwazi.rawValue
+        )
 
         do {
             dump(server)

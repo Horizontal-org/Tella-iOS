@@ -18,7 +18,7 @@ class Server : Hashable {
     var slug : String?
     var autoUpload: Bool?
     var autoDelete: Bool?
-    var serverType: String?
+    var serverType: Int?
 
     init(id: Int? = nil,
          name: String? = nil,
@@ -31,8 +31,8 @@ class Server : Hashable {
          projectId: String? = nil,
          slug: String? = nil,
          autoUpload: Bool?,
-         autoDelete: Bool,
-         serverType: String? = nil
+         autoDelete: Bool ,
+         serverType: Int? = nil
         ) {
         self.id = id
         self.name = name

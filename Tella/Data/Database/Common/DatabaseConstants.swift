@@ -12,7 +12,7 @@ struct D {
     
     /* DATABASE VERSIO */
 
-    static let databaseVersion = 1
+    static let databaseVersion = 2
 
     /* DEFAULT TYPES FOR DATABASE */
     static let integer = " INTEGER "
