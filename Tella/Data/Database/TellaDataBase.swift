@@ -575,25 +575,20 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziServerLanguage,
                                                          andCondition: [KeyValue(key: D.cServerId, value: serverId)])
         guard let locale = serversDict.first else { return nil }
-        let data = try JSONSerialization.data(withJSONObject: locale)
-        let locales = try JSONDecoder().decode(UwaziLocale.self, from: data)
-        return locales
+        return try self.parseDicToObjectOf(type: UwaziLocale.self, dic: locale)
     }
     func getAllUwaziLocale() throws -> [UwaziLocale] {
         let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziServerLanguage,
                                                          andCondition: [])
         if !serversDict.isEmpty {
-            let data = try JSONSerialization.data(withJSONObject: serversDict)
-            let locales = try JSONDecoder().decode([UwaziLocale].self, from: data)
-            return locales
+            return try self.parseDicToObjectOf(type: [UwaziLocale].self, dic: serversDict)
         }
         return []
     }
 
     func deleteUwaziLocaleWith(serverId : Int) throws {
-         try statementBuilder.delete(tableName: D.tUwaziServerLanguage,
+        statementBuilder.delete(tableName: D.tUwaziServerLanguage,
                                          primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
-         try statementBuilder.delete(tableName: D.tUwaziServerLanguage, primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
     }
 
     func deleteAllUwaziLocale() throws -> Int {
@@ -660,6 +655,13 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                       vaultFiles: getVaultFiles(reportID: reportID),
                       apiID: apiReportId,
                       currentUpload: currentUpload == 0 ? false : true)
+    }
+}
+extension TellaDataBase {
+    func parseDicToObjectOf<T:Codable>(type: T.Type, dic: Any) throws -> T {
+        let data = try JSONSerialization.data(withJSONObject: dic)
+        let decodedValues = try JSONDecoder().decode(T.self, from: data)
+        return decodedValues
     }
 }
 
