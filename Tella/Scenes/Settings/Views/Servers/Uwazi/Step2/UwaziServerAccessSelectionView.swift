@@ -81,7 +81,6 @@ struct UwaziServerAccessSelectionView: View {
                 } else {
                     self.isLoginSelected = true
                 }
-                serverViewModel.selectedLanguage
             }
 
         }

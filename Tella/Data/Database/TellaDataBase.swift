@@ -568,6 +568,16 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         ])
     }
 
+    func updateLocale(localeId: Int, locale: String) throws -> Int {
+
+        let valuesToUpdate = [KeyValue(key: D.cLocale, value: locale)]
+
+        let serverCondition = [KeyValue(key: D.cLocaleId, value: localeId)]
+        return try statementBuilder.update(tableName: D.tUwaziServerLanguage,
+                                           keyValue: valuesToUpdate,
+                                           primarykeyValue: serverCondition)
+    }
+
     func getUwaziLocaleWith(serverId: Int) throws -> UwaziLocale? {
         let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziServerLanguage,
                                                          andCondition: [KeyValue(key: D.cServerId, value: serverId)])
