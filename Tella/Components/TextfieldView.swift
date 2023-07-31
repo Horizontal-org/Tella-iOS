@@ -46,7 +46,7 @@ struct TextfieldView : View {
                     }
 
                 // Textfield
-                if fieldType == .password {
+                if fieldType == .password || fieldType == .code {
                     passwordTextfieldView
                 } else {
                     textfieldView
@@ -142,6 +142,8 @@ struct TextfieldView : View {
         case .password:
             self.isValid = value.passwordValidator()
             
+        case .code:
+            self.isValid = value.codeValidator()
         }
         self.shouldShowError = false
     }
@@ -177,4 +179,5 @@ enum FieldType {
     case username
     case text
     case password
+    case code
 }

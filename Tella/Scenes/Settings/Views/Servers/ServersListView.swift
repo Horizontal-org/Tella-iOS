@@ -10,6 +10,7 @@ struct ServersListView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
     @EnvironmentObject var sheetManager: SheetManager
     @EnvironmentObject var mainAppModel : MainAppModel
+    @EnvironmentObject var settingViewModel : SettingsViewModel
     
     @State var shouldShowEditServer : Bool = false
     

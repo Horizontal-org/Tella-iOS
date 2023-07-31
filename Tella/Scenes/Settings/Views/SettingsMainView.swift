@@ -76,7 +76,6 @@ struct SettingsMainView: View {
             .environmentObject(settingsViewModel)
     }
 }
-
 struct SettingsMainView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsMainView(appModel: MainAppModel.stub())

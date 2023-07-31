@@ -170,8 +170,6 @@ class ServerViewModel: ObservableObject {
             backgroundUpload = server.backgroundUpload ?? false
             autoUpload = server.autoUpload ?? false
             autoDelete = server.autoDelete ?? false
-
-
         }
     }
     

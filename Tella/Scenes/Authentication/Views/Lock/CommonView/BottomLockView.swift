@@ -18,19 +18,20 @@ struct BottomLockView<Destination:View>:View {
     var nextButtonAction: NextButtonAction
     var destination: Destination?
     var shouldHideNext : Bool = false
+    var shouldHideBack: Bool = false
     var nextAction : (() -> Void)?
     var backAction : (() -> Void)?
     
     var body: some View {
         HStack {
-             
-            BottomButtonActionView(title: LocalizableLock.actionBack.localized, isValid: shouldEnableBackButton) {
-                self.backAction?()
-                self.presentationMode.wrappedValue.dismiss()
+            if !shouldHideBack{
+                BottomButtonActionView(title: LocalizableLock.actionBack.localized, isValid: true) {
+                    self.backAction?()
+                    self.presentationMode.wrappedValue.dismiss()
+
+                }
             }
-            
             Spacer()
-            
             if !shouldHideNext {
                 BottomButtonActionView(title: LocalizableLock.actionNext.localized,isValid: isValid) {
                     self.nextAction?()

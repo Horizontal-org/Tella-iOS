@@ -25,6 +25,7 @@ struct D {
     
     static let tServer = "t_server"
     static let tReport = "t_report"
+    static let tUwaziServerLanguage = "t_uwazi_server_language"
     static let tReportInstanceVaultFile = "t_report_instance_vault_file";
 
     /* DATABASE COLUMNS */
@@ -63,6 +64,10 @@ struct D {
     static let cBytesSent = "c_bytes_Sent"
     static let cCreatedDate = "c_created_date"
     static let cUpdatedDate = "c_upated_date"
+
+    static let cLocale = "c_locale"
+    static let cLocaleId = "c_locale_id"
+
 }
 
 
