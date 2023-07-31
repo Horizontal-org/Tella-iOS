@@ -290,6 +290,9 @@
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
 		379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */; };
 		89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */; };
+		CC387D5C2A7857DD00853F2E /* UwaziViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC387D5B2A7857DD00853F2E /* UwaziViewModel.swift */; };
+		CC387D5E2A785B3200853F2E /* ReportsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC387D5D2A785B3200853F2E /* ReportsPageView.swift */; };
+		CC43D9E12A72F8260030192E /* UwaziView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC43D9E02A72F8260030192E /* UwaziView.swift */; };
 		CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */; };
 		CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */; };
 		CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */; };
@@ -669,6 +672,9 @@
 		83BA47B1A745C8D086B482FE /* libPods-Tella-TellaUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella-TellaUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tella.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TellaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC387D5B2A7857DD00853F2E /* UwaziViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziViewModel.swift; sourceTree = "<group>"; };
+		CC387D5D2A785B3200853F2E /* ReportsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsPageView.swift; sourceTree = "<group>"; };
+		CC43D9E02A72F8260030192E /* UwaziView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziView.swift; sourceTree = "<group>"; };
 		CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableReport.swift; sourceTree = "<group>"; };
 		CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationBottomSheet.swift; sourceTree = "<group>"; };
 		CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCheckboxItem.swift; sourceTree = "<group>"; };
@@ -1613,6 +1619,7 @@
 		12D7F5F52743F28700EBA3A2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				CC387D572A781A5000853F2E /* Reports */,
 				122E4D53291AD99A00562EB1 /* TellaButton */,
 				1272F25A27C919E40054F2E2 /* ImportFilesProgressView */,
 				0E99854E266E56A80019FDF4 /* Widgets */,
@@ -1742,6 +1749,31 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		CC387D572A781A5000853F2E /* Reports */ = {
+			isa = PBXGroup;
+			children = (
+				CC387D5D2A785B3200853F2E /* ReportsPageView.swift */,
+			);
+			path = Reports;
+			sourceTree = "<group>";
+		};
+		CC387D5A2A7857C900853F2E /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CC387D5B2A7857DD00853F2E /* UwaziViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		CC43D9DF2A72F7FB0030192E /* Uwazi */ = {
+			isa = PBXGroup;
+			children = (
+				CC387D5A2A7857C900853F2E /* ViewModel */,
+				CC43D9E02A72F8260030192E /* UwaziView.swift */,
+			);
+			path = Uwazi;
+			sourceTree = "<group>";
+		};
 		D50FA6812613ABC900D6D63B /* VaultManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -1754,6 +1786,7 @@
 		D53B76DA2601C9E50001CD34 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				CC43D9DF2A72F7FB0030192E /* Uwazi */,
 				D5D5696C262747E100C45416 /* MainView.swift */,
 				12781F4827EA28D600FE9609 /* ContentView */,
 				12567FED2716B24700A2D356 /* Authentication */,
@@ -2287,8 +2320,10 @@
 				1233007A28E3115500B8F7BA /* Request.swift in Sources */,
 				121C5D7D2942710600A64123 /* ProjectAPI.swift in Sources */,
 				1291F4F627B54300006A34D3 /* AudioPlayer.swift in Sources */,
+				CC387D5C2A7857DD00853F2E /* UwaziViewModel.swift in Sources */,
 				12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */,
 				128B929927D796E800E92ACF /* FolderListView.swift in Sources */,
+				CC387D5E2A785B3200853F2E /* ReportsPageView.swift in Sources */,
 				126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */,
 				0E64C6A6265E7625005A7934 /* ActionListBottomSheet.swift in Sources */,
 				D5077A40260D300600D72947 /* DebugLogging.swift in Sources */,
@@ -2405,6 +2440,7 @@
 				127C155827DA486A009EC15B /* TransitionView.swift in Sources */,
 				1204520028C7AC2800D572A7 /* ServerActionType.swift in Sources */,
 				12776A9827BAC87A00CDC5DC /* CameraViewModel.swift in Sources */,
+				CC43D9E12A72F8260030192E /* UwaziView.swift in Sources */,
 				12781F4627EA10AA00FE9609 /* LoginManager.swift in Sources */,
 				1256A33929490A7A00FE2B5C /* FileInfos.swift in Sources */,
 				121C5D7929422DF400A64123 /* DomainModel.swift in Sources */,

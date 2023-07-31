@@ -6,6 +6,7 @@ import Foundation
 
 public enum Pages: Hashable {
     
+    case templates
     case draft
     case outbox
     case submitted
@@ -13,6 +14,8 @@ public enum Pages: Hashable {
     var title: String {
         switch self {
             
+        case .templates:
+            return "Templates"
         case .draft:
             return "Drafts"
         case .outbox:
@@ -30,6 +33,8 @@ public enum Pages: Hashable {
             return 1
         case .submitted:
             return 2
+        case .templates:
+            return 3
         }
     }
     
@@ -41,6 +46,8 @@ public enum Pages: Hashable {
             return .outbox
         case 2:
             return .submitted
+        case 3:
+            return .templates
         default:
             return .draft
         }
