@@ -58,6 +58,9 @@ struct UwaziView: View {
                         Spacer()
                     }
                     
+                    AddFileYellowButton(action: {
+                        // this should navigate to download template
+                    })
                             
                     }.background(Styles.Colors.backgroundMain)
                     .padding(EdgeInsets(top: 15, leading: 20, bottom: 16, trailing: 20))
