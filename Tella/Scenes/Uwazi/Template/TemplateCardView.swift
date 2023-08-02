@@ -41,8 +41,9 @@ struct TemplateCardView: View {
     }
 }
 
-//struct TemplateCardView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        TemplateCardView()
-//    }
-//}
+struct TemplateCardView_Previews: PreviewProvider {
+    @State static var template: UwaziTemplateRow = UwaziTemplateRow(id: "1", name: "Sample Template", properties: nil, commonProperties: nil, v: 1, defaultVal: true, color: "blue")
+    static var previews: some View {
+        TemplateCardView(template: $template)
+    }
+}

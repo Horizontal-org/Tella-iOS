@@ -19,7 +19,8 @@ struct TemplateListView: View {
                     VStack(alignment: .center, spacing: 0) {
                         Text("These are uwazi templates you can fil out.")
                             .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                            .foregroundColor(.white)
+                            .foregroundColor(.white.opacity(0.64))
+                            .padding(.all, 14)
                         ForEach($templateArray, id: \.self) { template in
                             TemplateCardView(template: template)
                         }
@@ -32,8 +33,9 @@ struct TemplateListView: View {
     }
 }
 
-//struct TemplateListView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        TemplateListView()
-//    }
-//}
+struct TemplateListView_Previews: PreviewProvider {
+    @State static var templates: [UwaziTemplateRow] = []
+    static var previews: some View {
+        TemplateListView(templateArray: $templates, message: "")
+    }
+}
