@@ -298,7 +298,6 @@
 		CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */; };
 		CCD586BD2A798E8D00014F87 /* UwaziTemplateResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586BC2A798E8D00014F87 /* UwaziTemplateResults.swift */; };
 		CCD586C22A7AB28200014F87 /* TemplateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586C12A7AB28200014F87 /* TemplateListView.swift */; };
-		CCD586C52A7AB33D00014F87 /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586C42A7AB33D00014F87 /* Template.swift */; };
 		CCD586C72A7ABDE800014F87 /* TemplateCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586C62A7ABDE800014F87 /* TemplateCardView.swift */; };
 		CCD586CD2A7AD94B00014F87 /* ReportCardDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586CC2A7AD94B00014F87 /* ReportCardDetail.swift */; };
 		CCD586CF2A7AD9E400014F87 /* MoreButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586CE2A7AD9E400014F87 /* MoreButtonView.swift */; };
@@ -686,7 +685,6 @@
 		CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCheckboxItem.swift; sourceTree = "<group>"; };
 		CCD586BC2A798E8D00014F87 /* UwaziTemplateResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTemplateResults.swift; sourceTree = "<group>"; };
 		CCD586C12A7AB28200014F87 /* TemplateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateListView.swift; sourceTree = "<group>"; };
-		CCD586C42A7AB33D00014F87 /* Template.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Template.swift; sourceTree = "<group>"; };
 		CCD586C62A7ABDE800014F87 /* TemplateCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCardView.swift; sourceTree = "<group>"; };
 		CCD586CC2A7AD94B00014F87 /* ReportCardDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCardDetail.swift; sourceTree = "<group>"; };
 		CCD586CE2A7AD9E400014F87 /* MoreButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreButtonView.swift; sourceTree = "<group>"; };
@@ -1038,13 +1036,6 @@
 			path = Password;
 			sourceTree = "<group>";
 		};
-		122DBE022A5C21C000D6561A /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group";
-			sourceTree = "<group>";
-		};
 		122E4D53291AD99A00562EB1 /* TellaButton */ = {
 			isa = PBXGroup;
 			children = (
@@ -1087,7 +1078,6 @@
 		1231A45B294C76990057DA85 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				CCD586C32A7AB30C00014F87 /* Uwazi */,
 				121C5D7829422DF400A64123 /* DomainModel.swift */,
 				1231A45C294C771E0057DA85 /* Report */,
 			);
@@ -1656,7 +1646,6 @@
 				122389B2293630DA0058593B /* SaveSuccessView.swift */,
 				CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */,
 				12234BDF29DAEC4A00D6F981 /* CustomNavigation.swift */,
-				122DBE022A5C21C000D6561A /* New Group */,
 				12603DAB2A56C72900FB1492 /* ToastView.swift */,
 				122DBE002A5C1E0500D6561A /* Toast.swift */,
 			);
@@ -1797,14 +1786,6 @@
 				CCD586C62A7ABDE800014F87 /* TemplateCardView.swift */,
 			);
 			path = Template;
-			sourceTree = "<group>";
-		};
-		CCD586C32A7AB30C00014F87 /* Uwazi */ = {
-			isa = PBXGroup;
-			children = (
-				CCD586C42A7AB33D00014F87 /* Template.swift */,
-			);
-			path = Uwazi;
 			sourceTree = "<group>";
 		};
 		CCD586C92A7AD85400014F87 /* Card */ = {
@@ -2516,7 +2497,6 @@
 				12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */,
 				125AAD3129534259002194D6 /* UploadProgressInfo.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */,
-				CCD586C52A7AB33D00014F87 /* Template.swift in Sources */,
 				D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */,
 				127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */,
 				12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */,
