@@ -83,8 +83,8 @@ struct UwaziView: View {
 
 }
 
-//struct UwaziView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        UwaziView(mainAppModel: MainAppModel.stub(), server: )
-//    }
-//}
+struct UwaziView_Previews: PreviewProvider {
+    static var previews: some View {
+        UwaziView(mainAppModel: MainAppModel.stub(), server: Server(autoUpload: false, autoDelete: false) )
+    }
+}
