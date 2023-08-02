@@ -7,12 +7,13 @@
 //
 
 import Foundation
+import Combine
 
 class UwaziReportsViewModel: ObservableObject {
     
     var mainAppModel : MainAppModel
     
-    @Published var templates : [Report] = []
+    @Published var templates : [UwaziTemplateRow] = []
     @Published var draftReports : [Report] = []
     @Published var outboxedReports : [Report] = []
     @Published var submittedReports : [Report] = []
@@ -25,6 +26,13 @@ class UwaziReportsViewModel: ObservableObject {
         PageViewItem(title: LocalizableReport.submittedTitle.localized, page: .submitted, number: "")
     ]
     
+    @Published var isLoading: Bool = false
+    @Published var serverURL : String = "https://"
+    @Published var serverName : String
+    
+    var subscribers = Set<AnyCancellable>()
+    
+    
     var sheetItems : [ListActionSheetItem] { return [
         
         ListActionSheetItem(imageName: "view-icon",
@@ -36,11 +44,37 @@ class UwaziReportsViewModel: ObservableObject {
     ]}
     
     
-    init(mainAppModel : MainAppModel) {
+    init(mainAppModel : MainAppModel, server: Server) {
         
         self.mainAppModel = mainAppModel
+        dump(server)
+        self.serverURL = server.url ?? ""
+        self.serverName = server.name ?? ""
+        self.getTemplates()
     }
     
-
+    
+    func getTemplates() -> Void {
+        isLoading = true
+        guard let baseUrl = serverURL.getBaseURL() else { return}
+        UwaziServerRepository().getTemplates(serverURL: baseUrl)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                self.isLoading = false
+                
+                switch completion {
+                case .finished:
+                    print("Finished")
+                case .failure( _):
+                    self.isLoading = false
+                }
+            }, receiveValue: { wrapper in
+                self.isLoading = false
+                
+                self.templates = wrapper.rows ?? []
+                
+                
+            }).store(in: &subscribers)
+    }
     
 }

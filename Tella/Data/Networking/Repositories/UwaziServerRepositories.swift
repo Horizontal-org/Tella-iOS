@@ -42,6 +42,11 @@ struct UwaziServerRepository: WebRepository {
         let call :  AnyPublisher<UwaziLanguageResult, APIError> = call(endpoint: API.getLanguage(serverURL: serverURL))
         return call.eraseToAnyPublisher()
     }
+    
+    func getTemplates(serverURL: String) -> AnyPublisher<UwaziTemplateResult, APIError> {
+        let call : AnyPublisher<UwaziTemplateResult, APIError> = call(endpoint: API.getTemplates(serverURL: serverURL))
+        return call.eraseToAnyPublisher()
+    }
 
     func getProjetDetails(projectURL: String,token: String) -> AnyPublisher<ProjectAPI, APIError> {
 
@@ -66,6 +71,7 @@ extension UwaziServerRepository {
                                       password: String,
                                       token: String,
                                       serverURL: String))
+        case getTemplates(serverURL: String)
     }
 }
 
@@ -77,7 +83,7 @@ extension UwaziServerRepository.API: APIRequest {
             return nil
         case .getProjetDetails((_, let token)):
             return token
-        case .checkURL, .getLanguage:
+        case .checkURL, .getLanguage, .getTemplates:
             return nil
         }
     }
@@ -98,7 +104,7 @@ extension UwaziServerRepository.API: APIRequest {
                 "password": password,
                 "token": token
             ]
-        case .checkURL, .getLanguage:
+        case .checkURL, .getLanguage, .getTemplates:
             return nil
         }
     }
@@ -109,7 +115,7 @@ extension UwaziServerRepository.API: APIRequest {
             return serverURL
         case .getProjetDetails((let projectURL, _)):
             return projectURL
-        case .checkURL(serverURL: let serverURL) ,.getLanguage(serverURL: let serverURL):
+        case .checkURL(serverURL: let serverURL) ,.getLanguage(serverURL: let serverURL), .getTemplates(serverURL: let serverURL):
             return serverURL
         }
     }
@@ -124,6 +130,8 @@ extension UwaziServerRepository.API: APIRequest {
             return "/api/settings"
         case .getLanguage:
             return "/api/translations"
+        case .getTemplates:
+            return "/api/templates"
         }
     }
 
@@ -133,7 +141,7 @@ extension UwaziServerRepository.API: APIRequest {
             return HTTPMethod.post
         case .getProjetDetails(_):
             return HTTPMethod.get
-        case .checkURL, .getLanguage:
+        case .checkURL, .getLanguage, .getTemplates:
             return HTTPMethod.get
         }
     }

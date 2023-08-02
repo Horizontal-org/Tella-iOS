@@ -13,8 +13,11 @@ struct UwaziView: View {
     @StateObject private var uwaziReportsViewModel : UwaziReportsViewModel
     @EnvironmentObject var sheetManager : SheetManager
     
-    init(mainAppModel: MainAppModel) {
-        _uwaziReportsViewModel = StateObject(wrappedValue: UwaziReportsViewModel(mainAppModel: mainAppModel))
+    let server : Server
+    
+    init(mainAppModel: MainAppModel, server: Server) {
+        _uwaziReportsViewModel = StateObject(wrappedValue: UwaziReportsViewModel(mainAppModel: mainAppModel, server: server))
+        self.server = server
     }
     var body: some View {
         contentView
@@ -25,15 +28,43 @@ struct UwaziView: View {
     private var contentView :some View {
             
             ContainerView {
-                ReportsPageView(
-                    selectedCell: $uwaziReportsViewModel.selectedCell,
-                    pageViewItems: $uwaziReportsViewModel.pageViewItems,
-                    draftReports: $uwaziReportsViewModel.draftReports,
-                    outboxedReports: $uwaziReportsViewModel.outboxedReports,
-                    submittedReports: $uwaziReportsViewModel.submittedReports,
-                    navigateToAction: {  }
-                )
+                VStack(alignment: .center) {
+                            
+                    PageView(selectedOption: $uwaziReportsViewModel.selectedCell, pageViewItems: $uwaziReportsViewModel.pageViewItems)
+                        .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
+                            
+                    VStack (spacing: 0) {
+                        Spacer()
+                                    
+                        switch uwaziReportsViewModel.selectedCell {
+                        
+                        case .templates:
+                            TemplateListView(templateArray: $uwaziReportsViewModel.templates,
+                                           message: "Templates")
+                        case .draft:
+                            ReportListView(reportArray: $uwaziReportsViewModel.draftReports,
+                                           message: LocalizableReport.reportsDraftEmpty.localized)
+                                        
+                        case .outbox:
+                                        
+                            ReportListView(reportArray: $uwaziReportsViewModel.outboxedReports,
+                                           message: LocalizableReport.reportsOutboxEmpty.localized)
+                                        
+                        case .submitted:
+                            ReportListView(reportArray: $uwaziReportsViewModel.submittedReports,
+                                           message: LocalizableReport.reportsSubmitedEmpty.localized)
+                        }
+                                    
+                        Spacer()
+                    }
+                    
+                            
+                    }.background(Styles.Colors.backgroundMain)
+                    .padding(EdgeInsets(top: 15, leading: 20, bottom: 16, trailing: 20))
             }
+            .onAppear(perform: {
+                uwaziReportsViewModel.getTemplates()
+            })
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: backButton)
                 
@@ -52,8 +83,8 @@ struct UwaziView: View {
 
 }
 
-struct UwaziView_Previews: PreviewProvider {
-    static var previews: some View {
-        UwaziView(mainAppModel: MainAppModel.stub())
-    }
-}
+//struct UwaziView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        UwaziView(mainAppModel: MainAppModel.stub(), server: )
+//    }
+//}
