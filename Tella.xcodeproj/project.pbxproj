@@ -2729,6 +2729,7 @@
 				12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */,
 				125AAD3129534259002194D6 /* UploadProgressInfo.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */,
+				CCD586C52A7AB33D00014F87 /* Template.swift in Sources */,
 				D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */,
 				127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */,
 				12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */,

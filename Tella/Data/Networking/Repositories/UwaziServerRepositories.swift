@@ -72,6 +72,11 @@ class UwaziServerRepository: WebRepository {
         let call :  AnyPublisher<UwaziLanguageResult, APIError> = call(endpoint: API.getLanguage(serverURL: serverURL))
         return call.eraseToAnyPublisher()
     }
+    
+    func getTemplates(serverURL: String) -> AnyPublisher<UwaziTemplateResult, APIError> {
+        let call : AnyPublisher<UwaziTemplateResult, APIError> = call(endpoint: API.getTemplates(serverURL: serverURL))
+        return call.eraseToAnyPublisher()
+    }
 
     func getProjetDetails(projectURL: String,token: String) -> AnyPublisher<ProjectAPI, APIError> {
         let apiResponse : APIResponse<ProjectDetailsResult> = getAPIResponse(endpoint: API.getProjetDetails((projectURL: projectURL, token: token)))
@@ -230,6 +235,18 @@ extension UwaziServerRepository.API: APIRequest {
             return nil
         case .getTemplate,.getSetting, .getDictionary, .getTranslations:
             return nil
+        }
+    }
+
+    var headers: [String: String]? {
+        switch self {
+
+        case .login, .getProjetDetails, .checkURL, .getLanguage, .twoFactorAuthentication:
+            return [HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
+        case .getTemplate(_,let cookieList), .getSetting(_,let cookieList), .getDictionary(_,let cookieList), .getTranslations(_,let cookieList):
+            let cookiesString = cookieList.joined(separator: "; ")
+            return ["Cookie": cookiesString,
+                    HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
         }
     }
 

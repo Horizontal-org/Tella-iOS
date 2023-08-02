@@ -8,8 +8,7 @@
 
 import Foundation
 
-
-class UwaziViewModel: ObservableObject {
+class UwaziReportsViewModel: ObservableObject {
     
     var mainAppModel : MainAppModel
 
