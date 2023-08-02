@@ -7,7 +7,9 @@ import Foundation
 import Combine
 
 class TellaData : ObservableObject {
-    
+
+
+    // TODO: Make this private to ensure abstraction
     var database : TellaDataBase?
     
     // Servers

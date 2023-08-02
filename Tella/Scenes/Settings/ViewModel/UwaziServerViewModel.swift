@@ -94,9 +94,12 @@ class UwaziServerViewModel: ObservableObject {
                             projectId: setting?.id,
                             slug: "",
                             autoUpload: autoUpload,
-                            autoDelete: autoDelete)
+                            autoDelete: autoDelete,
+                            serverType: ServerConnectionType.uwazi.rawValue
+        )
 
         do {
+            dump(server)
             let id = try mainAppModel.vaultManager.tellaData.addServer(server: server)
             server.id = id
             self.addUwaziLocaleFor(serverId: id)
