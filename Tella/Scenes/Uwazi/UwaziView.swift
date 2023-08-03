@@ -39,8 +39,8 @@ struct UwaziView: View {
                         switch uwaziReportsViewModel.selectedCell {
                         
                         case .templates:
-                            TemplateListView(templateArray: $uwaziReportsViewModel.templates,
-                                           message: "Templates")
+                            TemplateListView(templateArray: $uwaziReportsViewModel.downloadedTemplates,
+                                             message: "Templates", serverName: server.name ?? "")
                         case .draft:
                             ReportListView(reportArray: $uwaziReportsViewModel.draftReports,
                                            message: LocalizableReport.reportsDraftEmpty.localized)
@@ -60,6 +60,7 @@ struct UwaziView: View {
                     
                     AddFileYellowButton(action: {
                         // this should navigate to download template
+                        navigateTo(destination: AddTemplatesView(templates: $uwaziReportsViewModel.templates, serverName: server.name ?? ""))
                     })
                             
                     }.background(Styles.Colors.backgroundMain)

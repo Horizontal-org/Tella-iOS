@@ -10,6 +10,7 @@ import SwiftUI
 
 struct TemplateCardView: View {
     @Binding var template : UwaziTemplateRow
+    var serverName : String
     @EnvironmentObject var uwaziReportsViewModel : UwaziReportsViewModel
     
     var body: some View {
@@ -24,7 +25,7 @@ struct TemplateCardView: View {
                                 //add this template to favorie
                             })
                             
-                            ReportCardDetail(title: template.name ?? "", subtitle: uwaziReportsViewModel.serverName)
+                            ReportCardDetail(title: template.name ?? "", subtitle: serverName)
                             
                             Spacer()
                             
@@ -44,6 +45,6 @@ struct TemplateCardView: View {
 struct TemplateCardView_Previews: PreviewProvider {
     @State static var template: UwaziTemplateRow = UwaziTemplateRow(id: "1", name: "Sample Template", properties: nil, commonProperties: nil, v: 1, defaultVal: true, color: "blue")
     static var previews: some View {
-        TemplateCardView(template: $template)
+        TemplateCardView(template: $template, serverName: "")
     }
 }

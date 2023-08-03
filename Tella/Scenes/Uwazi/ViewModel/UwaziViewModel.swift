@@ -14,6 +14,7 @@ class UwaziReportsViewModel: ObservableObject {
     var mainAppModel : MainAppModel
     
     @Published var templates : [UwaziTemplateRow] = []
+    @Published var downloadedTemplates : [UwaziTemplateRow] = []
     @Published var draftReports : [Report] = []
     @Published var outboxedReports : [Report] = []
     @Published var submittedReports : [Report] = []
