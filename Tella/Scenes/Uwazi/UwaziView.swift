@@ -40,7 +40,7 @@ struct UwaziView: View {
                         
                         case .templates:
                             TemplateListView(templateArray: $uwaziReportsViewModel.downloadedTemplates,
-                                             message: "Templates", serverName: server.name ?? "")
+                                             message: "You don't have any downloaded templates", serverName: server.name ?? "")
                         case .draft:
                             ReportListView(reportArray: $uwaziReportsViewModel.draftReports,
                                            message: LocalizableReport.reportsDraftEmpty.localized)
@@ -59,8 +59,12 @@ struct UwaziView: View {
                     }
                     
                     AddFileYellowButton(action: {
-                        // this should navigate to download template
-                        navigateTo(destination: AddTemplatesView(templates: $uwaziReportsViewModel.templates, serverName: server.name ?? ""))
+                        navigateTo(destination: AddTemplatesView(
+                            templates: $uwaziReportsViewModel.templates,
+                            downloadedTemplates: $uwaziReportsViewModel.downloadedTemplates,
+                            serverName: server.name ?? "",
+                            downloadTemplateAction: uwaziReportsViewModel.downloadTemplate
+                        ))
                     })
                             
                     }.background(Styles.Colors.backgroundMain)

@@ -78,4 +78,13 @@ class UwaziReportsViewModel: ObservableObject {
             }).store(in: &subscribers)
     }
     
+    func downloadTemplate(template: UwaziTemplateRow) -> Void {
+        isLoading = true
+        
+        downloadedTemplates.append(template)
+        
+        isLoading = false
+        
+    }
+    
 }
