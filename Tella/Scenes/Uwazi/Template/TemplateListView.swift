@@ -11,6 +11,7 @@ import SwiftUI
 struct TemplateListView: View {
     @Binding var templateArray : [UwaziTemplateRow]
     var message : String
+    var serverName : String
     
     var body: some View {
         ZStack {
@@ -22,7 +23,7 @@ struct TemplateListView: View {
                             .foregroundColor(.white.opacity(0.64))
                             .padding(.all, 14)
                         ForEach($templateArray, id: \.self) { template in
-                            TemplateCardView(template: template)
+                            TemplateCardView(template: template, serverName: serverName)
                         }
                     }
                 }
@@ -36,6 +37,6 @@ struct TemplateListView: View {
 struct TemplateListView_Previews: PreviewProvider {
     @State static var templates: [UwaziTemplateRow] = []
     static var previews: some View {
-        TemplateListView(templateArray: $templates, message: "")
+        TemplateListView(templateArray: $templates, message: "", serverName: "")
     }
 }
