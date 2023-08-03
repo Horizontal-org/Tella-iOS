@@ -10,7 +10,10 @@ import SwiftUI
 
 struct AddTemplatesView: View {
     @Binding var templates:[UwaziTemplateRow]
+    @Binding var downloadedTemplates: [UwaziTemplateRow]
     var serverName : String
+    var downloadTemplateAction : (UwaziTemplateRow) -> Void
+
     var body: some View {
         ContainerView {
             VStack(spacing: 0) {
@@ -27,7 +30,17 @@ struct AddTemplatesView: View {
                                 .foregroundColor(.white)
                                 .padding(.all, 14)
                             ForEach(Array(templates.enumerated()), id: \.element) { index, template in
-                                TemplateItemView(template: $templates[index], serverName: serverName)
+                                //move this to a viewModel
+                                let isDownloaded = downloadedTemplates.contains { downloadedTemplate in
+                                        downloadedTemplate.id == template.id
+                                    }
+                                TemplateItemView(
+                                    template: $templates[index],
+                                    serverName: serverName,
+                                    isDownloaded: isDownloaded,
+                                    downloadTemplate:downloadTemplateAction
+                                )
+                                
                                 if index < (templates.count - 1) {
                                     DividerView()
                                 }

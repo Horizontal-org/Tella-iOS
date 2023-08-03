@@ -11,7 +11,8 @@ import SwiftUI
 struct TemplateItemView: View {
     @Binding var template : UwaziTemplateRow
     var serverName : String
-    @EnvironmentObject var uwaziReportsViewModel : UwaziReportsViewModel
+    var isDownloaded : Bool
+    var downloadTemplate : (UwaziTemplateRow) -> Void
     
     var body: some View {
         Button {
@@ -19,6 +20,10 @@ struct TemplateItemView: View {
                 } label: {
                         
                     HStack {
+                        if(isDownloaded) {
+                            Image("report.submitted")
+                                .padding(.leading, 8)
+                        }
                         Text(template.name ?? "")
                             .font(.custom(Styles.Fonts.regularFontName, size: 16))
                             .foregroundColor(.white)
@@ -26,10 +31,16 @@ struct TemplateItemView: View {
                             
                         Spacer()
                             
-                        MoreButtonView(imageName: "template.add", action: {
-                            //add template to download array
-                            print("download template")
-                        })
+                        if(!isDownloaded) {
+                            MoreButtonView(imageName: "template.add", action: {
+                                //add template to download array
+                                downloadTemplate(template)
+                            })
+                        } else {
+                            MoreButtonView(imageName: "reports.more", action: {
+                                // 
+                            })
+                        }
                             
                     }.padding(.all, 8)
                         
