@@ -11,9 +11,9 @@ import SwiftUI
 struct AddTemplatesView: View {
     @Binding var templates:[UwaziTemplateRow]
     @Binding var downloadedTemplates: [UwaziTemplateRow]
-    var serverName : String
     var downloadTemplateAction : (UwaziTemplateRow) -> Void
-
+    @EnvironmentObject var uwaziReportsViewModel: UwaziReportsViewModel
+    
     var body: some View {
         ContainerView {
             VStack(spacing: 0) {
@@ -25,7 +25,7 @@ struct AddTemplatesView: View {
                 if $templates.wrappedValue.count > 0 {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 0) {
-                            Text(serverName)
+                            Text(uwaziReportsViewModel.serverName)
                                 .font(.custom(Styles.Fonts.boldFontName, size: 18))
                                 .foregroundColor(.white)
                                 .padding(.all, 14)
@@ -36,9 +36,9 @@ struct AddTemplatesView: View {
                                     }
                                 TemplateItemView(
                                     template: $templates[index],
-                                    serverName: serverName,
+                                    serverName: uwaziReportsViewModel.serverName,
                                     isDownloaded: isDownloaded,
-                                    downloadTemplate:downloadTemplateAction
+                                    downloadTemplate: downloadTemplateAction
                                 )
                                 
                                 if index < (templates.count - 1) {

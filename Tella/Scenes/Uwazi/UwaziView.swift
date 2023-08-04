@@ -10,15 +10,9 @@ import SwiftUI
 
 struct UwaziView: View {
     @EnvironmentObject var mainAppModel : MainAppModel
-    @StateObject private var uwaziReportsViewModel : UwaziReportsViewModel
     @EnvironmentObject var sheetManager : SheetManager
+    @EnvironmentObject var uwaziReportsViewModel: UwaziReportsViewModel
     
-    let server : Server
-    
-    init(mainAppModel: MainAppModel, server: Server) {
-        _uwaziReportsViewModel = StateObject(wrappedValue: UwaziReportsViewModel(mainAppModel: mainAppModel, server: server))
-        self.server = server
-    }
     var body: some View {
         contentView
             .navigationBarTitle("Uwazi", displayMode: .large)
@@ -40,7 +34,7 @@ struct UwaziView: View {
                         
                         case .templates:
                             TemplateListView(templateArray: $uwaziReportsViewModel.downloadedTemplates,
-                                             message: "You don't have any downloaded templates", serverName: server.name ?? "")
+                                             message: "You don't have any downloaded templates", serverName: uwaziReportsViewModel.serverName)
                         case .draft:
                             ReportListView(reportArray: $uwaziReportsViewModel.draftReports,
                                            message: LocalizableReport.reportsDraftEmpty.localized)
@@ -62,9 +56,8 @@ struct UwaziView: View {
                         navigateTo(destination: AddTemplatesView(
                             templates: $uwaziReportsViewModel.templates,
                             downloadedTemplates: $uwaziReportsViewModel.downloadedTemplates,
-                            serverName: server.name ?? "",
                             downloadTemplateAction: uwaziReportsViewModel.downloadTemplate
-                        ))
+                        ).environmentObject(uwaziReportsViewModel))
                     })
                             
                     }.background(Styles.Colors.backgroundMain)
@@ -93,6 +86,6 @@ struct UwaziView: View {
 
 struct UwaziView_Previews: PreviewProvider {
     static var previews: some View {
-        UwaziView(mainAppModel: MainAppModel.stub(), server: Server(autoUpload: false, autoDelete: false) )
+        UwaziView()
     }
 }
