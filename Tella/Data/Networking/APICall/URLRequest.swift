@@ -27,7 +27,7 @@ extension WebRepository {
         }
     }
     // TODO: Change the name
-    func callNew<Value>(endpoint: any APIRequest) -> AnyPublisher<(Value, HTTPURLResponse?), APIError>
+    func callReturnsHeaders<Value>(endpoint: any APIRequest) -> AnyPublisher<(Value, HTTPURLResponse?), APIError>
     where Value: Decodable {
         let subject = PassthroughSubject<(Value, HTTPURLResponse?), APIError>()
         do {

@@ -14,7 +14,7 @@ struct ServerSelectionView: View {
     @StateObject var serverViewModel : ServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
 
-    @State var istellWebSelected = false
+    @State var istellaWebSelected = false
     @State var isUwaziSelected = false
     @State var showTellaWeb = false
     @State var showUwazi = false
@@ -40,10 +40,10 @@ struct ServerSelectionView: View {
                 TellaButtonView<AnyView>(title: LocalizableSettings.settServerTellaWeb.localized,
                                          nextButtonAction: .action,
                                          isValid: .constant(true),action: {
-                    istellWebSelected = true
+                    istellaWebSelected = true
                     isUwaziSelected = false
                 })
-                .overlay( self.istellWebSelected ?
+                .overlay( self.istellaWebSelected ?
                           RoundedRectangle(cornerRadius: 20)
                     .stroke(.white, lineWidth: 4) : nil
                 ).padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
@@ -51,7 +51,7 @@ struct ServerSelectionView: View {
                 TellaButtonView<AnyView>(title: LocalizableSettings.settServerUwazi.localized,
                                          nextButtonAction: .action,
                                          isValid: .constant(true), action: {
-                    istellWebSelected = false
+                    istellaWebSelected = false
                     isUwaziSelected = true
                 })
                 .overlay( self.isUwaziSelected ? RoundedRectangle(cornerRadius: 20)
@@ -64,11 +64,12 @@ struct ServerSelectionView: View {
                                         shouldHideNext: false,
                                         shouldHideBack: true,
                                         nextAction: {
-                    if istellWebSelected {
+                    if istellaWebSelected {
                         navigateTo(destination: AddServerURLView(appModel: mainAppModel))
                     } else if isUwaziSelected {
                         navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel)
-                            .environmentObject(serverViewModel).environmentObject(serversViewModel))
+                            .environmentObject(serverViewModel)
+                            .environmentObject(serversViewModel))
                     } else {
 
                     }
