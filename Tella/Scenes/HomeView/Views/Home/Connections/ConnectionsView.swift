@@ -26,9 +26,9 @@ struct ConnectionsView: View {
     }
     
     var serversView: some View {
-        //        ScrollView(.horizontal, showsIndicators: false) {
-        serverItems
-        //        }
+        ScrollView(.horizontal, showsIndicators: false) {
+            serverItems
+        }
     }
     
     @ViewBuilder
@@ -38,9 +38,13 @@ struct ConnectionsView: View {
             ForEach(homeViewModel.serverDataItemArray, id: \.self) { server in
                 switch server.serverType {
                     
-                case .tellaUpload:
+                case .tella:
                     ConnectionsItemView(title: LocalizableReport.reportsTitle.localized,
                                         image: "home.report",
+                                        destination: ReportsView(mainAppModel: appModel))
+                case .uwazi:
+                    ConnectionsItemView(title: "Uwazi",
+                                        image: "home.uwazi",
                                         destination: ReportsView(mainAppModel: appModel))
                 default:
                     ConnectionsItemView(title: LocalizableReport.reportsTitle.localized,

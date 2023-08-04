@@ -30,7 +30,15 @@ class SQLiteStatementBuilder {
         return userVersion
         
     }
-    
+
+    func alterTable(tableName: String, column: String) {
+        let sqlExpression = "ALTER TABLE " + tableName + " ADD COLUMN " + column
+        let ret = sqlite3_exec(dbPointer, sqlExpression, nil, nil, nil)
+
+        if (ret != SQLITE_OK) { // corrupt database.
+            logDbErr("Error altering db table - \(tableName)")
+        }
+    }
     func setNewDatabaseVersion(version:Int) throws  {
         
         let sql = ("PRAGMA user_version = \(version)")

@@ -87,11 +87,12 @@ struct UwaziLoginView: View {
         .onAppear {
             if serverViewModel.currentServer != nil {
                 serverViewModel.validCredentials = true
+            } else {
+#if DEBUG
+                serverViewModel.username = "test-uwazi"
+                serverViewModel.password = "test-uwazi"
+#endif
             }
-//#if DEBUG
-//            serverViewModel.username = "admin@wearehorizontal.org"
-//            serverViewModel.password = "nadanada"
-//#endif
         }
     }
 }

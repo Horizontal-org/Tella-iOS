@@ -29,7 +29,7 @@ class ServersViewModel: ObservableObject {
         guard let serverId = self.currentServer?.id else { return  }
         do {
               try mainAppModel.vaultManager.tellaData.deleteServer(serverId: serverId)
-                if currentServer?.slug == "" || currentServer?.slug == nil {
+            if currentServer?.serverType == ServerConnectionType.uwazi.rawValue {
                     try mainAppModel.vaultManager.tellaData.database?.deleteUwaziLocaleWith(serverId: serverId)
                 }
         } catch {

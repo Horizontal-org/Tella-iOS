@@ -69,7 +69,8 @@ class ServerViewModel: ObservableObject {
                             projectId: project.id,
                             slug: project.slug,
                             autoUpload: autoUpload,
-                            autoDelete: autoDelete)
+                            autoDelete: autoDelete,
+                            serverType: ServerConnectionType.tella.rawValue)
         
         do {
             let id = try mainAppModel.vaultManager.tellaData.addServer(server: server)

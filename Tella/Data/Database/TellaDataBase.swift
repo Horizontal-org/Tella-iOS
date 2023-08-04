@@ -19,11 +19,12 @@ protocol UwaziServerLanguageProtocol {
 
 class TellaDataBase: UwaziServerLanguageProtocol {
     
-    var dataBaseHelper : DataBaseHelper
-    var statementBuilder : SQLiteStatementBuilder
+    private var dataBaseHelper : DataBaseHelper
+    private var statementBuilder : SQLiteStatementBuilder
     
     init(key: String?) {
-        
+
+        // TODO: inject these thing to the class of that
         dataBaseHelper = DataBaseHelper()
         dataBaseHelper.openDatabases(key: key)
         statementBuilder = SQLiteStatementBuilder(dbPointer: dataBaseHelper.dbPointer)
@@ -37,6 +38,8 @@ class TellaDataBase: UwaziServerLanguageProtocol {
             switch oldVersion {
             case 0:
                 createTables()
+            case 1:
+                alterTable()
             default :
                 break
             }
@@ -53,6 +56,9 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         createReportTable()
         createReportFilesTable()
         createLanguageTableForUwazi()
+    }
+    func alterTable() {
+        statementBuilder.alterTable(tableName: D.tServer, column: cddl(D.cServerType,D.integer, true, ServerConnectionType.tella.rawValue))
     }
     
     func update() {
@@ -72,7 +78,9 @@ class TellaDataBase: UwaziServerLanguageProtocol {
             cddl(D.cApiProjectId, D.text),
             cddl(D.cSlug, D.text),
             cddl(D.cAutoUpload, D.integer),
-            cddl(D.cAutoDelete, D.integer) ]
+            cddl(D.cAutoDelete, D.integer),
+            cddl(D.cServerType, D.integer)
+        ]
         
         statementBuilder.createTable(tableName: D.tServer, columns: columns)
     }
@@ -111,6 +119,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
     }
     
     func addServer(server : Server) throws -> Int {
+        dump(server)
         let valuesToAdd = [KeyValue(key: D.cName, value: server.name),
                            KeyValue(key: D.cURL, value: server.url),
                            KeyValue(key: D.cUsername, value: server.username),
@@ -121,7 +130,9 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                            KeyValue(key: D.cApiProjectId, value: server.projectId),
                            KeyValue(key: D.cSlug, value: server.slug),
                            KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1),
-                           KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1)]
+                           KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1),
+                           KeyValue(key: D.cServerType, value:server.serverType)
+        ]
         
         return try statementBuilder.insertInto(tableName: D.tServer,
                                                keyValue: valuesToAdd)
@@ -542,8 +553,9 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         statementBuilder.delete(tableName: D.tReport,
                                 primarykeyValue: reportCondition)
     }
-    // MARK: CRUD operation for Language table for Uwazu
-    // TODO: Add these thing to a new class and set a protocol for abstraction
+    // MARK: CRUD operation for Language table for Uwazi
+    // TODO: Add these thing to a new class and set a protocol decoupling the dependencies
+    // TODO: Move this fuctions to TellaData for abstraction if needed
     func createLanguageTableForUwazi() {
         let columns = [
             cddl(D.cLocaleId, D.integer, primaryKey: true, autoIncrement: true),
@@ -574,17 +586,13 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziServerLanguage,
                                                          andCondition: [KeyValue(key: D.cServerId, value: serverId)])
         guard let locale = serversDict.first else { return nil }
-        let data = try JSONSerialization.data(withJSONObject: locale)
-        let locales = try JSONDecoder().decode(UwaziLocale.self, from: data)
-        return locales
+        return try self.parseDicToObjectOf(type: UwaziLocale.self, dic: locale)
     }
     func getAllUwaziLocale() throws -> [UwaziLocale] {
         let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziServerLanguage,
                                                          andCondition: [])
         if !serversDict.isEmpty {
-            let data = try JSONSerialization.data(withJSONObject: serversDict)
-            let locales = try JSONDecoder().decode([UwaziLocale].self, from: data)
-            return locales
+            return try self.parseDicToObjectOf(type: [UwaziLocale].self, dic: serversDict)
         }
         return []
     }
@@ -618,6 +626,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         let slug = dictionnary[D.cSlug] as? String
         let autoUpload = dictionnary[D.cAutoUpload] as? Int
         let autoDelete = dictionnary[D.cAutoDelete] as? Int
+        let servertType = dictionnary[D.cServerType] as? Int
         
         return Server(id:id,
                       name: name,
@@ -630,7 +639,9 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                       projectId: apiProjectId,
                       slug:slug,
                       autoUpload: autoUpload == 0 ? false : true,
-                      autoDelete: autoDelete == 0 ? false : true)
+                      autoDelete: autoDelete == 0 ? false : true,
+                      serverType: servertType
+        )
         
     }
     
@@ -657,4 +668,12 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                       currentUpload: currentUpload == 0 ? false : true)
     }
 }
+extension TellaDataBase {
+    func parseDicToObjectOf<T:Codable>(type: T.Type, dic: Any) throws -> T {
+        let data = try JSONSerialization.data(withJSONObject: dic)
+        let decodedValues = try JSONDecoder().decode(T.self, from: data)
+        return decodedValues
+    }
+}
+
 
