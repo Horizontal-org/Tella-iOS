@@ -42,7 +42,7 @@ final class AppViewState: ObservableObject {
     }
 
     func resetToUnlock() {
-        homeViewModel = nil
+        homeViewModel = MainAppModel(networkMonitor: networkMonitor)
         viewStack = [.UNLOCK]
     }
 

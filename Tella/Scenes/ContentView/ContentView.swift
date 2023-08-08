@@ -5,7 +5,6 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject private var appViewState: AppViewState
-    @EnvironmentObject private var appModel: MainAppModel
     
     var body: some View {
         
@@ -20,17 +19,17 @@ struct ContentView: View {
             
             if appViewState.currentView == .LOCK {
                 WelcomeView()
-                    .environmentObject(LockViewModel(unlockType: .new, appModel: appModel))
+                    .environmentObject(LockViewModel(unlockType: .new, appModel: appViewState.homeViewModel!))
             }
             
             if appViewState.currentView == .UNLOCK {
                 let passwordType = AuthenticationManager().getPasswordType()
                 passwordType == .tellaPassword ?
                 UnlockPasswordView()
-                    .environmentObject(LockViewModel(unlockType: .new, appModel: MainAppModel.stub()))
+                    .environmentObject(LockViewModel(unlockType: .new, appModel: appViewState.homeViewModel!))
                     .eraseToAnyView() :
                 UnlockPinView()
-                    .environmentObject(LockViewModel(unlockType: .new, appModel: MainAppModel.stub()))
+                    .environmentObject(LockViewModel(unlockType: .new, appModel: appViewState.homeViewModel!))
                     .eraseToAnyView()
             }
         }.onAppear {

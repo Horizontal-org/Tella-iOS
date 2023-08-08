@@ -64,9 +64,9 @@ struct UnlockPinView: View {
                     viewModel.login()
                     if !viewModel.shouldShowUnlockError {
                         if viewModel.unlockType == .new   {
-                            isLoading = true
-                            appViewState.initMainAppModel()
-                            initRoot()
+                             isLoading = true
+                             appViewState.initMainAppModel()
+                             initRoot()
                         } else {
                             presentingLockChoice = true
                         }

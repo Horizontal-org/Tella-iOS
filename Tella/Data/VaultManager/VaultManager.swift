@@ -73,7 +73,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                 Task {
                     self.initRoot()
                     self.root.updateIds()
-//                    await self.recoverFiles()
+                    await self.recoverFiles()
                     self.save(file: self.root)
                     self.clearTmpDirectory()
                     promise(.success(true))

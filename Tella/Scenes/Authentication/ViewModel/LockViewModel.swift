@@ -19,7 +19,7 @@ class LockViewModel: ObservableObject {
     @Published var oldPassword : String = ""
     @Published var shouldShowUnlockError : Bool = false
     @Published var unlockAttempts : Int = 0
-    @Published var maxAttempts : Int
+    var maxAttempts : Int
     
     var privateKey : SecKey?
     var unlockType : UnlockType = .new
@@ -44,7 +44,6 @@ class LockViewModel: ObservableObject {
     init(unlockType: UnlockType, appModel: MainAppModel) {
         self.unlockType = unlockType
         self.appModel = appModel
-        
         maxAttempts = appModel.settings.deleteAfterFail.numberOfAttempts
     }
     

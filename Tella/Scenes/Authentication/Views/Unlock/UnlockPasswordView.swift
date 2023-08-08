@@ -63,10 +63,9 @@ struct UnlockPasswordView: View {
                     viewModel.login()
                     if !viewModel.shouldShowUnlockError {
                         if viewModel.unlockType == .new {
-                            appViewState.resetToMain()
-//                            isLoading = true
-//                            appViewState.initMainAppModel()
-//                            initRoot()
+                            isLoading = true
+                            appViewState.initMainAppModel()
+                            initRoot()
                         } else {
                             presentingLockChoice = true
                         }
