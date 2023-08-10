@@ -9,8 +9,17 @@
 import Combine
 import Foundation
 
-struct UwaziServerRepository: WebRepository {
 
+struct UwaziCombinedResults {
+    let templateResult: UwaziTemplateResult
+    let settingResult: UwaziSettingResult
+    let dictionaryResult: UwaziDictionaryResult
+    let translationResult: UwaziTranslationResult
+}
+
+class UwaziServerRepository: WebRepository {
+    private var subscribers = Set<AnyCancellable>()
+    var settingsSubscription: AnyCancellable?
     func login(username: String,
                password: String,
                serverURL: String) -> AnyPublisher<(UwaziLoginResult,HTTPURLResponse?), APIError> {
@@ -30,7 +39,6 @@ struct UwaziServerRepository: WebRepository {
 
         return call
             .eraseToAnyPublisher()
-
     }
 
     func checkServerURL(serverURL: String) -> AnyPublisher<UwaziCheckURLResult, APIError> {
@@ -40,6 +48,38 @@ struct UwaziServerRepository: WebRepository {
 
     func getLanguage(serverURL: String) -> AnyPublisher<UwaziLanguageResult, APIError> {
         let call :  AnyPublisher<UwaziLanguageResult, APIError> = call(endpoint: API.getLanguage(serverURL: serverURL))
+        return call.eraseToAnyPublisher()
+    }
+    func handleTemplate(serverURL: String, cookieList: [String]) {
+        self.getTranslations(serverURL: serverURL, cookieList: cookieList)
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { completion in
+                    switch completion {
+                    case .finished:
+                        print("Finished")
+                        // TODO: handle this error
+                    case .failure(let error):
+                       print(error)
+                    }
+
+                }, receiveValue: { wrapper in
+                    print(wrapper)
+                }).store(in: &subscribers)
+    }
+    func getTemplate(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziTemplateResult, APIError> {
+        let call :  AnyPublisher<UwaziTemplateResult, APIError> = call(endpoint: API.getTemplate(serverURL: serverURL, cookieList: cookieList))
+        return call.eraseToAnyPublisher()
+    }
+    func getSettings(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziSettingResult, APIError> {
+        let call :  AnyPublisher<UwaziSettingResult, APIError> = call(endpoint: API.getSetting(serverURL: serverURL, cookieList: cookieList))
+        return call.eraseToAnyPublisher()
+    }
+    func getDictionaries(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziDictionaryResult, APIError> {
+        let call :  AnyPublisher<UwaziDictionaryResult, APIError> = call(endpoint: API.getDictionary(serverURL: serverURL, cookieList: cookieList))
+        return call.eraseToAnyPublisher()
+    }
+    func getTranslations(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziTranslationResult, APIError> {
+        let call :  AnyPublisher<UwaziTranslationResult, APIError> = call(endpoint: API.getTranslations(serverURL: serverURL, cookieList: cookieList))
         return call.eraseToAnyPublisher()
     }
 
@@ -66,6 +106,10 @@ extension UwaziServerRepository {
                                       password: String,
                                       token: String,
                                       serverURL: String))
+        case getTemplate(serverURL: String, cookieList:[String])
+        case getSetting(serverURL: String, cookieList:[String])
+        case getDictionary(serverURL: String, cookieList:[String])
+        case getTranslations(serverURL: String, cookieList:[String])
     }
 }
 
@@ -79,6 +123,19 @@ extension UwaziServerRepository.API: APIRequest {
             return token
         case .checkURL, .getLanguage:
             return nil
+        case .getTemplate,.getSetting, .getDictionary, .getTranslations:
+            return nil
+        }
+    }
+
+    var headers: [String: String]? {
+        switch self {
+
+        case .login, .getProjetDetails, .checkURL, .getLanguage, .twoFactorAuthentication:
+            return nil
+        case .getTemplate(_,let cookieList), .getSetting(_,let cookieList), .getDictionary(_,let cookieList), .getTranslations(_,let cookieList):
+            let cookiesString = cookieList.joined(separator: "; ")
+            return ["Cookie": cookiesString]
         }
     }
 
@@ -98,7 +155,7 @@ extension UwaziServerRepository.API: APIRequest {
                 "password": password,
                 "token": token
             ]
-        case .checkURL, .getLanguage:
+        case .checkURL, .getLanguage, .getTemplate, .getSetting,.getDictionary,.getTranslations:
             return nil
         }
     }
@@ -110,6 +167,10 @@ extension UwaziServerRepository.API: APIRequest {
         case .getProjetDetails((let projectURL, _)):
             return projectURL
         case .checkURL(serverURL: let serverURL) ,.getLanguage(serverURL: let serverURL):
+            return serverURL
+        case .getTemplate(serverURL: let serverURL, cookieList: _):
+            return serverURL
+        case .getSetting(serverURL: let serverURL, cookieList: _), .getDictionary(serverURL: let serverURL, cookieList: _),.getTranslations(serverURL: let serverURL, cookieList: _):
             return serverURL
         }
     }
@@ -124,6 +185,14 @@ extension UwaziServerRepository.API: APIRequest {
             return "/api/settings"
         case .getLanguage:
             return "/api/translations"
+        case .getTemplate:
+            return "/api/templates"
+        case .getSetting:
+            return "/api/settings"
+        case .getDictionary:
+            return "/api/dictionaries"
+        case .getTranslations:
+            return "/api/translations"
         }
     }
 
@@ -133,7 +202,7 @@ extension UwaziServerRepository.API: APIRequest {
             return HTTPMethod.post
         case .getProjetDetails(_):
             return HTTPMethod.get
-        case .checkURL, .getLanguage:
+        case .checkURL, .getLanguage, .getSetting, .getTemplate,.getDictionary,.getTranslations:
             return HTTPMethod.get
         }
     }

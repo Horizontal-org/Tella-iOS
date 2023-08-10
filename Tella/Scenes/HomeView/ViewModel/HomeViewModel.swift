@@ -25,7 +25,71 @@ class HomeViewModel: ObservableObject {
     init(appModel:MainAppModel) {
         self.appModel = appModel
         getServersList()
+        do {
+            try getTemplate()
+        }catch {
+
+        }
+
     }
+
+    func getTemplate() throws {
+        let server = appModel.vaultManager.tellaData.database?.getServer()
+        if let firstServer = server?.first, let serverId = firstServer.id {
+            let locale = try appModel.vaultManager.tellaData.database?.getUwaziLocaleWith(serverId: serverId)
+            let serverURL = firstServer.url ?? ""
+            let cookieList = [firstServer.accessToken ?? "" , locale?.locale ?? ""]
+            //UwaziServerRepository().handleTemplate(serverURL: firstServer.url ?? "", cookieList: [firstServer.accessToken ?? "" , locale?.locale ?? ""])
+//            UwaziServerRepository().getTranslations(serverURL: firstServer.url ?? "", cookieList: cookieList)
+//                .receive(on: DispatchQueue.main)
+//                .sink(receiveCompletion: { completion in
+//                    switch completion {
+//                    case .finished:
+//                        print("Finished")
+//                        // TODO: handle this error
+//                    case .failure(let error):
+//                       print(error)
+//                    }
+//
+//                }, receiveValue: { wrapper in
+//                    print(wrapper)
+//                }).store(in: &subscribers)
+            let getTemplate = UwaziServerRepository().getTemplate(serverURL: serverURL, cookieList: cookieList)
+            let getSetting = UwaziServerRepository().getSettings(serverURL: serverURL, cookieList: cookieList)
+            let getDictionary = UwaziServerRepository().getDictionaries(serverURL: serverURL, cookieList: cookieList)
+            let getTranslation = UwaziServerRepository().getTranslations(serverURL: serverURL, cookieList: cookieList)
+
+            Publishers.Zip4(getTemplate, getSetting, getDictionary, getTranslation)
+                .receive(on: DispatchQueue.main)
+                .sink { completion in
+                    switch completion {
+                    case .finished:
+                        print("Finished")
+                        // TODO: handle this error
+                    case .failure(let error):
+                        print(error)
+                    }
+                } receiveValue: { template, setting, dictionary, translation in
+                    print(template)
+                }.store(in: &subscribers)
+//            UwaziServerRepository().getTemplate(serverURL: serverURL, cookieList: cookieList).zip(UwaziServerRepository().getSettings(serverURL: firstServer.url ?? "", cookieList: cookieList))
+//                .receive(on: DispatchQueue.main)
+//                .sink { completion in
+//                switch completion {
+//                case .finished:
+//                    print("Finished")
+//                    // TODO: handle this error
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            } receiveValue: { template, setting in
+//                print(template)
+//            }.store(in: &subscribers)
+
+        }
+
+    }
+
     
     func getServersList() {
             
