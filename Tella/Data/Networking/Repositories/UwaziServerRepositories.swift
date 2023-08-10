@@ -63,56 +63,14 @@ class UwaziServerRepository: WebRepository {
             .eraseToAnyPublisher()
     }
 
-    func getLanguage(serverURL: String) -> AnyPublisher<UwaziLanguage, APIError> {
-        let apiResponse: APIResponse<UwaziLanguageDTO> = getAPIResponse(endpoint: API.getLanguage(serverURL: serverURL))
-        return apiResponse
-            .compactMap{$0.0.toDomain() as? UwaziLanguage}
-            .eraseToAnyPublisher()
+    func checkServerURL(serverURL: String) -> AnyPublisher<UwaziCheckURLResult, APIError> {
+        let call :  AnyPublisher<UwaziCheckURLResult, APIError> = call(endpoint: API.checkURL(serverURL: serverURL))
+        return call.eraseToAnyPublisher()
     }
 
-    ///  Get all the templetes related to the Uwazi server
-    /// - Parameters:
-    ///   - serverURL: the URL of the server
-    ///   - cookieList:  The array of string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
-    /// - Returns: AnyPublisher with UwaziTemplateResult or APIError if any
-    func getTemplate(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziTemplateDTO, APIError> {
-        let apiResponse: APIResponse<UwaziTemplateDTO> = getAPIResponse(endpoint: API.getTemplate(serverURL: serverURL, cookieList: cookieList))
-        return apiResponse
-            .compactMap{$0.0}
-            .eraseToAnyPublisher()
-    }
-    ///  Get all the setting related to the Uwazi server to determine the whitelisted templates
-    /// - Parameters:
-    ///   - serverURL: the URL of the server
-    ///   - cookieList:  The array of string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
-    /// - Returns: AnyPublisher with UwaziSettingResult or APIError if any
-    func getSettings(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziSettingDTO, APIError> {
-        let apiResponse:  APIResponse<UwaziSettingDTO> = getAPIResponse(endpoint: API.getSetting(serverURL: serverURL, cookieList: cookieList))
-        return apiResponse
-            .compactMap{$0.0}
-            .eraseToAnyPublisher()
-    }
-    ///  Get all the options that are related to properties of the template related to the selected Uwazi server
-    /// - Parameters:
-    ///   - serverURL: the URL of the server
-    ///   - cookieList:  The array of string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
-    /// - Returns: AnyPublisher with UwaziDictionaryResult or APIError if any
-    func getDictionaries(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziDictionaryDTO, APIError> {
-        let apiResponse: APIResponse<UwaziDictionaryDTO> = getAPIResponse(endpoint: API.getDictionary(serverURL: serverURL, cookieList: cookieList))
-        return apiResponse
-            .compactMap{$0.0}
-            .eraseToAnyPublisher()
-    }
-    ///  Get all the translation of the text related to the selected Uwazi server
-    /// - Parameters:
-    ///   - serverURL: the URL of the server
-    ///   - cookieList:  The array of string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
-    /// - Returns: AnyPublisher with UwaziTranslationResult or APIError if any
-    func getTranslations(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziTranslationDTO, APIError> {
-        let apiResponse: APIResponse<UwaziTranslationDTO> = getAPIResponse(endpoint: API.getTranslations(serverURL: serverURL, cookieList: cookieList))
-        return apiResponse
-            .compactMap{$0.0}
-            .eraseToAnyPublisher()
+    func getLanguage(serverURL: String) -> AnyPublisher<UwaziLanguageResult, APIError> {
+        let call :  AnyPublisher<UwaziLanguageResult, APIError> = call(endpoint: API.getLanguage(serverURL: serverURL))
+        return call.eraseToAnyPublisher()
     }
 
     func getProjetDetails(projectURL: String,token: String) -> AnyPublisher<ProjectAPI, APIError> {

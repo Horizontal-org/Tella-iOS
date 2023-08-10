@@ -344,6 +344,10 @@
 		E131BA3B2A1B45A30095BC91 /* UwaziServerRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = E131BA3A2A1B45A30095BC91 /* UwaziServerRepositories.swift */; };
 		E14E0CF629FAD68E004FC4CD /* UwaziSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14E0CF529FAD68E004FC4CD /* UwaziSuccessView.swift */; };
 		E14FD87A2A6AB22200BC7523 /* UwaziLocale.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14FD8792A6AB22200BC7523 /* UwaziLocale.swift */; };
+		E177363C2A83AE4800FE01C0 /* UwaziTemplateResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E177363B2A83AE4800FE01C0 /* UwaziTemplateResult.swift */; };
+		E177363E2A83CCE100FE01C0 /* UwaziSettingsResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E177363D2A83CCE100FE01C0 /* UwaziSettingsResult.swift */; };
+		E17736402A83FFA200FE01C0 /* UwaziDictionaryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E177363F2A83FFA200FE01C0 /* UwaziDictionaryResult.swift */; };
+		E17736422A84034A00FE01C0 /* UwaziTranslationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17736412A84034A00FE01C0 /* UwaziTranslationResult.swift */; };
 		E16D20CF2ABEAAB1001708CC /* TemplateItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16D20CE2ABEAAB1001708CC /* TemplateItemViewModel.swift */; };
 		E16D20D12ABEB5C7001708CC /* TemplateCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16D20D02ABEB5C7001708CC /* TemplateCardViewModel.swift */; };
 		E177363C2A83AE4800FE01C0 /* UwaziTemplateDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E177363B2A83AE4800FE01C0 /* UwaziTemplateDTO.swift */; };
@@ -773,6 +777,10 @@
 		E131BA3A2A1B45A30095BC91 /* UwaziServerRepositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziServerRepositories.swift; sourceTree = "<group>"; };
 		E14E0CF529FAD68E004FC4CD /* UwaziSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSuccessView.swift; sourceTree = "<group>"; };
 		E14FD8792A6AB22200BC7523 /* UwaziLocale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLocale.swift; sourceTree = "<group>"; };
+		E177363B2A83AE4800FE01C0 /* UwaziTemplateResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTemplateResult.swift; sourceTree = "<group>"; };
+		E177363D2A83CCE100FE01C0 /* UwaziSettingsResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSettingsResult.swift; sourceTree = "<group>"; };
+		E177363F2A83FFA200FE01C0 /* UwaziDictionaryResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziDictionaryResult.swift; sourceTree = "<group>"; };
+		E17736412A84034A00FE01C0 /* UwaziTranslationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTranslationResult.swift; sourceTree = "<group>"; };
 		E16D20CE2ABEAAB1001708CC /* TemplateItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateItemViewModel.swift; sourceTree = "<group>"; };
 		E16D20D02ABEB5C7001708CC /* TemplateCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCardViewModel.swift; sourceTree = "<group>"; };
 		E177363B2A83AE4800FE01C0 /* UwaziTemplateDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTemplateDTO.swift; sourceTree = "<group>"; };
@@ -1044,6 +1052,10 @@
 				E17736412A84034A00FE01C0 /* UwaziTranslationRowDTO.swift */,
 				E1D48B842A1BB8EA00D36270 /* UwaziCheckURLDTO.swift */,
 				E11968B02A1F409D00BA7B56 /* UwaziLanguageDTO.swift */,
+				E177363B2A83AE4800FE01C0 /* UwaziTemplateResult.swift */,
+				E177363D2A83CCE100FE01C0 /* UwaziSettingsResult.swift */,
+				E177363F2A83FFA200FE01C0 /* UwaziDictionaryResult.swift */,
+				E17736412A84034A00FE01C0 /* UwaziTranslationResult.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
