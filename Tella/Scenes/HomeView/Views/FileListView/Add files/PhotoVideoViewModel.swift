@@ -48,9 +48,9 @@ class PhotoVideoViewModel : ObservableObject {
     func handleAddingVideo(_ completion: ImagePickerCompletion, _ isPreserveMetadataOn: Bool) {
         if let url = completion.videoURL {
             if isPreserveMetadataOn{
-                self.addVideoWithExif(files: [url])
+                self.addVideoWithExif(files: [url], referenceUrl: completion.referenceURL!)
             } else {
-                self.addVideoWithoutExif(files: [url])
+                self.addVideoWithoutExif(files: [url], referenceUrl: completion.referenceURL!)
             }
         }
     }
@@ -73,9 +73,9 @@ class PhotoVideoViewModel : ObservableObject {
     /// - Parameters:
     ///   - files: Array of the URL of the videos
     ///   - type: Type of file
-    func addVideoWithExif(files: [URL]) {
+    func addVideoWithExif(files: [URL], referenceUrl: URL) {
         Task {
-            await handleAddVideoFile(files: files, type: .video)
+            await handleAddVideoFile(files: files, type: .video, referenceUrl: referenceUrl)
         }
     }
     /// This function imports the document file
@@ -83,7 +83,7 @@ class PhotoVideoViewModel : ObservableObject {
     ///   - files: Array of the URL of the videos
     func addDocument(files: [URL]) {
         Task {
-            await handleAddVideoFile(files: files, type: .document)
+            await handleAddVideoFile(files: files, type: .document, referenceUrl: nil)
         }
     }
 
@@ -91,13 +91,13 @@ class PhotoVideoViewModel : ObservableObject {
     /// - Parameters:
     ///   - files: Array of the URL of the videos
     ///   - type: Type of file
-    func addVideoWithoutExif(files: [URL]) {
+    func addVideoWithoutExif(files: [URL], referenceUrl: URL) {
         Task {
             let urls = await files.asyncMap({ file in
                 let tmpFileURL = self.mainAppModel.vaultManager.createTempFileURL(pathExtension: file.pathExtension)
                 return await file.returnVideoURLWithoutMetadata(destinationURL: tmpFileURL)
             })
-            await handleAddVideoFile(files: urls.compactMap({$0}), type: .video)
+            await handleAddVideoFile(files: urls.compactMap({$0}), type: .video, referenceUrl: referenceUrl)
         }
     }
 
@@ -105,7 +105,7 @@ class PhotoVideoViewModel : ObservableObject {
     /// - Parameters:
     ///   - files:  Array of the URL of the videos
     ///   - type: Type of file
-    func handleAddVideoFile(files: [URL], type: TellaFileType) async {
+    func handleAddVideoFile(files: [URL], type: TellaFileType, referenceUrl: URL?) async {
 
         do { let vaultFile = try await self.mainAppModel.add(files: files,
                                                              to: self.mainAppModel.vaultManager.root,
@@ -113,7 +113,11 @@ class PhotoVideoViewModel : ObservableObject {
                                                              folderPathArray: self.folderPathArray)
 
             if mainAppModel.importOption == .deleteOriginal {
-                removeFiles(files: files)
+                if(type == .video && referenceUrl != nil) {
+                    removeOriginalImage(imageUrls: [referenceUrl!])
+                } else {
+                    removeFiles(files: files)
+                }
             }
             DispatchQueue.main.async {
                 self.resultFile?.wrappedValue = vaultFile

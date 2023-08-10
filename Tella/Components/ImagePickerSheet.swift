@@ -72,7 +72,7 @@ class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerC
             guard let videoURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {
                 return
             }
-            completion(ImagePickerCompletion(type: .video, videoURL: videoURL))
+            completion(ImagePickerCompletion(type: .video, videoURL: videoURL, referenceURL: referenceURL))
             //completion(nil, videoURL, nil, nil, nil)
         }
     }
