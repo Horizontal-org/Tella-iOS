@@ -46,12 +46,10 @@ class PhotoVideoViewModel : ObservableObject {
     ///   - completion: Object which contains all the information needed when the user selects a video from Gallery
     ///   - isPreserveMetadataOn: Flag to check whether the user want to preserve the metadata or not
     func handleAddingVideo(_ completion: ImagePickerCompletion, _ isPreserveMetadataOn: Bool) {
-        if let url = completion.videoURL {
-            if isPreserveMetadataOn{
-                self.addVideoWithExif(files: [url])
-            } else {
-                self.addVideoWithoutExif(files: [url])
-            }
+        if isPreserveMetadataOn{
+            self.addVideoWithExif(completion)
+        } else {
+            self.addVideoWithoutExif(completion)
         }
     }
     /// To handle adding the image based on either the user want to preserve the metadata or not
@@ -71,11 +69,12 @@ class PhotoVideoViewModel : ObservableObject {
 
     /// This function imports the video file from the user selected video with the withmetadata attached to the file
     /// - Parameters:
-    ///   - files: Array of the URL of the videos
-    ///   - type: Type of file
-    func addVideoWithExif(files: [URL]) {
+    ///   - completion: Object which contains all the information needed when the user selects a image from Gallery
+    func addVideoWithExif(_ completion: ImagePickerCompletion) {
         Task {
-            await handleAddVideoFile(files: files, type: .video)
+            if let url = completion.videoURL {
+                await handleAddVideoFile(files: [url], type: .video, referenceUrl: completion.referenceURL)
+            }
         }
     }
     /// This function imports the document file
@@ -83,21 +82,23 @@ class PhotoVideoViewModel : ObservableObject {
     ///   - files: Array of the URL of the videos
     func addDocument(files: [URL]) {
         Task {
-            await handleAddVideoFile(files: files, type: .document)
+            await handleAddVideoFile(files: files, type: .document, referenceUrl: nil)
         }
     }
 
     /// This function imports the video file from the user selected video with the without metadata attached to the file
     /// - Parameters:
-    ///   - files: Array of the URL of the videos
-    ///   - type: Type of file
-    func addVideoWithoutExif(files: [URL]) {
+    ///   - completion: Object which contains all the information needed when the user selects a image from Gallery
+    func addVideoWithoutExif(_ completion: ImagePickerCompletion) {
         Task {
-            let urls = await files.asyncMap({ file in
-                let tmpFileURL = self.mainAppModel.vaultManager.createTempFileURL(pathExtension: file.pathExtension)
-                return await file.returnVideoURLWithoutMetadata(destinationURL: tmpFileURL)
-            })
-            await handleAddVideoFile(files: urls.compactMap({$0}), type: .video)
+            if let url = completion.videoURL {
+                let files = [url]
+                let urls = await files.asyncMap({ file in
+                    let tmpFileURL = self.mainAppModel.vaultManager.createTempFileURL(pathExtension: file.pathExtension)
+                    return await file.returnVideoURLWithoutMetadata(destinationURL: tmpFileURL)
+                })
+                await handleAddVideoFile(files: urls.compactMap({$0}), type: .video, referenceUrl: completion.referenceURL)
+            }
         }
     }
 
@@ -105,7 +106,7 @@ class PhotoVideoViewModel : ObservableObject {
     /// - Parameters:
     ///   - files:  Array of the URL of the videos
     ///   - type: Type of file
-    func handleAddVideoFile(files: [URL], type: TellaFileType) async {
+    func handleAddVideoFile(files: [URL], type: TellaFileType, referenceUrl: URL?) async {
 
         do { let vaultFile = try await self.mainAppModel.add(files: files,
                                                              to: self.mainAppModel.vaultManager.root,
@@ -113,7 +114,11 @@ class PhotoVideoViewModel : ObservableObject {
                                                              folderPathArray: self.folderPathArray)
 
             if mainAppModel.importOption == .deleteOriginal {
-                removeFiles(files: files)
+                if(type == .video && referenceUrl != nil) {
+                    removeOriginalImage(imageUrls: [referenceUrl!])
+                } else {
+                    removeFiles(files: files)
+                }
             }
             DispatchQueue.main.async {
                 self.resultFile?.wrappedValue = vaultFile
