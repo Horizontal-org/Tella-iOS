@@ -46,12 +46,10 @@ class PhotoVideoViewModel : ObservableObject {
     ///   - completion: Object which contains all the information needed when the user selects a video from Gallery
     ///   - isPreserveMetadataOn: Flag to check whether the user want to preserve the metadata or not
     func handleAddingVideo(_ completion: ImagePickerCompletion, _ isPreserveMetadataOn: Bool) {
-        if let url = completion.videoURL {
-            if isPreserveMetadataOn{
-                self.addVideoWithExif(files: [url], referenceUrl: completion.referenceURL!)
-            } else {
-                self.addVideoWithoutExif(files: [url], referenceUrl: completion.referenceURL!)
-            }
+        if isPreserveMetadataOn{
+            self.addVideoWithExif(completion)
+        } else {
+            self.addVideoWithoutExif(completion)
         }
     }
     /// To handle adding the image based on either the user want to preserve the metadata or not
@@ -71,11 +69,12 @@ class PhotoVideoViewModel : ObservableObject {
 
     /// This function imports the video file from the user selected video with the withmetadata attached to the file
     /// - Parameters:
-    ///   - files: Array of the URL of the videos
-    ///   - type: Type of file
-    func addVideoWithExif(files: [URL], referenceUrl: URL) {
+    ///   - completion: Object which contains all the information needed when the user selects a image from Gallery
+    func addVideoWithExif(_ completion: ImagePickerCompletion) {
         Task {
-            await handleAddVideoFile(files: files, type: .video, referenceUrl: referenceUrl)
+            if let url = completion.videoURL {
+                await handleAddVideoFile(files: [url], type: .video, referenceUrl: completion.referenceURL)
+            }
         }
     }
     /// This function imports the document file
@@ -89,15 +88,17 @@ class PhotoVideoViewModel : ObservableObject {
 
     /// This function imports the video file from the user selected video with the without metadata attached to the file
     /// - Parameters:
-    ///   - files: Array of the URL of the videos
-    ///   - type: Type of file
-    func addVideoWithoutExif(files: [URL], referenceUrl: URL) {
+    ///   - completion: Object which contains all the information needed when the user selects a image from Gallery
+    func addVideoWithoutExif(_ completion: ImagePickerCompletion) {
         Task {
-            let urls = await files.asyncMap({ file in
-                let tmpFileURL = self.mainAppModel.vaultManager.createTempFileURL(pathExtension: file.pathExtension)
-                return await file.returnVideoURLWithoutMetadata(destinationURL: tmpFileURL)
-            })
-            await handleAddVideoFile(files: urls.compactMap({$0}), type: .video, referenceUrl: referenceUrl)
+            if let url = completion.videoURL {
+                let files = [url]
+                let urls = await files.asyncMap({ file in
+                    let tmpFileURL = self.mainAppModel.vaultManager.createTempFileURL(pathExtension: file.pathExtension)
+                    return await file.returnVideoURLWithoutMetadata(destinationURL: tmpFileURL)
+                })
+                await handleAddVideoFile(files: urls.compactMap({$0}), type: .video, referenceUrl: completion.referenceURL)
+            }
         }
     }
 
