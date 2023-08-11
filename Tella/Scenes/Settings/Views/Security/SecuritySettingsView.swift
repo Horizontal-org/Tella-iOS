@@ -15,7 +15,7 @@ struct SecuritySettingsView: View {
     
     
     init(appModel: MainAppModel) {
-        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .update, appModel: appModel))
+        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .update))
     }
     
     var body: some View {

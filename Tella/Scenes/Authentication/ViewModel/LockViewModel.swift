@@ -10,16 +10,14 @@ import Foundation
 import SwiftUI
 import Combine
 class LockViewModel: ObservableObject {
-    
-    var appModel: MainAppModel
-    
+
     @Published var loginPassword : String = ""
     @Published var password : String = ""
     @Published var confirmPassword : String = ""
     @Published var oldPassword : String = ""
     @Published var shouldShowUnlockError : Bool = false
     @Published var unlockAttempts : Int = 0
-    var maxAttempts : Int
+    var maxAttempts : Int = 5
     
     var privateKey : SecKey?
     var unlockType : UnlockType = .new
@@ -41,10 +39,8 @@ class LockViewModel: ObservableObject {
         return maxAttempts - unlockAttempts
     }
         
-    init(unlockType: UnlockType, appModel: MainAppModel) {
+    init(unlockType: UnlockType) {
         self.unlockType = unlockType
-        self.appModel = appModel
-        maxAttempts = appModel.settings.deleteAfterFail.numberOfAttempts
     }
     
     func login() {
@@ -74,7 +70,22 @@ class LockViewModel: ObservableObject {
     }
     
     func removeFilesAndConnections () -> Void {
-        appModel.removeAllFiles()
-        appModel.deleteAllServersConnection()
+        let fileManager = FileManager.default
+                
+            let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+                
+            print("Directory: \(paths)")
+                
+            do {
+                let fileName = try fileManager.contentsOfDirectory(atPath: paths)
+                    
+                for file in fileName {
+                    // For each file in the directory, create full path and delete the file
+                    let filePath = URL(fileURLWithPath: paths).appendingPathComponent(file).absoluteURL
+                    try fileManager.removeItem(at: filePath)
+                }
+            } catch let error {
+                print(error)
+            }
     }
 }
