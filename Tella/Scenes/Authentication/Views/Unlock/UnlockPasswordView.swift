@@ -64,7 +64,6 @@ struct UnlockPasswordView: View {
                     if !viewModel.shouldShowUnlockError {
                         if viewModel.unlockType == .new {
                             isLoading = true
-                            appViewState.initMainAppModel()
                             initRoot()
                         } else {
                             presentingLockChoice = true
@@ -102,7 +101,7 @@ struct UnlockPasswordView: View {
     
     private func initRoot() {
         DispatchQueue.main.async {
-            appViewState.homeViewModel?.initFiles()
+            appViewState.homeViewModel.initFiles()
                 .receive(on: DispatchQueue.main)
                 .sink { recoverResult in
                     isLoading = false

@@ -29,40 +29,39 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     func rename(file: VaultFile, parent: VaultFile?) {
         save(file: root)
     }
-    
-    
-    let containerPath: String
-    private let rootFileName: String
-    
+
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
-    private let cryptoManager: CryptoManagerInterface
-    private let fileManager: FileManagerInterface
     
-    @Published var root: VaultFile
-    @Published var tellaData : TellaData
-    
-    @Published var progress :  ImportProgress
-    var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
-    
+    private let cryptoManager: CryptoManager = CryptoManager.shared
+    private let fileManager: FileManagerInterface = DefaultFileManager()
+    private let rootFileName: String = "root"
     private var cancellable: Set<AnyCancellable> = []
     
-    init(cryptoManager: CryptoManagerInterface, fileManager: FileManagerInterface, rootFileName: String, containerPath: String, progress :  ImportProgress) {
-        self.cryptoManager = cryptoManager
-        self.fileManager = fileManager
-        self.rootFileName = rootFileName
-        self.containerPath = containerPath
-        self.progress = progress
-        self.tellaData = TellaData(key: CryptoManager.shared.metaPrivateKey?.getString())
+    internal let containerPath: String = "Containers"
+    
+    @Published var root: VaultFile?
+    @Published var tellaData : TellaData?
+    
+    @Published var progress :  ImportProgress = ImportProgress()
+    var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
+
+    func initialize(with key:String?) {
+        
+        self.tellaData = TellaData(key: key)
         
         root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
-        
         
         do {
             try FileManager.default.createDirectory(at: containerURL, withIntermediateDirectories: true, attributes: nil)
         } catch let error {
             debugLog(error)
         }
+    }
+    
+    func resetData() {
+        self.tellaData = nil
+        self.root = nil
     }
     
     func initFiles() -> AnyPublisher<Bool,Never> {
@@ -72,7 +71,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
                 guard let self = self else { return }
                 Task {
                     self.initRoot()
-                    self.root.updateIds()
+                    self.root?.updateIds()
                     await self.recoverFiles()
                     self.save(file: self.root)
                     self.clearTmpDirectory()
@@ -286,7 +285,8 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         return nil
     }
     
-    func save(file vaultFile: VaultFile) {
+    func save(file vaultFile: VaultFile?) {
+        guard let vaultFile else {return}
         debugLog("\(vaultFile)", space: .files)
         
         let fileURL = containerURL(for: vaultFile.containerName)
@@ -346,9 +346,10 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
     
     func removeAllFiles() {
+        guard let root else { return }
         debugLog("", space: .files)
         delete(files: root.files, parent: root)
-        root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
+        self.root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
         save(file: root)
     }
     
@@ -441,7 +442,57 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         
         return (vaultFileArray,size)
     }
+}
+
+///  VaultManager extension contains the methods used for authentication
+
+extension VaultManager {
     
+    func keysInitialized() -> Bool {
+        return self.cryptoManager.keysInitialized()
+    }
+    
+    func login(password:String?) -> Bool {
+        do {
+            guard let key = try self.recoverKey(password: password)?.getString() else { return false}
+            self.initialize(with: key)
+            return true
+        }
+        catch let error {
+            debugLog(error)
+            return false
+        }
+    }
+    
+    private func recoverKey( password:String? = nil) throws -> SecKey?  {
+        return cryptoManager.recoverKey(.PRIVATE, password: password)
+    }
+    
+    func initKeys(_ type: PasswordTypeEnum, password:String) {
+        do {
+            try cryptoManager.initKeys(type, password: password)
+            let key = try self.recoverKey(password: password)?.getString()
+            self.initialize(with: key)
+        }
+        catch let error {
+            debugLog(error)
+        }
+    }
+    
+    func updateKeys(_ type: PasswordTypeEnum, newPassword:String, oldPassword:String)  {
+        do {
+            guard let privateKey = try self.recoverKey(password: oldPassword) else { return }
+            try cryptoManager.updateKeys(privateKey, type, newPassword:newPassword, oldPassword: oldPassword)
+        }
+        catch let error {
+            debugLog(error)
+        }
+    }
+    
+    func getPasswordType() -> PasswordTypeEnum {
+        return cryptoManager.passwordType
+    }
+
 }
 
 //  VaultManager extension contains the methods used to restore files
@@ -464,13 +515,13 @@ extension VaultManager {
     
     func getFilesToRestore() -> [String] {
         var vaultFileResult : [VaultFile] = []
-        self.root.getAllFiles(vaultFileResult: &vaultFileResult)
+        self.root?.getAllFiles(vaultFileResult: &vaultFileResult)
         let rootContainerName = vaultFileResult.compactMap{$0.containerName }
         
         // return all the content of directory
         let containerURLContent =  fileManager.contentsOfDirectory(atPath: containerURL)
         let allContainerName = containerURLContent.compactMap{$0.lastPathComponent }
-
+        
         let rootContainerNameSet:Set<String> = Set(rootContainerName)
         var allContainerNameSet:Set<String> = Set(allContainerName)
         

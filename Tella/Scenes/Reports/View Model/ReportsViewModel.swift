@@ -41,7 +41,7 @@ class ReportsViewModel: ObservableObject {
     
     private func getReports() {
         
-        self.mainAppModel.vaultManager.tellaData.draftReports
+        self.mainAppModel.vaultManager.tellaData?.draftReports
             .receive(on: DispatchQueue.main)
             .sink { result in
             } receiveValue: { draftReports in
@@ -50,7 +50,7 @@ class ReportsViewModel: ObservableObject {
                 
             }.store(in: &subscribers)
         
-        self.mainAppModel.vaultManager.tellaData.outboxedReports
+        self.mainAppModel.vaultManager.tellaData?.outboxedReports
             .receive(on: DispatchQueue.main)
             .sink { result in
             } receiveValue: { draftReports in
@@ -59,7 +59,7 @@ class ReportsViewModel: ObservableObject {
                 
             }.store(in: &subscribers)
         
-        self.mainAppModel.vaultManager.tellaData.submittedReports
+        self.mainAppModel.vaultManager.tellaData?.submittedReports
             .receive(on: DispatchQueue.main)
             .sink { result in
             } receiveValue: { draftReports in

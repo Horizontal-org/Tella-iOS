@@ -22,7 +22,7 @@ class RecordViewModel: ObservableObject {
     
     
     init(mainAppModel: MainAppModel,
-         rootFile: VaultFile,
+         rootFile: VaultFile?,
          resultFile : Binding<[VaultFile]?>?,
          sourceView : SourceView,
          showingRecoredrView: Binding<Bool> ) {

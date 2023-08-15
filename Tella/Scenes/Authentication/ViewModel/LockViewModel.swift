@@ -9,8 +9,9 @@
 import Foundation
 import SwiftUI
 import Combine
-class LockViewModel: ObservableObject {
 
+class LockViewModel: ObservableObject {
+    
     @Published var loginPassword : String = ""
     @Published var password : String = ""
     @Published var confirmPassword : String = ""
@@ -18,11 +19,10 @@ class LockViewModel: ObservableObject {
     @Published var shouldShowUnlockError : Bool = false
     @Published var unlockAttempts : Int = 0
     var maxAttempts : Int = 5
-    
-    var privateKey : SecKey?
+
     var unlockType : UnlockType = .new
     var shouldDismiss = CurrentValueSubject<Bool, Never>(false)
-    
+    var appModel:MainAppModel
     var shouldShowErrorMessage : Bool {
         return password != confirmPassword
     }
@@ -38,14 +38,26 @@ class LockViewModel: ObservableObject {
     func remainingAttempts () -> Int {
         return maxAttempts - unlockAttempts
     }
-        
-    init(unlockType: UnlockType) {
+    
+    init(unlockType: UnlockType, appModel:MainAppModel) {
         self.unlockType = unlockType
+        self.appModel = appModel
     }
     
     func login() {
-        self.privateKey = CryptoManager.shared.recoverKey(.PRIVATE, password: loginPassword)
-        shouldShowUnlockError = privateKey == nil
+        let authorized = appModel.login(password: loginPassword)
+        shouldShowUnlockError = !authorized
+    }
+    
+    func initKeys(passwordTypeEnum:PasswordTypeEnum) {
+        appModel.initKeys(passwordTypeEnum,
+                          password: password)
+    }
+    
+    func updateKeys(passwordTypeEnum:PasswordTypeEnum) {
+        appModel.updateKeys(passwordTypeEnum,
+                            newPassword: password,
+                            oldPassword: loginPassword)
     }
     
     func initUnlockData() {
@@ -60,7 +72,7 @@ class LockViewModel: ObservableObject {
         password = ""
         confirmPassword = ""
         shouldShowUnlockError = false
-     }
+    }
     
     func warningText() -> String {
         if(unlockAttempts >= maxAttempts) {

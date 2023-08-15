@@ -15,7 +15,7 @@ struct SecuritySettingsView: View {
     
     
     init(appModel: MainAppModel) {
-        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .update))
+        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .update, appModel: appModel))
     }
     
     var body: some View {
@@ -42,7 +42,7 @@ struct SecuritySettingsView: View {
         
         .onAppear {
             lockViewModel.shouldDismiss.send(false)
-            let passwordType = AuthenticationManager().getPasswordType()
+            let passwordType = appModel.vaultManager.getPasswordType()
             passwordTypeString = passwordType == .tellaPassword ? LocalizableLock.lockSelectActionPassword.localized : LocalizableLock.lockSelectActionPin.localized
         }
         .onReceive(lockViewModel.shouldDismiss) { shouldDismiss in
@@ -115,7 +115,7 @@ struct SecuritySettingsView: View {
 
     var unlockView : some View {
         
-        let passwordType = AuthenticationManager().getPasswordType()
+        let passwordType = appModel.vaultManager.getPasswordType()
         return passwordType == .tellaPassword ?
         
         UnlockPasswordView()

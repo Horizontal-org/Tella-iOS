@@ -132,7 +132,9 @@ extension Array where Element == VaultFile {
         return self.filter({ filter == ($0.type) || (includeFolders && $0.type == .folder)})
     }
     
-    func sorted(by sortOrder: FileSortOptions, folderPathArray:[VaultFile] = [], root:VaultFile, fileType:[TellaFileType]? = nil) -> [VaultFile] {
+    func sorted(by sortOrder: FileSortOptions, folderPathArray:[VaultFile] = [], root:VaultFile?, fileType:[TellaFileType]? = nil) -> [VaultFile] {
+        
+        guard let root else { return [] }
         
         var filteredFiles : [VaultFile] = []
         
@@ -261,9 +263,9 @@ extension VaultFile {
 
 extension VaultFile {
     
-    func getFile(root: VaultFile, vaultFileResult: inout Set<VaultFile>, ids: [String])  {
+    func getFile(root: VaultFile?, vaultFileResult: inout Set<VaultFile>, ids: [String])  {
         
-        root.files.forEach { file in
+        root?.files.forEach { file in
             switch file.type {
             case .folder:
                 getFile(root: file, vaultFileResult: &vaultFileResult, ids: ids)
