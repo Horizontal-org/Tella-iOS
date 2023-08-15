@@ -40,6 +40,9 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                 createTables()
             case 1:
                 alterTable()
+                createTables()
+            case 2:
+                createTemplateTableForUwazi()
             default :
                 break
             }
@@ -56,6 +59,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         createReportTable()
         createReportFilesTable()
         createLanguageTableForUwazi()
+        createTemplateTableForUwazi()
     }
     func alterTable() {
         statementBuilder.alterTable(tableName: D.tServer, column: cddl(D.cServerType,D.integer, true, ServerConnectionType.tella.rawValue))
@@ -553,6 +557,53 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         statementBuilder.delete(tableName: D.tReport,
                                 primarykeyValue: reportCondition)
     }
+
+    func createTemplateTableForUwazi() {
+        let columns = [
+            cddl(D.cTemplateId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cTemplateEntity, D.text),
+            cddl(D.cTemplateDownloaded, D.integer),
+            cddl(D.cTemplateUpdated, D.integer),
+            cddl(D.cTemplateFavorited, D.integer),
+            cddl(D.cServerId, D.integer, tableName: D.tServer, referenceKey: D.cServerId)
+
+        ]
+        statementBuilder.createTable(tableName: D.tUwaziTemplate, columns: columns)
+    }
+    func getUwaziTemplateeWith(serverId: Int) throws -> CollectedTemplate? {
+        let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziTemplate,
+                                                           andCondition: [KeyValue(key: D.cServerId, value: serverId)])
+        guard let locale = serversDict.first else { return nil }
+        return try self.parseDicToObjectOf(type: CollectedTemplate.self, dic: locale)
+    }
+    func getUwaziTemplateeWith(templateId: Int) throws -> CollectedTemplate? {
+        let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziTemplate,
+                                                           andCondition: [KeyValue(key: D.cTemplateId, value: templateId)])
+        guard let locale = serversDict.first else { return nil }
+        return try self.parseDicToObjectOf(type: CollectedTemplate.self, dic: locale)
+    }
+    func getAllTemplateLocale() throws -> [CollectedTemplate] {
+        let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziTemplate,
+                                                           andCondition: [])
+        if !serversDict.isEmpty {
+            return try self.parseDicToObjectOf(type: [CollectedTemplate].self, dic: serversDict)
+        }
+        return []
+    }
+    func addUwaziTemplateWith(template: CollectedTemplate) throws -> CollectedTemplate {
+        let id = try statementBuilder.insertInto(tableName: D.tUwaziTemplate, keyValue: [
+            KeyValue(key: D.cTemplateDownloaded, value: 1),
+            KeyValue(key: D.cTemplateUpdated, value: 1),
+            KeyValue(key: D.cTemplateFavorited, value: 0),
+            KeyValue(key: D.cServerId, value: template.serverId),
+            KeyValue(key: D.cTemplateEntity, value: template.entityRowString),
+        ])
+        template.id = id
+        template.isUpdated = true
+        template.isDownloaded = true
+        return template
+    }
+
     // MARK: CRUD operation for Language table for Uwazi
     // TODO: Add these thing to a new class and set a protocol decoupling the dependencies
     // TODO: Move this fuctions to TellaData for abstraction if needed
@@ -564,6 +615,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         ]
         statementBuilder.createTable(tableName: D.tUwaziServerLanguage, columns: columns)
     }
+    
 
     func addUwaziLocaleWith(locale: UwaziLocale) throws -> Int {
         return try statementBuilder.insertInto(tableName: D.tUwaziServerLanguage, keyValue: [

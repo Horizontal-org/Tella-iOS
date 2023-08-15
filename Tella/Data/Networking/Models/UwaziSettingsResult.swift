@@ -11,10 +11,10 @@ import Foundation
 // MARK: - Welcome
 struct UwaziSettingResult: Codable {
     let id, siteName: String?
-    let languages: [UwaziLanguageRow]?
+    let languages: [UwaziLanguageRow]
     let v: Int?
     let isPrivate: Bool?
-    let allowedPublicTemplates: [String]?
+    let allowedPublicTemplates: [String]
     let mapAPIKey: String?
 
     enum CodingKeys: String, CodingKey {
