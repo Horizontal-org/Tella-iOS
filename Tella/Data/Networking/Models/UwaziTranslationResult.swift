@@ -9,13 +9,13 @@
 import Foundation
 
 struct UwaziTranslationResult: Codable {
-    let rows: [UwaziTranslation]?
+    let rows: [UwaziTranslation]
 }
 
 // MARK: - Row
 struct UwaziTranslation: Codable {
     let id, locale: String?
-    let contexts: [TranslationContext]?
+    let contexts: [TranslationContext]
     let v: Int?
 
     enum CodingKeys: String, CodingKey {

@@ -10,15 +10,15 @@ import Foundation
 
 
 struct UwaziTemplateResult: Codable {
-    let rows: [UwaziTemplate]?
+    let rows: [UwaziTemplate]
 }
 
 // MARK: - Row
-struct UwaziTemplate: Codable {
+class UwaziTemplate: Codable {
     let id, name: String?
-    let translatedName: String? = ""
-    let properties: [Property]?
-    let commonProperties: [CommonProperty]?
+    var translatedName: String? = ""
+    var properties: [Property]
+    var commonProperties: [CommonProperty]
     let v: Int?
     let rowDefault: Bool?
     let color, entityViewPage: String?
@@ -33,11 +33,11 @@ struct UwaziTemplate: Codable {
 }
 
 // MARK: - CommonProperty
-struct CommonProperty: Codable {
+class CommonProperty: Codable {
     let id, label, name: String?
     let isCommonProperty: Bool?
     let type: String?
-    let translatedLabel: String? = ""
+    var translatedLabel: String? = ""
     let prioritySorting, generatedID: Bool?
 
     enum CodingKeys: String, CodingKey {
@@ -48,13 +48,14 @@ struct CommonProperty: Codable {
 }
 
 // MARK: - Property
-struct Property: Codable {
+class Property: Codable {
     let content, id, label, type: String?
     let propertyRequired: Bool?
     let name: String?
     var translatedLabel : String? = ""
     let filter, showInCard: Bool?
     let relationType: String?
+    var values : [SelectValue]? = nil
 
     enum CodingKeys: String, CodingKey {
         case content
@@ -62,5 +63,61 @@ struct Property: Codable {
         case label, type
         case propertyRequired = "required"
         case name, filter, showInCard, relationType, translatedLabel
+    }
+}
+class CollectedTemplate: Codable {
+    var id: Int?
+    var serverId: Int?
+    var serverName: String?
+    var username: String?
+    var entityRow: UwaziTemplate?
+    var isDownloaded: Bool?
+    var isFavorite: Bool?
+    var isUpdated: Bool?
+
+    init(id: Int? = nil,
+         serverId: Int?,
+         serverName: String? = nil,
+         username: String? = nil,
+         entityRow: UwaziTemplate,
+         isDownloaded: Bool? = nil,
+         isFavorite: Bool? = nil,
+         isUpdated: Bool? = nil) {
+
+        self.id = id
+        self.serverId = serverId
+        self.serverName = serverName
+        self.username = username
+        self.entityRow = entityRow
+        self.isDownloaded = isDownloaded
+        self.isFavorite = isFavorite
+        self.isUpdated = isUpdated
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case id = "c_template_id"
+        case serverId = "c_server_id"
+        case serverName
+        case username
+        case entityRow = "c_template_entity"
+        case isDownloaded = "c_template_downloaded"
+        case isFavorite = "c_template_favorited"
+        case isUpdated = "c_template_updated"
+    }
+
+    var entityRowString: String? {
+        do {
+            if let jsonData = try? JSONEncoder().encode(entityRow), let json = String(bytes: jsonData, encoding: .utf8) {
+                // Here you have your array as a json string
+                // So you can save it into a string column
+
+                print(json) // ["one","two","three"]
+                return json
+            } else {
+                return nil
+            }
+        } catch {
+            return nil
+        }
     }
 }

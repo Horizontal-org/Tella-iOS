@@ -10,13 +10,13 @@ import Foundation
 
 struct UwaziDictionaryResult: Codable {
     // TODO: Change this to a generic like for Codeable
-    let rows: [UwaziDictionary]?
+    let rows: [UwaziDictionary]
 }
 
 // MARK: - Row
-struct UwaziDictionary: Codable {
+class UwaziDictionary: Codable {
     let id, name: String?
-    let values: [SelectValue]?
+    var values: [SelectValue]? = []
     let v: Int?
 
     enum CodingKeys: String, CodingKey {
@@ -27,14 +27,14 @@ struct UwaziDictionary: Codable {
 }
 
 // MARK: - Value
-struct SelectValue: Codable {
-    let label, id: String?
+class SelectValue: Codable {
+    var label, id: String?
     var translatedLabel: String? = ""
-    let values : [NestedSelectValue]?
+    var values : [NestedSelectValue]? = []
 }
-struct NestedSelectValue: Codable {
-    let id : String?
-    let label :String?
+class NestedSelectValue: Codable {
+    var id : String?
+    var label :String?
     var translatedLabel : String? = ""
 }
 
