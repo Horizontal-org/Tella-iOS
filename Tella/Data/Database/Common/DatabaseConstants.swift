@@ -75,6 +75,7 @@ struct D {
     static let cTemplateDownloaded = "c_template_downloaded"
     static let cTemplateUpdated = "c_template_updated"
     static let cTemplateFavorited = "c_template_favorited"
+    static let cServerName = "c_server_name"
 }
 
 

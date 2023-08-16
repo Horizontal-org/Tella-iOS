@@ -69,8 +69,7 @@ func requestJSON<Value>() -> AnyPublisher<Value, APIError> where Value: Decodabl
     return requestData()
         .decode(type: Value.self, decoder: JSONDecoder())
         .mapError{ error in
-            print(error.localizedDescription)
-            return error as! APIError
+            return APIError.unexpectedResponse
         }
         .eraseToAnyPublisher()
     }

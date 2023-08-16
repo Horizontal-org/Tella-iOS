@@ -67,24 +67,27 @@ class Property: Codable {
 }
 class CollectedTemplate: Codable {
     var id: Int?
+    var templateId: String?
     var serverId: Int?
     var serverName: String?
     var username: String?
     var entityRow: UwaziTemplate?
-    var isDownloaded: Bool?
-    var isFavorite: Bool?
-    var isUpdated: Bool?
+    var isDownloaded: Int?
+    var isFavorite: Int?
+    var isUpdated: Int?
 
     init(id: Int? = nil,
          serverId: Int?,
+         templateId: String?,
          serverName: String? = nil,
          username: String? = nil,
          entityRow: UwaziTemplate,
-         isDownloaded: Bool? = nil,
-         isFavorite: Bool? = nil,
-         isUpdated: Bool? = nil) {
+         isDownloaded: Int? = nil,
+         isFavorite: Int? = nil,
+         isUpdated: Int? = nil) {
 
         self.id = id
+        self.templateId = templateId
         self.serverId = serverId
         self.serverName = serverName
         self.username = username
@@ -95,14 +98,37 @@ class CollectedTemplate: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case id = "c_template_id"
+        case id = "c_id"
+        case templateId = "c_template_id"
         case serverId = "c_server_id"
-        case serverName
+        case serverName = "c_server_name"
         case username
         case entityRow = "c_template_entity"
         case isDownloaded = "c_template_downloaded"
         case isFavorite = "c_template_favorited"
         case isUpdated = "c_template_updated"
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        id = try container.decodeIfPresent(Int.self, forKey: .id)
+        templateId = try container.decodeIfPresent(String.self, forKey: .templateId)
+        serverId = try container.decodeIfPresent(Int.self, forKey: .serverId)
+        serverName = try container.decodeIfPresent(String.self, forKey: .serverName)
+        username = try container.decodeIfPresent(String.self, forKey: .username)
+
+        // Decode entityRow as a string
+        if let entityRowString = try container.decodeIfPresent(String.self, forKey: .entityRow) {
+            if let jsonData = entityRowString.data(using: .utf8), let array = try? JSONDecoder().decode(UwaziTemplate.self, from: jsonData) {
+                entityRow = array
+            } else {
+                throw DecodingError.dataCorruptedError(forKey: .entityRow, in: container, debugDescription: "entityRow issue")
+            }
+        }
+        isDownloaded = try container.decodeIfPresent(Int.self, forKey: .isDownloaded)
+        isFavorite = try container.decodeIfPresent(Int.self, forKey: .isFavorite)
+        isUpdated = try container.decodeIfPresent(Int.self, forKey: .isUpdated)
     }
 
     var entityRowString: String? {

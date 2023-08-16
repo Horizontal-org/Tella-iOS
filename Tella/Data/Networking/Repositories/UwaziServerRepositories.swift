@@ -132,10 +132,11 @@ extension UwaziServerRepository.API: APIRequest {
         switch self {
 
         case .login, .getProjetDetails, .checkURL, .getLanguage, .twoFactorAuthentication:
-            return nil
+             return [HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
         case .getTemplate(_,let cookieList), .getSetting(_,let cookieList), .getDictionary(_,let cookieList), .getTranslations(_,let cookieList):
             let cookiesString = cookieList.joined(separator: "; ")
-            return ["Cookie": cookiesString]
+            return ["Cookie": cookiesString,
+                    HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
         }
     }
 

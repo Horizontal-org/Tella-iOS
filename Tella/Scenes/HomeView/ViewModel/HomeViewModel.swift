@@ -24,11 +24,14 @@ class HomeViewModel: ObservableObject {
     
     fileprivate func handleTemplate() {
         do {
+            //try appModel.vaultManager.tellaData.database?.deleteAllUwaziTemplate()
+
+           // /*
             Task {
                 let servers = self.appModel.vaultManager.tellaData.database?.getServer()
                 guard let server = servers?.first,let id = server.id else { return }
                 guard let locale = try self.appModel.vaultManager.tellaData.database?.getUwaziLocaleWith(serverId: id) else { return }
-                let template = try await getTemplate(server: server, locale: locale)
+                var template = try await getTemplate(server: server, locale: locale)
                 template.sink { completion in
                     switch completion {
                     case .finished:
@@ -37,20 +40,88 @@ class HomeViewModel: ObservableObject {
                         print("Error: \(error)")
                     }
                 } receiveValue: { templates in
-                    print(templates)
+                    var allTemplates = templates
+                    print(allTemplates)
                     do {
-                        if let item = templates.first {
-                            try self.appModel.vaultManager.tellaData.database?.addUwaziTemplateWith(template: item)
-                            let savedTemplate = try self.appModel.vaultManager.tellaData.database?.getAllTemplateLocale()
-                            print(savedTemplate)
+//                        if var item = templates.first, let savedItem = try self.appModel.vaultManager.tellaData.database?.addUwaziTemplateWith(template: item) {
+//                            item = savedItem
+//                            let savedTemplate = try self.appModel.vaultManager.tellaData.database?.getAllUwaziTemplate()
+//                            print(savedTemplate)
+//                        }
 
-                        }
+                        // For saving the template into db for add template list
+//                        if var item = templates[safe: 1] {
+//                            self.saveTemplate(template: &item)
+//                        }
+
+
+                        // For handling the downloaded when the templates are already there
+                        //try self.handleDownloadStuff(templates: &allTemplates)
+
+
+                        // To delete the downloaded template for add template list
+//                        if var item = templates[safe: 1] {
+//                            self.deleteTemplate(template: &item)
+//                        }
+
+
+                        // To delete the downloaded template from template list
+//                        if var item = templates[safe: 1] {
+//                            self.deleteDownloadedTemplate(template: item)
+//                        }
+                        print(allTemplates)
                     } catch let error {
                         print(error)
                     }
-
-                    
                 }.store(in: &subscribers)
+            }
+           //  */
+        } catch {
+
+        }
+    }
+    func handleDownloadStuff(templates: inout [CollectedTemplate]) throws {
+        try templates.forEach { template in
+            let savedTemplateid = try self.getAllDownloadedTemplate()?.compactMap({$0.templateId})
+            if let savedTemplate = savedTemplateid,let templateId = template.templateId {
+                if savedTemplate.contains(templateId) {
+                    template.isDownloaded = 1
+                }
+            }
+        }
+    }
+
+    func saveTemplate( template: inout CollectedTemplate) {
+        do {
+            let savedTemplateid = try self.getAllDownloadedTemplate()?.compactMap({$0.templateId})
+            if let savedTemplate = savedTemplateid,let templateId = template.templateId {
+                if !savedTemplate.contains(templateId) {
+                    if let savedItem = try self.appModel.vaultManager.tellaData.database?.addUwaziTemplateWith(template: template) {
+                        template = savedItem
+                    }
+                }
+            }
+        } catch let error {
+            print(error)
+        }
+    }
+    func deleteTemplate(template: inout CollectedTemplate) {
+        do {
+            if let templateId = template.templateId {
+                _ = try self.appModel.vaultManager.tellaData.database?.deleteAllUwaziTemplateWith(templateId: templateId)
+                template.isDownloaded = 0
+            }
+        } catch {
+
+        }
+    }
+    func getAllDownloadedTemplate() throws -> [CollectedTemplate]? {
+        return try self.appModel.vaultManager.tellaData.database?.getAllUwaziTemplate()
+    }
+    func deleteDownloadedTemplate(template: CollectedTemplate) {
+        do {
+            if let templateId = template.templateId {
+                _ = try self.appModel.vaultManager.tellaData.database?.deleteAllUwaziTemplateWith(templateId: templateId)
             }
         } catch {
 
@@ -149,7 +220,7 @@ class HomeViewModel: ObservableObject {
                             print(resultTemplates)
 
                             let originalTemplate = resultTemplates.map { template in
-                                return CollectedTemplate(serverId: server.id, serverName: server.name, username: server.username ?? "", entityRow: template)
+                                return CollectedTemplate(serverId: server.id, templateId: template.id, serverName: server.name ?? "", username: server.username, entityRow: template, isDownloaded: 0, isFavorite: 0, isUpdated: 0 )
                             }
                             promise(.success(originalTemplate))
                         }.store(in: &self.subscribers)
@@ -187,5 +258,12 @@ class HomeViewModel: ObservableObject {
         let recentFile = appModel.vaultManager.root.getRecentFile()
         hasRecentFile = recentFile.count > 0
         return recentFile
+    }
+}
+extension Collection {
+
+    /// Returns the element at the specified index if it exists, otherwise nil.
+    subscript (safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
     }
 }
