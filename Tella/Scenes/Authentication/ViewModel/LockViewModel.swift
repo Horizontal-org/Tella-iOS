@@ -18,7 +18,8 @@ class LockViewModel: ObservableObject {
     @Published var oldPassword : String = ""
     @Published var shouldShowUnlockError : Bool = false
     @Published var unlockAttempts : Int = 0
-    var maxAttempts : Int = 5
+    var maxAttempts : Int
+    private var settingsCancellable: AnyCancellable?
 
     var unlockType : UnlockType = .new
     var shouldDismiss = CurrentValueSubject<Bool, Never>(false)
@@ -42,6 +43,12 @@ class LockViewModel: ObservableObject {
     init(unlockType: UnlockType, appModel:MainAppModel) {
         self.unlockType = unlockType
         self.appModel = appModel
+        
+        self.maxAttempts = appModel.settings.deleteAfterFail.numberOfAttempts
+            
+        self.settingsCancellable = appModel.settings.$deleteAfterFail
+            .map{ $0.numberOfAttempts }
+            .assign(to: \.maxAttempts, on: self)
     }
     
     func login() {

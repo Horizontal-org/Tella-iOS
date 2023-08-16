@@ -63,6 +63,7 @@ struct UnlockPinView: View {
                         keyboardNumbers: UnlockKeyboardNumbers) {
                     viewModel.login()
                     if !viewModel.shouldShowUnlockError {
+                        viewModel.unlockAttempts = 0
                         if viewModel.unlockType == .new {
                              isLoading = true
                              initRoot()
