@@ -70,7 +70,7 @@ struct UnlockPasswordView: View {
                         }
                     } else {
                         viewModel.unlockAttempts = viewModel.unlockAttempts + 1
-                        
+                        UserDefaults.standard.set(viewModel.unlockAttempts, forKey: "com.tella.lock.attempts")
                         if(viewModel.unlockAttempts == viewModel.maxAttempts) {
                             viewModel.removeFilesAndConnections()
                         }

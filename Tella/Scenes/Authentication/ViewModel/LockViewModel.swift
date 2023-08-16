@@ -17,7 +17,7 @@ class LockViewModel: ObservableObject {
     @Published var confirmPassword : String = ""
     @Published var oldPassword : String = ""
     @Published var shouldShowUnlockError : Bool = false
-    @Published var unlockAttempts : Int = 0
+    @Published var unlockAttempts : Int
     var maxAttempts : Int
     private var settingsCancellable: AnyCancellable?
 
@@ -45,6 +45,7 @@ class LockViewModel: ObservableObject {
         self.appModel = appModel
         
         self.maxAttempts = appModel.settings.deleteAfterFail.numberOfAttempts
+        self.unlockAttempts = UserDefaults.standard.integer(forKey: "com.tella.lock.attempts")
             
         self.settingsCancellable = appModel.settings.$deleteAfterFail
             .map{ $0.numberOfAttempts }
