@@ -139,6 +139,7 @@ struct UnlockView: View {
                                 
         if(viewModel.unlockAttempts == viewModel.maxAttempts) {
             viewModel.removeFilesAndConnections()
+            appViewState.resetApp()
         }
     }
     
