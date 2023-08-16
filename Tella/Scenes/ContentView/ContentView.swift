@@ -29,10 +29,10 @@ struct ContentView: View {
             if appViewState.currentView == .UNLOCK {
                 let passwordType = appViewState.homeViewModel.vaultManager.getPasswordType()
                 passwordType == .tellaPassword ?
-                UnlockPasswordView()
+                UnlockView(type: .tellaPassword)
                     .environmentObject(lockViewModel)
                     .eraseToAnyView() :
-                UnlockPinView()
+                UnlockView(type: .tellaPin)
                     .environmentObject(lockViewModel)
                     .eraseToAnyView()
             }

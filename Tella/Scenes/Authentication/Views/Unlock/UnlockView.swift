@@ -1,16 +1,15 @@
 //
-//  UnlockPinView.swift
+//  UnlockView.swift
 //  Tella
 //
-//
-//  Copyright © 2021 INTERNEWS. All rights reserved.
+//  Created by Gustavo on 16/08/2023.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import SwiftUI
 import Combine
 
-struct UnlockPinView: View {
-    
+struct UnlockView: View {
     @State private var presentingLockChoice : Bool = false
     
     @EnvironmentObject private var appViewState: AppViewState
@@ -19,7 +18,7 @@ struct UnlockPinView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State private var cancellable: Set<AnyCancellable> = []
     @State private var isLoading : Bool = false
-
+    var type : PasswordTypeEnum
     var body: some View {
         ContainerView {
             VStack(alignment: .center) {
@@ -49,20 +48,30 @@ struct UnlockPinView: View {
                         .padding(EdgeInsets(top: 0, leading: 67, bottom: 0, trailing: 67))
                     Spacer()
                 }
+                
+                
 
-               
-                
-                PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
-                                      isValid: .constant(true),
-                                      shouldShowError: $viewModel.shouldShowUnlockError,
-                                      disabled: true)
-                
-                Spacer(minLength: 20)
-                
-                PinView(fieldContent: $viewModel.loginPassword,
-                        keyboardNumbers: UnlockKeyboardNumbers) {
-                    loginActions()
+                if(type == .tellaPassword) {
+                    PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
+                                          isValid: .constant(true),
+                                          shouldShowError: $viewModel.shouldShowUnlockError) {
+                        loginActions()
+                    }
+                } else {
+                    PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
+                                          isValid: .constant(true),
+                                          shouldShowError: $viewModel.shouldShowUnlockError,
+                                          disabled: true)
+                    
+                    Spacer(minLength: 20)
+                    
+                    PinView(fieldContent: $viewModel.loginPassword,
+                            keyboardNumbers: UnlockKeyboardNumbers) {
+                        loginActions()
+                    }
                 }
+                
+                
                 
                 Spacer()
             }
@@ -102,6 +111,7 @@ struct UnlockPinView: View {
     
     private func successLogin() {
         viewModel.unlockAttempts = 0
+        UserDefaults.standard.set(viewModel.unlockAttempts, forKey: "com.tella.lock.attempts")
         if viewModel.unlockType == .new {
              isLoading = true
              initRoot()
@@ -129,11 +139,10 @@ struct UnlockPinView: View {
                 }.store(in: &self.cancellable)
         }
     }
-    
 }
 
-struct UnlockPinView_Previews: PreviewProvider {
+struct UnlockView_Previews: PreviewProvider {
     static var previews: some View {
-        UnlockPinView()
+        UnlockView(type: .tellaPassword)
     }
 }

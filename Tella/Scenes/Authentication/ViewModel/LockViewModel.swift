@@ -90,22 +90,24 @@ class LockViewModel: ObservableObject {
     }
     
     func removeFilesAndConnections () -> Void {
+        unlockAttempts = 0
+        UserDefaults.standard.set(unlockAttempts, forKey: "com.tella.lock.attempts")
         let fileManager = FileManager.default
                 
-            let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
                 
-            print("Directory: \(paths)")
+        print("Directory: \(paths)")
                 
-            do {
-                let fileName = try fileManager.contentsOfDirectory(atPath: paths)
+        do {
+            let fileName = try fileManager.contentsOfDirectory(atPath: paths)
                     
-                for file in fileName {
-                    // For each file in the directory, create full path and delete the file
-                    let filePath = URL(fileURLWithPath: paths).appendingPathComponent(file).absoluteURL
-                    try fileManager.removeItem(at: filePath)
-                }
-            } catch let error {
-                print(error)
+            for file in fileName {
+                // For each file in the directory, create full path and delete the file
+                let filePath = URL(fileURLWithPath: paths).appendingPathComponent(file).absoluteURL
+                try fileManager.removeItem(at: filePath)
             }
+        } catch let error {
+            print(error)
+        }
     }
 }
