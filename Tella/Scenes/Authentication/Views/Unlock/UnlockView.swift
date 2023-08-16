@@ -9,6 +9,11 @@
 import SwiftUI
 import Combine
 
+enum UnlockType {
+    case new
+    case update
+}
+
 struct UnlockView: View {
     @State private var presentingLockChoice : Bool = false
     
@@ -89,10 +94,18 @@ struct UnlockView: View {
     }
     
     var titleString : String {
+        if(type == .tellaPin) {
+            if viewModel.shouldShowUnlockError {
+                return  LocalizableLock.unlockUpdatePinErrorIncorrectPIN.localized
+            } else {
+                return viewModel.unlockType == .new ? LocalizableLock.unlockPinSubhead.localized : LocalizableLock.unlockUpdatePinSubhead.localized
+            }
+        }
+        
         if viewModel.shouldShowUnlockError {
-            return  LocalizableLock.unlockUpdatePinErrorIncorrectPIN.localized
+            return  LocalizableLock.unlockUpdatePasswordErrorIncorrectPassword.localized
         } else {
-            return viewModel.unlockType == .new ? LocalizableLock.unlockPinSubhead.localized : LocalizableLock.unlockUpdatePinSubhead.localized
+            return viewModel.unlockType == .new ? LocalizableLock.unlockPasswordSubhead.localized : LocalizableLock.unlockUpdatePasswordSubhead.localized
         }
     }
     
