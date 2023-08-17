@@ -122,8 +122,7 @@ struct UnlockView: View {
     }
     
     private func successLogin() {
-        viewModel.unlockAttempts = 0
-        UserDefaults.standard.set(viewModel.unlockAttempts, forKey: "com.tella.lock.attempts")
+        viewModel.resetUnlockAttempts()
         if viewModel.unlockType == .new {
              isLoading = true
              initRoot()
@@ -133,8 +132,7 @@ struct UnlockView: View {
     }
     
     private func checkUnlockAttempts() {
-        viewModel.unlockAttempts = viewModel.unlockAttempts + 1
-        UserDefaults.standard.set(viewModel.unlockAttempts, forKey: "com.tella.lock.attempts")
+        viewModel.increaseUnlockAttempts()
                                 
         if(viewModel.unlockAttempts == viewModel.maxAttempts) {
             viewModel.removeFilesAndConnections()

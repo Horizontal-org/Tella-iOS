@@ -25,8 +25,11 @@ import Foundation
     /// Lock timeout option
     @Published var lockTimeout: LockTimeoutOption = .immediately
 
-    // Delete after fail option
+    /// Delete after fail option
     @Published var deleteAfterFail: DeleteAfterFailOption = .off
+     
+     /// Track the amount of unlock attempts
+     @Published var unlockAttempts: Int = 0
     
     /// Whether screen security is enabled
     @Published var screenSecurity: Bool = true
@@ -39,6 +42,7 @@ import Foundation
         case showRecentFiles
         case lockTimeout
         case deleteAfterFail
+        case unlockAttempts
         case screenSecurity
     }
     

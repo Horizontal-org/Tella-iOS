@@ -117,6 +117,20 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         }
     }
     
+    func resetSettings() {
+        settings.unlockAttempts = 0
+        settings.deleteAfterFail = .off
+        settings.quickDelete = false
+        settings.offlineMode = false
+        settings.deleteServerSettings = false
+        settings.showRecentFiles = false
+        settings.lockTimeout = .immediately
+        settings.screenSecurity = true
+        settings.deleteVault = false
+        
+        saveSettings()
+    }
+    
     func saveLockTimeoutStartDate()  {
         lockTimeoutStartDate = Date()
     }
@@ -133,6 +147,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     }
     
     func deleteAfterMaxAttempts() {
+        resetSettings()
         let fileManager = FileManager.default
                 
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!

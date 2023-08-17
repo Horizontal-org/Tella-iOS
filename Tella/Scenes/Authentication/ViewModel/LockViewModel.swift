@@ -20,7 +20,7 @@ class LockViewModel: ObservableObject {
     @Published var unlockAttempts : Int
     var maxAttempts : Int
 
-    private var settingsCancellable: AnyCancellable?
+    private var cancellables = Set<AnyCancellable>()
 
     var unlockType : UnlockType = .new
     var shouldDismiss = CurrentValueSubject<Bool, Never>(false)
@@ -45,12 +45,21 @@ class LockViewModel: ObservableObject {
         self.unlockType = unlockType
         self.appModel = appModel
         
+        self.unlockAttempts = appModel.settings.unlockAttempts
         self.maxAttempts = appModel.settings.deleteAfterFail.numberOfAttempts
-        self.unlockAttempts = UserDefaults.standard.integer(forKey: "com.tella.lock.attempts")
-            
-        self.settingsCancellable = appModel.settings.$deleteAfterFail
-            .map{ $0.numberOfAttempts }
+        
+        setupSettingsObservations()
+    }
+    
+    private func setupSettingsObservations() {
+        appModel.settings.$deleteAfterFail
+            .map({ $0.numberOfAttempts })
             .assign(to: \.maxAttempts, on: self)
+            .store(in: &cancellables)
+        
+        appModel.settings.$unlockAttempts
+            .assign(to: \.unlockAttempts, on: self)
+            .store(in: &cancellables)
     }
     
     func login() {
@@ -90,10 +99,17 @@ class LockViewModel: ObservableObject {
         return String.init(format: LocalizableLock.unlockDeleterAfterFailRemainingAttempts.localized, self.remainingAttempts())
     }
     
+    func resetUnlockAttempts () -> Void {
+        appModel.settings.unlockAttempts = 0
+        appModel.saveSettings()
+    }
+    
+    func increaseUnlockAttempts () -> Void {
+        appModel.settings.unlockAttempts = appModel.settings.unlockAttempts + 1
+        appModel.saveSettings()
+    }
+    
     func removeFilesAndConnections () -> Void {
-        unlockAttempts = 0
-        UserDefaults.standard.set(unlockAttempts, forKey: "com.tella.lock.attempts")
-        
         appModel.deleteAfterMaxAttempts()
     }
 }
