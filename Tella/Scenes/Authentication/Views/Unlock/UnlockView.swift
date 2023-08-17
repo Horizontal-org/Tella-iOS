@@ -35,48 +35,21 @@ struct UnlockView: View {
                 
                 Spacer(minLength: 23)
                 
-                Text(titleString)
-                    .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-                    .foregroundColor(.white)
-                    .lineSpacing(7)
-                    .multilineTextAlignment(.center)
-                    .padding(EdgeInsets(top: 0, leading: 67, bottom: 0, trailing: 67))
+                TextView(content: titleString, size: 18)
                 
                 Spacer()
                 
                 if(viewModel.shouldShowAttemptsWarning) {
-                    Text(viewModel.warningText())
-                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                        .foregroundColor(.white)
-                        .lineSpacing(7)
-                        .multilineTextAlignment(.center)
-                        .padding(EdgeInsets(top: 0, leading: 67, bottom: 0, trailing: 67))
+                    TextView(content: viewModel.warningText(), size: 14)
                     Spacer()
                 }
                 
-                
-
+    
                 if(type == .tellaPassword) {
-                    PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
-                                          isValid: .constant(true),
-                                          shouldShowError: $viewModel.shouldShowUnlockError) {
-                        loginActions()
-                    }
+                    TellaPasswordView
                 } else {
-                    PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
-                                          isValid: .constant(true),
-                                          shouldShowError: $viewModel.shouldShowUnlockError,
-                                          disabled: true)
-                    
-                    Spacer(minLength: 20)
-                    
-                    PinView(fieldContent: $viewModel.loginPassword,
-                            keyboardNumbers: UnlockKeyboardNumbers) {
-                        loginActions()
-                    }
+                    TellaPinView
                 }
-                
-                
                 
                 Spacer()
             }
@@ -93,21 +66,47 @@ struct UnlockView: View {
         }
     }
     
-    var titleString : String {
-        if(type == .tellaPin) {
-            if viewModel.shouldShowUnlockError {
-                return  LocalizableLock.unlockUpdatePinErrorIncorrectPIN.localized
-            } else {
-                return viewModel.unlockType == .new ? LocalizableLock.unlockPinSubhead.localized : LocalizableLock.unlockUpdatePinSubhead.localized
-            }
+    
+    var titleString: String {
+        let unlockErrorString: String
+        let unlockSubheadString: String
+
+        switch type {
+        case .tellaPin:
+            unlockErrorString = viewModel.shouldShowUnlockError ? LocalizableLock.unlockUpdatePinErrorIncorrectPIN.localized : ""
+            unlockSubheadString = viewModel.unlockType == .new ? LocalizableLock.unlockPinSubhead.localized : LocalizableLock.unlockUpdatePinSubhead.localized
+        default:
+            unlockErrorString = viewModel.shouldShowUnlockError ? LocalizableLock.unlockUpdatePasswordErrorIncorrectPassword.localized : ""
+            unlockSubheadString = viewModel.unlockType == .new ? LocalizableLock.unlockPasswordSubhead.localized : LocalizableLock.unlockUpdatePasswordSubhead.localized
         }
-        
-        if viewModel.shouldShowUnlockError {
-            return  LocalizableLock.unlockUpdatePasswordErrorIncorrectPassword.localized
-        } else {
-            return viewModel.unlockType == .new ? LocalizableLock.unlockPasswordSubhead.localized : LocalizableLock.unlockUpdatePasswordSubhead.localized
+
+        return unlockErrorString.isEmpty ? unlockSubheadString : unlockErrorString
+    }
+    
+    var TellaPasswordView : some View {
+        PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
+                              isValid: .constant(true),
+                              shouldShowError: $viewModel.shouldShowUnlockError) {
+            loginActions()
         }
     }
+    
+    var TellaPinView : some View {
+        Group {
+            PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
+                                  isValid: .constant(true),
+                                  shouldShowError: $viewModel.shouldShowUnlockError,
+                                  disabled: true)
+            
+            Spacer(minLength: 20)
+            
+            PinView(fieldContent: $viewModel.loginPassword,
+                    keyboardNumbers: UnlockKeyboardNumbers) {
+                loginActions()
+            }
+        }
+    }
+
     
     var lockChoiceView : some View {
         presentingLockChoice ? LockChoiceView( isPresented: $presentingLockChoice) : nil

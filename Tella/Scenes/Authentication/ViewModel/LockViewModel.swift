@@ -19,6 +19,7 @@ class LockViewModel: ObservableObject {
     @Published var shouldShowUnlockError : Bool = false
     @Published var unlockAttempts : Int
     var maxAttempts : Int
+
     private var settingsCancellable: AnyCancellable?
 
     var unlockType : UnlockType = .new
