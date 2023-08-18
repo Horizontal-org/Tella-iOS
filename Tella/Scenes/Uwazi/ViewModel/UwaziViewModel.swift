@@ -69,10 +69,10 @@ class UwaziReportsViewModel: ObservableObject {
                 template.receive(on: DispatchQueue.main).sink { completion in
                     switch completion {
                     case .finished:
-                        print("Fetching template completed.")
+                        dump("Fetching template completed.")
                     case .failure(let error):
                         self.isLoading = false
-                        print("Error: \(error)")
+                        dump("Error: \(error)")
                     }
                 } receiveValue: { templates in
                     do {
@@ -81,7 +81,7 @@ class UwaziReportsViewModel: ObservableObject {
                         self.templates = allTemplates
                         self.isLoading = false
                     } catch let error {
-                        print(error)
+                        dump(error)
                         self.isLoading = false
                     }
 
@@ -140,7 +140,7 @@ class UwaziReportsViewModel: ObservableObject {
                 }
             }
         } catch let error {
-            print(error)
+            dump(error)
         }
     }
     /// Delete the saved template from database using the template id of the template and changing the status of isDownloaded property to 0  for template listing view
