@@ -21,8 +21,7 @@ enum UploadResponse {
     case initial
     case progress(progressInfo: UploadProgressInfo)
     case createReport(apiId: String?, reportStatus:ReportStatus?, error:APIError?)
-    case finish(shouldShowMainView:Bool)
-
+    case finish(isAutoDelete:Bool, title:String?)
 }
 
 enum UploadType {

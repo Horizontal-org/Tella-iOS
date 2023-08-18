@@ -14,13 +14,19 @@ enum MainViewEnum {
 
 final class AppViewState: ObservableObject {
    
-    var homeViewModel : MainAppModel?
+    var homeViewModel : MainAppModel
 
     @Published private var viewStack = [MainViewEnum]()
     @Published var shouldHidePresentedView: Bool = false
-    @Published var networkMonitor = NetworkMonitor()
+    @Published var mainAppLayout: LayoutDirection = .leftToRight
+    @Published var networkMonitor : NetworkMonitor 
 
     init() {
+        let networkMonitor = NetworkMonitor()
+        self.networkMonitor = networkMonitor
+
+        homeViewModel = MainAppModel(networkMonitor:  networkMonitor)
+        
         self.resetApp()
         self.initLanguage()
     }
@@ -42,30 +48,25 @@ final class AppViewState: ObservableObject {
     }
 
     func resetToUnlock() {
-        homeViewModel = nil
+        homeViewModel.resetVaultManager()
         viewStack = [.UNLOCK]
     }
-
-    func initMainAppModel() {
-        homeViewModel = MainAppModel(networkMonitor: networkMonitor)
-     }
 
     func showMainView() {
         viewStack = [.MAIN]
     }
     
     func resetToMain() {
-        homeViewModel = MainAppModel(networkMonitor: networkMonitor)
         viewStack = [.MAIN]
     }
 
     func resetApp() {
-        AuthenticationManager().keysInitialized() ? self.resetToUnlock() : self.resetToLock()
-        
+        homeViewModel.keysInitialized() ? self.resetToUnlock() : self.resetToLock()
     }
     
     func initLanguage() {
         let selectedLanguage = LanguageManager.shared.currentLanguage.rawValue
+        mainAppLayout = LanguageManager.shared.currentLanguage.layoutDirection
         Bundle.setLanguage(selectedLanguage)
     }
 }

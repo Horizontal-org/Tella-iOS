@@ -16,9 +16,7 @@ struct  PageViewCell: View {
     public var body: some View {
         
         Button(action: {
-            withAnimation(.interactiveSpring()){
-                self.selectedOption = page
-            }
+            self.selectedOption = page
         }, label: {
             
             let selected: Bool = page == selectedOption

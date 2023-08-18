@@ -25,7 +25,7 @@ protocol AppModelFileManagerProtocol {
     func sendAutoReportFile(file: VaultFile)
     func initFiles() -> AnyPublisher<Bool,Never>
     func initRoot()
-
+    
 }
 
 let lockTimeoutStartDateKey = "LockTimeoutStartDate"
@@ -55,24 +55,25 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     
     @Published var settings: SettingsModel = SettingsModel()
     
-    @Published var vaultManager: VaultManager = VaultManager(cryptoManager: CryptoManager.shared, fileManager: DefaultFileManager(), rootFileName: "root", containerPath: "Containers", progress: ImportProgress())
+    @Published var vaultManager: VaultManager = VaultManager()
     
     @Published var selectedTab: Tabs = .home
     
     @UserDefaultsProperty(key: lockTimeoutStartDateKey) private var lockTimeoutStartDate: Date?
     
-    @Published var shouldUpdateLanguage:Bool = true
     @Published var shouldSaveCurrentData: Bool = false
     @Published var shouldShowRecordingSecurityScreen: Bool = UIScreen.main.isCaptured
     @Published var shouldShowSecurityScreen: Bool = false
     @Published var appEnterInBackground: Bool = false
     @Published var importOption: ImportOption?
     var networkMonitor : NetworkMonitor
+    
+    @Published var shouldUpdateLanguage = true
 
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
     
     private var cancellable: Set<AnyCancellable> = []
-
+    
     init(networkMonitor:NetworkMonitor) {
         self.networkMonitor = networkMonitor
         loadData()
@@ -86,11 +87,49 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         }
     }
     
+    func initFiles() -> AnyPublisher<Bool,Never> {
+        return Deferred {
+            Future <Bool,Never> {  [weak self] promise in
+                guard let self = self else { return }
+                self.vaultManager.initFiles()
+                    .sink(receiveValue: { f in
+                        self.sendReports()
+                        promise(.success(f))
+                    }).store(in: &self.cancellable)
+                
+            }
+        }.eraseToAnyPublisher()
+    }
+    
+    func initRoot() {
+        vaultManager.initRoot()
+        UploadService.shared.initAutoUpload(mainAppModel: self)
+        
+    }
+    
+    func resetVaultManager() {
+        vaultManager.resetData()
+    }
+    
     func saveSettings() {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(settings) {
             UserDefaults.standard.set(encoded, forKey: "com.tella.settings")
         }
+    }
+    
+    func resetSettings() {
+        settings.unlockAttempts = 0
+        settings.deleteAfterFail = .off
+        settings.quickDelete = false
+        settings.offlineMode = false
+        settings.deleteServerSettings = false
+        settings.showRecentFiles = false
+        settings.lockTimeout = .immediately
+        settings.screenSecurity = true
+        settings.deleteVault = false
+        
+        saveSettings()
     }
     
     func saveLockTimeoutStartDate()  {
@@ -108,6 +147,12 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         publishUpdates()
     }
     
+    func deleteAfterMaxAttempts() {
+        resetSettings()
+        
+        vaultManager.deleteContainerDirectory()
+    }
+    
     func changeTab(to newTab: Tabs) {
         selectedTab = newTab
     }
@@ -123,7 +168,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
             self?.publishUpdates()
         }.store(in: &cancellable)
         
-        let files = try await self.vaultManager.importFile(files: files, to: parentFolder, type: type, folderPathArray: folderPathArray)
+        let files = try await self.vaultManager.importFile(files: files, to: parentFolder, type: type, folderPathArray: folderPathArray) ?? []
         self.publishUpdates()
         return files
     }
@@ -202,43 +247,30 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         }
     }
     
+    
+}
+
+///   MainAppModel extension contains the methods used to manage reports
+
+extension MainAppModel {
+    
     func sendAutoReportFile(file: VaultFile) {
-        if vaultManager.tellaData.getAutoUploadServer() != nil {
+        if vaultManager.tellaData?.getAutoUploadServer() != nil {
             UploadService.shared.addAutoUpload(file: file)
         }
-    }
-
-    func initFiles() -> AnyPublisher<Bool,Never> {
-        return Deferred {
-            Future <Bool,Never> {  [weak self] promise in
-                guard let self = self else { return }
-                self.vaultManager.initFiles()
-                    .sink(receiveValue: { f in
-                        self.sendReports()
-                        promise(.success(f))
-                    }).store(in: &self.cancellable)
-                
-            }
-        }.eraseToAnyPublisher()
-    }
-    
-    func initRoot() {
-        vaultManager.initRoot()
-        UploadService.shared.initAutoUpload(mainAppModel: self)
-
     }
     
     func sendReports() {
         UploadService.shared.initAutoUpload(mainAppModel: self)
         UploadService.shared.sendUnsentReports(mainAppModel: self)
     }
-
+    
     func deleteReport(reportId:Int?) {
         
         UploadService.shared.cancelSendingReport(reportId: reportId)
         
         do {
-            try _ = vaultManager.tellaData.deleteReport(reportId: reportId)
+            try _ = vaultManager.tellaData?.deleteReport(reportId: reportId)
         } catch {
         }
     }

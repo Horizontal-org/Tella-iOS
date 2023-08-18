@@ -14,7 +14,7 @@ struct FileListView: View {
     
     var title : String = ""
     
-    init(appModel: MainAppModel, rootFile: VaultFile , fileType: [TellaFileType]? , title : String = "", fileListType : FileListType = .fileList, resultFile: Binding<[VaultFile]?>? = nil) {
+    init(appModel: MainAppModel, rootFile: VaultFile? , fileType: [TellaFileType]? , title : String = "", fileListType : FileListType = .fileList, resultFile: Binding<[VaultFile]?>? = nil) {
         _fileListViewModel = StateObject(wrappedValue: FileListViewModel(appModel: appModel,fileType:fileType, rootFile: rootFile, folderPathArray: [], fileListType :  fileListType, resultFile: resultFile))
         self.title = title
     }
@@ -31,7 +31,7 @@ struct FileListView: View {
                     
                     SelectingFilesHeaderView()
                     
-                    if appModel.vaultManager.root.files.isEmpty {
+                    if (appModel.vaultManager.root?.files.isEmpty ?? true) {
                         EmptyFileListView(emptyListType: .allFiles)
                         
                     } else {
@@ -72,7 +72,7 @@ struct FileListView: View {
     var fileDetailView: some View {
         FileDetailView(appModel: appModel ,
                        file: self.fileListViewModel.currentSelectedVaultFile,
-                       videoFilesArray: fileListViewModel.rootFile.getVideos().sorted(by: fileListViewModel.sortBy),
+                       videoFilesArray: fileListViewModel.rootFile?.getVideos().sorted(by: fileListViewModel.sortBy),
                        rootFile: fileListViewModel.rootFile,
                        folderPathArray: fileListViewModel.folderPathArray)
     }
@@ -87,6 +87,7 @@ struct FileListView: View {
                     
                 } label: {
                     Image("back")
+                        .flipsForRightToLeftLayoutDirection(true)
                         .padding()
                 }
                 

@@ -29,26 +29,13 @@ struct LockConfirmPinView: View {
     }
     
     func lockWithPin() {
-        do {
-            try AuthenticationManager().initKeys(.tellaPin,
-                                                 password: lockViewModel.password)
-            navigateTo(destination: OnboardingEndView())
-            
-        } catch {
-            
-        }
+        lockViewModel.initKeys(passwordTypeEnum: .tellaPin)
+        navigateTo(destination: OnboardingEndView())
     }
     
     func updatePin() {
-        do {
-            guard let privateKey = lockViewModel.privateKey else { return }
-            try AuthenticationManager().updateKeys(privateKey, .tellaPin,
-                                                   newPassword: lockViewModel.password,
-                                                   oldPassword: lockViewModel.loginPassword)
-            lockViewModel.shouldDismiss.send(true)
-        } catch {
-            
-        }
+        lockViewModel.updateKeys(passwordTypeEnum: .tellaPin)
+        lockViewModel.shouldDismiss.send(true)
     }
     
 }

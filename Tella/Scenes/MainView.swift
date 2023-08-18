@@ -43,7 +43,7 @@ struct MainView: View  {
                             Image("tab.home")
                             Text(LocalizableHome.tabBar.localized)
                         }.tag(MainAppModel.Tabs.home)
-
+                    
                     ContainerView{}
                         .tabItem {
                             Image("tab.camera")
@@ -87,12 +87,12 @@ struct MainView: View  {
     
     @ViewBuilder
     var securityScreenView : some View {
-        if appViewState.homeViewModel?.shouldShowSecurityScreen == true || appViewState.homeViewModel?.shouldShowRecordingSecurityScreen == true , let screenSecurity = appViewState.homeViewModel?.settings.screenSecurity, screenSecurity == true {
+        if appViewState.homeViewModel.shouldShowSecurityScreen == true || appViewState.homeViewModel.shouldShowRecordingSecurityScreen == true ,    appViewState.homeViewModel.settings.screenSecurity == true {
             Color.white
                 .edgesIgnoringSafeArea(.all)
         }
     }
-
+    
     private func setupApperance() {
         
         UITabBar.appearance().unselectedItemTintColor = UIColor.white.withAlphaComponent(0.38)
@@ -108,7 +108,10 @@ struct MainView: View  {
                                                  .font: UIFont(name: Styles.Fonts.boldFontName, size: 24)!]
         coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white,
                                                       .font: UIFont(name: Styles.Fonts.boldFontName, size: 35)!]
-        coloredAppearance.setBackIndicatorImage(UIImage(named: "back"), transitionMaskImage: UIImage(named: "back"))
+        let image = UIImage(named: "back")
+        image?.imageFlippedForRightToLeftLayoutDirection()
+        
+        coloredAppearance.setBackIndicatorImage(image, transitionMaskImage: image)
         
         UINavigationBar.appearance().standardAppearance = coloredAppearance
         UINavigationBar.appearance().compactAppearance = coloredAppearance

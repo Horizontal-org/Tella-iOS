@@ -110,9 +110,9 @@ class OutboxReportVM: ObservableObject {
                             self.reportViewModel.status = reportStatus
                         }
                     }
-                case .finish(let shouldShowMainView):
+                case .finish(let isAutoDelete, _):
                     DispatchQueue.main.async {
-                        if shouldShowMainView {
+                        if isAutoDelete {
                             self.showMainView()
                         } else {
                             self.showSubmittedReport()
@@ -127,11 +127,11 @@ class OutboxReportVM: ObservableObject {
     
     func initVaultFile(reportId: Int?) {
         
-        if let reportId, let report = self.mainAppModel.vaultManager.tellaData.getReport(reportId: reportId) {
+        if let reportId, let report = self.mainAppModel.vaultManager.tellaData?.getReport(reportId: reportId) {
             
             var vaultFileResult : Set<VaultFile> = []
             
-            mainAppModel.vaultManager.root.getFile(root: mainAppModel.vaultManager.root,
+            mainAppModel.vaultManager.root?.getFile(root: mainAppModel.vaultManager.root,
                                                    vaultFileResult: &vaultFileResult,
                                                    ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
             var files : [ReportVaultFile] = []
@@ -274,14 +274,20 @@ class OutboxReportVM: ObservableObject {
         guard let id = reportViewModel.id else { return  }
         
         do {
-            try mainAppModel.vaultManager.tellaData.updateReportStatus(idReport: id, status: reportStatus)
+            try mainAppModel.vaultManager.tellaData?.updateReportStatus(idReport: id, status: reportStatus)
             
-        } catch {
-            
+        } catch let error {
+            debugLog(error)
         }
     }
     
     func deleteReport() {
-        mainAppModel.deleteReport(reportId: reportViewModel.id)
+        
+        do {
+            try mainAppModel.deleteReport(reportId: reportViewModel.id)
+        } catch let error {
+            debugLog(error)
+        }
+
     }
 }

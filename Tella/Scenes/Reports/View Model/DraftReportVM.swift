@@ -100,7 +100,7 @@ class DraftReportVM: ObservableObject {
     }
     
     private func getServers() {
-        serverArray = mainAppModel.vaultManager.tellaData.servers.value
+        serverArray = mainAppModel.vaultManager.tellaData?.servers.value ?? []
     }
     
     private func initcurrentReportVM(reportId:Int?) {
@@ -125,14 +125,14 @@ class DraftReportVM: ObservableObject {
     }
     
     func fillReportVM() {
-        if let reportId = self.reportId ,let report = self.mainAppModel.vaultManager.tellaData.getReport(reportId: reportId) {
+        if let reportId = self.reportId ,let report = self.mainAppModel.vaultManager.tellaData?.getReport(reportId: reportId) {
             
             var vaultFileResult : Set<VaultFile> = []
             
             self.title = report.title ?? ""
             self.description = report.description ?? ""
             self.server = report.server
-            self.mainAppModel.vaultManager.root.getFile(root: self.mainAppModel.vaultManager.root, vaultFileResult: &vaultFileResult, ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
+            self.mainAppModel.vaultManager.root?.getFile(root: self.mainAppModel.vaultManager.root, vaultFileResult: &vaultFileResult, ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
             self.files = vaultFileResult
             self.objectWillChange.send()
         }
@@ -160,9 +160,9 @@ class DraftReportVM: ObservableObject {
         
         do {
             if !isNewDraft {
-                try mainAppModel.vaultManager.tellaData.updateReport(report: report)
+                try mainAppModel.vaultManager.tellaData?.updateReport(report: report)
             } else {
-                let id = try mainAppModel.vaultManager.tellaData.addReport(report: report)
+                let id = try mainAppModel.vaultManager.tellaData?.addReport(report: report)
                 self.reportId = id
             }
             
@@ -183,6 +183,10 @@ class DraftReportVM: ObservableObject {
     }
     
     func deleteReport() {
-        mainAppModel.deleteReport(reportId: reportId)
+        do {
+            try mainAppModel.deleteReport(reportId: reportId)
+        } catch let error {
+            debugLog(error)
+        }
     }
 }

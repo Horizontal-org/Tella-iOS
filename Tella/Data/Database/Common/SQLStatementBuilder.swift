@@ -45,7 +45,7 @@ class SQLiteStatementBuilder {
             throw SqliteError(message: errorMessage)
         }
     }
-
+    
     func selectQuery(tableName: String, andCondition: [KeyValue] = [], andDifferentCondition: [KeyValue] = [], orCondition: [KeyValue] = [] , inCondition: [KeyValues] = [], notInCondition: [KeyValues] = [] , joinCondition: [JoinCondition]? = nil) throws -> [[String: Any]] {
         
         
@@ -283,46 +283,48 @@ class SQLiteStatementBuilder {
     }
     
     
-    @discardableResult
-    func delete(tableName:String, primarykeyValue : [KeyValue] = [], inCondition: [KeyValues] = []) throws -> Int {
+    func delete(tableName:String, primarykeyValue : [KeyValue] = [], inCondition: [KeyValues] = []) {
         
-        let primaryKeyColumnNames = primarykeyValue.compactMap{($0.key)}
-        
-        var deleteSql = "DELETE FROM '\(tableName)' WHERE "
-        
-        deleteSql  += primaryKeyColumnNames.map { "\($0) = :\($0)" }.joined(separator: " AND ")
-        
-        
-        for (index, condition) in inCondition.enumerated() {
+        do {
+            let primaryKeyColumnNames = primarykeyValue.compactMap{($0.key)}
             
-            let columnName = condition.key
-            let values = condition.value.map { "\($0)" }.joined(separator: ", ")
+            var deleteSql = "DELETE FROM '\(tableName)' WHERE "
             
-            deleteSql += " \(columnName) IN (\(values))"
+            deleteSql  += primaryKeyColumnNames.map { "\($0) = :\($0)" }.joined(separator: " AND ")
             
-            if index < inCondition.count - 1 {
-                deleteSql += "  AND"
+            
+            for (index, condition) in inCondition.enumerated() {
+                
+                let columnName = condition.key
+                let values = condition.value.map { "\($0)" }.joined(separator: ", ")
+                
+                deleteSql += " \(columnName) IN (\(values))"
+                
+                if index < inCondition.count - 1 {
+                    deleteSql += "  AND"
+                }
             }
-        }
-        
-        debugLog("delete: \(deleteSql)")
-        
-        guard let deleteStatement = try prepareStatement(sql: deleteSql) else {
-            throw SqliteError(message: errorMessage)
-        }
-        
-        if let stmt = bind(insertStatement: deleteStatement, primarykeyValue) {
             
-            let result = execute(stmt: stmt, sql: deleteSql)
+            debugLog("delete: \(deleteSql)")
             
-            if result == 0 {
+            guard let deleteStatement = try prepareStatement(sql: deleteSql) else {
                 throw SqliteError(message: errorMessage)
             }
             
-            return result
-            
-        } else {
-            throw SqliteError(message: errorMessage)
+            if let stmt = bind(insertStatement: deleteStatement, primarykeyValue) {
+                
+                let result = execute(stmt: stmt, sql: deleteSql)
+                
+                if result == 0 {
+                    throw SqliteError(message: errorMessage)
+                }
+                
+            } else {
+                throw SqliteError(message: errorMessage)
+            }
+        }
+        catch let error {
+            debugLog(error)
         }
     }
     
@@ -330,7 +332,7 @@ class SQLiteStatementBuilder {
         var totalDeletedCount = 0
         
         for tableName in tableNames {
-           
+            
             let deleteSql = "DELETE FROM '\(tableName)'"
             
             debugLog("delete: \(deleteSql)")

@@ -5,37 +5,39 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject private var appViewState: AppViewState
+    @StateObject var lockViewModel : LockViewModel
     
+    init(mainAppModel:MainAppModel) {
+        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .new, appModel: mainAppModel))
+    }
     var body: some View {
         
         ZStack {
-            
             if appViewState.currentView == .MAIN {
                 MainView()
-                    .environmentObject((appViewState.homeViewModel)!)
+                    .environmentObject((appViewState.homeViewModel))
                     .environment(\.layoutDirection, LanguageManager.shared.currentLanguage.layoutDirection)
                     .environmentObject(SheetManager())
             }
             
             if appViewState.currentView == .LOCK {
                 WelcomeView()
-                    .environmentObject(LockViewModel(unlockType: .new))
+                    .environmentObject(lockViewModel)
             }
             
             if appViewState.currentView == .UNLOCK {
-                let passwordType = AuthenticationManager().getPasswordType()
+                let passwordType = appViewState.homeViewModel.vaultManager.getPasswordType()
                 passwordType == .tellaPassword ?
-                UnlockPasswordView()
-                    .environmentObject(LockViewModel(unlockType: .new))
+                UnlockView(type: .tellaPassword)
+                    .environmentObject(lockViewModel)
                     .eraseToAnyView() :
-                UnlockPinView()
-                    .environmentObject(LockViewModel(unlockType: .new))
+                UnlockView(type: .tellaPin)
+                    .environmentObject(lockViewModel)
                     .eraseToAnyView()
             }
         }.onAppear {
             setDebugLevel(level: .debug, for: .app)
         }
         .environmentObject(DeviceOrientationHelper())
-
     }
 }

@@ -33,7 +33,6 @@ struct LanguageListView: View {
                 self.presentationMode.wrappedValue.dismiss()
             }
         }
-        
     }
 }
 
@@ -93,12 +92,7 @@ struct LanguageItemView : View {
                 
             }
             Button("") {
-                LanguageManager.shared.currentLanguage = languageItem
-                appModel.shouldUpdateLanguage = true
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    isPresented = false
-                }
+                updateLanguage()
             }
             
         }.padding(EdgeInsets(top: 7, leading: 20, bottom: 11, trailing: 16))
@@ -109,6 +103,16 @@ struct LanguageItemView : View {
     
     func isCurrentLanguage(languageItem:Language) -> Bool {
         return (languageItem == LanguageManager.shared.currentLanguage)
+    }
+    
+    func updateLanguage() {
+        popToRoot(animated: false)
+        LanguageManager.shared.currentLanguage = languageItem
+        appViewState.mainAppLayout = LanguageManager.shared.currentLanguage.layoutDirection
+        appViewState.homeViewModel.shouldUpdateLanguage = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            isPresented = false
+        }
     }
 }
 

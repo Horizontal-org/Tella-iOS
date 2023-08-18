@@ -15,13 +15,13 @@ enum UnlockType {
 }
 
 struct UnlockPasswordView: View {
+    @EnvironmentObject private var appViewState: AppViewState
     
     @EnvironmentObject private var viewModel: LockViewModel
-    @EnvironmentObject private var appViewState: AppViewState
     @State private var presentingLockChoice : Bool = false
     @State private var isLoading : Bool = false
     @State private var cancellable: Set<AnyCancellable> = []
-
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
@@ -43,7 +43,17 @@ struct UnlockPasswordView: View {
                     .lineSpacing(7)
                     .multilineTextAlignment(.center)
                     .padding(EdgeInsets(top: 0, leading: 67, bottom: 0, trailing: 67))
+                Spacer()
+                    .frame(height: 50)
                 
+                if(viewModel.shouldShowAttemptsWarning) {
+                    Text(viewModel.warningText())
+                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                        .foregroundColor(.white)
+                        .lineSpacing(7)
+                        .multilineTextAlignment(.center)
+                        .padding(EdgeInsets(top: 0, leading: 67, bottom: 0, trailing: 67))
+                }
                 Spacer()
                     .frame(height: 73)
                 
@@ -54,10 +64,15 @@ struct UnlockPasswordView: View {
                     if !viewModel.shouldShowUnlockError {
                         if viewModel.unlockType == .new {
                             isLoading = true
-                            appViewState.initMainAppModel()
                             initRoot()
                         } else {
                             presentingLockChoice = true
+                        }
+                    } else {
+                        viewModel.unlockAttempts = viewModel.unlockAttempts + 1
+                        UserDefaults.standard.set(viewModel.unlockAttempts, forKey: "com.tella.lock.attempts")
+                        if(viewModel.unlockAttempts == viewModel.maxAttempts) {
+                            viewModel.removeFilesAndConnections()
                         }
                     }
                 }
@@ -86,7 +101,7 @@ struct UnlockPasswordView: View {
     
     private func initRoot() {
         DispatchQueue.main.async {
-            appViewState.homeViewModel?.initFiles()
+            appViewState.homeViewModel.initFiles()
                 .receive(on: DispatchQueue.main)
                 .sink { recoverResult in
                     isLoading = false

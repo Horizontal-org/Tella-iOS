@@ -6,7 +6,6 @@ import Foundation
 import Combine
 import UIKit
 
-
 class UploadService: NSObject {
     
     // MARK: - Variables And Properties
@@ -51,9 +50,9 @@ class UploadService: NSObject {
         activeOperations.removeAll(where: {$0.report?.id == reportId && (operation?.type != .autoUpload)})
     }
     
-    func initAutoUpload( mainAppModel: MainAppModel ) {
+    func initAutoUpload(mainAppModel: MainAppModel ) {
         
-        let autoUploadServer = mainAppModel.vaultManager.tellaData.getAutoUploadServer()
+        let autoUploadServer = mainAppModel.vaultManager.tellaData?.getAutoUploadServer()
         
         let urlSession = URLSession(
             configuration: autoUploadServer?.autoUpload ?? false ? .background(withIdentifier: "org.wearehorizontal.tella") : .default ,
@@ -64,6 +63,8 @@ class UploadService: NSObject {
         activeOperations.append(operation)
         uploadQueue.addOperation(operation)
         operation.startUploadReportAndFiles()
+        
+        displayReportToast(operation: operation)
     }
     
     func checkUploadReportOperation(reportId:Int?) -> CurrentValueSubject<UploadResponse?,APIError>?  {
@@ -81,6 +82,9 @@ class UploadService: NSObject {
         let operation = UploadReportOperation(report: report, urlSession: urlSession, mainAppModel: mainAppModel, type: .uploadReport)
         activeOperations.append(operation)
         uploadQueue.addOperation(operation)
+        
+        displayReportToast(operation: operation)
+        
         return operation.response
     }
     
@@ -92,7 +96,7 @@ class UploadService: NSObject {
     
     func sendUnsentReports(mainAppModel:MainAppModel) {
         
-        let unsentReports = mainAppModel.vaultManager.tellaData.getUnsentReports()
+        guard let unsentReports = mainAppModel.vaultManager.tellaData?.getUnsentReports() else { return }
         
         unsentReports.forEach { report in
             let urlSession = URLSession(
@@ -102,15 +106,41 @@ class UploadService: NSObject {
             
             let operation = UploadReportOperation(report: report, urlSession: urlSession, mainAppModel: mainAppModel, type: .unsentReport)
             activeOperations.append(operation)
-
-            operation.response.sink(receiveCompletion: { com in
-                
-            }, receiveValue: { response in
-                
-            }).store(in: &subscribers)
-            
             uploadQueue.addOperation(operation)
             
+            displayReportToast(operation:operation)
+        }
+    }
+    
+    func displayReportToast(operation:BaseUploadOperation) {
+        
+        operation.response.sink(receiveCompletion: { completion in
+        }, receiveValue: { response in
+            self.handleReportResponse(response:response)
+        }).store(in: &subscribers)
+    }
+    
+    func handleReportResponse(response: UploadResponse?) {
+        switch response {
+        case .finish(let isAutoDelete, let title):
+            self.displaySubmittedToast(title: title)
+            if isAutoDelete {
+                self.displayDeletedToast(title: title)
+            }
+        default:
+            break
+        }
+    }
+    
+    func displaySubmittedToast(title: String?) {
+        let message = String(format: LocalizableReport.reportSubmittedToast.localized, title ?? "")
+        Toast.displayToast(message: message)
+    }
+    
+    func displayDeletedToast(title: String?) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            let message = String(format: LocalizableReport.reportDeletedToast.localized, title ?? "")
+            Toast.displayToast(message: message)
         }
     }
 }
@@ -161,3 +191,5 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
         }
     }
 }
+
+

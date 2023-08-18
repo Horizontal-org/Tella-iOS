@@ -118,7 +118,7 @@ class BaseUploadOperation : Operation {
                             status: reportStatus,
                             apiID: apiID)
         do {
-              try mainAppModel.vaultManager.tellaData.updateReport(report: report)
+              try mainAppModel.vaultManager.tellaData?.updateReport(report: report)
             
         } catch {
             
@@ -147,7 +147,7 @@ class BaseUploadOperation : Operation {
         let totalBytesSent = (file?.current ?? 0)  + (file?.bytesSent ?? 0)
         
         do {
-              try mainAppModel.vaultManager.tellaData.updateReportFile(reportFile: ReportFile(id: id,
+              try mainAppModel.vaultManager.tellaData?.updateReportFile(reportFile: ReportFile(id: id,
                                                                                                     status: fileStatus,
                                                                                                     bytesSent: totalBytesSent))
         } catch {
@@ -167,9 +167,9 @@ class BaseUploadOperation : Operation {
             
             if let currentUpload = self.report?.currentUpload, currentUpload , let autoDelete = self.report?.server?.autoDelete, autoDelete {
                 self.deleteCurrentAutoReport()
-                self.response.send(.finish(shouldShowMainView: true))
+                self.response.send(.finish(isAutoDelete: true, title: self.report?.title))
             } else  {
-                self.response.send(.finish(shouldShowMainView: false))
+                self.response.send(.finish(isAutoDelete: false, title: self.report?.title))
             }
             
             self.report = nil
@@ -181,7 +181,7 @@ class BaseUploadOperation : Operation {
     
     func deleteCurrentAutoReport() {
         do {
-              try mainAppModel.vaultManager.tellaData.deleteReport(reportId: self.report?.id)
+              try mainAppModel.vaultManager.tellaData?.deleteReport(reportId: self.report?.id)
         } catch {
             
         }

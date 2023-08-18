@@ -45,20 +45,22 @@ struct SettingsMainView: View {
     
     var generalView: some View {
         SettingsItemView(imageName: "settings.general",
-                         title: "General",
+                         title: LocalizableSettings.settGenAppBar.localized,
                          destination:
                             GeneralView().environmentObject(settingsViewModel))
     }
     
+    
+
     var securityView: some View {
         SettingsItemView(imageName: "settings.lock",
-                         title: "Security",
+                         title: LocalizableSettings.settSecAppBar.localized,
                          destination:securitySettingsView)
     }
     
     var serversView: some View {
         SettingsItemView(imageName: "settings.servers",
-                         title: "Servers",
+                         title: LocalizableSettings.settServersAppBar.localized,
                          destination:ServersListView()
             .environmentObject(serversViewModel))
     }
@@ -70,7 +72,7 @@ struct SettingsMainView: View {
     }
     
     var securitySettingsView: some View {
-        SecuritySettingsView()
+        SecuritySettingsView(appModel: MainAppModel.stub())
             .environmentObject(settingsViewModel)
     }
 }

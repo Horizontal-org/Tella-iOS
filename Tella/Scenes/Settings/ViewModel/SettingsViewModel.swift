@@ -25,7 +25,16 @@ class SettingsViewModel: ObservableObject {
         }
     }
     
+    var selectedDeleteAfterFailOption : DeleteAfterFailOption {
+        didSet {
+            deleteAfterFailOptions.filter{$0.deleteAfterFailOption != selectedDeleteAfterFailOption}.forEach{$0.isSelected = false}
+            deleteAfterFailOptions.filter{$0.deleteAfterFailOption == selectedDeleteAfterFailOption}.first?.isSelected = true
+            self.objectWillChange.send()
+        }
+    }
+    
     @Published var lockTimeoutOptions : [LockTimeoutOptionsStatus]
+    @Published var deleteAfterFailOptions: [DeleteAfterFailedOptionsStatus]
     
     init(appModel: MainAppModel) {
         
@@ -38,7 +47,16 @@ class SettingsViewModel: ObservableObject {
                               LockTimeoutOptionsStatus(lockTimeoutOption: .thirtyMinutes, isSelected: false),
                               LockTimeoutOptionsStatus(lockTimeoutOption: .onehour, isSelected: false)]
         selectedLockTimeoutOption =  appModel.settings.lockTimeout
+        
+        // Init delete after fail options
+        deleteAfterFailOptions=[DeleteAfterFailedOptionsStatus(deleteAfterFailOption: .off, isSelected: false),
+                                DeleteAfterFailedOptionsStatus(deleteAfterFailOption: .five, isSelected: false),
+                                DeleteAfterFailedOptionsStatus(deleteAfterFailOption: .ten, isSelected: false),
+                                DeleteAfterFailedOptionsStatus(deleteAfterFailOption: .twenty, isSelected: false)]
+        selectedDeleteAfterFailOption = appModel.settings.deleteAfterFail
+        
         lockTimeoutOptions.filter{$0.lockTimeoutOption == appModel.settings.lockTimeout}.first?.isSelected = true
+        deleteAfterFailOptions.filter{$0.deleteAfterFailOption == appModel.settings.deleteAfterFail}.first?.isSelected = true
     }
     
     func saveLockTimeout() {
@@ -48,6 +66,15 @@ class SettingsViewModel: ObservableObject {
     
     func cancelLockTimeout() {
         selectedLockTimeoutOption = appModel.settings.lockTimeout
+    }
+    
+    func saveDeleteAfterFail() {
+        appModel.settings.deleteAfterFail = selectedDeleteAfterFailOption
+        appModel.saveSettings()
+    }
+    
+    func cancelDeleteAfterFail() {
+        selectedDeleteAfterFailOption = appModel.settings.deleteAfterFail
     }
 
 }
