@@ -6,10 +6,17 @@ import SwiftUI
 import AVFoundation
 import Combine
 
-public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate {
+
+
+public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate, AVCaptureMetadataOutputObjectsDelegate {
+
+    struct CameraImageCompletion {
+        let image: UIImage
+        let imageData: Data
+        // let metaData: [String: Any]
+    }
     
     // MARK: - Private properties
-    
     private var backCamera: AVCaptureDevice?
     private var frontCamera: AVCaptureDevice?
     
@@ -29,7 +36,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     @Published var shouldShowPermission : Bool = false
     @Published var shouldCloseCamera : Bool = false
     @Published var shouldShowProgressView : Bool = false
-    @Published var imageCompletion: (UIImage,Data)?
+    @Published var imageCompletion: CameraImageCompletion?
     @Published var videoURLCompletion: URL?
     @Published var isRecording = false
     
@@ -73,10 +80,11 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
             guard let delegate = videoRecordingDelegate else {
                 return
             }
+
             if let videoOutputConnection = self.videoOutput?.connection(with: .video) {
                 videoOutputConnection.videoOrientation = deviceOrientation.videoOrientation()
             }
-            videoOutput?.startRecording(to: outFileUrl, recordingDelegate:delegate )
+            videoOutput?.startRecording(to: outFileUrl, recordingDelegate: delegate )
         }
     }
     
@@ -319,20 +327,19 @@ extension CameraService  {
             let image = UIImage(cgImage: cgImage,
                                 scale: 1,
                                 orientation: imageOrientation)
-            self.imageCompletion = (image, image.data!)
-            
+            if let data = image.data {
+                self.imageCompletion = CameraImageCompletion(image: image, imageData: data)
+            }
         }
     }
-    
     public func fileOutput(_ output: AVCaptureFileOutput,
                            didFinishRecordingTo outputFileURL: URL,
                            from connections: [AVCaptureConnection],
                            error: Error?) {
-        
-        self.videoURLCompletion = outputFileURL
+        self.videoURLCompletion =  outputFileURL
         self.isRecording = false
     }
-    
+
     public func fileOutput(_ output: AVCaptureFileOutput, didStartRecordingTo fileURL: URL, from connections: [AVCaptureConnection]) {
         self.isRecording = true
     }

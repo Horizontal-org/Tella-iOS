@@ -11,6 +11,7 @@ struct GeneralView: View {
     
     @EnvironmentObject var appModel : MainAppModel
     @EnvironmentObject var settingsModel : SettingsModel
+    @EnvironmentObject var appViewState : AppViewState
     
     @State private var presentingLanguage = false
     

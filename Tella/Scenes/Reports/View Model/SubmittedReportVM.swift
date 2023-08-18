@@ -67,5 +67,4 @@ class SubmittedReportVM: ObservableObject {
     func deleteReport() {
         mainAppModel.deleteReport(reportId: id)
     }
-    
 }

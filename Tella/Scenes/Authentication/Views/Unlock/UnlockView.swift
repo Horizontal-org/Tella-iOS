@@ -101,7 +101,7 @@ struct UnlockView: View {
             Spacer(minLength: 20)
             
             PinView(fieldContent: $viewModel.loginPassword,
-                    keyboardNumbers: UnlockKeyboardNumbers) {
+                    keyboardNumbers: viewModel.unlockKeyboardNumbers) {
                 loginActions()
             }
         }

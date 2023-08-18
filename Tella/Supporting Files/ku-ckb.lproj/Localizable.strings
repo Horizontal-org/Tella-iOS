@@ -206,6 +206,12 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Draft_EmptyAllFiles_Expl" = "لە ئێستادا ڕەشنووسەکانت بەتاڵن. ئەو ڕاپۆرتانەی کە تۆ پێشکەشت نەکردووە لێرەدا دەردەکەون.";
 "Reports_Outbox_EmptyAllFiles_Expl" = "لە ئێستادا Outboxـەکەت بەتاڵە. ئەو ڕاپۆرتانەی کە ئامادەی ناردنن لێرەدا دەردەکەون.";
 "Reports_Submitted_EmptyAllFiles_Expl" = "هیچ ڕاپۆرتێکی پێشکەشکراوت نییە.";
+"Reports_Submitted_ClearAll_SheetTitle" =  "Clear all Submitted reports?";
+"Reports_Submitted_ClearAll_SheetExpl" =  "Are you sure you want to delete all reports from your Submitted tab?";
+"Reports_Submitted_ClearAll_Cancel_SheetAction" =  "CANCEL";
+"Reports_Submitted_ClearAll_ClearSubmitted_SheetAction" =  "CLEAR SUBMITTED";
+"Reports_Submitted_Clear_AppBar" =  "Clear";
+
 "Reports_Action_NewReport" = "ڕاپۆرتی نوێ";
 "Reports_Draft_Select_Title" = "ناونیشان";
 "Reports_Draft_Select_Description" = "وەسف";
@@ -242,9 +248,15 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_DeleteDraftReport_SheetExpl" = "دڵنیایت لەوەی دەتەوێت ئەم ڕەشنووسە بسڕیتەوە؟";
 "Reports_DeleteOutboxReport_SheetExpl" = "Are you sure you want to delete this upload?";
 "Reports_DeleteSubmittedReport_SheetExpl" = "ئایا دڵنیایت لەوەی کە دەتەوێت ئەم ڕاپۆرتە نێردراوە لە تۆمارەکانتدا بسڕیتەوە؟";
+"Reports_DraftSaved_Toast" = "The report was saved as a draft";
+"Reports_ReportDeleted_Toast" = "“%@” has been deleted.";
+"Reports_ReportSubmitted_Toast" = "Upload complete: “%@”";
+"Reports_OutboxSaved_Toast" = "The report was saved to your Outbox. You can submit it when you are ready.";
+"Reports_AllReportDeleted_Toast" =  "Your submitted reports have been cleared.";
+
 "Settings_SettLang_Arabic_Expl" = "عەرەبی";
-"Settings_SettLang_SpanishLatinAmerican_Expl" = "Spanish Latin American";
 "Settings_SettLang_Belarusian_Expl" = "Belarusian";
 "Settings_SettLang_Persian_Expl" = "Persian";
 "Settings_SettLang_Kurdish_Expl" = "Kurdish";
 "Settings_SettLang_Burmese_Expl" = "Burmese";
+"Settings_SettLang_Tamil_Expl" = "Tamil";

@@ -13,7 +13,6 @@ struct ContentView: View {
     var body: some View {
         
         ZStack {
-            
             if appViewState.currentView == .MAIN {
                 MainView()
                     .environmentObject((appViewState.homeViewModel))
@@ -40,6 +39,5 @@ struct ContentView: View {
             setDebugLevel(level: .debug, for: .app)
         }
         .environmentObject(DeviceOrientationHelper())
-
     }
 }

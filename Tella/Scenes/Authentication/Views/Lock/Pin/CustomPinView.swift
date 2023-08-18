@@ -22,6 +22,20 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
     var destination: Destination?
     var action : (() -> Void)?
     
+    var lockKeyboardNumbers: [PinKeyboardModel] = { return [
+        PinKeyboardModel(text: "1", type: .number),
+        PinKeyboardModel(text: "2", type: .number),
+        PinKeyboardModel(text: "3", type: .number),
+        PinKeyboardModel(text: "4",  type: .number),
+        PinKeyboardModel(text: "5", type: .number),
+        PinKeyboardModel(text: "6",  type: .number),
+        PinKeyboardModel(text: "7", type: .number),
+        PinKeyboardModel(text: "8",  type: .number),
+        PinKeyboardModel(text: "9",  type: .number),
+        PinKeyboardModel(type: .empty),
+        PinKeyboardModel(text: "0",  type: .number),
+        PinKeyboardModel( imageName:"lock.backspace", type: .delete)]} ()
+
     var body: some View {
         ContainerView {
             VStack(alignment: .center) {
@@ -46,7 +60,7 @@ struct CustomPinView<T:LockViewProtocol, Destination:View>: View   {
                 Spacer(minLength: 20)
 
                 PinView(fieldContent: self.$fieldContent,
-                        keyboardNumbers: LockKeyboardNumbers)
+                        keyboardNumbers: lockKeyboardNumbers)
                 
                 Spacer()
                 

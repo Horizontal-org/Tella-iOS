@@ -33,6 +33,9 @@ import Foundation
     
     /// Whether screen security is enabled
     @Published var screenSecurity: Bool = true
+
+    /// Whether preserve metadata is enabled
+    @Published var preserveMetadata: Bool = false
     
     enum CodingKeys: CodingKey {
         case offlineMode
@@ -44,6 +47,7 @@ import Foundation
         case deleteAfterFail
         case unlockAttempts
         case screenSecurity
+        case preserveMetadata
     }
     
     init() {
@@ -63,7 +67,7 @@ import Foundation
         let deleteAfterFailString = try container.decode(String.self, forKey: .deleteAfterFail)
         deleteAfterFail = DeleteAfterFailOption(rawValue: deleteAfterFailString) ?? .off
         screenSecurity = try container.decode(Bool.self, forKey: .screenSecurity)
-        
+        preserveMetadata = try container.decode(Bool.self, forKey: .preserveMetadata)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -76,5 +80,6 @@ import Foundation
         try container.encode( lockTimeout.rawValue, forKey: .lockTimeout)
         try container.encode(deleteAfterFail.rawValue, forKey: .deleteAfterFail)
         try container.encode(screenSecurity, forKey: .screenSecurity)
+        try container.encode(preserveMetadata, forKey: .preserveMetadata)
     }
 }

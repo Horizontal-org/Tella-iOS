@@ -6,16 +6,30 @@ import SwiftUI
 import Photos
 import MobileCoreServices
 
+
+struct ImagePickerCompletion {
+    enum MediaType {
+        case video
+        case image
+    }
+    let type: MediaType
+    var image: UIImage? = nil
+    var videoURL: URL? = nil
+    var pathExtension: String? = nil
+    var referenceURL: URL? = nil
+    var imageURL: URL? = nil
+}
+
 //  SwiftUI wrapper for ImagePickerController for <= iOS 14.0
-struct ImagePickerView: UIViewControllerRepresentable {
+struct ImagePickerSheet: UIViewControllerRepresentable {
     
-    let completion: (UIImage?, URL?, String?, URL?) -> ()
+    let completion: (ImagePickerCompletion?) -> ()
 
     func makeCoordinator() -> ImageCoordinator {
       return ImageCoordinator(completion)
     }
 
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePickerView>) ->
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePickerSheet>) ->
         UIImagePickerController {
             let picker = UIImagePickerController()
             picker.delegate = context.coordinator
@@ -25,16 +39,16 @@ struct ImagePickerView: UIViewControllerRepresentable {
 
     //  this function must be here in order to fulfill recquirements, but nothing needs to go inside
     func updateUIViewController(_ uiViewController: UIImagePickerController,
-                                context: UIViewControllerRepresentableContext<ImagePickerView>) {
+                                context: UIViewControllerRepresentableContext<ImagePickerSheet>) {
     }
 }
 
 //  Creating the Coordinator (the go between) for the ImagePicker
 class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
-    let completion: (UIImage?, URL?, String?, URL?) -> ()
+    let completion: (ImagePickerCompletion?) -> ()
     
-    init(_ completion: @escaping (UIImage?, URL?, String?, URL?) -> ()) {
+    init(_ completion: @escaping (ImagePickerCompletion?) -> ()) {
         self.completion = completion
     }
     
@@ -42,24 +56,29 @@ class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerC
                 didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 
         let mediaType = info[UIImagePickerController.InfoKey.mediaType] as AnyObject
-        debugLog("\(mediaType)")
         let mediaURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL
-        let imageURL = info[UIImagePickerController.InfoKey.referenceURL] as? URL
+        let referenceURL = info[UIImagePickerController.InfoKey.referenceURL] as? URL
+        let imageURL = info[UIImagePickerController.InfoKey.imageURL] as? URL
         if mediaType as! CFString == kUTTypeImage {
             guard let unwrapImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
                 return
             }
-            completion(unwrapImage, nil,mediaURL?.pathExtension, imageURL)
+            //completion(unwrapImage, nil,mediaURL?.pathExtension, referenceURL, imageURL)
+            completion(ImagePickerCompletion(type: .image,image: unwrapImage,
+                                             pathExtension: mediaURL?.pathExtension,
+                                             referenceURL: referenceURL,
+                                             imageURL: imageURL))
         } else if mediaType as! CFString == kUTTypeMovie {
             guard let videoURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {
                 return
             }
-            completion(nil, videoURL, nil, nil)
+            completion(ImagePickerCompletion(type: .video, videoURL: videoURL, referenceURL: referenceURL))
+            //completion(nil, videoURL, nil, nil, nil)
         }
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        completion(nil, nil, nil, nil)
+        completion(nil)
     }
 }
 

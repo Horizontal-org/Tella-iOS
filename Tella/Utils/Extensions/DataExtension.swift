@@ -3,6 +3,8 @@
 //
 
 import Foundation
+import AVFoundation
+import AVKit
 import Combine
 
 extension Data {
@@ -34,10 +36,25 @@ extension Data {
         // Return the new copy of data
         return self
     }
+
+    /// This function takes the image data and metadata as parameter and returns the image data with metadata
+    /// - Parameters:
+    ///   - data: The original image data
+    ///   - properties: The metadata that is need to be written to the image data
+    /// - Returns: The image data with metadata
+    func saveImageWithImageData(properties: NSDictionary) async -> NSData {
+        let imageRef: CGImageSource = CGImageSourceCreateWithData((self as CFData), nil)!
+        let uti: CFString = CGImageSourceGetType(imageRef)!
+        let dataWithEXIF: NSMutableData = NSMutableData(data: self)
+        let destination: CGImageDestination = CGImageDestinationCreateWithData((dataWithEXIF as CFMutableData), uti, 1, nil)!
+
+        CGImageDestinationAddImageFromSource(destination, imageRef, 0, (properties as CFDictionary))
+        CGImageDestinationFinalize(destination)
+        return dataWithEXIF
+    }
     
     func fileExtension(vaultManager:VaultManager) -> String? {
         let fileTypeHelper = FileTypeHelper(data: self).getFileInformation()
         return fileTypeHelper?.fileExtension
     }
-    
 }

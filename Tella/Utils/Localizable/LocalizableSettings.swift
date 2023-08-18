@@ -30,11 +30,11 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settLangFrench = "Settings_SettLang_French_Expl"
     case settLangSpanish = "Settings_SettLang_Spanish_Expl"
     case settLangArabic = "Settings_SettLang_Arabic_Expl"
-    case settLangSpanishLatinAmerican = "Settings_SettLang_SpanishLatinAmerican_Expl"
     case settLangBelarusian = "Settings_SettLang_Belarusian_Expl"
     case settLangPersian = "Settings_SettLang_Persian_Expl"
     case settLangKurdish = "Settings_SettLang_Kurdish_Expl"
     case settLangBurmese = "Settings_SettLang_Burmese_Expl"
+    case settLangTamil = "Settings_SettLang_Tamil_Expl"
 
     // Security
     
@@ -48,6 +48,9 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settQuickDeleteExpl = "Settings_Sett_QuickDelete_Expl"
     case settQuickDeleteFilesCheckbox = "Settings_Sett_QuickDelete_Files_CheckboxItem"
     case settQuickDeleteConnectionsCheckbox = "Settings_Sett_QuickDelete_Connections_CheckboxItem"
+    case settSecPreserveMetadata = "Setting_SettSec_PreserveMetadata"
+    case settSecPreserveMetadataExpl = "Setting_SettSec_PreserveMetadata_Expl"
+
 
     
     // LockTimeout

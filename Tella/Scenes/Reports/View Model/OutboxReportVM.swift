@@ -110,9 +110,9 @@ class OutboxReportVM: ObservableObject {
                             self.reportViewModel.status = reportStatus
                         }
                     }
-                case .finish(let shouldShowMainView):
+                case .finish(let isAutoDelete, _):
                     DispatchQueue.main.async {
-                        if shouldShowMainView {
+                        if isAutoDelete {
                             self.showMainView()
                         } else {
                             self.showSubmittedReport()
@@ -276,12 +276,18 @@ class OutboxReportVM: ObservableObject {
         do {
             try mainAppModel.vaultManager.tellaData?.updateReportStatus(idReport: id, status: reportStatus)
             
-        } catch {
-            
+        } catch let error {
+            debugLog(error)
         }
     }
     
     func deleteReport() {
-        mainAppModel.deleteReport(reportId: reportViewModel.id)
+        
+        do {
+            try mainAppModel.deleteReport(reportId: reportViewModel.id)
+        } catch let error {
+            debugLog(error)
+        }
+
     }
 }
