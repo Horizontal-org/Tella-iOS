@@ -65,8 +65,10 @@ class Property: Codable {
         case name, filter, showInCard, relationType, translatedLabel
     }
 }
-class CollectedTemplate: Codable {
-
+class CollectedTemplate: Codable, Hashable {
+    static func == (lhs: CollectedTemplate, rhs: CollectedTemplate) -> Bool {
+        return (lhs.id == rhs.id) && (lhs.templateId == rhs.templateId)
+    }
     // TODO: Try to change the isDownload, isFavorite and isUpdated to Boolean for better understanding
     var id: Int?
     var templateId: String?
@@ -147,5 +149,9 @@ class CollectedTemplate: Codable {
         } catch {
             return nil
         }
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        return hasher.combine(templateId)
     }
 }
