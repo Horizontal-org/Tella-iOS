@@ -25,13 +25,12 @@ class HomeViewModel: ObservableObject {
     fileprivate func handleTemplate() {
         do {
             //try appModel.vaultManager.tellaData.database?.deleteAllUwaziTemplate()
-
            // /*
             Task {
                 let servers = self.appModel.vaultManager.tellaData.database?.getServer()
                 guard let server = servers?.first,let id = server.id else { return }
                 guard let locale = try self.appModel.vaultManager.tellaData.database?.getUwaziLocaleWith(serverId: id) else { return }
-                var template = try await getTemplate(server: server, locale: locale)
+                let template = try await UwaziServerRepository().getTemplateNew(server: server, locale: locale)
                 template.sink { completion in
                     switch completion {
                     case .finished:
@@ -50,13 +49,16 @@ class HomeViewModel: ObservableObject {
 //                        }
 
                         // For saving the template into db for add template list
-//                        if var item = templates[safe: 1] {
-//                            self.saveTemplate(template: &item)
-//                        }
+                        if var item = templates[safe: 0] {
+                            self.saveTemplate(template: &item)
+                        }
+
+                        let savedTemplate = try self.getAllDownloadedTemplate()
+                        print(savedTemplate)
 
 
                         // For handling the downloaded when the templates are already there
-                        //try self.handleDownloadStuff(templates: &allTemplates)
+                        //try self.handleTemplateDownload(templates: &allTemplates)
 
 
                         // To delete the downloaded template for add template list
@@ -80,7 +82,9 @@ class HomeViewModel: ObservableObject {
 
         }
     }
-    func handleDownloadStuff(templates: inout [CollectedTemplate]) throws {
+    /// To determine if the templates are already download or not reflect on the UI for template download list
+    /// - Parameter templates: Collection of CollectedTemplate to determine if it downloaded or not
+    func handleTemplateDownload(templates: inout [CollectedTemplate]) throws {
         try templates.forEach { template in
             let savedTemplateid = try self.getAllDownloadedTemplate()?.compactMap({$0.templateId})
             if let savedTemplate = savedTemplateid,let templateId = template.templateId {
@@ -91,10 +95,13 @@ class HomeViewModel: ObservableObject {
         }
     }
 
+    /// Save the template to the database
+    /// - Parameter template: The template that we need to save into the database
     func saveTemplate( template: inout CollectedTemplate) {
         do {
             let savedTemplateid = try self.getAllDownloadedTemplate()?.compactMap({$0.templateId})
             if let savedTemplate = savedTemplateid,let templateId = template.templateId {
+                // To only save the template if it is not already saved Not necessary because the UI will not have a download button if it is already downloaded
                 if !savedTemplate.contains(templateId) {
                     if let savedItem = try self.appModel.vaultManager.tellaData.database?.addUwaziTemplateWith(template: template) {
                         template = savedItem
@@ -105,6 +112,8 @@ class HomeViewModel: ObservableObject {
             print(error)
         }
     }
+    /// Delete the saved template from database using the template id of the template and changing the status of isDownloaded property to 0
+    /// - Parameter template: The CollectedTemplate Object and changing the status of isDownloaded property to 0
     func deleteTemplate(template: inout CollectedTemplate) {
         do {
             if let templateId = template.templateId {
@@ -115,13 +124,18 @@ class HomeViewModel: ObservableObject {
 
         }
     }
+    /// Get all the downloaded templates
+    /// - Returns: Collection of CollectedTemplate object which are stored in the database
     func getAllDownloadedTemplate() throws -> [CollectedTemplate]? {
         return try self.appModel.vaultManager.tellaData.database?.getAllUwaziTemplate()
     }
+    // TODO: Maybe just same the template id only rather than the whole object
+    /// Delete the saved template from database using the template id of the template
+    /// - Parameter template: The template object which we need to delete 
     func deleteDownloadedTemplate(template: CollectedTemplate) {
         do {
-            if let templateId = template.templateId {
-                _ = try self.appModel.vaultManager.tellaData.database?.deleteAllUwaziTemplateWith(templateId: templateId)
+            if let templateId = template.id {
+                _ = try self.appModel.vaultManager.tellaData.database?.deleteAllUwaziTemplateWith(templateNo: templateId)
             }
         } catch {
 
@@ -135,105 +149,6 @@ class HomeViewModel: ObservableObject {
 
     }
 
-    func getTemplate(server: Server, locale: UwaziLocale) async throws  -> AnyPublisher<[CollectedTemplate], Error> {
-        return Future { promise in
-            Task {
-
-                if let _ = server.id, let serverURL = server.url {
-                    let cookieList = [server.accessToken ?? "" , locale.locale ?? ""]
-                    // TODO: Try to use async await
-                    let getTemplate = UwaziServerRepository().getTemplate(serverURL: serverURL, cookieList: cookieList)
-                    let getSetting = UwaziServerRepository().getSettings(serverURL: serverURL, cookieList: cookieList)
-                    let getDictionary = UwaziServerRepository().getDictionaries(serverURL: serverURL, cookieList: cookieList)
-                    let getTranslation = UwaziServerRepository().getTranslations(serverURL: serverURL, cookieList: cookieList)
-
-                    Publishers.Zip4(getTemplate, getSetting, getDictionary, getTranslation)
-                        .receive(on: DispatchQueue.main)
-                        .sink { completion in
-                            switch completion {
-                            case .finished:
-                                print("Finished")
-                                // TODO: handle this error
-                            case .failure(let error):
-                                print(error)
-                            }
-                        } receiveValue: { templateResult, settings, dictionary, translationResult in
-                            let templates = templateResult.rows
-                            let translations = translationResult.rows
-                            let dictionary = dictionary.rows
-                            templates.forEach { template in
-                                template.properties.forEach { property in
-                                    dictionary.forEach { dictionaryItem in
-                                        if dictionaryItem.id == property.content {
-                                            property.values = dictionaryItem.values
-                                        }
-                                    }
-                                }
-                            }
-
-                            var resultTemplates = [UwaziTemplate]()
-                            if (server.username?.isEmpty ?? true) || (server.password?.isEmpty ?? true) {
-                                if !settings.allowedPublicTemplates.isEmpty {
-                                    templates.forEach { row in
-                                        settings.allowedPublicTemplates.forEach { id in
-                                            if row.id == id {
-                                                resultTemplates.append(row)
-                                            }
-                                        }
-                                    }
-                                }
-                            } else {
-                                resultTemplates = templates
-                            }
-                            resultTemplates.forEach { template in
-                                let filteredTranslations = translations.filter { row in
-                                    row.locale == locale.locale ?? ""
-                                }
-                                filteredTranslations.first?.contexts.forEach{ context in
-                                    if context.contextID == template.id {
-                                        template.translatedName = context.values?[template.name ?? ""] ?? ""
-                                        template.properties.forEach { property in
-                                            property.translatedLabel = context.values?[property.label ?? ""] ?? ""
-                                        }
-
-                                        template.commonProperties.forEach { property in
-                                            property.translatedLabel = context.values?[property.label ?? ""] ?? ""
-                                        }
-
-
-                                    } else {
-                                        template.properties.forEach { property in
-                                            property.values?.forEach { selectValue in
-                                                if context.contextID == property.content {
-                                                    selectValue.translatedLabel = context.values?[selectValue.label ?? ""] ?? selectValue.label
-                                                }
-                                                selectValue.values?.forEach { nestedSelectValue in
-                                                    if context.id == property.content {
-                                                        nestedSelectValue.translatedLabel = context.values?[nestedSelectValue.label ?? ""] ?? nestedSelectValue.label
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            print(resultTemplates)
-
-                            let originalTemplate = resultTemplates.map { template in
-                                return CollectedTemplate(serverId: server.id, templateId: template.id, serverName: server.name ?? "", username: server.username, entityRow: template, isDownloaded: 0, isFavorite: 0, isUpdated: 0 )
-                            }
-                            promise(.success(originalTemplate))
-                        }.store(in: &self.subscribers)
-
-                }
-            }
-
-        }.eraseToAnyPublisher()
-
-
-    }
-
-    
     func getServersList() {
             
             self.appModel.vaultManager.tellaData.servers.sink { result in

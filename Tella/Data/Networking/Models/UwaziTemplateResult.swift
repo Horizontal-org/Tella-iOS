@@ -66,6 +66,8 @@ class Property: Codable {
     }
 }
 class CollectedTemplate: Codable {
+
+    // TODO: Try to change the isDownload, isFavorite and isUpdated to Boolean for better understanding
     var id: Int?
     var templateId: String?
     var serverId: Int?

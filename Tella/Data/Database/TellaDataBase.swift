@@ -16,7 +16,7 @@ protocol UwaziServerLanguageProtocol {
     func deleteUwaziLocaleWith(serverId : Int) throws
     func deleteAllUwaziLocale() throws -> Int
 }
-protocol UwaziTemplateDownloadProtocol {
+protocol UwaziTemplateProtocol {
     func createTemplateTableForUwazi()
     func getUwaziTemplateeWith(serverId: Int) throws -> CollectedTemplate?
     func getUwaziTemplateeWith(templateId: Int) throws -> CollectedTemplate?
@@ -239,7 +239,7 @@ class TellaDataBase {
     }
     
     func deleteAllServers() throws -> Int {
-        return try statementBuilder.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile, D.tUwaziServerLanguage])
+        return try statementBuilder.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile, D.tUwaziServerLanguage, D.tUwaziTemplate])
     }
 
     func getReports(reportStatus:[ReportStatus]) -> [Report] {
@@ -692,7 +692,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
         return try statementBuilder.deleteAll(tableNames: [D.tUwaziServerLanguage])
     }
 }
-extension TellaDataBase: UwaziTemplateDownloadProtocol {
+extension TellaDataBase: UwaziTemplateProtocol {
     func createTemplateTableForUwazi() {
         let columns = [
             cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
