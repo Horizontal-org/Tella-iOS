@@ -17,9 +17,10 @@ struct TellaApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(appViewState)
+            ContentView(mainAppModel: appViewState.homeViewModel)
+                .environmentObject(appViewState)
                 .onReceive(NotificationCenter.default.publisher(for: UIScreen.capturedDidChangeNotification)) { value in
-                    appViewState.homeViewModel?.shouldShowRecordingSecurityScreen = UIScreen.main.isCaptured
+                    appViewState.homeViewModel.shouldShowRecordingSecurityScreen = UIScreen.main.isCaptured
                 }.onReceive(appDelegate.$shouldHandleTimeout) { value in
                     if value {
                         self.saveData(lockApptype: .finishBackgroundTasks)
@@ -33,7 +34,7 @@ struct TellaApp: App {
             case .active:
                 self.resetApp()
             case .inactive:
-                appViewState.homeViewModel?.shouldShowSecurityScreen = true
+                appViewState.homeViewModel.shouldShowSecurityScreen = true
             default:
                 break
             }
@@ -42,43 +43,42 @@ struct TellaApp: App {
     
     func saveData(lockApptype:LockApptype) {
         
-        appViewState.homeViewModel?.saveLockTimeoutStartDate()
+        appViewState.homeViewModel.saveLockTimeoutStartDate()
         
         UploadService.shared.cancelTasksIfNeeded()
         
-        guard let shouldResetApp = appViewState.homeViewModel?.shouldResetApp() else { return }
+         let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
 //        let hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
         
       let  hasFileOnBackground = lockApptype == .enterInBackground ? UploadService.shared.hasFilesToUploadOnBackground : false
             
          if shouldResetApp && !hasFileOnBackground {
             
-            appViewState.homeViewModel?.appEnterInBackground = true
-            appViewState.homeViewModel?.shouldSaveCurrentData = true
+            appViewState.homeViewModel.appEnterInBackground = true
+            appViewState.homeViewModel.shouldSaveCurrentData = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                appViewState.homeViewModel?.vaultManager.clearTmpDirectory() // TO FIX for server doesn't allow upload in Background
+                appViewState.homeViewModel.vaultManager.clearTmpDirectory() // TO FIX for server doesn't allow upload in Background
                 appViewState.resetApp()
             })
-            // appViewState.homeViewModel?.saveLockTimeoutStartDate()
-            appViewState.homeViewModel?.shouldSaveCurrentData = false
+            // appViewState.homeViewModel.saveLockTimeoutStartDate()
+            appViewState.homeViewModel.shouldSaveCurrentData = false
         }
     }
     
     func resetApp() {
-        if let shouldResetApp = appViewState.homeViewModel?.shouldResetApp(),
-           shouldResetApp == true,
-           appViewState.homeViewModel?.appEnterInBackground == true {
+         if appViewState.homeViewModel.shouldResetApp() == true,
+           appViewState.homeViewModel.appEnterInBackground == true {
             
             
             DispatchQueue.main.async {
                 appViewState.shouldHidePresentedView = true
-                appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
+                appViewState.homeViewModel.vaultManager.clearTmpDirectory()
                 appViewState.resetApp()
                 appViewState.shouldHidePresentedView = false
             }
         }
-        appViewState.homeViewModel?.appEnterInBackground = false
-        appViewState.homeViewModel?.shouldShowSecurityScreen = false
+        appViewState.homeViewModel.appEnterInBackground = false
+        appViewState.homeViewModel.shouldShowSecurityScreen = false
     }
 }
 

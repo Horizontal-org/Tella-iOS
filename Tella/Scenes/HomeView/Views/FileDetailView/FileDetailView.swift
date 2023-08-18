@@ -14,7 +14,7 @@ struct FileDetailView: View {
     var videoFilesArray: [VaultFile]?
     var folderPathArray: [VaultFile]?
     
-    init(appModel:MainAppModel,file: VaultFile?, videoFilesArray: [VaultFile]? = nil, rootFile:VaultFile, folderPathArray: [VaultFile]?) {
+    init(appModel:MainAppModel,file: VaultFile?, videoFilesArray: [VaultFile]? = nil, rootFile:VaultFile?, folderPathArray: [VaultFile]?) {
         _fileListViewModel = StateObject(wrappedValue: FileListViewModel(appModel: appModel, fileType: nil, rootFile: rootFile, folderPathArray: folderPathArray ?? [],fileActionSource: .details))
         self.file = file
         self.videoFilesArray = videoFilesArray

@@ -10,6 +10,7 @@ protocol FileManagerInterface {
     func contents(atPath path: URL) -> Data?
     func contentsOfDirectory(atPath path: URL) -> [URL]
     func contentsOfDirectory(atPath path: String) -> [String]
+    func removeContainerDirectory(fileName: [String], paths: String)
     
     @discardableResult
     func createFile(atPath path: URL, contents data: Data?) -> Bool
@@ -84,6 +85,17 @@ class DefaultFileManager: FileManagerInterface {
     func copyItem(at srcURL: URL, to dstURL: URL) throws {
         debugLog("copying from \(srcURL.path) \(dstURL.path)")
         try fileManager.copyItem(at: srcURL, to: dstURL)
+    }
+    
+    func removeContainerDirectory(fileName: [String], paths: String) {
+        do {
+            for file in fileName {
+                let filePath = URL(fileURLWithPath: paths).appendingPathComponent(file).absoluteURL
+                try fileManager.removeItem(at: filePath)
+            }
+        } catch let error {
+            debugLog(error)
+        }
     }
     
 }

@@ -1,16 +1,20 @@
 //
-//  UnlockPinView.swift
+//  UnlockView.swift
 //  Tella
 //
-//
-//  Copyright © 2021 INTERNEWS. All rights reserved.
+//  Created by Gustavo on 16/08/2023.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import SwiftUI
 import Combine
 
-struct UnlockPinView: View {
-    
+enum UnlockType {
+    case new
+    case update
+}
+
+struct UnlockView: View {
     @State private var presentingLockChoice : Bool = false
     
     @EnvironmentObject private var appViewState: AppViewState
@@ -19,7 +23,7 @@ struct UnlockPinView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State private var cancellable: Set<AnyCancellable> = []
     @State private var isLoading : Bool = false
-
+    var type : PasswordTypeEnum
     var body: some View {
         ContainerView {
             VStack(alignment: .center) {
@@ -31,37 +35,20 @@ struct UnlockPinView: View {
                 
                 Spacer(minLength: 23)
                 
-                Text(titleString)
-                    .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-                    .foregroundColor(.white)
-                    .lineSpacing(7)
-                    .multilineTextAlignment(.center)
-                    .padding(EdgeInsets(top: 0, leading: 67, bottom: 0, trailing: 67))
+                TextView(content: titleString, size: 18)
                 
                 Spacer()
                 
                 if(viewModel.shouldShowAttemptsWarning) {
-                    Text(viewModel.warningText())
-                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                        .foregroundColor(.white)
-                        .lineSpacing(7)
-                        .multilineTextAlignment(.center)
-                        .padding(EdgeInsets(top: 0, leading: 67, bottom: 0, trailing: 67))
+                    TextView(content: viewModel.warningText(), size: 14)
                     Spacer()
                 }
-
-               
                 
-                PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
-                                      isValid: .constant(true),
-                                      shouldShowError: $viewModel.shouldShowUnlockError,
-                                      disabled: true)
-                
-                Spacer(minLength: 20)
-                
-                PinView(fieldContent: $viewModel.loginPassword,
-                        keyboardNumbers: UnlockKeyboardNumbers) {
-                    loginActions()
+    
+                if(type == .tellaPassword) {
+                    TellaPasswordView
+                } else {
+                    TellaPinView
                 }
                 
                 Spacer()
@@ -79,13 +66,47 @@ struct UnlockPinView: View {
         }
     }
     
-    var titleString : String {
-        if viewModel.shouldShowUnlockError {
-            return  LocalizableLock.unlockUpdatePinErrorIncorrectPIN.localized
-        } else {
-            return viewModel.unlockType == .new ? LocalizableLock.unlockPinSubhead.localized : LocalizableLock.unlockUpdatePinSubhead.localized
+    
+    var titleString: String {
+        let unlockErrorString: String
+        let unlockSubheadString: String
+
+        switch type {
+        case .tellaPin:
+            unlockErrorString = viewModel.shouldShowUnlockError ? LocalizableLock.unlockUpdatePinErrorIncorrectPIN.localized : ""
+            unlockSubheadString = viewModel.unlockType == .new ? LocalizableLock.unlockPinSubhead.localized : LocalizableLock.unlockUpdatePinSubhead.localized
+        default:
+            unlockErrorString = viewModel.shouldShowUnlockError ? LocalizableLock.unlockUpdatePasswordErrorIncorrectPassword.localized : ""
+            unlockSubheadString = viewModel.unlockType == .new ? LocalizableLock.unlockPasswordSubhead.localized : LocalizableLock.unlockUpdatePasswordSubhead.localized
+        }
+
+        return unlockErrorString.isEmpty ? unlockSubheadString : unlockErrorString
+    }
+    
+    var TellaPasswordView : some View {
+        PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
+                              isValid: .constant(true),
+                              shouldShowError: $viewModel.shouldShowUnlockError) {
+            loginActions()
         }
     }
+    
+    var TellaPinView : some View {
+        Group {
+            PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
+                                  isValid: .constant(true),
+                                  shouldShowError: $viewModel.shouldShowUnlockError,
+                                  disabled: true)
+            
+            Spacer(minLength: 20)
+            
+            PinView(fieldContent: $viewModel.loginPassword,
+                    keyboardNumbers: viewModel.unlockKeyboardNumbers) {
+                loginActions()
+            }
+        }
+    }
+
     
     var lockChoiceView : some View {
         presentingLockChoice ? LockChoiceView( isPresented: $presentingLockChoice) : nil
@@ -101,7 +122,7 @@ struct UnlockPinView: View {
     }
     
     private func successLogin() {
-        viewModel.unlockAttempts = 0
+        viewModel.resetUnlockAttempts()
         if viewModel.unlockType == .new {
              isLoading = true
              initRoot()
@@ -111,11 +132,11 @@ struct UnlockPinView: View {
     }
     
     private func checkUnlockAttempts() {
-        viewModel.unlockAttempts = viewModel.unlockAttempts + 1
-        UserDefaults.standard.set(viewModel.unlockAttempts, forKey: "com.tella.lock.attempts")
+        viewModel.increaseUnlockAttempts()
                                 
         if(viewModel.unlockAttempts == viewModel.maxAttempts) {
             viewModel.removeFilesAndConnections()
+            appViewState.resetApp()
         }
     }
     
@@ -129,11 +150,10 @@ struct UnlockPinView: View {
                 }.store(in: &self.cancellable)
         }
     }
-    
 }
 
-struct UnlockPinView_Previews: PreviewProvider {
+struct UnlockView_Previews: PreviewProvider {
     static var previews: some View {
-        UnlockPinView()
+        UnlockView(type: .tellaPassword)
     }
 }

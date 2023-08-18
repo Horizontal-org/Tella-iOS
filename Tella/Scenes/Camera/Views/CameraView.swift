@@ -28,7 +28,7 @@ struct CameraView: View {
          showingCameraView: Binding<Bool>,
          resultFile: Binding<[VaultFile]?>? = nil,
          mainAppModel: MainAppModel,
-         rootFile:VaultFile) {
+         rootFile:VaultFile?) {
         
         self.showingCameraView = showingCameraView
         
