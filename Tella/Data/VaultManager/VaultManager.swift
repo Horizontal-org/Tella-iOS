@@ -395,23 +395,12 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     }
     
     func deleteContainerDirectory() {
-        
-        let fileManager = FileManager.default
 
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
 
-        print("Directory: \(paths)")
+        let fileName = fileManager.contentsOfDirectory(atPath: paths)
 
-        do {
-            let fileName = try fileManager.contentsOfDirectory(atPath: paths)
-
-            for file in fileName {
-                let filePath = URL(fileURLWithPath: paths).appendingPathComponent(file).absoluteURL
-                try fileManager.removeItem(at: filePath)
-            }
-        } catch let error {
-            print(error)
-        }
+        fileManager.removeContainerDirectory(fileName: fileName, paths: paths)
     }
     
     private func getFilesInfo(files: [URL], folderPathArray:[VaultFile]) async throws ->([(Data,VaultFile)], Double)  {
