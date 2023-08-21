@@ -60,24 +60,4 @@ class Server : Hashable {
     func hash(into hasher: inout Hasher){
         hasher.combine(id.hashValue)
     }
-    private enum CodingKeys: String, CodingKey {
-        case id, name, url, username, password, accessToken, activatedMetadata, backgroundUpload, projectId, slug, autoUpload, autoDelete, serverType
-    }
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decodeIfPresent(Int.self, forKey: .id)
-        name = try container.decodeIfPresent(String.self, forKey: .name)
-        url = try container.decodeIfPresent(String.self, forKey: .url)
-        username = try container.decodeIfPresent(String.self, forKey: .username)
-        password = try container.decodeIfPresent(String.self, forKey: .password)
-        accessToken = try container.decodeIfPresent(String.self, forKey: .accessToken)
-        activatedMetadata = try container.decodeIfPresent(Bool.self, forKey: .activatedMetadata)
-        backgroundUpload = try container.decodeIfPresent(Bool.self, forKey: .backgroundUpload)
-        projectId = try container.decodeIfPresent(String.self, forKey: .projectId)
-        slug = try container.decodeIfPresent(String.self, forKey: .slug)
-        autoUpload = try container.decodeIfPresent(Bool.self, forKey: .autoUpload)
-        autoDelete = try container.decodeIfPresent(Bool.self, forKey: .autoDelete)
-        serverType = try container.decodeIfPresent(ServerConnectionType.self, forKey: .serverType)
-    }
-    
 }
