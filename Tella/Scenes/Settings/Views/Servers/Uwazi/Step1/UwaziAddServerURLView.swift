@@ -70,25 +70,27 @@ struct UwaziAddServerURLView: View {
         }
         .navigationBarHidden(true)
         .onAppear {
+            #if DEBUG
+                        serverViewModel.serverURL = "https://horizontal.uwazi.io"
+            #endif
             guard (serverViewModel.currentServer != nil) else { return }
             serverViewModel.validURL = true
-//#if DEBUG
-//            serverViewModel.serverURL = "https://horizontal.uwazi.io"
-//#endif
         }
-        .onReceive(serverViewModel.$isPublicInstance) { value in
-            if value {
-                let serverAccess = UwaziServerAccessSelectionView().environmentObject(serverViewModel).environmentObject(serversViewModel)
-                navigateTo(destination: serverAccess)
-            }
+        .onReceive(serverViewModel.$isPublicInstance) { isPublicInstance in
+            guard let isPublicInstance = isPublicInstance else { return }
+            handleNavigation(isPublicInstance: isPublicInstance)
         }
-        .onReceive(serverViewModel.$isPrivateInstance) { value in
-            if value {
-                let loginView = UwaziLoginView()
-                    .environmentObject(serversViewModel)
-                    .environmentObject(serverViewModel)
-                navigateTo(destination: loginView)
-            }
+    }
+    func handleNavigation(isPublicInstance: Bool) {
+        if isPublicInstance {
+            let serverAccess = UwaziServerAccessSelectionView()
+                .environmentObject(serverViewModel).environmentObject(serversViewModel)
+            navigateTo(destination: serverAccess)
+        } else {
+            let loginView = UwaziLoginView()
+                .environmentObject(serversViewModel)
+                .environmentObject(serverViewModel)
+            navigateTo(destination: loginView)
         }
     }
 }

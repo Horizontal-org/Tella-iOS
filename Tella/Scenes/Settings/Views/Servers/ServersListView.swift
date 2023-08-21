@@ -80,7 +80,7 @@ struct ServersListView: View {
         
         switch type {
         case .edit:
-            if (server.serverType == ServerConnectionType.uwazi.rawValue) {
+            if (server.serverType == .uwazi) {
                 navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel, server: server)
                     .environmentObject(serversViewModel))
                 sheetManager.hide()

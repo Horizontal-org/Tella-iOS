@@ -13,9 +13,9 @@ struct UwaziServerRepository: WebRepository {
 
     func login(username: String,
                password: String,
-               serverURL: String) -> AnyPublisher<(UwaziLoginResult,HTTPURLResponse?), APIError> {
+               serverURL: String) -> AnyPublisher<(BoolResponse,HTTPURLResponse?), APIError> {
 
-        let call : AnyPublisher<(UwaziLoginResult,HTTPURLResponse?), APIError> = callReturnsHeaders(endpoint: API.login((username: username, password: password, serverURL: serverURL)))
+        let call : AnyPublisher<(BoolResponse,HTTPURLResponse?), APIError> = callReturnsHeaders(endpoint: API.login((username: username, password: password, serverURL: serverURL)))
 
         return call
             .eraseToAnyPublisher()
@@ -24,9 +24,9 @@ struct UwaziServerRepository: WebRepository {
     func twoFactorAuthentication(username: String,
                                   password: String,
                                   token: String,
-                                  serverURL: String) -> AnyPublisher<(UwaziLoginResult,HTTPURLResponse?), APIError> {
+                                  serverURL: String) -> AnyPublisher<(BoolResponse,HTTPURLResponse?), APIError> {
 
-        let call : AnyPublisher<(UwaziLoginResult,HTTPURLResponse?), APIError> = callReturnsHeaders(endpoint: API.twoFactorAuthentication((username: username, password: password,token: token, serverURL: serverURL)))
+        let call : AnyPublisher<(BoolResponse,HTTPURLResponse?), APIError> = callReturnsHeaders(endpoint: API.twoFactorAuthentication((username: username, password: password,token: token, serverURL: serverURL)))
 
         return call
             .eraseToAnyPublisher()

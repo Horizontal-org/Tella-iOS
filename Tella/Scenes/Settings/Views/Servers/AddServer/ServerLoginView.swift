@@ -77,13 +77,6 @@ struct ServerLoginView: View {
             
         }
         .navigationBarHidden(true)
-        .onAppear {
-#if DEBUG
-            serverViewModel.username = "admin@wearehorizontal.org"
-            serverViewModel.password = "nadanada"
-#endif
-        }
-
         .onReceive(serverViewModel.$showNextSuccessLoginView) { value in
             if value {
                 navigateTo(destination: successLoginView)

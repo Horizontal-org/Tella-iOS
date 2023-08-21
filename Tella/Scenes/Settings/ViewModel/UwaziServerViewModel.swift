@@ -29,8 +29,7 @@ class UwaziServerViewModel: ObservableObject {
     @Published var validURL : Bool = false
     @Published var shouldShowURLError : Bool = false
     @Published var urlErrorMessage : String = ""
-    @Published var isPublicInstance: Bool = false
-    @Published var isPrivateInstance: Bool = false
+    @Published var isPublicInstance: Bool?
 
     // Login
     @Published var validUsername : Bool = false
@@ -102,7 +101,7 @@ class UwaziServerViewModel: ObservableObject {
                             slug: "",
                             autoUpload: autoUpload,
                             autoDelete: autoDelete,
-                            serverType: ServerConnectionType.uwazi.rawValue
+                            serverType: .uwazi
         )
 
         do {
@@ -204,7 +203,7 @@ class UwaziServerViewModel: ObservableObject {
                     print("Finished")
                     // TODO: handle this error
                 case .failure(let error):
-                    self.isPrivateInstance = true
+                    self.isPublicInstance = false
                 }
 
             }, receiveValue: { wrapper in
@@ -262,17 +261,23 @@ class UwaziServerViewModel: ObservableObject {
                 },
                 receiveValue: { result in
                     self.isLoading = false
-                    if result.0.success {
+                    if result.0.success ?? false {
                         self.showNextLanguageSelectionView = true
-                        if let token = result.1?.value(forHTTPHeaderField: "Set-Cookie") {
-                            let filteredToken = token.split(separator: ";")
-                            let connectId = filteredToken.first!.replacingOccurrences(of: "connect.sid=", with: "")
-                            self.token = connectId
+                        if let httpResponse = result.1 {
+                            self.saveTokenFromHeader(httpResponse: httpResponse)
                         }
                     }
                 }
             )
             .store(in: &subscribers)
+    }
+
+    private func saveTokenFromHeader(httpResponse: HTTPURLResponse) {
+        if let token = httpResponse.value(forHTTPHeaderField: "Set-Cookie") {
+            let filteredToken = token.split(separator: ";")
+            let connectId = filteredToken.first!.replacingOccurrences(of: "connect.sid=", with: "")
+            self.token = connectId
+        }
     }
 
     func twoFactorAuthentication() {
@@ -322,7 +327,7 @@ class UwaziServerViewModel: ObservableObject {
                 },
                 receiveValue: { result in
                     self.isLoading = false
-                    if result.0.success {
+                    if result.0.success ?? false {
                         self.showNextLanguageSelectionView = true
                         if let token = result.1?.value(forHTTPHeaderField: "Set-Cookie") {
                             let filteredToken = token.split(separator: ";")

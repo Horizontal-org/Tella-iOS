@@ -7,10 +7,10 @@
 //
 
 import Foundation
-struct UwaziLoginResult: Codable {
-    let success: Bool
-
-    enum CodingKeys: String, CodingKey {
-        case success
-    }
-}
+//struct UwaziLoginResult: Codable {
+//    let success: Bool
+//
+//    enum CodingKeys: String, CodingKey {
+//        case success
+//    }
+//}

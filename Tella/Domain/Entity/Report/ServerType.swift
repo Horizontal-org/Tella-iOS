@@ -4,27 +4,17 @@
 
 import Foundation
 
-enum ServerType: String {
-    case unknown = "UNKNOWN"
-    case odkCollect = "ODK_COLLECT"
-    case tella = "TELLA_UPLOAD"
-    case uwazi = "UWAZI"
-}
-enum ServerConnectionType: Int {
+enum ServerConnectionType: Int, Decodable {
     case tella = 0
     case uwazi = 1
     case odkCollect = 3
+    case unknown
 }
 
-func mapServerTypeFromInt(_ serverTypeInt: Int?) -> ServerType {
-    switch serverTypeInt {
-    case ServerConnectionType.tella.rawValue:
-        return .tella
-    case ServerConnectionType.uwazi.rawValue:
-        return .uwazi
-    case ServerConnectionType.odkCollect.rawValue:
-        return .odkCollect
-    default:
+func mapServerTypeFromInt(_ serverTypeInt: Int?) -> ServerConnectionType {
+    if let serverType = serverTypeInt {
+        return ServerConnectionType(rawValue: serverType) ?? .unknown
+    } else {
         return .unknown
     }
 }

@@ -282,3 +282,5 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_Server_Uwazi_Language_Cancel" = "CANCEL";
 "Setting_Server_Uwazi_Connect_Server" = "Connected to server";
 "Setting_Server_Uwazi_Success_Message" = "You have successfully connected to the server and will be able to share your data.";
+
+"Uwazi_Home_Server_Title" = "Uwazi";

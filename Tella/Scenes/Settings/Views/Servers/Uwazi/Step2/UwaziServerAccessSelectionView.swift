@@ -18,56 +18,21 @@ struct UwaziServerAccessSelectionView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
     @EnvironmentObject var serverViewModel : UwaziServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
+
     var body: some View {
         ContainerView {
             VStack {
                 Spacer()
-                Image("settings.server")
                 VStack(spacing: 12) {
-                    Text(LocalizableSettings.UwaziAccessServerTitle.localized)
-                        .font(.custom(Styles.Fonts.regularFontName, size: 18))
-                        .foregroundColor(.white)
-                        .multilineTextAlignment(.center)
+                    HeaderView()
                     Spacer().frame(height:24)
-                    TellaButtonView<AnyView>(title: LocalizableSettings.UwaziLogin.localized,
-                                             nextButtonAction: .action,
-                                             isValid: .constant(true),action: {
-                        self.isLoginSelected = true
-                        self.isPublicInstance = false
-                    })
-                    .overlay( self.isLoginSelected ?
-                              RoundedRectangle(cornerRadius: 20)
-                        .stroke(.white, lineWidth: 4) : nil
-                    )
-                    TellaButtonView<AnyView>(title: LocalizableSettings.UwaziPublicInstance.localized,
-                                             nextButtonAction: .action,
-                                             isValid: .constant(true),action: {
-                        self.isLoginSelected = false
-                        self.isPublicInstance = true
-                    })
-                    .overlay( self.isPublicInstance ?
-                              RoundedRectangle(cornerRadius: 20)
-                        .stroke(.white, lineWidth: 4) : nil
-                    )
-                }.padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
+                    buttonView()
+                }
                 Spacer()
                 BottomLockView<AnyView>(isValid: $isButtonValid,
                                         nextButtonAction: .action,
                                         nextAction: {
-                    if isLoginSelected {
-                        let loginView = UwaziLoginView()
-                            .environmentObject(serversViewModel)
-                            .environmentObject(serverViewModel)
-                        navigateTo(destination: loginView)
-                    } else if isPublicInstance {
-                        let languageSelection = UwaziLanguageSelectionView(isPresented: .constant(true))
-                            //.environmentObject(SettingsViewModel(appModel: mainAppModel))
-                            .environmentObject(serversViewModel)
-                            .environmentObject(serverViewModel)
-                        navigateTo(destination: languageSelection)
-                    } else {
-
-                    }
+                    handleNavigation()
                 },
                 backAction: {
                     self.presentationMode.wrappedValue.dismiss()
@@ -88,6 +53,51 @@ struct UwaziServerAccessSelectionView: View {
         .navigationBarBackButtonHidden(true)
 
     }
+    fileprivate func buttonView() -> VStack<TupleView<(TellaButtonView<AnyView>, TellaButtonView<AnyView>)>> {
+        return VStack(spacing: 12) {
+            TellaButtonView<AnyView>(title: LocalizableSettings.UwaziLogin.localized,
+                                     nextButtonAction: .action,
+                                     isOverlay: self.isLoginSelected,
+                                     isValid: .constant(true),action: {
+                self.isLoginSelected = true
+                self.isPublicInstance = false
+            })
+            TellaButtonView<AnyView>(title: LocalizableSettings.UwaziPublicInstance.localized,
+                                     nextButtonAction: .action,
+                                     isOverlay: self.isPublicInstance,
+                                     isValid: .constant(true),action: {
+                self.isLoginSelected = false
+                self.isPublicInstance = true
+            })
+        }
+    }
+
+    fileprivate func handleNavigation() {
+        if isLoginSelected {
+            let loginView = UwaziLoginView()
+                .environmentObject(serversViewModel)
+                .environmentObject(serverViewModel)
+            navigateTo(destination: loginView)
+        } else if isPublicInstance {
+            let languageSelection = UwaziLanguageSelectionView(isPresented: .constant(true))
+                .environmentObject(serversViewModel)
+                .environmentObject(serverViewModel)
+            navigateTo(destination: languageSelection)
+        } else {
+
+        }
+    }
+    struct HeaderView: View {
+        var body: some View {
+            VStack(spacing: 12) {
+                Image("settings.server")
+                Text(LocalizableSettings.UwaziAccessServerTitle.localized)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 18))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+            }
+        }
+    }
 }
 
 struct UwaziServerAccessSelectionView_Previews: PreviewProvider {
@@ -97,4 +107,3 @@ struct UwaziServerAccessSelectionView_Previews: PreviewProvider {
             .environmentObject(ServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
     }
 }
-

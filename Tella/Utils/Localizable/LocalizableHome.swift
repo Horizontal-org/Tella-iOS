@@ -30,4 +30,7 @@ enum LocalizableHome: String, LocalizableDelegate {
     case quickDeleteSwipeTitle = "Home_QuickDelete_Action_Title"
     case quickDeleteActionTitle = "Home_QuickDelete_Action_QuickDelete"
     case quickDeleteActionCancel = "Home_QuickDelete_Action_QuickDeleteDeactivated"
+
+    case uwaziServerTitle = "Uwazi_Home_Server_Title"
+    
 }

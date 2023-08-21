@@ -640,7 +640,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                       slug:slug,
                       autoUpload: autoUpload == 0 ? false : true,
                       autoDelete: autoDelete == 0 ? false : true,
-                      serverType: servertType
+                      serverType: ServerConnectionType(rawValue: servertType ?? 1)
         )
         
     }

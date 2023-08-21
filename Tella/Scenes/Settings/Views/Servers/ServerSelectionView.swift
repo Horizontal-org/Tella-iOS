@@ -28,6 +28,57 @@ struct ServerSelectionView: View {
 
             VStack(spacing: 20) {
                 Spacer()
+                HeaderView()
+                buttonViews()
+                Spacer()
+                bottomView()
+            }
+            .toolbar {
+                LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
+            }
+        }
+    }
+    fileprivate func buttonViews() -> Group<TupleView<(some View, some View)>> {
+        return Group {
+            TellaButtonView<AnyView>(title: LocalizableSettings.settServerTellaWeb.localized,
+                                     nextButtonAction: .action,
+                                     isOverlay: self.istellaWebSelected,
+                                     isValid: .constant(true),action: {
+                istellaWebSelected = true
+                isUwaziSelected = false
+            })
+            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+            TellaButtonView<AnyView>(title: LocalizableSettings.settServerUwazi.localized,
+                                     nextButtonAction: .action,
+                                     isOverlay: self.isUwaziSelected,
+                                     isValid: .constant(true), action: {
+                istellaWebSelected = false
+                isUwaziSelected = true
+            }).padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+        }
+    }
+
+    fileprivate func bottomView() -> BottomLockView<AnyView> {
+        return BottomLockView<AnyView>(isValid: .constant(true),
+                                       nextButtonAction: .action,
+                                       shouldHideNext: false,
+                                       shouldHideBack: true,
+                                       nextAction: {
+            if istellaWebSelected {
+                navigateTo(destination: AddServerURLView(appModel: mainAppModel))
+            } else if isUwaziSelected {
+                navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel)
+                    .environmentObject(serverViewModel)
+                    .environmentObject(serversViewModel))
+            } else {
+
+            }
+        })
+    }
+
+    struct HeaderView: View {
+        var body: some View {
+            VStack(spacing: 20) {
                 Image("settings.server")
                 Text(LocalizableSettings.settServerSelectionTitle.localized)
                     .font(.custom(Styles.Fonts.regularFontName, size: 18))
@@ -37,49 +88,7 @@ struct ServerSelectionView: View {
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
-                TellaButtonView<AnyView>(title: LocalizableSettings.settServerTellaWeb.localized,
-                                         nextButtonAction: .action,
-                                         isValid: .constant(true),action: {
-                    istellaWebSelected = true
-                    isUwaziSelected = false
-                })
-                .overlay( self.istellaWebSelected ?
-                          RoundedRectangle(cornerRadius: 20)
-                    .stroke(.white, lineWidth: 4) : nil
-                ).padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
-
-                TellaButtonView<AnyView>(title: LocalizableSettings.settServerUwazi.localized,
-                                         nextButtonAction: .action,
-                                         isValid: .constant(true), action: {
-                    istellaWebSelected = false
-                    isUwaziSelected = true
-                })
-                .overlay( self.isUwaziSelected ? RoundedRectangle(cornerRadius: 20)
-                    .stroke(.white, lineWidth: 4) : nil
-                )
-                .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
-                Spacer()
-                BottomLockView<AnyView>(isValid: .constant(true),
-                                        nextButtonAction: .action,
-                                        shouldHideNext: false,
-                                        shouldHideBack: true,
-                                        nextAction: {
-                    if istellaWebSelected {
-                        navigateTo(destination: AddServerURLView(appModel: mainAppModel))
-                    } else if isUwaziSelected {
-                        navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel)
-                            .environmentObject(serverViewModel)
-                            .environmentObject(serversViewModel))
-                    } else {
-
-                    }
-                })
             }
-            .toolbar {
-                LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
-            }
-//            tellaWebLink
-//            UwaziLink
         }
     }
     private var tellaWebLink: some View {
