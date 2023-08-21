@@ -144,6 +144,7 @@ class UwaziServerViewModel: ObservableObject {
             guard let locale = self.selectedLanguage?.locale else { return }
             _ = try mainAppModel.vaultManager.tellaData.database?.addUwaziLocaleWith(locale: UwaziLocale(locale: locale, serverId: serverId))
         } catch let error {
+            debugLog(error)
         }
     }
     func updateUwaziLocaleFor(serverId: Int) {
@@ -154,6 +155,7 @@ class UwaziServerViewModel: ObservableObject {
                 _ = try mainAppModel.vaultManager.tellaData.database?.updateLocale(localeId: localeId, locale: locale)
             }
         } catch let error {
+            debugLog(error)
         }
     }
 
@@ -171,6 +173,7 @@ class UwaziServerViewModel: ObservableObject {
                     print("Finished")
                     // TODO: Handle this error
                 case .failure(let error):
+                    debugLog(error)
                     self.isLoading = false
                 }
 
@@ -201,6 +204,7 @@ class UwaziServerViewModel: ObservableObject {
                     print("Finished")
                     // TODO: handle this error
                 case .failure(let error):
+                    debugLog(error)
                     self.isPublicInstance = false
                 }
 
