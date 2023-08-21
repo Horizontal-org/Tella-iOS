@@ -74,18 +74,23 @@ struct UwaziServerAccessSelectionView: View {
 
     fileprivate func handleNavigation() {
         if isLoginSelected {
-            let loginView = UwaziLoginView()
-                .environmentObject(serversViewModel)
-                .environmentObject(serverViewModel)
-            navigateTo(destination: loginView)
+            navigateToLoginView()
         } else if isPublicInstance {
-            let languageSelection = UwaziLanguageSelectionView(isPresented: .constant(true))
-                .environmentObject(serversViewModel)
-                .environmentObject(serverViewModel)
-            navigateTo(destination: languageSelection)
-        } else {
+            navigateToLanguageView()
+        } else {}
+    }
+    fileprivate func navigateToLoginView() {
+        let loginView = UwaziLoginView()
+            .environmentObject(serversViewModel)
+            .environmentObject(serverViewModel)
+        navigateTo(destination: loginView)
+    }
 
-        }
+    fileprivate func navigateToLanguageView() {
+        let languageSelection = UwaziLanguageSelectionView(isPresented: .constant(true))
+            .environmentObject(serversViewModel)
+            .environmentObject(serverViewModel)
+        navigateTo(destination: languageSelection)
     }
     struct HeaderView: View {
         var body: some View {
