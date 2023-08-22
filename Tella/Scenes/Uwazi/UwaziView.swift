@@ -58,7 +58,7 @@ struct UwaziView: View {
                                 print($0)
                             }
                         ).environmentObject(uwaziReportsViewModel))
-                    })
+                    }).frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
                             
                     }.background(Styles.Colors.backgroundMain)
                     .padding(EdgeInsets(top: 15, leading: 20, bottom: 16, trailing: 20))

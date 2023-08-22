@@ -17,19 +17,19 @@ struct TemplateListView: View {
     var body: some View {
         ZStack {
             if uwaziViewModel.downloadedTemplates.count > 0 {
-                ScrollView {
                     VStack(alignment: .center, spacing: 0) {
                         Text("These are uwazi templates you can fil out.")
                             .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                             .foregroundColor(.white.opacity(0.64))
                             .padding(.all, 14)
-                        ForEach($uwaziViewModel.downloadedTemplates, id: \.self) { template in
-                            TemplateCardView(template: template, serverName: serverName) { template in
-                                self.showtemplateActionBottomSheet(template: template)
+                        ScrollView {
+                            ForEach($uwaziViewModel.downloadedTemplates, id: \.self) { template in
+                                TemplateCardView(template: template, serverName: serverName) { template in
+                                    self.showtemplateActionBottomSheet(template: template)
+                                }
                             }
                         }
                     }
-                }
             } else {
                 EmptyReportView(message: message)
             }
