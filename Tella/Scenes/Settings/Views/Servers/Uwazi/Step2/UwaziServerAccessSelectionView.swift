@@ -39,17 +39,6 @@ struct UwaziServerAccessSelectionView: View {
                 })
             }
         }
-        // TODO: If there previous selection needed to be retained
-//        .onAppear {
-//            if let server = serverViewModel.currentServer {
-//                if server.username == "" {
-//                    self.isPublicInstance = true
-//                } else {
-//                    self.isLoginSelected = true
-//                }
-//            }
-//
-//        }
         .navigationBarBackButtonHidden(true)
 
     }
