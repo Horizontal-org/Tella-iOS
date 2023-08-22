@@ -8,9 +8,7 @@ import Combine
 
 class TellaData : ObservableObject {
 
-
-    // TODO: Make this private to ensure abstraction
-    var database : TellaDataBase?
+    private var database : TellaDataBase?
     
     // Servers
     var servers = CurrentValueSubject<[Server], Error>([])
@@ -194,5 +192,59 @@ class TellaData : ObservableObject {
     func deleteSubmittedReport() {
         database?.deleteSubmittedReport()
         getReports()
+    }
+}
+extension TellaData {
+    func getUwaziLocaleWith(serverId: Int) throws -> UwaziLocale? {
+        guard let database = database else {
+            throw SqliteError()
+        }
+        return try database.getUwaziLocaleWith(serverId: serverId)
+    }
+    func deleteUwaziLocaleWith(serverId : Int) throws {
+        guard let database = database else {
+            throw SqliteError()
+        }
+        return try database.deleteUwaziLocaleWith(serverId: serverId)
+    }
+
+    func addUwaziLocaleWith(locale: UwaziLocale) throws -> Int {
+        guard let database = database else {
+            throw SqliteError()
+        }
+        return try database.addUwaziLocaleWith(locale: locale)
+    }
+    func updateLocale(localeId: Int, locale: String) throws -> Int {
+        guard let database = database else {
+            throw SqliteError()
+        }
+        return try database.updateLocale(localeId: localeId, locale: locale)
+    }
+}
+extension TellaData {
+    func addUwaziTemplateWith(template: CollectedTemplate) throws -> CollectedTemplate {
+        guard let database = database else {
+            throw SqliteError()
+        }
+        return try database.addUwaziTemplateWith(template: template)
+    }
+
+    func deleteAllUwaziTemplateWith(templateId: String) throws {
+        guard let database = database else {
+            throw SqliteError()
+        }
+        return try database.deleteAllUwaziTemplateWith(templateId: templateId)
+    }
+    func getAllUwaziTemplate() throws -> [CollectedTemplate] {
+        guard let database = database else {
+            throw SqliteError()
+        }
+        return try database.getAllUwaziTemplate()
+    }
+    func deleteAllUwaziTemplateWith(templateNo: Int) throws {
+        guard let database = database else {
+            throw SqliteError()
+        }
+        return try database.deleteAllUwaziTemplateWith(templateNo: templateNo)
     }
 }

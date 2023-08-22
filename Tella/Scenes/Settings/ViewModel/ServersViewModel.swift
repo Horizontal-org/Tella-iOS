@@ -30,7 +30,7 @@ class ServersViewModel: ObservableObject {
         do {
               try mainAppModel.vaultManager.tellaData.deleteServer(serverId: serverId)
             if currentServer?.serverType == ServerConnectionType.uwazi.rawValue {
-                    try mainAppModel.vaultManager.tellaData.database?.deleteUwaziLocaleWith(serverId: serverId)
+                    try mainAppModel.vaultManager.tellaData.deleteUwaziLocaleWith(serverId: serverId)
                 }
         } catch {
         }

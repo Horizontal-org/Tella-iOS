@@ -143,17 +143,17 @@ class UwaziServerViewModel: ObservableObject {
     func addUwaziLocaleFor(serverId: Int) {
         do {
             guard let locale = self.selectedLanguage?.locale else { return }
-            _ = try mainAppModel.vaultManager.tellaData.database?.addUwaziLocaleWith(locale: UwaziLocale(locale: locale, serverId: serverId))
+            _ = try mainAppModel.vaultManager.tellaData.addUwaziLocaleWith(locale: UwaziLocale(locale: locale, serverId: serverId))
         } catch let error {
             print(error)
         }
     }
     func updateUwaziLocaleFor(serverId: Int) {
         do {
-            let selectedlocale = try mainAppModel.vaultManager.tellaData.database?.getUwaziLocaleWith(serverId: serverId)
+            let selectedlocale = try mainAppModel.vaultManager.tellaData.getUwaziLocaleWith(serverId: serverId)
             guard let localeId = selectedlocale?.id, let locale = selectedLanguage?.locale else { return }
             if selectedlocale?.locale != locale {
-                _ = try mainAppModel.vaultManager.tellaData.database?.updateLocale(localeId: localeId, locale: locale)
+                _ = try mainAppModel.vaultManager.tellaData.updateLocale(localeId: localeId, locale: locale)
             }
         } catch let error {
             print(error)
@@ -172,8 +172,8 @@ class UwaziServerViewModel: ObservableObject {
 
                 case .finished:
                     print("Finished")
-                    // TODO: Handle this error
                 case .failure(let error):
+                    debugLog(error)
                     self.isLoading = false
                 }
 
@@ -182,7 +182,7 @@ class UwaziServerViewModel: ObservableObject {
                 self.isLoading = false
                 self.languages.append(contentsOf: wrapper.rows ?? [])
                 if let server = self.currentServer, let id = server.id {
-                    let locale = try? self.mainAppModel.vaultManager.tellaData.database?.getUwaziLocaleWith(serverId: id)
+                    let locale = try? self.mainAppModel.vaultManager.tellaData.getUwaziLocaleWith(serverId: id)
                     self.selectedLanguage = self.languages.first(where: {$0.locale == locale?.locale})
                 }
                 self.showNextSuccessLoginView = true
@@ -202,8 +202,8 @@ class UwaziServerViewModel: ObservableObject {
 
                 case .finished:
                     print("Finished")
-                    // TODO: handle this error
                 case .failure(let error):
+                    debugLog(error)
                     self.isPrivateInstance = true
                 }
 

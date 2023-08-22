@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct AddTemplatesView: View {
-    var downloadTemplateAction : (CollectedTemplate) -> Void
+    var downloadTemplateAction : (inout CollectedTemplate) -> Void
     var deleteTemplateAction: (CollectedTemplate) -> Void
     @EnvironmentObject var uwaziReportsViewModel: UwaziReportsViewModel
     @EnvironmentObject var sheetManager: SheetManager
@@ -42,7 +42,7 @@ struct AddTemplatesView: View {
                                                 isDownloaded: template.isDownloaded == 1 ? true : false,
                                                 downloadTemplate: { template in
                                                     Toast.displayToast(message: "“\(template.entityRow?.translatedName ?? "")” successfully added to your Uwazi templates.")
-                                                    self.downloadTemplateAction(template)
+                                                    self.downloadTemplateAction(&template)
                                                 }) { template in
                                                     showServerActionBottomSheet(template: template)
                                                 }

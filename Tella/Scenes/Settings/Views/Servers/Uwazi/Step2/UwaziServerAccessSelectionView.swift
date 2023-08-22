@@ -11,7 +11,6 @@ import SwiftUI
 struct UwaziServerAccessSelectionView: View {
     @State var isButtonValid = true
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    // TODO: Ask if there is any good way to do it
     @State var isLoginSelected: Bool = false
     @State var isPublicInstance: Bool = false
 
@@ -74,17 +73,6 @@ struct UwaziServerAccessSelectionView: View {
                 })
             }
         }
-        // TODO: If there previous selection needed to be retained
-//        .onAppear {
-//            if let server = serverViewModel.currentServer {
-//                if server.username == "" {
-//                    self.isPublicInstance = true
-//                } else {
-//                    self.isLoginSelected = true
-//                }
-//            }
-//
-//        }
         .navigationBarBackButtonHidden(true)
 
     }

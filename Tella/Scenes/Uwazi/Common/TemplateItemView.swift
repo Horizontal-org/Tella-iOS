@@ -12,7 +12,7 @@ struct TemplateItemView: View {
     @Binding var template : CollectedTemplate
     var serverName : String
     var isDownloaded : Bool
-    var downloadTemplate : (CollectedTemplate) -> Void
+    var downloadTemplate : (inout CollectedTemplate) -> Void
     var deleteTemplate: (CollectedTemplate) -> Void
     
     var body: some View {
@@ -35,7 +35,7 @@ struct TemplateItemView: View {
                         if(!isDownloaded) {
                             MoreButtonView(imageName: "template.add", action: {
                                 //add template to download array
-                                downloadTemplate(template)
+                                downloadTemplate(&template)
                             })
                         } else {
                             MoreButtonView(imageName: "reports.more", action: {

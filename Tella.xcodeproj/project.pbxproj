@@ -331,6 +331,7 @@
 		D7F55FC825348FA50028739E /* RecordState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FC725348FA50028739E /* RecordState.swift */; };
 		D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FCC25348FB80028739E /* AudioRecorderManager.swift */; };
 		D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FD9253490BE0028739E /* RecordingAudioManager.swift */; };
+		E10412132A947510003DCE6A /* DeleteTemplateConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10412122A947510003DCE6A /* DeleteTemplateConfirmationView.swift */; };
 		E108B75729FE79340045CCBE /* UwaziServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108B75629FE79340045CCBE /* UwaziServerViewModel.swift */; };
 		E11968B12A1F409D00BA7B56 /* UwaziLanguageResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11968B02A1F409D00BA7B56 /* UwaziLanguageResult.swift */; };
 		E131BA3B2A1B45A30095BC91 /* UwaziServerRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = E131BA3A2A1B45A30095BC91 /* UwaziServerRepositories.swift */; };
@@ -729,6 +730,7 @@
 		D7F55FC725348FA50028739E /* RecordState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordState.swift; sourceTree = "<group>"; };
 		D7F55FCC25348FB80028739E /* AudioRecorderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorderManager.swift; sourceTree = "<group>"; };
 		D7F55FD9253490BE0028739E /* RecordingAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingAudioManager.swift; sourceTree = "<group>"; };
+		E10412122A947510003DCE6A /* DeleteTemplateConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteTemplateConfirmationView.swift; sourceTree = "<group>"; };
 		E108B75629FE79340045CCBE /* UwaziServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziServerViewModel.swift; sourceTree = "<group>"; };
 		E11968B02A1F409D00BA7B56 /* UwaziLanguageResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLanguageResult.swift; sourceTree = "<group>"; };
 		E131BA3A2A1B45A30095BC91 /* UwaziServerRepositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziServerRepositories.swift; sourceTree = "<group>"; };
@@ -1787,6 +1789,7 @@
 		CC43D9DF2A72F7FB0030192E /* Uwazi */ = {
 			isa = PBXGroup;
 			children = (
+				E10412112A9474D9003DCE6A /* Views */,
 				CCD586D22A7C0EFA00014F87 /* Common */,
 				CCD586BE2A7AB0E300014F87 /* Template */,
 				CC387D5A2A7857C900853F2E /* ViewModel */,
@@ -1895,6 +1898,14 @@
 				1209FD2C27AD896A00D8C17E /* AudioPlayer */,
 			);
 			path = Audio;
+			sourceTree = "<group>";
+		};
+		E10412112A9474D9003DCE6A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E10412122A947510003DCE6A /* DeleteTemplateConfirmationView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		E14E0CF429F9ACA7004FC4CD /* Step6 */ = {
@@ -2444,6 +2455,7 @@
 				128D6E1A28045C090082AB18 /* manageFilesItems.swift in Sources */,
 				12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */,
 				1216123E28DE142D00E6D7B6 /* JoinItem.swift in Sources */,
+				E10412132A947510003DCE6A /* DeleteTemplateConfirmationView.swift in Sources */,
 				124190462A43230000E177F3 /* SQLiteStatementBuilderExtension.swift in Sources */,
 				12EC94D828ABCCED0070E72B /* SettingsItemView.swift in Sources */,
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,

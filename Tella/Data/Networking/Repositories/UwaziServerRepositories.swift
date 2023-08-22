@@ -57,109 +57,13 @@ class UwaziServerRepository: WebRepository {
                     switch completion {
                     case .finished:
                         print("Finished")
-                        // TODO: handle this error
                     case .failure(let error):
-                       print(error)
+                       debugLog(error)
                     }
 
                 }, receiveValue: { wrapper in
                     print(wrapper)
                 }).store(in: &subscribers)
-    }
-    func getTemplate(server: Server, locale: UwaziLocale) async throws  -> AnyPublisher<[CollectedTemplate], Error> {
-
-        return Future { promise in
-            Task {
-                if let _ = server.id, let serverURL = server.url {
-                    let cookieList = [server.accessToken ?? "" , locale.locale ?? ""]
-                    // TODO: Try to use async await
-                    let getTemplate = UwaziServerRepository().getTemplate(serverURL: serverURL, cookieList: cookieList)
-                    let getSetting = UwaziServerRepository().getSettings(serverURL: serverURL, cookieList: cookieList)
-                    let getDictionary = UwaziServerRepository().getDictionaries(serverURL: serverURL, cookieList: cookieList)
-                    let getTranslation = UwaziServerRepository().getTranslations(serverURL: serverURL, cookieList: cookieList)
-
-                    self.cancellable = Publishers.Zip4(getTemplate, getSetting, getDictionary, getTranslation)
-                        .receive(on: DispatchQueue.main)
-                        .sink { completion in
-                            switch completion {
-                            case .finished:
-
-                                print("Finished")
-                                // TODO: handle this error
-                            case .failure(let error):
-                                print(error)
-                            }
-                        } receiveValue: { templateResult, settings, dictionary, translationResult in
-                            let templates = templateResult.rows
-                            let translations = translationResult.rows
-                            let dictionary = dictionary.rows
-                            templates.forEach { template in
-                                template.properties.forEach { property in
-                                    dictionary.forEach { dictionaryItem in
-                                        if dictionaryItem.id == property.content {
-                                            property.values = dictionaryItem.values
-                                        }
-                                    }
-                                }
-                            }
-
-                            var resultTemplates = [UwaziTemplate]()
-                            if (server.username?.isEmpty ?? true) || (server.password?.isEmpty ?? true) {
-                                if !settings.allowedPublicTemplates.isEmpty {
-                                    templates.forEach { row in
-                                        settings.allowedPublicTemplates.forEach { id in
-                                            if row.id == id {
-                                                resultTemplates.append(row)
-                                            }
-                                        }
-                                    }
-                                }
-                            } else {
-                                resultTemplates = templates
-                            }
-                            resultTemplates.forEach { template in
-                                let filteredTranslations = translations.filter { row in
-                                    row.locale == locale.locale ?? ""
-                                }
-                                filteredTranslations.first?.contexts.forEach{ context in
-                                    if context.contextID == template.id {
-                                        template.translatedName = context.values?[template.name ?? ""] ?? ""
-                                        template.properties.forEach { property in
-                                            property.translatedLabel = context.values?[property.label ?? ""] ?? ""
-                                        }
-
-                                        template.commonProperties.forEach { property in
-                                            property.translatedLabel = context.values?[property.label ?? ""] ?? ""
-                                        }
-
-
-                                    } else {
-                                        template.properties.forEach { property in
-                                            property.values?.forEach { selectValue in
-                                                if context.contextID == property.content {
-                                                    selectValue.translatedLabel = context.values?[selectValue.label ?? ""] ?? selectValue.label
-                                                }
-                                                selectValue.values?.forEach { nestedSelectValue in
-                                                    if context.id == property.content {
-                                                        nestedSelectValue.translatedLabel = context.values?[nestedSelectValue.label ?? ""] ?? nestedSelectValue.label
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            print(resultTemplates)
-
-                            let originalTemplate = resultTemplates.map { template in
-                                return CollectedTemplate(serverId: server.id, templateId: template.id, serverName: server.name ?? "", username: server.username, entityRow: template, isDownloaded: 0, isFavorite: 0, isUpdated: 0 )
-                            }
-                            promise(.success(originalTemplate))
-                        }
-                }
-            }
-
-        }.eraseToAnyPublisher()
     }
     /// Return a collection of CollectedTemplate which is used to created after all the manpulation is done to prepare the template data for storage
     /// - Parameters:

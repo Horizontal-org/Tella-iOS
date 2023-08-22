@@ -639,8 +639,6 @@ extension TellaDataBase {
 }
 extension TellaDataBase: UwaziServerLanguageProtocol {
     // MARK: CRUD operation for Language table for Uwazi
-    // TODO: Add these thing to a new class and set a protocol decoupling the dependencies
-    // TODO: Move this fuctions to TellaData for abstraction if needed
     func createLanguageTableForUwazi() {
         let columns = [
             cddl(D.cLocaleId, D.integer, primaryKey: true, autoIncrement: true),

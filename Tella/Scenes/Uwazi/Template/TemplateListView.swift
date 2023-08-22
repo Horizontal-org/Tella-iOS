@@ -52,17 +52,19 @@ struct TemplateListView: View {
     }
     private func showDeleteReportConfirmationView(template: CollectedTemplate) {
         sheetManager.showBottomSheet(modalHeight: 200) {
-            DeleteReportConfirmationView(title: template.entityRow?.translatedName,
+            DeleteTemplateConfirmationView(title: template.entityRow?.translatedName,
                                          message: "Are you sure you want to delete this Template?") {
-                self.uwaziViewModel.deleteDownloadedTemplate(template: template)
+                if let templateId = template.id {
+                    self.uwaziViewModel.deleteDownloadedTemplate(templateId: templateId)
+                }
+
             }
         }
     }
 }
 
-//struct TemplateListView_Previews: PreviewProvider {
-//    @State static var templates: [UwaziTemplateRow] = []
-//    static var previews: some View {
-//        TemplateListView(templateArray: $templates, message: "", serverName: "")
-//    }
-//}
+struct TemplateListView_Previews: PreviewProvider {
+    static var previews: some View {
+        TemplateListView( message: "", serverName: "")
+    }
+}

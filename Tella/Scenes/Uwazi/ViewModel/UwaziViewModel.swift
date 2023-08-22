@@ -61,10 +61,9 @@ class UwaziReportsViewModel: ObservableObject {
 
     func getTemplates() {
         self.isLoading = true
-        do {
             Task {
                 guard let id = self.server.id else { return }
-                guard let locale = try self.mainAppModel.vaultManager.tellaData.database?.getUwaziLocaleWith(serverId: id) else { return }
+                guard let locale = try self.mainAppModel.vaultManager.tellaData.getUwaziLocaleWith(serverId: id) else { return }
                 let template = try await UwaziServerRepository().getTemplateNew(server: self.server, locale: locale)
                 template.receive(on: DispatchQueue.main).sink { completion in
                     switch completion {
@@ -87,9 +86,6 @@ class UwaziReportsViewModel: ObservableObject {
 
                 }.store(in: &subscribers)
             }
-        } catch {
-            self.isLoading = false
-        }
     }
     func getDownloadedTemplates() {
         do {
@@ -108,8 +104,10 @@ class UwaziReportsViewModel: ObservableObject {
             }
         } else if let type = item.type as? DownloadedTemplateActionType {
             if type == .delete {
-                self.deleteDownloadedTemplate(template: template)
-                completion()
+                if let templateId = template.id {
+                    self.deleteDownloadedTemplate(templateId: templateId)
+                    completion()
+                }
             }
         }
     }
@@ -134,9 +132,8 @@ class UwaziReportsViewModel: ObservableObject {
             if let savedTemplate = savedTemplateid,let templateId = template.templateId {
                 // To only save the template if it is not already saved Not necessary because the UI will not have a download button if it is already downloaded
                 if !savedTemplate.contains(templateId) {
-                    if let savedItem = try self.mainAppModel.vaultManager.tellaData.database?.addUwaziTemplateWith(template: template) {
-                        template = savedItem
-                    }
+                    let savedItem = try self.mainAppModel.vaultManager.tellaData.addUwaziTemplateWith(template: template)
+                    template = savedItem
                 }
             }
         } catch let error {
@@ -148,7 +145,7 @@ class UwaziReportsViewModel: ObservableObject {
     func deleteTemplate(template: inout CollectedTemplate) {
         do {
             if let templateId = template.templateId {
-                _ = try self.mainAppModel.vaultManager.tellaData.database?.deleteAllUwaziTemplateWith(templateId: templateId)
+                _ = try self.mainAppModel.vaultManager.tellaData.deleteAllUwaziTemplateWith(templateId: templateId)
                 template.isDownloaded = 0
             }
         } catch {
@@ -158,27 +155,22 @@ class UwaziReportsViewModel: ObservableObject {
     /// Get all the downloaded templates
     /// - Returns: Collection of CollectedTemplate object which are stored in the database
     func getAllDownloadedTemplate() throws -> [CollectedTemplate]? {
-        return try self.mainAppModel.vaultManager.tellaData.database?.getAllUwaziTemplate()
+        return try self.mainAppModel.vaultManager.tellaData.getAllUwaziTemplate()
     }
 
-    // TODO: Maybe just same the template id only rather than the whole object
     /// Delete the saved template from database using the template id of the template for downloaded template listing view
     /// - Parameter template: The template object which we need to delete
-    func deleteDownloadedTemplate(template: CollectedTemplate) {
+    func deleteDownloadedTemplate(templateId: Int) {
         do {
-            if let templateId = template.id {
-                _ = try self.mainAppModel.vaultManager.tellaData.database?.deleteAllUwaziTemplateWith(templateNo: templateId)
-                downloadedTemplates = downloadedTemplates.filter({$0.id != templateId})
-            }
+            _ = try self.mainAppModel.vaultManager.tellaData.deleteAllUwaziTemplateWith(templateNo: templateId)
+            downloadedTemplates = downloadedTemplates.filter({$0.id != templateId})
         } catch {
 
         }
     }
 
-    func downloadTemplate(template: CollectedTemplate) -> Void {
+    func downloadTemplate(template: inout CollectedTemplate) -> Void {
         isLoading = true
-        // TODO: Try to remove this
-        var template = template
         self.saveTemplate(template: &template)
         isLoading = false
         
