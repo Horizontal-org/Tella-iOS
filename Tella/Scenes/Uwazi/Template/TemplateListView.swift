@@ -22,8 +22,10 @@ struct TemplateListView: View {
                             .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                             .foregroundColor(.white.opacity(0.64))
                             .padding(.all, 14)
-                        ForEach($templateArray, id: \.self) { template in
-                            TemplateCardView(template: template, serverName: serverName)
+                        ForEach($uwaziViewModel.downloadedTemplates, id: \.self) { template in
+                            TemplateCardView(template: template, serverName: serverName) { template in
+                                self.showtemplateActionBottomSheet(template: template)
+                            }
                         }
                     }
                 }
