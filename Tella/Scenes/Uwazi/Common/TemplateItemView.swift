@@ -34,7 +34,7 @@ struct TemplateItemView: View {
                         if(!isDownloaded) {
                             MoreButtonView(imageName: "template.add", action: {
                                 //add template to download array
-                                downloadTemplate(template)
+                                downloadTemplate(&template)
                             })
                         } else {
                             MoreButtonView(imageName: "reports.more", action: {

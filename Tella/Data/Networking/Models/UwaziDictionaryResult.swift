@@ -9,7 +9,6 @@
 import Foundation
 
 struct UwaziDictionaryResult: Codable {
-    // TODO: Change this to a generic like for Codeable
     let rows: [UwaziDictionary]
 }
 
