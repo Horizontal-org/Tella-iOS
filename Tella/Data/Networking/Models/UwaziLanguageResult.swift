@@ -13,19 +13,16 @@ import Foundation
 struct UwaziLanguageResult: Codable {
     let rows: [UwaziLanguageRow]?
 }
-
 // MARK: - Row
 struct UwaziLanguageRow: Codable, Hashable {
 
-
-    let id, locale: String?
+    let id: String?
+    let locale: String?
     let contexts: [UwaziLanguageContext]?
-    let v: Int?
 
     enum CodingKeys: String, CodingKey {
         case id = "_id"
         case locale, contexts
-        case v = "__v"
     }
     static func == (lhs: UwaziLanguageRow, rhs: UwaziLanguageRow) -> Bool {
         lhs.id == rhs.id
