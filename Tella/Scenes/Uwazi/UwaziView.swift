@@ -29,12 +29,12 @@ struct UwaziView: View {
                             
                     VStack (spacing: 0) {
                         Spacer()
-                                    
                         switch uwaziReportsViewModel.selectedCell {
                         
                         case .templates:
-                            TemplateListView(templateArray: $uwaziReportsViewModel.downloadedTemplates,
+                            TemplateListView(
                                              message: "You don't have any downloaded templates", serverName: uwaziReportsViewModel.serverName)
+                            .environmentObject(uwaziReportsViewModel)
                         case .draft:
                             ReportListView(reportArray: $uwaziReportsViewModel.draftReports,
                                            message: LocalizableReport.reportsDraftEmpty.localized)
@@ -54,9 +54,9 @@ struct UwaziView: View {
                     
                     AddFileYellowButton(action: {
                         navigateTo(destination: AddTemplatesView(
-                            templates: $uwaziReportsViewModel.templates,
-                            downloadedTemplates: $uwaziReportsViewModel.downloadedTemplates,
-                            downloadTemplateAction: uwaziReportsViewModel.downloadTemplate
+                            downloadTemplateAction: uwaziReportsViewModel.downloadTemplate, deleteTemplateAction: {
+                                print($0)
+                            }
                         ).environmentObject(uwaziReportsViewModel))
                     })
                             
@@ -64,7 +64,7 @@ struct UwaziView: View {
                     .padding(EdgeInsets(top: 15, leading: 20, bottom: 16, trailing: 20))
             }
             .onAppear(perform: {
-                uwaziReportsViewModel.getTemplates()
+                //uwaziReportsViewModel.getTemplates()
             })
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: backButton)

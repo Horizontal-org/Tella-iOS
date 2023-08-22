@@ -27,16 +27,18 @@ class ServersViewModel: ObservableObject {
     
     func deleteServer() {
         guard let serverId = self.currentServer?.id else { return  }
-        
         do {
               try mainAppModel.vaultManager.tellaData.deleteServer(serverId: serverId)
+            if currentServer?.serverType == ServerConnectionType.uwazi.rawValue {
+                    try mainAppModel.vaultManager.tellaData.deleteUwaziLocaleWith(serverId: serverId)
+                }
         } catch {
         }
     }
     
     func deleteAllServersConnection() {
         do {
-            try mainAppModel.vaultManager.tellaData.deleteAllServers()
+            _ = try mainAppModel.vaultManager.tellaData.deleteAllServers()
         } catch {
         }
     }

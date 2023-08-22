@@ -8,10 +8,10 @@
 
 import Foundation
 
-struct UwaziTemplateResult: Codable {
-    let rows: [UwaziTemplateRow]?
-}
-
+//struct UwaziTemplateResult: Codable {
+//    let rows: [UwaziTemplateRow]?
+//}
+//
 struct UwaziTemplateRow: Codable, Hashable {
     let id, name: String?
     let properties: [UwaziTemplateProperty]?
@@ -19,7 +19,7 @@ struct UwaziTemplateRow: Codable, Hashable {
     let v: Int?
     let defaultVal: Bool?
     let color: String?
-    
+
     enum CodingKeys: String, CodingKey {
             case id = "_id"
             case name, properties, commonProperties

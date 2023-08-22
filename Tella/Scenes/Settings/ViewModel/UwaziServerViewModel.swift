@@ -78,9 +78,16 @@ class UwaziServerViewModel: ObservableObject {
         cancellableAuthenticationCode = $validCode.sink(receiveValue: { validCode in
             self.validAuthenticationCode = validCode
         })
-
         fillReportVM()
 
+    }
+
+    func handleServerAction() {
+        if currentServer != nil {
+            updateServer()
+        } else {
+            addServer()
+        }
     }
 
     func addServer() {
@@ -109,29 +116,47 @@ class UwaziServerViewModel: ObservableObject {
 
         }
     }
+    func updateServer() {
+        guard let currentServer = currentServer, let currentServerId = currentServer.id else { return }
+        let server = Server(id: currentServerId,
+            name: setting?.siteName,
+                            serverURL: serverURL.getBaseURL(),
+                            username: username,
+                            password: password,
+                            accessToken: self.token,
+                            activatedMetadata: activatedMetadata,
+                            backgroundUpload: backgroundUpload,
+                            projectId: setting?.id,
+                            slug: "",
+                            autoUpload: autoUpload,
+                            autoDelete: autoDelete)
+
+        do {
+            let id = try mainAppModel.vaultManager.tellaData.updateServer(server: server)
+            server.id = id
+            updateUwaziLocaleFor(serverId: currentServerId)
+        } catch {
+
+        }
+    }
 
     func addUwaziLocaleFor(serverId: Int) {
         do {
             guard let locale = self.selectedLanguage?.locale else { return }
-            _ = try mainAppModel.vaultManager.tellaData.database?.addUwaziLocaleWith(locale: UwaziLocale(locale: locale, serverId: serverId)) 
+            _ = try mainAppModel.vaultManager.tellaData.addUwaziLocaleWith(locale: UwaziLocale(locale: locale, serverId: serverId))
         } catch let error {
             print(error)
         }
     }
-
-    func updateServer() {
+    func updateUwaziLocaleFor(serverId: Int) {
         do {
-
-            guard let currentServer = self.currentServer else { return  }
-            currentServer.backgroundUpload = backgroundUpload
-            currentServer.activatedMetadata = activatedMetadata
-            currentServer.autoUpload = autoUpload
-            currentServer.autoDelete = autoDelete
-
-            _ = try mainAppModel.vaultManager.tellaData.updateServer(server: currentServer)
-
-        } catch {
-
+            let selectedlocale = try mainAppModel.vaultManager.tellaData.getUwaziLocaleWith(serverId: serverId)
+            guard let localeId = selectedlocale?.id, let locale = selectedLanguage?.locale else { return }
+            if selectedlocale?.locale != locale {
+                _ = try mainAppModel.vaultManager.tellaData.updateLocale(localeId: localeId, locale: locale)
+            }
+        } catch let error {
+            print(error)
         }
     }
 
@@ -147,8 +172,8 @@ class UwaziServerViewModel: ObservableObject {
 
                 case .finished:
                     print("Finished")
-                    // TODO: Handle this error
                 case .failure(let error):
+                    debugLog(error)
                     self.isLoading = false
                 }
 
@@ -156,6 +181,10 @@ class UwaziServerViewModel: ObservableObject {
                 print("Finished")
                 self.isLoading = false
                 self.languages.append(contentsOf: wrapper.rows ?? [])
+                if let server = self.currentServer, let id = server.id {
+                    let locale = try? self.mainAppModel.vaultManager.tellaData.getUwaziLocaleWith(serverId: id)
+                    self.selectedLanguage = self.languages.first(where: {$0.locale == locale?.locale})
+                }
                 self.showNextSuccessLoginView = true
             }).store(in: &subscribers)
     }
@@ -173,8 +202,8 @@ class UwaziServerViewModel: ObservableObject {
 
                 case .finished:
                     print("Finished")
-                    // TODO: handle this error
                 case .failure(let error):
+                    debugLog(error)
                     self.isPrivateInstance = true
                 }
 

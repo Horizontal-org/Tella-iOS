@@ -21,12 +21,11 @@ class HomeViewModel: ObservableObject {
     var showingFilesTitle: Bool {
         return (hasRecentFile && appModel.settings.showRecentFiles) || !serverDataItemArray.isEmpty
     }
-    
     init(appModel:MainAppModel) {
         self.appModel = appModel
         getServersList()
     }
-    
+
     func getServersList() {
             
             self.appModel.vaultManager.tellaData.servers.sink { result in
@@ -51,5 +50,12 @@ class HomeViewModel: ObservableObject {
         let recentFile = appModel.vaultManager.root.getRecentFile()
         hasRecentFile = recentFile.count > 0
         return recentFile
+    }
+}
+extension Collection {
+
+    /// Returns the element at the specified index if it exists, otherwise nil.
+    subscript (safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
     }
 }

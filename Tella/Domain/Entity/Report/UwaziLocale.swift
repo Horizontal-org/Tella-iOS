@@ -16,12 +16,12 @@ class UwaziLocale : Hashable, Codable {
 
     init(id: Int? = nil,
          locale: String? = nil,
-         serverId: Int? = nil
+         serverId: Int? = nil ,
+         title: Int? = nil
         ) {
         self.id = id
         self.locale = locale
         self.serverId = serverId
-
     }
     enum CodingKeys: String, CodingKey {
         case id = "c_locale_id"

@@ -70,10 +70,12 @@ struct UwaziAddServerURLView: View {
         }
         .navigationBarHidden(true)
         .onAppear {
-
 #if DEBUG
             serverViewModel.serverURL = "https://horizontal.uwazi.io"
 #endif
+            guard (serverViewModel.currentServer != nil) else { return }
+            serverViewModel.validURL = true
+
         }
         .onReceive(serverViewModel.$isPublicInstance) { value in
             if value {

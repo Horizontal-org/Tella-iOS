@@ -27,7 +27,7 @@ extension WebRepository {
         }
     }
     // TODO: Change the name
-    func callNew<Value>(endpoint: any APIRequest) -> AnyPublisher<(Value, HTTPURLResponse?), APIError>
+    func callReturnsHeaders<Value>(endpoint: any APIRequest) -> AnyPublisher<(Value, HTTPURLResponse?), APIError>
     where Value: Decodable {
         let subject = PassthroughSubject<(Value, HTTPURLResponse?), APIError>()
         do {
@@ -69,7 +69,7 @@ func requestJSON<Value>() -> AnyPublisher<Value, APIError> where Value: Decodabl
     return requestData()
         .decode(type: Value.self, decoder: JSONDecoder())
         .mapError{ error in
-            return error as! APIError
+            return APIError.unexpectedResponse
         }
         .eraseToAnyPublisher()
     }

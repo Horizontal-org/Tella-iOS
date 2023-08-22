@@ -85,11 +85,14 @@ struct UwaziLoginView: View {
             }
         })
         .onAppear {
-
+            if serverViewModel.currentServer != nil {
+                serverViewModel.validCredentials = true
+            } else {
 #if DEBUG
-            serverViewModel.username = "test-uwazi"
-            serverViewModel.password = "test-uwazi"
+                serverViewModel.username = "test-uwazi"
+                serverViewModel.password = "test-uwazi"
 #endif
+            }
         }
     }
 }
