@@ -280,9 +280,15 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_AllReportDeleted_Toast" =  "Your submitted reports have been cleared.";
 
 "Uwazi_AppBar" = "Uwazi";
+"Uwazi_Server_Edit_SheetAction" = "Edit";
+"Uwazi_Server_Delete_SheetAction" = "Delete";
+
 "Uwazi_PageViewItem_Template" = "Templates";
 "Uwazi_Template_TemplateList_Expl" = "These are uwazi templates you can fil out.";
 "Uwazi_Template_TemplateList_EmptyExpl" = "You don't have any downloaded templates";
+"Uwazi_Template_CreateEntity_SheetAction" = "Create an entity";
+"Uwazi_Template_Delete_SheetAction" = " Delete from this device";
+
 
 "Uwazi_Template_AddTemplate_Title" = "Add Templates";
 "Uwazi_Template_AddTemplate_Expl" = "These are the templates available on the Uwazi instances you are connected to. You can";

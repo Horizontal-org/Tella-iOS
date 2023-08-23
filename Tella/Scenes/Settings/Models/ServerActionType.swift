@@ -23,25 +23,25 @@ enum DownloadedTemplateActionType: ActionType {
 var serverActionItems : [ListActionSheetItem] { return [
     
     ListActionSheetItem(imageName: "edit-icon",
-                        content: "Edit",
+                        content: LocalizableUwazi.uwaziServerEdit.localized,
                         type: ServerActionType.edit),
     ListActionSheetItem(imageName: "delete-icon-white",
-                        content: "Delete",
+                        content: LocalizableUwazi.uwaziServerDelete.localized,
                         type: ServerActionType.delete)
 ]
 }
 var templateActionItems : [ListActionSheetItem] { return [
     ListActionSheetItem(imageName: "delete-icon-white",
-                        content: "Delete from this device",
+                        content: LocalizableUwazi.uwaziDeleteEntitySheetExpl.localized,
                         type: TemplateActionType.delete)
     ]
 }
 var downloadTemplateActionItems : [ListActionSheetItem] { return [
     ListActionSheetItem(imageName: "edit-icon",
-                        content: "Create an entity",
+                        content: LocalizableUwazi.uwaziCreateEntitySheetExpl.localized,
                         type: DownloadedTemplateActionType.createEntity),
     ListActionSheetItem(imageName: "delete-icon-white",
-                        content: "Delete from this device",
+                        content: LocalizableUwazi.uwaziDeleteEntitySheetExpl.localized,
                         type: DownloadedTemplateActionType.delete)
 ]
 }
