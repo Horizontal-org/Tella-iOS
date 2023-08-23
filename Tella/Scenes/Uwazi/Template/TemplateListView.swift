@@ -18,7 +18,7 @@ struct TemplateListView: View {
             if $templateArray.wrappedValue.count > 0 {
                 ScrollView {
                     VStack(alignment: .center, spacing: 0) {
-                        Text("These are uwazi templates you can fil out.")
+                        Text(LocalizableUwazi.uwaziTemplateListExpl.localized)
                             .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                             .foregroundColor(.white.opacity(0.64))
                             .padding(.all, 14)
