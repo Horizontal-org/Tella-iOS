@@ -195,24 +195,24 @@ class TellaData : ObservableObject {
     }
 }
 extension TellaData {
-    func getUwaziLocaleWith(serverId: Int) throws -> UwaziLocale? {
+    func getUwaziLocale(serverId: Int) throws -> UwaziLocale? {
         guard let database = database else {
             throw SqliteError()
         }
-        return try database.getUwaziLocaleWith(serverId: serverId)
+        return try database.getUwaziLocale(serverId: serverId)
     }
-    func deleteUwaziLocaleWith(serverId : Int) throws {
+    func deleteUwaziLocale(serverId : Int) throws {
         guard let database = database else {
             throw SqliteError()
         }
-        return try database.deleteUwaziLocaleWith(serverId: serverId)
+        return try database.deleteUwaziLocale(serverId: serverId)
     }
 
-    func addUwaziLocaleWith(locale: UwaziLocale) throws -> Int {
+    func addUwaziLocale(locale: UwaziLocale) throws -> Int {
         guard let database = database else {
             throw SqliteError()
         }
-        return try database.addUwaziLocaleWith(locale: locale)
+        return try database.addUwaziLocale(locale: locale)
     }
     func updateLocale(localeId: Int, locale: String) throws -> Int {
         guard let database = database else {
@@ -222,18 +222,18 @@ extension TellaData {
     }
 }
 extension TellaData {
-    func addUwaziTemplateWith(template: CollectedTemplate) throws -> CollectedTemplate {
+    func addUwaziTemplate(template: CollectedTemplate) throws -> CollectedTemplate {
         guard let database = database else {
             throw SqliteError()
         }
-        return try database.addUwaziTemplateWith(template: template)
+        return try database.addUwaziTemplate(template: template)
     }
 
-    func deleteAllUwaziTemplateWith(templateId: String) throws {
+    func deleteAllUwaziTemplate(templateId: String) throws {
         guard let database = database else {
             throw SqliteError()
         }
-        return try database.deleteAllUwaziTemplateWith(templateId: templateId)
+        return try database.deleteUwaziTemplate(templateId: templateId)
     }
     func getAllUwaziTemplate() throws -> [CollectedTemplate] {
         guard let database = database else {
@@ -241,10 +241,10 @@ extension TellaData {
         }
         return try database.getAllUwaziTemplate()
     }
-    func deleteAllUwaziTemplateWith(templateNo: Int) throws {
+    func deleteAllUwaziTemplate(id: Int) throws {
         guard let database = database else {
             throw SqliteError()
         }
-        return try database.deleteAllUwaziTemplateWith(templateNo: templateNo)
+        return try database.deleteUwaziTemplate(id: id)
     }
 }

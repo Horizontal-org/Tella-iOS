@@ -10,21 +10,21 @@ import SQLCipher
 
 protocol UwaziServerLanguageProtocol {
     func createLanguageTableForUwazi()
-    func addUwaziLocaleWith(locale: UwaziLocale) throws -> Int
-    func getUwaziLocaleWith(serverId: Int) throws -> UwaziLocale?
+    func addUwaziLocale(locale: UwaziLocale) throws -> Int
+    func getUwaziLocale(serverId: Int) throws -> UwaziLocale?
     func getAllUwaziLocale() throws -> [UwaziLocale]
-    func deleteUwaziLocaleWith(serverId : Int) throws
+    func deleteUwaziLocale(serverId : Int) throws
     func deleteAllUwaziLocale() throws -> Int
 }
 protocol UwaziTemplateProtocol {
     func createTemplateTableForUwazi()
-    func getUwaziTemplateeWith(serverId: Int) throws -> CollectedTemplate?
-    func getUwaziTemplateeWith(templateId: Int) throws -> CollectedTemplate?
+    func getUwaziTemplate(serverId: Int) throws -> CollectedTemplate?
+    func getUwaziTemplate(templateId: Int) throws -> CollectedTemplate?
     func getAllUwaziTemplate() throws -> [CollectedTemplate]
-    func addUwaziTemplateWith(template: CollectedTemplate) throws -> CollectedTemplate
+    func addUwaziTemplate(template: CollectedTemplate) throws -> CollectedTemplate
     func deleteAllUwaziTemplate() throws -> Int
-    func deleteAllUwaziTemplateWith(templateId: String) throws
-    func deleteAllUwaziTemplateWith(templateNo: Int) throws
+    func deleteUwaziTemplate(templateId: String) throws
+    func deleteUwaziTemplate(id: Int) throws
 }
 
 class TellaDataBase {
@@ -649,7 +649,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
     }
 
 
-    func addUwaziLocaleWith(locale: UwaziLocale) throws -> Int {
+    func addUwaziLocale(locale: UwaziLocale) throws -> Int {
         return try statementBuilder.insertInto(tableName: D.tUwaziServerLanguage, keyValue: [
             KeyValue(key: D.cLocale, value: locale.locale),
             KeyValue(key: D.cServerId, value: locale.serverId),
@@ -666,7 +666,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
                                            primarykeyValue: serverCondition)
     }
 
-    func getUwaziLocaleWith(serverId: Int) throws -> UwaziLocale? {
+    func getUwaziLocale(serverId: Int) throws -> UwaziLocale? {
         let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziServerLanguage,
                                                            andCondition: [KeyValue(key: D.cServerId, value: serverId)])
         guard let locale = serversDict.first else { return nil }
@@ -681,7 +681,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
         return []
     }
 
-    func deleteUwaziLocaleWith(serverId : Int) throws {
+    func deleteUwaziLocale(serverId : Int) throws {
         statementBuilder.delete(tableName: D.tUwaziServerLanguage,
                                 primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
     }
@@ -705,13 +705,13 @@ extension TellaDataBase: UwaziTemplateProtocol {
         ]
         statementBuilder.createTable(tableName: D.tUwaziTemplate, columns: columns)
     }
-    func getUwaziTemplateeWith(serverId: Int) throws -> CollectedTemplate? {
+    func getUwaziTemplate(serverId: Int) throws -> CollectedTemplate? {
         let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziTemplate,
                                                            andCondition: [KeyValue(key: D.cServerId, value: serverId)])
         guard let locale = serversDict.first else { return nil }
         return try self.parseDicToObjectOf(type: CollectedTemplate.self, dic: locale)
     }
-    func getUwaziTemplateeWith(templateId: Int) throws -> CollectedTemplate? {
+    func getUwaziTemplate(templateId: Int) throws -> CollectedTemplate? {
         let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziTemplate,
                                                            andCondition: [KeyValue(key: D.cTemplateId, value: templateId)])
         guard let locale = serversDict.first else { return nil }
@@ -725,7 +725,7 @@ extension TellaDataBase: UwaziTemplateProtocol {
         }
         return []
     }
-    func addUwaziTemplateWith(template: CollectedTemplate) throws -> CollectedTemplate {
+    func addUwaziTemplate(template: CollectedTemplate) throws -> CollectedTemplate {
         let id = try statementBuilder.insertInto(tableName: D.tUwaziTemplate, keyValue: [
             KeyValue(key: D.cTemplateId, value: template.templateId),
             KeyValue(key: D.cTemplateDownloaded, value: 1),
@@ -743,13 +743,13 @@ extension TellaDataBase: UwaziTemplateProtocol {
     func deleteAllUwaziTemplate() throws -> Int {
         return try statementBuilder.deleteAll(tableNames: [D.tUwaziTemplate])
     }
-    func deleteAllUwaziTemplateWith(templateId: String) throws {
+    func deleteUwaziTemplate(templateId: String) throws {
         statementBuilder.delete(tableName: D.tUwaziTemplate,
                                 primarykeyValue: [KeyValue(key: D.cTemplateId, value: templateId)])
     }
-    func deleteAllUwaziTemplateWith(templateNo: Int) throws {
+    func deleteUwaziTemplate(id: Int) throws {
         statementBuilder.delete(tableName: D.tUwaziTemplate,
-                                primarykeyValue: [KeyValue(key: D.cId, value: templateNo)])
+                                primarykeyValue: [KeyValue(key: D.cId, value: id)])
     }
 }
 
