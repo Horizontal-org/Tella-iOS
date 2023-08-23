@@ -13,9 +13,9 @@ class DataBaseHelper {
     
     var dbPointer: OpaquePointer?
     
-    func openDatabases(key: String?) {
+    func openDatabases(key: String?, databaseName: String) {
         
-        dbURL =  FileManager.documentDirectory(withPath: D.databaseName)
+        dbURL =  FileManager.documentDirectory(withPath:databaseName)
         
         guard let key = key else { return }
         

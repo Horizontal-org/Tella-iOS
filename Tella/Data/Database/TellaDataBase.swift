@@ -7,15 +7,15 @@ import Foundation
 import SQLite3
 import SQLCipher
 
-class TellaDataBase {
+class TellaDataBase : DataBase {
     
-    var dataBaseHelper : DataBaseHelper
-    var statementBuilder : SQLiteStatementBuilder
+    internal var dataBaseHelper : DataBaseHelper
+    internal var statementBuilder : SQLiteStatementBuilder
     
     init(key: String?) {
         
         dataBaseHelper = DataBaseHelper()
-        dataBaseHelper.openDatabases(key: key)
+        dataBaseHelper.openDatabases(key: key, databaseName:D.databaseName)
         statementBuilder = SQLiteStatementBuilder(dbPointer: dataBaseHelper.dbPointer)
         checkVersions()
     }

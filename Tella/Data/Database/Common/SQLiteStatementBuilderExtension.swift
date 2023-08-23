@@ -116,10 +116,14 @@ extension SQLiteStatementBuilder  {
             flag = self.bind(insertStatement: insertStatement, value.datatypeValue, atIndex: idx)
         } else if let value = value as? Bool {
             flag = self.bind(insertStatement: insertStatement, value.datatypeValue, atIndex: idx)
+        } else if let value = value as? Data {
+            value.withUnsafeBytes { buffer in
+                let ptr = buffer.baseAddress!
+                flag = sqlite3_bind_blob(insertStatement, Int32(idx), ptr, -1, SQLITE_TRANSIENT)
+             }
         } else if let _ = value {
             return 0
         }
-        
         return flag
     }
     

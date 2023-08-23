@@ -6,7 +6,7 @@
 import Foundation
 import SQLite3
 
-extension TellaDataBase {
+extension DataBase {
 
     func cddl(_ columnName: String, _ columnType: String,  primaryKey : Bool ,  autoIncrement : Bool) -> String {
         return columnName + " " + columnType + (primaryKey ?  " PRIMARY KEY "  : "") +  (autoIncrement ? " AUTOINCREMENT " : "");
@@ -49,4 +49,9 @@ extension TellaDataBase {
     }
     
     
+    func parseDicToObjectOf<T:Codable>(type: T.Type, dic: Any) throws -> T {
+        let data = try JSONSerialization.data(withJSONObject: dic)
+        let decodedValues = try JSONDecoder().decode(T.self, from: data)
+        return decodedValues
+    }
 }

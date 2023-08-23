@@ -137,6 +137,12 @@
 		12568002271790AF00A2D356 /* LockPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12568001271790AF00A2D356 /* LockPinView.swift */; };
 		1256A33929490A7A00FE2B5C /* FileInfos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256A33829490A7A00FE2B5C /* FileInfos.swift */; };
 		125A0AEF2726F0A000F6E77F /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A0AEE2726F0A000F6E77F /* ContainerView.swift */; };
+		125A89542A94C0F1009347C3 /* VaultFileDatabaseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A89532A94C0F1009347C3 /* VaultFileDatabaseConstants.swift */; };
+		125A89562A94D7AB009347C3 /* VaultDataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A89552A94D7AB009347C3 /* VaultDataBase.swift */; };
+		125A89582A965BA4009347C3 /* VaultFileDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A89572A965BA4009347C3 /* VaultFileDB.swift */; };
+		125A895B2A965BED009347C3 /* FilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A895A2A965BED009347C3 /* FilterType.swift */; };
+		125A895D2A965C00009347C3 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A895C2A965C00009347C3 /* Sort.swift */; };
+		125A895F2A965C33009347C3 /* VaultFileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A895E2A965C33009347C3 /* VaultFileType.swift */; };
 		125A9E0028CE52C700C0C3C8 /* TellaDataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A9DFF28CE52C700C0C3C8 /* TellaDataBase.swift */; };
 		125AAD3129534259002194D6 /* UploadProgressInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD3029534259002194D6 /* UploadProgressInfo.swift */; };
 		125AAD34295348EC002194D6 /* UploadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD33295348EC002194D6 /* UploadService.swift */; };
@@ -504,6 +510,12 @@
 		12568001271790AF00A2D356 /* LockPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPinView.swift; sourceTree = "<group>"; };
 		1256A33829490A7A00FE2B5C /* FileInfos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInfos.swift; sourceTree = "<group>"; };
 		125A0AEE2726F0A000F6E77F /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
+		125A89532A94C0F1009347C3 /* VaultFileDatabaseConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileDatabaseConstants.swift; sourceTree = "<group>"; };
+		125A89552A94D7AB009347C3 /* VaultDataBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultDataBase.swift; sourceTree = "<group>"; };
+		125A89572A965BA4009347C3 /* VaultFileDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileDB.swift; sourceTree = "<group>"; };
+		125A895A2A965BED009347C3 /* FilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterType.swift; sourceTree = "<group>"; };
+		125A895C2A965C00009347C3 /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
+		125A895E2A965C33009347C3 /* VaultFileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileType.swift; sourceTree = "<group>"; };
 		125A9DFF28CE52C700C0C3C8 /* TellaDataBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaDataBase.swift; sourceTree = "<group>"; };
 		125AAD3029534259002194D6 /* UploadProgressInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProgressInfo.swift; sourceTree = "<group>"; };
 		125AAD33295348EC002194D6 /* UploadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadService.swift; sourceTree = "<group>"; };
@@ -846,6 +858,7 @@
 			children = (
 				12351C1B28D220BA00F3CB7C /* TellaData.swift */,
 				125A9DFF28CE52C700C0C3C8 /* TellaDataBase.swift */,
+				125A89602A965CEF009347C3 /* Vault */,
 				1203CDE62991682800D09073 /* Common */,
 			);
 			path = Database;
@@ -1076,6 +1089,7 @@
 				0DC267A5267AED7C00E55AFA /* VaultFile.swift */,
 				128FD0B327F774FB00B24915 /* RecentFile.swift */,
 				12751EA92A13A22100FAD7C6 /* SettingsModel.swift */,
+				125A89592A965BE0009347C3 /* Vault */,
 			);
 			path = Report;
 			sourceTree = "<group>";
@@ -1129,6 +1143,26 @@
 				CC0797BD2A8D46CB00AAE63F /* UnlockView.swift */,
 			);
 			path = Unlock;
+			sourceTree = "<group>";
+		};
+		125A89592A965BE0009347C3 /* Vault */ = {
+			isa = PBXGroup;
+			children = (
+				125A89572A965BA4009347C3 /* VaultFileDB.swift */,
+				125A895A2A965BED009347C3 /* FilterType.swift */,
+				125A895C2A965C00009347C3 /* Sort.swift */,
+				125A895E2A965C33009347C3 /* VaultFileType.swift */,
+			);
+			path = Vault;
+			sourceTree = "<group>";
+		};
+		125A89602A965CEF009347C3 /* Vault */ = {
+			isa = PBXGroup;
+			children = (
+				125A89552A94D7AB009347C3 /* VaultDataBase.swift */,
+				125A89532A94C0F1009347C3 /* VaultFileDatabaseConstants.swift */,
+			);
+			path = Vault;
 			sourceTree = "<group>";
 		};
 		125AAD32295348D2002194D6 /* Upload */ = {
@@ -2176,6 +2210,7 @@
 				D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */,
 				121BAB7F29A7E30600D7E847 /* URLRequestExtension.swift in Sources */,
 				124190442A42F3A700E177F3 /* SQLStatementBuilder.swift in Sources */,
+				125A89542A94C0F1009347C3 /* VaultFileDatabaseConstants.swift in Sources */,
 				1217FCA128F9946A00DD2D70 /* CircularActivityIndicatory.swift in Sources */,
 				12B6481D28367C1D00CBE541 /* SheetManager.swift in Sources */,
 				D5DA7F982646220100B00FDA /* FileGroupButtonView.swift in Sources */,
@@ -2204,6 +2239,7 @@
 				12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */,
 				12568002271790AF00A2D356 /* LockPinView.swift in Sources */,
 				1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */,
+				125A89562A94D7AB009347C3 /* VaultDataBase.swift in Sources */,
 				12A148942720A89E00A1ADDC /* BottomLockView.swift in Sources */,
 				1236645128FFF23000FA839B /* ReportsViewModel.swift in Sources */,
 				1233007A28E3115500B8F7BA /* Request.swift in Sources */,
@@ -2269,6 +2305,7 @@
 				1237A71A278F18C000D7BC0F /* WebView.swift in Sources */,
 				1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */,
 				12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */,
+				125A895F2A965C33009347C3 /* VaultFileType.swift in Sources */,
 				123AE5A129CFAD7F00814CC7 /* OutboxReportVM.swift in Sources */,
 				12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */,
 				D572EAC7263A383900CE191A /* RecentFileCell.swift in Sources */,
@@ -2280,6 +2317,7 @@
 				1216123E28DE142D00E6D7B6 /* JoinItem.swift in Sources */,
 				124190462A43230000E177F3 /* SQLiteStatementBuilderExtension.swift in Sources */,
 				12EC94D828ABCCED0070E72B /* SettingsItemView.swift in Sources */,
+				125A89582A965BA4009347C3 /* VaultFileDB.swift in Sources */,
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,
 				128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */,
@@ -2355,6 +2393,7 @@
 				12751EAA2A13A22100FAD7C6 /* SettingsModel.swift in Sources */,
 				1203CDDE298D7C1300D09073 /* FileToUpload.swift in Sources */,
 				1227FC912922BE24002FD6FB /* CameraPreview.swift in Sources */,
+				125A895B2A965BED009347C3 /* FilterType.swift in Sources */,
 				121AD8262943D52B0056AC2A /* SubmitReportResult.swift in Sources */,
 				1203CDE02991429200D09073 /* FileStatus.swift in Sources */,
 				120451FC28C795DC00D572A7 /* EditServerDisplayItemView.swift in Sources */,
@@ -2380,6 +2419,7 @@
 				1203CDE129914FA300D09073 /* Value.swift in Sources */,
 				12D7D11F28E36123008121C8 /* ServerRepository.swift in Sources */,
 				D7CFC37F254260D300CCB352 /* RecordView.swift in Sources */,
+				125A895D2A965C00009347C3 /* Sort.swift in Sources */,
 				D7F55FC825348FA50028739E /* RecordState.swift in Sources */,
 				12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */,
 				0ECC781B267A542300A2ACF2 /* Pages.swift in Sources */,
