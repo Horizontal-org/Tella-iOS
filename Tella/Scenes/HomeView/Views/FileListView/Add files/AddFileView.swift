@@ -28,7 +28,8 @@ struct AddFileView: View {
             
             PhotoVideoPickerView(showingImagePicker: $fileListViewModel.showingImagePicker,
                                  showingImportDocumentPicker: $fileListViewModel.showingImportDocumentPicker,
-                                 appModel: appModel)
+                                 appModel: appModel,
+                                 rootFile: $fileListViewModel.rootFile)
         }
         .overlay(fileListViewModel.showingCamera ?
                  CameraView(sourceView: .addFile,
