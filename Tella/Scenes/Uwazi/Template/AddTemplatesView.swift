@@ -100,8 +100,4 @@ struct AddTemplatesView: View {
         }
     }
 }
-//struct AddTemplatesView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AddTemplatesView()
-//    }
-//}
+

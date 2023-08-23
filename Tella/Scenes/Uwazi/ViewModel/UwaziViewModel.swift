@@ -28,7 +28,7 @@ class UwaziReportsViewModel: ObservableObject {
     ]
     
     @Published var isLoading: Bool = false
-    @Published var serverURL : String = "https://"
+    @Published var serverURL : String
     @Published var serverName : String
     
     var subscribers = Set<AnyCancellable>()
