@@ -18,7 +18,7 @@ struct TemplateListView: View {
         ZStack {
             if uwaziViewModel.downloadedTemplates.count > 0 {
                     VStack(alignment: .center, spacing: 0) {
-                        Text("These are uwazi templates you can fil out.")
+                        Text(LocalizableUwazi.uwaziTemplateListExpl.localized)
                             .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                             .foregroundColor(.white.opacity(0.64))
                             .padding(.all, 14)
@@ -53,7 +53,7 @@ struct TemplateListView: View {
     private func showDeleteReportConfirmationView(template: CollectedTemplate) {
         sheetManager.showBottomSheet(modalHeight: 200) {
             DeleteTemplateConfirmationView(title: template.entityRow?.translatedName,
-                                         message: "Are you sure you want to delete this Template?") {
+                                         message: LocalizableUwazi.uwaziDeleteTemplateExpl.localized) {
                 if let templateId = template.id {
                     self.uwaziViewModel.deleteDownloadedTemplate(templateId: templateId)
                 }

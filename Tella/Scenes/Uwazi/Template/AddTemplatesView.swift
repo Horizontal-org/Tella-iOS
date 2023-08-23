@@ -19,9 +19,9 @@ struct AddTemplatesView: View {
             ZStack {
                 VStack {
                     Group {
-                        Text("These are the templates available on the Uwazi instances you are connected to. You can")
+                        Text(LocalizableUwazi.uwaziAddTemplateExpl.localized)
                             .foregroundColor(.white) +
-                        Text(" manage your Uwazi instances here.")
+                        Text(LocalizableUwazi.uwaziAddTemplateSecondExpl.localized)
                             .foregroundColor(Styles.Colors.yellow)
                     }
                         .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
@@ -41,7 +41,7 @@ struct AddTemplatesView: View {
                                                 serverName: uwaziReportsViewModel.serverName,
                                                 isDownloaded: template.isDownloaded == 1 ? true : false,
                                                 downloadTemplate: { template in
-                                                    Toast.displayToast(message: "“\(template.entityRow?.translatedName ?? "")” successfully added to your Uwazi templates.")
+                                                    Toast.displayToast(message: "“\(template.entityRow?.translatedName ?? "")” “\(LocalizableUwazi.uwaziAddTemplateSavedToast.localized)”")
                                                     self.downloadTemplateAction(&template)
                                                 }) { template in
                                                     showServerActionBottomSheet(template: template)
@@ -58,7 +58,7 @@ struct AddTemplatesView: View {
                                     .padding(.top, 0)
                                 }
                             } else {
-                                EmptyReportView(message: "There are no templates")
+                                EmptyReportView(message: LocalizableUwazi.uwaziAddTemplateEmptydExpl.localized)
                             }
                         }
                     Spacer()
@@ -74,7 +74,7 @@ struct AddTemplatesView: View {
         .navigationBarTitle("", displayMode: .inline)
         
         .toolbar {
-            LeadingTitleToolbar(title: "Add templates")
+            LeadingTitleToolbar(title: LocalizableUwazi.uwaziAddTemplateTitle.localized)
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     self.uwaziReportsViewModel.getTemplates()

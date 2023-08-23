@@ -21,7 +21,7 @@ class UwaziReportsViewModel: ObservableObject {
     @Published var selectedReport : Report?
     @Published var selectedCell = Pages.templates
     @Published var pageViewItems : [PageViewItem] = [
-        PageViewItem(title: "Templates", page: .templates, number: ""),
+        PageViewItem(title: LocalizableUwazi.uwaziPageViewTemplate.localized, page: .templates, number: ""),
         PageViewItem(title: LocalizableReport.draftTitle.localized, page: .draft, number: "") ,
         PageViewItem(title: LocalizableReport.outboxTitle.localized, page: .outbox, number: ""),
         PageViewItem(title: LocalizableReport.submittedTitle.localized, page: .submitted, number: "")

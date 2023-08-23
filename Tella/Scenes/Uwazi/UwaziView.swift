@@ -15,7 +15,7 @@ struct UwaziView: View {
     
     var body: some View {
         contentView
-            .navigationBarTitle("Uwazi", displayMode: .large)
+            .navigationBarTitle(LocalizableUwazi.uwaziTitle.localized, displayMode: .large)
             .environmentObject(uwaziReportsViewModel)
     }
     
@@ -33,7 +33,7 @@ struct UwaziView: View {
                         
                         case .templates:
                             TemplateListView(
-                                             message: "You don't have any downloaded templates", serverName: uwaziReportsViewModel.serverName)
+                                             message: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized, serverName: uwaziReportsViewModel.serverName)
                             .environmentObject(uwaziReportsViewModel)
                         case .draft:
                             ReportListView(reportArray: $uwaziReportsViewModel.draftReports,
