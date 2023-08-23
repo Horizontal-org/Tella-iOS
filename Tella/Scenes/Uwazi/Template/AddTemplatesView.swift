@@ -21,6 +21,7 @@ struct AddTemplatesView: View {
                     Group {
                         Text(LocalizableUwazi.uwaziAddTemplateExpl.localized)
                             .foregroundColor(.white) +
+                        Text(" ") +
                         Text(LocalizableUwazi.uwaziAddTemplateSecondExpl.localized)
                             .foregroundColor(Styles.Colors.yellow)
                     }
