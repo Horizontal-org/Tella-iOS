@@ -41,8 +41,10 @@ struct PhotoVideoPickerView: View {
             .sheet(isPresented:  showingImagePicker, content: {
                 ImagePickerSheet { imagePickerCompletion in
                     self.showingImagePicker.wrappedValue = false
-                    showProgressView()
-                    viewModel.handleAddingFile(imagePickerCompletion)
+                    if imagePickerCompletion != nil {
+                        showProgressView()
+                        viewModel.handleAddingFile(imagePickerCompletion)
+                    }
                 }
             })
     }

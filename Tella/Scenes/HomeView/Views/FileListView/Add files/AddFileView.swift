@@ -92,6 +92,7 @@ struct AddFileView: View {
             default:
                 fileListViewModel.showingImportDocumentPicker = true
             }
+            sheetManager.hide()
         }
         sheetManager.showBottomSheet(modalHeight: 300, content: {
             sheetContent
