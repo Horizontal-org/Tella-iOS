@@ -46,6 +46,9 @@ struct TemplateListView: View {
                 let type = item.type as? DownloadedTemplateActionType
                 if type == .delete {
                     showDeleteReportConfirmationView(template: template)
+                } else {
+                    navigateTo(destination: CreateEntityView(template: template).environmentObject(sheetManager))
+                    sheetManager.hide()
                 }
             })
         }

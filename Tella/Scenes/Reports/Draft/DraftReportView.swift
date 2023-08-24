@@ -56,34 +56,14 @@ struct DraftReportView: View {
     }
     
     var draftReportHeaderView: some View {
+
         
-        HStack(spacing: 0) {
-            
-            Button {
-                UIApplication.shared.endEditing()
-                showSaveReportConfirmationView()
-            } label: {
-                Image("close")
-                    .padding(EdgeInsets(top: 10, leading: 12, bottom: 5, trailing: 16))
-            }
-            
-            Text(LocalizableReport.reportsText.localized)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-                .foregroundColor(Color.white)
-            
-            Spacer()
-            
-            
-            Button {
-                saveDraftReport()
-            } label: {
-                Image("reports.save")
-                    .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
-                    .opacity(reportViewModel.reportIsDraft ? 1 : 0.4)
-            }.disabled(!reportViewModel.reportIsDraft)
-            
-            
-        }.frame(height: 56)
+        CreateDraftHeaderView(title: LocalizableReport.reportsText.localized,
+                              isDraft: reportViewModel.reportIsDraft,
+                              closeAction: {
+                                UIApplication.shared.endEditing()
+                                showSaveReportConfirmationView()
+        }, saveAction: {saveDraftReport()})
     }
     
     var draftContentView: some View {
