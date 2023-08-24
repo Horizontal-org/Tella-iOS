@@ -297,6 +297,7 @@
 		CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */; };
 		CCAEA04E2A97C948008190E0 /* CreateEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAEA04D2A97C948008190E0 /* CreateEntityView.swift */; };
 		CCAEA0522A97E038008190E0 /* CreateDraftHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAEA0512A97E038008190E0 /* CreateDraftHeaderView.swift */; };
+		CCAEA0552A97EF72008190E0 /* UwaziConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAEA0542A97EF72008190E0 /* UwaziConstants.swift */; };
 		CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */; };
 		CCD586C22A7AB28200014F87 /* TemplateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586C12A7AB28200014F87 /* TemplateListView.swift */; };
 		CCD586C72A7ABDE800014F87 /* TemplateCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586C62A7ABDE800014F87 /* TemplateCardView.swift */; };
@@ -693,6 +694,7 @@
 		CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationBottomSheet.swift; sourceTree = "<group>"; };
 		CCAEA04D2A97C948008190E0 /* CreateEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEntityView.swift; sourceTree = "<group>"; };
 		CCAEA0512A97E038008190E0 /* CreateDraftHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDraftHeaderView.swift; sourceTree = "<group>"; };
+		CCAEA0542A97EF72008190E0 /* UwaziConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziConstants.swift; sourceTree = "<group>"; };
 		CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCheckboxItem.swift; sourceTree = "<group>"; };
 		CCD586BC2A798E8D00014F87 /* UwaziTemplateResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTemplateResults.swift; sourceTree = "<group>"; };
 		CCD586C12A7AB28200014F87 /* TemplateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateListView.swift; sourceTree = "<group>"; };
@@ -1797,6 +1799,7 @@
 		CC43D9DF2A72F7FB0030192E /* Uwazi */ = {
 			isa = PBXGroup;
 			children = (
+				CCAEA0532A97EF01008190E0 /* Models */,
 				CCAEA04C2A97C939008190E0 /* Entity */,
 				E10412112A9474D9003DCE6A /* Views */,
 				CCD586D22A7C0EFA00014F87 /* Common */,
@@ -1813,6 +1816,14 @@
 				CCAEA04D2A97C948008190E0 /* CreateEntityView.swift */,
 			);
 			path = Entity;
+			sourceTree = "<group>";
+		};
+		CCAEA0532A97EF01008190E0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CCAEA0542A97EF72008190E0 /* UwaziConstants.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		CCD586BE2A7AB0E300014F87 /* Template */ = {
@@ -2396,6 +2407,7 @@
 				12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */,
 				12568002271790AF00A2D356 /* LockPinView.swift in Sources */,
 				1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */,
+				CCAEA0552A97EF72008190E0 /* UwaziConstants.swift in Sources */,
 				12A148942720A89E00A1ADDC /* BottomLockView.swift in Sources */,
 				1236645128FFF23000FA839B /* ReportsViewModel.swift in Sources */,
 				1233007A28E3115500B8F7BA /* Request.swift in Sources */,
