@@ -300,6 +300,8 @@
 		CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */; };
 		CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */; };
 		CCAE3A682AC217EC00A38C6D /* UwaziViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAE3A672AC217EC00A38C6D /* UwaziViewModel.swift */; };
+		CCAEA04E2A97C948008190E0 /* CreateEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAEA04D2A97C948008190E0 /* CreateEntityView.swift */; };
+		CCAEA0522A97E038008190E0 /* CreateDraftHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAEA0512A97E038008190E0 /* CreateDraftHeaderView.swift */; };
 		CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */; };
 		CCBEE0482A8E9B780067884E /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBEE0472A8E9B780067884E /* TextView.swift */; };
 		CCD586C22A7AB28200014F87 /* TemplateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586C12A7AB28200014F87 /* TemplateListView.swift */; };
@@ -728,6 +730,8 @@
 		CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableReport.swift; sourceTree = "<group>"; };
 		CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationBottomSheet.swift; sourceTree = "<group>"; };
 		CCAE3A672AC217EC00A38C6D /* UwaziViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziViewModel.swift; sourceTree = "<group>"; };
+		CCAEA04D2A97C948008190E0 /* CreateEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEntityView.swift; sourceTree = "<group>"; };
+		CCAEA0512A97E038008190E0 /* CreateDraftHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDraftHeaderView.swift; sourceTree = "<group>"; };
 		CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCheckboxItem.swift; sourceTree = "<group>"; };
 		CCBEE0472A8E9B780067884E /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		CCD586BC2A798E8D00014F87 /* UwaziTemplateResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTemplateResults.swift; sourceTree = "<group>"; };
@@ -942,6 +946,7 @@
 			isa = PBXGroup;
 			children = (
 				0E998552266E57FC0019FDF4 /* HeaderView.swift */,
+				CCAEA0512A97E038008190E0 /* CreateDraftHeaderView.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -1878,11 +1883,20 @@
 			isa = PBXGroup;
 			children = (
 				CCF47F422ABE18B4000ABBBC /* Models */,
+				CCAEA04C2A97C939008190E0 /* Entity */,
 				E10412112A9474D9003DCE6A /* Views */,
 				CC387D5A2A7857C900853F2E /* ViewModel */,
 				CC43D9E02A72F8260030192E /* UwaziView.swift */,
 			);
 			path = Uwazi;
+			sourceTree = "<group>";
+		};
+		CCAEA04C2A97C939008190E0 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				CCAEA04D2A97C948008190E0 /* CreateEntityView.swift */,
+			);
+			path = Entity;
 			sourceTree = "<group>";
 		};
 		CCD586BE2A7AB0E300014F87 /* Template */ = {
@@ -2535,6 +2549,7 @@
 				12D37A942721752B00E43BDB /* TellaApp.swift in Sources */,
 				125A0AEF2726F0A000F6E77F /* ContainerView.swift in Sources */,
 				12E9DD9B27DF7DA50002FD00 /* CreateNewFolderView.swift in Sources */,
+				CCAEA04E2A97C948008190E0 /* CreateEntityView.swift in Sources */,
 				12ADF98D28BD16A400FA96EB /* SettingsCardView.swift in Sources */,
 				E177363C2A83AE4800FE01C0 /* UwaziTemplateDTO.swift in Sources */,
 				125D231C271F119D00250FBB /* Validator.swift in Sources */,
@@ -2608,6 +2623,7 @@
 				125FA6D8278E2828004B9D06 /* DoubleExtension.swift in Sources */,
 				129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */,
 				E1EEE2A729F7E1A8009FE227 /* UwaziLanguageSelectionView.swift in Sources */,
+				CCAEA0522A97E038008190E0 /* CreateDraftHeaderView.swift in Sources */,
 				1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
 				E14E0CF629FAD68E004FC4CD /* UwaziSuccessView.swift in Sources */,
