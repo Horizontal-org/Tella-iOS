@@ -302,6 +302,7 @@
 		CCAE3A682AC217EC00A38C6D /* UwaziViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAE3A672AC217EC00A38C6D /* UwaziViewModel.swift */; };
 		CCAEA04E2A97C948008190E0 /* CreateEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAEA04D2A97C948008190E0 /* CreateEntityView.swift */; };
 		CCAEA0522A97E038008190E0 /* CreateDraftHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAEA0512A97E038008190E0 /* CreateDraftHeaderView.swift */; };
+		CCAEA0552A97EF72008190E0 /* UwaziConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAEA0542A97EF72008190E0 /* UwaziConstants.swift */; };
 		CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */; };
 		CCBEE0482A8E9B780067884E /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBEE0472A8E9B780067884E /* TextView.swift */; };
 		CCD586C22A7AB28200014F87 /* TemplateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586C12A7AB28200014F87 /* TemplateListView.swift */; };
@@ -732,6 +733,7 @@
 		CCAE3A672AC217EC00A38C6D /* UwaziViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziViewModel.swift; sourceTree = "<group>"; };
 		CCAEA04D2A97C948008190E0 /* CreateEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEntityView.swift; sourceTree = "<group>"; };
 		CCAEA0512A97E038008190E0 /* CreateDraftHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDraftHeaderView.swift; sourceTree = "<group>"; };
+		CCAEA0542A97EF72008190E0 /* UwaziConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziConstants.swift; sourceTree = "<group>"; };
 		CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCheckboxItem.swift; sourceTree = "<group>"; };
 		CCBEE0472A8E9B780067884E /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		CCD586BC2A798E8D00014F87 /* UwaziTemplateResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTemplateResults.swift; sourceTree = "<group>"; };
@@ -1899,6 +1901,14 @@
 			path = Entity;
 			sourceTree = "<group>";
 		};
+		CCAEA0532A97EF01008190E0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CCAEA0542A97EF72008190E0 /* UwaziConstants.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		CCD586BE2A7AB0E300014F87 /* Template */ = {
 			isa = PBXGroup;
 			children = (
@@ -2573,6 +2583,7 @@
 				12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */,
 				12568002271790AF00A2D356 /* LockPinView.swift in Sources */,
 				1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */,
+				CCAEA0552A97EF72008190E0 /* UwaziConstants.swift in Sources */,
 				12A148942720A89E00A1ADDC /* BottomLockView.swift in Sources */,
 				1236645128FFF23000FA839B /* ReportsViewModel.swift in Sources */,
 				1233007A28E3115500B8F7BA /* Request.swift in Sources */,
