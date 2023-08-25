@@ -78,7 +78,7 @@ struct MainView: View  {
             
             if appModel.selectedTab == .camera {
                 CameraView(sourceView: .tab,
-                           showingCameraView: .constant(false),
+                           showingCameraView: $appViewState.shouldHidePresentedView,
                            mainAppModel: appModel,
                            rootFile: appModel.vaultManager.root)
             }
