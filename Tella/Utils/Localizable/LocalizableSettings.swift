@@ -42,6 +42,8 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settSecLock = "Settings_SettSec_Lock"
     case settSecLockTimeout = "Settings_SettSec_LockTimeout"
     case settSecDeleteAfterFail = "Settings_SettSec_DeleteAfterFail"
+    case settSecShowUnlockAttempts = "Settings_SettSec_ShowUnlockAttempts"
+    case settSecShowUnlockAttemptsExpl = "Settings_SettSec_ShowUnlockAttempts_Expl"
     case settSecScreenSecurity = "Settings_SettSec_ScreenSecurity"
     case settSecScreenSecurityExpl = "Settings_SettSec_ScreenSecurity_Expl"
     case settQuickDelete = "Settings_Sett_QuickDelete"

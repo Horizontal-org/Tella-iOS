@@ -69,6 +69,12 @@ class SettingsViewModel: ObservableObject {
     }
     
     func saveDeleteAfterFail() {
+        if(appModel.settings.deleteAfterFail == .off && selectedDeleteAfterFailOption != .off) {
+            appModel.settings.showUnlockAttempts = true
+        }
+        if(selectedDeleteAfterFailOption == .off) {
+            appModel.settings.showUnlockAttempts = false
+        }
         appModel.settings.deleteAfterFail = selectedDeleteAfterFailOption
         appModel.saveSettings()
     }

@@ -182,6 +182,8 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettSec_LockTimeout" = "Lock timeout";
 "Settings_SettSec_DeleteAfterFail" = "Delete after failed unlock";
 "Settings_SettSec_DeleteAfterFail_Off" = "Off";
+"Settings_SettSec_ShowUnlockAttempts" = "Show unlock attempts remaining";
+"Settings_SettSec_ShowUnlockAttempts_Expl" = "On the unlock screen, show the remaining number of failed unlocking attempts before everything inside Tella is deleted";
 "Settings_SettSec_ScreenSecurity" = "Seguridad de pantalla";
 "Settings_SettSec_ScreenSecurity_Expl" = "Block screen recordings inside Tella and screen preview in the list of recent apps";
 "Settings_Sett_QuickDelete" = "Quick Delete";

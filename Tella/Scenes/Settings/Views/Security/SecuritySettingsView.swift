@@ -26,7 +26,7 @@ struct SecuritySettingsView: View {
                 Spacer()
                     .frame(height: 8)
 
-                SettingsCardView(cardViewArray: [lockView.eraseToAnyView(), lockTimeoutView.eraseToAnyView(), deleteAfterFailView.eraseToAnyView()])
+                SettingsCardView(cardViewArray: [lockView.eraseToAnyView(), lockTimeoutView.eraseToAnyView(), deleteAfterFailGroupView.eraseToAnyView()])
                 
                 SettingsCardView(cardViewArray: [screenSecurityView.eraseToAnyView()])
 
@@ -75,6 +75,15 @@ struct SecuritySettingsView: View {
         }
     }
     
+    var deleteAfterFailGroupView: some View {
+        Group {
+            deleteAfterFailView
+            if(appModel.settings.deleteAfterFail != .off) {
+                showUnlockAttemptsRemainingView
+            }
+        }
+    }
+    
     var deleteAfterFailView: some View {
         
         SettingsItemView<AnyView>(imageName: "settings.lock",
@@ -84,6 +93,12 @@ struct SecuritySettingsView: View {
             showDeleteAfterFailedAttempts()
         }
         
+    }
+    
+    var showUnlockAttemptsRemainingView: some View {
+        SettingToggleItem(title: LocalizableSettings.settSecShowUnlockAttempts.localized,
+                          description: LocalizableSettings.settSecShowUnlockAttemptsExpl.localized,
+                          toggle: $appModel.settings.showUnlockAttempts)
     }
 
  
