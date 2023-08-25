@@ -36,6 +36,14 @@ struct DeleteAfterFailView: View {
             }, cancelLabel: LocalizableSettings.settLockTimeoutCancelSheetAction.localized, saveAction: {
                 settingsViewModel.saveDeleteAfterFail()
                 sheetManager.hide()
+                
+                let message: String
+                if settingsViewModel.selectedDeleteAfterFailOption == .off {
+                    message = LocalizableSettings.settDeleteAfterFailOffToast.localized
+                } else {
+                    message = String(format: LocalizableSettings.settDeleteAfterFailToast.localized, settingsViewModel.selectedDeleteAfterFailOption.numberOfAttempts)
+                }
+                Toast.displayToast(message: message)
             }, saveLabel: LocalizableSettings.settLockTimeoutSaveSheetAction.localized)
         }
     }

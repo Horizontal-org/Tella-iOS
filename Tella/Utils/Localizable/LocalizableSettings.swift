@@ -76,6 +76,8 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settDeleteAfterFailTwentyAttemptsSheetSelect = "Settings_SettDeleteAfterFail_TwentyAttempts_SheetSelect"
     case settDeleteAfterFailCancelSheetAction = "Settings_SettDeleteAfterFail_Cancel_SheetAction"
     case settDeleteAfterFailSaveSheetAction = "Settings_SettDeleteAfterFail_Save_SheetAction"
+    case settDeleteAfterFailToast = "Settings_SettDeleteAfterFail_Toast"
+    case settDeleteAfterFailOffToast = "Settings_SettDeleteAfterFail_Off_Toast"
     
     // Servers
     case settServersAppBar = "Settings_SettServers_AppBar"
