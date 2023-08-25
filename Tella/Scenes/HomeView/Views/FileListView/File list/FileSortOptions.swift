@@ -20,12 +20,9 @@ enum FileViewType {
     
 }
 
-enum FileSortOptions : ActionType {
-    case nameAZ
-    case nameZA
-    case newestToOldest
-    case oldestToNewest
-    
+
+extension FileSortOptions  {
+
     var image: AnyView {
         switch self {
         case .nameAZ:
