@@ -79,7 +79,7 @@ struct SecuritySettingsView: View {
         
         SettingsItemView<AnyView>(imageName: "settings.lock",
                                   title: LocalizableSettings.settSecDeleteAfterFail.localized,
-                                  value: appModel.settings.deleteAfterFail.displayName,
+                                  value: showDeleteAfterFailSelected(),
                          destination:nil) {
             showDeleteAfterFailedAttempts()
         }
@@ -150,6 +150,14 @@ struct SecuritySettingsView: View {
             DeleteAfterFailView()
                 .environmentObject(settingsViewModel)
         }
+    }
+    
+    func showDeleteAfterFailSelected () -> String {
+        if(appModel.settings.deleteAfterFail == .off) {
+            return LocalizableSettings.settDeleteAfterFailOffTitle.localized
+        }
+        
+        return appModel.settings.deleteAfterFail.displayName
     }
 }
 

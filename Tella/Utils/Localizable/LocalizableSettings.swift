@@ -65,6 +65,7 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settLockTimeoutSaveSheetAction = "Settings_SettLockTimeout_Save_SheetAction"
 
     // DeleteAfterFail
+    case settDeleteAfterFailOffTitle = "Settings_SettSec_DeleteAfterFail_Off"
     case settDeleteAfterFailSheetTitle = "Settings_SettDeleteAfterFail_SheetTitle"
     case settDeleteAfterFailSheetExpl = "Settings_SettDeleteAfterFail_SheetExpl"
     case settDeleteAfterFailOffSheetSelect = "Settings_SettDeleteAfterFail_Off_SheetSelect"

@@ -180,6 +180,8 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettSec_AppBar" = "الأمان";
 "Settings_SettSec_Lock" = "قفل التأمين";
 "Settings_SettSec_LockTimeout" = "Lock timeout";
+"Settings_SettSec_DeleteAfterFail" = "Delete after failed unlock";
+"Settings_SettSec_DeleteAfterFail_Off" = "Off";
 "Settings_SettSec_ScreenSecurity" = "Screen security";
 "Settings_SettSec_ScreenSecurity_Expl" = "Block screen recordings inside Tella and screen preview in the list of recent apps";
 "Settings_Sett_QuickDelete" = "Quick Delete";
@@ -195,6 +197,14 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettLockTimeout_OneHour_SheetSelect" = "ساعة واحدة";
 "Settings_SettLockTimeout_Cancel_SheetAction" = "CANCEL";
 "Settings_SettLockTimeout_Save_SheetAction" = "SAVE";
+"Settings_SettDeleteAfterFail_SheetTitle" = "Delete after failed unlock";
+"Settings_SettDeleteAfterFail_SheetExpl" = "Decide how many failed unlock attempts are allowed before everything inside Tella is deleted.";
+"Settings_SettDeleteAfterFail_Off_SheetSelect" = "Off (Do not delete data) ";
+"Settings_SettDeleteAfterFail_FiveAttempts_SheetSelect" = "5 attempts";
+"Settings_SettDeleteAfterFail_TenAttempts_SheetSelect" = "10 attempts";
+"Settings_SettDeleteAfterFail_TwentyAttempts_SheetSelect" = "20 attempts";
+"Settings_SettDeleteAfterFail_Cancel_SheetAction" = "CANCEL";
+"Settings_SettDeleteAfterFail_Save_SheetAction" = "SAVE";
 "Settings_SettServers_AppBar" = "الخوادم";
 "Settings_SettAbout_AppBar" = "عن التطبيق والمساعدة";
 "Settings_SettAbout_Head" = "Tella";
