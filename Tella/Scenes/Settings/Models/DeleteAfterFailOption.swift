@@ -27,6 +27,15 @@ enum DeleteAfterFailOption : String {
         }
     }
     
+    var selectedDisplayName: String {
+        switch self {
+        case .off:
+            return LocalizableSettings.settDeleteAfterFailOffTitle.localized
+        default:
+            return self.displayName
+        }
+    }
+    
     var numberOfAttempts: Int {
         switch self{
         case .off:
