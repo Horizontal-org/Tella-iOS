@@ -28,7 +28,8 @@ import Foundation
     /// Delete after fail option
     @Published var deleteAfterFail: DeleteAfterFailOption = .off
      
-    @Published var showUnlockAttempts: Bool = true
+     /// Show the amount of unlock attempts in the unlock screen
+    @Published var showUnlockAttempts: Bool = false
      
      /// Track the amount of unlock attempts
      @Published var unlockAttempts: Int = 0
@@ -69,6 +70,7 @@ import Foundation
         lockTimeout = LockTimeoutOption(rawValue: lockTimeoutString) ?? .immediately
         let deleteAfterFailString = try container.decode(String.self, forKey: .deleteAfterFail)
         deleteAfterFail = DeleteAfterFailOption(rawValue: deleteAfterFailString) ?? .off
+        unlockAttempts = try container.decode(Int.self, forKey: .unlockAttempts)
         showUnlockAttempts = try container.decode(Bool.self, forKey: .showUnlockAttempts)
         screenSecurity = try container.decode(Bool.self, forKey: .screenSecurity)
         preserveMetadata = try container.decode(Bool.self, forKey: .preserveMetadata)
@@ -83,6 +85,7 @@ import Foundation
         try container.encode(showRecentFiles, forKey: .showRecentFiles)
         try container.encode( lockTimeout.rawValue, forKey: .lockTimeout)
         try container.encode(deleteAfterFail.rawValue, forKey: .deleteAfterFail)
+        try container.encode(unlockAttempts, forKey: .unlockAttempts)
         try container.encode(showUnlockAttempts, forKey: .showUnlockAttempts)
         try container.encode(screenSecurity, forKey: .screenSecurity)
         try container.encode(preserveMetadata, forKey: .preserveMetadata)

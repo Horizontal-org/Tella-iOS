@@ -29,23 +29,31 @@ struct DeleteAfterFailView: View {
             }.padding(EdgeInsets(top: 21, leading: 24, bottom: 0, trailing: 24))
             
             Spacer()
-            
-            BottomButtonsView(cancelAction: {
-                settingsViewModel.cancelDeleteAfterFail()
-                sheetManager.hide()
-            }, cancelLabel: LocalizableSettings.settLockTimeoutCancelSheetAction.localized, saveAction: {
-                settingsViewModel.saveDeleteAfterFail()
-                sheetManager.hide()
-                
-                let message: String
-                if settingsViewModel.selectedDeleteAfterFailOption == .off {
-                    message = LocalizableSettings.settDeleteAfterFailOffToast.localized
-                } else {
-                    message = String(format: LocalizableSettings.settDeleteAfterFailToast.localized, settingsViewModel.selectedDeleteAfterFailOption.numberOfAttempts)
-                }
-                Toast.displayToast(message: message)
-            }, saveLabel: LocalizableSettings.settLockTimeoutSaveSheetAction.localized)
+            bottomButtonsView
         }
+    }
+    
+    var bottomButtonsView : some View {
+        BottomButtonsView(cancelAction: {
+            settingsViewModel.cancelDeleteAfterFail()
+            sheetManager.hide()
+        }, cancelLabel: LocalizableSettings.settLockTimeoutCancelSheetAction.localized, saveAction: {
+            settingsViewModel.saveDeleteAfterFail()
+            sheetManager.hide()
+            
+            displayDeleteAfterFailToast()
+        }, saveLabel: LocalizableSettings.settLockTimeoutSaveSheetAction.localized)
+    }
+    
+    func displayDeleteAfterFailToast () {
+        let message: String
+        if settingsViewModel.selectedDeleteAfterFailOption == .off {
+            message = LocalizableSettings.settDeleteAfterFailOffToast.localized
+        } else {
+            message = String(format: LocalizableSettings.settDeleteAfterFailToast.localized, settingsViewModel.selectedDeleteAfterFailOption.numberOfAttempts)
+        }
+        
+        Toast.displayToast(message: message)
     }
 }
 

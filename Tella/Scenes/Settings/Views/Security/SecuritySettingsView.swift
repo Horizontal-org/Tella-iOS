@@ -79,6 +79,7 @@ struct SecuritySettingsView: View {
         Group {
             deleteAfterFailView
             if(appModel.settings.deleteAfterFail != .off) {
+                DividerView()
                 showUnlockAttemptsRemainingView
             }
         }
