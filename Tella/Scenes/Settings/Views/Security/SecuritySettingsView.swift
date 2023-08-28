@@ -21,20 +21,22 @@ struct SecuritySettingsView: View {
     var body: some View {
         
         ContainerView {
-            VStack(spacing: 0) {
-               
-                Spacer()
-                    .frame(height: 8)
+            ScrollView {
+                VStack(spacing: 0) {
+                   
+                    Spacer()
+                        .frame(height: 8)
 
-                SettingsCardView(cardViewArray: [lockView.eraseToAnyView(), lockTimeoutView.eraseToAnyView(), deleteAfterFailGroupView.eraseToAnyView()])
-                
-                SettingsCardView(cardViewArray: [screenSecurityView.eraseToAnyView()])
+                    SettingsCardView(cardViewArray: [lockView.eraseToAnyView(), lockTimeoutView.eraseToAnyView(), deleteAfterFailGroupView.eraseToAnyView()])
+                    
+                    SettingsCardView(cardViewArray: [screenSecurityView.eraseToAnyView()])
 
-                SettingsCardView(cardViewArray: [preserveMetadataView.eraseToAnyView()])
-                
-                SettingsCardView(cardViewArray: [quickDeleteView.eraseToAnyView()])
+                    SettingsCardView(cardViewArray: [preserveMetadataView.eraseToAnyView()])
+                    
+                    SettingsCardView(cardViewArray: [quickDeleteView.eraseToAnyView()])
 
-                Spacer()
+                    Spacer()
+                }
             }
         }
         
