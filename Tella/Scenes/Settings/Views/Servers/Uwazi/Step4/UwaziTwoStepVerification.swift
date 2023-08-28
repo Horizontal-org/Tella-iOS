@@ -11,7 +11,7 @@ import SwiftUI
 struct UwaziTwoStepVerification: View {
 
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var serverViewModel : UwaziServerViewModel
+    @EnvironmentObject var uwaziServerViewModel : UwaziServerViewModel
     @EnvironmentObject var serversViewModel : ServersViewModel
 
     var body: some View {
@@ -26,10 +26,10 @@ struct UwaziTwoStepVerification: View {
                         .multilineTextAlignment(.center)
                     Spacer()
                         .frame(height: 15)
-                    TextfieldView(fieldContent: $serverViewModel.code,
-                                  isValid: $serverViewModel.validCode,
-                                  shouldShowError: $serverViewModel.shouldShowAuthenticationError,
-                                  errorMessage: serverViewModel.codeErrorMessage,
+                    TextfieldView(fieldContent: $uwaziServerViewModel.code,
+                                  isValid: $uwaziServerViewModel.validCode,
+                                  shouldShowError: $uwaziServerViewModel.shouldShowAuthenticationError,
+                                  errorMessage: uwaziServerViewModel.codeErrorMessage,
                                   fieldType: .code,
                                   placeholder: LocalizableSettings.UwaziAuthenticationPlaceholder.localized)
                                 .keyboardType(.numberPad)
@@ -38,9 +38,9 @@ struct UwaziTwoStepVerification: View {
                         .frame(height: 19)
                     TellaButtonView<AnyView>(title: LocalizableSettings.UwaziAuthenticationVerify.localized,
                                              nextButtonAction: .action,
-                                             isValid: $serverViewModel.validAuthenticationCode) {
+                                             isValid: $uwaziServerViewModel.validAuthenticationCode) {
                         UIApplication.shared.endEditing()
-                        serverViewModel.twoFactorAuthentication()
+                        uwaziServerViewModel.twoFactorAuthentication()
                     }
                     Spacer()
                 }
@@ -52,12 +52,12 @@ struct UwaziTwoStepVerification: View {
             }
         }
         .navigationBarHidden(true)
-        .onReceive(serverViewModel.$showLanguageSelectionView) { value in
+        .onReceive(uwaziServerViewModel.$showLanguageSelectionView) { value in
             if value {
                 let languageView = UwaziLanguageSelectionView(isPresented: .constant(true))
                     //.environmentObject(SettingsViewModel(appModel: MainAppModel()))
                     .environmentObject(serversViewModel)
-                    .environmentObject(serverViewModel)
+                    .environmentObject(uwaziServerViewModel)
                 navigateTo(destination: languageView)
             }
         }

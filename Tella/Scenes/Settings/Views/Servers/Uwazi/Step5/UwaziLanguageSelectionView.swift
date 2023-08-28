@@ -10,8 +10,7 @@ import SwiftUI
 
 struct UwaziLanguageSelectionView: View {
     @Binding var isPresented : Bool
-    //@EnvironmentObject var settingsViewModel: SettingsViewModel
-    @EnvironmentObject var serverViewModel: UwaziServerViewModel
+    @EnvironmentObject var uwaziServerViewModel: UwaziServerViewModel
     @EnvironmentObject var serversViewModel: ServersViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var showSuccessView = false
@@ -45,16 +44,16 @@ struct UwaziLanguageSelectionView: View {
                         .padding(.trailing, 20)
                         .padding(.leading, 20)
                     List {
-                        ForEach(serverViewModel.languages, id:\.self) { item in
+                        ForEach(uwaziServerViewModel.languages, id:\.self) { item in
                             UwaziLanguageItemView(languageItem: item,
-                                                  selectedLanguage: $serverViewModel.selectedLanguage,
+                                                  selectedLanguage: $uwaziServerViewModel.selectedLanguage,
                                                   //settingsViewModel: settingsViewModel,
                                                   isPresented: $isPresented)
                         }.listRowBackground(Color.red)
                     }
                     .listStyle(.plain)
                     .overlay(Group {
-                        if(serverViewModel.languages.isEmpty) {
+                        if(uwaziServerViewModel.languages.isEmpty) {
                             ZStack() {
                                 Styles.Colors.backgroundMain
                                     .edgesIgnoringSafeArea(.all)
@@ -69,14 +68,14 @@ struct UwaziLanguageSelectionView: View {
                             self.presentationMode.wrappedValue.dismiss()
                         }
                         LanguageActionButton(type: .ok) {
-                            serverViewModel.handleServerAction()
+                            uwaziServerViewModel.handleServerAction()
                             navigateTo(destination: UwaziSuccessView())
                         }
                     }
                     .padding(.trailing, 20)
                     .padding(.top, 12)
                 }
-                if serverViewModel.isLoading {
+                if uwaziServerViewModel.isLoading {
                     CircularActivityIndicatory()
                 }
                 
@@ -84,8 +83,8 @@ struct UwaziLanguageSelectionView: View {
 
         }
         .onAppear(perform: {
-            self.serverViewModel.languages.removeAll()
-            self.serverViewModel.getLanguage()
+            self.uwaziServerViewModel.languages.removeAll()
+            self.uwaziServerViewModel.getLanguage()
         })
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: backButton)

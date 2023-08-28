@@ -16,7 +16,7 @@ struct UwaziServerAccessSelectionView: View {
     @State var isPublicInstance: Bool = false
 
     @EnvironmentObject var serversViewModel : ServersViewModel
-    @EnvironmentObject var serverViewModel : UwaziServerViewModel
+    @EnvironmentObject var uwaziServerViewModel : UwaziServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
 
     var body: some View {
@@ -71,14 +71,14 @@ struct UwaziServerAccessSelectionView: View {
     fileprivate func navigateToLoginView() {
         let loginView = UwaziLoginView()
             .environmentObject(serversViewModel)
-            .environmentObject(serverViewModel)
+            .environmentObject(uwaziServerViewModel)
         navigateTo(destination: loginView)
     }
 
     fileprivate func navigateToLanguageView() {
         let languageSelection = UwaziLanguageSelectionView(isPresented: .constant(true))
             .environmentObject(serversViewModel)
-            .environmentObject(serverViewModel)
+            .environmentObject(uwaziServerViewModel)
         navigateTo(destination: languageSelection)
     }
     struct HeaderView: View {

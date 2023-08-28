@@ -170,7 +170,7 @@ class UwaziServerViewModel: ObservableObject {
                 switch completion {
 
                 case .finished:
-                    print("Finished")
+                    debugLog("Finished")
                     // TODO: Handle this error
                 case .failure(let error):
                     debugLog(error)
@@ -178,7 +178,7 @@ class UwaziServerViewModel: ObservableObject {
                 }
 
             }, receiveValue: { wrapper in
-                print("Finished")
+                debugLog("Finished")
                 self.isLoading = false
                 self.languages.append(contentsOf: wrapper.rows ?? [])
                 if let server = self.currentServer, let id = server.id {
@@ -201,7 +201,7 @@ class UwaziServerViewModel: ObservableObject {
                 switch completion {
 
                 case .finished:
-                    print("Finished")
+                    debugLog("Finished")
                     // TODO: handle this error
                 case .failure(let error):
                     debugLog(error)
@@ -210,7 +210,7 @@ class UwaziServerViewModel: ObservableObject {
 
             }, receiveValue: { wrapper in
                 self.setting = wrapper
-                print("Finished")
+                debugLog("Finished")
                 self.isLoading = false
                 self.isPublicInstance = true
             }).store(in: &subscribers)

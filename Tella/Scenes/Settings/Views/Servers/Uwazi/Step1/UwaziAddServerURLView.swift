@@ -14,11 +14,11 @@ struct UwaziAddServerURLView: View {
 
 
     @EnvironmentObject var serversViewModel : ServersViewModel
-    @StateObject var serverViewModel : UwaziServerViewModel
+    @StateObject var uwaziServerViewModel : UwaziServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
 
     init(appModel:MainAppModel, server: Server? = nil) {
-        _serverViewModel = StateObject(wrappedValue: UwaziServerViewModel(mainAppModel: appModel, currentServer: server))
+        _uwaziServerViewModel = StateObject(wrappedValue: UwaziServerViewModel(mainAppModel: appModel, currentServer: server))
     }
 
 
@@ -45,17 +45,17 @@ struct UwaziAddServerURLView: View {
                     Spacer()
                         .frame(height: 40)
 
-                    TextfieldView(fieldContent: $serverViewModel.serverURL,
-                                  isValid: $serverViewModel.validURL,
-                                  shouldShowError: $serverViewModel.shouldShowURLError,
-                                  errorMessage: serverViewModel.urlErrorMessage,
+                    TextfieldView(fieldContent: $uwaziServerViewModel.serverURL,
+                                  isValid: $uwaziServerViewModel.validURL,
+                                  shouldShowError: $uwaziServerViewModel.shouldShowURLError,
+                                  errorMessage: uwaziServerViewModel.urlErrorMessage,
                                   fieldType: .url)
                     Spacer()
 
-                    BottomLockView<AnyView>(isValid: $serverViewModel.validURL,
+                    BottomLockView<AnyView>(isValid: $uwaziServerViewModel.validURL,
                                             nextButtonAction: .action,
                                             nextAction: {
-                        self.serverViewModel.checkURL()
+                        self.uwaziServerViewModel.checkURL()
 
                     },
                                             backAction: {
@@ -63,7 +63,7 @@ struct UwaziAddServerURLView: View {
                     })
                 } .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
 
-                if serverViewModel.isLoading {
+                if uwaziServerViewModel.isLoading {
                     CircularActivityIndicatory()
                 }
             }
@@ -71,12 +71,12 @@ struct UwaziAddServerURLView: View {
         .navigationBarHidden(true)
         .onAppear {
             #if DEBUG
-                        serverViewModel.serverURL = "https://horizontal.uwazi.io"
+                        uwaziServerViewModel.serverURL = "https://horizontal.uwazi.io"
             #endif
-            guard (serverViewModel.currentServer != nil) else { return }
-            serverViewModel.validURL = true
+            guard (uwaziServerViewModel.currentServer != nil) else { return }
+            uwaziServerViewModel.validURL = true
         }
-        .onReceive(serverViewModel.$isPublicInstance) { isPublicInstance in
+        .onReceive(uwaziServerViewModel.$isPublicInstance) { isPublicInstance in
             guard let isPublicInstance = isPublicInstance else { return }
             handleNavigation(isPublicInstance: isPublicInstance)
         }
@@ -84,12 +84,13 @@ struct UwaziAddServerURLView: View {
     func handleNavigation(isPublicInstance: Bool) {
         if isPublicInstance {
             let serverAccess = UwaziServerAccessSelectionView()
-                .environmentObject(serverViewModel).environmentObject(serversViewModel)
+                .environmentObject(uwaziServerViewModel)
+                .environmentObject(serversViewModel)
             navigateTo(destination: serverAccess)
         } else {
             let loginView = UwaziLoginView()
                 .environmentObject(serversViewModel)
-                .environmentObject(serverViewModel)
+                .environmentObject(uwaziServerViewModel)
             navigateTo(destination: loginView)
         }
     }
