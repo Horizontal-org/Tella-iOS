@@ -57,6 +57,7 @@ struct SecuritySettingsView: View {
 
     }
     
+    // MARK: Lock
     var lockView: some View {
         
         SettingsItemView(imageName: "settings.lock",
@@ -66,6 +67,7 @@ struct SecuritySettingsView: View {
         
     }
 
+    // MARK: Lock timeout
     var lockTimeoutView: some View {
         
         SettingsItemView<AnyView>(imageName:"settings.timeout",
@@ -77,6 +79,7 @@ struct SecuritySettingsView: View {
         }
     }
     
+    // MARK: Delete after failed unlock
     var deleteAfterFailGroupView: some View {
         Group {
             deleteAfterFailView
@@ -105,6 +108,7 @@ struct SecuritySettingsView: View {
     }
 
  
+    // MARK: Screen Security
     var screenSecurityView: some View {
         
         SettingToggleItem(title: LocalizableSettings.settSecScreenSecurity.localized,
@@ -113,6 +117,8 @@ struct SecuritySettingsView: View {
         
         
     }
+    
+    // MARK: Preserve metadata when importing
     var preserveMetadataView: some View {
 
         SettingToggleItem(title: LocalizableSettings.settSecPreserveMetadata.localized,
@@ -122,6 +128,7 @@ struct SecuritySettingsView: View {
 
     }
     
+    // MARK: Quick delete
     var quickDeleteView: some View {
         
         Group {
@@ -170,13 +177,6 @@ struct SecuritySettingsView: View {
         }
     }
     
-    func showDeleteAfterFailSelected () -> String {
-        if(appModel.settings.deleteAfterFail == .off) {
-            return LocalizableSettings.settDeleteAfterFailOffTitle.localized
-        }
-        
-        return appModel.settings.deleteAfterFail.displayName
-    }
 }
 
 struct SecuritySettingsView_Previews: PreviewProvider {
