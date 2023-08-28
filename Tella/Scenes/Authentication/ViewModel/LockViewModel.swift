@@ -46,7 +46,7 @@ class LockViewModel: ObservableObject {
     }
     
     var shouldShowAttemptsWarning : Bool {
-        return maxAttempts - unlockAttempts <= 3 && appModel.settings.showUnlockAttempts
+        return maxAttempts - unlockAttempts <= 3 && appModel.settings.showUnlockAttempts && appModel.settings.deleteAfterFail != .off
     }
     
     func remainingAttempts () -> Int {
