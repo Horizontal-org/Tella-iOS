@@ -128,6 +128,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         settings.lockTimeout = .immediately
         settings.screenSecurity = true
         settings.deleteVault = false
+        settings.showUnlockAttempts = false
         
         saveSettings()
     }

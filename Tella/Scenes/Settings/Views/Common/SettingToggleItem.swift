@@ -22,6 +22,7 @@ struct SettingToggleItem: View {
                 Text(description)
                     .foregroundColor(Color.white)
                     .font(.custom(Styles.Fonts.regularFontName, size: 12))
+                    .fixedSize(horizontal: false, vertical: true) 
             }
             Spacer()
             Toggle("", isOn: $toggle)
