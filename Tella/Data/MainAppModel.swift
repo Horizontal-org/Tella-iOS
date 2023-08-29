@@ -109,6 +109,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     
     func resetVaultManager() {
         vaultManager.resetData()
+        self.selectedTab = .home
     }
     
     func saveSettings() {
