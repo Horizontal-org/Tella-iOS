@@ -21,20 +21,22 @@ struct SecuritySettingsView: View {
     var body: some View {
         
         ContainerView {
-            VStack(spacing: 0) {
-               
-                Spacer()
-                    .frame(height: 8)
+            ScrollView {
+                VStack(spacing: 0) {
+                   
+                    Spacer()
+                        .frame(height: 8)
 
-                SettingsCardView(cardViewArray: [lockView.eraseToAnyView(), lockTimeoutView.eraseToAnyView(), deleteAfterFailView.eraseToAnyView()])
-                
-                SettingsCardView(cardViewArray: [screenSecurityView.eraseToAnyView()])
+                    SettingsCardView(cardViewArray: [lockView.eraseToAnyView(), lockTimeoutView.eraseToAnyView(), deleteAfterFailGroupView.eraseToAnyView()])
+                    
+                    SettingsCardView(cardViewArray: [screenSecurityView.eraseToAnyView()])
 
-                SettingsCardView(cardViewArray: [preserveMetadataView.eraseToAnyView()])
-                
-                SettingsCardView(cardViewArray: [quickDeleteView.eraseToAnyView()])
+                    SettingsCardView(cardViewArray: [preserveMetadataView.eraseToAnyView()])
+                    
+                    SettingsCardView(cardViewArray: [quickDeleteView.eraseToAnyView()])
 
-                Spacer()
+                    Spacer()
+                }
             }
         }
         
@@ -55,6 +57,7 @@ struct SecuritySettingsView: View {
 
     }
     
+    // MARK: Lock
     var lockView: some View {
         
         SettingsItemView(imageName: "settings.lock",
@@ -64,6 +67,7 @@ struct SecuritySettingsView: View {
         
     }
 
+    // MARK: Lock timeout
     var lockTimeoutView: some View {
         
         SettingsItemView<AnyView>(imageName:"settings.timeout",
@@ -75,18 +79,36 @@ struct SecuritySettingsView: View {
         }
     }
     
+    // MARK: Delete after failed unlock
+    var deleteAfterFailGroupView: some View {
+        Group {
+            deleteAfterFailView
+            if(appModel.settings.deleteAfterFail != .off) {
+                DividerView()
+                showUnlockAttemptsRemainingView
+            }
+        }
+    }
+    
     var deleteAfterFailView: some View {
         
         SettingsItemView<AnyView>(imageName: "settings.lock",
                                   title: LocalizableSettings.settSecDeleteAfterFail.localized,
-                                  value: appModel.settings.deleteAfterFail.displayName,
+                                  value: appModel.settings.deleteAfterFail.selectedDisplayName,
                          destination:nil) {
             showDeleteAfterFailedAttempts()
         }
         
     }
+    
+    var showUnlockAttemptsRemainingView: some View {
+        SettingToggleItem(title: LocalizableSettings.settSecShowUnlockAttempts.localized,
+                          description: LocalizableSettings.settSecShowUnlockAttemptsExpl.localized,
+                          toggle: $appModel.settings.showUnlockAttempts)
+    }
 
  
+    // MARK: Screen Security
     var screenSecurityView: some View {
         
         SettingToggleItem(title: LocalizableSettings.settSecScreenSecurity.localized,
@@ -95,6 +117,8 @@ struct SecuritySettingsView: View {
         
         
     }
+    
+    // MARK: Preserve metadata when importing
     var preserveMetadataView: some View {
 
         SettingToggleItem(title: LocalizableSettings.settSecPreserveMetadata.localized,
@@ -104,6 +128,7 @@ struct SecuritySettingsView: View {
 
     }
     
+    // MARK: Quick delete
     var quickDeleteView: some View {
         
         Group {
@@ -151,6 +176,7 @@ struct SecuritySettingsView: View {
                 .environmentObject(settingsViewModel)
         }
     }
+    
 }
 
 struct SecuritySettingsView_Previews: PreviewProvider {

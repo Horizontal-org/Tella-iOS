@@ -28,7 +28,8 @@ struct AddFileView: View {
             
             PhotoVideoPickerView(showingImagePicker: $fileListViewModel.showingImagePicker,
                                  showingImportDocumentPicker: $fileListViewModel.showingImportDocumentPicker,
-                                 appModel: appModel)
+                                 appModel: appModel,
+                                 rootFile: $fileListViewModel.rootFile)
         }
         .overlay(fileListViewModel.showingCamera ?
                  CameraView(sourceView: .addFile,
@@ -92,6 +93,7 @@ struct AddFileView: View {
             default:
                 fileListViewModel.showingImportDocumentPicker = true
             }
+            sheetManager.hide()
         }
         sheetManager.showBottomSheet(modalHeight: 300, content: {
             sheetContent

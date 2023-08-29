@@ -109,6 +109,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     
     func resetVaultManager() {
         vaultManager.resetData()
+        self.selectedTab = .home
     }
     
     func saveSettings() {
@@ -128,6 +129,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         settings.lockTimeout = .immediately
         settings.screenSecurity = true
         settings.deleteVault = false
+        settings.showUnlockAttempts = false
         
         saveSettings()
     }

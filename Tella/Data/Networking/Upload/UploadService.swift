@@ -40,7 +40,9 @@ class UploadService: NSObject {
     
     func cancelTasksIfNeeded() {
         let operations = activeOperations.filter({$0.report?.server?.backgroundUpload == false || $0.taskType == .dataTask})
-        _ = operations.compactMap({$0.pauseSendingReport})
+        operations.forEach { operation in
+            operation.pauseSendingReport()
+        }
         activeOperations.removeAll(where:{$0.report?.server?.backgroundUpload == false || $0.taskType == .dataTask})
     }
     
@@ -169,14 +171,12 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
     }
     
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        
         let operation = activeOperations.first{$0.uploadTasksDict[dataTask] != nil}
         operation?.update(responseFromDelegate: URLSessionTaskResponse(task: dataTask , data: data, response: dataTask.response as? HTTPURLResponse))
         operation?.uploadTasksDict.removeValue(forKey: dataTask)
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        
         let operation = activeOperations.first{$0.uploadTasksDict[task] != nil}
         if error == nil {
             

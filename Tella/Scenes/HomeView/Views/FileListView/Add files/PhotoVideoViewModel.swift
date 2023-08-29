@@ -16,16 +16,17 @@ class PhotoVideoViewModel : ObservableObject {
     var mainAppModel : MainAppModel
     var folderPathArray: [VaultFile] = []
     var  resultFile : Binding<[VaultFile]?>?
-    
+    var  rootFile : Binding<VaultFile?>?
+
     init(mainAppModel: MainAppModel,
          folderPathArray: [VaultFile],
-         resultFile : Binding<[VaultFile]?>? ) {
-        
+         resultFile : Binding<[VaultFile]?>?,
+         rootFile : Binding<VaultFile?>?) {
         self.mainAppModel = mainAppModel
         self.folderPathArray = folderPathArray
         self.resultFile = resultFile
+        self.rootFile = rootFile
     }
-
 
     func handleAddingFile(_ imagePickerCompletion: ImagePickerCompletion?) {
         let isPreserveMetadataOn = mainAppModel.settings.preserveMetadata
@@ -36,7 +37,6 @@ class PhotoVideoViewModel : ObservableObject {
                 self.handleAddingVideo(completion, isPreserveMetadataOn)
             case .image:
                 self.handleAddingImage(completion, isPreserveMetadataOn)
-
             }
         }
     }
@@ -109,7 +109,7 @@ class PhotoVideoViewModel : ObservableObject {
     func handleAddVideoFile(files: [URL], type: TellaFileType, referenceUrl: URL?) async {
 
         do { let vaultFile = try await self.mainAppModel.add(files: files,
-                                                             to: self.mainAppModel.vaultManager.root,
+                                                             to: self.rootFile?.wrappedValue,
                                                              type: type,
                                                              folderPathArray: self.folderPathArray)
 
@@ -151,7 +151,7 @@ class PhotoVideoViewModel : ObservableObject {
     func handleAddingImageFile(files: [URL],originalURL: URL?) async {
         do {
             let vaultFile = try await self.mainAppModel.add(files: files,
-                                                            to: self.mainAppModel.vaultManager.root,
+                                                            to: self.rootFile?.wrappedValue,
                                                             type: .image,
                                                             folderPathArray: self.folderPathArray)
 
