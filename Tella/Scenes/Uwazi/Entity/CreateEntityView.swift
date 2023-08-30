@@ -88,8 +88,8 @@ struct CreateEntityView: View {
         label: String, property: Property?,
         commonProperty: CommonProperty?
     ) -> some View {
-        switch propertyType{
-        case UwaziConstants.dataTypeText.rawValue, UwaziConstants.dataTypeNumeric.rawValue:
+        switch UwaziEntityPropertyType(rawValue: propertyType) {
+        case .dataTypeText, .dataTypeNumeric:
             //render textFieldComponent
             Title(label: label)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
@@ -141,9 +141,9 @@ struct CreateEntityView: View {
                                actionText: LocalizableReport.exitSave.localized,
                                didConfirmAction: {
                 
-                                }, didCancelAction: {
-                                    dismissViews()
-                                })
+            }, didCancelAction: {
+                dismissViews()
+            })
         }
     }
     
