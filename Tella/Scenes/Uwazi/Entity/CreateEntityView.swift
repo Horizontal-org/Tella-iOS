@@ -29,11 +29,11 @@ struct CreateEntityView: View {
     }
     
     var createEntityHeaderView: some View {
-            
-            CreateDraftHeaderView(title: template.entityRow?.name ?? "",
-                                  isDraft: true,
-                                  closeAction: { showSaveEntityConfirmationView() },
-                                  saveAction: {})
+
+        CreateDraftHeaderView(title: template.entityRow?.name ?? "",
+                              isDraft: true,
+                              closeAction: { showSaveEntityConfirmationView() },
+                              saveAction: {})
     }
     
     var draftContentView: some View {
@@ -48,7 +48,7 @@ struct CreateEntityView: View {
                         commonProperty: nil
                     )
                 }
-                    
+
                 ForEach(template.entityRow!.commonProperties, id: \.id) { commonProperty in
                     renderPropertyComponent(
                         propertyType: commonProperty.type ?? "",
@@ -56,8 +56,8 @@ struct CreateEntityView: View {
                         property: nil,
                         commonProperty: commonProperty
                     )
-                    }
                 }
+            }
         }
     }
     
@@ -67,30 +67,29 @@ struct CreateEntityView: View {
         label: String, property: Property?,
         commonProperty: CommonProperty?
     ) -> some View {
-        switch propertyType{
-        case UwaziConstants.dataTypeText.rawValue, UwaziConstants.dataTypeNumeric.rawValue:
+        switch UwaziEntityPropertyType(rawValue: propertyType) {
+        case .dataTypeText, .dataTypeNumeric:
             //render textFieldComponent
             Text(label)
-        case UwaziConstants.dataTypeDate.rawValue, UwaziConstants.dataTypeDateRange.rawValue,
-             UwaziConstants.dataTypeMultiDate.rawValue, UwaziConstants.dataTypeMultiDateRange.rawValue:
+        case .dataTypeDate, .dataTypeDateRange, .dataTypeMultiDate, .dataTypeMultiDateRange:
             Text(label)
-        case UwaziConstants.dataTypeSelect.rawValue, UwaziConstants.dataTypeMultiSelect.rawValue:
+        case .dataTypeSelect, .dataTypeMultiSelect:
             Text(label)
-        case UwaziConstants.dataTypeLink.rawValue:
+        case .dataTypeLink:
             Text(label)
-        case UwaziConstants.dataTypeImage.rawValue:
+        case .dataTypeImage:
             Text(label)
-        case UwaziConstants.dataTypeGeolocation.rawValue:
+        case .dataTypeGeolocation:
             Text(label)
-        case UwaziConstants.dataTypePreview.rawValue:
+        case .dataTypePreview:
             Text(label)
-        case UwaziConstants.dataTypeMedia.rawValue:
+        case .dataTypeMedia:
             Text(label)
-        case UwaziConstants.dataTypeMarkdown.rawValue:
+        case .dataTypeMarkdown:
             Text(label)
-        case UwaziConstants.dataTypeMultiFiles.rawValue, UwaziConstants.dataTypeMultiPDFFiles.rawValue:
+        case .dataTypeMultiFiles, .dataTypeMultiPDFFiles:
             Text(label)
-        case UwaziConstants.dataTypeGeneratedID.rawValue:
+        case .dataTypeGeneratedID:
             Text(label)
         default:
             Group {
@@ -108,9 +107,9 @@ struct CreateEntityView: View {
                                actionText: LocalizableReport.exitSave.localized,
                                didConfirmAction: {
                 
-                                }, didCancelAction: {
-                                    dismissViews()
-                                })
+            }, didCancelAction: {
+                dismissViews()
+            })
         }
     }
     
