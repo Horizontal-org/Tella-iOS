@@ -6,6 +6,9 @@ import Foundation
 import Combine
 import UIKit
 import SwiftUI
+import AVFoundation
+import AVKit
+import AssetsLibrary
 
 class CameraViewModel: ObservableObject {
     
@@ -113,7 +116,6 @@ class CameraViewModel: ObservableObject {
             }
         }
     }
-    
     func initialiseTimerRunning() {
         self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.timerRunning), userInfo: nil, repeats: true)
     }

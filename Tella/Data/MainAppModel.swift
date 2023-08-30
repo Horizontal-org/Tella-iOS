@@ -232,7 +232,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         UploadService.shared.initAutoUpload(mainAppModel: self)
         UploadService.shared.sendUnsentReports(mainAppModel: self)
     }
-    
+
     func deleteReport(reportId:Int?)  {
         UploadService.shared.cancelSendingReport(reportId: reportId)
         vaultManager.tellaData.deleteReport(reportId: reportId)

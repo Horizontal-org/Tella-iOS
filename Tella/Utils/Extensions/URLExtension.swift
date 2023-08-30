@@ -95,6 +95,53 @@ extension URL {
         }
     }
     
+    /// This function take the url of the video from the parameter converts it into AVAsset and exports the video file after removing the metadata to the destination URL and send the destination URL back .
+    /// If there is any issue it will return nil
+    /// - Parameters:
+    ///   - destinationURL: The URL where the file without the metadata is saved
+    /// - Returns: The URL in which the file is saved or if there is any issue then it will return nil
+    func returnVideoURLWithoutMetadata(destinationURL: URL) async -> URL? {
+        let asset = AVAsset(url: self)
+        guard let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) else { return nil }
+        exportSession.outputURL = destinationURL
+        exportSession.outputFileType =  self.getAVFileType()
+        exportSession.metadata = nil
+        exportSession.metadataItemFilter = .forSharing()
+        await exportSession.export()
+        if exportSession.status == .completed {
+            return destinationURL
+        } else {
+            return nil
+        }
+    }
+    func getAVFileType() -> AVFileType {
+        switch self.pathExtension.lowercased() {
+        case "mp4":
+            return .mp4
+        case "mov", ".qt":
+            return .mov
+        case "m4v":
+            return .m4v
+        case "3gpp", "3gp":
+            return .mobile3GPP
+        case "3gp2", "3g2":
+            return .mobile3GPP2
+        default:
+            return .mov
+        }
+    }
+    /// This function returns the EXIF or metadata as [String: Any] of the image using the URL
+    /// - Returns: Metadata
+    func getEXIFData() -> [String: Any] {
+        if let imageSource = CGImageSourceCreateWithURL(self as CFURL, nil) {
+            let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil)
+            if let dict = imageProperties as? [String: Any] {
+                return dict
+            }
+        }
+        return [:]
+    }
+    
     func getOfficeExtension() -> String? {
         
         do {
@@ -139,6 +186,5 @@ extension URL {
             return nil
         }
     }
-    
 }
 

@@ -25,6 +25,8 @@ struct SecuritySettingsView: View {
                 SettingsCardView(cardViewArray: [lockView.eraseToAnyView(), lockTimeoutView.eraseToAnyView()])
                 
                 SettingsCardView(cardViewArray: [screenSecurityView.eraseToAnyView()])
+
+                SettingsCardView(cardViewArray: [preserveMetadataView.eraseToAnyView()])
                 
                 SettingsCardView(cardViewArray: [quickDeleteView.eraseToAnyView()])
 
@@ -77,6 +79,14 @@ struct SecuritySettingsView: View {
                           toggle: $appModel.settings.screenSecurity)
         
         
+    }
+    var preserveMetadataView: some View {
+
+        SettingToggleItem(title: LocalizableSettings.settSecPreserveMetadata.localized,
+                          description: LocalizableSettings.settSecPreserveMetadataExpl.localized,
+                          toggle: $appModel.settings.preserveMetadata)
+
+
     }
     
     var quickDeleteView: some View {

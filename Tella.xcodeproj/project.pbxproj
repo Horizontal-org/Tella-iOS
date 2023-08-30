@@ -286,7 +286,7 @@
 		12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC0CE2799FF230068EC2B /* ImportProgress.swift */; };
 		12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */; };
 		12FFEFA528BE96E00081DDB2 /* AddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */; };
-		1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerView.swift */; };
+		1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
 		379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */; };
 		89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */; };
@@ -659,7 +659,7 @@
 		12FAC0CE2799FF230068EC2B /* ImportProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportProgress.swift; sourceTree = "<group>"; };
 		12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableHome.swift; sourceTree = "<group>"; };
 		12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerURLView.swift; sourceTree = "<group>"; };
-		1E67B39123FC9067001F3D64 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
+		1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheet.swift; sourceTree = "<group>"; };
 		1EAE6BF424146C2100114244 /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
 		21FEB79B83E10A1CBE4AA323 /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		41C55359B3FCA6834440D9D8 /* Pods-Tella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.debug.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1616,7 +1616,7 @@
 				0E78B3A42656B03500F9BDBC /* BottomSheet */,
 				0ECC7815267A532B00A2ACF2 /* Tabs */,
 				0DD99E042692D24D009327B3 /* SwipeToDeleteView.swift */,
-				1E67B39123FC9067001F3D64 /* ImagePickerView.swift */,
+				1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */,
 				0DEFD547268943CC0014EADE /* DocumentPickerView.swift */,
 				12D37A952721A49D00E43BDB /* NavigationContainerView.swift */,
 				125A0AEE2726F0A000F6E77F /* ContainerView.swift */,
@@ -2407,7 +2407,7 @@
 				1289B45628B62A99005DA687 /* DeviceOrientationHelper.swift in Sources */,
 				E1D48B852A1BB8EA00D36270 /* UwaziCheckURLResult.swift in Sources */,
 				125DD9C92796CB090053619D /* ImportFilesProgressView.swift in Sources */,
-				1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */,
+				1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */,
 				12B3AD8A28C0DD0200AC9AF9 /* ServerLoginView.swift in Sources */,
 				1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */,
 				128FD0B427F774FB00B24915 /* RecentFile.swift in Sources */,
@@ -2430,7 +2430,7 @@
 				128D6E1E2804DA2A0082AB18 /* ListActionSheetItem.swift in Sources */,
 				12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */,
 				125AAD3129534259002194D6 /* UploadProgressInfo.swift in Sources */,
-				1E67B39223FC9067001F3D64 /* ImagePickerView.swift in Sources */,
+				1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */,
 				D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */,
 				127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */,
 				12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */,
