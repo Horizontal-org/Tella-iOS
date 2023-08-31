@@ -20,8 +20,6 @@ struct UwaziAddServerURLView: View {
     init(appModel:MainAppModel, server: Server? = nil) {
         _uwaziServerViewModel = StateObject(wrappedValue: UwaziServerViewModel(mainAppModel: appModel, currentServer: server))
     }
-
-
     var body: some View {
 
         ContainerView {
@@ -44,7 +42,6 @@ struct UwaziAddServerURLView: View {
 
                     Spacer()
                         .frame(height: 40)
-
                     TextfieldView(fieldContent: $uwaziServerViewModel.serverURL,
                                   isValid: $uwaziServerViewModel.validURL,
                                   shouldShowError: $uwaziServerViewModel.shouldShowURLError,

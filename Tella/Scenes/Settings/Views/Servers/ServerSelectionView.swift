@@ -13,7 +13,6 @@ struct ServerSelectionView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
     @StateObject var serverViewModel : ServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
-
     @State var istellaWebSelected = false
     @State var isUwaziSelected = false
     @State var showTellaWeb = false

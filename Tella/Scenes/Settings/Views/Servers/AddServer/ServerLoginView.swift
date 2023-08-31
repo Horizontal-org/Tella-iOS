@@ -92,7 +92,6 @@ struct ServerLoginView: View {
     }
     
 }
-
 //struct ServerLoginView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        ServerLoginView()

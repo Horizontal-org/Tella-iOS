@@ -31,7 +31,6 @@ struct UwaziLanguageSelectionView: View {
     }
     var body: some View {
         ContainerView {
-
             ZStack {
                 VStack {
                     Spacer()
@@ -178,7 +177,6 @@ struct UwaziLanguageItemView : View {
         }
     }
 }
-
 struct BigButtonStyleForLanguage: ButtonStyle {
     @State var color: Color = .red
 

@@ -200,7 +200,6 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettLockTimeout_Cancel_SheetAction" = "CANCELAR";
 "Settings_SettLockTimeout_Save_SheetAction" = "SAVE";
 
-
 "Setting_SettServer_Selection_Title" = "What type of server would you like to connect to?";
 "Setting_SettServer_Selection_Message" = "If you are not sure, please ask your organization.";
 "Setting_SettServer_TellaWeb" = "TELLA WEB";
@@ -223,7 +222,6 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_Server_Uwazi_Language_Cancel" = "CANCEL";
 "Setting_Server_Uwazi_Connect_Server" = "Connected to server";
 "Setting_Server_Uwazi_Success_Message" = "You have successfully connected to the server and will be able to share your data.";
-
 
 "Settings_SettDeleteAfterFail_SheetTitle" = "Delete after failed unlock";
 "Settings_SettDeleteAfterFail_SheetExpl" = "Decide how many failed unlock attempts are allowed before everything inside Tella is deleted.";

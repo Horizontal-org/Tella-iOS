@@ -239,6 +239,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettDeleteAfterFail_Save_SheetAction" = "SAVE";
 
 "Settings_SettServers_AppBar" = "Serveurs";
+
 "Settings_SettAbout_AppBar" = "À propos et Aide";
 "Settings_SettAbout_Head" = "Tella";
 "Settings_SettAbout_Subhead" = "Version";
