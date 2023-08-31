@@ -187,6 +187,30 @@ class UwaziServerViewModel: ObservableObject {
             }).store(in: &subscribers)
     }
 
+    func getLanguage() {
+        isLoading = true
+        guard let baseURL = serverURL.getBaseURL() else { return }
+        UwaziServerRepository().getLanguage(serverURL: baseURL)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                self.isLoading = false
+
+                switch completion {
+
+                case .finished:
+                    print("Finished")
+                case .failure(let error):
+                    self.isLoading = false
+                }
+
+            }, receiveValue: { wrapper in
+                print("Finished")
+                self.isLoading = false
+                self.languages.append(contentsOf: wrapper.rows ?? [])
+                self.showNextSuccessLoginView = true
+            }).store(in: &subscribers)
+    }
+
     func checkURL() {
 
         isLoading = true
@@ -205,7 +229,6 @@ class UwaziServerViewModel: ObservableObject {
                     debugLog(error)
                     self.isPublicInstance = false
                 }
-
             }, receiveValue: { wrapper in
                 self.setting = wrapper
                 debugLog("Finished")

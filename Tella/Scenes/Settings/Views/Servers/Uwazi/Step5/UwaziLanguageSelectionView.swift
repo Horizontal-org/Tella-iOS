@@ -14,6 +14,7 @@ struct UwaziLanguageSelectionView: View {
     @EnvironmentObject var serversViewModel: ServersViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var showSuccessView = false
+    @State var selectLanguage: UwaziLanguageRow?
 
     var backButton : some View { Button(action: {
         self.presentationMode.wrappedValue.dismiss()
@@ -126,6 +127,13 @@ struct UwaziLanguageItemView : View {
     //@StateObject var settingsViewModel :  SettingsViewModel
 
     @Binding var isPresented : Bool
+
+
+
+
+
+
+    
 
     @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject private var appModel: MainAppModel

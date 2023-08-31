@@ -86,6 +86,22 @@ struct UwaziAddServerURLView: View {
                 .environmentObject(uwaziServerViewModel)
             navigateTo(destination: loginView)
         }
+        .onReceive(uwaziServerViewModel.$isPublicInstance) { value in
+            if value {
+                let serverAccess = UwaziServerAccessSelectionView()
+                    .environmentObject(uwaziServerViewModel)
+                    .environmentObject(serversViewModel)
+                navigateTo(destination: serverAccess)
+            }
+        }
+        .onReceive(uwaziServerViewModel.$isPrivateInstance) { value in
+            if value {
+                let loginView = UwaziLoginView()
+                    .environmentObject(serversViewModel)
+                    .environmentObject(uwaziServerViewModel)
+                navigateTo(destination: loginView)
+            }
+        }
     }
 }
 

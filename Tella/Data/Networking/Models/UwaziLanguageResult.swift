@@ -19,7 +19,6 @@ struct UwaziLanguageRow: Codable, Hashable {
     let id: String?
     let locale: String?
     let contexts: [UwaziLanguageContext]?
-
     enum CodingKeys: String, CodingKey {
         case id = "_id"
         case locale, contexts
