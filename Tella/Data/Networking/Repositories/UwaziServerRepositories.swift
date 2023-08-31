@@ -13,22 +13,37 @@ struct UwaziServerRepository: WebRepository {
 
     func login(username: String,
                password: String,
-               serverURL: String) -> APIResponse<BoolResponse> {
+               serverURL: String) -> AnyPublisher<(BoolResponse,String?), APIError> {
 
         let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.login((username: username, password: password, serverURL: serverURL)))
         return apiResponse
+            .tryMap({ (response, allHeaderFields) in
+                return (response, getTokenFromHeader(httpResponse: allHeaderFields))
+            })
+            .mapError {$0 as! APIError}
             .eraseToAnyPublisher()
     }
 
     func twoFactorAuthentication(username: String,
                                   password: String,
                                   token: String,
-                                  serverURL: String) -> APIResponse<BoolResponse> {
+                                  serverURL: String) -> AnyPublisher<(BoolResponse,String?), APIError> {
 
         let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.twoFactorAuthentication((username: username, password: password,token: token, serverURL: serverURL)))
         return apiResponse
+            .tryMap({ (response, allHeaderFields) in
+                return (response, getTokenFromHeader(httpResponse: allHeaderFields))
+            })
+            .mapError {$0 as! APIError}
             .eraseToAnyPublisher()
 
+    }
+    private func getTokenFromHeader(httpResponse: [AnyHashable: Any]?) -> String? {
+        if let token = httpResponse?["Set-Cookie"] as? String {
+            let filteredToken = token.split(separator: ";")
+            return filteredToken.first!.replacingOccurrences(of: "connect.sid=", with: "")
+        }
+        return nil
     }
 
     func checkServerURL(serverURL: String) -> AnyPublisher<UwaziCheckURLResult, APIError> {

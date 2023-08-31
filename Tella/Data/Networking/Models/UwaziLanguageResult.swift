@@ -19,6 +19,15 @@ struct UwaziLanguageRow: Codable, Hashable {
     let id: String?
     let locale: String?
     let contexts: [UwaziLanguageContext]?
+
+    func toDomain() -> DomainModel? {
+        var languageName = "English"
+        let currentLocale: Locale = .current
+        if let locale = self.locale {
+            languageName = currentLocale.localizedString(forLanguageCode: "\(locale)_\(locale.uppercased())") ?? "English"
+        }
+        return UwaziLanguageAPI(id: id, locale: locale, contexts: contexts, languageName: languageName)
+    }
     enum CodingKeys: String, CodingKey {
         case id = "_id"
         case locale, contexts
@@ -31,11 +40,11 @@ struct UwaziLanguageRow: Codable, Hashable {
         hasher.combine(locale)
     }
 
-    func languageName() -> String {
-        let currentLocale: Locale = .current
-        guard let locale = self.locale else { return "English"}
-        return currentLocale.localizedString(forLanguageCode: "\(locale)_\(locale.uppercased())") ?? "English"
-    }
+//    func languageName() -> String {
+//        let currentLocale: Locale = .current
+//        guard let locale = self.locale else { return "English"}
+//        return currentLocale.localizedString(forLanguageCode: "\(locale)_\(locale.uppercased())") ?? "English"
+//    }
 }
 
 // MARK: - Context

@@ -44,7 +44,7 @@ struct UwaziLanguageSelectionView: View {
                         .padding(.leading, 20)
                     List {
                         ForEach(uwaziServerViewModel.languages, id:\.self) { item in
-                            UwaziLanguageItemView(languageItem: item,
+                            UwaziLanguageItemView(languageItem: item.toDomain() as? UwaziLanguageAPI,
                                                   selectedLanguage: $uwaziServerViewModel.selectedLanguage,
                                                   //settingsViewModel: settingsViewModel,
                                                   isPresented: $isPresented)
@@ -120,19 +120,11 @@ struct LanguageActionButton: View {
 
 struct UwaziLanguageItemView : View {
 
-    var languageItem : UwaziLanguageRow
-    @Binding var selectedLanguage: UwaziLanguageRow?
+    var languageItem : UwaziLanguageAPI?
+    @Binding var selectedLanguage: UwaziLanguageAPI?
     //@StateObject var settingsViewModel :  SettingsViewModel
 
     @Binding var isPresented : Bool
-
-
-
-
-
-
-    
-
     @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject private var appModel: MainAppModel
 
@@ -142,11 +134,11 @@ struct UwaziLanguageItemView : View {
 
             HStack {
                 VStack(alignment: .leading) {
-                    Text(languageItem.languageName())
+                    Text(languageItem?.languageName ?? "")
                         .font(.custom(Styles.Fonts.regularFontName, size: 15))
                         .foregroundColor(.white)
 
-                    Text(languageItem.languageName())
+                    Text(languageItem?.languageName ?? "")
                         .font(.custom(Styles.Fonts.regularFontName, size: 12))
                         .foregroundColor(.white)
                 }
@@ -174,7 +166,8 @@ struct UwaziLanguageItemView : View {
             .listRowInsets(EdgeInsets())
     }
 
-    func isCurrentLanguage(languageItem: UwaziLanguageRow) -> Bool {
+    func isCurrentLanguage(languageItem: UwaziLanguageAPI?) -> Bool {
+        guard let languageItem = languageItem else { return false }
         if let selectedLanguage = selectedLanguage {
             return selectedLanguage.id == languageItem.id
         } else {

@@ -21,7 +21,6 @@ class UwaziLocale : Hashable, Codable {
         self.id = id
         self.locale = locale
         self.serverId = serverId
-        self.title = title
     }
     enum CodingKeys: String, CodingKey {
         case id = "c_locale_id"

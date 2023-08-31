@@ -39,7 +39,9 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
                 let decodedData : Value = try data.decoded()
                 return (decodedData, allHeaderFields)
             })
-            .mapError{ _ in APIError.unexpectedResponse }
+            .mapError{
+                return $0 as! APIError
+            }
             .eraseToAnyPublisher()
     }
 }

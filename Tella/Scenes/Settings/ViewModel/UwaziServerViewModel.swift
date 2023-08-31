@@ -52,7 +52,7 @@ class UwaziServerViewModel: ObservableObject {
 
     // Language
     @Published var languages: [UwaziLanguageRow] = []
-    @Published var selectedLanguage: UwaziLanguageRow?
+    @Published var selectedLanguage: UwaziLanguageAPI?
     private var cancellableLogin: Cancellable? = nil
     private var cancellableAuthenticationCode: Cancellable? = nil
     var subscribers = Set<AnyCancellable>()
@@ -178,7 +178,7 @@ class UwaziServerViewModel: ObservableObject {
                 self.languages.append(contentsOf: wrapper.rows ?? [])
                 if let server = self.currentServer, let id = server.id {
                     let locale = try? self.mainAppModel.vaultManager.tellaData?.database?.getUwaziLocaleWith(serverId: id)
-                    self.selectedLanguage = self.languages.first(where: {$0.locale == locale?.locale})
+                    self.selectedLanguage = self.languages.map{$0.toDomain() as? UwaziLanguageAPI}.compactMap{$0}.first(where: {$0.locale == locale?.locale})
                 }
                 self.showNextSuccessLoginView = true
             }).store(in: &subscribers)
@@ -223,56 +223,40 @@ class UwaziServerViewModel: ObservableObject {
                     switch completion {
                     case .failure(let error):
                         switch error {
-
-                        case .invalidURL:
+                        case .invalidURL, .unexpectedResponse:
                             self.shouldShowLoginError = true
                             self.loginErrorMessage = error.errorDescription ?? ""
-                            self.isLoading = false
                         case .httpCode(let code):
                             // if the status code is 401 then username or password is not matching
-                            if code == 401 {
-                                self.shouldShowLoginError = true
-                                self.loginErrorMessage = "Invalid username or password"
-                                self.isLoading = false
                             // if the status code is 409 then 2FA is needed
-                            } else if code == 409 {
+                            let httpError = HTTPErrorCodes(rawValue: code) ?? .unknown
+                            switch httpError {
+                            case .need2FA:
                                 self.showNext2FAView = true
+                            default:
+                                self.shouldShowLoginError = true
+                                self.loginErrorMessage = error.localizedDescription
                             }
-                            self.isLoading = false
-                        case .unexpectedResponse:
-                            self.shouldShowLoginError = true
-                            self.loginErrorMessage = error.errorDescription ?? ""
-                            self.isLoading = false
                         }
-
-
                     case .finished:
                         self.shouldShowLoginError = false
                         self.loginErrorMessage = ""
-                        self.isLoading = false
                         break
 
                     }
+                    self.isLoading = false
                 },
                 receiveValue: { result in
                     self.isLoading = false
                     if result.0.success ?? false {
                         self.showNextLanguageSelectionView = true
-                        if let httpResponse = result.1 {
-                            self.saveTokenFromHeader(httpResponse: httpResponse)
+                        if let token = result.1 {
+                            self.token = token
                         }
                     }
                 }
             )
             .store(in: &subscribers)
-    }
-
-    private func saveTokenFromHeader(httpResponse: [AnyHashable: Any]) {
-        if let token = httpResponse["Set-Cookie"] as? String {
-            let filteredToken = token.split(separator: ";")
-            let connectId = filteredToken.first!.replacingOccurrences(of: "connect.sid=", with: "")
-            self.token = connectId
-        }
     }
 
     func twoFactorAuthentication() {
@@ -289,43 +273,32 @@ class UwaziServerViewModel: ObservableObject {
                     switch completion {
                     case .failure(let error):
                         switch error {
-
-                        case .invalidURL:
-                            self.shouldShowAuthenticationError = true
+                        case .invalidURL, .unexpectedResponse:
                             self.codeErrorMessage = error.errorDescription ?? ""
-                            self.isLoading = false
                         case .httpCode(let code):
                             // if the status code is 401 then the 2FA code is incorrect
-                            if code == 401 {
-                                self.shouldShowAuthenticationError = true
+                            let httpError = HTTPErrorCodes(rawValue: code) ?? .unknown
+                            switch httpError {
+                            case .unauthorized:
                                 self.codeErrorMessage = "Two-factor authentication failed."
-                                self.isLoading = false
-                            } else {
-                                self.shouldShowAuthenticationError = true
+                            default:
                                 self.codeErrorMessage = error.errorDescription ?? ""
-                                self.isLoading = false
                             }
-                        case .unexpectedResponse:
-                            self.shouldShowAuthenticationError = true
-                            self.codeErrorMessage = error.errorDescription ?? ""
-                            self.isLoading = false
                         }
-
-
+                        self.shouldShowAuthenticationError = true
                     case .finished:
                         self.shouldShowAuthenticationError = false
                         self.codeErrorMessage = ""
-                        self.isLoading = false
                         break
-
                     }
+                    self.isLoading = false
                 },
                 receiveValue: { result in
                     self.isLoading = false
                     if result.0.success ?? false {
                         self.showNextLanguageSelectionView = true
-                        if let httpResponse = result.1 {
-                            self.saveTokenFromHeader(httpResponse: httpResponse)
+                        if let token = result.1 {
+                            self.token = token
                         }
                     }
                 }
