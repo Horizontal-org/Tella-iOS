@@ -19,7 +19,7 @@ class ServersViewModel: ObservableObject {
         
         self.mainAppModel = mainAppModel
         
-        mainAppModel.vaultManager.tellaData.servers.sink { completion in
+        mainAppModel.vaultManager.tellaData?.servers.sink { completion in
         } receiveValue: { serverArray in
             self.serverArray = serverArray
         }.store(in: &subscribers)
@@ -40,6 +40,7 @@ class ServersViewModel: ObservableObject {
         do {
             _ = try mainAppModel.vaultManager.tellaData.deleteAllServers()
         } catch {
+            print("Error deleting all servers connections")
         }
     }
 }
