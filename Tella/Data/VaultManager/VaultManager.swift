@@ -41,15 +41,20 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     internal let containerPath: String = "Containers"
     
     @Published var root: VaultFile?
-    @Published var tellaData : TellaData?
     
+    @Published var tellaData : TellaData?
+    @Published var vaultDataSource : VaultDataSourceInterface?
+
+    
+    //TODO: delete progress and shouldCancelImportAndEncryption
     @Published var progress :  ImportProgress = ImportProgress()
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
 
     func initialize(with key:String?) {
         
         self.tellaData = TellaData(key: key)
-        
+        self.vaultDataSource = VaultDataSource(key: key)
+
         root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
         
         do {
@@ -61,6 +66,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     
     func resetData() {
         self.tellaData = nil
+        self.vaultDataSource = nil
         self.root = nil
     }
     

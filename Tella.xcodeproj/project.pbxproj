@@ -174,6 +174,8 @@
 		1268553E27D2572100385E18 /* FileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC6FC53269BCDDE001B0D34 /* FileInfoView.swift */; };
 		1268554027D2994500385E18 /* VaultFileStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1268553F27D2994500385E18 /* VaultFileStatus.swift */; };
 		1268554127D2ACB200385E18 /* RecentFilesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC4263A383100CE191A /* RecentFilesListView.swift */; };
+		126A05BD2A9F7C7E0044E1B7 /* VaultDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126A05BC2A9F7C7E0044E1B7 /* VaultDataSource.swift */; };
+		126A05BF2A9F9CAA0044E1B7 /* VaultDataSourceInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126A05BE2A9F9CAA0044E1B7 /* VaultDataSourceInterface.swift */; };
 		126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */; };
 		126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */; };
 		126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ECFE927C57FA600ED5161 /* CameraState.swift */; };
@@ -543,6 +545,8 @@
 		126818C02A38B0C2004606BD /* FileInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInformation.swift; sourceTree = "<group>"; };
 		126818C22A38B69E004606BD /* FileTypeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTypeHelper.swift; sourceTree = "<group>"; };
 		1268553F27D2994500385E18 /* VaultFileStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileStatus.swift; sourceTree = "<group>"; };
+		126A05BC2A9F7C7E0044E1B7 /* VaultDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultDataSource.swift; sourceTree = "<group>"; };
+		126A05BE2A9F9CAA0044E1B7 /* VaultDataSourceInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultDataSourceInterface.swift; sourceTree = "<group>"; };
 		126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCamera.swift; sourceTree = "<group>"; };
 		126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtension.swift; sourceTree = "<group>"; };
 		126ECFE927C57FA600ED5161 /* CameraState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraState.swift; sourceTree = "<group>"; };
@@ -1159,6 +1163,8 @@
 		125A89602A965CEF009347C3 /* Vault */ = {
 			isa = PBXGroup;
 			children = (
+				126A05BC2A9F7C7E0044E1B7 /* VaultDataSource.swift */,
+				126A05BE2A9F9CAA0044E1B7 /* VaultDataSourceInterface.swift */,
 				125A89552A94D7AB009347C3 /* VaultDataBase.swift */,
 				125A89532A94C0F1009347C3 /* VaultFileDatabaseConstants.swift */,
 			);
@@ -2307,6 +2313,7 @@
 				12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */,
 				125A895F2A965C33009347C3 /* VaultFileType.swift in Sources */,
 				123AE5A129CFAD7F00814CC7 /* OutboxReportVM.swift in Sources */,
+				126A05BD2A9F7C7E0044E1B7 /* VaultDataSource.swift in Sources */,
 				12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */,
 				D572EAC7263A383900CE191A /* RecentFileCell.swift in Sources */,
 				1268554027D2994500385E18 /* VaultFileStatus.swift in Sources */,
@@ -2317,6 +2324,7 @@
 				1216123E28DE142D00E6D7B6 /* JoinItem.swift in Sources */,
 				124190462A43230000E177F3 /* SQLiteStatementBuilderExtension.swift in Sources */,
 				12EC94D828ABCCED0070E72B /* SettingsItemView.swift in Sources */,
+				126A05BF2A9F9CAA0044E1B7 /* VaultDataSourceInterface.swift in Sources */,
 				125A89582A965BA4009347C3 /* VaultFileDB.swift in Sources */,
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,
