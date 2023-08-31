@@ -14,7 +14,6 @@ struct UwaziServerRepository: WebRepository {
     func login(username: String,
                password: String,
                serverURL: String) -> AnyPublisher<(BoolResponse,HTTPURLResponse?), APIError> {
-
         let call : AnyPublisher<(BoolResponse,HTTPURLResponse?), APIError> = callReturnsHeaders(endpoint: API.login((username: username, password: password, serverURL: serverURL)))
         return call
             .eraseToAnyPublisher()
