@@ -26,9 +26,9 @@ class HomeViewModel: ObservableObject {
         self.appModel = appModel
         getServersList()
     }
-    
-    func getServersList() {
-            self.appModel.vaultManager.tellaData.servers.sink { result in
+
+    func getServersList() {            
+        self.appModel.vaultManager.tellaData?.servers.sink { result in
                 
             } receiveValue: { serverArray in
                 self.serverDataItemArray.removeAll()

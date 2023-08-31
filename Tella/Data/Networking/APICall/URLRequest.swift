@@ -28,40 +28,6 @@ extension WebRepository {
                 .eraseToAnyPublisher()
         }
     }
-    // TODO: Change the name
-    func callReturnsHeaders<Value>(endpoint: any APIRequest) -> AnyPublisher<(Value, HTTPURLResponse?), APIError>
-    where Value: Decodable {
-        let subject = PassthroughSubject<(Value, HTTPURLResponse?), APIError>()
-        do {
-            let request = try endpoint.urlRequest()
-            request.curlRepresentation()
-            let configuration = URLSessionConfiguration.default
-            configuration.waitsForConnectivity = true
-
-            URLSession(configuration: configuration)
-                .dataTask(with: request) { data, response, error in
-                    if let data = data, let response = response as? HTTPURLResponse {
-                        if !HTTPCodes.success.contains(response.statusCode) {
-                            subject.send(completion: .failure(APIError.httpCode(response.statusCode)))
-                        }
-                        do {
-                            let decodedObject = try JSONDecoder().decode(Value.self, from: data)
-                            subject.send((decodedObject, response))
-                            subject.send(completion: .finished)
-                        } catch {
-                            subject.send(completion: .failure(APIError.invalidURL))
-                        }
-                    } else {
-                        subject.send(completion: .failure(APIError.unexpectedResponse))
-                    }
-                }.resume()
-
-        } catch (let error) {
-            print(error.localizedDescription)
-            subject.send(completion: .failure(APIError.invalidURL))
-        }
-        return subject.eraseToAnyPublisher()
-    }
 }
 
 // MARK: - Helpers

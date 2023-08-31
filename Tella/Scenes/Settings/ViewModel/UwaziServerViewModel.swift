@@ -62,7 +62,7 @@ class UwaziServerViewModel: ObservableObject {
     var setting: UwaziCheckURLResult?
 
     var isAutoUploadServerExist: Bool {
-        return mainAppModel.vaultManager.tellaData.getAutoUploadServer() != nil && autoUpload == false
+        return mainAppModel.vaultManager.tellaData?.getAutoUploadServer() != nil && autoUpload == false
     }
 
     init(mainAppModel : MainAppModel, currentServer: Server?) {
@@ -102,7 +102,7 @@ class UwaziServerViewModel: ObservableObject {
         )
         do {
             dump(server)
-            let id = try mainAppModel.vaultManager.tellaData.addServer(server: server)
+            guard let id = try mainAppModel.vaultManager.tellaData?.addServer(server: server) else { return }
             server.id = id
             self.addUwaziLocaleFor(serverId: id)
             self.currentServer = server
@@ -127,7 +127,7 @@ class UwaziServerViewModel: ObservableObject {
                             autoDelete: autoDelete)
 
         do {
-            let id = try mainAppModel.vaultManager.tellaData.updateServer(server: server)
+            let id = try mainAppModel.vaultManager.tellaData?.updateServer(server: server)
             server.id = id
             updateUwaziLocaleFor(serverId: currentServerId)
         } catch {
@@ -137,17 +137,17 @@ class UwaziServerViewModel: ObservableObject {
     func addUwaziLocaleFor(serverId: Int) {
         do {
             guard let locale = self.selectedLanguage?.locale else { return }
-            _ = try mainAppModel.vaultManager.tellaData.database?.addUwaziLocaleWith(locale: UwaziLocale(locale: locale, serverId: serverId))
+            _ = try mainAppModel.vaultManager.tellaData?.database?.addUwaziLocaleWith(locale: UwaziLocale(locale: locale, serverId: serverId))
         } catch let error {
             debugLog(error)
         }
     }
     func updateUwaziLocaleFor(serverId: Int) {
         do {
-            let selectedlocale = try mainAppModel.vaultManager.tellaData.database?.getUwaziLocaleWith(serverId: serverId)
+            let selectedlocale = try mainAppModel.vaultManager.tellaData?.database?.getUwaziLocaleWith(serverId: serverId)
             guard let localeId = selectedlocale?.id, let locale = selectedLanguage?.locale else { return }
             if selectedlocale?.locale != locale {
-                _ = try mainAppModel.vaultManager.tellaData.database?.updateLocale(localeId: localeId, locale: locale)
+                _ = try mainAppModel.vaultManager.tellaData?.database?.updateLocale(localeId: localeId, locale: locale)
             }
         } catch let error {
             debugLog(error)
@@ -177,7 +177,7 @@ class UwaziServerViewModel: ObservableObject {
                 self.isLoading = false
                 self.languages.append(contentsOf: wrapper.rows ?? [])
                 if let server = self.currentServer, let id = server.id {
-                    let locale = try? self.mainAppModel.vaultManager.tellaData.database?.getUwaziLocaleWith(serverId: id)
+                    let locale = try? self.mainAppModel.vaultManager.tellaData?.database?.getUwaziLocaleWith(serverId: id)
                     self.selectedLanguage = self.languages.first(where: {$0.locale == locale?.locale})
                 }
                 self.showNextSuccessLoginView = true
@@ -267,8 +267,8 @@ class UwaziServerViewModel: ObservableObject {
             .store(in: &subscribers)
     }
 
-    private func saveTokenFromHeader(httpResponse: HTTPURLResponse) {
-        if let token = httpResponse.value(forHTTPHeaderField: "Set-Cookie") {
+    private func saveTokenFromHeader(httpResponse: [AnyHashable: Any]) {
+        if let token = httpResponse["Set-Cookie"] as? String {
             let filteredToken = token.split(separator: ";")
             let connectId = filteredToken.first!.replacingOccurrences(of: "connect.sid=", with: "")
             self.token = connectId
@@ -324,10 +324,8 @@ class UwaziServerViewModel: ObservableObject {
                     self.isLoading = false
                     if result.0.success ?? false {
                         self.showNextLanguageSelectionView = true
-                        if let token = result.1?.value(forHTTPHeaderField: "Set-Cookie") {
-                            let filteredToken = token.split(separator: ";")
-                            let connectId = filteredToken.first!.replacingOccurrences(of: "connect.sid=", with: "")
-                            self.token = connectId
+                        if let httpResponse = result.1 {
+                            self.saveTokenFromHeader(httpResponse: httpResponse)
                         }
                     }
                 }
