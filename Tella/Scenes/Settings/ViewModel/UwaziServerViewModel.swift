@@ -102,7 +102,6 @@ class UwaziServerViewModel: ObservableObject {
                             autoDelete: autoDelete,
                             serverType: .uwazi
         )
-
         do {
             dump(server)
             let id = try mainAppModel.vaultManager.tellaData.addServer(server: server)

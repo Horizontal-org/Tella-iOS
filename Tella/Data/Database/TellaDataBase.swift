@@ -81,7 +81,6 @@ class TellaDataBase: UwaziServerLanguageProtocol {
             cddl(D.cAutoDelete, D.integer),
             cddl(D.cServerType, D.integer)
         ]
-        
         statementBuilder.createTable(tableName: D.tServer, columns: columns)
     }
 
@@ -133,7 +132,6 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                            KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1),
                            KeyValue(key: D.cServerType, value:server.serverType)
         ]
-        
         return try statementBuilder.insertInto(tableName: D.tServer,
                                                keyValue: valuesToAdd)
     }
