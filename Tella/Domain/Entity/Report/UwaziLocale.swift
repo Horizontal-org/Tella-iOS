@@ -13,7 +13,6 @@ class UwaziLocale : Hashable, Codable {
     var id : Int?
     var locale : String?
     var serverId : Int?
-    var title: Int?
 
     init(id: Int? = nil,
          locale: String? = nil,
@@ -29,7 +28,6 @@ class UwaziLocale : Hashable, Codable {
         case id = "c_locale_id"
         case locale = "c_locale"
         case serverId = "c_server_id"
-        case title = "c_title"
     }
 
     static func == (lhs: UwaziLocale, rhs: UwaziLocale) -> Bool {

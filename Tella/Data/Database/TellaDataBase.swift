@@ -604,7 +604,6 @@ class TellaDataBase: UwaziServerLanguageProtocol {
     func deleteAllUwaziLocale() throws -> Int {
         return try statementBuilder.deleteAll(tableNames: [D.tUwaziServerLanguage])
     }
-
     func deleteReportFiles(reportIds:[Int]) {
         let reportCondition = [KeyValues(key: D.cReportInstanceId, value: reportIds)]
         statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
