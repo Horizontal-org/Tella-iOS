@@ -327,7 +327,6 @@
 		D7F55FC825348FA50028739E /* RecordState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FC725348FA50028739E /* RecordState.swift */; };
 		D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FCC25348FB80028739E /* AudioRecorderManager.swift */; };
 		D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FD9253490BE0028739E /* RecordingAudioManager.swift */; };
-
 		E108B75729FE79340045CCBE /* UwaziServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108B75629FE79340045CCBE /* UwaziServerViewModel.swift */; };
 		E11968B12A1F409D00BA7B56 /* UwaziLanguageResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11968B02A1F409D00BA7B56 /* UwaziLanguageResult.swift */; };
 		E131BA3B2A1B45A30095BC91 /* UwaziServerRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = E131BA3A2A1B45A30095BC91 /* UwaziServerRepositories.swift */; };

@@ -14,7 +14,6 @@ struct UwaziServerAccessSelectionView: View {
     // TODO: Ask if there is any good way to do it
     @State var isLoginSelected: Bool = false
     @State var isPublicInstance: Bool = false
-
     @EnvironmentObject var serversViewModel : ServersViewModel
     @EnvironmentObject var uwaziServerViewModel : UwaziServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel

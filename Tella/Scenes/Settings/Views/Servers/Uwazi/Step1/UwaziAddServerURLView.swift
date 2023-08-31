@@ -11,12 +11,9 @@ import SwiftUI
 struct UwaziAddServerURLView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var nextButtonAction: NextButtonAction = .action
-
-
     @EnvironmentObject var serversViewModel : ServersViewModel
     @StateObject var uwaziServerViewModel : UwaziServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
-
     init(appModel:MainAppModel, server: Server? = nil) {
         _uwaziServerViewModel = StateObject(wrappedValue: UwaziServerViewModel(mainAppModel: appModel, currentServer: server))
     }
@@ -53,7 +50,6 @@ struct UwaziAddServerURLView: View {
                                             nextButtonAction: .action,
                                             nextAction: {
                         self.uwaziServerViewModel.checkURL()
-
                     },
                                             backAction: {
                         self.presentationMode.wrappedValue.dismiss()

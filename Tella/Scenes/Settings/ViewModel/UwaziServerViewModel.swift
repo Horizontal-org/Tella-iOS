@@ -53,7 +53,6 @@ class UwaziServerViewModel: ObservableObject {
     // Language
     @Published var languages: [UwaziLanguageRow] = []
     @Published var selectedLanguage: UwaziLanguageRow?
-
     private var cancellableLogin: Cancellable? = nil
     private var cancellableAuthenticationCode: Cancellable? = nil
     var subscribers = Set<AnyCancellable>()
@@ -138,7 +137,6 @@ class UwaziServerViewModel: ObservableObject {
 
         }
     }
-
     func addUwaziLocaleFor(serverId: Int) {
         do {
             guard let locale = self.selectedLanguage?.locale else { return }
@@ -217,7 +215,6 @@ class UwaziServerViewModel: ObservableObject {
     }
 
     func login() {
-
         guard let baseURL = serverURL.getBaseURL() else { return }
 
         isLoading = true

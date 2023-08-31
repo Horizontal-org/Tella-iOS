@@ -77,7 +77,6 @@ struct UwaziLanguageSelectionView: View {
                 if uwaziServerViewModel.isLoading {
                     CircularActivityIndicatory()
                 }
-                
             }
 
         }
