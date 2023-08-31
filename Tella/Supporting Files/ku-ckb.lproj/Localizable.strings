@@ -298,7 +298,12 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_Server_Uwazi_Connect_Server" = "Connected to server";
 "Setting_Server_Uwazi_Success_Message" = "You have successfully connected to the server and will be able to share your data.";
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 "Uwazi_Home_Server_Title" = "Uwazi";
 =======
 >>>>>>> 9607f55 (Conflict resolved)
+=======
+
+"Uwazi_Home_Server_Title" = "Uwazi";
+>>>>>>> 8fd0780 (Conflict resolved)

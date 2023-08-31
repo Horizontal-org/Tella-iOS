@@ -17,6 +17,7 @@ struct UwaziServerAccessSelectionView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
     @EnvironmentObject var uwaziServerViewModel : UwaziServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
+
     var body: some View {
         ContainerView {
             VStack {

@@ -64,7 +64,7 @@ struct UwaziAddServerURLView: View {
         .navigationBarHidden(true)
         .onAppear {
             #if DEBUG
-                        uwaziServerViewModel.serverURL = "https://horizontal.uwazi.io"
+            uwaziServerViewModel.serverURL = "https://horizontal.uwazi.io"
             #endif
             guard (uwaziServerViewModel.currentServer != nil) else { return }
             uwaziServerViewModel.validURL = true
@@ -85,22 +85,6 @@ struct UwaziAddServerURLView: View {
                 .environmentObject(serversViewModel)
                 .environmentObject(uwaziServerViewModel)
             navigateTo(destination: loginView)
-        }
-        .onReceive(uwaziServerViewModel.$isPublicInstance) { value in
-            if value {
-                let serverAccess = UwaziServerAccessSelectionView()
-                    .environmentObject(uwaziServerViewModel)
-                    .environmentObject(serversViewModel)
-                navigateTo(destination: serverAccess)
-            }
-        }
-        .onReceive(uwaziServerViewModel.$isPrivateInstance) { value in
-            if value {
-                let loginView = UwaziLoginView()
-                    .environmentObject(serversViewModel)
-                    .environmentObject(uwaziServerViewModel)
-                navigateTo(destination: loginView)
-            }
         }
     }
 }
