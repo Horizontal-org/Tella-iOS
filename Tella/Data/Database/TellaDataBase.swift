@@ -38,8 +38,10 @@ class TellaDataBase: UwaziServerLanguageProtocol {
             switch oldVersion {
             case 0:
                 createTables()
+               // alterTable()
             case 1:
                 alterTable()
+                createTables()
             default :
                 break
             }
@@ -58,12 +60,10 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         createLanguageTableForUwazi()
     }
     func alterTable() {
-        statementBuilder.alterTable(tableName: D.tServer, column: cddl(D.cServerType,D.integer, true, ServerConnectionType.tella.rawValue))
+        let column = cddl(D.cServerType,D.integer, true, ServerConnectionType.tella.rawValue)
+        statementBuilder.alterTable(tableName: D.tServer, column: column)
     }
-    
-    func update() {
-    }
-    
+
     func createServerTable() {
         // c_id | c_name | c_url | c_username | c_password | cAccessToken | cActivatedMetadata | cBackgroundUpload
         let columns = [

@@ -15,6 +15,16 @@ struct SettingsMainView: View {
     init(appModel:MainAppModel) {
         _settingsViewModel = StateObject(wrappedValue: SettingsViewModel(appModel: appModel))
         _serversViewModel = StateObject(wrappedValue: ServersViewModel(mainAppModel: appModel))
+        do {
+
+           let newLanguage = try? appModel.vaultManager.tellaData.database?.addUwaziLocaleWith(locale: UwaziLocale(locale: "en", serverId: 100, title: 1000))
+            //let newLanguage = try? appModel.vaultManager.tellaData.database?.addUwaziLocaleWith(locale: UwaziLocale(locale: "en", serverId: 100))
+            let language = try? appModel.vaultManager.tellaData.database?.getAllUwaziLocale()
+            print(language)
+
+        } catch {
+
+        }
     }
     
     var body: some View {

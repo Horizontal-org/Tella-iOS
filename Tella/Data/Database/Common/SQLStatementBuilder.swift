@@ -215,8 +215,7 @@ class SQLiteStatementBuilder {
         if (ret != SQLITE_OK) { // corrupt database.
             logDbErr("Error creating db table - \(tableName)")
         }
-    }
-    
+    }    
     @discardableResult
     func insertInto(tableName:String, keyValue: [KeyValue?]) throws -> Int {
         let keyValue = keyValue.compactMap({$0})
