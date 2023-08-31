@@ -79,7 +79,6 @@ class UwaziServerViewModel: ObservableObject {
         fillReportVM()
 
     }
-
     func handleServerAction() {
         if currentServer != nil {
             updateServer()
@@ -87,7 +86,6 @@ class UwaziServerViewModel: ObservableObject {
             addServer()
         }
     }
-
     func addServer() {
         let server = Server(name: setting?.siteName,
                             serverURL: serverURL.getBaseURL(),

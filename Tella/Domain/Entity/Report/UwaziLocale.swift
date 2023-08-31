@@ -16,8 +16,7 @@ class UwaziLocale : Hashable, Codable {
 
     init(id: Int? = nil,
          locale: String? = nil,
-         serverId: Int? = nil ,
-         title: Int? = nil
+         serverId: Int? = nil
         ) {
         self.id = id
         self.locale = locale

@@ -23,7 +23,6 @@ struct UwaziServerRepository: WebRepository {
                                   password: String,
                                   token: String,
                                   serverURL: String) -> AnyPublisher<(BoolResponse,HTTPURLResponse?), APIError> {
-
         let call : AnyPublisher<(BoolResponse,HTTPURLResponse?), APIError> = callReturnsHeaders(endpoint: API.twoFactorAuthentication((username: username, password: password,token: token, serverURL: serverURL)))
         return call
             .eraseToAnyPublisher()

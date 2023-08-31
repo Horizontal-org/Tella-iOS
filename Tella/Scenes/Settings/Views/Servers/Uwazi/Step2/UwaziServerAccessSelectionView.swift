@@ -37,16 +37,6 @@ struct UwaziServerAccessSelectionView: View {
                 })
             }
         }
-        .onAppear {
-            if let server = serverViewModel.currentServer {
-                if server.username == "" {
-                    self.isPublicInstance = true
-                } else {
-                    self.isLoginSelected = true
-                }
-            }
-
-        }
         .navigationBarBackButtonHidden(true)
 
     }
@@ -109,4 +99,3 @@ struct UwaziServerAccessSelectionView_Previews: PreviewProvider {
             .environmentObject(ServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
     }
 }
-

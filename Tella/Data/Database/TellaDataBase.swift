@@ -292,6 +292,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                 let files = getVaultFiles(reportID: reportID)
                 
                 let filteredFile = files.filter{(Date().timeIntervalSince($0.updatedDate ?? Date())) < 1800 }
+
                 if !filteredFile.isEmpty {
                     return getReport(dictionnary: dict)
                 }
@@ -549,9 +550,8 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         statementBuilder.delete(tableName: D.tReport,
                                 primarykeyValue: reportCondition)
     }
-    // MARK: CRUD operation for Language table for Uwazi
-    // TODO: Add these thing to a new class and set a protocol decoupling the dependencies
-    // TODO: Move this fuctions to TellaData for abstraction if needed
+    // MARK: CRUD operation for Language table for Uwazu
+    // TODO: Add these thing to a new class and set a protocol for abstraction
     func createLanguageTableForUwazi() {
         let columns = [
             cddl(D.cLocaleId, D.integer, primaryKey: true, autoIncrement: true),
@@ -577,7 +577,6 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                                            keyValue: valuesToUpdate,
                                            primarykeyValue: serverCondition)
     }
-
     func getUwaziLocaleWith(serverId: Int) throws -> UwaziLocale? {
         let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziServerLanguage,
                                                          andCondition: [KeyValue(key: D.cServerId, value: serverId)])
