@@ -78,7 +78,6 @@ struct UwaziLanguageSelectionView: View {
                     CircularActivityIndicatory()
                 }
             }
-
         }
         .onAppear(perform: {
             self.uwaziServerViewModel.languages.removeAll()
