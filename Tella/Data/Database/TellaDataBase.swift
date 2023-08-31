@@ -295,7 +295,6 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                 let files = getVaultFiles(reportID: reportID)
                 
                 let filteredFile = files.filter{(Date().timeIntervalSince($0.updatedDate ?? Date())) < 1800 }
-
                 if !filteredFile.isEmpty {
                     return getReport(dictionnary: dict)
                 }
@@ -605,15 +604,15 @@ class TellaDataBase: UwaziServerLanguageProtocol {
     func deleteAllUwaziLocale() throws -> Int {
         return try statementBuilder.deleteAll(tableNames: [D.tUwaziServerLanguage])
     }
-    
+
     func deleteReportFiles(reportIds:[Int]) {
         let reportCondition = [KeyValues(key: D.cReportInstanceId, value: reportIds)]
         statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
                                 inCondition: reportCondition)
     }
-    
+
     private func getServer(dictionnary : [String:Any] ) -> Server {
-        
+
         let id = dictionnary[D.cServerId] as? Int
         let name = dictionnary[D.cName] as? String
         let url = dictionnary[D.cURL] as? String
@@ -627,7 +626,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         let autoUpload = dictionnary[D.cAutoUpload] as? Int
         let autoDelete = dictionnary[D.cAutoDelete] as? Int
         let servertType = dictionnary[D.cServerType] as? Int
-        
+
         return Server(id:id,
                       name: name,
                       serverURL: url,
@@ -642,11 +641,10 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                       autoDelete: autoDelete == 0 ? false : true,
                       serverType: ServerConnectionType(rawValue: servertType ?? 1)
         )
-        
     }
-    
+
     private func getReport(dictionnary : [String:Any] ) -> Report {
-        
+
         let reportID = dictionnary[D.cReportId] as? Int
         let title = dictionnary[D.cTitle] as? String
         let description = dictionnary[D.cDescription] as? String
@@ -655,7 +653,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         let status = dictionnary[D.cStatus] as? Int
         let apiReportId = dictionnary[D.cApiReportId] as? String
         let currentUpload = dictionnary[D.cCurrentUpload] as? Int
-        
+
         return Report(id: reportID,
                       title: title ?? "",
                       description: description ?? "",
@@ -675,5 +673,4 @@ extension TellaDataBase {
         return decodedValues
     }
 }
-
 

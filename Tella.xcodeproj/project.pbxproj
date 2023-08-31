@@ -1103,6 +1103,7 @@
 				128FD0B327F774FB00B24915 /* RecentFile.swift */,
 				E14FD8792A6AB22200BC7523 /* UwaziLocale.swift */,
 				12751EA92A13A22100FAD7C6 /* SettingsModel.swift */,
+				E14FD8792A6AB22200BC7523 /* UwaziLocale.swift */,
 			);
 			path = Report;
 			sourceTree = "<group>";
