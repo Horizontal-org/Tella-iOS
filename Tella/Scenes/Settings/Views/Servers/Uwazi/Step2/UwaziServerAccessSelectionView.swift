@@ -100,3 +100,7 @@ struct UwaziServerAccessSelectionView_Previews: PreviewProvider {
             .environmentObject(ServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
     }
 }
+
+
+
+
