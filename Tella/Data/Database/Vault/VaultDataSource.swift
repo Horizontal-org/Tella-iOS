@@ -12,7 +12,7 @@ class VaultDataSource : VaultDataSourceInterface {
         self.database = VaultDataBase(key: key)
     }
 
-    func addVaultFile(file: VaultFileDB, parentId: String) {
+    func addVaultFile(file: VaultFileDB, parentId: String?) {
         self.database.addVaultFile(file: file, parentId: parentId)
     }
     

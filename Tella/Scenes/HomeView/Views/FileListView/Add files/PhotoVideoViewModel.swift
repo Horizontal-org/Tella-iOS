@@ -10,18 +10,22 @@ import Photos
 import AVFoundation
 import AVKit
 import AssetsLibrary
+import Combine
 
 class PhotoVideoViewModel : ObservableObject {
     
     var mainAppModel : MainAppModel
     var folderPathArray: [VaultFile] = []
-    var  resultFile : Binding<[VaultFile]?>?
-    var  rootFile : Binding<VaultFile?>?
-
+ 
+    var  resultFile : Binding<[VaultFileDB]?>?
+    var  rootFile : Binding<VaultFileDB?>?
+    
+    private var cancellable: Set<AnyCancellable> = []
+    
     init(mainAppModel: MainAppModel,
          folderPathArray: [VaultFile],
-         resultFile : Binding<[VaultFile]?>?,
-         rootFile : Binding<VaultFile?>?) {
+         resultFile : Binding<[VaultFileDB]?>?,
+         rootFile : Binding<VaultFileDB?>?) {
         self.mainAppModel = mainAppModel
         self.folderPathArray = folderPathArray
         self.resultFile = resultFile
@@ -97,8 +101,10 @@ class PhotoVideoViewModel : ObservableObject {
                     let tmpFileURL = self.mainAppModel.vaultManager.createTempFileURL(pathExtension: file.pathExtension)
                     return await file.returnVideoURLWithoutMetadata(destinationURL: tmpFileURL)
                 })
-                await handleAddVideoFile(files: urls.compactMap({$0}), type: .video, referenceUrl: completion.referenceURL)
-            }
+//                await handleAddVideoFile(files: urls.compactMap({$0}), type: .video, referenceUrl: completion.referenceURL)
+                addFiles(files: urls.compactMap({$0}), originalURLs: [completion.referenceURL])
+                
+                            }
         }
     }
 
@@ -106,27 +112,37 @@ class PhotoVideoViewModel : ObservableObject {
     /// - Parameters:
     ///   - files:  Array of the URL of the videos
     ///   - type: Type of file
-    func handleAddVideoFile(files: [URL], type: TellaFileType, referenceUrl: URL?) async {
+    func addFiles(files: [URL], originalURLs: [URL?]?)   {
+        
+        self.mainAppModel.addVaultFile(filePaths: files, parentId: self.rootFile?.wrappedValue?.id)
+            .sink { importVaultFileResult in
+                
+                switch importVaultFileResult {
+                    
+                case .fileAdded(let vaulFile):
+                    
+                    if self.mainAppModel.importOption == .deleteOriginal {
+                       
+                        if let originalURLs {
+                            self.removeOriginalImage(imageUrls: originalURLs)
+                        } else {
+                            self.removeFiles(files: files)
+                        }
+                    }
 
-        do { let vaultFile = try await self.mainAppModel.add(files: files,
-                                                             to: self.rootFile?.wrappedValue,
-                                                             type: type,
-                                                             folderPathArray: self.folderPathArray)
-
-            if mainAppModel.importOption == .deleteOriginal {
-                if(type == .video && referenceUrl != nil) {
-                    removeOriginalImage(imageUrls: [referenceUrl!])
-                } else {
-                    removeFiles(files: files)
+                    DispatchQueue.main.async {
+                        self.resultFile?.wrappedValue = vaulFile
+                    }
+                    
+                    break
+                    
+                case .importProgress(let importProgress):
+                    break
+                    
                 }
-            }
-            DispatchQueue.main.async {
-                self.resultFile?.wrappedValue = vaultFile
-            }
-        }
-        catch {
+                
+            }.store(in: &cancellable)
 
-        }
     }
 
     /// This function imports the image file from the user selected image with the metadata attached to the file
@@ -149,30 +165,55 @@ class PhotoVideoViewModel : ObservableObject {
     ///   - files: Array of the URL of the images
     ///   - originalURL: The actual URL of the image selected
     func handleAddingImageFile(files: [URL],originalURL: URL?) async {
-        do {
-            let vaultFile = try await self.mainAppModel.add(files: files,
-                                                            to: self.rootFile?.wrappedValue,
-                                                            type: .image,
-                                                            folderPathArray: self.folderPathArray)
+      
+        
+        self.mainAppModel.addVaultFile(filePaths: files, parentId: self.rootFile?.wrappedValue?.id)
+            .sink { importVaultFileResult in
+             
+                switch importVaultFileResult {
+                case .fileAdded(let vaulFile):
+                    
+                    break
+                    
+                case .importProgress(let importProgress):
+                    print("importProgress", importProgress)
+                    
+                    break
 
-            //remove originalURL from phone
-            if mainAppModel.importOption == .deleteOriginal {
-                let imageUrls = [originalURL].compactMap{$0}
-                removeOriginalImage(imageUrls: imageUrls)
+                }
+                
+            }.store(in: &cancellable)
 
-            }
-            DispatchQueue.main.async {
-                self.resultFile?.wrappedValue = vaultFile
-            }
-        }
-        catch {
-
-        }
+        
+        
+        
+        
+//        do {
+//            let vaultFile = try await self.mainAppModel.add(files: files,
+//                                                            to: self.rootFile?.wrappedValue,
+//                                                            type: .image,
+//                                                            folderPathArray: self.folderPathArray)
+//
+//            //remove originalURL from phone
+//            if mainAppModel.importOption == .deleteOriginal {
+//                let imageUrls = [originalURL].compactMap{$0}
+//                removeOriginalImage(imageUrls: imageUrls)
+//
+//            }
+//            DispatchQueue.main.async {
+//                self.resultFile?.wrappedValue = vaultFile
+//            }
+//        }
+//        catch {
+//
+//        }
     }
 
-    func removeOriginalImage(imageUrls: [URL]) {
+    func removeOriginalImage(imageUrls: [URL?]) {
+//        guard let imageUrls  else { return  }
+        let imageUrlss = imageUrls.compactMap({$0})
         PHPhotoLibrary.shared().performChanges( {
-            let imageAssetToDelete = PHAsset.fetchAssets(withALAssetURLs: imageUrls, options: nil)
+            let imageAssetToDelete = PHAsset.fetchAssets(withALAssetURLs: imageUrlss, options: nil)
                 PHAssetChangeRequest.deleteAssets(imageAssetToDelete)
                 },
                 completionHandler: { success, error in

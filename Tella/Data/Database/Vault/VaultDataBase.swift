@@ -6,7 +6,7 @@ import Foundation
 
 protocol VaultDataBaseProtocol {
     func createVaultTable()
-    func addVaultFile(file : VaultFileDB, parentId: String)
+    func addVaultFile(file : VaultFileDB, parentId: String?)
     func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB]
     func getVaultFile(id: String?) -> VaultFileDB?
     func getVaultFiles(ids: [String]) -> [VaultFileDB]
@@ -21,7 +21,7 @@ protocol DataBase {
 }
 
 class VaultDataBase : DataBase, VaultDataBaseProtocol {
-    
+
     internal var dataBaseHelper: DataBaseHelper
     internal var statementBuilder: SQLiteStatementBuilder
     
@@ -75,7 +75,7 @@ class VaultDataBase : DataBase, VaultDataBaseProtocol {
         statementBuilder.createTable(tableName: VaultD.tVaultFile, columns: columns)
     }
     
-    func addVaultFile(file : VaultFileDB, parentId: String) {
+    func addVaultFile(file : VaultFileDB, parentId: String?) {
         
         let valuesToAdd = [KeyValue(key: VaultD.cId, value: file.id),
                            KeyValue(key: VaultD.cParentId, value: parentId),

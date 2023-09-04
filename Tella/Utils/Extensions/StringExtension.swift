@@ -4,6 +4,9 @@
 //
 
 import Foundation
+import MobileCoreServices
+import UniformTypeIdentifiers
+
 
 extension String {
     func getDate() -> Date? {
@@ -72,6 +75,63 @@ extension String {
         
         return "\(fileType)-\(Date().getDate())"
     }
+
+//    func getMimeType() -> String {
+//
+//        let unknown = "application/octet-stream"
+//
+//        guard let extUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, self as CFString, nil) else {
+//            return  unknown
+//        }
+//
+//        guard let mimeUTI = UTTypeCopyPreferredTagWithClass(extUTI.takeUnretainedValue(), kUTTagClassMIMEType) else {
+//            return  unknown
+//        }
+//
+//        return String(mimeUTI.takeUnretainedValue())
+//    }
     
+
+    
+}
+
+extension String {
+
+    func mimeType() -> String {
+         if let type = UTType(filenameExtension: self) {
+            if let mimetype = type.preferredMIMEType {
+                return mimetype as String
+            }
+        }
+        return "application/octet-stream"
+    }
+
+    var containsImage: Bool {
+        if let type = UTType(mimeType: self) {
+            return type.conforms(to: .image)
+        }
+        return false
+    }
+    
+    var containsAudio: Bool {
+        if let type = UTType(mimeType: self) {
+            return type.conforms(to: .audio)
+        }
+        return false
+    }
+    
+    var containsMovie: Bool {
+        if let type = UTType(mimeType: self) {
+            return type.conforms(to: .movie)   // ex. .mp4-movies
+        }
+        return false
+    }
+    
+    var containsVideo: Bool {
+        if let type = UTType(mimeType: self) {
+            return type.conforms(to: .video)
+        }
+        return false
+    }
 }
 

@@ -14,8 +14,8 @@ protocol VaultManagerInterface {
     func load(file: VaultFile) -> Data?
     func load(files vaultFiles: [VaultFile]) -> [URL]
     func loadFilesInfos(file vaultFile: VaultFile, offsetSize:Int ) -> VaultFileInfo?
-    func save(_ data: Data, vaultFile: VaultFile, parent: VaultFile?) -> Bool?
-    func save<T: Datable>(_ object: T, vaultFile: VaultFile, parent: VaultFile? ) -> Bool?
+//    func save(_ data: Data, vaultFile: VaultFile, parent: VaultFile?) -> Bool?
+//    func save<T: Datable>(_ object: T, vaultFile: VaultFile, parent: VaultFile? ) -> Bool?
     func createNewFolder(name: String, parent: VaultFile?, folderPathArray : [VaultFile])
     func rename(file : VaultFile, parent: VaultFile?)
     func delete(files: [VaultFile], parent: VaultFile?)
@@ -36,7 +36,7 @@ class VaultManager: VaultManagerInterface, ObservableObject {
     private let cryptoManager: CryptoManager = CryptoManager.shared
     private let fileManager: FileManagerInterface = DefaultFileManager()
     private let rootFileName: String = "root"
-    private var cancellable: Set<AnyCancellable> = []
+     var cancellable: Set<AnyCancellable> = []
     
     internal let containerPath: String = "Containers"
     
@@ -194,6 +194,23 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
     }
     
+    
+    
+    //TODO: To remove
+    
+    func importFileAndEncrypt(data : Data, vaultFile:VaultFileDB) {
+       
+       debugLog("\(data.count); \(vaultFile.type); \(vaultFile.name)", space: .files)
+       
+       let fileURL = containerURL(for: vaultFile.id)
+       guard let encrypted = cryptoManager.encrypt(data),
+             fileManager.createFile(atPath: fileURL, contents: encrypted) else {
+           debugLog("encryption failed \(String(describing: vaultFile.name))", level: .debug, space: .crypto)
+           return
+       }
+   }
+
+    
     func createNewFolder(name: String, parent: VaultFile?, folderPathArray : [VaultFile])  {
         debugLog("\(name)", space: .files)
         let pathArray = folderPathArray.compactMap{$0.containerName}
@@ -318,7 +335,6 @@ class VaultManager: VaultManagerInterface, ObservableObject {
             debugLog("encryption failed \(String(describing: vaultFile.fileName))", level: .debug, space: .crypto)
             return nil
         }
-        parent?.add(file: vaultFile)
         return true
     }
     
@@ -594,6 +610,9 @@ extension VaultManager {
         
         guard  let filePath =  self.saveRetoredFilesToTempFiles(fileToRestore: fileToRestore) else { return nil}
         
+        
+        
+        ///----------------------------------------
         let _ = filePath.startAccessingSecurityScopedResource()
         defer { filePath.stopAccessingSecurityScopedResource() }
         
@@ -617,6 +636,8 @@ extension VaultManager {
                                         resolution: resolution,
                                         duration: duration,
                                         pathArray: pathArray)
+        ///-----------------------------------------
+
         
         return (FileDetails(file: vaultFile, data: data, fileUrl: filePath))
     }

@@ -9,3 +9,8 @@ struct FileDetails {
     var data : Data
     var fileUrl : URL
 }
+
+struct VaultFileDetails {
+    var file : VaultFileDB
+    var data : Data
+}

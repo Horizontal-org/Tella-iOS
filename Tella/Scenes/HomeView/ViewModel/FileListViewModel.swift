@@ -236,32 +236,7 @@ class FileListViewModel: ObservableObject {
         }
         
     }
-    
-    func add(files: [URL], type: TellaFileType) {
-        Task {
-            
-            do { try await appModel.add(files: files, to: self.rootFile, type: type, folderPathArray: folderPathArray)
-            }
-            catch {
-                
-            }
-        }
-    }
-    
-    func add(image: UIImage , type: TellaFileType, pathExtension:String?) {
-        guard let data = image.fixedOrientation()?.pngData() else { return }
-        guard let url = appModel.vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension ?? "png") else { return  }
-        Task {
-            
-            do {   try await appModel.add(files: [url], to: self.rootFile, type: type, folderPathArray: folderPathArray)
-                
-            }
-            catch {
-                
-            }
-        }
-    }
-    
+
     func add(folder: String) {
         appModel.add(folder: folder , to: self.rootFile)
     }

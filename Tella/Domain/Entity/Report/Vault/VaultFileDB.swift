@@ -7,12 +7,12 @@ import Foundation
 
 class VaultFileDB : Codable, Hashable {
     
-    var id : String?
+    var id : String
     var type : VaultFileType
     var hash : String?
     var metadata : String?
     var thumbnail : Data?
-    var name :  String?
+    var name :  String
     var created : Date?
     var duration: Double?
     var anonymous : Bool
@@ -40,6 +40,31 @@ class VaultFileDB : Codable, Hashable {
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id.hashValue)
+    }
+    
+    init(id: String = UUID().uuidString,
+         type: VaultFileType,
+         hash: String?  ,
+         metadata: String?,
+         thumbnail: Data?,
+         name: String,
+         created: Date? = nil,
+         duration: Double?,
+         anonymous: Bool,
+         size: Int? ,
+         mimeType: String? ) {
+        
+        self.id = id
+        self.type = type
+        self.hash = hash
+        self.metadata = metadata
+        self.thumbnail = thumbnail
+        self.name = name
+        self.created = created
+        self.duration = duration
+        self.anonymous = anonymous
+        self.size = size
+        self.mimeType = mimeType
     }
     
     required init(from decoder: Decoder) throws {
