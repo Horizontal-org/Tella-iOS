@@ -9,16 +9,11 @@
 import Combine
 import Foundation
 
-enum ServerTokenType {
-    case token(String)
-    case none
-}
-
 struct UwaziServerRepository: WebRepository {
 
     func login(username: String,
                password: String,
-               serverURL: String) -> AnyPublisher<ServerTokenType, APIError> {
+               serverURL: String) -> AnyPublisher<String?, APIError> {
 
         let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.login((username: username, password: password, serverURL: serverURL)))
         return apiResponse
@@ -32,7 +27,7 @@ struct UwaziServerRepository: WebRepository {
     func twoFactorAuthentication(username: String,
                                   password: String,
                                   token: String,
-                                  serverURL: String) -> AnyPublisher<ServerTokenType, APIError> {
+                                  serverURL: String) -> AnyPublisher<String?, APIError> {
 
         let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.twoFactorAuthentication((username: username, password: password,token: token, serverURL: serverURL)))
         return apiResponse
@@ -43,12 +38,12 @@ struct UwaziServerRepository: WebRepository {
             .eraseToAnyPublisher()
 
     }
-    private func handleToken(response: BoolResponse, allHeaderFields: [AnyHashable: Any]?) -> ServerTokenType {
+    private func handleToken(response: BoolResponse, allHeaderFields: [AnyHashable: Any]?) -> String? {
         if response.success ?? false {
-            guard let token = getTokenFromHeader(httpResponse: allHeaderFields) else { return .none}
-            return (.token(token))
+            guard let token = getTokenFromHeader(httpResponse: allHeaderFields) else { return nil }
+            return token
         } else {
-            return .none
+            return nil
         }
     }
     private func getTokenFromHeader(httpResponse: [AnyHashable: Any]?) -> String? {

@@ -234,12 +234,11 @@ class UwaziServerViewModel: ObservableObject {
         self.isLoading = false
     }
 
-    fileprivate func handleReceiveValueForLogin(_ result: ServerTokenType) {
+    fileprivate func handleReceiveValueForLogin(_ result: String?) {
         self.isLoading = false
-        switch result {
-        case .token(let token):
-            self.token = token
-        case .none:
+        if let result = result {
+            self.token = result
+        } else {
             self.shouldShowLoginError = true
             // TODO: More appropiate message here
             self.loginErrorMessage = "Something went wrong!!"
@@ -279,7 +278,7 @@ class UwaziServerViewModel: ObservableObject {
                     self.handleCompletionFor2FA(completion)
                 },
                 receiveValue: { result in
-                    self.handleReceiveValueFor2FA(result)
+                    self.handleReceiveValueForLogin(result)
                 }
             )
             .store(in: &subscribers)
@@ -307,18 +306,6 @@ class UwaziServerViewModel: ObservableObject {
             break
         }
         self.isLoading = false
-    }
-
-    fileprivate func handleReceiveValueFor2FA(_ result: ServerTokenType) {
-        self.isLoading = false
-        switch result {
-        case .token(let token):
-            self.token = token
-        case .none:
-            self.shouldShowLoginError = true
-            // TODO: More appropiate message here
-            self.loginErrorMessage = "Something went wrong!!"
-        }
     }
 
     func fillReportVM() {
