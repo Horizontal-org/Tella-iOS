@@ -217,75 +217,85 @@ class SQLiteStatementBuilder {
         }
     }    
     @discardableResult
-    func insertInto(tableName:String, keyValue: [KeyValue?]) throws -> Int {
-        let keyValue = keyValue.compactMap({$0})
-        
-        let keys = keyValue.compactMap{($0.key)}
-        let values = keyValue.compactMap{value in (":\(value.key)") }
-        
-        let insertSql = "INSERT INTO " + tableName
-        + " ( " + keys.joined(separator: ",") + ")"
-        + " VALUES "
-        + " ( " + values.joined(separator: ",") + " ) "
-        
-        debugLog("insertSql: \(insertSql)")
-        
-        guard let insertStatement = try prepareStatement(sql: insertSql) else {
-            throw SqliteError(message: errorMessage)
-        }
-        
-        if let stmt = bind(insertStatement: insertStatement, keyValue) {
-            
-            let result = execute(stmt: stmt, sql: insertSql)
-            
-            if result == 0 {
+    func insertInto(tableName:String, keyValue: [KeyValue?]) -> Int? {
+       do {
+            let keyValue = keyValue.compactMap({$0})
+
+            let keys = keyValue.compactMap{($0.key)}
+            let values = keyValue.compactMap{value in (":\(value.key)") }
+
+            let insertSql = "INSERT INTO " + tableName
+            + " ( " + keys.joined(separator: ",") + ")"
+            + " VALUES "
+            + " ( " + values.joined(separator: ",") + " ) "
+
+            debugLog("insertSql: \(insertSql)")
+
+            guard let insertStatement = try prepareStatement(sql: insertSql) else {
                 throw SqliteError(message: errorMessage)
             }
-            
-            return result
-            
-        } else {
-            throw SqliteError(message: errorMessage)
+
+            if let stmt = bind(insertStatement: insertStatement, keyValue) {
+
+                let result = execute(stmt: stmt, sql: insertSql)
+
+                if result == 0 {
+                    throw SqliteError(message: errorMessage)
+                }
+
+                return result
+
+            } else {
+                throw SqliteError(message: errorMessage)
+            }
+        } catch let error {
+            logDbErr("Error inserting into  db table - \(tableName) with error \(error.localizedDescription)")
+            return nil
         }
     }
     
     @discardableResult
-    func update(tableName:String, keyValue: [KeyValue?], primarykeyValue : [KeyValue?] ) throws -> Int {
-        let keyValue = keyValue.compactMap({$0})
-        let primarykeyValue = primarykeyValue.compactMap({$0})
-        
-        let setColumnNames = keyValue.compactMap{($0.key)}
-        let primaryKeyColumnNames = primarykeyValue.compactMap{($0.key)}
-        
-        let bindValues = keyValue + (primarykeyValue)
-        
-        var updateSql = "UPDATE '\(tableName)' SET "
-        
-        updateSql  += setColumnNames.map { "\($0) = :\($0)" }.joined(separator: ", ")
-        
-        if !primarykeyValue.isEmpty {
-            updateSql += " WHERE "
-            updateSql += primaryKeyColumnNames.map { "\($0) = :\($0)" }.joined(separator: " AND ")
-        }
-        
-        debugLog("update: \(updateSql)")
-        
-        guard let updateStatement = try prepareStatement(sql: updateSql) else {
-            throw SqliteError(message: errorMessage)
-        }
-        
-        if let stmt = bind(insertStatement: updateStatement, bindValues) {
-            
-            let result = execute(stmt: stmt, sql: updateSql)
-            
-            if result == 0 {
+    func update(tableName:String, keyValue: [KeyValue?], primarykeyValue : [KeyValue?] ) -> Int? {
+        do {
+            let keyValue = keyValue.compactMap({$0})
+            let primarykeyValue = primarykeyValue.compactMap({$0})
+
+            let setColumnNames = keyValue.compactMap{($0.key)}
+            let primaryKeyColumnNames = primarykeyValue.compactMap{($0.key)}
+
+            let bindValues = keyValue + (primarykeyValue)
+
+            var updateSql = "UPDATE '\(tableName)' SET "
+
+            updateSql  += setColumnNames.map { "\($0) = :\($0)" }.joined(separator: ", ")
+
+            if !primarykeyValue.isEmpty {
+                updateSql += " WHERE "
+                updateSql += primaryKeyColumnNames.map { "\($0) = :\($0)" }.joined(separator: " AND ")
+            }
+
+            debugLog("update: \(updateSql)")
+
+            guard let updateStatement = try prepareStatement(sql: updateSql) else {
                 throw SqliteError(message: errorMessage)
             }
-            
-            return result
-            
-        } else {
-            throw SqliteError(message: errorMessage)
+
+            if let stmt = bind(insertStatement: updateStatement, bindValues) {
+
+                let result = execute(stmt: stmt, sql: updateSql)
+
+                if result == 0 {
+                    throw SqliteError(message: errorMessage)
+                }
+
+                return result
+
+            } else {
+                throw SqliteError(message: errorMessage)
+            }
+        } catch let error {
+            logDbErr("Error inserting into  db table - \(tableName) with error \(error.localizedDescription)")
+            return nil
         }
     }
     

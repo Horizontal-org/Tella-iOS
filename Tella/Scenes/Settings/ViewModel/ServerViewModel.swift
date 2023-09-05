@@ -45,20 +45,15 @@ class ServerViewModel: ObservableObject {
     }
     
     init(mainAppModel : MainAppModel, currentServer: Server?) {
-        
         self.mainAppModel = mainAppModel
         self.currentServer = currentServer
-        
         cancellable = $validUsername.combineLatest($validPassword).sink(receiveValue: { validUsername, validPassword  in
             self.validCredentials = validUsername && validPassword
         })
-        
         fillReportVM()
-        
     }
     
     func addServer(token: String, project: ProjectAPI) {
-        
         let server = Server(name: project.name,
                             serverURL: projectURL.getBaseURL(),
                             username: username,
@@ -71,32 +66,20 @@ class ServerViewModel: ObservableObject {
                             autoUpload: autoUpload,
                             autoDelete: autoDelete,
                             serverType: .tella)
-        
-        do {
-            let id = try mainAppModel.vaultManager.tellaData?.addServer(server: server)
-            server.id = id
-            
-            self.currentServer = server
-            
-        } catch {
-            
-        }
+
+        guard let id = mainAppModel.vaultManager.tellaData?.addServer(server: server) else { return }
+        server.id = id
+        self.currentServer = server
+
     }
     
     func updateServer() {
-        do {
-            
-            guard let currentServer = self.currentServer else { return  }
-            currentServer.backgroundUpload = backgroundUpload
-            currentServer.activatedMetadata = activatedMetadata
-            currentServer.autoUpload = autoUpload
-            currentServer.autoDelete = autoDelete
-
-              try mainAppModel.vaultManager.tellaData?.updateServer(server: currentServer)
-      
-        } catch {
-            
-        }
+        guard let currentServer = self.currentServer else { return  }
+        currentServer.backgroundUpload = backgroundUpload
+        currentServer.activatedMetadata = activatedMetadata
+        currentServer.autoUpload = autoUpload
+        currentServer.autoDelete = autoDelete
+        mainAppModel.vaultManager.tellaData?.updateServer(server: currentServer)
     }
 
     func login() {
@@ -122,10 +105,7 @@ class ServerViewModel: ObservableObject {
                     }
                 },
                 receiveValue: { result in
-//
-                    
                     self.getProjetSlug(token: result.accessToken)
-
                 }
             )
             .store(in: &subscribers)
