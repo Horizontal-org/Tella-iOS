@@ -63,9 +63,6 @@ struct UwaziAddServerURLView: View {
         }
         .navigationBarHidden(true)
         .onAppear {
-            #if DEBUG
-            uwaziServerViewModel.serverURL = "https://horizontal.uwazi.io"
-            #endif
             guard (uwaziServerViewModel.currentServer != nil) else { return }
             uwaziServerViewModel.validURL = true
         }

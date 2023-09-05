@@ -13,7 +13,6 @@ struct UwaziLanguageSelectionView: View {
     @EnvironmentObject var uwaziServerViewModel: UwaziServerViewModel
     @EnvironmentObject var serversViewModel: ServersViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @State var showSuccessView = false
 
     var backButton : some View { Button(action: {
         self.presentationMode.wrappedValue.dismiss()
