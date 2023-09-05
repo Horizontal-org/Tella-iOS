@@ -32,7 +32,9 @@ class ServersViewModel: ObservableObject {
             if currentServer?.serverType == .uwazi {
                 try mainAppModel.vaultManager.tellaData?.database?.deleteUwaziLocaleWith(serverId: serverId)
                 }
-        } catch {
+        } catch let error{
+            debugLog("Error while deleting server with ServerId \(serverId)")
+            debugLog(error)
         }
     }
     

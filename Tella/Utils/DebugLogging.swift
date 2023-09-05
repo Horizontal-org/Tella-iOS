@@ -38,6 +38,11 @@ func debugLog(_ debugText: String, level: DebugLevel = .debug, space: DebugSpace
         Logger.shared.log("\(function):\n\(debugText)\n", level: level, space: space)
     #endif
 }
+func debugLog(_ object: Any, level: DebugLevel = .debug, space: DebugSpace = .app, function: String = #function) {
+    #if DEBUG || STAGING
+        Logger.shared.log("\(function):\n\(object)\n", level: level, space: space)
+    #endif
+}
 
 private class Logger {
     static let shared = Logger()

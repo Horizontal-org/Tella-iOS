@@ -45,26 +45,17 @@ class PhotoVideoViewModel : ObservableObject {
     /// - Parameters:
     ///   - completion: Object which contains all the information needed when the user selects a video from Gallery
     ///   - isPreserveMetadataOn: Flag to check whether the user want to preserve the metadata or not
-    func handleAddingVideo(_ completion: ImagePickerCompletion, _ isPreserveMetadataOn: Bool) {
-        if isPreserveMetadataOn{
-            self.addVideoWithExif(completion)
-        } else {
-            self.addVideoWithoutExif(completion)
-        }
+    func handleAddingVideo(_ completion: ImagePickerCompletion, _ preserveMetadata: Bool) {
+        preserveMetadata ? self.addVideoWithExif(completion) : self.addVideoWithoutExif(completion)
     }
     /// To handle adding the image based on either the user want to preserve the metadata or not
     /// - Parameters:
     ///   - completion: Object which contains all the information needed when the user selects a image from Gallery
     ///   - isPreserveMetadataOn: Flag to check whether the user want to preserve the metadata or not
-    func handleAddingImage(_ completion: ImagePickerCompletion, _ isPreserveMetadataOn: Bool) {
+    func handleAddingImage(_ completion: ImagePickerCompletion, _ preserveMetadata: Bool) {
         Task {
-            if isPreserveMetadataOn {
-                await self.addImageWithExif(completion: completion)
-            } else {
-                await self.addImageWithoutExif(completion: completion)
-            }
+            preserveMetadata ? await self.addImageWithExif(completion: completion) : await self.addImageWithoutExif(completion: completion)
         }
-
     }
 
     /// This function imports the video file from the user selected video with the withmetadata attached to the file

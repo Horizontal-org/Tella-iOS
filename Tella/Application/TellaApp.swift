@@ -14,6 +14,7 @@ struct TellaApp: App {
     private var appViewState = AppViewState()
     @Environment(\.scenePhase) var scenePhase
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    let delayTimeInSecond = 1.0
     
     var body: some Scene {
         WindowGroup {
@@ -56,7 +57,7 @@ struct TellaApp: App {
             
             appViewState.homeViewModel.appEnterInBackground = true
             appViewState.homeViewModel.shouldSaveCurrentData = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond, execute: {
                 appViewState.homeViewModel.vaultManager.clearTmpDirectory() // TO FIX for server doesn't allow upload in Background
                 appViewState.resetApp()
             })
@@ -66,8 +67,9 @@ struct TellaApp: App {
     }
     
     func resetApp() {
-         if appViewState.homeViewModel.shouldResetApp() == true,
-           appViewState.homeViewModel.appEnterInBackground == true {
+        let homeViewModel = appViewState.homeViewModel
+         if homeViewModel.shouldResetApp() == true,
+            homeViewModel.appEnterInBackground == true {
             
             
             DispatchQueue.main.async {
@@ -77,8 +79,8 @@ struct TellaApp: App {
                 appViewState.shouldHidePresentedView = false
             }
         }
-        appViewState.homeViewModel.appEnterInBackground = false
-        appViewState.homeViewModel.shouldShowSecurityScreen = false
+        homeViewModel.appEnterInBackground = false
+        homeViewModel.shouldShowSecurityScreen = false
     }
 }
 

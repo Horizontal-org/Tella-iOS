@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 5/25/23.
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import Foundation
@@ -39,12 +39,6 @@ struct UwaziLanguageRow: Codable, Hashable {
         hasher.combine(id)
         hasher.combine(locale)
     }
-
-//    func languageName() -> String {
-//        let currentLocale: Locale = .current
-//        guard let locale = self.locale else { return "English"}
-//        return currentLocale.localizedString(forLanguageCode: "\(locale)_\(locale.uppercased())") ?? "English"
-//    }
 }
 
 // MARK: - Context

@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 5/22/23.
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import Foundation

@@ -3,22 +3,27 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 5/22/23.
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import Combine
 import Foundation
 
+enum ServerTokenType {
+    case token(String)
+    case none
+}
+
 struct UwaziServerRepository: WebRepository {
 
     func login(username: String,
                password: String,
-               serverURL: String) -> AnyPublisher<(BoolResponse,String?), APIError> {
+               serverURL: String) -> AnyPublisher<ServerTokenType, APIError> {
 
         let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.login((username: username, password: password, serverURL: serverURL)))
         return apiResponse
             .tryMap({ (response, allHeaderFields) in
-                return (response, getTokenFromHeader(httpResponse: allHeaderFields))
+                return handleToken(response: response, allHeaderFields: allHeaderFields)
             })
             .mapError {$0 as! APIError}
             .eraseToAnyPublisher()
@@ -27,21 +32,29 @@ struct UwaziServerRepository: WebRepository {
     func twoFactorAuthentication(username: String,
                                   password: String,
                                   token: String,
-                                  serverURL: String) -> AnyPublisher<(BoolResponse,String?), APIError> {
+                                  serverURL: String) -> AnyPublisher<ServerTokenType, APIError> {
 
         let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.twoFactorAuthentication((username: username, password: password,token: token, serverURL: serverURL)))
         return apiResponse
             .tryMap({ (response, allHeaderFields) in
-                return (response, getTokenFromHeader(httpResponse: allHeaderFields))
+                return handleToken(response: response, allHeaderFields: allHeaderFields)
             })
             .mapError {$0 as! APIError}
             .eraseToAnyPublisher()
 
     }
+    private func handleToken(response: BoolResponse, allHeaderFields: [AnyHashable: Any]?) -> ServerTokenType {
+        if response.success ?? false {
+            guard let token = getTokenFromHeader(httpResponse: allHeaderFields) else { return .none}
+            return (.token(token))
+        } else {
+            return .none
+        }
+    }
     private func getTokenFromHeader(httpResponse: [AnyHashable: Any]?) -> String? {
         if let token = httpResponse?["Set-Cookie"] as? String {
             let filteredToken = token.split(separator: ";")
-            return filteredToken.first!.replacingOccurrences(of: "connect.sid=", with: "")
+            return filteredToken.first?.replacingOccurrences(of: "connect.sid=", with: "")
         }
         return nil
     }
