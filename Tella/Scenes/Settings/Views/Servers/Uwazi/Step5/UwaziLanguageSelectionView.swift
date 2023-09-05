@@ -44,9 +44,8 @@ struct UwaziLanguageSelectionView: View {
                         .padding(.leading, 20)
                     List {
                         ForEach(uwaziServerViewModel.languages, id:\.self) { item in
-                            UwaziLanguageItemView(languageItem: item.toDomain() as? UwaziLanguageAPI,
+                            UwaziLanguageItemView(languageItem: item,
                                                   selectedLanguage: $uwaziServerViewModel.selectedLanguage,
-                                                  //settingsViewModel: settingsViewModel,
                                                   isPresented: $isPresented)
                         }.listRowBackground(Color.red)
                     }
@@ -120,9 +119,8 @@ struct LanguageActionButton: View {
 
 struct UwaziLanguageItemView : View {
 
-    var languageItem : UwaziLanguageAPI?
-    @Binding var selectedLanguage: UwaziLanguageAPI?
-    //@StateObject var settingsViewModel :  SettingsViewModel
+    var languageItem : UwaziLanguageRow?
+    @Binding var selectedLanguage: UwaziLanguageRow?
 
     @Binding var isPresented : Bool
     @EnvironmentObject private var appViewState: AppViewState
@@ -151,7 +149,6 @@ struct UwaziLanguageItemView : View {
 
             }
             Button("") {
-               // LanguageManager.shared.currentLanguage = languageItem
                 selectedLanguage = languageItem
                 appModel.shouldUpdateLanguage = true
 
@@ -166,7 +163,7 @@ struct UwaziLanguageItemView : View {
             .listRowInsets(EdgeInsets())
     }
 
-    func isCurrentLanguage(languageItem: UwaziLanguageAPI?) -> Bool {
+    func isCurrentLanguage(languageItem: UwaziLanguageRow?) -> Bool {
         guard let languageItem = languageItem else { return false }
         if let selectedLanguage = selectedLanguage {
             return selectedLanguage.id == languageItem.id

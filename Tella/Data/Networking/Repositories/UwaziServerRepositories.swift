@@ -59,17 +59,17 @@ struct UwaziServerRepository: WebRepository {
         return nil
     }
 
-    func checkServerURL(serverURL: String) -> AnyPublisher<UwaziCheckURLResult, APIError> {
-        let apiResponse :  APIResponse<UwaziCheckURLResult> = getAPIResponse(endpoint: API.checkURL(serverURL: serverURL))
+    func checkServerURL(serverURL: String) -> AnyPublisher<UwaziCheckURL, APIError> {
+        let apiResponse :  APIResponse<UwaziCheckURLDTO> = getAPIResponse(endpoint: API.checkURL(serverURL: serverURL))
         return apiResponse
-            .map{$0.0}
+            .compactMap{$0.0.toDomain() as? UwaziCheckURL}
             .eraseToAnyPublisher()
     }
 
-    func getLanguage(serverURL: String) -> AnyPublisher<UwaziLanguageResult, APIError> {
-        let apiResponse :  APIResponse<UwaziLanguageResult> = getAPIResponse(endpoint: API.getLanguage(serverURL: serverURL))
+    func getLanguage(serverURL: String) -> AnyPublisher<UwaziLanguage, APIError> {
+        let apiResponse :  APIResponse<UwaziLanguageDTO> = getAPIResponse(endpoint: API.getLanguage(serverURL: serverURL))
         return apiResponse
-            .map{$0.0}
+            .compactMap{$0.0.toDomain() as? UwaziLanguage}
             .eraseToAnyPublisher()
     }
 

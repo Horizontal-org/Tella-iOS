@@ -117,7 +117,6 @@ class TellaDataBase: UwaziServerLanguageProtocol {
     }
     
     func addServer(server : Server) throws -> Int {
-        debugLog(server)
         let valuesToAdd = [KeyValue(key: D.cName, value: server.name),
                            KeyValue(key: D.cURL, value: server.url),
                            KeyValue(key: D.cUsername, value: server.username),
@@ -170,7 +169,6 @@ class TellaDataBase: UwaziServerLanguageProtocol {
     }
     
     func updateServer(server : Server) throws -> Int {
-        
         let valuesToUpdate = [KeyValue(key: D.cName, value: server.name),
                               KeyValue(key: D.cURL, value: server.url),
                               KeyValue(key: D.cUsername, value: server.username),

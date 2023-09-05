@@ -8,12 +8,15 @@
 
 import Foundation
 
-struct UwaziCheckURLResult: Codable {
+struct UwaziCheckURLDTO: Codable, DataModel {
     let id: String
     let siteName: String
 
     enum CodingKeys: String, CodingKey {
         case id = "_id"
         case siteName = "site_name"
+    }
+    func toDomain() -> DomainModel? {
+        UwaziCheckURL(id: id, siteName: siteName)
     }
 }

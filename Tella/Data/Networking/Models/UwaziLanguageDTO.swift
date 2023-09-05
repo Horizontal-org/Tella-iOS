@@ -3,22 +3,32 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 5/25/23.
-//  Copyright © 2023 HORIZONTAL. All rights reserved.
+//  Copyright © 2023 INTERNEWS. All rights reserved.
 //
 
 import Foundation
 
-
 // MARK: - Welcome
-struct UwaziLanguageResult: Codable {
-    let rows: [UwaziLanguageRow]?
+struct UwaziLanguageDTO: Codable, DataModel {
+    let rows: [UwaziLanguageRowDTO]?
+    func toDomain() -> DomainModel? {
+        let rows = rows?.compactMap{ $0.toDomain() as? UwaziLanguageRow}
+        return UwaziLanguage(rows: rows)
+    }
 }
+class UwaziLanguage: DomainModel {
+    let rows: [UwaziLanguageRow]?
+    init(rows: [UwaziLanguageRow]?) {
+        self.rows = rows
+    }
+}
+
 // MARK: - Row
-struct UwaziLanguageRow: Codable, Hashable {
+struct UwaziLanguageRowDTO: Codable, DataModel {
 
     let id: String?
     let locale: String?
-    let contexts: [UwaziLanguageContext]?
+    let contexts: [UwaziLanguageContextDTO]?
 
     func toDomain() -> DomainModel? {
         var languageName = "English"
@@ -26,23 +36,16 @@ struct UwaziLanguageRow: Codable, Hashable {
         if let locale = self.locale {
             languageName = currentLocale.localizedString(forLanguageCode: "\(locale)_\(locale.uppercased())") ?? "English"
         }
-        return UwaziLanguageAPI(id: id, locale: locale, contexts: contexts, languageName: languageName)
+        return UwaziLanguageRow(id: id, locale: locale, languageName: languageName)
     }
     enum CodingKeys: String, CodingKey {
         case id = "_id"
         case locale, contexts
     }
-    static func == (lhs: UwaziLanguageRow, rhs: UwaziLanguageRow) -> Bool {
-        lhs.id == rhs.id
-    }
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(locale)
-    }
 }
 
-// MARK: - Context
-struct UwaziLanguageContext: Codable {
+//// MARK: - Context
+struct UwaziLanguageContextDTO: Codable, DataModel {
     let contextID, label: String?
     let type: UwaziLanguageTypeEnum?
     let values: [String: String]?
@@ -50,8 +53,12 @@ struct UwaziLanguageContext: Codable {
 
     enum CodingKeys: String, CodingKey {
         case contextID = "id"
-        case label, type, values
+        case label
+        case type, values
         case id = "_id"
+    }
+    func toDomain() -> DomainModel? {
+        return UwaziLanguageContext(contextID: contextID, label: label, id: id)
     }
 }
 

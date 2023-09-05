@@ -8,21 +8,24 @@
 
 import Foundation
 
-class UwaziLanguageAPI: DomainModel {
+class UwaziLanguageRow: DomainModel, Hashable {
     let id: String?
     let locale: String?
-    let contexts: [UwaziLanguageContext]?
     let languageName: String
-    
+
     init(id: String?,
          locale: String?,
-         contexts: [UwaziLanguageContext]?,
          languageName: String) {
-
         self.id = id
         self.locale = locale
-        self.contexts = contexts
         self.languageName = languageName
 
+    }
+    static func == (lhs: UwaziLanguageRow, rhs: UwaziLanguageRow) -> Bool {
+        lhs.id == rhs.id
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(locale)
     }
 }

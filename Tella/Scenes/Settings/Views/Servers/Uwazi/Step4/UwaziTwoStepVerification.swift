@@ -16,40 +16,46 @@ struct UwaziTwoStepVerification: View {
 
     var body: some View {
         ContainerView {
-            VStack {
-                VStack(spacing: 10) {
-                    Spacer()
-                    TopServerView(title: LocalizableSettings.UwaziTwoStepTitle.localized)
-                    Text(LocalizableSettings.UwaziTwoStepMessage.localized)
-                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                        .foregroundColor(.white)
-                        .multilineTextAlignment(.center)
-                    Spacer()
-                        .frame(height: 15)
-                    TextfieldView(fieldContent: $uwaziServerViewModel.code,
-                                  isValid: $uwaziServerViewModel.validCode,
-                                  shouldShowError: $uwaziServerViewModel.shouldShowAuthenticationError,
-                                  errorMessage: uwaziServerViewModel.codeErrorMessage,
-                                  fieldType: .code,
-                                  placeholder: LocalizableSettings.UwaziAuthenticationPlaceholder.localized)
-                                .keyboardType(.numberPad)
-                    .frame(height: 57)
-                    Spacer()
-                        .frame(height: 19)
-                    TellaButtonView<AnyView>(title: LocalizableSettings.UwaziAuthenticationVerify.localized,
-                                             nextButtonAction: .action,
-                                             isValid: $uwaziServerViewModel.validAuthenticationCode) {
-                        UIApplication.shared.endEditing()
-                        uwaziServerViewModel.twoFactorAuthentication()
+            ZStack {
+                VStack {
+                    VStack(spacing: 10) {
+                        Spacer()
+                        TopServerView(title: LocalizableSettings.UwaziTwoStepTitle.localized)
+                        Text(LocalizableSettings.UwaziTwoStepMessage.localized)
+                            .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                            .foregroundColor(.white)
+                            .multilineTextAlignment(.center)
+                        Spacer()
+                            .frame(height: 15)
+                        TextfieldView(fieldContent: $uwaziServerViewModel.code,
+                                      isValid: $uwaziServerViewModel.validCode,
+                                      shouldShowError: $uwaziServerViewModel.shouldShowAuthenticationError,
+                                      errorMessage: uwaziServerViewModel.codeErrorMessage,
+                                      fieldType: .code,
+                                      placeholder: LocalizableSettings.UwaziAuthenticationPlaceholder.localized)
+                        .keyboardType(.numberPad)
+                        .frame(height: 57)
+                        Spacer()
+                            .frame(height: 19)
+                        TellaButtonView<AnyView>(title: LocalizableSettings.UwaziAuthenticationVerify.localized,
+                                                 nextButtonAction: .action,
+                                                 isValid: $uwaziServerViewModel.validAuthenticationCode) {
+                            UIApplication.shared.endEditing()
+                            uwaziServerViewModel.twoFactorAuthentication()
+                        }
+                        Spacer()
                     }
-                    Spacer()
+                    .padding(.leading, 23)
+                    .padding(.trailing,23)
+                    BottomLockView<AnyView>(isValid: .constant(true),
+                                            nextButtonAction: .action,
+                                            shouldHideNext: true)
                 }
-                .padding(.leading, 23)
-                .padding(.trailing,23)
-                BottomLockView<AnyView>(isValid: .constant(true),
-                                        nextButtonAction: .action,
-                                        shouldHideNext: true)
+                if uwaziServerViewModel.isLoading {
+                    CircularActivityIndicatory()
+                }
             }
+
         }
         .navigationBarHidden(true)
         .onReceive(uwaziServerViewModel.$showLanguageSelectionView) { value in

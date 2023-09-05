@@ -52,14 +52,14 @@ class UwaziServerViewModel: ObservableObject {
 
     // Language
     @Published var languages: [UwaziLanguageRow] = []
-    @Published var selectedLanguage: UwaziLanguageAPI?
+    @Published var selectedLanguage: UwaziLanguageRow?
     private var cancellableLogin: Cancellable? = nil
     private var cancellableAuthenticationCode: Cancellable? = nil
     var subscribers = Set<AnyCancellable>()
 
     var currentServer : Server?
     var token: String?
-    var setting: UwaziCheckURLResult?
+    var setting: UwaziCheckURL?
 
     var isAutoUploadServerExist: Bool {
         return mainAppModel.vaultManager.tellaData?.getAutoUploadServer() != nil && autoUpload == false
@@ -177,13 +177,13 @@ class UwaziServerViewModel: ObservableObject {
         }
     }
 
-    fileprivate func handleRecieveValueForGetLanguage(_ wrapper: UwaziLanguageResult) {
+    fileprivate func handleRecieveValueForGetLanguage(_ wrapper: UwaziLanguage) {
         debugLog("Finished")
         self.isLoading = false
         self.languages.append(contentsOf: wrapper.rows ?? [])
         if let server = self.currentServer, let id = server.id {
             let locale = try? self.mainAppModel.vaultManager.tellaData?.database?.getUwaziLocaleWith(serverId: id)
-            self.selectedLanguage = self.languages.map{$0.toDomain() as? UwaziLanguageAPI}.compactMap{$0}.first(where: {$0.locale == locale?.locale})
+            self.selectedLanguage = self.languages.compactMap{$0}.first(where: {$0.locale == locale?.locale})
         }
         self.showNextSuccessLoginView = true
     }
@@ -214,7 +214,7 @@ class UwaziServerViewModel: ObservableObject {
         }
     }
 
-    fileprivate func handleRecieveValueForCheckURL(_ wrapper: UwaziCheckURLResult) {
+    fileprivate func handleRecieveValueForCheckURL(_ wrapper: UwaziCheckURL) {
         self.setting = wrapper
         debugLog("Finished")
         self.isLoading = false
