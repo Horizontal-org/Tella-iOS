@@ -15,8 +15,6 @@ struct ServerSelectionView: View {
     @EnvironmentObject var mainAppModel : MainAppModel
     @State var istellaWebSelected = false
     @State var isUwaziSelected = false
-    @State var showTellaWeb = false
-    @State var showUwazi = false
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     init(appModel:MainAppModel, server: Server? = nil) {
@@ -89,11 +87,6 @@ struct ServerSelectionView: View {
                     .multilineTextAlignment(.center)
             }
         }
-    }
-    private var tellaWebLink: some View {
-        AddServerURLView(appModel: mainAppModel)
-            .environmentObject(serversViewModel)
-            //.addNavigationLink(isActive: $showTellaWeb)
     }
 }
 

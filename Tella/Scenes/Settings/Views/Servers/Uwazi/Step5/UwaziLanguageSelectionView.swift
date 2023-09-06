@@ -85,44 +85,12 @@ struct UwaziLanguageSelectionView: View {
         })
     }
 }
-
-struct LanguageActionButton: View {
-    enum ButtonAction {
-        case ok
-        case cancel
-
-        var title: String {
-            switch self {
-            case .ok:
-                return LocalizableSettings.UwaziLanguageOk.localized
-            case .cancel:
-                return LocalizableSettings.UwaziLanguageCancel.localized
-            }
-        }
-        var buttonColor: Color {
-            switch self {
-            case .ok:
-                return Styles.Colors.yellow
-            case .cancel:
-                return Color(UIColor(hexValue: 0xF5F5F5).withAlphaComponent(0.16))
-            }
-        }
-    }
-    let type: ButtonAction
-    var action: () -> Void
-
-    var body: some View {
-        Button(type.title,action: action).buttonStyle(BigButtonStyleForLanguage(color: type.buttonColor))
-    }
-}
-
 struct UwaziLanguageItemView : View {
 
     var languageItem : UwaziLanguageRow?
     @Binding var selectedLanguage: UwaziLanguageRow?
 
     @Binding var isPresented : Bool
-    @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject private var appModel: MainAppModel
     var delayTime = 0.1
 
