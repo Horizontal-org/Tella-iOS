@@ -14,63 +14,15 @@ struct UwaziLanguageSelectionView: View {
     @EnvironmentObject var serversViewModel: ServersViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
-    var backButton : some View { Button(action: {
-        self.presentationMode.wrappedValue.dismiss()
-    }) {
-        HStack {
-            Image(systemName: "arrow.backward")
-                .font(.system(size: 18, weight: .bold))
-                .aspectRatio(contentMode: .fill)
-            Text(LocalizableSettings.UwaziLanguageTitle.localized)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-        }
-        .foregroundColor(Color.white)
-        .opacity(0.8)
-    }
-    }
     var body: some View {
         ContainerView {
             ZStack {
                 VStack {
-                    Spacer()
-                        .frame(height: 20)
-                    Text(LocalizableSettings.UwaziLanguageMessage.localized)
-                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                        .foregroundColor(.white)
-                        .opacity(0.88)
-                        .multilineTextAlignment(.center)
-                        .padding(.trailing, 20)
-                        .padding(.leading, 20)
-                    List {
-                        ForEach(uwaziServerViewModel.languages, id:\.self) { item in
-                            UwaziLanguageItemView(languageItem: item,
-                                                  selectedLanguage: $uwaziServerViewModel.selectedLanguage,
-                                                  isPresented: $isPresented)
-                        }.listRowBackground(Color.red)
-                    }
-                    .listStyle(.plain)
-                    .overlay(Group {
-                        if(uwaziServerViewModel.languages.isEmpty) {
-                            ZStack() {
-                                Styles.Colors.backgroundMain
-                                    .edgesIgnoringSafeArea(.all)
-                            }
-                        }
-                    })
+                    headerView()
+                    listView()
                     Spacer()
                     Rectangle().frame(height: 0.4).foregroundColor(.white)
-                    HStack{
-                        Spacer()
-                        LanguageActionButton(type: .cancel) {
-                            self.presentationMode.wrappedValue.dismiss()
-                        }
-                        LanguageActionButton(type: .ok) {
-                            uwaziServerViewModel.handleServerAction()
-                            navigateTo(destination: UwaziSuccessView())
-                        }
-                    }
-                    .padding(.trailing, 20)
-                    .padding(.top, 12)
+                    bottomView()
                 }
                 if uwaziServerViewModel.isLoading {
                     CircularActivityIndicatory()
@@ -81,8 +33,56 @@ struct UwaziLanguageSelectionView: View {
             self.uwaziServerViewModel.languages.removeAll()
             self.uwaziServerViewModel.getLanguage()
         })
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: backButton)
+        .toolbar {
+            LeadingTitleToolbar(title: LocalizableSettings.UwaziLanguageTitle.localized)
+        }
+    }
+    fileprivate func bottomView() -> some View {
+        return HStack{
+            Spacer()
+            SettingsBottomView(cancelAction: {
+                self.presentationMode.wrappedValue.dismiss()
+            }, saveAction: {
+                uwaziServerViewModel.handleServerAction()
+                navigateTo(destination: UwaziSuccessView())
+
+            }, saveActionTitle: "OK")
+        }
+        .padding(.trailing, 20)
+        .padding(.top, 12)
+    }
+
+    fileprivate func headerView() -> some View {
+        return VStack {
+            Spacer()
+                .frame(height: 20)
+            Text(LocalizableSettings.UwaziLanguageMessage.localized)
+                .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                .foregroundColor(.white)
+                .opacity(0.88)
+                .multilineTextAlignment(.center)
+                .padding(.trailing, 20)
+                .padding(.leading, 20)
+        }
+    }
+
+    fileprivate func listView() -> some View {
+        return List {
+            ForEach(uwaziServerViewModel.languages, id:\.self) { item in
+                UwaziLanguageItemView(languageItem: item,
+                                      selectedLanguage: $uwaziServerViewModel.selectedLanguage,
+                                      isPresented: $isPresented)
+            }.listRowBackground(Color.red)
+        }
+        .listStyle(.plain)
+        .overlay(Group {
+            if(uwaziServerViewModel.languages.isEmpty) {
+                ZStack() {
+                    Styles.Colors.backgroundMain
+                        .edgesIgnoringSafeArea(.all)
+                }
+            }
+        })
     }
 }
 
@@ -124,6 +124,7 @@ struct UwaziLanguageItemView : View {
     @Binding var isPresented : Bool
     @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject private var appModel: MainAppModel
+    var delayTime = 0.1
 
     var body: some View {
 
@@ -149,9 +150,7 @@ struct UwaziLanguageItemView : View {
             }
             Button("") {
                 selectedLanguage = languageItem
-                appModel.shouldUpdateLanguage = true
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + delayTime) {
                     isPresented = false
                 }
             }
