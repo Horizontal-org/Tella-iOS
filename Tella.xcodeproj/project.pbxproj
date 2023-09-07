@@ -293,6 +293,7 @@
 		CC387D5C2A7857DD00853F2E /* UwaziViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC387D5B2A7857DD00853F2E /* UwaziViewModel.swift */; };
 		CC387D5E2A785B3200853F2E /* ReportsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC387D5D2A785B3200853F2E /* ReportsPageView.swift */; };
 		CC43D9E12A72F8260030192E /* UwaziView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC43D9E02A72F8260030192E /* UwaziView.swift */; };
+		CC76B1062AA6590700F7514A /* DraftUwaziEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC76B1052AA6590700F7514A /* DraftUwaziEntity.swift */; };
 		CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */; };
 		CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */; };
 		CCAEA04E2A97C948008190E0 /* CreateEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAEA04D2A97C948008190E0 /* CreateEntityView.swift */; };
@@ -690,6 +691,7 @@
 		CC387D5B2A7857DD00853F2E /* UwaziViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziViewModel.swift; sourceTree = "<group>"; };
 		CC387D5D2A785B3200853F2E /* ReportsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsPageView.swift; sourceTree = "<group>"; };
 		CC43D9E02A72F8260030192E /* UwaziView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziView.swift; sourceTree = "<group>"; };
+		CC76B1052AA6590700F7514A /* DraftUwaziEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftUwaziEntity.swift; sourceTree = "<group>"; };
 		CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableReport.swift; sourceTree = "<group>"; };
 		CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationBottomSheet.swift; sourceTree = "<group>"; };
 		CCAEA04D2A97C948008190E0 /* CreateEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEntityView.swift; sourceTree = "<group>"; };
@@ -1650,6 +1652,7 @@
 		12D7F5F52743F28700EBA3A2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				CC15D65D2AA7B4B60087D9C9 /* Uwazi */,
 				CC387D572A781A5000853F2E /* Reports */,
 				122E4D53291AD99A00562EB1 /* TellaButton */,
 				1272F25A27C919E40054F2E2 /* ImportFilesProgressView */,
@@ -1779,6 +1782,21 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		CC15D65D2AA7B4B60087D9C9 /* Uwazi */ = {
+			isa = PBXGroup;
+			children = (
+				CC15D65E2AA7B4DB0087D9C9 /* Widgets */,
+			);
+			path = Uwazi;
+			sourceTree = "<group>";
+		};
+		CC15D65E2AA7B4DB0087D9C9 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
 		CC387D572A781A5000853F2E /* Reports */ = {
 			isa = PBXGroup;
 			children = (
@@ -1792,6 +1810,7 @@
 			isa = PBXGroup;
 			children = (
 				CC387D5B2A7857DD00853F2E /* UwaziViewModel.swift */,
+				CC76B1052AA6590700F7514A /* DraftUwaziEntity.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -2353,6 +2372,7 @@
 				128D6E182804531B0082AB18 /* AddPhotoVideoItems.swift in Sources */,
 				12730E65279EAB9200DC0135 /* SettingsMainView.swift in Sources */,
 				12E0882427AD31F600CEB198 /* LocalizableAudio.swift in Sources */,
+				CC76B1062AA6590700F7514A /* DraftUwaziEntity.swift in Sources */,
 				12E6772F27A9719F00DC1E1C /* UIImageExtension.swift in Sources */,
 				D5B823EB262774E00008E04B /* MainView.swift in Sources */,
 				1220A72E292EB11B000BC24C /* ReportFileGridView.swift in Sources */,

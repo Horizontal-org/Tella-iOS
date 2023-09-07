@@ -11,6 +11,7 @@ import SwiftUI
 struct TemplateListView: View {
     @EnvironmentObject var uwaziViewModel : UwaziReportsViewModel
     @EnvironmentObject var sheetManager: SheetManager
+    @EnvironmentObject var mainAppModel: MainAppModel
     var message : String
     var serverName : String
     
@@ -47,7 +48,11 @@ struct TemplateListView: View {
                 if type == .delete {
                     showDeleteReportConfirmationView(template: template)
                 } else {
-                    navigateTo(destination: CreateEntityView(template: template).environmentObject(sheetManager))
+                    navigateTo(destination:
+                                CreateEntityView(mainAppModel: mainAppModel, template: template)
+                                .environmentObject(sheetManager)
+                               
+                    )
                     sheetManager.hide()
                 }
             })
