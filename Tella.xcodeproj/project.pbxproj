@@ -297,6 +297,7 @@
 		CC13138A2A5DB68E0057271C /* BottomSheetTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1313892A5DB68E0057271C /* BottomSheetTitleView.swift */; };
 		CC13138C2A5DB79B0057271C /* BottomButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC13138B2A5DB79B0057271C /* BottomButtonsView.swift */; };
 		CC43D9E12A72F8260030192E /* UwaziView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC43D9E02A72F8260030192E /* UwaziView.swift */; };
+		CC5BFEB12AAA27CE00FDB766 /* RenderPropertyComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5BFEB02AAA27CE00FDB766 /* RenderPropertyComponentView.swift */; };
 		CC76B1062AA6590700F7514A /* DraftUwaziEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC76B1052AA6590700F7514A /* DraftUwaziEntity.swift */; };
 		CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */; };
 		CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */; };
@@ -729,6 +730,7 @@
 		CC1313892A5DB68E0057271C /* BottomSheetTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetTitleView.swift; sourceTree = "<group>"; };
 		CC13138B2A5DB79B0057271C /* BottomButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomButtonsView.swift; sourceTree = "<group>"; };
 		CC43D9E02A72F8260030192E /* UwaziView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziView.swift; sourceTree = "<group>"; };
+		CC5BFEB02AAA27CE00FDB766 /* RenderPropertyComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderPropertyComponentView.swift; sourceTree = "<group>"; };
 		CC76B1052AA6590700F7514A /* DraftUwaziEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftUwaziEntity.swift; sourceTree = "<group>"; };
 		CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableReport.swift; sourceTree = "<group>"; };
 		CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationBottomSheet.swift; sourceTree = "<group>"; };
@@ -1900,6 +1902,7 @@
 			isa = PBXGroup;
 			children = (
 				CCAEA04D2A97C948008190E0 /* CreateEntityView.swift */,
+				CC5BFEB02AAA27CE00FDB766 /* RenderPropertyComponentView.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -2571,6 +2574,7 @@
 				129B845928BFED9700F1B344 /* TellaButtonView.swift in Sources */,
 				123048D7295F95BB0015CD96 /* SubmittedDetailsItemView.swift in Sources */,
 				E1CF5A272AB3488E00365036 /* JSONDecoderExtension.swift in Sources */,
+				CC5BFEB12AAA27CE00FDB766 /* RenderPropertyComponentView.swift in Sources */,
 				1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */,
 				1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */,
 				1234179229CD19E6004CFAEA /* BaseUploadOperation.swift in Sources */,
