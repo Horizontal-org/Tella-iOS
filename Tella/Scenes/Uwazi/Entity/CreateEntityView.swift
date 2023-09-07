@@ -88,43 +88,39 @@ struct CreateEntityView: View {
         label: String, property: Property?,
         commonProperty: CommonProperty?
     ) -> some View {
-        switch propertyType{
-        case UwaziConstants.dataTypeText.rawValue, UwaziConstants.dataTypeNumeric.rawValue:
+        switch UwaziEntityPropertyType(rawValue: propertyType) {
+        case .dataTypeText, .dataTypeNumeric:
             //render textFieldComponent
+            
             Title(label: label)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(Color.white)
-            TextfieldView(
-                fieldContent: entityViewModel.bindingForLabel(label),
-                isValid: $entityViewModel.isValidText,
-                shouldShowError: $entityViewModel.shouldShowError,
-                fieldType: .text
-            )
-        case UwaziConstants.dataTypeDate.rawValue, UwaziConstants.dataTypeDateRange.rawValue,
-             UwaziConstants.dataTypeMultiDate.rawValue, UwaziConstants.dataTypeMultiDateRange.rawValue:
-            Title(label: label)
-        case UwaziConstants.dataTypeSelect.rawValue, UwaziConstants.dataTypeMultiSelect.rawValue:
-            Title(label: label)
-        case UwaziConstants.dataTypeLink.rawValue:
-            Title(label: label)
-        case UwaziConstants.dataTypeImage.rawValue:
-            Title(label: label)
-        case UwaziConstants.dataTypeGeolocation.rawValue:
-            Title(label: label)
-        case UwaziConstants.dataTypePreview.rawValue:
-            Title(label: label)
-        case UwaziConstants.dataTypeMedia.rawValue:
-            Title(label: label)
-        case UwaziConstants.dataTypeMarkdown.rawValue:
-            Title(label: label)
-        case UwaziConstants.dataTypeMultiFiles.rawValue:
-            Title(label: label)
-            Subtitle(label: "Select as many files as you wish")
-        case UwaziConstants.dataTypeMultiPDFFiles.rawValue:
-            Title(label: label)
-            Subtitle(label: "Select as many PDF files as you wish")
-        case UwaziConstants.dataTypeGeneratedID.rawValue:
-            Title(label: label)
+                            .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                            .foregroundColor(Color.white)
+                        TextfieldView(
+                            fieldContent: entityViewModel.bindingForLabel(label),
+                            isValid: $entityViewModel.isValidText,
+                            shouldShowError: $entityViewModel.shouldShowError,
+                            fieldType: .text
+                        )
+        case .dataTypeDate, .dataTypeDateRange, .dataTypeMultiDate, .dataTypeMultiDateRange:
+            Text(label)
+        case .dataTypeSelect, .dataTypeMultiSelect:
+            Text(label)
+        case .dataTypeLink:
+            Text(label)
+        case .dataTypeImage:
+            Text(label)
+        case .dataTypeGeolocation:
+            Text(label)
+        case .dataTypePreview:
+            Text(label)
+        case .dataTypeMedia:
+            Text(label)
+        case .dataTypeMarkdown:
+            Text(label)
+        case .dataTypeMultiFiles, .dataTypeMultiPDFFiles:
+            Text(label)
+        case .dataTypeGeneratedID:
+            Text(label)
         default:
             Group {
                 Text("Unsupported property type")
@@ -141,9 +137,9 @@ struct CreateEntityView: View {
                                actionText: LocalizableReport.exitSave.localized,
                                didConfirmAction: {
                 
-                                }, didCancelAction: {
-                                    dismissViews()
-                                })
+            }, didCancelAction: {
+                dismissViews()
+            })
         }
     }
     

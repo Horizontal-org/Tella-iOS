@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum UwaziConstants: String, CodingKey {
+enum UwaziEntityPropertyType: String, CodingKey {
     case dataTypeText = "text"
     case dataTypeNumeric = "numeric"
     case dataTypeSelect = "select"
