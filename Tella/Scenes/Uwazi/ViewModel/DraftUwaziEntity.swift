@@ -19,7 +19,7 @@ class DraftUwaziEntity: ObservableObject {
     @Published var shouldShowError : Bool = false
     @Published var isValidText : Bool = false
     
-    @Published var propertyValues : [String:String] = [ : ]
+    @Published var propertyValues : [String:Any] = [ : ]
     
     func initializePropertyTextValues() {
         // Iterate through the template's properties and set initial values in propertyTextValues
@@ -28,12 +28,18 @@ class DraftUwaziEntity: ObservableObject {
                 propertyValues[label] = ""
             }
         }
+        
+        for commonProperty in template.entityRow?.commonProperties ?? [] {
+            if let label = commonProperty.label {
+                propertyValues[label] = ""
+            }
+        }
     }
     
     func bindingForLabel(_ label: String) -> Binding<String> {
             // Use a computed property to return a binding to the value in propertyValues
             Binding<String>(
-                get: { self.propertyValues[label, default: ""] },
+                get: { self.propertyValues[label, default: ""] as! String },
                 set: { self.propertyValues[label] = $0 }
             )
         }
@@ -43,8 +49,8 @@ class DraftUwaziEntity: ObservableObject {
         
         self.initializePropertyTextValues()
         
-//        dump(propertyValues)
         dump(template.entityRow?.properties)
+        dump(propertyValues)
         
         
     }
