@@ -9,10 +9,13 @@
 import SwiftUI
 
 struct CreateEntityView: View {
-    var template : CollectedTemplate
+    @StateObject var entityViewModel : DraftUwaziEntity
     @EnvironmentObject var sheetManager : SheetManager
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
+    init(mainAppModel: MainAppModel, template: CollectedTemplate) {
+        _entityViewModel = StateObject(wrappedValue: DraftUwaziEntity(mainAppModel: mainAppModel, template: template))
+    }
     var body: some View {
         ContainerView {
             contentView
@@ -29,37 +32,55 @@ struct CreateEntityView: View {
     }
     
     var createEntityHeaderView: some View {
-            
-            CreateDraftHeaderView(title: template.entityRow?.name ?? "",
-                                  isDraft: true,
-                                  closeAction: { showSaveEntityConfirmationView() },
-                                  saveAction: {})
+        
+        CreateDraftHeaderView(title: entityViewModel.template.entityRow?.name ?? "",
+                              isDraft: true,
+                              closeAction: { showSaveEntityConfirmationView() },
+                              saveAction: {})
     }
     
     var draftContentView: some View {
         
-        ZStack {
-            VStack {
-                ForEach(template.entityRow!.properties, id: \.id) { property in
+        ScrollView {
+            VStack(alignment: .leading) {
+                ForEach(entityViewModel.template.entityRow!.properties, id: \.id) { property in
                     renderPropertyComponent(
                         propertyType: property.type ?? "",
-                        label: property.label ?? "",
+                        label: property.translatedLabel ?? "",
                         property: property,
                         commonProperty: nil
                     )
                 }
-                    
-                ForEach(template.entityRow!.commonProperties, id: \.id) { commonProperty in
+                ForEach(entityViewModel.template.entityRow!.commonProperties, id: \.id) { commonProperty in
                     renderPropertyComponent(
                         propertyType: commonProperty.type ?? "",
-                        label: commonProperty.label ?? "",
+                        label: commonProperty.translatedLabel ?? "",
                         property: nil,
                         commonProperty: commonProperty
                     )
-                    }
                 }
+            }.padding(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16))
         }
     }
+    
+    @ViewBuilder
+    private func Title(
+        label: String
+    ) -> some View {
+        Text(label)
+            .font(.custom(Styles.Fonts.regularFontName, size: 14))
+            .foregroundColor(Color.white)
+    }
+    
+    @ViewBuilder
+    private func Subtitle(
+        label: String
+    ) -> some View {
+        Text(label)
+            .font(.custom(Styles.Fonts.regularFontName, size: 12))
+            .foregroundColor(Color.white.opacity(0.8))
+    }
+    
     
     @ViewBuilder
     private func renderPropertyComponent(
@@ -70,28 +91,40 @@ struct CreateEntityView: View {
         switch propertyType{
         case UwaziConstants.dataTypeText.rawValue, UwaziConstants.dataTypeNumeric.rawValue:
             //render textFieldComponent
-            Text(label)
+            Title(label: label)
+                .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                .foregroundColor(Color.white)
+            TextfieldView(
+                fieldContent: entityViewModel.bindingForLabel(label),
+                isValid: $entityViewModel.isValidText,
+                shouldShowError: $entityViewModel.shouldShowError,
+                fieldType: .text
+            )
         case UwaziConstants.dataTypeDate.rawValue, UwaziConstants.dataTypeDateRange.rawValue,
              UwaziConstants.dataTypeMultiDate.rawValue, UwaziConstants.dataTypeMultiDateRange.rawValue:
-            Text(label)
+            Title(label: label)
         case UwaziConstants.dataTypeSelect.rawValue, UwaziConstants.dataTypeMultiSelect.rawValue:
-            Text(label)
+            Title(label: label)
         case UwaziConstants.dataTypeLink.rawValue:
-            Text(label)
+            Title(label: label)
         case UwaziConstants.dataTypeImage.rawValue:
-            Text(label)
+            Title(label: label)
         case UwaziConstants.dataTypeGeolocation.rawValue:
-            Text(label)
+            Title(label: label)
         case UwaziConstants.dataTypePreview.rawValue:
-            Text(label)
+            Title(label: label)
         case UwaziConstants.dataTypeMedia.rawValue:
-            Text(label)
+            Title(label: label)
         case UwaziConstants.dataTypeMarkdown.rawValue:
-            Text(label)
-        case UwaziConstants.dataTypeMultiFiles.rawValue, UwaziConstants.dataTypeMultiPDFFiles.rawValue:
-            Text(label)
+            Title(label: label)
+        case UwaziConstants.dataTypeMultiFiles.rawValue:
+            Title(label: label)
+            Subtitle(label: "Select as many files as you wish")
+        case UwaziConstants.dataTypeMultiPDFFiles.rawValue:
+            Title(label: label)
+            Subtitle(label: "Select as many PDF files as you wish")
         case UwaziConstants.dataTypeGeneratedID.rawValue:
-            Text(label)
+            Title(label: label)
         default:
             Group {
                 Text("Unsupported property type")
