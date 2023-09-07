@@ -1,5 +1,5 @@
 //
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import Foundation
@@ -34,7 +34,7 @@ class SubmittedReportVM: ObservableObject {
     
     func fillReportVM(reportId:Int?) {
         
-        if let reportId ,let report = self.mainAppModel.vaultManager.tellaData.getReport(reportId: reportId) {
+        if let reportId ,let report = self.mainAppModel.vaultManager.tellaData?.getReport(reportId: reportId) {
             
             // Init file
             var vaultFileResult : Set<VaultFile> = []
@@ -43,7 +43,7 @@ class SubmittedReportVM: ObservableObject {
             self.title = report.title ?? ""
             self.description = report.description ?? ""
             
-            mainAppModel.vaultManager.root.getFile(root: mainAppModel.vaultManager.root,
+            mainAppModel.vaultManager.root?.getFile(root: mainAppModel.vaultManager.root,
                                                    vaultFileResult: &vaultFileResult,
                                                    ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
             self.files = Array(vaultFileResult)

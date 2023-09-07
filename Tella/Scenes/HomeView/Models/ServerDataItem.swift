@@ -8,9 +8,9 @@ class ServerDataItem: Hashable {
     
     
     var servers : [Server]
-    var serverType : ServerType
+    var serverType : ServerConnectionType
     
-    init(servers: [Server], serverType: ServerType) {
+    init(servers: [Server], serverType: ServerConnectionType) {
         self.servers = servers
         self.serverType = serverType
     }

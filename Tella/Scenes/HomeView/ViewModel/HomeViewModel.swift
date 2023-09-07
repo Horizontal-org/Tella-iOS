@@ -26,29 +26,25 @@ class HomeViewModel: ObservableObject {
         self.appModel = appModel
         getServersList()
     }
-    
-    func getServersList() {
-            
-            self.appModel.vaultManager.tellaData.servers.sink { result in
+
+    func getServersList() {            
+        self.appModel.vaultManager.tellaData?.servers.sink { result in
                 
             } receiveValue: { serverArray in
                 self.serverDataItemArray.removeAll()
                 if !serverArray.isEmpty {
                     // here i group all the tella servers in one array and the third party services in diferents arrays
-                    let thirdPartyConnections = serverArray.filter { mapServerTypeFromInt($0.serverType) != .tella }
-                    let tellaUploadServers = serverArray.filter { mapServerTypeFromInt($0.serverType) == .tella }
-                    if !thirdPartyConnections.isEmpty {
-                        self.serverDataItemArray.append(contentsOf: thirdPartyConnections.map { ServerDataItem(servers: [$0], serverType: mapServerTypeFromInt($0.serverType) )})
-                    }
-                    if !tellaUploadServers.isEmpty {
-                        self.serverDataItemArray.append(ServerDataItem(servers: tellaUploadServers, serverType: .tella))
-                    }
+                    let uwaziConnections = serverArray.filter { $0.serverType == .uwazi }
+                    let tellaUploadServers = serverArray.filter { $0.serverType == .tella }
+
+                    self.serverDataItemArray.append(ServerDataItem(servers: uwaziConnections, serverType: .uwazi))
+                    self.serverDataItemArray.append(ServerDataItem(servers: tellaUploadServers, serverType: .tella))
                 }
             }.store(in: &subscribers)
         }
     
     func getFiles() -> [RecentFile] {
-        let recentFile = appModel.vaultManager.root.getRecentFile()
+        guard let recentFile = appModel.vaultManager.root?.getRecentFile() else { return [] }
         hasRecentFile = recentFile.count > 0
         return recentFile
     }

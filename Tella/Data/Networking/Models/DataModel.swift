@@ -4,6 +4,6 @@
 
 import Foundation
 
-protocol DataModel:Codable {
+protocol DataModel: Codable {
     func toDomain() -> DomainModel?
 }

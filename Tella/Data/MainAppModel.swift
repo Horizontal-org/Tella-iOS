@@ -55,7 +55,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     
     @Published var settings: SettingsModel = SettingsModel()
     
-    @Published var vaultManager: VaultManager = VaultManager(cryptoManager: CryptoManager.shared, fileManager: DefaultFileManager(), rootFileName: "root", containerPath: "Containers", progress: ImportProgress())
+    @Published var vaultManager: VaultManager = VaultManager()
     
     @Published var selectedTab: Tabs = .home
     
@@ -67,6 +67,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     @Published var appEnterInBackground: Bool = false
     @Published var importOption: ImportOption?
     var networkMonitor : NetworkMonitor
+    
     @Published var shouldUpdateLanguage = true
 
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
@@ -86,11 +87,41 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         }
     }
     
+    func initFiles() -> AnyPublisher<Bool,Never> {
+        return Deferred {
+            Future <Bool,Never> {  [weak self] promise in
+                guard let self = self else { return }
+                self.vaultManager.initFiles()
+                    .sink(receiveValue: { f in
+                        self.sendReports()
+                        promise(.success(f))
+                    }).store(in: &self.cancellable)
+                
+            }
+        }.eraseToAnyPublisher()
+    }
+    
+    func initRoot() {
+        vaultManager.initRoot()
+        UploadService.shared.initAutoUpload(mainAppModel: self)
+        
+    }
+    
+    func resetVaultManager() {
+        vaultManager.resetData()
+        self.selectedTab = .home
+    }
+    
     func saveSettings() {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(settings) {
             UserDefaults.standard.set(encoded, forKey: "com.tella.settings")
         }
+    }
+    
+    func resetSettings() {
+        settings = SettingsModel()
+        saveSettings()
     }
     
     func saveLockTimeoutStartDate()  {
@@ -106,6 +137,12 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     func removeAllFiles() {
         vaultManager.removeAllFiles()
         publishUpdates()
+    }
+    
+    func deleteAfterMaxAttempts() {
+        resetSettings()
+        
+        vaultManager.deleteContainerDirectory()
     }
     
     func changeTab(to newTab: Tabs) {
@@ -202,30 +239,17 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         }
     }
     
+    
+}
+
+///   MainAppModel extension contains the methods used to manage reports
+
+extension MainAppModel {
+    
     func sendAutoReportFile(file: VaultFile) {
-        if vaultManager.tellaData.getAutoUploadServer() != nil {
+        if vaultManager.tellaData?.getAutoUploadServer() != nil {
             UploadService.shared.addAutoUpload(file: file)
         }
-    }
-    
-    func initFiles() -> AnyPublisher<Bool,Never> {
-        return Deferred {
-            Future <Bool,Never> {  [weak self] promise in
-                guard let self = self else { return }
-                self.vaultManager.initFiles()
-                    .sink(receiveValue: { f in
-                        self.sendReports()
-                        promise(.success(f))
-                    }).store(in: &self.cancellable)
-                
-            }
-        }.eraseToAnyPublisher()
-    }
-    
-    func initRoot() {
-        vaultManager.initRoot()
-        UploadService.shared.initAutoUpload(mainAppModel: self)
-        
     }
     
     func sendReports() {
@@ -233,9 +257,10 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         UploadService.shared.sendUnsentReports(mainAppModel: self)
     }
     
-    func deleteReport(reportId:Int?)  {
+    func deleteReport(reportId:Int?) {
+        
         UploadService.shared.cancelSendingReport(reportId: reportId)
-        vaultManager.tellaData.deleteReport(reportId: reportId)
+         vaultManager.tellaData?.deleteReport(reportId: reportId)
     }
 }
 

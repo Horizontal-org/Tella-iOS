@@ -8,13 +8,15 @@ import SQLite3
 
 struct D {
     /* DATABASE */
+    // MARK: - DATABASE
     static let databaseName = "tella_vault.db"
     
     /* DATABASE VERSIO */
-
+    // MARK: - DATABASE VERSION
     static let databaseVersion = 2
 
     /* DEFAULT TYPES FOR DATABASE */
+    // MARK: - DEFAULT TYPES FOR DATABASE
     static let integer = " INTEGER "
     static let text = " TEXT ";
     static let blob = " BLOB ";
@@ -22,14 +24,14 @@ struct D {
 
     
     /* DATABASE TABLES */
-    
+    // MARK: - DATABASE TABLES
     static let tServer = "t_server"
     static let tReport = "t_report"
     static let tUwaziServerLanguage = "t_uwazi_server_language"
     static let tReportInstanceVaultFile = "t_report_instance_vault_file";
 
     /* DATABASE COLUMNS */
-    
+    // MARK: - DATABASE COLUMNS
     static let cId = "c_id"
     static let cName = "c_name"
     static let cServerURL = "c_server_url"
@@ -48,7 +50,6 @@ struct D {
     static let cApiProjectId = "c_api_project_id"
     static let cSlug = "c_slug"
 
-    
     static let cTitle = "c_title"
     static let cDescription = "c_description"
     static let cDate = "c_date"
@@ -64,10 +65,9 @@ struct D {
     static let cBytesSent = "c_bytes_Sent"
     static let cCreatedDate = "c_created_date"
     static let cUpdatedDate = "c_upated_date"
-
+    // MARK: Uwazi Locale
     static let cLocale = "c_locale"
     static let cLocaleId = "c_locale_id"
-
     static let cServerType = "c_server_type"
 }
 

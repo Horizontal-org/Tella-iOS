@@ -4,6 +4,7 @@
 
 import SwiftUI
 import Combine
+import AVFoundation
 
 
 struct CameraView: View {
@@ -27,7 +28,7 @@ struct CameraView: View {
          showingCameraView: Binding<Bool>,
          resultFile: Binding<[VaultFile]?>? = nil,
          mainAppModel: MainAppModel,
-         rootFile:VaultFile) {
+         rootFile:VaultFile?) {
         
         self.showingCameraView = showingCameraView
         
@@ -84,10 +85,11 @@ struct CameraView: View {
             .onReceive(model.$imageCompletion) { value in
                 guard let value = value else { return }
                 
-                cameraViewModel.image = value.0
-                cameraViewModel.imageData = value.1
+                cameraViewModel.image = value.image
+                cameraViewModel.imageData = value.imageData
 //                showProgressView()
                 cameraViewModel.saveImage()
+
             }
         
             .onReceive(model.$videoURLCompletion) { videoURL in

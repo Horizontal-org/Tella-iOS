@@ -3,96 +3,99 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 4/24/23.
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import SwiftUI
 
 struct UwaziLoginView: View {
-    @EnvironmentObject var serverViewModel : UwaziServerViewModel
+    @EnvironmentObject var uwaziServerViewModel : UwaziServerViewModel
     @EnvironmentObject var serversViewModel : ServersViewModel
 
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var mainAppModel : MainAppModel
-
-    @State var presentingSuccessLoginView : Bool = false
 
     var body: some View {
 
         ContainerView {
             ZStack {
                 VStack(spacing: 0) {
-                    VStack(spacing: 0) {
+                    VStack(spacing: 32) {
                         Spacer()
                         TopServerView(title: LocalizableSettings.UwaziLoginAccess.localized)
-                        Spacer()
-                            .frame(height: 40)
-                        TextfieldView(fieldContent: $serverViewModel.username,
-                                      isValid: $serverViewModel.validUsername,
-                                      shouldShowError: $serverViewModel.shouldShowLoginError,
-                                      fieldType: .username,
-                                      placeholder : LocalizableSettings.UwaziUsername.localized)
-                        .autocapitalization(.none)
-                        .frame(height: 30)
-                        Spacer()
-                            .frame(height: 27)
-                        TextfieldView(fieldContent: $serverViewModel.password,
-                                      isValid: $serverViewModel.validPassword,
-                                      shouldShowError: $serverViewModel.shouldShowLoginError,
-                                      errorMessage: serverViewModel.loginErrorMessage,
-                                      fieldType: .password,
-                                      placeholder : LocalizableSettings.UwaziPassword.localized)
-                        .autocapitalization(.none)
-                        .frame(height: 57)
-                        Spacer()
-                            .frame(height: 32)
-                        TellaButtonView<AnyView>(title: LocalizableSettings.UwaziLogin.localized,
-                                                 nextButtonAction: .action,
-                                                 isValid: $serverViewModel.validCredentials) {
-                            UIApplication.shared.endEditing()
-                            self.serverViewModel.login()
-                        }
+                        usernameTextFieldView()
+                        passwordTextFieldView()
+                        loginButtonView()
                         Spacer()
                     }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
 
-                    BottomLockView<AnyView>(isValid: $serverViewModel.validPassword,
+                    BottomLockView<AnyView>(isValid: $uwaziServerViewModel.validPassword,
                                             nextButtonAction: .action,
                                             shouldHideNext: true)
                 }
-                if serverViewModel.isLoading {
+                if uwaziServerViewModel.isLoading {
                     CircularActivityIndicatory()
                 }
             }
         }
         .navigationBarHidden(true)
-        .onReceive(serverViewModel.$showNextLanguageSelectionView, perform: { value in
+        .onReceive(uwaziServerViewModel.$showNextLanguageSelectionView, perform: { value in
             if value {
-                let languageView = UwaziLanguageSelectionView(isPresented: .constant(true))
-                    //.environmentObject(SettingsViewModel(appModel: MainAppModel()))
-                    .environmentObject(serversViewModel)
-                    .environmentObject(serverViewModel)
-                navigateTo(destination: languageView)
+                showLanguageSelectionView()
             }
         })
-        .onReceive(serverViewModel.$showNext2FAView, perform: { value in
+        .onReceive(uwaziServerViewModel.$showNext2FAView, perform: { value in
             if value {
-                let twoStepVerification =  UwaziTwoStepVerification()
-                                        .environmentObject(serversViewModel)
-                                        .environmentObject(serverViewModel)
-                if !serverViewModel.shouldShowLoginError {
-                    navigateTo(destination: twoStepVerification)
-                }
+                show2FAView()
             }
         })
         .onAppear {
-            if serverViewModel.currentServer != nil {
-                serverViewModel.validCredentials = true
-            } else {
-#if DEBUG
-                serverViewModel.username = "test-uwazi"
-                serverViewModel.password = "test-uwazi"
-#endif
-            }
+            if uwaziServerViewModel.currentServer != nil {
+                uwaziServerViewModel.validCredentials = true
+            } else {}
+        }
+    }
+    fileprivate func usernameTextFieldView() -> some View {
+        return TextfieldView(fieldContent: $uwaziServerViewModel.username,
+                             isValid: $uwaziServerViewModel.validUsername,
+                             shouldShowError: $uwaziServerViewModel.shouldShowLoginError,
+                             fieldType: .username,
+                             placeholder : LocalizableSettings.UwaziUsername.localized)
+        .autocapitalization(.none)
+        .frame(height: 30)
+    }
+
+    fileprivate func passwordTextFieldView() -> some View {
+        return TextfieldView(fieldContent: $uwaziServerViewModel.password,
+                             isValid: $uwaziServerViewModel.validPassword,
+                             shouldShowError: $uwaziServerViewModel.shouldShowLoginError,
+                             errorMessage: uwaziServerViewModel.loginErrorMessage,
+                             fieldType: .password,
+                             placeholder : LocalizableSettings.UwaziPassword.localized)
+        .autocapitalization(.none)
+        .frame(height: 57)
+    }
+
+    fileprivate func loginButtonView() -> TellaButtonView<AnyView> {
+        return TellaButtonView<AnyView>(title: LocalizableSettings.UwaziLogin.localized,
+                                        nextButtonAction: .action,
+                                        isValid: $uwaziServerViewModel.validCredentials) {
+            UIApplication.shared.endEditing()
+            self.uwaziServerViewModel.login()
+        }
+    }
+    fileprivate func showLanguageSelectionView() {
+        let languageView = UwaziLanguageSelectionView(isPresented: .constant(true))
+            .environmentObject(serversViewModel)
+            .environmentObject(uwaziServerViewModel)
+        navigateTo(destination: languageView)
+    }
+
+    fileprivate func show2FAView() {
+        let twoStepVerification =  UwaziTwoStepVerification()
+            .environmentObject(serversViewModel)
+            .environmentObject(uwaziServerViewModel)
+        if !uwaziServerViewModel.shouldShowLoginError {
+            navigateTo(destination: twoStepVerification)
         }
     }
 }

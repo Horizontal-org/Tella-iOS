@@ -57,5 +57,9 @@ enum LocalizableLock: String, LocalizableDelegate {
     case unlockUpdatePinErrorIncorrectPIN = "LockUnlock_UnlockUpdatePin_Error_IncorrectPIN"
     case unlockUpdatePinSubhead = "LockUnlock_UnlockUpdatePin_Subhead"
     case unlockPinActionOk = "LockUnlock_UnlockPin_Action_Ok"
+
+    // Delete After Faile
+    case unlockDeleterAfterFailRemainingAttempts = "LockUnlock_UnlockDeleteAfterFail_Warning_RemainingAttempts"
+    case unlockDeleteAfterFailContentDeleted = "LockUnlock_UnlockDeleteAfterFail_Error_ContentDeleted"
 }
 

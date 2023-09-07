@@ -1,6 +1,6 @@
 //  Tella
 //
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import Foundation
@@ -36,8 +36,8 @@ class AutoUpload: BaseUploadOperation {
     func startUploadReportAndFiles() {
         
         self.response.send(UploadResponse.initial)
-        
-        let currentReport = self.mainAppModel.vaultManager.tellaData.getCurrentReport()
+
+        let currentReport = self.mainAppModel.vaultManager.tellaData?.getCurrentReport()
         
         if let currentReport  {
             self.report = currentReport
@@ -54,7 +54,7 @@ class AutoUpload: BaseUploadOperation {
     
     func startUploadReportAndFiles(file:VaultFile) {
         
-        let currentReport = self.mainAppModel.vaultManager.tellaData.getCurrentReport()
+        let currentReport = self.mainAppModel.vaultManager.tellaData?.getCurrentReport()
         
         if let currentReport {
             self.addReportFile(file: file, report: currentReport)
@@ -65,16 +65,11 @@ class AutoUpload: BaseUploadOperation {
     }
     
     func addReportFile(file:VaultFile, report:Report) {
-        do {
-            guard let reportId = report.id else { return  }
-            self.report = report
-            
-            let addedReportFile = try self.mainAppModel.vaultManager.tellaData.addReportFile(fileId: file.id, reportId: reportId)
-            
-            if let addedReportFile {
-                report.reportFiles?.append(addedReportFile)
-            }
-        } catch {
+        guard let reportId = report.id else { return  }
+        self.report = report
+        let addedReportFile = self.mainAppModel.vaultManager.tellaData?.addReportFile(fileId: file.id, reportId: reportId)
+        if let addedReportFile {
+            report.reportFiles?.append(addedReportFile)
         }
     }
     
@@ -83,7 +78,7 @@ class AutoUpload: BaseUploadOperation {
         let reportToAdd = Report(title: "Auto-report" + Date().getFormattedDateString(format: DateFormat.autoReportNameName.rawValue),
                                  description: "",
                                  status: .finalized,
-                                 server: self.mainAppModel.vaultManager.tellaData.getAutoUploadServer(),
+                                 server: self.mainAppModel.vaultManager.tellaData?.getAutoUploadServer(),
                                  vaultFiles: [ReportFile(fileId: file.id,
                                                          status: .notSubmitted,
                                                          bytesSent: 0,
@@ -93,7 +88,7 @@ class AutoUpload: BaseUploadOperation {
         
         do {
             // files
-            let report = try self.mainAppModel.vaultManager.tellaData.addCurrentUploadReport(report: reportToAdd)
+            let report = try self.mainAppModel.vaultManager.tellaData?.addCurrentUploadReport(report: reportToAdd)
             self.report = report
             self.checkReport()
         } catch {
@@ -126,7 +121,7 @@ class AutoUpload: BaseUploadOperation {
         
         var vaultFileResult : Set<VaultFile> = []
         
-        mainAppModel.vaultManager.root.getFile(root: mainAppModel.vaultManager.root,
+        mainAppModel.vaultManager.root?.getFile(root: mainAppModel.vaultManager.root,
                                                vaultFileResult: &vaultFileResult,
                                                ids: report?.reportFiles?.compactMap{$0.fileId} ?? [])
         

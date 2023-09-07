@@ -10,25 +10,33 @@ struct SecuritySettingsView: View {
     @EnvironmentObject var appModel : MainAppModel
     @EnvironmentObject var settingsViewModel : SettingsViewModel
     @EnvironmentObject private var sheetManager: SheetManager
-    @StateObject var lockViewModel = LockViewModel(unlockType: .update)
+    @StateObject var lockViewModel: LockViewModel
     @State var passwordTypeString : String = ""
     
+    
+    init(appModel: MainAppModel) {
+        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .update, appModel: appModel))
+    }
     
     var body: some View {
         
         ContainerView {
-            VStack(spacing: 0) {
-               
-                Spacer()
-                    .frame(height: 8)
+            ScrollView {
+                VStack(spacing: 0) {
+                   
+                    Spacer()
+                        .frame(height: 8)
 
-                SettingsCardView(cardViewArray: [lockView.eraseToAnyView(), lockTimeoutView.eraseToAnyView()])
-                
-                SettingsCardView(cardViewArray: [screenSecurityView.eraseToAnyView()])
-                
-                SettingsCardView(cardViewArray: [quickDeleteView.eraseToAnyView()])
+                    SettingsCardView(cardViewArray: [lockView.eraseToAnyView(), lockTimeoutView.eraseToAnyView(), deleteAfterFailGroupView.eraseToAnyView()])
+                    
+                    SettingsCardView(cardViewArray: [screenSecurityView.eraseToAnyView()])
 
-                Spacer()
+                    SettingsCardView(cardViewArray: [preserveMetadataView.eraseToAnyView()])
+                    
+                    SettingsCardView(cardViewArray: [quickDeleteView.eraseToAnyView()])
+
+                    Spacer()
+                }
             }
         }
         
@@ -38,7 +46,7 @@ struct SecuritySettingsView: View {
         
         .onAppear {
             lockViewModel.shouldDismiss.send(false)
-            let passwordType = AuthenticationManager().getPasswordType()
+            let passwordType = appModel.vaultManager.getPasswordType()
             passwordTypeString = passwordType == .tellaPassword ? LocalizableLock.lockSelectActionPassword.localized : LocalizableLock.lockSelectActionPin.localized
         }
         .onReceive(lockViewModel.shouldDismiss) { shouldDismiss in
@@ -49,6 +57,7 @@ struct SecuritySettingsView: View {
 
     }
     
+    // MARK: Lock
     var lockView: some View {
         
         SettingsItemView(imageName: "settings.lock",
@@ -58,6 +67,7 @@ struct SecuritySettingsView: View {
         
     }
 
+    // MARK: Lock timeout
     var lockTimeoutView: some View {
         
         SettingsItemView<AnyView>(imageName:"settings.timeout",
@@ -68,8 +78,37 @@ struct SecuritySettingsView: View {
 
         }
     }
+    
+    // MARK: Delete after failed unlock
+    var deleteAfterFailGroupView: some View {
+        Group {
+            deleteAfterFailView
+            if(appModel.settings.deleteAfterFail != .off) {
+                DividerView()
+                showUnlockAttemptsRemainingView
+            }
+        }
+    }
+    
+    var deleteAfterFailView: some View {
+        
+        SettingsItemView<AnyView>(imageName: "settings.lock",
+                                  title: LocalizableSettings.settSecDeleteAfterFail.localized,
+                                  value: appModel.settings.deleteAfterFail.selectedDisplayName,
+                         destination:nil) {
+            showDeleteAfterFailedAttempts()
+        }
+        
+    }
+    
+    var showUnlockAttemptsRemainingView: some View {
+        SettingToggleItem(title: LocalizableSettings.settSecShowUnlockAttempts.localized,
+                          description: LocalizableSettings.settSecShowUnlockAttemptsExpl.localized,
+                          toggle: $appModel.settings.showUnlockAttempts)
+    }
 
  
+    // MARK: Screen Security
     var screenSecurityView: some View {
         
         SettingToggleItem(title: LocalizableSettings.settSecScreenSecurity.localized,
@@ -79,6 +118,17 @@ struct SecuritySettingsView: View {
         
     }
     
+    // MARK: Preserve metadata when importing
+    var preserveMetadataView: some View {
+
+        SettingToggleItem(title: LocalizableSettings.settSecPreserveMetadata.localized,
+                          description: LocalizableSettings.settSecPreserveMetadataExpl.localized,
+                          toggle: $appModel.settings.preserveMetadata)
+
+
+    }
+    
+    // MARK: Quick delete
     var quickDeleteView: some View {
         
         Group {
@@ -100,14 +150,14 @@ struct SecuritySettingsView: View {
 
     var unlockView : some View {
         
-        let passwordType = AuthenticationManager().getPasswordType()
+        let passwordType = appModel.vaultManager.getPasswordType()
         return passwordType == .tellaPassword ?
         
-        UnlockPasswordView()
+        UnlockView(type: .tellaPassword)
             .environmentObject(lockViewModel)
             .eraseToAnyView()  :
         
-        UnlockPinView()
+        UnlockView(type: .tellaPin)
             .environmentObject(lockViewModel)
             .eraseToAnyView()
         
@@ -119,10 +169,18 @@ struct SecuritySettingsView: View {
                 .environmentObject(settingsViewModel)
         }
     }
+    
+    func showDeleteAfterFailedAttempts() {
+        sheetManager.showBottomSheet(modalHeight: 408) {
+            DeleteAfterFailView()
+                .environmentObject(settingsViewModel)
+        }
+    }
+    
 }
 
 struct SecuritySettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SecuritySettingsView()
+        SecuritySettingsView(appModel: MainAppModel.stub())
     }
 }

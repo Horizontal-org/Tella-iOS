@@ -18,7 +18,7 @@ class Server : Hashable {
     var slug : String?
     var autoUpload: Bool?
     var autoDelete: Bool?
-    var serverType: Int?
+    var serverType: ServerConnectionType?
 
     init(id: Int? = nil,
          name: String? = nil,
@@ -31,8 +31,8 @@ class Server : Hashable {
          projectId: String? = nil,
          slug: String? = nil,
          autoUpload: Bool?,
-         autoDelete: Bool ,
-         serverType: Int? = nil
+         autoDelete: Bool,
+         serverType: ServerConnectionType? = nil
         ) {
         self.id = id
         self.name = name
@@ -60,5 +60,4 @@ class Server : Hashable {
     func hash(into hasher: inout Hasher){
         hasher.combine(id.hashValue)
     }
-    
 }

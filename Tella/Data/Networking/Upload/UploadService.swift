@@ -40,7 +40,9 @@ class UploadService: NSObject {
     
     func cancelTasksIfNeeded() {
         let operations = activeOperations.filter({$0.report?.server?.backgroundUpload == false || $0.taskType == .dataTask})
-        _ = operations.compactMap({$0.pauseSendingReport})
+        operations.forEach { operation in
+            operation.pauseSendingReport()
+        }
         activeOperations.removeAll(where:{$0.report?.server?.backgroundUpload == false || $0.taskType == .dataTask})
     }
     
@@ -52,7 +54,7 @@ class UploadService: NSObject {
     
     func initAutoUpload(mainAppModel: MainAppModel ) {
         
-        let autoUploadServer = mainAppModel.vaultManager.tellaData.getAutoUploadServer()
+        let autoUploadServer = mainAppModel.vaultManager.tellaData?.getAutoUploadServer()
         
         let urlSession = URLSession(
             configuration: autoUploadServer?.autoUpload ?? false ? .background(withIdentifier: "org.wearehorizontal.tella") : .default ,
@@ -96,7 +98,7 @@ class UploadService: NSObject {
     
     func sendUnsentReports(mainAppModel:MainAppModel) {
         
-        let unsentReports = mainAppModel.vaultManager.tellaData.getUnsentReports()
+        guard let unsentReports = mainAppModel.vaultManager.tellaData?.getUnsentReports() else { return }
         
         unsentReports.forEach { report in
             let urlSession = URLSession(
@@ -169,14 +171,12 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
     }
     
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        
         let operation = activeOperations.first{$0.uploadTasksDict[dataTask] != nil}
         operation?.update(responseFromDelegate: URLSessionTaskResponse(task: dataTask , data: data, response: dataTask.response as? HTTPURLResponse))
         operation?.uploadTasksDict.removeValue(forKey: dataTask)
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        
         let operation = activeOperations.first{$0.uploadTasksDict[task] != nil}
         if error == nil {
             

@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 7/21/23.
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import Foundation
@@ -16,8 +16,7 @@ class UwaziLocale : Hashable, Codable {
 
     init(id: Int? = nil,
          locale: String? = nil,
-         serverId: Int? = nil ,
-         title: Int? = nil
+         serverId: Int? = nil
         ) {
         self.id = id
         self.locale = locale

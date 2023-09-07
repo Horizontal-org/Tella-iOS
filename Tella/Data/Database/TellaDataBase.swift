@@ -10,7 +10,7 @@ import SQLCipher
 
 protocol UwaziServerLanguageProtocol {
     func createLanguageTableForUwazi()
-    func addUwaziLocaleWith(locale: UwaziLocale) throws -> Int
+    func addUwaziLocaleWith(locale: UwaziLocale) -> Int?
     func getUwaziLocaleWith(serverId: Int) throws -> UwaziLocale?
     func getAllUwaziLocale() throws -> [UwaziLocale]
     func deleteUwaziLocaleWith(serverId : Int) throws
@@ -18,7 +18,6 @@ protocol UwaziServerLanguageProtocol {
 }
 
 class TellaDataBase: UwaziServerLanguageProtocol {
-    
     private var dataBaseHelper : DataBaseHelper
     private var statementBuilder : SQLiteStatementBuilder
     
@@ -38,12 +37,13 @@ class TellaDataBase: UwaziServerLanguageProtocol {
             switch oldVersion {
             case 0:
                 createTables()
+               // alterTable()
             case 1:
                 alterTable()
+                createTables()
             default :
                 break
             }
-            
             try statementBuilder.setNewDatabaseVersion(version: D.databaseVersion)
             
         } catch let error {
@@ -58,12 +58,10 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         createLanguageTableForUwazi()
     }
     func alterTable() {
-        statementBuilder.alterTable(tableName: D.tServer, column: cddl(D.cServerType,D.integer, true, ServerConnectionType.tella.rawValue))
+        let column = cddl(D.cServerType,D.integer, true, ServerConnectionType.tella.rawValue)
+        statementBuilder.alterTable(tableName: D.tServer, column: column)
     }
-    
-    func update() {
-    }
-    
+
     func createServerTable() {
         // c_id | c_name | c_url | c_username | c_password | cAccessToken | cActivatedMetadata | cBackgroundUpload
         let columns = [
@@ -81,7 +79,6 @@ class TellaDataBase: UwaziServerLanguageProtocol {
             cddl(D.cAutoDelete, D.integer),
             cddl(D.cServerType, D.integer)
         ]
-        
         statementBuilder.createTable(tableName: D.tServer, columns: columns)
     }
 
@@ -118,8 +115,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         
     }
     
-    func addServer(server : Server) throws -> Int {
-        dump(server)
+    func addServer(server : Server) -> Int? {
         let valuesToAdd = [KeyValue(key: D.cName, value: server.name),
                            KeyValue(key: D.cURL, value: server.url),
                            KeyValue(key: D.cUsername, value: server.username),
@@ -131,10 +127,9 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                            KeyValue(key: D.cSlug, value: server.slug),
                            KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1),
                            KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1),
-                           KeyValue(key: D.cServerType, value:server.serverType)
+                           KeyValue(key: D.cServerType, value:server.serverType?.rawValue)
         ]
-        
-        return try statementBuilder.insertInto(tableName: D.tServer,
+        return statementBuilder.insertInto(tableName: D.tServer,
                                                keyValue: valuesToAdd)
     }
 
@@ -172,8 +167,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         }
     }
     
-    func updateServer(server : Server) throws -> Int {
-        
+    func updateServer(server : Server) -> Int? {
         let valuesToUpdate = [KeyValue(key: D.cName, value: server.name),
                               KeyValue(key: D.cURL, value: server.url),
                               KeyValue(key: D.cUsername, value: server.username),
@@ -187,7 +181,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                               KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1 )]
         
         let serverCondition = [KeyValue(key: D.cServerId, value: server.id)]
-        return try statementBuilder.update(tableName: D.tServer,
+        return statementBuilder.update(tableName: D.tServer,
                                            keyValue: valuesToUpdate,
                                            primarykeyValue: serverCondition)
     }
@@ -210,15 +204,15 @@ class TellaDataBase: UwaziServerLanguageProtocol {
             
         }
         
-        try statementBuilder.delete(tableName: D.tServer,
+         statementBuilder.delete(tableName: D.tServer,
                                     primarykeyValue: serverCondition)
         
-        try statementBuilder.delete(tableName: D.tReport,
+         statementBuilder.delete(tableName: D.tReport,
                                     primarykeyValue: serverCondition)
         
         if !reportIDs.isEmpty {
             let reportCondition = [KeyValues(key: D.cReportInstanceId, value: reportIDs)]
-            try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
+             statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
                                         inCondition: reportCondition)
         }
         
@@ -372,7 +366,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         
     }
     
-    func addReport(report : Report) throws -> Int {
+    func addReport(report : Report) -> Int? {
         let currentUpload = ((report.currentUpload == false) || (report.currentUpload == nil)) ? 0 : 1
         
         let reportValuesToAdd = [KeyValue(key: D.cTitle, value: report.title),
@@ -383,10 +377,10 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                                  KeyValue(key: D.cServerId, value: report.server?.id),
                                  KeyValue(key: D.cCurrentUpload, value:currentUpload )]
         
-        let reportId = try statementBuilder.insertInto(tableName: D.tReport,
-                                                       keyValue:reportValuesToAdd)
+        guard let reportId = statementBuilder.insertInto(tableName: D.tReport,
+                                                         keyValue:reportValuesToAdd) else { return nil }
         
-        try report.reportFiles?.forEach({ reportFile in
+        report.reportFiles?.forEach({ reportFile in
             
             let reportFileValuesToAdd = [KeyValue(key: D.cReportInstanceId, value: reportId),
                                          KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
@@ -395,7 +389,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                                          KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
                                          KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
             
-            try statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
+            statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
                                             keyValue: reportFileValuesToAdd)
             
             
@@ -403,7 +397,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         return reportId
     }
     
-    func updateReport(report : Report) throws -> Report? {
+    func updateReport(report : Report) -> Report? {
         
         var keyValueArray : [KeyValue]  = []
         
@@ -435,17 +429,17 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         }
         
         let reportCondition = [KeyValue(key: D.cReportId, value: report.id)]
-        try statementBuilder.update(tableName: D.tReport,
+        statementBuilder.update(tableName: D.tReport,
                                     keyValue: keyValueArray,
                                     primarykeyValue: reportCondition)
         
         if let files = report.reportFiles {
             let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: report.id as Any)]
             
-            try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
+            statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
                                         primarykeyValue:reportFilesCondition )
             
-            try files.forEach({ reportFile in
+            files.forEach({ reportFile in
                 let reportFileValuesToAdd = [
                     
                     reportFile.id == nil ? nil : KeyValue(key: D.cId, value: reportFile.id),
@@ -456,7 +450,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                     KeyValue(key: D.cCreatedDate, value: reportFile.createdDate),
                     KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
                 
-                try statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
+                statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
                                                 keyValue: reportFileValuesToAdd)
             })
         }
@@ -465,19 +459,19 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         return getReport(reportId: reportId)
     }
     
-    func updateReportStatus(idReport : Int, status: ReportStatus, date: Date) throws -> Int {
+    func updateReportStatus(idReport : Int, status: ReportStatus, date: Date) -> Int? {
         
         let valuesToUpdate = [KeyValue(key: D.cStatus, value: status.rawValue),
                               KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
         let reportCondition = [KeyValue(key: D.cReportId, value: idReport)]
         
-        return try statementBuilder.update(tableName: D.tReport,
+        return statementBuilder.update(tableName: D.tReport,
                                            keyValue: valuesToUpdate,
                                            primarykeyValue: reportCondition)
     }
     
     @discardableResult
-    func resetCurrentUploadReport() throws -> Int {
+    func resetCurrentUploadReport() throws -> Int? {
         let reportCondition = [KeyValue(key: D.cCurrentUpload, value: 1)]
         let responseDict = try statementBuilder.selectQuery(tableName: D.tReport,
                                                             andCondition: reportCondition )
@@ -488,7 +482,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                                   KeyValue(key: D.cStatus, value: ReportStatus.submitted.rawValue)]
             let reportCondition = [KeyValue(key: D.cReportId, value: reportID)]
             
-            return try statementBuilder.update(tableName: D.tReport,
+            return statementBuilder.update(tableName: D.tReport,
                                                keyValue: valuesToUpdate,
                                                primarykeyValue:reportCondition)
         }
@@ -496,7 +490,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
     }
     
     @discardableResult
-    func updateReportFile(reportFile:ReportFile) throws -> Int {
+    func updateReportFile(reportFile:ReportFile) -> Int? {
         
         var keyValueArray : [KeyValue]  = []
         
@@ -511,12 +505,12 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         keyValueArray.append(KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()))
         
         let primarykey = [KeyValue(key: D.cId, value: reportFile.id)]
-        return try statementBuilder.update(tableName: D.tReportInstanceVaultFile,
+        return statementBuilder.update(tableName: D.tReportInstanceVaultFile,
                                            keyValue: keyValueArray,
                                            primarykeyValue: primarykey)
     }
     
-    func addReportFile(fileId:String?, reportId:Int) throws -> Int {
+    func addReportFile(fileId:String?, reportId:Int) -> Int? {
         let reportFileValues = [KeyValue(key: D.cReportInstanceId, value: reportId),
                                 KeyValue(key: D.cVaultFileInstanceId, value: fileId),
                                 KeyValue(key: D.cStatus, value: FileStatus.notSubmitted.rawValue),
@@ -525,7 +519,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                                 KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
         
         
-        return  try statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
+        return statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
                                                 keyValue: reportFileValues)
     }
     
@@ -553,9 +547,8 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         statementBuilder.delete(tableName: D.tReport,
                                 primarykeyValue: reportCondition)
     }
-    // MARK: CRUD operation for Language table for Uwazi
-    // TODO: Add these thing to a new class and set a protocol decoupling the dependencies
-    // TODO: Move this fuctions to TellaData for abstraction if needed
+    // MARK: CRUD operation for Language table for Uwazu
+    // TODO: Add these thing to a new class and set a protocol for abstraction
     func createLanguageTableForUwazi() {
         let columns = [
             cddl(D.cLocaleId, D.integer, primaryKey: true, autoIncrement: true),
@@ -564,35 +557,44 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         ]
         statementBuilder.createTable(tableName: D.tUwaziServerLanguage, columns: columns)
     }
-
-    func addUwaziLocaleWith(locale: UwaziLocale) throws -> Int {
-        return try statementBuilder.insertInto(tableName: D.tUwaziServerLanguage, keyValue: [
+    @discardableResult
+    func addUwaziLocaleWith(locale: UwaziLocale) -> Int? {
+        return statementBuilder.insertInto(tableName: D.tUwaziServerLanguage, keyValue: [
             KeyValue(key: D.cLocale, value: locale.locale),
             KeyValue(key: D.cServerId, value: locale.serverId),
         ])
     }
-
-    func updateLocale(localeId: Int, locale: String) throws -> Int {
+    @discardableResult
+    func updateLocale(localeId: Int, locale: String) -> Int? {
 
         let valuesToUpdate = [KeyValue(key: D.cLocale, value: locale)]
 
         let serverCondition = [KeyValue(key: D.cLocaleId, value: localeId)]
-        return try statementBuilder.update(tableName: D.tUwaziServerLanguage,
+        return statementBuilder.update(tableName: D.tUwaziServerLanguage,
                                            keyValue: valuesToUpdate,
                                            primarykeyValue: serverCondition)
     }
+    func getUwaziLocaleWith(serverId: Int) -> UwaziLocale? {
+        do {
+            let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziServerLanguage,
+                                                               andCondition: [KeyValue(key: D.cServerId, value: serverId)])
+            guard let locale = serversDict.first else { return nil }
+            return try self.parseDicToObjectOf(type: UwaziLocale.self, dic: locale)
+        } catch let error {
+            debugLog(error.localizedDescription)
+            return nil
+        }
 
-    func getUwaziLocaleWith(serverId: Int) throws -> UwaziLocale? {
-        let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziServerLanguage,
-                                                         andCondition: [KeyValue(key: D.cServerId, value: serverId)])
-        guard let locale = serversDict.first else { return nil }
-        return try self.parseDicToObjectOf(type: UwaziLocale.self, dic: locale)
     }
-    func getAllUwaziLocale() throws -> [UwaziLocale] {
-        let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziServerLanguage,
-                                                         andCondition: [])
-        if !serversDict.isEmpty {
-            return try self.parseDicToObjectOf(type: [UwaziLocale].self, dic: serversDict)
+    func getAllUwaziLocale() -> [UwaziLocale] {
+        do {
+            let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziServerLanguage,
+                                                               andCondition: [])
+            if !serversDict.isEmpty {
+                return try self.parseDicToObjectOf(type: [UwaziLocale].self, dic: serversDict)
+            }
+        } catch let error {
+            debugLog(error.localizedDescription)
         }
         return []
     }
@@ -605,15 +607,13 @@ class TellaDataBase: UwaziServerLanguageProtocol {
     func deleteAllUwaziLocale() throws -> Int {
         return try statementBuilder.deleteAll(tableNames: [D.tUwaziServerLanguage])
     }
-    
     func deleteReportFiles(reportIds:[Int]) {
         let reportCondition = [KeyValues(key: D.cReportInstanceId, value: reportIds)]
         statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
                                 inCondition: reportCondition)
     }
-    
+
     private func getServer(dictionnary : [String:Any] ) -> Server {
-        
         let id = dictionnary[D.cServerId] as? Int
         let name = dictionnary[D.cName] as? String
         let url = dictionnary[D.cURL] as? String
@@ -627,7 +627,6 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         let autoUpload = dictionnary[D.cAutoUpload] as? Int
         let autoDelete = dictionnary[D.cAutoDelete] as? Int
         let servertType = dictionnary[D.cServerType] as? Int
-        
         return Server(id:id,
                       name: name,
                       serverURL: url,
@@ -640,13 +639,11 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                       slug:slug,
                       autoUpload: autoUpload == 0 ? false : true,
                       autoDelete: autoDelete == 0 ? false : true,
-                      serverType: servertType
+                      serverType: ServerConnectionType(rawValue: servertType ?? 0)
         )
-        
     }
-    
+
     private func getReport(dictionnary : [String:Any] ) -> Report {
-        
         let reportID = dictionnary[D.cReportId] as? Int
         let title = dictionnary[D.cTitle] as? String
         let description = dictionnary[D.cDescription] as? String
@@ -655,7 +652,6 @@ class TellaDataBase: UwaziServerLanguageProtocol {
         let status = dictionnary[D.cStatus] as? Int
         let apiReportId = dictionnary[D.cApiReportId] as? String
         let currentUpload = dictionnary[D.cCurrentUpload] as? Int
-        
         return Report(id: reportID,
                       title: title ?? "",
                       description: description ?? "",
@@ -675,5 +671,4 @@ extension TellaDataBase {
         return decodedValues
     }
 }
-
 

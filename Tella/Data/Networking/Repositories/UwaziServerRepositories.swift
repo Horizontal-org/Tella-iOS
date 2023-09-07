@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 5/22/23.
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import Combine
@@ -13,42 +13,68 @@ struct UwaziServerRepository: WebRepository {
 
     func login(username: String,
                password: String,
-               serverURL: String) -> AnyPublisher<(UwaziLoginResult,HTTPURLResponse?), APIError> {
+               serverURL: String) -> AnyPublisher<String?, APIError> {
 
-        let call : AnyPublisher<(UwaziLoginResult,HTTPURLResponse?), APIError> = callReturnsHeaders(endpoint: API.login((username: username, password: password, serverURL: serverURL)))
-
-        return call
+        let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.login((username: username, password: password, serverURL: serverURL)))
+        return apiResponse
+            .tryMap({ (response, allHeaderFields) in
+                let token = handleToken(response: response, allHeaderFields: allHeaderFields)
+                return token
+            })
+            .mapError {$0 as! APIError}
             .eraseToAnyPublisher()
     }
 
     func twoFactorAuthentication(username: String,
                                   password: String,
                                   token: String,
-                                  serverURL: String) -> AnyPublisher<(UwaziLoginResult,HTTPURLResponse?), APIError> {
+                                  serverURL: String) -> AnyPublisher<String?, APIError> {
 
-        let call : AnyPublisher<(UwaziLoginResult,HTTPURLResponse?), APIError> = callReturnsHeaders(endpoint: API.twoFactorAuthentication((username: username, password: password,token: token, serverURL: serverURL)))
-
-        return call
+        let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.twoFactorAuthentication((username: username, password: password,token: token, serverURL: serverURL)))
+        return apiResponse
+            .tryMap({ (response, allHeaderFields) in
+                return handleToken(response: response, allHeaderFields: allHeaderFields)
+            })
+            .mapError {$0 as! APIError}
             .eraseToAnyPublisher()
 
     }
-
-    func checkServerURL(serverURL: String) -> AnyPublisher<UwaziCheckURLResult, APIError> {
-        let call :  AnyPublisher<UwaziCheckURLResult, APIError> = call(endpoint: API.checkURL(serverURL: serverURL))
-        return call.eraseToAnyPublisher()
+    private func handleToken(response: BoolResponse, allHeaderFields: [AnyHashable: Any]?) -> String? {
+        if response.success ?? false {
+            guard let token = getTokenFromHeader(httpResponse: allHeaderFields) else { return nil }
+            return token
+        } else {
+            return nil
+        }
+    }
+    private func getTokenFromHeader(httpResponse: [AnyHashable: Any]?) -> String? {
+        if let token = httpResponse?["Set-Cookie"] as? String {
+            let filteredToken = token.split(separator: ";")
+            return filteredToken.first?.replacingOccurrences(of: "connect.sid=", with: "")
+        }
+        return nil
     }
 
-    func getLanguage(serverURL: String) -> AnyPublisher<UwaziLanguageResult, APIError> {
-        let call :  AnyPublisher<UwaziLanguageResult, APIError> = call(endpoint: API.getLanguage(serverURL: serverURL))
-        return call.eraseToAnyPublisher()
+    func checkServerURL(serverURL: String) -> AnyPublisher<UwaziCheckURL, APIError> {
+        let apiResponse :  APIResponse<UwaziCheckURLDTO> = getAPIResponse(endpoint: API.checkURL(serverURL: serverURL))
+        return apiResponse
+            .compactMap{$0.0.toDomain() as? UwaziCheckURL}
+            .eraseToAnyPublisher()
+    }
+
+    func getLanguage(serverURL: String) -> AnyPublisher<UwaziLanguage, APIError> {
+        let apiResponse :  APIResponse<UwaziLanguageDTO> = getAPIResponse(endpoint: API.getLanguage(serverURL: serverURL))
+        return apiResponse
+            .compactMap{$0.0.toDomain() as? UwaziLanguage}
+            .eraseToAnyPublisher()
     }
 
     func getProjetDetails(projectURL: String,token: String) -> AnyPublisher<ProjectAPI, APIError> {
 
-        let call : AnyPublisher<ProjectDetailsResult, APIError> = call(endpoint: API.getProjetDetails((projectURL: projectURL, token: token)))
+        let apiResponse : APIResponse<ProjectDetailsResult> = getAPIResponse(endpoint: API.getProjetDetails((projectURL: projectURL, token: token)))
 
-        return call
-            .compactMap{$0.toDomain() as? ProjectAPI }
+        return apiResponse
+            .compactMap{$0.0.toDomain() as? ProjectAPI }
             .eraseToAnyPublisher()
     }
 }

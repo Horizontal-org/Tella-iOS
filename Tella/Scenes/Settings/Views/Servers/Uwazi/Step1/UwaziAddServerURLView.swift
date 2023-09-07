@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 4/18/23.
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import SwiftUI
@@ -11,17 +11,12 @@ import SwiftUI
 struct UwaziAddServerURLView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var nextButtonAction: NextButtonAction = .action
-
-
     @EnvironmentObject var serversViewModel : ServersViewModel
-    @StateObject var serverViewModel : UwaziServerViewModel
-    @EnvironmentObject var mainAppModel : MainAppModel
-
+    @StateObject var uwaziServerViewModel : UwaziServerViewModel
+    
     init(appModel:MainAppModel, server: Server? = nil) {
-        _serverViewModel = StateObject(wrappedValue: UwaziServerViewModel(mainAppModel: appModel, currentServer: server))
+        _uwaziServerViewModel = StateObject(wrappedValue: UwaziServerViewModel(mainAppModel: appModel, currentServer: server))
     }
-
-
     var body: some View {
 
         ContainerView {
@@ -44,51 +39,49 @@ struct UwaziAddServerURLView: View {
 
                     Spacer()
                         .frame(height: 40)
-
-                    TextfieldView(fieldContent: $serverViewModel.serverURL,
-                                  isValid: $serverViewModel.validURL,
-                                  shouldShowError: $serverViewModel.shouldShowURLError,
-                                  errorMessage: serverViewModel.urlErrorMessage,
+                    TextfieldView(fieldContent: $uwaziServerViewModel.serverURL,
+                                  isValid: $uwaziServerViewModel.validURL,
+                                  shouldShowError: $uwaziServerViewModel.shouldShowURLError,
+                                  errorMessage: uwaziServerViewModel.urlErrorMessage,
                                   fieldType: .url)
                     Spacer()
 
-                    BottomLockView<AnyView>(isValid: $serverViewModel.validURL,
+                    BottomLockView<AnyView>(isValid: $uwaziServerViewModel.validURL,
                                             nextButtonAction: .action,
                                             nextAction: {
-                        self.serverViewModel.checkURL()
-
+                        self.uwaziServerViewModel.checkURL()
                     },
                                             backAction: {
                         self.presentationMode.wrappedValue.dismiss()
                     })
                 } .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
 
-                if serverViewModel.isLoading {
+                if uwaziServerViewModel.isLoading {
                     CircularActivityIndicatory()
                 }
             }
         }
         .navigationBarHidden(true)
         .onAppear {
-            guard (serverViewModel.currentServer != nil) else { return }
-            serverViewModel.validURL = true
-//#if DEBUG
-//            serverViewModel.serverURL = "https://horizontal.uwazi.io"
-//#endif
+            guard (uwaziServerViewModel.currentServer != nil) else { return }
+            uwaziServerViewModel.validURL = true
         }
-        .onReceive(serverViewModel.$isPublicInstance) { value in
-            if value {
-                let serverAccess = UwaziServerAccessSelectionView().environmentObject(serverViewModel).environmentObject(serversViewModel)
-                navigateTo(destination: serverAccess)
-            }
+        .onReceive(uwaziServerViewModel.$isPublicInstance) { isPublicInstance in
+            guard let isPublicInstance = isPublicInstance else { return }
+            handleNavigation(isPublicInstance: isPublicInstance)
         }
-        .onReceive(serverViewModel.$isPrivateInstance) { value in
-            if value {
-                let loginView = UwaziLoginView()
-                    .environmentObject(serversViewModel)
-                    .environmentObject(serverViewModel)
-                navigateTo(destination: loginView)
-            }
+    }
+    func handleNavigation(isPublicInstance: Bool) {
+        if isPublicInstance {
+            let serverAccess = UwaziServerAccessSelectionView()
+                .environmentObject(uwaziServerViewModel)
+                .environmentObject(serversViewModel)
+            navigateTo(destination: serverAccess)
+        } else {
+            let loginView = UwaziLoginView()
+                .environmentObject(serversViewModel)
+                .environmentObject(uwaziServerViewModel)
+            navigateTo(destination: loginView)
         }
     }
 }

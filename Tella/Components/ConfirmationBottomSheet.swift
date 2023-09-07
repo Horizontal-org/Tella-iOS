@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Gustavo on 16/03/2023.
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import SwiftUI
