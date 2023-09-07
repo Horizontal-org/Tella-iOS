@@ -57,40 +57,47 @@ struct ServersListView: View {
                                   action:  {item in
                 
                 serversViewModel.currentServer = server
-                
                 self.handleActions(item : item, server: server)
             })
         }
     }
-    
-    private func showDeleteServerConfirmationView(server: Server) {
-        sheetManager.showBottomSheet(modalHeight: 200) {
-            ConfirmBottomSheet(titleText: "Delete \(server.name ?? "N/A") server?",
-                               msgText: "If you delete this server, all draft and submitted forms will be deleted from your device.",
-                               cancelText: "CANCEL",
-                               actionText: "DELETE", didConfirmAction: {
+    private func handleActions(item: ListActionSheetItem, server: Server) {
+        guard let type = item.type as? ServerActionType else { return  }
+        switch type {
+        case .edit:
+            handleEditServer(server)
+            sheetManager.hide()
+        case .delete:
+            let deleteMessages = DeleteServerTexts(server: server)
+            showDeleteServerConfirmationView(message: deleteMessages)
+        }
+    }
+
+    fileprivate func handleEditServer(_ server: Server) {
+        guard let serverType = server.serverType else { return }
+        switch serverType {
+        case .tella:
+            shouldShowEditServer = true
+        case .uwazi:
+            navigateToUwaziAddServerView(server)
+        default:
+            break
+        }
+    }
+    private func showDeleteServerConfirmationView(message: DeleteServerTexts) {
+        sheetManager.showBottomSheet(modalHeight: 210) {
+            ConfirmBottomSheet(titleText: message.titleText,
+                                      msgText: message.messageText,
+                                      cancelText: message.cancelText,
+                                      actionText: message.actionText, didConfirmAction: {
                 serversViewModel.deleteServer()
-                sheetManager.hide()
             })
         }
     }
-    
-    private func handleActions(item: ListActionSheetItem, server: Server) {
-        guard let type = item.type as? ServerActionType else { return  }
-        
-        switch type {
-        case .edit:
-            if (server.serverType == .uwazi) {
-                navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel, server: server)
-                    .environmentObject(serversViewModel))
-                sheetManager.hide()
-                return
-            }
-            shouldShowEditServer = true
-            sheetManager.hide()
-        case .delete:
-            showDeleteServerConfirmationView(server: server)
-        }
+
+    fileprivate func navigateToUwaziAddServerView(_ server: Server) {
+        navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel, server: server)
+            .environmentObject(serversViewModel))
     }
 }
 

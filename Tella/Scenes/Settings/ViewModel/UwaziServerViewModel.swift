@@ -205,6 +205,24 @@ class UwaziServerViewModel: ObservableObject {
         self.isLoading = false
         self.isPublicInstance = true
     }
+    // MARK: - Login API Call Methods
+    func login() {
+        guard let baseURL = serverURL.getBaseURL() else { return }
+
+        isLoading = true
+
+        UwaziServerRepository().login(username: username, password: password, serverURL: baseURL)
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { completion in
+                    self.handleCompletionForLogin(completion)
+                },
+                receiveValue: { result in
+                    self.handleReceiveValueForLogin(result)
+                }
+            )
+            .store(in: &subscribers)
+    }
 
     fileprivate func handleCompletionForLogin(_ completion: Subscribers.Completion<APIError>) {
         switch completion {
@@ -229,7 +247,6 @@ class UwaziServerViewModel: ObservableObject {
             self.shouldShowLoginError = false
             self.loginErrorMessage = ""
             break
-
         }
         self.isLoading = false
     }
@@ -238,6 +255,7 @@ class UwaziServerViewModel: ObservableObject {
         self.isLoading = false
         if let result = result {
             self.token = result
+            self.showNextLanguageSelectionView = true
         } else {
             self.shouldShowLoginError = true
             // TODO: More appropiate message here
@@ -245,24 +263,7 @@ class UwaziServerViewModel: ObservableObject {
         }
     }
 
-    // MARK: - Login API Call Methods
-    func login() {
-        guard let baseURL = serverURL.getBaseURL() else { return }
 
-        isLoading = true
-
-        UwaziServerRepository().login(username: username, password: password, serverURL: baseURL)
-            .receive(on: DispatchQueue.main)
-            .sink(
-                receiveCompletion: { completion in
-                    self.handleCompletionForLogin(completion)
-                },
-                receiveValue: { result in
-                    self.handleReceiveValueForLogin(result)
-                }
-            )
-            .store(in: &subscribers)
-    }
 
     // MARK: - 2FA API Call Methods
     func twoFactorAuthentication() {

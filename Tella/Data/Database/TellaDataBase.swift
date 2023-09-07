@@ -127,7 +127,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                            KeyValue(key: D.cSlug, value: server.slug),
                            KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1),
                            KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1),
-                           KeyValue(key: D.cServerType, value:server.serverType)
+                           KeyValue(key: D.cServerType, value:server.serverType?.rawValue)
         ]
         return statementBuilder.insertInto(tableName: D.tServer,
                                                keyValue: valuesToAdd)
@@ -639,7 +639,7 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                       slug:slug,
                       autoUpload: autoUpload == 0 ? false : true,
                       autoDelete: autoDelete == 0 ? false : true,
-                      serverType: ServerConnectionType(rawValue: servertType ?? 1)
+                      serverType: ServerConnectionType(rawValue: servertType ?? 0)
         )
     }
 

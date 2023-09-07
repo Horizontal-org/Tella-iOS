@@ -32,8 +32,8 @@ struct UwaziTwoStepVerification: View {
                                       shouldShowError: $uwaziServerViewModel.shouldShowAuthenticationError,
                                       errorMessage: uwaziServerViewModel.codeErrorMessage,
                                       fieldType: .code,
-                                      placeholder: LocalizableSettings.UwaziAuthenticationPlaceholder.localized)
-                        .keyboardType(.numberPad)
+                                      placeholder: LocalizableSettings.UwaziAuthenticationPlaceholder.localized,
+                                      keyboardType: .numberPad)
                         .frame(height: 57)
                         Spacer()
                             .frame(height: 19)

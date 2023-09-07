@@ -9,14 +9,17 @@
 import SwiftUI
 
 struct UwaziServerAccessSelectionView: View {
+    enum UwaziAccessServerType {
+        case publicServer
+        case privateServer
+        case none
+    }
+
     @State var isButtonValid = true
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    // TODO: Ask if there is any good way to do it
-    @State var isLoginSelected: Bool = false
-    @State var isPublicInstance: Bool = false
+    @State var accessServerType: UwaziAccessServerType = .none
     @EnvironmentObject var serversViewModel : ServersViewModel
     @EnvironmentObject var uwaziServerViewModel : UwaziServerViewModel
-    @EnvironmentObject var mainAppModel : MainAppModel
 
     var body: some View {
         ContainerView {
@@ -41,31 +44,44 @@ struct UwaziServerAccessSelectionView: View {
         .navigationBarBackButtonHidden(true)
 
     }
-    fileprivate func buttonView() -> VStack<TupleView<(TellaButtonView<AnyView>, TellaButtonView<AnyView>)>> {
+    struct HeaderView: View {
+        var body: some View {
+            VStack(spacing: 12) {
+                Image("settings.server")
+                Text(LocalizableSettings.UwaziAccessServerTitle.localized)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 18))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+            }
+        }
+    }
+    fileprivate func buttonView() -> some View {
         return VStack(spacing: 12) {
             TellaButtonView<AnyView>(title: LocalizableSettings.UwaziLogin.localized,
                                      nextButtonAction: .action,
-                                     isOverlay: self.isLoginSelected,
+                                     isOverlay: accessServerType == .privateServer,
                                      isValid: .constant(true),action: {
-                self.isLoginSelected = true
-                self.isPublicInstance = false
+                accessServerType = .privateServer
             })
             TellaButtonView<AnyView>(title: LocalizableSettings.UwaziPublicInstance.localized,
                                      nextButtonAction: .action,
-                                     isOverlay: self.isPublicInstance,
+                                     isOverlay: accessServerType == .publicServer,
                                      isValid: .constant(true),action: {
-                self.isLoginSelected = false
-                self.isPublicInstance = true
+                accessServerType = .publicServer
             })
         }
     }
 
     fileprivate func handleNavigation() {
-        if isLoginSelected {
-            navigateToLoginView()
-        } else if isPublicInstance {
+        switch accessServerType {
+
+        case .publicServer:
             navigateToLanguageView()
-        } else {}
+        case .privateServer:
+            navigateToLoginView()
+        case .none:
+            break
+        }
     }
     fileprivate func navigateToLoginView() {
         let loginView = UwaziLoginView()
@@ -80,17 +96,7 @@ struct UwaziServerAccessSelectionView: View {
             .environmentObject(uwaziServerViewModel)
         navigateTo(destination: languageSelection)
     }
-    struct HeaderView: View {
-        var body: some View {
-            VStack(spacing: 12) {
-                Image("settings.server")
-                Text(LocalizableSettings.UwaziAccessServerTitle.localized)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 18))
-                    .foregroundColor(.white)
-                    .multilineTextAlignment(.center)
-            }
-        }
-    }
+
 }
 
 struct UwaziServerAccessSelectionView_Previews: PreviewProvider {

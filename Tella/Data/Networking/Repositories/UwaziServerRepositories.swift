@@ -18,7 +18,8 @@ struct UwaziServerRepository: WebRepository {
         let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.login((username: username, password: password, serverURL: serverURL)))
         return apiResponse
             .tryMap({ (response, allHeaderFields) in
-                return handleToken(response: response, allHeaderFields: allHeaderFields)
+                let token = handleToken(response: response, allHeaderFields: allHeaderFields)
+                return token
             })
             .mapError {$0 as! APIError}
             .eraseToAnyPublisher()

@@ -70,7 +70,6 @@ class ServerViewModel: ObservableObject {
         guard let id = mainAppModel.vaultManager.tellaData?.addServer(server: server) else { return }
         server.id = id
         self.currentServer = server
-
     }
     
     func updateServer() {

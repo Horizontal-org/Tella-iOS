@@ -9,12 +9,10 @@
 import SwiftUI
 
 struct ServerSelectionView: View {
-
     @EnvironmentObject var serversViewModel : ServersViewModel
     @StateObject var serverViewModel : ServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
-    @State var istellaWebSelected = false
-    @State var isUwaziSelected = false
+    @State var selectedServerType: ServerConnectionType = .unknown
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     init(appModel:MainAppModel, server: Server? = nil) {
@@ -39,18 +37,16 @@ struct ServerSelectionView: View {
         return Group {
             TellaButtonView<AnyView>(title: LocalizableSettings.settServerTellaWeb.localized,
                                      nextButtonAction: .action,
-                                     isOverlay: self.istellaWebSelected,
+                                     isOverlay: selectedServerType == .tella,
                                      isValid: .constant(true),action: {
-                istellaWebSelected = true
-                isUwaziSelected = false
+                selectedServerType = .tella
             })
             .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
             TellaButtonView<AnyView>(title: LocalizableSettings.settServerUwazi.localized,
                                      nextButtonAction: .action,
-                                     isOverlay: self.isUwaziSelected,
+                                     isOverlay: selectedServerType == .uwazi,
                                      isValid: .constant(true), action: {
-                istellaWebSelected = false
-                isUwaziSelected = true
+                selectedServerType = .uwazi
             }).padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
         }
     }
@@ -61,17 +57,27 @@ struct ServerSelectionView: View {
                                        shouldHideNext: false,
                                        shouldHideBack: true,
                                        nextAction: {
-            if istellaWebSelected {
-                navigateTo(destination: AddServerURLView(appModel: mainAppModel))
-            } else if isUwaziSelected {
-                navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel)
-                    .environmentObject(serverViewModel)
-                    .environmentObject(serversViewModel))
-            } else {
-
+            switch selectedServerType {
+            case .tella:
+                navigateToTellaWebFlow()
+            case .uwazi:
+                navigateToUwaziFlow()
+            default:
+                break
             }
         })
     }
+
+    fileprivate func navigateToTellaWebFlow() {
+        navigateTo(destination: AddServerURLView(appModel: mainAppModel))
+    }
+
+    fileprivate func navigateToUwaziFlow() {
+        navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel)
+            .environmentObject(serverViewModel)
+            .environmentObject(serversViewModel))
+    }
+
 
     struct HeaderView: View {
         var body: some View {

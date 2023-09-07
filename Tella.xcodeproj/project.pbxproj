@@ -334,6 +334,7 @@
 		E14FD87A2A6AB22200BC7523 /* UwaziLocale.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14FD8792A6AB22200BC7523 /* UwaziLocale.swift */; };
 		E18BD4332AA0C39A00EE62E2 /* UwaziLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18BD4322AA0C39A00EE62E2 /* UwaziLanguage.swift */; };
 		E1D48B852A1BB8EA00D36270 /* UwaziCheckURLDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D48B842A1BB8EA00D36270 /* UwaziCheckURLDTO.swift */; };
+		E1E7C56F2AA9822F00DDB07E /* DeleteServerTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E7C56E2AA9822F00DDB07E /* DeleteServerTexts.swift */; };
 		E1EAA0552AA74FEC00492078 /* UwaziLanguageContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EAA0542AA74FEC00492078 /* UwaziLanguageContext.swift */; };
 		E1EAA0572AA7501800492078 /* UwaziCheckURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EAA0562AA7501800492078 /* UwaziCheckURL.swift */; };
 		E1EEE29629E6796E009FE227 /* ServerSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEE29529E6796E009FE227 /* ServerSelectionView.swift */; };
@@ -725,6 +726,7 @@
 		E14FD8792A6AB22200BC7523 /* UwaziLocale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLocale.swift; sourceTree = "<group>"; };
 		E18BD4322AA0C39A00EE62E2 /* UwaziLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLanguage.swift; sourceTree = "<group>"; };
 		E1D48B842A1BB8EA00D36270 /* UwaziCheckURLDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziCheckURLDTO.swift; sourceTree = "<group>"; };
+		E1E7C56E2AA9822F00DDB07E /* DeleteServerTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteServerTexts.swift; sourceTree = "<group>"; };
 		E1EAA0542AA74FEC00492078 /* UwaziLanguageContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLanguageContext.swift; sourceTree = "<group>"; };
 		E1EAA0562AA7501800492078 /* UwaziCheckURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziCheckURL.swift; sourceTree = "<group>"; };
 		E1EEE29529E6796E009FE227 /* ServerSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSelectionView.swift; sourceTree = "<group>"; };
@@ -1587,6 +1589,7 @@
 				120451FF28C7AC2800D572A7 /* ServerActionType.swift */,
 				CC1313812A5CB0DB0057271C /* DeleteAfterFailOption.swift */,
 				CC1313872A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift */,
+				E1E7C56E2AA9822F00DDB07E /* DeleteServerTexts.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2372,6 +2375,7 @@
 				12199C34294094430041BD38 /* OutboxDetailsView.swift in Sources */,
 				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
 				1291A83228BE0086001A6055 /* SettingsAddServerCardView.swift in Sources */,
+				E1E7C56F2AA9822F00DDB07E /* DeleteServerTexts.swift in Sources */,
 				0E87C875268BDDFB00EB5E34 /* ImageViewer.swift in Sources */,
 				1233076729F15A290019DF7C /* NetworkMonitor.swift in Sources */,
 				0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */,

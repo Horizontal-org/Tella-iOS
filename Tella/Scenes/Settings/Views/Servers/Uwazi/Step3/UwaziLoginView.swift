@@ -13,10 +13,47 @@ struct UwaziLoginView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
 
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var mainAppModel : MainAppModel
 
-    @State var presentingSuccessLoginView : Bool = false
+    var body: some View {
 
+        ContainerView {
+            ZStack {
+                VStack(spacing: 0) {
+                    VStack(spacing: 32) {
+                        Spacer()
+                        TopServerView(title: LocalizableSettings.UwaziLoginAccess.localized)
+                        usernameTextFieldView()
+                        passwordTextFieldView()
+                        loginButtonView()
+                        Spacer()
+                    }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+
+                    BottomLockView<AnyView>(isValid: $uwaziServerViewModel.validPassword,
+                                            nextButtonAction: .action,
+                                            shouldHideNext: true)
+                }
+                if uwaziServerViewModel.isLoading {
+                    CircularActivityIndicatory()
+                }
+            }
+        }
+        .navigationBarHidden(true)
+        .onReceive(uwaziServerViewModel.$showNextLanguageSelectionView, perform: { value in
+            if value {
+                showLanguageSelectionView()
+            }
+        })
+        .onReceive(uwaziServerViewModel.$showNext2FAView, perform: { value in
+            if value {
+                show2FAView()
+            }
+        })
+        .onAppear {
+            if uwaziServerViewModel.currentServer != nil {
+                uwaziServerViewModel.validCredentials = true
+            } else {}
+        }
+    }
     fileprivate func usernameTextFieldView() -> some View {
         return TextfieldView(fieldContent: $uwaziServerViewModel.username,
                              isValid: $uwaziServerViewModel.validUsername,
@@ -46,54 +83,19 @@ struct UwaziLoginView: View {
             self.uwaziServerViewModel.login()
         }
     }
+    fileprivate func showLanguageSelectionView() {
+        let languageView = UwaziLanguageSelectionView(isPresented: .constant(true))
+            .environmentObject(serversViewModel)
+            .environmentObject(uwaziServerViewModel)
+        navigateTo(destination: languageView)
+    }
 
-    var body: some View {
-
-        ContainerView {
-            ZStack {
-                VStack(spacing: 0) {
-                    VStack(spacing: 32) {
-                        Spacer()
-                        TopServerView(title: LocalizableSettings.UwaziLoginAccess.localized)
-                        usernameTextFieldView()
-                        passwordTextFieldView()
-                        loginButtonView()
-                        Spacer()
-                    }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-
-                    BottomLockView<AnyView>(isValid: $uwaziServerViewModel.validPassword,
-                                            nextButtonAction: .action,
-                                            shouldHideNext: true)
-                }
-                if uwaziServerViewModel.isLoading {
-                    CircularActivityIndicatory()
-                }
-            }
-        }
-        .navigationBarHidden(true)
-        .onReceive(uwaziServerViewModel.$showNextLanguageSelectionView, perform: { value in
-            if value {
-                let languageView = UwaziLanguageSelectionView(isPresented: .constant(true))
-                    //.environmentObject(SettingsViewModel(appModel: MainAppModel()))
-                    .environmentObject(serversViewModel)
-                    .environmentObject(uwaziServerViewModel)
-                navigateTo(destination: languageView)
-            }
-        })
-        .onReceive(uwaziServerViewModel.$showNext2FAView, perform: { value in
-            if value {
-                let twoStepVerification =  UwaziTwoStepVerification()
-                                        .environmentObject(serversViewModel)
-                                        .environmentObject(uwaziServerViewModel)
-                if !uwaziServerViewModel.shouldShowLoginError {
-                    navigateTo(destination: twoStepVerification)
-                }
-            }
-        })
-        .onAppear {
-            if uwaziServerViewModel.currentServer != nil {
-                uwaziServerViewModel.validCredentials = true
-            } else {}
+    fileprivate func show2FAView() {
+        let twoStepVerification =  UwaziTwoStepVerification()
+            .environmentObject(serversViewModel)
+            .environmentObject(uwaziServerViewModel)
+        if !uwaziServerViewModel.shouldShowLoginError {
+            navigateTo(destination: twoStepVerification)
         }
     }
 }

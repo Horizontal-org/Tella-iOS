@@ -13,7 +13,7 @@ struct UwaziAddServerURLView: View {
     var nextButtonAction: NextButtonAction = .action
     @EnvironmentObject var serversViewModel : ServersViewModel
     @StateObject var uwaziServerViewModel : UwaziServerViewModel
-    @EnvironmentObject var mainAppModel : MainAppModel
+    
     init(appModel:MainAppModel, server: Server? = nil) {
         _uwaziServerViewModel = StateObject(wrappedValue: UwaziServerViewModel(mainAppModel: appModel, currentServer: server))
     }

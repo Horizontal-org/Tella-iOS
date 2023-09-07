@@ -108,9 +108,7 @@ struct UwaziLanguageItemView : View {
                         .font(.custom(Styles.Fonts.regularFontName, size: 12))
                         .foregroundColor(.white)
                 }
-
                 Spacer()
-
                 if isCurrentLanguage(languageItem: languageItem) {
                     Image("settings.done")
                 }
@@ -136,19 +134,6 @@ struct UwaziLanguageItemView : View {
         } else {
             return false
         }
-    }
-}
-struct BigButtonStyleForLanguage: ButtonStyle {
-    @State var color: Color = .red
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-            .padding()
-            .frame(width: 120, height: 40)
-            .foregroundColor(.white)
-            .background(color)
-            .cornerRadius(25)
     }
 }
 
