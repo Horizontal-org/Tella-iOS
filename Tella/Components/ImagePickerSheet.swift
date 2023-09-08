@@ -54,7 +54,6 @@ class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerC
     
     func imagePickerController(_ picker: UIImagePickerController,
                 didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-
         guard let mediaType = info[UIImagePickerController.InfoKey.mediaType] as? String,
               let mediaURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL,
               let referenceURL = info[UIImagePickerController.InfoKey.referenceURL] as? URL,

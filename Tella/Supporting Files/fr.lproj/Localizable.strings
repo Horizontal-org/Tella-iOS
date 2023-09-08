@@ -211,7 +211,6 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettDeleteAfterFail_Cancel_SheetAction" = "CANCEL";
 "Settings_SettDeleteAfterFail_Save_SheetAction" = "SAVE";
 
-
 "Setting_SettServer_Selection_Title" = "What type of server would you like to connect to?";
 "Setting_SettServer_Selection_Message" = "If you are not sure, please ask your organization.";
 "Setting_SettServer_TellaWeb" = "TELLA WEB";

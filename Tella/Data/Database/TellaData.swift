@@ -8,7 +8,6 @@ import Combine
 
 class TellaData : ObservableObject {
 
-
     // TODO: Make this private to ensure abstraction
     var database : TellaDataBase?
     
@@ -27,13 +26,11 @@ class TellaData : ObservableObject {
     }
     
     func addServer(server : Server) -> Int? {
-        
         guard let database = database else {
             return nil
         }
         let id = database.addServer(server: server)
         getServers()
-        
         return id
         
     }
@@ -172,14 +169,11 @@ class TellaData : ObservableObject {
     }
     
     func addReportFile(fileId: String?, reportId : Int) -> ReportFile? {
-        
         guard let database = database else {
             return nil
         }
         guard let id = database.addReportFile(fileId: fileId , reportId: reportId) else { return nil}
-        
         return database.getVaultFile(reportFileId: id)
-        
     }
     
     func updateReportFile(reportFile: ReportFile) {

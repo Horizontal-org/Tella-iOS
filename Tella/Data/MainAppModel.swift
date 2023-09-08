@@ -160,7 +160,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
             self?.publishUpdates()
         }.store(in: &cancellable)
         
-        let files = try await self.vaultManager.importFile(files: files, to: parentFolder, type: type, folderPathArray: folderPathArray)
+        let files = try await self.vaultManager.importFile(files: files, to: parentFolder, type: type, folderPathArray: folderPathArray) ?? []
         self.publishUpdates()
         return files
     }
@@ -238,8 +238,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
             self.objectWillChange.send()
         }
     }
-    
-    
+
 }
 
 ///   MainAppModel extension contains the methods used to manage reports
@@ -258,9 +257,8 @@ extension MainAppModel {
     }
     
     func deleteReport(reportId:Int?) {
-        
         UploadService.shared.cancelSendingReport(reportId: reportId)
-         vaultManager.tellaData?.deleteReport(reportId: reportId)
+        vaultManager.tellaData?.deleteReport(reportId: reportId)
     }
 }
 

@@ -65,10 +65,8 @@ struct TellaApp: App {
     }
     func resetApp() {
         let homeViewModel = appViewState.homeViewModel
-         if homeViewModel.shouldResetApp() == true,
-            homeViewModel.appEnterInBackground == true {
-            
-            
+        if homeViewModel.shouldResetApp() == true,
+           homeViewModel.appEnterInBackground == true {
             DispatchQueue.main.async {
                 appViewState.shouldHidePresentedView = true
                 appViewState.homeViewModel.vaultManager.clearTmpDirectory()

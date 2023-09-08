@@ -26,7 +26,6 @@ class HomeViewModel: ObservableObject {
         self.appModel = appModel
         getServersList()
     }
-
     func getServersList() {            
         self.appModel.vaultManager.tellaData?.servers.sink { result in
                 
@@ -42,7 +41,6 @@ class HomeViewModel: ObservableObject {
                 }
             }.store(in: &subscribers)
         }
-    
     func getFiles() -> [RecentFile] {
         guard let recentFile = appModel.vaultManager.root?.getRecentFile() else { return [] }
         hasRecentFile = recentFile.count > 0

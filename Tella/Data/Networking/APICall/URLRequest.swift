@@ -29,9 +29,7 @@ extension WebRepository {
         }
     }
 }
-
 // MARK: - Helpers
-
 extension Publisher where Output == URLSession.DataTaskPublisher.Output {
     func requestJSON<Value>() -> APIResponse<Value> where Value: Decodable {
         return requestData()

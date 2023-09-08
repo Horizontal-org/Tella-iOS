@@ -45,7 +45,6 @@ class TellaDataBase: UwaziServerLanguageProtocol {
                 break
             }
             try statementBuilder.setNewDatabaseVersion(version: D.databaseVersion)
-            
         } catch let error {
             debugLog(error)
         }
