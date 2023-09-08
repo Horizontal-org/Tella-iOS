@@ -24,33 +24,31 @@ class TellaData : ObservableObject {
         getReports()
     }
     
-    func addServer(server : Server) throws -> Int {
-        
+    func addServer(server : Server) -> Int? {
         guard let database = database else {
-            throw SqliteError()
+            return nil
         }
-        let id = try database.addServer(server: server)
+        let id = database.addServer(server: server)
         getServers()
-        
         return id
         
     }
     
     @discardableResult
-    func updateServer(server : Server) throws -> Int {
+    func updateServer(server : Server) -> Int? {
         
         guard let database = database else {
-            throw SqliteError()
+            return nil
         }
-        let id = try database.updateServer(server: server)
+        let id = database.updateServer(server: server)
         getServers()
         return id
     }
     
-    func deleteServer(serverId : Int) throws  {
+    func deleteServer(serverId : Int) throws {
         
         guard let database = database else {
-            throw SqliteError()
+            return
         }
         try database.deleteServer(serverId: serverId)
         getServers()
@@ -124,12 +122,12 @@ class TellaData : ObservableObject {
                                                    .submissionInProgress])
     }
     
-    func addReport(report : Report) throws -> Int {
+    func addReport(report : Report) -> Int? {
         
         guard let database = database else {
-            throw SqliteError()
+            return nil
         }
-        let id = try database.addReport(report: report)
+        let id = database.addReport(report: report)
         getReports()
         return id
     }
@@ -137,51 +135,48 @@ class TellaData : ObservableObject {
     func addCurrentUploadReport(report : Report) throws -> Report? {
         
         guard let database = database else {
-            throw SqliteError()
+            return nil
         }
         
         try database.resetCurrentUploadReport()
-        let id = try database.addReport(report: report)
+        guard let id = database.addReport(report: report) else { return nil }
         let report = getReport(reportId: id)
         return report
     }
     
     @discardableResult
-    func updateReport(report : Report) throws -> Report? {
+    func updateReport(report : Report) -> Report? {
         
         guard let database = database else {
-            throw SqliteError()
+            return nil
         }
-        let report = try database.updateReport(report: report)
+        let report = database.updateReport(report: report)
         getReports()
         return report
     }
     
     @discardableResult
-    func updateReportStatus(idReport : Int, status: ReportStatus) throws -> Int {
+    func updateReportStatus(idReport : Int, status: ReportStatus) -> Int? {
         
         guard let database = database else {
-            throw SqliteError()
+            return nil
         }
-        let id = try database.updateReportStatus(idReport: idReport, status: status, date: Date())
+        let id = database.updateReportStatus(idReport: idReport, status: status, date: Date())
         getReports()
         return id
         
     }
     
-    func addReportFile(fileId: String?, reportId : Int) throws -> ReportFile? {
-        
+    func addReportFile(fileId: String?, reportId : Int) -> ReportFile? {
         guard let database = database else {
-            throw SqliteError()
+            return nil
         }
-        let id = try database.addReportFile(fileId: fileId , reportId: reportId)
-        
+        guard let id = database.addReportFile(fileId: fileId , reportId: reportId) else { return nil}
         return database.getVaultFile(reportFileId: id)
-        
     }
     
-    func updateReportFile(reportFile: ReportFile) throws   {
-        try database?.updateReportFile(reportFile: reportFile)
+    func updateReportFile(reportFile: ReportFile) {
+        database?.updateReportFile(reportFile: reportFile)
     }
     
     func deleteReport(reportId : Int?)  {
@@ -195,11 +190,11 @@ class TellaData : ObservableObject {
     }
 }
 extension TellaData {
-    func getUwaziLocale(serverId: Int) throws -> UwaziLocale? {
+    func getUwaziLocale(serverId: Int) -> UwaziLocale? {
         guard let database = database else {
-            throw SqliteError()
+            return nil
         }
-        return try database.getUwaziLocale(serverId: serverId)
+        return database.getUwaziLocale(serverId: serverId)
     }
     func deleteUwaziLocale(serverId : Int) throws {
         guard let database = database else {
@@ -207,44 +202,48 @@ extension TellaData {
         }
         return try database.deleteUwaziLocale(serverId: serverId)
     }
-
-    func addUwaziLocale(locale: UwaziLocale) throws -> Int {
+    @discardableResult
+    func addUwaziLocale(locale: UwaziLocale) -> Int? {
         guard let database = database else {
-            throw SqliteError()
+            return nil
         }
-        return try database.addUwaziLocale(locale: locale)
+        return database.addUwaziLocale(locale: locale)
     }
-    func updateLocale(localeId: Int, locale: String) throws -> Int {
+
+    @discardableResult
+    func updateLocale(localeId: Int, locale: String) -> Int? {
         guard let database = database else {
-            throw SqliteError()
+            return nil
         }
-        return try database.updateLocale(localeId: localeId, locale: locale)
+        return database.updateLocale(localeId: localeId, locale: locale)
     }
 }
 extension TellaData {
-    func addUwaziTemplate(template: CollectedTemplate) throws -> CollectedTemplate {
+    func addUwaziTemplate(template: CollectedTemplate) -> CollectedTemplate? {
         guard let database = database else {
-            throw SqliteError()
+            return nil
         }
-        return try database.addUwaziTemplate(template: template)
+        return database.addUwaziTemplate(template: template)
     }
 
-    func deleteAllUwaziTemplate(templateId: String) throws {
-        guard let database = database else {
-            throw SqliteError()
-        }
-        return try database.deleteUwaziTemplate(templateId: templateId)
+    func deleteAllUwaziTemplate(templateId: String) {
+        guard let database = database else { return }
+        return database.deleteUwaziTemplate(templateId: templateId)
     }
-    func getAllUwaziTemplate() throws -> [CollectedTemplate] {
-        guard let database = database else {
-            throw SqliteError()
+    func getAllUwaziTemplate() -> [CollectedTemplate] {
+        do {
+            guard let database = database else {
+                throw SqliteError()
+            }
+            return try database.getAllUwaziTemplate()
+        } catch let error {
+            debugLog(error)
+            return []
         }
-        return try database.getAllUwaziTemplate()
+
     }
-    func deleteAllUwaziTemplate(id: Int) throws {
-        guard let database = database else {
-            throw SqliteError()
-        }
-        return try database.deleteUwaziTemplate(id: id)
+    func deleteAllUwaziTemplate(id: Int) {
+        guard let database = database else { return }
+        database.deleteUwaziTemplate(id: id)
     }
 }

@@ -3,52 +3,70 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 5/22/23.
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import Combine
 import Foundation
-
-
-struct UwaziCombinedResults {
-    let templateResult: UwaziTemplateResult
-    let settingResult: UwaziSettingResult
-    let dictionaryResult: UwaziDictionaryResult
-    let translationResult: UwaziTranslationResult
-}
 
 class UwaziServerRepository: WebRepository {
     var cancellable: AnyCancellable?
     private var subscribers = Set<AnyCancellable>()
     func login(username: String,
                password: String,
-               serverURL: String) -> AnyPublisher<(UwaziLoginResult,HTTPURLResponse?), APIError> {
+               serverURL: String) -> AnyPublisher<String?, APIError> {
 
-        let call : AnyPublisher<(UwaziLoginResult,HTTPURLResponse?), APIError> = callReturnsHeaders(endpoint: API.login((username: username, password: password, serverURL: serverURL)))
-
-        return call
+        let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.login((username: username, password: password, serverURL: serverURL)))
+        return apiResponse
+            .tryMap({ (response, allHeaderFields) in
+                let token = self.handleToken(response: response, allHeaderFields: allHeaderFields)
+                return token
+            })
+            .mapError {$0 as! APIError}
             .eraseToAnyPublisher()
     }
 
     func twoFactorAuthentication(username: String,
                                   password: String,
                                   token: String,
-                                  serverURL: String) -> AnyPublisher<(UwaziLoginResult,HTTPURLResponse?), APIError> {
+                                  serverURL: String) -> AnyPublisher<String?, APIError> {
 
-        let call : AnyPublisher<(UwaziLoginResult,HTTPURLResponse?), APIError> = callReturnsHeaders(endpoint: API.twoFactorAuthentication((username: username, password: password,token: token, serverURL: serverURL)))
+        let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.twoFactorAuthentication((username: username, password: password,token: token, serverURL: serverURL)))
+        return apiResponse
+            .tryMap({ (response, allHeaderFields) in
+                return self.handleToken(response: response, allHeaderFields: allHeaderFields)
+            })
+            .mapError {$0 as! APIError}
+            .eraseToAnyPublisher()
+    }
+    private func handleToken(response: BoolResponse, allHeaderFields: [AnyHashable: Any]?) -> String? {
+        if response.success ?? false {
+            guard let token = getTokenFromHeader(httpResponse: allHeaderFields) else { return nil }
+            return token
+        } else {
+            return nil
+        }
+    }
+    private func getTokenFromHeader(httpResponse: [AnyHashable: Any]?) -> String? {
+        if let token = httpResponse?["Set-Cookie"] as? String {
+            let filteredToken = token.split(separator: ";")
+            return filteredToken.first?.replacingOccurrences(of: "connect.sid=", with: "")
+        }
+        return nil
+    }
 
-        return call
+    func checkServerURL(serverURL: String) -> AnyPublisher<UwaziCheckURL, APIError> {
+        let apiResponse: APIResponse<UwaziCheckURLDTO> = getAPIResponse(endpoint: API.checkURL(serverURL: serverURL))
+        return apiResponse
+            .compactMap{$0.0.toDomain() as? UwaziCheckURL}
             .eraseToAnyPublisher()
     }
 
-    func checkServerURL(serverURL: String) -> AnyPublisher<UwaziCheckURLResult, APIError> {
-        let call :  AnyPublisher<UwaziCheckURLResult, APIError> = call(endpoint: API.checkURL(serverURL: serverURL))
-        return call.eraseToAnyPublisher()
-    }
-
-    func getLanguage(serverURL: String) -> AnyPublisher<UwaziLanguageResult, APIError> {
-        let call :  AnyPublisher<UwaziLanguageResult, APIError> = call(endpoint: API.getLanguage(serverURL: serverURL))
-        return call.eraseToAnyPublisher()
+    func getLanguage(serverURL: String) -> AnyPublisher<UwaziLanguage, APIError> {
+        let apiResponse: APIResponse<UwaziLanguageDTO> = getAPIResponse(endpoint: API.getLanguage(serverURL: serverURL))
+        return apiResponse
+            .compactMap{$0.0.toDomain() as? UwaziLanguage}
+            .eraseToAnyPublisher()
     }
     func handleTemplate(serverURL: String, cookieList: [String]) {
         self.getTranslations(serverURL: serverURL, cookieList: cookieList)
@@ -91,9 +109,9 @@ class UwaziServerRepository: WebRepository {
                 let dictionary = dictionary.rows
 
                 // Maps the options to the property of the template
-                templates.forEach { template in
+                templates?.forEach { template in
                     template.properties.forEach { property in
-                        dictionary.forEach { dictionaryItem in
+                        dictionary?.forEach { dictionaryItem in
                             if dictionaryItem.id == property.content {
                                 property.values = dictionaryItem.values
                             }
@@ -101,12 +119,12 @@ class UwaziServerRepository: WebRepository {
                     }
                 }
 
-                var resultTemplates = [UwaziTemplate]()
+                var resultTemplates = [UwaziTemplateRow]()
                 // Check whether the server instance is public and if public then only use the whitelisted templates are added to resultTemplates
                 if (server.username?.isEmpty ?? true) || (server.password?.isEmpty ?? true) {
                     // allowedPublicTemplates get only the templates ids that are whitelisted
                     if !settings.allowedPublicTemplates.isEmpty {
-                        templates.forEach { row in
+                        templates?.forEach { row in
                             settings.allowedPublicTemplates.forEach { id in
                                 if row.id == id {
                                     resultTemplates.append(row)
@@ -116,14 +134,14 @@ class UwaziServerRepository: WebRepository {
                     }
                 } else {
                     // This means its private instance and all the templates are added to resultTemplates
-                    resultTemplates = templates
+                    resultTemplates = templates ?? []
                 }
                 resultTemplates.forEach { template in
                     // Get only the translations based on the language that user selected
-                    let filteredTranslations = translations.filter { row in
+                    let filteredTranslations = translations?.filter { row in
                         row.locale == locale.locale ?? ""
                     }
-                    filteredTranslations.first?.contexts.forEach{ context in
+                    filteredTranslations?.first?.contexts.forEach{ context in
                         // Compare context id and template id to determine appropiate translations
                         if context.contextID == template.id {
                             // Translation for the template name
@@ -136,7 +154,6 @@ class UwaziServerRepository: WebRepository {
                             template.commonProperties.forEach { property in
                                 property.translatedLabel = context.values?[property.label ?? ""] ?? ""
                             }
-
                         } else {
                             // Translation for the template's property options texts or labels if there is any
                             template.properties.forEach { property in
@@ -155,10 +172,15 @@ class UwaziServerRepository: WebRepository {
                         }
                     }
                 }
-
-
                 let originalTemplate = resultTemplates.map { template in
-                    return CollectedTemplate(serverId: serverID, templateId: template.id, serverName: server.name ?? "", username: server.username, entityRow: template, isDownloaded: 0, isFavorite: 0, isUpdated: 0 )
+                    return CollectedTemplate(serverId: serverID,
+                                             templateId: template.id,
+                                             serverName: server.name ?? "",
+                                             username: server.username,
+                                             entityRow: template,
+                                             isDownloaded: false,
+                                             isFavorite: false,
+                                             isUpdated: false)
                 }
                 return originalTemplate
             }
@@ -175,44 +197,52 @@ class UwaziServerRepository: WebRepository {
     ///   - serverURL: the URL of the server
     ///   - cookieList:  The array of string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
     /// - Returns: AnyPublisher with UwaziTemplateResult or APIError if any
-    func getTemplate(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziTemplateResult, APIError> {
-        let call :  AnyPublisher<UwaziTemplateResult, APIError> = call(endpoint: API.getTemplate(serverURL: serverURL, cookieList: cookieList))
-        return call.eraseToAnyPublisher()
+    func getTemplate(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziTemplate, APIError> {
+        let apiResponse: APIResponse<UwaziTemplateDTO> = getAPIResponse(endpoint: API.getTemplate(serverURL: serverURL, cookieList: cookieList))
+        return apiResponse
+            .compactMap{$0.0.toDomain() as? UwaziTemplate}
+            .eraseToAnyPublisher()
     }
     ///  Get all the setting related to the Uwazi server to determine the whitelisted templates
     /// - Parameters:
     ///   - serverURL: the URL of the server
     ///   - cookieList:  The array of string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
     /// - Returns: AnyPublisher with UwaziSettingResult or APIError if any
-    func getSettings(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziSettingResult, APIError> {
-        let call :  AnyPublisher<UwaziSettingResult, APIError> = call(endpoint: API.getSetting(serverURL: serverURL, cookieList: cookieList))
-        return call.eraseToAnyPublisher()
+    func getSettings(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziSetting, APIError> {
+        let apiResponse:  APIResponse<UwaziSettingDTO> = getAPIResponse(endpoint: API.getSetting(serverURL: serverURL, cookieList: cookieList))
+        return apiResponse
+            .compactMap{$0.0.toDomain() as? UwaziSetting}
+            .eraseToAnyPublisher()
     }
     ///  Get all the options that are related to properties of the template related to the selected Uwazi server
     /// - Parameters:
     ///   - serverURL: the URL of the server
     ///   - cookieList:  The array of string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
     /// - Returns: AnyPublisher with UwaziDictionaryResult or APIError if any
-    func getDictionaries(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziDictionaryResult, APIError> {
-        let call :  AnyPublisher<UwaziDictionaryResult, APIError> = call(endpoint: API.getDictionary(serverURL: serverURL, cookieList: cookieList))
-        return call.eraseToAnyPublisher()
+    func getDictionaries(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziDictionary, APIError> {
+        let apiResponse: APIResponse<UwaziDictionaryDTO> = getAPIResponse(endpoint: API.getDictionary(serverURL: serverURL, cookieList: cookieList))
+        return apiResponse
+            .compactMap{$0.0.toDomain() as? UwaziDictionary}
+            .eraseToAnyPublisher()
     }
     ///  Get all the translation of the text related to the selected Uwazi server
     /// - Parameters:
     ///   - serverURL: the URL of the server
     ///   - cookieList:  The array of string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
     /// - Returns: AnyPublisher with UwaziTranslationResult or APIError if any
-    func getTranslations(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziTranslationResult, APIError> {
-        let call :  AnyPublisher<UwaziTranslationResult, APIError> = call(endpoint: API.getTranslations(serverURL: serverURL, cookieList: cookieList))
-        return call.eraseToAnyPublisher()
+    func getTranslations(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziTranslation, APIError> {
+        let apiResponse: APIResponse<UwaziTranslationDTO> = getAPIResponse(endpoint: API.getTranslations(serverURL: serverURL, cookieList: cookieList))
+        return apiResponse
+            .compactMap{$0.0.toDomain() as? UwaziTranslation}
+            .eraseToAnyPublisher()
     }
 
     func getProjetDetails(projectURL: String,token: String) -> AnyPublisher<ProjectAPI, APIError> {
 
-        let call : AnyPublisher<ProjectDetailsResult, APIError> = call(endpoint: API.getProjetDetails((projectURL: projectURL, token: token)))
+        let apiResponse : APIResponse<ProjectDetailsResult> = getAPIResponse(endpoint: API.getProjetDetails((projectURL: projectURL, token: token)))
 
-        return call
-            .compactMap{$0.toDomain() as? ProjectAPI }
+        return apiResponse
+            .compactMap{$0.0.toDomain() as? ProjectAPI }
             .eraseToAnyPublisher()
     }
 }
@@ -306,14 +336,12 @@ extension UwaziServerRepository.API: APIRequest {
             return "/api/login"
         case .getProjetDetails(_):
             return ""
-        case .checkURL:
+        case .checkURL,.getSetting:
             return "/api/settings"
         case .getLanguage:
             return "/api/translations"
         case .getTemplate:
             return "/api/templates"
-        case .getSetting:
-            return "/api/settings"
         case .getDictionary:
             return "/api/dictionaries"
         case .getTranslations:

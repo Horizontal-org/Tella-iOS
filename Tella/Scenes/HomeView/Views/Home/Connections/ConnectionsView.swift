@@ -43,7 +43,7 @@ struct ConnectionsView: View {
                                         image: "home.report",
                                         destination: ReportsView(mainAppModel: appModel))
                 case .uwazi:
-                    ConnectionsItemView(title: LocalizableUwazi.uwaziTitle.localized,
+                    ConnectionsItemView(title: LocalizableHome.uwaziServerTitle.localized,
                                         image: "home.uwazi",
                                         destination: UwaziView().environmentObject(UwaziReportsViewModel(mainAppModel: appModel, server: server.servers[0])))
                 default:

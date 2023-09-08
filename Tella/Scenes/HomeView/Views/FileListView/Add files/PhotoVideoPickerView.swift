@@ -20,11 +20,13 @@ struct PhotoVideoPickerView: View {
     init(showingImagePicker: Binding<Bool>,
          showingImportDocumentPicker: Binding<Bool>,
          appModel: MainAppModel,
-         resultFile : Binding<[VaultFile]?>? = nil) {
+         resultFile : Binding<[VaultFile]?>? = nil,
+         rootFile:Binding<VaultFile?>) {
         
         _viewModel = StateObject(wrappedValue: PhotoVideoViewModel(mainAppModel: appModel,
                                                                    folderPathArray: [],
-                                                                   resultFile: resultFile))
+                                                                   resultFile: resultFile,
+                                                                   rootFile: rootFile))
         self.showingImagePicker = showingImagePicker
         self.showingImportDocumentPicker = showingImportDocumentPicker
     }
@@ -33,26 +35,22 @@ struct PhotoVideoPickerView: View {
         addFileDocumentImporter
         imagePickerView
     }
-    
-    
+
+
+
     var imagePickerView: some View {
         HStack{}
             .sheet(isPresented:  showingImagePicker, content: {
-                ImagePickerView { image, url, pathExtension, imageURL in
-                    
+                ImagePickerSheet { imagePickerCompletion in
                     self.showingImagePicker.wrappedValue = false
-                    
-                    if let url = url {
+                    if imagePickerCompletion != nil {
                         showProgressView()
-                        viewModel.add(files: [url], type: .video)
-                    }
-                    if let image = image {
-                         showProgressView()
-                         viewModel.add(image: image, type: .image, pathExtension: pathExtension, originalUrl: imageURL)
+                        viewModel.handleAddingFile(imagePickerCompletion)
                     }
                 }
             })
     }
+    
     
     var addFileDocumentImporter: some View {
         HStack{}
@@ -63,7 +61,7 @@ struct PhotoVideoPickerView: View {
                 onCompletion: { result in
                     if let urls = try? result.get() {
                         showProgressView()
-                        viewModel.add(files: urls, type: .document)
+                        viewModel.addDocument(files: urls)
                     }
                 }
             )

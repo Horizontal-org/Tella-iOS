@@ -16,7 +16,7 @@ struct TemplateListView: View {
     
     var body: some View {
         ZStack {
-            if uwaziViewModel.downloadedTemplates.count > 0 {
+            if !uwaziViewModel.downloadedTemplates.isEmpty{
                     VStack(alignment: .center, spacing: 0) {
                         Text(LocalizableUwazi.uwaziTemplateListExpl.localized)
                             .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
@@ -45,12 +45,12 @@ struct TemplateListView: View {
                                   action:  {item in
                 let type = item.type as? DownloadedTemplateActionType
                 if type == .delete {
-                    showDeleteReportConfirmationView(template: template)
+                    showDeleteTemplateConfirmationView(template: template)
                 }
             })
         }
     }
-    private func showDeleteReportConfirmationView(template: CollectedTemplate) {
+    private func showDeleteTemplateConfirmationView(template: CollectedTemplate) {
         sheetManager.showBottomSheet(modalHeight: 200) {
             DeleteTemplateConfirmationView(title: template.entityRow?.translatedName,
                                          message: LocalizableUwazi.uwaziDeleteTemplateExpl.localized) {

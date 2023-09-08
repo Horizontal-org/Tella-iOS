@@ -22,9 +22,12 @@ extension APIError: LocalizedError {
             return "Unexpected response from the server"
         }
     }
-    
     func customErrorMessage(errorCode : Int) -> String {
-        switch errorCode {
+        switch HTTPErrorCodes(rawValue: errorCode) {
+        case .unauthorized:
+            return "Invalid username or password"
+        case .forbidden:
+            return "Account locked due to too many unsuccessful attempts."
         default:
             return "Custom Error"
         }

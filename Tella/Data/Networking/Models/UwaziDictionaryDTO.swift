@@ -8,24 +8,31 @@
 
 import Foundation
 
-struct UwaziDictionaryResult: Codable {
-    let rows: [UwaziDictionary]
+struct UwaziDictionaryDTO: Codable, DataModel {
+    let rows: [UwaziDictionaryRowDTO]?
+    func toDomain() -> DomainModel? {
+        UwaziDictionary(rows: rows?.compactMap{$0.toDomain() as? UwaziDictionaryRow})
+    }
 }
 
-// MARK: - Row
-class UwaziDictionary: Codable {
+class UwaziDictionaryRowDTO: Codable, DataModel {
     let id, name: String?
     var values: [SelectValue]? = []
-    let v: Int?
+    let version: Int?
 
     enum CodingKeys: String, CodingKey {
         case id = "_id"
         case name, values
-        case v = "__v"
+        case version = "__v"
     }
+    func toDomain() -> DomainModel? {
+        UwaziDictionaryRow(id: id,
+                           name: name,
+                           values: values)
+    }
+
 }
 
-// MARK: - Value
 class SelectValue: Codable {
     var label, id: String?
     var translatedLabel: String? = ""

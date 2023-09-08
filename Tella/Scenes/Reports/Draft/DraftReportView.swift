@@ -263,7 +263,8 @@ struct DraftReportView: View {
         PhotoVideoPickerView(showingImagePicker: $reportViewModel.showingImagePicker,
                              showingImportDocumentPicker: $reportViewModel.showingImportDocumentPicker,
                              appModel: mainAppModel,
-                             resultFile: $reportViewModel.resultFile)
+                             resultFile: $reportViewModel.resultFile,
+                             rootFile: self.$mainAppModel.vaultManager.root)
     }
     
     

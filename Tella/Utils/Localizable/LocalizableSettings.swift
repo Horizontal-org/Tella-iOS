@@ -41,12 +41,18 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settSecAppBar = "Settings_SettSec_AppBar"
     case settSecLock = "Settings_SettSec_Lock"
     case settSecLockTimeout = "Settings_SettSec_LockTimeout"
+    case settSecDeleteAfterFail = "Settings_SettSec_DeleteAfterFail"
+    case settSecShowUnlockAttempts = "Settings_SettSec_ShowUnlockAttempts"
+    case settSecShowUnlockAttemptsExpl = "Settings_SettSec_ShowUnlockAttempts_Expl"
     case settSecScreenSecurity = "Settings_SettSec_ScreenSecurity"
     case settSecScreenSecurityExpl = "Settings_SettSec_ScreenSecurity_Expl"
     case settQuickDelete = "Settings_Sett_QuickDelete"
     case settQuickDeleteExpl = "Settings_Sett_QuickDelete_Expl"
     case settQuickDeleteFilesCheckbox = "Settings_Sett_QuickDelete_Files_CheckboxItem"
     case settQuickDeleteConnectionsCheckbox = "Settings_Sett_QuickDelete_Connections_CheckboxItem"
+    case settSecPreserveMetadata = "Setting_SettSec_PreserveMetadata"
+    case settSecPreserveMetadataExpl = "Setting_SettSec_PreserveMetadata_Expl"
+
 
     
     // LockTimeout
@@ -59,6 +65,19 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settLockTimeoutOneHourSheetSelect = "Settings_SettLockTimeout_OneHour_SheetSelect"
     case settLockTimeoutCancelSheetAction = "Settings_SettLockTimeout_Cancel_SheetAction"
     case settLockTimeoutSaveSheetAction = "Settings_SettLockTimeout_Save_SheetAction"
+
+    // DeleteAfterFail
+    case settDeleteAfterFailOffTitle = "Settings_SettSec_DeleteAfterFail_Off"
+    case settDeleteAfterFailSheetTitle = "Settings_SettDeleteAfterFail_SheetTitle"
+    case settDeleteAfterFailSheetExpl = "Settings_SettDeleteAfterFail_SheetExpl"
+    case settDeleteAfterFailOffSheetSelect = "Settings_SettDeleteAfterFail_Off_SheetSelect"
+    case settDeleteAfterFailFiveAttemptsSheetSelect = "Settings_SettDeleteAfterFail_FiveAttempts_SheetSelect"
+    case settDeleteAfterFailTenAttemptsSheetSelect = "Settings_SettDeleteAfterFail_TenAttempts_SheetSelect"
+    case settDeleteAfterFailTwentyAttemptsSheetSelect = "Settings_SettDeleteAfterFail_TwentyAttempts_SheetSelect"
+    case settDeleteAfterFailCancelSheetAction = "Settings_SettDeleteAfterFail_Cancel_SheetAction"
+    case settDeleteAfterFailSaveSheetAction = "Settings_SettDeleteAfterFail_Save_SheetAction"
+    case settDeleteAfterFailToast = "Settings_SettDeleteAfterFail_Toast"
+    case settDeleteAfterFailOffToast = "Settings_SettDeleteAfterFail_Off_Toast"
     
     // Servers
     case settServersAppBar = "Settings_SettServers_AppBar"

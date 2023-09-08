@@ -40,7 +40,7 @@ struct AddTemplatesView: View {
                                             TemplateItemView(
                                                 template: $uwaziReportsViewModel.templates[index],
                                                 serverName: uwaziReportsViewModel.serverName,
-                                                isDownloaded: template.isDownloaded == 1 ? true : false,
+                                                isDownloaded: template.isDownloaded ?? false,
                                                 downloadTemplate: { template in
                                                     Toast.displayToast(message: "“\(template.entityRow?.translatedName ?? "")” “\(LocalizableUwazi.uwaziAddTemplateSavedToast.localized)”")
                                                     self.downloadTemplateAction(&template)
@@ -93,8 +93,7 @@ struct AddTemplatesView: View {
             ActionListBottomSheet(items: templateActionItems,
                                   headerTitle: template.entityRow?.translatedName ?? "",
                                   action:  {item in
-
-                self.uwaziReportsViewModel.handleActions(item : item, template: template) {
+                self.uwaziReportsViewModel.handleDeleteActionsForAddTemplate(item : item, template: template) {
                     self.sheetManager.hide()
                 }
             })

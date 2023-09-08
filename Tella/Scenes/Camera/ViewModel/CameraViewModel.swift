@@ -6,6 +6,9 @@ import Foundation
 import Combine
 import UIKit
 import SwiftUI
+import AVFoundation
+import AVKit
+import AssetsLibrary
 
 class CameraViewModel: ObservableObject {
     
@@ -25,7 +28,7 @@ class CameraViewModel: ObservableObject {
     var videoURL : URL?
     var mainAppModel: MainAppModel?
     
-    var rootFile: VaultFile
+    var rootFile: VaultFile?
     var sourceView : SourceView
     
     // MARK: - Private properties
@@ -36,14 +39,14 @@ class CameraViewModel: ObservableObject {
     // MARK: - Public functions
     
     init(mainAppModel: MainAppModel,
-         rootFile: VaultFile,
+         rootFile: VaultFile?,
          resultFile : Binding<[VaultFile]?>? = nil,
          sourceView : SourceView) {
         
         self.mainAppModel = mainAppModel
         self.rootFile = rootFile
         
-        self.lastImageOrVideoVaultFile = mainAppModel.vaultManager.root.files.sorted(by: .newestToOldest, folderPathArray: [], root: rootFile, fileType: [.image, .video]).first
+        self.lastImageOrVideoVaultFile = mainAppModel.vaultManager.root?.files.sorted(by: .newestToOldest, folderPathArray: [], root: rootFile, fileType: [.image, .video]).first
         
         mainAppModel.vaultManager.progress.progress.sink { value in
             if value == 1 {
@@ -113,7 +116,6 @@ class CameraViewModel: ObservableObject {
             }
         }
     }
-    
     func initialiseTimerRunning() {
         self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.timerRunning), userInfo: nil, repeats: true)
     }

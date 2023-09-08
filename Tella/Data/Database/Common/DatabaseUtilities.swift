@@ -15,7 +15,10 @@ extension TellaDataBase {
     func cddl(_ columnName: String, _ columnType: String) -> String {
         return columnName + " " + columnType;
     }
-
+    func cddl(_ columnName: String, _ columnType: String, defaultValue: String) -> String {
+        return columnName + " " + columnType //+ "DEFAULT" + defaultValue
+    }
+    
     func cddl(_ columnName: String, _ columnType: String, _ notNull: Bool) -> String {
         return  (columnName) + " " + columnType + (notNull ? " NOT NULL" : "")
     }

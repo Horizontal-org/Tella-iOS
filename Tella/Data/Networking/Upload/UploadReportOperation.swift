@@ -1,5 +1,5 @@
 //
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import Foundation
@@ -61,7 +61,7 @@ class UploadReportOperation: BaseUploadOperation {
         
         var vaultFileResult : Set<VaultFile> = []
         
-        mainAppModel.vaultManager.root.getFile(root: mainAppModel.vaultManager.root,
+        mainAppModel.vaultManager.root?.getFile(root: mainAppModel.vaultManager.root,
                                                vaultFileResult: &vaultFileResult,
                                                ids: report?.reportFiles?.compactMap{$0.fileId} ?? [])
         

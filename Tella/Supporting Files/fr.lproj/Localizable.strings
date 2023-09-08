@@ -33,6 +33,8 @@
 "LockUnlock_UnlockUpdatePin_Subhead" = "Enter your PIN to change your lock method";
 "LockUnlock_UnlockUpdatePin_Error_IncorrectPIN" = "Incorrect PIN, please try again";
 "LockUnlock_UnlockPin_Action_Ok" = "Valider";
+"LockUnlock_UnlockDeleteAfterFail_Warning_RemainingAttempts" = "You have %i attempts remaining until everything in your Tella is deleted.";
+"LockUnlock_UnlockDeleteAfterFail_Error_ContentDeleted" = "You have exceeded the maximum number of incorrect login attempts. All your Tella data has been deleted.";
 "Home_TabBar" = "Accueil";
 "Home_AppBar" = "Tella";
 "Home_RecentFiles_Subhead" = "Fichiers récents";
@@ -178,6 +180,10 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettSec_AppBar" = "Sécurité";
 "Settings_SettSec_Lock" = "Verrou";
 "Settings_SettSec_LockTimeout" = "Lock timeout";
+"Settings_SettSec_DeleteAfterFail" = "Delete after failed unlock";
+"Settings_SettSec_DeleteAfterFail_Off" = "Off";
+"Settings_SettSec_ShowUnlockAttempts" = "Show unlock attempts remaining";
+"Settings_SettSec_ShowUnlockAttempts_Expl" = "On the unlock screen, show the remaining number of failed unlocking attempts before everything inside Tella is deleted";
 "Settings_SettSec_ScreenSecurity" = "Screen security";
 "Settings_SettSec_ScreenSecurity_Expl" = "Block screen recordings inside Tella and screen preview in the list of recent apps";
 "Settings_Sett_QuickDelete" = "Suppression rapide";
@@ -194,6 +200,16 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettLockTimeout_Cancel_SheetAction" = "ANNULER";
 "Settings_SettLockTimeout_Save_SheetAction" = "SAVE";
 
+"Settings_SettDeleteAfterFail_SheetTitle" = "Delete after failed unlock";
+"Settings_SettDeleteAfterFail_SheetExpl" = "Decide how many failed unlock attempts are allowed before everything inside Tella is deleted.";
+"Settings_SettDeleteAfterFail_Off_SheetSelect" = "Off (Do not delete data) ";
+"Settings_SettDeleteAfterFail_FiveAttempts_SheetSelect" = "5 attempts";
+"Settings_SettDeleteAfterFail_TenAttempts_SheetSelect" = "10 attempts";
+"Settings_SettDeleteAfterFail_TwentyAttempts_SheetSelect" = "20 attempts";
+"Settings_SettDeleteAfterFail_Toast" = "Your Tella data will be deleted after %i failed unlock attempts";
+"Settings_SettDeleteAfterFail_Off_Toast" = "Your tella data won't be deleted after failed attempts";
+"Settings_SettDeleteAfterFail_Cancel_SheetAction" = "CANCEL";
+"Settings_SettDeleteAfterFail_Save_SheetAction" = "SAVE";
 
 "Setting_SettServer_Selection_Title" = "What type of server would you like to connect to?";
 "Setting_SettServer_Selection_Message" = "If you are not sure, please ask your organization.";
@@ -218,8 +234,8 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_Server_Uwazi_Connect_Server" = "Connected to server";
 "Setting_Server_Uwazi_Success_Message" = "You have successfully connected to the server and will be able to share your data.";
 
-
 "Settings_SettServers_AppBar" = "Serveurs";
+
 "Settings_SettAbout_AppBar" = "À propos et Aide";
 "Settings_SettAbout_Head" = "Tella";
 "Settings_SettAbout_Subhead" = "Version";
@@ -263,6 +279,9 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_ManageReport_Open_SheetAction" = "Open";
 "Reports_Draft_Select_SelectProject" = "Select your project";
 "Reports_Draft_SelectFiles_TakePhotoVideo_SheetSelect" = "Take photo or video with camera";
+
+"Setting_SettSec_PreserveMetadata" = "Preserve metadata  when importing";
+"Setting_SettSec_PreserveMetadata_Expl" = "Retain EXIF metadata when importing photos and videos into Tella. This includes data about when the image was created, camera settings, location and your device.";
 "Reports_Draft_Record_SheetSelect" = "Enregistrer de l’audio";
 "Reports_Draft_SelectFiles_TellaFiles_SheetSelect" = "Sélectionnez parmi les fichiers dans Tella";
 "Reports_Draft_SelectFiles_ImportFromDevice_SheetSelect" = "Sélectionnez depuis votre appareil";
@@ -301,3 +320,5 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettLang_Kurdish_Expl" = "Kurdish";
 "Settings_SettLang_Burmese_Expl" = "Burmese";
 "Settings_SettLang_Tamil_Expl" = "Tamil";
+
+"Uwazi_Home_Server_Title" = "Uwazi";

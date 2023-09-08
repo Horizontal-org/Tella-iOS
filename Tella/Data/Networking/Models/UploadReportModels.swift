@@ -40,11 +40,13 @@ class UploadDecode<T,T1>  {
     var dto : T?
     var domain : T1?
     var error : APIError?
-    
-    init(dto: T?, domain: T1?, error: APIError?) {
+    var headers : [AnyHashable:Any]?
+
+    init(dto: T?, domain: T1?, error: APIError?, headers: [AnyHashable:Any]?) {
         self.dto = dto
         self.domain = domain
         self.error = error
+        self.headers = headers
     }
 }
 
