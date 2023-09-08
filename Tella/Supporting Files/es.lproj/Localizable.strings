@@ -299,7 +299,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Uwazi_Template_Delete_SheetAction" = " Delete from this device";
 
 "Uwazi_Template_AddTemplate_Title" = "Add Templates";
-"Uwazi_Template_AddTemplate_Expl" = "These are the templates available on the Uwazi instances you are connected to. You can";
+"Uwazi_Template_AddTemplate_Expl" = "These are the templates available on the Uwazi instances you are connected to. You can ";
 "Uwazi_Template_AddTemplate_SecondExpl" = "manage your Uwazi instances here.";
 "Uwazi_Template_AddTemplateSaved_Toast" = "successfully added to your Uwazi templates.";
 "Uwazi_Template_AddTemplate_EmptyExpl" = "There are no templates";

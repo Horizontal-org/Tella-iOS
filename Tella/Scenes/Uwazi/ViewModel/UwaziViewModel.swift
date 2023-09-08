@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-class UwaziReportsViewModel: ObservableObject {
+class UwaziTemplateViewModel: ObservableObject {
     
     var mainAppModel : MainAppModel
 

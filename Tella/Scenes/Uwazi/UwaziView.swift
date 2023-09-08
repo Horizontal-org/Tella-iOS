@@ -11,7 +11,7 @@ import SwiftUI
 struct UwaziView: View {
     @EnvironmentObject var mainAppModel : MainAppModel
     @EnvironmentObject var sheetManager : SheetManager
-    @EnvironmentObject var uwaziReportsViewModel: UwaziReportsViewModel
+    @EnvironmentObject var uwaziReportsViewModel: UwaziTemplateViewModel
     
     var body: some View {
         contentView
