@@ -16,12 +16,6 @@ struct UwaziLanguageDTO: Codable, DataModel {
         return UwaziLanguage(rows: rows)
     }
 }
-class UwaziLanguage: DomainModel {
-    let rows: [UwaziLanguageRow]?
-    init(rows: [UwaziLanguageRow]?) {
-        self.rows = rows
-    }
-}
 
 // MARK: - Row
 struct UwaziLanguageRowDTO: Codable, DataModel {
