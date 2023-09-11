@@ -10,7 +10,6 @@ import SwiftUI
 
 struct AddTemplatesView: View {
     var downloadTemplateAction : (inout CollectedTemplate) -> Void
-    var deleteTemplateAction: (CollectedTemplate) -> Void
     @EnvironmentObject var uwaziReportsViewModel: UwaziTemplateViewModel
     @EnvironmentObject var sheetManager: SheetManager
 
@@ -73,7 +72,6 @@ struct AddTemplatesView: View {
                         ForEach(Array(uwaziReportsViewModel.templates.enumerated()), id: \.element) { index, template in
                             TemplateItemView(
                                 template: $uwaziReportsViewModel.templates[index],
-                                serverName: uwaziReportsViewModel.serverName,
                                 isDownloaded: template.isDownloaded ?? false,
                                 downloadTemplate: { template in
                                     Toast.displayToast(message: "“\(template.entityRow?.translatedName ?? "")” “\(LocalizableUwazi.uwaziAddTemplateSavedToast.localized)”")

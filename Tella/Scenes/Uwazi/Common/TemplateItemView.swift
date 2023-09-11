@@ -10,7 +10,6 @@ import SwiftUI
 
 struct TemplateItemView: View {
     @Binding var template : CollectedTemplate
-    var serverName : String
     var isDownloaded : Bool
     var downloadTemplate : (inout CollectedTemplate) -> Void
     var deleteTemplate: (CollectedTemplate) -> Void

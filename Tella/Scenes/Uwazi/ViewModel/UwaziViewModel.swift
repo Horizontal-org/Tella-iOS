@@ -39,7 +39,10 @@ class UwaziTemplateViewModel: ObservableObject {
                             content: LocalizableReport.viewModelDelete.localized,
                             type: ReportActionType.delete)
     ]}
-    
+
+    var tellaData: TellaData? {
+        return self.mainAppModel.vaultManager.tellaData
+    }
     
     init(mainAppModel : MainAppModel, server: Server) {
         
@@ -54,8 +57,8 @@ class UwaziTemplateViewModel: ObservableObject {
         self.isLoading = true
         Task {
             guard let id = self.server.id else { return }
-            guard let locale = self.mainAppModel.vaultManager.tellaData?.getUwaziLocale(serverId: id) else { return }
-            let template = try await UwaziServerRepository().getTemplateNew(server: self.server, locale: locale)
+            guard let locale = self.tellaData?.getUwaziLocale(serverId: id) else { return }
+            let template = try await UwaziServerRepository().handleTemplate(server: self.server, locale: locale)
             template.receive(on: DispatchQueue.main).sink { completion in
                 self.handleGetTemplateCompletion(completion)
             } receiveValue: { templates in
@@ -90,6 +93,7 @@ class UwaziTemplateViewModel: ObservableObject {
             completion()
         }
     }
+
     /// To determine if the templates are already download or not reflect on the UI for template download list
     /// - Parameter templates: Collection of CollectedTemplate to determine if it downloaded or not
     func handleTemplateDownload(templates: [CollectedTemplate]) {
@@ -102,6 +106,7 @@ class UwaziTemplateViewModel: ObservableObject {
             }
         }
     }
+
     /// Save the template to the database
     /// - Parameter template: The template that we need to save into the database
     func saveTemplate( template: inout CollectedTemplate) {
@@ -109,29 +114,31 @@ class UwaziTemplateViewModel: ObservableObject {
         if let savedTemplate = savedTemplateid,let templateId = template.templateId {
             // To only save the template if it is not already saved Not necessary because the UI will not have a download button if it is already downloaded
             if !savedTemplate.contains(templateId) {
-                guard let savedItem = self.mainAppModel.vaultManager.tellaData?.addUwaziTemplate(template: template) else { return }
+                guard let savedItem = self.tellaData?.addUwaziTemplate(template: template) else { return }
                 template = savedItem
             }
         }
     }
+
     /// Delete the saved template from database using the template id of the template and changing the status of isDownloaded property to 0  for template listing view
     /// - Parameter template: The CollectedTemplate Object and changing the status of isDownloaded property to 0
     func deleteTemplate(template: CollectedTemplate) {
         if let templateId = template.templateId {
-            _ = self.mainAppModel.vaultManager.tellaData?.deleteAllUwaziTemplate(templateId: templateId)
+            _ = self.tellaData?.deleteAllUwaziTemplate(templateId: templateId)
             template.isDownloaded = false
         }
     }
+    
     /// Get all the downloaded templates
     /// - Returns: Collection of CollectedTemplate object which are stored in the database
     func getAllDownloadedTemplate() -> [CollectedTemplate]? {
-        self.mainAppModel.vaultManager.tellaData?.getAllUwaziTemplate()
+        self.tellaData?.getAllUwaziTemplate()
     }
 
     /// Delete the saved template from database using the template id of the template for downloaded template listing view
     /// - Parameter template: The template object which we need to delete
     func deleteDownloadedTemplate(templateId: Int) {
-        self.mainAppModel.vaultManager.tellaData?.deleteAllUwaziTemplate(id: templateId)
+        self.tellaData?.deleteAllUwaziTemplate(id: templateId)
         getDownloadedTemplates()
     }
 

@@ -198,7 +198,7 @@ class TellaDataBase {
                                            primarykeyValue: serverCondition)
     }
     
-    func deleteServer(serverId : Int) throws {
+    func deleteServer(serverId : Int) {
         
         var reportIDs : [Int] = []
         let serverCondition = [KeyValue(key: D.cServerId, value: serverId)]
@@ -622,9 +622,8 @@ extension TellaDataBase {
         return decodedValues
     }
 }
+// MARK: - Methods related to UwaziServerLanguageProtocol
 extension TellaDataBase: UwaziServerLanguageProtocol {
-
-    // MARK: CRUD operation for Language table for Uwazi
     func createLanguageTableForUwazi() {
         let columns = [
             cddl(D.cLocaleId, D.integer, primaryKey: true, autoIncrement: true),
@@ -668,7 +667,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
         return []
     }
 
-    func deleteUwaziLocale(serverId : Int) throws {
+    func deleteUwaziLocale(serverId : Int) {
         statementBuilder.delete(tableName: D.tUwaziServerLanguage,
                                 primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
     }
@@ -677,6 +676,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
         return try statementBuilder.deleteAll(tableNames: [D.tUwaziServerLanguage])
     }
 }
+// MARK: - Methods related to UwaziTemplateProtocol
 extension TellaDataBase: UwaziTemplateProtocol {
     func createTemplateTableForUwazi() {
         let columns = [

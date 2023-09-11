@@ -9,8 +9,6 @@
 import SwiftUI
 
 struct UwaziView: View {
-    @EnvironmentObject var mainAppModel : MainAppModel
-    @EnvironmentObject var sheetManager : SheetManager
     @EnvironmentObject var uwaziReportsViewModel: UwaziTemplateViewModel
     
     var body: some View {
@@ -53,19 +51,13 @@ struct UwaziView: View {
                     }
                     
                     AddFileYellowButton(action: {
-                        navigateTo(destination: AddTemplatesView(
-                            downloadTemplateAction: uwaziReportsViewModel.downloadTemplate, deleteTemplateAction: {
-                                print($0)
-                            }
-                        ).environmentObject(uwaziReportsViewModel))
+                        navigateTo(destination: AddTemplatesView(downloadTemplateAction: uwaziReportsViewModel.downloadTemplate)
+                            .environmentObject(uwaziReportsViewModel))
                     }).frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
                             
                     }.background(Styles.Colors.backgroundMain)
                     .padding(EdgeInsets(top: 15, leading: 20, bottom: 16, trailing: 20))
             }
-            .onAppear(perform: {
-                //uwaziReportsViewModel.getTemplates()
-            })
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: backButton)
                 

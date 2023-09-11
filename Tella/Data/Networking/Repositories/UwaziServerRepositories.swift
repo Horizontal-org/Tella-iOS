@@ -11,7 +11,6 @@ import Foundation
 
 class UwaziServerRepository: WebRepository {
     var cancellable: AnyCancellable?
-    private var subscribers = Set<AnyCancellable>()
     func login(username: String,
                password: String,
                serverURL: String) -> AnyPublisher<String?, APIError> {
@@ -27,9 +26,9 @@ class UwaziServerRepository: WebRepository {
     }
 
     func twoFactorAuthentication(username: String,
-                                  password: String,
-                                  token: String,
-                                  serverURL: String) -> AnyPublisher<String?, APIError> {
+                                 password: String,
+                                 token: String,
+                                 serverURL: String) -> AnyPublisher<String?, APIError> {
 
         let apiResponse : APIResponse<BoolResponse> = getAPIResponse(endpoint: API.twoFactorAuthentication((username: username, password: password,token: token, serverURL: serverURL)))
         return apiResponse
@@ -68,129 +67,6 @@ class UwaziServerRepository: WebRepository {
             .compactMap{$0.0.toDomain() as? UwaziLanguage}
             .eraseToAnyPublisher()
     }
-    func handleTemplate(serverURL: String, cookieList: [String]) {
-        self.getTranslations(serverURL: serverURL, cookieList: cookieList)
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { completion in
-                    switch completion {
-                    case .finished:
-                        print("Finished")
-                    case .failure(let error):
-                       debugLog(error)
-                    }
-
-                }, receiveValue: { wrapper in
-                    print(wrapper)
-                }).store(in: &subscribers)
-    }
-    /// Return a collection of CollectedTemplate which is used to created after all the manpulation is done to prepare the template data for storage
-    /// - Parameters:
-    ///   - server: Server Object to get the information about the Uwazi server
-    ///   - locale: UwaziLocale Object that has the locale information about language that the user selected when adding a new Uwazi server
-    /// - Returns: Collection of CollectedTemplate
-    func getTemplateNew(server: Server, locale: UwaziLocale) async throws  -> AnyPublisher<[CollectedTemplate], Error> {
-        if let serverID = server.id, let serverURL = server.url {
-            let cookieList = [server.accessToken ?? "", locale.locale ?? ""]
-
-            let getTemplate = UwaziServerRepository().getTemplate(serverURL: serverURL, cookieList: cookieList)
-            let getSetting = UwaziServerRepository().getSettings(serverURL: serverURL, cookieList: cookieList)
-            let getDictionary = UwaziServerRepository().getDictionaries(serverURL: serverURL, cookieList: cookieList)
-            let getTranslation = UwaziServerRepository().getTranslations(serverURL: serverURL, cookieList: cookieList)
-
-            return Publishers.Zip4(
-                getTemplate,
-                getSetting,
-                getDictionary,
-                getTranslation
-            )
-            .tryMap { templateResult, settings, dictionary, translationResult in
-                let templates = templateResult.rows
-                let translations = translationResult.rows
-                let dictionary = dictionary.rows
-
-                // Maps the options to the property of the template
-                templates?.forEach { template in
-                    template.properties.forEach { property in
-                        dictionary?.forEach { dictionaryItem in
-                            if dictionaryItem.id == property.content {
-                                property.values = dictionaryItem.values
-                            }
-                        }
-                    }
-                }
-
-                var resultTemplates = [UwaziTemplateRow]()
-                // Check whether the server instance is public and if public then only use the whitelisted templates are added to resultTemplates
-                if (server.username?.isEmpty ?? true) || (server.password?.isEmpty ?? true) {
-                    // allowedPublicTemplates get only the templates ids that are whitelisted
-                    if !settings.allowedPublicTemplates.isEmpty {
-                        templates?.forEach { row in
-                            settings.allowedPublicTemplates.forEach { id in
-                                if row.id == id {
-                                    resultTemplates.append(row)
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    // This means its private instance and all the templates are added to resultTemplates
-                    resultTemplates = templates ?? []
-                }
-                resultTemplates.forEach { template in
-                    // Get only the translations based on the language that user selected
-                    let filteredTranslations = translations?.filter { row in
-                        row.locale == locale.locale ?? ""
-                    }
-                    filteredTranslations?.first?.contexts.forEach{ context in
-                        // Compare context id and template id to determine appropiate translations
-                        if context.contextID == template.id {
-                            // Translation for the template name
-                            template.translatedName = context.values?[template.name ?? ""] ?? ""
-                            // Translation for the template's property texts or labels
-                            template.properties.forEach { property in
-                                property.translatedLabel = context.values?[property.label ?? ""] ?? ""
-                            }
-                            // Translation for the template's common properties texts or labels
-                            template.commonProperties.forEach { property in
-                                property.translatedLabel = context.values?[property.label ?? ""] ?? ""
-                            }
-                        } else {
-                            // Translation for the template's property options texts or labels if there is any
-                            template.properties.forEach { property in
-                                property.values?.forEach { selectValue in
-                                    if context.contextID == property.content {
-                                        selectValue.translatedLabel = context.values?[selectValue.label ?? ""] ?? selectValue.label
-                                    }
-                                    // Translation for the template's property option's options texts or labels if there is any
-                                    selectValue.values?.forEach { nestedSelectValue in
-                                        if context.id == property.content {
-                                            nestedSelectValue.translatedLabel = context.values?[nestedSelectValue.label ?? ""] ?? nestedSelectValue.label
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                let originalTemplate = resultTemplates.map { template in
-                    return CollectedTemplate(serverId: serverID,
-                                             templateId: template.id,
-                                             serverName: server.name ?? "",
-                                             username: server.username,
-                                             entityRow: template,
-                                             isDownloaded: false,
-                                             isFavorite: false,
-                                             isUpdated: false)
-                }
-                return originalTemplate
-            }
-            .eraseToAnyPublisher()
-        }
-
-        // Handle error case
-        return Fail(error: APIError.unexpectedResponse).eraseToAnyPublisher()
-    }
-
 
     ///  Get all the templetes related to the Uwazi server
     /// - Parameters:
@@ -246,6 +122,136 @@ class UwaziServerRepository: WebRepository {
             .eraseToAnyPublisher()
     }
 }
+extension UwaziServerRepository {
+    /// Return a collection of CollectedTemplate which is used to created after all the manpulation is done to prepare the template data for storage
+    /// - Parameters:
+    ///   - server: Server Object to get the information about the Uwazi server
+    ///   - locale: UwaziLocale Object that has the locale information about language that the user selected when adding a new Uwazi server
+    /// - Returns: Collection of CollectedTemplate
+    func handleTemplate(server: Server, locale: UwaziLocale) async throws  -> AnyPublisher<[CollectedTemplate], Error> {
+        if let serverID = server.id, let serverURL = server.url {
+            let cookieList = [server.accessToken ?? "", locale.locale ?? ""]
+            let getTemplate = UwaziServerRepository().getTemplate(serverURL: serverURL, cookieList: cookieList)
+            let getSetting = UwaziServerRepository().getSettings(serverURL: serverURL, cookieList: cookieList)
+            let getDictionary = UwaziServerRepository().getDictionaries(serverURL: serverURL, cookieList: cookieList)
+            let getTranslation = UwaziServerRepository().getTranslations(serverURL: serverURL, cookieList: cookieList)
+
+            return Publishers.Zip4(
+                getTemplate,
+                getSetting,
+                getDictionary,
+                getTranslation
+            )
+            .tryMap({ (templateResult, settings, dictionary, translationResult) in
+                let templates = templateResult.rows
+                let translations = translationResult.rows
+                let dictionary = dictionary.rows
+                let settings: UwaziSetting = settings
+
+                // Maps the options to the property of the template
+                self.handleMapping(templates, dictionary)
+                // Check whether the server instance is public and if public then only use the whitelisted templates are added to resultTemplates
+                let resultTemplates = self.getAllowedTemplates(server: server, settings: settings, templates: templates)
+                self.translate(locale: locale, resultTemplates: resultTemplates, translations: translations)
+                let originalTemplate = resultTemplates.map { template in
+                    return CollectedTemplate(serverId: serverID,
+                                             templateId: template.id,
+                                             serverName: server.name ?? "",
+                                             username: server.username,
+                                             entityRow: template,
+                                             isDownloaded: false,
+                                             isFavorite: false,
+                                             isUpdated: false)
+                }
+                return originalTemplate
+            })
+            .eraseToAnyPublisher()
+        }
+        // Handle error case
+        return Fail(error: APIError.unexpectedResponse).eraseToAnyPublisher()
+    }
+
+    fileprivate func getAllowedTemplates(server: Server, settings: UwaziSetting, templates: [UwaziTemplateRow]?) -> [UwaziTemplateRow] {
+        // Check whether the server instance is public and if public then only use the whitelisted templates are added to resultTemplates
+        var tempTemplates: [UwaziTemplateRow] = []
+        if !self.isPublic(server: server) {
+            tempTemplates = templates ?? []
+        } else {
+            if !settings.allowedPublicTemplates.isEmpty {
+                templates?.forEach { row in
+                    settings.allowedPublicTemplates.forEach { id in
+                        if row.id == id {
+                            tempTemplates.append(row)
+                        }
+                    }
+                }
+            }
+        }
+        return tempTemplates
+    }
+
+    fileprivate func isPublic(server: Server) -> Bool {
+        return (server.username?.isEmpty ?? true) || (server.password?.isEmpty ?? true)
+    }
+
+    // Maps the options to the property of the template
+    fileprivate func handleMapping(_ templates: [UwaziTemplateRow]?, _ dictionary: [UwaziDictionaryRow]?) {
+        templates?.forEach { template in
+            template.properties.forEach { property in
+                dictionary?.forEach { dictionaryItem in
+                    if dictionaryItem.id == property.content {
+                        property.values = dictionaryItem.values
+                    }
+                }
+            }
+        }
+    }
+
+    fileprivate func translate(locale: UwaziLocale, resultTemplates: [UwaziTemplateRow], translations: [UwaziTranslationRow]?) {
+        resultTemplates.forEach { template in
+            // Get only the translations based on the language that user selected
+            let filteredTranslations = translations?.filter{$0.locale == locale.locale ?? ""}
+            filteredTranslations?.first?.contexts.forEach{ context in
+                // Compare context id and template id to determine appropiate translations
+                if context.contextID == template.id {
+                    handleTranslationForTemplate(template: template, context: context)
+                } else {
+                    handleTranslationForOtherProperties(template: template, context: context)
+                }
+            }
+        }
+    }
+
+    fileprivate func handleTranslationForTemplate(template: UwaziTemplateRow, context: UwaziTranslationContext) {
+        // Translation for the template name
+        template.translatedName = context.values?[template.name ?? ""] ?? ""
+        // Translation for the template's property texts or labels
+        template.properties.forEach { property in
+            property.translatedLabel = context.values?[property.label ?? ""] ?? ""
+        }
+        // Translation for the template's common properties texts or labels
+        template.commonProperties.forEach { property in
+            property.translatedLabel = context.values?[property.label ?? ""] ?? ""
+        }
+    }
+
+    fileprivate func handleTranslationForOtherProperties(template: UwaziTemplateRow, context: UwaziTranslationContext) {
+        // Translation for the template's property options texts or labels if there is any
+        template.properties.forEach { property in
+            property.values?.forEach { selectValue in
+                if context.contextID == property.content {
+                    selectValue.translatedLabel = context.values?[selectValue.label ?? ""] ?? selectValue.label
+                }
+                // Translation for the template's property option's options texts or labels if there is any
+                selectValue.values?.forEach { nestedSelectValue in
+                    if context.id == property.content {
+                        nestedSelectValue.translatedLabel = context.values?[nestedSelectValue.label ?? ""] ?? nestedSelectValue.label
+                    }
+                }
+            }
+        }
+    }
+}
 
 extension UwaziServerRepository {
     enum API {
@@ -286,7 +292,7 @@ extension UwaziServerRepository.API: APIRequest {
         switch self {
 
         case .login, .getProjetDetails, .checkURL, .getLanguage, .twoFactorAuthentication:
-             return [HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
+            return [HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
         case .getTemplate(_,let cookieList), .getSetting(_,let cookieList), .getDictionary(_,let cookieList), .getTranslations(_,let cookieList):
             let cookiesString = cookieList.joined(separator: "; ")
             return ["Cookie": cookiesString,
