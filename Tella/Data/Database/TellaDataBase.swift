@@ -1,38 +1,17 @@
 //  Tella
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Copyright © 2022 HORIZONTAL. All rights reserved.
 //
 
 import Foundation
 import SQLite3
 import SQLCipher
 
-
-protocol UwaziServerLanguageProtocol {
-    func createLanguageTableForUwazi()
-    func addUwaziLocale(locale: UwaziLocale) -> Int?
-    func getUwaziLocale(serverId: Int) throws -> UwaziLocale?
-    func getAllUwaziLocale() throws -> [UwaziLocale]
-    func deleteUwaziLocale(serverId : Int) throws
-    func deleteAllUwaziLocale() throws -> Int
-}
-protocol UwaziTemplateProtocol {
-    func createTemplateTableForUwazi()
-    func getUwaziTemplate(serverId: Int) throws -> CollectedTemplate?
-    func getUwaziTemplate(templateId: Int) throws -> CollectedTemplate?
-    func getAllUwaziTemplate() throws -> [CollectedTemplate]
-    func addUwaziTemplate(template: CollectedTemplate) throws -> CollectedTemplate
-    func deleteAllUwaziTemplate() throws -> Int
-    func deleteUwaziTemplate(templateId: String) throws
-    func deleteUwaziTemplate(id: Int) throws
-}
-
 class TellaDataBase {
     private var dataBaseHelper : DataBaseHelper
     private var statementBuilder : SQLiteStatementBuilder
     
     init(key: String?) {
-
         // TODO: inject these thing to the class of that
         dataBaseHelper = DataBaseHelper()
         dataBaseHelper.openDatabases(key: key)

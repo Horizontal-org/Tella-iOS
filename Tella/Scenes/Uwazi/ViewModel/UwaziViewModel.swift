@@ -47,7 +47,6 @@ class UwaziTemplateViewModel: ObservableObject {
     init(mainAppModel : MainAppModel, server: Server) {
         
         self.mainAppModel = mainAppModel
-        dump(server)
         self.server = server
         self.serverURL = server.url ?? ""
         self.serverName = server.name ?? ""

@@ -18,11 +18,9 @@ struct UwaziLanguageDTO: Codable, DataModel {
 }
 // MARK: - Row
 struct UwaziLanguageRowDTO: Codable, DataModel {
-
     let id: String?
     let locale: String?
     let contexts: [UwaziLanguageContextDTO]?
-
     func toDomain() -> DomainModel? {
         var languageName = "English"
         let currentLocale: Locale = .current
@@ -36,8 +34,7 @@ struct UwaziLanguageRowDTO: Codable, DataModel {
         case locale, contexts
     }
 }
-
-//// MARK: - Context
+// MARK: - Context
 struct UwaziLanguageContextDTO: Codable, DataModel {
     let contextID, label: String?
     let type: UwaziLanguageTypeEnum?

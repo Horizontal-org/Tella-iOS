@@ -38,6 +38,7 @@ class UwaziServerRepository: WebRepository {
             .mapError {$0 as! APIError}
             .eraseToAnyPublisher()
     }
+
     private func handleToken(response: BoolResponse, allHeaderFields: [AnyHashable: Any]?) -> String? {
         if response.success ?? false {
             guard let token = getTokenFromHeader(httpResponse: allHeaderFields) else { return nil }
@@ -46,6 +47,7 @@ class UwaziServerRepository: WebRepository {
             return nil
         }
     }
+
     private func getTokenFromHeader(httpResponse: [AnyHashable: Any]?) -> String? {
         if let token = httpResponse?["Set-Cookie"] as? String {
             let filteredToken = token.split(separator: ";")

@@ -119,14 +119,12 @@ class TellaData : ObservableObject {
         guard let database = database else {
             return []
         }
-        
         return database.getReports(reportStatus: [ .submissionError,
                                                    .submissionPending,
                                                    .submissionInProgress])
     }
     
     func addReport(report : Report) -> Int? {
-        
         guard let database = database else {
             return nil
         }
@@ -136,11 +134,9 @@ class TellaData : ObservableObject {
     }
     
     func addCurrentUploadReport(report : Report) throws -> Report? {
-        
         guard let database = database else {
             return nil
         }
-        
         try database.resetCurrentUploadReport()
         guard let id = database.addReport(report: report) else { return nil }
         let report = getReport(reportId: id)

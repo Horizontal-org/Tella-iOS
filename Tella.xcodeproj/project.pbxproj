@@ -370,6 +370,8 @@
 		E1EEE2A129F6EA2B009FE227 /* UwaziLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEE2A029F6EA2B009FE227 /* UwaziLoginView.swift */; };
 		E1EEE2A429F7D192009FE227 /* UwaziTwoStepVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEE2A329F7D192009FE227 /* UwaziTwoStepVerification.swift */; };
 		E1EEE2A729F7E1A8009FE227 /* UwaziLanguageSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEE2A629F7E1A8009FE227 /* UwaziLanguageSelectionView.swift */; };
+		E1F4A8E22AAF3F62001C8E61 /* UwaziServerLanguageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F4A8E12AAF3F62001C8E61 /* UwaziServerLanguageProtocol.swift */; };
+		E1F4A8E42AAF3F80001C8E61 /* UwaziTemplateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F4A8E32AAF3F80001C8E61 /* UwaziTemplateProtocol.swift */; };
 		F66E65B323E32080000F93E5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F66E65B223E32080000F93E5 /* Assets.xcassets */; };
 		F66E65B923E32080000F93E5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F66E65B723E32080000F93E5 /* LaunchScreen.storyboard */; };
 		F66E65CF23E32080000F93E5 /* TellaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65CE23E32080000F93E5 /* TellaUITests.swift */; };
@@ -790,6 +792,8 @@
 		E1EEE2A029F6EA2B009FE227 /* UwaziLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLoginView.swift; sourceTree = "<group>"; };
 		E1EEE2A329F7D192009FE227 /* UwaziTwoStepVerification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTwoStepVerification.swift; sourceTree = "<group>"; };
 		E1EEE2A629F7E1A8009FE227 /* UwaziLanguageSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLanguageSelectionView.swift; sourceTree = "<group>"; };
+		E1F4A8E12AAF3F62001C8E61 /* UwaziServerLanguageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziServerLanguageProtocol.swift; sourceTree = "<group>"; };
+		E1F4A8E32AAF3F80001C8E61 /* UwaziTemplateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTemplateProtocol.swift; sourceTree = "<group>"; };
 		F16689EAD5E834B9D4331109 /* Pods-TellaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.release.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.release.xcconfig"; sourceTree = "<group>"; };
 		F66E65A923E3207D000F93E5 /* Tella.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tella.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F66E65B023E3207D000F93E5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -931,6 +935,7 @@
 		1203CDE429915C6600D09073 /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				E1F4A8E02AAF3F4E001C8E61 /* Protocols */,
 				12351C1B28D220BA00F3CB7C /* TellaData.swift */,
 				125A9DFF28CE52C700C0C3C8 /* TellaDataBase.swift */,
 				1203CDE62991682800D09073 /* Common */,
@@ -2072,6 +2077,15 @@
 			path = Step5;
 			sourceTree = "<group>";
 		};
+		E1F4A8E02AAF3F4E001C8E61 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				E1F4A8E12AAF3F62001C8E61 /* UwaziServerLanguageProtocol.swift */,
+				E1F4A8E32AAF3F80001C8E61 /* UwaziTemplateProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		F66E65A023E3207D000F93E5 = {
 			isa = PBXGroup;
 			children = (
@@ -2689,6 +2703,7 @@
 				125EDDAD271DBD5200E2789A /* ContentView.swift in Sources */,
 				12351C1E28D267EF00F3CB7C /* DatabaseConstants.swift in Sources */,
 				12A148962720B2B400A1ADDC /* PasswordTextFieldView.swift in Sources */,
+				E1F4A8E42AAF3F80001C8E61 /* UwaziTemplateProtocol.swift in Sources */,
 				CCD586D12A7C096C00014F87 /* AddTemplatesView.swift in Sources */,
 				1236644F28FFECEF00FA839B /* DraftReportView.swift in Sources */,
 				12603DAC2A56C72900FB1492 /* ToastView.swift in Sources */,
@@ -2749,6 +2764,7 @@
 				128EDB942809897C00747B98 /* HomeViewModel.swift in Sources */,
 				122389BE293698010058593B /* ConnectionsView.swift in Sources */,
 				122C54BC28C614C2003B2DBC /* TellaButtonStyleProtocol.swift in Sources */,
+				E1F4A8E22AAF3F62001C8E61 /* UwaziServerLanguageProtocol.swift in Sources */,
 				0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */,
 				123125422930241500D3BCD5 /* PhotoVideoViewModel.swift in Sources */,
 				0D4D7518266470A700D7A635 /* SettingToggleItem.swift in Sources */,
