@@ -55,7 +55,7 @@ class Property: Codable {
     var translatedLabel : String? = ""
     let filter, showInCard: Bool?
     let relationType: String?
-    var values : [SelectValue]? = nil
+    var values : [SelectValue]?
 
     enum CodingKeys: String, CodingKey {
         case content
@@ -63,6 +63,7 @@ class Property: Codable {
         case label, type
         case propertyRequired = "required"
         case name, filter, showInCard, relationType, translatedLabel
+        case values
     }
 }
 class CollectedTemplate: Codable, Hashable {
