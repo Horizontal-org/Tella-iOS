@@ -21,7 +21,7 @@ struct UwaziView: View {
             
             ContainerView {
                 VStack(alignment: .center) {
-                            
+                        
                     PageView(selectedOption: $uwaziReportsViewModel.selectedCell, pageViewItems: $uwaziReportsViewModel.pageViewItems)
                         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
                             
