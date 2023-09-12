@@ -91,13 +91,4 @@ class DraftUwaziEntity: ObservableObject {
         }
     }
 
-    
-    func bindingForLabel(_ label: String) -> Binding<String> {
-            // Use a computed property to return a binding to the value in propertyValues
-            Binding<String>(
-                get: { self.propertyValues[label, default: ""] as! String },
-                set: { self.propertyValues[label] = $0 }
-            )
-        }
-
 }
