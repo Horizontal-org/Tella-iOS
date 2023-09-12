@@ -23,28 +23,26 @@ struct CreateEntityView: View {
         .navigationBarHidden(true)
     }
     
-    var contentView: some View {
+    fileprivate var contentView: some View {
         VStack(alignment: .leading) {
             createEntityHeaderView
             draftContentView
             Spacer()
         }
     }
-    
-    var createEntityHeaderView: some View {
+
+    fileprivate var createEntityHeaderView: some View {
         CreateDraftHeaderView(title: entityViewModel.template.entityRow?.name ?? "",
                               isDraft: true,
                               closeAction: { showSaveEntityConfirmationView() },
                               saveAction: {
-            let result = entityViewModel.entryPrompts
-            let requiredPrompts = result.filter({$0.required ?? false})
-            requiredPrompts.forEach { prompt in
-                prompt.showMandatoryError = prompt.value.stringValue.isEmpty
-            }
+            self.entityViewModel.handleMandatoryProperties()
         })
     }
+
+
     
-    var draftContentView: some View {
+    fileprivate var draftContentView: some View {
         ScrollView {
             VStack(alignment: .leading) {
                 ForEach(entityViewModel.entryPrompts, id: \.id) { prompt in

@@ -84,6 +84,12 @@ class DraftUwaziEntity: ObservableObject {
         } ?? []
         entryPrompts.append(contentsOf: entryPromptyProperties)
     }
+    func handleMandatoryProperties() {
+        let requiredPrompts = entryPrompts.filter({$0.required ?? false})
+        requiredPrompts.forEach { prompt in
+            prompt.showMandatoryError = prompt.value.stringValue.isEmpty
+        }
+    }
 
     
     func bindingForLabel(_ label: String) -> Binding<String> {
