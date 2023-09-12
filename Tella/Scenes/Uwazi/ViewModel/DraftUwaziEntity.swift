@@ -17,9 +17,7 @@ class DraftUwaziEntity: ObservableObject {
     @Published var entryPrompts: [UwaziEntryPrompt] = []
 
     // Fields validation
-    @Published var shouldShowError : Bool = false
     @Published var isValidText : Bool = false
-    @Published var propertyValues : [String:Any] = [ : ]
 
     let uwaziTitleString = "title"
 
@@ -27,8 +25,6 @@ class DraftUwaziEntity: ObservableObject {
         self.mainAppModel = mainAppModel
         self.template = template
         handleEntryPrompts()
-        dump(template.entityRow?.properties)
-        dump(propertyValues)
     }
 
 
