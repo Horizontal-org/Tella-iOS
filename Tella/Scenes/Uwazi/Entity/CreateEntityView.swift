@@ -32,37 +32,29 @@ struct CreateEntityView: View {
     }
     
     var createEntityHeaderView: some View {
-        
         CreateDraftHeaderView(title: entityViewModel.template.entityRow?.name ?? "",
                               isDraft: true,
                               closeAction: { showSaveEntityConfirmationView() },
-                              saveAction: {})
+                              saveAction: {
+            let result = entityViewModel.entryPrompts
+            let requiredPrompts = result.filter({$0.required ?? false})
+            requiredPrompts.forEach { prompt in
+                prompt.showMandatoryError = prompt.value.stringValue.isEmpty
+            }
+        })
     }
     
     var draftContentView: some View {
-        
         ScrollView {
             VStack(alignment: .leading) {
-                ForEach(entityViewModel.template.entityRow!.properties, id: \.id) { property in
-                    RenderPropertyComponentView(
-                        label: property.label ?? "",
-                        propertyType: property.type ?? "",
-                        property: property
-                    ).environmentObject(entityViewModel)
-                }
-                ForEach(entityViewModel.template.entityRow!.commonProperties, id: \.id) { commonProperty in
-                    RenderPropertyComponentView(
-                        label: commonProperty.label ?? "",
-                        propertyType: commonProperty.type ?? "",
-                        commonProperty: commonProperty
-                    ).environmentObject(entityViewModel)
+                ForEach(entityViewModel.entryPrompts, id: \.id) { prompt in
+                    RenderPropertyComponentView(prompt: prompt)
+                        .environmentObject(entityViewModel)
                 }
             }.padding(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16))
         }
     }
-    
 
-    
     private func showSaveEntityConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: 200) {
             ConfirmBottomSheet(titleText: "Exit entity?",

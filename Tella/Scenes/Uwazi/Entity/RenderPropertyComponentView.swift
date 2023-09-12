@@ -10,80 +10,45 @@ import SwiftUI
 
 struct RenderPropertyComponentView: View {
     @EnvironmentObject var entityViewModel : DraftUwaziEntity
-    var label : String
-    var propertyType: String
-    var commonProperty: CommonProperty?
-    var property: Property?
+    @StateObject var prompt: UwaziEntryPrompt
     
     var body: some View {
-        renderPropertyComponent(
-            propertyType: propertyType,
-            label: label,
-            property: property ?? nil,
-            commonProperty: commonProperty ?? nil
-        )
-    }
-    
-    @ViewBuilder
-    private func renderPropertyComponent(
-        propertyType: String,
-        label: String, property: Property?,
-        commonProperty: CommonProperty?
-    ) -> some View {
-        switch UwaziEntityPropertyType(rawValue: propertyType) {
-        case .dataTypeText, .dataTypeNumeric:
-            Title(label: label)
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(Color.white)
-            TextfieldView(
-                fieldContent:
-                    entityViewModel.bindingForLabel(label),
-                    isValid: $entityViewModel.isValidText,
-                    shouldShowError: $entityViewModel.shouldShowError,
-                    fieldType: .text
+        GenericEntityWidget(title: prompt.question) {
+            renderPropertyComponent(
+                prompt: prompt
             )
+        }
+    }
+    @ViewBuilder
+    private func renderPropertyComponent(prompt: UwaziEntryPrompt) -> some View {
+        switch UwaziEntityPropertyType(rawValue: prompt.type) {
+        case .dataTypeText, .dataTypeNumeric:
+            UwaziTextWidget(value: prompt.value)
+            .environmentObject(prompt)
         case .dataTypeDate, .dataTypeDateRange, .dataTypeMultiDate, .dataTypeMultiDateRange:
-            Text(label)
+            Text(prompt.question)
         case .dataTypeSelect, .dataTypeMultiSelect:
-            Text(label)
+            Text(prompt.question)
         case .dataTypeLink:
-            Text(label)
+            Text(prompt.question)
         case .dataTypeImage:
-            Text(label)
+            Text(prompt.question)
         case .dataTypeGeolocation:
-            Text(label)
+            Text(prompt.question)
         case .dataTypePreview:
-            Text(label)
+            Text(prompt.question)
         case .dataTypeMedia:
-            Text(label)
+            Text(prompt.question)
         case .dataTypeMarkdown:
-            Text(label)
+            Text(prompt.question)
         case .dataTypeMultiFiles, .dataTypeMultiPDFFiles:
-            Text(label)
+            Text(prompt.question)
         case .dataTypeGeneratedID:
-            Text(label)
+            Text(prompt.question)
         default:
             Group {
                 Text("Unsupported property type")
             }
         }
-    }
-    
-    @ViewBuilder
-    private func Title(
-        label: String
-    ) -> some View {
-        Text(label)
-            .font(.custom(Styles.Fonts.regularFontName, size: 14))
-            .foregroundColor(Color.white)
-    }
-    
-    @ViewBuilder
-    private func Subtitle(
-        label: String
-    ) -> some View {
-        Text(label)
-            .font(.custom(Styles.Fonts.regularFontName, size: 12))
-            .foregroundColor(Color.white.opacity(0.8))
     }
 }

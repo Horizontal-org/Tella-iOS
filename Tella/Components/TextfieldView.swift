@@ -67,7 +67,9 @@ struct TextfieldView : View {
     
     var textfieldView : some View {
         
-        TextField("", text: $fieldContent,onCommit: {
+        TextField("",
+                  text: $fieldContent,
+                  onCommit: {
             self.onCommit?()
         }).onChange(of: fieldContent, perform: { value in
             validateField(value: value)
