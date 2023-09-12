@@ -14,27 +14,77 @@ class DraftUwaziEntity: ObservableObject {
     
     @Published var template: CollectedTemplate
     @Published var text: String = ""
-    
+    @Published var entryPrompts: [UwaziEntryPrompt] = []
+
     // Fields validation
     @Published var shouldShowError : Bool = false
     @Published var isValidText : Bool = false
-    
     @Published var propertyValues : [String:Any] = [ : ]
-    
-    func initializePropertyTextValues() {
-        // Iterate through the template's properties and set initial values in propertyTextValues
-        for property in template.entityRow?.properties ?? [] {
-            if let label = property.label {
-                propertyValues[label] = ""
-            }
-        }
-        
-        for commonProperty in template.entityRow?.commonProperties ?? [] {
-            if let label = commonProperty.label {
-                propertyValues[label] = ""
-            }
-        }
+
+    let uwaziTitleString = "title"
+
+    init(mainAppModel: MainAppModel, template: CollectedTemplate) {
+        self.mainAppModel = mainAppModel
+        self.template = template
+        handleEntryPrompts()
+        dump(template.entityRow?.properties)
+        dump(propertyValues)
     }
+
+
+    func handleEntryPrompts() {
+        // Iterate through the template's properties and set initial values in propertyTextValues
+        handlePdfsPrompt()
+        handleSupportPrompt()
+        handleTitlePrompt()
+        handleEntryPromptForProperties()
+    }
+
+
+    fileprivate func handlePdfsPrompt() {
+        let pdfPrompt = UwaziEntryPrompt(id: "10242050",
+                                         formIndex: "10242050",
+                                         type: UwaziEntityPropertyType.dataTypeMultiPDFFiles.rawValue,
+                                         question: "Primary Documents",
+                                         required: false,
+                                         helpText: "Attach as many PDF files as you wish")
+        entryPrompts.append(pdfPrompt)
+    }
+    fileprivate func handleSupportPrompt() {
+        let supportPrompt = UwaziEntryPrompt(id: "10242049",
+                                         formIndex: "10242049",
+                                         type: UwaziEntityPropertyType.dataTypeMultiPDFFiles.rawValue,
+                                         question: "Supporting files",
+                                         required: false,
+                                         helpText: "Select as many files as you wish")
+        entryPrompts.append(supportPrompt)
+    }
+
+    fileprivate func handleTitlePrompt() {
+        guard let titleProperty = template.entityRow?.commonProperties.first (where:{ $0.name == uwaziTitleString }) else { return }
+        let titlePrompt = UwaziEntryPrompt(id: titleProperty.id ?? "",
+                         formIndex: titleProperty.id,
+                         type: titleProperty.type ?? "",
+                                           question: titleProperty.translatedLabel ?? "",
+                         required: true,
+                         helpText: titleProperty.translatedLabel)
+        self.entryPrompts.append(titlePrompt)
+    }
+
+    fileprivate func handleEntryPromptForProperties() {
+        let entryPromptyProperties = template.entityRow?.properties.compactMap {
+            UwaziEntryPrompt(id: $0.id ?? "",
+                             formIndex: $0.id,
+                             type: $0.type ?? "",
+                             question: $0.translatedLabel ?? "",
+                             required: $0.propertyRequired,
+                             helpText: $0.translatedLabel,
+                             selectValues: $0.values)
+
+        } ?? []
+        entryPrompts.append(contentsOf: entryPromptyProperties)
+    }
+
     
     func bindingForLabel(_ label: String) -> Binding<String> {
             // Use a computed property to return a binding to the value in propertyValues
@@ -43,16 +93,5 @@ class DraftUwaziEntity: ObservableObject {
                 set: { self.propertyValues[label] = $0 }
             )
         }
-    init(mainAppModel: MainAppModel, template: CollectedTemplate) {
-        self.mainAppModel = mainAppModel
-        self.template = template
-        
-        self.initializePropertyTextValues()
-        
-        dump(template.entityRow?.properties)
-        dump(propertyValues)
-        
-        
-    }
 
 }

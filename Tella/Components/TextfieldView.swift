@@ -75,7 +75,9 @@ struct TextfieldView : View {
     
     var textfieldView : some View {
         
-        TextField("", text: $fieldContent,onCommit: {
+        TextField("",
+                  text: $fieldContent,
+                  onCommit: {
             self.onCommit?()
         })
         .keyboardType(keyboardType)

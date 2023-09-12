@@ -15,7 +15,8 @@ struct UwaziTemplateResult: Codable {
 
 // MARK: - Row
 class UwaziTemplate: Codable {
-    let id, name: String?
+    let id: String
+    let name: String?
     var translatedName: String? = ""
     var properties: [Property]
     var commonProperties: [CommonProperty]
