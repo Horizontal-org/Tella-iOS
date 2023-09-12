@@ -11,6 +11,7 @@ import SwiftUI
 struct RenderPropertyComponentView: View {
     @EnvironmentObject var entityViewModel : DraftUwaziEntity
     @StateObject var prompt: UwaziEntryPrompt
+    var geometry : GeometryProxy
     
     var body: some View {
         GenericEntityWidget(title: prompt.question) {
