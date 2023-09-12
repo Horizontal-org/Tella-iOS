@@ -28,7 +28,8 @@ struct RenderPropertyComponentView: View {
         case .dataTypeDate, .dataTypeDateRange, .dataTypeMultiDate, .dataTypeMultiDateRange:
             Text(prompt.question)
         case .dataTypeSelect, .dataTypeMultiSelect:
-            Text(prompt.question)
+            UwaziSelectWidget()
+                .environmentObject(prompt)
         case .dataTypeLink:
             Text(prompt.question)
         case .dataTypeImage:
