@@ -43,13 +43,15 @@ struct CreateEntityView: View {
 
     
     fileprivate var draftContentView: some View {
-        ScrollView {
-            VStack(alignment: .leading) {
-                ForEach(entityViewModel.entryPrompts, id: \.id) { prompt in
-                    RenderPropertyComponentView(prompt: prompt)
-                        .environmentObject(entityViewModel)
-                }
-            }.padding(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16))
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(alignment: .leading) {
+                    ForEach(entityViewModel.entryPrompts, id: \.id) { prompt in
+                        RenderPropertyComponentView(prompt: prompt, geometry: geometry)
+                            .environmentObject(entityViewModel)
+                    }
+                }.padding(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16))
+            }
         }
     }
 
