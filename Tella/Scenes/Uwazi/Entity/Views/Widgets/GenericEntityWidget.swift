@@ -12,9 +12,7 @@ struct GenericEntityWidget<Content: View>: View {
     var title = ""
     let content: Content
     var isRequired: Bool
-    @State var mandatoryError = false
     @Binding var showManatory: Bool
-
 
     init(title: String = "",
          isRequired: Bool = false,
@@ -28,14 +26,11 @@ struct GenericEntityWidget<Content: View>: View {
     }
     var body: some View {
         VStack {
-            UwaziEntityTitleView(title: title,isRequired: isRequired)
-            if mandatoryError {
+            UwaziEntityTitleView(title: title, isRequired: isRequired)
+            if showManatory {
                 UwaziEntityMandatoryTextView()
             }
             content
-        }
-        .onChange(of: showManatory) {
-            mandatoryError = $0
         }
     }
 }

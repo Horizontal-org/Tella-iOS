@@ -1829,7 +1829,6 @@
 			isa = PBXGroup;
 			children = (
 				CC387D5B2A7857DD00853F2E /* UwaziViewModel.swift */,
-				CC76B1052AA6590700F7514A /* UwaziEntityViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1837,13 +1836,9 @@
 		CC43D9DF2A72F7FB0030192E /* Uwazi */ = {
 			isa = PBXGroup;
 			children = (
-				E1F6D77A2AB1666D000A9B64 /* Utils */,
 				CCAEA0532A97EF01008190E0 /* Models */,
 				CCAEA04C2A97C939008190E0 /* Entity */,
-				E10412112A9474D9003DCE6A /* Views */,
-				CCD586D22A7C0EFA00014F87 /* Common */,
 				CCD586BE2A7AB0E300014F87 /* Template */,
-				CC387D5A2A7857C900853F2E /* ViewModel */,
 				CC43D9E02A72F8260030192E /* UwaziView.swift */,
 			);
 			path = Uwazi;
@@ -1852,8 +1847,9 @@
 		CCAEA04C2A97C939008190E0 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				CCAEA04D2A97C948008190E0 /* CreateEntityView.swift */,
-				CC5BFEB02AAA27CE00FDB766 /* RenderPropertyComponentView.swift */,
+				E1F6D77A2AB1666D000A9B64 /* Utils */,
+				E1F6D7802AB17A84000A9B64 /* ViewModel */,
+				E10412112A9474D9003DCE6A /* Views */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -1869,9 +1865,8 @@
 		CCD586BE2A7AB0E300014F87 /* Template */ = {
 			isa = PBXGroup;
 			children = (
-				CCD586C12A7AB28200014F87 /* TemplateListView.swift */,
-				CCD586C62A7ABDE800014F87 /* TemplateCardView.swift */,
-				CCD586D02A7C096B00014F87 /* AddTemplatesView.swift */,
+				E1F6D7812AB17ADF000A9B64 /* Views */,
+				CC387D5A2A7857C900853F2E /* ViewModel */,
 			);
 			path = Template;
 			sourceTree = "<group>";
@@ -1972,7 +1967,8 @@
 			isa = PBXGroup;
 			children = (
 				E1F4A8E52AAF431F001C8E61 /* Widgets */,
-				E10412122A947510003DCE6A /* DeleteTemplateConfirmationView.swift */,
+				CCAEA04D2A97C948008190E0 /* CreateEntityView.swift */,
+				CC5BFEB02AAA27CE00FDB766 /* RenderPropertyComponentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2081,6 +2077,26 @@
 				E1F6D77E2AB16F80000A9B64 /* UwaziEntityParserProtocol.swift */,
 			);
 			path = Protocol;
+			sourceTree = "<group>";
+		};
+		E1F6D7802AB17A84000A9B64 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CC76B1052AA6590700F7514A /* UwaziEntityViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		E1F6D7812AB17ADF000A9B64 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CCD586D22A7C0EFA00014F87 /* Common */,
+				CCD586C12A7AB28200014F87 /* TemplateListView.swift */,
+				E10412122A947510003DCE6A /* DeleteTemplateConfirmationView.swift */,
+				CCD586C62A7ABDE800014F87 /* TemplateCardView.swift */,
+				CCD586D02A7C096B00014F87 /* AddTemplatesView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		F66E65A023E3207D000F93E5 = {
