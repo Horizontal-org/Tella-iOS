@@ -37,9 +37,7 @@ struct CreateEntityView: View {
         CreateDraftHeaderView(title: entityViewModel.template.entityRow?.name ?? "",
                               isDraft: true,
                               closeAction: { showSaveEntityConfirmationView() },
-                              saveAction: {
-            self.entityViewModel.handleMandatoryProperties()
-        })
+                              saveAction: { self.entityViewModel.handleMandatoryProperties() })
     }
 
 

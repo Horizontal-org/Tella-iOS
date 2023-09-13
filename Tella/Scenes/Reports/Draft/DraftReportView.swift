@@ -56,8 +56,6 @@ struct DraftReportView: View {
     }
     
     var draftReportHeaderView: some View {
-
-        
         CreateDraftHeaderView(title: LocalizableReport.reportsText.localized,
                               isDraft: reportViewModel.reportIsDraft,
                               closeAction: {
