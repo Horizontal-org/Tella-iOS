@@ -85,6 +85,8 @@ class DraftUwaziEntity: ObservableObject {
         requiredPrompts.forEach { prompt in
             prompt.showMandatoryError = prompt.value.stringValue.isEmpty
         }
+        
+        dump(entryPrompts)
     }
 
 }

@@ -10,8 +10,8 @@ import SwiftUI
 
 struct UwaziSelectWidget: View {
     @State private var shouldShowMenu : Bool = false
-    @State private var manuFrame : CGRect = CGRectZero
     @EnvironmentObject var prompt: UwaziEntryPrompt
+    @State var value: UwaziValue
     var body: some View {
         Button {
             DispatchQueue.main.async {
@@ -20,7 +20,7 @@ struct UwaziSelectWidget: View {
             
         } label: {
             HStack {
-                Text(prompt.question)
+                Text(selectTitle(value:value.stringValue))
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(Color.white.opacity(0.87))
                     .padding()
@@ -38,20 +38,20 @@ struct UwaziSelectWidget: View {
         }
     }
     
+    func selectTitle(value: String) -> String {
+        return value.isEmpty ? "Select" : value
+    }
     @ViewBuilder
     var selectListOptions: some View {
 
             VStack {
-                Spacer()
                 ScrollView {
-
                     VStack(spacing: 0) {
-
                         ForEach(prompt.selectValues ?? [], id: \.self) { selectedOptions in
-
                             Button {
                                 shouldShowMenu = false
-
+                                prompt.value.selectedValue = [selectedOptions]
+                                prompt.value.stringValue = selectedOptions.translatedLabel ?? ""
                             } label: {
                                 Text(selectedOptions.translatedLabel ?? "")
                                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
@@ -69,11 +69,5 @@ struct UwaziSelectWidget: View {
             .padding()
 
             .background(Color.clear)
-    }
-}
-
-struct UwaziSelectWidget_Previews: PreviewProvider {
-    static var previews: some View {
-        UwaziSelectWidget()
     }
 }
