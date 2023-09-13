@@ -39,6 +39,7 @@ struct TemplateListView: View {
             self.uwaziViewModel.getDownloadedTemplates()
         }
     }
+
     private func showtemplateActionBottomSheet(template: CollectedTemplate) {
         sheetManager.showBottomSheet(modalHeight: 176) {
             ActionListBottomSheet(items: downloadTemplateActionItems,
@@ -48,15 +49,19 @@ struct TemplateListView: View {
                 if type == .delete {
                     showDeleteTemplateConfirmationView(template: template)
                 } else {
-                    navigateTo(destination:
-                                CreateEntityView(mainAppModel: mainAppModel, template: template)
-                                .environmentObject(sheetManager)
-                               
-                    )
+                    navigateToCreateEntityView(template: template)
                     sheetManager.hide()
                 }
             })
         }
+    }
+
+    private func navigateToCreateEntityView(template: CollectedTemplate) {
+        navigateTo(destination:
+                    CreateEntityView(mainAppModel: mainAppModel, template: template)
+            .environmentObject(sheetManager)
+
+        )
     }
     private func showDeleteTemplateConfirmationView(template: CollectedTemplate) {
         sheetManager.showBottomSheet(modalHeight: 200) {

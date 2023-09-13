@@ -36,7 +36,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
     fileprivate func handleSupportPrompt() {
         let supportPrompt = UwaziEntryPrompt(id: "10242049",
                                              formIndex: "10242049",
-                                             type: UwaziEntityPropertyType.dataTypeMultiPDFFiles.rawValue,
+                                             type: UwaziEntityPropertyType.dataTypeMultiFiles.rawValue,
                                              question: "Supporting files",
                                              required: false,
                                              helpText: "Select as many files as you wish")
