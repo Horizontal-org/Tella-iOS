@@ -9,12 +9,14 @@
 import SwiftUI
 
 struct CreateEntityView: View {
-    @StateObject var entityViewModel : DraftUwaziEntity
+    @StateObject var entityViewModel : UwaziEntityViewModel
     @EnvironmentObject var sheetManager : SheetManager
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     init(mainAppModel: MainAppModel, template: CollectedTemplate) {
-        _entityViewModel = StateObject(wrappedValue: DraftUwaziEntity(mainAppModel: mainAppModel, template: template))
+        _entityViewModel = StateObject(wrappedValue: UwaziEntityViewModel(mainAppModel: mainAppModel,
+                                                                          template: template,
+                                                                          parser: UwaziEntityParser(template: template)))
     }
     var body: some View {
         ContainerView {
@@ -47,7 +49,7 @@ struct CreateEntityView: View {
             ScrollView {
                 VStack(alignment: .leading) {
                     ForEach(entityViewModel.entryPrompts, id: \.id) { prompt in
-                        RenderPropertyComponentView(prompt: prompt, geometry: geometry)
+                        RenderPropertyComponentView(prompt: prompt)
                             .environmentObject(entityViewModel)
                     }
                 }.padding(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16))
