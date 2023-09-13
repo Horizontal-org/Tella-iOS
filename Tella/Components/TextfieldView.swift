@@ -19,6 +19,7 @@ struct TextfieldView : View {
     var placeholder : String = ""
     var shouldShowTitle : Bool = false
     var onCommit : (() -> Void)? =  ({})
+    var keyboardType: UIKeyboardType = .default
     
     @State private var shouldShowPassword : Bool = false
     
@@ -35,6 +36,7 @@ struct TextfieldView : View {
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .frame(maxWidth: .infinity,alignment: .leading)
                     .contentShape(Rectangle())
+
                     .foregroundColor(fieldContent.isEmpty ? .white : .white.opacity(0.8))
                     .scaleEffect(fieldContent.isEmpty ? 1 : 0.88, anchor: .leading)
                     .transaction { transaction in
@@ -71,7 +73,9 @@ struct TextfieldView : View {
                   text: $fieldContent,
                   onCommit: {
             self.onCommit?()
-        }).onChange(of: fieldContent, perform: { value in
+        })
+        .keyboardType(keyboardType)
+        .onChange(of: fieldContent, perform: { value in
             validateField(value: value)
             self.pfieldContent = value
         })
@@ -93,6 +97,7 @@ struct TextfieldView : View {
                         self.onCommit?()
                     })
                 }}
+            .keyboardType(keyboardType)
             .textFieldStyle(TextfieldStyle(shouldShowError: shouldShowError))
             .onChange(of: fieldContent, perform: { value in
                 validateField(value: value)

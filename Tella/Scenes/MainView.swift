@@ -72,7 +72,7 @@ struct MainView: View  {
             
             if appModel.selectedTab == .camera {
                 CameraView(sourceView: .tab,
-                           showingCameraView: .constant(false),
+                           showingCameraView: $appViewState.shouldHidePresentedView,
                            mainAppModel: appModel,
                            rootFile: appModel.vaultManager.root)
             }
@@ -81,7 +81,7 @@ struct MainView: View  {
     
     @ViewBuilder
     var securityScreenView : some View {
-        if appViewState.homeViewModel?.shouldShowSecurityScreen == true || appViewState.homeViewModel?.shouldShowRecordingSecurityScreen == true , let screenSecurity = appViewState.homeViewModel?.settings.screenSecurity, screenSecurity == true {
+        if appViewState.homeViewModel.shouldShowSecurityScreen == true || appViewState.homeViewModel.shouldShowRecordingSecurityScreen == true ,    appViewState.homeViewModel.settings.screenSecurity == true {
             Color.white
                 .edgesIgnoringSafeArea(.all)
         }

@@ -40,6 +40,7 @@ class DraftReportVM: ObservableObject {
     
     var cancellable : Cancellable? = nil
     private var subscribers = Set<AnyCancellable>()
+    var delayTime = 2.0
     
     var serverName : String {
         guard let serverName = server?.name else { return LocalizableReport.selectProject.localized }
@@ -100,7 +101,7 @@ class DraftReportVM: ObservableObject {
     }
     
     private func getServers() {
-        serverArray = mainAppModel.vaultManager.tellaData.servers.value
+        serverArray = mainAppModel.vaultManager.tellaData?.servers.value ?? []
     }
     
     private func initcurrentReportVM(reportId:Int?) {
@@ -125,18 +126,15 @@ class DraftReportVM: ObservableObject {
     }
     
     func fillReportVM() {
-        if let reportId = self.reportId ,let report = self.mainAppModel.vaultManager.tellaData.getReport(reportId: reportId) {
-            
+        if let reportId = self.reportId ,let report = self.mainAppModel.vaultManager.tellaData?.getReport(reportId: reportId) {
             var vaultFileResult : Set<VaultFile> = []
-            
             self.title = report.title ?? ""
             self.description = report.description ?? ""
             self.server = report.server
-            self.mainAppModel.vaultManager.root.getFile(root: self.mainAppModel.vaultManager.root, vaultFileResult: &vaultFileResult, ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
+            self.mainAppModel.vaultManager.root?.getFile(root: self.mainAppModel.vaultManager.root, vaultFileResult: &vaultFileResult, ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
             self.files = vaultFileResult
             self.objectWillChange.send()
         }
-        
         DispatchQueue.main.async {
             self.isValidTitle =  self.title.textValidator()
             self.isValidDescription = self.description.textValidator()
@@ -147,7 +145,6 @@ class DraftReportVM: ObservableObject {
     }
     
     func saveReport() {
-        
         let report = Report(id: reportId, title: title,
                             description: description,
                             status: status,
@@ -157,23 +154,15 @@ class DraftReportVM: ObservableObject {
                                                                           bytesSent: 0,
                                                                           createdDate: Date())},
                             apiID: apiID)
-        
-        do {
-            if !isNewDraft {
-                try mainAppModel.vaultManager.tellaData.updateReport(report: report)
-            } else {
-                let id = try mainAppModel.vaultManager.tellaData.addReport(report: report)
-                self.reportId = id
-            }
-            
-            showingSuccessMessage = true
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                self.showingSuccessMessage = false
-            }
-            
-        } catch {
-            
+        if !isNewDraft {
+            mainAppModel.vaultManager.tellaData?.updateReport(report: report)
+        } else {
+            let id = mainAppModel.vaultManager.tellaData?.addReport(report: report)
+            self.reportId = id
+        }
+        showingSuccessMessage = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + delayTime) {
+            self.showingSuccessMessage = false
         }
     }
     
@@ -183,10 +172,6 @@ class DraftReportVM: ObservableObject {
     }
     
     func deleteReport() {
-        do {
-            try mainAppModel.deleteReport(reportId: reportId)
-        } catch let error {
-            debugLog(error)
-        }
+        mainAppModel.deleteReport(reportId: reportId)
     }
 }

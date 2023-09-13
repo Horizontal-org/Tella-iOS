@@ -14,12 +14,14 @@ struct TellaApp: App {
     private var appViewState = AppViewState()
     @Environment(\.scenePhase) var scenePhase
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    let delayTimeInSecond = 1.0
     
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(appViewState)
+            ContentView(mainAppModel: appViewState.homeViewModel)
+                .environmentObject(appViewState)
                 .onReceive(NotificationCenter.default.publisher(for: UIScreen.capturedDidChangeNotification)) { value in
-                    appViewState.homeViewModel?.shouldShowRecordingSecurityScreen = UIScreen.main.isCaptured
+                    appViewState.homeViewModel.shouldShowRecordingSecurityScreen = UIScreen.main.isCaptured
                 }.onReceive(appDelegate.$shouldHandleTimeout) { value in
                     if value {
                         self.saveData(lockApptype: .finishBackgroundTasks)
@@ -33,52 +35,47 @@ struct TellaApp: App {
             case .active:
                 self.resetApp()
             case .inactive:
-                appViewState.homeViewModel?.shouldShowSecurityScreen = true
+                appViewState.homeViewModel.shouldShowSecurityScreen = true
             default:
                 break
             }
         }
     }
-    
+
     func saveData(lockApptype:LockApptype) {
-        
-        appViewState.homeViewModel?.saveLockTimeoutStartDate()
-        
+        let homeViewModel = appViewState.homeViewModel
+        homeViewModel.saveLockTimeoutStartDate()
         UploadService.shared.cancelTasksIfNeeded()
-        
-        guard let shouldResetApp = appViewState.homeViewModel?.shouldResetApp() else { return }
-//        let hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
-        
-      let  hasFileOnBackground = lockApptype == .enterInBackground ? UploadService.shared.hasFilesToUploadOnBackground : false
-            
-         if shouldResetApp && !hasFileOnBackground {
-            
-            appViewState.homeViewModel?.appEnterInBackground = true
-            appViewState.homeViewModel?.shouldSaveCurrentData = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                appViewState.homeViewModel?.vaultManager.clearTmpDirectory() // TO FIX for server doesn't allow upload in Background
-                appViewState.resetApp()
-            })
-            // appViewState.homeViewModel?.saveLockTimeoutStartDate()
-            appViewState.homeViewModel?.shouldSaveCurrentData = false
-        }
+        handleResetApp(lockApptype)
     }
     
+    fileprivate func handleResetApp(_ lockApptype: LockApptype) {
+        let homeViewModel = appViewState.homeViewModel
+        let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
+        let  hasFileOnBackground = lockApptype == .enterInBackground ? UploadService.shared.hasFilesToUploadOnBackground : false
+        if shouldResetApp && !hasFileOnBackground {
+            homeViewModel.appEnterInBackground = true
+            homeViewModel.shouldSaveCurrentData = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond, execute: {
+                appViewState.homeViewModel.vaultManager.clearTmpDirectory() // TO FIX for server doesn't allow upload in Background
+                appViewState.resetApp()
+            })
+            homeViewModel.shouldSaveCurrentData = false
+        }
+    }
     func resetApp() {
-        if let shouldResetApp = appViewState.homeViewModel?.shouldResetApp(),
-           shouldResetApp == true,
-           appViewState.homeViewModel?.appEnterInBackground == true {
-            
-            
+        let homeViewModel = appViewState.homeViewModel
+        if homeViewModel.shouldResetApp() == true,
+           homeViewModel.appEnterInBackground == true {
             DispatchQueue.main.async {
                 appViewState.shouldHidePresentedView = true
-                appViewState.homeViewModel?.vaultManager.clearTmpDirectory()
+                appViewState.homeViewModel.vaultManager.clearTmpDirectory()
                 appViewState.resetApp()
                 appViewState.shouldHidePresentedView = false
             }
         }
-        appViewState.homeViewModel?.appEnterInBackground = false
-        appViewState.homeViewModel?.shouldShowSecurityScreen = false
+        homeViewModel.appEnterInBackground = false
+        homeViewModel.shouldShowSecurityScreen = false
     }
 }
 

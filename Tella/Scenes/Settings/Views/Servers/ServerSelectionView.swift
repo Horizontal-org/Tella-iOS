@@ -3,21 +3,16 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 4/12/23.
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import SwiftUI
 
 struct ServerSelectionView: View {
-
     @EnvironmentObject var serversViewModel : ServersViewModel
     @StateObject var serverViewModel : ServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
-
-    @State var istellaWebSelected = false
-    @State var isUwaziSelected = false
-    @State var showTellaWeb = false
-    @State var showUwazi = false
+    @State var selectedServerType: ServerConnectionType = .unknown
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     init(appModel:MainAppModel, server: Server? = nil) {
@@ -28,6 +23,65 @@ struct ServerSelectionView: View {
 
             VStack(spacing: 20) {
                 Spacer()
+                HeaderView()
+                buttonViews()
+                Spacer()
+                bottomView()
+            }
+            .toolbar {
+                LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
+            }
+        }
+    }
+    fileprivate func buttonViews() -> Group<TupleView<(some View, some View)>> {
+        return Group {
+            TellaButtonView<AnyView>(title: LocalizableSettings.settServerTellaWeb.localized,
+                                     nextButtonAction: .action,
+                                     isOverlay: selectedServerType == .tella,
+                                     isValid: .constant(true),action: {
+                selectedServerType = .tella
+            })
+            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+            TellaButtonView<AnyView>(title: LocalizableSettings.settServerUwazi.localized,
+                                     nextButtonAction: .action,
+                                     isOverlay: selectedServerType == .uwazi,
+                                     isValid: .constant(true), action: {
+                selectedServerType = .uwazi
+            }).padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+        }
+    }
+
+    fileprivate func bottomView() -> BottomLockView<AnyView> {
+        return BottomLockView<AnyView>(isValid: .constant(true),
+                                       nextButtonAction: .action,
+                                       shouldHideNext: false,
+                                       shouldHideBack: true,
+                                       nextAction: {
+            switch selectedServerType {
+            case .tella:
+                navigateToTellaWebFlow()
+            case .uwazi:
+                navigateToUwaziFlow()
+            default:
+                break
+            }
+        })
+    }
+
+    fileprivate func navigateToTellaWebFlow() {
+        navigateTo(destination: AddServerURLView(appModel: mainAppModel))
+    }
+
+    fileprivate func navigateToUwaziFlow() {
+        navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel)
+            .environmentObject(serverViewModel)
+            .environmentObject(serversViewModel))
+    }
+
+
+    struct HeaderView: View {
+        var body: some View {
+            VStack(spacing: 20) {
                 Image("settings.server")
                 Text(LocalizableSettings.settServerSelectionTitle.localized)
                     .font(.custom(Styles.Fonts.regularFontName, size: 18))
@@ -37,55 +91,8 @@ struct ServerSelectionView: View {
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
-                TellaButtonView<AnyView>(title: LocalizableSettings.settServerTellaWeb.localized,
-                                         nextButtonAction: .action,
-                                         isValid: .constant(true),action: {
-                    istellaWebSelected = true
-                    isUwaziSelected = false
-                })
-                .overlay( self.istellaWebSelected ?
-                          RoundedRectangle(cornerRadius: 20)
-                    .stroke(.white, lineWidth: 4) : nil
-                ).padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
-
-                TellaButtonView<AnyView>(title: LocalizableSettings.settServerUwazi.localized,
-                                         nextButtonAction: .action,
-                                         isValid: .constant(true), action: {
-                    istellaWebSelected = false
-                    isUwaziSelected = true
-                })
-                .overlay( self.isUwaziSelected ? RoundedRectangle(cornerRadius: 20)
-                    .stroke(.white, lineWidth: 4) : nil
-                )
-                .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
-                Spacer()
-                BottomLockView<AnyView>(isValid: .constant(true),
-                                        nextButtonAction: .action,
-                                        shouldHideNext: false,
-                                        shouldHideBack: true,
-                                        nextAction: {
-                    if istellaWebSelected {
-                        navigateTo(destination: AddServerURLView(appModel: mainAppModel))
-                    } else if isUwaziSelected {
-                        navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel)
-                            .environmentObject(serverViewModel)
-                            .environmentObject(serversViewModel))
-                    } else {
-
-                    }
-                })
             }
-            .toolbar {
-                LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
-            }
-//            tellaWebLink
-//            UwaziLink
         }
-    }
-    private var tellaWebLink: some View {
-        AddServerURLView(appModel: mainAppModel)
-            .environmentObject(serversViewModel)
-            //.addNavigationLink(isActive: $showTellaWeb)
     }
 }
 

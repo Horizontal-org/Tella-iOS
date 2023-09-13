@@ -23,7 +23,7 @@ struct RecordView: View {
     let modalHeight = 173.0
     
     init(appModel: MainAppModel,
-         rootFile: VaultFile,
+         rootFile: VaultFile?,
          sourceView : SourceView,
          showingRecoredrView: Binding<Bool>,
          resultFile : Binding<[VaultFile]?>? = nil) {

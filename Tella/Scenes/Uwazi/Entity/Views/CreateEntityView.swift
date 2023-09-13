@@ -12,6 +12,7 @@ struct CreateEntityView: View {
     @StateObject var entityViewModel : UwaziEntityViewModel
     @EnvironmentObject var sheetManager : SheetManager
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    let modelHeight = 180.0
     
     init(mainAppModel: MainAppModel, template: CollectedTemplate) {
         _entityViewModel = StateObject(wrappedValue: UwaziEntityViewModel(mainAppModel: mainAppModel,
@@ -57,7 +58,7 @@ struct CreateEntityView: View {
     }
 
     private func showSaveEntityConfirmationView() {
-        sheetManager.showBottomSheet(modalHeight: 200) {
+        sheetManager.showBottomSheet(modalHeight: modelHeight) {
             ConfirmBottomSheet(titleText: "Exit entity?",
                                msgText: "Your draft will be lost",
                                cancelText: LocalizableReport.exitCancel.localized,

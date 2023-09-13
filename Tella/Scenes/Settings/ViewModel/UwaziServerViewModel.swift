@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 4/30/23.
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import Foundation
@@ -15,7 +15,6 @@ class UwaziServerViewModel: ObservableObject {
     // Server propreties
     @Published var serverURL : String = "https://"
 
-    
     @Published var name : String?
     @Published var username : String = ""
     @Published var password : String = ""
@@ -29,8 +28,7 @@ class UwaziServerViewModel: ObservableObject {
     @Published var validURL : Bool = false
     @Published var shouldShowURLError : Bool = false
     @Published var urlErrorMessage : String = ""
-    @Published var isPublicInstance: Bool = false
-    @Published var isPrivateInstance: Bool = false
+    @Published var isPublicInstance: Bool?
 
     // Login
     @Published var validUsername : Bool = false
@@ -54,17 +52,16 @@ class UwaziServerViewModel: ObservableObject {
     // Language
     @Published var languages: [UwaziLanguageRow] = []
     @Published var selectedLanguage: UwaziLanguageRow?
-
     private var cancellableLogin: Cancellable? = nil
     private var cancellableAuthenticationCode: Cancellable? = nil
     var subscribers = Set<AnyCancellable>()
 
     var currentServer : Server?
     var token: String?
-    var setting: UwaziCheckURLResult?
+    var setting: UwaziCheckURL?
 
     var isAutoUploadServerExist: Bool {
-        return mainAppModel.vaultManager.tellaData.getAutoUploadServer() != nil && autoUpload == false
+        return mainAppModel.vaultManager.tellaData?.getAutoUploadServer() != nil && autoUpload == false
     }
 
     init(mainAppModel : MainAppModel, currentServer: Server?) {
@@ -81,7 +78,6 @@ class UwaziServerViewModel: ObservableObject {
         fillReportVM()
 
     }
-
     func handleServerAction() {
         if currentServer != nil {
             updateServer()
@@ -89,7 +85,6 @@ class UwaziServerViewModel: ObservableObject {
             addServer()
         }
     }
-
     func addServer() {
         let server = Server(name: setting?.siteName,
                             serverURL: serverURL.getBaseURL(),
@@ -102,19 +97,13 @@ class UwaziServerViewModel: ObservableObject {
                             slug: "",
                             autoUpload: autoUpload,
                             autoDelete: autoDelete,
-                            serverType: ServerConnectionType.uwazi.rawValue
+                            serverType: .uwazi
         )
-
-        do {
-            dump(server)
-            let id = try mainAppModel.vaultManager.tellaData.addServer(server: server)
-            server.id = id
-            self.addUwaziLocaleFor(serverId: id)
-            self.currentServer = server
-
-        } catch {
-
-        }
+        debugLog(server)
+        guard let id = mainAppModel.vaultManager.tellaData?.addServer(server: server) else { return }
+        server.id = id
+        self.addUwaziLocaleFor(serverId: id)
+        self.currentServer = server
     }
     func updateServer() {
         guard let currentServer = currentServer, let currentServerId = currentServer.id else { return }
@@ -131,92 +120,92 @@ class UwaziServerViewModel: ObservableObject {
                             autoUpload: autoUpload,
                             autoDelete: autoDelete)
 
-        do {
-            let id = try mainAppModel.vaultManager.tellaData.updateServer(server: server)
-            server.id = id
-            updateUwaziLocaleFor(serverId: currentServerId)
-        } catch {
 
-        }
+        guard let id = mainAppModel.vaultManager.tellaData?.updateServer(server: server) else { return }
+        server.id = id
+        updateUwaziLocaleFor(serverId: currentServerId)
     }
-
     func addUwaziLocaleFor(serverId: Int) {
-        do {
-            guard let locale = self.selectedLanguage?.locale else { return }
-            _ = try mainAppModel.vaultManager.tellaData.addUwaziLocale(locale: UwaziLocale(locale: locale, serverId: serverId))
-        } catch let error {
-            print(error)
-        }
+        guard let locale = self.selectedLanguage?.locale else { return }
+        mainAppModel.vaultManager.tellaData?.addUwaziLocale(locale: UwaziLocale(locale: locale, serverId: serverId))
     }
     func updateUwaziLocaleFor(serverId: Int) {
-        do {
-            let selectedlocale = try mainAppModel.vaultManager.tellaData.getUwaziLocale(serverId: serverId)
-            guard let localeId = selectedlocale?.id, let locale = selectedLanguage?.locale else { return }
-            if selectedlocale?.locale != locale {
-                _ = try mainAppModel.vaultManager.tellaData.updateLocale(localeId: localeId, locale: locale)
-            }
-        } catch let error {
-            print(error)
+        let selectedlocale = mainAppModel.vaultManager.tellaData?.getUwaziLocale(serverId: serverId)
+        guard let localeId = selectedlocale?.id, let locale = selectedLanguage?.locale else { return }
+        if selectedlocale?.locale != locale {
+            mainAppModel.vaultManager.tellaData?.updateLocale(localeId: localeId, locale: locale)
         }
     }
 
+    // MARK: - Get Language API Call Methods
     func getLanguage() {
         isLoading = true
         guard let baseURL = serverURL.getBaseURL() else { return }
         UwaziServerRepository().getLanguage(serverURL: baseURL)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
-                self.isLoading = false
-
-                switch completion {
-
-                case .finished:
-                    print("Finished")
-                case .failure(let error):
-                    debugLog(error)
-                    self.isLoading = false
-                }
-
+                self.handleCompletionForGetLanguage(completion)
             }, receiveValue: { wrapper in
-                print("Finished")
-                self.isLoading = false
-                self.languages.append(contentsOf: wrapper.rows ?? [])
-                if let server = self.currentServer, let id = server.id {
-                    let locale = try? self.mainAppModel.vaultManager.tellaData.getUwaziLocale(serverId: id)
-                    self.selectedLanguage = self.languages.first(where: {$0.locale == locale?.locale})
-                }
-                self.showNextSuccessLoginView = true
+                self.handleRecieveValueForGetLanguage(wrapper)
             }).store(in: &subscribers)
     }
+    fileprivate func handleCompletionForGetLanguage(_ completion: Subscribers.Completion<APIError>) {
+        self.isLoading = false
+        switch completion {
+        case .finished:
+            debugLog("Finished")
+            // TODO: Handle this error
+        case .failure(let error):
+            debugLog(error)
+            self.isLoading = false
+        }
+    }
 
+    fileprivate func handleRecieveValueForGetLanguage(_ wrapper: UwaziLanguage) {
+        debugLog("Finished")
+        self.isLoading = false
+        self.languages.append(contentsOf: wrapper.rows ?? [])
+        if let server = self.currentServer, let id = server.id {
+            let locale = self.mainAppModel.vaultManager.tellaData?.getUwaziLocale(serverId: id)
+            self.selectedLanguage = self.languages.compactMap{$0}.first(where: {$0.locale == locale?.locale})
+        }
+        self.showNextSuccessLoginView = true
+    }
+
+
+    // MARK: - Check URL API Call Methods
     func checkURL() {
-
         isLoading = true
         guard let baseURL = serverURL.getBaseURL() else { return }
         UwaziServerRepository().checkServerURL(serverURL: baseURL)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
-                self.isLoading = false
-
-                switch completion {
-
-                case .finished:
-                    print("Finished")
-                case .failure(let error):
-                    debugLog(error)
-                    self.isPrivateInstance = true
-                }
-
+                self.handleCompletionForCheckURL(completion)
             }, receiveValue: { wrapper in
-                self.setting = wrapper
-                print("Finished")
-                self.isLoading = false
-                self.isPublicInstance = true
+                self.handleRecieveValueForCheckURL(wrapper)
             }).store(in: &subscribers)
     }
 
-    func login() {
+    fileprivate func handleCompletionForCheckURL(_ completion: Subscribers.Completion<APIError>) {
+        self.isLoading = false
+        switch completion {
+        case .finished:
+            debugLog("Finished")
+            // TODO: handle this error
+        case .failure(let error):
+            debugLog(error)
+            self.isPublicInstance = false
+        }
+    }
 
+    fileprivate func handleRecieveValueForCheckURL(_ wrapper: UwaziCheckURL) {
+        self.setting = wrapper
+        debugLog("Finished")
+        self.isLoading = false
+        self.isPublicInstance = true
+    }
+    // MARK: - Login API Call Methods
+    func login() {
         guard let baseURL = serverURL.getBaseURL() else { return }
 
         isLoading = true
@@ -225,56 +214,57 @@ class UwaziServerViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { completion in
-
-                    switch completion {
-                    case .failure(let error):
-                        switch error {
-
-                        case .invalidURL:
-                            self.shouldShowLoginError = true
-                            self.loginErrorMessage = error.errorDescription ?? ""
-                            self.isLoading = false
-                        case .httpCode(let code):
-                            // if the status code is 401 then username or password is not matching
-                            if code == 401 {
-                                self.shouldShowLoginError = true
-                                self.loginErrorMessage = "Invalid username or password"
-                                self.isLoading = false
-                            // if the status code is 409 then 2FA is needed
-                            } else if code == 409 {
-                                self.showNext2FAView = true
-                            }
-                            self.isLoading = false
-                        case .unexpectedResponse:
-                            self.shouldShowLoginError = true
-                            self.loginErrorMessage = error.errorDescription ?? ""
-                            self.isLoading = false
-                        }
-
-
-                    case .finished:
-                        self.shouldShowLoginError = false
-                        self.loginErrorMessage = ""
-                        self.isLoading = false
-                        break
-
-                    }
+                    self.handleCompletionForLogin(completion)
                 },
                 receiveValue: { result in
-                    self.isLoading = false
-                    if result.0.success {
-                        self.showNextLanguageSelectionView = true
-                        if let token = result.1?.value(forHTTPHeaderField: "Set-Cookie") {
-                            let filteredToken = token.split(separator: ";")
-                            let connectId = filteredToken.first!.replacingOccurrences(of: "connect.sid=", with: "")
-                            self.token = connectId
-                        }
-                    }
+                    self.handleReceiveValueForLogin(result)
                 }
             )
             .store(in: &subscribers)
     }
 
+    fileprivate func handleCompletionForLogin(_ completion: Subscribers.Completion<APIError>) {
+        switch completion {
+        case .failure(let error):
+            switch error {
+            case .invalidURL, .unexpectedResponse:
+                self.shouldShowLoginError = true
+                self.loginErrorMessage = error.errorDescription ?? ""
+            case .httpCode(let code):
+                // if the status code is 401 then username or password is not matching
+                // if the status code is 409 then 2FA is needed
+                let httpError = HTTPErrorCodes(rawValue: code) ?? .unknown
+                switch httpError {
+                case .need2FA:
+                    self.showNext2FAView = true
+                default:
+                    self.shouldShowLoginError = true
+                    self.loginErrorMessage = error.localizedDescription
+                }
+            }
+        case .finished:
+            self.shouldShowLoginError = false
+            self.loginErrorMessage = ""
+            break
+        }
+        self.isLoading = false
+    }
+
+    fileprivate func handleReceiveValueForLogin(_ result: String?) {
+        self.isLoading = false
+        if let result = result {
+            self.token = result
+            self.showNextLanguageSelectionView = true
+        } else {
+            self.shouldShowLoginError = true
+            // TODO: More appropiate message here
+            self.loginErrorMessage = "Something went wrong!!"
+        }
+    }
+
+
+
+    // MARK: - 2FA API Call Methods
     func twoFactorAuthentication() {
 
         guard let baseURL = serverURL.getBaseURL() else { return }
@@ -285,67 +275,51 @@ class UwaziServerViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { completion in
-
-                    switch completion {
-                    case .failure(let error):
-                        switch error {
-
-                        case .invalidURL:
-                            self.shouldShowAuthenticationError = true
-                            self.codeErrorMessage = error.errorDescription ?? ""
-                            self.isLoading = false
-                        case .httpCode(let code):
-                            // if the status code is 401 then the 2FA code is incorrect
-                            if code == 401 {
-                                self.shouldShowAuthenticationError = true
-                                self.codeErrorMessage = "Two-factor authentication failed."
-                                self.isLoading = false
-                            } else {
-                                self.shouldShowAuthenticationError = true
-                                self.codeErrorMessage = error.errorDescription ?? ""
-                                self.isLoading = false
-                            }
-                        case .unexpectedResponse:
-                            self.shouldShowAuthenticationError = true
-                            self.codeErrorMessage = error.errorDescription ?? ""
-                            self.isLoading = false
-                        }
-
-
-                    case .finished:
-                        self.shouldShowAuthenticationError = false
-                        self.codeErrorMessage = ""
-                        self.isLoading = false
-                        break
-
-                    }
+                    self.handleCompletionFor2FA(completion)
                 },
                 receiveValue: { result in
-                    self.isLoading = false
-                    if result.0.success {
-                        self.showNextLanguageSelectionView = true
-                        if let token = result.1?.value(forHTTPHeaderField: "Set-Cookie") {
-                            let filteredToken = token.split(separator: ";")
-                            let connectId = filteredToken.first!.replacingOccurrences(of: "connect.sid=", with: "")
-                            self.token = connectId
-                        }
-                    }
+                    self.handleReceiveValueForLogin(result)
                 }
             )
             .store(in: &subscribers)
     }
+    fileprivate func handleCompletionFor2FA(_ completion: Subscribers.Completion<APIError>) {
+        switch completion {
+        case .failure(let error):
+            switch error {
+            case .invalidURL, .unexpectedResponse:
+                self.codeErrorMessage = error.errorDescription ?? ""
+            case .httpCode(let code):
+                // if the status code is 401 then the 2FA code is incorrect
+                let httpError = HTTPErrorCodes(rawValue: code) ?? .unknown
+                switch httpError {
+                case .unauthorized:
+                    self.codeErrorMessage = "Two-factor authentication failed."
+                default:
+                    self.codeErrorMessage = error.errorDescription ?? ""
+                }
+            }
+            self.shouldShowAuthenticationError = true
+        case .finished:
+            self.shouldShowAuthenticationError = false
+            self.codeErrorMessage = ""
+            break
+        }
+        self.isLoading = false
+    }
 
     func fillReportVM() {
-        if let server = self.currentServer {
-            name =  server.name ?? ""
-            serverURL = server.url ?? ""
-            username = server.username ?? ""
-            password = server.password ?? ""
-            activatedMetadata = server.activatedMetadata ?? false
-            backgroundUpload = server.backgroundUpload ?? false
-            autoUpload = server.autoUpload ?? false
-            autoDelete = server.autoDelete ?? false
+        guard let server = self.currentServer else {
+            return
         }
+        name =  server.name ?? ""
+        serverURL = server.url ?? ""
+        username = server.username ?? ""
+        password = server.password ?? ""
+        activatedMetadata = server.activatedMetadata ?? false
+        backgroundUpload = server.backgroundUpload ?? false
+        autoUpload = server.autoUpload ?? false
+        autoDelete = server.autoDelete ?? false
     }
 }
 

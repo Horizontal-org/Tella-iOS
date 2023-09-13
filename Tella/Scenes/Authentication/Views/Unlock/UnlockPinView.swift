@@ -14,7 +14,6 @@ struct UnlockPinView: View {
     @State private var presentingLockChoice : Bool = false
     
     @EnvironmentObject private var appViewState: AppViewState
-    @EnvironmentObject private var mainAppModel: MainAppModel
     
     @EnvironmentObject private var viewModel: LockViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -41,6 +40,18 @@ struct UnlockPinView: View {
                 
                 Spacer()
                 
+                if(viewModel.shouldShowAttemptsWarning) {
+                    Text(viewModel.warningText())
+                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                        .foregroundColor(.white)
+                        .lineSpacing(7)
+                        .multilineTextAlignment(.center)
+                        .padding(EdgeInsets(top: 0, leading: 67, bottom: 0, trailing: 67))
+                    Spacer()
+                }
+
+               
+                
                 PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
                                       isValid: .constant(true),
                                       shouldShowError: $viewModel.shouldShowUnlockError,
@@ -49,17 +60,8 @@ struct UnlockPinView: View {
                 Spacer(minLength: 20)
                 
                 PinView(fieldContent: $viewModel.loginPassword,
-                        keyboardNumbers: viewModel.unlockKeyboardNumbers) {
-                    viewModel.login()
-                    if !viewModel.shouldShowUnlockError {
-                        if viewModel.unlockType == .new {
-                            isLoading = true
-                            appViewState.initMainAppModel()
-                            initRoot()
-                        } else {
-                            presentingLockChoice = true
-                        }
-                    }
+                        keyboardNumbers: UnlockKeyboardNumbers) {
+                    loginActions()
                 }
                 
                 Spacer()
@@ -89,14 +91,41 @@ struct UnlockPinView: View {
         presentingLockChoice ? LockChoiceView( isPresented: $presentingLockChoice) : nil
     }
     
+    private func loginActions() {
+        viewModel.login()
+        if !viewModel.shouldShowUnlockError {
+            successLogin()
+        } else {
+            checkUnlockAttempts()
+        }
+    }
+    
+    private func successLogin() {
+        viewModel.unlockAttempts = 0
+        if viewModel.unlockType == .new {
+             isLoading = true
+             initRoot()
+        } else {
+            presentingLockChoice = true
+        }
+    }
+    
+    private func checkUnlockAttempts() {
+        viewModel.unlockAttempts = viewModel.unlockAttempts + 1
+        UserDefaults.standard.set(viewModel.unlockAttempts, forKey: "com.tella.lock.attempts")
+                                
+        if(viewModel.unlockAttempts == viewModel.maxAttempts) {
+            viewModel.removeFilesAndConnections()
+        }
+    }
+    
     private func initRoot() {
         DispatchQueue.main.async {
-            appViewState.homeViewModel?.initFiles()
+            appViewState.homeViewModel.initFiles()
                 .receive(on: DispatchQueue.main)
                 .sink { recoverResult in
                     isLoading = false
                     appViewState.showMainView()
-                    
                 }.store(in: &self.cancellable)
         }
     }

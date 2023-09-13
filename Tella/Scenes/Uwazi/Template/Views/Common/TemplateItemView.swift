@@ -10,16 +10,14 @@ import SwiftUI
 
 struct TemplateItemView: View {
     @Binding var template : CollectedTemplate
-    var serverName : String
     var isDownloaded : Bool
     var downloadTemplate : (inout CollectedTemplate) -> Void
     var deleteTemplate: (CollectedTemplate) -> Void
-    
+
     var body: some View {
-        Button {
-                    
-                } label: {
-                        
+//        Button {
+//                    
+//                } label: {
                     HStack {
                         if(isDownloaded) {
                             Image("report.submitted")
@@ -46,6 +44,6 @@ struct TemplateItemView: View {
                             
                     }.padding(.all, 8)
                         
-                }
+                // }
     }
 }

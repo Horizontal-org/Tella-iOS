@@ -1,5 +1,5 @@
 //
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import Foundation
@@ -23,7 +23,7 @@ class BaseUploadOperation : Operation {
     var subscribers : Set<AnyCancellable> = []
     var type: OperationType!
     var taskType: URLSessionTaskType = .dataTask
-
+    
     override init() {
         super.init()
     }
@@ -117,12 +117,7 @@ class BaseUploadOperation : Operation {
         let report = Report(id: self.report?.id,
                             status: reportStatus,
                             apiID: apiID)
-        do {
-              try mainAppModel.vaultManager.tellaData.updateReport(report: report)
-            
-        } catch {
-            
-        }
+        mainAppModel.vaultManager.tellaData?.updateReport(report: report)
     }
     
     func updateReportFile(fileStatus:FileStatus, id:Int?, bytesSent:Int? = nil, current:Int? = nil ) -> Int {
@@ -142,17 +137,12 @@ class BaseUploadOperation : Operation {
             }
             return file
         }
-
+        
         let file = self.reportVaultFiles?.first(where: {$0.instanceId == id})
         let totalBytesSent = (file?.current ?? 0)  + (file?.bytesSent ?? 0)
-        
-        do {
-              try mainAppModel.vaultManager.tellaData.updateReportFile(reportFile: ReportFile(id: id,
-                                                                                                    status: fileStatus,
-                                                                                                    bytesSent: totalBytesSent))
-        } catch {
-            
-        }
+        mainAppModel.vaultManager.tellaData?.updateReportFile(reportFile: ReportFile(id: id,
+                                                                                     status: fileStatus,
+                                                                                     bytesSent: totalBytesSent))
         return totalBytesSent
     }
     
@@ -180,14 +170,9 @@ class BaseUploadOperation : Operation {
     }
     
     func deleteCurrentAutoReport() {
-        do {
-              try mainAppModel.vaultManager.tellaData.deleteReport(reportId: self.report?.id)
-        } catch {
-            
-        }
+        mainAppModel.vaultManager.tellaData?.deleteReport(reportId: self.report?.id)
         guard let reportVaultFiles = self.reportVaultFiles else { return }
         mainAppModel.vaultManager.delete(files: reportVaultFiles, parent: mainAppModel.vaultManager.root)
-        
     }
     
     func sendReport() {
@@ -201,7 +186,7 @@ class BaseUploadOperation : Operation {
                 guard let task = self.urlSession?.dataTask(with: request) else { return}
                 task.resume()
                 taskType = .dataTask
-
+                
                 uploadTasksDict[task] = UploadTask(task: task, response: .createReport)
                 
                 self.updateReport(reportStatus: ReportStatus.submissionInProgress)
@@ -326,7 +311,7 @@ class BaseUploadOperation : Operation {
                 guard let task = self.urlSession?.uploadTask(with: request, fromFile: fileURL!) else { return}
                 task.resume()
                 taskType = .uploadTask
-
+                
                 uploadTasksDict[task] = UploadTask(task: task, response: .progress(fileId: fileToUpload.fileId, type: .putReportFile))
                 
             } catch {
@@ -355,7 +340,7 @@ class BaseUploadOperation : Operation {
                 guard let task = self.urlSession?.dataTask(with: request) else { return}
                 task.resume()
                 taskType = .dataTask
-
+                
                 uploadTasksDict[task] = UploadTask(task: task,  response: .progress(fileId: fileToUpload.fileId, type: .postReportFile))
                 
             } catch {
@@ -420,9 +405,7 @@ class BaseUploadOperation : Operation {
                 
                 //                let file = self.reportVaultFiles?.first(where: {$0.id == fileId})
                 
-                let result:UploadDecode<SizeResult,ServerFileSize>  = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
-                
-                let size = result.domain?.size
+                let result:UploadDecode<EmptyResult,EmptyDomainModel>  = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
                 
                 if let _ = result.error {
                     // headReportFile
@@ -430,13 +413,19 @@ class BaseUploadOperation : Operation {
                     
                 } else {
                     
+                    guard let sizeValue = result.headers?["size"], let sizeString = sizeValue as? String, let size = Int(sizeString)  else {
+                        
+                        self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
+                        return
+                    }
+                    
                     self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(bytesSent: size, current:0 ,fileId: fileId, status: FileStatus.partialSubmitted)))
                     
                     let fileToUpload = filesToUpload.first(where: {$0.fileId == fileId})
                     if fileToUpload?.fileSize == size {
                         self.postReportFile(fileId: fileId)
                     } else {
-                        self.putReportFile(fileId: fileId, size:size ?? 0)
+                        self.putReportFile(fileId: fileId, size:size)
                     }
                     
                 }
@@ -446,7 +435,7 @@ class BaseUploadOperation : Operation {
                 
                 let result:UploadDecode<BoolResponse,BoolModel> = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
                 
-                let success = result.domain?.success ?? false
+                _ = result.domain?.success ?? false
                 
                 if let _ = result.error {
                     self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
@@ -474,32 +463,18 @@ extension BaseUploadOperation {
     
     func getAPIResponse<Value1, Value2> (response:HTTPURLResponse?, data: Data?, error: Error?) -> UploadDecode<Value1, Value2> where Value1: DataModel, Value2: DomainModel {
         
+        let allHeaderFields = (response)?.allHeaderFields
+        
         guard let code = (response)?.statusCode else {
-            return UploadDecode(dto: nil, domain: nil, error: APIError.unexpectedResponse)
+            return UploadDecode(dto: nil, domain: nil, error: APIError.unexpectedResponse, headers: allHeaderFields)
         }
         guard HTTPCodes.success.contains(code) else {
             debugLog("Error code: \(code)")
-            return UploadDecode(dto: nil, domain: nil, error: APIError.httpCode(code))
+            return UploadDecode(dto: nil, domain: nil, error: APIError.httpCode(code), headers: allHeaderFields)
         }
         
-        if let size = (response)?.allHeaderFields.filter({($0.key as? String) == "size"}),
-           !size.isEmpty   {
-            
-            if let jsonString = JSONStringEncoder().encode(size as! [String:Any]) {
-                do{
-                    let result : Value1 = try jsonString.decoded()
-                    let dtoResponse  =    result
-                    let domainResponse  =   (result.toDomain() as? Value2)
-                    
-                    return UploadDecode(dto: dtoResponse, domain: domainResponse, error: nil)
-                }
-                catch {
-                    return UploadDecode(dto: nil, domain: nil, error: APIError.unexpectedResponse)
-                }
-            }
-        }
         guard let data = data else {
-            return UploadDecode(dto: nil, domain: nil, error: APIError.unexpectedResponse)
+            return UploadDecode(dto: nil, domain: nil, error: nil, headers: allHeaderFields)
         }
         
         let dataString = String(decoding:  data  , as: UTF8.self)
@@ -509,10 +484,10 @@ extension BaseUploadOperation {
             let dtoResponse  =   result
             let domainResponse  =   result.toDomain() as? Value2
             
-            return UploadDecode(dto: dtoResponse, domain: domainResponse, error: nil)
+            return UploadDecode(dto: dtoResponse, domain: domainResponse, error: nil, headers: allHeaderFields)
         }
         catch {
-            return UploadDecode(dto: nil, domain: nil, error: APIError.unexpectedResponse)
+            return UploadDecode(dto: nil, domain: nil, error: APIError.unexpectedResponse, headers: allHeaderFields)
         }
     }
 }

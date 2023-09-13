@@ -6,7 +6,6 @@
 import Foundation
 
 // MARK: - LoginResult
-
 struct LoginResult: Codable {
     let accessToken: String
     let user: User

@@ -30,41 +30,17 @@ struct ConfirmLockPasswordView: View {
                     lockViewModel.unlockType == .new ? lockWithPassword() :  updatePassword()
                 }
             }
-            
-            onboardingLink
         }.navigationBarBackButtonHidden(true)
     }
     
     func lockWithPassword() {
-        do {
-            try AuthenticationManager().initKeys(.tellaPassword, password: lockViewModel.password)
-
-            shouldShowOnboarding = true
-            
-        } catch {
-            
-        }
+        lockViewModel.initKeys(passwordTypeEnum: .tellaPassword)
+        navigateTo(destination: OnboardingEndView())
     }
     
     func updatePassword() {
-        do {
-            guard let privateKey = lockViewModel.privateKey else { return }
-            try AuthenticationManager().updateKeys(privateKey, .tellaPassword, newPassword: lockViewModel.password, oldPassword: lockViewModel.loginPassword)
-            lockViewModel.shouldDismiss.send(true)
-            
-        } catch {
-            
-        }
-    }
-    
-    private var onboardingLink: some View {
-        NavigationLink(destination:
-                        
-                        OnboardingEndView() ,
-                       isActive: $shouldShowOnboarding) {
-            EmptyView()
-        }.frame(width: 0, height: 0)
-            .hidden()
+        lockViewModel.updateKeys(passwordTypeEnum: .tellaPassword)
+        lockViewModel.shouldDismiss.send(true)
     }
 }
 

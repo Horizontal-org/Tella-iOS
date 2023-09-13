@@ -109,7 +109,7 @@ struct LanguageItemView : View {
         popToRoot(animated: false)
         LanguageManager.shared.currentLanguage = languageItem
         appViewState.mainAppLayout = LanguageManager.shared.currentLanguage.layoutDirection
-        appViewState.homeViewModel?.shouldUpdateLanguage = true
+        appViewState.homeViewModel.shouldUpdateLanguage = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
             isPresented = false
         }

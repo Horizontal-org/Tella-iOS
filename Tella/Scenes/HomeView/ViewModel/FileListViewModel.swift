@@ -25,8 +25,8 @@ class FileListViewModel: ObservableObject {
     
     var appModel: MainAppModel
     var fileType: [TellaFileType]?
-    var rootFile : VaultFile
-    var oldRootFile : VaultFile
+    var rootFile : VaultFile?
+    var oldRootFile : VaultFile?
     var fileActionSource : FileActionSource = .listView
     var fileListType : FileListType = .fileList
     var resultFile : Binding<[VaultFile]?>?
@@ -133,7 +133,7 @@ class FileListViewModel: ObservableObject {
         return items
     }
     
-    init(appModel:MainAppModel, fileType:[TellaFileType]?, rootFile:VaultFile, folderPathArray:[VaultFile]?,fileActionSource : FileActionSource = .listView,fileListType : FileListType = .fileList, resultFile : Binding<[VaultFile]?>? = nil) {
+    init(appModel:MainAppModel, fileType:[TellaFileType]?, rootFile:VaultFile?, folderPathArray:[VaultFile]?,fileActionSource : FileActionSource = .listView,fileListType : FileListType = .fileList, resultFile : Binding<[VaultFile]?>? = nil) {
         
         self.appModel = appModel
         self.fileType = fileType
@@ -164,7 +164,7 @@ class FileListViewModel: ObservableObject {
     }
     
     func getFiles() -> [VaultFile]  {
-        return appModel.vaultManager.root.files.sorted(by: self.sortBy, folderPathArray: folderPathArray, root: self.appModel.vaultManager.root, fileType: self.fileType)
+        return appModel.vaultManager.root?.files.sorted(by: self.sortBy, folderPathArray: folderPathArray, root: self.appModel.vaultManager.root, fileType: self.fileType) ?? []
     }
     
     func updateSelection(for file:VaultFile) {
@@ -198,7 +198,10 @@ class FileListViewModel: ObservableObject {
     }
     
     func initFolderPathArray() {
-        if let index = self.folderPathArray.firstIndex(of: self.oldRootFile) {
+        guard let oldRootFile = self.oldRootFile else {
+            return
+        }
+        if let index = self.folderPathArray.firstIndex(of: oldRootFile) {
             self.folderPathArray.removeSubrange(index + 1..<self.folderPathArray.endIndex)
         } else {
             self.folderPathArray.removeAll()

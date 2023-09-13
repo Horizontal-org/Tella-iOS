@@ -12,18 +12,19 @@ struct ServerRepository: WebRepository {
                password: String,
                serverURL: String) -> AnyPublisher<LoginResult, APIError> {
         
-        let call : AnyPublisher<LoginResult, APIError> = call(endpoint: API.login((username: username, password: password, serverURL: serverURL)))
+        let apiResponse : APIResponse<LoginResult> = getAPIResponse(endpoint: API.login((username: username, password: password, serverURL: serverURL)))
         
-        return call
+        return apiResponse
+            .map{$0.0}
             .eraseToAnyPublisher()
     }
     
     func getProjetDetails(projectURL: String,token: String) -> AnyPublisher<ProjectAPI, APIError> {
         
-        let call : AnyPublisher<ProjectDetailsResult, APIError> = call(endpoint: API.getProjetDetails((projectURL: projectURL, token: token)))
+        let apiResponse : APIResponse<ProjectDetailsResult> = getAPIResponse(endpoint: API.getProjetDetails((projectURL: projectURL, token: token)))
         
-        return call
-            .compactMap{$0.toDomain() as? ProjectAPI }
+        return apiResponse
+            .compactMap{$0.0.toDomain() as? ProjectAPI}
             .eraseToAnyPublisher()
     }
 }

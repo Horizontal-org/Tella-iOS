@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Robert Shrestha on 4/27/23.
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import SwiftUI
@@ -27,7 +27,6 @@ struct UwaziSuccessView: View {
                                         shouldHideBack: true,
                                         nextAction: {
                     self.popTo(UIHostingController<Optional<ModifiedContent<ServersListView, _EnvironmentKeyWritingModifier<Optional<ServersViewModel>>>>>.self)
-
                 })
             }.padding(.leading, 23)
                 .padding(.trailing, 23)

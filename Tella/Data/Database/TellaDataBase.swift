@@ -1,39 +1,17 @@
 //  Tella
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Copyright © 2022 HORIZONTAL. All rights reserved.
 //
 
 import Foundation
 import SQLite3
 import SQLCipher
 
-
-protocol UwaziServerLanguageProtocol {
-    func createLanguageTableForUwazi()
-    func addUwaziLocale(locale: UwaziLocale) throws -> Int
-    func getUwaziLocale(serverId: Int) throws -> UwaziLocale?
-    func getAllUwaziLocale() throws -> [UwaziLocale]
-    func deleteUwaziLocale(serverId : Int) throws
-    func deleteAllUwaziLocale() throws -> Int
-}
-protocol UwaziTemplateProtocol {
-    func createTemplateTableForUwazi()
-    func getUwaziTemplate(serverId: Int) throws -> CollectedTemplate?
-    func getUwaziTemplate(templateId: Int) throws -> CollectedTemplate?
-    func getAllUwaziTemplate() throws -> [CollectedTemplate]
-    func addUwaziTemplate(template: CollectedTemplate) throws -> CollectedTemplate
-    func deleteAllUwaziTemplate() throws -> Int
-    func deleteUwaziTemplate(templateId: String) throws
-    func deleteUwaziTemplate(id: Int) throws
-}
-
 class TellaDataBase {
-    
     private var dataBaseHelper : DataBaseHelper
     private var statementBuilder : SQLiteStatementBuilder
     
     init(key: String?) {
-
         // TODO: inject these thing to the class of that
         dataBaseHelper = DataBaseHelper()
         dataBaseHelper.openDatabases(key: key)
@@ -48,6 +26,7 @@ class TellaDataBase {
             switch oldVersion {
             case 0:
                 createTables()
+               // alterTable()
             case 1:
                 alterTable()
                 createTables()
@@ -56,9 +35,7 @@ class TellaDataBase {
             default :
                 break
             }
-            
             try statementBuilder.setNewDatabaseVersion(version: D.databaseVersion)
-            
         } catch let error {
             debugLog(error)
         }
@@ -72,12 +49,10 @@ class TellaDataBase {
         createTemplateTableForUwazi()
     }
     func alterTable() {
-        statementBuilder.alterTable(tableName: D.tServer, column: cddl(D.cServerType,D.integer, true, ServerConnectionType.tella.rawValue))
+        let column = cddl(D.cServerType,D.integer, true, ServerConnectionType.tella.rawValue)
+        statementBuilder.alterTable(tableName: D.tServer, column: column)
     }
-    
-    func update() {
-    }
-    
+
     func createServerTable() {
         // c_id | c_name | c_url | c_username | c_password | cAccessToken | cActivatedMetadata | cBackgroundUpload
         let columns = [
@@ -95,7 +70,6 @@ class TellaDataBase {
             cddl(D.cAutoDelete, D.integer),
             cddl(D.cServerType, D.integer)
         ]
-        
         statementBuilder.createTable(tableName: D.tServer, columns: columns)
     }
 
@@ -132,8 +106,7 @@ class TellaDataBase {
         
     }
     
-    func addServer(server : Server) throws -> Int {
-        dump(server)
+    func addServer(server : Server) -> Int? {
         let valuesToAdd = [KeyValue(key: D.cName, value: server.name),
                            KeyValue(key: D.cURL, value: server.url),
                            KeyValue(key: D.cUsername, value: server.username),
@@ -145,10 +118,9 @@ class TellaDataBase {
                            KeyValue(key: D.cSlug, value: server.slug),
                            KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1),
                            KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1),
-                           KeyValue(key: D.cServerType, value:server.serverType)
+                           KeyValue(key: D.cServerType, value:server.serverType?.rawValue)
         ]
-        
-        return try statementBuilder.insertInto(tableName: D.tServer,
+        return statementBuilder.insertInto(tableName: D.tServer,
                                                keyValue: valuesToAdd)
     }
 
@@ -186,8 +158,7 @@ class TellaDataBase {
         }
     }
     
-    func updateServer(server : Server) throws -> Int {
-        
+    func updateServer(server : Server) -> Int? {
         let valuesToUpdate = [KeyValue(key: D.cName, value: server.name),
                               KeyValue(key: D.cURL, value: server.url),
                               KeyValue(key: D.cUsername, value: server.username),
@@ -201,12 +172,12 @@ class TellaDataBase {
                               KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1 )]
         
         let serverCondition = [KeyValue(key: D.cServerId, value: server.id)]
-        return try statementBuilder.update(tableName: D.tServer,
+        return statementBuilder.update(tableName: D.tServer,
                                            keyValue: valuesToUpdate,
                                            primarykeyValue: serverCondition)
     }
     
-    func deleteServer(serverId : Int) throws {
+    func deleteServer(serverId : Int) {
         
         var reportIDs : [Int] = []
         let serverCondition = [KeyValue(key: D.cServerId, value: serverId)]
@@ -224,15 +195,15 @@ class TellaDataBase {
             
         }
         
-        try statementBuilder.delete(tableName: D.tServer,
+         statementBuilder.delete(tableName: D.tServer,
                                     primarykeyValue: serverCondition)
         
-        try statementBuilder.delete(tableName: D.tReport,
+         statementBuilder.delete(tableName: D.tReport,
                                     primarykeyValue: serverCondition)
         
         if !reportIDs.isEmpty {
             let reportCondition = [KeyValues(key: D.cReportInstanceId, value: reportIDs)]
-            try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
+             statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
                                         inCondition: reportCondition)
         }
         
@@ -386,7 +357,7 @@ class TellaDataBase {
         
     }
     
-    func addReport(report : Report) throws -> Int {
+    func addReport(report : Report) -> Int? {
         let currentUpload = ((report.currentUpload == false) || (report.currentUpload == nil)) ? 0 : 1
         
         let reportValuesToAdd = [KeyValue(key: D.cTitle, value: report.title),
@@ -397,10 +368,10 @@ class TellaDataBase {
                                  KeyValue(key: D.cServerId, value: report.server?.id),
                                  KeyValue(key: D.cCurrentUpload, value:currentUpload )]
         
-        let reportId = try statementBuilder.insertInto(tableName: D.tReport,
-                                                       keyValue:reportValuesToAdd)
+        guard let reportId = statementBuilder.insertInto(tableName: D.tReport,
+                                                         keyValue:reportValuesToAdd) else { return nil }
         
-        try report.reportFiles?.forEach({ reportFile in
+        report.reportFiles?.forEach({ reportFile in
             
             let reportFileValuesToAdd = [KeyValue(key: D.cReportInstanceId, value: reportId),
                                          KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
@@ -409,7 +380,7 @@ class TellaDataBase {
                                          KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
                                          KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
             
-            try statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
+            statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
                                             keyValue: reportFileValuesToAdd)
             
             
@@ -417,7 +388,7 @@ class TellaDataBase {
         return reportId
     }
     
-    func updateReport(report : Report) throws -> Report? {
+    func updateReport(report : Report) -> Report? {
         
         var keyValueArray : [KeyValue]  = []
         
@@ -449,17 +420,17 @@ class TellaDataBase {
         }
         
         let reportCondition = [KeyValue(key: D.cReportId, value: report.id)]
-        try statementBuilder.update(tableName: D.tReport,
+        statementBuilder.update(tableName: D.tReport,
                                     keyValue: keyValueArray,
                                     primarykeyValue: reportCondition)
         
         if let files = report.reportFiles {
             let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: report.id as Any)]
             
-            try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
+            statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
                                         primarykeyValue:reportFilesCondition )
             
-            try files.forEach({ reportFile in
+            files.forEach({ reportFile in
                 let reportFileValuesToAdd = [
                     
                     reportFile.id == nil ? nil : KeyValue(key: D.cId, value: reportFile.id),
@@ -470,7 +441,7 @@ class TellaDataBase {
                     KeyValue(key: D.cCreatedDate, value: reportFile.createdDate),
                     KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
                 
-                try statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
+                statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
                                                 keyValue: reportFileValuesToAdd)
             })
         }
@@ -479,19 +450,19 @@ class TellaDataBase {
         return getReport(reportId: reportId)
     }
     
-    func updateReportStatus(idReport : Int, status: ReportStatus, date: Date) throws -> Int {
+    func updateReportStatus(idReport : Int, status: ReportStatus, date: Date) -> Int? {
         
         let valuesToUpdate = [KeyValue(key: D.cStatus, value: status.rawValue),
                               KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
         let reportCondition = [KeyValue(key: D.cReportId, value: idReport)]
         
-        return try statementBuilder.update(tableName: D.tReport,
+        return statementBuilder.update(tableName: D.tReport,
                                            keyValue: valuesToUpdate,
                                            primarykeyValue: reportCondition)
     }
     
     @discardableResult
-    func resetCurrentUploadReport() throws -> Int {
+    func resetCurrentUploadReport() throws -> Int? {
         let reportCondition = [KeyValue(key: D.cCurrentUpload, value: 1)]
         let responseDict = try statementBuilder.selectQuery(tableName: D.tReport,
                                                             andCondition: reportCondition )
@@ -502,7 +473,7 @@ class TellaDataBase {
                                   KeyValue(key: D.cStatus, value: ReportStatus.submitted.rawValue)]
             let reportCondition = [KeyValue(key: D.cReportId, value: reportID)]
             
-            return try statementBuilder.update(tableName: D.tReport,
+            return statementBuilder.update(tableName: D.tReport,
                                                keyValue: valuesToUpdate,
                                                primarykeyValue:reportCondition)
         }
@@ -510,7 +481,7 @@ class TellaDataBase {
     }
     
     @discardableResult
-    func updateReportFile(reportFile:ReportFile) throws -> Int {
+    func updateReportFile(reportFile:ReportFile) -> Int? {
         
         var keyValueArray : [KeyValue]  = []
         
@@ -525,12 +496,12 @@ class TellaDataBase {
         keyValueArray.append(KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()))
         
         let primarykey = [KeyValue(key: D.cId, value: reportFile.id)]
-        return try statementBuilder.update(tableName: D.tReportInstanceVaultFile,
+        return statementBuilder.update(tableName: D.tReportInstanceVaultFile,
                                            keyValue: keyValueArray,
                                            primarykeyValue: primarykey)
     }
     
-    func addReportFile(fileId:String?, reportId:Int) throws -> Int {
+    func addReportFile(fileId:String?, reportId:Int) -> Int? {
         let reportFileValues = [KeyValue(key: D.cReportInstanceId, value: reportId),
                                 KeyValue(key: D.cVaultFileInstanceId, value: fileId),
                                 KeyValue(key: D.cStatus, value: FileStatus.notSubmitted.rawValue),
@@ -539,7 +510,7 @@ class TellaDataBase {
                                 KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
         
         
-        return  try statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
+        return statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
                                                 keyValue: reportFileValues)
     }
     
@@ -567,15 +538,12 @@ class TellaDataBase {
         statementBuilder.delete(tableName: D.tReport,
                                 primarykeyValue: reportCondition)
     }
-    
     func deleteReportFiles(reportIds:[Int]) {
         let reportCondition = [KeyValues(key: D.cReportInstanceId, value: reportIds)]
         statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
                                 inCondition: reportCondition)
     }
-    
     private func getServer(dictionnary : [String:Any] ) -> Server {
-        
         let id = dictionnary[D.cServerId] as? Int
         let name = dictionnary[D.cName] as? String
         let url = dictionnary[D.cURL] as? String
@@ -589,7 +557,6 @@ class TellaDataBase {
         let autoUpload = dictionnary[D.cAutoUpload] as? Int
         let autoDelete = dictionnary[D.cAutoDelete] as? Int
         let servertType = dictionnary[D.cServerType] as? Int
-        
         return Server(id:id,
                       name: name,
                       serverURL: url,
@@ -602,13 +569,11 @@ class TellaDataBase {
                       slug:slug,
                       autoUpload: autoUpload == 0 ? false : true,
                       autoDelete: autoDelete == 0 ? false : true,
-                      serverType: servertType
+                      serverType: ServerConnectionType(rawValue: servertType ?? 0)
         )
-        
     }
-    
+
     private func getReport(dictionnary : [String:Any] ) -> Report {
-        
         let reportID = dictionnary[D.cReportId] as? Int
         let title = dictionnary[D.cTitle] as? String
         let description = dictionnary[D.cDescription] as? String
@@ -617,7 +582,6 @@ class TellaDataBase {
         let status = dictionnary[D.cStatus] as? Int
         let apiReportId = dictionnary[D.cApiReportId] as? String
         let currentUpload = dictionnary[D.cCurrentUpload] as? Int
-        
         return Report(id: reportID,
                       title: title ?? "",
                       description: description ?? "",
@@ -637,8 +601,8 @@ extension TellaDataBase {
         return decodedValues
     }
 }
+// MARK: - Methods related to UwaziServerLanguageProtocol
 extension TellaDataBase: UwaziServerLanguageProtocol {
-    // MARK: CRUD operation for Language table for Uwazi
     func createLanguageTableForUwazi() {
         let columns = [
             cddl(D.cLocaleId, D.integer, primaryKey: true, autoIncrement: true),
@@ -647,30 +611,31 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
         ]
         statementBuilder.createTable(tableName: D.tUwaziServerLanguage, columns: columns)
     }
-
-
-    func addUwaziLocale(locale: UwaziLocale) throws -> Int {
-        return try statementBuilder.insertInto(tableName: D.tUwaziServerLanguage, keyValue: [
+    func addUwaziLocale(locale: UwaziLocale) -> Int? {
+        return statementBuilder.insertInto(tableName: D.tUwaziServerLanguage, keyValue: [
             KeyValue(key: D.cLocale, value: locale.locale),
             KeyValue(key: D.cServerId, value: locale.serverId),
         ])
     }
 
-    func updateLocale(localeId: Int, locale: String) throws -> Int {
-
+    func updateLocale(localeId: Int, locale: String) -> Int? {
         let valuesToUpdate = [KeyValue(key: D.cLocale, value: locale)]
-
         let serverCondition = [KeyValue(key: D.cLocaleId, value: localeId)]
-        return try statementBuilder.update(tableName: D.tUwaziServerLanguage,
+        return statementBuilder.update(tableName: D.tUwaziServerLanguage,
                                            keyValue: valuesToUpdate,
                                            primarykeyValue: serverCondition)
     }
 
-    func getUwaziLocale(serverId: Int) throws -> UwaziLocale? {
-        let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziServerLanguage,
-                                                           andCondition: [KeyValue(key: D.cServerId, value: serverId)])
-        guard let locale = serversDict.first else { return nil }
-        return try self.parseDicToObjectOf(type: UwaziLocale.self, dic: locale)
+    func getUwaziLocale(serverId: Int) -> UwaziLocale? {
+        do {
+            let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziServerLanguage,
+                                                               andCondition: [KeyValue(key: D.cServerId, value: serverId)])
+            guard let locale = serversDict.first else { return nil }
+            return try self.parseDicToObjectOf(type: UwaziLocale.self, dic: locale)
+        }catch let error {
+            debugLog(error.localizedDescription)
+            return nil
+        }
     }
     func getAllUwaziLocale() throws -> [UwaziLocale] {
         let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziServerLanguage,
@@ -681,7 +646,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
         return []
     }
 
-    func deleteUwaziLocale(serverId : Int) throws {
+    func deleteUwaziLocale(serverId : Int) {
         statementBuilder.delete(tableName: D.tUwaziServerLanguage,
                                 primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
     }
@@ -690,6 +655,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
         return try statementBuilder.deleteAll(tableNames: [D.tUwaziServerLanguage])
     }
 }
+// MARK: - Methods related to UwaziTemplateProtocol
 extension TellaDataBase: UwaziTemplateProtocol {
     func createTemplateTableForUwazi() {
         let columns = [
@@ -725,8 +691,8 @@ extension TellaDataBase: UwaziTemplateProtocol {
         }
         return []
     }
-    func addUwaziTemplate(template: CollectedTemplate) throws -> CollectedTemplate {
-        let id = try statementBuilder.insertInto(tableName: D.tUwaziTemplate, keyValue: [
+    func addUwaziTemplate(template: CollectedTemplate) -> CollectedTemplate {
+        let id = statementBuilder.insertInto(tableName: D.tUwaziTemplate, keyValue: [
             KeyValue(key: D.cTemplateId, value: template.templateId),
             KeyValue(key: D.cTemplateDownloaded, value: 1),
             KeyValue(key: D.cTemplateUpdated, value: 1),
@@ -736,20 +702,19 @@ extension TellaDataBase: UwaziTemplateProtocol {
             KeyValue(key: D.cTemplateEntity, value: template.entityRowString),
         ])
         template.id = id
-        template.isUpdated = 1
-        template.isDownloaded = 1
+        template.isUpdated = true
+        template.isDownloaded = true
         return template
     }
     func deleteAllUwaziTemplate() throws -> Int {
         return try statementBuilder.deleteAll(tableNames: [D.tUwaziTemplate])
     }
-    func deleteUwaziTemplate(templateId: String) throws {
+    func deleteUwaziTemplate(templateId: String) {
         statementBuilder.delete(tableName: D.tUwaziTemplate,
                                 primarykeyValue: [KeyValue(key: D.cTemplateId, value: templateId)])
     }
-    func deleteUwaziTemplate(id: Int) throws {
+    func deleteUwaziTemplate(id: Int) {
         statementBuilder.delete(tableName: D.tUwaziTemplate,
                                 primarykeyValue: [KeyValue(key: D.cId, value: id)])
     }
 }
-
