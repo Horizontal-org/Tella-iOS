@@ -62,7 +62,7 @@ struct MainView: View  {
                 .navigationBarTitle(LocalizableHome.appBar.localized, displayMode: .inline)
             }
             .accentColor(.white)
-            
+
             if appModel.selectedTab == .mic {
                 RecordView(appModel: appModel,
                            rootFile: appModel.vaultManager.root,

@@ -52,14 +52,3 @@ class UwaziEntryPrompt: Hashable, ObservableObject {
     }
 }
 
-class UwaziValue {
-    var stringValue: String
-    var selectedValue: [SelectValue]
-    init(stringValue: String, selectedValue: [SelectValue]) {
-        self.stringValue = stringValue
-        self.selectedValue = selectedValue
-    }
-    static func defaultValue() -> UwaziValue {
-        return UwaziValue(stringValue: "", selectedValue: [])
-    }
-}
