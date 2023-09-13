@@ -19,24 +19,19 @@ struct MainView: View  {
     var body: some View {
         ZStack {
             tabbar
-            
             DragView(modalHeight: sheetManager.modalHeight,
                      shouldHideOnTap: sheetManager.shouldHideOnTap,
                      backgroundColor: sheetManager.backgroundColor,
                      isShown: $sheetManager.isPresented) {
                 sheetManager.content
             }
-            
             securityScreenView
         }.navigationBarHidden(false)
     }
     
     private var tabbar: some View {
-        
         ZStack {
-            
             CustomNavigation() {
-                
                 TabView(selection: $appModel.selectedTab) {
                     HomeView(appModel: appModel)
                         .tabItem {
@@ -56,7 +51,6 @@ struct MainView: View  {
                             Text(LocalizableRecorder.tabBar.localized)
                         }.tag(MainAppModel.Tabs.mic)
                 }
-                
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         leadingView
