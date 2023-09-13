@@ -11,14 +11,9 @@ import SwiftUI
 struct UwaziTextWidget: View {
     @State var isValidText = false
     @State var mandatoryError = false
-    @EnvironmentObject var prompt: UwaziEntryPrompt
     @State var value: UwaziValue
-
     var body: some View {
         VStack(alignment: .leading) {
-                if mandatoryError {
-                    UwaziEntityMandatoryTextView()
-                }
                 TextfieldView(
                     fieldContent: $value.stringValue,
                     isValid: $isValidText,
@@ -26,7 +21,6 @@ struct UwaziTextWidget: View {
                     fieldType: .text
                 )
             }
-        .onChange(of: prompt.showMandatoryError) { mandatoryError = $0 }
     }
 }
 struct UwaziTextWidget_Previews: PreviewProvider {

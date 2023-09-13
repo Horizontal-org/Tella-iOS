@@ -9,12 +9,12 @@
 import SwiftUI
 
 struct RenderPropertyComponentView: View {
-    @EnvironmentObject var entityViewModel : DraftUwaziEntity
+    @EnvironmentObject var entityViewModel : UwaziEntityViewModel
     @StateObject var prompt: UwaziEntryPrompt
-    var geometry : GeometryProxy
-    
     var body: some View {
-        GenericEntityWidget(title: prompt.question) {
+        GenericEntityWidget(title: prompt.question,
+                            isRequired: prompt.required ?? false,
+                            showMandatory: $prompt.showMandatoryError) {
             renderPropertyComponent(
                 prompt: prompt
             )
@@ -25,7 +25,6 @@ struct RenderPropertyComponentView: View {
         switch UwaziEntityPropertyType(rawValue: prompt.type) {
         case .dataTypeText, .dataTypeNumeric:
             UwaziTextWidget(value: prompt.value)
-            .environmentObject(prompt)
         case .dataTypeDate, .dataTypeDateRange, .dataTypeMultiDate, .dataTypeMultiDateRange:
             Text(prompt.question)
         case .dataTypeSelect, .dataTypeMultiSelect:

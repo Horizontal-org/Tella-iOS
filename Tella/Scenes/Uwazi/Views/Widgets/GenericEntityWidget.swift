@@ -11,22 +11,38 @@ import SwiftUI
 struct GenericEntityWidget<Content: View>: View {
     var title = ""
     let content: Content
+    var isRequired: Bool
+    @State var mandatoryError = false
+    @Binding var showManatory: Bool
 
-    init(title: String = "", @ViewBuilder content: () ->  Content) {
+
+    init(title: String = "",
+         isRequired: Bool = false,
+         showMandatory: Binding<Bool>,
+         @ViewBuilder content: () ->  Content)
+          {
         self.title = title
         self.content = content()
+        self.isRequired = isRequired
+        self._showManatory = showMandatory
     }
     var body: some View {
         VStack {
-            UwaziEntityTitleView(title: title)
+            UwaziEntityTitleView(title: title,isRequired: isRequired)
+            if mandatoryError {
+                UwaziEntityMandatoryTextView()
+            }
             content
+        }
+        .onChange(of: showManatory) {
+            mandatoryError = $0
         }
     }
 }
 
 struct GenericEntityWidget_Previews: PreviewProvider {
     static var previews: some View {
-        GenericEntityWidget {
+        GenericEntityWidget(showMandatory: .constant(false)) {
             Text("")
         }
     }

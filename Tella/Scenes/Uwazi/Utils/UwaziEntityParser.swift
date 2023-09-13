@@ -1,35 +1,22 @@
 //
-//  DraftUwaziEntity.swift
+//  UwaziEntityParser.swift
 //  Tella
 //
-//  Created by Gustavo on 04/09/2023.
+//  Created by Robert Shrestha on 9/13/23.
 //  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import Foundation
-import SwiftUI
-
-class DraftUwaziEntity: ObservableObject {
-    var mainAppModel: MainAppModel
-    
-    @Published var template: CollectedTemplate
-    @Published var text: String = ""
-    @Published var entryPrompts: [UwaziEntryPrompt] = []
-
-    // Fields validation
-    @Published var isValidText : Bool = false
-
+class UwaziEntityParser: UwaziEntityParserProtocol {
+    var entryPrompts: [UwaziEntryPrompt] = []
+    var template: CollectedTemplate
     let uwaziTitleString = "title"
 
-    init(mainAppModel: MainAppModel, template: CollectedTemplate) {
-        self.mainAppModel = mainAppModel
+    init(template: CollectedTemplate) {
         self.template = template
         handleEntryPrompts()
     }
-
-
     func handleEntryPrompts() {
-        // Iterate through the template's properties and set initial values in propertyTextValues
         handlePdfsPrompt()
         handleSupportPrompt()
         handleTitlePrompt()
@@ -48,25 +35,24 @@ class DraftUwaziEntity: ObservableObject {
     }
     fileprivate func handleSupportPrompt() {
         let supportPrompt = UwaziEntryPrompt(id: "10242049",
-                                         formIndex: "10242049",
-                                         type: UwaziEntityPropertyType.dataTypeMultiPDFFiles.rawValue,
-                                         question: "Supporting files",
-                                         required: false,
-                                         helpText: "Select as many files as you wish")
+                                             formIndex: "10242049",
+                                             type: UwaziEntityPropertyType.dataTypeMultiPDFFiles.rawValue,
+                                             question: "Supporting files",
+                                             required: false,
+                                             helpText: "Select as many files as you wish")
         entryPrompts.append(supportPrompt)
     }
 
     fileprivate func handleTitlePrompt() {
         guard let titleProperty = template.entityRow?.commonProperties.first (where:{ $0.name == uwaziTitleString }) else { return }
         let titlePrompt = UwaziEntryPrompt(id: titleProperty.id ?? "",
-                         formIndex: titleProperty.id,
-                         type: titleProperty.type ?? "",
+                                           formIndex: titleProperty.id,
+                                           type: titleProperty.type ?? "",
                                            question: titleProperty.translatedLabel ?? "",
-                         required: true,
-                         helpText: titleProperty.translatedLabel)
+                                           required: true,
+                                           helpText: titleProperty.translatedLabel)
         self.entryPrompts.append(titlePrompt)
     }
-
     fileprivate func handleEntryPromptForProperties() {
         let entryPromptyProperties = template.entityRow?.properties.compactMap {
             UwaziEntryPrompt(id: $0.id ?? "",
@@ -80,11 +66,4 @@ class DraftUwaziEntity: ObservableObject {
         } ?? []
         entryPrompts.append(contentsOf: entryPromptyProperties)
     }
-    func handleMandatoryProperties() {
-        let requiredPrompts = entryPrompts.filter({$0.required ?? false})
-        requiredPrompts.forEach { prompt in
-            prompt.showMandatoryError = prompt.value.stringValue.isEmpty
-        }
-    }
-
 }
