@@ -10,7 +10,6 @@ import SwiftUI
 
 struct UwaziTextWidget: View {
     @State var isValidText = false
-    @State var mandatoryError = false
     @State var value: UwaziValue
     var body: some View {
         VStack(alignment: .leading) {
