@@ -664,7 +664,7 @@ extension TellaDataBase: UwaziTemplateProtocol {
             cddl(D.cTemplateEntity, D.text),
             cddl(D.cTemplateDownloaded, D.integer),
             cddl(D.cTemplateUpdated, D.integer),
-            cddl(D.cTemplateFavorited, D.integer),
+            cddl(D.cTemplateFavorite, D.integer),
             cddl(D.cServerName, D.text),
             cddl(D.cServerId, D.integer, tableName: D.tServer, referenceKey: D.cServerId)
 
@@ -696,7 +696,7 @@ extension TellaDataBase: UwaziTemplateProtocol {
             KeyValue(key: D.cTemplateId, value: template.templateId),
             KeyValue(key: D.cTemplateDownloaded, value: 1),
             KeyValue(key: D.cTemplateUpdated, value: 1),
-            KeyValue(key: D.cTemplateFavorited, value: 0),
+            KeyValue(key: D.cTemplateFavorite, value: 0),
             KeyValue(key: D.cServerId, value: template.serverId),
             KeyValue(key: D.cServerName, value: template.serverName),
             KeyValue(key: D.cTemplateEntity, value: template.entityRowString),
