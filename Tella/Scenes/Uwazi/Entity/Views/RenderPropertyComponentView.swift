@@ -44,6 +44,8 @@ struct RenderPropertyComponentView: View {
             Text(prompt.question)
         case .dataTypeGeneratedID:
             Text(prompt.question)
+        case .dataTypeDivider:
+            UwaziDividerWidget()
         default:
             Group {
                 Text("Unsupported property type")

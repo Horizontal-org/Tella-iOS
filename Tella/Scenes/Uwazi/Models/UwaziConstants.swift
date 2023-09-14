@@ -26,4 +26,5 @@ enum UwaziEntityPropertyType: String, CodingKey {
     case dataTypeMultiFiles = "multifiles"
     case dataTypeMultiPDFFiles = "multipdffiles"
     case dataTypeGeneratedID = "generatedid"
+    case dataTypeDivider = "divider"
 }
