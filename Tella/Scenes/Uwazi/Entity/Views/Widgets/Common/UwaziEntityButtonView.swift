@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 
+// TODO: Did not use the TellaButtonView because the button content need to be different rather than just a text. Maybe Modify TellaButtonView later.
 struct UwaziEntityButtonView<Content:View> : View {
     var buttonType : ButtonType = .clear
     let content: Content
