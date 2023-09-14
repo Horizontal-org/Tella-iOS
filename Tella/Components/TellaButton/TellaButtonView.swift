@@ -17,7 +17,6 @@ struct TellaButtonView<Destination:View> : View {
     
     var action : (() -> ())?
     
-    
     var buttonStyle : TellaButtonStyleProtocol {
         switch  buttonType {
         case .yellow:
@@ -68,7 +67,7 @@ struct TellaButtonStyle : ButtonStyle {
     }
     
     func getBackgroundColor() -> Color {
-        isValid ? buttonStyle.backgroundColor :  buttonStyle.backgroundColor.opacity(0.16)
+        isValid ? buttonStyle.backgroundColor :  buttonStyle.backgroundColor.opacity(0.8)
     }
 }
 

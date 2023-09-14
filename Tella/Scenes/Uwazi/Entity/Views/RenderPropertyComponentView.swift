@@ -27,7 +27,9 @@ struct RenderPropertyComponentView: View {
         case .dataTypeDate, .dataTypeDateRange, .dataTypeMultiDate, .dataTypeMultiDateRange:
             Text(prompt.question)
         case .dataTypeSelect, .dataTypeMultiSelect:
-            Text(prompt.question)
+            UwaziDateWidget(value: &prompt.value, onSuccess: {
+                prompt.value.stringValue = $0 
+            })
         case .dataTypeLink:
             Text(prompt.question)
         case .dataTypeImage:

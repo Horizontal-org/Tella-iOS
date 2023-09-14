@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct GenericEntityWidget<Content: View>: View {
+struct GenericEntityWidget<Content:View>: View {
     var title = ""
     let content: Content
     var isRequired: Bool
@@ -26,8 +26,15 @@ struct GenericEntityWidget<Content: View>: View {
     }
 
     var body: some View {
-        VStack(spacing: 10) {
-            UwaziEntityTitleView(title: title, isRequired: isRequired)
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                UwaziEntityTitleView(title: title, isRequired: isRequired)
+                Spacer()
+                Button {
+                } label: {
+                    Image(systemName: "x.circle.fill")
+                }
+            }
             if showManatory {
                 UwaziEntityMandatoryTextView()
             }
@@ -38,8 +45,10 @@ struct GenericEntityWidget<Content: View>: View {
 
 struct GenericEntityWidget_Previews: PreviewProvider {
     static var previews: some View {
-        GenericEntityWidget(showMandatory: .constant(false)) {
-            Text("")
+        ContainerView {
+            GenericEntityWidget(showMandatory: .constant(false)) {
+                Text("Hello")
+            }
         }
     }
 }

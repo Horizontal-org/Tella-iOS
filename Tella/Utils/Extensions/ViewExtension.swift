@@ -11,6 +11,14 @@ import SwiftUI
 
 extension View {
     
+    @ViewBuilder func changeTextColor(_ color: Color) -> some View {
+        if UITraitCollection.current.userInterfaceStyle == .light {
+            self.colorInvert().colorMultiply(color)
+        } else {
+            self.colorMultiply(color)
+        }
+    }
+    
     func navigateTo<Destination: View>( destination: Destination, title: String? = nil, largeTitle:Bool = false) {
         let hostingView = UIHostingController(rootView: destination)
         if largeTitle {

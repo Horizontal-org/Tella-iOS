@@ -7,7 +7,7 @@
 //
 
 import Foundation
-class UwaziValue {
+class UwaziValue: ObservableObject {
     var stringValue: String
     var selectedValue: [SelectValue]
     init(stringValue: String, selectedValue: [SelectValue]) {
