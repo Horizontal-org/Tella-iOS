@@ -2751,7 +2751,6 @@
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
 				E1CF5A232AB2FEEB00365036 /* UwaziDividerWidget.swift in Sources */,
 				E14E0CF629FAD68E004FC4CD /* UwaziSuccessView.swift in Sources */,
-				E1CF5A292AB34C9F00365036 /* UwaziLanguageDatabase.swift in Sources */,
 				12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				E1975EE92AB065100060228F /* UwaziEntitySubtitleView.swift in Sources */,
