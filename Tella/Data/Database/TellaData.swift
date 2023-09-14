@@ -75,7 +75,7 @@ class TellaData : ObservableObject {
             return
         }
         
-        servers.value = database.getServer()
+        servers.value = database.getServers()
     }
     
     func getAutoUploadServer() -> Server? {
