@@ -19,6 +19,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
     func handleEntryPrompts() {
         handlePdfsPrompt()
         handleSupportPrompt()
+        handleDividerPrompt()
         handleTitlePrompt()
         handleEntryPromptForProperties()
     }
@@ -41,6 +42,15 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                              required: false,
                                              helpText: "Select as many files as you wish")
         entryPrompts.append(supportPrompt)
+    }
+    fileprivate func handleDividerPrompt() {
+        let dividerPrompt = UwaziEntryPrompt(id: "",
+                                             formIndex: "",
+                                             type: UwaziEntityPropertyType.dataTypeDivider.rawValue,
+                                             question: "",
+                                             required: false,
+                                             helpText: "")
+        entryPrompts.append(dividerPrompt)
     }
 
     fileprivate func handleTitlePrompt() {
