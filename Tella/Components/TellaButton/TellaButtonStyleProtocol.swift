@@ -19,7 +19,7 @@ protocol TellaButtonStyleProtocol {
 }
 
 struct ClearButtonStyle : TellaButtonStyleProtocol {
-    var backgroundColor = Color.white.opacity(0.24)
+    var backgroundColor = Color.white.opacity(0.16)
     var pressedBackgroundColor = Color.white.opacity(0.32)
     var overlayColor = Color.white.opacity(0.64)
     

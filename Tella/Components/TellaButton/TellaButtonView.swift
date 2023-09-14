@@ -67,7 +67,7 @@ struct TellaButtonStyle : ButtonStyle {
     }
     
     func getBackgroundColor() -> Color {
-        isValid ? buttonStyle.backgroundColor :  buttonStyle.backgroundColor.opacity(0.8)
+        isValid ? buttonStyle.backgroundColor :  buttonStyle.backgroundColor.opacity(0.16)
     }
 }
 
