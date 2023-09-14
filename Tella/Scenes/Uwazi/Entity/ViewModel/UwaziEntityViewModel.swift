@@ -19,7 +19,6 @@ class UwaziEntityViewModel: ObservableObject {
         self.mainAppModel = mainAppModel
         self.template = template
         entryPrompts = parser.getEntryPrompts()
-        print(entryPrompts)
     }
     func handleMandatoryProperties() {
         let requiredPrompts = entryPrompts.filter({$0.required ?? false})
