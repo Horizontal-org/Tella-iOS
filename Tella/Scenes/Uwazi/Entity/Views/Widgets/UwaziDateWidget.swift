@@ -11,27 +11,36 @@ import SwiftUI
 struct UwaziDateWidget: View {
     @State private var isDatePickerVisible = false
     @State private var selectedDate = Date()
-    @State private var dateText = "Select date"
-    var value: UwaziValue
-    var onSuccess: ((String) -> Void)?
+    @State private var dateText = ""
+    var defaultDateString = "Select date"
+    @ObservedObject var prompt: UwaziEntryPrompt
     var effect: CGAffineTransform = CGAffineTransform(scaleX: 3, y: 2.1)
-    init( value: inout UwaziValue, onSuccess: @escaping (String) -> Void) {
-        self.value = value
-        self.onSuccess = onSuccess
+    init(prompt: UwaziEntryPrompt) {
+        self.prompt = prompt
+        dateText = "Select date"
     }
     var body: some View {
         HStack(alignment: .lastTextBaseline) {
             ZStack(alignment: .topLeading) {
-                UwaziEntityButtonView(action: {
-                    isDatePickerVisible.toggle()
-                }, content: {
-                    mainView()
-                })
+                entityButton()
                 UwaziDatePickerView(selectedDate: $selectedDate)
                     .transformEffect(effect)
             }
+            .onReceive(prompt.$isClearButtonHidden, perform: {
+                if $0 {
+                    dateText = defaultDateString
+                    prompt.value.stringValue = ""
+                }
+            })
             Spacer()
         }
+    }
+    fileprivate func entityButton() -> UwaziEntityButtonView<some View> {
+        return UwaziEntityButtonView(action: {
+            isDatePickerVisible.toggle()
+        }, content: {
+            mainView()
+        })
     }
     fileprivate func mainView() -> some View {
         return HStack {
@@ -39,65 +48,20 @@ struct UwaziDateWidget: View {
             Text(dateText)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .kerning(0.5)
-                .foregroundColor(.white.opacity(0.8))
                 .onChange(of: selectedDate) { newValue in
-                    dateText = formattedDate(newValue)
-                    value.stringValue = dateText
-                    if onSuccess != nil {
-                        onSuccess?(dateText)
-                    }
+                    dateText = newValue.getFormattedDateString(format: "d/MM/yyyy")
+                    prompt.value.stringValue = dateText
+                    prompt.isClearButtonHidden = false
                 }
             Spacer()
         }.padding(15)
     }
-    func formattedDate(_ date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "d/M/yyyy"
-        return dateFormatter.string(from: date)
-    }
 }
 
-//struct UwaziDateWidget: View {
-//    @State private var isDatePickerVisible = false
-//    @State private var selectedDate = Date()
-//    @State private var dateText = "Select date"
-//    var body: some View {
-//        UwaziEntityButtonView(action: {
-//            isDatePickerVisible.toggle()
-//        }, content: {
-//            VStack {
-//                HStack(alignment: .center) {
-//                    Image("date")
-//                    Text(dateText)
-//                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
-//                        .kerning(0.5)
-//                        .foregroundColor(.white.opacity(0.8))
-//                    Spacer()
-//                }.padding(15)
-//                if isDatePickerVisible {
-//                    UwaziDatePickerView(selectedDate: $selectedDate)
-//                        .datePickerStyle(.wheel)
-//                        .offset(x: 40,y: 6)
-//                        .transformEffect(.init(scaleX: 0.8, y: 0.8))
-//                }
-//            }
-//
-//        })
-//        .onChange(of: selectedDate) { newValue in
-//           dateText = formattedDate(newValue)
-//        }
-//    }
-//    func formattedDate(_ date: Date) -> String {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "d/M/yyyy"
-//        return dateFormatter.string(from: date)
-//    }
-//}
-
-//struct UwaziDateWidget_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContainerView {
-//            UwaziDateWidget(value: .defaultValue())
-//        }
-//    }
-//}
+struct UwaziDateWidget_Previews: PreviewProvider {
+    static var previews: some View {
+        ContainerView {
+            UwaziDateWidget(prompt: .defaultValue())
+        }
+    }
+}

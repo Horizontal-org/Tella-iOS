@@ -20,6 +20,7 @@ class UwaziEntryPrompt: Hashable, ObservableObject {
     let helpText: String?
     var selectValues: [SelectValue]?
     @Published var showMandatoryError: Bool
+    @Published var isClearButtonHidden: Bool
     var value: UwaziValue
 
 
@@ -32,6 +33,7 @@ class UwaziEntryPrompt: Hashable, ObservableObject {
          helpText: String?,
          selectValues: [SelectValue]? = nil,
          showMandatoryError: Bool = false,
+         isClearButtonHidden: Bool = true,
          value: UwaziValue = UwaziValue.defaultValue()) {
         self.id = id
         self.formIndex = formIndex
@@ -42,6 +44,7 @@ class UwaziEntryPrompt: Hashable, ObservableObject {
         self.helpText = helpText
         self.selectValues = selectValues
         self.showMandatoryError = showMandatoryError
+        self.isClearButtonHidden = isClearButtonHidden
         self.value = value
     }
     static func == (lhs: UwaziEntryPrompt, rhs: UwaziEntryPrompt) -> Bool {
@@ -49,6 +52,9 @@ class UwaziEntryPrompt: Hashable, ObservableObject {
     }
     public func hash(into hasher: inout Hasher) {
         return hasher.combine(id)
+    }
+    static public func defaultValue() -> UwaziEntryPrompt {
+        UwaziEntryPrompt(id: "", formIndex: "", type: "", question: "", required: false, helpText: "")
     }
 }
 

@@ -2143,7 +2143,6 @@
 				E1F4A8E62AAF4492001C8E61 /* UwaziTextWidget.swift */,
 				E1F6D7B92AB18862000A9B64 /* GenericEntityWidget.swift */,
 				E1F6D7BF2AB1A303000A9B64 /* UwaziDateWidget.swift */,
-				E1F6D7C32AB1C47D000A9B64 /* UwaziDatePickerView.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -2151,6 +2150,7 @@
 		E1F4A8E82AAF7AD1001C8E61 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				E1F6D7C32AB1C47D000A9B64 /* UwaziDatePickerView.swift */,
 				E1F6D7BC2AB18875000A9B64 /* UwaziEntityMandatoryTextView.swift */,
 				E1F6D7BB2AB18875000A9B64 /* UwaziEntitySubtitleView.swift */,
 				E1F4A8E92AAF7AEF001C8E61 /* UwaziEntityTitleView.swift */,

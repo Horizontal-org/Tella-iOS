@@ -11,25 +11,21 @@ import SwiftUI
 struct RenderPropertyComponentView: View {
     @StateObject var prompt: UwaziEntryPrompt
     var body: some View {
-        GenericEntityWidget(title: prompt.question,
-                            isRequired: prompt.required ?? false,
-                            showMandatory: $prompt.showMandatoryError) {
-            renderPropertyComponent(
-                prompt: prompt
-            )
-        }
+        GenericEntityWidget(isRequired: prompt.required ?? false,
+                            showClearButton: ableToClearData(),
+                            prompt: prompt) {
+            renderPropertyComponent()
+        }.padding(.vertical, 20)
     }
     @ViewBuilder
-    private func renderPropertyComponent(prompt: UwaziEntryPrompt) -> some View {
+    private func renderPropertyComponent() -> some View {
         switch UwaziEntityPropertyType(rawValue: prompt.type) {
         case .dataTypeText, .dataTypeNumeric:
             UwaziTextWidget(value: prompt.value)
         case .dataTypeDate, .dataTypeDateRange, .dataTypeMultiDate, .dataTypeMultiDateRange:
-            Text(prompt.question)
+            UwaziDateWidget(prompt: prompt)
         case .dataTypeSelect, .dataTypeMultiSelect:
-            UwaziDateWidget(value: &prompt.value, onSuccess: {
-                prompt.value.stringValue = $0 
-            })
+            Text(prompt.question)
         case .dataTypeLink:
             Text(prompt.question)
         case .dataTypeImage:
@@ -50,6 +46,16 @@ struct RenderPropertyComponentView: View {
             Group {
                 Text("Unsupported property type")
             }
+        }
+    }
+}
+extension RenderPropertyComponentView {
+    func ableToClearData() -> Bool {
+        switch UwaziEntityPropertyType(rawValue: prompt.type) {
+        case .dataTypeDate:
+            return true
+        default:
+            return false
         }
     }
 }

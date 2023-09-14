@@ -9,36 +9,42 @@
 import SwiftUI
 
 struct GenericEntityWidget<Content:View>: View {
-    var title = ""
-    let content: Content
-    var isRequired: Bool
-    @Binding var showManatory: Bool
+    @ObservedObject var prompt: UwaziEntryPrompt
+    private let content: Content
+    private var isRequired: Bool
+    private var showClearButton: Bool
     
-    init(title: String = "",
-         isRequired: Bool = false,
-         showMandatory: Binding<Bool>,
+    init(isRequired: Bool = false,
+         showClearButton: Bool = false,
+         prompt: UwaziEntryPrompt,
          @ViewBuilder content: () ->  Content)
-          {
-        self.title = title
+    {
         self.content = content()
         self.isRequired = isRequired
-        self._showManatory = showMandatory
+        self.showClearButton = showClearButton
+        self.prompt = prompt
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                UwaziEntityTitleView(title: title, isRequired: isRequired)
+                UwaziEntityTitleView(title: prompt.question, isRequired: isRequired)
                 Spacer()
-                Button {
-                } label: {
-                    Image(systemName: "x.circle.fill")
+                if !prompt.isClearButtonHidden {
+                    clearButton()
                 }
             }
-            if showManatory {
+            if prompt.showMandatoryError {
                 UwaziEntityMandatoryTextView()
             }
             content
+        }
+    }
+    fileprivate func clearButton() -> Button<Image> {
+        return Button {
+            prompt.isClearButtonHidden = true
+        } label: {
+            Image(systemName: "x.circle.fill")
         }
     }
 }
@@ -46,7 +52,7 @@ struct GenericEntityWidget<Content:View>: View {
 struct GenericEntityWidget_Previews: PreviewProvider {
     static var previews: some View {
         ContainerView {
-            GenericEntityWidget(showMandatory: .constant(false)) {
+            GenericEntityWidget(prompt: .defaultValue()) {
                 Text("Hello")
             }
         }
