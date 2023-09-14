@@ -50,7 +50,7 @@ struct CreateEntityView: View {
                     ForEach(entityViewModel.entryPrompts, id: \.id) { prompt in
                         RenderPropertyComponentView(prompt: prompt)
                     }
-                }.padding(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16))
+                }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
             }
         }
     }
