@@ -22,7 +22,7 @@ extension WebRepository {
             let request = try endpoint.urlRequest()
             request.curlRepresentation()
             let configuration = URLSessionConfiguration.default
-            configuration.waitsForConnectivity = true
+            configuration.waitsForConnectivity = false
             
             return URLSession(configuration: configuration)
                 .dataTaskPublisher(for: request)
