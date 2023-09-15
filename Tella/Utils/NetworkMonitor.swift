@@ -11,7 +11,7 @@ class NetworkMonitor: ObservableObject {
     var connectionDidChange = PassthroughSubject<Bool,Never>()
     var isConnected : Bool = true
     
-    private let monitor = NWPathMonitor()
+    let monitor = NWPathMonitor()
     private let queue = DispatchQueue(label: "Monitor")
     
     static let shared = NetworkMonitor()
