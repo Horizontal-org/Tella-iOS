@@ -164,7 +164,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Camera_DeniedCameraPermission_Action_Cancel" = "CANCEL";
 "Settings_Sett_AppBar" = "ڕێکخستنەکان";
 "Settings_Sett_General" = "گشتی";
-"Settings_Sett_Servers" = "سێرڤەرەکان";
+"Settings_Sett_Connections" = "سێرڤەرەکان";
 "Settings_Sett_Security" = "ئاسایش";
 "Settings_Sett_About" = "دەربارەی & یارمەتی";
 "Settings_SettGen_AppBar" = "گشتی";

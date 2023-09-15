@@ -11,7 +11,7 @@ enum LocalizableSettings: String, LocalizableDelegate {
     
     // Main
     case settGeneral = "Settings_Sett_General"
-    case settServers = "Settings_Sett_Servers"
+    case settConnections = "Settings_Sett_Connections"
     case settSecurity = "Settings_Sett_Security"
     case settAbout = "Settings_Sett_About"
     
