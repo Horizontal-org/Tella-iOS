@@ -162,7 +162,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Camera_DeniedCameraPermission_Action_Cancel" = "CANCEL";
 "Settings_Sett_AppBar" = "அமைப்புகள்";
 "Settings_Sett_General" = "பொது";
-"Settings_Sett_Servers" = "Servers";
+"Settings_Sett_Connections" = "Connections";
 "Settings_Sett_Security" = "Security";
 "Settings_Sett_About" = "டெல்லா பற்றிய தகவல்கள் மற்றும் டெல்லா பயன்பாட்டு உதவி";
 "Settings_SettGen_AppBar" = "பொது";

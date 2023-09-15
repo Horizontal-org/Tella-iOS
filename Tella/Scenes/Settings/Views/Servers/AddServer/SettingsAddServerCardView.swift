@@ -15,7 +15,7 @@ struct SettingsAddServerCardView: View {
         ZStack {
             HStack{
                 VStack(alignment: .leading) {
-                    Text("Servers")
+                    Text(LocalizableSettings.settConnections.localized)
                         .font(.custom(Styles.Fonts.regularFontName, size: 14))
                         .foregroundColor(Color.white).padding(.bottom, -5)
                     

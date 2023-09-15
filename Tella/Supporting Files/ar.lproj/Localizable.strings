@@ -164,7 +164,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Camera_DeniedCameraPermission_Action_Cancel" = "CANCEL";
 "Settings_Sett_AppBar" = "Settings";
 "Settings_Sett_General" = "General";
-"Settings_Sett_Servers" = "الخوادم";
+"Settings_Sett_Connections" = "Connections";
 "Settings_Sett_Security" = "الأمان";
 "Settings_Sett_About" = "عن التطبيق والمساعدة";
 "Settings_SettGen_AppBar" = "General";

@@ -29,7 +29,7 @@ struct ServerSelectionView: View {
                 bottomView()
             }
             .toolbar {
-                LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
+                LeadingTitleToolbar(title: LocalizableSettings.settConnections.localized)
             }
         }
     }
