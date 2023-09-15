@@ -74,6 +74,24 @@ extension String {
         }
         return true
     }
+    func uwaziUsernameValidator() -> Bool {
+        guard !self.isEmpty else {
+            return false
+        }
+        guard validateRegex(value: self, pattern: Regex.textRegex) else {
+            return false
+        }
+        return true
+    }
+    func uwaziPasswordValidator() -> Bool {
+        guard !self.isEmpty else {
+            return false
+        }
+        guard validateRegex(value: self, pattern: Regex.textRegex) else {
+            return false
+        }
+        return true
+    }
 
 }
 

@@ -5,7 +5,15 @@
 
 import SwiftUI
 import Combine
-
+enum FieldType {
+    case url
+    case username
+    case text
+    case password
+    case code
+    case uwaziUsername
+    case uwaziPassword
+}
 struct TextfieldView : View {
     
     @Binding var fieldContent : String
@@ -149,6 +157,10 @@ struct TextfieldView : View {
             
         case .code:
             self.isValid = value.codeValidator()
+        case .uwaziUsername:
+            self.isValid = value.uwaziUsernameValidator()
+        case .uwaziPassword:
+            self.isValid = value.uwaziPasswordValidator()
         }
         self.shouldShowError = false
     }
@@ -178,11 +190,3 @@ struct TextfieldView_Previews: PreviewProvider {
     }
 }
 
-
-enum FieldType {
-    case url
-    case username
-    case text
-    case password
-    case code
-}
