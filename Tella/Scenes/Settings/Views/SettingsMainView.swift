@@ -60,7 +60,7 @@ struct SettingsMainView: View {
     
     var serversView: some View {
         SettingsItemView(imageName: "settings.servers",
-                         title: LocalizableSettings.settServersAppBar.localized,
+                         title: LocalizableSettings.settConnections.localized,
                          destination:ServersListView()
             .environmentObject(serversViewModel))
     }

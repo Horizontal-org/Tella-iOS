@@ -11,7 +11,7 @@ enum LocalizableSettings: String, LocalizableDelegate {
     
     // Main
     case settGeneral = "Settings_Sett_General"
-    case settServers = "Settings_Sett_Servers"
+    case settConnections = "Settings_Sett_Connections"
     case settSecurity = "Settings_Sett_Security"
     case settAbout = "Settings_Sett_About"
     
@@ -50,8 +50,8 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settQuickDeleteExpl = "Settings_Sett_QuickDelete_Expl"
     case settQuickDeleteFilesCheckbox = "Settings_Sett_QuickDelete_Files_CheckboxItem"
     case settQuickDeleteConnectionsCheckbox = "Settings_Sett_QuickDelete_Connections_CheckboxItem"
-    case settSecPreserveMetadata = "Setting_SettSec_PreserveMetadata"
-    case settSecPreserveMetadataExpl = "Setting_SettSec_PreserveMetadata_Expl"
+    case settSecPreserveMetadata = "Settings_SettSec_PreserveMetadata"
+    case settSecPreserveMetadataExpl = "Settings_SettSec_PreserveMetadata_Expl"
 
 
     

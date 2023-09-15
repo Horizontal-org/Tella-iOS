@@ -164,7 +164,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Camera_DeniedCameraPermission_Action_Cancel" = "CANCEL";
 "Settings_Sett_AppBar" = "Налады";
 "Settings_Sett_General" = "Агульныя";
-"Settings_Sett_Servers" = "Servers";
+"Settings_Sett_Connections" = "Servers";
 "Settings_Sett_Security" = "Security";
 "Settings_Sett_About" = "Аб і Дапамога";
 "Settings_SettGen_AppBar" = "Агульныя";
@@ -186,6 +186,8 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettSec_ShowUnlockAttempts_Expl" = "On the unlock screen, show the remaining number of failed unlocking attempts before everything inside Tella is deleted";
 "Settings_SettSec_ScreenSecurity" = "Screen security";
 "Settings_SettSec_ScreenSecurity_Expl" = "Block screen recordings inside Tella and screen preview in the list of recent apps";
+"Settings_SettSec_PreserveMetadata" = "Preserve metadata  when importing";
+"Settings_SettSec_PreserveMetadata_Expl" = "Retain EXIF metadata when importing photos and videos into Tella. This includes data about when the image was created, camera settings, location and your device.";
 "Settings_Sett_QuickDelete" = "Quick Delete";
 "Settings_Sett_QuickDelete_Expl" = "Shows a sliding button on the homescreen to quicky exit Tella in emergency situations.";
 "Settings_Sett_QuickDelete_Files_CheckboxItem" = "Delete files and folders";
