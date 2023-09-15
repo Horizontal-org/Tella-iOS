@@ -9,6 +9,7 @@ enum APIError: Swift.Error {
     case invalidURL
     case httpCode(HTTPCode)
     case unexpectedResponse
+    // TODO: Better name for it
     case error(String)
 }
 
@@ -31,8 +32,6 @@ extension APIError: LocalizedError {
             return "Invalid username or password"
         case .forbidden:
             return "Account locked due to too many unsuccessful attempts."
-        case .notFound:
-            return "Oops! Page Not Found."
         default:
             return "Custom Error"
         }
