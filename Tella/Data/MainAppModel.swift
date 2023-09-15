@@ -76,6 +76,8 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     
     init(networkMonitor:NetworkMonitor) {
         self.networkMonitor = networkMonitor
+        // To initialize the NetworkMonitor singleton class
+        _ = NetworkMonitor.shared.isConnected
         loadData()
     }
     
