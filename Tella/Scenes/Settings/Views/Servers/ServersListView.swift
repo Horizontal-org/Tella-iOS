@@ -33,7 +33,7 @@ struct ServersListView: View {
         })
         
         .toolbar {
-            LeadingTitleToolbar(title: "Servers")
+            LeadingTitleToolbar(title: LocalizableSettings.settConnections.localized)
         }
     }
     

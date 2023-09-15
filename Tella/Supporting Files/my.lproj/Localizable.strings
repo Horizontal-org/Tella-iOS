@@ -164,7 +164,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Camera_DeniedCameraPermission_Action_Cancel" = "CANCEL";
 "Settings_Sett_AppBar" = "ချိန်ညှိ့သည့်နေရာ";
 "Settings_Sett_General" = "အထွေထွေ";
-"Settings_Sett_Servers" = "ဆာဗာများ";
+"Settings_Sett_Connections" = "ဆာဗာများ";
 "Settings_Sett_Security" = "လုံခြုံရေး";
 "Settings_Sett_About" = "အကြောင်းနှင့် အကူအညီ";
 "Settings_SettGen_AppBar" = "အထွေထွေ";
