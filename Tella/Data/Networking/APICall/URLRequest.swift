@@ -62,7 +62,7 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
             return ($0.0, ($0.1 as? HTTPURLResponse)?.allHeaderFields)
         }
         .mapError{  error in
-            return error as! APIError
+            return APIError.unexpectedResponse
         }
         .eraseToAnyPublisher()
     }
