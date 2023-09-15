@@ -195,7 +195,8 @@ class UwaziServerViewModel: ObservableObject {
             // TODO: handle this error
         case .failure(let error):
             debugLog(error)
-            self.isPublicInstance = false
+            urlErrorMessage = "Error: The server URL is incorrect"
+            shouldShowURLError = true
         }
     }
 
@@ -242,6 +243,9 @@ class UwaziServerViewModel: ObservableObject {
                     self.shouldShowLoginError = true
                     self.loginErrorMessage = error.localizedDescription
                 }
+            case .error:
+                self.shouldShowLoginError = true
+                self.loginErrorMessage = error.errorDescription ?? ""
             }
         case .finished:
             self.shouldShowLoginError = false
@@ -299,6 +303,8 @@ class UwaziServerViewModel: ObservableObject {
                 default:
                     self.codeErrorMessage = error.errorDescription ?? ""
                 }
+            case .error:
+                self.codeErrorMessage = error.errorDescription ?? ""
             }
             self.shouldShowAuthenticationError = true
         case .finished:

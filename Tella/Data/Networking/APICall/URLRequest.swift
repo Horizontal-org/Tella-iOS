@@ -18,7 +18,7 @@ extension WebRepository {
             let request = try endpoint.urlRequest()
             request.curlRepresentation()
             let configuration = URLSessionConfiguration.default
-            configuration.waitsForConnectivity = true
+            configuration.waitsForConnectivity = false
             
             return URLSession(configuration: configuration)
                 .dataTaskPublisher(for: request)
@@ -57,8 +57,8 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
             }
             return ($0.0, ($0.1 as? HTTPURLResponse)?.allHeaderFields)
         }
-        .mapError{  error in
-            return error as! APIError
+        .mapError{ error in
+            APIError.error(error.localizedDescription)
         }
         .eraseToAnyPublisher()
     }

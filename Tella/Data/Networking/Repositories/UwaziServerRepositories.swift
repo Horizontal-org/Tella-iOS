@@ -59,6 +59,7 @@ struct UwaziServerRepository: WebRepository {
         let apiResponse :  APIResponse<UwaziCheckURLDTO> = getAPIResponse(endpoint: API.checkURL(serverURL: serverURL))
         return apiResponse
             .compactMap{$0.0.toDomain() as? UwaziCheckURL}
+            .mapError {$0}
             .eraseToAnyPublisher()
     }
 
@@ -66,6 +67,7 @@ struct UwaziServerRepository: WebRepository {
         let apiResponse :  APIResponse<UwaziLanguageDTO> = getAPIResponse(endpoint: API.getLanguage(serverURL: serverURL))
         return apiResponse
             .compactMap{$0.0.toDomain() as? UwaziLanguage}
+            .mapError {$0}
             .eraseToAnyPublisher()
     }
 
@@ -75,6 +77,7 @@ struct UwaziServerRepository: WebRepository {
 
         return apiResponse
             .compactMap{$0.0.toDomain() as? ProjectAPI }
+            .mapError {$0}
             .eraseToAnyPublisher()
     }
 }

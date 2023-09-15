@@ -9,6 +9,7 @@ enum APIError: Swift.Error {
     case invalidURL
     case httpCode(HTTPCode)
     case unexpectedResponse
+    case error(String)
 }
 
 extension APIError: LocalizedError {
@@ -20,14 +21,18 @@ extension APIError: LocalizedError {
             return customErrorMessage(errorCode: code)
         case .unexpectedResponse:
             return "Unexpected response from the server"
+        case .error(let message):
+            return message
         }
     }
-    func customErrorMessage(errorCode : Int) -> String {
+    private func customErrorMessage(errorCode : Int) -> String {
         switch HTTPErrorCodes(rawValue: errorCode) {
         case .unauthorized:
             return "Invalid username or password"
         case .forbidden:
             return "Account locked due to too many unsuccessful attempts."
+        case .notFound:
+            return "Oops! Page Not Found."
         default:
             return "Custom Error"
         }
