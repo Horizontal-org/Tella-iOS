@@ -388,7 +388,6 @@
 		E1F6D7BD2AB18875000A9B64 /* UwaziEntitySubtitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6D7BB2AB18875000A9B64 /* UwaziEntitySubtitleView.swift */; };
 		E1F6D7BE2AB18875000A9B64 /* UwaziEntityMandatoryTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6D7BC2AB18875000A9B64 /* UwaziEntityMandatoryTextView.swift */; };
 		E1F6D7C02AB1A303000A9B64 /* UwaziDateWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6D7BF2AB1A303000A9B64 /* UwaziDateWidget.swift */; };
-		E1F6D7C22AB1A6D6000A9B64 /* UwaziEntityButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6D7C12AB1A6D6000A9B64 /* UwaziEntityButtonView.swift */; };
 		E1F6D7C42AB1C47D000A9B64 /* UwaziDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6D7C32AB1C47D000A9B64 /* UwaziDatePickerView.swift */; };
 		F66E65B323E32080000F93E5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F66E65B223E32080000F93E5 /* Assets.xcassets */; };
 		F66E65B923E32080000F93E5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F66E65B723E32080000F93E5 /* LaunchScreen.storyboard */; };
@@ -845,7 +844,6 @@
 		E1F6D7BB2AB18875000A9B64 /* UwaziEntitySubtitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UwaziEntitySubtitleView.swift; sourceTree = "<group>"; };
 		E1F6D7BC2AB18875000A9B64 /* UwaziEntityMandatoryTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UwaziEntityMandatoryTextView.swift; sourceTree = "<group>"; };
 		E1F6D7BF2AB1A303000A9B64 /* UwaziDateWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziDateWidget.swift; sourceTree = "<group>"; };
-		E1F6D7C12AB1A6D6000A9B64 /* UwaziEntityButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityButtonView.swift; sourceTree = "<group>"; };
 		E1F6D7C32AB1C47D000A9B64 /* UwaziDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziDatePickerView.swift; sourceTree = "<group>"; };
 		F16689EAD5E834B9D4331109 /* Pods-TellaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.release.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.release.xcconfig"; sourceTree = "<group>"; };
 		F66E65A923E3207D000F93E5 /* Tella.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tella.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2156,7 +2154,6 @@
 				E1F6D7BC2AB18875000A9B64 /* UwaziEntityMandatoryTextView.swift */,
 				E1F6D7BB2AB18875000A9B64 /* UwaziEntitySubtitleView.swift */,
 				E1F4A8E92AAF7AEF001C8E61 /* UwaziEntityTitleView.swift */,
-				E1F6D7C12AB1A6D6000A9B64 /* UwaziEntityButtonView.swift */,
 				E1CF5A222AB2FEEB00365036 /* UwaziDividerWidget.swift */,
 			);
 			path = Common;
@@ -2689,7 +2686,6 @@
 				E1F6D7A82AB1855D000A9B64 /* UwaziCheckURL.swift in Sources */,
 				E1F6D7B72AB1880B000A9B64 /* UwaziTemplateRow.swift in Sources */,
 				1236645128FFF23000FA839B /* ReportsViewModel.swift in Sources */,
-				E1F6D7C22AB1A6D6000A9B64 /* UwaziEntityButtonView.swift in Sources */,
 				1233007A28E3115500B8F7BA /* Request.swift in Sources */,
 				121C5D7D2942710600A64123 /* ProjectAPI.swift in Sources */,
 				1291F4F627B54300006A34D3 /* AudioPlayer.swift in Sources */,

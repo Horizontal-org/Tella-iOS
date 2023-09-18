@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct UwaziDateWidget: View {
-    @State private var isDatePickerVisible = false
     @State private var selectedDate = Date()
     @State private var dateText = ""
     var defaultDateString = "Select date"
@@ -19,10 +18,11 @@ struct UwaziDateWidget: View {
         self.prompt = prompt
         dateText = "Select date"
     }
+
     var body: some View {
         HStack(alignment: .lastTextBaseline) {
             ZStack(alignment: .topLeading) {
-                entityButton()
+                viewWithBackground()
                 UwaziDatePickerView(selectedDate: $selectedDate)
                     .transformEffect(effect)
             }
@@ -35,13 +35,17 @@ struct UwaziDateWidget: View {
             Spacer()
         }
     }
-    fileprivate func entityButton() -> UwaziEntityButtonView<some View> {
-        return UwaziEntityButtonView(action: {
-            isDatePickerVisible.toggle()
-        }, content: {
-            mainView()
-        })
+
+    fileprivate func viewWithBackground() -> some View{
+        ZStack {
+            Color.white.opacity(0.16)
+                .cornerRadius(15)
+            HStack(alignment: .top) {
+                mainView()
+            }
+        }
     }
+
     fileprivate func mainView() -> some View {
         return HStack {
             Image("date")
@@ -53,6 +57,7 @@ struct UwaziDateWidget: View {
                     prompt.value.stringValue = dateText
                     prompt.isClearButtonHidden = false
                 }
+                .foregroundColor(.white)
             Spacer()
         }.padding(15)
     }

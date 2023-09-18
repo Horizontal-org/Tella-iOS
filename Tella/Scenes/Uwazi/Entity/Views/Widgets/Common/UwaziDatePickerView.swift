@@ -11,16 +11,14 @@ import SwiftUI
 struct UwaziDatePickerView: View {
     @Binding var selectedDate: Date
     var body: some View {
-        VStack(alignment: .leading) {
-            DatePicker("",
-                       selection: $selectedDate,
-                       displayedComponents: [.date])
-                .datePickerStyle(.compact)
-                .accentColor(Styles.Colors.lightBlue)
-                .changeTextColor(.clear)
-                .labelsHidden()
-                .clipped()
-        }
+        DatePicker("",
+                   selection: $selectedDate,
+                   displayedComponents: [.date])
+        .datePickerStyle(.compact)
+        .accentColor(Styles.Colors.lightBlue)
+        .changeTextColor(.clear)
+        .labelsHidden()
+        .clipped()
     }
 }
 
