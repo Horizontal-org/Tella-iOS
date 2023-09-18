@@ -28,4 +28,9 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     
     case uwaziCreateEntitySheetExpl = "Uwazi_Template_CreateEntity_SheetAction"
     case uwaziDeleteEntitySheetExpl = "Uwazi_Template_Delete_SheetAction"
+    
+    case uwaziMultiFileWidgetPrimaryDocuments = "Uwazi_Entity_MultiFile_PrimaryDocument"
+    case uwaziMultiFileWidgetAttachManyPDFFiles = "Uwazi_Entity_MultiFile_AttachManyPDFFiles"
+    case uwaziMultiFileWidgetSupportingFiles = "Uwazi_Entity_MultiFile_SupportingFiles"
+    case uwaziMultiFileWidgetSelectManyFiles = "Uwazi_Entity_MultiFile_SelectManyFiles"
 }

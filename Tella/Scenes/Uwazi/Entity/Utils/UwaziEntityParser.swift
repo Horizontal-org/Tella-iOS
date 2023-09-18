@@ -29,18 +29,18 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
         let pdfPrompt = UwaziEntryPrompt(id: "10242050",
                                          formIndex: "10242050",
                                          type: UwaziEntityPropertyType.dataTypeMultiPDFFiles.rawValue,
-                                         question: "Primary Documents",
+                                         question: LocalizableUwazi.uwaziMultiFileWidgetPrimaryDocuments.localized,
                                          required: false,
-                                         helpText: "Attach as many PDF files as you wish")
+                                         helpText: LocalizableUwazi.uwaziMultiFileWidgetAttachManyPDFFiles.localized)
         entryPrompts.append(pdfPrompt)
     }
     fileprivate func handleSupportPrompt() {
         let supportPrompt = UwaziEntryPrompt(id: "10242049",
                                              formIndex: "10242049",
                                              type: UwaziEntityPropertyType.dataTypeMultiFiles.rawValue,
-                                             question: "Supporting files",
+                                             question: LocalizableUwazi.uwaziMultiFileWidgetSupportingFiles.localized,
                                              required: false,
-                                             helpText: "Select as many files as you wish")
+                                             helpText: LocalizableUwazi.uwaziMultiFileWidgetSelectManyFiles.localized)
         entryPrompts.append(supportPrompt)
     }
     fileprivate func handleDividerPrompt() {
