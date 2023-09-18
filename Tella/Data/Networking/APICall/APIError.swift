@@ -22,7 +22,7 @@ extension APIError: LocalizedError {
         case .unexpectedResponse:
             return "Unexpected response from the server"
         case .noInternetConnection:
-            return "No Internet connection. Try again when you are connected to the Internet."
+            return LocalizableSettings.settServerNoInternetConnection.localized
         }
     }
     func customErrorMessage(errorCode : Int) -> String {
