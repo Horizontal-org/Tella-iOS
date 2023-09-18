@@ -158,9 +158,9 @@ struct TextfieldView : View {
         case .code:
             self.isValid = value.codeValidator()
         case .uwaziUsername:
-            self.isValid = value.uwaziUsernameValidator()
+            self.isValid = value.validateWithRegex(pattern: Regex.textRegex)
         case .uwaziPassword:
-            self.isValid = value.uwaziPasswordValidator()
+            self.isValid = value.validateWithRegex(pattern: Regex.textRegex)
         }
         self.shouldShowError = false
     }
