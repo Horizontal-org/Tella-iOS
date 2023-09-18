@@ -46,10 +46,10 @@ class CollectedTemplate: Codable, Hashable {
         case serverId = "c_server_id"
         case serverName = "c_server_name"
         case username
-        case entityRow = "c_template_entity"
-        case isDownloaded = "c_template_downloaded"
-        case isFavorite = "c_template_favorited"
-        case isUpdated = "c_template_updated"
+        case entityRow = "c_entity"
+        case isDownloaded = "c_downloaded"
+        case isFavorite = "c_favorite"
+        case isUpdated = "c_updated"
     }
 
     static func == (lhs: CollectedTemplate, rhs: CollectedTemplate) -> Bool {

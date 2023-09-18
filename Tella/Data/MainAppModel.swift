@@ -240,7 +240,6 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     }
 
 }
-
 ///   MainAppModel extension contains the methods used to manage reports
 
 extension MainAppModel {

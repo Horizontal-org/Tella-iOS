@@ -347,6 +347,8 @@
 		E11968B12A1F409D00BA7B56 /* UwaziLanguageDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11968B02A1F409D00BA7B56 /* UwaziLanguageDTO.swift */; };
 		E131BA3B2A1B45A30095BC91 /* UwaziServerRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = E131BA3A2A1B45A30095BC91 /* UwaziServerRepositories.swift */; };
 		E14946D62AB8003400CD34EA /* UwaziEntityButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14946D52AB8003400CD34EA /* UwaziEntityButtonView.swift */; };
+		E14946DA2AB801D600CD34EA /* UwaziServerLanguageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14946D82AB801D600CD34EA /* UwaziServerLanguageProtocol.swift */; };
+		E14946DB2AB801D600CD34EA /* UwaziTemplateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14946D92AB801D600CD34EA /* UwaziTemplateProtocol.swift */; };
 		E14E0CF629FAD68E004FC4CD /* UwaziSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14E0CF529FAD68E004FC4CD /* UwaziSuccessView.swift */; };
 		E14FD87A2A6AB22200BC7523 /* UwaziLocale.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14FD8792A6AB22200BC7523 /* UwaziLocale.swift */; };
 		E177363C2A83AE4800FE01C0 /* UwaziTemplateDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E177363B2A83AE4800FE01C0 /* UwaziTemplateDTO.swift */; };
@@ -354,6 +356,10 @@
 		E17736402A83FFA200FE01C0 /* UwaziDictionaryDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E177363F2A83FFA200FE01C0 /* UwaziDictionaryDTO.swift */; };
 		E17736422A84034A00FE01C0 /* UwaziTranslationRowDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17736412A84034A00FE01C0 /* UwaziTranslationRowDTO.swift */; };
 		E1CF5A232AB2FEEB00365036 /* UwaziDividerWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF5A222AB2FEEB00365036 /* UwaziDividerWidget.swift */; };
+		E1CF5A252AB3477C00365036 /* UwaziDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF5A242AB3477C00365036 /* UwaziDatabase.swift */; };
+		E1CF5A272AB3488E00365036 /* JSONDecoderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF5A262AB3488E00365036 /* JSONDecoderExtension.swift */; };
+		E1CF5A2B2AB3533100365036 /* ServerDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF5A2A2AB3533100365036 /* ServerDatabase.swift */; };
+		E1CF5A2D2AB3558400365036 /* ReportDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF5A2C2AB3558400365036 /* ReportDatabase.swift */; };
 		E1D48B852A1BB8EA00D36270 /* UwaziCheckURLDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D48B842A1BB8EA00D36270 /* UwaziCheckURLDTO.swift */; };
 		E1E7C56F2AA9822F00DDB07E /* DeleteServerTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E7C56E2AA9822F00DDB07E /* DeleteServerTexts.swift */; };
 		E1EEE29629E6796E009FE227 /* ServerSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEE29529E6796E009FE227 /* ServerSelectionView.swift */; };
@@ -378,8 +384,6 @@
 		E1F6D7A62AB1855D000A9B64 /* UwaziDictionaryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6D7972AB1855D000A9B64 /* UwaziDictionaryRow.swift */; };
 		E1F6D7A72AB1855D000A9B64 /* UwaziDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6D7982AB1855D000A9B64 /* UwaziDictionary.swift */; };
 		E1F6D7A82AB1855D000A9B64 /* UwaziCheckURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6D7992AB1855D000A9B64 /* UwaziCheckURL.swift */; };
-		E1F6D7AC2AB187A2000A9B64 /* UwaziServerLanguageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6D7AA2AB187A2000A9B64 /* UwaziServerLanguageProtocol.swift */; };
-		E1F6D7AD2AB187A2000A9B64 /* UwaziTemplateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6D7AB2AB187A2000A9B64 /* UwaziTemplateProtocol.swift */; };
 		E1F6D7B42AB1880B000A9B64 /* UwaziCommonProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6D7AF2AB1880B000A9B64 /* UwaziCommonProperty.swift */; };
 		E1F6D7B52AB1880B000A9B64 /* UwaziSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6D7B02AB1880B000A9B64 /* UwaziSetting.swift */; };
 		E1F6D7B62AB1880B000A9B64 /* UwaziProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6D7B12AB1880B000A9B64 /* UwaziProperty.swift */; };
@@ -785,6 +789,8 @@
 		E11968B02A1F409D00BA7B56 /* UwaziLanguageDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLanguageDTO.swift; sourceTree = "<group>"; };
 		E131BA3A2A1B45A30095BC91 /* UwaziServerRepositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziServerRepositories.swift; sourceTree = "<group>"; };
 		E14946D52AB8003400CD34EA /* UwaziEntityButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UwaziEntityButtonView.swift; sourceTree = "<group>"; };
+		E14946D82AB801D600CD34EA /* UwaziServerLanguageProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UwaziServerLanguageProtocol.swift; sourceTree = "<group>"; };
+		E14946D92AB801D600CD34EA /* UwaziTemplateProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UwaziTemplateProtocol.swift; sourceTree = "<group>"; };
 		E14E0CF529FAD68E004FC4CD /* UwaziSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSuccessView.swift; sourceTree = "<group>"; };
 		E14FD8792A6AB22200BC7523 /* UwaziLocale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLocale.swift; sourceTree = "<group>"; };
 		E177363B2A83AE4800FE01C0 /* UwaziTemplateDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTemplateDTO.swift; sourceTree = "<group>"; };
@@ -793,6 +799,10 @@
 		E17736412A84034A00FE01C0 /* UwaziTranslationRowDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTranslationRowDTO.swift; sourceTree = "<group>"; };
 		E18BD4322AA0C39A00EE62E2 /* UwaziLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLanguage.swift; sourceTree = "<group>"; };
 		E1CF5A222AB2FEEB00365036 /* UwaziDividerWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziDividerWidget.swift; sourceTree = "<group>"; };
+		E1CF5A242AB3477C00365036 /* UwaziDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziDatabase.swift; sourceTree = "<group>"; };
+		E1CF5A262AB3488E00365036 /* JSONDecoderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDecoderExtension.swift; sourceTree = "<group>"; };
+		E1CF5A2A2AB3533100365036 /* ServerDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDatabase.swift; sourceTree = "<group>"; };
+		E1CF5A2C2AB3558400365036 /* ReportDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportDatabase.swift; sourceTree = "<group>"; };
 		E1D48B842A1BB8EA00D36270 /* UwaziCheckURLDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziCheckURLDTO.swift; sourceTree = "<group>"; };
 		E1E7C56E2AA9822F00DDB07E /* DeleteServerTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteServerTexts.swift; sourceTree = "<group>"; };
 		E1E7C5702AAB2BAB00DDB07E /* UwaziLanguageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLanguageRow.swift; sourceTree = "<group>"; };
@@ -985,10 +995,13 @@
 		1203CDE429915C6600D09073 /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				E1F6D7A92AB187A2000A9B64 /* Protocols */,
+				E14946D72AB801D600CD34EA /* Protocols */,
+				1203CDE62991682800D09073 /* Common */,
 				12351C1B28D220BA00F3CB7C /* TellaData.swift */,
 				125A9DFF28CE52C700C0C3C8 /* TellaDataBase.swift */,
-				1203CDE62991682800D09073 /* Common */,
+				E1CF5A242AB3477C00365036 /* UwaziDatabase.swift */,
+				E1CF5A2A2AB3533100365036 /* ServerDatabase.swift */,
+				E1CF5A2C2AB3558400365036 /* ReportDatabase.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -1312,6 +1325,7 @@
 				122389B6293635790058593B /* SetExtension.swift */,
 				12283F9F295C6FB100580EFE /* DataExtension.swift */,
 				121BAB7E29A7E30600D7E847 /* URLRequestExtension.swift */,
+				E1CF5A262AB3488E00365036 /* JSONDecoderExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1667,6 +1681,8 @@
 				E1E7C5782AAB515100DDB07E /* UwaziTemplateRow.swift */,
 				E1E7C5702AAB2BAB00DDB07E /* UwaziLanguageRow.swift */,
 				E1F4A8E12AAF3F62001C8E61 /* UwaziServerLanguageProtocol.swift */,
+				E1F6D7AB2AB187A2000A9B64 /* UwaziTemplateProtocol.swift */,
+				E1F6D7AA2AB187A2000A9B64 /* UwaziServerLanguageProtocol.swift */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -2064,6 +2080,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		E14946D72AB801D600CD34EA /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				E14946D82AB801D600CD34EA /* UwaziServerLanguageProtocol.swift */,
+				E14946D92AB801D600CD34EA /* UwaziTemplateProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		E14E0CF429F9ACA7004FC4CD /* Step6 */ = {
 			isa = PBXGroup;
 			children = (
@@ -2233,15 +2258,6 @@
 				E1F6D7982AB1855D000A9B64 /* UwaziDictionary.swift */,
 			);
 			path = Dictionary;
-			sourceTree = "<group>";
-		};
-		E1F6D7A92AB187A2000A9B64 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				E1F6D7AA2AB187A2000A9B64 /* UwaziServerLanguageProtocol.swift */,
-				E1F6D7AB2AB187A2000A9B64 /* UwaziTemplateProtocol.swift */,
-			);
-			path = Protocols;
 			sourceTree = "<group>";
 		};
 		E1F6D7AE2AB1880B000A9B64 /* Template */ = {
@@ -2606,7 +2622,6 @@
 				CC1313882A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift in Sources */,
 				D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */,
 				0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */,
-				E1F6D7AD2AB187A2000A9B64 /* UwaziTemplateProtocol.swift in Sources */,
 				12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */,
 				12E333C328D0A8D300E1DDB7 /* CryptoManager.swift in Sources */,
 				120451FA28C7525200D572A7 /* EditSettingsServerView.swift in Sources */,
@@ -2632,12 +2647,14 @@
 				12607D5E27904F5300E2B8CC /* PlayerView.swift in Sources */,
 				125AAD34295348EC002194D6 /* UploadService.swift in Sources */,
 				1237A71E278F5F8B00D7BC0F /* LanguageManager.swift in Sources */,
+				E1CF5A2B2AB3533100365036 /* ServerDatabase.swift in Sources */,
 				CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */,
 				D5DAFDCF265384C4002F3942 /* MainAppModel.swift in Sources */,
 				E108B75729FE79340045CCBE /* UwaziServerViewModel.swift in Sources */,
 				E1F6D79B2AB1855D000A9B64 /* UwaziTranslationRow.swift in Sources */,
 				1289B98B27C53C2400315FCE /* CameraTypeItemView.swift in Sources */,
 				126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */,
+				E1CF5A252AB3477C00365036 /* UwaziDatabase.swift in Sources */,
 				125680002717907900A2D356 /* LockPasswordView.swift in Sources */,
 				1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */,
 				D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */,
@@ -2661,6 +2678,7 @@
 				129B845928BFED9700F1B344 /* TellaButtonView.swift in Sources */,
 				123048D7295F95BB0015CD96 /* SubmittedDetailsItemView.swift in Sources */,
 				CC5BFEB12AAA27CE00FDB766 /* RenderPropertyComponentView.swift in Sources */,
+				E1CF5A272AB3488E00365036 /* JSONDecoderExtension.swift in Sources */,
 				1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */,
 				1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */,
 				1234179229CD19E6004CFAEA /* BaseUploadOperation.swift in Sources */,
@@ -2794,6 +2812,7 @@
 				12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */,
 				128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */,
 				12CCDC5428D8E05300C3BE4E /* Project.swift in Sources */,
+				E14946DB2AB801D600CD34EA /* UwaziTemplateProtocol.swift in Sources */,
 				126818C12A38B0C2004606BD /* FileInformation.swift in Sources */,
 				129354772949F04700735ED0 /* EmptyResult.swift in Sources */,
 				1290743B274CEB9B00F38A81 /* FileGridItem.swift in Sources */,
@@ -2818,6 +2837,7 @@
 				1268554127D2ACB200385E18 /* RecentFilesListView.swift in Sources */,
 				127C155827DA486A009EC15B /* TransitionView.swift in Sources */,
 				1204520028C7AC2800D572A7 /* ServerActionType.swift in Sources */,
+				E1CF5A2D2AB3558400365036 /* ReportDatabase.swift in Sources */,
 				12776A9827BAC87A00CDC5DC /* CameraViewModel.swift in Sources */,
 				CC43D9E12A72F8260030192E /* UwaziView.swift in Sources */,
 				12781F4627EA10AA00FE9609 /* AuthenticationManager.swift in Sources */,
@@ -2860,9 +2880,9 @@
 				D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */,
 				127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */,
 				12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */,
-				E1F6D7AC2AB187A2000A9B64 /* UwaziServerLanguageProtocol.swift in Sources */,
 				CC1313842A5CB3590057271C /* DeleteAfterFailView.swift in Sources */,
 				0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */,
+				E14946DA2AB801D600CD34EA /* UwaziServerLanguageProtocol.swift in Sources */,
 				12751EAA2A13A22100FAD7C6 /* SettingsModel.swift in Sources */,
 				1203CDDE298D7C1300D09073 /* FileToUpload.swift in Sources */,
 				1227FC912922BE24002FD6FB /* CameraPreview.swift in Sources */,
