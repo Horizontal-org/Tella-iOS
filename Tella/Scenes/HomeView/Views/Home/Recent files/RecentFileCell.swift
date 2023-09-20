@@ -6,7 +6,7 @@ import SwiftUI
 
 struct RecentFileCell<Destination:View>: View {
     
-    let recentFile: VaultFile
+    let recentFile: VaultFileDB
     let desination: Destination
     
     var body: some View {

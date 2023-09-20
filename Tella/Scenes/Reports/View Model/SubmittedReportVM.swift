@@ -13,7 +13,7 @@ class SubmittedReportVM: ObservableObject {
     @Published var id : Int?
     @Published var title : String = ""
     @Published var description : String = ""
-    @Published var files :  [VaultFile] = []
+    @Published var files :  [VaultFileDB] = []
     
     @Published var progressFileItems : [ProgressFileItemViewModel] = []
     @Published var uploadedDate : String = ""
@@ -37,15 +37,18 @@ class SubmittedReportVM: ObservableObject {
         if let reportId ,let report = self.mainAppModel.vaultManager.tellaData?.getReport(reportId: reportId) {
             
             // Init file
-            var vaultFileResult : Set<VaultFile> = []
+//            var vaultFileResult : Set<VaultFileDB> = []
             
             self.id = report.id
             self.title = report.title ?? ""
             self.description = report.description ?? ""
             
-            mainAppModel.vaultManager.root?.getFile(root: mainAppModel.vaultManager.root,
-                                                   vaultFileResult: &vaultFileResult,
-                                                   ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
+//            mainAppModel.vaultManager.root?.getFile(root: mainAppModel.vaultManager.root,
+//                                                   vaultFileResult: &vaultFileResult,
+//                                                   ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
+           
+           let vaultFileResult = mainAppModel.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
+            
             self.files = Array(vaultFileResult)
             
             // Initialize progression Infos

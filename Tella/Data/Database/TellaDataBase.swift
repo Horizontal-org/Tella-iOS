@@ -9,13 +9,12 @@ import SQLCipher
 
 class TellaDataBase : DataBase {
     
-    internal var dataBaseHelper : DataBaseHelper
-    internal var statementBuilder : SQLiteStatementBuilder
+      var dataBaseHelper : DataBaseHelper
+      var statementBuilder : SQLiteStatementBuilder
     
     init(key: String?) {
         
-        dataBaseHelper = DataBaseHelper()
-        dataBaseHelper.openDatabases(key: key, databaseName:D.databaseName)
+        dataBaseHelper = DataBaseHelper(key: key, databaseName:D.databaseName)
         statementBuilder = SQLiteStatementBuilder(dbPointer: dataBaseHelper.dbPointer)
         checkVersions()
     }

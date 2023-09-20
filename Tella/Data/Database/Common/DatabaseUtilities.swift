@@ -47,11 +47,14 @@ extension DataBase {
     func comma() -> String {
         return " , ";
     }
-    
-    
+
     func parseDicToObjectOf<T:Codable>(type: T.Type, dic: Any) throws -> T {
         let data = try JSONSerialization.data(withJSONObject: dic)
         let decodedValues = try JSONDecoder().decode(T.self, from: data)
         return decodedValues
     }
+
+
 }
+
+

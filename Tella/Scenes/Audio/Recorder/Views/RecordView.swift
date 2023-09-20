@@ -23,16 +23,18 @@ struct RecordView: View {
     let modalHeight = 173.0
     
     init(appModel: MainAppModel,
-         rootFile: VaultFile?,
+         rootFile: VaultFileDB? = nil,
          sourceView : SourceView,
          showingRecoredrView: Binding<Bool>,
-         resultFile : Binding<[VaultFile]?>? = nil) {
+         resultFile : Binding<[VaultFileDB]?>? = nil,
+         shouldReloadVaultFiles : Binding<Bool>? = nil) {
         
         _viewModel = StateObject(wrappedValue: RecordViewModel(mainAppModel: appModel,
                                                                rootFile: rootFile,
                                                                resultFile: resultFile,
                                                                sourceView: sourceView,
-                                                               showingRecoredrView: showingRecoredrView))
+                                                               showingRecoredrView: showingRecoredrView,
+                                                               shouldReloadVaultFiles: shouldReloadVaultFiles))
     }
     
     func goBack() {
@@ -236,8 +238,7 @@ struct RecordView: View {
     
     private func getFileListView() -> some View {
         FileListView(appModel: mainAppModel,
-                     rootFile: mainAppModel.vaultManager.root,
-                     fileType: [.audio],
+                     filterType: .audio,
                      title: LocalizableRecorder.audioRecordingsAppBar.localized,
                      fileListType: .recordList)
     }

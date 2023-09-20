@@ -8,7 +8,7 @@ import SwiftUI
 
 struct ReportFileGridView: View {
     
-    var file: VaultFile
+    var file: VaultFileDB
     
     @EnvironmentObject var draftReportVM: DraftReportVM
     
@@ -36,10 +36,10 @@ struct ReportFileGridView: View {
     @ViewBuilder
     var fileNameText: some View {
         
-        if self.file.type != .image || self.file.type != .video {
+        if self.file.tellaFileType != .image || self.file.tellaFileType != .video {
             VStack {
                 Spacer()
-                Text(self.file.fileName)
+                Text(self.file.name)
                     .font(.custom(Styles.Fonts.regularFontName, size: 11))
                     .foregroundColor(.white)
                     .lineLimit(1)

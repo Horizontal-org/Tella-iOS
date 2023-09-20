@@ -186,6 +186,18 @@ extension URL {
             return nil
         }
     }
+    
+    func contents() -> Data? {
+        do {
+            let _ = self.startAccessingSecurityScopedResource()
+            defer { self.stopAccessingSecurityScopedResource() }
+            return try Data(contentsOf: self)
+        } catch let error {
+            debugLog(error)
+        }
+        return nil
+    }
+
 }
 
 import UniformTypeIdentifiers

@@ -84,6 +84,7 @@ class SQLiteStatementBuilder {
                             inCondition: inCondition,
                             notInCondition: notInCondition,
                             sortCondition: sortCondition,
+                            limit: limit, 
                             joinCondition: joinCondition,
                             likeConditions: likeConditions,
                             notLikeConditions: notLikeConditions)
@@ -238,13 +239,13 @@ class SQLiteStatementBuilder {
             sql += " WHERE "
             
             if !equalCondition.isEmpty {
-                let result = equalCondition.compactMap{(" \($0.sqliteOperator) \($0.key) = :\($0.key)")}
-                sql += " (\(result))"
+                let result = equalCondition.compactMap{(" \($0.sqliteOperator.rawValue) \($0.key) = :\($0.key)")}.joined(separator: ", ")
+                sql += " \(result)"
             }
             
             if !differentCondition.isEmpty {
-                let result = differentCondition.compactMap{(" \($0.sqliteOperator) \($0.key) != :\($0.key)")}
-                sql += " (\(result))"
+                let result = differentCondition.compactMap{(" \($0.sqliteOperator.rawValue) \($0.key) != :\($0.key)")}.joined(separator: ", ")
+                sql += " \(result)"
             }
             
             for condition in inCondition {
@@ -270,14 +271,14 @@ class SQLiteStatementBuilder {
             }
             
             if !likeConditions.isEmpty {
-                let result = likeConditions.compactMap{(" \($0.sqliteOperator) \($0.key) LIKE '\($0.value ?? "")'")}
-                sql += " (\(result))"
+                let result = likeConditions.compactMap{(" \($0.sqliteOperator.rawValue) \($0.key) LIKE '\($0.value ?? "")'")}.joined(separator: " ")
+                sql += " \(result)"
             }
             
             
             if !notLikeConditions.isEmpty {
-                let result = notLikeConditions.compactMap{(" \($0.sqliteOperator) \($0.key) NOT LIKE '\($0.value ?? "")'")}
-                sql += " (\(result))"
+                let result = notLikeConditions.compactMap{(" \($0.sqliteOperator.rawValue) \($0.key) NOT LIKE '\($0.value ?? "")'")}.joined(separator: " ")
+                sql += " \(result)"
             }
         }
         
@@ -286,7 +287,7 @@ class SQLiteStatementBuilder {
             sql += " ORDER BY \(formattedSortCondition)"
         }
         if limit > 0 {
-            sql += " LIMIT 0, \(limit)"
+            sql += " LIMIT \(limit)"
         }
         return sql
     }
@@ -409,7 +410,7 @@ class SQLiteStatementBuilder {
             for (index, condition) in inCondition.enumerated() {
                 
                 let columnName = condition.key
-                let values = condition.value.map { "\($0)" }.joined(separator: ", ")
+                let values = condition.value.map { "'\($0)'" }.joined(separator: ", ")
                 
                 deleteSql += " \(columnName) IN (\(values))"
                 

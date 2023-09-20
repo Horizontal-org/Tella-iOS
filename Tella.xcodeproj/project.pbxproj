@@ -561,6 +561,8 @@
 		1270EAA22A4B4B07000851BA /* my */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = my; path = my.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1270EAA72A4DAA79000851BA /* fa-IR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fa-IR"; path = "fa-IR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1270EAA82A4DB008000851BA /* ta */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ta; path = ta.lproj/Localizable.strings; sourceTree = "<group>"; };
+		12728AE82AADB8AF00053E00 /* MainAppModell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAppModell.swift; sourceTree = "<group>"; };
+		12728AEA2AADB96100053E00 /* VaultManagerr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManagerr.swift; sourceTree = "<group>"; };
 		1272F25C27C91ACD0054F2E2 /* ImportFileProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFileProgress.swift; sourceTree = "<group>"; };
 		1272F25E27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesFromCameraProgress.swift; sourceTree = "<group>"; };
 		1272F26027C91CD90054F2E2 /* ImportFilesProgressModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesProgressModels.swift; sourceTree = "<group>"; };
@@ -1058,6 +1060,7 @@
 			isa = PBXGroup;
 			children = (
 				D5DAFDCD265384C4002F3942 /* MainAppModel.swift */,
+				12728AE82AADB8AF00053E00 /* MainAppModell.swift */,
 				12781F4527EA10AA00FE9609 /* AuthenticationManager.swift */,
 				126A05C22AA0B6B50044E1B7 /* AppModelVault.swift */,
 				1203CDE429915C6600D09073 /* Database */,
@@ -1796,6 +1799,7 @@
 			isa = PBXGroup;
 			children = (
 				D53B77002601CA3A0001CD34 /* VaultManager.swift */,
+				12728AEA2AADB96100053E00 /* VaultManagerr.swift */,
 				126A05C42AA0D7560044E1B7 /* VaultFilesManager.swift */,
 				0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */,
 				12FAC0CE2799FF230068EC2B /* ImportProgress.swift */,

@@ -7,47 +7,47 @@ import Combine
 
 protocol AppModelVaultFilesInterface {
     func addVaultFile(filePaths: [URL], parentId: String?) -> AnyPublisher<ImportVaultFileResult,Never>
+    func addFolder(name:String, parentId: String?)
     func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB]
     func getVaultFile(id: String?) -> VaultFileDB?
     func getVaultFiles(ids: [String]) -> [VaultFileDB]
     func renameVaultFile(id: String, name: String?)
-    func moveVaultFile(id: String, newParentId: String)
-    func deleteVaultFile(ids: [String])
+    func moveVaultFile(selectedFilesIds: [String], newParentId: String?)
+    func delete(filesIds: [String])
 }
 
 
 extension MainAppModel : AppModelVaultFilesInterface  {
     
+    func addFolder(name:String, parentId: String?)  {
+        vaultManager.addFolderFile(name: name, parentId: parentId)
+    }
+
     func addVaultFile(filePaths: [URL], parentId: String?) -> AnyPublisher<ImportVaultFileResult,Never> {
         vaultManager.addVaultFile(filePaths: filePaths, parentId: parentId)
     }
     
     func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB] {
-        //TODO:
-        return []
+        return vaultManager.getVaultFiles(parentId: parentId, filter: filter, sort: sort) 
     }
     
     func getVaultFile(id: String?) -> VaultFileDB? {
-        //TODO:
-        return nil
+        return vaultManager.getVaultFile(id: id)
     }
     
     func getVaultFiles(ids: [String]) -> [VaultFileDB] {
-        return []
+       return vaultManager.getVaultFiles(ids: ids)
     }
     
     func renameVaultFile(id: String, name: String?) {
-        //TODO:
+        vaultManager.renameVaultFile(id: id, name: name)
     }
     
-    func moveVaultFile(id: String, newParentId: String) {
-        //TODO:
+    func moveVaultFile(selectedFilesIds: [String], newParentId: String?) {
+        vaultManager.moveVaultFile(fileIds: selectedFilesIds, newParentId: newParentId)
     }
     
-    func deleteVaultFile(ids: [String]) {
-        //TODO:
+    func delete(filesIds: [String]) {
+        vaultManager.deleteVaultFile(fileIds: filesIds)
     }
-    
-    
-    
 }

@@ -4,7 +4,7 @@
 
 import SwiftUI
 
-extension VaultFile {
+extension VaultFileDB {
     var gridImage: AnyView {
         AnyView(
             GeometryReader { geometryReader in
@@ -26,7 +26,7 @@ extension VaultFile {
     }
 }
 
-extension VaultFile {
+extension VaultFileDB {
     var listImage: AnyView {
         AnyView(
             ZStack{

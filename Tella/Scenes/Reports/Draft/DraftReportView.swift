@@ -232,28 +232,26 @@ struct DraftReportView: View {
         .environmentObject(reportsViewModel)
     }
     
-    var fileListView : some View {
-        FileListView(appModel: mainAppModel,
-                     rootFile: mainAppModel.vaultManager.root,
-                     fileType: nil,
-                     title: LocalizableReport.selectFiles.localized,
-                     fileListType: .selectFiles,
-                     resultFile: $reportViewModel.resultFile)
-    }
+//    var fileListView : some View {
+//        FileListView(appModel: mainAppModel,
+//                     rootFile: mainAppModel.vaultManager.root,
+//                     filterType: .all,
+//                     title: LocalizableReport.selectFiles.localized,
+//                     fileListType: .selectFiles,
+//                     resultFile: $reportViewModel.resultFile)
+//    }
     
     var cameraView : some View {
         reportViewModel.showingCamera ?
         CameraView(sourceView: SourceView.addReportFile,
                    showingCameraView: $reportViewModel.showingCamera,
                    resultFile: $reportViewModel.resultFile,
-                   mainAppModel: mainAppModel,
-                   rootFile: mainAppModel.vaultManager.root) : nil
+                   mainAppModel: mainAppModel) : nil
     }
     
     var recordView : some View {
         reportViewModel.showingRecordView ?
         RecordView(appModel: mainAppModel,
-                   rootFile: mainAppModel.vaultManager.root,
                    sourceView: .addReportFile,
                    showingRecoredrView: $reportViewModel.showingRecordView,
                    resultFile: $reportViewModel.resultFile) : nil
@@ -263,8 +261,8 @@ struct DraftReportView: View {
         PhotoVideoPickerView(showingImagePicker: $reportViewModel.showingImagePicker,
                              showingImportDocumentPicker: $reportViewModel.showingImportDocumentPicker,
                              appModel: mainAppModel,
-                             resultFile: $reportViewModel.resultFile,
-                             rootFile: self.$mainAppModel.vaultManager.root)
+                             resultFile: $reportViewModel.resultFile, 
+                             shouldReloadVaultFiles: .constant(false))
     }
     
     

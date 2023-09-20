@@ -21,7 +21,7 @@ struct OutboxDetailsItemView: View {
                 )
             VStack(alignment: .leading, spacing: 0){
                 Spacer()
-                Text(item.file.fileName)
+                Text(item.file.name)
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                     .foregroundColor(Color.white)
                     .lineLimit(1)
@@ -45,6 +45,6 @@ struct OutboxDetailsItemView: View {
 
 struct ReportDetailsItemView_Previews: PreviewProvider {
     static var previews: some View {
-        OutboxDetailsItemView(item: .constant(ProgressFileItemViewModel(file: VaultFile.stub(type: .audio), progression: "0/4.5 MB") ))
+        OutboxDetailsItemView(item: .constant(ProgressFileItemViewModel(file: VaultFileDB.stub(), progression: "0/4.5 MB") ))
     }
 }

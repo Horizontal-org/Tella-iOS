@@ -1,36 +1,58 @@
-//
-//  Copyright © 2021 INTERNEWS. All rights reserved.
-//
-
 import SwiftUI
 import Combine
 
 protocol AppModelFileManagerProtocol {
     
-    func add(files: [URL], to parentFolder: VaultFile?, type: TellaFileType, folderPathArray:[VaultFile]) async throws -> [VaultFile]
-    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: TellaFileType, fileName:String, folderPathArray:[VaultFile]) async throws -> VaultFile?
-    func add(folder: String, to parentFolder: VaultFile?, folderPathArray:[VaultFile])
+//    func add(files: [URL], to parentFolder: VaultFileDB?, type: TellaFileType, folderPathArray:[VaultFileDB]) async throws -> [VaultFileDB]
+//    func add(audioFilePath: URL, to parentFolder: VaultFileDB?, type: TellaFileType, fileName:String, folderPathArray:[VaultFileDB]) async throws -> VaultFileDB?
+//    func add(folder: String, to parentFolder: VaultFileDB?, folderPathArray:[VaultFileDB])
+//
+//    func move(files: [VaultFileDB], from originalParentFolder: VaultFileDB?, to newParentFolder: VaultFileDB?)
+//    func cancelImportAndEncryption()
+//    func delete(files: [VaultFileDB], from parentFolder: VaultFileDB?)
+//    func rename(file : VaultFileDB, parent: VaultFileDB?)
+//    func getFilesForShare(files: [VaultFileDB]) -> [Any]
+//    func clearTmpDirectory()
+//    func saveDataToTempFile(data:Data, pathExtension:String) -> URL?
+//    func saveDataToTempFile(data: Data?, fileName: String, pathExtension:String) -> URL?
+//    func load(files vaultFiles: [VaultFileDB]) -> [URL]
+//    func load(file vaultFile: VaultFileDB) -> Data?
+//    func loadFilesInfos(file vaultFile: VaultFileDB, offsetSize:Int ) -> VaultFileInfo?
+//    func sendAutoReportFile(file: VaultFileDB)
+//    func initFiles() -> AnyPublisher<Bool,Never>
+//    func initRoot()
     
-    func move(files: [VaultFile], from originalParentFolder: VaultFile?, to newParentFolder: VaultFile?)
-    func cancelImportAndEncryption()
-    func delete(files: [VaultFile], from parentFolder: VaultFile?)
-    func rename(file : VaultFile, parent: VaultFile?)
-    func getFilesForShare(files: [VaultFile]) -> [Any]
-    func clearTmpDirectory()
-    func saveDataToTempFile(data:Data, pathExtension:String) -> URL?
+    
+    func sendAutoReportFile(file: VaultFileDB)
+
+    
+    
+    func addVaultFile(filePaths: [URL], parentId: String?) -> AnyPublisher<ImportVaultFileResult,Never>
+    func addFolderFile(name:String, parentId: String?)
+    func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB]
+//    func delete(files: [VaultFileDB])
+//    func delete(filesIds: [String])
+    
+    func loadFileData(fileName: String?) -> Data?
+    func loadVaultFilesToURL(files vaultFiles: [VaultFileDB]) -> [URL]
+    func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL?
+
+    func loadFilesInfos(file vaultFile: VaultFileDB, offsetSize:Int ) -> VaultFileInfo?
+    func saveDataToTempFile(data: Data, pathExtension:String) -> URL?
     func saveDataToTempFile(data: Data?, fileName: String, pathExtension:String) -> URL?
-    func load(files vaultFiles: [VaultFile]) -> [URL]
-    func load(file vaultFile: VaultFile) -> Data?
-    func loadFilesInfos(file vaultFile: VaultFile, offsetSize:Int ) -> VaultFileInfo?
-    func sendAutoReportFile(file: VaultFile)
-    func initFiles() -> AnyPublisher<Bool,Never>
-    func initRoot()
+    func createTempFileURL(pathExtension: String) -> URL
+
+    func clearTmpDirectory()
+    func deleteAfterMaxAttempts()
+    func resetVaultManager()
+    func removeAllFiles()
+
     
 }
 
 let lockTimeoutStartDateKey = "LockTimeoutStartDate"
 
-class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
+class MainAppModel: ObservableObject {
     
     
     enum Tabs: Hashable {
@@ -66,27 +88,21 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     @Published var shouldShowSecurityScreen: Bool = false
     @Published var appEnterInBackground: Bool = false
     @Published var importOption: ImportOption?
-    var networkMonitor : NetworkMonitor
-    
     @Published var shouldUpdateLanguage = true
 
-    var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
+    var networkMonitor : NetworkMonitor
+
+    //    var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
     
     private var cancellable: Set<AnyCancellable> = []
+
+    //MARK: - init -
     
     init(networkMonitor:NetworkMonitor) {
         self.networkMonitor = networkMonitor
         loadData()
     }
-    
-    private func loadData() {
-        let decoder = JSONDecoder()
-        if let data = UserDefaults.standard.object(forKey: "com.tella.settings") as? Data,
-           let settings = try? decoder.decode(SettingsModel.self, from: data) {
-            self.settings = settings
-        }
-    }
-    
+
     func initFiles() -> AnyPublisher<Bool,Never> {
         return Deferred {
             Future <Bool,Never> {  [weak self] promise in
@@ -106,12 +122,27 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         UploadService.shared.initAutoUpload(mainAppModel: self)
         
     }
-    
-    func resetVaultManager() {
-        vaultManager.resetData()
-        self.selectedTab = .home
+
+    func publishUpdates() { //TODO: Dhekra to check
+        DispatchQueue.main.async {
+            self.objectWillChange.send()
+        }
     }
-    
+}
+
+
+//MARK: - Settings -
+
+extension MainAppModel {
+
+    private func loadData() {
+        let decoder = JSONDecoder()
+        if let data = UserDefaults.standard.object(forKey: "com.tella.settings") as? Data,
+           let settings = try? decoder.decode(SettingsModel.self, from: data) {
+            self.settings = settings
+        }
+    }
+
     func saveSettings() {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(settings) {
@@ -133,7 +164,13 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         
         saveSettings()
     }
-    
+
+}
+
+ //MARK: - Lock Timeout -
+
+extension MainAppModel {
+   
     func saveLockTimeoutStartDate()  {
         lockTimeoutStartDate = Date()
     }
@@ -143,120 +180,18 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
         let elapsedTime = Date().timeIntervalSince(startDate)
         return  TimeInterval(self.settings.lockTimeout.time) <  elapsedTime
     }
-    
-    func removeAllFiles() {
-        vaultManager.removeAllFiles()
-        publishUpdates()
-    }
-    
-    func deleteAfterMaxAttempts() {
-        resetSettings()
-        
-        vaultManager.deleteContainerDirectory()
-    }
-    
+
     func changeTab(to newTab: Tabs) {
         selectedTab = newTab
     }
-    
-    @discardableResult
-    func add(files: [URL], to parentFolder: VaultFile?, type: TellaFileType, folderPathArray:[VaultFile] = []) async throws -> [VaultFile] {
-        
-        vaultManager.progress.progress.sink { [weak self] value in
-            self?.publishUpdates()
-        }.store(in: &cancellable)
-        
-        vaultManager.progress.progressFile.sink { [weak self] value in
-            self?.publishUpdates()
-        }.store(in: &cancellable)
-        
-        let files = try await self.vaultManager.importFile(files: files, to: parentFolder, type: type, folderPathArray: folderPathArray) ?? []
-        self.publishUpdates()
-        return files
-    }
-    
-    func add(audioFilePath: URL, to parentFolder: VaultFile?, type: TellaFileType, fileName:String, folderPathArray:[VaultFile] = []) async throws -> VaultFile? {
-        let file = try await   self.vaultManager.importFile(audioFilePath: audioFilePath, to: parentFolder, type: type, fileName: fileName, folderPathArray: folderPathArray)
-        self.publishUpdates()
-        return file
-        
-    }
-    
-    func add(folder: String, to parentFolder: VaultFile?,  folderPathArray:[VaultFile] = []) {
-        DispatchQueue.global(qos: .background).async {
-            self.vaultManager.createNewFolder(name: folder, parent: parentFolder, folderPathArray: folderPathArray)
-            self.publishUpdates()
-        }
-    }
-    
-    func move( files: [VaultFile], from originalParentFolder: VaultFile?, to newParentFolder: VaultFile?) {
-        self.vaultManager.move(files: files, from: originalParentFolder, to: newParentFolder)
-    }
-    
-    func cancelImportAndEncryption() {
-        self.vaultManager.shouldCancelImportAndEncryption.send(true)
-    }
-    
-    func delete(files: [VaultFile], from parentFolder: VaultFile?) {
-        DispatchQueue.global(qos: .background).async {
-            self.vaultManager.delete(files: files, parent: parentFolder)
-            self.publishUpdates()
-        }
-    }
-    
-    func rename(file: VaultFile, parent: VaultFile?) {
-        DispatchQueue.global(qos: .background).async {
-            self.vaultManager.rename(file: file, parent: parent)
-            self.publishUpdates()
-        }
-    }
-    
-    func getFilesForShare(files: [VaultFile]) -> [Any] {
-        return vaultManager.load(files: files)
-    }
-    
-    //    func loadFilesInfos(files vaultFiles: [VaultFile], offsetSize :Int) -> [VaultFileInfo] {
-    //        return vaultManager.loadFilesInfos(files: vaultFiles, offsetSize: offsetSize)
-    //    }
-    
-    func loadFilesInfos(file vaultFile: VaultFile, offsetSize:Int ) -> VaultFileInfo? {
-        return vaultManager.loadFilesInfos(file: vaultFile, offsetSize: offsetSize)
-    }
-    
-    func saveDataToTempFile(data:Data, pathExtension:String) -> URL? {
-        return vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension)
-    }
-    
-    func saveDataToTempFile(data: Data?, fileName: String, pathExtension:String) -> URL? {
-        return vaultManager.saveDataToTempFile(data: data, fileName: fileName, pathExtension: pathExtension)
-    }
-    
-    func clearTmpDirectory() {
-        vaultManager.clearTmpDirectory()
-    }
-    
-    func load(files vaultFiles: [VaultFile]) -> [URL] {
-        vaultManager.load(files: vaultFiles)
-    }
-    
-    func load(file vaultFile: VaultFile) -> Data? {
-        vaultManager.load(file: vaultFile)
-    }
-    
-    func publishUpdates() {
-        DispatchQueue.main.async {
-            self.objectWillChange.send()
-        }
-    }
-    
-    
 }
 
-///   MainAppModel extension contains the methods used to manage reports
+
+//MARK: - Manage reports -
 
 extension MainAppModel {
     
-    func sendAutoReportFile(file: VaultFile) {
+    func sendAutoReportFile(file: VaultFileDB) {
         if vaultManager.tellaData?.getAutoUploadServer() != nil {
             UploadService.shared.addAutoUpload(file: file)
         }
@@ -278,9 +213,72 @@ extension MainAppModel {
     }
 }
 
+
+extension MainAppModel :  AppModelFileManagerProtocol {
+
+    func addFolderFile(name: String, parentId: String?) {
+        vaultManager.addFolderFile(name: name, parentId: parentId)
+    }
+    
+    
+    func loadFileData(fileName: String?) -> Data? {
+       return vaultManager.loadFileData(fileName: fileName)
+    }
+    
+    func loadVaultFilesToURL(files vaultFiles: [VaultFileDB]) -> [URL] {
+       return vaultManager.loadVaultFilesToURL(files: vaultFiles)
+    }
+    
+    func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL? {
+        return vaultManager.loadVaultFileToURL(file: vaultFile)
+    }
+    
+    func createTempFileURL(pathExtension: String) -> URL {
+        return vaultManager.createTempFileURL(pathExtension: pathExtension)
+    }
+    
+    func saveDataToTempFile(data:Data, pathExtension:String) -> URL? {
+        return vaultManager.saveDataToTempFile(data: data, pathExtension: pathExtension)
+    }
+    
+    func saveDataToTempFile(data: Data?, fileName: String, pathExtension:String) -> URL? {
+        return vaultManager.saveDataToTempFile(data: data, fileName: fileName, pathExtension: pathExtension)
+    }
+
+    func deleteAfterMaxAttempts() {
+        resetSettings()
+        vaultManager.deleteContainerDirectory()
+    }
+
+    func resetVaultManager() {
+        vaultManager.resetData()
+        self.selectedTab = .home
+    }
+
+    func removeAllFiles() {
+        vaultManager.removeAllFiles()
+        publishUpdates()
+    }
+    
+    func clearTmpDirectory() {
+        vaultManager.clearTmpDirectory()
+    }
+
+//    func load(file vaultFile: VaultFileDB) -> Data? {
+//        return vaultManager.loadFileData(fileName: vaultFile.id)
+//    }
+    
+    func loadFilesInfos(file vaultFile: VaultFileDB, offsetSize:Int ) -> VaultFileInfo? {
+        return vaultManager.loadFilesInfos(file: vaultFile, offsetSize: offsetSize)
+    }
+
+    func cancelImportAndEncryption() {
+        self.vaultManager.shouldCancelImportAndEncryption.send(true)
+    }
+}
+
 extension MainAppModel {
     static func stub() -> MainAppModel {
         return MainAppModel(networkMonitor: NetworkMonitor())
     }
 }
-

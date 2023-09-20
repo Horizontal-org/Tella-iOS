@@ -76,21 +76,6 @@ extension String {
         return "\(fileType)-\(Date().getDate())"
     }
 
-//    func getMimeType() -> String {
-//
-//        let unknown = "application/octet-stream"
-//
-//        guard let extUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, self as CFString, nil) else {
-//            return  unknown
-//        }
-//
-//        guard let mimeUTI = UTTypeCopyPreferredTagWithClass(extUTI.takeUnretainedValue(), kUTTagClassMIMEType) else {
-//            return  unknown
-//        }
-//
-//        return String(mimeUTI.takeUnretainedValue())
-//    }
-    
 
     
 }
@@ -105,33 +90,61 @@ extension String {
         }
         return "application/octet-stream"
     }
+    
+    func getExtension() -> String {
+        
+        let unmanagedFileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, self as CFString, nil)?.takeRetainedValue()
+       guard let fileExtension = UTTypeCopyPreferredTagWithClass((unmanagedFileUTI)!, kUTTagClassFilenameExtension)?.takeRetainedValue()
+        else { return ""}
+        
+        return fileExtension as String
+    }
 
-    var containsImage: Bool {
-        if let type = UTType(mimeType: self) {
-            return type.conforms(to: .image)
-        }
-        return false
-    }
     
-    var containsAudio: Bool {
-        if let type = UTType(mimeType: self) {
-            return type.conforms(to: .audio)
-        }
-        return false
-    }
     
-    var containsMovie: Bool {
-        if let type = UTType(mimeType: self) {
-            return type.conforms(to: .movie)   // ex. .mp4-movies
+    var tellaFileType: TellaFileType {
+
+        guard let type = UTType(mimeType: self) else {
+            return .other
         }
-        return false
+        
+        if type.conforms(to: .video) || type.conforms(to: .movie) {
+            return .video
+        }
+        
+        if type.conforms(to: .image) {
+            return .image
+        }
+        
+        if type.conforms(to: .audio) {
+            return .audio
+        }
+        
+//        enum OpenXmlFormats : String {
+//
+//            case word = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+//            case presentation = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+//            case sheet = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+
+//        let word = "application/msword"
+//        let excel = "application/vnd.ms-excel"
+//        let powerPoint = "application/mspowerpoint"
+
+        if type.conforms(to: .pdf) || type.conforms(to: .presentation) || type.conforms(to: .spreadsheet) {
+            return .document
+
+        }
+
+ 
+
+        
+ 
+
+        return .other
     }
+
     
-    var containsVideo: Bool {
-        if let type = UTType(mimeType: self) {
-            return type.conforms(to: .video)
-        }
-        return false
-    }
+    
+    
 }
 

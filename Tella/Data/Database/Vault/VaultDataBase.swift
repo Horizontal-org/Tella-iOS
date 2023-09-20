@@ -10,29 +10,33 @@ protocol VaultDataBaseProtocol {
     func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB]
     func getVaultFile(id: String?) -> VaultFileDB?
     func getVaultFiles(ids: [String]) -> [VaultFileDB]
+    func getRecentVaultFiles() -> [VaultFileDB]
     func renameVaultFile(id: String, name: String?)
-    func moveVaultFile(id: String, newParentId: String)
+    func moveVaultFile(fileIds: [String], newParentId: String?)
     func deleteVaultFile(ids: [String])
 }
 
 protocol DataBase {
     var dataBaseHelper : DataBaseHelper { get }
     var statementBuilder : SQLiteStatementBuilder { get  }
+    func checkVersions()
+    func createTables()
 }
 
-class VaultDataBase : DataBase, VaultDataBaseProtocol {
+class VaultDatabase : DataBase, VaultDataBaseProtocol {
 
-    internal var dataBaseHelper: DataBaseHelper
-    internal var statementBuilder: SQLiteStatementBuilder
+    var dataBaseHelper: DataBaseHelper
+    var statementBuilder: SQLiteStatementBuilder
+  
+    private var rootId = "11223344-5566-4777-8899-aabbccddeeff";
     
     init(key: String?) {
-        dataBaseHelper = DataBaseHelper()
-        dataBaseHelper.openDatabases(key: key, databaseName: VaultD.databaseName)
+        dataBaseHelper = DataBaseHelper(key: key, databaseName: VaultD.databaseName)
         statementBuilder = SQLiteStatementBuilder(dbPointer: dataBaseHelper.dbPointer)
         checkVersions()
     }
     
-    func checkVersions() {
+      func checkVersions() {
         do {
             let oldVersion = try statementBuilder.getCurrentDatabaseVersion()
             
@@ -51,11 +55,11 @@ class VaultDataBase : DataBase, VaultDataBaseProtocol {
         }
     }
     
-    func createTables() {
+     func createTables() {
         createVaultTable()
     }
     
-    func createVaultTable() {
+      func createVaultTable() {
         
         let columns = [
             cddl(VaultD.cId, VaultD.text, primaryKey: true, autoIncrement: false),
@@ -67,7 +71,7 @@ class VaultDataBase : DataBase, VaultDataBaseProtocol {
             cddl(VaultD.cThumbnail, VaultD.blob),
             cddl(VaultD.cName, VaultD.text, true),
             cddl(VaultD.cCreated, VaultD.real, true),
-            cddl(VaultD.cDuration, VaultD.real, true, 0),
+            cddl(VaultD.cDuration, VaultD.real),
             cddl(VaultD.cAnonymous, VaultD.integer, true, 0),
             cddl(VaultD.cSize, VaultD.integer, true, 0)
             // Resolution ?
@@ -76,6 +80,8 @@ class VaultDataBase : DataBase, VaultDataBaseProtocol {
     }
     
     func addVaultFile(file : VaultFileDB, parentId: String?) {
+        
+        let parentId = parentId ?? self.rootId
         
         let valuesToAdd = [KeyValue(key: VaultD.cId, value: file.id),
                            KeyValue(key: VaultD.cParentId, value: parentId),
@@ -103,6 +109,8 @@ class VaultDataBase : DataBase, VaultDataBaseProtocol {
     func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB] {
         do {
             
+            let parentId = parentId ?? self.rootId
+
             let filterConditions = getFilterConditions(filter: filter, parentId: parentId)
             
             let sortCondition = getSortCondition(fileSortOption: sort)
@@ -115,7 +123,7 @@ class VaultDataBase : DataBase, VaultDataBaseProtocol {
                                                                   likeConditions: filterConditions.likeConditions,
                                                                   notLikeConditions: filterConditions.notLikeConditions )
             
-            let vaultFiles: [VaultFileDB] =  try self.parseDicToObjectOf(type: [VaultFileDB].self, dic: vaultFilesDict)
+            let vaultFiles = vaultFilesDict.compactMap{VaultFileDB.init(dictionnary: $0)}
             return vaultFiles
             
         } catch {
@@ -129,8 +137,8 @@ class VaultDataBase : DataBase, VaultDataBaseProtocol {
             let vaultFilesDict = try statementBuilder.selectQuery(tableName: VaultD.tVaultFile,
                                                                   equalCondition:[KeyValue(key: VaultD.cId, value: id)])
             
-            let vaultFile: VaultFileDB =  try self.parseDicToObjectOf(type: VaultFileDB.self, dic: vaultFilesDict)
-            return vaultFile
+            let vaultFile: [VaultFileDB] =  try self.parseDicToObjectOf(type: [VaultFileDB].self, dic: vaultFilesDict)
+            return vaultFile.first
             
         } catch let error {
             debugLog(error)
@@ -154,6 +162,27 @@ class VaultDataBase : DataBase, VaultDataBaseProtocol {
         }
     }
     
+    func getRecentVaultFiles() -> [VaultFileDB] {
+
+        do {
+
+            let sortCondition = SortCondition(column: VaultD.cCreated, sortDirection: SortDirection.desc.rawValue)
+            let differentCondition = [KeyValue(key: VaultD.cType,value: VaultFileType.directory.rawValue)]
+
+            let vaultFilesDict = try statementBuilder.selectQuery(tableName: VaultD.tVaultFile,
+                                                                  differentCondition: differentCondition,
+                                                                  sortCondition: [sortCondition],
+                                                                  limit: 10)
+            
+            let vaultFiles = vaultFilesDict.compactMap{VaultFileDB.init(dictionnary: $0)}
+            return vaultFiles
+            
+        } catch {
+            return []
+        }
+
+     }
+    
     func renameVaultFile(id: String, name: String?) {
         
         do {
@@ -170,13 +199,16 @@ class VaultDataBase : DataBase, VaultDataBaseProtocol {
         }
     }
     
-    func moveVaultFile(id: String, newParentId: String) {
+    func moveVaultFile(fileIds: [String], newParentId: String?) {
         
+        let parentId = newParentId ?? self.rootId
+
         do {
             
-            let valuesToUpdate = [KeyValue(key: VaultD.cParentId, value: newParentId)]
-            let vaultCondition = [KeyValue(key: VaultD.cId, value: id)]
-            
+            let valuesToUpdate = [KeyValue(key: VaultD.cParentId, value: parentId)]
+//            let vaultCondition = [KeyValue(key: VaultD.cId, value: id)]
+            let vaultCondition = fileIds.compactMap({KeyValue(key: VaultD.cId, value: $0) })
+
             try statementBuilder.update(tableName: VaultD.tVaultFile,
                                         keyValue: valuesToUpdate,
                                         primarykeyValue: vaultCondition)
@@ -190,7 +222,7 @@ class VaultDataBase : DataBase, VaultDataBaseProtocol {
         
         let vaultCondition = [KeyValues(key: VaultD.cId, value: ids)]
         
-        statementBuilder.delete(tableName: D.tReport,
+        statementBuilder.delete(tableName: VaultD.tVaultFile,
                                 inCondition: vaultCondition)
         
     }
@@ -242,6 +274,11 @@ class VaultDataBase : DataBase, VaultDataBaseProtocol {
             filterCondition.likeConditions = [KeyValue(key: VaultD.cMimeType, value:  FilterPattern.image.rawValue),
                                               KeyValue(key: VaultD.cMimeType, value:  FilterPattern.video.rawValue, sqliteOperator: .or)]
             
+        case .audioPhotoVideo:
+            filterCondition.likeConditions = [KeyValue(key: VaultD.cMimeType, value:  FilterPattern.image.rawValue),
+                                              KeyValue(key: VaultD.cMimeType, value:  FilterPattern.video.rawValue, sqliteOperator: .or),
+                                              KeyValue(key: VaultD.cMimeType, value:  FilterPattern.audio.rawValue, sqliteOperator: .or)]
+
         default:
             filterCondition.equalCondition = [KeyValue(key: VaultD.cParentId, value: parentId)]
         }
@@ -260,7 +297,7 @@ class VaultDataBase : DataBase, VaultDataBaseProtocol {
             return SortCondition(column: VaultD.cName, sortDirection: SortDirection.desc.rawValue)
             
         case .newestToOldest:
-            return SortCondition(column: VaultD.cCreated, sortDirection: SortDirection.asc.rawValue)
+            return SortCondition(column: VaultD.cCreated, sortDirection: SortDirection.desc.rawValue)
             
         case .oldestToNewest:
             return SortCondition(column: VaultD.cCreated, sortDirection: SortDirection.asc.rawValue)

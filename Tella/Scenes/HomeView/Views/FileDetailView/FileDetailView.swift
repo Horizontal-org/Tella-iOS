@@ -7,67 +7,58 @@ import QuickLook
 
 struct FileDetailView: View {
     
-    @ObservedObject var appModel: MainAppModel
-    @StateObject var fileListViewModel: FileListViewModel
-    
-    var file: VaultFile?
-    var videoFilesArray: [VaultFile]?
-    var folderPathArray: [VaultFile]?
-    
-    init(appModel:MainAppModel,file: VaultFile?, videoFilesArray: [VaultFile]? = nil, rootFile:VaultFile?, folderPathArray: [VaultFile]?) {
-        _fileListViewModel = StateObject(wrappedValue: FileListViewModel(appModel: appModel, fileType: nil, rootFile: rootFile, folderPathArray: folderPathArray ?? [],fileActionSource: .details))
-        self.file = file
-        self.videoFilesArray = videoFilesArray
-        self.appModel = appModel
-    }
-    
+//    @ObservedObject var appModel: MainAppModel
+    @EnvironmentObject var fileListViewModel: FileListViewModel
+    @EnvironmentObject var appModel: MainAppModel
+
     var body: some View {
         ZStack {
             detailsView()
+            
             FileActionMenu()
             toolbar()
         }
-        .environmentObject(fileListViewModel)
-        .navigationBarHidden(fileListViewModel.shouldHideNavigationBar)
+         .environmentObject(fileListViewModel)
+//        .navigationBarHidden(fileListViewModel.shouldHideNavigationBar)
     }
     
     @ViewBuilder
     func detailsView() -> some View {
-        if let file = self.file {
-            switch file.type {
+        if let file = self.fileListViewModel.selectedFiles.first {
+            switch file.tellaFileType {
             case .audio:
                 AudioPlayerView(vaultFile: file)
             case .document:
-                if let file = appModel.vaultManager.loadVideo(file: file) {
+                if let file = appModel.loadVaultFileToURL(file: file) {
                     QuickLookView(file: file)
                 }
             case .video:
-                VideoViewer(appModel: appModel, currentFile: file, playList: videoFilesArray ?? [file])
+                VideoViewer(appModel: appModel, currentFile: file, playList: self.fileListViewModel.getVideoFiles())
             case .image:
-                ImageViewer(imageData: appModel.vaultManager.load(file: file))
+                ImageViewer(imageData: appModel.loadFileData(fileName: file.id))
             case .folder:
                 EmptyView()
                 
             default:
-                WebViewer(url: file.containerName)
+                WebViewer(url: file.id)
             }
         }
     }
     
     func fileActionTrailingView() -> some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            MoreFileActionButton(file: file, moreButtonType: .navigationBar)
+            MoreFileActionButton(file: self.fileListViewModel.selectedFiles.first, moreButtonType: .navigationBar)
         }
     }
     
     @ViewBuilder
     func toolbar() -> some View {
-        if let file = self.file {
+        if let file = self.fileListViewModel.selectedFiles.first {
             
             ZStack{}
-                .if(file.type != .video, transform: { view in
+                .if(file.tellaFileType != .video, transform: { view in
                     view.toolbar {
-                        LeadingTitleToolbar(title: file.fileName)
+                        LeadingTitleToolbar(title: file.name)
                         fileActionTrailingView()
                     }
                 })

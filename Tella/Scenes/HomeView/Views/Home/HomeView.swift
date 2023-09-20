@@ -29,12 +29,12 @@ struct HomeView: View {
                 ConnectionsView()
                 
                 Spacer()
-                    .frame( height: (!viewModel.serverDataItemArray.isEmpty && viewModel.getFiles().count > 0) ? 16 : 0 )
+                    .frame( height: (!viewModel.serverDataItemArray.isEmpty && viewModel.recentFiles.count > 0) ? 16 : 0 )
 
                 if appModel.settings.showRecentFiles {
                     Spacer()
-                        .frame( height: viewModel.getFiles().count > 0 ? 16 : 0 )
-                    RecentFilesListView(recentFiles: viewModel.getFiles())
+                        .frame( height: viewModel.recentFiles.count > 0 ? 16 : 0 )
+                    RecentFilesListView(recentFiles: $viewModel.recentFiles)
                 }
                 
                 Spacer()
@@ -58,6 +58,9 @@ struct HomeView: View {
                     })
                 }
             }
+        }
+        .onAppear{
+            viewModel.getFiles()
         }
         .environmentObject(viewModel)
         .navigationBarTitle(LocalizableHome.appBar.localized, displayMode: .inline)

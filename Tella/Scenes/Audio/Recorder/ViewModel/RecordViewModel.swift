@@ -13,6 +13,8 @@ class RecordViewModel: ObservableObject {
     @Published var fileName: String = ""
     @Published var time: String = ""
     @Published var shouldShowSettingsAlert: Bool = false
+//    @Published var shouldReloadVaultFiles = false
+
     //    @Published var showingRecoredrView: Bool = false
     var showingRecoredrView: Binding<Bool> = .constant(false)
     
@@ -20,12 +22,22 @@ class RecordViewModel: ObservableObject {
     private var cancellable: Set<AnyCancellable> = []
     var sourceView : SourceView = .tab
     
+    private var mainAppModel: MainAppModel
+    private var rootFile: VaultFileDB?
+    private var resultFile: Binding<[VaultFileDB]?>?
+    
+    private var shouldReloadVaultFiles : Binding<Bool>?
     
     init(mainAppModel: MainAppModel,
-         rootFile: VaultFile?,
-         resultFile : Binding<[VaultFile]?>?,
+         rootFile: VaultFileDB?,
+         resultFile : Binding<[VaultFileDB]?>?,
          sourceView : SourceView,
-         showingRecoredrView: Binding<Bool> ) {
+         showingRecoredrView: Binding<Bool>,
+         shouldReloadVaultFiles : Binding<Bool>?) {
+        
+        self.mainAppModel = mainAppModel
+        self.rootFile = rootFile
+        self.resultFile = resultFile
         
         audioBackend = RecordingAudioManager()
         
@@ -36,26 +48,16 @@ class RecordViewModel: ObservableObject {
         
         
         // Save the audio file and return the recorded file
-        audioBackend.fileURL.sink { value in
-            guard let value else { return }
-            Task {
-                do {
-                    guard let file = try await mainAppModel.add(audioFilePath: value, to: rootFile, type: .audio, fileName: self.fileName) else {return}
-                    DispatchQueue.main.async {
-                        resultFile?.wrappedValue = [file]
-                    }
-                    
-                    if sourceView != .addReportFile {
-                        mainAppModel.sendAutoReportFile(file: file)
-                    }
-                    DispatchQueue.main.async {
-                        self.resetRecording()
-                    }
-                }
-            }
-        }.store(in: &cancellable)
         
+        //TODO: Dhekra
+
         
+        audioBackend.fileURL.sink { url in
+            
+            guard let url else { return }
+            self.addVaultFile(fileURL: url)
+        } .store(in: &self.cancellable)
+
         // Init the file name
         self.fileName = self.initialFileName
         
@@ -74,6 +76,37 @@ class RecordViewModel: ObservableObject {
                 self.shouldShowSettingsAlert = true
             }
         }.store(in: &cancellable)
+        
+    }
+    
+    func addVaultFile(fileURL: URL) {
+        //TODO: Dhekra
+
+        mainAppModel.addVaultFile(filePaths: [fileURL], parentId: rootFile?.id)
+                .sink { importVaultFileResult in
+                    
+                    switch importVaultFileResult {
+                        
+                    case .fileAdded(let vaulFile):
+                        
+                        guard let vaulFile = vaulFile.first else { return  }
+                        DispatchQueue.main.async {
+                            self.resultFile?.wrappedValue = [vaulFile]
+                            self.shouldReloadVaultFiles?.wrappedValue = true
+                        }
+
+                        if self.sourceView != .addReportFile {
+                            self.mainAppModel.sendAutoReportFile(file: vaulFile)
+                        }
+                        DispatchQueue.main.async {
+                            self.resetRecording()
+                        }
+                    case .importProgress:
+                        break
+                    }
+                    
+                }.store(in: &self.cancellable)
+
     }
     
     // Record audio

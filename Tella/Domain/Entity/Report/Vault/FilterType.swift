@@ -15,5 +15,6 @@ enum FilterType {
     case others
     case photoVideo
     case audioVideo
+    case audioPhotoVideo
     case pdf
 }

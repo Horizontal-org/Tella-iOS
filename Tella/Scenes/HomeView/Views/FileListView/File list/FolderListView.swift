@@ -14,8 +14,9 @@ struct FolderListView: View {
             
             if fileListViewModel.folderPathArray.count > 0 {
                 Button() {
-                    fileListViewModel.rootFile = appModel.vaultManager.root
+                    fileListViewModel.rootFile = nil
                     fileListViewModel.folderPathArray.removeAll()
+                    
                 } label: {
                     Image("files.folder")
                         .resizable()
@@ -41,7 +42,7 @@ struct FolderListView: View {
                             fileListViewModel.initFolderPathArray(for: file)
                             
                         } label: {
-                            Text(file.fileName)
+                            Text(file.name)
                                 .foregroundColor(.white).opacity(0.72)
                                 .font(.custom(Styles.Fonts.regularFontName, size: 16))
                         }

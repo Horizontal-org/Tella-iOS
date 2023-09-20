@@ -119,7 +119,7 @@ extension SQLiteStatementBuilder  {
         } else if let value = value as? Data {
             value.withUnsafeBytes { buffer in
                 let ptr = buffer.baseAddress!
-                flag = sqlite3_bind_blob(insertStatement, Int32(idx), ptr, -1, SQLITE_TRANSIENT)
+                flag = sqlite3_bind_blob(insertStatement, Int32(idx), ptr, Int32(value.count), SQLITE_TRANSIENT)
              }
         } else if let _ = value {
             return 0

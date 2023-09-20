@@ -10,7 +10,7 @@ import SwiftUI
 
 struct FileGridItem: View {
     
-    var file: VaultFile
+    var file: VaultFileDB
     
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var fileListViewModel : FileListViewModel
@@ -47,10 +47,10 @@ struct FileGridItem: View {
         
         if !fileListViewModel.shouldHideViewsForGallery {
             
-            if self.file.type != .image || self.file.type != .video {
+            if self.file.tellaFileType != .image || self.file.tellaFileType != .video {
                 VStack {
                     Spacer()
-                    Text(self.file.fileName)
+                    Text(self.file.name)
                         .font(.custom(Styles.Fonts.regularFontName, size: 11))
                         .foregroundColor(.white)
                         .lineLimit(1)
@@ -108,7 +108,7 @@ struct FileGridItem: View {
 
 struct FileGridItem_Previews: PreviewProvider {
     static var previews: some View {
-        FileGridItem(file: VaultFile.stub(type: .folder))
+        FileGridItem(file: VaultFileDB.stub())
             .environmentObject(MainAppModel.stub())
             .environmentObject(FileListViewModel.stub())
         

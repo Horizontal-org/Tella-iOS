@@ -35,7 +35,7 @@ struct AddNewFolderView: View {
                                      cancelButtonText: LocalizableVault.createNewFolderCancelSheetAction.localized,
                                      fieldContent: $fieldContent,
                                      didConfirmAction:  {
-                fileListViewModel.add(folder: fieldContent)
+                fileListViewModel.addFolder(name: fieldContent)
             })
             
         })

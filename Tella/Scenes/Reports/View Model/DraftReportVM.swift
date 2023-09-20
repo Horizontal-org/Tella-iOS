@@ -15,7 +15,7 @@ class DraftReportVM: ObservableObject {
     @Published var reportId : Int?
     @Published var title : String = ""
     @Published var description : String = ""
-    @Published var files :  Set <VaultFile> = []
+    @Published var files :  Set <VaultFileDB> = []
     @Published var server :  Server?
     @Published var status : ReportStatus?
     @Published var apiID : String?
@@ -27,7 +27,7 @@ class DraftReportVM: ObservableObject {
     @Published var reportIsValid : Bool = false
     @Published var reportIsDraft : Bool = false
     
-    @Published var resultFile : [VaultFile]?
+    @Published var resultFile : [VaultFileDB]?
     
     @Published var showingSuccessMessage : Bool = false
     @Published var showingImagePicker : Bool = false
@@ -127,12 +127,17 @@ class DraftReportVM: ObservableObject {
     func fillReportVM() {
         if let reportId = self.reportId ,let report = self.mainAppModel.vaultManager.tellaData?.getReport(reportId: reportId) {
             
-            var vaultFileResult : Set<VaultFile> = []
+//            var vaultFileResult : Set<VaultFileDB> = []
             
             self.title = report.title ?? ""
             self.description = report.description ?? ""
             self.server = report.server
-            self.mainAppModel.vaultManager.root?.getFile(root: self.mainAppModel.vaultManager.root, vaultFileResult: &vaultFileResult, ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
+            
+//            self.mainAppModel.vaultManager.root?.getFile(root: self.mainAppModel.vaultManager.root, vaultFileResult: &vaultFileResult, ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
+            
+            let vaultFileResult  = Set(mainAppModel.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])) 
+
+            
             self.files = vaultFileResult
             self.objectWillChange.send()
         }

@@ -10,7 +10,7 @@ struct VideoViewer: View {
     @EnvironmentObject var appModel: MainAppModel
     @StateObject private var playerVM : PlayerViewModel
     
-    init(appModel: MainAppModel, currentFile : VaultFile, playList: [VaultFile?]) {
+    init(appModel: MainAppModel, currentFile : VaultFileDB, playList: [VaultFileDB?]) {
         _playerVM = StateObject(wrappedValue: PlayerViewModel(appModel: appModel,
                                                               currentFile: currentFile,
                                                               playList: playList))
@@ -26,7 +26,7 @@ struct VideoViewer: View {
             appModel.vaultManager.clearTmpDirectory()
         }
         .toolbar {
-            LeadingTitleToolbar(title: playerVM.currentFile?.fileName ?? "")
+            LeadingTitleToolbar(title: playerVM.currentFile?.name ?? "")
             fileActionTrailingView()
         }
         .ignoresSafeArea()

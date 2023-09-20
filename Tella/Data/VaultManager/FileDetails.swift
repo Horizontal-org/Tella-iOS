@@ -5,7 +5,7 @@
 import Foundation
 
 struct FileDetails {
-    var file : VaultFile
+    var file : VaultFileDB
     var data : Data
     var fileUrl : URL
 }
@@ -13,4 +13,5 @@ struct FileDetails {
 struct VaultFileDetails {
     var file : VaultFileDB
     var data : Data
+    
 }

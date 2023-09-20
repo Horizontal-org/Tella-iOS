@@ -14,12 +14,14 @@ class CameraViewModel: ObservableObject {
     
     // MARK: - Public properties
     
-    var resultFile : Binding<[VaultFile]?>?
+    var resultFile : Binding<[VaultFileDB]?>?
     
-    @Published var lastImageOrVideoVaultFile :  VaultFile?
+    @Published var lastImageOrVideoVaultFile :  VaultFileDB?
     @Published var isRecording : Bool = false
     @Published var formattedCurrentTime : String = "00:00:00"
     @Published var currentTime : TimeInterval = 0.0
+    @Published var progressFile:ProgressFile = ProgressFile()
+    var  shouldReloadVaultFiles : Binding<Bool>?
     
     
     var imageData : Data?
@@ -28,7 +30,7 @@ class CameraViewModel: ObservableObject {
     var videoURL : URL?
     var mainAppModel: MainAppModel?
     
-    var rootFile: VaultFile?
+    var rootFile: VaultFileDB?
     var sourceView : SourceView
     
     // MARK: - Private properties
@@ -39,83 +41,72 @@ class CameraViewModel: ObservableObject {
     // MARK: - Public functions
     
     init(mainAppModel: MainAppModel,
-         rootFile: VaultFile?,
-         resultFile : Binding<[VaultFile]?>? = nil,
-         sourceView : SourceView) {
+         rootFile: VaultFileDB?,
+         resultFile : Binding<[VaultFileDB]?>? = nil,
+         sourceView : SourceView,
+         shouldReloadVaultFiles : Binding<Bool>?) {
         
         self.mainAppModel = mainAppModel
         self.rootFile = rootFile
         
-        self.lastImageOrVideoVaultFile = mainAppModel.vaultManager.root?.files.sorted(by: .newestToOldest, folderPathArray: [], root: rootFile, fileType: [.image, .video]).first
-        
-        mainAppModel.vaultManager.progress.progress.sink { value in
-            if value == 1 {
+        self.lastImageOrVideoVaultFile = mainAppModel.getVaultFiles(parentId: nil, filter: FilterType.photoVideo, sort: FileSortOptions.newestToOldest).first
                 
-                // mainAppModel.vaultManager.clearTmpDirectory()
-            }
-        }.store(in: &cancellable)
-        
         self.resultFile = resultFile
         
         self.sourceView = sourceView
+        
+        self.shouldReloadVaultFiles = shouldReloadVaultFiles
     }
     
-    func saveImage()   {
+    func saveImage() {
+        
         guard let imageData = image?.fixedOrientation()?.pngData() else { return  }
         guard let url = mainAppModel?.saveDataToTempFile(data: imageData, pathExtension: "png") else { return  }
-        Task {
-            
-            do { let file = try await mainAppModel?.add(files: [url],
-                                                        to: rootFile,
-                                                        type: .image)
-                
-                DispatchQueue.main.async {
-                    self.resultFile?.wrappedValue = file
-                    self.lastImageOrVideoVaultFile = file?.first
-                }
-                
-                if sourceView != .addReportFile {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                        if let file = file?.first {
-                            self.mainAppModel?.sendAutoReportFile(file: file)
-                        }
-                    }
-                }
-                
-                
-            }
-            catch {
-                
-            }
-        }
+        
+        saveFile(urlFile: url)
     }
-    
+
     func saveVideo() {
         guard let videoURL = videoURL else { return  }
+        saveFile(urlFile: videoURL)
+    }
+    
+    private func saveFile(urlFile:URL) {
         
-        Task {
-            
-            do { let file = try await mainAppModel?.add(files: [videoURL],
-                                                        to: rootFile,
-                                                        type: .video)
-                DispatchQueue.main.async {
-                    self.resultFile?.wrappedValue = file
-                    self.lastImageOrVideoVaultFile = file?.first
-                }
-                if sourceView != .addReportFile {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                        if let file = file?.first {
-                            self.mainAppModel?.sendAutoReportFile(file: file)
+        self.mainAppModel?.addVaultFile(filePaths: [urlFile], parentId: self.rootFile?.id)
+            .sink { importVaultFileResult in
+                
+                switch importVaultFileResult {
+                    
+                case .fileAdded(let vaulFile):
+                    
+                    DispatchQueue.main.async {
+                        self.resultFile?.wrappedValue = vaulFile
+                        self.shouldReloadVaultFiles?.wrappedValue = true
+                        self.lastImageOrVideoVaultFile = vaulFile.first
+                    }
+                    
+                    if self.sourceView != .addReportFile {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                            if let file = vaulFile.first {
+                                self.mainAppModel?.sendAutoReportFile(file: file)
+                            }
                         }
+                    }
+                    
+                case .importProgress(let importProgress):
+                    
+                    DispatchQueue.main.async {
+                        self.progressFile.progress = importProgress.progress.value
+                        self.progressFile.progressFile = importProgress.progressFile.value
+                        self.progressFile.isFinishing = importProgress.isFinishing.value
                     }
                 }
                 
-            }
-            catch {
-                
-            }
-        }
+            }.store(in: &cancellable)
     }
+
+    
     func initialiseTimerRunning() {
         self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.timerRunning), userInfo: nil, repeats: true)
     }
@@ -127,8 +118,6 @@ class CameraViewModel: ObservableObject {
     }
     
     // MARK: - Private functions
-    
-    
     @objc private func timerRunning() {
         currentTime = currentTime + 1
         self.formattedCurrentTime = currentTime.stringFromTimeInterval()

@@ -22,7 +22,7 @@ struct SubmittedDetailsItemView: View {
                 )
             VStack(alignment: .leading, spacing: 0){
                 Spacer()
-                Text(item.file.fileName)
+                Text(item.file.name)
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                     .foregroundColor(Color.white)
                     .lineLimit(1)
@@ -49,6 +49,6 @@ struct SubmittedDetailsItemView: View {
 
 struct SubmittedDetailsItemView_Previews: PreviewProvider {
     static var previews: some View {
-        OutboxDetailsItemView(item: .constant(ProgressFileItemViewModel(file: VaultFile.stub(type: .audio), progression: "4.5/4.5 MB") ))
+        OutboxDetailsItemView(item: .constant(ProgressFileItemViewModel(file: VaultFileDB.stub(), progression: "4.5/4.5 MB") ))
     }
 }

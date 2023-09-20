@@ -106,14 +106,6 @@ class VaultFile: Codable, Hashable {
     }
 }
 
-extension VaultFile: CustomDebugStringConvertible {
-    
-    var debugDescription: String {
-        return "\(type): \(String(describing: fileName)), \(containerName), \(files.count)"
-    }
-    
-}
-
 extension VaultFile: Equatable {
     
     static func == (lhs: VaultFile, rhs: VaultFile) -> Bool {
@@ -193,73 +185,7 @@ extension VaultFile {
     func getVideos() ->  [VaultFile] {
         return self.files.filter{$0.type == .video}
     }
-    
 }
-
-extension VaultFile {
-    
-    var formattedCreationDate : String {
-        get {
-            return created.fileCreationDate()
-        }
-    }
-}
-
-extension VaultFile {
-    
-    var longFormattedCreationDate : String {
-        get {
-            return created.getFormattedDateString(format: DateFormat.fileInfo.rawValue)
-        }
-    }
-}
-
-extension VaultFile {
-    
-    var formattedResolution : String? {
-        get {
-            guard let resolution = resolution else {return nil}
-            return "\(Int(resolution.width)):\(Int(resolution.height))"
-        }
-    }
-}
-
-extension VaultFile {
-    
-    var formattedDuration : String? {
-        get {
-            guard let duration = duration else {return nil}
-            return  duration.shortTimeString()
-        }
-    }
-}
-
-extension VaultFile {
-    
-    func getRecentFile() -> [RecentFile] {
-        
-        var vaultFileResult : [RecentFile] = []
-        var rootFile = self
-        var folderPathArray : [VaultFile] = []
-        
-        getRecentFile(root: self, vaultFileResult: &vaultFileResult,rootFile: &rootFile, folderPathArray: &folderPathArray)
-        return vaultFileResult.limit(10)
-    }
-    
-    func getRecentFile(root: VaultFile, vaultFileResult: inout [RecentFile], rootFile: inout VaultFile, folderPathArray:inout [VaultFile]) {
-        
-        root.files.forEach { file in
-            switch file.type {
-            case .folder:
-                getRecentFile(root: file, vaultFileResult: &vaultFileResult, rootFile: &rootFile, folderPathArray:&folderPathArray)
-            default:
-                let recentFile = RecentFile(file: file, rootFile: rootFile, folderPathArray:  folderPathArray)
-                vaultFileResult.append(recentFile)
-            }
-        }
-    }
-}
-
 
 extension VaultFile {
     

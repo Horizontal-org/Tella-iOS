@@ -90,7 +90,7 @@ class UploadService: NSObject {
         return operation.response
     }
     
-    func addAutoUpload(file: VaultFile)  {
+    func addAutoUpload(file: VaultFileDB)  {
         if let operation: AutoUpload = activeOperations.first(where:{$0.type == .autoUpload }) as? AutoUpload {
             operation.addFile(file:file)
         }

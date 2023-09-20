@@ -27,8 +27,7 @@ struct FileGroupsView: View {
                         FileGroupView(groupName: homeFileItem.title,
                                       iconName: homeFileItem.imageName,
                                       destination: FileListView(appModel: appModel,
-                                                                rootFile: appModel.vaultManager.root,
-                                                                fileType: homeFileItem.fileType,
+                                                                filterType: homeFileItem.filterType,
                                                                 title: homeFileItem.title ))
                     }
                 }

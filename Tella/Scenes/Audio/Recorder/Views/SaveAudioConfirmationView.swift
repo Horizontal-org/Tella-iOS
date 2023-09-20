@@ -62,10 +62,11 @@ struct SaveAudioConfirmationView: View {
 struct SaveAudioConfirmationView_Previews: PreviewProvider {
     static var previews: some View {
         SaveAudioConfirmationView(viewModel: RecordViewModel(mainAppModel: MainAppModel.stub(),
-                                                             rootFile: VaultFile.stub(type: .audio),
-                                                             resultFile: .constant([VaultFile.stub(type: .audio)]),
+                                                             rootFile: VaultFileDB.stub(),
+                                                             resultFile: .constant([VaultFileDB.stub()]),
                                                              sourceView: .tab,
-                                                             showingRecoredrView: .constant(true)),
+                                                             showingRecoredrView: .constant(true), 
+                                                             shouldReloadVaultFiles: .constant(true)),
                                   showingSaveSuccessView: .constant(true))
     }
 }

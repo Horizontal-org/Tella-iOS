@@ -45,14 +45,14 @@ class AutoUpload: BaseUploadOperation {
         }
     }
     
-    func addFile(file:VaultFile) {
+    func addFile(file:VaultFileDB) {
         self.response.send(UploadResponse.initial)
         self.autoPauseReport()
         self.filesToUpload.removeAll()
         startUploadReportAndFiles(file: file)
     }
     
-    func startUploadReportAndFiles(file:VaultFile) {
+    func startUploadReportAndFiles(file:VaultFileDB) {
         
         let currentReport = self.mainAppModel.vaultManager.tellaData?.getCurrentReport()
         
@@ -64,7 +64,7 @@ class AutoUpload: BaseUploadOperation {
         }
     }
     
-    func addReportFile(file:VaultFile, report:Report) {
+    func addReportFile(file:VaultFileDB, report:Report) {
         do {
             guard let reportId = report.id else { return  }
             self.report = report
@@ -78,7 +78,7 @@ class AutoUpload: BaseUploadOperation {
         }
     }
     
-    func createNewReport(file:VaultFile) {
+    func createNewReport(file:VaultFileDB) {
         
         let reportToAdd = Report(title: "Auto-report" + Date().getFormattedDateString(format: DateFormat.autoReportNameName.rawValue),
                                  description: "",
@@ -124,11 +124,15 @@ class AutoUpload: BaseUploadOperation {
     
     func prepareReportToSend(report:Report?) {
         
-        var vaultFileResult : Set<VaultFile> = []
+//        var vaultFileResult : Set<VaultFileDB> = []
+//        
+//        mainAppModel.vaultManager.root?.getFile(root: mainAppModel.vaultManager.root,
+//                                               vaultFileResult: &vaultFileResult,
+//                                               ids: report?.reportFiles?.compactMap{$0.fileId} ?? [])
         
-        mainAppModel.vaultManager.root?.getFile(root: mainAppModel.vaultManager.root,
-                                               vaultFileResult: &vaultFileResult,
-                                               ids: report?.reportFiles?.compactMap{$0.fileId} ?? [])
+       
+        
+        let vaultFileResult  = mainAppModel.getVaultFiles(ids: report?.reportFiles?.compactMap{$0.fileId} ?? [])
         
         self.report = report
         

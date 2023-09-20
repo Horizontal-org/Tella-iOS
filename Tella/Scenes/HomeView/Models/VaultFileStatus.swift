@@ -5,10 +5,10 @@
 import Foundation
 
 class VaultFileStatus {
-    var file : VaultFile
+    var file : VaultFileDB
     var isSelected : Bool
     
-    init(file : VaultFile, isSelected : Bool) {
+    init(file : VaultFileDB, isSelected : Bool) {
         self.file = file
         self.isSelected = isSelected
     }

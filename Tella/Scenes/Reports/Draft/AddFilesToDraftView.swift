@@ -55,8 +55,7 @@ struct AddFilesToDraftView: View {
     
     var fileListView : some View {
         FileListView(appModel: appModel,
-                     rootFile: appModel.vaultManager.root,
-                     fileType: [.audio,.image,.video],
+                     filterType: .audioVideo,
                      title: LocalizableReport.selectFiles.localized,
                      fileListType: .selectFiles,
                      resultFile: $draftReportVM.resultFile)

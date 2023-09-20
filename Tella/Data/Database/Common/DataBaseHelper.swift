@@ -26,9 +26,28 @@ class DataBaseHelper {
             debugLog("Opening database at \(dbURL?.absoluteString ?? "")")
         }
         
+//        if (sqlite3_key(dbPointer, key, Int32(key.count)) != SQLITE_OK) {
+//            logDbErr("Error setting key")
+//        }
+    }
+    
+    
+    init(key: String?, databaseName: String) {
+        dbURL =  FileManager.documentDirectory(withPath:databaseName)
+        
+        guard let key = key else { return }
+        
+        if sqlite3_open(dbURL?.path, &dbPointer) != SQLITE_OK {
+            debugLog("Error opening database at \(dbURL?.absoluteString ?? "")!")
+            logDbErr("Error opening database")
+        } else {
+            debugLog("Opening database at \(dbURL?.absoluteString ?? "")")
+        }
+        
         if (sqlite3_key(dbPointer, key, Int32(key.count)) != SQLITE_OK) {
             logDbErr("Error setting key")
         }
+
     }
     
     func logDbErr(_ msg: String) {

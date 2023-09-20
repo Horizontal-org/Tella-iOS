@@ -13,11 +13,13 @@ struct ImagePickerCompletion {
         case image
     }
     let type: MediaType
-    var image: UIImage? = nil
-    var videoURL: URL? = nil
-    var pathExtension: String? = nil
+//    var image: UIImage? = nil
+//    var videoURL: URL? = nil
+//    var pathExtension: String? = nil
     var referenceURL: URL? = nil
-    var imageURL: URL? = nil
+//    var imageURL: URL? = nil
+    var mediaURL: URL? = nil
+
 }
 
 //  SwiftUI wrapper for ImagePickerController for <= iOS 14.0
@@ -59,21 +61,11 @@ class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerC
         let mediaURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL
         let referenceURL = info[UIImagePickerController.InfoKey.referenceURL] as? URL
         let imageURL = info[UIImagePickerController.InfoKey.imageURL] as? URL
+       
         if mediaType as! CFString == kUTTypeImage {
-            guard let unwrapImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
-                return
-            }
-            //completion(unwrapImage, nil,mediaURL?.pathExtension, referenceURL, imageURL)
-            completion(ImagePickerCompletion(type: .image,image: unwrapImage,
-                                             pathExtension: mediaURL?.pathExtension,
-                                             referenceURL: referenceURL,
-                                             imageURL: imageURL))
+            completion(ImagePickerCompletion(type: .image, referenceURL: referenceURL, mediaURL: imageURL))
         } else if mediaType as! CFString == kUTTypeMovie {
-            guard let videoURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {
-                return
-            }
-            completion(ImagePickerCompletion(type: .video, videoURL: videoURL, referenceURL: referenceURL))
-            //completion(nil, videoURL, nil, nil, nil)
+            completion(ImagePickerCompletion(type: .video, referenceURL: referenceURL, mediaURL: mediaURL))
         }
     }
     

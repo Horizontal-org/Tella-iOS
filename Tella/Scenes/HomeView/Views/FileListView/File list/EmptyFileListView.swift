@@ -6,7 +6,7 @@ import SwiftUI
 
 enum EmptyListType {
     case allFiles
-    case folder
+    case directory
 }
 
 struct EmptyFileListView: View {

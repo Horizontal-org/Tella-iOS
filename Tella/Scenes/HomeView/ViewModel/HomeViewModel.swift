@@ -13,7 +13,8 @@ class HomeViewModel: ObservableObject {
     @Published var showingDocumentPicker = false
     @Published var showingAddFileSheet = false
     @Published var serverDataItemArray : [ServerDataItem] = []
-    
+    @Published var recentFiles : [VaultFileDB] = []
+
     var hasRecentFile = false
     
     private var subscribers = Set<AnyCancellable>()
@@ -39,9 +40,8 @@ class HomeViewModel: ObservableObject {
         }.store(in: &subscribers)
     }
     
-    func getFiles() -> [RecentFile] {
-        guard let recentFile = appModel.vaultManager.root?.getRecentFile() else { return [] }
-        hasRecentFile = recentFile.count > 0
-        return recentFile
+    func getFiles()   {
+        recentFiles = appModel.vaultManager.getRecentVaultFiles()
+        hasRecentFile = recentFiles.count > 0
     }
 }

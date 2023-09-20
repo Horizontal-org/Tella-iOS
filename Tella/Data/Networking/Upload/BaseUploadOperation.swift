@@ -180,14 +180,10 @@ class BaseUploadOperation : Operation {
     }
     
     func deleteCurrentAutoReport() {
-        do {
-            try mainAppModel.vaultManager.tellaData?.deleteReport(reportId: self.report?.id)
-        } catch {
-            
-        }
-        guard let reportVaultFiles = self.reportVaultFiles else { return }
-        mainAppModel.vaultManager.delete(files: reportVaultFiles, parent: mainAppModel.vaultManager.root)
-        
+        mainAppModel.vaultManager.tellaData?.deleteReport(reportId: self.report?.id)
+        guard let reportVaultFiles = self.reportVaultFiles else {return}
+        let reportVaultFilesIds = reportVaultFiles.compactMap{ $0.id}
+        mainAppModel.delete(filesIds: reportVaultFilesIds)
     }
     
     func sendReport() {
@@ -235,7 +231,7 @@ class BaseUploadOperation : Operation {
                                                         accessToken: accessToken,
                                                         serverURL: serverUrl,
                                                         data: vaultFileInfo.data,
-                                                        fileName: reportVaultFile.fileName,
+                                                        fileName: reportVaultFile.name,
                                                         fileExtension: reportVaultFile.fileExtension,
                                                         fileId: reportVaultFile.id,
                                                         fileSize: reportVaultFile.size,

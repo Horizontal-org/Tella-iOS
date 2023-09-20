@@ -6,10 +6,11 @@ import Foundation
 
 class VaultDataSource : VaultDataSourceInterface {
     
-    var database : VaultDataBase
+    
+    var database : VaultDatabase
 
     init(key: String?) {
-        self.database = VaultDataBase(key: key)
+        self.database = VaultDatabase(key: key)
     }
 
     func addVaultFile(file: VaultFileDB, parentId: String?) {
@@ -28,12 +29,17 @@ class VaultDataSource : VaultDataSourceInterface {
         return self.database.getVaultFiles(ids: ids)
     }
     
+    func getRecentVaultFiles() -> [VaultFileDB] {
+        return self.database.getRecentVaultFiles()
+
+    }
+
     func renameVaultFile(id: String, name: String?) {
         self.database.renameVaultFile(id: id, name: name)
     }
     
-    func moveVaultFile(id: String, newParentId: String) {
-        self.database.moveVaultFile(id: id, newParentId: newParentId)
+    func moveVaultFile(fileIds: [String], newParentId: String?) {
+        self.database.moveVaultFile(fileIds: fileIds, newParentId: newParentId)
     }
     
     func deleteVaultFile(ids: [String]) {
