@@ -58,7 +58,7 @@ struct TemplateListView: View {
 
     private func navigateToCreateEntityView(template: CollectedTemplate) {
         navigateTo(destination:
-                    CreateEntityView(mainAppModel: mainAppModel, template: template)
+                    CreateEntityView(mainAppModel: mainAppModel, template: template, server: uwaziViewModel.server)
             .environmentObject(sheetManager)
 
         )

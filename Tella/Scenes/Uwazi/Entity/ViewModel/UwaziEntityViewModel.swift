@@ -14,16 +14,34 @@ class UwaziEntityViewModel: ObservableObject {
     
     @Published var template: CollectedTemplate
     @Published var entryPrompts: [UwaziEntryPrompt] = []
+    @Published var accessToken: String
+    @Published var serverURL: String
 
-    init(mainAppModel: MainAppModel, template: CollectedTemplate, parser: UwaziEntityParserProtocol) {
+    init(mainAppModel: MainAppModel,
+         template: CollectedTemplate,
+         parser: UwaziEntityParserProtocol,
+         server: Server
+    ) {
         self.mainAppModel = mainAppModel
         self.template = template
+        self.accessToken = server.accessToken ?? ""
+        self.serverURL = server.url ?? ""
         entryPrompts = parser.getEntryPrompts()
     }
-    func handleMandatoryProperties() {
-        let requiredPrompts = entryPrompts.filter({$0.required ?? false})
-        requiredPrompts.forEach { prompt in
-            prompt.showMandatoryError = prompt.value.stringValue.isEmpty
-        }
+    func handleMandatoryProperties() async {
+        //        let requiredPrompts = entryPrompts.filter({$0.required ?? false})
+        //        requiredPrompts.forEach { prompt in
+        //            prompt.showMandatoryError = prompt.value.stringValue.isEmpty
+        //        }
+        try await submitEntity()
+    }
+    
+    private func submitEntity() async -> Void {
+        let serverURL = self.serverURL
+        let cookieList = ["connect.sid=" + self.accessToken]
+        
+        let response = try await UwaziServerRepository().submitEntity(serverURL: serverURL, cookieList: cookieList, entity: "title from ios")
+        
+        dump(response)
     }
 }
