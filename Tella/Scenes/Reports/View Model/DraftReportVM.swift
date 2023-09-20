@@ -100,7 +100,7 @@ class DraftReportVM: ObservableObject {
     }
     
     private func getServers() {
-        serverArray = mainAppModel.vaultManager.tellaData?.servers.value ?? []
+        serverArray = mainAppModel.vaultManager.tellaData?.servers.value.filter{ $0.serverType == .tella } ?? []
     }
     
     private func initcurrentReportVM(reportId:Int?) {
