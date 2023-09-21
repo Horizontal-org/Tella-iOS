@@ -34,12 +34,6 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
     func requestJSON<Value>() -> APIResponse<Value> where Value: Decodable {
         return requestData()
             .tryMap({ (data, allHeaderFields) in
-                do {
-                    let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String : Any]
-                    Swift.print(json)
-                } catch {
-                    print("errorMsg")
-                }
                 let decodedData : Value = try data.decoded()
                 return (decodedData, allHeaderFields)
             })
