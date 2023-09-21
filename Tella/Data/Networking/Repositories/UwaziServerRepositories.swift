@@ -126,16 +126,8 @@ class UwaziServerRepository: WebRepository {
     
     func submitEntity(serverURL: String, cookieList: [String], entity: String) -> AnyPublisher<EntityCreationResponse, APIError> {
         let apiResponse: APIResponse<EntityCreationResponse> = getAPIResponse(endpoint: API.submitEntity(serverURL: serverURL, cookieList: cookieList, entity: entity))
-
         return apiResponse
-            .map { response, _ in
-                return response
-            }
-            .mapError { error in
-                if let apiError = error as? APIError {
-                    return apiError
-                }
-            }
+            .map { $0.0 }
             .eraseToAnyPublisher()
     }
 }

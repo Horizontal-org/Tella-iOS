@@ -34,19 +34,17 @@ struct CreateEntityView: View {
             Spacer()
         }
     }
-
+    
     fileprivate var createEntityHeaderView: some View {
         CreateDraftHeaderView(title: entityViewModel.template.entityRow?.name ?? "",
                               isDraft: true,
                               closeAction: { showSaveEntityConfirmationView() },
                               saveAction: {
-                                          Task {
-                                              await self.entityViewModel.handleMandatoryProperties()
-                                          }
-                                      })
+            self.entityViewModel.handleMandatoryProperties()
+        })
     }
-
-
+    
+    
     
     fileprivate var draftContentView: some View {
         GeometryReader { geometry in
@@ -59,7 +57,7 @@ struct CreateEntityView: View {
             }
         }
     }
-
+    
     private func showSaveEntityConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: modelHeight) {
             ConfirmBottomSheet(titleText: "Exit entity?",

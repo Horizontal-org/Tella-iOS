@@ -15,6 +15,7 @@ class UwaziEntryPrompt: Hashable, ObservableObject {
     let type: String
     var question: String
     var answer: String?
+    var name: String
     let required: Bool?
     let readonly = false
     let helpText: String?
@@ -27,6 +28,7 @@ class UwaziEntryPrompt: Hashable, ObservableObject {
          formIndex: String?,
          type: String,
          question: String,
+         name: String,
          answer: String? = nil,
          required: Bool?,
          helpText: String?,
@@ -37,6 +39,7 @@ class UwaziEntryPrompt: Hashable, ObservableObject {
         self.formIndex = formIndex
         self.type = type
         self.question = question
+        self.name = name
         self.answer = answer
         self.required = required
         self.helpText = helpText

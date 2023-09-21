@@ -30,6 +30,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                          formIndex: "10242050",
                                          type: UwaziEntityPropertyType.dataTypeMultiPDFFiles.rawValue,
                                          question: "Primary Documents",
+                                         name: "primary_documents",
                                          required: false,
                                          helpText: "Attach as many PDF files as you wish")
         entryPrompts.append(pdfPrompt)
@@ -39,6 +40,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                              formIndex: "10242049",
                                              type: UwaziEntityPropertyType.dataTypeMultiFiles.rawValue,
                                              question: "Supporting files",
+                                             name: "supporting_files",
                                              required: false,
                                              helpText: "Select as many files as you wish")
         entryPrompts.append(supportPrompt)
@@ -48,6 +50,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                              formIndex: "",
                                              type: UwaziEntityPropertyType.dataTypeDivider.rawValue,
                                              question: "",
+                                             name: "divider",
                                              required: false,
                                              helpText: "")
         entryPrompts.append(dividerPrompt)
@@ -59,6 +62,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                            formIndex: titleProperty.id,
                                            type: titleProperty.type ?? "",
                                            question: titleProperty.translatedLabel ?? "",
+                                           name: titleProperty.name ?? "",
                                            required: true,
                                            helpText: titleProperty.translatedLabel)
         self.entryPrompts.append(titlePrompt)
@@ -69,6 +73,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                              formIndex: $0.id,
                              type: $0.type ?? "",
                              question: $0.translatedLabel ?? "",
+                             name: $0.name ?? "",
                              required: $0.propertyRequired,
                              helpText: $0.translatedLabel,
                              selectValues: $0.values)
