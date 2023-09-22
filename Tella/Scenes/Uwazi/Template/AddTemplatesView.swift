@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AddTemplatesView: View {
     var downloadTemplateAction : (inout CollectedTemplate) -> Void
-    @EnvironmentObject var uwaziReportsViewModel: UwaziTemplateViewModel
+    @EnvironmentObject var uwaziTemplateViewModel: UwaziTemplateViewModel
     @EnvironmentObject var sheetManager: SheetManager
 
     var body: some View {
@@ -18,12 +18,12 @@ struct AddTemplatesView: View {
             ZStack {
                 VStack {
                     headerView()
-                    if !self.uwaziReportsViewModel.isLoading {
+                    if !self.uwaziTemplateViewModel.isLoading {
                         handleListView()
                     }
                     Spacer()
                 }.padding(.top, 0)
-                if uwaziReportsViewModel.isLoading {
+                if uwaziTemplateViewModel.isLoading {
                     CircularActivityIndicatory()
                 }
             }
@@ -35,13 +35,13 @@ struct AddTemplatesView: View {
             reloadTemplatesButton()
         }
         .onAppear {
-            self.uwaziReportsViewModel.getTemplates()
+            self.uwaziTemplateViewModel.getTemplates()
         }
     }
     fileprivate func reloadTemplatesButton() -> ToolbarItem<(), Button<some View>> {
         return ToolbarItem(placement: .navigationBarTrailing) {
             Button {
-                self.uwaziReportsViewModel.getTemplates()
+                self.uwaziTemplateViewModel.getTemplates()
             } label: {
                 Image("arrow.clockwise")
                     .resizable()
@@ -64,16 +64,16 @@ struct AddTemplatesView: View {
 
     fileprivate func handleListView() -> some View {
         VStack {
-            if uwaziReportsViewModel.templates.count > 0 {
+            if uwaziTemplateViewModel.templates.count > 0 {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
-                        Text(uwaziReportsViewModel.serverName)
+                        Text(uwaziTemplateViewModel.serverName)
                             .font(.custom(Styles.Fonts.semiBoldFontName, size: 16))
                             .foregroundColor(.white)
                             .padding(.all, 14)
-                        ForEach(Array(uwaziReportsViewModel.templates.enumerated()), id: \.element) { index, template in
+                        ForEach(Array(uwaziTemplateViewModel.templates.enumerated()), id: \.element) { index, template in
                             TemplateItemView(
-                                template: $uwaziReportsViewModel.templates[index],
+                                template: $uwaziTemplateViewModel.templates[index],
                                 isDownloaded: template.isDownloaded ?? false,
                                 downloadTemplate: { template in
                                     Toast.displayToast(message: "“\(template.entityRow?.translatedName ?? "")” “\(LocalizableUwazi.uwaziAddTemplateSavedToast.localized)”")
@@ -81,7 +81,7 @@ struct AddTemplatesView: View {
                                 }) { template in
                                     showServerActionBottomSheet(template: template)
                                 }
-                            if index < (uwaziReportsViewModel.templates.count - 1) {
+                            if index < (uwaziTemplateViewModel.templates.count - 1) {
                                 DividerView()
                             }
                         }
@@ -101,7 +101,7 @@ struct AddTemplatesView: View {
             ActionListBottomSheet(items: templateActionItems,
                                   headerTitle: template.entityRow?.translatedName ?? "",
                                   action:  {item in
-                self.uwaziReportsViewModel.handleDeleteActionsForAddTemplate(item : item, template: template) {
+                self.uwaziTemplateViewModel.handleDeleteActionsForAddTemplate(item : item, template: template) {
                     self.sheetManager.hide()
                 }
             })

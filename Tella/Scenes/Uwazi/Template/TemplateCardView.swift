@@ -11,7 +11,7 @@ import SwiftUI
 struct TemplateCardView: View {
     @Binding var template : CollectedTemplate
     var serverName : String
-    @EnvironmentObject var uwaziReportsViewModel : UwaziTemplateViewModel
+    @EnvironmentObject var uwaziTemplateViewModel : UwaziTemplateViewModel
     var deleteTemplate: (CollectedTemplate) -> Void
     
     var body: some View {
