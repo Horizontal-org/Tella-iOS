@@ -38,12 +38,14 @@ struct AddTemplatesView: View {
             self.uwaziReportsViewModel.getTemplates()
         }
     }
-    fileprivate func reloadTemplatesButton() -> ToolbarItem<(), Button<Image>> {
+    fileprivate func reloadTemplatesButton() -> ToolbarItem<(), Button<some View>> {
         return ToolbarItem(placement: .navigationBarTrailing) {
             Button {
                 self.uwaziReportsViewModel.getTemplates()
             } label: {
-                Image(systemName: "arrow.clockwise")
+                Image("arrow.clockwise")
+                    .resizable()
+                    .frame(width: 24, height: 24)
             }
         }
     }
@@ -66,7 +68,7 @@ struct AddTemplatesView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
                         Text(uwaziReportsViewModel.serverName)
-                            .font(.custom(Styles.Fonts.boldFontName, size: 18))
+                            .font(.custom(Styles.Fonts.semiBoldFontName, size: 16))
                             .foregroundColor(.white)
                             .padding(.all, 14)
                         ForEach(Array(uwaziReportsViewModel.templates.enumerated()), id: \.element) { index, template in

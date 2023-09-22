@@ -26,7 +26,7 @@ struct TemplateItemView: View {
                         Text(template.entityRow?.name ?? "")
                             .font(.custom(Styles.Fonts.regularFontName, size: 16))
                             .foregroundColor(.white)
-                            .padding(.leading, 8)
+                            .padding(.horizontal, 8)
                             
                         Spacer()
                             
@@ -39,10 +39,10 @@ struct TemplateItemView: View {
                             MoreButtonView(imageName: "reports.more", action: {
                                 //
                                 deleteTemplate(template)
-                            })
+                            }).padding(.trailing, 8)
                         }
                             
-                    }.padding(.all, 8)
+                    }.padding(.all, 4)
                         
                 // }
     }
