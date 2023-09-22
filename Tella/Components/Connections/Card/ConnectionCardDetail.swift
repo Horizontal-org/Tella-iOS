@@ -1,5 +1,5 @@
 //
-//  ReportCardDetail.swift
+//  ConnectionCardDetail.swift
 //  Tella
 //
 //  Created by Gustavo on 02/08/2023.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct ReportCardDetail: View {
+struct ConnectionCardDetail: View {
     var title : String
     var subtitle: String
     var body: some View {
@@ -28,6 +28,6 @@ struct ReportCardDetail: View {
 
 struct ReportCardDetail_Previews: PreviewProvider {
     static var previews: some View {
-        ReportCardDetail(title: "", subtitle: "")
+        ConnectionCardDetail(title: "", subtitle: "")
     }
 }

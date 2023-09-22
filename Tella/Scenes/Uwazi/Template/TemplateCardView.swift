@@ -21,7 +21,7 @@ struct TemplateCardView: View {
                     MoreButtonView(imageName: "uwazi.star", action: {
                         //add this template to favorie
                     })
-                    ReportCardDetail(title: template.entityRow?.translatedName ?? "", subtitle: template.serverName ?? "")
+                    ConnectionCardDetail(title: template.entityRow?.translatedName ?? "", subtitle: template.serverName ?? "")
                     Spacer()
                     MoreButtonView(imageName: "reports.more", action: {
                         //show detail

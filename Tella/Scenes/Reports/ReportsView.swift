@@ -31,7 +31,7 @@ struct ReportsView: View {
     private var contentView :some View {
         
         ContainerView {
-            ReportsPageView(
+            ConnectionsPageView(
                 selectedCell: $reportsViewModel.selectedCell,
                 pageViewItems: $reportsViewModel.pageViewItems,
                 draftReports: $reportsViewModel.draftReports,

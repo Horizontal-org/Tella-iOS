@@ -26,7 +26,7 @@ struct ReportCardView : View {
                 
                 HStack {
                     
-                    ReportCardDetail(title: report.title ?? "", subtitle: report.getReportDate)
+                    ConnectionCardDetail(title: report.title ?? "", subtitle: report.getReportDate)
                     
                     Spacer()
                     
