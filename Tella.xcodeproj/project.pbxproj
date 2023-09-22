@@ -308,6 +308,7 @@
 		CCD586D42A7C294800014F87 /* TemplateItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586D32A7C294800014F87 /* TemplateItemView.swift */; };
 		CCE875B32A96699000C576B9 /* LocalizableUwazi.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE875B22A96699000C576B9 /* LocalizableUwazi.swift */; };
 		CCF47F412ABE1326000ABBBC /* ConnectionsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF47F402ABE1325000ABBBC /* ConnectionsPageView.swift */; };
+		CCF47F442ABE18D7000ABBBC /* TemplateActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF47F432ABE18D7000ABBBC /* TemplateActionType.swift */; };
 		CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02ED7E24E42B3900014176 /* UserDefaultsProperty.swift */; };
 		D50727BF2625561400BBC370 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50727BE2625561400BBC370 /* KeychainManager.swift */; };
 		D50727C42625567900BBC370 /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50727C32625567900BBC370 /* KeychainTests.swift */; };
@@ -729,6 +730,7 @@
 		CCD586D32A7C294800014F87 /* TemplateItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateItemView.swift; sourceTree = "<group>"; };
 		CCE875B22A96699000C576B9 /* LocalizableUwazi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableUwazi.swift; sourceTree = "<group>"; };
 		CCF47F402ABE1325000ABBBC /* ConnectionsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionsPageView.swift; sourceTree = "<group>"; };
+		CCF47F432ABE18D7000ABBBC /* TemplateActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateActionType.swift; sourceTree = "<group>"; };
 		CE02ED7E24E42B3900014176 /* UserDefaultsProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsProperty.swift; sourceTree = "<group>"; };
 		CE64FA282505542E00B03CEC /* AppViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewState.swift; sourceTree = "<group>"; };
 		D47E68E3B1AECB3684E49829 /* Pods-Tella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.release.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.release.xcconfig"; sourceTree = "<group>"; };
@@ -1846,6 +1848,7 @@
 		CC43D9DF2A72F7FB0030192E /* Uwazi */ = {
 			isa = PBXGroup;
 			children = (
+				CCF47F422ABE18B4000ABBBC /* Models */,
 				E10412112A9474D9003DCE6A /* Views */,
 				CCD586D22A7C0EFA00014F87 /* Common */,
 				CCD586BE2A7AB0E300014F87 /* Template */,
@@ -1889,6 +1892,14 @@
 				CCF47F402ABE1325000ABBBC /* ConnectionsPageView.swift */,
 			);
 			path = Connections;
+			sourceTree = "<group>";
+		};
+		CCF47F422ABE18B4000ABBBC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CCF47F432ABE18D7000ABBBC /* TemplateActionType.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		D50FA6812613ABC900D6D63B /* VaultManager */ = {
@@ -2617,6 +2628,7 @@
 				0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */,
 				121C5D7529422C0800A64123 /* ProjectDetailsResult.swift in Sources */,
 				121C945E28FF3DCC00570EB4 /* EmptyReportView.swift in Sources */,
+				CCF47F442ABE18D7000ABBBC /* TemplateActionType.swift in Sources */,
 				CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */,
 				1216123C28DE13AC00E6D7B6 /* DatabaseUtilities.swift in Sources */,
 				12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */,
