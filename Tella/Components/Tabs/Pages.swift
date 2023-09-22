@@ -24,32 +24,4 @@ public enum Pages: Hashable {
             return "Submitted"
         }
     }
-    
-    static func fromHashValue(hashValue: Pages) -> Int {
-        switch hashValue {
-        case .draft:
-            return 0
-        case .outbox:
-            return 1
-        case .submitted:
-            return 2
-        case .templates:
-            return 3
-        }
-    }
-    
-    static func fromValueHash(value: Int) -> Pages {
-        switch value {
-        case 0:
-            return .draft
-        case 1:
-            return .outbox
-        case 2:
-            return .submitted
-        case 3:
-            return .templates
-        default:
-            return .draft
-        }
-    }
 }
