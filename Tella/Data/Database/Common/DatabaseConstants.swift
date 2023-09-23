@@ -72,10 +72,10 @@ struct D {
     static let cLocaleId = "c_locale_id"
 
     static let cTemplateId = "c_template_id"
-    static let cTemplateEntity = "c_entity"
-    static let cTemplateDownloaded = "c_downloaded"
-    static let cTemplateUpdated = "c_updated"
-    static let cTemplateFavorite = "c_favorite"
+    static let cEntity = "c_entity"
+    static let cDownloaded = "c_downloaded"
+    static let cUpdated = "c_updated"
+    static let cFavorite = "c_favorite"
     static let cServerName = "c_server_name"
 
 }

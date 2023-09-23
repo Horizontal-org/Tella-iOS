@@ -14,10 +14,10 @@ extension TellaDataBase: UwaziTemplateProtocol {
         let columns = [
             cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
             cddl(D.cTemplateId, D.text),
-            cddl(D.cTemplateEntity, D.text),
-            cddl(D.cTemplateDownloaded, D.integer),
-            cddl(D.cTemplateUpdated, D.integer),
-            cddl(D.cTemplateFavorite, D.integer),
+            cddl(D.cEntity, D.text),
+            cddl(D.cDownloaded, D.integer),
+            cddl(D.cUpdated, D.integer),
+            cddl(D.cFavorite, D.integer),
             cddl(D.cServerName, D.text),
             cddl(D.cServerId, D.integer, tableName: D.tServer, referenceKey: D.cServerId)
 
@@ -47,12 +47,12 @@ extension TellaDataBase: UwaziTemplateProtocol {
     func addUwaziTemplate(template: CollectedTemplate) -> CollectedTemplate {
         let id = statementBuilder.insertInto(tableName: D.tUwaziTemplate, keyValue: [
             KeyValue(key: D.cTemplateId, value: template.templateId),
-            KeyValue(key: D.cTemplateDownloaded, value: 1),
-            KeyValue(key: D.cTemplateUpdated, value: 1),
-            KeyValue(key: D.cTemplateFavorite, value: 0),
+            KeyValue(key: D.cDownloaded, value: 1),
+            KeyValue(key: D.cUpdated, value: 1),
+            KeyValue(key: D.cFavorite, value: 0),
             KeyValue(key: D.cServerId, value: template.serverId),
             KeyValue(key: D.cServerName, value: template.serverName),
-            KeyValue(key: D.cTemplateEntity, value: template.entityRowString),
+            KeyValue(key: D.cEntity, value: template.entityRowString),
         ])
         template.id = id
         template.isUpdated = true
