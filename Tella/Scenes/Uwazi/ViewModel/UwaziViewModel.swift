@@ -27,7 +27,6 @@ class UwaziTemplateViewModel: ObservableObject {
         PageViewItem(title: LocalizableReport.submittedTitle.localized, page: .submitted, number: "")
     ]
     @Published var isLoading: Bool = false
-    @Published var serverURL : String
     @Published var serverName : String
     var subscribers = Set<AnyCancellable>()
     var server: Server
@@ -48,7 +47,6 @@ class UwaziTemplateViewModel: ObservableObject {
         
         self.mainAppModel = mainAppModel
         self.server = server
-        self.serverURL = server.url ?? ""
         self.serverName = server.name ?? ""
     }
 
