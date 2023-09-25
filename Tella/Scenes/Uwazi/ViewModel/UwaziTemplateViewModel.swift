@@ -15,29 +15,10 @@ class UwaziTemplateViewModel: ObservableObject {
 
     @Published var templates : [CollectedTemplate] = []
     @Published var downloadedTemplates : [CollectedTemplate] = []
-    @Published var draftReports : [Report] = []
-    @Published var outboxedReports : [Report] = []
-    @Published var submittedReports : [Report] = []
-    @Published var selectedReport : Report?
-    @Published var selectedCell = Pages.templates
-    @Published var pageViewItems : [PageViewItem] = [
-        PageViewItem(title: LocalizableUwazi.uwaziPageViewTemplate.localized, page: .templates, number: ""),
-        PageViewItem(title: LocalizableReport.draftTitle.localized, page: .draft, number: "") ,
-        PageViewItem(title: LocalizableReport.outboxTitle.localized, page: .outbox, number: ""),
-        PageViewItem(title: LocalizableReport.submittedTitle.localized, page: .submitted, number: "")
-    ]
     @Published var isLoading: Bool = false
     @Published var serverName : String
     var subscribers = Set<AnyCancellable>()
     var server: Server
-    var sheetItems : [ListActionSheetItem] { return [
-        ListActionSheetItem(imageName: "view-icon",
-                            content: self.selectedReport?.status?.sheetItemTitle ?? "",
-                            type: self.selectedReport?.status?.reportActionType ?? .viewSubmitted),
-        ListActionSheetItem(imageName: "delete-icon-white",
-                            content: LocalizableReport.viewModelDelete.localized,
-                            type: ReportActionType.delete)
-    ]}
 
     var tellaData: TellaData? {
         return self.mainAppModel.vaultManager.tellaData

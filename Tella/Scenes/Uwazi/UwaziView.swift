@@ -9,12 +9,12 @@
 import SwiftUI
 
 struct UwaziView: View {
-    @EnvironmentObject var uwaziTemplateViewModel: UwaziTemplateViewModel
+    @EnvironmentObject var uwaziViewModel: UwaziViewModel
     
     var body: some View {
         contentView
             .navigationBarTitle(LocalizableUwazi.uwaziTitle.localized, displayMode: .large)
-            .environmentObject(uwaziTemplateViewModel)
+            .environmentObject(uwaziViewModel)
     }
     
     private var contentView :some View {
@@ -22,28 +22,28 @@ struct UwaziView: View {
             ContainerView {
                 VStack(alignment: .center) {
                         
-                    PageView(selectedOption: $uwaziTemplateViewModel.selectedCell, pageViewItems: $uwaziTemplateViewModel.pageViewItems)
+                    PageView(selectedOption: $uwaziViewModel.selectedCell, pageViewItems: $uwaziViewModel.pageViewItems)
                         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
                             
                     VStack (spacing: 0) {
                         Spacer()
-                        switch uwaziTemplateViewModel.selectedCell {
+                        switch uwaziViewModel.selectedCell {
                         
                         case .templates:
                             TemplateListView(
-                                             message: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized, serverName: uwaziTemplateViewModel.serverName)
-                            .environmentObject(uwaziTemplateViewModel)
+                                             message: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized, serverName: uwaziViewModel.serverName)
+                            .environmentObject(UwaziTemplateViewModel(mainAppModel: uwaziViewModel.mainAppModel, server: uwaziViewModel.server))
                         case .draft:
-                            ReportListView(reportArray: $uwaziTemplateViewModel.draftReports,
+                            ReportListView(reportArray: $uwaziViewModel.draftEntities,
                                            message: LocalizableReport.reportsDraftEmpty.localized)
                                         
                         case .outbox:
                                         
-                            ReportListView(reportArray: $uwaziTemplateViewModel.outboxedReports,
+                            ReportListView(reportArray: $uwaziViewModel.outboxedEntities,
                                            message: LocalizableReport.reportsOutboxEmpty.localized)
                                         
                         case .submitted:
-                            ReportListView(reportArray: $uwaziTemplateViewModel.submittedReports,
+                            ReportListView(reportArray: $uwaziViewModel.submittedEntities,
                                            message: LocalizableReport.reportsSubmitedEmpty.localized)
                         }
                                     
@@ -52,7 +52,7 @@ struct UwaziView: View {
                     
                     AddFileYellowButton(action: {
                         navigateTo(destination: AddTemplatesView()
-                            .environmentObject(uwaziTemplateViewModel))
+                            .environmentObject(UwaziTemplateViewModel(mainAppModel: uwaziViewModel.mainAppModel, server: uwaziViewModel.server)))
                     }).frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
                             
                     }.background(Styles.Colors.backgroundMain)
