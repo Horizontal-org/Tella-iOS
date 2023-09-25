@@ -158,6 +158,12 @@ class UwaziServerViewModel: ObservableObject {
             // TODO: Handle this error
         case .failure(let error):
             debugLog(error)
+            switch error {
+            case .noInternetConnection:
+                Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+            default:
+                break
+            }
             self.isLoading = false
         }
     }
@@ -176,7 +182,7 @@ class UwaziServerViewModel: ObservableObject {
 
     // MARK: - Check URL API Call Methods
     func checkURL() {
-        isLoading = true
+        self.isLoading = true
         guard let baseURL = serverURL.getBaseURL() else { return }
         UwaziServerRepository().checkServerURL(serverURL: baseURL)
             .receive(on: DispatchQueue.main)
@@ -194,8 +200,12 @@ class UwaziServerViewModel: ObservableObject {
             debugLog("Finished")
             // TODO: handle this error
         case .failure(let error):
-            debugLog(error)
-            self.isPublicInstance = false
+            switch error {
+                case .noInternetConnection:
+                    Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+            default:
+                self.isPublicInstance = false
+            }
         }
     }
 
@@ -242,6 +252,8 @@ class UwaziServerViewModel: ObservableObject {
                     self.shouldShowLoginError = true
                     self.loginErrorMessage = error.localizedDescription
                 }
+            case .noInternetConnection:
+                Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
             }
         case .finished:
             self.shouldShowLoginError = false
@@ -299,6 +311,8 @@ class UwaziServerViewModel: ObservableObject {
                 default:
                     self.codeErrorMessage = error.errorDescription ?? ""
                 }
+            case .noInternetConnection:
+                Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
             }
             self.shouldShowAuthenticationError = true
         case .finished:

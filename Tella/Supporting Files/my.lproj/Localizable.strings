@@ -279,6 +279,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_SettServer_Selection_Message" = "If you are not sure, please ask your organization.";
 "Setting_SettServer_TellaWeb" = "TELLA WEB";
 "Setting_SettServer_Uwazi" = "UWAZI";
+"Setting_SettServer_No_Internet" = "No Internet connection. Try again when you are connected to the Internet.";
 
 
 "Setting_Server_Uwazi_Server_URL" = "Enter the server URL";
