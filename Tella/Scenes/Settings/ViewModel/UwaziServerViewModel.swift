@@ -182,6 +182,7 @@ class UwaziServerViewModel: ObservableObject {
 
     // MARK: - Check URL API Call Methods
     func checkURL() {
+        self.isLoading = true
         guard let baseURL = serverURL.getBaseURL() else { return }
         UwaziServerRepository().checkServerURL(serverURL: baseURL)
             .receive(on: DispatchQueue.main)

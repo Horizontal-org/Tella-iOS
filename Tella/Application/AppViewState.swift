@@ -24,6 +24,8 @@ final class AppViewState: ObservableObject {
     init() {
         let networkMonitor = NetworkMonitor()
         self.networkMonitor = networkMonitor
+        // To initialize the NetworkMonitor singleton class
+        _ = NetworkMonitor.shared
 
         homeViewModel = MainAppModel(networkMonitor:  networkMonitor)
         
