@@ -9,7 +9,7 @@
 import Foundation
 
 // MARK: - Welcome
-class UwaziSettingDTO: Codable, DataModel {
+class UwaziSettingDTO: Codable {
     let id, siteName: String?
     let languages: [UwaziLanguageRowDTO]
     let version: Int?
@@ -25,10 +25,5 @@ class UwaziSettingDTO: Codable, DataModel {
         case isPrivate = "private"
         case allowedPublicTemplates
         case mapAPIKey = "mapApiKey"
-    }
-    func toDomain() -> DomainModel? {
-        UwaziSetting(id: id,
-                     allowedPublicTemplates: allowedPublicTemplates,
-                     mapAPIKey: mapAPIKey)
     }
 }

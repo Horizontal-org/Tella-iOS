@@ -13,7 +13,7 @@ struct TemplateListView: View {
     @EnvironmentObject var sheetManager: SheetManager
     var message : String
     var serverName : String
-    
+
     var body: some View {
         ZStack {
             if !uwaziViewModel.downloadedTemplates.isEmpty {
@@ -24,9 +24,8 @@ struct TemplateListView: View {
                         .padding(.all, 14)
                     ScrollView {
                         ForEach($uwaziViewModel.downloadedTemplates, id: \.self) { template in
-                            TemplateCardView(template: template, serverName: serverName) { template in
-                                self.showtemplateActionBottomSheet(template: template)
-                            }
+                            let cardViewModel = createCardViewModel(template)
+                            TemplateCardView(viewModel: cardViewModel)
                         }
                     }
                 }
@@ -38,6 +37,14 @@ struct TemplateListView: View {
             self.uwaziViewModel.getDownloadedTemplates()
         }
     }
+
+    fileprivate func createCardViewModel(_ template: Binding<CollectedTemplate>) -> TemplateCardViewModel {
+        return TemplateCardViewModel(serverName: template.serverName.wrappedValue ?? "",
+                                     translatedName: template.entityRow.wrappedValue?.translatedName ?? "") {
+            self.showDeleteTemplateConfirmationView(template: template.wrappedValue)
+        }
+    }
+
     private func showtemplateActionBottomSheet(template: CollectedTemplate) {
         sheetManager.showBottomSheet(modalHeight: 176) {
             ActionListBottomSheet(items: downloadTemplateActionItems,
@@ -50,15 +57,17 @@ struct TemplateListView: View {
             })
         }
     }
+    
     private func showDeleteTemplateConfirmationView(template: CollectedTemplate) {
         sheetManager.showBottomSheet(modalHeight: 200) {
-            DeleteTemplateConfirmationView(title: template.entityRow?.translatedName,
-                                           message: LocalizableUwazi.uwaziDeleteTemplateExpl.localized) {
+            let deleteViewModel = DeleteTemplateConfirmationViewModel(title: template.entityRow?.translatedName ?? "",
+                                                                      message: LocalizableUwazi.uwaziDeleteTemplateExpl.localized,
+                                                                      confirmAction: {
                 if let templateId = template.id {
                     self.uwaziViewModel.deleteDownloadedTemplate(templateId: templateId)
                 }
-                
-            }
+            })
+            return DeleteTemplateConfirmationView(viewModel: deleteViewModel)
         }
     }
 }

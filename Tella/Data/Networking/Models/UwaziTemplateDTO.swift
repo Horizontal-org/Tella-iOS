@@ -9,12 +9,8 @@
 import Foundation
 
 
-struct UwaziTemplateDTO: Codable, DataModel {
-    let rows: [UwaziTemplateRowDTO]?
-    func toDomain() -> DomainModel? {
-        let rows = rows?.compactMap{ $0.toDomain() as? UwaziTemplateRow}
-        return UwaziTemplate(rows: rows)
-    }
+struct UwaziTemplateDTO: Codable {
+    let rows: [UwaziTemplateRowDTO]
 }
 
 class UwaziTemplateRowDTO: Codable, DataModel {

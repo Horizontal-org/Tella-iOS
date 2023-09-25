@@ -9,24 +9,23 @@
 import SwiftUI
 
 struct DeleteTemplateConfirmationView: View {
-    var title : String?
-    var message : String
-    var confirmAction : () -> ()
-
+    var viewModel: DeleteTemplateConfirmationViewModel
     var body: some View {
-        let titleText = LocalizableReport.viewModelDelete.localized + " " + "\"\(title ?? "")\""
+        let titleText = LocalizableReport.viewModelDelete.localized + " " + "\"\(viewModel.title)\""
         ConfirmBottomSheet(titleText: titleText,
-                           msgText: message,
+                           msgText: viewModel.message,
                            cancelText: LocalizableReport.deleteCancel.localized,
                            actionText: LocalizableReport.deleteConfirm.localized, didConfirmAction: {
 
-            confirmAction()
+            viewModel.confirmAction()
         })
     }
 }
 
 struct DeleteTemplateConfirmationView_Previews: PreviewProvider {
     static var previews: some View {
-        DeleteTemplateConfirmationView(message: "", confirmAction: {})
+        DeleteTemplateConfirmationView(viewModel: DeleteTemplateConfirmationViewModel(title: "", message: "", confirmAction: {
+            print("")
+        }))
     }
 }

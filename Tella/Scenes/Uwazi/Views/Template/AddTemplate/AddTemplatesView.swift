@@ -9,10 +9,8 @@
 import SwiftUI
 
 struct AddTemplatesView: View {
-    var downloadTemplateAction : (inout CollectedTemplate) -> Void
     @EnvironmentObject var uwaziTemplateViewModel: UwaziTemplateViewModel
     @EnvironmentObject var sheetManager: SheetManager
-
     var body: some View {
         ContainerView {
             ZStack {
@@ -72,15 +70,8 @@ struct AddTemplatesView: View {
                             .foregroundColor(.white)
                             .padding(.all, 14)
                         ForEach(Array(uwaziTemplateViewModel.templates.enumerated()), id: \.element) { index, template in
-                            TemplateItemView(
-                                template: $uwaziTemplateViewModel.templates[index],
-                                isDownloaded: template.isDownloaded ?? false,
-                                downloadTemplate: { template in
-                                    Toast.displayToast(message: "“\(template.entityRow?.translatedName ?? "")” “\(LocalizableUwazi.uwaziAddTemplateSavedToast.localized)”")
-                                    self.downloadTemplateAction(&template)
-                                }) { template in
-                                    showServerActionBottomSheet(template: template)
-                                }
+                            let templateItemViewModel = createTemplateItemViewModel(template: template)
+                            TemplateItemView(viewModel: templateItemViewModel)
                             if index < (uwaziTemplateViewModel.templates.count - 1) {
                                 DividerView()
                             }
@@ -94,6 +85,18 @@ struct AddTemplatesView: View {
             } else {
                 EmptyReportView(message: LocalizableUwazi.uwaziAddTemplateEmptydExpl.localized)
             }
+        }
+    }
+
+
+
+    private func createTemplateItemViewModel(template: CollectedTemplate) -> TemplateItemViewModel {
+
+        return TemplateItemViewModel(name: template.entityRow?.name ?? "",
+                                                          isDownloaded: template.isDownloaded ?? false) {
+            self.uwaziTemplateViewModel.downloadTemplate(template: template)
+        } deleteTemplate: {
+            showServerActionBottomSheet(template: template)
         }
     }
     private func showServerActionBottomSheet(template: CollectedTemplate) {

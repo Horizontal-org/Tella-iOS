@@ -51,7 +51,7 @@ struct UwaziView: View {
                     }
                     
                     AddFileYellowButton(action: {
-                        navigateTo(destination: AddTemplatesView(downloadTemplateAction: uwaziTemplateViewModel.downloadTemplate)
+                        navigateTo(destination: AddTemplatesView()
                             .environmentObject(uwaziTemplateViewModel))
                     }).frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
                             

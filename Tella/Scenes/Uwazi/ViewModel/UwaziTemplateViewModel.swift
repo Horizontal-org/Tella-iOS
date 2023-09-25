@@ -59,9 +59,29 @@ class UwaziTemplateViewModel: ObservableObject {
             template.receive(on: DispatchQueue.main).sink { completion in
                 self.handleGetTemplateCompletion(completion)
             } receiveValue: { templates in
-                self.handleRecieveValue(templates)
+                self.handleRecieveValue(self.mapToCollectedTemplate(serverId: id, templates))
             }.store(in: &subscribers)
         }
+    }
+
+
+    fileprivate func mapToCollectedTemplate(serverId: Int, _ templates: [UwaziTemplateRow]) -> [CollectedTemplate] {
+        return templates.map { template in
+            return CollectedTemplate(serverId: serverId,
+                                     templateId: template.id,
+                                     serverName: self.server.name ?? "",
+                                     username: self.server.username,
+                                     entityRow: template,
+                                     isDownloaded: false,
+                                     isFavorite: false,
+                                     isUpdated: false)
+        }
+    }
+
+    func downloadTemplate(template: CollectedTemplate) {
+        var template = template
+        Toast.displayToast(message: "“\(template.entityRow?.translatedName ?? "")” “\(LocalizableUwazi.uwaziAddTemplateSavedToast.localized)”")
+        self.downloadTemplate(template: &template)
     }
 
     fileprivate func handleGetTemplateCompletion(_ completion: Subscribers.Completion<Error>) {

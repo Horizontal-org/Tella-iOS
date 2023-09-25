@@ -75,10 +75,10 @@ class UwaziServerRepository: WebRepository {
     ///   - serverURL: the URL of the server
     ///   - cookieList:  The array of string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
     /// - Returns: AnyPublisher with UwaziTemplateResult or APIError if any
-    func getTemplate(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziTemplate, APIError> {
+    func getTemplate(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziTemplateDTO, APIError> {
         let apiResponse: APIResponse<UwaziTemplateDTO> = getAPIResponse(endpoint: API.getTemplate(serverURL: serverURL, cookieList: cookieList))
         return apiResponse
-            .compactMap{$0.0.toDomain() as? UwaziTemplate}
+            .compactMap{$0.0}
             .eraseToAnyPublisher()
     }
     ///  Get all the setting related to the Uwazi server to determine the whitelisted templates
@@ -86,10 +86,10 @@ class UwaziServerRepository: WebRepository {
     ///   - serverURL: the URL of the server
     ///   - cookieList:  The array of string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
     /// - Returns: AnyPublisher with UwaziSettingResult or APIError if any
-    func getSettings(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziSetting, APIError> {
+    func getSettings(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziSettingDTO, APIError> {
         let apiResponse:  APIResponse<UwaziSettingDTO> = getAPIResponse(endpoint: API.getSetting(serverURL: serverURL, cookieList: cookieList))
         return apiResponse
-            .compactMap{$0.0.toDomain() as? UwaziSetting}
+            .compactMap{$0.0}
             .eraseToAnyPublisher()
     }
     ///  Get all the options that are related to properties of the template related to the selected Uwazi server
@@ -97,10 +97,10 @@ class UwaziServerRepository: WebRepository {
     ///   - serverURL: the URL of the server
     ///   - cookieList:  The array of string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
     /// - Returns: AnyPublisher with UwaziDictionaryResult or APIError if any
-    func getDictionaries(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziDictionary, APIError> {
+    func getDictionaries(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziDictionaryDTO, APIError> {
         let apiResponse: APIResponse<UwaziDictionaryDTO> = getAPIResponse(endpoint: API.getDictionary(serverURL: serverURL, cookieList: cookieList))
         return apiResponse
-            .compactMap{$0.0.toDomain() as? UwaziDictionary}
+            .compactMap{$0.0}
             .eraseToAnyPublisher()
     }
     ///  Get all the translation of the text related to the selected Uwazi server
@@ -108,10 +108,10 @@ class UwaziServerRepository: WebRepository {
     ///   - serverURL: the URL of the server
     ///   - cookieList:  The array of string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
     /// - Returns: AnyPublisher with UwaziTranslationResult or APIError if any
-    func getTranslations(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziTranslation, APIError> {
+    func getTranslations(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziTranslationDTO, APIError> {
         let apiResponse: APIResponse<UwaziTranslationDTO> = getAPIResponse(endpoint: API.getTranslations(serverURL: serverURL, cookieList: cookieList))
         return apiResponse
-            .compactMap{$0.0.toDomain() as? UwaziTranslation}
+            .compactMap{$0.0}
             .eraseToAnyPublisher()
     }
 
@@ -130,8 +130,8 @@ extension UwaziServerRepository {
     ///   - server: Server Object to get the information about the Uwazi server
     ///   - locale: UwaziLocale Object that has the locale information about language that the user selected when adding a new Uwazi server
     /// - Returns: Collection of CollectedTemplate
-    func handleTemplate(server: Server, locale: UwaziLocale) async throws  -> AnyPublisher<[CollectedTemplate], Error> {
-        guard let serverID = server.id, let serverURL = server.url else {
+    func handleTemplate(server: Server, locale: UwaziLocale) async throws  -> AnyPublisher<[UwaziTemplateRow], Error> {
+        guard let serverURL = server.url else {
             return Fail(error: APIError.unexpectedResponse).eraseToAnyPublisher()
         }
         let cookieList = [server.accessToken ?? "", locale.locale ?? ""]
@@ -150,31 +150,21 @@ extension UwaziServerRepository {
             let templates = templateResult.rows
             let translations = translationResult.rows
             let dictionary = dictionary.rows
-            let settings: UwaziSetting = settings
+            let settings: UwaziSettingDTO = settings
 
             // Maps the options to the property of the template
             self.handleMapping(templates, dictionary)
             // Check whether the server instance is public and if public then only use the whitelisted templates are added to resultTemplates
             let resultTemplates = self.getAllowedTemplates(server: server, settings: settings, templates: templates)
             self.translate(locale: locale, resultTemplates: resultTemplates, translations: translations)
-            let originalTemplate = resultTemplates.map { template in
-                return CollectedTemplate(serverId: serverID,
-                                         templateId: template.id,
-                                         serverName: server.name ?? "",
-                                         username: server.username,
-                                         entityRow: template,
-                                         isDownloaded: false,
-                                         isFavorite: false,
-                                         isUpdated: false)
-            }
-            return originalTemplate
+            return resultTemplates.compactMap({$0.toDomain() as? UwaziTemplateRow})
         })
         .eraseToAnyPublisher()
     }
 
-    fileprivate func getAllowedTemplates(server: Server, settings: UwaziSetting, templates: [UwaziTemplateRow]?) -> [UwaziTemplateRow] {
+    fileprivate func getAllowedTemplates(server: Server, settings: UwaziSettingDTO, templates: [UwaziTemplateRowDTO]?) -> [UwaziTemplateRowDTO] {
         // Check whether the server instance is public and if public then only use the whitelisted templates are added to resultTemplates
-        var tempTemplates: [UwaziTemplateRow] = []
+        var tempTemplates: [UwaziTemplateRowDTO] = []
         if !self.isPublic(server: server) {
             tempTemplates = templates ?? []
         } else {
@@ -196,7 +186,7 @@ extension UwaziServerRepository {
     }
 
     // Maps the options to the property of the template
-    fileprivate func handleMapping(_ templates: [UwaziTemplateRow]?, _ dictionary: [UwaziDictionaryRow]?) {
+    fileprivate func handleMapping(_ templates: [UwaziTemplateRowDTO]?, _ dictionary: [UwaziDictionaryRowDTO]?) {
         templates?.forEach { template in
             template.properties.forEach { property in
                 if let dictionaryItem = dictionary?.first(where: { $0.id == property.content }) {
@@ -204,16 +194,9 @@ extension UwaziServerRepository {
                 }
             }
         }
-//        let hello = templates?.compactMap({ templateRow in
-//            templateRow.properties.compactMap { property in
-//                if let dictionaryItem = dictionary?.first(where: { $0.id == property.content }) {
-//                    property.values = dictionaryItem.values
-//                }
-//            }
-//        })
     }
 
-    fileprivate func translate(locale: UwaziLocale, resultTemplates: [UwaziTemplateRow], translations: [UwaziTranslationRow]?) {
+    fileprivate func translate(locale: UwaziLocale, resultTemplates: [UwaziTemplateRowDTO], translations: [UwaziTranslationRowDTO]?) {
         resultTemplates.forEach { template in
             // Get only the translations based on the language that user selected
             let filteredTranslations = translations?.filter{$0.locale == locale.locale ?? ""}
@@ -228,7 +211,7 @@ extension UwaziServerRepository {
         }
     }
 
-    fileprivate func handleTranslationForTemplate(template: UwaziTemplateRow, context: UwaziTranslationContext) {
+    fileprivate func handleTranslationForTemplate(template: UwaziTemplateRowDTO, context: UwaziTranslationContextDTO) {
         // Translation for the template name
         template.translatedName = context.values?[template.name ?? ""] ?? ""
         // Translation for the template's property texts or labels
@@ -241,7 +224,7 @@ extension UwaziServerRepository {
         }
     }
 
-    fileprivate func handleTranslationForOtherProperties(template: UwaziTemplateRow, context: UwaziTranslationContext) {
+    fileprivate func handleTranslationForOtherProperties(template: UwaziTemplateRowDTO, context: UwaziTranslationContextDTO) {
         // Translation for the template's property options texts or labels if there is any
         template.properties.forEach { property in
             property.values?.forEach { selectValue in

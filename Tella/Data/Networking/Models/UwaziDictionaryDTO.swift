@@ -8,14 +8,11 @@
 
 import Foundation
 
-struct UwaziDictionaryDTO: Codable, DataModel {
+struct UwaziDictionaryDTO: Codable {
     let rows: [UwaziDictionaryRowDTO]?
-    func toDomain() -> DomainModel? {
-        UwaziDictionary(rows: rows?.compactMap{$0.toDomain() as? UwaziDictionaryRow})
-    }
 }
 
-class UwaziDictionaryRowDTO: Codable, DataModel {
+class UwaziDictionaryRowDTO: Codable {
     let id, name: String?
     var values: [SelectValue]? = []
     let version: Int?
@@ -25,12 +22,6 @@ class UwaziDictionaryRowDTO: Codable, DataModel {
         case name, values
         case version = "__v"
     }
-    func toDomain() -> DomainModel? {
-        UwaziDictionaryRow(id: id,
-                           name: name,
-                           values: values)
-    }
-
 }
 
 class SelectValue: Codable {

@@ -8,14 +8,11 @@
 
 import Foundation
 
-struct UwaziTranslationDTO: Codable, DataModel {
+struct UwaziTranslationDTO: Codable {
     let rows: [UwaziTranslationRowDTO]?
-    func toDomain() -> DomainModel? {
-        UwaziTranslation(rows: rows?.compactMap{$0.toDomain() as? UwaziTranslationRow})
-    }
 }
 
-struct UwaziTranslationRowDTO: Codable, DataModel {
+struct UwaziTranslationRowDTO: Codable {
     let id, locale: String?
     let contexts: [UwaziTranslationContextDTO]
     let version: Int?
@@ -25,15 +22,10 @@ struct UwaziTranslationRowDTO: Codable, DataModel {
         case locale, contexts
         case version = "__v"
     }
-    func toDomain() -> DomainModel? {
-        UwaziTranslationRow(id: id,
-                            locale: locale,
-                            contexts: contexts.compactMap{$0.toDomain() as? UwaziTranslationContext})
-    }
 }
 
 // MARK: - Context
-struct UwaziTranslationContextDTO: Codable, DataModel {
+struct UwaziTranslationContextDTO: Codable {
     let contextID, label: String?
     let type: String?
     let values: [String: String]?
@@ -44,11 +36,4 @@ struct UwaziTranslationContextDTO: Codable, DataModel {
         case label, type, values
         case id = "_id"
     }
-    func toDomain() -> DomainModel? {
-        UwaziTranslationContext(
-            contextID: contextID,
-                           values: values,
-                           id: id)
-    }
-
 }

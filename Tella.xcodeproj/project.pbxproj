@@ -294,7 +294,7 @@
 		CC1313882A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1313872A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift */; };
 		CC13138A2A5DB68E0057271C /* BottomSheetTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1313892A5DB68E0057271C /* BottomSheetTitleView.swift */; };
 		CC13138C2A5DB79B0057271C /* BottomButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC13138B2A5DB79B0057271C /* BottomButtonsView.swift */; };
-		CC387D5C2A7857DD00853F2E /* UwaziViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC387D5B2A7857DD00853F2E /* UwaziViewModel.swift */; };
+		CC387D5C2A7857DD00853F2E /* UwaziTemplateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC387D5B2A7857DD00853F2E /* UwaziTemplateViewModel.swift */; };
 		CC43D9E12A72F8260030192E /* UwaziView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC43D9E02A72F8260030192E /* UwaziView.swift */; };
 		CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */; };
 		CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */; };
@@ -344,6 +344,9 @@
 		E131BA3B2A1B45A30095BC91 /* UwaziServerRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = E131BA3A2A1B45A30095BC91 /* UwaziServerRepositories.swift */; };
 		E14E0CF629FAD68E004FC4CD /* UwaziSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14E0CF529FAD68E004FC4CD /* UwaziSuccessView.swift */; };
 		E14FD87A2A6AB22200BC7523 /* UwaziLocale.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14FD8792A6AB22200BC7523 /* UwaziLocale.swift */; };
+		E16D20CF2ABEAAB1001708CC /* TemplateItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16D20CE2ABEAAB1001708CC /* TemplateItemViewModel.swift */; };
+		E16D20D12ABEB5C7001708CC /* TemplateCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16D20D02ABEB5C7001708CC /* TemplateCardViewModel.swift */; };
+		E16D20D52ABEB83A001708CC /* DeleteTemplateConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16D20D42ABEB83A001708CC /* DeleteTemplateConfirmationViewModel.swift */; };
 		E177363C2A83AE4800FE01C0 /* UwaziTemplateDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E177363B2A83AE4800FE01C0 /* UwaziTemplateDTO.swift */; };
 		E177363E2A83CCE100FE01C0 /* UwaziSettingDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E177363D2A83CCE100FE01C0 /* UwaziSettingDTO.swift */; };
 		E17736402A83FFA200FE01C0 /* UwaziDictionaryDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E177363F2A83FFA200FE01C0 /* UwaziDictionaryDTO.swift */; };
@@ -715,7 +718,7 @@
 		CC1313872A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAfterFailOptionsStatus.swift; sourceTree = "<group>"; };
 		CC1313892A5DB68E0057271C /* BottomSheetTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetTitleView.swift; sourceTree = "<group>"; };
 		CC13138B2A5DB79B0057271C /* BottomButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomButtonsView.swift; sourceTree = "<group>"; };
-		CC387D5B2A7857DD00853F2E /* UwaziViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziViewModel.swift; sourceTree = "<group>"; };
+		CC387D5B2A7857DD00853F2E /* UwaziTemplateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTemplateViewModel.swift; sourceTree = "<group>"; };
 		CC43D9E02A72F8260030192E /* UwaziView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziView.swift; sourceTree = "<group>"; };
 		CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableReport.swift; sourceTree = "<group>"; };
 		CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationBottomSheet.swift; sourceTree = "<group>"; };
@@ -771,6 +774,9 @@
 		E131BA3A2A1B45A30095BC91 /* UwaziServerRepositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziServerRepositories.swift; sourceTree = "<group>"; };
 		E14E0CF529FAD68E004FC4CD /* UwaziSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSuccessView.swift; sourceTree = "<group>"; };
 		E14FD8792A6AB22200BC7523 /* UwaziLocale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLocale.swift; sourceTree = "<group>"; };
+		E16D20CE2ABEAAB1001708CC /* TemplateItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateItemViewModel.swift; sourceTree = "<group>"; };
+		E16D20D02ABEB5C7001708CC /* TemplateCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCardViewModel.swift; sourceTree = "<group>"; };
+		E16D20D42ABEB83A001708CC /* DeleteTemplateConfirmationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteTemplateConfirmationViewModel.swift; sourceTree = "<group>"; };
 		E177363B2A83AE4800FE01C0 /* UwaziTemplateDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTemplateDTO.swift; sourceTree = "<group>"; };
 		E177363D2A83CCE100FE01C0 /* UwaziSettingDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSettingDTO.swift; sourceTree = "<group>"; };
 		E177363F2A83FFA200FE01C0 /* UwaziDictionaryDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziDictionaryDTO.swift; sourceTree = "<group>"; };
@@ -1840,7 +1846,10 @@
 		CC387D5A2A7857C900853F2E /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				CC387D5B2A7857DD00853F2E /* UwaziViewModel.swift */,
+				CC387D5B2A7857DD00853F2E /* UwaziTemplateViewModel.swift */,
+				E16D20CE2ABEAAB1001708CC /* TemplateItemViewModel.swift */,
+				E16D20D02ABEB5C7001708CC /* TemplateCardViewModel.swift */,
+				E16D20D42ABEB83A001708CC /* DeleteTemplateConfirmationViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1850,8 +1859,6 @@
 			children = (
 				CCF47F422ABE18B4000ABBBC /* Models */,
 				E10412112A9474D9003DCE6A /* Views */,
-				CCD586D22A7C0EFA00014F87 /* Common */,
-				CCD586BE2A7AB0E300014F87 /* Template */,
 				CC387D5A2A7857C900853F2E /* ViewModel */,
 				CC43D9E02A72F8260030192E /* UwaziView.swift */,
 			);
@@ -1861,9 +1868,8 @@
 		CCD586BE2A7AB0E300014F87 /* Template */ = {
 			isa = PBXGroup;
 			children = (
-				CCD586C12A7AB28200014F87 /* TemplateListView.swift */,
-				CCD586C62A7ABDE800014F87 /* TemplateCardView.swift */,
-				CCD586D02A7C096B00014F87 /* AddTemplatesView.swift */,
+				E16D20D22ABEB786001708CC /* TemplateList */,
+				E16D20D32ABEB792001708CC /* AddTemplate */,
 			);
 			path = Template;
 			sourceTree = "<group>";
@@ -1880,6 +1886,8 @@
 		CCD586D22A7C0EFA00014F87 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				E10412122A947510003DCE6A /* DeleteTemplateConfirmationView.swift */,
+				CCD586C62A7ABDE800014F87 /* TemplateCardView.swift */,
 				CCD586D32A7C294800014F87 /* TemplateItemView.swift */,
 			);
 			path = Common;
@@ -1980,7 +1988,8 @@
 		E10412112A9474D9003DCE6A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E10412122A947510003DCE6A /* DeleteTemplateConfirmationView.swift */,
+				CCD586D22A7C0EFA00014F87 /* Common */,
+				CCD586BE2A7AB0E300014F87 /* Template */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1991,6 +2000,22 @@
 				E14E0CF529FAD68E004FC4CD /* UwaziSuccessView.swift */,
 			);
 			path = Step6;
+			sourceTree = "<group>";
+		};
+		E16D20D22ABEB786001708CC /* TemplateList */ = {
+			isa = PBXGroup;
+			children = (
+				CCD586C12A7AB28200014F87 /* TemplateListView.swift */,
+			);
+			path = TemplateList;
+			sourceTree = "<group>";
+		};
+		E16D20D32ABEB792001708CC /* AddTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				CCD586D02A7C096B00014F87 /* AddTemplatesView.swift */,
+			);
+			path = AddTemplate;
 			sourceTree = "<group>";
 		};
 		E18BD4312AA0C2EB00EE62E2 /* Uwazi */ = {
@@ -2534,7 +2559,7 @@
 				1233007A28E3115500B8F7BA /* Request.swift in Sources */,
 				121C5D7D2942710600A64123 /* ProjectAPI.swift in Sources */,
 				1291F4F627B54300006A34D3 /* AudioPlayer.swift in Sources */,
-				CC387D5C2A7857DD00853F2E /* UwaziViewModel.swift in Sources */,
+				CC387D5C2A7857DD00853F2E /* UwaziTemplateViewModel.swift in Sources */,
 				CCBEE0482A8E9B780067884E /* TextView.swift in Sources */,
 				12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */,
 				128B929927D796E800E92ACF /* FolderListView.swift in Sources */,
@@ -2571,6 +2596,7 @@
 				1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */,
 				123048D5295F95A40015CD96 /* SubmittedDetailsView.swift in Sources */,
 				1278B66127EB364500C9AC4D /* Utils.swift in Sources */,
+				E16D20D52ABEB83A001708CC /* DeleteTemplateConfirmationViewModel.swift in Sources */,
 				125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */,
 				12234BE029DAEC4A00D6F981 /* CustomNavigation.swift in Sources */,
 				125D2324271F891500250FBB /* PinView.swift in Sources */,
@@ -2595,6 +2621,7 @@
 				1289B98927C53A9C00315FCE /* CameraType.swift in Sources */,
 				0E78B3A72656B03600F9BDBC /* DragView.swift in Sources */,
 				1231A45E294C779D0057DA85 /* ReportStatus.swift in Sources */,
+				E16D20D12ABEB5C7001708CC /* TemplateCardViewModel.swift in Sources */,
 				12607D562790416400E2B8CC /* PlayerViewModel.swift in Sources */,
 				128B929B27D798E200E92ACF /* ManageFileView.swift in Sources */,
 				E1E7C57D2AAB553500DDB07E /* UwaziProperty.swift in Sources */,
@@ -2694,6 +2721,7 @@
 				CC13138C2A5DB79B0057271C /* BottomButtonsView.swift in Sources */,
 				129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */,
 				1203CDDC298C5B9100D09073 /* ReportActionType.swift in Sources */,
+				E16D20CF2ABEAAB1001708CC /* TemplateItemViewModel.swift in Sources */,
 				12476E1F2A5B7D2F00069048 /* TrailingButtonToolbar.swift in Sources */,
 				12199C3A2941260D0041BD38 /* OutboxDetailsItemView.swift in Sources */,
 				128D6E1E2804DA2A0082AB18 /* ListActionSheetItem.swift in Sources */,
