@@ -9,8 +9,8 @@ enum APIError: Swift.Error {
     case invalidURL
     case httpCode(HTTPCode)
     case unexpectedResponse
-    // TODO: Better name for it
     case error(String)
+    case noInternetConnection
 }
 
 extension APIError: LocalizedError {
@@ -24,6 +24,8 @@ extension APIError: LocalizedError {
             return "Unexpected response from the server"
         case .error(let message):
             return message
+        case .noInternetConnection:
+            return LocalizableSettings.settServerNoInternetConnection.localized
         }
     }
     private func customErrorMessage(errorCode : Int) -> String {

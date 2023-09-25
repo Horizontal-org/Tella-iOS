@@ -74,6 +74,5 @@ extension String {
         }
         return true
     }
-
 }
 

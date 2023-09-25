@@ -109,7 +109,7 @@ class UwaziServerViewModel: ObservableObject {
     func updateServer() {
         guard let currentServer = currentServer, let currentServerId = currentServer.id else { return }
         let server = Server(id: currentServerId,
-            name: setting?.siteName,
+                            name: setting?.siteName,
                             serverURL: serverURL.getBaseURL(),
                             username: username,
                             password: password,
@@ -158,6 +158,12 @@ class UwaziServerViewModel: ObservableObject {
             // TODO: Handle this error
         case .failure(let error):
             debugLog(error)
+            switch error {
+            case .noInternetConnection:
+                Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+            default:
+                break
+            }
             self.isLoading = false
         }
     }
@@ -176,7 +182,7 @@ class UwaziServerViewModel: ObservableObject {
 
     // MARK: - Check URL API Call Methods
     func checkURL() {
-        isLoading = true
+        self.isLoading = true
         guard let baseURL = serverURL.getBaseURL() else { return }
         UwaziServerRepository().checkServerURL(serverURL: baseURL)
             .receive(on: DispatchQueue.main)
@@ -194,11 +200,17 @@ class UwaziServerViewModel: ObservableObject {
             debugLog("Finished")
             // TODO: handle this error
         case .failure(let error):
-            debugLog(error)
-            urlErrorMessage = "Error: The server URL is incorrect"
-            shouldShowURLError = true
+            switch error {
+            case .noInternetConnection:
+                Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+            default:
+                debugLog(error)
+                urlErrorMessage = LocalizableSettings.settServerServerURLIncorrect.localized
+                shouldShowURLError = true
+            }
         }
     }
+
 
     fileprivate func handleRecieveValueForCheckURL(_ wrapper: UwaziCheckURL) {
         self.setting = wrapper
@@ -246,6 +258,8 @@ class UwaziServerViewModel: ObservableObject {
             case .error:
                 self.shouldShowLoginError = true
                 self.loginErrorMessage = error.errorDescription ?? ""
+            case .noInternetConnection:
+                Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
             }
         case .finished:
             self.shouldShowLoginError = false
@@ -305,6 +319,8 @@ class UwaziServerViewModel: ObservableObject {
                 }
             case .error:
                 self.codeErrorMessage = error.errorDescription ?? ""
+            case .noInternetConnection:
+                Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
             }
             self.shouldShowAuthenticationError = true
         case .finished:

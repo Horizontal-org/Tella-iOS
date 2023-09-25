@@ -85,6 +85,8 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settServerSelectionMessage = "Setting_SettServer_Selection_Message"
     case settServerTellaWeb = "Setting_SettServer_TellaWeb"
     case settServerUwazi = "Setting_SettServer_Uwazi"
+    case settServerNoInternetConnection = "Setting_SettServer_No_Internet"
+    case settServerServerURLIncorrect = "Setting_SettServer_Server_URL_Incorrect"
 
     // Uwazi
     case UwaziServerURL = "Setting_Server_Uwazi_Server_URL"
