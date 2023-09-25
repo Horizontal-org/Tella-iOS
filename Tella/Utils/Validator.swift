@@ -74,14 +74,5 @@ extension String {
         }
         return true
     }
-    func validateWithRegex(pattern: String) -> Bool {
-        guard !self.isEmpty else {
-            return false
-        }
-        guard validateRegex(value: self, pattern: pattern) else {
-            return false
-        }
-        return true
-    }
 }
 
