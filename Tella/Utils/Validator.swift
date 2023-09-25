@@ -83,14 +83,5 @@ extension String {
         }
         return true
     }
-    func uwaziLoginValidtor() -> Bool {
-        guard !self.isEmpty else {
-            return false
-        }
-        guard validateRegex(value: self, pattern:  Regex.textRegex) else {
-            return false
-        }
-        return true
-    }
 }
 

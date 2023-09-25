@@ -58,7 +58,7 @@ struct UwaziLoginView: View {
         return TextfieldView(fieldContent: $uwaziServerViewModel.username,
                              isValid: $uwaziServerViewModel.validUsername,
                              shouldShowError: $uwaziServerViewModel.shouldShowLoginError,
-                             fieldType: .uwaziUsername,
+                             fieldType: .text,
                              placeholder : LocalizableSettings.UwaziUsername.localized)
         .autocapitalization(.none)
         .frame(height: 30)
@@ -69,7 +69,7 @@ struct UwaziLoginView: View {
                              isValid: $uwaziServerViewModel.validPassword,
                              shouldShowError: $uwaziServerViewModel.shouldShowLoginError,
                              errorMessage: uwaziServerViewModel.loginErrorMessage,
-                             fieldType: .uwaziPassword,
+                             fieldType: .text,
                              placeholder : LocalizableSettings.UwaziPassword.localized)
         .autocapitalization(.none)
         .frame(height: 57)

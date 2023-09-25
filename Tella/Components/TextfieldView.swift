@@ -11,8 +11,6 @@ enum FieldType {
     case text
     case password
     case code
-    case uwaziUsername
-    case uwaziPassword
 }
 struct TextfieldView : View {
     
@@ -157,10 +155,6 @@ struct TextfieldView : View {
             
         case .code:
             self.isValid = value.codeValidator()
-        case .uwaziUsername:
-            self.isValid = value.validateWithRegex(pattern: Regex.textRegex)
-        case .uwaziPassword:
-            self.isValid = value.validateWithRegex(pattern: Regex.textRegex)
         }
         self.shouldShowError = false
     }
