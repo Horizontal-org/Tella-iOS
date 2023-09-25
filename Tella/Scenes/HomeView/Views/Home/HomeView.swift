@@ -22,8 +22,6 @@ struct HomeView: View {
         ContainerView {
           
             VStack() {
-                
-                     
                 Spacer()
                     .frame( height: !viewModel.serverDataItemArray.isEmpty ? 16 : 0 )
                 ConnectionsView()
