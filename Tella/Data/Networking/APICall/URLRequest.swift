@@ -16,7 +16,7 @@ extension WebRepository {
     where Value: Decodable {
         do {
             guard (NetworkMonitor.shared.isConnected) else {
-                return Fail<(Value,[AnyHashable:Any]?), APIError>(error: APIError.noInternetConnection)
+                return Fail(error: APIError.noInternetConnection)
                     .eraseToAnyPublisher()
             }
             let request = try endpoint.urlRequest()
@@ -28,7 +28,7 @@ extension WebRepository {
                 .dataTaskPublisher(for: request)
                 .requestJSON()
         } catch _ {
-            return Fail<(Value,[AnyHashable:Any]?), APIError>(error: APIError.invalidURL)
+            return Fail(error: APIError.invalidURL)
                 .eraseToAnyPublisher()
         }
     }
