@@ -29,12 +29,14 @@ class HomeViewModel: ObservableObject {
         self.appModel.vaultManager.tellaData?.servers.sink { result in
             } receiveValue: { serverArray in
                 self.serverDataItemArray.removeAll()
+
                 if !serverArray.isEmpty {
                     // here i group all the tella servers in one array and the third party services in diferents arrays
                     let uwaziConnections = serverArray.filter { $0.serverType == .uwazi }
                     let tellaUploadServers = serverArray.filter { $0.serverType == .tella }
-                    self.serverDataItemArray.append(ServerDataItem(servers: uwaziConnections, serverType: .uwazi))
-                    self.serverDataItemArray.append(ServerDataItem(servers: tellaUploadServers, serverType: .tella))
+                    if !uwaziConnections.isEmpty { self.serverDataItemArray.append(ServerDataItem(servers: uwaziConnections, serverType: .uwazi)) }
+                    if !tellaUploadServers.isEmpty { self.serverDataItemArray.append(ServerDataItem(servers: tellaUploadServers, serverType: .tella)) }
+
                 }
             }.store(in: &subscribers)
         }

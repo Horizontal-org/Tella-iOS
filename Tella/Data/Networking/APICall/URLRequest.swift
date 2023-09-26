@@ -15,16 +15,20 @@ extension WebRepository {
     func getAPIResponse<Value>(endpoint: any APIRequest) -> APIResponse<Value>
     where Value: Decodable {
         do {
+            guard (NetworkMonitor.shared.isConnected) else {
+                return Fail(error: APIError.noInternetConnection)
+                    .eraseToAnyPublisher()
+            }
             let request = try endpoint.urlRequest()
             request.curlRepresentation()
             let configuration = URLSessionConfiguration.default
-            configuration.waitsForConnectivity = true
+            configuration.waitsForConnectivity = false
             
             return URLSession(configuration: configuration)
                 .dataTaskPublisher(for: request)
                 .requestJSON()
         } catch _ {
-            return Fail<(Value,[AnyHashable:Any]?), APIError>(error: APIError.invalidURL)
+            return Fail(error: APIError.invalidURL)
                 .eraseToAnyPublisher()
         }
     }
@@ -58,7 +62,7 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
             return ($0.0, ($0.1 as? HTTPURLResponse)?.allHeaderFields)
         }
         .mapError{  error in
-            return error as! APIError
+            return APIError.unexpectedResponse
         }
         .eraseToAnyPublisher()
     }
