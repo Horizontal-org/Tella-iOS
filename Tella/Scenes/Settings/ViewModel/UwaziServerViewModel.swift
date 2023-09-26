@@ -205,7 +205,7 @@ class UwaziServerViewModel: ObservableObject {
                 Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
             default:
                 debugLog(error)
-                urlErrorMessage = LocalizableSettings.settServerServerURLIncorrect.localized
+                urlErrorMessage = error.errorDescription ?? error.localizedDescription
                 shouldShowURLError = true
             }
         }
@@ -253,7 +253,7 @@ class UwaziServerViewModel: ObservableObject {
                     self.showNext2FAView = true
                 default:
                     self.shouldShowLoginError = true
-                    self.loginErrorMessage = error.localizedDescription
+                    self.loginErrorMessage = error.errorDescription ?? error.localizedDescription
                 }
             case .error:
                 self.shouldShowLoginError = true

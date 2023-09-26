@@ -14,6 +14,7 @@ enum APIError: Swift.Error {
 }
 
 extension APIError: LocalizedError {
+
     var errorDescription: String? {
         switch self {
         case .invalidURL:
@@ -34,6 +35,8 @@ extension APIError: LocalizedError {
             return "Invalid username or password"
         case .forbidden:
             return "Account locked due to too many unsuccessful attempts."
+        case .notFound:
+            return "Error: The server URL is incorrect"
         default:
             return "Custom Error"
         }
