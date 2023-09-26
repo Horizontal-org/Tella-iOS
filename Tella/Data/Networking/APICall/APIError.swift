@@ -36,7 +36,7 @@ extension APIError: LocalizedError {
         case .forbidden:
             return "Account locked due to too many unsuccessful attempts."
         case .notFound:
-            return "Error: The server URL is incorrect"
+            return LocalizableSettings.settServerServerURLIncorrect.localized
         default:
             return "Custom Error"
         }
