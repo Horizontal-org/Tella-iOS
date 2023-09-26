@@ -30,12 +30,13 @@ extension APIError: LocalizedError {
         }
     }
     private func customErrorMessage(errorCode : Int) -> String {
-        switch HTTPErrorCodes(rawValue: errorCode) {
+        let httpErrorCode = HTTPErrorCodes(rawValue: errorCode)
+        switch httpErrorCode{
         case .unauthorized:
             return "Invalid username or password"
         case .forbidden:
             return "Account locked due to too many unsuccessful attempts."
-        case .notFound:
+        case .notFound, .badServer:
             return LocalizableSettings.settServerServerURLIncorrect.localized
         default:
             return "Custom Error"

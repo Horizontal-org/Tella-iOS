@@ -42,7 +42,12 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
                 return (decodedData, allHeaderFields)
             })
             .mapError{
-                return $0 as! APIError
+                if let error = $0 as? APIError {
+                    return error
+                } else {
+                    return APIError.unexpectedResponse
+                }
+
             }
             .eraseToAnyPublisher()
     }
@@ -62,7 +67,11 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
             return ($0.0, ($0.1 as? HTTPURLResponse)?.allHeaderFields)
         }
         .mapError{ error in
-            return error as! APIError
+            if let error = error as? APIError {
+                return error
+            } else  {
+                return APIError.httpCode(error._code)
+            }
         }
         .eraseToAnyPublisher()
     }
