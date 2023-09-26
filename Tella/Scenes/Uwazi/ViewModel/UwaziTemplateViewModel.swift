@@ -1,5 +1,5 @@
 //
-//  UwaziViewModel.swift
+//  UwaziTemplateViewModel.swift
 //  Tella
 //
 //  Created by Gustavo on 31/07/2023.
