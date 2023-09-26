@@ -1963,8 +1963,6 @@
 		CCD586D22A7C0EFA00014F87 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				E10412122A947510003DCE6A /* DeleteTemplateConfirmationView.swift */,
-				CCD586C62A7ABDE800014F87 /* TemplateCardView.swift */,
 				CCD586D32A7C294800014F87 /* TemplateItemView.swift */,
 			);
 			path = Common;
@@ -2079,22 +2077,6 @@
 				E14E0CF529FAD68E004FC4CD /* UwaziSuccessView.swift */,
 			);
 			path = Step6;
-			sourceTree = "<group>";
-		};
-		E16D20D22ABEB786001708CC /* TemplateList */ = {
-			isa = PBXGroup;
-			children = (
-				CCD586C12A7AB28200014F87 /* TemplateListView.swift */,
-			);
-			path = TemplateList;
-			sourceTree = "<group>";
-		};
-		E16D20D32ABEB792001708CC /* AddTemplate */ = {
-			isa = PBXGroup;
-			children = (
-				CCD586D02A7C096B00014F87 /* AddTemplatesView.swift */,
-			);
-			path = AddTemplate;
 			sourceTree = "<group>";
 		};
 		E18BD4312AA0C2EB00EE62E2 /* Uwazi */ = {
