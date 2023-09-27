@@ -62,16 +62,17 @@ struct AddTemplatesView: View {
 
     fileprivate func handleListView() -> some View {
         VStack {
-            if uwaziTemplateViewModel.templates.count > 0 {
+            if uwaziTemplateViewModel.templateItemsViewModel.count > 0 {
+                Text("")
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
                         Text(uwaziTemplateViewModel.serverName)
                             .font(.custom(Styles.Fonts.semiBoldFontName, size: 16))
                             .foregroundColor(.white)
                             .padding(.all, 14)
-                        ForEach(Array(uwaziTemplateViewModel.templateItemsViewModel.enumerated()), id: \.self) { index, template in
-                            TemplateItemView(templateItemViewModel: template)
-                            if index < (uwaziTemplateViewModel.templates.count - 1) {
+                        ForEach(Array(uwaziTemplateViewModel.templateItemsViewModel.enumerated()), id: \.element) { index, itemViewModel in
+                            TemplateItemView(templateItemViewModel: itemViewModel)
+                            if index < (uwaziTemplateViewModel.templateItemsViewModel.count - 1) {
                                 DividerView()
                             }
                         }

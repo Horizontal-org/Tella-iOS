@@ -13,8 +13,8 @@ class UwaziTemplateViewModel: ObservableObject {
     
     var mainAppModel : MainAppModel
 
-    @Published var templates : [CollectedTemplate] = []
-    @Published var downloadedTemplates : [CollectedTemplate] = []
+    @Published private var templates : [CollectedTemplate] = []
+    @Published private var downloadedTemplates : [CollectedTemplate] = []
 
     @Published var templateItemsViewModel : [TemplateItemViewModel] = []
     @Published var templateCardsViewModel : [TemplateCardViewModel] = []
