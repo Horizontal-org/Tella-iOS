@@ -70,7 +70,7 @@ struct AddTemplatesView: View {
                             .font(.custom(Styles.Fonts.semiBoldFontName, size: 16))
                             .foregroundColor(.white)
                             .padding(.all, 14)
-                        ForEach(Array(uwaziTemplateViewModel.templateItemsViewModel.enumerated()), id: \.element) { index, itemViewModel in
+                        ForEach(Array(uwaziTemplateViewModel.templateItemsViewModel.enumerated()), id: \.0.id) { index, itemViewModel in
                             TemplateItemView(templateItemViewModel: itemViewModel)
                             if index < (uwaziTemplateViewModel.templateItemsViewModel.count - 1) {
                                 DividerView()
