@@ -9,34 +9,48 @@
 import SwiftUI
 
 struct TemplateItemView: View {
-    internal init(viewModel: TemplateItemViewModel) {
-        self.viewModel = viewModel
+    
+    @EnvironmentObject var sheetManager: SheetManager
+    var templateItemViewModel: TemplateItemViewModel
+    
+    internal init(templateItemViewModel: TemplateItemViewModel) {
+        self.templateItemViewModel = templateItemViewModel
     }
     
-    var viewModel: TemplateItemViewModel
     var body: some View {
         HStack {
-            if(viewModel.isDownloaded) {
+            if(templateItemViewModel.isDownloaded) {
                 Image("report.submitted")
                     .padding(.leading, 8)
             }
-            Text(viewModel.name)
+            Text(templateItemViewModel.name)
                 .font(.custom(Styles.Fonts.regularFontName, size: 16))
                 .foregroundColor(.white)
                 .padding(.horizontal, 8)
-
+            
             Spacer()
-
-            if(!viewModel.isDownloaded) {
-                MoreButtonView(imageName: "template.add", action: {
-                    viewModel.downloadTemplate()
-                })
+            
+            if(!templateItemViewModel.isDownloaded) {
+                MoreButtonView(imageName: "template.add", 
+                               action: templateItemViewModel.downloadTemplate)
             } else {
                 MoreButtonView(imageName: "reports.more", action: {
-                    viewModel.deleteTemplate()
+                    showTemplateActionBottomSheet()
                 }).padding(.trailing, 8)
             }
-
+            
         }.padding(.all, 4)
     }
+    
+    private func showTemplateActionBottomSheet() {
+        sheetManager.showBottomSheet(modalHeight: 176) {
+            ActionListBottomSheet(items: templateActionItems,
+                                  headerTitle: templateItemViewModel.name ,
+                                  action:  {item in
+                self.sheetManager.hide()
+                 self.templateItemViewModel.deleteTemplate()
+            })
+        }
+    }
+    
 }

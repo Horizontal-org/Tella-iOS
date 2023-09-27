@@ -69,9 +69,8 @@ struct AddTemplatesView: View {
                             .font(.custom(Styles.Fonts.semiBoldFontName, size: 16))
                             .foregroundColor(.white)
                             .padding(.all, 14)
-                        ForEach(Array(uwaziTemplateViewModel.templates.enumerated()), id: \.element) { index, template in
-                            let templateItemViewModel = createTemplateItemViewModel(template: template)
-                            TemplateItemView(viewModel: templateItemViewModel)
+                        ForEach(Array(uwaziTemplateViewModel.templateItemsViewModel.enumerated()), id: \.self) { index, template in
+                            TemplateItemView(templateItemViewModel: template)
                             if index < (uwaziTemplateViewModel.templates.count - 1) {
                                 DividerView()
                             }
@@ -85,29 +84,6 @@ struct AddTemplatesView: View {
             } else {
                 EmptyReportView(message: LocalizableUwazi.uwaziAddTemplateEmptydExpl.localized)
             }
-        }
-    }
-
-
-
-    private func createTemplateItemViewModel(template: CollectedTemplate) -> TemplateItemViewModel {
-
-        return TemplateItemViewModel(name: template.entityRow?.name ?? "",
-                                                          isDownloaded: template.isDownloaded ?? false) {
-            self.uwaziTemplateViewModel.downloadTemplate(template: template)
-        } deleteTemplate: {
-            showServerActionBottomSheet(template: template)
-        }
-    }
-    private func showServerActionBottomSheet(template: CollectedTemplate) {
-        sheetManager.showBottomSheet(modalHeight: 176) {
-            ActionListBottomSheet(items: templateActionItems,
-                                  headerTitle: template.entityRow?.translatedName ?? "",
-                                  action:  {item in
-                self.uwaziTemplateViewModel.handleDeleteActionsForAddTemplate(item : item, template: template) {
-                    self.sheetManager.hide()
-                }
-            })
         }
     }
 }

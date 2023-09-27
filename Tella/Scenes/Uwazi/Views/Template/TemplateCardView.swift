@@ -9,18 +9,18 @@
 import SwiftUI
 
 struct TemplateCardView: View {
-    var viewModel: TemplateCardViewModel
+    var templateCardViewModel: TemplateCardViewModel
     var body: some View {
         VStack(spacing: 0) {
             HStack {
                 MoreButtonView(imageName: "uwazi.star", action: {
                     //add this template to favorie
                 })
-                ConnectionCardDetail(title: viewModel.translatedName, subtitle: viewModel.serverName)
+                ConnectionCardDetail(title: templateCardViewModel.translatedName, subtitle: templateCardViewModel.serverName)
                 Spacer()
                 MoreButtonView(imageName: "reports.more", action: {
                     //show detail
-                    viewModel.deleteTemplate()
+                    templateCardViewModel.deleteTemplate()
                 })
             }.padding(.all, 16)
         }

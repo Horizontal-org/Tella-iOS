@@ -15,6 +15,10 @@ class UwaziTemplateViewModel: ObservableObject {
 
     @Published var templates : [CollectedTemplate] = []
     @Published var downloadedTemplates : [CollectedTemplate] = []
+
+    @Published var templateItemsViewModel : [TemplateItemViewModel] = []
+    @Published var templateCardsViewModel : [TemplateCardViewModel] = []
+
     @Published var isLoading: Bool = false
     @Published var serverName : String
     var subscribers = Set<AnyCancellable>()
@@ -79,7 +83,14 @@ class UwaziTemplateViewModel: ObservableObject {
         self.handleTemplateDownload(templates: templates)
         self.templates = templates
         self.isLoading = false
+
+        self.templateItemsViewModel = self.templates.map({ collectedTemplate in
+            TemplateItemViewModel(template: collectedTemplate, 
+                                  downloadTemplate: {self.downloadTemplate(template: collectedTemplate)} ,
+                                  deleteTemplate: {self.deleteDownloadedTemplate(templateId:collectedTemplate.id)})
+         })
     }
+    
     func getDownloadedTemplates() {
         self.downloadedTemplates = self.getAllDownloadedTemplate() ?? []
     }
@@ -135,7 +146,8 @@ class UwaziTemplateViewModel: ObservableObject {
 
     /// Delete the saved template from database using the template id of the template for downloaded template listing view
     /// - Parameter template: The template object which we need to delete
-    func deleteDownloadedTemplate(templateId: Int) {
+    func deleteDownloadedTemplate(templateId: Int?) {
+        guard let templateId else { return }
         self.tellaData?.deleteAllUwaziTemplate(id: templateId)
         getDownloadedTemplates()
     }

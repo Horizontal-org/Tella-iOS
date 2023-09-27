@@ -23,9 +23,8 @@ struct TemplateListView: View {
                         .foregroundColor(.white.opacity(0.64))
                         .padding(.all, 14)
                     ScrollView {
-                        ForEach($uwaziViewModel.downloadedTemplates, id: \.self) { template in
-                            let cardViewModel = createCardViewModel(template)
-                            TemplateCardView(viewModel: cardViewModel)
+                        ForEach($uwaziViewModel.templateCardsViewModel, id: \.self) { cardViewModel in
+                            TemplateCardView(templateCardViewModel: cardViewModel)
                         }
                     }
                 }
@@ -38,6 +37,10 @@ struct TemplateListView: View {
         }
     }
 
+    
+    
+    
+    //TODO: to move to view model
     fileprivate func createCardViewModel(_ template: Binding<CollectedTemplate>) -> TemplateCardViewModel {
         return TemplateCardViewModel(serverName: template.serverName.wrappedValue ?? "",
                                      translatedName: template.entityRow.wrappedValue?.translatedName ?? "") {
@@ -45,6 +48,8 @@ struct TemplateListView: View {
         }
     }
 
+    
+    //TODO: To move showtemplateActionBottomSheet and showDeleteTemplateConfirmationView
     private func showtemplateActionBottomSheet(template: CollectedTemplate) {
         sheetManager.showBottomSheet(modalHeight: 176) {
             ActionListBottomSheet(items: downloadTemplateActionItems,
@@ -70,6 +75,7 @@ struct TemplateListView: View {
             return DeleteTemplateConfirmationView(viewModel: deleteViewModel)
         }
     }
+    ...
 }
 
 struct TemplateListView_Previews: PreviewProvider {
