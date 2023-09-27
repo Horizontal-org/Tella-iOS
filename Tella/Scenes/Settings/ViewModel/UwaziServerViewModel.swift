@@ -241,7 +241,7 @@ class UwaziServerViewModel: ObservableObject {
         switch completion {
         case .failure(let error):
             switch error {
-            case .invalidURL, .unexpectedResponse:
+            case .invalidURL, .unexpectedResponse, .badServer:
                 self.shouldShowLoginError = true
                 self.loginErrorMessage = error.errorDescription ?? ""
             case .httpCode(let code):
@@ -306,7 +306,7 @@ class UwaziServerViewModel: ObservableObject {
         switch completion {
         case .failure(let error):
             switch error {
-            case .invalidURL, .unexpectedResponse:
+            case .invalidURL, .unexpectedResponse, .badServer:
                 self.codeErrorMessage = error.errorDescription ?? ""
             case .httpCode(let code):
                 // if the status code is 401 then the 2FA code is incorrect

@@ -70,7 +70,13 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
             if let error = error as? APIError {
                 return error
             } else  {
-                return APIError.httpCode(error._code)
+                let error = error as NSError
+                if error.domain == NSURLErrorDomain {
+                    return APIError.badServer
+                } else {
+                    return APIError.httpCode(error._code)
+                }
+
             }
         }
         .eraseToAnyPublisher()

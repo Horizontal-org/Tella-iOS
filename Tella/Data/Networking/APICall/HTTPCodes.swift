@@ -20,7 +20,6 @@ enum HTTPErrorCodes: Int {
     case requestTimeout = 408
     case need2FA = 409
     case internalServerError = 500
-    case badServer = -1003
     case unknown
 }
 

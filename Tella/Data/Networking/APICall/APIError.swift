@@ -11,6 +11,7 @@ enum APIError: Swift.Error {
     case unexpectedResponse
     case error(String)
     case noInternetConnection
+    case badServer
 }
 
 extension APIError: LocalizedError {
@@ -27,6 +28,8 @@ extension APIError: LocalizedError {
             return message
         case .noInternetConnection:
             return LocalizableSettings.settServerNoInternetConnection.localized
+        case .badServer:
+            return LocalizableSettings.settServerServerURLIncorrect.localized
         }
     }
     private func customErrorMessage(errorCode : Int) -> String {
@@ -36,7 +39,7 @@ extension APIError: LocalizedError {
             return "Invalid username or password"
         case .forbidden:
             return "Account locked due to too many unsuccessful attempts."
-        case .notFound, .badServer:
+        case .notFound:
             return LocalizableSettings.settServerServerURLIncorrect.localized
         default:
             return "Custom Error"
