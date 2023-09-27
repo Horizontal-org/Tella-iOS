@@ -45,12 +45,13 @@ struct TemplateCardView: View {
 
     private func showDeleteTemplateConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: 200) {
-            let deleteViewModel = DeleteTemplateConfirmationViewModel(title: templateCardViewModel.translatedName,
-                                                                      message: LocalizableUwazi.uwaziDeleteTemplateExpl.localized,
-                                                                      confirmAction: {
+            let titleText = LocalizableReport.viewModelDelete.localized + " " + "\"\(templateCardViewModel.translatedName)\""
+            return ConfirmBottomSheet(titleText: titleText,
+                                      msgText: LocalizableUwazi.uwaziDeleteTemplateExpl.localized,
+                                      cancelText: LocalizableReport.deleteCancel.localized,
+                                      actionText: LocalizableReport.deleteConfirm.localized) {
                 templateCardViewModel.deleteTemplate()
-            })
-            return DeleteTemplateConfirmationView(viewModel: deleteViewModel)
+            }
         }
     }
 }
