@@ -29,60 +29,59 @@ struct ReportsView: View {
     }
     
     private var contentView :some View {
+        
+        ContainerView {
             
-            ContainerView {
+            VStack(alignment: .center) {
                 
-                VStack(alignment: .center) {
+                PageView(selectedOption: self.$reportsViewModel.selectedCell, pageViewItems: $reportsViewModel.pageViewItems)
+                    .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
+                
+                VStack (spacing: 0) {
+                    Spacer()
                     
-                    PageView(selectedOption: self.$reportsViewModel.selectedCell, pageViewItems: $reportsViewModel.pageViewItems)
-                        .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
-                    
-                    VStack (spacing: 0) {
-                        Spacer()
+                    switch ReportPages(rawValue: self.reportsViewModel.selectedCell) {
+                    case .draft:
+                        ReportListView(reportArray: $reportsViewModel.draftReports,
+                                       message: LocalizableReport.reportsDraftEmpty.localized)
+                    case .outbox:
                         
-                        switch self.reportsViewModel.selectedCell {
-                        case .templates:
-                            ReportListView(reportArray: $reportsViewModel.draftReports,
-                                           message: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized)
-                        case .draft:
-                            ReportListView(reportArray: $reportsViewModel.draftReports,
-                                           message: LocalizableReport.reportsDraftEmpty.localized)
-                        case .outbox:
-                            
-                            ReportListView(reportArray: $reportsViewModel.outboxedReports,
-                                           message: LocalizableReport.reportsOutboxEmpty.localized)
-                            
-                        case .submitted:
-                            ReportListView(reportArray: $reportsViewModel.submittedReports,
-                                           message: LocalizableReport.reportsSubmitedEmpty.localized)
-                        }
+                        ReportListView(reportArray: $reportsViewModel.outboxedReports,
+                                       message: LocalizableReport.reportsOutboxEmpty.localized)
                         
-                        Spacer()
+                    case .submitted:
+                        ReportListView(reportArray: $reportsViewModel.submittedReports,
+                                       message: LocalizableReport.reportsSubmitedEmpty.localized)
+                    case .none:
+                        EmptyView()
                     }
                     
-                    TellaButtonView<AnyView> (title: LocalizableReport.reportsCreateNew.localized,
-                                              nextButtonAction: .action,
-                                              buttonType: .yellow,
-                                              isValid: .constant(true)) {
-                        navigateTo(destination: newDraftReportView)
-                    } .padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0))
-                    
-                }.background(Styles.Colors.backgroundMain)
-                    .padding(EdgeInsets(top: 15, leading: 20, bottom: 16, trailing: 20))
-            }
-            .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: backButton)
-            
-            .if(self.reportsViewModel.selectedCell == .submitted && self.reportsViewModel.submittedReports.count > 0, transform: { view in
-                view.toolbar {
-                    TrailingButtonToolbar(title: LocalizableReport.clearAppBar.localized) {
-                        showDeleteReportConfirmationView()
-                    }
+                    Spacer()
                 }
-            })
                 
+                TellaButtonView<AnyView> (title: LocalizableReport.reportsCreateNew.localized,
+                                          nextButtonAction: .action,
+                                          buttonType: .yellow,
+                                          isValid: .constant(true)) {
+                    navigateTo(destination: newDraftReportView)
+                } .padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0))
                 
+            }.background(Styles.Colors.backgroundMain)
+                .padding(EdgeInsets(top: 15, leading: 20, bottom: 16, trailing: 20))
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: backButton)
+        
+        .if(self.reportsViewModel.selectedCell == ReportPages.submitted.rawValue && self.reportsViewModel.submittedReports.count > 0, transform: { view in
+            view.toolbar {
+                TrailingButtonToolbar(title: LocalizableReport.clearAppBar.localized) {
+                    showDeleteReportConfirmationView()
+                }
+            }
+        })
+        
+        
+    }
     
     private var newDraftReportView: some View {
         DraftReportView(mainAppModel: mainAppModel).environmentObject(reportsViewModel)

@@ -15,10 +15,10 @@ class ReportsViewModel: ObservableObject {
     @Published var outboxedReports : [Report] = []
     @Published var submittedReports : [Report] = []
     @Published var selectedReport : Report?
-    @Published var selectedCell = Pages.draft
-    @Published var pageViewItems : [PageViewItem] = [PageViewItem(title: LocalizableReport.draftTitle.localized, page: .draft, number: "") ,
-                                                     PageViewItem(title: LocalizableReport.outboxTitle.localized, page: .outbox, number: ""),
-                                                     PageViewItem(title: LocalizableReport.submittedTitle.localized, page: .submitted, number: "")]
+    @Published var selectedCell: Int = ReportPages.draft.rawValue
+    @Published var pageViewItems : [PageViewItem] = [PageViewItem(title: LocalizableReport.draftTitle.localized, page: ReportPages.draft.rawValue, number: "") ,
+                                                     PageViewItem(title: LocalizableReport.outboxTitle.localized, page: ReportPages.outbox.rawValue, number: ""),
+                                                     PageViewItem(title: LocalizableReport.submittedTitle.localized, page: ReportPages.submitted.rawValue, number: "")]
     
     var sheetItems : [ListActionSheetItem] { return [
         
@@ -70,7 +70,7 @@ class ReportsViewModel: ObservableObject {
     }
     
     private func updateDraftReportsNumber() {
-        if let row = self.pageViewItems.firstIndex(where: {$0.page == .draft}) {
+        if let row = self.pageViewItems.firstIndex(where: {$0.page == ReportPages.draft.rawValue}) {
             if draftReports.count > 0 {
                 pageViewItems[row].number = "(\(draftReports.count))"
             }
@@ -81,7 +81,7 @@ class ReportsViewModel: ObservableObject {
     }
     
     private func updateOutboxReportsNumber() {
-        if let row = self.pageViewItems.firstIndex(where: {$0.page == .outbox}) {
+        if let row = self.pageViewItems.firstIndex(where: {$0.page == ReportPages.outbox.rawValue}) {
             
             if outboxedReports.count > 0 {
                 pageViewItems[row].number = "(\(outboxedReports.count))"
@@ -93,7 +93,7 @@ class ReportsViewModel: ObservableObject {
     }
     
     private func updateSubmittedReportsNumber() {
-        if let row = self.pageViewItems.firstIndex(where: {$0.page == .submitted}) {
+        if let row = self.pageViewItems.firstIndex(where: {$0.page == ReportPages.submitted.rawValue}) {
             
             if submittedReports.count > 0 {
                 pageViewItems[row].number = "(\(submittedReports.count))"

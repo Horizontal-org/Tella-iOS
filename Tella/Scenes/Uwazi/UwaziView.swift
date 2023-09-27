@@ -18,62 +18,64 @@ struct UwaziView: View {
     }
     
     private var contentView :some View {
-            
-            ContainerView {
-                VStack(alignment: .center) {
+        
+        ContainerView {
+            VStack(alignment: .center) {
+                
+                PageView(selectedOption: $uwaziViewModel.selectedCell, pageViewItems: $uwaziViewModel.pageViewItems)
+                    .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
+                
+                VStack (spacing: 0) {
+                    Spacer()
+                    switch UwaziPages(rawValue:uwaziViewModel.selectedCell) {
                         
-                    PageView(selectedOption: $uwaziViewModel.selectedCell, pageViewItems: $uwaziViewModel.pageViewItems)
-                        .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
-                            
-                    VStack (spacing: 0) {
-                        Spacer()
-                        switch uwaziViewModel.selectedCell {
+                    case .templates:
+                        TemplateListView(
+                            message: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized, serverName: uwaziViewModel.serverName)
+                        .environmentObject(UwaziTemplateViewModel(mainAppModel: uwaziViewModel.mainAppModel, server: uwaziViewModel.server))
+                    case .draft:
+                        ReportListView(reportArray: $uwaziViewModel.draftEntities,
+                                       message: LocalizableReport.reportsDraftEmpty.localized)
                         
-                        case .templates:
-                            TemplateListView(
-                                             message: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized, serverName: uwaziViewModel.serverName)
-                            .environmentObject(UwaziTemplateViewModel(mainAppModel: uwaziViewModel.mainAppModel, server: uwaziViewModel.server))
-                        case .draft:
-                            ReportListView(reportArray: $uwaziViewModel.draftEntities,
-                                           message: LocalizableReport.reportsDraftEmpty.localized)
-                                        
-                        case .outbox:
-                                        
-                            ReportListView(reportArray: $uwaziViewModel.outboxedEntities,
-                                           message: LocalizableReport.reportsOutboxEmpty.localized)
-                                        
-                        case .submitted:
-                            ReportListView(reportArray: $uwaziViewModel.submittedEntities,
-                                           message: LocalizableReport.reportsSubmitedEmpty.localized)
-                        }
-                                    
-                        Spacer()
+                    case .outbox:
+                        
+                        ReportListView(reportArray: $uwaziViewModel.outboxedEntities,
+                                       message: LocalizableReport.reportsOutboxEmpty.localized)
+                        
+                    case .submitted:
+                        ReportListView(reportArray: $uwaziViewModel.submittedEntities,
+                                       message: LocalizableReport.reportsSubmitedEmpty.localized)
+                    case .none:
+                        EmptyView()
                     }
                     
-                    AddFileYellowButton(action: {
-                        navigateTo(destination: AddTemplatesView()
-                            .environmentObject(UwaziTemplateViewModel(mainAppModel: uwaziViewModel.mainAppModel, server: uwaziViewModel.server)))
-                    }).frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
-                            
-                    }.background(Styles.Colors.backgroundMain)
-                    .padding(EdgeInsets(top: 15, leading: 20, bottom: 16, trailing: 20))
-            }
-            .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: backButton)
+                    Spacer()
+                }
                 
+                AddFileYellowButton(action: {
+                    navigateTo(destination: AddTemplatesView()
+                        .environmentObject(UwaziTemplateViewModel(mainAppModel: uwaziViewModel.mainAppModel, server: uwaziViewModel.server)))
+                }).frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
+                
+            }.background(Styles.Colors.backgroundMain)
+                .padding(EdgeInsets(top: 15, leading: 20, bottom: 16, trailing: 20))
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: backButton)
+        
+    }
     
     var backButton : some View {
-            Button {
-                self.popToRoot()
-            } label: {
-                Image("back")
-                    .flipsForRightToLeftLayoutDirection(true)
-                    .padding(EdgeInsets(top: -3, leading: -8, bottom: 0, trailing: 12))
-            }
+        Button {
+            self.popToRoot()
+        } label: {
+            Image("back")
+                .flipsForRightToLeftLayoutDirection(true)
+                .padding(EdgeInsets(top: -3, leading: -8, bottom: 0, trailing: 12))
         }
+    }
     
-
+    
 }
 
 struct UwaziView_Previews: PreviewProvider {

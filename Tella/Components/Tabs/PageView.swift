@@ -7,10 +7,10 @@ import SwiftUI
 class PageViewItem {
     
     var title : String
-    var page : Pages
+    var page : Int
     var number : String
     
-    init(title: String, page: Pages, number: String) {
+    init(title: String, page: Int, number: String) {
         self.title = title
         self.page = page
         self.number = number
@@ -19,7 +19,7 @@ class PageViewItem {
 
 public struct PageView: View {
     
-    @Binding var selectedOption: Pages
+    @Binding var selectedOption: Int
     @Binding var pageViewItems : [PageViewItem]
     
     public var body: some View {
