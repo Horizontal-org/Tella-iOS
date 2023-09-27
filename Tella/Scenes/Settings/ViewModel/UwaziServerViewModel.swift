@@ -255,9 +255,6 @@ class UwaziServerViewModel: ObservableObject {
                     self.shouldShowLoginError = true
                     self.loginErrorMessage = error.errorDescription ?? error.localizedDescription
                 }
-            case .error:
-                self.shouldShowLoginError = true
-                self.loginErrorMessage = error.errorDescription ?? ""
             case .noInternetConnection:
                 Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
             }
@@ -317,8 +314,6 @@ class UwaziServerViewModel: ObservableObject {
                 default:
                     self.codeErrorMessage = error.errorDescription ?? ""
                 }
-            case .error:
-                self.codeErrorMessage = error.errorDescription ?? ""
             case .noInternetConnection:
                 Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
             }
