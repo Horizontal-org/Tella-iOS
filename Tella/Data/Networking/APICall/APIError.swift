@@ -10,9 +10,11 @@ enum APIError: Swift.Error {
     case httpCode(HTTPCode)
     case unexpectedResponse
     case noInternetConnection
+    case badServer
 }
 
 extension APIError: LocalizedError {
+
     var errorDescription: String? {
         switch self {
         case .invalidURL:
@@ -23,16 +25,21 @@ extension APIError: LocalizedError {
             return "Unexpected response from the server"
         case .noInternetConnection:
             return LocalizableSettings.settServerNoInternetConnection.localized
+        case .badServer:
+            return LocalizableSettings.settServerServerURLIncorrect.localized
         }
     }
-    func customErrorMessage(errorCode : Int) -> String {
-        switch HTTPErrorCodes(rawValue: errorCode) {
+    private func customErrorMessage(errorCode : Int) -> String {
+        let httpErrorCode = HTTPErrorCodes(rawValue: errorCode)
+        switch httpErrorCode{
         case .unauthorized:
             return "Invalid username or password"
         case .forbidden:
             return "Account locked due to too many unsuccessful attempts."
+        case .notFound:
+            return LocalizableSettings.settServerServerURLIncorrect.localized
         default:
-            return "Custom Error"
+            return "Unexpected response from the server"
         }
     }
 }

@@ -280,7 +280,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_SettServer_TellaWeb" = "TELLA WEB";
 "Setting_SettServer_Uwazi" = "UWAZI";
 "Setting_SettServer_No_Internet" = "No Internet connection. Try again when you are connected to the Internet.";
-
+"Setting_SettServer_Server_URL_Incorrect" = "Error: The server URL is incorrect";
 
 
 "Setting_Server_Uwazi_Server_URL" = "Enter the server URL";

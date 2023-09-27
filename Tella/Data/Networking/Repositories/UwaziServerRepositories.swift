@@ -70,9 +70,7 @@ struct UwaziServerRepository: WebRepository {
     }
 
     func getProjetDetails(projectURL: String,token: String) -> AnyPublisher<ProjectAPI, APIError> {
-
         let apiResponse : APIResponse<ProjectDetailsResult> = getAPIResponse(endpoint: API.getProjetDetails((projectURL: projectURL, token: token)))
-
         return apiResponse
             .compactMap{$0.0.toDomain() as? ProjectAPI }
             .eraseToAnyPublisher()

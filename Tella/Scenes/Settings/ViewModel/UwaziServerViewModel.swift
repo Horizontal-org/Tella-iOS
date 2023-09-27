@@ -109,7 +109,7 @@ class UwaziServerViewModel: ObservableObject {
     func updateServer() {
         guard let currentServer = currentServer, let currentServerId = currentServer.id else { return }
         let server = Server(id: currentServerId,
-            name: setting?.siteName,
+                            name: setting?.siteName,
                             serverURL: serverURL.getBaseURL(),
                             username: username,
                             password: password,
@@ -201,13 +201,16 @@ class UwaziServerViewModel: ObservableObject {
             // TODO: handle this error
         case .failure(let error):
             switch error {
-                case .noInternetConnection:
-                    Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+            case .noInternetConnection:
+                Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
             default:
-                self.isPublicInstance = false
+                debugLog(error)
+                urlErrorMessage = error.errorDescription ?? error.localizedDescription
+                shouldShowURLError = true
             }
         }
     }
+
 
     fileprivate func handleRecieveValueForCheckURL(_ wrapper: UwaziCheckURL) {
         self.setting = wrapper
@@ -238,7 +241,7 @@ class UwaziServerViewModel: ObservableObject {
         switch completion {
         case .failure(let error):
             switch error {
-            case .invalidURL, .unexpectedResponse:
+            case .invalidURL, .unexpectedResponse, .badServer:
                 self.shouldShowLoginError = true
                 self.loginErrorMessage = error.errorDescription ?? ""
             case .httpCode(let code):
@@ -250,7 +253,7 @@ class UwaziServerViewModel: ObservableObject {
                     self.showNext2FAView = true
                 default:
                     self.shouldShowLoginError = true
-                    self.loginErrorMessage = error.localizedDescription
+                    self.loginErrorMessage = error.errorDescription ?? error.localizedDescription
                 }
             case .noInternetConnection:
                 Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
@@ -300,7 +303,7 @@ class UwaziServerViewModel: ObservableObject {
         switch completion {
         case .failure(let error):
             switch error {
-            case .invalidURL, .unexpectedResponse:
+            case .invalidURL, .unexpectedResponse, .badServer:
                 self.codeErrorMessage = error.errorDescription ?? ""
             case .httpCode(let code):
                 // if the status code is 401 then the 2FA code is incorrect
