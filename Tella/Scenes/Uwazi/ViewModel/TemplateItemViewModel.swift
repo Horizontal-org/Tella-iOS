@@ -9,7 +9,8 @@
 import Foundation
 
 class TemplateItemViewModel: Hashable {
-    var id = UUID()
+    
+    var id : Int?
     var name: String
     var isDownloaded : Bool
     var downloadTemplate : (() -> Void)
@@ -18,6 +19,7 @@ class TemplateItemViewModel: Hashable {
     init(template : CollectedTemplate,
          downloadTemplate: @escaping (() -> Void),
          deleteTemplate: @escaping (() -> Void) ) {
+        self.id = template.id
         self.name = template.entityRow?.name ?? ""
         self.isDownloaded = template.isDownloaded ?? false
         self.downloadTemplate = downloadTemplate

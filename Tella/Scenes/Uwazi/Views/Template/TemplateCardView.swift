@@ -48,7 +48,7 @@ struct TemplateCardView: View {
             let deleteViewModel = DeleteTemplateConfirmationViewModel(title: templateCardViewModel.translatedName,
                                                                       message: LocalizableUwazi.uwaziDeleteTemplateExpl.localized,
                                                                       confirmAction: {
-                templateCardViewModel.deleteTemplate
+                templateCardViewModel.deleteTemplate()
             })
             return DeleteTemplateConfirmationView(viewModel: deleteViewModel)
         }

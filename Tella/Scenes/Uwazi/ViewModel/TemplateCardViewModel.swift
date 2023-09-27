@@ -8,14 +8,27 @@
 
 import Foundation
 
-class TemplateCardViewModel {
-    var id = UUID()
+class TemplateCardViewModel: Hashable {
+    
+    var id : Int?
     var serverName: String
     var translatedName: String
-    var deleteTemplate: ()
-    init(serverName: String, translatedName: String, deleteTemplate: ()) {
-        self.serverName = serverName
-        self.translatedName = translatedName
+    var deleteTemplate: (() -> Void)
+   
+    init(template : CollectedTemplate,
+         deleteTemplate: @escaping (() -> Void) ) {
+        self.id = template.id
+        self.serverName = template.serverName ?? ""
+        self.translatedName = template.entityRow?.translatedName ?? ""
         self.deleteTemplate = deleteTemplate
     }
+    
+    static func == (lhs: TemplateCardViewModel, rhs: TemplateCardViewModel) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
 }

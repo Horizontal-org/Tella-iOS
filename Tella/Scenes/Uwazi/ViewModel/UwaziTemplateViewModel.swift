@@ -12,18 +12,18 @@ import Combine
 class UwaziTemplateViewModel: ObservableObject {
     
     var mainAppModel : MainAppModel
-
+    
     @Published private var templates : [CollectedTemplate] = []
     @Published private var downloadedTemplates : [CollectedTemplate] = []
-
+    
     @Published var templateItemsViewModel : [TemplateItemViewModel] = []
     @Published var templateCardsViewModel : [TemplateCardViewModel] = []
-
+    
     @Published var isLoading: Bool = false
     @Published var serverName : String
     var subscribers = Set<AnyCancellable>()
     var server: Server
-
+    
     var tellaData: TellaData? {
         return self.mainAppModel.vaultManager.tellaData
     }
@@ -34,7 +34,7 @@ class UwaziTemplateViewModel: ObservableObject {
         self.server = server
         self.serverName = server.name ?? ""
     }
-
+    
     func getTemplates() {
         self.isLoading = true
         Task {
@@ -48,8 +48,8 @@ class UwaziTemplateViewModel: ObservableObject {
             }.store(in: &subscribers)
         }
     }
-
-
+    
+    
     fileprivate func mapToCollectedTemplate(serverId: Int, _ templates: [UwaziTemplateRow]) -> [CollectedTemplate] {
         return templates.map { template in
             return CollectedTemplate(serverId: serverId,
@@ -62,13 +62,13 @@ class UwaziTemplateViewModel: ObservableObject {
                                      isUpdated: false)
         }
     }
-
+    
     func downloadTemplate(template: CollectedTemplate) {
         var template = template
         Toast.displayToast(message: "“\(template.entityRow?.translatedName ?? "")” “\(LocalizableUwazi.uwaziAddTemplateSavedToast.localized)”")
         self.downloadTemplate(template: &template)
     }
-
+    
     fileprivate func handleGetTemplateCompletion(_ completion: Subscribers.Completion<Error>) {
         switch completion {
         case .finished:
@@ -78,23 +78,28 @@ class UwaziTemplateViewModel: ObservableObject {
         }
         self.isLoading = false
     }
-
+    
     fileprivate func handleRecieveValue(_ templates: [CollectedTemplate]) {
         self.handleTemplateDownload(templates: templates)
         self.templates = templates
         self.isLoading = false
-
+        
         self.templateItemsViewModel = self.templates.map({ collectedTemplate in
-            TemplateItemViewModel(template: collectedTemplate, 
+            TemplateItemViewModel(template: collectedTemplate,
                                   downloadTemplate: {self.downloadTemplate(template: collectedTemplate)} ,
                                   deleteTemplate: {self.deleteDownloadedTemplate(templateId:collectedTemplate.id)})
-         })
+        })
     }
     
     func getDownloadedTemplates() {
         self.downloadedTemplates = self.getAllDownloadedTemplate() ?? []
+        
+        self.templateCardsViewModel = self.downloadedTemplates.map({ collectedTemplate in
+            TemplateCardViewModel(template: collectedTemplate,
+                                  deleteTemplate: {self.deleteDownloadedTemplate(templateId:collectedTemplate.id)})
+        })
     }
-
+    
     func handleDeleteActionsForAddTemplate(item: ListActionSheetItem, template: CollectedTemplate, completion: ()-> Void) {
         guard let type = item.type as? TemplateActionType else { return }
         if type == .delete {
@@ -102,7 +107,7 @@ class UwaziTemplateViewModel: ObservableObject {
             completion()
         }
     }
-
+    
     /// To determine if the templates are already download or not reflect on the UI for template download list
     /// - Parameter templates: Collection of CollectedTemplate to determine if it downloaded or not
     func handleTemplateDownload(templates: [CollectedTemplate]) {
@@ -115,7 +120,7 @@ class UwaziTemplateViewModel: ObservableObject {
             }
         }
     }
-
+    
     /// Save the template to the database
     /// - Parameter template: The template that we need to save into the database
     func saveTemplate( template: inout CollectedTemplate) {
@@ -128,7 +133,7 @@ class UwaziTemplateViewModel: ObservableObject {
             }
         }
     }
-
+    
     /// Delete the saved template from database using the template id of the template and changing the status of isDownloaded property to 0  for template listing view
     /// - Parameter template: The CollectedTemplate Object and changing the status of isDownloaded property to 0
     func deleteTemplate(template: CollectedTemplate) {
@@ -143,7 +148,7 @@ class UwaziTemplateViewModel: ObservableObject {
     func getAllDownloadedTemplate() -> [CollectedTemplate]? {
         self.tellaData?.getAllUwaziTemplate()
     }
-
+    
     /// Delete the saved template from database using the template id of the template for downloaded template listing view
     /// - Parameter template: The template object which we need to delete
     func deleteDownloadedTemplate(templateId: Int?) {
@@ -151,7 +156,7 @@ class UwaziTemplateViewModel: ObservableObject {
         self.tellaData?.deleteAllUwaziTemplate(id: templateId)
         getDownloadedTemplates()
     }
-
+    
     func downloadTemplate(template: inout CollectedTemplate) -> Void {
         isLoading = true
         self.saveTemplate(template: &template)
