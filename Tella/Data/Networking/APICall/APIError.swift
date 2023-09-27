@@ -39,7 +39,7 @@ extension APIError: LocalizedError {
         case .notFound:
             return LocalizableSettings.settServerServerURLIncorrect.localized
         default:
-            return "Custom Error"
+            return "Unexpected response from the server"
         }
     }
 }
