@@ -48,7 +48,7 @@ struct TemplateItemView: View {
                                   headerTitle: templateItemViewModel.name ,
                                   action:  {item in
                 self.sheetManager.hide()
-               self.templateItemViewModel.deleteTemplate()
+                self.templateItemViewModel.deleteTemplate()
             })
         }
     }

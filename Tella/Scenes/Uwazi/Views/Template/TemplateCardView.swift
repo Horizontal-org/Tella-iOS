@@ -51,6 +51,7 @@ struct TemplateCardView: View {
                                       cancelText: LocalizableReport.deleteCancel.localized,
                                       actionText: LocalizableReport.deleteConfirm.localized) {
                 templateCardViewModel.deleteTemplate()
+                Toast.displayToast(message: "“\(templateCardViewModel.translatedName)” \(LocalizableUwazi.uwaziDeleteEntitySheetExpl.localized)")
             }
         }
     }

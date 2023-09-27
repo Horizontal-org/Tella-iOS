@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct TemplateListView: View {
-    @EnvironmentObject var uwaziViewModel : UwaziTemplateViewModel
+    @EnvironmentObject var uwaziViewModel : DownloadedTemplatesViewModel
     var message : String
     var serverName : String
 

@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct AddTemplatesView: View {
-    @EnvironmentObject var uwaziTemplateViewModel: UwaziTemplateViewModel
+    @EnvironmentObject var uwaziTemplateViewModel: AddTemplateViewModel
     @EnvironmentObject var sheetManager: SheetManager
     var body: some View {
         ContainerView {
