@@ -11,11 +11,7 @@ import SwiftUI
 struct TemplateItemView: View {
     
     @EnvironmentObject var sheetManager: SheetManager
-    var templateItemViewModel: TemplateItemViewModel
-    
-    internal init(templateItemViewModel: TemplateItemViewModel) {
-        self.templateItemViewModel = templateItemViewModel
-    }
+    @Binding var templateItemViewModel: TemplateItemViewModel
     
     var body: some View {
         HStack {

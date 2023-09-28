@@ -18,7 +18,7 @@ class AddTemplateViewModel: ObservableObject {
     @Published var templateItemsViewModel : [TemplateItemViewModel] = []
     
     @Published var isLoading: Bool = false
-    @Published var serverName : String
+    var serverName : String
     var subscribers = Set<AnyCancellable>()
     var server: Server
     
@@ -65,6 +65,7 @@ class AddTemplateViewModel: ObservableObject {
         var template = template
         Toast.displayToast(message: "“\(template.entityRow?.translatedName ?? "")” “\(LocalizableUwazi.uwaziAddTemplateSavedToast.localized)”")
         self.downloadTemplate(template: &template)
+        self.templateItemsViewModel.first(where: {template.templateId == $0.id})?.isDownloaded = true
     }
     
     fileprivate func handleGetTemplateCompletion(_ completion: Subscribers.Completion<Error>) {
@@ -131,6 +132,7 @@ class AddTemplateViewModel: ObservableObject {
             _ = self.tellaData?.deleteAllUwaziTemplate(templateId: templateId)
             template.isDownloaded = false
             Toast.displayToast(message: "“\(template.entityRow?.translatedName ?? "")” “\(LocalizableUwazi.uwaziDeleteEntitySheetExpl.localized)”")
+            self.templateItemsViewModel.first(where: {template.templateId == $0.id})?.isDownloaded = false
         }
     }
     
