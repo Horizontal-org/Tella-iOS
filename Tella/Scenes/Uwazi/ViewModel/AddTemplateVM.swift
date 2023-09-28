@@ -63,7 +63,6 @@ class AddTemplateViewModel: ObservableObject {
     
     func downloadTemplate(template: CollectedTemplate) {
         var template = template
-        Toast.displayToast(message: "“\(template.entityRow?.translatedName ?? "")” “\(LocalizableUwazi.uwaziAddTemplateSavedToast.localized)”")
         self.downloadTemplate(template: &template)
         self.templateItemsViewModel.first(where: {template.templateId == $0.id})?.isDownloaded = true
     }
@@ -131,7 +130,6 @@ class AddTemplateViewModel: ObservableObject {
         if let templateId = template.templateId {
             _ = self.tellaData?.deleteAllUwaziTemplate(templateId: templateId)
             template.isDownloaded = false
-            Toast.displayToast(message: "“\(template.entityRow?.translatedName ?? "")” “\(LocalizableUwazi.uwaziDeleteEntitySheetExpl.localized)”")
             self.templateItemsViewModel.first(where: {template.templateId == $0.id})?.isDownloaded = false
         }
     }
