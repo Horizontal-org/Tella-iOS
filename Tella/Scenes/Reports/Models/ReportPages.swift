@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 public enum ReportPages : Int {
     case draft
     case outbox
