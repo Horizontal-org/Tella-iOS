@@ -21,10 +21,9 @@ class UwaziLanguageRow: DomainModel, Hashable {
 
     }
     static func == (lhs: UwaziLanguageRow, rhs: UwaziLanguageRow) -> Bool {
-        lhs.id == rhs.id
+        lhs.locale == rhs.locale
     }
     func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
         hasher.combine(locale)
     }
 }

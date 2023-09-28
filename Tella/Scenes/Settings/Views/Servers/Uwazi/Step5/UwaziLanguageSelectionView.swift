@@ -68,7 +68,7 @@ struct UwaziLanguageSelectionView: View {
 
     fileprivate func listView() -> some View {
         return List {
-            ForEach(uwaziServerViewModel.languages, id:\.self) { item in
+            ForEach(uwaziServerViewModel.languages, id:\.locale) { item in
                 UwaziLanguageItemView(languageItem: item,
                                       selectedLanguage: $uwaziServerViewModel.selectedLanguage,
                                       isPresented: $isPresented)
@@ -129,7 +129,7 @@ struct UwaziLanguageItemView : View {
     func isCurrentLanguage(languageItem: UwaziLanguageRow?) -> Bool {
         guard let languageItem = languageItem else { return false }
         if let selectedLanguage = selectedLanguage {
-            return selectedLanguage.id == languageItem.id
+            return selectedLanguage.locale == languageItem.locale
         } else {
             return false
         }
