@@ -160,7 +160,7 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
             self?.publishUpdates()
         }.store(in: &cancellable)
         
-        let files = try await self.vaultManager.importFile(files: files, to: parentFolder, type: type, folderPathArray: folderPathArray) ?? []
+        let files = try await self.vaultManager.importFile(files: files, to: parentFolder, type: type, folderPathArray: folderPathArray) 
         self.publishUpdates()
         return files
     }
@@ -240,7 +240,6 @@ class MainAppModel: ObservableObject, AppModelFileManagerProtocol {
     }
 
 }
-
 ///   MainAppModel extension contains the methods used to manage reports
 
 extension MainAppModel {

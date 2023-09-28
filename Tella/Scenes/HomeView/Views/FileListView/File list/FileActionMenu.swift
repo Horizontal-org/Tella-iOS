@@ -29,7 +29,7 @@ struct FileActionMenu: View {
             appModel.vaultManager.clearTmpDirectory()
         }, content: {
             DocumentPickerView(documentPickerType: .forExport,
-                               URLs: appModel.vaultManager.load(files: fileListViewModel.selectedFiles) ?? [] ) { _ in
+                               URLs: appModel.vaultManager.load(files: fileListViewModel.selectedFiles) ) { _ in
             }
         })
     }

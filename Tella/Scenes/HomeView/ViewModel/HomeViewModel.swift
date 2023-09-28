@@ -21,14 +21,12 @@ class HomeViewModel: ObservableObject {
     var showingFilesTitle: Bool {
         return (hasRecentFile && appModel.settings.showRecentFiles) || !serverDataItemArray.isEmpty
     }
-    
     init(appModel:MainAppModel) {
         self.appModel = appModel
         getServersList()
     }
     func getServersList() {            
         self.appModel.vaultManager.tellaData?.servers.sink { result in
-                
             } receiveValue: { serverArray in
                 self.serverDataItemArray.removeAll()
 

@@ -40,8 +40,7 @@ struct ReportsView: View {
                 VStack (spacing: 0) {
                     Spacer()
                     
-                    switch self.reportsViewModel.selectedCell {
-                        
+                    switch ReportPages(rawValue: self.reportsViewModel.selectedCell) {
                     case .draft:
                         ReportListView(reportArray: $reportsViewModel.draftReports,
                                        message: LocalizableReport.reportsDraftEmpty.localized)
@@ -53,6 +52,8 @@ struct ReportsView: View {
                     case .submitted:
                         ReportListView(reportArray: $reportsViewModel.submittedReports,
                                        message: LocalizableReport.reportsSubmitedEmpty.localized)
+                    case .none:
+                        EmptyView()
                     }
                     
                     Spacer()
@@ -71,15 +72,15 @@ struct ReportsView: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: backButton)
         
-        .if(self.reportsViewModel.selectedCell == .submitted && self.reportsViewModel.submittedReports.count > 0, transform: { view in
+        .if(self.reportsViewModel.selectedCell == ReportPages.submitted.rawValue && self.reportsViewModel.submittedReports.count > 0, transform: { view in
             view.toolbar {
                 TrailingButtonToolbar(title: LocalizableReport.clearAppBar.localized) {
                     showDeleteReportConfirmationView()
                 }
             }
         })
-            
-            
+        
+        
     }
     
     private var newDraftReportView: some View {

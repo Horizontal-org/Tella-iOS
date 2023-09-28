@@ -26,11 +26,14 @@ struct ReportCardView : View {
                 
                 HStack {
                     
-                    reportDetails
+                    ConnectionCardDetail(title: report.title ?? "", subtitle: report.getReportDate)
                     
                     Spacer()
                     
-                    moreButtonView
+                    MoreButtonView(imageName: "reports.more", action: {
+                        reportsViewModel.selectedReport = report
+                        showReportActionBottomSheet()
+                    })
                     
                 }.padding(.all, 16)
                 
@@ -40,31 +43,6 @@ struct ReportCardView : View {
         }
     }
     
-    private var reportDetails : some View {
-        
-        VStack(alignment: .leading, spacing: 6) {
-            
-            Text(report.title ?? "")
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                .foregroundColor(.white)
-                .lineLimit(1)
-            
-            Text(report.getReportDate)
-                .font(.custom(Styles.Fonts.regularFontName, size: 12))
-                .foregroundColor(.white)
-        }
-    }
-    
-    private var moreButtonView : some View {
-        Button {
-            reportsViewModel.selectedReport = report
-            showReportActionBottomSheet()
-            
-        } label: {
-            Image("reports.more")
-                .padding()
-        }
-    }
     
     private func showReportActionBottomSheet() {
         sheetManager.showBottomSheet(modalHeight: 176) {

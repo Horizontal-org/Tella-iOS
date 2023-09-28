@@ -15,7 +15,6 @@ class UwaziServerViewModel: ObservableObject {
     // Server propreties
     @Published var serverURL : String = "https://"
 
-    
     @Published var name : String?
     @Published var username : String = ""
     @Published var password : String = ""
@@ -128,13 +127,13 @@ class UwaziServerViewModel: ObservableObject {
     }
     func addUwaziLocaleFor(serverId: Int) {
         guard let locale = self.selectedLanguage?.locale else { return }
-        mainAppModel.vaultManager.tellaData?.database?.addUwaziLocaleWith(locale: UwaziLocale(locale: locale, serverId: serverId))
+        mainAppModel.vaultManager.tellaData?.addUwaziLocale(locale: UwaziLocale(locale: locale, serverId: serverId))
     }
     func updateUwaziLocaleFor(serverId: Int) {
-        guard let selectedlocale = mainAppModel.vaultManager.tellaData?.database?.getUwaziLocaleWith(serverId: serverId) else { return }
-        guard let localeId = selectedlocale.id, let locale = selectedLanguage?.locale else { return }
-        if selectedlocale.locale != locale {
-            mainAppModel.vaultManager.tellaData?.database?.updateLocale(localeId: localeId, locale: locale)
+        let selectedlocale = mainAppModel.vaultManager.tellaData?.getUwaziLocale(serverId: serverId)
+        guard let localeId = selectedlocale?.id, let locale = selectedLanguage?.locale else { return }
+        if selectedlocale?.locale != locale {
+            mainAppModel.vaultManager.tellaData?.updateLocale(localeId: localeId, locale: locale)
         }
     }
 
@@ -173,7 +172,7 @@ class UwaziServerViewModel: ObservableObject {
         self.isLoading = false
         self.languages.append(contentsOf: wrapper.rows ?? [])
         if let server = self.currentServer, let id = server.id {
-            let locale = self.mainAppModel.vaultManager.tellaData?.database?.getUwaziLocaleWith(serverId: id)
+            let locale = self.mainAppModel.vaultManager.tellaData?.getUwaziLocale(serverId: id)
             self.selectedLanguage = self.languages.compactMap{$0}.first(where: {$0.locale == locale?.locale})
         }
         self.showNextSuccessLoginView = true

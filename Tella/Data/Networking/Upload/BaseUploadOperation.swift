@@ -117,12 +117,7 @@ class BaseUploadOperation : Operation {
         let report = Report(id: self.report?.id,
                             status: reportStatus,
                             apiID: apiID)
-        do {
-            try mainAppModel.vaultManager.tellaData?.updateReport(report: report)
-            
-        } catch {
-            
-        }
+        mainAppModel.vaultManager.tellaData?.updateReport(report: report)
     }
     
     func updateReportFile(fileStatus:FileStatus, id:Int?, bytesSent:Int? = nil, current:Int? = nil ) -> Int {
@@ -145,14 +140,9 @@ class BaseUploadOperation : Operation {
         
         let file = self.reportVaultFiles?.first(where: {$0.instanceId == id})
         let totalBytesSent = (file?.current ?? 0)  + (file?.bytesSent ?? 0)
-        
-        do {
-            try mainAppModel.vaultManager.tellaData?.updateReportFile(reportFile: ReportFile(id: id,
-                                                                                             status: fileStatus,
-                                                                                             bytesSent: totalBytesSent))
-        } catch {
-            
-        }
+        mainAppModel.vaultManager.tellaData?.updateReportFile(reportFile: ReportFile(id: id,
+                                                                                     status: fileStatus,
+                                                                                     bytesSent: totalBytesSent))
         return totalBytesSent
     }
     
@@ -180,14 +170,9 @@ class BaseUploadOperation : Operation {
     }
     
     func deleteCurrentAutoReport() {
-        do {
-            try mainAppModel.vaultManager.tellaData?.deleteReport(reportId: self.report?.id)
-        } catch {
-            
-        }
+        mainAppModel.vaultManager.tellaData?.deleteReport(reportId: self.report?.id)
         guard let reportVaultFiles = self.reportVaultFiles else { return }
         mainAppModel.vaultManager.delete(files: reportVaultFiles, parent: mainAppModel.vaultManager.root)
-        
     }
     
     func sendReport() {

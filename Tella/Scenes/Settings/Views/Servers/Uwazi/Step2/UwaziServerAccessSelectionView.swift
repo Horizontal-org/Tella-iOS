@@ -36,7 +36,7 @@ struct UwaziServerAccessSelectionView: View {
                                         nextAction: {
                     handleNavigation()
                 },
-                backAction: {
+                                        backAction: {
                     self.presentationMode.wrappedValue.dismiss()
                 })
             }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
@@ -74,7 +74,6 @@ struct UwaziServerAccessSelectionView: View {
 
     fileprivate func handleNavigation() {
         switch accessServerType {
-
         case .publicServer:
             navigateToLanguageView()
         case .privateServer:

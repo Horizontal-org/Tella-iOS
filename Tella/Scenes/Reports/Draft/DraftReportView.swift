@@ -280,7 +280,7 @@ struct DraftReportView: View {
     private func submitReportLater() {
         reportViewModel.status = .finalized
         reportViewModel.saveReport()
-        reportsViewModel.selectedCell = .outbox
+        reportsViewModel.selectedCell = ReportPages.outbox.rawValue
         dismissViews()
        Toast.displayToast(message: LocalizableReport.outboxSavedToast.localized)
 
@@ -289,7 +289,7 @@ struct DraftReportView: View {
     private func saveDraftReport() {
         reportViewModel.status = .draft
         reportViewModel.saveReport()
-        reportsViewModel.selectedCell = .draft
+        reportsViewModel.selectedCell = ReportPages.draft.rawValue 
         dismissViews()
        Toast.displayToast(message: LocalizableReport.draftSavedToast.localized)
     }

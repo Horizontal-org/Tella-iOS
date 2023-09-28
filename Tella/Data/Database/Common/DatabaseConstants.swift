@@ -29,6 +29,7 @@ struct D {
     static let tReport = "t_report"
     static let tUwaziServerLanguage = "t_uwazi_server_language"
     static let tReportInstanceVaultFile = "t_report_instance_vault_file";
+    static let tUwaziTemplate = "t_uwazi_template"
 
     /* DATABASE COLUMNS */
     // MARK: - DATABASE COLUMNS
@@ -55,6 +56,7 @@ struct D {
     static let cDate = "c_date"
     static let cStatus = "c_status"
     static let cServerId = "c_server_id"
+    static let cServerType = "c_server_type"
     
     static let cReportId = "c_report_id"
     static let cApiReportId = "c_api_report_id"
@@ -68,7 +70,14 @@ struct D {
     // MARK: Uwazi Locale
     static let cLocale = "c_locale"
     static let cLocaleId = "c_locale_id"
-    static let cServerType = "c_server_type"
+
+    static let cTemplateId = "c_template_id"
+    static let cEntity = "c_entity"
+    static let cDownloaded = "c_downloaded"
+    static let cUpdated = "c_updated"
+    static let cFavorite = "c_favorite"
+    static let cServerName = "c_server_name"
+
 }
 
 
