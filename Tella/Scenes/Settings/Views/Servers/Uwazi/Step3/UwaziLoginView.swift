@@ -49,9 +49,7 @@ struct UwaziLoginView: View {
             }
         })
         .onAppear {
-            if uwaziServerViewModel.currentServer != nil {
-                uwaziServerViewModel.validCredentials = true
-            } else {}
+            self.uwaziServerViewModel.validateForLogin()
         }
     }
     fileprivate func usernameTextFieldView() -> some View {
