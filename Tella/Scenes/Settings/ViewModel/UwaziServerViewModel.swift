@@ -344,6 +344,7 @@ class UwaziServerViewModel: ObservableObject {
     func fillUwaziServer() {
         guard let server = self.currentServer else { return }
         self.serverURL = server.url ?? ""
+        // To Avoid the animation of textfield in login view
         self.username = ""
         self.username = ""
 
