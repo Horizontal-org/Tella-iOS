@@ -134,7 +134,7 @@ extension UwaziServerRepository {
     /// - Parameters:
     ///   - server: Server Object to get the information about the Uwazi server
     /// - Returns: Collection of CollectedTemplate
-    func handleTemplate(server: UwaziServer) async throws  -> AnyPublisher<[UwaziTemplateRow], Error> {
+    func handleTemplate(server: UwaziServer) -> AnyPublisher<[UwaziTemplateRow], APIError> {
         guard let serverURL = server.url else {
             return Fail(error: APIError.unexpectedResponse).eraseToAnyPublisher()
         }
