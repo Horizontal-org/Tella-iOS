@@ -126,18 +126,7 @@ class UwaziServerViewModel: ObservableObject {
         server.id = id
         updateUwaziLocaleFor(serverId: currentServerId)
     }
-    func validateForLogin() {
-        guard let currentServer = currentServer else { return }
-        self.username = currentServer.username ?? ""
-        self.password = currentServer.password ?? ""
-        if !self.username.isEmpty {
-            self.validUsername = true
-        }
-        if !self.password.isEmpty {
-            self.validPassword = true
-        }
-    }
-
+    
     func addUwaziLocaleFor(serverId: Int) {
         guard let locale = self.selectedLanguage?.locale else { return }
         mainAppModel.vaultManager.tellaData?.addUwaziLocale(locale: UwaziLocale(locale: locale, serverId: serverId))
