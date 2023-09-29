@@ -86,6 +86,11 @@ struct AddTemplatesView: View {
                 EmptyReportView(message: LocalizableUwazi.uwaziAddTemplateEmptydExpl.localized)
             }
         }
+        .onReceive(uwaziTemplateViewModel.$showToast, perform: { showToast in
+            if showToast {
+                Toast.displayToast(message: uwaziTemplateViewModel.errorMessage)
+            }
+        })
     }
 }
 

@@ -11,11 +11,13 @@ struct EmptyReportView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 22) {
+            Spacer()
             Image("reports.report")
             Text(message)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
+            Spacer()
         }.padding(EdgeInsets(top: 0, leading: 31, bottom: 0, trailing: 31))
     }
 }

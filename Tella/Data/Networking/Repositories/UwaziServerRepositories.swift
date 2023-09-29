@@ -163,6 +163,7 @@ extension UwaziServerRepository {
             self.translate(locale: server.locale ?? "", resultTemplates: resultTemplates, translations: translations)
             return resultTemplates.compactMap({$0.toDomain() as? UwaziTemplateRow})
         })
+        .mapError{$0 as! APIError}
         .eraseToAnyPublisher()
     }
 
