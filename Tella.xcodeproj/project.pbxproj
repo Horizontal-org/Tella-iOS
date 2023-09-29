@@ -1880,6 +1880,16 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		CC284CCC2AC76B0300DFD7D6 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				CCC1B4262AC75A380075B819 /* CreateEntityView.swift */,
+				CCC1B4282AC75A8E0075B819 /* RenderPropertyComponentView.swift */,
+				E1F4A8E52AAF431F001C8E61 /* Widgets */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
 		CC387D5A2A7857C900853F2E /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -2029,10 +2039,8 @@
 		E10412112A9474D9003DCE6A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E1F4A8E52AAF431F001C8E61 /* Widgets */,
+				CC284CCC2AC76B0300DFD7D6 /* Entity */,
 				CCD586BE2A7AB0E300014F87 /* Template */,
-				CCC1B4262AC75A380075B819 /* CreateEntityView.swift */,
-				CCC1B4282AC75A8E0075B819 /* RenderPropertyComponentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
