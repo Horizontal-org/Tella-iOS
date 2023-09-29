@@ -11,7 +11,6 @@ import SwiftUI
 struct TemplateListView: View {
     @EnvironmentObject var uwaziViewModel : DownloadedTemplatesViewModel
     var message : String
-    var serverName : String
 
     var body: some View {
         ZStack {
@@ -39,6 +38,6 @@ struct TemplateListView: View {
 
 struct TemplateListView_Previews: PreviewProvider {
     static var previews: some View {
-        TemplateListView( message: "", serverName: "")
+        TemplateListView( message: "")
     }
 }

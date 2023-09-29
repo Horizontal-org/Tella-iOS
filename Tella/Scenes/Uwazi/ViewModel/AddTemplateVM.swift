@@ -26,10 +26,9 @@ class AddTemplateViewModel: ObservableObject {
         return self.mainAppModel.vaultManager.tellaData
     }
     
-    init(mainAppModel : MainAppModel, server: Server) {
-        
+    init(mainAppModel : MainAppModel) {
         self.mainAppModel = mainAppModel
-        self.server = server
+        self.server = (mainAppModel.vaultManager.tellaData?.servers.value.first)!
         self.serverName = server.name ?? ""
     }
     

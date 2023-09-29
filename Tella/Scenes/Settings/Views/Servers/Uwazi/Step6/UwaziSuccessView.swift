@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct UwaziSuccessView: View {
+    @EnvironmentObject var uwaziServerViewModel: UwaziServerViewModel
     var body: some View {
         ContainerView {
             VStack(spacing: 10) {
@@ -26,7 +27,8 @@ struct UwaziSuccessView: View {
                                         shouldHideNext: false,
                                         shouldHideBack: true,
                                         nextAction: {
-                    self.popTo(UIHostingController<Optional<ModifiedContent<ServersListView, _EnvironmentKeyWritingModifier<Optional<ServersViewModel>>>>>.self)
+                    //self.popTo(UIHostingController<Optional<ModifiedContent<ServersListView, _EnvironmentKeyWritingModifier<Optional<ServersViewModel>>>>>.self)
+                    navigateTo(destination: UwaziView().environmentObject(UwaziViewModel(mainAppModel: uwaziServerViewModel.mainAppModel)))
                 })
             }.padding(.leading, 23)
                 .padding(.trailing, 23)

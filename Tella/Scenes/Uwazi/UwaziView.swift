@@ -31,7 +31,7 @@ struct UwaziView: View {
                         
                     case .templates:
                         TemplateListView(
-                            message: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized, serverName: uwaziViewModel.serverName)
+                            message: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized)
                         .environmentObject(DownloadedTemplatesViewModel(mainAppModel: uwaziViewModel.mainAppModel))
                     case .draft:
                         ReportListView(reportArray: $uwaziViewModel.draftEntities,
@@ -54,7 +54,7 @@ struct UwaziView: View {
                 
                 AddFileYellowButton(action: {
                     navigateTo(destination: AddTemplatesView()
-                        .environmentObject(AddTemplateViewModel(mainAppModel: uwaziViewModel.mainAppModel, server: uwaziViewModel.server)))
+                        .environmentObject(AddTemplateViewModel(mainAppModel: uwaziViewModel.mainAppModel)))
                 }).frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
                 
             }.background(Styles.Colors.backgroundMain)

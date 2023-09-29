@@ -44,7 +44,7 @@ struct UwaziLanguageSelectionView: View {
                 self.presentationMode.wrappedValue.dismiss()
             }, saveAction: {
                 uwaziServerViewModel.handleServerAction()
-                navigateTo(destination: UwaziSuccessView())
+                navigateTo(destination: UwaziSuccessView().environmentObject(uwaziServerViewModel))
 
             }, saveActionTitle: "OK")
         }

@@ -26,17 +26,11 @@ class UwaziViewModel: ObservableObject {
         PageViewItem(title: LocalizableReport.submittedTitle.localized, page: UwaziPages.submitted.rawValue, number: "")
     ]
     @Published var isLoading: Bool = false
-    @Published var serverName : String
-    var server: Server
 
     var tellaData: TellaData? {
         return self.mainAppModel.vaultManager.tellaData
     }
-    
-    init(mainAppModel : MainAppModel, server: Server) {
-        
+    init(mainAppModel : MainAppModel) {
         self.mainAppModel = mainAppModel
-        self.server = server
-        self.serverName = server.name ?? ""
     }
 }
