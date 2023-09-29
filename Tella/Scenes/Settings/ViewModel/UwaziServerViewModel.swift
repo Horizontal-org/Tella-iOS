@@ -75,7 +75,6 @@ class UwaziServerViewModel: ObservableObject {
         cancellableAuthenticationCode = $validCode.sink(receiveValue: { validCode in
             self.validAuthenticationCode = validCode
         })
-        fillUwaziServerVM()
     }
 
     func handleServerAction() {
@@ -342,24 +341,18 @@ class UwaziServerViewModel: ObservableObject {
         self.isLoading = false
     }
 
-    func fillUwaziServerVM() {
-        guard let server = self.currentServer else {
-            return
-        }
-        name =  server.name ?? ""
-        serverURL = server.url ?? ""
-        username = server.username ?? ""
-        password = server.password ?? ""
-        activatedMetadata = server.activatedMetadata ?? false
-        backgroundUpload = server.backgroundUpload ?? false
-        autoUpload = server.autoUpload ?? false
-        autoDelete = server.autoDelete ?? false
-        if !self.username.isEmpty {
-            self.validUsername = true
-        }
-        if !self.password.isEmpty {
-            self.validPassword = true
-        }
+    func fillUwaziServer() {
+        guard let server = self.currentServer else { return }
+        self.serverURL = server.url ?? ""
+        self.username = ""
+        self.username = ""
+
+    }
+
+    func fillUwaziCredentials() {
+        guard let server = self.currentServer else { return }
+        self.username = server.username ?? ""
+        self.password = server.password ?? ""
     }
 }
 

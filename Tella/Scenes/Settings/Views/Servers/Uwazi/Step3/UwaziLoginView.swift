@@ -48,6 +48,9 @@ struct UwaziLoginView: View {
                 show2FAView()
             }
         })
+        .onAppear {
+            self.uwaziServerViewModel.fillUwaziCredentials()
+        }
     }
     fileprivate func usernameTextFieldView() -> some View {
         return TextfieldView(fieldContent: $uwaziServerViewModel.username,
