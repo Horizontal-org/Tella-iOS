@@ -14,6 +14,7 @@ class TemplateCardViewModel: Hashable {
     var serverName: String
     var translatedName: String
     var deleteTemplate: (() -> Void)
+    var template: CollectedTemplate
    
     init(template : CollectedTemplate,
          deleteTemplate: @escaping (() -> Void) ) {
@@ -21,6 +22,7 @@ class TemplateCardViewModel: Hashable {
         self.serverName = template.serverName ?? ""
         self.translatedName = template.entityRow?.translatedName ?? ""
         self.deleteTemplate = deleteTemplate
+        self.template = template
     }
     
     static func == (lhs: TemplateCardViewModel, rhs: TemplateCardViewModel) -> Bool {

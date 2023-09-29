@@ -9,11 +9,7 @@
 import SwiftUI
 
 struct AddTemplatesView: View {
-<<<<<<< HEAD:Tella/Scenes/Uwazi/Views/Template/AddTemplatesView.swift
     @EnvironmentObject var uwaziTemplateViewModel: AddTemplateViewModel
-=======
-    @EnvironmentObject var uwaziTemplateViewModel: UwaziTemplateViewModel
->>>>>>> 14f2291... Removed toDomain from unnecessary DTOs:Tella/Scenes/Uwazi/Views/Template/AddTemplate/AddTemplatesView.swift
     @EnvironmentObject var sheetManager: SheetManager
     var body: some View {
         ContainerView {
@@ -74,16 +70,9 @@ struct AddTemplatesView: View {
                             .font(.custom(Styles.Fonts.semiBoldFontName, size: 16))
                             .foregroundColor(.white)
                             .padding(.all, 14)
-<<<<<<< HEAD:Tella/Scenes/Uwazi/Views/Template/AddTemplatesView.swift
                         ForEach($uwaziTemplateViewModel.templateItemsViewModel, id: \.id) { itemViewModel in
                             TemplateItemView(templateItemViewModel: itemViewModel)
                             if itemViewModel.wrappedValue.id != (uwaziTemplateViewModel.templateItemsViewModel.last?.id ?? "") {
-=======
-                        ForEach(Array(uwaziTemplateViewModel.templates.enumerated()), id: \.element) { index, template in
-                            let templateItemViewModel = createTemplateItemViewModel(template: template)
-                            TemplateItemView(viewModel: templateItemViewModel)
-                            if index < (uwaziTemplateViewModel.templates.count - 1) {
->>>>>>> 14f2291... Removed toDomain from unnecessary DTOs:Tella/Scenes/Uwazi/Views/Template/AddTemplate/AddTemplatesView.swift
                                 DividerView()
                             }
                         }
@@ -98,31 +87,5 @@ struct AddTemplatesView: View {
             }
         }
     }
-<<<<<<< HEAD:Tella/Scenes/Uwazi/Views/Template/AddTemplatesView.swift
-=======
-
-
-
-    private func createTemplateItemViewModel(template: CollectedTemplate) -> TemplateItemViewModel {
-
-        return TemplateItemViewModel(name: template.entityRow?.name ?? "",
-                                                          isDownloaded: template.isDownloaded ?? false) {
-            self.uwaziTemplateViewModel.downloadTemplate(template: template)
-        } deleteTemplate: {
-            showServerActionBottomSheet(template: template)
-        }
-    }
-    private func showServerActionBottomSheet(template: CollectedTemplate) {
-        sheetManager.showBottomSheet(modalHeight: 176) {
-            ActionListBottomSheet(items: templateActionItems,
-                                  headerTitle: template.entityRow?.translatedName ?? "",
-                                  action:  {item in
-                self.uwaziTemplateViewModel.handleDeleteActionsForAddTemplate(item : item, template: template) {
-                    self.sheetManager.hide()
-                }
-            })
-        }
-    }
->>>>>>> 14f2291... Removed toDomain from unnecessary DTOs:Tella/Scenes/Uwazi/Views/Template/AddTemplate/AddTemplatesView.swift
 }
 

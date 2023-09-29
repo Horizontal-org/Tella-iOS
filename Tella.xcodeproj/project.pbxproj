@@ -297,16 +297,25 @@
 		CC13138A2A5DB68E0057271C /* BottomSheetTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1313892A5DB68E0057271C /* BottomSheetTitleView.swift */; };
 		CC13138C2A5DB79B0057271C /* BottomButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC13138B2A5DB79B0057271C /* BottomButtonsView.swift */; };
 		CC43D9E12A72F8260030192E /* UwaziView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC43D9E02A72F8260030192E /* UwaziView.swift */; };
-		CC5BFEB12AAA27CE00FDB766 /* RenderPropertyComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5BFEB02AAA27CE00FDB766 /* RenderPropertyComponentView.swift */; };
-		CC76B1062AA6590700F7514A /* UwaziEntityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC76B1052AA6590700F7514A /* UwaziEntityViewModel.swift */; };
 		CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */; };
 		CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */; };
 		CCAE3A682AC217EC00A38C6D /* UwaziViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAE3A672AC217EC00A38C6D /* UwaziViewModel.swift */; };
-		CCAEA04E2A97C948008190E0 /* CreateEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAEA04D2A97C948008190E0 /* CreateEntityView.swift */; };
 		CCAEA0522A97E038008190E0 /* CreateDraftHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAEA0512A97E038008190E0 /* CreateDraftHeaderView.swift */; };
-		CCAEA0552A97EF72008190E0 /* UwaziConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAEA0542A97EF72008190E0 /* UwaziConstants.swift */; };
 		CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */; };
 		CCBEE0482A8E9B780067884E /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBEE0472A8E9B780067884E /* TextView.swift */; };
+		CCC1B4252AC759F70075B819 /* UwaziEntityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4242AC759F70075B819 /* UwaziEntityViewModel.swift */; };
+		CCC1B4272AC75A380075B819 /* CreateEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4262AC75A380075B819 /* CreateEntityView.swift */; };
+		CCC1B4292AC75A8E0075B819 /* RenderPropertyComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4282AC75A8E0075B819 /* RenderPropertyComponentView.swift */; };
+		CCC1B42B2AC75AAE0075B819 /* GenericEntityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B42A2AC75AAE0075B819 /* GenericEntityWidget.swift */; };
+		CCC1B42D2AC75AD20075B819 /* UwaziTextWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B42C2AC75AD20075B819 /* UwaziTextWidget.swift */; };
+		CCC1B42F2AC75AF60075B819 /* UwaziDividerWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B42E2AC75AF60075B819 /* UwaziDividerWidget.swift */; };
+		CCC1B4312AC75B120075B819 /* UwaziEntityButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4302AC75B120075B819 /* UwaziEntityButtonView.swift */; };
+		CCC1B4332AC75B410075B819 /* UwaziEntityMandatoryTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4322AC75B410075B819 /* UwaziEntityMandatoryTextView.swift */; };
+		CCC1B4352AC75B550075B819 /* UwaziEntitySubtitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4342AC75B550075B819 /* UwaziEntitySubtitleView.swift */; };
+		CCC1B4372AC75B700075B819 /* UwaziEntityTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4362AC75B700075B819 /* UwaziEntityTitleView.swift */; };
+		CCC1B4392AC75B8D0075B819 /* UwaziEntityParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4382AC75B8D0075B819 /* UwaziEntityParser.swift */; };
+		CCC1B43B2AC75BED0075B819 /* UwaziEntityParserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B43A2AC75BED0075B819 /* UwaziEntityParserProtocol.swift */; };
+		CCC1B43D2AC75C5D0075B819 /* UwaziConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B43C2AC75C5D0075B819 /* UwaziConstants.swift */; };
 		CCD586C22A7AB28200014F87 /* TemplateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586C12A7AB28200014F87 /* TemplateListView.swift */; };
 		CCD586C72A7ABDE800014F87 /* TemplateCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586C62A7ABDE800014F87 /* TemplateCardView.swift */; };
 		CCD586CD2A7AD94B00014F87 /* ConnectionCardDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586CC2A7AD94B00014F87 /* ConnectionCardDetail.swift */; };
@@ -344,21 +353,11 @@
 		D7F55FC825348FA50028739E /* RecordState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FC725348FA50028739E /* RecordState.swift */; };
 		D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FCC25348FB80028739E /* AudioRecorderManager.swift */; };
 		D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F55FD9253490BE0028739E /* RecordingAudioManager.swift */; };
-		E10412132A947510003DCE6A /* DeleteTemplateConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10412122A947510003DCE6A /* DeleteTemplateConfirmationView.swift */; };
 		E108B75729FE79340045CCBE /* UwaziServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E108B75629FE79340045CCBE /* UwaziServerViewModel.swift */; };
 		E11968B12A1F409D00BA7B56 /* UwaziLanguageDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11968B02A1F409D00BA7B56 /* UwaziLanguageDTO.swift */; };
 		E131BA3B2A1B45A30095BC91 /* UwaziServerRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = E131BA3A2A1B45A30095BC91 /* UwaziServerRepositories.swift */; };
-		E14946D62AB8003400CD34EA /* UwaziEntityButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14946D52AB8003400CD34EA /* UwaziEntityButtonView.swift */; };
 		E14E0CF629FAD68E004FC4CD /* UwaziSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14E0CF529FAD68E004FC4CD /* UwaziSuccessView.swift */; };
 		E14FD87A2A6AB22200BC7523 /* UwaziLocale.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14FD8792A6AB22200BC7523 /* UwaziLocale.swift */; };
-		E177363C2A83AE4800FE01C0 /* UwaziTemplateResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E177363B2A83AE4800FE01C0 /* UwaziTemplateResult.swift */; };
-		E177363E2A83CCE100FE01C0 /* UwaziSettingsResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E177363D2A83CCE100FE01C0 /* UwaziSettingsResult.swift */; };
-		E17736402A83FFA200FE01C0 /* UwaziDictionaryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E177363F2A83FFA200FE01C0 /* UwaziDictionaryResult.swift */; };
-		E17736422A84034A00FE01C0 /* UwaziTranslationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17736412A84034A00FE01C0 /* UwaziTranslationResult.swift */; };
-		E1975EE72AB032B10060228F /* UwaziEntryPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1975EE62AB032B10060228F /* UwaziEntryPrompt.swift */; };
-		E1975EE92AB065100060228F /* UwaziEntitySubtitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1975EE82AB065100060228F /* UwaziEntitySubtitleView.swift */; };
-		E1975EEB2AB06AED0060228F /* UwaziEntityMandatoryTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1975EEA2AB06AED0060228F /* UwaziEntityMandatoryTextView.swift */; };
-		E1975EED2AB075B10060228F /* GenericEntityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1975EEC2AB075B10060228F /* GenericEntityWidget.swift */; };
 		E16D20CF2ABEAAB1001708CC /* TemplateItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16D20CE2ABEAAB1001708CC /* TemplateItemViewModel.swift */; };
 		E16D20D12ABEB5C7001708CC /* TemplateCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16D20D02ABEB5C7001708CC /* TemplateCardViewModel.swift */; };
 		E177363C2A83AE4800FE01C0 /* UwaziTemplateDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E177363B2A83AE4800FE01C0 /* UwaziTemplateDTO.swift */; };
@@ -366,11 +365,11 @@
 		E17736402A83FFA200FE01C0 /* UwaziDictionaryDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E177363F2A83FFA200FE01C0 /* UwaziDictionaryDTO.swift */; };
 		E17736422A84034A00FE01C0 /* UwaziTranslationRowDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17736412A84034A00FE01C0 /* UwaziTranslationRowDTO.swift */; };
 		E18BD4332AA0C39A00EE62E2 /* UwaziLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18BD4322AA0C39A00EE62E2 /* UwaziLanguage.swift */; };
+		E1975EE72AB032B10060228F /* UwaziEntryPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1975EE62AB032B10060228F /* UwaziEntryPrompt.swift */; };
 		E1CF5A252AB3477C00365036 /* UwaziDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF5A242AB3477C00365036 /* UwaziDatabase.swift */; };
 		E1CF5A272AB3488E00365036 /* JSONDecoderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF5A262AB3488E00365036 /* JSONDecoderExtension.swift */; };
 		E1CF5A2B2AB3533100365036 /* ServerDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF5A2A2AB3533100365036 /* ServerDatabase.swift */; };
 		E1CF5A2D2AB3558400365036 /* ReportDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF5A2C2AB3558400365036 /* ReportDatabase.swift */; };
-		E1CF5A232AB2FEEB00365036 /* UwaziDividerWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF5A222AB2FEEB00365036 /* UwaziDividerWidget.swift */; };
 		E1D48B852A1BB8EA00D36270 /* UwaziCheckURLDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D48B842A1BB8EA00D36270 /* UwaziCheckURLDTO.swift */; };
 		E1E7C56F2AA9822F00DDB07E /* DeleteServerTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E7C56E2AA9822F00DDB07E /* DeleteServerTexts.swift */; };
 		E1E7C5712AAB2BAB00DDB07E /* UwaziLanguageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E7C5702AAB2BAB00DDB07E /* UwaziLanguageRow.swift */; };
@@ -395,10 +394,6 @@
 		E1EEE2A729F7E1A8009FE227 /* UwaziLanguageSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EEE2A629F7E1A8009FE227 /* UwaziLanguageSelectionView.swift */; };
 		E1F4A8E22AAF3F62001C8E61 /* UwaziServerLanguageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F4A8E12AAF3F62001C8E61 /* UwaziServerLanguageProtocol.swift */; };
 		E1F4A8E42AAF3F80001C8E61 /* UwaziTemplateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F4A8E32AAF3F80001C8E61 /* UwaziTemplateProtocol.swift */; };
-		E1F4A8E72AAF4492001C8E61 /* UwaziTextWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F4A8E62AAF4492001C8E61 /* UwaziTextWidget.swift */; };
-		E1F4A8EA2AAF7AEF001C8E61 /* UwaziEntityTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F4A8E92AAF7AEF001C8E61 /* UwaziEntityTitleView.swift */; };
-		E1F6D77C2AB16683000A9B64 /* UwaziEntityParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6D77B2AB16683000A9B64 /* UwaziEntityParser.swift */; };
-		E1F6D77F2AB16F80000A9B64 /* UwaziEntityParserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6D77E2AB16F80000A9B64 /* UwaziEntityParserProtocol.swift */; };
 		E1F6D7832AB17FB5000A9B64 /* UwaziValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F6D7822AB17FB5000A9B64 /* UwaziValue.swift */; };
 		F66E65B323E32080000F93E5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F66E65B223E32080000F93E5 /* Assets.xcassets */; };
 		F66E65B923E32080000F93E5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F66E65B723E32080000F93E5 /* LaunchScreen.storyboard */; };
@@ -741,17 +736,25 @@
 		CC1313892A5DB68E0057271C /* BottomSheetTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetTitleView.swift; sourceTree = "<group>"; };
 		CC13138B2A5DB79B0057271C /* BottomButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomButtonsView.swift; sourceTree = "<group>"; };
 		CC43D9E02A72F8260030192E /* UwaziView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziView.swift; sourceTree = "<group>"; };
-		CC5BFEB02AAA27CE00FDB766 /* RenderPropertyComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderPropertyComponentView.swift; sourceTree = "<group>"; };
-		CC76B1052AA6590700F7514A /* UwaziEntityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityViewModel.swift; sourceTree = "<group>"; };
 		CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableReport.swift; sourceTree = "<group>"; };
 		CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationBottomSheet.swift; sourceTree = "<group>"; };
 		CCAE3A672AC217EC00A38C6D /* UwaziViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziViewModel.swift; sourceTree = "<group>"; };
-		CCAEA04D2A97C948008190E0 /* CreateEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEntityView.swift; sourceTree = "<group>"; };
 		CCAEA0512A97E038008190E0 /* CreateDraftHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDraftHeaderView.swift; sourceTree = "<group>"; };
-		CCAEA0542A97EF72008190E0 /* UwaziConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziConstants.swift; sourceTree = "<group>"; };
 		CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCheckboxItem.swift; sourceTree = "<group>"; };
 		CCBEE0472A8E9B780067884E /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
-		CCD586BC2A798E8D00014F87 /* UwaziTemplateResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTemplateResults.swift; sourceTree = "<group>"; };
+		CCC1B4242AC759F70075B819 /* UwaziEntityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityViewModel.swift; sourceTree = "<group>"; };
+		CCC1B4262AC75A380075B819 /* CreateEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEntityView.swift; sourceTree = "<group>"; };
+		CCC1B4282AC75A8E0075B819 /* RenderPropertyComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderPropertyComponentView.swift; sourceTree = "<group>"; };
+		CCC1B42A2AC75AAE0075B819 /* GenericEntityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericEntityWidget.swift; sourceTree = "<group>"; };
+		CCC1B42C2AC75AD20075B819 /* UwaziTextWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTextWidget.swift; sourceTree = "<group>"; };
+		CCC1B42E2AC75AF60075B819 /* UwaziDividerWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziDividerWidget.swift; sourceTree = "<group>"; };
+		CCC1B4302AC75B120075B819 /* UwaziEntityButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityButtonView.swift; sourceTree = "<group>"; };
+		CCC1B4322AC75B410075B819 /* UwaziEntityMandatoryTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityMandatoryTextView.swift; sourceTree = "<group>"; };
+		CCC1B4342AC75B550075B819 /* UwaziEntitySubtitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntitySubtitleView.swift; sourceTree = "<group>"; };
+		CCC1B4362AC75B700075B819 /* UwaziEntityTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityTitleView.swift; sourceTree = "<group>"; };
+		CCC1B4382AC75B8D0075B819 /* UwaziEntityParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityParser.swift; sourceTree = "<group>"; };
+		CCC1B43A2AC75BED0075B819 /* UwaziEntityParserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityParserProtocol.swift; sourceTree = "<group>"; };
+		CCC1B43C2AC75C5D0075B819 /* UwaziConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziConstants.swift; sourceTree = "<group>"; };
 		CCD586C12A7AB28200014F87 /* TemplateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateListView.swift; sourceTree = "<group>"; };
 		CCD586C62A7ABDE800014F87 /* TemplateCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCardView.swift; sourceTree = "<group>"; };
 		CCD586CC2A7AD94B00014F87 /* ConnectionCardDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionCardDetail.swift; sourceTree = "<group>"; };
@@ -794,21 +797,11 @@
 		D7F55FC725348FA50028739E /* RecordState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordState.swift; sourceTree = "<group>"; };
 		D7F55FCC25348FB80028739E /* AudioRecorderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorderManager.swift; sourceTree = "<group>"; };
 		D7F55FD9253490BE0028739E /* RecordingAudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingAudioManager.swift; sourceTree = "<group>"; };
-		E10412122A947510003DCE6A /* DeleteTemplateConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteTemplateConfirmationView.swift; sourceTree = "<group>"; };
 		E108B75629FE79340045CCBE /* UwaziServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziServerViewModel.swift; sourceTree = "<group>"; };
 		E11968B02A1F409D00BA7B56 /* UwaziLanguageDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLanguageDTO.swift; sourceTree = "<group>"; };
 		E131BA3A2A1B45A30095BC91 /* UwaziServerRepositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziServerRepositories.swift; sourceTree = "<group>"; };
-		E14946D52AB8003400CD34EA /* UwaziEntityButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UwaziEntityButtonView.swift; sourceTree = "<group>"; };
 		E14E0CF529FAD68E004FC4CD /* UwaziSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSuccessView.swift; sourceTree = "<group>"; };
 		E14FD8792A6AB22200BC7523 /* UwaziLocale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLocale.swift; sourceTree = "<group>"; };
-		E177363B2A83AE4800FE01C0 /* UwaziTemplateResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTemplateResult.swift; sourceTree = "<group>"; };
-		E177363D2A83CCE100FE01C0 /* UwaziSettingsResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSettingsResult.swift; sourceTree = "<group>"; };
-		E177363F2A83FFA200FE01C0 /* UwaziDictionaryResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziDictionaryResult.swift; sourceTree = "<group>"; };
-		E17736412A84034A00FE01C0 /* UwaziTranslationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTranslationResult.swift; sourceTree = "<group>"; };
-		E1975EE62AB032B10060228F /* UwaziEntryPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntryPrompt.swift; sourceTree = "<group>"; };
-		E1975EE82AB065100060228F /* UwaziEntitySubtitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntitySubtitleView.swift; sourceTree = "<group>"; };
-		E1975EEA2AB06AED0060228F /* UwaziEntityMandatoryTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityMandatoryTextView.swift; sourceTree = "<group>"; };
-		E1975EEC2AB075B10060228F /* GenericEntityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericEntityWidget.swift; sourceTree = "<group>"; };
 		E16D20CE2ABEAAB1001708CC /* TemplateItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateItemViewModel.swift; sourceTree = "<group>"; };
 		E16D20D02ABEB5C7001708CC /* TemplateCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCardViewModel.swift; sourceTree = "<group>"; };
 		E177363B2A83AE4800FE01C0 /* UwaziTemplateDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTemplateDTO.swift; sourceTree = "<group>"; };
@@ -816,11 +809,11 @@
 		E177363F2A83FFA200FE01C0 /* UwaziDictionaryDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziDictionaryDTO.swift; sourceTree = "<group>"; };
 		E17736412A84034A00FE01C0 /* UwaziTranslationRowDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTranslationRowDTO.swift; sourceTree = "<group>"; };
 		E18BD4322AA0C39A00EE62E2 /* UwaziLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLanguage.swift; sourceTree = "<group>"; };
+		E1975EE62AB032B10060228F /* UwaziEntryPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntryPrompt.swift; sourceTree = "<group>"; };
 		E1CF5A242AB3477C00365036 /* UwaziDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziDatabase.swift; sourceTree = "<group>"; };
 		E1CF5A262AB3488E00365036 /* JSONDecoderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDecoderExtension.swift; sourceTree = "<group>"; };
 		E1CF5A2A2AB3533100365036 /* ServerDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDatabase.swift; sourceTree = "<group>"; };
 		E1CF5A2C2AB3558400365036 /* ReportDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportDatabase.swift; sourceTree = "<group>"; };
-		E1CF5A222AB2FEEB00365036 /* UwaziDividerWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziDividerWidget.swift; sourceTree = "<group>"; };
 		E1D48B842A1BB8EA00D36270 /* UwaziCheckURLDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziCheckURLDTO.swift; sourceTree = "<group>"; };
 		E1E7C56E2AA9822F00DDB07E /* DeleteServerTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteServerTexts.swift; sourceTree = "<group>"; };
 		E1E7C5702AAB2BAB00DDB07E /* UwaziLanguageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLanguageRow.swift; sourceTree = "<group>"; };
@@ -845,10 +838,6 @@
 		E1EEE2A629F7E1A8009FE227 /* UwaziLanguageSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziLanguageSelectionView.swift; sourceTree = "<group>"; };
 		E1F4A8E12AAF3F62001C8E61 /* UwaziServerLanguageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziServerLanguageProtocol.swift; sourceTree = "<group>"; };
 		E1F4A8E32AAF3F80001C8E61 /* UwaziTemplateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTemplateProtocol.swift; sourceTree = "<group>"; };
-		E1F4A8E62AAF4492001C8E61 /* UwaziTextWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziTextWidget.swift; sourceTree = "<group>"; };
-		E1F4A8E92AAF7AEF001C8E61 /* UwaziEntityTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityTitleView.swift; sourceTree = "<group>"; };
-		E1F6D77B2AB16683000A9B64 /* UwaziEntityParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityParser.swift; sourceTree = "<group>"; };
-		E1F6D77E2AB16F80000A9B64 /* UwaziEntityParserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityParserProtocol.swift; sourceTree = "<group>"; };
 		E1F6D7822AB17FB5000A9B64 /* UwaziValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziValue.swift; sourceTree = "<group>"; };
 		F16689EAD5E834B9D4331109 /* Pods-TellaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.release.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.release.xcconfig"; sourceTree = "<group>"; };
 		F66E65A923E3207D000F93E5 /* Tella.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tella.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1081,16 +1070,12 @@
 				121C5D7629422D6800A64123 /* DataModel.swift */,
 				1234179329CD2CFC004CFAEA /* URLSessionTaskResponse.swift */,
 				125AAD352953607D002194D6 /* UploadReportModels.swift */,
+				E1D48B842A1BB8EA00D36270 /* UwaziCheckURLDTO.swift */,
+				E11968B02A1F409D00BA7B56 /* UwaziLanguageDTO.swift */,
 				E177363B2A83AE4800FE01C0 /* UwaziTemplateDTO.swift */,
 				E177363D2A83CCE100FE01C0 /* UwaziSettingDTO.swift */,
 				E177363F2A83FFA200FE01C0 /* UwaziDictionaryDTO.swift */,
 				E17736412A84034A00FE01C0 /* UwaziTranslationRowDTO.swift */,
-				E1D48B842A1BB8EA00D36270 /* UwaziCheckURLDTO.swift */,
-				E11968B02A1F409D00BA7B56 /* UwaziLanguageDTO.swift */,
-				E177363B2A83AE4800FE01C0 /* UwaziTemplateResult.swift */,
-				E177363D2A83CCE100FE01C0 /* UwaziSettingsResult.swift */,
-				E177363F2A83FFA200FE01C0 /* UwaziDictionaryResult.swift */,
-				E17736412A84034A00FE01C0 /* UwaziTranslationResult.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1671,7 +1656,6 @@
 		1291F4F427B541DD006A34D3 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				CCD586BC2A798E8D00014F87 /* UwaziTemplateResults.swift */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1904,7 +1888,7 @@
 				CCAE3A672AC217EC00A38C6D /* UwaziViewModel.swift */,
 				CC0D56EC2AC4B46F00AA5D81 /* DownloadedTemplatesVM.swift */,
 				CC0D56EE2AC4B59B00AA5D81 /* AddTemplateVM.swift */,
-				CC76B1052AA6590700F7514A /* UwaziEntityViewModel.swift */,
+				CCC1B4242AC759F70075B819 /* UwaziEntityViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1914,30 +1898,11 @@
 			children = (
 				E1F6D77A2AB1666D000A9B64 /* Utils */,
 				CCF47F422ABE18B4000ABBBC /* Models */,
-				CCAEA04C2A97C939008190E0 /* Entity */,
 				E10412112A9474D9003DCE6A /* Views */,
 				CC387D5A2A7857C900853F2E /* ViewModel */,
 				CC43D9E02A72F8260030192E /* UwaziView.swift */,
 			);
 			path = Uwazi;
-			sourceTree = "<group>";
-		};
-		CCAEA04C2A97C939008190E0 /* Entity */ = {
-			isa = PBXGroup;
-			children = (
-				E1F6D77A2AB1666D000A9B64 /* Utils */,
-				E1F6D7802AB17A84000A9B64 /* ViewModel */,
-				E10412112A9474D9003DCE6A /* Views */,
-			);
-			path = Entity;
-			sourceTree = "<group>";
-		};
-		CCAEA0532A97EF01008190E0 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				CCAEA0542A97EF72008190E0 /* UwaziConstants.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		CCD586BE2A7AB0E300014F87 /* Template */ = {
@@ -1981,6 +1946,7 @@
 			children = (
 				CCF47F432ABE18D7000ABBBC /* TemplateActionType.swift */,
 				0ECC781A267A542300A2ACF2 /* UwaziPages.swift */,
+				CCC1B43C2AC75C5D0075B819 /* UwaziConstants.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2065,8 +2031,8 @@
 			children = (
 				E1F4A8E52AAF431F001C8E61 /* Widgets */,
 				CCD586BE2A7AB0E300014F87 /* Template */,
-				CCAEA04D2A97C948008190E0 /* CreateEntityView.swift */,
-				CC5BFEB02AAA27CE00FDB766 /* RenderPropertyComponentView.swift */,
+				CCC1B4262AC75A380075B819 /* CreateEntityView.swift */,
+				CCC1B4282AC75A8E0075B819 /* RenderPropertyComponentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2090,6 +2056,15 @@
 				E1E7C5722AAB4DCC00DDB07E /* CollectedTemplate.swift */,
 			);
 			path = Uwazi;
+			sourceTree = "<group>";
+		};
+		E1975EE52AB032350060228F /* UwaziEntity */ = {
+			isa = PBXGroup;
+			children = (
+				E1F6D7822AB17FB5000A9B64 /* UwaziValue.swift */,
+				E1975EE62AB032B10060228F /* UwaziEntryPrompt.swift */,
+			);
+			path = UwaziEntity;
 			sourceTree = "<group>";
 		};
 		E1E7C5742AAB50FB00DDB07E /* Language */ = {
@@ -2131,15 +2106,6 @@
 				E1E7C58A2AAB7F2000DDB07E /* UwaziTranslationContext.swift */,
 			);
 			path = Translation;
-			sourceTree = "<group>";
-		};
-		E1975EE52AB032350060228F /* UwaziEntity */ = {
-			isa = PBXGroup;
-			children = (
-				E1F6D7822AB17FB5000A9B64 /* UwaziValue.swift */,
-				E1975EE62AB032B10060228F /* UwaziEntryPrompt.swift */,
-			);
-			path = UwaziEntity;
 			sourceTree = "<group>";
 		};
 		E1EEE29229E671B8009FE227 /* Uwazi */ = {
@@ -2208,8 +2174,8 @@
 			isa = PBXGroup;
 			children = (
 				E1F4A8E82AAF7AD1001C8E61 /* Common */,
-				E1F4A8E62AAF4492001C8E61 /* UwaziTextWidget.swift */,
-				E1975EEC2AB075B10060228F /* GenericEntityWidget.swift */,
+				CCC1B42C2AC75AD20075B819 /* UwaziTextWidget.swift */,
+				CCC1B42A2AC75AAE0075B819 /* GenericEntityWidget.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -2217,11 +2183,11 @@
 		E1F4A8E82AAF7AD1001C8E61 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				E1F4A8E92AAF7AEF001C8E61 /* UwaziEntityTitleView.swift */,
-				E1975EE82AB065100060228F /* UwaziEntitySubtitleView.swift */,
-				E1975EEA2AB06AED0060228F /* UwaziEntityMandatoryTextView.swift */,
-				E14946D52AB8003400CD34EA /* UwaziEntityButtonView.swift */,
-				E1CF5A222AB2FEEB00365036 /* UwaziDividerWidget.swift */,
+				CCC1B4362AC75B700075B819 /* UwaziEntityTitleView.swift */,
+				CCC1B4342AC75B550075B819 /* UwaziEntitySubtitleView.swift */,
+				CCC1B4322AC75B410075B819 /* UwaziEntityMandatoryTextView.swift */,
+				CCC1B4302AC75B120075B819 /* UwaziEntityButtonView.swift */,
+				CCC1B42E2AC75AF60075B819 /* UwaziDividerWidget.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2230,7 +2196,7 @@
 			isa = PBXGroup;
 			children = (
 				E1F6D77D2AB16F70000A9B64 /* Protocol */,
-				E1F6D77B2AB16683000A9B64 /* UwaziEntityParser.swift */,
+				CCC1B4382AC75B8D0075B819 /* UwaziEntityParser.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2238,29 +2204,9 @@
 		E1F6D77D2AB16F70000A9B64 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
-				E1F6D77E2AB16F80000A9B64 /* UwaziEntityParserProtocol.swift */,
+				CCC1B43A2AC75BED0075B819 /* UwaziEntityParserProtocol.swift */,
 			);
 			path = Protocol;
-			sourceTree = "<group>";
-		};
-		E1F6D7802AB17A84000A9B64 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				CC76B1052AA6590700F7514A /* UwaziEntityViewModel.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		E1F6D7812AB17ADF000A9B64 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				CCD586D22A7C0EFA00014F87 /* Common */,
-				CCD586C12A7AB28200014F87 /* TemplateListView.swift */,
-				E10412122A947510003DCE6A /* DeleteTemplateConfirmationView.swift */,
-				CCD586C62A7ABDE800014F87 /* TemplateCardView.swift */,
-				CCD586D02A7C096B00014F87 /* AddTemplatesView.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		F66E65A023E3207D000F93E5 = {
@@ -2607,7 +2553,6 @@
 				E1E7C5872AAB7EA200DDB07E /* UwaziTranslation.swift in Sources */,
 				1209FD3027AD8AC400D8C17E /* AudioPlayerManager.swift in Sources */,
 				12BAFA7728B3B8D300930451 /* UIImageOrientation.swift in Sources */,
-				E1975EEB2AB06AED0060228F /* UwaziEntityMandatoryTextView.swift in Sources */,
 				CCE875B32A96699000C576B9 /* LocalizableUwazi.swift in Sources */,
 				123CE84429126B52003C251F /* ServerViewModel.swift in Sources */,
 				122DA88F29CB1F21003801CD /* AutoUpload.swift in Sources */,
@@ -2626,13 +2571,13 @@
 				12730E65279EAB9200DC0135 /* SettingsMainView.swift in Sources */,
 				12E0882427AD31F600CEB198 /* LocalizableAudio.swift in Sources */,
 				CC0D56EF2AC4B59B00AA5D81 /* AddTemplateVM.swift in Sources */,
-				CC76B1062AA6590700F7514A /* UwaziEntityViewModel.swift in Sources */,
 				12E6772F27A9719F00DC1E1C /* UIImageExtension.swift in Sources */,
 				D5B823EB262774E00008E04B /* MainView.swift in Sources */,
 				1220A72E292EB11B000BC24C /* ReportFileGridView.swift in Sources */,
 				125FA6D6278DE49A004B9D06 /* URLExtension.swift in Sources */,
 				127369E327B3C4DA00CF7BE5 /* UIDeviceExtension.swift in Sources */,
 				12A148922720A32000A1ADDC /* LockPinData.swift in Sources */,
+				CCC1B43B2AC75BED0075B819 /* UwaziEntityParserProtocol.swift in Sources */,
 				D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */,
 				CC1313822A5CB0DB0057271C /* DeleteAfterFailOption.swift in Sources */,
 				1203CDEB2992C1CB00D09073 /* HTTPCodes.swift in Sources */,
@@ -2642,6 +2587,7 @@
 				125AAD34295348EC002194D6 /* UploadService.swift in Sources */,
 				1237A71E278F5F8B00D7BC0F /* LanguageManager.swift in Sources */,
 				E1CF5A2B2AB3533100365036 /* ServerDatabase.swift in Sources */,
+				CCC1B4372AC75B700075B819 /* UwaziEntityTitleView.swift in Sources */,
 				CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */,
 				D5DAFDCF265384C4002F3942 /* MainAppModel.swift in Sources */,
 				E108B75729FE79340045CCBE /* UwaziServerViewModel.swift in Sources */,
@@ -2650,7 +2596,6 @@
 				E1E7C58B2AAB7F2000DDB07E /* UwaziTranslationContext.swift in Sources */,
 				E1E7C5732AAB4DCC00DDB07E /* CollectedTemplate.swift in Sources */,
 				E1CF5A252AB3477C00365036 /* UwaziDatabase.swift in Sources */,
-				E1975EED2AB075B10060228F /* GenericEntityWidget.swift in Sources */,
 				125680002717907900A2D356 /* LockPasswordView.swift in Sources */,
 				1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */,
 				D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */,
@@ -2664,7 +2609,6 @@
 				12D37A942721752B00E43BDB /* TellaApp.swift in Sources */,
 				125A0AEF2726F0A000F6E77F /* ContainerView.swift in Sources */,
 				12E9DD9B27DF7DA50002FD00 /* CreateNewFolderView.swift in Sources */,
-				CCAEA04E2A97C948008190E0 /* CreateEntityView.swift in Sources */,
 				12ADF98D28BD16A400FA96EB /* SettingsCardView.swift in Sources */,
 				E177363C2A83AE4800FE01C0 /* UwaziTemplateDTO.swift in Sources */,
 				125D231C271F119D00250FBB /* Validator.swift in Sources */,
@@ -2672,14 +2616,12 @@
 				129B845928BFED9700F1B344 /* TellaButtonView.swift in Sources */,
 				123048D7295F95BB0015CD96 /* SubmittedDetailsItemView.swift in Sources */,
 				E1CF5A272AB3488E00365036 /* JSONDecoderExtension.swift in Sources */,
-				CC5BFEB12AAA27CE00FDB766 /* RenderPropertyComponentView.swift in Sources */,
 				1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */,
 				1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */,
 				1234179229CD19E6004CFAEA /* BaseUploadOperation.swift in Sources */,
 				125EFACE274A834300D93DF6 /* FileActionMenu.swift in Sources */,
 				12351C1A28D2209400F3CB7C /* Report.swift in Sources */,
 				D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */,
-				E1F6D77F2AB16F80000A9B64 /* UwaziEntityParserProtocol.swift in Sources */,
 				121C5D7B29424F4E00A64123 /* ReportAPI.swift in Sources */,
 				1224DAEA27197578001C0ED0 /* ConfirmLockPasswordView.swift in Sources */,
 				12781F4B27EA315600FE9609 /* BundleInfo.swift in Sources */,
@@ -2690,23 +2632,21 @@
 				12ADF98B28BD130C00FA96EB /* ServersListView.swift in Sources */,
 				12568002271790AF00A2D356 /* LockPinView.swift in Sources */,
 				1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */,
-				CCAEA0552A97EF72008190E0 /* UwaziConstants.swift in Sources */,
 				12A148942720A89E00A1ADDC /* BottomLockView.swift in Sources */,
 				1236645128FFF23000FA839B /* ReportsViewModel.swift in Sources */,
 				1233007A28E3115500B8F7BA /* Request.swift in Sources */,
 				121C5D7D2942710600A64123 /* ProjectAPI.swift in Sources */,
 				1291F4F627B54300006A34D3 /* AudioPlayer.swift in Sources */,
-				E14946D62AB8003400CD34EA /* UwaziEntityButtonView.swift in Sources */,
 				CCBEE0482A8E9B780067884E /* TextView.swift in Sources */,
 				12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */,
 				128B929927D796E800E92ACF /* FolderListView.swift in Sources */,
 				126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */,
 				E1EAA0572AA7501800492078 /* UwaziCheckURL.swift in Sources */,
 				0E64C6A6265E7625005A7934 /* ActionListBottomSheet.swift in Sources */,
+				CCC1B4352AC75B550075B819 /* UwaziEntitySubtitleView.swift in Sources */,
 				D5077A40260D300600D72947 /* DebugLogging.swift in Sources */,
 				1234179429CD2CFC004CFAEA /* URLSessionTaskResponse.swift in Sources */,
 				E1F6D7832AB17FB5000A9B64 /* UwaziValue.swift in Sources */,
-				0ECC781D267AADA500A2ACF2 /* PageViewCellNotification.swift in Sources */,
 				122DA89729CB2709003801CD /* SettingsBottomView.swift in Sources */,
 				1216124028DE144200E6D7B6 /* JoinCondition.swift in Sources */,
 				12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */,
@@ -2725,6 +2665,7 @@
 				CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */,
 				1293547B294A454900735ED0 /* AppDelegate.swift in Sources */,
 				12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */,
+				CCC1B4332AC75B410075B819 /* UwaziEntityMandatoryTextView.swift in Sources */,
 				12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */,
 				E1975EE72AB032B10060228F /* UwaziEntryPrompt.swift in Sources */,
 				1291A83628BE3948001A6055 /* SettingsLinkItemView.swift in Sources */,
@@ -2735,12 +2676,10 @@
 				1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */,
 				123048D5295F95A40015CD96 /* SubmittedDetailsView.swift in Sources */,
 				1278B66127EB364500C9AC4D /* Utils.swift in Sources */,
-				E16D20D52ABEB83A001708CC /* DeleteTemplateConfirmationViewModel.swift in Sources */,
 				125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */,
 				12234BE029DAEC4A00D6F981 /* CustomNavigation.swift in Sources */,
 				125D2324271F891500250FBB /* PinView.swift in Sources */,
 				125AAD362953607D002194D6 /* UploadReportModels.swift in Sources */,
-				E1F6D77C2AB16683000A9B64 /* UwaziEntityParser.swift in Sources */,
 				129B844F28BF5E4700F1B344 /* TextfieldView.swift in Sources */,
 				1203CDE92992C19D00D09073 /* JSONStringEncoder.swift in Sources */,
 				125FA6D8278E2828004B9D06 /* DoubleExtension.swift in Sources */,
@@ -2749,17 +2688,15 @@
 				CCAEA0522A97E038008190E0 /* CreateDraftHeaderView.swift in Sources */,
 				1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
-				E1CF5A232AB2FEEB00365036 /* UwaziDividerWidget.swift in Sources */,
 				E14E0CF629FAD68E004FC4CD /* UwaziSuccessView.swift in Sources */,
 				12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
-				E1975EE92AB065100060228F /* UwaziEntitySubtitleView.swift in Sources */,
 				12199C34294094430041BD38 /* OutboxDetailsView.swift in Sources */,
+				CCC1B4312AC75B120075B819 /* UwaziEntityButtonView.swift in Sources */,
 				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
 				1291A83228BE0086001A6055 /* SettingsAddServerCardView.swift in Sources */,
 				E1E7C56F2AA9822F00DDB07E /* DeleteServerTexts.swift in Sources */,
 				0E87C875268BDDFB00EB5E34 /* ImageViewer.swift in Sources */,
-				E1F4A8EA2AAF7AEF001C8E61 /* UwaziEntityTitleView.swift in Sources */,
 				1233076729F15A290019DF7C /* NetworkMonitor.swift in Sources */,
 				0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */,
 				1289B98927C53A9C00315FCE /* CameraType.swift in Sources */,
@@ -2771,6 +2708,7 @@
 				E1E7C57D2AAB553500DDB07E /* UwaziProperty.swift in Sources */,
 				1237A71A278F18C000D7BC0F /* WebView.swift in Sources */,
 				1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */,
+				CCC1B4292AC75A8E0075B819 /* RenderPropertyComponentView.swift in Sources */,
 				12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */,
 				123AE5A129CFAD7F00814CC7 /* OutboxReportVM.swift in Sources */,
 				12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */,
@@ -2785,6 +2723,7 @@
 				124190462A43230000E177F3 /* SQLiteStatementBuilderExtension.swift in Sources */,
 				12EC94D828ABCCED0070E72B /* SettingsItemView.swift in Sources */,
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,
+				CCC1B42F2AC75AF60075B819 /* UwaziDividerWidget.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,
 				128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */,
 				1289B98727C5397200315FCE /* ScreenExtension.swift in Sources */,
@@ -2798,10 +2737,12 @@
 				121F87AA2964383D00E6BA0D /* SubmittedReportVM.swift in Sources */,
 				0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */,
 				121C5D7529422C0800A64123 /* ProjectDetailsResult.swift in Sources */,
+				CCC1B4272AC75A380075B819 /* CreateEntityView.swift in Sources */,
 				121C945E28FF3DCC00570EB4 /* EmptyReportView.swift in Sources */,
 				CCF47F442ABE18D7000ABBBC /* TemplateActionType.swift in Sources */,
 				CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */,
 				1216123C28DE13AC00E6D7B6 /* DatabaseUtilities.swift in Sources */,
+				CCC1B4392AC75B8D0075B819 /* UwaziEntityParser.swift in Sources */,
 				12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */,
 				CC0D56ED2AC4B46F00AA5D81 /* DownloadedTemplatesVM.swift in Sources */,
 				128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */,
@@ -2819,7 +2760,6 @@
 				D75F9E9C25342539006F6212 /* RecordViewModel.swift in Sources */,
 				E1EEE2A129F6EA2B009FE227 /* UwaziLoginView.swift in Sources */,
 				12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */,
-				E1F4A8E72AAF4492001C8E61 /* UwaziTextWidget.swift in Sources */,
 				1291A83428BE0D51001A6055 /* SettingsServerItemView.swift in Sources */,
 				12607D5A2790457600E2B8CC /* VideoViewer.swift in Sources */,
 				CCD586C22A7AB28200014F87 /* TemplateListView.swift in Sources */,
@@ -2856,6 +2796,7 @@
 				12607D5327903E9E00E2B8CC /* CustomVideoControlsView.swift in Sources */,
 				1216F8742901823100F5AEA5 /* TextEditorView.swift in Sources */,
 				12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */,
+				CCC1B43D2AC75C5D0075B819 /* UwaziConstants.swift in Sources */,
 				1268553E27D2572100385E18 /* FileInfoView.swift in Sources */,
 				1289B45828B63187005DA687 /* RotationViewModifier.swift in Sources */,
 				12751EAC2A13B6A100FAD7C6 /* VaultFileInfo.swift in Sources */,
@@ -2874,7 +2815,6 @@
 				12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */,
 				125AAD3129534259002194D6 /* UploadProgressInfo.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */,
-				CCD586C52A7AB33D00014F87 /* Template.swift in Sources */,
 				D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */,
 				127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */,
 				12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */,
@@ -2908,6 +2848,7 @@
 				E1F4A8E42AAF3F80001C8E61 /* UwaziTemplateProtocol.swift in Sources */,
 				CCD586D12A7C096C00014F87 /* AddTemplatesView.swift in Sources */,
 				1236644F28FFECEF00FA839B /* DraftReportView.swift in Sources */,
+				CCC1B42D2AC75AD20075B819 /* UwaziTextWidget.swift in Sources */,
 				12603DAC2A56C72900FB1492 /* ToastView.swift in Sources */,
 				D50727BF2625561400BBC370 /* KeychainManager.swift in Sources */,
 				1203CDE129914FA300D09073 /* Value.swift in Sources */,
@@ -2923,6 +2864,8 @@
 				E1E7C5822AAB707C00DDB07E /* UwaziDictionary.swift in Sources */,
 				126FE4D727A427E200AE4188 /* Constants.swift in Sources */,
 				122389BB293683930058593B /* ServerDataItem.swift in Sources */,
+				CCC1B4252AC759F70075B819 /* UwaziEntityViewModel.swift in Sources */,
+				CCC1B42B2AC75AAE0075B819 /* GenericEntityWidget.swift in Sources */,
 				123AE5A329CFB7F000814CC7 /* UploadReportOperation.swift in Sources */,
 				12EC94CF28AA566C0070E72B /* GeneralView.swift in Sources */,
 				CCD586CF2A7AD9E400014F87 /* MoreButtonView.swift in Sources */,

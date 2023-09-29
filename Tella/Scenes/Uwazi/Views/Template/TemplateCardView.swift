@@ -38,6 +38,9 @@ struct TemplateCardView: View {
                 let type = item.type as? DownloadedTemplateActionType
                 if type == .delete {
                     showDeleteTemplateConfirmationView()
+                } else {
+                    navigateTo(destination: CreateEntityView(template: templateCardViewModel.template).environmentObject(sheetManager))
+                                        sheetManager.hide()
                 }
             })
         }
