@@ -48,7 +48,7 @@ struct RenderPropertyComponentView: View {
             UwaziDividerWidget()
         default:
             Group {
-                Text("Unsupported property type")
+                Text(LocalizableUwazi.uwaziEntityUnsopportedProperty.localized)
             }
         }
     }

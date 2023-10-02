@@ -56,8 +56,8 @@ struct CreateEntityView: View {
 
     private func showSaveEntityConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: modelHeight) {
-            ConfirmBottomSheet(titleText: "Exit entity?",
-                               msgText: "Your draft will be lost",
+            ConfirmBottomSheet(titleText: LocalizableUwazi.uwaziEntityExitSheetTitle.localized,
+                               msgText: LocalizableUwazi.uwaziEntityExitSheetExpl.localized,
                                cancelText: LocalizableReport.exitCancel.localized,
                                actionText: LocalizableReport.exitSave.localized,
                                didConfirmAction: {
