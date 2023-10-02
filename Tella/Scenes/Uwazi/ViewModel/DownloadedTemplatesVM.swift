@@ -12,6 +12,7 @@ import Combine
 class DownloadedTemplatesViewModel: ObservableObject {
     
     var mainAppModel : MainAppModel
+    var server : Server
     
     @Published private var downloadedTemplates : [CollectedTemplate] = []
     
@@ -21,15 +22,17 @@ class DownloadedTemplatesViewModel: ObservableObject {
         return self.mainAppModel.vaultManager.tellaData
     }
     
-    init(mainAppModel : MainAppModel) {
+    init(mainAppModel : MainAppModel, server: Server) {
         self.mainAppModel = mainAppModel
+        self.server = server
     }
 
     func getDownloadedTemplates() {
         self.downloadedTemplates = self.tellaData?.getAllUwaziTemplate() ?? []
         self.templateCardsViewModel = self.downloadedTemplates.map({ collectedTemplate in
             TemplateCardViewModel(template: collectedTemplate,
-                                  deleteTemplate: {self.deleteDownloadedTemplate(templateId:collectedTemplate.id)})
+                                  deleteTemplate: {self.deleteDownloadedTemplate(templateId:collectedTemplate.id)},
+                                  server: self.server)
         })
     }
 

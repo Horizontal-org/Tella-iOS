@@ -32,7 +32,7 @@ struct UwaziView: View {
                     case .templates:
                         TemplateListView(
                             message: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized, serverName: uwaziViewModel.serverName)
-                        .environmentObject(DownloadedTemplatesViewModel(mainAppModel: uwaziViewModel.mainAppModel))
+                        .environmentObject(DownloadedTemplatesViewModel(mainAppModel: uwaziViewModel.mainAppModel, server: uwaziViewModel.server))
                     case .draft:
                         ReportListView(reportArray: $uwaziViewModel.draftEntities,
                                        message: LocalizableReport.reportsDraftEmpty.localized)

@@ -11,14 +11,16 @@ import Foundation
 class TemplateCardViewModel: Hashable {
     
     var id : Int?
-    var serverName: String
     var translatedName: String
     var deleteTemplate: (() -> Void)
+    var template: CollectedTemplate
+    var server: Server
    
     init(template : CollectedTemplate,
-         deleteTemplate: @escaping (() -> Void) ) {
+         deleteTemplate: @escaping (() -> Void),
+         server: Server ) {
         self.id = template.id
-        self.serverName = template.serverName ?? ""
+        self.server = server
         self.translatedName = template.entityRow?.translatedName ?? ""
         self.deleteTemplate = deleteTemplate
     }
