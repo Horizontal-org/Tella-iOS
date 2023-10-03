@@ -40,5 +40,6 @@ struct EmptyFileListView: View {
 struct EmptyFileListView_Previews: PreviewProvider {
     static var previews: some View {
         EmptyFileListView(emptyListType: .allFiles)
+            .background(Styles.Colors.backgroundMain)
     }
 }

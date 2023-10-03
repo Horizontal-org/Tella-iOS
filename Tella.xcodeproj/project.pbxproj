@@ -226,7 +226,7 @@
 		128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C7BC32745AB0100A680B3 /* FileListViewModel.swift */; };
 		128D6E182804531B0082AB18 /* AddPhotoVideoItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E172804531B0082AB18 /* AddPhotoVideoItems.swift */; };
 		128D6E1A28045C090082AB18 /* ManageFileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E1928045C090082AB18 /* ManageFileType.swift */; };
-		128D6E1C280480500082AB18 /* FileActionItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E1B280480500082AB18 /* FileActionItems.swift */; };
+		128D6E1C280480500082AB18 /* FileActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E1B280480500082AB18 /* FileActionType.swift */; };
 		128D6E1E2804DA2A0082AB18 /* ListActionSheetItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E1D2804DA2A0082AB18 /* ListActionSheetItem.swift */; };
 		128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128EDB91280980DB00747B98 /* SequenceExtension.swift */; };
 		128EDB942809897C00747B98 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128EDB932809897C00747B98 /* HomeViewModel.swift */; };
@@ -605,7 +605,7 @@
 		128C7BC32745AB0100A680B3 /* FileListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListViewModel.swift; sourceTree = "<group>"; };
 		128D6E172804531B0082AB18 /* AddPhotoVideoItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoVideoItems.swift; sourceTree = "<group>"; };
 		128D6E1928045C090082AB18 /* ManageFileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageFileType.swift; sourceTree = "<group>"; };
-		128D6E1B280480500082AB18 /* FileActionItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileActionItems.swift; sourceTree = "<group>"; };
+		128D6E1B280480500082AB18 /* FileActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileActionType.swift; sourceTree = "<group>"; };
 		128D6E1D2804DA2A0082AB18 /* ListActionSheetItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListActionSheetItem.swift; sourceTree = "<group>"; };
 		128EDB91280980DB00747B98 /* SequenceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceExtension.swift; sourceTree = "<group>"; };
 		128EDB932809897C00747B98 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -804,9 +804,8 @@
 				D572EACA263A43C100CE191A /* FileDetailView.swift */,
 				0DC6FC53269BCDDE001B0D34 /* FileInfoView.swift */,
 				0E87C874268BDDFB00EB5E34 /* ImageViewer.swift */,
-				0E87C876268C792000EB5E34 /* NSUIImage.swift */,
-				12607D5427903ECC00E2B8CC /* Video */,
 				0E87C87C268CCA3500EB5E34 /* WebView.swift */,
+				12607D5427903ECC00E2B8CC /* Video */,
 			);
 			path = FileDetailView;
 			sourceTree = "<group>";
@@ -1193,6 +1192,7 @@
 		125D231D271F127D00250FBB /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				0E87C876268C792000EB5E34 /* NSUIImage.swift */,
 				125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */,
 				125D2320271F823100250FBB /* UIApplicationExtension.swift */,
 				12A1488E27209F2800A1ADDC /* ViewExtension.swift */,
@@ -1272,6 +1272,7 @@
 		1272F25B27C91A730054F2E2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				128D6E1B280480500082AB18 /* FileActionType.swift */,
 				128D6E1928045C090082AB18 /* ManageFileType.swift */,
 				1272F25C27C91ACD0054F2E2 /* ImportFileProgress.swift */,
 				1268553F27D2994500385E18 /* VaultFileStatus.swift */,
@@ -1405,7 +1406,6 @@
 			children = (
 				128C7BC32745AB0100A680B3 /* FileListViewModel.swift */,
 				128D6E172804531B0082AB18 /* AddPhotoVideoItems.swift */,
-				128D6E1B280480500082AB18 /* FileActionItems.swift */,
 				128EDB932809897C00747B98 /* HomeViewModel.swift */,
 			);
 			path = ViewModel;
@@ -2363,7 +2363,7 @@
 				121C5D7729422D6800A64123 /* DataModel.swift in Sources */,
 				125A9E0028CE52C700C0C3C8 /* TellaDataBase.swift in Sources */,
 				12A2DB03273576D50094B856 /* AddFileView.swift in Sources */,
-				128D6E1C280480500082AB18 /* FileActionItems.swift in Sources */,
+				128D6E1C280480500082AB18 /* FileActionType.swift in Sources */,
 				D75F9E9C25342539006F6212 /* RecordViewModel.swift in Sources */,
 				12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */,
 				1291A83428BE0D51001A6055 /* SettingsServerItemView.swift in Sources */,

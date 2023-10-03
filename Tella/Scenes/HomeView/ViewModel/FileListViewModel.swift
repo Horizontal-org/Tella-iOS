@@ -203,7 +203,15 @@ class FileListViewModel: ObservableObject {
     
     private var cancellable: Set<AnyCancellable> = []
     
-    init(appModel:MainAppModel, filterType:FilterType = .all, rootFile:VaultFileDB? = nil,fileActionSource : FileActionSource = .listView,fileListType : FileListType = .fileList, resultFile : Binding<[VaultFileDB]?>? = nil, selectedFile: VaultFileDB? = nil ) {
+    init(
+        appModel:MainAppModel,
+        filterType:FilterType = .all,
+        rootFile:VaultFileDB? = nil,
+        fileActionSource : FileActionSource = .listView,
+        fileListType : FileListType = .fileList,
+        resultFile : Binding<[VaultFileDB]?>? = nil,
+        selectedFile: VaultFileDB? = nil
+    ) {
         
         self.appModel = appModel
         self.filterType = filterType
@@ -239,21 +247,7 @@ class FileListViewModel: ObservableObject {
         vaultFileStatusArray.removeAll()
         vaultFiles.forEach{vaultFileStatusArray.append(VaultFileStatus(file: $0, isSelected: false))}
     }
-    
-    //    func initFiles() {
-    //        fileActionSource = .listView
-    //        getFiles()
-    //        initVaultFileStatusArray()
-    //    }
-    
-    func getFiles() {
-        vaultFiles = appModel.getVaultFiles(parentId: self.rootFile?.id, filter: self.filterType, sort: self.sortBy)
-    }
-    
-    func getVideoFiles() -> [VaultFileDB] {
-        return appModel.getVaultFiles(parentId: self.rootFile?.id, filter: .video, sort: self.sortBy)
-    }
-    
+
     func updateSelection(for file:VaultFileDB) {
         if let index = self.vaultFileStatusArray.firstIndex(where: {$0.file == file }) {
             vaultFileStatusArray[index].isSelected = !vaultFileStatusArray[index].isSelected
@@ -320,7 +314,33 @@ class FileListViewModel: ObservableObject {
         }
         
     }
+
+    func attachFiles() {
+        DispatchQueue.main.async {
+            self.resultFile?.wrappedValue = self.selectedFiles
+        }
+    }
     
+    func bindReloadVaultFiles() {
+        self.$shouldReloadVaultFiles.sink(receiveValue: { shouldReloadVaultFiles in
+            if shouldReloadVaultFiles {
+                self.getFiles()
+            }
+        }).store(in: &cancellable)
+    }
+    
+}
+
+extension FileListViewModel {
+   
+    func getFiles() {
+        vaultFiles = appModel.getVaultFiles(parentId: self.rootFile?.id, filter: self.filterType, sort: self.sortBy)
+    }
+    
+    func getVideoFiles() -> [VaultFileDB] {
+        return appModel.getVaultFiles(parentId: self.rootFile?.id, filter: .video, sort: self.sortBy)
+    }
+
     func addFolder(name: String) {
         appModel.addFolder(name: name, parentId: self.rootFile?.id)
         getFiles()
@@ -349,21 +369,7 @@ class FileListViewModel: ObservableObject {
     func getDataToShare() -> [Any] {
         appModel.loadVaultFilesToURL(files: selectedFiles)
     }
-    
-    func attachFiles() {
-        DispatchQueue.main.async {
-            self.resultFile?.wrappedValue = self.selectedFiles
-        }
-    }
-    
-    func bindReloadVaultFiles() {
-        self.$shouldReloadVaultFiles.sink(receiveValue: { shouldReloadVaultFiles in
-            if shouldReloadVaultFiles {
-                self.getFiles()
-            }
-        }).store(in: &cancellable)
-    }
-    
+
 }
 
 extension FileListViewModel {

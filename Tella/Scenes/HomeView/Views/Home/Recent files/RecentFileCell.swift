@@ -9,7 +9,7 @@ struct RecentFileCell<Destination:View>: View {
     let recentFile: VaultFileDB
     let desination: Destination
     @EnvironmentObject var appModel: MainAppModel
-
+    
     var body: some View {
         Button {
             navigateTo(destination: desination

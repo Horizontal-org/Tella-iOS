@@ -5,7 +5,7 @@
 import SwiftUI
 
 struct RecentFilesListView: View {
-
+    
     @EnvironmentObject var appModel: MainAppModel
     @State private var moreRecentFilesLoaded = false
     var recentFiles : Binding<[VaultFileDB]>
@@ -40,7 +40,7 @@ struct RecentFilesListView: View {
                 ForEach(0..<number, id: \.self) { i in
                     RecentFileCell(recentFile: recentFiles[i].wrappedValue,
                                    desination: FileDetailView()
-                        )
+                    )
                 }
                 
                 // More button

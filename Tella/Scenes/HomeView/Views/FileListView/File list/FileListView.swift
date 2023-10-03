@@ -78,7 +78,6 @@ struct FileListView: View {
         }
         .onAppear(perform: {
             fileListViewModel.fileActionSource = .listView
-//            fileListViewModel.getFiles()
         })
     }
     

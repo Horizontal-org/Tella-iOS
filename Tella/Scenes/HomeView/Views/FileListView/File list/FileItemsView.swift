@@ -54,6 +54,6 @@ struct FileItemsView_Previews: PreviewProvider {
         FileItemsView(files: [VaultFileDB.stub(),
                               VaultFileDB.stub()])
             .environmentObject(FileListViewModel.stub())
-        
+            .background(Styles.Colors.backgroundMain)
     }
 }

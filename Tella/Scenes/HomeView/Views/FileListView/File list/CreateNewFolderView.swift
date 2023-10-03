@@ -42,8 +42,9 @@ struct AddNewFolderView: View {
     }
 }
 
-struct CreateNewFolderView_Previews: PreviewProvider {
+struct AddNewFolderView_Previews: PreviewProvider {
     static var previews: some View {
         AddNewFolderView()
+            .background(Styles.Colors.backgroundMain)
     }
 }
