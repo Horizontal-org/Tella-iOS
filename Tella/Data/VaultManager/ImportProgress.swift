@@ -65,7 +65,6 @@ class ImportProgress: ObservableObject {
     func finish() {
         DispatchQueue.main.async {
             self.timeRemaining = 0.0
-            //            self.timerIsOn = false
             self.timer.invalidate()
             self.progress.send(1)
             self.isFinishing.send(true)

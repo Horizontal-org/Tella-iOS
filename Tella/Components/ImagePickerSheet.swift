@@ -13,11 +13,7 @@ struct ImagePickerCompletion {
         case image
     }
     let type: MediaType
-//    var image: UIImage? = nil
-//    var videoURL: URL? = nil
-//    var pathExtension: String? = nil
     var referenceURL: URL? = nil
-//    var imageURL: URL? = nil
     var mediaURL: URL? = nil
 
 }
