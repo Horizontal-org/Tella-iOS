@@ -10,7 +10,7 @@ import SwiftUI
 
 struct UwaziEntityMandatoryTextView: View {
     var body: some View {
-        Text("This field is mandatory.")
+        Text(LocalizableUwazi.uwaziEntityMandatoryExpl.localized)
             .font(Font.custom(Styles.Fonts.boldFontName, size: 12))
             .foregroundColor(Styles.Colors.yellow)
             .frame(maxWidth: .infinity, alignment: .topLeading)

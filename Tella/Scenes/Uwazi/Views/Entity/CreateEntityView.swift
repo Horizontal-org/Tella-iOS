@@ -30,6 +30,8 @@ struct CreateEntityView: View {
             createEntityHeaderView
             draftContentView
             Spacer()
+            UwaziDividerWidget()
+            bottomActionView
         }
     }
 
@@ -37,7 +39,7 @@ struct CreateEntityView: View {
         CreateDraftHeaderView(title: entityViewModel.template.entityRow?.name ?? "",
                               isDraft: true,
                               closeAction: { showSaveEntityConfirmationView() },
-                              saveAction: { self.entityViewModel.handleMandatoryProperties() })
+                              saveAction: { })
     }
 
 
@@ -52,6 +54,18 @@ struct CreateEntityView: View {
                 }.padding(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16))
             }
         }
+    }
+    
+    fileprivate var bottomActionView: some View {
+        Button(action: {
+            self.entityViewModel.handleMandatoryProperties()
+        }) {
+            Text(LocalizableUwazi.uwaziEntityActionNext.localized)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 32))
+                .foregroundColor(Color.white)
+        }
+        .buttonStyle(PlainButtonStyle())
     }
 
     private func showSaveEntityConfirmationView() {

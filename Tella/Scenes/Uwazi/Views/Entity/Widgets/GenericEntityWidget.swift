@@ -26,7 +26,7 @@ struct GenericEntityWidget<Content: View>: View {
     }
 
     var body: some View {
-        VStack(spacing: 10) {
+        VStack() {
             UwaziEntityTitleView(title: title, isRequired: isRequired)
             if showManatory {
                 UwaziEntityMandatoryTextView()
