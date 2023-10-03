@@ -58,8 +58,8 @@ struct CreateEntityView: View {
         sheetManager.showBottomSheet(modalHeight: modelHeight) {
             ConfirmBottomSheet(titleText: LocalizableUwazi.uwaziEntityExitSheetTitle.localized,
                                msgText: LocalizableUwazi.uwaziEntityExitSheetExpl.localized,
-                               cancelText: LocalizableReport.exitCancel.localized,
-                               actionText: LocalizableReport.exitSave.localized,
+                               cancelText: LocalizableReport.exitCancel.localized.uppercased(),
+                               actionText: LocalizableReport.exitSave.localized.uppercased(),
                                didConfirmAction: {
                 
             }, didCancelAction: {

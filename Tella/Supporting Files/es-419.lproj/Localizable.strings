@@ -289,6 +289,9 @@ If you want to take a picture or a video, proceed in the following way:\
 "Uwazi_Entity_MultiFile_AttachManyPDFFiles" = "Attach as many PDF files as you wish";
 "Uwazi_Entity_MultiFile_SupportingFiles" = "Supporting files";
 "Uwazi_Entity_MultiFile_SupportingFiles" = "Select as many files as you wish";
+"Uwazi_Entity_ExitEntity_SheetTitle" = "Exit entity?";
+"Uwazi_Entity_ExitEntity_SheetExpl" = "Your draft will be lost";
+"Uwazi_Entity_Property_Unsopported" = "Unsupported property type";
 
 "Settings_SettLang_Arabic_Expl" = "Árabe";
 "Settings_SettLang_Belarusian_Expl" = "Belarusian";
