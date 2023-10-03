@@ -41,5 +41,7 @@ struct FileGroupsView: View {
 struct FileGroupsView_Previews: PreviewProvider {
     static var previews: some View {
         FileGroupsView(shouldShowFilesTitle: true)
+            .environmentObject(MainAppModel.stub())
+
     }
 }

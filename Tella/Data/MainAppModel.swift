@@ -45,7 +45,6 @@ protocol AppModelFileManagerProtocol {
     func clearTmpDirectory()
     func deleteAfterMaxAttempts()
     func resetVaultManager()
-    func removeAllFiles()
 
     
 }
@@ -215,6 +214,7 @@ extension MainAppModel {
 
 
 extension MainAppModel :  AppModelFileManagerProtocol {
+    
 
     func addFolderFile(name: String, parentId: String?) {
         vaultManager.addFolderFile(name: name, parentId: parentId)
@@ -255,10 +255,6 @@ extension MainAppModel :  AppModelFileManagerProtocol {
         self.selectedTab = .home
     }
 
-    func removeAllFiles() {
-        vaultManager.removeAllFiles()
-        publishUpdates()
-    }
     
     func clearTmpDirectory() {
         vaultManager.clearTmpDirectory()

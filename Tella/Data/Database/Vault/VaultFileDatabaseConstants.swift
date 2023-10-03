@@ -36,4 +36,7 @@ struct VaultD {
     static let cAnonymous = "c_anonymous"
     static let cSize = "c_size"
     static let cMimeType = "c_mime_type"
+    static let cWidth = "c_width"
+    static let cHeight = "c_height"
+
 }

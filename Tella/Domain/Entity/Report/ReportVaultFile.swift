@@ -18,14 +18,13 @@ class ReportVaultFile : VaultFileDB {
         
         super.init(id:vaultFile.id,
                    type: vaultFile.type,
-                   hash: vaultFile.hash,
-                   metadata: vaultFile.metadata,
                    thumbnail: vaultFile.thumbnail,
                    name: vaultFile.name,
                    duration: vaultFile.duration,
-                   anonymous: vaultFile.anonymous,
                    size: vaultFile.size,
-                   mimeType: vaultFile.mimeType)
+                   mimeType: vaultFile.mimeType,
+                   width: vaultFile.width,
+                   height: vaultFile.height)
         
         self.instanceId = reportFile.id
         self.status = reportFile.status

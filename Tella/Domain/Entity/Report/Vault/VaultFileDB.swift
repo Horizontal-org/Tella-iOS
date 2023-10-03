@@ -10,28 +10,27 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
     
     var id : String
     var type : VaultFileType
-    var hash : String?
-    var metadata : String?
     var thumbnail : Data?
     var name :  String
     var created : Date
     var duration: Double?
-    var anonymous : Bool = true
     var size : Int
     var mimeType : String?
-    
+    var width : Double?
+    var height : Double?
+
     enum CodingKeys: String, CodingKey {
         case id = "c_id"
         case type = "c_type"
-        case hash = "c_hash"
-        case metadata = "c_metadata"
         case thumbnail = "c_thumbnail"
         case name = "c_name"
         case created = "c_created"
         case duration = "c_duration"
-        case anonymous = "c_anonymous"
         case size = "c_size"
         case mimeType = "c_mime_type"
+        case width = "c_width"
+        case height = "c_height"
+
     }
     
     static func == (lhs: VaultFileDB, rhs: VaultFileDB) -> Bool {
@@ -45,26 +44,25 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
     
     init(id: String = UUID().uuidString,
          type: VaultFileType,
-         hash: String?  ,
-         metadata: String?,
          thumbnail: Data?,
          name: String,
          duration: Double?,
-         anonymous: Bool,
          size: Int ,
-         mimeType: String? ) {
+         mimeType: String?, 
+         width: Double?,
+         height: Double?) {
         
         self.id = id
         self.type = type
-        self.hash = hash
-        self.metadata = metadata
         self.thumbnail = thumbnail
         self.name = name
         self.duration = duration
-        self.anonymous = anonymous
         self.size = size
         self.mimeType = mimeType
         self.created = Date()
+        self.width = width
+        self.height = height
+
     }
     
     init(id: String = UUID().uuidString,
@@ -85,8 +83,6 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
         let typeInt = try container.decode(Int.self, forKey: .type)
         type = VaultFileType(rawValue: typeInt) ?? .unknown
         
-        hash = try container.decode(String.self, forKey: .hash)
-        metadata = try container.decode(String.self, forKey: .metadata)
         thumbnail = try container.decode(Data.self, forKey: .thumbnail)
         name = try container.decode(String.self, forKey: .name)
         
@@ -94,10 +90,14 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
         created = createdDouble.getDate() ?? Date()
         
         duration = try container.decode(Double.self, forKey: .duration)
-        anonymous = try container.decode(Bool.self, forKey: .anonymous)
         size = try container.decode(Int.self, forKey: .size)
         
         mimeType = try container.decode(String.self, forKey: .mimeType)
+        
+         width = try container.decode(Double.self, forKey: .width)
+        height = try container.decode(Double.self, forKey: .height)
+        
+
     }
     
      init(dictionnary: [String:Any])   {
@@ -108,8 +108,6 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
        let type = VaultFileType(rawValue: typeInt ?? 0) ?? .unknown
        
        
-       let hash = dictionnary[CodingKeys.hash.rawValue] as? String
-       let metadata = dictionnary[CodingKeys.metadata.rawValue] as? String
        let thumbnail = dictionnary[CodingKeys.thumbnail.rawValue] as? Data
        let name = dictionnary[CodingKeys.name.rawValue] as? String
 
@@ -119,37 +117,29 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
        
        
        let duration = dictionnary[CodingKeys.duration.rawValue] as? Double
-       let anonymous = dictionnary[CodingKeys.anonymous.rawValue] as? Bool
 
        
        let size = dictionnary[CodingKeys.size.rawValue] as? Int
        let mimeType = dictionnary[CodingKeys.mimeType.rawValue] as? String
 
+        let width = dictionnary[CodingKeys.width.rawValue] as? Double
+            let height = dictionnary[CodingKeys.height.rawValue] as? Double
+          
 
-//       return  VaultFileDB(id:id ?? "",
-//                           type: type,
-//                           hash: hash,
-//                           metadata: metadata,
-//                           thumbnail: thumbnail,
-//                           name: name ?? "",
-//                           duration: duration,
-//                           anonymous: anonymous ?? true,
-//                           size: size ?? 0,
-//                           mimeType: mimeType)
          
          
          self.id = id ?? ""
          self.type = type
-         self.hash = hash
-         self.metadata =  metadata
          self.thumbnail = thumbnail
          self.name = name ?? ""
          self.created = created
          self.duration = duration
-         self.anonymous = anonymous ?? true
          self.size = size ?? 0
          self.mimeType = mimeType
+         self.width = width
+         self.height = height
 
+ 
     }
 }
 
@@ -165,9 +155,7 @@ extension VaultFileDB: CustomDebugStringConvertible {
 extension VaultFileDB {
     
     var thumbnailImage: UIImage {
-        
-        
- 
+
         guard let thumbnail else {return UIImage()}
 
         guard let image = UIImage(data: thumbnail) else {return UIImage()}
@@ -261,10 +249,8 @@ extension VaultFileDB {
     
     var formattedResolution : String? {
         get {
-            return ""
-            //TODO: Dhekra
-//            guard let resolution = resolution else {return nil}
-//            return "\(Int(resolution.width)):\(Int(resolution.height))"
+            guard let width, let height  else {return nil}
+            return "\(Int( width)):\(Int( height))"
         }
     }
 }

@@ -123,15 +123,7 @@ class AutoUpload: BaseUploadOperation {
     }
     
     func prepareReportToSend(report:Report?) {
-        
-//        var vaultFileResult : Set<VaultFileDB> = []
-//        
-//        mainAppModel.vaultManager.root?.getFile(root: mainAppModel.vaultManager.root,
-//                                               vaultFileResult: &vaultFileResult,
-//                                               ids: report?.reportFiles?.compactMap{$0.fileId} ?? [])
-        
-       
-        
+
         let vaultFileResult  = mainAppModel.getVaultFiles(ids: report?.reportFiles?.compactMap{$0.fileId} ?? [])
         
         self.report = report

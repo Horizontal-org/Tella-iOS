@@ -18,6 +18,7 @@ protocol VaultFilesManagerInterface {
     func renameVaultFile(id: String, name: String?)
     func moveVaultFile(fileIds: [String], newParentId: String?)
     func deleteVaultFile(fileIds: [String])
+    func deleteVaultFile(vaultFiles: [VaultFileDB])
 
     func loadFileData(fileName: String?) -> Data?
     func loadVaultFilesToURL(files vaultFiles: [VaultFileDB]) -> [URL]
@@ -31,7 +32,7 @@ protocol VaultFilesManagerInterface {
     func clearTmpDirectory()
     func deleteContainerDirectory()
     func resetData()
-    func removeAllFiles()
+    func deleteAllVaultFiles()
     
     
 }
@@ -234,8 +235,9 @@ class VaultManager: ObservableObject {
         return tmpFileURL
     }
     
-    func removeAllFiles() { // ✅
+    func deleteAllVaultFilesFromDevice() { // ✅
         debugLog("", space: .files)
+        fileManager.removeItem(at: containerURL)
     } // ✅
     
     func deleteVaultFile(filesIds: [String]) { // ✅

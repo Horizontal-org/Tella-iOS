@@ -67,7 +67,7 @@ class SQLiteStatementBuilder {
         }
     }
     
-    func selectQuery(tableName: String,
+    func getSelectQuery(tableName: String,
                      equalCondition: [KeyValue] = [],
                      differentCondition: [KeyValue] = [],
                      inCondition: [KeyValues] = [],
@@ -239,7 +239,7 @@ class SQLiteStatementBuilder {
             sql += " WHERE "
             
             if !equalCondition.isEmpty {
-                let result = equalCondition.compactMap{(" \($0.sqliteOperator.rawValue) \($0.key) = :\($0.key)")}.joined(separator: ", ")
+                let result = equalCondition.compactMap{("\($0.sqliteOperator.rawValue) \($0.key) = :\($0.key)")}.joined(separator: ", ")
                 sql += " \(result)"
             }
             
@@ -254,7 +254,7 @@ class SQLiteStatementBuilder {
                 
                 
                 let columnName = condition.key
-                let values = condition.value.map { "\($0)" }.joined(separator: ", ")
+                let values = condition.value.map { "'\($0)'" }.joined(separator: ", ")
                 
                 sql += " \(columnName) IN (\(values))"
             }
@@ -264,7 +264,7 @@ class SQLiteStatementBuilder {
                 sql += condition.sqliteOperator.rawValue
                 
                 let columnName = condition.key
-                let values = condition.value.map { "\($0)" }.joined(separator: ", ")
+                let values = condition.value.map { "'\($0)'" }.joined(separator: ", ")
                 
                 sql += " \(columnName) NOT IN (\(values))"
                 
@@ -402,7 +402,11 @@ class SQLiteStatementBuilder {
         do {
             let primaryKeyColumnNames = primarykeyValue.compactMap{($0.key)}
             
-            var deleteSql = "DELETE FROM '\(tableName)' WHERE "
+            var deleteSql = "DELETE FROM '\(tableName)'"
+            
+            if !primarykeyValue.isEmpty || !inCondition.isEmpty {
+                deleteSql  += " WHERE "
+            }
             
             deleteSql  += primaryKeyColumnNames.map { "\($0) = :\($0)" }.joined(separator: " AND ")
             
@@ -442,30 +446,32 @@ class SQLiteStatementBuilder {
         }
     }
     
-    func deleteAll(tableNames: [String]) throws -> Int {
-        var totalDeletedCount = 0
-        
-        for tableName in tableNames {
+    func deleteAll(tableNames: [String]) {
+       
+        do {
             
-            let deleteSql = "DELETE FROM '\(tableName)'"
             
-            debugLog("delete: \(deleteSql)")
-            
-            guard let deleteStatement = try prepareStatement(sql: deleteSql) else {
-                throw SqliteError(message: errorMessage)
+            for tableName in tableNames {
+                
+                let deleteSql = "DELETE FROM '\(tableName)'"
+                
+                debugLog("delete: \(deleteSql)")
+                
+                guard let deleteStatement = try prepareStatement(sql: deleteSql) else {
+                    throw SqliteError(message: errorMessage)
+                }
+                
+                let deletedCount = execute(stmt: deleteStatement, sql: deleteSql)
+                
+                if deletedCount == 0 {
+                    throw SqliteError(message: errorMessage)
+                }
             }
-            
-            let deletedCount = execute(stmt: deleteStatement, sql: deleteSql)
-            
-            if deletedCount == 0 {
-                throw SqliteError(message: errorMessage)
-            }
-            
-            totalDeletedCount += deletedCount
         }
-        
-        return totalDeletedCount
-    }
+        catch let error {
+            debugLog(error)
+        }
+     }
 }
 
 

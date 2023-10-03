@@ -42,12 +42,8 @@ class SubmittedReportVM: ObservableObject {
             self.id = report.id
             self.title = report.title ?? ""
             self.description = report.description ?? ""
-            
-//            mainAppModel.vaultManager.root?.getFile(root: mainAppModel.vaultManager.root,
-//                                                   vaultFileResult: &vaultFileResult,
-//                                                   ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
-           
-           let vaultFileResult = mainAppModel.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
+
+            let vaultFileResult = mainAppModel.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
             
             self.files = Array(vaultFileResult)
             

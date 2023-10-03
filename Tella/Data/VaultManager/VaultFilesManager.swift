@@ -26,7 +26,7 @@ actor FilesActor {
 
 extension VaultManager : VaultFilesManagerInterface {
     
-
+    
     func addVaultFile(filePaths: [URL], parentId: String?) -> AnyPublisher<ImportVaultFileResult,Never> { // ✅
         
         let filesActor = FilesActor()
@@ -35,16 +35,16 @@ extension VaultManager : VaultFilesManagerInterface {
         let subject = CurrentValueSubject<ImportVaultFileResult, Never>(.importProgress(importProgress:  importProgress))
         
         let filestotalSize = self.getFilesTotalSize(filePaths: filePaths)
-         importProgress.start(totalFiles: filePaths.count, totalSize: Double(filestotalSize))
-
+        importProgress.start(totalFiles: filePaths.count, totalSize: Double(filestotalSize))
+        
         let fileDetailsStream = self.getFileDetailsStream(filePaths)
-       
+        
         Task {
             
             for await fileDetail in fileDetailsStream {
                 
                 if self.shouldCancelImportAndEncryption.value {
-                     importProgress.stop()
+                    importProgress.stop()
                     self.shouldCancelImportAndEncryption.value = false
                     await subject.send(.fileAdded(filesActor.files))
                     return
@@ -56,25 +56,25 @@ extension VaultManager : VaultFilesManagerInterface {
                 }
                 
                 await filesActor.add(vaultFile: fileDetail.file)
-
+                
                 if await filesActor.files.count == filePaths.count {
-                     importProgress.finish()
+                    importProgress.finish()
                     await subject.send(.fileAdded(filesActor.files))
                 } else {
-                     importProgress.currentFile += 1
+                    importProgress.currentFile += 1
                 }
                 
                 subject.send(.importProgress(importProgress:  importProgress))
             }
         }
         
-         importProgress.progress.sink { progress in
+        importProgress.progress.sink { progress in
             subject.send(.importProgress(importProgress:  importProgress))
         }.store(in: &self.cancellable)
-
+        
         return subject.eraseToAnyPublisher()
     }  // ✅
-
+    
     private func getFileDetailsStream(_ filePaths: [URL]) -> AsyncStream<VaultFileDetails> {  // ✅
         
         // Init AsyncStream with element type = `VaultFileDetails`
@@ -98,7 +98,7 @@ extension VaultManager : VaultFilesManagerInterface {
         
         return stream
     }  // ✅
-
+    
     func addFolderFile(name: String, parentId: String?) { // ✅
         let file = VaultFileDB(type: .directory, name: name)
         self.vaultDataSource?.addVaultFile(file: file, parentId: parentId)
@@ -110,35 +110,37 @@ extension VaultManager : VaultFilesManagerInterface {
     
     
     func getFileDetails(filePath: URL) async throws -> VaultFileDetails?  { // ✅
-        
-        ///----------------------------------------
+
         let _ = filePath.startAccessingSecurityScopedResource()
         defer { filePath.stopAccessingSecurityScopedResource() }
         
         let data = try Data(contentsOf: filePath)
         
         async let thumnail = await filePath.thumbnail()
+
         let fileName = filePath.deletingPathExtension().lastPathComponent
         let path = filePath.path
         let pathExtension = filePath.pathExtension
-        let resolution = filePath.resolution()
+        
+        var width : Double?
+        var height :  Double?
+        
+        if let resolution = filePath.resolution()  {
+            width = resolution.width
+            height = resolution.height
+        }
+        
         let duration =  filePath.getDuration()
         let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
         
         let vaultFile = await VaultFileDB(type: .file,
-                                          hash: "",
-                                          metadata: nil,
-                                          thumbnail: thumnail,
+                                          thumbnail: thumnail  ,
                                           name: fileName,
                                           duration: duration,
-                                          anonymous: true,
                                           size: size,
-                                          mimeType: pathExtension.mimeType())
-        
-        
-        ///-----------------------------------------
-        
-        
+                                          mimeType: pathExtension.mimeType(),
+                                          width: width,
+                                          height: height)
         return (VaultFileDetails(file: vaultFile, data: data))
     } // ✅
     
@@ -158,7 +160,7 @@ extension VaultManager : VaultFilesManagerInterface {
         return totalSizeArray.reduce(0, +)
         
     } // ✅
-
+    
     
     func getVaultFile(id: String?) -> VaultFileDB? {
         return self.vaultDataSource?.getVaultFile(id: id)
@@ -170,9 +172,9 @@ extension VaultManager : VaultFilesManagerInterface {
     
     func getRecentVaultFiles() -> [VaultFileDB] {
         return self.vaultDataSource?.getRecentVaultFiles() ?? []
-
+        
     }
-
+    
     
     func renameVaultFile(id: String, name: String?) {
         self.vaultDataSource?.renameVaultFile(id: id, name: name)
@@ -182,8 +184,36 @@ extension VaultManager : VaultFilesManagerInterface {
         self.vaultDataSource?.moveVaultFile(fileIds: fileIds, newParentId: newParentId)
     }
     
-     func deleteVaultFile(fileIds ids: [String]) {
+    func deleteVaultFile(fileIds ids: [String]) {
         self.deleteVaultFile(filesIds: ids)
         self.vaultDataSource?.deleteVaultFile(ids: ids)
     }
+    
+    func deleteVaultFile(vaultFiles : [VaultFileDB]) {
+        var resultFiles : [VaultFileDB] = []
+        let fileWalker = FileWalker(vaultDataSource: self.vaultDataSource)
+
+        vaultFiles.forEach { file in
+            if file.type == .directory {
+                resultFiles.append(contentsOf: fileWalker.walkWithDirectories(root: file))
+            }
+            resultFiles.append(file)
+        }
+
+        let fileIds = resultFiles.compactMap({$0.id})
+        
+        
+        self.deleteVaultFile(filesIds: fileIds)
+        self.vaultDataSource?.deleteVaultFile(ids: fileIds)
+    }
+    
+    
+    func deleteAllVaultFiles() { // ✅
+        
+        deleteAllVaultFilesFromDevice()
+        self.vaultDataSource?.deleteAllVaultFiles()
+        
+        
+    } // ✅
+    
 }

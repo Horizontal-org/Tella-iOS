@@ -39,6 +39,8 @@ struct FileGroupView<Destination:View>: View {
 struct FileGroupView_Previews: PreviewProvider {
     static var previews: some View {
         FileGroupView(groupName: "name", iconName: "files.documents", destination: EmptyView())
+            .background(Styles.Colors.backgroundMain)
+
     }
 }
 

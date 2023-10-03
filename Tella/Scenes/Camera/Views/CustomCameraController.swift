@@ -144,11 +144,12 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         releasePreview()
         
         setupCaptureSession()
-        setupPhotoInputOutput()
+        
+        cameraType == .video ? setupVideoInputOutput() : setupPhotoInputOutput()
     }
     
     private func setupCaptureSession() {
-        captureSession.sessionPreset = AVCaptureSession.Preset.photo
+        captureSession.sessionPreset = AVCaptureSession.Preset.high
     }
     
     private func createTempFileURL() -> URL {
@@ -198,9 +199,9 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         
         // Video Output
         videoOutput = AVCaptureMovieFileOutput()
-        guard let photoOutput = videoOutput else { return }
-        if captureSession.canAddOutput(photoOutput) {
-            captureSession.addOutput(photoOutput)
+        guard let videoOutput = videoOutput else { return }
+        if captureSession.canAddOutput(videoOutput) {
+            captureSession.addOutput(videoOutput)
         }
         
         startRunningCaptureSession()

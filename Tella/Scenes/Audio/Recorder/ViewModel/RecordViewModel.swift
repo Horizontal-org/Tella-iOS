@@ -38,6 +38,7 @@ class RecordViewModel: ObservableObject {
         self.mainAppModel = mainAppModel
         self.rootFile = rootFile
         self.resultFile = resultFile
+        self.shouldReloadVaultFiles = shouldReloadVaultFiles
         
         audioBackend = RecordingAudioManager()
         

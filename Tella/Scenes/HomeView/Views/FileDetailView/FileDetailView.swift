@@ -7,19 +7,19 @@ import QuickLook
 
 struct FileDetailView: View {
     
-//    @ObservedObject var appModel: MainAppModel
     @EnvironmentObject var fileListViewModel: FileListViewModel
     @EnvironmentObject var appModel: MainAppModel
 
     var body: some View {
         ZStack {
             detailsView()
-            
             FileActionMenu()
             toolbar()
         }
          .environmentObject(fileListViewModel)
-//        .navigationBarHidden(fileListViewModel.shouldHideNavigationBar)
+         .onAppear(perform: {
+             self.fileListViewModel.fileActionSource = .details
+         })
     }
     
     @ViewBuilder
@@ -28,10 +28,6 @@ struct FileDetailView: View {
             switch file.tellaFileType {
             case .audio:
                 AudioPlayerView(vaultFile: file)
-            case .document:
-                if let file = appModel.loadVaultFileToURL(file: file) {
-                    QuickLookView(file: file)
-                }
             case .video:
                 VideoViewer(appModel: appModel, currentFile: file, playList: self.fileListViewModel.getVideoFiles())
             case .image:
@@ -40,7 +36,9 @@ struct FileDetailView: View {
                 EmptyView()
                 
             default:
-                WebViewer(url: file.id)
+                if let file = appModel.loadVaultFileToURL(file: file) {
+                    QuickLookView(file: file)
+                }
             }
         }
     }

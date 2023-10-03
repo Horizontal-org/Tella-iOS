@@ -55,7 +55,7 @@ struct AddFilesToDraftView: View {
     
     var fileListView : some View {
         FileListView(appModel: appModel,
-                     filterType: .audioVideo,
+                     filterType: .audioPhotoVideo,
                      title: LocalizableReport.selectFiles.localized,
                      fileListType: .selectFiles,
                      resultFile: $draftReportVM.resultFile)
@@ -66,7 +66,7 @@ struct AddFilesToDraftView: View {
         sheetManager.showBottomSheet( modalHeight: CGFloat(draftReportVM.addFileToDraftItems.count * 50 + 90), content: {
             ActionListBottomSheet(items: draftReportVM.addFileToDraftItems,
                                   headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
-                                  action:  {item in
+                                  action: {item in
                 self.handleActions(item : item)
             })
         })

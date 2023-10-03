@@ -13,7 +13,9 @@ protocol AppModelVaultFilesInterface {
     func getVaultFiles(ids: [String]) -> [VaultFileDB]
     func renameVaultFile(id: String, name: String?)
     func moveVaultFile(selectedFilesIds: [String], newParentId: String?)
+    func deleteVaultFile(vaultFiles: [VaultFileDB])
     func delete(filesIds: [String])
+    func deleteAllVaultFiles()
 }
 
 
@@ -47,7 +49,17 @@ extension MainAppModel : AppModelVaultFilesInterface  {
         vaultManager.moveVaultFile(fileIds: selectedFilesIds, newParentId: newParentId)
     }
     
+    func deleteVaultFile(vaultFiles: [VaultFileDB]) {
+        vaultManager.deleteVaultFile(vaultFiles: vaultFiles)
+    }
+    
     func delete(filesIds: [String]) {
         vaultManager.deleteVaultFile(fileIds: filesIds)
     }
+
+
+    func deleteAllVaultFiles() {
+        vaultManager.deleteAllVaultFiles()
+    }
+
 }

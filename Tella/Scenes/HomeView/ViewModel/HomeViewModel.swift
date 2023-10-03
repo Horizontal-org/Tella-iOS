@@ -44,4 +44,17 @@ class HomeViewModel: ObservableObject {
         recentFiles = appModel.vaultManager.getRecentVaultFiles()
         hasRecentFile = recentFiles.count > 0
     }
+
+    func deleteAllVaultFiles()   {
+        appModel.deleteAllVaultFiles()
+    }
+    
+    func deleteAllServersConnection()   {
+        do {
+            try appModel.vaultManager.tellaData?.deleteAllServers()
+        } catch {
+            print("Error deleting all servers connections")
+        }
+    }
+
 }

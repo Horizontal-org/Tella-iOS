@@ -8,14 +8,13 @@ extension VaultFileDB {
     
     static func stub() -> VaultFileDB {
         let file = VaultFileDB(type: VaultFileType.file,
-                               hash: nil,
-                               metadata: nil,
                                thumbnail: nil,
                                name: "Test",
                                duration: 20,
-                               anonymous: true,
                                size: 20,
-                               mimeType: "application/pdf")
+                               mimeType: "application/pdf",
+                               width: 12.0,
+                               height: 13.0)
         return file
     }
 

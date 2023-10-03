@@ -126,18 +126,12 @@ class DraftReportVM: ObservableObject {
     
     func fillReportVM() {
         if let reportId = self.reportId ,let report = self.mainAppModel.vaultManager.tellaData?.getReport(reportId: reportId) {
-            
-//            var vaultFileResult : Set<VaultFileDB> = []
-            
+
             self.title = report.title ?? ""
             self.description = report.description ?? ""
             self.server = report.server
-            
-//            self.mainAppModel.vaultManager.root?.getFile(root: self.mainAppModel.vaultManager.root, vaultFileResult: &vaultFileResult, ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
-            
-            let vaultFileResult  = Set(mainAppModel.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])) 
 
-            
+            let vaultFileResult  = Set(mainAppModel.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? []))
             self.files = vaultFileResult
             self.objectWillChange.send()
         }

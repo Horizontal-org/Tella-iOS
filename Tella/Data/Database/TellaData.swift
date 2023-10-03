@@ -57,16 +57,15 @@ class TellaData : ObservableObject {
         getReports()
     }
     
-    func deleteAllServers() throws -> Int {
+    func deleteAllServers() {
         
         guard let database = database else {
-            throw SqliteError()
+            return
         }
-        let id = try database.deleteAllServers()
+        database.deleteAllServers()
         getServers()
         getReports()
-        return id
-        
+ 
     }
     
     func getServers(){

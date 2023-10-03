@@ -44,8 +44,8 @@ struct AddFileView: View {
     }
     
     func showAddFileSheet() {
-        sheetManager.showBottomSheet( modalHeight: CGFloat(manageFilesItems.count * 50 + 90), content: {
-            ActionListBottomSheet(items: manageFilesItems,
+        sheetManager.showBottomSheet( modalHeight: CGFloat(fileListViewModel.manageFilesItems.count * 50 + 90), content: {
+            ActionListBottomSheet(items: fileListViewModel.manageFilesItems,
                                   headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
                                   action:  {item in
                 self.handleActions(item : item)

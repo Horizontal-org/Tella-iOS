@@ -25,32 +25,10 @@ enum FileListType {
 class FileListViewModel: ObservableObject {
     
     
-    var appModel: MainAppModel
-    var filterType: FilterType
-    
-    var rootFile : VaultFileDB? {
-        didSet {
-            getFiles()
-        }
-    }
-    
-    var oldParentFile : VaultFileDB?
-    var fileActionSource : FileActionSource = .listView
-    var fileListType : FileListType = .fileList
-    var resultFile : Binding<[VaultFileDB]?>?
-    
     @Published var shouldReloadVaultFiles = false
-    
-    @Published var sortBy: FileSortOptions = FileSortOptions.nameAZ {
-        didSet {
-            getFiles()
-        }
-    }
     @Published var viewType: FileViewType = FileViewType.list
-    
     @Published var vaultFileStatusArray : [VaultFileStatus] = []
     @Published var folderPathArray: [VaultFileDB] = []
-    
     @Published var selectingFiles = false
     @Published var showFileDetails = false
     @Published var showFileInfoActive = false
@@ -61,9 +39,27 @@ class FileListViewModel: ObservableObject {
     @Published var showingDocumentPicker = false
     @Published var showingImportDocumentPicker = false
     @Published var showingImagePicker = false
-    
     @Published var vaultFiles : [VaultFileDB] = []
     
+    
+    var appModel: MainAppModel
+    var filterType: FilterType
+    var oldParentFile : VaultFileDB?
+    var fileActionSource : FileActionSource = .listView
+    var fileListType : FileListType = .fileList
+    var resultFile : Binding<[VaultFileDB]?>?
+    
+    var rootFile : VaultFileDB? {
+        didSet {
+            getFiles()
+        }
+    }
+    
+    var sortBy: FileSortOptions = FileSortOptions.nameAZ {
+        didSet {
+            getFiles()
+        }
+    }
     
     var selectedFiles : [VaultFileDB] {
         return vaultFileStatusArray.filter{$0.isSelected}.compactMap{$0.file}
@@ -123,7 +119,7 @@ class FileListViewModel: ObservableObject {
         return vaultFileStatusArray.filter{$0.isSelected == true}.count == vaultFileStatusArray.count
     }
     var shouldHideViewsForGallery: Bool {
-        return (fileListType == .cameraGallery || fileListType == .recordList)
+        return (fileListType == .cameraGallery || fileListType == .recordList || filterType != .all)
     }
     
     var shouldHideAddFileButton: Bool {
@@ -132,21 +128,77 @@ class FileListViewModel: ObservableObject {
     
     var fileActionItems: [ListActionSheetItem] {
         
-        firstFileActionItems.filter{$0.type as! FileActionType == FileActionType.share}.first?.isActive = shouldActivateShare
-        secondFileActionItems.filter{$0.type as! FileActionType == FileActionType.move}.first?.isActive = !shouldHideViewsForGallery
-        secondFileActionItems.filter{$0.type as! FileActionType == FileActionType.rename}.first?.isActive =  shouldActivateRename
-        secondFileActionItems.filter{$0.type as! FileActionType == FileActionType.save}.first?.isActive =  shouldActivateShare
-        secondFileActionItems.filter{$0.type as! FileActionType == FileActionType.info}.first?.isActive =  shouldActivateFileInformation
+        var firstFileActionItems: [ListActionSheetItem] = []
+        
+        if shouldActivateShare {
+            firstFileActionItems.append(ListActionSheetItem(imageName: "share-icon",
+                                                            content: LocalizableVault.moreActionsShareSheetSelect.localized,
+                                                            type: FileActionType.share))
+        }
+        
+        var secondFileActionItems: [ListActionSheetItem] = []
+        
+        if !shouldHideViewsForGallery {
+            secondFileActionItems.append(ListActionSheetItem(imageName: "move-icon",
+                                                             content: LocalizableVault.moreActionsMoveSheetSelect.localized,
+                                                             type: FileActionType.move))
+        }
+        
+        if shouldActivateRename  {
+            secondFileActionItems.append(ListActionSheetItem(imageName: "edit-icon",
+                                                             content: LocalizableVault.moreActionsRenameSheetSelect.localized,
+                                                             type: FileActionType.rename))
+        }
+        
+        if shouldActivateShare {
+            secondFileActionItems.append(ListActionSheetItem(imageName: "save-icon",
+                                                             content: LocalizableVault.moreActionsSaveSheetSelect.localized,
+                                                             type: FileActionType.save))
+        }
+        
+        if shouldActivateFileInformation {
+            secondFileActionItems.append(ListActionSheetItem(imageName: "info-icon",
+                                                             content: LocalizableVault.moreActionsFileInformationSheetSelect.localized,
+                                                             type: FileActionType.info))
+        }
+        
+        secondFileActionItems.append(ListActionSheetItem(imageName: "delete-icon",
+                                                         content: LocalizableVault.moreActionsDeleteSheetSelect.localized,
+                                                         type: FileActionType.delete))
         
         var items : [ListActionSheetItem] = []
-        items.append(contentsOf: firstFileActionItems.filter{$0.isActive == true})
+        items.append(contentsOf: firstFileActionItems.compactMap({$0}))
         
-        if (firstFileActionItems.contains(where: {$0.isActive})) {
+        if !firstFileActionItems.isEmpty {
             items.append(ListActionSheetItem(viewType: .divider, type: FileActionType.none))
         }
         
-        items.append(contentsOf: secondFileActionItems.filter{$0.isActive == true})
+        items.append(contentsOf: secondFileActionItems)
+        
         return items
+    }
+    
+    var  manageFilesItems: [ListActionSheetItem] {
+        
+        let allManageFilesItems = [
+            
+            ListActionSheetItem(imageName: "camera-icon",
+                                content: LocalizableVault.manageFilesTakePhotoVideoSheetSelect.localized,
+                                type: ManageFileType.camera),
+            ListActionSheetItem(imageName: "mic-icon",
+                                content: LocalizableVault.manageFilesRecordAudioSheetSelect.localized,
+                                type: ManageFileType.recorder),
+            ListActionSheetItem(imageName: "upload-icon",
+                                content: LocalizableVault.manageFilesImportFromDeviceSheetSelect.localized,
+                                type: ManageFileType.fromDevice),
+            filterType == .all ? ListActionSheetItem(imageName: "new_folder-icon",
+                                                     content: LocalizableVault.manageFilesCreateNewFolderSheetSelect.localized,
+                                                     isActive: filterType == .all,
+                                                     type: ManageFileType.folder) : nil
+            
+        ]
+        
+        return allManageFilesItems.compactMap({$0})
     }
     
     private var cancellable: Set<AnyCancellable> = []
@@ -168,7 +220,6 @@ class FileListViewModel: ObservableObject {
         if let selectedFile {
             updateSingleSelection(for: selectedFile)
             showFileDetails = true
-
         }
     }
     
@@ -188,6 +239,12 @@ class FileListViewModel: ObservableObject {
         vaultFileStatusArray.removeAll()
         vaultFiles.forEach{vaultFileStatusArray.append(VaultFileStatus(file: $0, isSelected: false))}
     }
+    
+    //    func initFiles() {
+    //        fileActionSource = .listView
+    //        getFiles()
+    //        initVaultFileStatusArray()
+    //    }
     
     func getFiles() {
         vaultFiles = appModel.getVaultFiles(parentId: self.rootFile?.id, filter: self.filterType, sort: self.sortBy)
@@ -216,12 +273,6 @@ class FileListViewModel: ObservableObject {
         }
         return false
     }
-    
-//    func initSelectedFiles() {
-//        if !showFileDetails {
-//            _ = self.vaultFileStatusArray.compactMap{$0.isSelected = false}
-//        }
-//    }
     
     func initFolderPathArray(for file:VaultFileDB) {
         if let index = self.folderPathArray.firstIndex(of: file) {
@@ -269,8 +320,7 @@ class FileListViewModel: ObservableObject {
         }
         
     }
-    //TODO: Dhekra
-
+    
     func addFolder(name: String) {
         appModel.addFolder(name: name, parentId: self.rootFile?.id)
         getFiles()
@@ -288,8 +338,7 @@ class FileListViewModel: ObservableObject {
     }
     
     func deleteSelectedFiles() {
-        let selectedFilesIds = selectedFiles.compactMap{$0.id}
-        appModel.delete(filesIds: selectedFilesIds)
+        appModel.deleteVaultFile(vaultFiles: selectedFiles)
         getFiles()
     }
     

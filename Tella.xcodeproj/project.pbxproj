@@ -127,6 +127,7 @@
 		1244141927E35D120037D469 /* VaultFileImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141827E35D120037D469 /* VaultFileImages.swift */; };
 		12476E1F2A5B7D2F00069048 /* TrailingButtonToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12476E1E2A5B7D2F00069048 /* TrailingButtonToolbar.swift */; };
 		124F8E0829119E9400FBB7AC /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F8E0729119E9400FBB7AC /* StringExtension.swift */; };
+		125389F82ACAD33500CE33AB /* FileWalker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125389F72ACAD33500CE33AB /* FileWalker.swift */; };
 		12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12567FEE2716B38F00A2D356 /* LockChoiceView.swift */; };
 		12567FF22716E33500A2D356 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12567FF02716E33500A2D356 /* OpenSans-Bold.ttf */; };
 		12567FF32716E33500A2D356 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12567FF12716E33500A2D356 /* OpenSans-Regular.ttf */; };
@@ -141,7 +142,6 @@
 		125A89562A94D7AB009347C3 /* VaultDataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A89552A94D7AB009347C3 /* VaultDataBase.swift */; };
 		125A89582A965BA4009347C3 /* VaultFileDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A89572A965BA4009347C3 /* VaultFileDB.swift */; };
 		125A895B2A965BED009347C3 /* FilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A895A2A965BED009347C3 /* FilterType.swift */; };
-		125A895D2A965C00009347C3 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A895C2A965C00009347C3 /* Sort.swift */; };
 		125A895F2A965C33009347C3 /* VaultFileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A895E2A965C33009347C3 /* VaultFileType.swift */; };
 		125A9E0028CE52C700C0C3C8 /* TellaDataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125A9DFF28CE52C700C0C3C8 /* TellaDataBase.swift */; };
 		125AAD3129534259002194D6 /* UploadProgressInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD3029534259002194D6 /* UploadProgressInfo.swift */; };
@@ -225,7 +225,7 @@
 		128B929D27D7A08700E92ACF /* FileItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128B929C27D7A08700E92ACF /* FileItemsView.swift */; };
 		128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C7BC32745AB0100A680B3 /* FileListViewModel.swift */; };
 		128D6E182804531B0082AB18 /* AddPhotoVideoItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E172804531B0082AB18 /* AddPhotoVideoItems.swift */; };
-		128D6E1A28045C090082AB18 /* manageFilesItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E1928045C090082AB18 /* manageFilesItems.swift */; };
+		128D6E1A28045C090082AB18 /* ManageFileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E1928045C090082AB18 /* ManageFileType.swift */; };
 		128D6E1C280480500082AB18 /* FileActionItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E1B280480500082AB18 /* FileActionItems.swift */; };
 		128D6E1E2804DA2A0082AB18 /* ListActionSheetItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E1D2804DA2A0082AB18 /* ListActionSheetItem.swift */; };
 		128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128EDB91280980DB00747B98 /* SequenceExtension.swift */; };
@@ -504,6 +504,7 @@
 		1244141827E35D120037D469 /* VaultFileImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileImages.swift; sourceTree = "<group>"; };
 		12476E1E2A5B7D2F00069048 /* TrailingButtonToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailingButtonToolbar.swift; sourceTree = "<group>"; };
 		124F8E0729119E9400FBB7AC /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		125389F72ACAD33500CE33AB /* FileWalker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FileWalker.swift; path = ../../../../../Downloads/FileWalker.swift; sourceTree = "<group>"; };
 		12567FEE2716B38F00A2D356 /* LockChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockChoiceView.swift; sourceTree = "<group>"; };
 		12567FF02716E33500A2D356 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		12567FF12716E33500A2D356 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -518,7 +519,6 @@
 		125A89552A94D7AB009347C3 /* VaultDataBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultDataBase.swift; sourceTree = "<group>"; };
 		125A89572A965BA4009347C3 /* VaultFileDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileDB.swift; sourceTree = "<group>"; };
 		125A895A2A965BED009347C3 /* FilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterType.swift; sourceTree = "<group>"; };
-		125A895C2A965C00009347C3 /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
 		125A895E2A965C33009347C3 /* VaultFileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileType.swift; sourceTree = "<group>"; };
 		125A9DFF28CE52C700C0C3C8 /* TellaDataBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaDataBase.swift; sourceTree = "<group>"; };
 		125AAD3029534259002194D6 /* UploadProgressInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProgressInfo.swift; sourceTree = "<group>"; };
@@ -604,7 +604,7 @@
 		128B929C27D7A08700E92ACF /* FileItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItemsView.swift; sourceTree = "<group>"; };
 		128C7BC32745AB0100A680B3 /* FileListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListViewModel.swift; sourceTree = "<group>"; };
 		128D6E172804531B0082AB18 /* AddPhotoVideoItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoVideoItems.swift; sourceTree = "<group>"; };
-		128D6E1928045C090082AB18 /* manageFilesItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = manageFilesItems.swift; sourceTree = "<group>"; };
+		128D6E1928045C090082AB18 /* ManageFileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageFileType.swift; sourceTree = "<group>"; };
 		128D6E1B280480500082AB18 /* FileActionItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileActionItems.swift; sourceTree = "<group>"; };
 		128D6E1D2804DA2A0082AB18 /* ListActionSheetItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListActionSheetItem.swift; sourceTree = "<group>"; };
 		128EDB91280980DB00747B98 /* SequenceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceExtension.swift; sourceTree = "<group>"; };
@@ -1063,6 +1063,7 @@
 				12728AE82AADB8AF00053E00 /* MainAppModell.swift */,
 				12781F4527EA10AA00FE9609 /* AuthenticationManager.swift */,
 				126A05C22AA0B6B50044E1B7 /* AppModelVault.swift */,
+				125389F72ACAD33500CE33AB /* FileWalker.swift */,
 				1203CDE429915C6600D09073 /* Database */,
 				1236EE8328E2226F00973EEA /* Networking */,
 				D53B76DB2601C9EC0001CD34 /* VaultManager */,
@@ -1162,7 +1163,6 @@
 			children = (
 				125A89572A965BA4009347C3 /* VaultFileDB.swift */,
 				125A895A2A965BED009347C3 /* FilterType.swift */,
-				125A895C2A965C00009347C3 /* Sort.swift */,
 				125A895E2A965C33009347C3 /* VaultFileType.swift */,
 			);
 			path = Vault;
@@ -1272,6 +1272,7 @@
 		1272F25B27C91A730054F2E2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				128D6E1928045C090082AB18 /* ManageFileType.swift */,
 				1272F25C27C91ACD0054F2E2 /* ImportFileProgress.swift */,
 				1268553F27D2994500385E18 /* VaultFileStatus.swift */,
 				128D6E1D2804DA2A0082AB18 /* ListActionSheetItem.swift */,
@@ -1404,7 +1405,6 @@
 			children = (
 				128C7BC32745AB0100A680B3 /* FileListViewModel.swift */,
 				128D6E172804531B0082AB18 /* AddPhotoVideoItems.swift */,
-				128D6E1928045C090082AB18 /* manageFilesItems.swift */,
 				128D6E1B280480500082AB18 /* FileActionItems.swift */,
 				128EDB932809897C00747B98 /* HomeViewModel.swift */,
 			);
@@ -2318,6 +2318,7 @@
 				1231A45E294C779D0057DA85 /* ReportStatus.swift in Sources */,
 				12607D562790416400E2B8CC /* PlayerViewModel.swift in Sources */,
 				128B929B27D798E200E92ACF /* ManageFileView.swift in Sources */,
+				125389F82ACAD33500CE33AB /* FileWalker.swift in Sources */,
 				1237A71A278F18C000D7BC0F /* WebView.swift in Sources */,
 				126A05C32AA0B6B50044E1B7 /* AppModelVault.swift in Sources */,
 				1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */,
@@ -2330,7 +2331,7 @@
 				1268554027D2994500385E18 /* VaultFileStatus.swift in Sources */,
 				0D4BC3C5267577F900DCDC30 /* ReportsView.swift in Sources */,
 				12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */,
-				128D6E1A28045C090082AB18 /* manageFilesItems.swift in Sources */,
+				128D6E1A28045C090082AB18 /* ManageFileType.swift in Sources */,
 				12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */,
 				1216123E28DE142D00E6D7B6 /* JoinItem.swift in Sources */,
 				124190462A43230000E177F3 /* SQLiteStatementBuilderExtension.swift in Sources */,
@@ -2438,7 +2439,6 @@
 				1203CDE129914FA300D09073 /* Value.swift in Sources */,
 				12D7D11F28E36123008121C8 /* ServerRepository.swift in Sources */,
 				D7CFC37F254260D300CCB352 /* RecordView.swift in Sources */,
-				125A895D2A965C00009347C3 /* Sort.swift in Sources */,
 				D7F55FC825348FA50028739E /* RecordState.swift in Sources */,
 				12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */,
 				126A05C52AA0D7560044E1B7 /* VaultFilesManager.swift in Sources */,

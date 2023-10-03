@@ -17,7 +17,7 @@ class VaultDataSource : VaultDataSourceInterface {
         self.database.addVaultFile(file: file, parentId: parentId)
     }
     
-    func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB] {
+    func getVaultFiles(parentId: String?, filter: FilterType?, sort: FileSortOptions?) -> [VaultFileDB] {
         self.database.getVaultFiles(parentId: parentId, filter: filter, sort: sort)
     }
     
@@ -45,4 +45,9 @@ class VaultDataSource : VaultDataSourceInterface {
     func deleteVaultFile(ids: [String]) {
         self.database.deleteVaultFile(ids: ids)
     }
+    
+    func deleteAllVaultFiles() {
+        self.database.deleteAllVaultFiles()
+    }
+
 }

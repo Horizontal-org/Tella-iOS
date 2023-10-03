@@ -199,8 +199,8 @@ class TellaDataBase : DataBase {
         
     }
     
-    func deleteAllServers() throws -> Int {
-        return try statementBuilder.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile])
+    func deleteAllServers() {
+        return statementBuilder.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile])
     }
     
     func getReports(reportStatus:[ReportStatus]) -> [Report] {

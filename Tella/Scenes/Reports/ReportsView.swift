@@ -34,7 +34,7 @@ struct ReportsView: View {
             
             VStack(alignment: .center) {
                 
-                PageView(selectedOption: self.$reportsViewModel.selectedCell, pageViewItems: $reportsViewModel.pageViewItems)
+                PageView(selectedOption: self.$reportsViewModel.selectedCell, pageViewItems: reportsViewModel.pageViewItems)
                     .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
                 
                 VStack (spacing: 0) {

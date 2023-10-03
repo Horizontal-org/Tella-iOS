@@ -14,8 +14,18 @@ struct FileListView: View {
     
     var title : String = ""
     
-    init(appModel: MainAppModel, rootFile: VaultFileDB? = nil , filterType: FilterType , title : String = "", fileListType : FileListType = .fileList, resultFile: Binding<[VaultFileDB]?>? = nil) {
-        _fileListViewModel = StateObject(wrappedValue: FileListViewModel(appModel: appModel,filterType:filterType, rootFile: rootFile, fileListType :  fileListType, resultFile: resultFile))
+    init(appModel: MainAppModel, 
+         rootFile: VaultFileDB? = nil ,
+         filterType: FilterType ,
+         title : String = "",
+         fileListType : FileListType = .fileList,
+         resultFile: Binding<[VaultFileDB]?>? = nil) {
+        
+        _fileListViewModel = StateObject(wrappedValue: FileListViewModel(appModel: appModel,
+                                                                         filterType:filterType,
+                                                                         rootFile: rootFile,
+                                                                         fileListType : fileListType,
+                                                                         resultFile: resultFile))
         self.title = title
     }
     
@@ -50,7 +60,6 @@ struct FileListView: View {
                 
                 if !fileListViewModel.shouldHideAddFileButton {
                     AddFileView()
-                    
                 }
                 
                 FileActionMenu()
@@ -67,6 +76,10 @@ struct FileListView: View {
                 navigateTo(destination: fileDetailView)
             }
         }
+        .onAppear(perform: {
+            fileListViewModel.fileActionSource = .listView
+//            fileListViewModel.getFiles()
+        })
     }
     
     var fileDetailView: some View {
