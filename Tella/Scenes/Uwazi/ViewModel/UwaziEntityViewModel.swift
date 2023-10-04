@@ -45,6 +45,9 @@ class UwaziEntityViewModel: ObservableObject {
         if(!requiredPrompts.isEmpty) {
             submitEntity()
         }
+        if(!requiredPrompts.isEmpty) {
+            submitEntity()
+        }
     }
     
     private func submitEntity() {
