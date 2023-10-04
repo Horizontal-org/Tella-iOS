@@ -31,7 +31,8 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                          type: UwaziEntityPropertyType.dataTypeMultiPDFFiles.rawValue,
                                          question: LocalizableUwazi.uwaziMultiFileWidgetPrimaryDocuments.localized,
                                          required: false,
-                                         helpText: LocalizableUwazi.uwaziMultiFileWidgetAttachManyPDFFiles.localized)
+                                         helpText: LocalizableUwazi.uwaziMultiFileWidgetAttachManyPDFFiles.localized,
+                                         name: UwaziEntityPropertyType.dataTypeMultiPDFFiles.rawValue)
         entryPrompts.append(pdfPrompt)
     }
     fileprivate func handleSupportPrompt() {
@@ -40,7 +41,8 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                              type: UwaziEntityPropertyType.dataTypeMultiFiles.rawValue,
                                              question: LocalizableUwazi.uwaziMultiFileWidgetSupportingFiles.localized,
                                              required: false,
-                                             helpText: LocalizableUwazi.uwaziMultiFileWidgetSelectManyFiles.localized)
+                                             helpText: LocalizableUwazi.uwaziMultiFileWidgetSelectManyFiles.localized,
+                                             name: UwaziEntityPropertyType.dataTypeMultiFiles.rawValue)
         entryPrompts.append(supportPrompt)
     }
     fileprivate func handleDividerPrompt() {
@@ -49,7 +51,8 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                              type: UwaziEntityPropertyType.dataTypeDivider.rawValue,
                                              question: "",
                                              required: false,
-                                             helpText: "")
+                                             helpText: "",
+                                             name: "")
         entryPrompts.append(dividerPrompt)
     }
 
@@ -60,7 +63,8 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                            type: titleProperty.type ?? "",
                                            question: titleProperty.translatedLabel ?? "",
                                            required: true,
-                                           helpText: titleProperty.translatedLabel)
+                                           helpText: titleProperty.translatedLabel,
+                                           name:titleProperty.name)
         self.entryPrompts.append(titlePrompt)
     }
     fileprivate func handleEntryPromptForProperties() {
@@ -71,7 +75,8 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                              question: $0.translatedLabel ?? "",
                              required: $0.propertyRequired,
                              helpText: $0.translatedLabel,
-                             selectValues: $0.values)
+                             selectValues: $0.values,
+                             name: $0.name)
 
         } ?? []
         entryPrompts.append(contentsOf: entryPromptyProperties)
