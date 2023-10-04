@@ -8,7 +8,7 @@ import SwiftUI
 
 class VaultFileDB : Codable, Hashable, ObservableObject {
     
-    var id : String
+    var id : String?
     var type : VaultFileType
     var thumbnail : Data?
     var name :  String
@@ -42,7 +42,7 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
         hasher.combine(id.hashValue)
     }
     
-    init(id: String = UUID().uuidString,
+    init(id: String?,
          type: VaultFileType,
          thumbnail: Data?,
          name: String,
@@ -75,6 +75,23 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
         self.created = Date()
     }
     
+    init(vaultFile :VaultFile) {
+       self.id = vaultFile.id
+       self.type = vaultFile.type == .folder ? .directory : .file
+       self.thumbnail = vaultFile.thumbnail
+       self.name = vaultFile.fileName
+       self.duration = vaultFile.duration
+       self.size = vaultFile.size
+       self.mimeType = vaultFile.fileExtension.mimeType()
+       self.created = vaultFile.created
+       if let width = vaultFile.resolution?.width {
+           self.width = width
+       }
+       if let height = vaultFile.resolution?.height {
+           self.height = height
+       }
+   }
+
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         

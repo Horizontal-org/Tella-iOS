@@ -75,7 +75,7 @@ extension VaultManager : VaultFilesManagerInterface {
         return subject.eraseToAnyPublisher()
     }  // ✅
     
-    private func getFileDetailsStream(_ filePaths: [URL]) -> AsyncStream<VaultFileDetails> {  // ✅
+      func getFileDetailsStream(_ filePaths: [URL]) -> AsyncStream<VaultFileDetails> {  // ✅
         
         // Init AsyncStream with element type = `VaultFileDetails`
         let stream = AsyncStream(VaultFileDetails.self) { continuation in
@@ -111,6 +111,7 @@ extension VaultManager : VaultFilesManagerInterface {
     
     func getFileDetails(filePath: URL) async throws -> VaultFileDetails?  { // ✅
 
+        let id = UUID().uuidString
         let _ = filePath.startAccessingSecurityScopedResource()
         defer { filePath.stopAccessingSecurityScopedResource() }
         
@@ -133,7 +134,8 @@ extension VaultManager : VaultFilesManagerInterface {
         let duration =  filePath.getDuration()
         let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
         
-        let vaultFile = await VaultFileDB(type: .file,
+        let vaultFile = await VaultFileDB(id: id,
+                                          type: .file,
                                           thumbnail: thumnail  ,
                                           name: fileName,
                                           duration: duration,
@@ -176,7 +178,7 @@ extension VaultManager : VaultFilesManagerInterface {
     }
     
     
-    func renameVaultFile(id: String, name: String?) {
+    func renameVaultFile(id: String?, name: String?) {
         self.vaultDataSource?.renameVaultFile(id: id, name: name)
     }
     

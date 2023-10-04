@@ -15,7 +15,7 @@ protocol VaultFilesManagerInterface {
     func getVaultFile(id: String?) -> VaultFileDB?
     func getVaultFiles(ids: [String]) -> [VaultFileDB]
     func getRecentVaultFiles() -> [VaultFileDB]
-    func renameVaultFile(id: String, name: String?)
+    func renameVaultFile(id: String?, name: String?)
     func moveVaultFile(fileIds: [String], newParentId: String?)
     func deleteVaultFile(fileIds: [String])
     func deleteVaultFile(vaultFiles: [VaultFileDB])
@@ -49,7 +49,7 @@ class VaultManager: ObservableObject {
     
     internal let containerPath: String = "Containers"
     
-    @Published var root: VaultFile?
+//    @Published var root: VaultFile?
     
     @Published var tellaData : TellaData?
     @Published var vaultDataSource : VaultDataSourceInterface?
@@ -61,42 +61,46 @@ class VaultManager: ObservableObject {
     func resetData() {
         self.tellaData = nil
         self.vaultDataSource = nil
-        self.root = nil
     }
+    
     
     func initFiles() -> AnyPublisher<Bool,Never> {
         return Deferred {
-            
             Future <Bool,Never> {  [weak self] promise in
                 guard let self = self else { return }
                 Task {
-                    self.initRoot()
-                    self.root?.updateIds()
-                    await self.recoverFiles()
-                    // self.save(file: self.root) //TODO: Dhekra
-                    self.clearTmpDirectory()
+                    self.mergeRootFilesToDatabase()
                     promise(.success(true))
                 }
             }
         }.eraseToAnyPublisher()
     }
     
-    func initRoot() {
+    func mergeRootFilesToDatabase() {
         if let root = self.load(name: self.rootFileName) {
-            self.root = root //TODO: Dhekra merge to Database
+            var vaultFileResult : [VaultFileDB] = []
+            getFiles(root: root, vaultFileResult: &vaultFileResult)
         }
     }
 
-    
-    
+    func getFiles(root: VaultFile, vaultFileResult: inout [VaultFileDB], parentId: String? = nil) {
+        root.files.forEach { file in
+            
+            let vaultFile = VaultFileDB(vaultFile:file)
+            self.vaultDataSource?.addVaultFile(file: vaultFile, parentId: parentId)
+
+            if file.type == .folder {
+                getFiles(root: file, vaultFileResult: &vaultFileResult, parentId: file.id)
+            }
+        }
+    }
+
     private func initialize(with key:String?) {
         
         self.tellaData = TellaData(key: key)
         self.vaultDataSource = VaultDataSource(key: key)
-        
-        root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
-        
-        do {
+
+        do { //TODO: Dhekra
             try FileManager.default.createDirectory(at: containerURL, withIntermediateDirectories: true, attributes: nil)
         } catch let error {
             debugLog(error)
@@ -124,8 +128,8 @@ class VaultManager: ObservableObject {
 
       func save(_ data: Data, vaultFile: VaultFileDB) -> Bool? { // ✅
         debugLog("\(data.count); \(vaultFile.type); \(vaultFile.name)", space: .files)
-        
-        let fileURL = containerURL(for: vaultFile.id)
+          guard let id = vaultFile.id else { return false }
+        let fileURL = containerURL(for: id)
         guard let encrypted = cryptoManager.encrypt(data),
               fileManager.createFile(atPath: fileURL, contents: encrypted) else {
             debugLog("encryption failed \(String(describing: vaultFile.name))", level: .debug, space: .crypto)

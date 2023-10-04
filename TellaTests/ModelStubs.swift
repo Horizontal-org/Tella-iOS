@@ -7,7 +7,8 @@ import SwiftUI
 extension VaultFileDB {
     
     static func stub() -> VaultFileDB {
-        let file = VaultFileDB(type: VaultFileType.file,
+        let file = VaultFileDB(id: UUID().uuidString,
+                               type: VaultFileType.file,
                                thumbnail: nil,
                                name: "Test",
                                duration: 20,

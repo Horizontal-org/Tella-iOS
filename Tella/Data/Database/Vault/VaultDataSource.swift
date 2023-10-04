@@ -34,7 +34,7 @@ class VaultDataSource : VaultDataSourceInterface {
 
     }
 
-    func renameVaultFile(id: String, name: String?) {
+    func renameVaultFile(id: String?, name: String?) {
         self.database.renameVaultFile(id: id, name: name)
     }
     

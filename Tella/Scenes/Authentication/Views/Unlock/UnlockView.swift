@@ -125,7 +125,7 @@ struct UnlockView: View {
         viewModel.resetUnlockAttempts()
         if viewModel.unlockType == .new {
              isLoading = true
-             initRoot()
+            initFiles()
         } else {
             presentingLockChoice = true
         }
@@ -140,7 +140,7 @@ struct UnlockView: View {
         }
     }
     
-    private func initRoot() {
+    private func initFiles() {
         DispatchQueue.main.async {
             appViewState.homeViewModel.initFiles()
                 .receive(on: DispatchQueue.main)

@@ -116,10 +116,8 @@ class MainAppModel: ObservableObject {
         }.eraseToAnyPublisher()
     }
     
-    func initRoot() {
-        vaultManager.initRoot()
+    func initAutoUpload() {
         UploadService.shared.initAutoUpload(mainAppModel: self)
-        
     }
 
     func publishUpdates() { //TODO: Dhekra to check

@@ -11,7 +11,7 @@ protocol VaultDataBaseProtocol {
     func getVaultFile(id: String?) -> VaultFileDB?
     func getVaultFiles(ids: [String]) -> [VaultFileDB]
     func getRecentVaultFiles() -> [VaultFileDB]
-    func renameVaultFile(id: String, name: String?)
+    func renameVaultFile(id: String?, name: String?)
     func moveVaultFile(fileIds: [String], newParentId: String?)
     func deleteVaultFile(ids: [String])
 }
@@ -182,7 +182,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
 
      }
     
-    func renameVaultFile(id: String, name: String?) {
+    func renameVaultFile(id: String?, name: String?) {
         
         do {
             

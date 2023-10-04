@@ -10,7 +10,7 @@ protocol VaultDataSourceInterface {
     func getVaultFile(id: String?) -> VaultFileDB?
     func getVaultFiles(ids: [String]) -> [VaultFileDB]
     func getRecentVaultFiles() -> [VaultFileDB]
-    func renameVaultFile(id: String, name: String?)
+    func renameVaultFile(id: String?, name: String?)
     func moveVaultFile(fileIds: [String], newParentId: String?)
     func deleteVaultFile(ids: [String])
     func deleteAllVaultFiles()
