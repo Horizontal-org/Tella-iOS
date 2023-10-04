@@ -41,22 +41,32 @@ class UwaziEntityViewModel: ObservableObject {
             prompt.showMandatoryError = prompt.value.stringValue.isEmpty
         }
         
-        submitEntity()
+        if(!requiredPrompts.isEmpty) {
+            submitEntity()
+        }
     }
     
     private func submitEntity() -> Void {
-            let serverURL = self.serverURL
-            let cookieList = ["connect.sid=" + self.accessToken]
+        var promptValues: [String: String] = [:]
+        for entryPrompt in entryPrompts {
+            let question = entryPrompt.question
+            let valueString = entryPrompt.value.stringValue
 
-            let response = UwaziServerRepository().submitEntity(serverURL: serverURL, cookieList: cookieList, entity: "title from ios 2")
-            response.sink { completion in
-                switch completion {
+            promptValues[question] = valueString
+        }
 
-                case .finished:
-                    print("Finished")
-                case .failure(let error):
-                    print(error)
-                }
+        let serverURL = self.serverURL
+        let cookieList = ["connect.sid=" + self.accessToken]
+
+        let response = UwaziServerRepository().submitEntity(serverURL: serverURL, cookieList: cookieList, entity: promptValues)
+        response.sink { completion in
+            switch completion {
+
+            case .finished:
+                print("Finished")
+            case .failure(let error):
+                print(error)
+            }
             } receiveValue: { value in
                 print(value)
             }

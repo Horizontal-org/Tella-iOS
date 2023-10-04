@@ -122,18 +122,11 @@ class UwaziServerRepository: WebRepository {
             .eraseToAnyPublisher()
     }
     
-    func submitEntity(serverURL: String, cookieList: [String], entity: String) -> AnyPublisher<EntityCreationResponse, APIError> {
+    func submitEntity(serverURL: String, cookieList: [String], entity: [String: String]) -> AnyPublisher<EntityCreationResponse, APIError> {
             let apiResponse: APIResponse<EntityCreationResponse> = getAPIResponse(endpoint: API.submitEntity(serverURL: serverURL, cookieList: cookieList, entity: entity))
 
             return apiResponse
-                .map { response, _ in
-                    return response
-                }
-                .mapError { error in
-                    if let apiError = error as? APIError {
-                        return apiError
-                    }
-                }
+                .compactMap{$0.0}
                 .eraseToAnyPublisher()
         }
 }
@@ -272,7 +265,7 @@ extension UwaziServerRepository {
         case getSetting(serverURL: String, cookieList:[String])
         case getDictionary(serverURL: String, cookieList:[String])
         case getTranslations(serverURL: String, cookieList:[String])
-        case submitEntity(serverURL: String, cookieList: [String], entity: String)
+        case submitEntity(serverURL: String, cookieList: [String], entity: [String: String])
     }
 }
 
@@ -324,9 +317,7 @@ extension UwaziServerRepository.API: APIRequest {
                 "token": token
             ]
         case .submitEntity(_, _, let entity):
-            return [
-                "title": entity
-            ]
+            return entity
         case .checkURL, .getLanguage, .getTemplate, .getSetting,.getDictionary,.getTranslations:
             return nil
         }
