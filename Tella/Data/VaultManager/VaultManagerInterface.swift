@@ -33,6 +33,7 @@ protocol VaultManagerInterface {
     
     func deleteAllVaultFilesFromDevice()
     func deleteVaultFile(filesIds: [String])
+    func deleteFiles(files: [URL])
     func clearTmpDirectory()
     func deleteContainerDirectory()
 }

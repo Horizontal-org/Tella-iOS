@@ -8,6 +8,7 @@ import Combine
 
 class VaultManager : VaultManagerInterface, ObservableObject{
     
+    
     private let cryptoManager: CryptoManager = CryptoManager.shared
     private let fileManager: FileManagerInterface = DefaultFileManager()
     private let rootFileName: String = "root"
@@ -140,7 +141,12 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         fileManager.removeContainerDirectory(fileName: fileName, paths: urlPath)
     }
     
-    
+    func deleteFiles(files: [URL]) {
+        files.forEach { url in
+            fileManager.removeItem(at: url)
+        }
+    }
+ 
     private func containerURL(for containerName: String) -> URL {
         return containerURL.appendingPathComponent(containerName)
     }
