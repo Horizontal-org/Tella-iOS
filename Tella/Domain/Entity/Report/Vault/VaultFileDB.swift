@@ -76,7 +76,7 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
     }
     
     init(vaultFile :VaultFile) {
-        self.id = vaultFile.id
+        self.id = vaultFile.containerName
         self.type = vaultFile.type == .folder ? .directory : .file
         self.thumbnail = vaultFile.thumbnail
         self.name = vaultFile.fileName
