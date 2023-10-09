@@ -122,7 +122,7 @@ class UwaziServerRepository: WebRepository {
             .eraseToAnyPublisher()
     }
     
-    func submitEntity(serverURL: String, cookieList: [String], entity: [String: String]) -> AnyPublisher<EntityCreationResponse, APIError> {
+    func submitEntity(serverURL: String, cookieList: [String], entity: [String: Any]) -> AnyPublisher<EntityCreationResponse, APIError> {
             let apiResponse: APIResponse<EntityCreationResponse> = getAPIResponse(endpoint: API.submitEntity(serverURL: serverURL, cookieList: cookieList, entity: entity))
 
             return apiResponse
@@ -265,7 +265,7 @@ extension UwaziServerRepository {
         case getSetting(serverURL: String, cookieList:[String])
         case getDictionary(serverURL: String, cookieList:[String])
         case getTranslations(serverURL: String, cookieList:[String])
-        case submitEntity(serverURL: String, cookieList: [String], entity: [String: String])
+        case submitEntity(serverURL: String, cookieList: [String], entity: [String: Any])
     }
 }
 
@@ -300,7 +300,7 @@ extension UwaziServerRepository.API: APIRequest {
         }
     }
 
-    var keyValues: [Key : Value?]? {
+    var keyValues: [Key : Any]? {
 
         switch self {
         case .login((let username, let password, _ )):

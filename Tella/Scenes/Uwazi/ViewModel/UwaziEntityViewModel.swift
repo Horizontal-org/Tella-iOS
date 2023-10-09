@@ -47,18 +47,30 @@ class UwaziEntityViewModel: ObservableObject {
     }
     
     private func submitEntity() -> Void {
-        var promptValues: [String: String] = [:]
+        var entityData: [String: Any] = [:]
+        var metadata: [String: Any] = [:]
+
         for entryPrompt in entryPrompts {
-            let question = entryPrompt.question
-            let valueString = entryPrompt.value.stringValue
-
-            promptValues[question] = valueString
+            switch entryPrompt.name {
+            case "text":
+                metadata["text"] = [["value": entryPrompt.value.stringValue]]
+            case "title":
+                entityData["title"] = entryPrompt.value.stringValue
+                
+            // continue with the rest of fields
+            default:
+                break
+            }
         }
-
+        entityData["template"] = template.templateId
+        
+        entityData["metadata"] = metadata
+        
+        
         let serverURL = self.serverURL
         let cookieList = ["connect.sid=" + self.accessToken]
 
-        let response = UwaziServerRepository().submitEntity(serverURL: serverURL, cookieList: cookieList, entity: promptValues)
+        let response = UwaziServerRepository().submitEntity(serverURL: serverURL, cookieList: cookieList, entity: entityData)
         response.sink { completion in
             switch completion {
 

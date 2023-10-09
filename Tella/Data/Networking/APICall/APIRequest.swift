@@ -7,7 +7,7 @@ import Foundation
 
 public protocol APIRequest {
     
-    var keyValues : [Key : Value?]? { get }
+    var keyValues : [Key : Any]? { get }
     var urlQueryParameters : [String : String?]? { get }
     
     var baseURL: String { get }
@@ -28,7 +28,7 @@ public extension APIRequest {
     
     typealias Key = String
     
-    var keyValues: [Key : Value?]? { nil }
+    var keyValues: [Key : Any]? { nil }
     var urlQueryParameters: [String : String?]? { nil }
     
     var encoding: Encoding { Encoding.json }
