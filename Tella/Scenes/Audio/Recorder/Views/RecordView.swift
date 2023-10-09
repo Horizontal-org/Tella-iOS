@@ -74,9 +74,6 @@ struct RecordView: View {
         .alert(isPresented: self.$viewModel.shouldShowSettingsAlert) {
             getSettingsAlertView()
         }
-        .onDisappear {
-            mainAppModel.vaultManager.clearTmpDirectory()
-        }
     }
     
     private func getSettingsAlertView() -> Alert {

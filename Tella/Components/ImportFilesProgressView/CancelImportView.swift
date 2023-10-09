@@ -18,7 +18,7 @@ struct CancelImportView: View {
                                msgText: importFilesProgressProtocol.cancelMessage,
                                cancelText: importFilesProgressProtocol.exitCancelImportButtonTitle,
                                actionText: importFilesProgressProtocol.cancelImportButtonTitle) {
-                mainAppModel.cancelImportAndEncryption()
+                mainAppModel.vaultFilesManager?.cancelImportAndEncryption()
                 sheetManager.hide()
 
             } didCancelAction: {

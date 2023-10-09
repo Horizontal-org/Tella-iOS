@@ -183,7 +183,7 @@ class BaseUploadOperation : Operation {
         mainAppModel.vaultManager.tellaData?.deleteReport(reportId: self.report?.id)
         guard let reportVaultFiles = self.reportVaultFiles else {return}
         let reportVaultFilesIds = reportVaultFiles.compactMap{ $0.id}
-        mainAppModel.delete(filesIds: reportVaultFilesIds)
+        mainAppModel.vaultFilesManager?.deleteVaultFile(fileIds: reportVaultFilesIds) 
     }
     
     func sendReport() {
@@ -222,7 +222,7 @@ class BaseUploadOperation : Operation {
                 } else {
                     filesToUpload.forEach({ reportVaultFile in
                         
-                        let vaultFileInfo = mainAppModel.loadFilesInfos(file: reportVaultFile,offsetSize: 0)
+                        let vaultFileInfo = mainAppModel.vaultManager.loadFilesInfos(file: reportVaultFile,offsetSize: 0)
                         
                         guard let vaultFileInfo else { return }
                         
@@ -302,7 +302,7 @@ class BaseUploadOperation : Operation {
             let data = fileToUpload.data?.extract(size:size)
             
             if size != 0 {
-                if let fileUrlPath = self.mainAppModel.saveDataToTempFile(data: data, fileName: fileToUpload.fileName, pathExtension: fileToUpload.fileExtension) {
+                if let fileUrlPath = self.mainAppModel.vaultManager.saveDataToTempFile(data: data, fileName: fileToUpload.fileName, pathExtension: fileToUpload.fileExtension) {
                     fileToUpload.fileUrlPath = fileUrlPath
                 }
                 fileToUpload.data = data

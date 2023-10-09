@@ -129,12 +129,12 @@ class OutboxReportVM: ObservableObject {
         
         if let reportId, let report = self.mainAppModel.vaultManager.tellaData?.getReport(reportId: reportId) {
 
-            let vaultFileResult  = mainAppModel.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
+            let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
 
             var files : [ReportVaultFile] = []
             
             report.reportFiles?.forEach({ reportFile in
-                if let vaultFile = vaultFileResult.first(where: {reportFile.fileId == $0.id}) {
+                if let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}) {
                     let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
                     files.append(reportVaultFile)
                 }

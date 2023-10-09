@@ -211,7 +211,7 @@ extension URL {
                 return mimetype as String
             }
         }
-        return "application/octet-stream"
+        return ""
     }
     
     var containsImage: Bool {

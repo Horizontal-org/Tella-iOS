@@ -59,10 +59,10 @@ class UploadReportOperation: BaseUploadOperation {
         
         var reportVaultFiles : [ReportVaultFile] = []
 
-        let vaultFileResult = mainAppModel.getVaultFiles(ids: report?.reportFiles?.compactMap{$0.fileId} ?? [])
+        let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report?.reportFiles?.compactMap{$0.fileId} ?? [])
 
         report?.reportFiles?.forEach({ reportFile in
-            if let vaultFile = vaultFileResult.first(where: {reportFile.fileId == $0.id}) {
+            if let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}) {
                 let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
                 reportVaultFiles.append(reportVaultFile)
             }

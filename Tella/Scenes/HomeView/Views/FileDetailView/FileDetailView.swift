@@ -31,12 +31,12 @@ struct FileDetailView: View {
             case .video:
                 VideoViewer(appModel: appModel, currentFile: file, playList: self.fileListViewModel.getVideoFiles())
             case .image:
-                ImageViewer(imageData: appModel.loadFileData(fileName: file.id))
+                ImageViewer(imageData: appModel.vaultManager.loadFileData(fileName: file.id))
             case .folder:
                 EmptyView()
                 
             default:
-                if let file = appModel.loadVaultFileToURL(file: file) {
+                if let file = appModel.vaultManager.loadVaultFileToURL(file: file) {
                     QuickLookView(file: file)
                 }
             }

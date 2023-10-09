@@ -131,8 +131,10 @@ class DraftReportVM: ObservableObject {
             self.description = report.description ?? ""
             self.server = report.server
 
-            let vaultFileResult  = Set(mainAppModel.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? []))
-            self.files = vaultFileResult
+            if let  vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [] ) {
+                let vaultFileResult  = Set(vaultFileResult)
+                self.files = vaultFileResult
+            }
             self.objectWillChange.send()
         }
         

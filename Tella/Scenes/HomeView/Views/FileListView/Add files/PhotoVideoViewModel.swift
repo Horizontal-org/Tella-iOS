@@ -149,7 +149,7 @@ class PhotoVideoViewModel : ObservableObject {
         
         let files = files.compactMap({$0})
         
-        self.mainAppModel.addVaultFile(filePaths: files, parentId: self.rootFile?.wrappedValue?.id)
+        self.mainAppModel.vaultFilesManager?.addVaultFile(filePaths: files, parentId: self.rootFile?.wrappedValue?.id)
             .sink { importVaultFileResult in
                 
                 switch importVaultFileResult {

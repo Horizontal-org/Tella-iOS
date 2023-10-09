@@ -75,17 +75,17 @@ class LockViewModel: ObservableObject {
     }
     
     func login() {
-        let authorized = appModel.login(password: loginPassword)
+        let authorized = appModel.vaultManager.login(password: loginPassword)
         shouldShowUnlockError = !authorized
     }
     
     func initKeys(passwordTypeEnum:PasswordTypeEnum) {
-        appModel.initKeys(passwordTypeEnum,
+        appModel.vaultManager.initKeys(passwordTypeEnum,
                           password: password)
     }
     
     func updateKeys(passwordTypeEnum:PasswordTypeEnum) {
-        appModel.updateKeys(passwordTypeEnum,
+        appModel.vaultManager.updateKeys(passwordTypeEnum,
                             newPassword: password,
                             oldPassword: loginPassword)
     }

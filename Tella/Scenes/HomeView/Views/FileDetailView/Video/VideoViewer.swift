@@ -22,9 +22,6 @@ struct VideoViewer: View {
                 .overlay(CustomVideoControlsView(playerVM: playerVM)
                          ,alignment: .bottom)
         }
-        .onDisappear {
-            appModel.vaultManager.clearTmpDirectory()
-        }
         .toolbar {
             LeadingTitleToolbar(title: playerVM.currentFile?.name ?? "")
             fileActionTrailingView()

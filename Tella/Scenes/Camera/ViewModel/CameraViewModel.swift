@@ -49,7 +49,7 @@ class CameraViewModel: ObservableObject {
         self.mainAppModel = mainAppModel
         self.rootFile = rootFile
         
-        self.lastImageOrVideoVaultFile = mainAppModel.getVaultFiles(parentId: nil, filter: FilterType.photoVideo, sort: FileSortOptions.newestToOldest).first
+        self.lastImageOrVideoVaultFile = mainAppModel.vaultFilesManager?.getVaultFiles(parentId: nil, filter: FilterType.photoVideo, sort: FileSortOptions.newestToOldest).first
                 
         self.resultFile = resultFile
         
@@ -61,7 +61,7 @@ class CameraViewModel: ObservableObject {
     func saveImage() {
         
         guard let imageData = image?.fixedOrientation()?.pngData() else { return  }
-        guard let url = mainAppModel?.saveDataToTempFile(data: imageData, pathExtension: "png") else { return  }
+        guard let url = mainAppModel?.vaultManager.saveDataToTempFile(data: imageData, pathExtension: "png") else { return  }
         
         saveFile(urlFile: url)
     }
@@ -73,7 +73,7 @@ class CameraViewModel: ObservableObject {
     
     private func saveFile(urlFile:URL) {
         
-        self.mainAppModel?.addVaultFile(filePaths: [urlFile], parentId: self.rootFile?.id)
+        self.mainAppModel?.vaultFilesManager?.addVaultFile(filePaths: [urlFile], parentId: self.rootFile?.id)
             .sink { importVaultFileResult in
                 
                 switch importVaultFileResult {

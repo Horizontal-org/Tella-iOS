@@ -26,7 +26,7 @@ class ServersViewModel: ObservableObject {
     }
     
     func deleteServer() {
-        guard let serverId = self.currentServer?.id else { return  }
+        guard let serverId = self.currentServer?.id else { return }
         
         do {
               try mainAppModel.vaultManager.tellaData?.deleteServer(serverId: serverId)

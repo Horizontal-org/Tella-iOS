@@ -18,7 +18,7 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
     var mimeType : String?
     var width : Double?
     var height : Double?
-
+    
     enum CodingKeys: String, CodingKey {
         case id = "c_id"
         case type = "c_type"
@@ -30,7 +30,7 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
         case mimeType = "c_mime_type"
         case width = "c_width"
         case height = "c_height"
-
+        
     }
     
     static func == (lhs: VaultFileDB, rhs: VaultFileDB) -> Bool {
@@ -48,7 +48,7 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
          name: String,
          duration: Double?,
          size: Int ,
-         mimeType: String?, 
+         mimeType: String?,
          width: Double?,
          height: Double?) {
         
@@ -62,7 +62,7 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
         self.created = Date()
         self.width = width
         self.height = height
-
+        
     }
     
     init(id: String = UUID().uuidString,
@@ -76,22 +76,22 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
     }
     
     init(vaultFile :VaultFile) {
-       self.id = vaultFile.id
-       self.type = vaultFile.type == .folder ? .directory : .file
-       self.thumbnail = vaultFile.thumbnail
-       self.name = vaultFile.fileName
-       self.duration = vaultFile.duration
-       self.size = vaultFile.size
-       self.mimeType = vaultFile.fileExtension.mimeType()
-       self.created = vaultFile.created
-       if let width = vaultFile.resolution?.width {
-           self.width = width
-       }
-       if let height = vaultFile.resolution?.height {
-           self.height = height
-       }
-   }
-
+        self.id = vaultFile.id
+        self.type = vaultFile.type == .folder ? .directory : .file
+        self.thumbnail = vaultFile.thumbnail
+        self.name = vaultFile.fileName
+        self.duration = vaultFile.duration
+        self.size = vaultFile.size
+        self.mimeType = vaultFile.fileExtension.mimeType()
+        self.created = vaultFile.created
+        if let width = vaultFile.resolution?.width {
+            self.width = width
+        }
+        if let height = vaultFile.resolution?.height {
+            self.height = height
+        }
+    }
+    
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
@@ -111,52 +111,52 @@ class VaultFileDB : Codable, Hashable, ObservableObject {
         
         mimeType = try container.decode(String.self, forKey: .mimeType)
         
-         width = try container.decode(Double.self, forKey: .width)
+        width = try container.decode(Double.self, forKey: .width)
         height = try container.decode(Double.self, forKey: .height)
         
-
+        
     }
     
-     init(dictionnary: [String:Any])   {
-
-       let id = dictionnary[CodingKeys.id.rawValue] as? String
-       
-       let typeInt = dictionnary[CodingKeys.type.rawValue] as? Int
-       let type = VaultFileType(rawValue: typeInt ?? 0) ?? .unknown
-       
-       
-       let thumbnail = dictionnary[CodingKeys.thumbnail.rawValue] as? Data
-       let name = dictionnary[CodingKeys.name.rawValue] as? String
-
-       
-       let createdDouble = dictionnary[CodingKeys.created.rawValue] as? Double
+    init(dictionnary: [String:Any])   {
+        
+        let id = dictionnary[CodingKeys.id.rawValue] as? String
+        
+        let typeInt = dictionnary[CodingKeys.type.rawValue] as? Int
+        let type = VaultFileType(rawValue: typeInt ?? 0) ?? .unknown
+        
+        
+        let thumbnail = dictionnary[CodingKeys.thumbnail.rawValue] as? Data
+        let name = dictionnary[CodingKeys.name.rawValue] as? String
+        
+        
+        let createdDouble = dictionnary[CodingKeys.created.rawValue] as? Double
         let created = createdDouble?.getDate() ?? Date()
-       
-       
-       let duration = dictionnary[CodingKeys.duration.rawValue] as? Double
-
-       
-       let size = dictionnary[CodingKeys.size.rawValue] as? Int
-       let mimeType = dictionnary[CodingKeys.mimeType.rawValue] as? String
-
+        
+        
+        let duration = dictionnary[CodingKeys.duration.rawValue] as? Double
+        
+        
+        let size = dictionnary[CodingKeys.size.rawValue] as? Int
+        let mimeType = dictionnary[CodingKeys.mimeType.rawValue] as? String
+        
         let width = dictionnary[CodingKeys.width.rawValue] as? Double
-            let height = dictionnary[CodingKeys.height.rawValue] as? Double
-          
-
-         
-         
-         self.id = id ?? ""
-         self.type = type
-         self.thumbnail = thumbnail
-         self.name = name ?? ""
-         self.created = created
-         self.duration = duration
-         self.size = size ?? 0
-         self.mimeType = mimeType
-         self.width = width
-         self.height = height
-
- 
+        let height = dictionnary[CodingKeys.height.rawValue] as? Double
+        
+        
+        
+        
+        self.id = id ?? ""
+        self.type = type
+        self.thumbnail = thumbnail
+        self.name = name ?? ""
+        self.created = created
+        self.duration = duration
+        self.size = size ?? 0
+        self.mimeType = mimeType
+        self.width = width
+        self.height = height
+        
+        
     }
 }
 
@@ -172,14 +172,14 @@ extension VaultFileDB: CustomDebugStringConvertible {
 extension VaultFileDB {
     
     var thumbnailImage: UIImage {
-
-        guard let thumbnail else {return UIImage()}
-
-        guard let image = UIImage(data: thumbnail) else {return UIImage()}
-            
-            return image
-        }
         
+        guard let thumbnail else {return UIImage()}
+        
+        guard let image = UIImage(data: thumbnail) else {return UIImage()}
+        
+        return image
+    }
+    
     
     
     var iconImage: UIImage {
@@ -240,9 +240,7 @@ extension VaultFileDB {
             return #imageLiteral(resourceName: "filetype.big_document")
         }
     }
-
 }
-
 
 extension VaultFileDB {
     
@@ -292,52 +290,4 @@ extension VaultFileDB {
             return self.mimeType?.getExtension() ?? ""
         }
     }
-
-    
-    
 }
-
-
-//class VaultFileViewModel: ObservableObject {
-//
-//    var id : String
-//    var thumbnail : UIImage
-//    var name :  String
-//    var duration: String?
-//    var size : Int?
-//    var fileType : TellaFileType?
-//    var resolution: String?
-//    var formattedCreationDate : String
-//    var longFormattedCreationDate : String
-//
-//    var iconImage: UIImage
-//    var bigIconImage: UIImage
-//
-//    func hash(into hasher: inout Hasher) {
-//        hasher.combine(id.hashValue)
-//    }
-//
-//    init(vaulFileDB: VaultFileDB) {
-//        self.id = vaulFileDB.id
-//        self.thumbnail = vaulFileDB.thumbnailImage
-//        self.name = vaulFileDB.name
-//        self.duration = vaulFileDB.duration?.shortTimeString()
-//        size = vaulFileDB.size
-//
-//        self.fileType = vaulFileDB.mimeType?.tellaFileType
-//
-//        self.resolution = "" //TODO: Dhekra
-////        guard let resolution = resolution else {return nil}
-////        return "\(Int(resolution.width)):\(Int(resolution.height))"
-//
-//
-//        self.formattedCreationDate = vaulFileDB.created?.fileCreationDate() ?? ""
-//        self.longFormattedCreationDate = vaulFileDB.created?.getFormattedDateString(format: DateFormat.fileInfo.rawValue) ?? ""
-//
-//        self.iconImage = vaulFileDB.iconImage
-//        self.bigIconImage = vaulFileDB.bigIconImage
-//
-//    }
-//
-//
-//}

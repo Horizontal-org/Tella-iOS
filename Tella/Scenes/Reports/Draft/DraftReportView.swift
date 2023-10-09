@@ -231,16 +231,7 @@ struct DraftReportView: View {
                           shouldStartUpload: true)
         .environmentObject(reportsViewModel)
     }
-    
-//    var fileListView : some View {
-//        FileListView(appModel: mainAppModel,
-//                     rootFile: mainAppModel.vaultManager.root,
-//                     filterType: .all,
-//                     title: LocalizableReport.selectFiles.localized,
-//                     fileListType: .selectFiles,
-//                     resultFile: $reportViewModel.resultFile)
-//    }
-    
+
     var cameraView : some View {
         reportViewModel.showingCamera ?
         CameraView(sourceView: SourceView.addReportFile,

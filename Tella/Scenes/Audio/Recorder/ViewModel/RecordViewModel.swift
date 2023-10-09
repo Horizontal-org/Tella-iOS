@@ -49,10 +49,7 @@ class RecordViewModel: ObservableObject {
         
         
         // Save the audio file and return the recorded file
-        
-        //TODO: Dhekra
 
-        
         audioBackend.fileURL.sink { url in
             
             guard let url else { return }
@@ -81,9 +78,8 @@ class RecordViewModel: ObservableObject {
     }
     
     func addVaultFile(fileURL: URL) {
-        //TODO: Dhekra
 
-        mainAppModel.addVaultFile(filePaths: [fileURL], parentId: rootFile?.id)
+        mainAppModel.vaultFilesManager?.addVaultFile(filePaths: [fileURL], parentId: rootFile?.id)
                 .sink { importVaultFileResult in
                     
                     switch importVaultFileResult {

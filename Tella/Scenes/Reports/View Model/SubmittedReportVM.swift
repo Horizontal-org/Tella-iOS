@@ -43,7 +43,7 @@ class SubmittedReportVM: ObservableObject {
             self.title = report.title ?? ""
             self.description = report.description ?? ""
 
-            let vaultFileResult = mainAppModel.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
+            let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? []) ?? []
             
             self.files = Array(vaultFileResult)
             

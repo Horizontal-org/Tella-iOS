@@ -41,12 +41,12 @@ class HomeViewModel: ObservableObject {
     }
     
     func getFiles()   {
-        recentFiles = appModel.vaultManager.getRecentVaultFiles()
+        recentFiles = appModel.vaultFilesManager?.getRecentVaultFiles() ?? []
         hasRecentFile = recentFiles.count > 0
     }
 
     func deleteAllVaultFiles()   {
-        appModel.deleteAllVaultFiles()
+        appModel.vaultFilesManager?.deleteAllVaultFiles()
     }
     
     func deleteAllServersConnection()   {

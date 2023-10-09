@@ -80,7 +80,7 @@ struct CameraView: View {
                     } else {
                         showingCameraView.wrappedValue = false
                     }
-                    mainAppModel.clearTmpDirectory()
+                    mainAppModel.vaultManager.clearTmpDirectory()
                 }
             }
         

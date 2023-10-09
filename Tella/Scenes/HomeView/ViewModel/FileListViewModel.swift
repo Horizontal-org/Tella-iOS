@@ -334,40 +334,40 @@ class FileListViewModel: ObservableObject {
 extension FileListViewModel {
    
     func getFiles() {
-        vaultFiles = appModel.getVaultFiles(parentId: self.rootFile?.id, filter: self.filterType, sort: self.sortBy)
+        vaultFiles = appModel.vaultFilesManager?.getVaultFiles(parentId: self.rootFile?.id, filter: self.filterType, sort: self.sortBy) ?? []
     }
     
     func getVideoFiles() -> [VaultFileDB] {
-        return appModel.getVaultFiles(parentId: self.rootFile?.id, filter: .video, sort: self.sortBy)
+        return appModel.vaultFilesManager?.getVaultFiles(parentId: self.rootFile?.id, filter: .video, sort: self.sortBy) ?? []
     }
 
     func addFolder(name: String) {
-        appModel.addFolder(name: name, parentId: self.rootFile?.id)
+        appModel.vaultFilesManager?.addFolderFile(name: name, parentId: self.rootFile?.id)
         getFiles()
     }
     
     func moveFiles() {
         let selectedFilesIds = selectedFiles.compactMap({$0.id})
-        appModel.moveVaultFile(selectedFilesIds: selectedFilesIds, newParentId: rootFile?.id)
+        appModel.vaultFilesManager?.moveVaultFile(fileIds: selectedFilesIds, newParentId: rootFile?.id)
         getFiles()
     }
     
     func renameSelectedFile() {
-        appModel.renameVaultFile(id: selectedFiles[0].id, name: selectedFiles[0].name)
+        appModel.vaultFilesManager?.renameVaultFile(id: selectedFiles[0].id, name: selectedFiles[0].name)
         getFiles()
     }
     
     func deleteSelectedFiles() {
-        appModel.deleteVaultFile(vaultFiles: selectedFiles)
+        appModel.vaultFilesManager?.deleteVaultFile(vaultFiles: selectedFiles)
         getFiles()
     }
     
     func clearTmpDirectory() {
-        appModel.clearTmpDirectory()
+        appModel.vaultManager.clearTmpDirectory()
     }
     
     func getDataToShare() -> [Any] {
-        appModel.loadVaultFilesToURL(files: selectedFiles)
+        appModel.vaultManager.loadVaultFilesToURL(files: selectedFiles)
     }
 
 }

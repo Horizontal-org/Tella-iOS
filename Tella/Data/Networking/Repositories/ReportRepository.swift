@@ -81,7 +81,7 @@ extension ReportRepository.API: APIRequest {
             return "/report"
             
         case .putReportFile((let file)), .postReportFile((let file)), .headReportFile((let file)):
-            return "/file/\(file.idReport)/\(file.fileUrlPath.lastPathComponent.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)"
+            return "/file/\(file.idReport)/\(file.fileName.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)"
 
             
         }

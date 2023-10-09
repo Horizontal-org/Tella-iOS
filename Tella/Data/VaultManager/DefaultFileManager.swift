@@ -11,11 +11,13 @@ protocol FileManagerInterface {
     func contentsOfDirectory(atPath path: URL) -> [URL]
     func contentsOfDirectory(atPath path: String) -> [String]
     func removeContainerDirectory(fileName: [String], paths: String)
-    
+    func removeContainerDirectory(directoryPath: String)
     @discardableResult
     func createFile(atPath path: URL, contents data: Data?) -> Bool
+    func createDirectory(atPath path:URL)
     func removeItem(at path: URL)
     func removeItem(at path: String)
+    func fileExists(filePath: String) -> Bool
 }
 
 class DefaultFileManager: FileManagerInterface {
@@ -82,6 +84,14 @@ class DefaultFileManager: FileManagerInterface {
         return true
     }
     
+    func createDirectory(atPath path:URL) {
+        do {
+            try fileManager.createDirectory(at: path, withIntermediateDirectories: true, attributes: nil)
+        } catch let error {
+            debugLog(error)
+        }
+    }
+
     func copyItem(at srcURL: URL, to dstURL: URL) throws {
         debugLog("copying from \(srcURL.path) \(dstURL.path)")
         try fileManager.copyItem(at: srcURL, to: dstURL)
@@ -98,4 +108,20 @@ class DefaultFileManager: FileManagerInterface {
         }
     }
     
+    func removeContainerDirectory(directoryPath: String) {
+        let directoryContent =  self.contentsOfDirectory(atPath: directoryPath)
+
+        do {
+            for file in directoryContent {
+                let filePath = URL(fileURLWithPath: directoryPath).appendingPathComponent(file).absoluteURL
+                 try fileManager.removeItem(at: filePath)
+            }
+        } catch let error {
+            debugLog(error)
+        }
+    }
+    
+    func fileExists(filePath: String) -> Bool {
+        fileManager.fileExists(atPath: filePath)
+    }
 }

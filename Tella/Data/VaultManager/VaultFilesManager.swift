@@ -5,29 +5,19 @@
 import Foundation
 import Combine
 
-
-
-
-enum ImportVaultFileResult {
+class VaultFilesManager : VaultFilesManagerInterface {
     
-    case importProgress(importProgress:ImportProgress)
-    case fileAdded([VaultFileDB])
+    var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
+    var vaultDataSource : VaultDataSourceInterface?
+    var vaultManager : VaultManagerInterface?
+    var cancellable: Set<AnyCancellable> = []
     
-}
-
-actor FilesActor {
-    
-    var files : [VaultFileDB] = []
-    
-    func add(vaultFile: VaultFileDB) {
-        files.append(vaultFile)
+    init(key: String, vaultManager: VaultManagerInterface? = nil) {
+        self.vaultDataSource = VaultDataSource(key: key)
+        self.vaultManager = vaultManager
     }
-}
-
-extension VaultManager : VaultFilesManagerInterface {
     
-    
-    func addVaultFile(filePaths: [URL], parentId: String?) -> AnyPublisher<ImportVaultFileResult,Never> { // ✅
+    func addVaultFile(filePaths: [URL], parentId: String?) -> AnyPublisher<ImportVaultFileResult,Never> {
         
         let filesActor = FilesActor()
         let importProgress :  ImportProgress = ImportProgress()
@@ -50,7 +40,7 @@ extension VaultManager : VaultFilesManagerInterface {
                     return
                 }
                 
-                guard let isSaved = self.save(fileDetail.data, vaultFile: fileDetail.file) else { return }
+                guard let isSaved = self.vaultManager?.save(fileDetail.data, vaultFileId: fileDetail.file.id) else { return }
                 if isSaved {
                     self.vaultDataSource?.addVaultFile(file: fileDetail.file, parentId: parentId)
                 }
@@ -73,9 +63,9 @@ extension VaultManager : VaultFilesManagerInterface {
         }.store(in: &self.cancellable)
         
         return subject.eraseToAnyPublisher()
-    }  // ✅
+    }
     
-      func getFileDetailsStream(_ filePaths: [URL]) -> AsyncStream<VaultFileDetails> {  // ✅
+    func getFileDetailsStream(_ filePaths: [URL]) -> AsyncStream<VaultFileDetails> {
         
         // Init AsyncStream with element type = `VaultFileDetails`
         let stream = AsyncStream(VaultFileDetails.self) { continuation in
@@ -97,20 +87,26 @@ extension VaultManager : VaultFilesManagerInterface {
         }
         
         return stream
-    }  // ✅
+    }
     
-    func addFolderFile(name: String, parentId: String?) { // ✅
+    func addVaultFiles(files: [(VaultFileDB,String?)]) {
+        files.forEach { (file, parentId) in
+            self.vaultDataSource?.addVaultFile(file: file, parentId: parentId)
+        }
+    }
+    
+    func addFolderFile(name: String, parentId: String?) {
         let file = VaultFileDB(type: .directory, name: name)
         self.vaultDataSource?.addVaultFile(file: file, parentId: parentId)
-    } // ✅
+    }
     
-    func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB] { // ✅
+    func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB] {
         return self.vaultDataSource?.getVaultFiles(parentId: parentId, filter: filter, sort: sort) ?? []
-    } // ✅
+    }
     
     
-    func getFileDetails(filePath: URL) async throws -> VaultFileDetails?  { // ✅
-
+    func getFileDetails(filePath: URL) async throws -> VaultFileDetails?  {
+        
         let id = UUID().uuidString
         let _ = filePath.startAccessingSecurityScopedResource()
         defer { filePath.stopAccessingSecurityScopedResource() }
@@ -118,7 +114,7 @@ extension VaultManager : VaultFilesManagerInterface {
         let data = try Data(contentsOf: filePath)
         
         async let thumnail = await filePath.thumbnail()
-
+        
         let fileName = filePath.deletingPathExtension().lastPathComponent
         let path = filePath.path
         let pathExtension = filePath.pathExtension
@@ -144,9 +140,9 @@ extension VaultManager : VaultFilesManagerInterface {
                                           width: width,
                                           height: height)
         return (VaultFileDetails(file: vaultFile, data: data))
-    } // ✅
+    }
     
-    func getFilesTotalSize(filePaths: [URL]) -> Int  { // ✅
+    func getFilesTotalSize(filePaths: [URL]) -> Int  {
         
         var totalSizeArray : [Int] = []
         
@@ -161,7 +157,7 @@ extension VaultManager : VaultFilesManagerInterface {
         
         return totalSizeArray.reduce(0, +)
         
-    } // ✅
+    }
     
     
     func getVaultFile(id: String?) -> VaultFileDB? {
@@ -187,35 +183,36 @@ extension VaultManager : VaultFilesManagerInterface {
     }
     
     func deleteVaultFile(fileIds ids: [String]) {
-        self.deleteVaultFile(filesIds: ids)
+        self.vaultManager?.deleteVaultFile(filesIds: ids)
         self.vaultDataSource?.deleteVaultFile(ids: ids)
     }
     
     func deleteVaultFile(vaultFiles : [VaultFileDB]) {
         var resultFiles : [VaultFileDB] = []
         let fileWalker = FileWalker(vaultDataSource: self.vaultDataSource)
-
+        
         vaultFiles.forEach { file in
             if file.type == .directory {
                 resultFiles.append(contentsOf: fileWalker.walkWithDirectories(root: file))
             }
             resultFiles.append(file)
         }
-
+        
         let fileIds = resultFiles.compactMap({$0.id})
         
         
-        self.deleteVaultFile(filesIds: fileIds)
+        self.vaultManager?.deleteVaultFile(filesIds: fileIds)
         self.vaultDataSource?.deleteVaultFile(ids: fileIds)
     }
     
     
-    func deleteAllVaultFiles() { // ✅
-        
-        deleteAllVaultFilesFromDevice()
+    func deleteAllVaultFiles() {
+        self.vaultManager?.deleteAllVaultFilesFromDevice()
         self.vaultDataSource?.deleteAllVaultFiles()
-        
-        
-    } // ✅
+    }
+    
+    func cancelImportAndEncryption() {
+        self.shouldCancelImportAndEncryption.send(true)
+    }
     
 }
