@@ -119,32 +119,12 @@ extension String {
         if type.conforms(to: .audio) {
             return .audio
         }
-        
-//        enum OpenXmlFormats : String {
-//
-//            case word = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-//            case presentation = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
-//            case sheet = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-
-//        let word = "application/msword"
-//        let excel = "application/vnd.ms-excel"
-//        let powerPoint = "application/mspowerpoint"
 
         if type.conforms(to: .pdf) || type.conforms(to: .presentation) || type.conforms(to: .spreadsheet) {
             return .document
-
         }
-
- 
-
-        
- 
 
         return .other
     }
-
-    
-    
-    
 }
 

@@ -25,10 +25,10 @@ protocol DataBase {
 }
 
 class VaultDatabase : DataBase, VaultDataBaseProtocol {
-
+    
     var dataBaseHelper: DataBaseHelper
     var statementBuilder: SQLiteStatementBuilder
-  
+    
     private var rootId = "11223344-5566-4777-8899-aabbccddeeff";
     
     init(key: String?) {
@@ -37,7 +37,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         checkVersions()
     }
     
-      func checkVersions() {
+    func checkVersions() {
         do {
             let oldVersion = try statementBuilder.getCurrentDatabaseVersion()
             
@@ -56,13 +56,13 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         }
     }
     
-     func createTables() {
+    func createTables() {
         createVaultTable()
     }
     
-      func createVaultTable() {
-
-          let columns = [
+    func createVaultTable() {
+        
+        let columns = [
             cddl(VaultD.cId, VaultD.text, primaryKey: true, autoIncrement: false),
             cddl(VaultD.cParentId, VaultD.text),
             cddl(VaultD.cType, VaultD.integer, true),
@@ -82,7 +82,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         
         let parentId = parentId ?? self.rootId
         let defaultThumbnail = "".data(using: .utf8)
-
+        
         let valuesToAdd = [KeyValue(key: VaultD.cId, value: file.id),
                            KeyValue(key: VaultD.cParentId, value: parentId),
                            KeyValue(key: VaultD.cType, value: file.type.rawValue),
@@ -94,30 +94,30 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
                            KeyValue(key: VaultD.cSize, value:file.size),
                            KeyValue(key: VaultD.cWidth, value:file.width),
                            KeyValue(key: VaultD.cHeight, value:file.height)
-
+                           
         ]
         
         try statementBuilder.insertInto(tableName: VaultD.tVaultFile,
-                                            keyValue: valuesToAdd)
- 
+                                        keyValue: valuesToAdd)
+        
     }
     
     func getVaultFiles(parentId: String?, filter: FilterType?, sort: FileSortOptions?) -> [VaultFileDB] {
         do {
             
             let parentId = parentId ?? self.rootId
-
+            
             let filterConditions = getFilterConditions(filter: filter, parentId: parentId)
             
             let sortCondition = getSortCondition(fileSortOption: sort)
             
             let vaultFilesDict = try statementBuilder.getSelectQuery(tableName: VaultD.tVaultFile,
-                                                                  equalCondition: filterConditions.equalCondition,
-                                                                  differentCondition: filterConditions.differentCondition,
-                                                                  inCondition: filterConditions.inCondition,
-                                                                  sortCondition: [sortCondition],
-                                                                  likeConditions: filterConditions.likeConditions,
-                                                                  notLikeConditions: filterConditions.notLikeConditions )
+                                                                     equalCondition: filterConditions.equalCondition,
+                                                                     differentCondition: filterConditions.differentCondition,
+                                                                     inCondition: filterConditions.inCondition,
+                                                                     sortCondition: [sortCondition],
+                                                                     likeConditions: filterConditions.likeConditions,
+                                                                     notLikeConditions: filterConditions.notLikeConditions )
             
             let vaultFiles = vaultFilesDict.compactMap{VaultFileDB.init(dictionnary: $0)}
             return vaultFiles
@@ -131,9 +131,9 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         do {
             
             let vaultFilesDict = try statementBuilder.getSelectQuery(tableName: VaultD.tVaultFile,
-                                                                  equalCondition:[KeyValue(key: VaultD.cId, value: id)])
+                                                                     equalCondition:[KeyValue(key: VaultD.cId, value: id)])
             let vaultFiles = vaultFilesDict.compactMap{VaultFileDB.init(dictionnary: $0)}
-
+            
             return vaultFiles.first
             
         } catch let error {
@@ -148,7 +148,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             let vaultCondition =  [KeyValues(key: VaultD.cId, value:ids)]
             
             let vaultFilesDict = try statementBuilder.getSelectQuery(tableName: VaultD.tVaultFile,
-                                                                  inCondition: vaultCondition)
+                                                                     inCondition: vaultCondition)
             let vaultFiles = vaultFilesDict.compactMap{VaultFileDB.init(dictionnary: $0)}
             return vaultFiles
             
@@ -158,16 +158,16 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
     }
     
     func getRecentVaultFiles() -> [VaultFileDB] {
-
+        
         do {
-
+            
             let sortCondition = SortCondition(column: VaultD.cCreated, sortDirection: SortDirection.desc.rawValue)
             let equalCondition = [KeyValue(key: VaultD.cType,value: VaultFileType.file.rawValue)]
-
+            
             let vaultFilesDict = try statementBuilder.getSelectQuery(tableName: VaultD.tVaultFile,
-                                                                  equalCondition: equalCondition,
-                                                                  sortCondition: [sortCondition],
-                                                                  limit: 10)
+                                                                     equalCondition: equalCondition,
+                                                                     sortCondition: [sortCondition],
+                                                                     limit: 10)
             
             let vaultFiles = vaultFilesDict.compactMap{VaultFileDB.init(dictionnary: $0)}
             return vaultFiles
@@ -175,8 +175,8 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         } catch {
             return []
         }
-
-     }
+        
+    }
     
     func renameVaultFile(id: String?, name: String?) {
         
@@ -197,13 +197,13 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
     func moveVaultFile(fileIds: [String], newParentId: String?) {
         
         let parentId = newParentId ?? self.rootId
-
+        
         do {
             
             let valuesToUpdate = [KeyValue(key: VaultD.cParentId, value: parentId)]
-//            let vaultCondition = [KeyValue(key: VaultD.cId, value: id)]
+            //            let vaultCondition = [KeyValue(key: VaultD.cId, value: id)]
             let vaultCondition = fileIds.compactMap({KeyValue(key: VaultD.cId, value: $0) })
-
+            
             try statementBuilder.update(tableName: VaultD.tVaultFile,
                                         keyValue: valuesToUpdate,
                                         primarykeyValue: vaultCondition)
@@ -224,7 +224,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
     func deleteAllVaultFiles() {
         statementBuilder.deleteAll(tableNames: [VaultD.tVaultFile])
     }
-
+    
     func getFilterConditions(filter:FilterType?, parentId:String?) -> FilterCondition {
         
         let filterCondition = FilterCondition()
@@ -251,19 +251,25 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             filterCondition.notLikeConditions = [KeyValue(key: VaultD.cMimeType, value: FilterPattern.audio.rawValue),
                                                  KeyValue(key: VaultD.cMimeType, value: FilterPattern.video.rawValue, sqliteOperator: .and),
                                                  KeyValue(key: VaultD.cMimeType, value: FilterPattern.image.rawValue, sqliteOperator: .and),
-                                                 KeyValue(key: VaultD.cMimeType, value: FilterPattern.text.rawValue, sqliteOperator: .and)]
+                                                 KeyValue(key: VaultD.cMimeType, value: FilterPattern.text.rawValue, sqliteOperator: .and),
+                                                 KeyValue(key: VaultD.cMimeType, value: FilterPattern.pdf.rawValue, sqliteOperator: .and),
+                                                 KeyValue(key: VaultD.cMimeType, value: FilterPattern.word.rawValue, sqliteOperator: .and),
+                                                 KeyValue(key: VaultD.cMimeType, value: FilterPattern.excel.rawValue, sqliteOperator: .and),
+                                                 KeyValue(key: VaultD.cMimeType, value: FilterPattern.powerPoint.rawValue, sqliteOperator: .and),
+                                                 KeyValue(key: VaultD.cMimeType, value: FilterPattern.pages.rawValue, sqliteOperator: .and)]
             
         case .audioVideo:
             filterCondition.likeConditions = [KeyValue(key: VaultD.cMimeType, value:  FilterPattern.audio.rawValue),
                                               KeyValue(key: VaultD.cMimeType, value:  FilterPattern.video.rawValue, sqliteOperator: .or)]
             
         case .documents:
-            filterCondition.likeConditions = [KeyValue(key: VaultD.cMimeType, value: FilterPattern.text.rawValue)]
+            filterCondition.likeConditions = [KeyValue(key: VaultD.cMimeType, value: FilterPattern.text.rawValue, sqliteOperator: .or)]
             filterCondition.inCondition = [KeyValues(key: VaultD.cMimeType, value: [FilterPattern.pdf.rawValue,
                                                                                     FilterPattern.word.rawValue,
                                                                                     FilterPattern.excel.rawValue,
                                                                                     FilterPattern.powerPoint.rawValue,
-                                                                                    FilterPattern.zip.rawValue],sqliteOperator: .or)]
+                                                                                    FilterPattern.pages.rawValue,
+                                                                                    FilterPattern.zip.rawValue])]
             
         case .allWithoutDirectory:
             filterCondition.differentCondition = [KeyValue(key: VaultD.cType,value: VaultFileType.directory.rawValue)]
@@ -276,7 +282,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             filterCondition.likeConditions = [KeyValue(key: VaultD.cMimeType, value:  FilterPattern.image.rawValue),
                                               KeyValue(key: VaultD.cMimeType, value:  FilterPattern.video.rawValue, sqliteOperator: .or),
                                               KeyValue(key: VaultD.cMimeType, value:  FilterPattern.audio.rawValue, sqliteOperator: .or)]
-
+            
         default:
             filterCondition.equalCondition = [KeyValue(key: VaultD.cParentId, value: parentId)]
         }
@@ -338,8 +344,9 @@ enum FilterPattern :String {
     case image = "image/%"
     case text = "text/%"
     case pdf = "application/pdf"
-    case word = "application/msword"
-    case excel = "application/vnd.ms-excel"
-    case powerPoint = "application/mspowerpoint"
+    case word = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    case powerPoint = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    case excel = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    case pages = "application/x-iwork-pages-sffpages"
     case zip = "application/zip"
 }
