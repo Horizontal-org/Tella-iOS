@@ -26,9 +26,9 @@ class DataBaseHelper {
             debugLog("Opening database at \(dbURL?.absoluteString ?? "")")
         }
         
-//        if (sqlite3_key(dbPointer, key, Int32(key.count)) != SQLITE_OK) {
-//            logDbErr("Error setting key")
-//        }
+        if (sqlite3_key(dbPointer, key, Int32(key.count)) != SQLITE_OK) {
+            logDbErr("Error setting key")
+        }
     }
     
     
