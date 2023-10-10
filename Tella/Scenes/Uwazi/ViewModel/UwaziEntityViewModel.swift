@@ -46,7 +46,32 @@ class UwaziEntityViewModel: ObservableObject {
         }
     }
     
-    private func submitEntity() -> Void {
+    private func submitEntity() {
+        // Extract entity data and metadata
+        let entityData = extractEntityDataAndMetadata()
+        
+        // Prepare server URL and cookie list
+        let serverURL = self.serverURL
+        let cookieList = ["connect.sid=" + self.accessToken]
+        
+        // Submit the entity data
+        let response = UwaziServerRepository().submitEntity(serverURL: serverURL, cookieList: cookieList, entity: entityData)
+               response.sink { completion in
+                   switch completion {
+
+                   case .finished:
+                       print("Finished")
+                   case .failure(let error):
+                       print(error)
+                   }
+                   } receiveValue: { value in
+                       print(value)
+                   }
+
+                   .store(in: &subscribers)
+    }
+
+    private func extractEntityDataAndMetadata() -> ([String: Any]) {
         var entityData: [String: Any] = [:]
         var metadata: [String: Any] = [:]
 
@@ -56,7 +81,7 @@ class UwaziEntityViewModel: ObservableObject {
                 if entryPrompt.name == "title" {
                     entityData[entryPrompt.name!] = entryPrompt.value.stringValue
                 } else {
-                    metadata[entryPrompt.name!] =  [["value": entryPrompt.value.stringValue]]
+                    metadata[entryPrompt.name!] = [["value": entryPrompt.value.stringValue]]
                 }
             case .dataTypeNumeric:
                 metadata[entryPrompt.name!] = [["value": entryPrompt.value.stringValue]]
@@ -64,28 +89,10 @@ class UwaziEntityViewModel: ObservableObject {
                 break
             }
         }
-        
+
         entityData["template"] = template.templateId
-        
         entityData["metadata"] = metadata
-        
-        
-        let serverURL = self.serverURL
-        let cookieList = ["connect.sid=" + self.accessToken]
 
-        let response = UwaziServerRepository().submitEntity(serverURL: serverURL, cookieList: cookieList, entity: entityData)
-        response.sink { completion in
-            switch completion {
-
-            case .finished:
-                print("Finished")
-            case .failure(let error):
-                print(error)
-            }
-            } receiveValue: { value in
-                print(value)
-            }
-
-            .store(in: &subscribers)
-        }
+        return entityData
+    }
 }
