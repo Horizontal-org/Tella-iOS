@@ -51,17 +51,20 @@ class UwaziEntityViewModel: ObservableObject {
         var metadata: [String: Any] = [:]
 
         for entryPrompt in entryPrompts {
-            switch entryPrompt.name {
-            case "text":
-                metadata["text"] = [["value": entryPrompt.value.stringValue]]
-            case "title":
-                entityData["title"] = entryPrompt.value.stringValue
-                
-            // continue with the rest of fields
+            switch UwaziEntityPropertyType(rawValue: entryPrompt.type) {
+            case .dataTypeText:
+                if entryPrompt.name == "title" {
+                    entityData[entryPrompt.name!] = entryPrompt.value.stringValue
+                } else {
+                    metadata[entryPrompt.name!] =  [["value": entryPrompt.value.stringValue]]
+                }
+            case .dataTypeNumeric:
+                metadata[entryPrompt.name!] = [["value": entryPrompt.value.stringValue]]
             default:
                 break
             }
         }
+        
         entityData["template"] = template.templateId
         
         entityData["metadata"] = metadata
