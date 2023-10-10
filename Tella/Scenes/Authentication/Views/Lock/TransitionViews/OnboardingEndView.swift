@@ -12,7 +12,6 @@ struct OnboardingEndView: View {
         NavigationContainerView {
             TransitionView(transitionViewData: OnboardingEndViewData()) {
                 self.appViewState.resetToMain()
-                self.appViewState.homeViewModel.initAutoUpload()
             }
         }
     }

@@ -72,8 +72,12 @@ class TellaData : ObservableObject {
         guard let database = database else {
             return
         }
+
+        DispatchQueue.main.async {
+            self.servers.value = database.getServer()
+
+        }
         
-        servers.value = database.getServer()
     }
     
     func getAutoUploadServer() -> Server? {
@@ -88,15 +92,19 @@ class TellaData : ObservableObject {
         guard let database = database else {
             return
         }
-        self.draftReports.value = database.getReports(reportStatus: [ReportStatus.draft])
-        self.outboxedReports.value = database.getReports(reportStatus: [.finalized,
-                                                                        .submissionError,
-                                                                        .submissionPending,
-                                                                        .submissionPaused,
-                                                                        .submissionInProgress,
-                                                                        .submissionAutoPaused])
         
-        self.submittedReports.value = database.getReports(reportStatus: [ReportStatus.submitted])
+        DispatchQueue.main.async {
+            
+            self.draftReports.value = database.getReports(reportStatus: [ReportStatus.draft])
+            self.outboxedReports.value = database.getReports(reportStatus: [.finalized,
+                                                                            .submissionError,
+                                                                            .submissionPending,
+                                                                            .submissionPaused,
+                                                                            .submissionInProgress,
+                                                                            .submissionAutoPaused])
+            
+            self.submittedReports.value = database.getReports(reportStatus: [ReportStatus.submitted])
+        }
     }
     
     func getReport(reportId: Int) -> Report? {

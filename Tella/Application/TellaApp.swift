@@ -17,7 +17,7 @@ struct TellaApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(mainAppModel: appViewState.homeViewModel)
+            ContentView(mainAppModel: appViewState.homeViewModel, appViewState: appViewState)
                 .environmentObject(appViewState)
                 .onReceive(NotificationCenter.default.publisher(for: UIScreen.capturedDidChangeNotification)) { value in
                     appViewState.homeViewModel.shouldShowRecordingSecurityScreen = UIScreen.main.isCaptured

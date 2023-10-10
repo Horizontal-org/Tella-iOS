@@ -7,8 +7,7 @@ import SwiftUI
 import Combine
 
 class VaultManager : VaultManagerInterface, ObservableObject{
-    
-    
+
     private let cryptoManager: CryptoManager = CryptoManager.shared
     private let fileManager: FileManagerInterface = DefaultFileManager()
     private let rootFileName: String = "root"
@@ -20,8 +19,12 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
     
-    var onSuccessLogin = PassthroughSubject<String,Never>()
+    var onSuccessLock = PassthroughSubject<String,Never>()
     
+    var key: String? {
+        return cryptoManager.metaPrivateKey?.getString()
+    }
+
     func save(_ data: Data, vaultFileId: String?) -> Bool? {
         guard let vaultFileId else { return false }
         debugLog("\(data.count); \(vaultFileId) ", space: .files)
@@ -146,6 +149,11 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         fileManager.removeItem(at: rootFileURL)
     }
     
+    func rootIsExist() -> Bool {
+        let rootFileURL = containerURL(for: self.rootFileName)
+        return fileManager.fileExists(filePath: rootFileURL.absoluteString)
+    }
+    
     func deleteFiles(files: [URL]) {
         files.forEach { url in
             fileManager.removeItem(at: url)
@@ -172,20 +180,27 @@ extension VaultManager {
     func keysInitialized() -> Bool {
         return self.cryptoManager.keysInitialized()
     }
-    
-    func login(password:String?) -> Bool {
-        do {
-            guard let key = try self.recoverKey(password: password)?.getString() else { return false}
-            self.initialize(with: key)
-            onSuccessLogin.send(key)
-            return true
-        }
-        catch let error {
-            debugLog(error)
-            return false
-        }
+
+    func login(password:String?) -> AnyPublisher<Bool,Never> {
+
+        return Deferred {
+            Future <Bool,Never> {  [weak self] promise in
+                guard let self = self else { return }
+
+                do {
+                    guard let key = try self.recoverKey(password: password)?.getString() else { return promise(.success(false))  }
+                    self.initialize(with: key)
+                    promise(.success(true))
+                }
+                catch let error {
+                    debugLog(error)
+                    promise(.success(false))
+
+                }
+            }
+        }.eraseToAnyPublisher()
     }
-    
+
     private func recoverKey( password:String? = nil) throws -> SecKey?  {
         return cryptoManager.recoverKey(.PRIVATE, password: password)
     }
@@ -195,7 +210,7 @@ extension VaultManager {
             try cryptoManager.initKeys(type, password: password)
             guard let key = try self.recoverKey(password: password)?.getString() else { return }
             self.initialize(with: key)
-            onSuccessLogin.send(key)
+            onSuccessLock.send(key)
         }
         catch let error {
             debugLog(error)

@@ -8,11 +8,13 @@ import Combine
 protocol VaultManagerInterface {
     
     var tellaData : TellaData? { get set }
+    var key : String? { get }
     var shouldCancelImportAndEncryption : CurrentValueSubject<Bool,Never> { get set }
-    var onSuccessLogin : PassthroughSubject<String,Never> { get set }
+    var onSuccessLock : PassthroughSubject<String,Never> { get set }
+    func rootIsExist() -> Bool
     
     func keysInitialized() -> Bool
-    func login(password:String?) -> Bool
+    func login(password:String?) -> AnyPublisher<Bool,Never>
     func initKeys(_ type: PasswordTypeEnum, password:String)
     func updateKeys(_ type: PasswordTypeEnum, newPassword:String, oldPassword:String)
     func getPasswordType() -> PasswordTypeEnum

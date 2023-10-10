@@ -51,29 +51,46 @@ class MainAppModel: ObservableObject {
     
     init(networkMonitor:NetworkMonitor) {
         self.networkMonitor = networkMonitor
-        loadData()
-        self.onSuccessLogin()
+        self.loadSettingsData()
+        self.onSuccessLock()
     }
     
-    private func onSuccessLogin() {
-        vaultManager.onSuccessLogin.sink(receiveValue: { key in
-            self.vaultFilesManager = VaultFilesManager(key: key, vaultManager: self.vaultManager)
-        }).store(in: &cancellable)
-    }
-    
-    func initFiles() -> AnyPublisher<Bool,Never> {
+    func loadData() -> AnyPublisher<Bool,Never> {
         return Deferred {
             Future <Bool,Never> {  [weak self] promise in
                 guard let self = self else { return }
-                self.vaultManager.getFilesToMergeToDatabase()
-                    .subscribe(on: DispatchQueue.global(qos: .userInitiated))
-                    .sink(receiveValue: { files in
-                        self.saveFiles(files: files)
-                        self.sendReports()
-                        promise(.success(true))
-                    }).store(in: &self.cancellable)
+
+                self.initDataSource()
+
+                if self.vaultManager.rootIsExist() {
+                    self.mergeFileToDatabase(promise: promise)
+                } else {
+                    self.sendReports()
+                    promise(.success(true))
+                }
             }
         }.eraseToAnyPublisher()
+    }
+
+    private func onSuccessLock() {
+        vaultManager.onSuccessLock.sink(receiveValue: { key in
+            self.initDataSource()
+            self.initAutoUpload()
+        }).store(in: &cancellable)
+    }
+
+    private func initDataSource() {
+        self.vaultFilesManager = VaultFilesManager(key: self.vaultManager.key, vaultManager: self.vaultManager)
+    }
+    
+    private func mergeFileToDatabase(promise:  @escaping (Result<Bool,Never>) -> Void) {
+        self.vaultManager.getFilesToMergeToDatabase()
+            .sink(receiveValue: { files in
+                self.saveFiles(files: files)
+                self.sendReports()
+                promise(.success(true))
+            }).store(in: &self.cancellable)
+        
     }
     
     private func saveFiles(files: [(VaultFileDB,String?)]) {
@@ -102,7 +119,7 @@ class MainAppModel: ObservableObject {
 
 extension MainAppModel {
     
-    private func loadData() {
+    private func loadSettingsData() {
         let decoder = JSONDecoder()
         if let data = UserDefaults.standard.object(forKey: "com.tella.settings") as? Data,
            let settings = try? decoder.decode(SettingsModel.self, from: data) {

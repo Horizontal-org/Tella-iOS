@@ -33,6 +33,7 @@ class DataBaseHelper {
     
     
     init(key: String?, databaseName: String) {
+        
         dbURL =  FileManager.documentDirectory(withPath:databaseName)
         
         guard let key = key else { return }
