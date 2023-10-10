@@ -82,13 +82,13 @@ extension String {
 
 extension String {
 
-    func mimeType() -> String {
+    func mimeType() -> String? {
          if let type = UTType(filenameExtension: self) {
             if let mimetype = type.preferredMIMEType {
                 return mimetype as String
             }
         }
-        return "application/octet-stream"
+        return nil
     }
     
     func getExtension() -> String {

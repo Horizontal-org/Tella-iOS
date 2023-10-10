@@ -247,10 +247,9 @@ extension VaultManager {
         root.files.forEach { file in
             
             let vaultFile = VaultFileDB(vaultFile:file)
-            // self.vaultDataSource?.addVaultFile(file: vaultFile, parentId: parentId)
             vaultFileResult.append((vaultFile, parentId))
             if file.type == .folder {
-                getFiles(root: file, vaultFileResult: &vaultFileResult, parentId: file.id)
+                getFiles(root: file, vaultFileResult: &vaultFileResult, parentId: file.containerName)
             }
         }
     }
