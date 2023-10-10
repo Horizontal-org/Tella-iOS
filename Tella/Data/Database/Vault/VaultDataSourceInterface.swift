@@ -5,7 +5,7 @@
 import Foundation
 
 protocol VaultDataSourceInterface {
-    func addVaultFile(file : VaultFileDB, parentId: String?)
+    func addVaultFile(file : VaultFileDB, parentId: String?) throws
     func getVaultFiles(parentId: String?, filter: FilterType?, sort: FileSortOptions?) -> [VaultFileDB]
     func getVaultFile(id: String?) -> VaultFileDB?
     func getVaultFiles(ids: [String]) -> [VaultFileDB]

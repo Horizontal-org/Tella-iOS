@@ -4,9 +4,10 @@
 
 import Foundation
 
+
 protocol VaultDataBaseProtocol {
     func createVaultTable()
-    func addVaultFile(file : VaultFileDB, parentId: String?)
+    func addVaultFile(file : VaultFileDB, parentId: String?) throws
     func getVaultFiles(parentId: String?, filter: FilterType?, sort: FileSortOptions?) -> [VaultFileDB]
     func getVaultFile(id: String?) -> VaultFileDB?
     func getVaultFiles(ids: [String]) -> [VaultFileDB]
@@ -77,7 +78,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         statementBuilder.createTable(tableName: VaultD.tVaultFile, columns: columns)
     }
     
-    func addVaultFile(file : VaultFileDB, parentId: String?) {
+    func addVaultFile(file : VaultFileDB, parentId: String?) throws {
         
         let parentId = parentId ?? self.rootId
         let defaultThumbnail = "".data(using: .utf8)
@@ -96,14 +97,9 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
 
         ]
         
-        do {
-            try statementBuilder.insertInto(tableName: VaultD.tVaultFile,
+        try statementBuilder.insertInto(tableName: VaultD.tVaultFile,
                                             keyValue: valuesToAdd)
-            
-        } catch let error {
-            debugLog(error)
-        }
-        
+ 
     }
     
     func getVaultFiles(parentId: String?, filter: FilterType?, sort: FileSortOptions?) -> [VaultFileDB] {

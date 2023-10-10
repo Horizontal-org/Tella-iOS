@@ -41,8 +41,13 @@ class VaultFilesManager : VaultFilesManagerInterface {
                 }
                 
                 guard let isSaved = self.vaultManager?.save(fileDetail.data, vaultFileId: fileDetail.file.id) else { return }
+               
                 if isSaved {
-                    self.vaultDataSource?.addVaultFile(file: fileDetail.file, parentId: parentId)
+                    do {
+                        try self.vaultDataSource?.addVaultFile(file: fileDetail.file, parentId: parentId)
+                    } catch let error {
+                        debugLog(error)
+                     }
                 }
                 
                 await filesActor.add(vaultFile: fileDetail.file)
@@ -89,15 +94,26 @@ class VaultFilesManager : VaultFilesManagerInterface {
         return stream
     }
     
-    func addVaultFiles(files: [(VaultFileDB,String?)]) {
-        files.forEach { (file, parentId) in
-            self.vaultDataSource?.addVaultFile(file: file, parentId: parentId)
+    func addVaultFiles(files: [(VaultFileDB,String?)]) throws {
+      
+//        var result : Result<Bool,Error> = .success(true)
+        
+        try files.forEach { (file, parentId) in
+             try self.vaultDataSource?.addVaultFile(file: file, parentId: parentId)
         }
+        
+//        return result
     }
     
     func addFolderFile(name: String, parentId: String?) {
-        let file = VaultFileDB(type: .directory, name: name)
-        self.vaultDataSource?.addVaultFile(file: file, parentId: parentId)
+        do {
+
+            let file = VaultFileDB(type: .directory, name: name)
+            try self.vaultDataSource?.addVaultFile(file: file, parentId: parentId)
+
+        } catch let error {
+            debugLog(error)
+         }
     }
     
     func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB] {

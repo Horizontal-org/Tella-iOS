@@ -67,7 +67,7 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         
         vaultFiles.forEach { vaultFile in
             if vaultFile.type != .directory {
-                guard let url = self.loadVaultFileToURL(file: vaultFile) else { return } 
+                guard let url = self.loadVaultFileToURL(file: vaultFile) else { return }
                 tmpUrlArray.append(url)
             }
         }
@@ -128,7 +128,7 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     }
     
     func clearTmpDirectory() {
-
+        
         fileManager.removeContainerDirectory(directoryPath: NSTemporaryDirectory())
     }
     
@@ -141,12 +141,17 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         fileManager.removeContainerDirectory(fileName: fileName, paths: urlPath)
     }
     
+    func deleteRootFile() {
+        let rootFileURL = containerURL(for: self.rootFileName)
+        fileManager.removeItem(at: rootFileURL)
+    }
+    
     func deleteFiles(files: [URL]) {
         files.forEach { url in
             fileManager.removeItem(at: url)
         }
     }
- 
+    
     private func containerURL(for containerName: String) -> URL {
         return containerURL.appendingPathComponent(containerName)
     }
@@ -212,9 +217,7 @@ extension VaultManager {
     }
     
     private func initialize(with key:String?) {
-        
         self.tellaData = TellaData(key: key)
-
         fileManager.createDirectory(atPath: containerURL)
     }
 }
@@ -223,13 +226,11 @@ extension VaultManager {
 
 extension VaultManager {
     
-    func initFiles() -> AnyPublisher<[(VaultFileDB,String?)],Never> {
+    func getFilesToMergeToDatabase() -> AnyPublisher<[(VaultFileDB,String?)],Never> {
         return Deferred {
             Future <[(VaultFileDB,String?)],Never> {  [weak self] promise in
                 guard let self = self else { return }
-                DispatchQueue.main.async {
-                    promise(.success(self.getFilesInRoot()))
-                }
+                promise(.success(self.getFilesInRoot()))
             }
         }.eraseToAnyPublisher()
     }

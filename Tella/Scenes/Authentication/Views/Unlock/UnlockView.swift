@@ -141,14 +141,12 @@ struct UnlockView: View {
     }
     
     private func initFiles() {
-        DispatchQueue.main.async {
-            appViewState.homeViewModel.initFiles()
-                .receive(on: DispatchQueue.main)
-                .sink { recoverResult in
-                    isLoading = false
-                    appViewState.showMainView()
-                }.store(in: &self.cancellable)
-        }
+        appViewState.homeViewModel.initFiles()
+            .receive(on: DispatchQueue.main)
+            .sink { recoverResult in
+                isLoading = false
+                appViewState.showMainView()
+            }.store(in: &self.cancellable)
     }
 }
 

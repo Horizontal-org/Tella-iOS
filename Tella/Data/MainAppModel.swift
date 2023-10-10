@@ -5,7 +5,7 @@ import Combine
 let lockTimeoutStartDateKey = "LockTimeoutStartDate"
 
 class MainAppModel: ObservableObject {
-
+    
     enum Tabs: Hashable {
         case home
         case forms
@@ -65,15 +65,24 @@ class MainAppModel: ObservableObject {
         return Deferred {
             Future <Bool,Never> {  [weak self] promise in
                 guard let self = self else { return }
-                self.vaultManager.initFiles()
+                self.vaultManager.getFilesToMergeToDatabase()
+                    .subscribe(on: DispatchQueue.global(qos: .userInitiated))
                     .sink(receiveValue: { files in
-                        self.vaultFilesManager?.addVaultFiles(files: files)
+                        self.saveFiles(files: files)
                         self.sendReports()
                         promise(.success(true))
                     }).store(in: &self.cancellable)
-                
             }
         }.eraseToAnyPublisher()
+    }
+    
+    private func saveFiles(files: [(VaultFileDB,String?)]) {
+        do {
+            try self.vaultFilesManager?.addVaultFiles(files: files)
+            self.vaultManager.deleteRootFile()
+        } catch (let error){
+            debugLog(error)
+        }
     }
     
     func publishUpdates() {

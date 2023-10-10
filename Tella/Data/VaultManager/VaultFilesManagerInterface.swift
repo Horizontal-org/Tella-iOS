@@ -7,7 +7,9 @@ import Combine
 
 protocol VaultFilesManagerInterface {
     func addVaultFile(filePaths: [URL], parentId: String?) -> AnyPublisher<ImportVaultFileResult,Never>
-    func addVaultFiles(files: [(VaultFileDB,String?)])
+    func addVaultFiles(files: [(VaultFileDB,String?)]) throws
+    
+    
     func addFolderFile(name:String, parentId: String?)
     func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB]
     func getVaultFile(id: String?) -> VaultFileDB?

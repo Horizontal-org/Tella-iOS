@@ -17,7 +17,7 @@ protocol VaultManagerInterface {
     func updateKeys(_ type: PasswordTypeEnum, newPassword:String, oldPassword:String)
     func getPasswordType() -> PasswordTypeEnum
     
-    func initFiles() -> AnyPublisher<[(VaultFileDB,String?)],Never>
+    func getFilesToMergeToDatabase() -> AnyPublisher<[(VaultFileDB,String?)],Never>
     func loadFileData(fileName: String?) -> Data?
     func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL?
     func loadVaultFilesToURL(files vaultFiles: [VaultFileDB]) -> [URL]
@@ -36,4 +36,5 @@ protocol VaultManagerInterface {
     func deleteFiles(files: [URL])
     func clearTmpDirectory()
     func deleteContainerDirectory()
+    func deleteRootFile()
 }
