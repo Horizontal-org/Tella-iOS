@@ -75,9 +75,8 @@ class UwaziServerViewModel: ObservableObject {
         cancellableAuthenticationCode = $validCode.sink(receiveValue: { validCode in
             self.validAuthenticationCode = validCode
         })
-        fillReportVM()
-
     }
+
     func handleServerAction() {
         if currentServer != nil {
             updateServer()
@@ -85,6 +84,7 @@ class UwaziServerViewModel: ObservableObject {
             addServer()
         }
     }
+
     func addServer() {
         let server = Server(name: setting?.siteName,
                             serverURL: serverURL.getBaseURL(),
@@ -105,6 +105,7 @@ class UwaziServerViewModel: ObservableObject {
         self.addUwaziLocaleFor(serverId: id)
         self.currentServer = server
     }
+
     func updateServer() {
         guard let currentServer = currentServer, let currentServerId = currentServer.id else { return }
         let server = Server(id: currentServerId,
@@ -125,10 +126,12 @@ class UwaziServerViewModel: ObservableObject {
         server.id = id
         updateUwaziLocaleFor(serverId: currentServerId)
     }
+    
     func addUwaziLocaleFor(serverId: Int) {
         guard let locale = self.selectedLanguage?.locale else { return }
         mainAppModel.vaultManager.tellaData?.addUwaziLocale(locale: UwaziLocale(locale: locale, serverId: serverId))
     }
+
     func updateUwaziLocaleFor(serverId: Int) {
         let selectedlocale = mainAppModel.vaultManager.tellaData?.getUwaziLocale(serverId: serverId)
         guard let localeId = selectedlocale?.id, let locale = selectedLanguage?.locale else { return }
@@ -149,6 +152,7 @@ class UwaziServerViewModel: ObservableObject {
                 self.handleRecieveValueForGetLanguage(wrapper)
             }).store(in: &subscribers)
     }
+
     fileprivate func handleCompletionForGetLanguage(_ completion: Subscribers.Completion<APIError>) {
         self.isLoading = false
         switch completion {
@@ -217,6 +221,7 @@ class UwaziServerViewModel: ObservableObject {
         self.isLoading = false
         self.isPublicInstance = true
     }
+    
     // MARK: - Login API Call Methods
     func login() {
         guard let baseURL = serverURL.getBaseURL() else { return }
@@ -325,18 +330,19 @@ class UwaziServerViewModel: ObservableObject {
         self.isLoading = false
     }
 
-    func fillReportVM() {
-        guard let server = self.currentServer else {
-            return
-        }
-        name =  server.name ?? ""
-        serverURL = server.url ?? ""
-        username = server.username ?? ""
-        password = server.password ?? ""
-        activatedMetadata = server.activatedMetadata ?? false
-        backgroundUpload = server.backgroundUpload ?? false
-        autoUpload = server.autoUpload ?? false
-        autoDelete = server.autoDelete ?? false
+    func fillUwaziServer() {
+        guard let server = self.currentServer else { return }
+        self.serverURL = server.url ?? ""
+        // To Avoid the animation of textfield in login view
+        self.username = ""
+        self.username = ""
+
+    }
+
+    func fillUwaziCredentials() {
+        guard let server = self.currentServer else { return }
+        self.username = server.username ?? ""
+        self.password = server.password ?? ""
     }
 }
 

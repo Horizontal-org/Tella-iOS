@@ -63,8 +63,7 @@ struct UwaziAddServerURLView: View {
         }
         .navigationBarHidden(true)
         .onAppear {
-            guard (uwaziServerViewModel.currentServer != nil) else { return }
-            uwaziServerViewModel.validURL = true
+            self.uwaziServerViewModel.fillUwaziServer()
         }
         .onReceive(uwaziServerViewModel.$isPublicInstance) { isPublicInstance in
             guard let isPublicInstance = isPublicInstance else { return }
