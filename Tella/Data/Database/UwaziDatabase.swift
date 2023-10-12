@@ -32,7 +32,7 @@ extension TellaDataBase: UwaziTemplateProtocol {
     }
     func getUwaziTemplate(templateId: Int) throws -> CollectedTemplate? {
         let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziTemplate,
-                                                           andCondition: [KeyValue(key: D.cTemplateId, value: templateId)])
+                                                           andCondition: [KeyValue(key: D.cId, value: templateId)])
         guard let template = serversDict.first else { return nil }
         return try JSONDecoder().decode(CollectedTemplate.self, from: template)
     }

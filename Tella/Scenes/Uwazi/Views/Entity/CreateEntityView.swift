@@ -14,9 +14,9 @@ struct CreateEntityView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     let modelHeight = 200.0
     
-    init(template: CollectedTemplate) {
-        _entityViewModel = StateObject(wrappedValue: UwaziEntityViewModel(template: template,
-                                                                          parser: UwaziEntityParser(template: template)))
+    init(appModel: MainAppModel, templateId: Int) {
+        _entityViewModel = StateObject(wrappedValue: UwaziEntityViewModel(mainAppModel: appModel,
+                                                                          templateId: templateId))
     }
     var body: some View {
         ContainerView {
@@ -36,7 +36,7 @@ struct CreateEntityView: View {
     }
 
     fileprivate var createEntityHeaderView: some View {
-        CreateDraftHeaderView(title: entityViewModel.template.entityRow?.name ?? "",
+        CreateDraftHeaderView(title: entityViewModel.template!.entityRow?.name ?? "",
                               isDraft: true,
                               closeAction: { showSaveEntityConfirmationView() },
                               saveAction: { })

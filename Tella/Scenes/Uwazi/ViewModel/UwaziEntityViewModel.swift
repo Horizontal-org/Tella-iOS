@@ -11,12 +11,23 @@ import SwiftUI
 
 class UwaziEntityViewModel: ObservableObject {
     
-    @Published var template: CollectedTemplate
+    var mainAppModel : MainAppModel
+    
+    @Published var template: CollectedTemplate? = nil
     @Published var entryPrompts: [UwaziEntryPrompt] = []
 
-    init(template: CollectedTemplate, parser: UwaziEntityParserProtocol) {
-        self.template = template
-        entryPrompts = parser.getEntryPrompts()
+    init(mainAppModel : MainAppModel, templateId: Int) {
+        self.mainAppModel = mainAppModel
+        self.template = self.getTemplateById(id: templateId)
+        entryPrompts = UwaziEntityParser(template: template!).getEntryPrompts()
+    }
+    
+    var tellaData: TellaData? {
+        return self.mainAppModel.vaultManager.tellaData
+    }
+    
+    func getTemplateById (id: Int) -> CollectedTemplate {
+        return (self.tellaData?.getUwaziTemplateById(id: id))!
     }
     func handleMandatoryProperties() {
         let requiredPrompts = entryPrompts.filter({$0.required ?? false})
