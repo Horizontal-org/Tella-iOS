@@ -16,8 +16,8 @@ class UwaziEntityViewModel: ObservableObject {
     
     @Published var template: CollectedTemplate? = nil
     @Published var entryPrompts: [UwaziEntryPrompt] = []
-    @Published var accessToken: String
-    @Published var serverURL: String
+    @Published var accessToken: String = ""
+    @Published var serverURL: String = ""
     var subscribers = Set<AnyCancellable>()
 
     init(mainAppModel : MainAppModel, templateId: Int, server: Server) {
@@ -90,7 +90,7 @@ class UwaziEntityViewModel: ObservableObject {
             }
         }
 
-        entityData["template"] = template.templateId
+        entityData["template"] = template!.templateId
         entityData["metadata"] = metadata
 
         return entityData

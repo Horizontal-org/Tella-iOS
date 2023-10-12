@@ -13,7 +13,6 @@ class TemplateCardViewModel: Hashable {
     var id : Int?
     var translatedName: String
     var deleteTemplate: (() -> Void)
-    var template: CollectedTemplate
     var server: Server
    
     init(template : CollectedTemplate,
