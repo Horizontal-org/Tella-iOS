@@ -19,7 +19,6 @@ struct TemplateCardView: View {
                     //add this template to favorie
                 })
                 ConnectionCardDetail(title: templateCardViewModel.translatedName, subtitle: templateCardViewModel.server.name!)
-                ConnectionCardDetail(title: templateCardViewModel.translatedName, subtitle: templateCardViewModel.server.name!)
                 Spacer()
                 MoreButtonView(imageName: "reports.more", action: {
                     //show detail
