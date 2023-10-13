@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TextEditorView : View {
+struct UnderlinedTextEditorView : View {
     
     var placeholder : String
     
@@ -19,7 +19,7 @@ struct TextEditorView : View {
     var shouldShowTitle : Bool = false
     var onCommit : (() -> Void)? =  ({})
     
-    @State var textEditorHeight : CGFloat = 36
+    @State var textEditorHeight : CGFloat = 65
     
     var body: some View {
         
@@ -83,7 +83,7 @@ struct TextEditorView : View {
             .multilineTextAlignment(.leading)
             .disableAutocorrection(true)
             .keyboardType(.alphabet)
-            .frame(height: 65)
+            .frame(height: textEditorHeight)
             .padding(EdgeInsets(top: -7, leading: -5, bottom: -5, trailing: -5))
             .onChange(of: fieldContent, perform: { value in
                 validateField(value: value)
@@ -115,7 +115,7 @@ struct TextEditorView : View {
 struct TextEditorView_Previews: PreviewProvider {
     static var previews: some View {
         ContainerView {
-            TextEditorView(placeholder: "Placeholder",
+            UnderlinedTextEditorView(placeholder: "Placeholder",
                            fieldContent: .constant(""),
                            isValid: .constant(true),
                            shouldShowError: .constant(false))

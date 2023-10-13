@@ -287,3 +287,10 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettLang_Kurdish_Expl" = "Kurdish";
 "Settings_SettLang_Burmese_Expl" = "Burmese";
 "Settings_SettLang_Tamil_Expl" = "Tamil";
+
+
+
+"Settings_SettFeedback_ExitFeedback_SheetTitle" = "Save draft?";
+"Settings_SettFeedback_ExitFeedback_SheetExpl" = "You can come back anytime to submit your feedback.";
+"Settings_SettFeedback_ExitFeedback_Exit_SheetAction" = "Exit without saving";
+"Settings_SettFeedback_ExitFeedback_Save_SheetAction" = "Save draft";

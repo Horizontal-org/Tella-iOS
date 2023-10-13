@@ -13,7 +13,8 @@ class UploadService: NSObject {
     static var shared : UploadService = UploadService()
     
     fileprivate var activeOperations: [BaseUploadOperation] = []
-    
+    fileprivate var feedbackOperation: FeedbackOperation?
+
     var uploadQueue: OperationQueue!
     private var subscribers = Set<AnyCancellable>()
     
@@ -90,6 +91,26 @@ class UploadService: NSObject {
         return operation.response
     }
     
+    func addFeedbackOperation(mainAppModel: MainAppModel, feedbackRepository: FeedbackRepository ) -> AnyPublisher<FeedbackAPI,APIError>?  {
+        
+        if let feedbackOperation  {
+            return feedbackOperation.response
+        } else {
+            let urlSession = URLSession( configuration:  .default ,
+                                         delegate: self,
+                                         delegateQueue: nil)
+            
+            
+            let operation = FeedbackOperation(urlSession: urlSession, mainAppModel: mainAppModel, feedbackRepository: feedbackRepository)
+            feedbackOperation = operation
+            uploadQueue.addOperation(operation)
+            
+            // displayReportToast(operation: operation)
+            
+            return operation.response
+        }
+    }
+
     func addAutoUpload(file: VaultFileDB)  {
         if let operation: AutoUpload = activeOperations.first(where:{$0.type == .autoUpload }) as? AutoUpload {
             operation.addFile(file:file)

@@ -5,7 +5,7 @@
 import Foundation
 
 //// Represents the settings model for the application
- class SettingsModel: ObservableObject, Codable {
+class SettingsModel: ObservableObject, Codable {
     
     /// Whether offline mode is enabled
     @Published var offlineMode = false
@@ -24,21 +24,25 @@ import Foundation
     
     /// Lock timeout option
     @Published var lockTimeout: LockTimeoutOption = .immediately
-
+    
     /// Delete after fail option
     @Published var deleteAfterFail: DeleteAfterFailOption = .off
-     
-     /// Show the amount of unlock attempts in the unlock screen
+    
+    /// Show the amount of unlock attempts in the unlock screen
     @Published var showUnlockAttempts: Bool = false
-     
-     /// Track the amount of unlock attempts
-     @Published var unlockAttempts: Int = 0
+    
+    /// Track the amount of unlock attempts
+    @Published var unlockAttempts: Int = 0
     
     /// Whether screen security is enabled
     @Published var screenSecurity: Bool = true
-
+    
     /// Whether preserve metadata is enabled
     @Published var preserveMetadata: Bool = false
+    
+    
+    /// Whether feedback sharing is enabled
+    @Published var shareFeedback: Bool = false
     
     enum CodingKeys: CodingKey {
         case offlineMode
@@ -52,6 +56,8 @@ import Foundation
         case unlockAttempts
         case screenSecurity
         case preserveMetadata
+        case shareFeedback
+        
     }
     
     init() {
@@ -74,6 +80,8 @@ import Foundation
         showUnlockAttempts = try container.decode(Bool.self, forKey: .showUnlockAttempts)
         screenSecurity = try container.decode(Bool.self, forKey: .screenSecurity)
         preserveMetadata = try container.decode(Bool.self, forKey: .preserveMetadata)
+        shareFeedback = try container.decode(Bool.self, forKey: .shareFeedback)
+        
     }
     
     func encode(to encoder: Encoder) throws {
@@ -89,5 +97,7 @@ import Foundation
         try container.encode(showUnlockAttempts, forKey: .showUnlockAttempts)
         try container.encode(screenSecurity, forKey: .screenSecurity)
         try container.encode(preserveMetadata, forKey: .preserveMetadata)
+        try container.encode(shareFeedback, forKey: .shareFeedback)
+        
     }
 }

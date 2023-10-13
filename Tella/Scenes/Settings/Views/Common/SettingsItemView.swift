@@ -10,6 +10,7 @@ struct SettingsItemView<T:View> : View {
     var imageName : String = ""
     var title : String = ""
     var value : String = ""
+    var presentationType : ViewPresentationType = .push
     var destination : T?
     var completion : (() -> ())?
     
@@ -17,9 +18,17 @@ struct SettingsItemView<T:View> : View {
         
         Button {
             if (destination != nil) {
-                navigateTo(destination:  destination)
+                
+                switch presentationType {
+                case .push:
+                    navigateTo(destination:  destination)
+                    
+                case .present:
+                    self.present(style: .fullScreen, transitionStyle: .crossDissolve) {
+                        destination
+                    }
+                }
             }
-            
             completion?()
         } label: {
             

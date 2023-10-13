@@ -89,7 +89,13 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settAboutSubhead = "Settings_SettAbout_Subhead"
     case settAboutContactUs = "Settings_SettAbout_ContactUs"
     case settAboutPrivacyPolicy = "Settings_SettAbout_PrivacyPolicy"
-}
+    
+    case exitFeedbackTitle = "Settings_SettFeedback_ExitFeedback_SheetTitle"
+    case exitFeedbackSheetExpl = "Settings_SettFeedback_ExitFeedback_SheetExpl"
+    case exitFeedbackSheetAction = "Settings_SettFeedback_ExitFeedback_Exit_SheetAction"
+    case exitFeedbackSaveSheetAction = "Settings_SettFeedback_ExitFeedback_Save_SheetAction"
+
+ }
 
 
 protocol LocalizableDelegate {

@@ -14,6 +14,8 @@ public enum HTTPHeaderField: String {
     case contentType = "Content-Type"
     case authorization = "Authorization"
     case bearer = "Bearer "
+    case tellaPlatform = "X-Tella-Platform"
+
 }
 
 public enum Encoding {

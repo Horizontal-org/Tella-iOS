@@ -12,7 +12,7 @@ struct D {
     
     /* DATABASE VERSION */
 
-    static let databaseVersion = 1
+    static let databaseVersion = 2
 
     /* DEFAULT TYPES FOR DATABASE */
     static let integer = " INTEGER "
@@ -26,6 +26,7 @@ struct D {
     static let tServer = "t_server"
     static let tReport = "t_report"
     static let tReportInstanceVaultFile = "t_report_instance_vault_file";
+    static let tFeedback = "t_feedback"
 
     /* DATABASE COLUMNS */
     
@@ -63,6 +64,10 @@ struct D {
     static let cBytesSent = "c_bytes_Sent"
     static let cCreatedDate = "c_created_date"
     static let cUpdatedDate = "c_upated_date"
+    
+        
+    static let ctext = "c_text"
+
 }
 
 
