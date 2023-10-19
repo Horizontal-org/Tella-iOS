@@ -84,16 +84,16 @@ class RecordViewModel: ObservableObject {
                     
                     switch importVaultFileResult {
                         
-                    case .fileAdded(let vaulFile):
+                    case .fileAdded(let vaultFile):
                         
-                        guard let vaulFile = vaulFile.first else { return  }
+                        guard let vaultFile = vaultFile.first else { return  }
                         DispatchQueue.main.async {
-                            self.resultFile?.wrappedValue = [vaulFile]
+                            self.resultFile?.wrappedValue = [vaultFile]
                             self.shouldReloadVaultFiles?.wrappedValue = true
                         }
 
                         if self.sourceView != .addReportFile {
-                            self.mainAppModel.sendAutoReportFile(file: vaulFile)
+                            self.mainAppModel.sendAutoReportFile(file: vaultFile)
                         }
                         DispatchQueue.main.async {
                             self.resetRecording()

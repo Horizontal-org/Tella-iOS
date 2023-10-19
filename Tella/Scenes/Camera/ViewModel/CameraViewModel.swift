@@ -78,17 +78,17 @@ class CameraViewModel: ObservableObject {
                 
                 switch importVaultFileResult {
                     
-                case .fileAdded(let vaulFile):
+                case .fileAdded(let vaultFile):
                     
                     DispatchQueue.main.async {
-                        self.resultFile?.wrappedValue = vaulFile
+                        self.resultFile?.wrappedValue = vaultFile
                         self.shouldReloadVaultFiles?.wrappedValue = true
-                        self.lastImageOrVideoVaultFile = vaulFile.first
+                        self.lastImageOrVideoVaultFile = vaultFile.first
                     }
                     
                     if self.sourceView != .addReportFile {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                            if let file = vaulFile.first {
+                            if let file = vaultFile.first {
                                 self.mainAppModel?.sendAutoReportFile(file: file)
                             }
                         }

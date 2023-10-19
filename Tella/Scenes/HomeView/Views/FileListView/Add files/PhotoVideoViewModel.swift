@@ -88,7 +88,7 @@ class PhotoVideoViewModel : ObservableObject {
                 
                 switch importVaultFileResult {
                     
-                case .fileAdded(let vaulFile):
+                case .fileAdded(let vaultFile):
                     
                     if self.mainAppModel.importOption == .deleteOriginal {
                         
@@ -100,7 +100,7 @@ class PhotoVideoViewModel : ObservableObject {
                     }
                     
                     DispatchQueue.main.async {
-                        self.resultFile?.wrappedValue = vaulFile
+                        self.resultFile?.wrappedValue = vaultFile
                         self.shouldReloadVaultFiles?.wrappedValue = true
                     }
                     
