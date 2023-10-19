@@ -28,4 +28,14 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     
     case uwaziCreateEntitySheetExpl = "Uwazi_Template_CreateEntity_SheetAction"
     case uwaziDeleteEntitySheetExpl = "Uwazi_Template_Delete_SheetAction"
+    
+    case uwaziEntityExitSheetTitle = "Uwazi_Entity_ExitEntity_SheetTitle"
+    case uwaziEntityExitSheetExpl = "Uwazi_Entity_ExitEntity_SheetExpl"
+    case uwaziEntityUnsopportedProperty = "Uwazi_Entity_Property_Unsopported"
+    case uwaziEntityActionNext = "Uwazi_Entity_Action_Next"
+    case uwaziEntityMandatoryExpl = "Uwazi_Entity_Mandatory_Expl"
+    case uwaziMultiFileWidgetPrimaryDocuments = "Uwazi_Entity_MultiFile_PrimaryDocument"
+    case uwaziMultiFileWidgetAttachManyPDFFiles = "Uwazi_Entity_MultiFile_AttachManyPDFFiles"
+    case uwaziMultiFileWidgetSupportingFiles = "Uwazi_Entity_MultiFile_SupportingFiles"
+    case uwaziMultiFileWidgetSelectManyFiles = "Uwazi_Entity_MultiFile_SelectManyFiles"
 }

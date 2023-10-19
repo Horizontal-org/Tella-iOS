@@ -316,6 +316,16 @@ If you want to take a picture or a video, proceed in the following way:\
 "Uwazi_Template_AddTemplate_EmptyExpl" = "There are no templates";
 "Uwazi_DeleteTemplate_SheetExpl" = "Are you sure you want to delete this Template?";
 
+"Uwazi_Entity_MultiFile_PrimaryDocument" = "Primary Documents";
+"Uwazi_Entity_MultiFile_AttachManyPDFFiles" = "Attach as many PDF files as you wish";
+"Uwazi_Entity_MultiFile_SupportingFiles" = "Supporting files";
+"Uwazi_Entity_MultiFile_SupportingFiles" = "Select as many files as you wish";
+"Uwazi_Entity_ExitEntity_SheetTitle" = "Exit entity?";
+"Uwazi_Entity_ExitEntity_SheetExpl" = "Your draft will be lost";
+"Uwazi_Entity_Property_Unsopported" = "Unsupported property type";
+"Uwazi_Entity_Action_Next" = "Next";
+"Uwazi_Entity_Mandatory_Expl" = "This field is mandatory.";
+
 "Settings_SettLang_Arabic_Expl" = "Arabe";
 "Settings_SettLang_Belarusian_Expl" = "Belarusian";
 "Settings_SettLang_Persian_Expl" = "Persian";

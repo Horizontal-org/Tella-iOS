@@ -10,6 +10,7 @@ import SwiftUI
 
 struct TemplateCardView: View {
     @EnvironmentObject var sheetManager: SheetManager
+    @EnvironmentObject var mainAppModel: MainAppModel
     var templateCardViewModel: TemplateCardViewModel
     var body: some View {
         VStack(spacing: 0) {
@@ -38,6 +39,9 @@ struct TemplateCardView: View {
                 let type = item.type as? DownloadedTemplateActionType
                 if type == .delete {
                     showDeleteTemplateConfirmationView()
+                } else {
+                    navigateTo(destination: CreateEntityView(appModel: mainAppModel, templateId: templateCardViewModel.id!).environmentObject(sheetManager))
+                                        sheetManager.hide()
                 }
             })
         }

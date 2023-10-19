@@ -24,6 +24,7 @@ struct TemplateListView: View {
                     ScrollView {
                         ForEach(uwaziViewModel.templateCardsViewModel, id: \.id) { cardViewModel in
                             TemplateCardView(templateCardViewModel: cardViewModel)
+                                .environmentObject(uwaziViewModel.mainAppModel)
                         }
                     }
                 }

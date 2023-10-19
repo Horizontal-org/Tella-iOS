@@ -173,6 +173,14 @@ extension TellaData {
         }
 
     }
+    func getUwaziTemplateById(id: Int) -> CollectedTemplate? {
+        do {
+            return try database.getUwaziTemplate(templateId: id)
+        } catch let error {
+            debugLog(error)
+            return nil
+        }
+    }
     func deleteAllUwaziTemplate(id: Int) {
         database.deleteUwaziTemplate(id: id)
     }
