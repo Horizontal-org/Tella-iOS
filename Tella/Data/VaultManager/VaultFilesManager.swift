@@ -95,14 +95,9 @@ class VaultFilesManager : VaultFilesManagerInterface {
     }
     
     func addVaultFiles(files: [(VaultFileDB,String?)]) throws {
-      
-//        var result : Result<Bool,Error> = .success(true)
-        
         try files.forEach { (file, parentId) in
              try self.vaultDataSource?.addVaultFile(file: file, parentId: parentId)
         }
-        
-//        return result
     }
     
     func addFolderFile(name: String, parentId: String?) {
