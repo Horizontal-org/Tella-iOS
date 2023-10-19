@@ -9,27 +9,7 @@ import QuickLook
 import ZIPFoundation
 
 extension URL {
-    var containsVideo: Bool {
-            return self.typeConforms(to: .video)
-        }
-
-        private var mimeTypeFromPathExtension: String? {
-            let pathExtension = self.pathExtension
-            guard let type = UTType(filenameExtension: pathExtension),
-                  let mimeType = type.preferredMIMEType as? String else {
-                return nil
-            }
-            return mimeType
-        }
-
-        private func typeConforms(to mediaType: UTTypeTag) -> Bool {
-            if let mimeType = self.mimeType,
-               let type = UTType(mimeType: mimeType) {
-                return type.conforms(to: mediaType)
-            }
-            return false
-        }
-
+    
     func resolution() -> CGSize? {
         switch self.fileType {
         case .video:
