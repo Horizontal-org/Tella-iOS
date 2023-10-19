@@ -87,16 +87,18 @@ class PhotoVideoViewModel : ObservableObject {
             .sink { importVaultFileResult in
                 
                 switch importVaultFileResult {
-                    
-                case .fileAdded(let vaultFile):
-                    self.handleDeletionFiles(urlfiles: filteredURLfiles, originalURLs: originalURLs)
-                    self.updateResultFile(vaultFiles:vaultFile)
-
+                case .fileAdded(let vaultFiles):
+                    self.handleSuccessAddingFiles(urlfiles: filteredURLfiles, originalURLs: originalURLs, vaultFiles: vaultFiles)
                 case .importProgress(let importProgress):
                     self.updateProgress(importProgress:importProgress)
                 }
                 
             }.store(in: &cancellable)
+    }
+    
+    private func handleSuccessAddingFiles(urlfiles: [URL], originalURLs: [URL?]?,vaultFiles:[VaultFileDB] ) {
+        self.handleDeletionFiles(urlfiles: urlfiles, originalURLs: originalURLs)
+        self.updateResultFile(vaultFiles:vaultFiles)
     }
     
     private func updateProgress(importProgress:ImportProgress) {

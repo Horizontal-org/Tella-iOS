@@ -84,28 +84,37 @@ class RecordViewModel: ObservableObject {
                     
                     switch importVaultFileResult {
                         
-                    case .fileAdded(let vaultFile):
-                        
-                        guard let vaultFile = vaultFile.first else { return  }
-                        DispatchQueue.main.async {
-                            self.resultFile?.wrappedValue = [vaultFile]
-                            self.shouldReloadVaultFiles?.wrappedValue = true
-                        }
-
-                        if self.sourceView != .addReportFile {
-                            self.mainAppModel.sendAutoReportFile(file: vaultFile)
-                        }
-                        DispatchQueue.main.async {
-                            self.resetRecording()
-                        }
+                    case .fileAdded(let vaultFiles):
+                        guard let vaultFile = vaultFiles.first else { return  }
+                        self.handleSuccessAddingFiles(vaultFile: vaultFile)
                     case .importProgress:
                         break
                     }
                     
                 }.store(in: &self.cancellable)
-
     }
     
+    private func handleSuccessAddingFiles(vaultFile:VaultFileDB) {
+        self.updateResultFile(vaultFile: vaultFile)
+        self.sendAutoReport(vaultFile: vaultFile)
+        DispatchQueue.main.async {
+            self.resetRecording()
+        }
+    }
+
+    private func sendAutoReport(vaultFile:VaultFileDB)  {
+        if self.sourceView != .addReportFile {
+            self.mainAppModel.sendAutoReportFile(file: vaultFile)
+        }
+    }
+    
+    private func updateResultFile(vaultFile:VaultFileDB)  {
+        DispatchQueue.main.async {
+            self.resultFile?.wrappedValue = [vaultFile]
+            self.shouldReloadVaultFiles?.wrappedValue = true
+        }
+    }
+
     // Record audio
     func checkCameraAccess() {
         audioBackend.checkMicrophonePermission()

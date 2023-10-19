@@ -78,32 +78,44 @@ class CameraViewModel: ObservableObject {
                 
                 switch importVaultFileResult {
                     
-                case .fileAdded(let vaultFile):
-                    
-                    DispatchQueue.main.async {
-                        self.resultFile?.wrappedValue = vaultFile
-                        self.shouldReloadVaultFiles?.wrappedValue = true
-                        self.lastImageOrVideoVaultFile = vaultFile.first
-                    }
-                    
-                    if self.sourceView != .addReportFile {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                            if let file = vaultFile.first {
-                                self.mainAppModel?.sendAutoReportFile(file: file)
-                            }
-                        }
-                    }
-                    
+                case .fileAdded(let vaultFiles):
+                    self.handleSuccessAddingFiles(vaultFiles: vaultFiles)
                 case .importProgress(let importProgress):
-                    
-                    DispatchQueue.main.async {
-                        self.progressFile.progress = importProgress.progress.value
-                        self.progressFile.progressFile = importProgress.progressFile.value
-                        self.progressFile.isFinishing = importProgress.isFinishing.value
-                    }
+                    self.updateProgress(importProgress:importProgress)
                 }
                 
             }.store(in: &cancellable)
+    }
+    
+    private func handleSuccessAddingFiles(vaultFiles:[VaultFileDB]) {
+        self.updateResultFile(vaultFiles:vaultFiles)
+        self.sendAutoReport(vaultFiles: vaultFiles)
+    }
+    
+    private func updateProgress(importProgress:ImportProgress) {
+        DispatchQueue.main.async {
+            self.progressFile.progress = importProgress.progress.value
+            self.progressFile.progressFile = importProgress.progressFile.value
+            self.progressFile.isFinishing = importProgress.isFinishing.value
+        }
+    }
+
+    private func sendAutoReport(vaultFiles:[VaultFileDB])  {
+        if self.sourceView != .addReportFile {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                if let file = vaultFiles.first {
+                    self.mainAppModel?.sendAutoReportFile(file: file)
+                }
+            }
+        }
+    }
+    
+    private func updateResultFile(vaultFiles:[VaultFileDB])  {
+        DispatchQueue.main.async {
+            self.resultFile?.wrappedValue = vaultFiles
+            self.shouldReloadVaultFiles?.wrappedValue = true
+            self.lastImageOrVideoVaultFile = vaultFiles.first
+        }
     }
 
     

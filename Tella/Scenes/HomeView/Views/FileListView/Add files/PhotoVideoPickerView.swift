@@ -63,7 +63,7 @@ struct PhotoVideoPickerView: View {
                 onCompletion: { result in
                     if let urls = try? result.get() {
                         showProgressView()
-                        viewModel.addFiles(files: urls)
+                        viewModel.addFiles(urlfiles: urls)
                     }
                 }
             )
