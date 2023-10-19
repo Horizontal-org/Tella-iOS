@@ -108,23 +108,18 @@ extension String {
             return .other
         }
         
-        if type.conforms(to: .video) || type.conforms(to: .movie) {
+        switch type {
+        case _ where type.conforms(to: .video) || type.conforms(to: .movie):
             return .video
-        }
-        
-        if type.conforms(to: .image) {
+        case _ where type.conforms(to: .image):
             return .image
-        }
-        
-        if type.conforms(to: .audio) {
+        case _ where type.conforms(to: .audio):
             return .audio
+        case _ where type.conforms(to: .pdf) || type.conforms(to: .presentation) || type.conforms(to: .spreadsheet):
+            return .video
+        default:
+            return .other
         }
-
-        if type.conforms(to: .pdf) || type.conforms(to: .presentation) || type.conforms(to: .spreadsheet) {
-            return .document
-        }
-
-        return .other
     }
 }
 
