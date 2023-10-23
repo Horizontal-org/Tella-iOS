@@ -14,9 +14,8 @@ struct CreateEntityView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     let modelHeight = 200.0
     
-    init(appModel: MainAppModel, templateId: Int) {
-        _entityViewModel = StateObject(wrappedValue: UwaziEntityViewModel(mainAppModel: appModel,
-                                                                          templateId: templateId))
+    init(appModel: MainAppModel, templateId: Int, server: Server) {
+        _entityViewModel = StateObject(wrappedValue: UwaziEntityViewModel(mainAppModel: appModel, templateId:templateId, server: server))
     }
     var body: some View {
         ContainerView {

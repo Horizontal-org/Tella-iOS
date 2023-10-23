@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 class UwaziEntityViewModel: ObservableObject {
     
@@ -15,10 +16,15 @@ class UwaziEntityViewModel: ObservableObject {
     
     @Published var template: CollectedTemplate? = nil
     @Published var entryPrompts: [UwaziEntryPrompt] = []
+    @Published var accessToken: String = ""
+    @Published var serverURL: String = ""
+    var subscribers = Set<AnyCancellable>()
 
-    init(mainAppModel : MainAppModel, templateId: Int) {
+    init(mainAppModel : MainAppModel, templateId: Int, server: Server) {
         self.mainAppModel = mainAppModel
         self.template = self.getTemplateById(id: templateId)
+        self.accessToken = server.accessToken ?? ""
+        self.serverURL = server.url ?? ""
         entryPrompts = UwaziEntityParser(template: template!).getEntryPrompts()
     }
     
@@ -34,5 +40,59 @@ class UwaziEntityViewModel: ObservableObject {
         requiredPrompts.forEach { prompt in
             prompt.showMandatoryError = prompt.value.stringValue.isEmpty
         }
+        
+        if(!requiredPrompts.isEmpty) {
+            submitEntity()
+        }
+    }
+    
+    private func submitEntity() {
+        // Extract entity data and metadata
+        let entityData = extractEntityDataAndMetadata()
+        
+        // Prepare server URL and cookie list
+        let serverURL = self.serverURL
+        let cookieList = ["connect.sid=" + self.accessToken]
+        
+        // Submit the entity data
+        let response = UwaziServerRepository().submitEntity(serverURL: serverURL, cookieList: cookieList, entity: entityData)
+               response.sink { completion in
+                   switch completion {
+
+                   case .finished:
+                       print("Finished")
+                   case .failure(let error):
+                       print(error)
+                   }
+                   } receiveValue: { value in
+                       print(value)
+                   }
+
+                   .store(in: &subscribers)
+    }
+
+    private func extractEntityDataAndMetadata() -> ([String: Any]) {
+        var entityData: [String: Any] = [:]
+        var metadata: [String: Any] = [:]
+
+        for entryPrompt in entryPrompts {
+            switch UwaziEntityPropertyType(rawValue: entryPrompt.type) {
+            case .dataTypeText:
+                if entryPrompt.name == "title" {
+                    entityData[entryPrompt.name!] = entryPrompt.value.stringValue
+                } else {
+                    metadata[entryPrompt.name!] = [["value": entryPrompt.value.stringValue]]
+                }
+            case .dataTypeNumeric:
+                metadata[entryPrompt.name!] = [["value": entryPrompt.value.stringValue]]
+            default:
+                break
+            }
+        }
+
+        entityData["template"] = template!.templateId
+        entityData["metadata"] = metadata
+
+        return entityData
     }
 }

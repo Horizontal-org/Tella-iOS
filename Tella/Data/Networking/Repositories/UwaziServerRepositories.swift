@@ -121,6 +121,14 @@ class UwaziServerRepository: WebRepository {
             .compactMap{$0.0.toDomain() as? ProjectAPI }
             .eraseToAnyPublisher()
     }
+    
+    func submitEntity(serverURL: String, cookieList: [String], entity: [String: Any]) -> AnyPublisher<EntityCreationResponse, APIError> {
+            let apiResponse: APIResponse<EntityCreationResponse> = getAPIResponse(endpoint: API.submitEntity(serverURL: serverURL, cookieList: cookieList, entity: entity))
+
+            return apiResponse
+                .compactMap{$0.0}
+                .eraseToAnyPublisher()
+        }
 }
 extension UwaziServerRepository {
     /// Return a collection of CollectedTemplate which is used to created after all the manpulation is done to prepare the template data for storage
@@ -257,6 +265,7 @@ extension UwaziServerRepository {
         case getSetting(serverURL: String, cookieList:[String])
         case getDictionary(serverURL: String, cookieList:[String])
         case getTranslations(serverURL: String, cookieList:[String])
+        case submitEntity(serverURL: String, cookieList: [String], entity: [String: Any])
     }
 }
 
@@ -270,24 +279,28 @@ extension UwaziServerRepository.API: APIRequest {
             return token
         case .checkURL, .getLanguage:
             return nil
-        case .getTemplate,.getSetting, .getDictionary, .getTranslations:
+        case .getTemplate,.getSetting, .getDictionary, .getTranslations, .submitEntity:
             return nil
         }
     }
 
     var headers: [String: String]? {
         switch self {
-
         case .login, .getProjetDetails, .checkURL, .getLanguage, .twoFactorAuthentication:
             return [HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
         case .getTemplate(_,let cookieList), .getSetting(_,let cookieList), .getDictionary(_,let cookieList), .getTranslations(_,let cookieList):
             let cookiesString = cookieList.joined(separator: "; ")
             return ["Cookie": cookiesString,
                     HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
+        case .submitEntity(_, let cookieList, _):
+                    let cookiesString = cookieList.joined(separator: ";")
+                    return ["Cookie": cookiesString,
+                            "X-Requested-With": "XMLHttpRequest",
+                            HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
         }
     }
 
-    var keyValues: [Key : Value?]? {
+    var keyValues: [Key : Any]? {
 
         switch self {
         case .login((let username, let password, _ )):
@@ -303,6 +316,8 @@ extension UwaziServerRepository.API: APIRequest {
                 "password": password,
                 "token": token
             ]
+        case .submitEntity(_, _, let entity):
+            return entity
         case .checkURL, .getLanguage, .getTemplate, .getSetting,.getDictionary,.getTranslations:
             return nil
         }
@@ -318,7 +333,7 @@ extension UwaziServerRepository.API: APIRequest {
             return serverURL
         case .getTemplate(serverURL: let serverURL, cookieList: _):
             return serverURL
-        case .getSetting(serverURL: let serverURL, cookieList: _), .getDictionary(serverURL: let serverURL, cookieList: _),.getTranslations(serverURL: let serverURL, cookieList: _):
+        case .getSetting(serverURL: let serverURL, cookieList: _), .getDictionary(serverURL: let serverURL, cookieList: _),.getTranslations(serverURL: let serverURL, cookieList: _), .submitEntity(serverURL: let serverURL, cookieList: _, entity: _):
             return serverURL
         }
     }
@@ -339,12 +354,14 @@ extension UwaziServerRepository.API: APIRequest {
             return "/api/dictionaries"
         case .getTranslations:
             return "/api/translations"
+        case .submitEntity:
+            return "/api/entities"
         }
     }
 
     var httpMethod: HTTPMethod {
         switch self {
-        case .login, .twoFactorAuthentication:
+        case .login, .twoFactorAuthentication, .submitEntity:
             return HTTPMethod.post
         case .getProjetDetails(_):
             return HTTPMethod.get
