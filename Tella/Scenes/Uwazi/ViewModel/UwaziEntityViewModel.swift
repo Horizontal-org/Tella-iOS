@@ -85,6 +85,8 @@ class UwaziEntityViewModel: ObservableObject {
                 }
             case .dataTypeNumeric:
                 metadata[entryPrompt.name!] = [["value": entryPrompt.value.stringValue]]
+            case .dataTypeSelect, .dataTypeMultiSelect:
+                metadata[entryPrompt.name!] = [["value": entryPrompt.value.selectedValue[0].id, "label": entryPrompt.value.selectedValue[0].label]]
             default:
                 break
             }
