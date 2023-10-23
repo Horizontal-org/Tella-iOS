@@ -91,24 +91,23 @@ class UploadService: NSObject {
         return operation.response
     }
     
-    func addFeedbackOperation(mainAppModel: MainAppModel, feedbackRepository: FeedbackRepository ) -> AnyPublisher<FeedbackAPI,APIError>?  {
+    func addFeedbackOperation(mainAppModel: MainAppModel, feedbackRepository: FeedbackRepository) {
         
-        if let feedbackOperation  {
-            return feedbackOperation.response
-        } else {
-            let urlSession = URLSession( configuration:  .default ,
-                                         delegate: self,
-                                         delegateQueue: nil)
+        let urlSession = URLSession( configuration:  .default ,
+                                     delegate: self,
+                                     delegateQueue: nil)
+        
+        let operation = FeedbackOperation(urlSession: urlSession, mainAppModel: mainAppModel, feedbackRepository: feedbackRepository)
+        feedbackOperation = operation
+        uploadQueue.addOperation(operation)
+        
+        operation.response?.sink(receiveCompletion: { completion in
+        }, receiveValue: { response in
             
+            let message = String(format: "Your feedback has been sent")
+            Toast.displayToast(message: message)
             
-            let operation = FeedbackOperation(urlSession: urlSession, mainAppModel: mainAppModel, feedbackRepository: feedbackRepository)
-            feedbackOperation = operation
-            uploadQueue.addOperation(operation)
-            
-            // displayReportToast(operation: operation)
-            
-            return operation.response
-        }
+        }).store(in: &subscribers)
     }
 
     func addAutoUpload(file: VaultFileDB)  {

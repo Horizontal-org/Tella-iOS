@@ -13,6 +13,7 @@ class FeedbackViewModel : ObservableObject {
     
     @Published var feedbackContent : String = ""
     @Published var feedbackIsValid : Bool = false
+    @Published var successSent : Bool = false
     
     
     private var subscribers = Set<AnyCancellable>()
@@ -23,7 +24,7 @@ class FeedbackViewModel : ObservableObject {
     }
     
     func initFeedback() {
-        let feedback = self.mainAppModel.vaultManager.tellaData?.getCurrentFeedback()
+        let feedback = self.mainAppModel.vaultManager.tellaData?.getDraftFeedback()
         self.feedbackContent = self.feedback?.text ?? ""
         self.feedbackId = feedback?.id
     }
@@ -46,18 +47,15 @@ class FeedbackViewModel : ObservableObject {
         
         saveFeedback(status: .pending)
         
-        
-        
         FeedbackRepository().submitFeedback(text: feedbackContent, mainAppModel: mainAppModel)?
+            .receive(on: DispatchQueue.main)
             .sink { result in
-                
                 switch result {
                 case .finished:
                     self.mainAppModel.vaultManager.tellaData?.deleteFeedback(feedbackId: self.feedbackId)
-                    
-                    break
-                case .failure(let error):
-                    break
+                    self.successSent = true
+                case .failure:
+                    self.saveFeedback(status: .error)
                 }
             } receiveValue: { feedback in
                 dump(feedback)

@@ -9,7 +9,15 @@ struct FeedbackRepository: WebRepository {
     
 
     func submitFeedback(text: String, mainAppModel: MainAppModel) -> AnyPublisher<FeedbackAPI,APIError>? {
-        return  UploadService.shared.addFeedbackOperation(mainAppModel: mainAppModel, feedbackRepository: self)
+        if !mainAppModel.networkMonitor.isConnected {
+            UploadService.shared.addFeedbackOperation(mainAppModel: mainAppModel, feedbackRepository: self)
+        }
+        
+        let apiResponse : APIResponse<FeedbackDTO> = getAPIResponse(endpoint: FeedbackRepository.API.submitFeedback("Test"))
+
+        return apiResponse
+            .compactMap{$0.0.toDomain() as? FeedbackAPI}
+            .eraseToAnyPublisher()
     }
 
 

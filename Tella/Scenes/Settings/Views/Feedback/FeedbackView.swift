@@ -50,6 +50,12 @@ struct FeedbackView: View {
             }
             
             confirmBottomSheet
+            
+        }.onReceive(feedbackViewModel.$successSent) { successSent in
+            if successSent {
+                self.dismiss()
+                Toast.displayToast(message: "Thanks for your feedback!")
+            }
         }
     }
     
