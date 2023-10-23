@@ -6,7 +6,7 @@
 import Foundation
 
 public protocol APIRequest {
-    
+    associatedtype Value
     var keyValues : [Key : Value?]? { get }
     var urlQueryParameters : [String : String?]? { get }
     

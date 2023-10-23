@@ -270,7 +270,7 @@ extension UwaziServerRepository {
 }
 
 extension UwaziServerRepository.API: APIRequest {
-
+    typealias Value = Any
     var token: String? {
         switch self {
         case .login, .twoFactorAuthentication:
@@ -300,7 +300,7 @@ extension UwaziServerRepository.API: APIRequest {
         }
     }
 
-    var keyValues: [Key : Any]? {
+    var keyValues: [Key : Value?]? {
 
         switch self {
         case .login((let username, let password, _ )):
