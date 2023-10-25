@@ -22,7 +22,7 @@ struct BorderedTextEditorView: View {
                 if shouldShowTitle {
                     Text(placeholder)
                         .padding(.bottom, fieldContent.isEmpty ? 0 : 15)
-                        .offset(x: fieldContent.isEmpty ? 0 : -15,y: fieldContent.isEmpty ? 0 : -50)
+                        .offset(x: fieldContent.isEmpty ? 0 : -15, y: fieldContent.isEmpty ? 0 : -50)
                         .scaleEffect(fieldContent.isEmpty ? 1 : 0.88, anchor: .leading)
                         .animation(.default)
                     

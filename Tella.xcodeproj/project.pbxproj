@@ -80,6 +80,7 @@
 		1227FC8F2922BDBC002FD6FB /* CameraModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1227FC8E2922BDBC002FD6FB /* CameraModel.swift */; };
 		1227FC912922BE24002FD6FB /* CameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1227FC902922BE24002FD6FB /* CameraPreview.swift */; };
 		12283FA0295C6FB100580EFE /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12283F9F295C6FB100580EFE /* DataExtension.swift */; };
+		122B61362AE72D8D00631403 /* FeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122B61352AE72D8D00631403 /* FeedbackService.swift */; };
 		122C54BC28C614C2003B2DBC /* TellaButtonStyleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122C54BB28C614C2003B2DBC /* TellaButtonStyleProtocol.swift */; };
 		122C54BE28C6351E003B2DBC /* AdvancedServerSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122C54BD28C6351E003B2DBC /* AdvancedServerSettingsView.swift */; };
 		122C54C028C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122C54BF28C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift */; };
@@ -133,6 +134,7 @@
 		125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299E02AD0515600191CAB /* VaultFilesManager.swift */; };
 		125389F82ACAD33500CE33AB /* FileWalker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125389F72ACAD33500CE33AB /* FileWalker.swift */; };
 		125595382AFCFAA400F71DFE /* SelectQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125595372AFCFAA400F71DFE /* SelectQuery.swift */; };
+		12558CF62AE95CBB001D0C80 /* OfflineFeedbackToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12558CF52AE95CBB001D0C80 /* OfflineFeedbackToast.swift */; };
 		12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12567FEE2716B38F00A2D356 /* LockChoiceView.swift */; };
 		12567FF22716E33500A2D356 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12567FF02716E33500A2D356 /* OpenSans-Bold.ttf */; };
 		12567FF32716E33500A2D356 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12567FF12716E33500A2D356 /* OpenSans-Regular.ttf */; };
@@ -471,6 +473,7 @@
 		1227FC8E2922BDBC002FD6FB /* CameraModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraModel.swift; sourceTree = "<group>"; };
 		1227FC902922BE24002FD6FB /* CameraPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
 		12283F9F295C6FB100580EFE /* DataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtension.swift; sourceTree = "<group>"; };
+		122B61352AE72D8D00631403 /* FeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackService.swift; sourceTree = "<group>"; };
 		122C54BB28C614C2003B2DBC /* TellaButtonStyleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaButtonStyleProtocol.swift; sourceTree = "<group>"; };
 		122C54BD28C6351E003B2DBC /* AdvancedServerSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedServerSettingsView.swift; sourceTree = "<group>"; };
 		122C54BF28C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessAdvancedSettingsView.swift; sourceTree = "<group>"; };
@@ -523,6 +526,7 @@
 		125299E02AD0515600191CAB /* VaultFilesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFilesManager.swift; sourceTree = "<group>"; };
 		125389F72ACAD33500CE33AB /* FileWalker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FileWalker.swift; path = ../../../../../Downloads/FileWalker.swift; sourceTree = "<group>"; };
 		125595372AFCFAA400F71DFE /* SelectQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectQuery.swift; sourceTree = "<group>"; };
+		12558CF52AE95CBB001D0C80 /* OfflineFeedbackToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineFeedbackToast.swift; sourceTree = "<group>"; };
 		12567FEE2716B38F00A2D356 /* LockChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockChoiceView.swift; sourceTree = "<group>"; };
 		12567FF02716E33500A2D356 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		12567FF12716E33500A2D356 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -1264,6 +1268,7 @@
 			isa = PBXGroup;
 			children = (
 				125F9B972AD965800073748C /* FeedbackOperation.swift */,
+				122B61352AE72D8D00631403 /* FeedbackService.swift */,
 			);
 			path = Feedback;
 			sourceTree = "<group>";
@@ -1590,8 +1595,7 @@
 			isa = PBXGroup;
 			children = (
 				1293F6652AD7E52800F6CFBD /* FeedbackView.swift */,
-				1293F6672AD7EF3900F6CFBD /* CloseHeaderView.swift */,
-				1293F66B2AD80DB100F6CFBD /* CardFrameView.swift */,
+				12558CF52AE95CBB001D0C80 /* OfflineFeedbackToast.swift */,
 			);
 			path = Feedback;
 			sourceTree = "<group>";
@@ -1716,6 +1720,7 @@
 				CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */,
 				12234BDF29DAEC4A00D6F981 /* CustomNavigation.swift */,
 				CCBEE0472A8E9B780067884E /* TextView.swift */,
+				1293F6672AD7EF3900F6CFBD /* CloseHeaderView.swift */,
 				122DBE022A5C21C000D6561A /* New Group */,
 				12603DAB2A56C72900FB1492 /* ToastView.swift */,
 				122DBE002A5C1E0500D6561A /* Toast.swift */,
@@ -1789,6 +1794,7 @@
 				122DA89629CB2709003801CD /* SettingsBottomView.swift */,
 				CC1313892A5DB68E0057271C /* BottomSheetTitleView.swift */,
 				CC13138B2A5DB79B0057271C /* BottomButtonsView.swift */,
+				1293F66B2AD80DB100F6CFBD /* CardFrameView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2377,6 +2383,7 @@
 				12199C34294094430041BD38 /* OutboxDetailsView.swift in Sources */,
 				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
 				1291A83228BE0086001A6055 /* SettingsAddServerCardView.swift in Sources */,
+				122B61362AE72D8D00631403 /* FeedbackService.swift in Sources */,
 				0E87C875268BDDFB00EB5E34 /* ImageViewer.swift in Sources */,
 				1233076729F15A290019DF7C /* NetworkMonitor.swift in Sources */,
 				1249B3832AD43AA7009A7023 /* VaultFilesManagerInterface.swift in Sources */,
@@ -2455,6 +2462,7 @@
 				1289B45628B62A99005DA687 /* DeviceOrientationHelper.swift in Sources */,
 				125DD9C92796CB090053619D /* ImportFilesProgressView.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */,
+				12558CF62AE95CBB001D0C80 /* OfflineFeedbackToast.swift in Sources */,
 				12B3AD8A28C0DD0200AC9AF9 /* ServerLoginView.swift in Sources */,
 				1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */,
 				128FD0B427F774FB00B24915 /* RecentFile.swift in Sources */,

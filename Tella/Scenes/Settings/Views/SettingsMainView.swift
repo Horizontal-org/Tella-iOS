@@ -85,7 +85,7 @@ struct SettingsMainView: View {
     
     var feedbackView: some View {
         SettingsItemView(imageName: "settings.feedback",
-                         title: "Feedback",
+                         title: LocalizableSettings.settFeedback.localized,
                          presentationType: .present,
                          destination:
                             FeedbackView(mainAppModel: appModel)

@@ -683,7 +683,7 @@ extension TellaDataBase {
     
     func getDraftFeedback() -> Feedback? {
         do {
-            let feedbackCondition = [KeyValue(key: D.cStatus, value: FeedbackStatus.draft)]
+            let feedbackCondition = [KeyValue(key: D.cStatus, value: FeedbackStatus.draft.rawValue)]
 
             let feedbackDict = try statementBuilder.getSelectQuery(tableName: D.tFeedback,
                                                                    equalCondition: feedbackCondition)
@@ -693,6 +693,18 @@ extension TellaDataBase {
         }
     }
     
+    func getUnsentFeedbacks() -> [Feedback] {
+        do {
+            let feedbackCondition = [KeyValue(key: D.cStatus, value: FeedbackStatus.pending.rawValue)]
+
+            let feedbackDict = try statementBuilder.getSelectQuery(tableName: D.tFeedback,
+                                                                   equalCondition: feedbackCondition)
+            return try feedbackDict.decode(Feedback.self)
+        } catch {
+            return []
+        }
+    }
+
     func addFeedback(feedback : Feedback) -> Int? {
         do {
             let valuesToAdd = [KeyValue(key: D.ctext, value: feedback.text),

@@ -9,12 +9,12 @@ class FeedbackViewModel : ObservableObject {
     
     var mainAppModel: MainAppModel
     var feedback : Feedback?
-    var feedbackId : Int?
     
     @Published var feedbackContent : String = ""
     @Published var feedbackIsValid : Bool = false
-    @Published var successSent : Bool = false
-    
+    @Published var feedbackSentSuccessfully : Bool = false
+    @Published var showOfflineToast : Bool = false
+    @Published var isLoading : Bool = false
     
     private var subscribers = Set<AnyCancellable>()
     
@@ -23,42 +23,56 @@ class FeedbackViewModel : ObservableObject {
         self.initFeedback()
     }
     
-    func initFeedback() {
+    private func initFeedback() {
         let feedback = self.mainAppModel.vaultManager.tellaData?.getDraftFeedback()
+        self.feedback = feedback
         self.feedbackContent = self.feedback?.text ?? ""
-        self.feedbackId = feedback?.id
+        feedbackIsValid = self.feedback?.text != nil
     }
     
-    func saveFeedbackDraft()   {
+    public func saveFeedbackDraft()   {
         saveFeedback(status: .draft)
     }
     
-    func saveFeedback(status:FeedbackStatus) {
-        guard let feedbackId else {
+    private func saveFeedback(status:FeedbackStatus) {
+        guard let feedbackId = self.feedback?.id else {
             let feedback = Feedback(text: feedbackContent, status: status)
-            feedbackId = self.mainAppModel.vaultManager.tellaData?.addFeedback(feedback: feedback)
+            feedback.id = self.mainAppModel.vaultManager.tellaData?.addFeedback(feedback: feedback)
+            self.feedback = feedback
             return
         }
         let feedback = Feedback(id:feedbackId, text: feedbackContent, status: status)
+        self.feedback = feedback
         self.mainAppModel.vaultManager.tellaData?.updateFeedback(feedback: feedback)
     }
     
-    func submitFeedback() {
-        
+    public func submitFeedback() {
         saveFeedback(status: .pending)
+        guard let feedback else { return }
+        isLoading = true
         
-        FeedbackRepository().submitFeedback(text: feedbackContent, mainAppModel: mainAppModel)?
+        FeedbackRepository().submitFeedback(feedback: feedback, mainAppModel: mainAppModel)?
             .receive(on: DispatchQueue.main)
             .sink { result in
-                switch result {
-                case .finished:
-                    self.mainAppModel.vaultManager.tellaData?.deleteFeedback(feedbackId: self.feedbackId)
-                    self.successSent = true
-                case .failure:
-                    self.saveFeedback(status: .error)
-                }
+                self.isLoading = false
+                self.handleFeedbackResult(result:result)
             } receiveValue: { feedback in
-                dump(feedback)
             }.store(in: &subscribers)
+    }
+    
+    private func handleFeedbackResult(result:Subscribers.Completion<APIError>) {
+        guard let feedback  else { return }
+        switch result {
+        case .finished:
+            self.mainAppModel.vaultManager.tellaData?.deleteFeedback(feedbackId: feedback.id)
+            self.feedbackSentSuccessfully = true
+        case .failure(let error):
+            switch error {
+            case .noInternetConnection:
+                self.showOfflineToast = true
+            default:
+                break
+            }
+        }
     }
 }

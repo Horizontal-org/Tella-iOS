@@ -65,7 +65,7 @@ class MainAppModel: ObservableObject {
                 if self.vaultManager.rootIsExist() {
                     self.mergeFileToDatabase(promise: promise)
                 } else {
-                    self.sendReports()
+                    self.sendPendingFiles()
                     promise(.success(true))
                 }
             }
@@ -94,7 +94,7 @@ class MainAppModel: ObservableObject {
         self.vaultManager.getFilesToMergeToDatabase()
             .sink(receiveValue: { files in
                 self.saveFiles(files: files)
-                self.sendReports()
+                self.sendPendingFiles()
                 promise(.success(true))
             }).store(in: &self.cancellable)
         
@@ -196,9 +196,10 @@ extension MainAppModel {
         UploadService.shared.initAutoUpload(mainAppModel: self)
     }
     
-    func sendReports() {
+    func sendPendingFiles() {
         UploadService.shared.initAutoUpload(mainAppModel: self)
         UploadService.shared.sendUnsentReports(mainAppModel: self)
+        FeedbackService.shared.addUnsentFeedbacksOperation(mainAppModel: self)
     }
     
     @discardableResult

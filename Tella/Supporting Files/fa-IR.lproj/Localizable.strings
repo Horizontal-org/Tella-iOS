@@ -168,6 +168,8 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_Sett_Connections" = "سرورها";
 "Settings_Sett_Security" = "امنیت";
 "Settings_Sett_About" = "درباره و راهنما";
+"Settings_Sett_Feedback" = "Feedback";
+
 "Settings_SettGen_AppBar" = "عمومی";
 "Settings_SettGen_Language" = "زبان";
 "Settings_SettGen_RecentFiles" = "فایل‌های اخیر";
@@ -277,3 +279,18 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettLang_Kurdish_Expl" = "Kurdish";
 "Settings_SettLang_Burmese_Expl" = "Burmese";
 "Settings_SettLang_Tamil_Expl" = "Tamil";
+
+
+"Settings_SettFeedback_AppBar" = "Feedback";
+"Settings_SettFeedback_Expl" = "Tell us if you are experiencing a bug, have a request for a new feature, or have any other feedback.\n\nThis feedback is anonymous, so make sure to include contact information if you want a response from us.";
+"Settings_SettFeedback_EnableFeedback_Title" = "Enable feedback sharing";
+"Settings_SettFeedback_EnableFeedback_Expl" = "WARNING: using this feature may reveal to someone observing the network that you use Tella. Only use if you feel comfortable with this risk. Learn more.";
+"Settings_SettFeedback_Select_Feedback " = "Feedback";
+"Settings_SettFeedback_Action_Submit" = "Submit";
+"Settings_SettFeedback_Offline_Toast" = "You are not connected to the internet. Your feedback will be sent automatically when you are connected.";
+"Settings_SettFeedback_SuccessSent_Toast" = "Thanks for your feedback!";
+"Settings_SettFeedback_BackgroundSuccessSent_Toast" = "Your feedback has been sent";
+"Settings_SettFeedback_ExitFeedback_SheetTitle" = "Save draft?";
+"Settings_SettFeedback_ExitFeedback_SheetExpl" = "You can come back anytime to submit your feedback.";
+"Settings_SettFeedback_ExitFeedback_Exit_SheetAction" = "Exit without saving";
+"Settings_SettFeedback_ExitFeedback_Save_SheetAction" = "Save draft";

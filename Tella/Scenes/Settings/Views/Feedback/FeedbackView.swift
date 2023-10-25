@@ -7,10 +7,10 @@ import SwiftUI
 struct FeedbackView: View {
     
     @StateObject var feedbackViewModel : FeedbackViewModel
+    @State var isPresented : Bool = false
     @EnvironmentObject var appModel : MainAppModel
     @EnvironmentObject var sheetManager : SheetManager
-    @State var isPresented : Bool = false
-    
+
     init(mainAppModel:MainAppModel) {
         _feedbackViewModel = StateObject(wrappedValue: FeedbackViewModel(mainAppModel: mainAppModel))
     }
@@ -18,45 +18,52 @@ struct FeedbackView: View {
     var body: some View {
         ContainerView {
             content
+        }.onReceive(feedbackViewModel.$feedbackSentSuccessfully) { _ in
+            handleFeedbackSentSuccessfully()
         }
     }
-    
+
     var content : some View {
         
         ZStack {
-            VStack() {
-                
-                VStack(spacing: 24) {
-                    
-                    CloseHeaderView(title: "Feedback") {
-                        showSaveFeedbackConfirmationView()
-                    }
-                    
-                    introductionView
-                    
-                    dividerView
-                    
-                    manageFeedbackView
-                    
-                    feedbackTextView
-                }
-                
-                Spacer()
-            }
             
-            VStack() {
-                Spacer()
-                submitButton
-            }
+            feedbackContentView
+            
+            submitButton
             
             confirmBottomSheet
+
+            if feedbackViewModel.showOfflineToast {
+                OfflineFeedbackToast()
+            }
             
-        }.onReceive(feedbackViewModel.$successSent) { successSent in
-            if successSent {
-                self.dismiss()
-                Toast.displayToast(message: "Thanks for your feedback!")
+            if  feedbackViewModel.isLoading {
+                CircularActivityIndicatory()
             }
         }
+    }
+    
+    var feedbackContentView: some View {
+        VStack() {
+            
+            VStack(spacing: 24) {
+                
+                CloseHeaderView(title: LocalizableSettings.settFeedbackAppBar.localized) {
+                    showSaveFeedbackConfirmationView()
+                }
+                
+                introductionView
+                
+                dividerView
+                
+                manageFeedbackView
+                
+                feedbackTextView
+            }
+            
+            Spacer()
+        }
+        
     }
     
     var introductionView : some View {
@@ -68,7 +75,7 @@ struct FeedbackView: View {
                 
                 Spacer().frame(width: 24)
                 
-                Text("Tell us if you are experiencing a bug, have a request for a new feature, or have any other feedback.\n\nThis feedback is anonymous, so make sure to include contact information if you want a response from us.")
+                Text(LocalizableSettings.settFeedbackExpl.localized)
                     .font(.custom(Styles.Fonts.regularFontName, size: 12))
                     .foregroundColor(.white)
                 
@@ -85,17 +92,17 @@ struct FeedbackView: View {
     
     var manageFeedbackView : some View {
         CardFrameView {
-            SettingToggleItem(title: "Enable feedback sharing",
-                              description: "WARNING: using this feature may reveal to someone observing the network that you use Tella. Only use if you feel comfortable with this risk. Learn more." ,
+            SettingToggleItem(title: LocalizableSettings.enableFeedbackTitle.localized,
+                              description: LocalizableSettings.enableFeedbackExpl.localized ,
                               toggle: $appModel.settings.shareFeedback)
         }
     }
-    
+
     @ViewBuilder
     var feedbackTextView : some View {
         if $appModel.settings.shareFeedback.wrappedValue {
             
-            BorderedTextEditorView(placeholder: "Feedback",
+            BorderedTextEditorView(placeholder: LocalizableSettings.selectFeedback.localized,
                                    fieldContent: $feedbackViewModel.feedbackContent,
                                    isValid: $feedbackViewModel.feedbackIsValid,
                                    shouldShowTitle: true)
@@ -104,17 +111,19 @@ struct FeedbackView: View {
     
     var submitButton : some View {
         
-        TellaButtonView<AnyView> (title: "Submit",
-                                  nextButtonAction: .action,
-                                  buttonType: .yellow,
-                                  isValid: $feedbackViewModel.feedbackIsValid) {
-            feedbackViewModel.submitFeedback()
-        } .padding(EdgeInsets(top: 0, leading: 16, bottom: 16, trailing: 16))
-        
+        VStack() {
+            Spacer()
+            TellaButtonView<AnyView> (title:  LocalizableSettings.submit.localized ,
+                                      nextButtonAction: .action,
+                                      buttonType: .yellow,
+                                      isValid: $feedbackViewModel.feedbackIsValid) {
+                feedbackViewModel.submitFeedback()
+                
+            } .padding(EdgeInsets(top: 0, leading: 16, bottom: 20, trailing: 16))
+        }
     }
     
-    
-    
+ 
     private func showSaveFeedbackConfirmationView() {
         self.isPresented = true
     }
@@ -130,10 +139,16 @@ struct FeedbackView: View {
             }, didCancelAction: {
                 self.dismiss()
             })
-            
         }
-        
     }
+    
+    private func handleFeedbackSentSuccessfully() {
+        if feedbackViewModel.feedbackSentSuccessfully {
+            self.dismiss()
+            Toast.displayToast(message: LocalizableSettings.successSentToast.localized)
+        }
+    }
+
 }
 
 #Preview {
@@ -141,6 +156,3 @@ struct FeedbackView: View {
         .environmentObject(MainAppModel.stub())
     
 }
-
-
-

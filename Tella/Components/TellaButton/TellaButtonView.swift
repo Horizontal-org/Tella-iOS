@@ -29,6 +29,9 @@ struct TellaButtonView<Destination:View> : View {
     
     var body: some View {
         Button {
+            
+            UIApplication.shared.endEditing()
+
             if nextButtonAction == .action  {
                 action?()
             }
@@ -65,7 +68,7 @@ struct TellaButtonStyle : ButtonStyle {
     }
     
     func getBackgroundColor() -> Color {
-        isValid ? buttonStyle.backgroundColor :  buttonStyle.backgroundColor.opacity(0.16)
+        isValid ? buttonStyle.backgroundColor :  buttonStyle.disabledBackgroundColor
     }
 }
 

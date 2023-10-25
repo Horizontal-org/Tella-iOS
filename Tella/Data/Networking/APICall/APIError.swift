@@ -22,7 +22,7 @@ extension APIError: LocalizedError {
         case .unexpectedResponse:
             return "Unexpected response from the server"
         case .noInternetConnection:
-            return LocalizableSettings.settServerNoInternetConnection.localized
+            return "No Internet connection"
         }
     }
     

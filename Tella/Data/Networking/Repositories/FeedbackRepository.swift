@@ -7,25 +7,22 @@ import Combine
 
 struct FeedbackRepository: WebRepository {
     
-
-    func submitFeedback(text: String, mainAppModel: MainAppModel) -> AnyPublisher<FeedbackAPI,APIError>? {
+    func submitFeedback(feedback: Feedback, mainAppModel: MainAppModel) -> AnyPublisher<FeedbackAPI,APIError>? {
+        
         if !mainAppModel.networkMonitor.isConnected {
-            UploadService.shared.addFeedbackOperation(mainAppModel: mainAppModel, feedbackRepository: self)
+            FeedbackService.shared.addFeedbackOperation(mainAppModel: mainAppModel, feedbackRepository: self, feedbackToSend: feedback)
         }
         
-        let apiResponse : APIResponse<FeedbackDTO> = getAPIResponse(endpoint: FeedbackRepository.API.submitFeedback("Test"))
-
+        let apiResponse : APIResponse<FeedbackDTO> = getAPIResponse(endpoint: FeedbackRepository.API.submitFeedback(feedback.text))
         return apiResponse
             .compactMap{$0.0.toDomain() as? FeedbackAPI}
             .eraseToAnyPublisher()
     }
-
-
 }
 
 extension FeedbackRepository {
     enum API {
-        case submitFeedback((String))
+        case submitFeedback((String?))
     }
 }
 

@@ -5,27 +5,19 @@
 import Foundation
 import Combine
 
-class FeedbackOperation:Operation {
+class FeedbackOperation:Operation, WebRepository {
     
-    var feddbackToSend : Feedback?
-    
-    public var urlSession : URLSession!
+    public var feedbackToSend : Feedback?
     public var mainAppModel :MainAppModel!
-    var feedbackRepository:FeedbackRepository!
-    
-    var subscribers : Set<AnyCancellable> = []
-    @Published var response : AnyPublisher<FeedbackAPI,APIError>?
-    
-    init(urlSession:URLSession, mainAppModel :MainAppModel, feedbackRepository:FeedbackRepository) {
+
+    private var cancellable: AnyCancellable?
+    private var subscribers : Set<AnyCancellable> = []
+
+    init(mainAppModel :MainAppModel) {
         super.init()
-        
-        self.urlSession = urlSession
         self.mainAppModel = mainAppModel
-        self.feedbackRepository = feedbackRepository
-        
         setupNetworkMonitor()
     }
-    
     
     override func main() {
         super.main()
@@ -33,30 +25,34 @@ class FeedbackOperation:Operation {
     }
     
     private func setupNetworkMonitor() {
-        self.mainAppModel.networkMonitor.connectionDidChange.sink(receiveValue: { isConnected in
-            if self.feddbackToSend != nil {
-                if isConnected && self.feddbackToSend?.status == .pending  {
-                    self.submitFeedback()
-                } else if !isConnected && self.feddbackToSend?.status != .pending {
-                    // self.updateFeedback
-                    // self.stopConnection()
-                    debugLog("No internet connection")
-                }
+        cancellable =  self.mainAppModel.networkMonitor.connectionDidChange.sink(receiveValue: { isConnected in
+            if isConnected && self.feedbackToSend != nil {
+                self.submitFeedback()
+                self.cancellable = nil
             }
-        }).store(in: &subscribers)
+        })
     }
     
-    func submitFeedback() {
-        if mainAppModel.networkMonitor.isConnected {
+    public func submitFeedback() {
+        
+        if mainAppModel.networkMonitor.isConnected, let feedbackToSend, let text = feedbackToSend.text {
             
-            let apiResponse : APIResponse<FeedbackDTO> = feedbackRepository.getAPIResponse(endpoint: FeedbackRepository.API.submitFeedback("Test"))
+            let apiResponse : APIResponse<FeedbackDTO> = getAPIResponse(endpoint: FeedbackRepository.API.submitFeedback(text))
             
-            response =  apiResponse
+            apiResponse
                 .compactMap{$0.0.toDomain() as? FeedbackAPI}
-                .eraseToAnyPublisher()
-         } else {
-            
+                .sink { result in
+                    switch result {
+                    case .finished:
+                        let message = String(format: LocalizableSettings.backgroundSuccessSentToast.localized)
+                        Toast.displayToast(message: message)
+                        self.mainAppModel.vaultManager.tellaData?.deleteFeedback(feedbackId: feedbackToSend.id)
+                        self.cancel()
+                    default:
+                        break
+                    }
+                } receiveValue: { feedbackAPI in
+                }.store(in: &subscribers)
         }
     }
-    
 }

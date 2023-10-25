@@ -14,6 +14,7 @@ struct CloseHeaderView: View {
  
             HStack {
                 Button {
+                    UIApplication.shared.endEditing()
                     didClose?()
                 } label: {
                     Image("close")

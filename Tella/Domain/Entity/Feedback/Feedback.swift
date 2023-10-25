@@ -6,10 +6,10 @@ import Foundation
 
 class Feedback: Codable {
     
-    let id: Int?
-    let text: String?
-    let status : FeedbackStatus?
-    let createdAt, updatedAt: Date?
+    var id: Int?
+    var text: String?
+    var status : FeedbackStatus?
+    var createdAt, updatedAt: Date?
     
     enum CodingKeys: String, CodingKey {
         case id = "c_id"
