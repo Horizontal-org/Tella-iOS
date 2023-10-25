@@ -15,7 +15,7 @@ class FeedbackService: NSObject {
         operationQueue = queue
     }
     
-    func addFeedbackOperation(mainAppModel: MainAppModel, feedbackRepository: FeedbackRepository, feedbackToSend : Feedback) {
+    func addFeedbackOperation(mainAppModel: MainAppModel, feedbackToSend : Feedback) {
         let operation = FeedbackOperation(mainAppModel: mainAppModel)
         operation.feedbackToSend = feedbackToSend
         operation.submitFeedback()

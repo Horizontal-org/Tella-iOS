@@ -10,7 +10,7 @@ struct FeedbackRepository: WebRepository {
     func submitFeedback(feedback: Feedback, mainAppModel: MainAppModel) -> AnyPublisher<FeedbackAPI,APIError>? {
         
         if !mainAppModel.networkMonitor.isConnected {
-            FeedbackService.shared.addFeedbackOperation(mainAppModel: mainAppModel, feedbackRepository: self, feedbackToSend: feedback)
+            FeedbackService.shared.addFeedbackOperation(mainAppModel: mainAppModel, feedbackToSend: feedback)
         }
         
         let apiResponse : APIResponse<FeedbackDTO> = getAPIResponse(endpoint: FeedbackRepository.API.submitFeedback(feedback.text))

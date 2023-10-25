@@ -9,10 +9,10 @@ class FeedbackOperation:Operation, WebRepository {
     
     public var feedbackToSend : Feedback?
     public var mainAppModel :MainAppModel!
-
+    
     private var cancellable: AnyCancellable?
     private var subscribers : Set<AnyCancellable> = []
-
+    
     init(mainAppModel :MainAppModel) {
         super.init()
         self.mainAppModel = mainAppModel
@@ -42,17 +42,21 @@ class FeedbackOperation:Operation, WebRepository {
             apiResponse
                 .compactMap{$0.0.toDomain() as? FeedbackAPI}
                 .sink { result in
-                    switch result {
-                    case .finished:
-                        let message = String(format: LocalizableSettings.backgroundSuccessSentToast.localized)
-                        Toast.displayToast(message: message)
-                        self.mainAppModel.vaultManager.tellaData?.deleteFeedback(feedbackId: feedbackToSend.id)
-                        self.cancel()
-                    default:
-                        break
-                    }
+                    self.handleFeedbackResult(result:result, feedbackToSend:feedbackToSend)
                 } receiveValue: { feedbackAPI in
                 }.store(in: &subscribers)
+        }
+    }
+    
+    private func handleFeedbackResult(result:Subscribers.Completion<APIError>, feedbackToSend:Feedback) {
+        switch result {
+        case .finished:
+            let message = String(format: LocalizableSettings.backgroundSuccessSentToast.localized)
+            Toast.displayToast(message: message)
+            self.mainAppModel.vaultManager.tellaData?.deleteFeedback(feedbackId: feedbackToSend.id)
+            self.cancel()
+        default:
+            break
         }
     }
 }

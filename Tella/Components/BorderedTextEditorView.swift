@@ -7,13 +7,12 @@ import SwiftUI
 struct BorderedTextEditorView: View {
     
     var placeholder : String
-    
+    var shouldShowTitle : Bool = false
+
     @Binding var fieldContent : String
     @Binding var isValid : Bool
-    
-    var shouldShowTitle : Bool = false
-    
-    @State var textEditorHeight : CGFloat = 120
+
+    @State private var textEditorHeight : CGFloat = 120
     
     var body: some View {
         ZStack(alignment: .topLeading) {

@@ -103,9 +103,9 @@ struct FeedbackView: View {
         if $appModel.settings.shareFeedback.wrappedValue {
             
             BorderedTextEditorView(placeholder: LocalizableSettings.selectFeedback.localized,
+                                   shouldShowTitle: true,
                                    fieldContent: $feedbackViewModel.feedbackContent,
-                                   isValid: $feedbackViewModel.feedbackIsValid,
-                                   shouldShowTitle: true)
+                                   isValid: $feedbackViewModel.feedbackIsValid)
         }
     }
     
