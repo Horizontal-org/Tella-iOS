@@ -10,6 +10,8 @@ import SwiftUI
 
 struct UwaziFileSelector: View {
     @EnvironmentObject var prompt: UwaziEntryPrompt
+    var addFiles: () -> Void
+    var title: String
     var body: some View {
         VStack {
             Spacer()
@@ -18,9 +20,9 @@ struct UwaziFileSelector: View {
                 .foregroundColor(Color.white.opacity(0.87))
                 .frame(maxWidth: .infinity, alignment: .leading)
             Button {
-                
+                addFiles()
             } label: {
-                SelectFileComponent(title: "Select files")
+                SelectFileComponent(title: title)
             }
             .background(Color.white.opacity(0.08))
             .cornerRadius(12)
@@ -46,6 +48,6 @@ struct SelectFileComponent: View {
 
 struct UwaziFileSelector_Previews: PreviewProvider {
     static var previews: some View {
-        UwaziFileSelector()
+        UwaziFileSelector(addFiles: {}, title: "Title")
     }
 }

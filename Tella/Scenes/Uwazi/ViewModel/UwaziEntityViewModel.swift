@@ -18,6 +18,19 @@ class UwaziEntityViewModel: ObservableObject {
     @Published var entryPrompts: [UwaziEntryPrompt] = []
     @Published var accessToken: String = ""
     @Published var serverURL: String = ""
+    
+    // files
+    @Published var files : Set <VaultFile> = []
+    @Published var pdfDocuments: Set<VaultFile> = []
+    @Published var resultFile : [VaultFile]?
+        
+    @Published var showingSuccessMessage : Bool = false
+    @Published var showingImagePicker : Bool = false
+    @Published var showingImportDocumentPicker : Bool = false
+    @Published var showingFileList : Bool = false
+    @Published var showingRecordView : Bool = false
+    @Published var showingCamera : Bool = false
+    
     var subscribers = Set<AnyCancellable>()
 
     init(mainAppModel : MainAppModel, templateId: Int, server: Server) {
@@ -25,7 +38,9 @@ class UwaziEntityViewModel: ObservableObject {
         self.template = self.getTemplateById(id: templateId)
         self.accessToken = server.accessToken ?? ""
         self.serverURL = server.url ?? ""
+        self.bindVaultFileTaken()
         entryPrompts = UwaziEntityParser(template: template!).getEntryPrompts()
+        dump(files)
     }
     
     var tellaData: TellaData? {
@@ -54,6 +69,7 @@ class UwaziEntityViewModel: ObservableObject {
         let serverURL = self.serverURL
         let cookieList = ["connect.sid=" + self.accessToken]
         
+        dump(files)
         // Submit the entity data
         let response = UwaziServerRepository().submitEntity(serverURL: serverURL, cookieList: cookieList, entity: entityData)
                response.sink { completion in
@@ -97,4 +113,35 @@ class UwaziEntityViewModel: ObservableObject {
 
         return entityData
     }
+    
+    private func bindVaultFileTaken() {
+        $resultFile.sink(receiveValue: { value in
+            guard let value else { return }
+            self.files.insert(value)
+            self.publishUpdates()
+        }).store(in: &subscribers)
+    }
+       
+    private func publishUpdates() {
+        DispatchQueue.main.async {
+            self.objectWillChange.send()
+        }
+    }
+        
+    var addFileToDraftItems : [ListActionSheetItem] { return [
+            
+            ListActionSheetItem(imageName: "report.camera-filled",
+                                content: LocalizableReport.cameraFilled.localized,
+                                type: ManageFileType.camera),
+            ListActionSheetItem(imageName: "report.mic-filled",
+                                content: LocalizableReport.micFilled.localized,
+                                type: ManageFileType.recorder),
+            ListActionSheetItem(imageName: "report.gallery",
+                                content: LocalizableReport.galleryFilled.localized,
+                                type: ManageFileType.tellaFile),
+            ListActionSheetItem(imageName: "report.phone",
+                                content: LocalizableReport.phoneFilled.localized,
+                                type: ManageFileType.fromDevice)
+        ]}
+
 }

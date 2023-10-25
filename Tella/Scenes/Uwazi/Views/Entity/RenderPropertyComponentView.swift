@@ -10,6 +10,9 @@ import SwiftUI
 
 struct RenderPropertyComponentView: View {
     @StateObject var prompt: UwaziEntryPrompt
+    @EnvironmentObject var sheetManager: SheetManager
+    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
+    
     var body: some View {
         GenericEntityWidget(title: prompt.question,
                             isRequired: prompt.required ?? false,
@@ -41,9 +44,16 @@ struct RenderPropertyComponentView: View {
             Text(prompt.question)
         case .dataTypeMarkdown:
             Text(prompt.question)
-        case .dataTypeMultiFiles, .dataTypeMultiPDFFiles:
-            UwaziFileSelector()
+        case .dataTypeMultiFiles:
+            SupportingFileWidget()
                 .environmentObject(prompt)
+                .environmentObject(sheetManager)
+                .environmentObject(entityViewModel)
+        case .dataTypeMultiPDFFiles:
+            PrimaryDocuments()
+                .environmentObject(prompt)
+                .environmentObject(sheetManager)
+                .environmentObject(entityViewModel)
 //        case .dataTypeGeneratedID:
 //            Text(prompt.question)
         case .dataTypeDivider:

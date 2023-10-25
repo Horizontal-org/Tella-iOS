@@ -327,6 +327,8 @@
 		CCEAE5922AE6F6EE0069204A /* EntityCreationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEAE5912AE6F6EE0069204A /* EntityCreationResponse.swift */; };
 		CCEAE5942AE7188F0069204A /* UwaziSelectWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEAE5932AE7188F0069204A /* UwaziSelectWidget.swift */; };
 		CCF47F442ABE18D7000ABBBC /* TemplateActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF47F432ABE18D7000ABBBC /* TemplateActionType.swift */; };
+		CCF8D5C22AE994BF000D27C5 /* SupportingFileWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF8D5C12AE994BF000D27C5 /* SupportingFileWidget.swift */; };
+		CCF8D5C42AE9AA08000D27C5 /* PrimaryDocuments.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF8D5C32AE9AA08000D27C5 /* PrimaryDocuments.swift */; };
 		CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02ED7E24E42B3900014176 /* UserDefaultsProperty.swift */; };
 		D50727BF2625561400BBC370 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50727BE2625561400BBC370 /* KeychainManager.swift */; };
 		D50727C42625567900BBC370 /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50727C32625567900BBC370 /* KeychainTests.swift */; };
@@ -769,6 +771,8 @@
 		CCEAE5912AE6F6EE0069204A /* EntityCreationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityCreationResponse.swift; sourceTree = "<group>"; };
 		CCEAE5932AE7188F0069204A /* UwaziSelectWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSelectWidget.swift; sourceTree = "<group>"; };
 		CCF47F432ABE18D7000ABBBC /* TemplateActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateActionType.swift; sourceTree = "<group>"; };
+		CCF8D5C12AE994BF000D27C5 /* SupportingFileWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportingFileWidget.swift; sourceTree = "<group>"; };
+		CCF8D5C32AE9AA08000D27C5 /* PrimaryDocuments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryDocuments.swift; sourceTree = "<group>"; };
 		CE02ED7E24E42B3900014176 /* UserDefaultsProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsProperty.swift; sourceTree = "<group>"; };
 		CE64FA282505542E00B03CEC /* AppViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewState.swift; sourceTree = "<group>"; };
 		D47E68E3B1AECB3684E49829 /* Pods-Tella.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.release.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.release.xcconfig"; sourceTree = "<group>"; };
@@ -2192,6 +2196,8 @@
 				CCC1B42C2AC75AD20075B819 /* UwaziTextWidget.swift */,
 				CCC1B42A2AC75AAE0075B819 /* GenericEntityWidget.swift */,
 				CCEAE5932AE7188F0069204A /* UwaziSelectWidget.swift */,
+				CCF8D5C12AE994BF000D27C5 /* SupportingFileWidget.swift */,
+				CCF8D5C32AE9AA08000D27C5 /* PrimaryDocuments.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -2588,6 +2594,7 @@
 				12730E65279EAB9200DC0135 /* SettingsMainView.swift in Sources */,
 				12E0882427AD31F600CEB198 /* LocalizableAudio.swift in Sources */,
 				CC0D56EF2AC4B59B00AA5D81 /* AddTemplateVM.swift in Sources */,
+				CCF8D5C22AE994BF000D27C5 /* SupportingFileWidget.swift in Sources */,
 				12E6772F27A9719F00DC1E1C /* UIImageExtension.swift in Sources */,
 				D5B823EB262774E00008E04B /* MainView.swift in Sources */,
 				1220A72E292EB11B000BC24C /* ReportFileGridView.swift in Sources */,
@@ -2732,6 +2739,7 @@
 				123AE5A129CFAD7F00814CC7 /* OutboxReportVM.swift in Sources */,
 				12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */,
 				D572EAC7263A383900CE191A /* RecentFileCell.swift in Sources */,
+				CCF8D5C42AE9AA08000D27C5 /* PrimaryDocuments.swift in Sources */,
 				1268554027D2994500385E18 /* VaultFileStatus.swift in Sources */,
 				0D4BC3C5267577F900DCDC30 /* ReportsView.swift in Sources */,
 				12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */,
