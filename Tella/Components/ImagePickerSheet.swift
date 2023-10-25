@@ -54,8 +54,6 @@ class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerC
     
     func imagePickerController(_ picker: UIImagePickerController,
                 didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        func imagePickerController(_ picker: UIImagePickerController,
-                                   didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             let mediaType = info[UIImagePickerController.InfoKey.mediaType] as AnyObject
             let mediaURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL
             let referenceURL = info[UIImagePickerController.InfoKey.referenceURL] as? URL
@@ -74,7 +72,6 @@ class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerC
                 }
                 completion(ImagePickerCompletion(type: .video, videoURL: videoURL, referenceURL: referenceURL))
             }
-        }
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
