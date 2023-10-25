@@ -18,6 +18,10 @@ class FeedbackViewModel : ObservableObject {
     
     private var subscribers = Set<AnyCancellable>()
     
+    var shouldShowSaveDraftSheet: Bool {
+        return feedbackIsValid && mainAppModel.settings.shareFeedback
+    }
+    
     init(mainAppModel: MainAppModel) {
         self.mainAppModel = mainAppModel
         self.initFeedback()

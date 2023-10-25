@@ -7,7 +7,7 @@ import SwiftUI
 struct FeedbackView: View {
     
     @StateObject var feedbackViewModel : FeedbackViewModel
-    @State var isPresented : Bool = false
+    @State var showSaveDraftSheet : Bool = false
     @EnvironmentObject var appModel : MainAppModel
     @EnvironmentObject var sheetManager : SheetManager
 
@@ -94,7 +94,8 @@ struct FeedbackView: View {
         CardFrameView {
             SettingToggleItem(title: LocalizableSettings.enableFeedbackTitle.localized,
                               description: LocalizableSettings.enableFeedbackExpl.localized ,
-                              toggle: $appModel.settings.shareFeedback)
+                              toggle: $appModel.settings.shareFeedback) {
+            }
         }
     }
 
@@ -125,11 +126,15 @@ struct FeedbackView: View {
     
  
     private func showSaveFeedbackConfirmationView() {
-        self.isPresented = true
+        if feedbackViewModel.shouldShowSaveDraftSheet  {
+            self.showSaveDraftSheet = true
+        } else {
+            self.dismiss()
+        }
     }
     
     var confirmBottomSheet: some View {
-        DragView(modalHeight: 200, isShown: $isPresented) {
+        DragView(modalHeight: 200, isShown: $showSaveDraftSheet) {
             ConfirmBottomSheet(titleText: LocalizableSettings.exitFeedbackTitle.localized,
                                msgText: LocalizableSettings.exitFeedbackSheetExpl.localized,
                                cancelText: LocalizableSettings.exitFeedbackSheetAction.localized.uppercased(),
