@@ -42,9 +42,10 @@ struct RenderPropertyComponentView: View {
         case .dataTypeMarkdown:
             Text(prompt.question)
         case .dataTypeMultiFiles, .dataTypeMultiPDFFiles:
-            Text(prompt.question)
-        case .dataTypeGeneratedID:
-            Text(prompt.question)
+            UwaziFileSelector()
+                .environmentObject(prompt)
+//        case .dataTypeGeneratedID:
+//            Text(prompt.question)
         case .dataTypeDivider:
             UwaziDividerWidget()
         default:

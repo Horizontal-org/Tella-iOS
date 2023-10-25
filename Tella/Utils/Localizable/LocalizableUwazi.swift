@@ -37,5 +37,5 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     case uwaziMultiFileWidgetPrimaryDocuments = "Uwazi_Entity_MultiFile_PrimaryDocument"
     case uwaziMultiFileWidgetAttachManyPDFFiles = "Uwazi_Entity_MultiFile_AttachManyPDFFiles"
     case uwaziMultiFileWidgetSupportingFiles = "Uwazi_Entity_MultiFile_SupportingFiles"
-    case uwaziMultiFileWidgetSelectManyFiles = "Uwazi_Entity_MultiFile_SelectManyFiles"
+    case uwaziMultiFileWidgetSelectManyFiles = "Uwazi_Entity_MultiFile_SupportingFiles_HelpText"
 }

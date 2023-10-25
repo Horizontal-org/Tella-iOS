@@ -17,6 +17,8 @@ struct UwaziEntityTitleView: View {
                 Text(title)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(Color.white)
+                    .frame(alignment: .leading)
+                Spacer()
                 if isRequired {
                     Text("*")
                         .font(Font.custom(Styles.Fonts.boldFontName, size: 14))
