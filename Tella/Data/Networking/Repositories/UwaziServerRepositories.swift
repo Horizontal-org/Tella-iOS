@@ -296,7 +296,16 @@ extension UwaziServerRepository.API: APIRequest {
                     let cookiesString = cookieList.joined(separator: ";")
             return [HTTPHeaderField.cookie.rawValue: cookiesString,
                     HTTPHeaderField.xRequestedWith.rawValue: XRequestedWithValue.xmlHttp.rawValue,
-                    HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
+                    HTTPHeaderField.contentType.rawValue : ContentType.data.rawValue ]
+        }
+    }
+    
+    var encoding: Encoding {
+        switch self {
+        case .submitEntity:
+            return Encoding.form
+        default:
+            return Encoding.json
         }
     }
 

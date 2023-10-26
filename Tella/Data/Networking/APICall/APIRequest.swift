@@ -66,7 +66,15 @@ extension APIRequest {
             request.addValue(HTTPHeaderField.bearer.rawValue + token, forHTTPHeaderField: HTTPHeaderField.authorization.rawValue)
         }
         request.httpMethod = httpMethod.rawValue
-        request.httpBody = try body()
+        if encoding == .form {
+            let boundary = "Boundary-\(UUID().uuidString)"
+            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+                
+            request.httpBody = try body(boundary: boundary)
+        } else {
+            request.httpBody = try body()
+        }
+//        request.httpBody = try body()
         request.timeoutInterval = TimeInterval(30)
         return request
     }
@@ -74,20 +82,38 @@ extension APIRequest {
 
 extension APIRequest {
     
-    func body() throws -> Data? {
+    func body(boundary: String? = nil) throws -> Data? {
         let keyValues = keyValues?.compactMapValues { $0 } ?? [:]
         
         let queryItemsDictionary = keyValues
             .reduce(into: [:]) { result, tuple in
                 result[tuple.key.apiString] = tuple.value
             }
-        
         if !queryItemsDictionary.isEmpty, encoding == .json {
             return try JSONSerialization.data(withJSONObject: queryItemsDictionary,
                                               options: .prettyPrinted
             )
         }
         
+        if encoding == .form {
+            let boundary = boundary!
+            var body = Data()
+                    
+            for (key, value) in keyValues {
+                body.append("--\(boundary)\r\n".data(using: .utf8)!)
+                
+                let jsonData = try JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
+                if let jsonString = String(data: jsonData, encoding: .utf8) {
+                    body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n".data(using: .utf8)!)
+                    body.append("Content-Type: application/json\r\n\r\n".data(using: .utf8)!)
+                    body.append("\(jsonString)\r\n".data(using: .utf8)!)
+                }
+            }
+            
+            body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+            
+            return body
+        }
 //        if let fileToUpload {
 //            return getHttpBody(fieldInfo: fileToUpload)
 //        }

@@ -69,8 +69,8 @@ class UwaziEntityViewModel: ObservableObject {
         let serverURL = self.serverURL
         let cookieList = ["connect.sid=" + self.accessToken]
         
-        dump(files)
-        // Submit the entity data
+
+//         Submit the entity data
         let response = UwaziServerRepository().submitEntity(serverURL: serverURL, cookieList: cookieList, entity: entityData)
                response.sink { completion in
                    switch completion {
@@ -88,6 +88,7 @@ class UwaziEntityViewModel: ObservableObject {
     }
 
     private func extractEntityDataAndMetadata() -> ([String: Any]) {
+        var entityWrapper: [String: Any] = [:]
         var entityData: [String: Any] = [:]
         var metadata: [String: Any] = [:]
 
@@ -110,8 +111,9 @@ class UwaziEntityViewModel: ObservableObject {
 
         entityData["template"] = template!.templateId
         entityData["metadata"] = metadata
+        entityWrapper["entity"] = entityData
 
-        return entityData
+        return entityWrapper
     }
     
     private func bindVaultFileTaken() {
