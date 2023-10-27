@@ -68,8 +68,6 @@ class UwaziEntityViewModel: ObservableObject {
         // Prepare server URL and cookie list
         let serverURL = self.serverURL
         let cookieList = ["connect.sid=" + self.accessToken]
-        
-
 //         Submit the entity data
         let response = UwaziServerRepository().submitEntity(serverURL: serverURL, cookieList: cookieList, entity: entityData)
                response.sink { completion in
@@ -91,6 +89,8 @@ class UwaziEntityViewModel: ObservableObject {
         var entityWrapper: [String: Any] = [:]
         var entityData: [String: Any] = [:]
         var metadata: [String: Any] = [:]
+        var attachments: [[String: Any]] = [[:]]
+        entityData["attachments"] = attachments
 
         for entryPrompt in entryPrompts {
             switch UwaziEntityPropertyType(rawValue: entryPrompt.type) {
@@ -111,9 +111,32 @@ class UwaziEntityViewModel: ObservableObject {
 
         entityData["template"] = template!.templateId
         entityData["metadata"] = metadata
-        entityWrapper["entity"] = entityData
+        
+        if(!files.isEmpty) {
+            attachments = extractFilesAsAttachments()
+            entityData["attachments"] = attachments
+        }
 
+        entityWrapper["entity"] = entityData
+        
         return entityWrapper
+    }
+    
+    private func extractFilesAsAttachments() ->[[String: Any]] {
+        var attachments = [[String: Any]]()
+        for file in files {
+            let attachment = [
+                "originalname": file.fileName,
+                "filename": file.fileName,
+                "type": "attachment",
+                "mimetype": MIMEType.mime(for: file.fileExtension),
+                "entity": "NEW_ENTITY"
+            ] as [String: Any]
+                    
+            attachments.append(attachment)
+        }
+        
+        return attachments
     }
     
     private func bindVaultFileTaken() {
