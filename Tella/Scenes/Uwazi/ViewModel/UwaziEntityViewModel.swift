@@ -69,7 +69,7 @@ class UwaziEntityViewModel: ObservableObject {
         let serverURL = self.serverURL
         let cookieList = ["connect.sid=" + self.accessToken]
 //         Submit the entity data
-        let response = UwaziServerRepository().submitEntity(serverURL: serverURL, cookieList: cookieList, entity: entityData)
+        let response = UwaziServerRepository().submitEntity(serverURL: serverURL, cookieList: cookieList, entity: entityData, attachments: getFilesInfo())
                response.sink { completion in
                    switch completion {
 
@@ -139,6 +139,16 @@ class UwaziEntityViewModel: ObservableObject {
         return attachments
     }
     
+    func getFilesInfo() -> [UwaziAttachment] {
+        return files.compactMap { file in
+            // this is just for testing purpose. We should send the whole file
+            if let thumbnail = file.thumbnail {
+                return UwaziAttachment(filename: file.fileName, data: thumbnail)
+            } else {
+                return nil
+            }
+        }
+    }
     private func bindVaultFileTaken() {
         $resultFile.sink(receiveValue: { value in
             guard let value else { return }
@@ -169,4 +179,15 @@ class UwaziEntityViewModel: ObservableObject {
                                 type: ManageFileType.fromDevice)
         ]}
 
+}
+
+
+public struct UwaziAttachment {
+    public let filename: String
+    public let data: Data
+    
+    public init(filename: String, data: Data) {
+        self.filename = filename
+        self.data = data
+    }
 }

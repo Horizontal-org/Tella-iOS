@@ -122,9 +122,8 @@ class UwaziServerRepository: WebRepository {
             .eraseToAnyPublisher()
     }
     
-    func submitEntity(serverURL: String, cookieList: [String], entity: [String: Any]) -> AnyPublisher<EntityCreationResponse, APIError> {
-            let apiResponse: APIResponse<EntityCreationResponse> = getAPIResponse(endpoint: API.submitEntity(serverURL: serverURL, cookieList: cookieList, entity: entity))
-
+    func submitEntity(serverURL: String, cookieList: [String], entity: [String: Any], attachments: [UwaziAttachment]) -> AnyPublisher<EntityCreationResponse, APIError> {
+            let apiResponse: APIResponse<EntityCreationResponse> = getAPIResponse(endpoint: API.submitEntity(serverURL: serverURL, cookieList: cookieList, entity: entity, attachments: attachments))
             return apiResponse
                 .compactMap{$0.0}
                 .eraseToAnyPublisher()
@@ -265,7 +264,7 @@ extension UwaziServerRepository {
         case getSetting(serverURL: String, cookieList:[String])
         case getDictionary(serverURL: String, cookieList:[String])
         case getTranslations(serverURL: String, cookieList:[String])
-        case submitEntity(serverURL: String, cookieList: [String], entity: [String: Any])
+        case submitEntity(serverURL: String, cookieList: [String], entity: [String: Any], attachments: [UwaziAttachment])
     }
 }
 
@@ -292,7 +291,7 @@ extension UwaziServerRepository.API: APIRequest {
             let cookiesString = cookieList.joined(separator: "; ")
             return [HTTPHeaderField.cookie.rawValue: cookiesString,
                     HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
-        case .submitEntity(_, let cookieList, _):
+        case .submitEntity(_, let cookieList, _, _):
                     let cookiesString = cookieList.joined(separator: ";")
             return [HTTPHeaderField.cookie.rawValue: cookiesString,
                     HTTPHeaderField.xRequestedWith.rawValue: XRequestedWithValue.xmlHttp.rawValue,
@@ -325,9 +324,18 @@ extension UwaziServerRepository.API: APIRequest {
                 "password": password,
                 "token": token
             ]
-        case .submitEntity(_, _, let entity):
+        case .submitEntity(_, _, let entity, _):
             return entity
         case .checkURL, .getLanguage, .getTemplate, .getSetting,.getDictionary,.getTranslations:
+            return nil
+        }
+    }
+    
+    var uwaziAttachments: [UwaziAttachment]? {
+        switch self {
+        case .submitEntity(_, _, _, let attachment):
+            return attachment
+        default:
             return nil
         }
     }
@@ -342,7 +350,7 @@ extension UwaziServerRepository.API: APIRequest {
             return serverURL
         case .getTemplate(serverURL: let serverURL, cookieList: _):
             return serverURL
-        case .getSetting(serverURL: let serverURL, cookieList: _), .getDictionary(serverURL: let serverURL, cookieList: _),.getTranslations(serverURL: let serverURL, cookieList: _), .submitEntity(serverURL: let serverURL, cookieList: _, entity: _):
+        case .getSetting(serverURL: let serverURL, cookieList: _), .getDictionary(serverURL: let serverURL, cookieList: _),.getTranslations(serverURL: let serverURL, cookieList: _), .submitEntity(serverURL: let serverURL, cookieList: _, entity: _, _):
             return serverURL
         }
     }

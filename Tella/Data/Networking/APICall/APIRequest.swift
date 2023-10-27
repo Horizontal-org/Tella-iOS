@@ -21,6 +21,7 @@ public protocol APIRequest {
     var url: URL? { get }
     var uploadsSession: URLSession? { get }
     var apiSession: URLSession? { get }
+    var uwaziAttachments: [UwaziAttachment]? { get }
 
 }
 
@@ -45,6 +46,8 @@ public extension APIRequest {
     var url: URL? { return  URL(string: baseURL + path) }
     var uploadsSession: URLSession? { return nil }
     var apiSession: URLSession? { return nil }
+    var uwaziAttachments: [UwaziAttachment]? { nil }
+
 }
 
 extension APIRequest {
@@ -96,7 +99,7 @@ extension APIRequest {
         }
         
         if encoding == .form {
-            return createMultipartBody(keyValues: keyValues, boundary: boundary!)
+            return createMultipartBody(keyValues: keyValues, boundary: boundary!, attachments: uwaziAttachments)
         }
 //        if let fileToUpload {
 //            return getHttpBody(fieldInfo: fileToUpload)
@@ -104,7 +107,7 @@ extension APIRequest {
         return nil
     }
     
-    private func createMultipartBody(keyValues: [String: Any], boundary: String) -> Data {
+    private func createMultipartBody(keyValues: [String: Any], boundary: String, attachments: [UwaziAttachment]?) -> Data {
         let lineBreak = "\r\n"
         var body = Data()
         for (key, value) in keyValues {
@@ -114,6 +117,30 @@ extension APIRequest {
             body.append("Content-Disposition: form-data; name=\"\(key)\"\(lineBreak + lineBreak)")
             body.append("\(jsonString)\(lineBreak)")
         }
+        
+        
+        if let attachments = attachments {
+            for (index, attachment) in attachments.enumerated() {
+                dump(attachment.data)
+                body.append("--\(boundary)\(lineBreak)")
+                body.append("Content-Disposition: form-data; name=\"attachments[\(index)]\"; filename=\"\(attachment.filename)\"\(lineBreak)")
+                body.append("Content-Type: image/jpeg\(lineBreak + lineBreak)")
+                body.append(attachment.data)
+                body.append(lineBreak)
+
+            }
+        }
+
+        if let attachments = attachments {
+            for (index, attachment) in attachments.enumerated() {
+                body.append("--\(boundary)\(lineBreak)")
+                body.append("Content-Disposition: form-data; name=\"attachments_originalname[\(index)]\"\(lineBreak + lineBreak)")
+                body.append(attachment.filename)
+                body.append(lineBreak)
+
+            }
+        }
+        
         body.append("--\(boundary)--\(lineBreak)")
         return body
     }
