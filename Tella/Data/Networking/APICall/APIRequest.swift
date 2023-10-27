@@ -96,28 +96,26 @@ extension APIRequest {
         }
         
         if encoding == .form {
-            let boundary = boundary!
-            var body = Data()
-                    
-            for (key, value) in keyValues {
-                body.append("--\(boundary)\r\n".data(using: .utf8)!)
-                
-                let jsonData = try JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
-                if let jsonString = String(data: jsonData, encoding: .utf8) {
-                    body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n".data(using: .utf8)!)
-                    body.append("Content-Type: application/json\r\n\r\n".data(using: .utf8)!)
-                    body.append("\(jsonString)\r\n".data(using: .utf8)!)
-                }
-            }
-            
-            body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-            
-            return body
+            return createMultipartBody(keyValues: keyValues, boundary: boundary!)
         }
 //        if let fileToUpload {
 //            return getHttpBody(fieldInfo: fileToUpload)
 //        }
         return nil
+    }
+    
+    private func createMultipartBody(keyValues: [String: Any], boundary: String) -> Data {
+        let lineBreak = "\r\n"
+        var body = Data()
+        for (key, value) in keyValues {
+            let jsonData = try? JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
+            let jsonString = String(data: jsonData!, encoding: .utf8) ?? ""
+            body.append("--\(boundary + lineBreak)")
+            body.append("Content-Disposition: form-data; name=\"\(key)\"\(lineBreak + lineBreak)")
+            body.append("\(jsonString)\(lineBreak)")
+        }
+        body.append("--\(boundary)--\(lineBreak)")
+        return body
     }
     
     private func addURLQueryParameters(toURL url: URL) -> URL {
@@ -154,6 +152,14 @@ extension NSMutableData {
     func appendString(_ string: String) {
         if let data = string.data(using: .utf8) {
             self.append(data)
+        }
+    }
+}
+
+extension Data {
+    mutating func append(_ string: String) {
+        if let data = string.data(using: .utf8) {
+            append(data)
         }
     }
 }
