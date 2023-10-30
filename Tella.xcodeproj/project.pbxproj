@@ -297,6 +297,8 @@
 		CC13138A2A5DB68E0057271C /* BottomSheetTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1313892A5DB68E0057271C /* BottomSheetTitleView.swift */; };
 		CC13138C2A5DB79B0057271C /* BottomButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC13138B2A5DB79B0057271C /* BottomButtonsView.swift */; };
 		CC43D9E12A72F8260030192E /* UwaziView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC43D9E02A72F8260030192E /* UwaziView.swift */; };
+		CC5CEB872AF037B600BF238B /* FileDropdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5CEB862AF037B600BF238B /* FileDropdown.swift */; };
+		CC5CEB892AF0551900BF238B /* UwaziAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5CEB882AF0551900BF238B /* UwaziAttachment.swift */; };
 		CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */; };
 		CC9DEE5F2AE80ED400C8ED29 /* UwaziFileSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9DEE5E2AE80ED400C8ED29 /* UwaziFileSelector.swift */; };
 		CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */; };
@@ -741,6 +743,8 @@
 		CC1313892A5DB68E0057271C /* BottomSheetTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetTitleView.swift; sourceTree = "<group>"; };
 		CC13138B2A5DB79B0057271C /* BottomButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomButtonsView.swift; sourceTree = "<group>"; };
 		CC43D9E02A72F8260030192E /* UwaziView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziView.swift; sourceTree = "<group>"; };
+		CC5CEB862AF037B600BF238B /* FileDropdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDropdown.swift; sourceTree = "<group>"; };
+		CC5CEB882AF0551900BF238B /* UwaziAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziAttachment.swift; sourceTree = "<group>"; };
 		CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableReport.swift; sourceTree = "<group>"; };
 		CC9DEE5E2AE80ED400C8ED29 /* UwaziFileSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziFileSelector.swift; sourceTree = "<group>"; };
 		CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationBottomSheet.swift; sourceTree = "<group>"; };
@@ -1968,6 +1972,7 @@
 				CCF47F432ABE18D7000ABBBC /* TemplateActionType.swift */,
 				0ECC781A267A542300A2ACF2 /* UwaziPages.swift */,
 				CCC1B43C2AC75C5D0075B819 /* UwaziConstants.swift */,
+				CC5CEB882AF0551900BF238B /* UwaziAttachment.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2211,6 +2216,7 @@
 				CCC1B4302AC75B120075B819 /* UwaziEntityButtonView.swift */,
 				CCC1B42E2AC75AF60075B819 /* UwaziDividerWidget.swift */,
 				CC9DEE5E2AE80ED400C8ED29 /* UwaziFileSelector.swift */,
+				CC5CEB862AF037B600BF238B /* FileDropdown.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2717,6 +2723,7 @@
 				12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				12199C34294094430041BD38 /* OutboxDetailsView.swift in Sources */,
+				CC5CEB892AF0551900BF238B /* UwaziAttachment.swift in Sources */,
 				CCC1B4312AC75B120075B819 /* UwaziEntityButtonView.swift in Sources */,
 				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
 				1291A83228BE0086001A6055 /* SettingsAddServerCardView.swift in Sources */,
@@ -2752,6 +2759,7 @@
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,
 				CCC1B42F2AC75AF60075B819 /* UwaziDividerWidget.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,
+				CC5CEB872AF037B600BF238B /* FileDropdown.swift in Sources */,
 				128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */,
 				1289B98727C5397200315FCE /* ScreenExtension.swift in Sources */,
 				1227FC8F2922BDBC002FD6FB /* CameraModel.swift in Sources */,

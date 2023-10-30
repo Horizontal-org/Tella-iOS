@@ -121,10 +121,9 @@ extension APIRequest {
         
         if let attachments = attachments {
             for (index, attachment) in attachments.enumerated() {
-                dump(attachment.data)
                 body.append("--\(boundary)\(lineBreak)")
                 body.append("Content-Disposition: form-data; name=\"attachments[\(index)]\"; filename=\"\(attachment.filename)\"\(lineBreak)")
-                body.append("Content-Type: image/jpeg\(lineBreak + lineBreak)")
+                body.append("Content-Type: \(attachment.mimeType)\(lineBreak + lineBreak)")
                 body.append(attachment.data)
                 body.append(lineBreak)
 
@@ -135,7 +134,7 @@ extension APIRequest {
             for (index, attachment) in attachments.enumerated() {
                 body.append("--\(boundary)\(lineBreak)")
                 body.append("Content-Disposition: form-data; name=\"attachments_originalname[\(index)]\"\(lineBreak + lineBreak)")
-                body.append(attachment.filename)
+                body.append("\(attachment.filename).\(attachment.fileExtension)")
                 body.append(lineBreak)
 
             }

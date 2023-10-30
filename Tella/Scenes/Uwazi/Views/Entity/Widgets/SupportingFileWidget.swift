@@ -22,17 +22,10 @@ struct SupportingFileWidget: View {
             showAddFileSheet()
         }, title: "Select Files")
             .environmentObject(prompt)
-        itemsGridView
-    }
-    
-    var itemsGridView: some View {
-            LazyVGrid(columns: gridLayout, alignment: .center, spacing: 12) {
-                ForEach(entityViewModel.files.sorted{$0.created < $1.created}, id: \.id) { file in
-                    ReportFileGridView(file: file)
-                        .frame(height: (UIScreen.screenWidth - 64) / 3 )
-                }
-            }
+        if(entityViewModel.files.count > 0) {
+            FileDropdown(files: $entityViewModel.files)
         }
+    }
     
     func showAddFileSheet() {
             

@@ -47,6 +47,7 @@ class UwaziEntityViewModel: ObservableObject {
         return self.mainAppModel.vaultManager.tellaData
     }
     
+    
     func getTemplateById (id: Int) -> CollectedTemplate {
         return (self.tellaData?.getUwaziTemplateById(id: id))!
     }
@@ -126,8 +127,8 @@ class UwaziEntityViewModel: ObservableObject {
         var attachments = [[String: Any]]()
         for file in files {
             let attachment = [
-                "originalname": file.fileName,
-                "filename": file.fileName,
+                "originalname": "\(file.fileName).\(file.fileExtension)",
+                "filename": "\(file.fileName).\(file.fileExtension)",
                 "type": "attachment",
                 "mimetype": MIMEType.mime(for: file.fileExtension),
                 "entity": "NEW_ENTITY"
@@ -142,8 +143,8 @@ class UwaziEntityViewModel: ObservableObject {
     func getFilesInfo() -> [UwaziAttachment] {
         return files.compactMap { file in
             // this is just for testing purpose. We should send the whole file
-            if let thumbnail = file.thumbnail {
-                return UwaziAttachment(filename: file.fileName, data: thumbnail)
+            if let fileData = self.mainAppModel.load(file: file) {
+                return UwaziAttachment(filename: file.fileName, data: fileData, fileExtension: file.fileExtension)
             } else {
                 return nil
             }
@@ -179,15 +180,4 @@ class UwaziEntityViewModel: ObservableObject {
                                 type: ManageFileType.fromDevice)
         ]}
 
-}
-
-
-public struct UwaziAttachment {
-    public let filename: String
-    public let data: Data
-    
-    public init(filename: String, data: Data) {
-        self.filename = filename
-        self.data = data
-    }
 }
