@@ -95,6 +95,7 @@ struct FeedbackView: View {
             SettingToggleItem(title: LocalizableSettings.enableFeedbackTitle.localized,
                               description: LocalizableSettings.enableFeedbackExpl.localized ,
                               toggle: $appModel.settings.shareFeedback) {
+                feedbackViewModel.deleteCurrentDraft()
             }
         }
     }
@@ -148,12 +149,13 @@ struct FeedbackView: View {
     }
     
     private func handleFeedbackSentSuccessfully() {
-        if feedbackViewModel.feedbackSentSuccessfully {
-            self.dismiss()
-            Toast.displayToast(message: LocalizableSettings.successSentToast.localized)
+        DispatchQueue.main.async {
+            if feedbackViewModel.feedbackSentSuccessfully {
+                self.dismiss()
+                Toast.displayToast(message: LocalizableSettings.successSentToast.localized)
+            }
         }
     }
-
 }
 
 #Preview {

@@ -65,10 +65,9 @@ class FeedbackViewModel : ObservableObject {
     }
     
     private func handleFeedbackResult(result:Subscribers.Completion<APIError>) {
-        guard let feedback  else { return }
         switch result {
         case .finished:
-            self.mainAppModel.vaultManager.tellaData?.deleteFeedback(feedbackId: feedback.id)
+            self.deleteCurrentDraft()
             self.feedbackSentSuccessfully = true
         case .failure(let error):
             switch error {
@@ -78,5 +77,11 @@ class FeedbackViewModel : ObservableObject {
                 break
             }
         }
+    }
+    
+    func deleteCurrentDraft() {
+        guard let feedback  else { return }
+        self.mainAppModel.vaultManager.tellaData?.deleteFeedback(feedbackId: feedback.id)
+        initFeedback()
     }
 }
