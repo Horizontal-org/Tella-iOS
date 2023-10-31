@@ -36,6 +36,7 @@ struct SupportingFileWidget: View {
         }
     
     func showAddPhotoVideoSheet() {
+        
             entityViewModel.showingImagePicker = true
         }
     

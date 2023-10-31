@@ -36,8 +36,8 @@ struct PrimaryDocuments: View {
     
     func showAddFileSheet() {
             
-            sheetManager.showBottomSheet( modalHeight: CGFloat(300), content: {
-                ActionListBottomSheet(items: entityViewModel.addFileToDraftItems,
+            sheetManager.showBottomSheet( modalHeight: CGFloat(150), content: {
+                ActionListBottomSheet(items: entityViewModel.addFileToPdfItems,
                                       headerTitle: "Select files",
                                       action:  {item in
                     self.handleActions(item : item)
@@ -46,16 +46,16 @@ struct PrimaryDocuments: View {
         }
     
     func showAddPhotoVideoSheet() {
-            entityViewModel.showingImagePicker = true
-        }
+        entityViewModel.showingImportDocumentPicker = true
+    }
     
     var fileListView : some View {
         FileListView(appModel: entityViewModel.mainAppModel,
-                         rootFile: entityViewModel.mainAppModel.vaultManager.root,
-                         fileType: [.audio,.image,.video],
-                         title: LocalizableReport.selectFiles.localized,
-                         fileListType: .selectFiles,
-                         resultFile: $entityViewModel.resultFile)
+                        rootFile: entityViewModel.mainAppModel.vaultManager.root,
+                        fileType: [.document],
+                        title: LocalizableReport.selectFiles.localized,
+                        fileListType: .selectFiles,
+                        resultFile: $entityViewModel.resultFile)
         }
     
     private func handleActions(item: ListActionSheetItem) {

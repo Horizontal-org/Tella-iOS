@@ -22,7 +22,7 @@ public protocol APIRequest {
     var uploadsSession: URLSession? { get }
     var apiSession: URLSession? { get }
     var uwaziAttachments: [UwaziAttachment]? { get }
-
+    var uwaziDocuments: [UwaziAttachment]? { get }
 }
 
 public extension APIRequest {
@@ -47,6 +47,7 @@ public extension APIRequest {
     var uploadsSession: URLSession? { return nil }
     var apiSession: URLSession? { return nil }
     var uwaziAttachments: [UwaziAttachment]? { nil }
+    var uwaziDocuments: [UwaziAttachment]? {nil}
 
 }
 
@@ -99,7 +100,7 @@ extension APIRequest {
         }
         
         if encoding == .form {
-            return createMultipartBody(keyValues: keyValues, boundary: boundary!, attachments: uwaziAttachments)
+            return createMultipartBody(keyValues: keyValues, boundary: boundary!, attachments: uwaziAttachments, documents: uwaziDocuments)
         }
 //        if let fileToUpload {
 //            return getHttpBody(fieldInfo: fileToUpload)
@@ -107,7 +108,7 @@ extension APIRequest {
         return nil
     }
     
-    private func createMultipartBody(keyValues: [String: Any], boundary: String, attachments: [UwaziAttachment]?) -> Data {
+    private func createMultipartBody(keyValues: [String: Any], boundary: String, attachments: [UwaziAttachment]?, documents: [UwaziAttachment]?) -> Data {
         let lineBreak = "\r\n"
         var body = Data()
         for (key, value) in keyValues {
@@ -135,6 +136,27 @@ extension APIRequest {
                 body.append("--\(boundary)\(lineBreak)")
                 body.append("Content-Disposition: form-data; name=\"attachments_originalname[\(index)]\"\(lineBreak + lineBreak)")
                 body.append("\(attachment.filename).\(attachment.fileExtension)")
+                body.append(lineBreak)
+
+            }
+        }
+        
+        if let documents = documents {
+            for (index, document) in documents.enumerated() {
+                body.append("--\(boundary)\(lineBreak)")
+                body.append("Content-Disposition: form-data; name=\"documents[\(index)]\"; filename=\"\(document.filename)\"\(lineBreak)")
+                body.append("Content-Type: \(document.mimeType)\(lineBreak + lineBreak)")
+                body.append(document.data)
+                body.append(lineBreak)
+
+            }
+        }
+
+        if let documents = documents {
+            for (index, document) in documents.enumerated() {
+                body.append("--\(boundary)\(lineBreak)")
+                body.append("Content-Disposition: form-data; name=\"documents_originalname[\(index)]\"\(lineBreak + lineBreak)")
+                body.append("\(document.filename).\(document.fileExtension)")
                 body.append(lineBreak)
 
             }
