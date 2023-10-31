@@ -20,6 +20,8 @@ struct CreateEntityView: View {
     var body: some View {
         ContainerView {
             contentView
+            
+            photoVideoPickerView
         }
         .navigationBarHidden(true)
         .overlay(cameraView)
@@ -88,6 +90,14 @@ struct CreateEntityView: View {
                     showingRecoredrView: $entityViewModel.showingRecordView,
                     resultFile: $entityViewModel.resultFile) : nil
         }
+    
+    var photoVideoPickerView : some View {
+        PhotoVideoPickerView(showingImagePicker: $entityViewModel.showingImagePicker,
+                             showingImportDocumentPicker: $entityViewModel.showingImportDocumentPicker,
+                             appModel: entityViewModel.mainAppModel,
+                             resultFile: $entityViewModel.resultFile,
+                             rootFile:  $entityViewModel.mainAppModel.vaultManager.root)
+    }
 
     private func showSaveEntityConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: modelHeight) {
