@@ -13,9 +13,6 @@ struct SupportingFileWidget: View {
     @EnvironmentObject var sheetManager: SheetManager
     @EnvironmentObject var entityViewModel: UwaziEntityViewModel
     
-    private let gridLayout: [GridItem] = [GridItem(spacing: 12),
-                                              GridItem(spacing: 12),
-                                              GridItem(spacing: 12)]
     var body: some View {
         UwaziFileSelector(addFiles: {
             UIApplication.shared.endEditing()

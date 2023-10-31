@@ -22,6 +22,8 @@ struct CreateEntityView: View {
             contentView
         }
         .navigationBarHidden(true)
+        .overlay(cameraView)
+        .overlay(recordView)
     }
     
     fileprivate var contentView: some View {
@@ -68,6 +70,24 @@ struct CreateEntityView: View {
         }
         .buttonStyle(PlainButtonStyle())
     }
+    
+    var cameraView : some View {
+        entityViewModel.showingCamera ?
+        CameraView(sourceView: SourceView.addReportFile,
+                   showingCameraView: $entityViewModel.showingCamera,
+                   resultFile: $entityViewModel.resultFile,
+                   mainAppModel: entityViewModel.mainAppModel,
+                   rootFile: entityViewModel.mainAppModel.vaultManager.root) : nil
+    }
+    
+    var recordView : some View {
+        entityViewModel.showingRecordView ?
+        RecordView(appModel: entityViewModel.mainAppModel,
+                   rootFile: entityViewModel.mainAppModel.vaultManager.root,
+                    sourceView: .addReportFile,
+                    showingRecoredrView: $entityViewModel.showingRecordView,
+                    resultFile: $entityViewModel.resultFile) : nil
+        }
 
     private func showSaveEntityConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: modelHeight) {
