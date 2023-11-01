@@ -109,61 +109,44 @@ extension APIRequest {
     }
     
     private func createMultipartBody(keyValues: [String: Any], boundary: String, attachments: [UwaziAttachment]?, documents: [UwaziAttachment]?) -> Data {
-        let lineBreak = "\r\n"
-        var body = Data()
+        var multipart = MultipartRequest(boundary: boundary)
+        
         for (key, value) in keyValues {
             let jsonData = try? JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
             let jsonString = String(data: jsonData!, encoding: .utf8) ?? ""
-            body.append("--\(boundary + lineBreak)")
-            body.append("Content-Disposition: form-data; name=\"\(key)\"\(lineBreak + lineBreak)")
-            body.append("\(jsonString)\(lineBreak)")
+            multipart.add(key: key, value: jsonString)
         }
         
         
         if let attachments = attachments {
             for (index, attachment) in attachments.enumerated() {
-                body.append("--\(boundary)\(lineBreak)")
-                body.append("Content-Disposition: form-data; name=\"attachments[\(index)]\"; filename=\"\(attachment.filename)\"\(lineBreak)")
-                body.append("Content-Type: \(attachment.mimeType)\(lineBreak + lineBreak)")
-                body.append(attachment.data)
-                body.append(lineBreak)
-
-            }
-        }
-
-        if let attachments = attachments {
-            for (index, attachment) in attachments.enumerated() {
-                body.append("--\(boundary)\(lineBreak)")
-                body.append("Content-Disposition: form-data; name=\"attachments_originalname[\(index)]\"\(lineBreak + lineBreak)")
-                body.append("\(attachment.filename).\(attachment.fileExtension)")
-                body.append(lineBreak)
-
-            }
-        }
-        
-        if let documents = documents {
-            for (index, document) in documents.enumerated() {
-                body.append("--\(boundary)\(lineBreak)")
-                body.append("Content-Disposition: form-data; name=\"documents[\(index)]\"; filename=\"\(document.filename)\"\(lineBreak)")
-                body.append("Content-Type: \(document.mimeType)\(lineBreak + lineBreak)")
-                body.append(document.data)
-                body.append(lineBreak)
+                multipart.add(
+                    key: "attachments[\(index)]",
+                    fileName: attachment.filename,
+                    fileMimeType: attachment.mimeType,
+                    fileData: attachment.data
+                )
+                
+                multipart.add(key: "attachments_originalname[\(index)]", value: attachment.filename)
 
             }
         }
 
         if let documents = documents {
             for (index, document) in documents.enumerated() {
-                body.append("--\(boundary)\(lineBreak)")
-                body.append("Content-Disposition: form-data; name=\"documents_originalname[\(index)]\"\(lineBreak + lineBreak)")
-                body.append("\(document.filename).\(document.fileExtension)")
-                body.append(lineBreak)
-
+                multipart.add(
+                    key: "documents[\(index)]",
+                    fileName: document.filename,
+                    fileMimeType: document.mimeType,
+                    fileData: document.data
+                )
+                
+                multipart.add(key: "documents_originalname[\(index)]", value: document.filename)
             }
         }
+
         
-        body.append("--\(boundary)--\(lineBreak)")
-        return body
+        return multipart.httpBody
     }
     
     private func addURLQueryParameters(toURL url: URL) -> URL {
@@ -200,14 +183,6 @@ extension NSMutableData {
     func appendString(_ string: String) {
         if let data = string.data(using: .utf8) {
             self.append(data)
-        }
-    }
-}
-
-extension Data {
-    mutating func append(_ string: String) {
-        if let data = string.data(using: .utf8) {
-            append(data)
         }
     }
 }
