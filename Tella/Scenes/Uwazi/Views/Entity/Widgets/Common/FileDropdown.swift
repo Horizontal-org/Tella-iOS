@@ -21,7 +21,7 @@ struct FileDropdown: View {
             }
             
             if showFiles {
-                dropdownItems
+                FileItems(files: $files)
             }
         }
     }
@@ -40,7 +40,12 @@ struct FileDropdown: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
     
-    var dropdownItems: some View {
+}
+
+
+struct FileItems: View {
+    @Binding var files: Set<VaultFile>
+    var body: some View {
         VStack {
             ForEach(files.sorted{$0.created < $1.created}, id: \.id) { file in
                 HStack {
@@ -68,6 +73,7 @@ struct FileDropdown: View {
                     .padding(.horizontal, 17)
                 }
                 .padding(.bottom, 17)
+                .padding(.horizontal, 17)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         }

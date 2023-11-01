@@ -13,26 +13,14 @@ struct PrimaryDocuments: View {
     @EnvironmentObject var sheetManager: SheetManager
     @EnvironmentObject var entityViewModel: UwaziEntityViewModel
     
-    private let gridLayout: [GridItem] = [GridItem(spacing: 12),
-                                              GridItem(spacing: 12),
-                                              GridItem(spacing: 12)]
     var body: some View {
         UwaziFileSelector(addFiles: {
             UIApplication.shared.endEditing()
             showAddFileSheet()
         }, title: "Select PDF files")
             .environmentObject(prompt)
-        itemsGridView
+        FileItems(files: $entityViewModel.pdfDocuments)
     }
-    
-    var itemsGridView: some View {
-            LazyVGrid(columns: gridLayout, alignment: .center, spacing: 12) {
-                ForEach(entityViewModel.pdfDocuments.sorted{$0.created < $1.created}, id: \.id) { file in
-                    ReportFileGridView(file: file)
-                        .frame(height: (UIScreen.screenWidth - 64) / 3 )
-                }
-            }
-        }
     
     func showAddFileSheet() {
             
