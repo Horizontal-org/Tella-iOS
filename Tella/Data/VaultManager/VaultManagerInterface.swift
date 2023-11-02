@@ -18,6 +18,7 @@ protocol VaultManagerInterface {
     func initKeys(_ type: PasswordTypeEnum, password:String)
     func updateKeys(_ type: PasswordTypeEnum, newPassword:String, oldPassword:String)
     func getPasswordType() -> PasswordTypeEnum
+    func initialize(with key:String?) throws
     
     func getFilesToMergeToDatabase() -> AnyPublisher<[(VaultFileDB,String?)],Never>
     func loadFileData(fileName: String?) -> Data?

@@ -12,9 +12,8 @@ class TellaDataBase : DataBase {
       var dataBaseHelper : DataBaseHelper
       var statementBuilder : SQLiteStatementBuilder
     
-    init(key: String?) {
-        
-        dataBaseHelper = DataBaseHelper(key: key, databaseName:D.databaseName)
+    init(key: String?) throws {
+        dataBaseHelper =  try DataBaseHelper(key: key, databaseName:D.databaseName)
         statementBuilder = SQLiteStatementBuilder(dbPointer: dataBaseHelper.dbPointer)
         checkVersions()
     }

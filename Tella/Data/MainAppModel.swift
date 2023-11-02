@@ -80,7 +80,12 @@ class MainAppModel: ObservableObject {
     }
 
     private func initDataSource() {
-        self.vaultFilesManager = VaultFilesManager(key: self.vaultManager.key, vaultManager: self.vaultManager)
+        do {
+            try self.vaultManager.initialize(with: self.vaultManager.key)
+            self.vaultFilesManager = try VaultFilesManager(key: self.vaultManager.key, vaultManager: self.vaultManager)
+        } catch (let error){
+            Toast.displayToast(message: "Error opening the app")
+        }
     }
     
     private func mergeFileToDatabase(promise:  @escaping (Result<Bool,Never>) -> Void) {

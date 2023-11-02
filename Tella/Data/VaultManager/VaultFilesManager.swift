@@ -12,8 +12,8 @@ class VaultFilesManager : VaultFilesManagerInterface {
     var vaultManager : VaultManagerInterface?
     var cancellable: Set<AnyCancellable> = []
     
-    init(key: String?, vaultManager: VaultManagerInterface? = nil) {
-        self.vaultDataSource = VaultDataSource(key: key)
+    init(key: String?, vaultManager: VaultManagerInterface? = nil) throws {
+        self.vaultDataSource = try VaultDataSource(key: key)
         self.vaultManager = vaultManager
     }
     

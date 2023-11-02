@@ -9,8 +9,8 @@ class VaultDataSource : VaultDataSourceInterface {
     
     var database : VaultDatabase
 
-    init(key: String?) {
-        self.database = VaultDatabase(key: key)
+    init(key: String?) throws {
+        self.database = try VaultDatabase(key: key)
     }
 
     func addVaultFile(file : VaultFileDB, parentId: String?) throws {

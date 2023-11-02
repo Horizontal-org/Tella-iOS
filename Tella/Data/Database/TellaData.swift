@@ -18,8 +18,8 @@ class TellaData : ObservableObject {
     var submittedReports = CurrentValueSubject<[Report], Error>([])
     var outboxedReports = CurrentValueSubject<[Report], Error>([])
     
-    init(key: String?) {
-        self.database = TellaDataBase(key: key)
+    init(key: String?) throws {
+        self.database = try TellaDataBase(key: key)
         getServers()
         getReports()
     }

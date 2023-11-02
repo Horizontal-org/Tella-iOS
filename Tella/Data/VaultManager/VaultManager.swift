@@ -189,7 +189,6 @@ extension VaultManager {
 
                 do {
                     guard let key = try self.recoverKey(password: password)?.getString() else { return promise(.success(false))  }
-                    self.initialize(with: key)
                     promise(.success(true))
                 }
                 catch let error {
@@ -209,7 +208,6 @@ extension VaultManager {
         do {
             try cryptoManager.initKeys(type, password: password)
             guard let key = try self.recoverKey(password: password)?.getString() else { return }
-            self.initialize(with: key)
             onSuccessLock.send(key)
         }
         catch let error {
@@ -231,8 +229,8 @@ extension VaultManager {
         return cryptoManager.passwordType
     }
     
-    private func initialize(with key:String?) {
-        self.tellaData = TellaData(key: key)
+     func initialize(with key:String?) throws {
+        self.tellaData = try TellaData(key: key)
         fileManager.createDirectory(atPath: containerURL)
     }
 }

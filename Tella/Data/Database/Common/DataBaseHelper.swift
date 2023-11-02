@@ -12,45 +12,28 @@ class DataBaseHelper {
     var dbURL: URL?
     
     var dbPointer: OpaquePointer?
-    
-    func openDatabases(key: String?, databaseName: String) {
-        
-        dbURL =  FileManager.documentDirectory(withPath:databaseName)
-        
-        guard let key = key else { return }
-        
-        if sqlite3_open(dbURL?.path, &dbPointer) != SQLITE_OK {
-            debugLog("Error opening database at \(dbURL?.absoluteString ?? "")!")
-            logDbErr("Error opening database")
-        } else {
-            debugLog("Opening database at \(dbURL?.absoluteString ?? "")")
-        }
-        
-        if (sqlite3_key(dbPointer, key, Int32(key.count)) != SQLITE_OK) {
-            logDbErr("Error setting key")
-        }
-    }
-    
-    
-    init(key: String?, databaseName: String) {
-        
-        dbURL =  FileManager.documentDirectory(withPath:databaseName)
-        
-        guard let key = key else { return }
-        
-        if sqlite3_open(dbURL?.path, &dbPointer) != SQLITE_OK {
-            debugLog("Error opening database at \(dbURL?.absoluteString ?? "")!")
-            logDbErr("Error opening database")
-        } else {
-            debugLog("Opening database at \(dbURL?.absoluteString ?? "")")
-        }
-        
-        if (sqlite3_key(dbPointer, key, Int32(key.count)) != SQLITE_OK) {
-            logDbErr("Error setting key")
-        }
 
+    init(key: String?, databaseName: String) throws {
+        
+        dbURL =  FileManager.documentDirectory(withPath:"dd")
+        
+        guard let key = key else { return }
+
+        if sqlite3_open(dbURL?.path, &dbPointer) != SQLITE_OK {
+            debugLog("Error opening database at \(dbURL?.absoluteString ?? "")!")
+            logDbErr("Error opening database")
+            throw  SqliteError(error: SQLITE_ERROR)
+            
+        } else {
+            debugLog("Opening database at \(dbURL?.absoluteString ?? "")")
+        }
+        
+        if (sqlite3_key(dbPointer, key, Int32(key.count)) != SQLITE_OK) {
+            logDbErr("Error setting key")
+            throw  SqliteError(error: SQLITE_ERROR)
+        }
     }
-    
+
     func logDbErr(_ msg: String) {
         let errmsg = String(cString: sqlite3_errmsg(dbPointer)!)
         debugLog("\(msg): \(errmsg)")

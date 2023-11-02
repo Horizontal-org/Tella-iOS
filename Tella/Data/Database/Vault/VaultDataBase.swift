@@ -31,8 +31,8 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
     
     private var rootId = "11223344-5566-4777-8899-aabbccddeeff";
     
-    init(key: String?) {
-        dataBaseHelper = DataBaseHelper(key: key, databaseName: VaultD.databaseName)
+    init(key: String?) throws {
+        dataBaseHelper = try DataBaseHelper(key: key, databaseName: VaultD.databaseName)
         statementBuilder = SQLiteStatementBuilder(dbPointer: dataBaseHelper.dbPointer)
         checkVersions()
     }
