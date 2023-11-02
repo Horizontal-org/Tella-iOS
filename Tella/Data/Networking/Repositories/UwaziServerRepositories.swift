@@ -331,24 +331,65 @@ extension UwaziServerRepository.API: APIRequest {
         }
     }
     
-    var uwaziAttachments: [UwaziAttachment]? {
+    var multipartBody: Data? {
         switch self {
-        case .submitEntity(_, _, _, let attachment, _):
-            return attachment
+        case .submitEntity(_, _, let entity, let attachment, let documents):
+            return createMultipartBody(
+                keyValues: entity,
+                boundary: "<BOUNDARY_ID>",
+                attachments: attachment,
+                documents: documents
+            )
         default:
             return nil
         }
     }
     
-    var uwaziDocuments: [UwaziAttachment]? {
-        switch self {
-        case .submitEntity(_, _, _, _, let documents):
-            return documents
-        default:
-            return nil
-        }
+    var multipartHeader: String? {
+        return "multipart/form-data; boundary=<BOUNDARY_ID>"
     }
 
+    private func createMultipartBody(keyValues: [String: Any], boundary: String, attachments: [UwaziAttachment]?, documents: [UwaziAttachment]?) -> Data {
+        let keyValues = keyValues.compactMapValues { $0 }
+        var multipart = MultipartRequest(boundary: boundary)
+        
+        for (key, value) in keyValues {
+            let jsonData = try? JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
+            let jsonString = String(data: jsonData!, encoding: .utf8) ?? ""
+            multipart.add(key: key, value: jsonString)
+        }
+        
+        
+        if let attachments = attachments {
+            for (index, attachment) in attachments.enumerated() {
+                multipart.add(
+                    key: "attachments[\(index)]",
+                    fileName: attachment.filename,
+                    fileMimeType: attachment.mimeType,
+                    fileData: attachment.data
+                )
+                
+                multipart.add(key: "attachments_originalname[\(index)]", value: attachment.filename)
+
+            }
+        }
+
+        if let documents = documents {
+            for (index, document) in documents.enumerated() {
+                multipart.add(
+                    key: "documents[\(index)]",
+                    fileName: document.filename,
+                    fileMimeType: document.mimeType,
+                    fileData: document.data
+                )
+                
+                multipart.add(key: "documents_originalname[\(index)]", value: document.filename)
+            }
+        }
+
+        
+        return multipart.httpBody
+    }
     var baseURL: String {
         switch self {
         case .login((_, _, let serverURL)), .twoFactorAuthentication((_,_,_, let serverURL)):

@@ -21,8 +21,8 @@ public protocol APIRequest {
     var url: URL? { get }
     var uploadsSession: URLSession? { get }
     var apiSession: URLSession? { get }
-    var uwaziAttachments: [UwaziAttachment]? { get }
-    var uwaziDocuments: [UwaziAttachment]? { get }
+    var multipartBody: Data? { get }
+    var multipartHeader: String? {get}
 }
 
 public extension APIRequest {
@@ -46,8 +46,8 @@ public extension APIRequest {
     var url: URL? { return  URL(string: baseURL + path) }
     var uploadsSession: URLSession? { return nil }
     var apiSession: URLSession? { return nil }
-    var uwaziAttachments: [UwaziAttachment]? { nil }
-    var uwaziDocuments: [UwaziAttachment]? {nil}
+    var multipartBody: Data? { nil }
+    var multipartHeader: String? { nil }
 
 }
 
@@ -71,14 +71,13 @@ extension APIRequest {
         }
         request.httpMethod = httpMethod.rawValue
         if encoding == .form {
-            let boundary = "Boundary-\(UUID().uuidString)"
-            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            request.setValue(multipartHeader, forHTTPHeaderField: "Content-Type")
                 
-            request.httpBody = try body(boundary: boundary)
+            request.httpBody = multipartBody
         } else {
             request.httpBody = try body()
         }
-//        request.httpBody = try body()
+
         request.timeoutInterval = TimeInterval(30)
         return request
     }
@@ -98,56 +97,12 @@ extension APIRequest {
                                               options: .prettyPrinted
             )
         }
-        
-        if encoding == .form {
-            return createMultipartBody(keyValues: keyValues, boundary: boundary!, attachments: uwaziAttachments, documents: uwaziDocuments)
-        }
 //        if let fileToUpload {
 //            return getHttpBody(fieldInfo: fileToUpload)
 //        }
         return nil
     }
     
-    private func createMultipartBody(keyValues: [String: Any], boundary: String, attachments: [UwaziAttachment]?, documents: [UwaziAttachment]?) -> Data {
-        var multipart = MultipartRequest(boundary: boundary)
-        
-        for (key, value) in keyValues {
-            let jsonData = try? JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
-            let jsonString = String(data: jsonData!, encoding: .utf8) ?? ""
-            multipart.add(key: key, value: jsonString)
-        }
-        
-        
-        if let attachments = attachments {
-            for (index, attachment) in attachments.enumerated() {
-                multipart.add(
-                    key: "attachments[\(index)]",
-                    fileName: attachment.filename,
-                    fileMimeType: attachment.mimeType,
-                    fileData: attachment.data
-                )
-                
-                multipart.add(key: "attachments_originalname[\(index)]", value: attachment.filename)
-
-            }
-        }
-
-        if let documents = documents {
-            for (index, document) in documents.enumerated() {
-                multipart.add(
-                    key: "documents[\(index)]",
-                    fileName: document.filename,
-                    fileMimeType: document.mimeType,
-                    fileData: document.data
-                )
-                
-                multipart.add(key: "documents_originalname[\(index)]", value: document.filename)
-            }
-        }
-
-        
-        return multipart.httpBody
-    }
     
     private func addURLQueryParameters(toURL url: URL) -> URL {
         guard let urlQueryParameters else { return url }
