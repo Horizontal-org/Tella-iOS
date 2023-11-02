@@ -51,6 +51,7 @@ class UwaziEntityViewModel: ObservableObject {
     func getTemplateById (id: Int) -> CollectedTemplate {
         return (self.tellaData?.getUwaziTemplateById(id: id))!
     }
+    
     func handleMandatoryProperties() {
         let requiredPrompts = entryPrompts.filter({$0.required ?? false})
         requiredPrompts.forEach { prompt in
@@ -74,8 +75,8 @@ class UwaziEntityViewModel: ObservableObject {
             serverURL: serverURL,
             cookieList: cookieList,
             entity: entityData,
-            attachments: getFilesInfo(),
-            documents: getDocumentsInfo())
+            attachments: UwaziFileUtility(files: files, mainAppModel: mainAppModel).getFilesInfo(),
+            documents: UwaziFileUtility(files: pdfDocuments, mainAppModel: mainAppModel).getFilesInfo())
                response.sink { completion in
                    switch completion {
 
@@ -92,105 +93,46 @@ class UwaziEntityViewModel: ObservableObject {
     }
 
     private func extractEntityDataAndMetadata() -> ([String: Any]) {
-        var entityWrapper: [String: Any] = [:]
-        var entityData: [String: Any] = [:]
-        var metadata: [String: Any] = [:]
-        var attachments: [[String: Any]] = [[:]]
-        var documents: [[String: Any]] = []
+        let attachments = extractAttachmentsIfAny()
+        let documents = extractDocumentsIfAny()
         
-        entityData["attachments"] = attachments
-        entityData["documents"] = documents
+        var entityData: [String: Any] = [
+            UwaziEntityMetadataKeys.attachments: attachments,
+            UwaziEntityMetadataKeys.documents: documents,
+            UwaziEntityMetadataKeys.template: template?.templateId ?? ""
+        ]
+            
+        var metadata: [String: Any] = [:]
 
         for entryPrompt in entryPrompts {
+            guard let propertyName = entryPrompt.name else { break }
+            
             switch UwaziEntityPropertyType(rawValue: entryPrompt.type) {
-            case .dataTypeText:
-                if entryPrompt.name == "title" {
-                    entityData[entryPrompt.name!] = entryPrompt.value.stringValue
-                } else {
-                    metadata[entryPrompt.name!] = [["value": entryPrompt.value.stringValue]]
-                }
-            case .dataTypeNumeric:
-                metadata[entryPrompt.name!] = [["value": entryPrompt.value.stringValue]]
+            case .dataTypeText where propertyName == UwaziEntityMetadataKeys.title:
+                entityData[propertyName] = entryPrompt.value.stringValue
+            case .dataTypeText, .dataTypeNumeric:
+                metadata[propertyName] = [[UwaziEntityMetadataKeys.value: entryPrompt.value.stringValue]]
             case .dataTypeSelect, .dataTypeMultiSelect:
-                metadata[entryPrompt.name!] = [["value": entryPrompt.value.selectedValue[0].id, "label": entryPrompt.value.selectedValue[0].label]]
+                if let selectedValue = entryPrompt.value.selectedValue.first {
+                    metadata[propertyName] = [[UwaziEntityMetadataKeys.value: selectedValue.id, UwaziEntityMetadataKeys.label: selectedValue.label]]
+                }
             default:
                 break
             }
         }
+        
+        entityData[UwaziEntityMetadataKeys.metadata] = metadata
+        
+        return [UwaziEntityMetadataKeys.entity: entityData]
+    }
+    
+    
+    private func extractAttachmentsIfAny() -> [[String: Any]] {
+        !files.isEmpty ? UwaziFileUtility(files: files).extractFilesAsAttachments() : []
+    }
 
-        entityData["template"] = template!.templateId
-        entityData["metadata"] = metadata
-        
-        if(!files.isEmpty) {
-            attachments = extractFilesAsAttachments()
-            entityData["attachments"] = attachments
-        }
-        
-        if(!pdfDocuments.isEmpty) {
-            documents = extractPrimaryDocuments()
-            entityData["documents"] = documents
-        }
-
-        entityWrapper["entity"] = entityData
-        
-        return entityWrapper
-    }
-    
-    private func extractFilesAsAttachments() ->[[String: Any]] {
-        var attachments = [[String: Any]]()
-        for file in files {
-            let attachment = [
-                "originalname": "\(file.fileName).\(file.fileExtension)",
-                "filename": "\(file.fileName).\(file.fileExtension)",
-                "type": "attachment",
-                "mimetype": MIMEType.mime(for: file.fileExtension),
-                "entity": "NEW_ENTITY"
-            ] as [String: Any]
-                    
-            attachments.append(attachment)
-        }
-        
-        return attachments
-    }
-    
-    private func extractPrimaryDocuments() -> [[String: Any]] {
-        var documents = [[String: Any]]()
-        
-        for doc in pdfDocuments {
-            let document = [
-                "type": "document",
-                "originalname": doc.fileName,
-                "filename": doc.fileName,
-                "mimetype": MIMEType.mime(for: doc.fileExtension),
-                "entity": "NEW_ENTITY",
-                "size": doc.size
-            ] as [String: Any]
-            
-            documents.append(document)
-        }
-        
-        return documents
-    }
-    
-    // unify these two functions
-    func getFilesInfo() -> [UwaziAttachment] {
-        return files.compactMap { file in
-            if let fileData = self.mainAppModel.load(file: file) {
-                return UwaziAttachment(filename: file.fileName, data: fileData, fileExtension: file.fileExtension)
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    func getDocumentsInfo() -> [UwaziAttachment] {
-        return pdfDocuments.compactMap { file in
-            if let fileData = self.mainAppModel.load(file: file) {
-                return UwaziAttachment(filename: file.fileName, data: fileData, fileExtension: file.fileExtension)
-            } else {
-                return nil
-            }
-        }
+    private func extractDocumentsIfAny() -> [[String: Any]] {
+        !pdfDocuments.isEmpty ? UwaziFileUtility(files: pdfDocuments).extractFilesAsAttachments() : []
     }
     
     // files
@@ -215,31 +157,4 @@ class UwaziEntityViewModel: ObservableObject {
             self.objectWillChange.send()
         }
     }
-        
-    // move this into a model
-    var addFileToDraftItems : [ListActionSheetItem] { return [
-            
-            ListActionSheetItem(imageName: "report.camera-filled",
-                                content: LocalizableReport.cameraFilled.localized,
-                                type: ManageFileType.camera),
-            ListActionSheetItem(imageName: "report.mic-filled",
-                                content: LocalizableReport.micFilled.localized,
-                                type: ManageFileType.recorder),
-            ListActionSheetItem(imageName: "report.gallery",
-                                content: LocalizableReport.galleryFilled.localized,
-                                type: ManageFileType.tellaFile),
-            ListActionSheetItem(imageName: "report.phone",
-                                content: LocalizableReport.phoneFilled.localized,
-                                type: ManageFileType.fromDevice)
-        ]}
-    
-    var addFileToPdfItems: [ListActionSheetItem] { return [
-        ListActionSheetItem(imageName: "report.gallery",
-                            content: LocalizableReport.galleryFilled.localized,
-                            type: ManageFileType.tellaFile),
-        ListActionSheetItem(imageName: "report.phone",
-                            content: LocalizableReport.phoneFilled.localized,
-                            type: ManageFileType.fromDevice)
-    ]}
-
 }

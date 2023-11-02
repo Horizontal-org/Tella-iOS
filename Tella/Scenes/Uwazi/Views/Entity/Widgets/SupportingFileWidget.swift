@@ -27,7 +27,7 @@ struct SupportingFileWidget: View {
     func showAddFileSheet() {
             
             sheetManager.showBottomSheet( modalHeight: CGFloat(300), content: {
-                ActionListBottomSheet(items: entityViewModel.addFileToDraftItems,
+                ActionListBottomSheet(items: addFileToDraftItems,
                                       headerTitle: "Select files",
                                       action:  {item in
                     self.handleActions(item : item)

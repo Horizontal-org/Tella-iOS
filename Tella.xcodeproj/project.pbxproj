@@ -327,6 +327,8 @@
 		CCD586D42A7C294800014F87 /* TemplateItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586D32A7C294800014F87 /* TemplateItemView.swift */; };
 		CCDC398A2AF2BCE400674735 /* MultipartRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDC39892AF2BCE400674735 /* MultipartRequest.swift */; };
 		CCE875B32A96699000C576B9 /* LocalizableUwazi.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE875B22A96699000C576B9 /* LocalizableUwazi.swift */; };
+		CCE8CCDD2AF41E410088B61D /* UwaziFileUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE8CCDC2AF41E410088B61D /* UwaziFileUtility.swift */; };
+		CCE8CCDF2AF4297B0088B61D /* UwaziAttachmentsActionItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE8CCDE2AF4297B0088B61D /* UwaziAttachmentsActionItems.swift */; };
 		CCEAE5922AE6F6EE0069204A /* EntityCreationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEAE5912AE6F6EE0069204A /* EntityCreationResponse.swift */; };
 		CCEAE5942AE7188F0069204A /* UwaziSelectWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEAE5932AE7188F0069204A /* UwaziSelectWidget.swift */; };
 		CCF47F442ABE18D7000ABBBC /* TemplateActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF47F432ABE18D7000ABBBC /* TemplateActionType.swift */; };
@@ -774,6 +776,8 @@
 		CCD586D32A7C294800014F87 /* TemplateItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateItemView.swift; sourceTree = "<group>"; };
 		CCDC39892AF2BCE400674735 /* MultipartRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartRequest.swift; sourceTree = "<group>"; };
 		CCE875B22A96699000C576B9 /* LocalizableUwazi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableUwazi.swift; sourceTree = "<group>"; };
+		CCE8CCDC2AF41E410088B61D /* UwaziFileUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziFileUtility.swift; sourceTree = "<group>"; };
+		CCE8CCDE2AF4297B0088B61D /* UwaziAttachmentsActionItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziAttachmentsActionItems.swift; sourceTree = "<group>"; };
 		CCEAE5912AE6F6EE0069204A /* EntityCreationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityCreationResponse.swift; sourceTree = "<group>"; };
 		CCEAE5932AE7188F0069204A /* UwaziSelectWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSelectWidget.swift; sourceTree = "<group>"; };
 		CCF47F432ABE18D7000ABBBC /* TemplateActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateActionType.swift; sourceTree = "<group>"; };
@@ -1984,6 +1988,7 @@
 				0ECC781A267A542300A2ACF2 /* UwaziPages.swift */,
 				CCC1B43C2AC75C5D0075B819 /* UwaziConstants.swift */,
 				CC5CEB882AF0551900BF238B /* UwaziAttachment.swift */,
+				CCE8CCDE2AF4297B0088B61D /* UwaziAttachmentsActionItems.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2237,6 +2242,7 @@
 			children = (
 				E1F6D77D2AB16F70000A9B64 /* Protocol */,
 				CCC1B4382AC75B8D0075B819 /* UwaziEntityParser.swift */,
+				CCE8CCDC2AF41E410088B61D /* UwaziFileUtility.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2689,6 +2695,7 @@
 				D5077A40260D300600D72947 /* DebugLogging.swift in Sources */,
 				1234179429CD2CFC004CFAEA /* URLSessionTaskResponse.swift in Sources */,
 				E1F6D7832AB17FB5000A9B64 /* UwaziValue.swift in Sources */,
+				CCE8CCDF2AF4297B0088B61D /* UwaziAttachmentsActionItems.swift in Sources */,
 				122DA89729CB2709003801CD /* SettingsBottomView.swift in Sources */,
 				1216124028DE144200E6D7B6 /* JoinCondition.swift in Sources */,
 				12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */,
@@ -2927,6 +2934,7 @@
 				12B6AF7D283E4C7200D697F6 /* LocalizableVault.swift in Sources */,
 				CCAE3A682AC217EC00A38C6D /* UwaziViewModel.swift in Sources */,
 				E1EEE2A429F7D192009FE227 /* UwaziTwoStepVerification.swift in Sources */,
+				CCE8CCDD2AF41E410088B61D /* UwaziFileUtility.swift in Sources */,
 				122E6A5529A396C400BDACAD /* ServerFileSize.swift in Sources */,
 				125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */,
 				CCD586C72A7ABDE800014F87 /* TemplateCardView.swift in Sources */,
