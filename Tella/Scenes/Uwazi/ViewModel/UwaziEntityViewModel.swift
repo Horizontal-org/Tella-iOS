@@ -71,12 +71,18 @@ class UwaziEntityViewModel: ObservableObject {
         let serverURL = self.serverURL
         let cookieList = ["connect.sid=" + self.accessToken]
 //         Submit the entity data
+        let (body, contentTypeHeader) = UwaziMultipartFormDataBuilder.createBodyWith(
+            keyValues: entityData,
+            attachments: UwaziFileUtility(files: files, mainAppModel: mainAppModel).getFilesInfo(),
+            documents: UwaziFileUtility(files: pdfDocuments, mainAppModel: mainAppModel).getFilesInfo()
+        )
+
         let response = UwaziServerRepository().submitEntity(
             serverURL: serverURL,
             cookieList: cookieList,
-            entity: entityData,
-            attachments: UwaziFileUtility(files: files, mainAppModel: mainAppModel).getFilesInfo(),
-            documents: UwaziFileUtility(files: pdfDocuments, mainAppModel: mainAppModel).getFilesInfo())
+            multipartHeader: contentTypeHeader,
+            multipartBody: body
+        )
                response.sink { completion in
                    switch completion {
 

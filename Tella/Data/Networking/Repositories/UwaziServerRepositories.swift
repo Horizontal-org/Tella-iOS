@@ -122,8 +122,8 @@ class UwaziServerRepository: WebRepository {
             .eraseToAnyPublisher()
     }
     
-    func submitEntity(serverURL: String, cookieList: [String], entity: [String: Any], attachments: [UwaziAttachment], documents: [UwaziAttachment]) -> AnyPublisher<EntityCreationResponse, APIError> {
-        let apiResponse: APIResponse<EntityCreationResponse> = getAPIResponse(endpoint: API.submitEntity(serverURL: serverURL, cookieList: cookieList, entity: entity, attachments: attachments, documents: documents))
+    func submitEntity(serverURL: String, cookieList: [String], multipartHeader: String, multipartBody: Data) -> AnyPublisher<EntityCreationResponse, APIError> {
+        let apiResponse: APIResponse<EntityCreationResponse> = getAPIResponse(endpoint: API.submitEntity(serverURL: serverURL, cookieList: cookieList, multipartHeader: multipartHeader, multipartBody: multipartBody))
             return apiResponse
                 .compactMap{$0.0}
                 .eraseToAnyPublisher()
@@ -264,7 +264,7 @@ extension UwaziServerRepository {
         case getSetting(serverURL: String, cookieList:[String])
         case getDictionary(serverURL: String, cookieList:[String])
         case getTranslations(serverURL: String, cookieList:[String])
-        case submitEntity(serverURL: String, cookieList: [String], entity: [String: Any], attachments: [UwaziAttachment], documents: [UwaziAttachment])
+        case submitEntity(serverURL: String, cookieList: [String], multipartHeader: String, multipartBody: Data)
     }
 }
 
@@ -291,7 +291,7 @@ extension UwaziServerRepository.API: APIRequest {
             let cookiesString = cookieList.joined(separator: "; ")
             return [HTTPHeaderField.cookie.rawValue: cookiesString,
                     HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
-        case .submitEntity(_, let cookieList, _, _, _):
+        case .submitEntity(_, let cookieList, _, _):
                     let cookiesString = cookieList.joined(separator: ";")
             return [HTTPHeaderField.cookie.rawValue: cookiesString,
                     HTTPHeaderField.xRequestedWith.rawValue: XRequestedWithValue.xmlHttp.rawValue,
@@ -324,71 +324,27 @@ extension UwaziServerRepository.API: APIRequest {
                 "password": password,
                 "token": token
             ]
-        case .submitEntity(_, _, let entity, _, _):
-            return entity
-        case .checkURL, .getLanguage, .getTemplate, .getSetting,.getDictionary,.getTranslations:
+        case .checkURL, .getLanguage, .getTemplate, .getSetting,.getDictionary,.getTranslations, .submitEntity(_, _, _, _):
             return nil
         }
     }
     
     var multipartBody: Data? {
         switch self {
-        case .submitEntity(_, _, let entity, let attachment, let documents):
-            return createMultipartBody(
-                keyValues: entity,
-                boundary: "<BOUNDARY_ID>",
-                attachments: attachment,
-                documents: documents
-            )
+        case .submitEntity(_, _, _, let multipartBody):
+            return multipartBody
         default:
             return nil
         }
     }
-    
+
     var multipartHeader: String? {
-        return "multipart/form-data; boundary=<BOUNDARY_ID>"
-    }
-
-    private func createMultipartBody(keyValues: [String: Any], boundary: String, attachments: [UwaziAttachment]?, documents: [UwaziAttachment]?) -> Data {
-        let keyValues = keyValues.compactMapValues { $0 }
-        var multipart = MultipartRequest(boundary: boundary)
-        
-        for (key, value) in keyValues {
-            let jsonData = try? JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
-            let jsonString = String(data: jsonData!, encoding: .utf8) ?? ""
-            multipart.add(key: key, value: jsonString)
+        switch self {
+        case .submitEntity(_, _, let multipartHeader, _):
+            return multipartHeader
+        default:
+            return nil
         }
-        
-        
-        if let attachments = attachments {
-            for (index, attachment) in attachments.enumerated() {
-                multipart.add(
-                    key: "attachments[\(index)]",
-                    fileName: attachment.filename,
-                    fileMimeType: attachment.mimeType,
-                    fileData: attachment.data
-                )
-                
-                multipart.add(key: "attachments_originalname[\(index)]", value: attachment.filename)
-
-            }
-        }
-
-        if let documents = documents {
-            for (index, document) in documents.enumerated() {
-                multipart.add(
-                    key: "documents[\(index)]",
-                    fileName: document.filename,
-                    fileMimeType: document.mimeType,
-                    fileData: document.data
-                )
-                
-                multipart.add(key: "documents_originalname[\(index)]", value: document.filename)
-            }
-        }
-
-        
-        return multipart.httpBody
     }
     var baseURL: String {
         switch self {
@@ -400,7 +356,7 @@ extension UwaziServerRepository.API: APIRequest {
             return serverURL
         case .getTemplate(serverURL: let serverURL, cookieList: _):
             return serverURL
-        case .getSetting(serverURL: let serverURL, cookieList: _), .getDictionary(serverURL: let serverURL, cookieList: _),.getTranslations(serverURL: let serverURL, cookieList: _), .submitEntity(serverURL: let serverURL, cookieList: _, entity: _, _, _):
+        case .getSetting(serverURL: let serverURL, cookieList: _), .getDictionary(serverURL: let serverURL, cookieList: _),.getTranslations(serverURL: let serverURL, cookieList: _), .submitEntity(serverURL: let serverURL, cookieList: _, _, _):
             return serverURL
         }
     }
