@@ -118,12 +118,4 @@ struct CreateEntityView: View {
         self.presentationMode.wrappedValue.dismiss()
     }
     
-//    private func getResultFile() -> Binding<[VaultFile]?> {
-//        print(entityViewModel.showingImagePicker)
-//        if (entityViewModel.showingImportDocumentPicker == true) {
-//            return $entityViewModel.resultPdfFiles
-//        }
-//
-//        return $entityViewModel.resultFile
-//    }
 }

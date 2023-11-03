@@ -40,7 +40,6 @@ class UwaziEntityViewModel: ObservableObject {
         self.serverURL = server.url ?? ""
         self.bindVaultFileTaken()
         entryPrompts = UwaziEntityParser(template: template!).getEntryPrompts()
-        dump(files)
     }
     
     var tellaData: TellaData? {
@@ -54,16 +53,22 @@ class UwaziEntityViewModel: ObservableObject {
     
     func handleMandatoryProperties() {
         let requiredPrompts = entryPrompts.filter({$0.required ?? false})
+        var hasMandatoryErrors = false
+        
         requiredPrompts.forEach { prompt in
             prompt.showMandatoryError = prompt.value.stringValue.isEmpty
+            if prompt.value.stringValue.isEmpty {
+                prompt.showMandatoryError = true
+                hasMandatoryErrors = true
+            }
         }
         
-        if(!requiredPrompts.isEmpty) {
+        if !hasMandatoryErrors {
             submitEntity()
         }
     }
     
-    private func submitEntity() {
+    func submitEntity() {
         // Extract entity data and metadata
         let entityData = extractEntityDataAndMetadata()
         
