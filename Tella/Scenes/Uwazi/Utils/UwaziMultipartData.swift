@@ -27,6 +27,28 @@ struct UwaziMultipartFormDataBuilder {
             }
         }
         
+        // Add attachments
+        attachments?.enumerated().forEach { index, attachment in
+            multipartRequest.add(
+                key: "attachments[\(index)]",
+                fileName: attachment.filename,
+                fileMimeType: attachment.mimeType,
+                fileData: attachment.data
+            )
+            multipartRequest.add(key: "attachments_originalname[\(index)]", value: attachment.filename)
+        }
+                
+                // Add documents
+        documents?.enumerated().forEach { index, document in
+            multipartRequest.add(
+                key: "documents[\(index)]",
+                fileName: document.filename,
+                fileMimeType: document.mimeType,
+                fileData: document.data
+            )
+            multipartRequest.add(key: "documents_originalname[\(index)]", value: document.filename)
+        }
+        
         return (
             body: multipartRequest.httpBody,
             ContentTypeHeader: multipartRequest.httpContentTypeHeadeValue
