@@ -15,7 +15,7 @@ class DataBaseHelper {
 
     init(key: String?, databaseName: String) throws {
         
-        dbURL =  FileManager.documentDirectory(withPath:"dd")
+        dbURL =  FileManager.documentDirectory(withPath:databaseName)
         
         guard let key = key else { return }
 

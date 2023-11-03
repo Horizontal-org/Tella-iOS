@@ -366,7 +366,7 @@ class SQLiteStatementBuilder {
         
         let bindValues = keyValue + (primarykeyValue)
         
-        var updateSql = "UPDATE '\(tableName)' SET "
+        var updateSql = "UPDATE \(tableName) SET "
         
         updateSql  += setColumnNames.map { "\($0) = :\($0)" }.joined(separator: ", ")
         
@@ -402,7 +402,7 @@ class SQLiteStatementBuilder {
         do {
             let primaryKeyColumnNames = primarykeyValue.compactMap{($0.key)}
             
-            var deleteSql = "DELETE FROM '\(tableName)'"
+            var deleteSql = "DELETE FROM \(tableName)"
             
             if !primarykeyValue.isEmpty || !inCondition.isEmpty {
                 deleteSql  += " WHERE "
@@ -453,7 +453,7 @@ class SQLiteStatementBuilder {
             
             for tableName in tableNames {
                 
-                let deleteSql = "DELETE FROM '\(tableName)'"
+                let deleteSql = "DELETE FROM \(tableName)"
                 
                 debugLog("delete: \(deleteSql)")
                 
