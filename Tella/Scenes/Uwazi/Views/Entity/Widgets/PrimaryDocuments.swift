@@ -24,7 +24,7 @@ struct PrimaryDocuments: View {
     
     func showAddFileSheet() {
             
-            sheetManager.showBottomSheet( modalHeight: CGFloat(150), content: {
+            sheetManager.showBottomSheet( modalHeight: CGFloat(200), content: {
                 ActionListBottomSheet(items: addFileToPdfItems,
                                       headerTitle: "Select files",
                                       action:  {item in
