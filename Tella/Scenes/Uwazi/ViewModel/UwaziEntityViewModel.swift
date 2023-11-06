@@ -51,7 +51,11 @@ class UwaziEntityViewModel: ObservableObject {
         return (self.tellaData?.getUwaziTemplateById(id: id))!
     }
     
-    func handleMandatoryProperties() {
+    func getEntityTitle() -> String {
+        return self.entryPrompts.first(where: { $0.name == UwaziEntityMetadataKeys.title })?.value.stringValue ?? ""
+    }
+    
+    func handleMandatoryProperties() -> Bool {
         let requiredPrompts = entryPrompts.filter({$0.required ?? false})
         var hasMandatoryErrors = false
         
@@ -63,9 +67,7 @@ class UwaziEntityViewModel: ObservableObject {
             }
         }
         
-        if !hasMandatoryErrors {
-            submitEntity()
-        }
+        return hasMandatoryErrors
     }
     
     func submitEntity() {
@@ -144,6 +146,19 @@ class UwaziEntityViewModel: ObservableObject {
 
     private func extractDocumentsIfAny() -> [[String: Any]] {
         !pdfDocuments.isEmpty ? UwaziFileUtility(files: pdfDocuments).extractFilesAsAttachments() : []
+    }
+    
+    func getEntityResponseSize() -> String {
+        do {
+            let entityData = extractEntityDataAndMetadata()
+            let jsonData = try JSONSerialization.data(withJSONObject: entityData, options: [])
+            let sizeInBytes = Int(jsonData.count)
+            let sizeInMB = sizeInBytes.getFormattedFileSize()
+            return sizeInMB
+        } catch {
+            debugLog(error)
+            return "\(error)"
+        }
     }
     
     // files

@@ -63,7 +63,11 @@ struct CreateEntityView: View {
     
     fileprivate var bottomActionView: some View {
         Button(action: {
-            self.entityViewModel.handleMandatoryProperties()
+            let checkMandatoryFields = self.entityViewModel.handleMandatoryProperties()
+            
+            if !checkMandatoryFields {
+                navigateTo(destination: SubmitEntityView(entityViewModel: entityViewModel))
+            }
         }) {
             Text(LocalizableUwazi.uwaziEntityActionNext.localized)
                 .frame(maxWidth: .infinity, alignment: .trailing)

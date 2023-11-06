@@ -66,7 +66,7 @@ struct FileItems: View {
                         Spacer()
                             .frame(height: 2)
                         
-                        Text("\(file.size)")
+                        Text(file.size.getFormattedFileSize())
                             .font(.custom(Styles.Fonts.regularFontName, size: 10))
                             .foregroundColor(Color.white)
                     }
