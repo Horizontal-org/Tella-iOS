@@ -10,6 +10,7 @@ import SwiftUI
 
 struct SubmitEntityView: View {
     @ObservedObject var entityViewModel: UwaziEntityViewModel
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
     var body: some View {
         ContainerView {
@@ -81,11 +82,19 @@ struct SubmitEntityView: View {
             Button {
                 entityViewModel.submitEntity()
             } label: {
-                Text("SUBMIT")
-                    .frame(maxWidth:.infinity)
-                    .frame(height: 55)
-                    .contentShape(Rectangle())
+                if entityViewModel.isLoading {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .frame(maxWidth:.infinity)
+                        .frame(height: 55) // Ensures the progress view has the same height as your button for consistent layout
+                } else {
+                    Text("SUBMIT")
+                        .frame(maxWidth:.infinity)
+                        .frame(height: 55)
+                        .contentShape(Rectangle())
+                }
             }
+            .disabled(entityViewModel.isLoading)
             .frame(width: UIScreen.main.bounds.width / 2, alignment: .trailing)
             .cornerRadius(50)
             .buttonStyle(TellaButtonStyle(buttonStyle: YellowButtonStyle(), isValid: true))

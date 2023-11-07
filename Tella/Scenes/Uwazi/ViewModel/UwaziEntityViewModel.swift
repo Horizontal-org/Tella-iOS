@@ -31,6 +31,8 @@ class UwaziEntityViewModel: ObservableObject {
     @Published var showingRecordView : Bool = false
     @Published var showingCamera : Bool = false
     
+    @Published var isLoading : Bool = false
+    
     var subscribers = Set<AnyCancellable>()
 
     init(mainAppModel : MainAppModel, templateId: Int, server: Server) {
@@ -71,6 +73,7 @@ class UwaziEntityViewModel: ObservableObject {
     }
     
     func submitEntity() {
+        self.isLoading = true
         // Extract entity data and metadata
         let entityData = extractEntityDataAndMetadata()
         
@@ -90,19 +93,21 @@ class UwaziEntityViewModel: ObservableObject {
             multipartHeader: contentTypeHeader,
             multipartBody: body
         )
-               response.sink { completion in
-                   switch completion {
-
-                   case .finished:
-                       print("Finished")
-                   case .failure(let error):
-                       print(error)
-                   }
-                   } receiveValue: { value in
-                       print(value)
-                   }
-
-                   .store(in: &subscribers)
+        response
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                self?.isLoading = false
+                switch completion {
+                case .finished:
+                    debugLog("Finished")
+                    Toast.displayToast(message: "Entity submitted succesfully")
+                case .failure(let error):
+                    debugLog(error.localizedDescription)
+                }
+            } receiveValue: { value in
+                debugLog(value)
+            }
+            .store(in: &subscribers)
     }
 
     private func extractEntityDataAndMetadata() -> ([String: Any]) {
