@@ -36,7 +36,7 @@ struct SubmitEntityView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 HStack {
-                    Text("Summary")
+                    Text(LocalizableUwazi.uwaziEntitySummaryDetailToolbarItem.localized)
                         .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity, alignment: .leading) // Align to leading
@@ -47,11 +47,11 @@ struct SubmitEntityView: View {
     
     var templateData: some View {
         VStack {
-            Text("Server: \(entityViewModel.template?.serverName ?? "")")
+            Text("\(LocalizableUwazi.uwaziEntitySummaryDetailServerTitle.localized) \(entityViewModel.template?.serverName ?? "")")
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            Text("Template: \(entityViewModel.template!.entityRow?.name ?? "")")
+            Text("\(LocalizableUwazi.uwaziEntitySummaryDetailTemplateTitle.localized) \(entityViewModel.template!.entityRow?.name ?? "")")
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -88,7 +88,7 @@ struct SubmitEntityView: View {
                         .frame(maxWidth:.infinity)
                         .frame(height: 55) // Ensures the progress view has the same height as your button for consistent layout
                 } else {
-                    Text("SUBMIT")
+                    Text(LocalizableUwazi.uwaziEntitySummaryDetailSubmitAction.localized)
                         .frame(maxWidth:.infinity)
                         .frame(height: 55)
                         .contentShape(Rectangle())
@@ -114,7 +114,7 @@ struct SubmitEntityView: View {
                     .cornerRadius(5)
                 )
             VStack(alignment: .leading) {
-                Text("Entity reponse")
+                Text(LocalizableUwazi.uwaziEntitySummaryDetailEntityResponseTitle.localized)
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                     .foregroundColor(Color.white)
                     .lineLimit(1)

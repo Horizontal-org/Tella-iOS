@@ -28,10 +28,10 @@ struct FileDropdown: View {
     
     var dropdownHeader: some View {
         HStack {
-            Text("\(files.count) files attached")
+            Text("\(files.count) \(LocalizableUwazi.uwaziEntitySelectFilesDropdownTitle.localized)")
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
             Spacer()
-            Text(showFiles ? "Hide files" : "Show files")
+            Text(showFiles ? LocalizableUwazi.uwaziEntitySelectFilesDropdownHide.localized : LocalizableUwazi.uwaziEntitySelectFilesDropdownShow.localized)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                 .foregroundColor(.yellow)
             Image(systemName: showFiles ? "chevron.up" : "chevron.down")

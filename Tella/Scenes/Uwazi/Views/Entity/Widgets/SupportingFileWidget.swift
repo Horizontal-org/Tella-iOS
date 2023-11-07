@@ -17,7 +17,7 @@ struct SupportingFileWidget: View {
         UwaziFileSelector(addFiles: {
             UIApplication.shared.endEditing()
             showAddFileSheet()
-        }, title: "Select Files")
+        }, title: LocalizableUwazi.uwaziEntitySelectFiles.localized)
             .environmentObject(prompt)
         if(entityViewModel.files.count > 0) {
             FileDropdown(files: $entityViewModel.files)
@@ -28,7 +28,7 @@ struct SupportingFileWidget: View {
             
             sheetManager.showBottomSheet( modalHeight: CGFloat(300), content: {
                 ActionListBottomSheet(items: addFileToDraftItems,
-                                      headerTitle: "Select files",
+                                      headerTitle: LocalizableUwazi.uwaziEntitySelectFiles.localized,
                                       action:  {item in
                     self.handleActions(item : item)
                 })

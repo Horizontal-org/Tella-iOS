@@ -17,7 +17,7 @@ struct PrimaryDocuments: View {
         UwaziFileSelector(addFiles: {
             UIApplication.shared.endEditing()
             showAddFileSheet()
-        }, title: "Select PDF files")
+        }, title: LocalizableUwazi.uwaziMultiFileWidgetAttachManyPDFFilesSelectTitle.localized)
             .environmentObject(prompt)
         FileItems(files: $entityViewModel.pdfDocuments)
     }
@@ -26,7 +26,7 @@ struct PrimaryDocuments: View {
             
             sheetManager.showBottomSheet( modalHeight: CGFloat(200), content: {
                 ActionListBottomSheet(items: addFileToPdfItems,
-                                      headerTitle: "Select files",
+                                      headerTitle: LocalizableUwazi.uwaziEntitySelectFiles.localized,
                                       action:  {item in
                     self.handleActions(item : item)
                 })
