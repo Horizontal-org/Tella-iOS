@@ -65,16 +65,13 @@ class AutoUpload: BaseUploadOperation {
     }
     
     func addReportFile(file:VaultFileDB, report:Report) {
-        do {
-            guard let reportId = report.id else { return  }
-            self.report = report
-
-            let addedReportFile = try self.mainAppModel.vaultManager.tellaData?.addReportFile(fileId: file.id, reportId: reportId)
-            
-            if let addedReportFile {
-                report.reportFiles?.append(addedReportFile)
-            }
-        } catch {
+        guard let reportId = report.id else { return }
+        self.report = report
+        
+        let addedReportFile = self.mainAppModel.vaultManager.tellaData?.addReportFile(fileId: file.id, reportId: reportId)
+        
+        if let addedReportFile{
+            report.reportFiles?.append(addedReportFile)
         }
     }
     
@@ -91,14 +88,10 @@ class AutoUpload: BaseUploadOperation {
                                                          updatedDate: Date())],
                                  currentUpload:true)
         
-        do {
-            // files
-            let report = try self.mainAppModel.vaultManager.tellaData?.addCurrentUploadReport(report: reportToAdd)
-            self.report = report
-            self.checkReport()
-        } catch {
-            
-        }
+        // files
+        let report = self.mainAppModel.vaultManager.tellaData?.addCurrentUploadReport(report: reportToAdd)
+        self.report = report
+        self.checkReport()
     }
     
     private func checkReport() {

@@ -83,7 +83,7 @@ class MainAppModel: ObservableObject {
         do {
             try self.vaultManager.initialize(with: self.vaultManager.key)
             self.vaultFilesManager = try VaultFilesManager(key: self.vaultManager.key, vaultManager: self.vaultManager)
-        } catch (let error){
+        } catch {
             Toast.displayToast(message: "Error opening the app")
         }
     }
@@ -199,9 +199,10 @@ extension MainAppModel {
         UploadService.shared.sendUnsentReports(mainAppModel: self)
     }
     
-    func deleteReport(reportId:Int?) {
+    @discardableResult
+    func deleteReport(reportId:Int?) -> Result<Bool, Error>? {
         UploadService.shared.cancelSendingReport(reportId: reportId)
-        vaultManager.tellaData?.deleteReport(reportId: reportId)
+        return vaultManager.tellaData?.deleteReport(reportId: reportId)
     }
 }
 

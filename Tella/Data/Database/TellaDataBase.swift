@@ -9,8 +9,8 @@ import SQLCipher
 
 class TellaDataBase : DataBase {
     
-      var dataBaseHelper : DataBaseHelper
-      var statementBuilder : SQLiteStatementBuilder
+    var dataBaseHelper : DataBaseHelper
+    var statementBuilder : SQLiteStatementBuilder
     
     init(key: String?) throws {
         dataBaseHelper =  try DataBaseHelper(key: key, databaseName:D.databaseName)
@@ -41,9 +41,6 @@ class TellaDataBase : DataBase {
         createServerTable()
         createReportTable()
         createReportFilesTable()
-    }
-    
-    func update() {
     }
     
     func createServerTable() {
@@ -97,21 +94,27 @@ class TellaDataBase : DataBase {
         
     }
     
-    func addServer(server : Server) throws -> Int {
-        let valuesToAdd = [KeyValue(key: D.cName, value: server.name),
-                           KeyValue(key: D.cURL, value: server.url),
-                           KeyValue(key: D.cUsername, value: server.username),
-                           KeyValue(key: D.cPassword, value: server.password ),
-                           KeyValue(key: D.cAccessToken, value: server.accessToken),
-                           KeyValue(key: D.cActivatedMetadata, value: server.activatedMetadata == false ? 0 : 1),
-                           KeyValue(key: D.cBackgroundUpload, value: server.backgroundUpload == false ? 0 : 1),
-                           KeyValue(key: D.cApiProjectId, value: server.projectId),
-                           KeyValue(key: D.cSlug, value: server.slug),
-                           KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1),
-                           KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1)]
-        
-        return try statementBuilder.insertInto(tableName: D.tServer,
-                                               keyValue: valuesToAdd)
+    func addServer(server : Server)  -> Result<Int, Error> {
+        do {
+            let valuesToAdd = [KeyValue(key: D.cName, value: server.name),
+                               KeyValue(key: D.cURL, value: server.url),
+                               KeyValue(key: D.cUsername, value: server.username),
+                               KeyValue(key: D.cPassword, value: server.password ),
+                               KeyValue(key: D.cAccessToken, value: server.accessToken),
+                               KeyValue(key: D.cActivatedMetadata, value: server.activatedMetadata == false ? 0 : 1),
+                               KeyValue(key: D.cBackgroundUpload, value: server.backgroundUpload == false ? 0 : 1),
+                               KeyValue(key: D.cApiProjectId, value: server.projectId),
+                               KeyValue(key: D.cSlug, value: server.slug),
+                               KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1),
+                               KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1)]
+            
+            let serverId = try statementBuilder.insertInto(tableName: D.tServer,
+                                                           keyValue: valuesToAdd)
+            return .success(serverId)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
     }
     
     func getServer() -> [Server] {
@@ -146,31 +149,37 @@ class TellaDataBase : DataBase {
         }
     }
     
-    func updateServer(server : Server) throws -> Int {
-        
-        let valuesToUpdate = [KeyValue(key: D.cName, value: server.name),
-                              KeyValue(key: D.cURL, value: server.url),
-                              KeyValue(key: D.cUsername, value: server.username),
-                              KeyValue(key: D.cPassword, value: server.password),
-                              KeyValue(key: D.cAccessToken, value: server.accessToken),
-                              KeyValue(key: D.cActivatedMetadata, value: server.activatedMetadata == false ? 0 : 1),
-                              KeyValue(key: D.cBackgroundUpload, value: server.backgroundUpload == false ? 0 : 1),
-                              KeyValue(key: D.cApiProjectId, value: server.projectId),
-                              KeyValue(key: D.cSlug, value: server.slug),
-                              KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1 ),
-                              KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1 )]
-        
-        let serverCondition = [KeyValue(key: D.cServerId, value: server.id)]
-        return try statementBuilder.update(tableName: D.tServer,
-                                           keyValue: valuesToUpdate,
-                                           primarykeyValue: serverCondition)
+    func updateServer(server : Server) -> Result<Bool, Error> {
+        do {
+            
+            let valuesToUpdate = [KeyValue(key: D.cName, value: server.name),
+                                  KeyValue(key: D.cURL, value: server.url),
+                                  KeyValue(key: D.cUsername, value: server.username),
+                                  KeyValue(key: D.cPassword, value: server.password),
+                                  KeyValue(key: D.cAccessToken, value: server.accessToken),
+                                  KeyValue(key: D.cActivatedMetadata, value: server.activatedMetadata == false ? 0 : 1),
+                                  KeyValue(key: D.cBackgroundUpload, value: server.backgroundUpload == false ? 0 : 1),
+                                  KeyValue(key: D.cApiProjectId, value: server.projectId),
+                                  KeyValue(key: D.cSlug, value: server.slug),
+                                  KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1 ),
+                                  KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1 )]
+            
+            let serverCondition = [KeyValue(key: D.cServerId, value: server.id)]
+            try statementBuilder.update(tableName: D.tServer,
+                                        keyValue: valuesToUpdate,
+                                        primarykeyValue: serverCondition)
+            return .success(true)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
     }
     
-    func deleteServer(serverId : Int) throws {
-        
-        var reportIDs : [Int] = []
-        let serverCondition = [KeyValue(key: D.cServerId, value: serverId)]
+    func deleteServer(serverId : Int) -> Result<Bool,Error> {
         do {
+            var reportIDs : [Int] = []
+            let serverCondition = [KeyValue(key: D.cServerId, value: serverId)]
+            
             
             let responseDict = try statementBuilder.selectQuery(tableName: D.tReport,
                                                                 andCondition: serverCondition)
@@ -180,26 +189,34 @@ class TellaDataBase : DataBase {
                     reportIDs.append(id)
                 }
             }
-        } catch {
             
+            try statementBuilder.delete(tableName: D.tServer,
+                                        primarykeyValue: serverCondition)
+            
+            try statementBuilder.delete(tableName: D.tReport,
+                                        primarykeyValue: serverCondition)
+            
+            if !reportIDs.isEmpty {
+                let reportCondition = [KeyValues(key: D.cReportInstanceId, value: reportIDs)]
+                try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
+                                            inCondition: reportCondition)
+            }
+            return .success(true)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
         }
-        
-        try statementBuilder.delete(tableName: D.tServer,
-                                    primarykeyValue: serverCondition)
-        
-        try statementBuilder.delete(tableName: D.tReport,
-                                    primarykeyValue: serverCondition)
-        
-        if !reportIDs.isEmpty {
-            let reportCondition = [KeyValues(key: D.cReportInstanceId, value: reportIDs)]
-            try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
-                                        inCondition: reportCondition)
-        }
-        
     }
     
-    func deleteAllServers() {
-        return statementBuilder.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile])
+    func deleteAllServers() -> Result<Bool,Error> {
+        do {
+            try statementBuilder.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile])
+            return .success(true)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
+        
     }
     
     func getReports(reportStatus:[ReportStatus]) -> [Report] {
@@ -346,193 +363,250 @@ class TellaDataBase : DataBase {
         
     }
     
-    func addReport(report : Report) throws -> Int {
-        let currentUpload = ((report.currentUpload == false) || (report.currentUpload == nil)) ? 0 : 1
+    func addReport(report : Report) -> Result<Int, Error> {
         
-        let reportValuesToAdd = [KeyValue(key: D.cTitle, value: report.title),
-                                 KeyValue(key: D.cDescription, value: report.description),
-                                 KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
-                                 KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()),
-                                 KeyValue(key: D.cStatus, value: report.status?.rawValue),
-                                 KeyValue(key: D.cServerId, value: report.server?.id),
-                                 KeyValue(key: D.cCurrentUpload, value:currentUpload )]
-        
-        let reportId = try statementBuilder.insertInto(tableName: D.tReport,
-                                                       keyValue:reportValuesToAdd)
-        
-        try report.reportFiles?.forEach({ reportFile in
+        do {
             
-            let reportFileValuesToAdd = [KeyValue(key: D.cReportInstanceId, value: reportId),
-                                         KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
-                                         KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
-                                         KeyValue(key: D.cBytesSent, value: 0),
-                                         KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
-                                         KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
+            let currentUpload = ((report.currentUpload == false) || (report.currentUpload == nil)) ? 0 : 1
             
-            try statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
-                                            keyValue: reportFileValuesToAdd)
+            let reportValuesToAdd = [KeyValue(key: D.cTitle, value: report.title),
+                                     KeyValue(key: D.cDescription, value: report.description),
+                                     KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
+                                     KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()),
+                                     KeyValue(key: D.cStatus, value: report.status?.rawValue),
+                                     KeyValue(key: D.cServerId, value: report.server?.id),
+                                     KeyValue(key: D.cCurrentUpload, value:currentUpload )]
             
+            let reportId = try statementBuilder.insertInto(tableName: D.tReport,
+                                                           keyValue:reportValuesToAdd)
             
-        })
-        return reportId
-    }
-    
-    func updateReport(report : Report) throws -> Report? {
-        
-        var keyValueArray : [KeyValue]  = []
-        
-        if let title = report.title {
-            keyValueArray.append(KeyValue(key: D.cTitle, value: title))
-        }
-        
-        if let description = report.description {
-            keyValueArray.append(KeyValue(key: D.cDescription, value: description))
-        }
-        
-        keyValueArray.append(KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()))
-        
-        if let status = report.status {
-            keyValueArray.append(KeyValue(key: D.cStatus, value: status.rawValue))
-        }
-        
-        if let serverId = report.server?.id {
-            keyValueArray.append(KeyValue(key: D.cServerId, value: serverId))
-        }
-        
-        if let apiID = report.apiID {
-            keyValueArray.append(KeyValue(key: D.cApiReportId, value: apiID))
-        }
-        
-        
-        if let currentUpload = report.currentUpload {
-            keyValueArray.append(KeyValue(key: D.cCurrentUpload, value: currentUpload == false ? 0 : 1))
-        }
-        
-        let reportCondition = [KeyValue(key: D.cReportId, value: report.id)]
-        try statementBuilder.update(tableName: D.tReport,
-                                    keyValue: keyValueArray,
-                                    primarykeyValue: reportCondition)
-        
-        if let files = report.reportFiles {
-            let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: report.id as Any)]
-            
-            try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
-                                        primarykeyValue:reportFilesCondition )
-            
-            try files.forEach({ reportFile in
-                let reportFileValuesToAdd = [
-                    
-                    reportFile.id == nil ? nil : KeyValue(key: D.cId, value: reportFile.id),
-                    KeyValue(key: D.cReportInstanceId, value: report.id),
-                    KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
-                    KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
-                    KeyValue(key: D.cBytesSent, value: reportFile.bytesSent),
-                    KeyValue(key: D.cCreatedDate, value: reportFile.createdDate),
-                    KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
+            try report.reportFiles?.forEach({ reportFile in
+                
+                let reportFileValuesToAdd = [KeyValue(key: D.cReportInstanceId, value: reportId),
+                                             KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
+                                             KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
+                                             KeyValue(key: D.cBytesSent, value: 0),
+                                             KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
+                                             KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
                 
                 try statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
                                                 keyValue: reportFileValuesToAdd)
+                
+                
             })
+            return .success(reportId)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
         }
-        
-        guard let reportId = report.id else { return nil }
-        return getReport(reportId: reportId)
     }
     
-    func updateReportStatus(idReport : Int, status: ReportStatus, date: Date) throws -> Int {
-        
-        let valuesToUpdate = [KeyValue(key: D.cStatus, value: status.rawValue),
-                              KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
-        let reportCondition = [KeyValue(key: D.cReportId, value: idReport)]
-        
-        return try statementBuilder.update(tableName: D.tReport,
-                                           keyValue: valuesToUpdate,
-                                           primarykeyValue: reportCondition)
+    func updateReport(report : Report) -> Result<Report?,Error> {
+        do {
+            var keyValueArray : [KeyValue]  = []
+            
+            if let title = report.title {
+                keyValueArray.append(KeyValue(key: D.cTitle, value: title))
+            }
+            
+            if let description = report.description {
+                keyValueArray.append(KeyValue(key: D.cDescription, value: description))
+            }
+            
+            keyValueArray.append(KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()))
+            
+            if let status = report.status {
+                keyValueArray.append(KeyValue(key: D.cStatus, value: status.rawValue))
+            }
+            
+            if let serverId = report.server?.id {
+                keyValueArray.append(KeyValue(key: D.cServerId, value: serverId))
+            }
+            
+            if let apiID = report.apiID {
+                keyValueArray.append(KeyValue(key: D.cApiReportId, value: apiID))
+            }
+            
+            
+            if let currentUpload = report.currentUpload {
+                keyValueArray.append(KeyValue(key: D.cCurrentUpload, value: currentUpload == false ? 0 : 1))
+            }
+            
+            let reportCondition = [KeyValue(key: D.cReportId, value: report.id)]
+            try statementBuilder.update(tableName: D.tReport,
+                                        keyValue: keyValueArray,
+                                        primarykeyValue: reportCondition)
+            
+            if let files = report.reportFiles {
+                let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: report.id as Any)]
+                
+                try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
+                                            primarykeyValue:reportFilesCondition )
+                
+                try files.forEach({ reportFile in
+                    let reportFileValuesToAdd = [
+                        
+                        reportFile.id == nil ? nil : KeyValue(key: D.cId, value: reportFile.id),
+                        KeyValue(key: D.cReportInstanceId, value: report.id),
+                        KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
+                        KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
+                        KeyValue(key: D.cBytesSent, value: reportFile.bytesSent),
+                        KeyValue(key: D.cCreatedDate, value: reportFile.createdDate),
+                        KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
+                    
+                    try statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
+                                                    keyValue: reportFileValuesToAdd)
+                })
+            }
+            
+            guard let reportId = report.id else {
+                return .failure(RuntimeError("No report ID"))
+            }
+            
+            let report = getReport(reportId: reportId)
+            return .success(report)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
+    
+    func updateReportStatus(idReport : Int, status: ReportStatus, date: Date) -> Result<Bool, Error> {
+        do {
+            let valuesToUpdate = [KeyValue(key: D.cStatus, value: status.rawValue),
+                                  KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
+            let reportCondition = [KeyValue(key: D.cReportId, value: idReport)]
+            
+            try statementBuilder.update(tableName: D.tReport,
+                                        keyValue: valuesToUpdate,
+                                        primarykeyValue: reportCondition)
+            return .success(true)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
     }
     
     @discardableResult
-    func resetCurrentUploadReport() throws -> Int {
-        let reportCondition = [KeyValue(key: D.cCurrentUpload, value: 1)]
-        let responseDict = try statementBuilder.selectQuery(tableName: D.tReport,
-                                                            andCondition: reportCondition )
-        
-        if !responseDict.isEmpty, let dict = responseDict.first  {
+    func resetCurrentUploadReport() -> Result<Bool,Error> {
+        do {
+            let reportCondition = [KeyValue(key: D.cCurrentUpload, value: 1)]
+            let responseDict = try statementBuilder.selectQuery(tableName: D.tReport,
+                                                                andCondition: reportCondition )
             
-            let reportID = dict[D.cReportId] as? Int
-            let valuesToUpdate = [KeyValue(key: D.cCurrentUpload, value: 0),
-                                  KeyValue(key: D.cStatus, value: ReportStatus.submitted.rawValue)]
-            let reportCondition = [KeyValue(key: D.cReportId, value: reportID)]
+            if !responseDict.isEmpty, let dict = responseDict.first  {
+                
+                let reportID = dict[D.cReportId] as? Int
+                let valuesToUpdate = [KeyValue(key: D.cCurrentUpload, value: 0),
+                                      KeyValue(key: D.cStatus, value: ReportStatus.submitted.rawValue)]
+                let reportCondition = [KeyValue(key: D.cReportId, value: reportID)]
+                
+                try statementBuilder.update(tableName: D.tReport,
+                                            keyValue: valuesToUpdate,
+                                            primarykeyValue:reportCondition)
+            }
             
-            return try statementBuilder.update(tableName: D.tReport,
-                                               keyValue: valuesToUpdate,
-                                               primarykeyValue:reportCondition)
+            return .success(true)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
         }
-        return 0
+        
     }
     
     @discardableResult
-    func updateReportFile(reportFile:ReportFile) throws -> Int {
-        
-        var keyValueArray : [KeyValue]  = []
-        
-        if let status = reportFile.status {
-            keyValueArray.append(KeyValue(key: D.cStatus, value: status.rawValue))
+    func updateReportFile(reportFile:ReportFile) -> Result<Bool,Error> {
+        do {
+            var keyValueArray : [KeyValue]  = []
+            
+            if let status = reportFile.status {
+                keyValueArray.append(KeyValue(key: D.cStatus, value: status.rawValue))
+            }
+            
+            if let bytesSent = reportFile.bytesSent {
+                keyValueArray.append(KeyValue(key: D.cBytesSent, value: bytesSent))
+            }
+            
+            keyValueArray.append(KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()))
+            
+            let primarykey = [KeyValue(key: D.cId, value: reportFile.id)]
+            try statementBuilder.update(tableName: D.tReportInstanceVaultFile,
+                                        keyValue: keyValueArray,
+                                        primarykeyValue: primarykey)
+            return .success(true)
+            
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
         }
+    }
+    
+    func addReportFile(fileId:String?, reportId:Int) -> Result<Int,Error> {
         
-        if let bytesSent = reportFile.bytesSent {
-            keyValueArray.append(KeyValue(key: D.cBytesSent, value: bytesSent))
+        do {
+            let reportFileValues = [KeyValue(key: D.cReportInstanceId, value: reportId),
+                                    KeyValue(key: D.cVaultFileInstanceId, value: fileId),
+                                    KeyValue(key: D.cStatus, value: FileStatus.notSubmitted.rawValue),
+                                    KeyValue(key: D.cBytesSent, value: 0),
+                                    KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
+                                    KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
+            
+            let reportFileId = try statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
+                                                               keyValue: reportFileValues)
+            return .success(reportFileId)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
         }
-        
-        keyValueArray.append(KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()))
-        
-        let primarykey = [KeyValue(key: D.cId, value: reportFile.id)]
-        return try statementBuilder.update(tableName: D.tReportInstanceVaultFile,
-                                           keyValue: keyValueArray,
-                                           primarykeyValue: primarykey)
     }
     
-    func addReportFile(fileId:String?, reportId:Int) throws -> Int {
-        let reportFileValues = [KeyValue(key: D.cReportInstanceId, value: reportId),
-                                KeyValue(key: D.cVaultFileInstanceId, value: fileId),
-                                KeyValue(key: D.cStatus, value: FileStatus.notSubmitted.rawValue),
-                                KeyValue(key: D.cBytesSent, value: 0),
-                                KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
-                                KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
+    func deleteReport(reportId : Int?) -> Result<Bool,Error> {
         
-        
-        return  try statementBuilder.insertInto(tableName: D.tReportInstanceVaultFile,
-                                                keyValue: reportFileValues)
+        do {
+            
+            guard let reportId, let report = self.getReport(reportId: reportId)else {
+                return .failure(RuntimeError("No report is selected"))
+            }
+            
+            try deleteReportFiles(reportIds: [reportId])
+            
+            let reportCondition = [KeyValue(key: D.cReportId, value: report.id as Any)]
+            
+            try statementBuilder.delete(tableName: D.tReport,
+                                        primarykeyValue: reportCondition)
+            
+            return .success(true)
+            
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
     }
     
-    func deleteReport(reportId : Int?) {
-        
-        guard let reportId, let report = self.getReport(reportId: reportId) else { return }
-        
-        deleteReportFiles(reportIds: [reportId])
-        
-        let reportCondition = [KeyValue(key: D.cReportId, value: report.id as Any)]
-        
-        statementBuilder.delete(tableName: D.tReport,
-                                primarykeyValue: reportCondition)
+    func deleteSubmittedReport() -> Result<Bool,Error> {
+        do {
+            let submittedReports = self.getReports(reportStatus: [.submitted])
+            let reportIds = submittedReports.compactMap{$0.id}
+            
+            try deleteReportFiles(reportIds: reportIds)
+            
+            let reportCondition = [KeyValue(key: D.cStatus, value: ReportStatus.submitted.rawValue)]
+            
+            try statementBuilder.delete(tableName: D.tReport,
+                                        primarykeyValue: reportCondition)
+            return .success(true)
+            
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
     }
     
-    func deleteSubmittedReport() {
-        
-        let submittedReports = self.getReports(reportStatus: [.submitted])
-        let reportIds = submittedReports.compactMap{$0.id}
-        
-        deleteReportFiles(reportIds: reportIds)
-        
-        let reportCondition = [KeyValue(key: D.cStatus, value: ReportStatus.submitted.rawValue)]
-        
-        statementBuilder.delete(tableName: D.tReport,
-                                primarykeyValue: reportCondition)
-    }
-    
-    func deleteReportFiles(reportIds:[Int]) {
+    private func deleteReportFiles(reportIds:[Int]) throws {
         let reportCondition = [KeyValues(key: D.cReportInstanceId, value: reportIds)]
-        statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
-                                inCondition: reportCondition)
+        try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
+                                    inCondition: reportCondition)
+        
     }
     
     private func getServer(dictionnary : [String:Any] ) -> Server {

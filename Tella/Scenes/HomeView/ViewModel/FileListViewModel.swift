@@ -342,24 +342,32 @@ extension FileListViewModel {
     }
 
     func addFolder(name: String) {
-        appModel.vaultFilesManager?.addFolderFile(name: name, parentId: self.rootFile?.id)
-        getFiles()
+        let addFolderFileResult = appModel.vaultFilesManager?.addFolderFile(name: name, parentId: self.rootFile?.id)
+        if case .success = addFolderFileResult {
+            getFiles()
+        }
     }
     
     func moveFiles() {
         let selectedFilesIds = selectedFiles.compactMap({$0.id})
-        appModel.vaultFilesManager?.moveVaultFile(fileIds: selectedFilesIds, newParentId: rootFile?.id)
-        getFiles()
+        let moveVaultFileResult = appModel.vaultFilesManager?.moveVaultFile(fileIds: selectedFilesIds, newParentId: rootFile?.id)
+        if case .success = moveVaultFileResult {
+            getFiles()
+        }
     }
     
     func renameSelectedFile() {
-        appModel.vaultFilesManager?.renameVaultFile(id: selectedFiles[0].id, name: selectedFiles[0].name)
-        getFiles()
+        let renameVaultFileResult = appModel.vaultFilesManager?.renameVaultFile(id: selectedFiles[0].id, name: selectedFiles[0].name)
+        if case .success = renameVaultFileResult {
+            getFiles()
+        }
     }
     
     func deleteSelectedFiles() {
-        appModel.vaultFilesManager?.deleteVaultFile(vaultFiles: selectedFiles)
-        getFiles()
+        let deleteVaultFileResult = appModel.vaultFilesManager?.deleteVaultFile(vaultFiles: selectedFiles)
+        if case .success = deleteVaultFileResult {
+            getFiles()
+        }
     }
     
     func clearTmpDirectory() {

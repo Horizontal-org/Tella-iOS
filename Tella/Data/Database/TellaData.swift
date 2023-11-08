@@ -8,7 +8,7 @@ import Combine
 
 class TellaData : ObservableObject {
     
-    var database : TellaDataBase?
+    var database : TellaDataBase
     
     // Servers
     var servers = CurrentValueSubject<[Server], Error>([])
@@ -24,180 +24,136 @@ class TellaData : ObservableObject {
         getReports()
     }
     
-    func addServer(server : Server) throws -> Int {
-        
-        guard let database = database else {
-            throw SqliteError()
-        }
-        let id = try database.addServer(server: server)
+    func addServer(server : Server) -> Result<Int, Error> {
+        let addServerResult = database.addServer(server: server)
         getServers()
         
-        return id
-        
+        return addServerResult
     }
     
     @discardableResult
-    func updateServer(server : Server) throws -> Int {
-        
-        guard let database = database else {
-            throw SqliteError()
-        }
-        let id = try database.updateServer(server: server)
+    func updateServer(server : Server) -> Result<Bool, Error> {
+        let updateServerResult = database.updateServer(server: server)
         getServers()
-        return id
+        return updateServerResult
     }
     
-    func deleteServer(serverId : Int) throws  {
-        
-        guard let database = database else {
-            throw SqliteError()
-        }
-        try database.deleteServer(serverId: serverId)
+    @discardableResult
+    func deleteServer(serverId : Int) -> Result<Bool, Error> {
+        let deleteServerResult = database.deleteServer(serverId: serverId)
         getServers()
         getReports()
+        return deleteServerResult
     }
     
-    func deleteAllServers() {
-        
-        guard let database = database else {
-            return
-        }
-        database.deleteAllServers()
+    @discardableResult
+    func deleteAllServers() -> Result<Bool, Error>{
+        let deleteAllServersResult = database.deleteAllServers()
         getServers()
         getReports()
- 
+        return deleteAllServersResult
     }
     
     func getServers(){
-        guard let database = database else {
-            return
-        }
-
         DispatchQueue.main.async {
-            self.servers.value = database.getServer()
-
+            self.servers.value = self.database.getServer()
         }
-        
     }
     
     func getAutoUploadServer() -> Server? {
-        guard let database = database else {
-            return nil
-        }
-        
         return database.getAutoUploadServer()
     }
     
     func getReports() {
-        guard let database = database else {
-            return
-        }
-        
         DispatchQueue.main.async {
             
-            self.draftReports.value = database.getReports(reportStatus: [ReportStatus.draft])
-            self.outboxedReports.value = database.getReports(reportStatus: [.finalized,
+            self.draftReports.value = self.database.getReports(reportStatus: [ReportStatus.draft])
+            self.outboxedReports.value = self.database.getReports(reportStatus: [.finalized,
                                                                             .submissionError,
                                                                             .submissionPending,
                                                                             .submissionPaused,
                                                                             .submissionInProgress,
                                                                             .submissionAutoPaused])
             
-            self.submittedReports.value = database.getReports(reportStatus: [ReportStatus.submitted])
+            self.submittedReports.value = self.database.getReports(reportStatus: [ReportStatus.submitted])
         }
     }
     
     func getReport(reportId: Int) -> Report? {
-        guard let database = database else {
-            return nil
-        }
         return database.getReport(reportId: reportId)
     }
     
     func getCurrentReport() -> Report? {
-        guard let database = database else {
-            return nil
-        }
         return database.getCurrentReport()
     }
     
     func getUnsentReports() -> [Report] {
-        guard let database = database else {
-            return []
-        }
-        
         return database.getReports(reportStatus: [ .submissionError,
                                                    .submissionPending,
                                                    .submissionInProgress])
     }
     
-    func addReport(report : Report) throws -> Int {
-        
-        guard let database = database else {
-            throw SqliteError()
-        }
-        let id = try database.addReport(report: report)
+    func addReport(report : Report) -> Result<Int, Error> {
+        let id =  database.addReport(report: report)
         getReports()
         return id
     }
     
-    func addCurrentUploadReport(report : Report) throws -> Report? {
-        
-        guard let database = database else {
-            throw SqliteError()
+    func addCurrentUploadReport(report : Report) -> Report?   {
+        database.resetCurrentUploadReport()
+        let addReportResult = database.addReport(report: report)
+
+        switch addReportResult {
+        case .success(let id):
+            return getReport(reportId: id)
+        default:
+            return nil
         }
-        
-        try database.resetCurrentUploadReport()
-        let id = try database.addReport(report: report)
-        let report = getReport(reportId: id)
-        return report
     }
     
     @discardableResult
-    func updateReport(report : Report) throws -> Report? {
-        
-        guard let database = database else {
-            throw SqliteError()
-        }
-        let report = try database.updateReport(report: report)
+    func updateReport(report : Report) -> Result<Report?, Error>  {
+        let report = database.updateReport(report: report)
         getReports()
         return report
     }
     
     @discardableResult
-    func updateReportStatus(idReport : Int, status: ReportStatus) throws -> Int {
-        
-        guard let database = database else {
-            throw SqliteError()
-        }
-        let id = try database.updateReportStatus(idReport: idReport, status: status, date: Date())
+    func updateReportStatus(idReport : Int, status: ReportStatus) -> Result<Bool, Error>  {
+        let id = database.updateReportStatus(idReport: idReport, status: status, date: Date())
         getReports()
         return id
         
     }
     
-    func addReportFile(fileId: String?, reportId : Int) throws -> ReportFile? {
+    func addReportFile(fileId: String?, reportId : Int)  -> ReportFile? {
+        let addReportFileResult =  database.addReportFile(fileId: fileId , reportId: reportId)
         
-        guard let database = database else {
-            throw SqliteError()
+        switch addReportFileResult {
+        case .success(let id):
+            return database.getVaultFile(reportFileId: id)
+        default:
+            return nil
         }
-        let id = try database.addReportFile(fileId: fileId , reportId: reportId)
-        
-        return database.getVaultFile(reportFileId: id)
         
     }
     
-    func updateReportFile(reportFile: ReportFile) throws   {
-        try database?.updateReportFile(reportFile: reportFile)
+    @discardableResult
+    func updateReportFile(reportFile: ReportFile) -> Result<Bool, Error>{
+          database.updateReportFile(reportFile: reportFile)
     }
     
-    func deleteReport(reportId : Int?)  {
-        database?.deleteReport(reportId: reportId)
+    func deleteReport(reportId : Int?) -> Result<Bool, Error> {
+        let deleteReportResult = database.deleteReport(reportId: reportId)
         getReports()
+        return deleteReportResult
     }
     
-    func deleteSubmittedReport() {
-        database?.deleteSubmittedReport()
+    @discardableResult
+    func deleteSubmittedReport() -> Result<Bool, Error> {
+        let deleteSubmittedReportResult = database.deleteSubmittedReport()
         getReports()
+        return deleteSubmittedReportResult
+
     }
 }

@@ -50,11 +50,7 @@ class HomeViewModel: ObservableObject {
     }
     
     func deleteAllServersConnection()   {
-        do {
-            try appModel.vaultManager.tellaData?.deleteAllServers()
-        } catch {
-            print("Error deleting all servers connections")
-        }
+        appModel.vaultManager.tellaData?.deleteAllServers()
     }
 
 }

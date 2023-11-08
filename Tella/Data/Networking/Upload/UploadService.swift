@@ -182,7 +182,7 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
             
             operation?.update(responseFromDelegate: URLSessionTaskResponse(task: task , data: nil, response: task.response as? HTTPURLResponse))
             
-        } else if let code = (error as? NSError)?.code {
+        } else if let _ = (error as? NSError)?.code {
             operation?.update(responseFromDelegate: URLSessionTaskResponse(task: task , data: nil, response: nil, error: error))
             
         } else {

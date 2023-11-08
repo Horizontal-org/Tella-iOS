@@ -20,7 +20,7 @@ class SQLiteStatementBuilder {
     func getCurrentDatabaseVersion() throws -> Int? {
         
         guard let selectStatement = try prepareStatement(sql: "PRAGMA user_version") else {
-            throw SqliteError(message: errorMessage)
+            throw RuntimeError(errorMessage)
         }
         
         let dict =  query(stmt: selectStatement)
@@ -36,13 +36,13 @@ class SQLiteStatementBuilder {
         let sql = ("PRAGMA user_version = \(version)")
         
         guard let updateStatement = try prepareStatement(sql:sql ) else {
-            throw SqliteError(message: errorMessage)
+            throw RuntimeError(errorMessage)
         }
         
         let result = execute(stmt: updateStatement, sql: sql)
         
         if result == 0 {
-            throw SqliteError(message: errorMessage)
+            throw RuntimeError(errorMessage)
         }
     }
     
@@ -54,7 +54,7 @@ class SQLiteStatementBuilder {
         debugLog("selectSql \(selectSql)")
         
         guard let selectStatement = try prepareStatement(sql: selectSql) else {
-            throw SqliteError(message: errorMessage)
+            throw RuntimeError(errorMessage)
         }
         
         let arrayBinds = andCondition + orCondition
@@ -63,28 +63,28 @@ class SQLiteStatementBuilder {
             return rows
             
         } else {
-            throw SqliteError(message: errorMessage)
+            throw RuntimeError(errorMessage)
         }
     }
     
     func getSelectQuery(tableName: String,
-                     equalCondition: [KeyValue] = [],
-                     differentCondition: [KeyValue] = [],
-                     inCondition: [KeyValues] = [],
-                     notInCondition: [KeyValues] = [] ,
-                     sortCondition : [SortCondition] = [],
-                     limit: Int = 0,
-                     joinCondition: [JoinCondition]? = nil,
-                     likeConditions: [KeyValue] = [],
-                     notLikeConditions: [KeyValue] = [])  throws -> [[String: Any]] {
-
+                        equalCondition: [KeyValue] = [],
+                        differentCondition: [KeyValue] = [],
+                        inCondition: [KeyValues] = [],
+                        notInCondition: [KeyValues] = [] ,
+                        sortCondition : [SortCondition] = [],
+                        limit: Int = 0,
+                        joinCondition: [JoinCondition]? = nil,
+                        likeConditions: [KeyValue] = [],
+                        notLikeConditions: [KeyValue] = [])  throws -> [[String: Any]] {
+        
         let selectSql = sql(tableName: tableName,
                             equalCondition: equalCondition,
                             differentCondition: differentCondition,
                             inCondition: inCondition,
                             notInCondition: notInCondition,
                             sortCondition: sortCondition,
-                            limit: limit, 
+                            limit: limit,
                             joinCondition: joinCondition,
                             likeConditions: likeConditions,
                             notLikeConditions: notLikeConditions)
@@ -92,7 +92,7 @@ class SQLiteStatementBuilder {
         debugLog("selectSql \(selectSql)")
         
         guard let selectStatement = try prepareStatement(sql: selectSql) else {
-            throw SqliteError(message: errorMessage)
+            throw RuntimeError(errorMessage)
         }
         
         let arrayBinds = equalCondition + differentCondition
@@ -101,7 +101,7 @@ class SQLiteStatementBuilder {
             return rows
             
         } else {
-            throw SqliteError(message: errorMessage)
+            throw RuntimeError(errorMessage)
         }
     }
     
@@ -124,7 +124,7 @@ class SQLiteStatementBuilder {
         debugLog("selectSql \(selectSql)")
         
         guard let selectStatement = try prepareStatement(sql: selectSql) else {
-            throw SqliteError(message: errorMessage)
+            throw RuntimeError(errorMessage)
         }
         
         if let stmt = bind(insertStatement: selectStatement, keyValues) {
@@ -132,7 +132,7 @@ class SQLiteStatementBuilder {
             return rows
             
         } else {
-            throw SqliteError(message: errorMessage)
+            throw RuntimeError(errorMessage)
         }
     }
     
@@ -283,7 +283,7 @@ class SQLiteStatementBuilder {
         }
         
         if !sortCondition.isEmpty {
-           let formattedSortCondition = sortCondition.compactMap({"\($0.column) \($0.sortDirection)"}).joined(separator: ", ")
+            let formattedSortCondition = sortCondition.compactMap({"\($0.column) \($0.sortDirection)"}).joined(separator: ", ")
             sql += " ORDER BY \(formattedSortCondition)"
         }
         if limit > 0 {
@@ -308,7 +308,6 @@ class SQLiteStatementBuilder {
         
     }
     
-    
     func createTable(tableName: String, columns:[String]) {
         
         let sqlExpression = "CREATE TABLE IF NOT EXISTS " +
@@ -324,7 +323,7 @@ class SQLiteStatementBuilder {
     }
     
     @discardableResult
-    func insertInto(tableName:String, keyValue: [KeyValue?]) throws -> Int {
+    func insertInto(tableName:String, keyValue: [KeyValue?])  throws -> Int {
         let keyValue = keyValue.compactMap({$0})
         
         let keys = keyValue.compactMap{($0.key)}
@@ -338,7 +337,7 @@ class SQLiteStatementBuilder {
         debugLog("insertSql: \(insertSql)")
         
         guard let insertStatement = try prepareStatement(sql: insertSql) else {
-            throw SqliteError(message: errorMessage)
+            throw RuntimeError(errorMessage)
         }
         
         if let stmt = bind(insertStatement: insertStatement, keyValue) {
@@ -346,18 +345,19 @@ class SQLiteStatementBuilder {
             let result = execute(stmt: stmt, sql: insertSql)
             
             if result == 0 {
-                throw SqliteError(message: errorMessage)
+                throw RuntimeError(errorMessage)
             }
             
             return result
             
         } else {
-            throw SqliteError(message: errorMessage)
+            throw RuntimeError(errorMessage)
         }
     }
     
     @discardableResult
     func update(tableName:String, keyValue: [KeyValue?], primarykeyValue : [KeyValue?] ) throws -> Int {
+        
         let keyValue = keyValue.compactMap({$0})
         let primarykeyValue = primarykeyValue.compactMap({$0})
         
@@ -378,7 +378,7 @@ class SQLiteStatementBuilder {
         debugLog("update: \(updateSql)")
         
         guard let updateStatement = try prepareStatement(sql: updateSql) else {
-            throw SqliteError(message: errorMessage)
+            throw RuntimeError(errorMessage)
         }
         
         if let stmt = bind(insertStatement: updateStatement, bindValues) {
@@ -386,92 +386,79 @@ class SQLiteStatementBuilder {
             let result = execute(stmt: stmt, sql: updateSql)
             
             if result == 0 {
-                throw SqliteError(message: errorMessage)
+                throw RuntimeError(errorMessage)
             }
-            
             return result
             
         } else {
-            throw SqliteError(message: errorMessage)
+            throw RuntimeError(errorMessage)
         }
     }
     
-    
-    func delete(tableName:String, primarykeyValue : [KeyValue] = [], inCondition: [KeyValues] = []) {
+    func delete(tableName:String, primarykeyValue : [KeyValue] = [], inCondition: [KeyValues] = []) throws {
         
-        do {
-            let primaryKeyColumnNames = primarykeyValue.compactMap{($0.key)}
+        let primaryKeyColumnNames = primarykeyValue.compactMap{($0.key)}
+        
+        var deleteSql = "DELETE FROM \(tableName)"
+        
+        if !primarykeyValue.isEmpty || !inCondition.isEmpty {
+            deleteSql  += " WHERE "
+        }
+        
+        deleteSql  += primaryKeyColumnNames.map { "\($0) = :\($0)" }.joined(separator: " AND ")
+        
+        
+        for (index, condition) in inCondition.enumerated() {
             
-            var deleteSql = "DELETE FROM \(tableName)"
+            let columnName = condition.key
+            let values = condition.value.map { "'\($0)'" }.joined(separator: ", ")
             
-            if !primarykeyValue.isEmpty || !inCondition.isEmpty {
-                deleteSql  += " WHERE "
+            deleteSql += " \(columnName) IN (\(values))"
+            
+            if index < inCondition.count - 1 {
+                deleteSql += "  AND"
+            }
+        }
+        
+        debugLog("delete: \(deleteSql)")
+        
+        guard let deleteStatement = try prepareStatement(sql: deleteSql) else {
+            throw RuntimeError(errorMessage)
+        }
+        
+        if let stmt = bind(insertStatement: deleteStatement, primarykeyValue) {
+            
+            let result = execute(stmt: stmt, sql: deleteSql)
+            
+            if result == 0 {
+                throw RuntimeError(errorMessage)
             }
             
-            deleteSql  += primaryKeyColumnNames.map { "\($0) = :\($0)" }.joined(separator: " AND ")
+        } else {
+            throw RuntimeError(errorMessage)
+        }
+        
+    }
+    
+    func deleteAll(tableNames: [String]) throws {
+        
+        for tableName in tableNames {
             
-            
-            for (index, condition) in inCondition.enumerated() {
-                
-                let columnName = condition.key
-                let values = condition.value.map { "'\($0)'" }.joined(separator: ", ")
-                
-                deleteSql += " \(columnName) IN (\(values))"
-                
-                if index < inCondition.count - 1 {
-                    deleteSql += "  AND"
-                }
-            }
+            let deleteSql = "DELETE FROM \(tableName)"
             
             debugLog("delete: \(deleteSql)")
             
             guard let deleteStatement = try prepareStatement(sql: deleteSql) else {
-                throw SqliteError(message: errorMessage)
+                throw RuntimeError(errorMessage)
             }
             
-            if let stmt = bind(insertStatement: deleteStatement, primarykeyValue) {
-                
-                let result = execute(stmt: stmt, sql: deleteSql)
-                
-                if result == 0 {
-                    throw SqliteError(message: errorMessage)
-                }
-                
-            } else {
-                throw SqliteError(message: errorMessage)
+            let deletedCount = execute(stmt: deleteStatement, sql: deleteSql)
+            
+            if deletedCount == 0 {
+                throw RuntimeError(errorMessage)
             }
-        }
-        catch let error {
-            debugLog(error)
         }
     }
-    
-    func deleteAll(tableNames: [String]) {
-       
-        do {
-            
-            
-            for tableName in tableNames {
-                
-                let deleteSql = "DELETE FROM \(tableName)"
-                
-                debugLog("delete: \(deleteSql)")
-                
-                guard let deleteStatement = try prepareStatement(sql: deleteSql) else {
-                    throw SqliteError(message: errorMessage)
-                }
-                
-                let deletedCount = execute(stmt: deleteStatement, sql: deleteSql)
-                
-                if deletedCount == 0 {
-                    throw SqliteError(message: errorMessage)
-                }
-            }
-        }
-        catch let error {
-            debugLog(error)
-        }
-     }
 }
 
 

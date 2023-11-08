@@ -7,14 +7,14 @@ import Foundation
 
 protocol VaultDataBaseProtocol {
     func createVaultTable()
-    func addVaultFile(file : VaultFileDB, parentId: String?) throws
+    func addVaultFile(file : VaultFileDB, parentId: String?) throws -> Result<Int,Error>
     func getVaultFiles(parentId: String?, filter: FilterType?, sort: FileSortOptions?) -> [VaultFileDB]
     func getVaultFile(id: String?) -> VaultFileDB?
     func getVaultFiles(ids: [String]) -> [VaultFileDB]
     func getRecentVaultFiles() -> [VaultFileDB]
-    func renameVaultFile(id: String?, name: String?)
-    func moveVaultFile(fileIds: [String], newParentId: String?)
-    func deleteVaultFile(ids: [String])
+    func renameVaultFile(id: String?, name: String?) -> Result<Bool, Error>
+    func moveVaultFile(fileIds: [String], newParentId: String?) -> Result<Bool, Error>
+    func deleteVaultFile(ids: [String]) -> Result<Bool, Error>
 }
 
 protocol DataBase {
@@ -78,28 +78,33 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         statementBuilder.createTable(tableName: VaultD.tVaultFile, columns: columns)
     }
     
-    func addVaultFile(file : VaultFileDB, parentId: String?) throws {
+    func addVaultFile(file : VaultFileDB, parentId: String?) -> Result<Int,Error> {
         
-        let parentId = parentId ?? self.rootId
-        let defaultThumbnail = "".data(using: .utf8)
-        
-        let valuesToAdd = [KeyValue(key: VaultD.cId, value: file.id),
-                           KeyValue(key: VaultD.cParentId, value: parentId),
-                           KeyValue(key: VaultD.cType, value: file.type.rawValue),
-                           KeyValue(key: VaultD.cMimeType, value: file.mimeType),
-                           KeyValue(key: VaultD.cThumbnail, value: file.thumbnail ?? defaultThumbnail),
-                           KeyValue(key: VaultD.cName, value:file.name),
-                           KeyValue(key: VaultD.cCreated, value:Date().getDateDouble()),
-                           KeyValue(key: VaultD.cDuration, value:file.duration),
-                           KeyValue(key: VaultD.cSize, value:file.size),
-                           KeyValue(key: VaultD.cWidth, value:file.width),
-                           KeyValue(key: VaultD.cHeight, value:file.height)
-                           
-        ]
-        
-        try statementBuilder.insertInto(tableName: VaultD.tVaultFile,
-                                        keyValue: valuesToAdd)
-        
+        do {
+            let parentId = parentId ?? self.rootId
+            let defaultThumbnail = "".data(using: .utf8)
+            
+            let valuesToAdd = [KeyValue(key: VaultD.cId, value: file.id),
+                               KeyValue(key: VaultD.cParentId, value: parentId),
+                               KeyValue(key: VaultD.cType, value: file.type.rawValue),
+                               KeyValue(key: VaultD.cMimeType, value: file.mimeType),
+                               KeyValue(key: VaultD.cThumbnail, value: file.thumbnail ?? defaultThumbnail),
+                               KeyValue(key: VaultD.cName, value:file.name),
+                               KeyValue(key: VaultD.cCreated, value:Date().getDateDouble()),
+                               KeyValue(key: VaultD.cDuration, value:file.duration),
+                               KeyValue(key: VaultD.cSize, value:file.size),
+                               KeyValue(key: VaultD.cWidth, value:file.width),
+                               KeyValue(key: VaultD.cHeight, value:file.height)
+            ]
+            
+            let id = try statementBuilder.insertInto(tableName: VaultD.tVaultFile,
+                                                     keyValue: valuesToAdd)
+            
+            return .success(id)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
     }
     
     func getVaultFiles(parentId: String?, filter: FilterType?, sort: FileSortOptions?) -> [VaultFileDB] {
@@ -178,7 +183,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         
     }
     
-    func renameVaultFile(id: String?, name: String?) {
+    func renameVaultFile(id: String?, name: String?) -> Result<Bool, Error> {
         
         do {
             
@@ -188,13 +193,15 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             try statementBuilder.update(tableName: VaultD.tVaultFile,
                                         keyValue: valuesToUpdate,
                                         primarykeyValue: vaultCondition)
-            
+            return .success(true)
         } catch let error {
             debugLog(error)
+            return .failure(error)
+            
         }
     }
     
-    func moveVaultFile(fileIds: [String], newParentId: String?) {
+    func moveVaultFile(fileIds: [String], newParentId: String?) -> Result<Bool, Error> {
         
         let parentId = newParentId ?? self.rootId
         
@@ -207,22 +214,41 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             try statementBuilder.update(tableName: VaultD.tVaultFile,
                                         keyValue: valuesToUpdate,
                                         primarykeyValue: vaultCondition)
+            return .success(true)
             
         } catch let error {
             debugLog(error)
+            return .failure(error)
+            
         }
     }
     
-    func deleteVaultFile(ids: [String]) {
-        
-        let vaultCondition = [KeyValues(key: VaultD.cId, value: ids)]
-        
-        statementBuilder.delete(tableName: VaultD.tVaultFile,
-                                inCondition: vaultCondition)
+    func deleteVaultFile(ids: [String]) -> Result<Bool, Error> {
+        do {
+            
+            let vaultCondition = [KeyValues(key: VaultD.cId, value: ids)]
+            
+            try statementBuilder.delete(tableName: VaultD.tVaultFile,
+                                        inCondition: vaultCondition)
+            return .success(true)
+            
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+            
+        }
     }
     
-    func deleteAllVaultFiles() {
-        statementBuilder.deleteAll(tableNames: [VaultD.tVaultFile])
+    func deleteAllVaultFiles() -> Result<Bool, Error> {
+        do {
+            try statementBuilder.deleteAll(tableNames: [VaultD.tVaultFile])
+            return .success(true)
+            
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+            
+        }
     }
     
     func getFilterConditions(filter:FilterType?, parentId:String?) -> FilterCondition {

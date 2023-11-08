@@ -10,16 +10,19 @@ protocol VaultFilesManagerInterface {
     func addVaultFiles(files: [(VaultFileDB,String?)]) throws
     
     
-    func addFolderFile(name:String, parentId: String?)
+    func addFolderFile(name: String, parentId: String?) -> Result<Int,Error>?
     func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB]
     func getVaultFile(id: String?) -> VaultFileDB?
     func getVaultFiles(ids: [String]) -> [VaultFileDB]
     func getRecentVaultFiles() -> [VaultFileDB]
-    func renameVaultFile(id: String?, name: String?)
-    func moveVaultFile(fileIds: [String], newParentId: String?)
-    func deleteVaultFile(fileIds: [String])
-    func deleteAllVaultFiles()
-    func deleteVaultFile(vaultFiles: [VaultFileDB])
+    func renameVaultFile(id: String?, name: String?) -> Result<Bool, Error>?
+    func moveVaultFile(fileIds: [String], newParentId: String?) -> Result<Bool, Error>?
+   
+    @discardableResult
+    func deleteVaultFile(fileIds ids: [String]) -> Result<Bool, Error>?
+    
+    func deleteAllVaultFiles() -> Result<Bool, Error>?
+    func deleteVaultFile(vaultFiles: [VaultFileDB]) -> Result<Bool, Error>?
     func cancelImportAndEncryption()
 }
 

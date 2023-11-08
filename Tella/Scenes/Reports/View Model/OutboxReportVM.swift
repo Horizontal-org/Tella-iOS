@@ -228,11 +228,11 @@ class OutboxReportVM: ObservableObject {
             return currentFile
         }
         
-        guard  let currentFile = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId}) else { return}
+        guard  let _ = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId}) else { return}
         
         // All Files
         let totalBytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent)}
-        let totalSize = self.reportViewModel.files.reduce(0) { $0 + ($1.size ?? 0)}
+        let totalSize = self.reportViewModel.files.reduce(0) { $0 + ($1.size)}
         
         // current file
         
@@ -258,7 +258,7 @@ class OutboxReportVM: ObservableObject {
                         let size = currentItem.file.size.getFormattedFileSize()
                         let currentFileTotalBytesSent = currentFileTotalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
                         
-                        currentItem.progression = "\(currentFileTotalBytesSent)/\(size ?? "")"
+                        currentItem.progression = "\(currentFileTotalBytesSent)/\(size )"
                     }
                     self.objectWillChange.send()
                 }
@@ -273,22 +273,11 @@ class OutboxReportVM: ObservableObject {
         self.reportViewModel.status = reportStatus
         
         guard let id = reportViewModel.id else { return  }
-        
-        do {
-            try mainAppModel.vaultManager.tellaData?.updateReportStatus(idReport: id, status: reportStatus)
-            
-        } catch let error {
-            debugLog(error)
-        }
+
+        mainAppModel.vaultManager.tellaData?.updateReportStatus(idReport: id, status: reportStatus)
     }
     
     func deleteReport() {
-        
-        do {
-            try mainAppModel.deleteReport(reportId: reportViewModel.id)
-        } catch let error {
-            debugLog(error)
-        }
-
+        mainAppModel.deleteReport(reportId: reportViewModel.id)
     }
 }

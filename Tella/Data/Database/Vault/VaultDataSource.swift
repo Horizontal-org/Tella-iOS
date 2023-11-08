@@ -13,8 +13,9 @@ class VaultDataSource : VaultDataSourceInterface {
         self.database = try VaultDatabase(key: key)
     }
 
-    func addVaultFile(file : VaultFileDB, parentId: String?) throws {
-        try self.database.addVaultFile(file: file, parentId: parentId)
+    @discardableResult
+    func addVaultFile(file : VaultFileDB, parentId: String?) -> Result<Int,Error> {
+        self.database.addVaultFile(file: file, parentId: parentId)
     }
     
     func getVaultFiles(parentId: String?, filter: FilterType?, sort: FileSortOptions?) -> [VaultFileDB] {
@@ -31,22 +32,21 @@ class VaultDataSource : VaultDataSourceInterface {
     
     func getRecentVaultFiles() -> [VaultFileDB] {
         return self.database.getRecentVaultFiles()
-
     }
 
-    func renameVaultFile(id: String?, name: String?) {
+    func renameVaultFile(id: String?, name: String?) -> Result<Bool, Error> {
         self.database.renameVaultFile(id: id, name: name)
     }
     
-    func moveVaultFile(fileIds: [String], newParentId: String?) {
+    func moveVaultFile(fileIds: [String], newParentId: String?) -> Result<Bool, Error> {
         self.database.moveVaultFile(fileIds: fileIds, newParentId: newParentId)
     }
     
-    func deleteVaultFile(ids: [String]) {
+    func deleteVaultFile(ids: [String]) -> Result<Bool, Error> {
         self.database.deleteVaultFile(ids: ids)
     }
     
-    func deleteAllVaultFiles() {
+    func deleteAllVaultFiles() -> Result<Bool, Error> {
         self.database.deleteAllVaultFiles()
     }
 

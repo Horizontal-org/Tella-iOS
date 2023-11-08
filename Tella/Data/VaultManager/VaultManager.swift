@@ -188,7 +188,7 @@ extension VaultManager {
                 guard let self = self else { return }
 
                 do {
-                    guard let key = try self.recoverKey(password: password)?.getString() else { return promise(.success(false))  }
+                    guard let _ = try self.recoverKey(password: password)?.getString() else { return promise(.success(false))  }
                     promise(.success(true))
                 }
                 catch let error {
