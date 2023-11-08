@@ -290,13 +290,13 @@ extension UwaziServerRepository.API: APIRequest {
             return [HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
         case .getTemplate(_,let cookieList), .getSetting(_,let cookieList), .getDictionary(_,let cookieList), .getTranslations(_,let cookieList):
             let cookiesString = cookieList.joined(separator: "; ")
-            return ["Cookie": cookiesString,
+            return [HTTPHeaderField.cookie.rawValue: cookiesString,
                     HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
         case .submitEntity(_, let cookieList, _):
                     let cookiesString = cookieList.joined(separator: ";")
-                    return ["Cookie": cookiesString,
-                            "X-Requested-With": "XMLHttpRequest",
-                            HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
+            return [HTTPHeaderField.cookie.rawValue: cookiesString,
+                    HTTPHeaderField.xRequestedWith.rawValue: XRequestedWithValue.xmlHttp.rawValue,
+                    HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
         }
     }
 
