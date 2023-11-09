@@ -9,7 +9,7 @@ struct VaultD {
     /* DATABASE */
     static let databaseName = "tella_vault_file.db"
     
-    /* DATABASE VERSIO */
+    /* DATABASE VERSION */
     
     static let databaseVersion = 1
     
@@ -23,6 +23,9 @@ struct VaultD {
     
     static let tVaultFile = "t_vault_file"
     
+    /* Root ID */
+    static let rootId = "11223344-5566-4777-8899-aabbccddeeff";
+
     /* DATABASE COLUMNS */
     static let cId = "c_id"
     static let cParentId = "c_parent_id"

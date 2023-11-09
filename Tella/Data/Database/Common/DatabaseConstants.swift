@@ -10,7 +10,7 @@ struct D {
     /* DATABASE */
     static let databaseName = "tella_vault.db"
     
-    /* DATABASE VERSIO */
+    /* DATABASE VERSION */
 
     static let databaseVersion = 1
 

@@ -29,7 +29,6 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
     var dataBaseHelper: DataBaseHelper
     var statementBuilder: SQLiteStatementBuilder
     
-    private var rootId = "11223344-5566-4777-8899-aabbccddeeff";
     
     init(key: String?) throws {
         dataBaseHelper = try DataBaseHelper(key: key, databaseName: VaultD.databaseName)
@@ -81,7 +80,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
     func addVaultFile(file : VaultFileDB, parentId: String?) -> Result<Int,Error> {
         
         do {
-            let parentId = parentId ?? self.rootId
+            let parentId = parentId ?? VaultD.rootId
             let defaultThumbnail = "".data(using: .utf8)
             
             let valuesToAdd = [KeyValue(key: VaultD.cId, value: file.id),
@@ -110,7 +109,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
     func getVaultFiles(parentId: String?, filter: FilterType?, sort: FileSortOptions?) -> [VaultFileDB] {
         do {
             
-            let parentId = parentId ?? self.rootId
+            let parentId = parentId ?? VaultD.rootId
             
             let filterConditions = getFilterConditions(filter: filter, parentId: parentId)
             
@@ -203,7 +202,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
     
     func moveVaultFile(fileIds: [String], newParentId: String?) -> Result<Bool, Error> {
         
-        let parentId = newParentId ?? self.rootId
+        let parentId = newParentId ?? VaultD.rootId
         
         do {
             
