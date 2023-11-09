@@ -82,7 +82,9 @@ class MainAppModel: ObservableObject {
     private func initDataSource() {
         do {
             try self.vaultManager.initialize(with: self.vaultManager.key)
-            self.vaultFilesManager = try VaultFilesManager(key: self.vaultManager.key, vaultManager: self.vaultManager)
+
+            let database = try VaultDatabase(key: self.vaultManager.key)
+            self.vaultFilesManager = try VaultFilesManager(vaultDataBase: database, vaultManager: self.vaultManager)
         } catch {
             Toast.displayToast(message: "Error opening the app")
         }

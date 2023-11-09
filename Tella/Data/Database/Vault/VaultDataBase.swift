@@ -7,7 +7,8 @@ import Foundation
 
 protocol VaultDataBaseProtocol {
     func createVaultTable()
-    func addVaultFile(file : VaultFileDB, parentId: String?) throws -> Result<Int,Error>
+    @discardableResult
+    func addVaultFile(file : VaultFileDB, parentId: String?) -> Result<Int,Error>
     func getVaultFiles(parentId: String?, filter: FilterType?, sort: FileSortOptions?) -> [VaultFileDB]
     func getVaultFile(id: String?) -> VaultFileDB?
     func getVaultFiles(ids: [String]) -> [VaultFileDB]
@@ -15,6 +16,7 @@ protocol VaultDataBaseProtocol {
     func renameVaultFile(id: String?, name: String?) -> Result<Bool, Error>
     func moveVaultFile(fileIds: [String], newParentId: String?) -> Result<Bool, Error>
     func deleteVaultFile(ids: [String]) -> Result<Bool, Error>
+    func deleteAllVaultFiles() -> Result<Bool, Error>
 }
 
 protocol DataBase {
@@ -29,13 +31,12 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
     var dataBaseHelper: DataBaseHelper
     var statementBuilder: SQLiteStatementBuilder
     
-    
     init(key: String?) throws {
         dataBaseHelper = try DataBaseHelper(key: key, databaseName: VaultD.databaseName)
         statementBuilder = SQLiteStatementBuilder(dbPointer: dataBaseHelper.dbPointer)
         checkVersions()
     }
-    
+
     func checkVersions() {
         do {
             let oldVersion = try statementBuilder.getCurrentDatabaseVersion()
