@@ -122,9 +122,8 @@ class UwaziServerRepository: WebRepository {
             .eraseToAnyPublisher()
     }
     
-    func submitEntity(serverURL: String, cookieList: [String], entity: [String: Any]) -> AnyPublisher<EntityCreationResponse, APIError> {
-            let apiResponse: APIResponse<EntityCreationResponse> = getAPIResponse(endpoint: API.submitEntity(serverURL: serverURL, cookieList: cookieList, entity: entity))
-
+    func submitEntity(serverURL: String, cookieList: [String], multipartHeader: String, multipartBody: Data) -> AnyPublisher<EntityCreationResponse, APIError> {
+        let apiResponse: APIResponse<EntityCreationResponse> = getAPIResponse(endpoint: API.submitEntity(serverURL: serverURL, cookieList: cookieList, multipartHeader: multipartHeader, multipartBody: multipartBody))
             return apiResponse
                 .compactMap{$0.0}
                 .eraseToAnyPublisher()
@@ -265,7 +264,7 @@ extension UwaziServerRepository {
         case getSetting(serverURL: String, cookieList:[String])
         case getDictionary(serverURL: String, cookieList:[String])
         case getTranslations(serverURL: String, cookieList:[String])
-        case submitEntity(serverURL: String, cookieList: [String], entity: [String: Any])
+        case submitEntity(serverURL: String, cookieList: [String], multipartHeader: String, multipartBody: Data)
     }
 }
 
@@ -292,11 +291,20 @@ extension UwaziServerRepository.API: APIRequest {
             let cookiesString = cookieList.joined(separator: "; ")
             return [HTTPHeaderField.cookie.rawValue: cookiesString,
                     HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
-        case .submitEntity(_, let cookieList, _):
+        case .submitEntity(_, let cookieList, _, _):
                     let cookiesString = cookieList.joined(separator: ";")
             return [HTTPHeaderField.cookie.rawValue: cookiesString,
                     HTTPHeaderField.xRequestedWith.rawValue: XRequestedWithValue.xmlHttp.rawValue,
-                    HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
+                    HTTPHeaderField.contentType.rawValue : ContentType.data.rawValue ]
+        }
+    }
+    
+    var encoding: Encoding {
+        switch self {
+        case .submitEntity:
+            return Encoding.form
+        default:
+            return Encoding.json
         }
     }
 
@@ -316,13 +324,28 @@ extension UwaziServerRepository.API: APIRequest {
                 "password": password,
                 "token": token
             ]
-        case .submitEntity(_, _, let entity):
-            return entity
-        case .checkURL, .getLanguage, .getTemplate, .getSetting,.getDictionary,.getTranslations:
+        case .checkURL, .getLanguage, .getTemplate, .getSetting,.getDictionary,.getTranslations, .submitEntity(_, _, _, _):
+            return nil
+        }
+    }
+    
+    var multipartBody: Data? {
+        switch self {
+        case .submitEntity(_, _, _, let multipartBody):
+            return multipartBody
+        default:
             return nil
         }
     }
 
+    var multipartHeader: String? {
+        switch self {
+        case .submitEntity(_, _, let multipartHeader, _):
+            return multipartHeader
+        default:
+            return nil
+        }
+    }
     var baseURL: String {
         switch self {
         case .login((_, _, let serverURL)), .twoFactorAuthentication((_,_,_, let serverURL)):
@@ -333,7 +356,7 @@ extension UwaziServerRepository.API: APIRequest {
             return serverURL
         case .getTemplate(serverURL: let serverURL, cookieList: _):
             return serverURL
-        case .getSetting(serverURL: let serverURL, cookieList: _), .getDictionary(serverURL: let serverURL, cookieList: _),.getTranslations(serverURL: let serverURL, cookieList: _), .submitEntity(serverURL: let serverURL, cookieList: _, entity: _):
+        case .getSetting(serverURL: let serverURL, cookieList: _), .getDictionary(serverURL: let serverURL, cookieList: _),.getTranslations(serverURL: let serverURL, cookieList: _), .submitEntity(serverURL: let serverURL, cookieList: _, _, _):
             return serverURL
         }
     }

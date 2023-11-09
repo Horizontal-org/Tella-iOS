@@ -21,7 +21,8 @@ public protocol APIRequest {
     var url: URL? { get }
     var uploadsSession: URLSession? { get }
     var apiSession: URLSession? { get }
-
+    var multipartBody: Data? { get }
+    var multipartHeader: String? {get}
 }
 
 public extension APIRequest {
@@ -45,6 +46,9 @@ public extension APIRequest {
     var url: URL? { return  URL(string: baseURL + path) }
     var uploadsSession: URLSession? { return nil }
     var apiSession: URLSession? { return nil }
+    var multipartBody: Data? { nil }
+    var multipartHeader: String? { nil }
+
 }
 
 extension APIRequest {
@@ -66,7 +70,14 @@ extension APIRequest {
             request.addValue(HTTPHeaderField.bearer.rawValue + token, forHTTPHeaderField: HTTPHeaderField.authorization.rawValue)
         }
         request.httpMethod = httpMethod.rawValue
-        request.httpBody = try body()
+        if encoding == .form {
+            request.setValue(multipartHeader, forHTTPHeaderField: "Content-Type")
+                
+            request.httpBody = multipartBody
+        } else {
+            request.httpBody = try body()
+        }
+
         request.timeoutInterval = TimeInterval(30)
         return request
     }
@@ -74,25 +85,24 @@ extension APIRequest {
 
 extension APIRequest {
     
-    func body() throws -> Data? {
+    func body(boundary: String? = nil) throws -> Data? {
         let keyValues = keyValues?.compactMapValues { $0 } ?? [:]
         
         let queryItemsDictionary = keyValues
             .reduce(into: [:]) { result, tuple in
                 result[tuple.key.apiString] = tuple.value
             }
-        
         if !queryItemsDictionary.isEmpty, encoding == .json {
             return try JSONSerialization.data(withJSONObject: queryItemsDictionary,
                                               options: .prettyPrinted
             )
         }
-        
 //        if let fileToUpload {
 //            return getHttpBody(fieldInfo: fileToUpload)
 //        }
         return nil
     }
+    
     
     private func addURLQueryParameters(toURL url: URL) -> URL {
         guard let urlQueryParameters else { return url }

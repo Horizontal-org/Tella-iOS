@@ -10,47 +10,54 @@ import SwiftUI
 
 struct RenderPropertyComponentView: View {
     @StateObject var prompt: UwaziEntryPrompt
+    @EnvironmentObject var sheetManager: SheetManager
+    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
+    
     var body: some View {
         GenericEntityWidget(title: prompt.question,
                             isRequired: prompt.required ?? false,
-                            showMandatory: $prompt.showMandatoryError) {
+                            showMandatory: $prompt.showMandatoryError,
+                            shouldRender:shouldRenderPrompt(forType: prompt.type)
+        ) {
             renderPropertyComponent(
                 prompt: prompt
             )
         }
     }
+    
     @ViewBuilder
     private func renderPropertyComponent(prompt: UwaziEntryPrompt) -> some View {
         switch UwaziEntityPropertyType(rawValue: prompt.type) {
         case .dataTypeText, .dataTypeNumeric:
             UwaziTextWidget(value: prompt.value)
-        case .dataTypeDate, .dataTypeDateRange, .dataTypeMultiDate, .dataTypeMultiDateRange:
-            Text(prompt.question)
         case .dataTypeSelect, .dataTypeMultiSelect:
             UwaziSelectWidget(value: prompt.value)
                 .environmentObject(prompt)
-        case .dataTypeLink:
-            Text(prompt.question)
-        case .dataTypeImage:
-            Text(prompt.question)
-        case .dataTypeGeolocation:
-            Text(prompt.question)
-        case .dataTypePreview:
-            Text(prompt.question)
-        case .dataTypeMedia:
-            Text(prompt.question)
-        case .dataTypeMarkdown:
-            Text(prompt.question)
-        case .dataTypeMultiFiles, .dataTypeMultiPDFFiles:
-            Text(prompt.question)
-        case .dataTypeGeneratedID:
-            Text(prompt.question)
+        case .dataTypeMultiFiles:
+            SupportingFileWidget()
+                .environmentObject(prompt)
+                .environmentObject(sheetManager)
+                .environmentObject(entityViewModel)
+        case .dataTypeMultiPDFFiles:
+            PrimaryDocuments()
+                .environmentObject(prompt)
+                .environmentObject(sheetManager)
+                .environmentObject(entityViewModel)
         case .dataTypeDivider:
             UwaziDividerWidget()
         default:
-            Group {
-                Text(LocalizableUwazi.uwaziEntityUnsopportedProperty.localized)
-            }
+            EmptyView()
+        }
+    }
+    
+    private func shouldRenderPrompt(forType type: String) -> Bool {
+        guard let propertyType = UwaziEntityPropertyType(rawValue: type) else { return false }
+        
+        switch propertyType {
+        case .dataTypeText, .dataTypeNumeric, .dataTypeSelect, .dataTypeMultiSelect, .dataTypeMultiFiles, .dataTypeMultiPDFFiles, .dataTypeDivider:
+            return true
+        default:
+            return false
         }
     }
 }

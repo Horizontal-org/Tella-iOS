@@ -15,9 +15,9 @@ struct TemplateCardView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                MoreButtonView(imageName: "uwazi.star", action: {
-                    //add this template to favorie
-                })
+//                MoreButtonView(imageName: "uwazi.star", action: {
+//                    //add this template to favorie
+//                })
                 ConnectionCardDetail(title: templateCardViewModel.translatedName, subtitle: templateCardViewModel.server.name!)
                 Spacer()
                 MoreButtonView(imageName: "reports.more", action: {

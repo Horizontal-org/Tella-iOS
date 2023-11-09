@@ -287,13 +287,25 @@ If you want to take a picture or a video, proceed in the following way:\
 
 "Uwazi_Entity_MultiFile_PrimaryDocument" = "Primary Documents";
 "Uwazi_Entity_MultiFile_AttachManyPDFFiles" = "Attach as many PDF files as you wish";
+"Uwazi_Entity_MultiFile_AttachManyPDFFiles_SelectTitle" = "Select PDF files";
 "Uwazi_Entity_MultiFile_SupportingFiles" = "Supporting files";
-"Uwazi_Entity_MultiFile_SupportingFiles" = "Select as many files as you wish";
+"Uwazi_Entity_MultiFile_SupportingFiles_HelpText" = "Select as many files as you wish";
 "Uwazi_Entity_ExitEntity_SheetTitle" = "Exit entity?";
 "Uwazi_Entity_ExitEntity_SheetExpl" = "Your draft will be lost";
 "Uwazi_Entity_Property_Unsopported" = "Unsupported property type";
 "Uwazi_Entity_Action_Next" = "Next";
 "Uwazi_Entity_Mandatory_Expl" = "This field is mandatory.";
+
+"Uwazi_Entity_Submitted" = "Entity submitted succesfully";
+"Uwazi_Entity_SummaryDetail_ToolbarItem" = "Summary";
+"Uwazi_Entity_SummaryDetail_ServerTitle" = "Server:";
+"Uwazi_Entity_SummaryDetail_TemplateTitle" = "Template:";
+"Uwazi_Entity_SummaryDetail_EntityResponse_Title" = "Entity Response";
+"Uwazi_Entity_SummaryDetail_Submit_Action" = "SUBMIT";
+"Uwazi_Entity_SelectFiles" = "Select Files";
+"Uwazi_Entity_SelectFiles_Dropdown_Title" = "files attached";
+"Uwazi_Entity_SelectFiles_Dropdown_Hide" = "Hide files";
+"Uwazi_Entity_SelectFiles_Dropdown_Show" = "Show files";
 
 "Settings_SettLang_Arabic_Expl" = "عربي";
 "Settings_SettLang_Belarusian_Expl" = "Belarusian";
