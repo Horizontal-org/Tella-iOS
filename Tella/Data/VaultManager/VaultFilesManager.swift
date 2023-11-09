@@ -8,12 +8,13 @@ import Combine
 class VaultFilesManager : VaultFilesManagerInterface {
     
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
-    var vaultDataSource : VaultDataSourceInterface?
+    var vaultDataBase : VaultDataBaseProtocol
+    
     var vaultManager : VaultManagerInterface?
     var cancellable: Set<AnyCancellable> = []
     
-    init(key: String?, vaultManager: VaultManagerInterface? = nil) throws {
-        self.vaultDataSource = try VaultDataSource(key: key)
+    init(vaultDataBase: VaultDataBaseProtocol, vaultManager: VaultManagerInterface? = nil) throws {
+        self.vaultDataBase = vaultDataBase
         self.vaultManager = vaultManager
     }
     
@@ -41,9 +42,9 @@ class VaultFilesManager : VaultFilesManagerInterface {
                 }
                 
                 guard let isSaved = self.vaultManager?.save(fileDetail.data, vaultFileId: fileDetail.file.id) else { return }
-               
+                
                 if isSaved {
-                    self.vaultDataSource?.addVaultFile(file: fileDetail.file, parentId: parentId)
+                    self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: parentId)
                 }
                 
                 await filesActor.add(vaultFile: fileDetail.file)
@@ -92,21 +93,21 @@ class VaultFilesManager : VaultFilesManagerInterface {
     
     func addVaultFiles(files: [(VaultFileDB,String?)]) throws {
         try files.forEach { (file, parentId) in
-            let addVaultFileResult = self.vaultDataSource?.addVaultFile(file: file, parentId: parentId)
-
+            let addVaultFileResult = self.vaultDataBase.addVaultFile(file: file, parentId: parentId)
+            
             if case .failure = addVaultFileResult {
-                 throw RuntimeError("Error adding file")
+                throw RuntimeError("Error adding file")
             }
         }
     }
     
     func addFolderFile(name: String, parentId: String?) -> Result<Int,Error>? {
         let file = VaultFileDB(type: .directory, name: name)
-        return self.vaultDataSource?.addVaultFile(file: file, parentId: parentId)
+        return self.vaultDataBase.addVaultFile(file: file, parentId: parentId)
     }
     
     func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB] {
-        return self.vaultDataSource?.getVaultFiles(parentId: parentId, filter: filter, sort: sort) ?? []
+        return self.vaultDataBase.getVaultFiles(parentId: parentId, filter: filter, sort: sort)
     }
     
     
@@ -166,34 +167,34 @@ class VaultFilesManager : VaultFilesManagerInterface {
     
     
     func getVaultFile(id: String?) -> VaultFileDB? {
-        return self.vaultDataSource?.getVaultFile(id: id)
+        return self.vaultDataBase.getVaultFile(id: id)
     }
     
     func getVaultFiles(ids: [String]) -> [VaultFileDB] {
-        return self.vaultDataSource?.getVaultFiles(ids: ids) ?? []
+        return self.vaultDataBase.getVaultFiles(ids: ids)
     }
     
     func getRecentVaultFiles() -> [VaultFileDB] {
-        return self.vaultDataSource?.getRecentVaultFiles() ?? []
+        return self.vaultDataBase.getRecentVaultFiles()
     }
-
+    
     func renameVaultFile(id: String?, name: String?) -> Result<Bool, Error>? {
-        self.vaultDataSource?.renameVaultFile(id: id, name: name)
+        self.vaultDataBase.renameVaultFile(id: id, name: name)
     }
     
     func moveVaultFile(fileIds: [String], newParentId: String?) -> Result<Bool, Error>? {
-        self.vaultDataSource?.moveVaultFile(fileIds: fileIds, newParentId: newParentId)
+        self.vaultDataBase.moveVaultFile(fileIds: fileIds, newParentId: newParentId)
     }
     
     @discardableResult
     func deleteVaultFile(fileIds ids: [String]) -> Result<Bool, Error>? {
         self.vaultManager?.deleteVaultFile(filesIds: ids)
-        return self.vaultDataSource?.deleteVaultFile(ids: ids)
+        return self.vaultDataBase.deleteVaultFile(ids: ids)
     }
     
     func deleteVaultFile(vaultFiles : [VaultFileDB]) -> Result<Bool, Error>? {
         var resultFiles : [VaultFileDB] = []
-        let fileWalker = FileWalker(vaultDataSource: self.vaultDataSource)
+        let fileWalker = FileWalker(vaultDatabase: self.vaultDataBase)
         
         vaultFiles.forEach { file in
             if file.type == .directory {
@@ -203,15 +204,15 @@ class VaultFilesManager : VaultFilesManagerInterface {
         }
         
         let fileIds = resultFiles.compactMap({$0.id})
-
+        
         self.vaultManager?.deleteVaultFile(filesIds: fileIds)
-        return self.vaultDataSource?.deleteVaultFile(ids: fileIds)
+        return self.vaultDataBase.deleteVaultFile(ids: fileIds)
     }
     
     @discardableResult
     func deleteAllVaultFiles() -> Result<Bool, Error>? {
         self.vaultManager?.deleteAllVaultFilesFromDevice()
-        return self.vaultDataSource?.deleteAllVaultFiles()
+        return self.vaultDataBase.deleteAllVaultFiles()
     }
     
     func cancelImportAndEncryption() {
