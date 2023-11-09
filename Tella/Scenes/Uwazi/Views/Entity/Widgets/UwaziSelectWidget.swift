@@ -19,7 +19,7 @@ struct UwaziSelectWidget: View {
             }
 
         } label: {
-            SelectWidgetButton(title: selectTitle(value: value.stringValue))
+            SelectWidgetButton(title: selectTitle(value: value.stringValue), shouldShowMenu: shouldShowMenu)
         }.background(Color.white.opacity(0.08))
             .cornerRadius(12)
 
@@ -35,7 +35,7 @@ struct UwaziSelectWidget: View {
 
 struct SelectWidgetButton: View {
     let title: String
-
+    let shouldShowMenu: Bool
     var body: some View {
         HStack {
             Text(title)
@@ -44,8 +44,13 @@ struct SelectWidgetButton: View {
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            Image("reports.arrow-down")
-                .padding()
+            if(shouldShowMenu) {
+                Image("select.arrow.up")
+                    .padding()
+            } else {
+                Image("reports.arrow-down")
+                    .padding()
+            }
         }
     }
 }
@@ -56,7 +61,7 @@ struct SelectListOptions: View {
     @Binding var value: UwaziValue
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(prompt.selectValues ?? [], id: \.self) { selectedOptions in
@@ -73,7 +78,6 @@ struct SelectListOptions: View {
             }
             Spacer()
         }
-        .padding()
         .background(Color.clear)
     }
 }
@@ -95,6 +99,6 @@ struct SelectOptionButton: View {
                 .foregroundColor(.white)
                 .padding(.all, 14)
         }
-        .background(Color.white.opacity(0.08))
+        .background(value.stringValue == selectedOption.translatedLabel ?  Color.white.opacity(0.16) : Color.white.opacity(0.08))
     }
 }
