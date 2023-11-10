@@ -688,7 +688,8 @@ extension TellaDataBase {
             let feedbackDict = try statementBuilder.getSelectQuery(tableName: D.tFeedback,
                                                                    equalCondition: feedbackCondition)
             return try feedbackDict.first?.decode(Feedback.self)
-        } catch {
+        } catch (let error) {
+            debugLog(error)
             return nil
         }
     }
@@ -700,7 +701,8 @@ extension TellaDataBase {
             let feedbackDict = try statementBuilder.getSelectQuery(tableName: D.tFeedback,
                                                                    equalCondition: feedbackCondition)
             return try feedbackDict.decode(Feedback.self)
-        } catch {
+        } catch (let error) {
+            debugLog(error)
             return []
         }
     }
