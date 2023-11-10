@@ -16,7 +16,7 @@ class Feedback: Codable {
         case text = "c_text"
         case status = "c_status"
         case createdAt = "c_created_date"
-        case updatedAt = "c_upated_date"
+        case updatedAt = "c_updated_date"
     }
     
     init(id: Int? = nil, text: String?, status: FeedbackStatus?, createdAt: Date? = nil, updatedAt: Date? = nil) {
