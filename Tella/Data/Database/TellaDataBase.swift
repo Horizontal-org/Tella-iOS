@@ -684,7 +684,7 @@ extension TellaDataBase {
     func getDraftFeedback() -> Feedback? {
         do {
             let feedbackCondition = [KeyValue(key: D.cStatus, value: FeedbackStatus.draft.rawValue)]
-
+            
             let feedbackDict = try statementBuilder.getSelectQuery(tableName: D.tFeedback,
                                                                    equalCondition: feedbackCondition)
             return try feedbackDict.first?.decode(Feedback.self)
@@ -696,7 +696,7 @@ extension TellaDataBase {
     func getUnsentFeedbacks() -> [Feedback] {
         do {
             let feedbackCondition = [KeyValue(key: D.cStatus, value: FeedbackStatus.pending.rawValue)]
-
+            
             let feedbackDict = try statementBuilder.getSelectQuery(tableName: D.tFeedback,
                                                                    equalCondition: feedbackCondition)
             return try feedbackDict.decode(Feedback.self)
@@ -704,50 +704,55 @@ extension TellaDataBase {
             return []
         }
     }
-
-    func addFeedback(feedback : Feedback) -> Int? {
+    
+    func addFeedback(feedback : Feedback) -> Result<Int?, Error> {
         do {
             let valuesToAdd = [KeyValue(key: D.ctext, value: feedback.text),
                                KeyValue(key: D.cStatus, value: feedback.status?.rawValue),
                                KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
                                KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
             
-           return try statementBuilder.insertInto(tableName: D.tFeedback,
-                                            keyValue: valuesToAdd)
+            let idResult = try statementBuilder.insertInto(tableName: D.tFeedback,
+                                                           keyValue: valuesToAdd)
+            return .success(idResult)
             
         } catch(let error) {
             debugLog(error)
-            return nil
+            return .failure(error)
         }
     }
     
-    func updateFeedback(feedback : Feedback) {
+    func updateFeedback(feedback : Feedback) -> Result<Bool, Error> {
         
         do {
             
             let valuesToUpdate = [ KeyValue(key: D.ctext, value: feedback.text),
                                    KeyValue(key: D.cStatus, value: feedback.status?.rawValue),
-                                  KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
+                                   KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
             
             let feedbackCondition = [KeyValue(key: D.cId, value: feedback.id)]
             try statementBuilder.update(tableName: D.tFeedback,
                                         keyValue: valuesToUpdate,
                                         primarykeyValue: feedbackCondition)
+            return .success(true)
             
         } catch(let error) {
             debugLog(error)
+            return .failure(error)
         }
-        
     }
-    
-    
-    func deleteFeedback(feedbackId: Int?) {
+
+    func deleteFeedback(feedbackId: Int?) -> Result<Bool,Error> {
         
-        let feedbackCondition = [KeyValue(key: D.cId, value: feedbackId as Any)]
-        
-        statementBuilder.delete(tableName: D.tFeedback,
-                                primarykeyValue:feedbackCondition)
+        do {
+            let feedbackCondition = [KeyValue(key: D.cId, value: feedbackId as Any)]
+            
+            try statementBuilder.delete(tableName: D.tFeedback,
+                                        primarykeyValue:feedbackCondition)
+            return .success(true)
+        } catch (let error) {
+            debugLog(error)
+            return .failure(error)
+        }
     }
-    
-    
 }

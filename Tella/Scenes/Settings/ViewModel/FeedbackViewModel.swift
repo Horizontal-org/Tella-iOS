@@ -15,11 +15,20 @@ class FeedbackViewModel : ObservableObject {
     @Published var feedbackSentSuccessfully : Bool = false
     @Published var showOfflineToast : Bool = false
     @Published var isLoading : Bool = false
+    @Published var showErrorToast : Bool = false
     
     private var subscribers = Set<AnyCancellable>()
     
     var shouldShowSaveDraftSheet: Bool {
         return feedbackIsValid && mainAppModel.settings.shareFeedback
+    }
+    
+    var tellaData: TellaData?  {
+        return self.mainAppModel.vaultManager.tellaData
+    }
+    
+    var isNewFeedback: Bool {
+        return ((self.feedback?.id) == nil)
     }
     
     init(mainAppModel: MainAppModel) {
@@ -34,34 +43,65 @@ class FeedbackViewModel : ObservableObject {
         feedbackIsValid = self.feedback?.text != nil
     }
     
-    public func saveFeedbackDraft()   {
+    public func saveFeedbackDraft() {
         saveFeedback(status: .draft)
     }
     
-    private func saveFeedback(status:FeedbackStatus) {
-        guard let feedbackId = self.feedback?.id else {
-            let feedback = Feedback(text: feedbackContent, status: status)
-            feedback.id = self.mainAppModel.vaultManager.tellaData?.addFeedback(feedback: feedback)
-            self.feedback = feedback
-            return
+    @discardableResult
+    private func saveFeedback(status:FeedbackStatus) -> Result<Bool, Error>? {
+        isNewFeedback ? addFeedback(status: status) : updateFeedback(status: status)
+    }
+    
+    private func updateFeedback(status:FeedbackStatus)  -> Result<Bool, Error>? {
+        guard let tellaData else {
+            return .failure(RuntimeError("Error"))
         }
-        let feedback = Feedback(id:feedbackId, text: feedbackContent, status: status)
+        
+        let feedback = Feedback(id:self.feedback?.id, text: feedbackContent, status: status)
         self.feedback = feedback
-        self.mainAppModel.vaultManager.tellaData?.updateFeedback(feedback: feedback)
+        return tellaData.updateFeedback(feedback: feedback)
+        
+    }
+    
+    private func addFeedback(status:FeedbackStatus) -> Result<Bool, Error>? {
+        guard let tellaData else {
+            return .failure(RuntimeError("Error"))
+        }
+        
+        let feedback = Feedback(text: feedbackContent, status: status)
+        let feedbackResult = tellaData.addFeedback(feedback: feedback)
+        
+        switch feedbackResult {
+            
+        case .success(let id):
+            feedback.id = id
+            self.feedback = feedback
+            return .success(true)
+            
+        case .failure(let error):
+            self.showErrorToast = true
+            return .failure(error)
+        }
+        
     }
     
     public func submitFeedback() {
-        saveFeedback(status: .pending)
-        guard let feedback else { return }
-        isLoading = true
+        let saveFeedbackResult = saveFeedback(status: .pending)
         
-        FeedbackRepository().submitFeedback(feedback: feedback, mainAppModel: mainAppModel)?
-            .receive(on: DispatchQueue.main)
-            .sink { result in
-                self.isLoading = false
-                self.handleFeedbackResult(result:result)
-            } receiveValue: { feedback in
-            }.store(in: &subscribers)
+        if case .success = saveFeedbackResult {
+            
+            guard let feedback else { return }
+            isLoading = true
+            
+            FeedbackRepository().submitFeedback(feedback: feedback, mainAppModel: mainAppModel)?
+                .receive(on: DispatchQueue.main)
+                .sink { result in
+                    self.isLoading = false
+                    self.handleFeedbackResult(result:result)
+                } receiveValue: { feedback in
+                }.store(in: &subscribers)
+            
+        }
     }
     
     private func handleFeedbackResult(result:Subscribers.Completion<APIError>) {
@@ -74,7 +114,7 @@ class FeedbackViewModel : ObservableObject {
             case .noInternetConnection:
                 self.showOfflineToast = true
             default:
-                break
+                self.showErrorToast = true
             }
         }
     }

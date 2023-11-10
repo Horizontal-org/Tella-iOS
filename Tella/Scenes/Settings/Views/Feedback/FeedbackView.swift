@@ -20,6 +20,9 @@ struct FeedbackView: View {
             content
         }.onReceive(feedbackViewModel.$feedbackSentSuccessfully) { _ in
             handleFeedbackSentSuccessfully()
+        }.onReceive(feedbackViewModel.$showErrorToast) { _ in
+            handleErrorToast()
+
         }
     }
 
@@ -153,6 +156,14 @@ struct FeedbackView: View {
             if feedbackViewModel.feedbackSentSuccessfully {
                 self.dismiss()
                 Toast.displayToast(message: LocalizableSettings.successSentToast.localized)
+            }
+        }
+    }
+    
+    private func handleErrorToast() {
+        DispatchQueue.main.async {
+            if feedbackViewModel.showErrorToast {
+                Toast.displayToast(message: LocalizableCommon.commonError.localized)
             }
         }
     }
