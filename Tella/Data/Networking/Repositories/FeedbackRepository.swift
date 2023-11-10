@@ -34,22 +34,22 @@ extension FeedbackRepository.API: APIRequest {
         switch self {
         case .submitFeedback((let text)):
             return [
-                "platform": Platform.ios.rawValue,
-                "text": text]
+                FeedbackParameterKey.platform: Platform.ios.rawValue,
+                FeedbackParameterKey.text: text]
         }
     }
     
     var baseURL: String {
         switch self {
         case .submitFeedback:
-            return "https://api.feedback.tella-app.org"
+            return FeedbackConstants.baseURL
         }
     }
     
     var path: String {
         switch self {
         case .submitFeedback:
-            return "/opinions"
+            return FeedbackConstants.opinionsPath
         }
     }
     
@@ -63,7 +63,7 @@ extension FeedbackRepository.API: APIRequest {
     var headers: [String : String]? {
         switch self {
         case .submitFeedback:
-            return [HTTPHeaderField.tellaPlatform.rawValue:"wearehorizontal"]
+            return [HTTPHeaderField.tellaPlatform.rawValue:FeedbackConstants.tellaPlatform]
         }
     }
 }

@@ -51,6 +51,7 @@
 		1217FCA128F9946A00DD2D70 /* CircularActivityIndicatory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217FCA028F9946A00DD2D70 /* CircularActivityIndicatory.swift */; };
 		1217FCA328F99A7D00DD2D70 /* CircularLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217FCA228F99A7D00DD2D70 /* CircularLoader.swift */; };
 		1218E86528E48AEC00FE2E68 /* LoginResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1218E86428E48AEC00FE2E68 /* LoginResult.swift */; };
+		1218EDFC2AFED7F700F672F7 /* FeedbackConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1218EDFB2AFED7F700F672F7 /* FeedbackConstants.swift */; };
 		12199C34294094430041BD38 /* OutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12199C33294094430041BD38 /* OutboxDetailsView.swift */; };
 		12199C362940966E0041BD38 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12199C352940966E0041BD38 /* OpenSans-Italic.ttf */; };
 		12199C3A2941260D0041BD38 /* OutboxDetailsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12199C392941260D0041BD38 /* OutboxDetailsItemView.swift */; };
@@ -133,8 +134,8 @@
 		125299DF2AD02E9D00191CAB /* FilesActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299DE2AD02E9D00191CAB /* FilesActor.swift */; };
 		125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299E02AD0515600191CAB /* VaultFilesManager.swift */; };
 		125389F82ACAD33500CE33AB /* FileWalker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125389F72ACAD33500CE33AB /* FileWalker.swift */; };
-		125595382AFCFAA400F71DFE /* SelectQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125595372AFCFAA400F71DFE /* SelectQuery.swift */; };
 		12558CF62AE95CBB001D0C80 /* OfflineFeedbackToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12558CF52AE95CBB001D0C80 /* OfflineFeedbackToast.swift */; };
+		125595382AFCFAA400F71DFE /* SelectQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125595372AFCFAA400F71DFE /* SelectQuery.swift */; };
 		12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12567FEE2716B38F00A2D356 /* LockChoiceView.swift */; };
 		12567FF22716E33500A2D356 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12567FF02716E33500A2D356 /* OpenSans-Bold.ttf */; };
 		12567FF32716E33500A2D356 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12567FF12716E33500A2D356 /* OpenSans-Regular.ttf */; };
@@ -444,6 +445,7 @@
 		1217FCA028F9946A00DD2D70 /* CircularActivityIndicatory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularActivityIndicatory.swift; sourceTree = "<group>"; };
 		1217FCA228F99A7D00DD2D70 /* CircularLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularLoader.swift; sourceTree = "<group>"; };
 		1218E86428E48AEC00FE2E68 /* LoginResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResult.swift; sourceTree = "<group>"; };
+		1218EDFB2AFED7F700F672F7 /* FeedbackConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackConstants.swift; sourceTree = "<group>"; };
 		12199C33294094430041BD38 /* OutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxDetailsView.swift; sourceTree = "<group>"; };
 		12199C352940966E0041BD38 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Italic.ttf"; sourceTree = "<group>"; };
 		12199C392941260D0041BD38 /* OutboxDetailsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxDetailsItemView.swift; sourceTree = "<group>"; };
@@ -525,8 +527,8 @@
 		125299DE2AD02E9D00191CAB /* FilesActor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesActor.swift; sourceTree = "<group>"; };
 		125299E02AD0515600191CAB /* VaultFilesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFilesManager.swift; sourceTree = "<group>"; };
 		125389F72ACAD33500CE33AB /* FileWalker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FileWalker.swift; path = ../../../../../Downloads/FileWalker.swift; sourceTree = "<group>"; };
-		125595372AFCFAA400F71DFE /* SelectQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectQuery.swift; sourceTree = "<group>"; };
 		12558CF52AE95CBB001D0C80 /* OfflineFeedbackToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineFeedbackToast.swift; sourceTree = "<group>"; };
+		125595372AFCFAA400F71DFE /* SelectQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectQuery.swift; sourceTree = "<group>"; };
 		12567FEE2716B38F00A2D356 /* LockChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockChoiceView.swift; sourceTree = "<group>"; };
 		12567FF02716E33500A2D356 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		12567FF12716E33500A2D356 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -1154,6 +1156,7 @@
 				125AAD32295348D2002194D6 /* Upload */,
 				12D7D11D28E35FCE008121C8 /* Repositories */,
 				1217FCA428F9B19C00DD2D70 /* Models */,
+				1261AC9B2AFEDDA1005A8325 /* Constants */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1283,6 +1286,14 @@
 				12607D5D27904F5300E2B8CC /* PlayerView.swift */,
 			);
 			path = Video;
+			sourceTree = "<group>";
+		};
+		1261AC9B2AFEDDA1005A8325 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				1218EDFB2AFED7F700F672F7 /* FeedbackConstants.swift */,
+			);
+			path = Constants;
 			sourceTree = "<group>";
 		};
 		126D34DF2A3B4A0D00137074 /* FileTypeHelper */ = {
@@ -2408,6 +2419,7 @@
 				128D6E1A28045C090082AB18 /* ManageFileType.swift in Sources */,
 				12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */,
 				1216123E28DE142D00E6D7B6 /* JoinItem.swift in Sources */,
+				1218EDFC2AFED7F700F672F7 /* FeedbackConstants.swift in Sources */,
 				124190462A43230000E177F3 /* SQLiteStatementBuilderExtension.swift in Sources */,
 				12EC94D828ABCCED0070E72B /* SettingsItemView.swift in Sources */,
 				1249B3812AD43A8D009A7023 /* VaultManagerInterface.swift in Sources */,
