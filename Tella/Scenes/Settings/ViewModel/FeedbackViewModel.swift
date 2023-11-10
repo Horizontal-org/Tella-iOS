@@ -120,8 +120,8 @@ class FeedbackViewModel : ObservableObject {
     }
     
     func deleteCurrentDraft() {
-        guard let feedback  else { return }
-        self.mainAppModel.vaultManager.tellaData?.deleteFeedback(feedbackId: feedback.id)
+        guard let feedback, let feedbackId = feedback.id   else { return }
+        self.mainAppModel.vaultManager.tellaData?.deleteFeedback(feedbackId: feedbackId)
         initFeedback()
     }
 }

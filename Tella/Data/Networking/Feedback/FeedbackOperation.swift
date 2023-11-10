@@ -35,25 +35,25 @@ class FeedbackOperation:Operation, WebRepository {
     
     public func submitFeedback() {
         
-        if mainAppModel.networkMonitor.isConnected, let feedbackToSend, let text = feedbackToSend.text {
+        if mainAppModel.networkMonitor.isConnected, let feedbackToSend, let text = feedbackToSend.text, let feedbackId = feedbackToSend.id {
             
             let apiResponse : APIResponse<FeedbackDTO> = getAPIResponse(endpoint: FeedbackRepository.API.submitFeedback(text))
             
             apiResponse
                 .compactMap{$0.0.toDomain() as? FeedbackAPI}
                 .sink { result in
-                    self.handleFeedbackResult(result:result, feedbackToSend:feedbackToSend)
+                    self.handleFeedbackResult(result:result, feedbackId:feedbackId)
                 } receiveValue: { feedbackAPI in
                 }.store(in: &subscribers)
         }
     }
     
-    private func handleFeedbackResult(result:Subscribers.Completion<APIError>, feedbackToSend:Feedback) {
+    private func handleFeedbackResult(result:Subscribers.Completion<APIError>, feedbackId:Int) {
         switch result {
         case .finished:
             let message = String(format: LocalizableSettings.backgroundSuccessSentToast.localized)
             Toast.displayToast(message: message)
-            self.mainAppModel.vaultManager.tellaData?.deleteFeedback(feedbackId: feedbackToSend.id)
+            self.mainAppModel.vaultManager.tellaData?.deleteFeedback(feedbackId: feedbackId)
             self.cancel()
         default:
             break

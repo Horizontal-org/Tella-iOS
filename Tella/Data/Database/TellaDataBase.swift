@@ -744,7 +744,7 @@ extension TellaDataBase {
         }
     }
 
-    func deleteFeedback(feedbackId: Int?) -> Result<Bool,Error> {
+    func deleteFeedback(feedbackId: Int) -> Result<Bool,Error> {
         
         do {
             let feedbackCondition = [KeyValue(key: D.cId, value: feedbackId as Any)]

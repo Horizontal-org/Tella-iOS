@@ -174,7 +174,7 @@ class TellaData : ObservableObject {
     }
     
     @discardableResult
-    func deleteFeedback(feedbackId: Int?) -> Result<Bool,Error> {
+    func deleteFeedback(feedbackId: Int) -> Result<Bool,Error> {
         database.deleteFeedback(feedbackId: feedbackId)
     }
 }
