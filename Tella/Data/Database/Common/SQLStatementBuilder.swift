@@ -78,20 +78,24 @@ class SQLiteStatementBuilder {
                         likeConditions: [KeyValue] = [],
                         notLikeConditions: [KeyValue] = [])  throws -> [[String: Any]] {
         
-        let selectSql = sql(tableName: tableName,
-                            equalCondition: equalCondition,
-                            differentCondition: differentCondition,
-                            inCondition: inCondition,
-                            notInCondition: notInCondition,
-                            sortCondition: sortCondition,
-                            limit: limit,
-                            joinCondition: joinCondition,
-                            likeConditions: likeConditions,
-                            notLikeConditions: notLikeConditions)
+        let selectQuery = SelectQuery.Builder()
+            .setTableName(tableName)
+            .setEqualCondition(equalCondition)
+            .setDifferentCondition(differentCondition)
+            .setInCondition(inCondition)
+            .setNotInCondition(notInCondition)
+            .setSortCondition(sortCondition)
+            .setDifferentCondition(differentCondition)
+            .setLimit(limit)
+            .setJoinCondition(joinCondition)
+            .setLikeConditions(likeConditions)
+            .setNotLikeConditions(notLikeConditions)
+            .build()
+            .getString()
         
-        debugLog("selectSql \(selectSql)")
+        debugLog("selectQuery \(selectQuery)")
         
-        guard let selectStatement = try prepareStatement(sql: selectSql) else {
+        guard let selectStatement = try prepareStatement(sql: selectQuery) else {
             throw RuntimeError(errorMessage)
         }
         
@@ -216,82 +220,6 @@ class SQLiteStatementBuilder {
         }
         return sql
     }
-    
-    func sql(tableName:String,
-             equalCondition: [KeyValue] = [],
-             differentCondition: [KeyValue] = [],
-             inCondition: [KeyValues] = [],
-             notInCondition: [KeyValues] = [] ,
-             sortCondition : [SortCondition] = [],
-             limit: Int = 0,
-             joinCondition: [JoinCondition]? = nil,
-             likeConditions: [KeyValue] = [],
-             notLikeConditions: [KeyValue] = []) -> String {
-        
-        var sql = "SELECT * FROM \(tableName)"
-        
-        if let joinCondition = joinCondition {
-            sql += join(joinCondition: joinCondition)
-        }
-        
-        if !equalCondition.isEmpty || !differentCondition.isEmpty || !inCondition.isEmpty || !notInCondition.isEmpty || !likeConditions.isEmpty || !notLikeConditions.isEmpty {
-            
-            sql += " WHERE "
-            
-            if !equalCondition.isEmpty {
-                let result = equalCondition.compactMap{("\($0.sqliteOperator.rawValue) \($0.key) = :\($0.key)")}.joined(separator: ", ")
-                sql += " \(result)"
-            }
-            
-            if !differentCondition.isEmpty {
-                let result = differentCondition.compactMap{(" \($0.sqliteOperator.rawValue) \($0.key) != :\($0.key)")}.joined(separator: ", ")
-                sql += " \(result)"
-            }
-            
-            for condition in inCondition {
-                
-                sql += condition.sqliteOperator.rawValue
-                
-                
-                let columnName = condition.key
-                let values = condition.value.map { "'\($0)'" }.joined(separator: ", ")
-                
-                sql += " \(columnName) IN (\(values))"
-            }
-            
-            for condition in notInCondition  {
-                
-                sql += condition.sqliteOperator.rawValue
-                
-                let columnName = condition.key
-                let values = condition.value.map { "'\($0)'" }.joined(separator: ", ")
-                
-                sql += " \(columnName) NOT IN (\(values))"
-                
-            }
-            
-            if !likeConditions.isEmpty {
-                let result = likeConditions.compactMap{(" \($0.sqliteOperator.rawValue) \($0.key) LIKE '\($0.value ?? "")'")}.joined(separator: " ")
-                sql += " \(result)"
-            }
-            
-            
-            if !notLikeConditions.isEmpty {
-                let result = notLikeConditions.compactMap{(" \($0.sqliteOperator.rawValue) \($0.key) NOT LIKE '\($0.value ?? "")'")}.joined(separator: " ")
-                sql += " \(result)"
-            }
-        }
-        
-        if !sortCondition.isEmpty {
-            let formattedSortCondition = sortCondition.compactMap({"\($0.column) \($0.sortDirection)"}).joined(separator: ", ")
-            sql += " ORDER BY \(formattedSortCondition)"
-        }
-        if limit > 0 {
-            sql += " LIMIT \(limit)"
-        }
-        return sql
-    }
-    
     
     func join(joinCondition:[JoinCondition]) -> String {
         
