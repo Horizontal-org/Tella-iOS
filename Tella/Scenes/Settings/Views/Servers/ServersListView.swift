@@ -79,7 +79,10 @@ struct ServersListView: View {
         case .tella:
             shouldShowEditServer = true
         case .uwazi:
-            navigateToUwaziAddServerView(server)
+            navigateToUwaziAddServerView(
+                UwaziServer(
+                    id: server.id, name: server.name, serverURL: server.url, accessToken: server.accessToken)
+            )
         default:
             break
         }
@@ -95,7 +98,7 @@ struct ServersListView: View {
         }
     }
 
-    fileprivate func navigateToUwaziAddServerView(_ server: Server) {
+    fileprivate func navigateToUwaziAddServerView(_ server: UwaziServer) {
         navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel, server: server)
             .environmentObject(serversViewModel))
     }

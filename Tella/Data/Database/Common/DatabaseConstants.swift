@@ -30,6 +30,7 @@ struct D {
     static let tUwaziServerLanguage = "t_uwazi_server_language"
     static let tReportInstanceVaultFile = "t_report_instance_vault_file";
     static let tUwaziTemplate = "t_uwazi_template"
+    static let tUwaziServer = "t_uwazi_server"
 
     /* DATABASE COLUMNS */
     // MARK: - DATABASE COLUMNS
@@ -77,6 +78,7 @@ struct D {
     static let cUpdated = "c_updated"
     static let cFavorite = "c_favorite"
     static let cServerName = "c_server_name"
+    static let cCookie = "c_cookie"
 
 }
 

@@ -32,6 +32,7 @@ class TellaDataBase {
                 createTables()
             case 2:
                 createTemplateTableForUwazi()
+                createUwaziServerTable()
             default :
                 break
             }
@@ -47,5 +48,6 @@ class TellaDataBase {
         createReportFilesTable()
         createLanguageTableForUwazi()
         createTemplateTableForUwazi()
+        createUwaziServerTable()
     }
 }
