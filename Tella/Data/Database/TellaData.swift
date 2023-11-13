@@ -31,6 +31,12 @@ class TellaData : ObservableObject {
         
     }
     
+    func addUwaziServer(server: UwaziServer) -> Int? {
+        let id = database.addUwaziServer(server: server)
+        getServers()
+        return id
+    }
+    
     @discardableResult
     func updateServer(server : Server) -> Int? {
         let id = database.updateServer(server: server)
@@ -58,6 +64,7 @@ class TellaData : ObservableObject {
     
     func getServers(){
         servers.value = database.getServers()
+        dump(servers)
     }
     
     func getAutoUploadServer() -> Server? {

@@ -14,7 +14,7 @@ struct UwaziAddServerURLView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
     @StateObject var uwaziServerViewModel : UwaziServerViewModel
     
-    init(appModel:MainAppModel, server: Server? = nil) {
+    init(appModel:MainAppModel, server: UwaziServer? = nil) {
         _uwaziServerViewModel = StateObject(wrappedValue: UwaziServerViewModel(mainAppModel: appModel, currentServer: server))
     }
     var body: some View {

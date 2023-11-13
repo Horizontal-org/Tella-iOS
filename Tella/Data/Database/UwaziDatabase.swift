@@ -81,6 +81,35 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
         ]
         statementBuilder.createTable(tableName: D.tUwaziServerLanguage, columns: columns)
     }
+    
+    func createUwaziServerTable() {
+        let columns = [
+            cddl(D.cServerId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cName, D.text),
+            cddl(D.cURL, D.text),
+            cddl(D.cUsername, D.text),
+            cddl(D.cPassword, D.text),
+            cddl(D.cAccessToken, D.text),
+            cddl(D.cServerType, D.integer),
+            cddl(D.cCookie, D.text)
+        ]
+        
+        statementBuilder.createTable(tableName: D.tUwaziServer, columns: columns)
+    }
+    
+    func addUwaziServer(server: UwaziServer) -> Int? {
+        let valuesToAdd = [KeyValue(key: D.cName, value: server.name),
+                           KeyValue(key: D.cURL, value: server.url),
+                           KeyValue(key: D.cUsername, value: server.username),
+                           KeyValue(key: D.cPassword, value: server.password ),
+                           KeyValue(key: D.cAccessToken, value: server.accessToken),
+                           KeyValue(key: D.cCookie, value: server.cookie),
+                           KeyValue(key: D.cServerType, value:server.serverType?.rawValue)
+        ]
+        
+        
+        return statementBuilder.insertInto(tableName: D.tUwaziServer, keyValue: valuesToAdd)
+    }
     func addUwaziLocale(locale: UwaziLocale) -> Int? {
         return statementBuilder.insertInto(tableName: D.tUwaziServerLanguage, keyValue: [
             KeyValue(key: D.cLocale, value: locale.locale),

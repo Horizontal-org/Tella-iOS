@@ -56,15 +56,12 @@ class UwaziServerViewModel: ObservableObject {
     private var cancellableAuthenticationCode: Cancellable? = nil
     var subscribers = Set<AnyCancellable>()
 
-    var currentServer : Server?
+    var currentServer : UwaziServer?
     var token: String?
     var setting: UwaziCheckURL?
+    var cookie: String?
 
-    var isAutoUploadServerExist: Bool {
-        return mainAppModel.vaultManager.tellaData?.getAutoUploadServer() != nil && autoUpload == false
-    }
-
-    init(mainAppModel : MainAppModel, currentServer: Server?) {
+    init(mainAppModel : MainAppModel, currentServer: UwaziServer?) {
 
         self.mainAppModel = mainAppModel
         self.currentServer = currentServer
@@ -86,26 +83,29 @@ class UwaziServerViewModel: ObservableObject {
     }
 
     func addServer() {
-        let server = Server(name: setting?.siteName,
+        let server = UwaziServer(name: setting?.siteName,
                             serverURL: serverURL.getBaseURL(),
                             username: username,
                             password: password,
                             accessToken: self.token,
-                            activatedMetadata: activatedMetadata,
-                            backgroundUpload: backgroundUpload,
-                            projectId: setting?.id,
-                            slug: "",
-                            autoUpload: autoUpload,
-                            autoDelete: autoDelete,
-                            serverType: .uwazi
+                            serverType: .uwazi,
+                            cookie: createCookie()
         )
         debugLog(server)
-        guard let id = mainAppModel.vaultManager.tellaData?.addServer(server: server) else { return }
+        guard let id = mainAppModel.vaultManager.tellaData?.addUwaziServer(server: server) else { return }
         server.id = id
         self.addUwaziLocaleFor(serverId: id)
         self.currentServer = server
     }
-
+    
+    func createCookie() -> String {
+        let accessToken = self.token ?? ""
+        let locale = self.selectedLanguage?.locale ?? ""
+        let cookieList = ["connect.sid=" + accessToken, "locale=" + locale]
+        
+        return cookieList.joined(separator: ";")
+    }
+    
     func updateServer() {
         guard let currentServer = currentServer, let currentServerId = currentServer.id else { return }
         let server = Server(id: currentServerId,

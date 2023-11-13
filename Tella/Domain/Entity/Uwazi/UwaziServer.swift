@@ -1,23 +1,20 @@
+//
+//  UwaziServer.swift
 //  Tella
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Created by Gustavo on 13/11/2023.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import Foundation
 
-class Server : Hashable {
+class UwaziServer : Hashable {
     var id : Int?
     var name : String?
     var url : String?
     var username : String?
     var password : String?
     var accessToken : String?
-    var activatedMetadata : Bool?
-    var backgroundUpload : Bool?
-    var projectId : String?
-    var slug : String?
-    var autoUpload: Bool?
-    var autoDelete: Bool?
     var serverType: ServerConnectionType?
     var cookie: String?
 
@@ -27,12 +24,6 @@ class Server : Hashable {
          username: String? = nil,
          password: String? = nil,
          accessToken: String? = nil,
-         activatedMetadata: Bool? = nil,
-         backgroundUpload: Bool? = nil,
-         projectId: String? = nil,
-         slug: String? = nil,
-         autoUpload: Bool?,
-         autoDelete: Bool,
          serverType: ServerConnectionType? = nil,
          cookie: String? = nil
         ) {
@@ -42,12 +33,6 @@ class Server : Hashable {
         self.username = username
         self.password = password
         self.accessToken = accessToken
-        self.activatedMetadata = activatedMetadata
-        self.backgroundUpload = backgroundUpload
-        self.projectId = projectId
-        self.slug = slug
-        self.autoUpload = autoUpload
-        self.autoDelete = autoDelete
         self.serverType = serverType
         self.cookie = cookie
     }
@@ -56,7 +41,7 @@ class Server : Hashable {
         
     }
     
-    static func == (lhs: Server, rhs: Server) -> Bool {
+    static func == (lhs: UwaziServer, rhs: UwaziServer) -> Bool {
         lhs.id  == rhs.id
     }
     
