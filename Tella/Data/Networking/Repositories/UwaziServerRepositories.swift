@@ -122,8 +122,8 @@ class UwaziServerRepository: WebRepository {
             .eraseToAnyPublisher()
     }
     
-    func submitEntity(serverURL: String, cookieList: [String], multipartHeader: String, multipartBody: Data) -> AnyPublisher<EntityCreationResponse, APIError> {
-        let apiResponse: APIResponse<EntityCreationResponse> = getAPIResponse(endpoint: API.submitEntity(serverURL: serverURL, cookieList: cookieList, multipartHeader: multipartHeader, multipartBody: multipartBody))
+    func submitEntity(serverURL: String, cookie: String, multipartHeader: String, multipartBody: Data) -> AnyPublisher<EntityCreationResponse, APIError> {
+        let apiResponse: APIResponse<EntityCreationResponse> = getAPIResponse(endpoint: API.submitEntity(serverURL: serverURL, cookie: cookie, multipartHeader: multipartHeader, multipartBody: multipartBody))
             return apiResponse
                 .compactMap{$0.0}
                 .eraseToAnyPublisher()
@@ -264,7 +264,7 @@ extension UwaziServerRepository {
         case getSetting(serverURL: String, cookieList:[String])
         case getDictionary(serverURL: String, cookieList:[String])
         case getTranslations(serverURL: String, cookieList:[String])
-        case submitEntity(serverURL: String, cookieList: [String], multipartHeader: String, multipartBody: Data)
+        case submitEntity(serverURL: String, cookie: String, multipartHeader: String, multipartBody: Data)
     }
 }
 
@@ -291,9 +291,8 @@ extension UwaziServerRepository.API: APIRequest {
             let cookiesString = cookieList.joined(separator: "; ")
             return [HTTPHeaderField.cookie.rawValue: cookiesString,
                     HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
-        case .submitEntity(_, let cookieList, _, _):
-                    let cookiesString = cookieList.joined(separator: ";")
-            return [HTTPHeaderField.cookie.rawValue: cookiesString,
+        case .submitEntity(_, let cookie, _, _):
+            return [HTTPHeaderField.cookie.rawValue: cookie,
                     HTTPHeaderField.xRequestedWith.rawValue: XRequestedWithValue.xmlHttp.rawValue,
                     HTTPHeaderField.contentType.rawValue : ContentType.data.rawValue ]
         }
@@ -356,7 +355,7 @@ extension UwaziServerRepository.API: APIRequest {
             return serverURL
         case .getTemplate(serverURL: let serverURL, cookieList: _):
             return serverURL
-        case .getSetting(serverURL: let serverURL, cookieList: _), .getDictionary(serverURL: let serverURL, cookieList: _),.getTranslations(serverURL: let serverURL, cookieList: _), .submitEntity(serverURL: let serverURL, cookieList: _, _, _):
+        case .getSetting(serverURL: let serverURL, cookieList: _), .getDictionary(serverURL: let serverURL, cookieList: _),.getTranslations(serverURL: let serverURL, cookieList: _), .submitEntity(serverURL: let serverURL, _, _, _):
             return serverURL
         }
     }

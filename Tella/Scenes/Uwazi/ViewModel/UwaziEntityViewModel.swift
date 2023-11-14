@@ -33,10 +33,11 @@ class UwaziEntityViewModel: ObservableObject {
     @Published var showingCamera : Bool = false
     
     @Published var isLoading : Bool = false
+    @Published var server: UwaziServer? = nil
     
     var subscribers = Set<AnyCancellable>()
 
-    init(mainAppModel : MainAppModel, templateId: Int, server: Server) {
+    init(mainAppModel : MainAppModel, templateId: Int, serverId: Int) {
         self.mainAppModel = mainAppModel
         self.template = self.getTemplateById(id: templateId)
         // this will be removed in the refactor branch of UwaziServer
@@ -44,6 +45,7 @@ class UwaziEntityViewModel: ObservableObject {
         self.accessToken = server.accessToken ?? ""
         self.serverURL = server.url ?? ""
         self.bindVaultFileTaken()
+        self.server = self.getServerById(id: serverId)
         entryPrompts = UwaziEntityParser(template: template!).getEntryPrompts()
     }
     
@@ -55,6 +57,11 @@ class UwaziEntityViewModel: ObservableObject {
     func getTemplateById (id: Int) -> CollectedTemplate {
         return (self.tellaData?.getUwaziTemplateById(id: id))!
     }
+    
+    func getServerById(id: Int) -> UwaziServer {
+        return (self.tellaData?.getUwaziServer(serverId: id))!
+    }
+    
     
     func getEntityTitle() -> String {
         return self.entryPrompts.first(where: { $0.name == UwaziEntityMetadataKeys.title })?.value.stringValue ?? ""
@@ -80,9 +87,6 @@ class UwaziEntityViewModel: ObservableObject {
         // Extract entity data and metadata
         let entityData = extractEntityDataAndMetadata()
         
-        // Prepare server URL and cookie list
-        let serverURL = self.serverURL
-        let cookieList = ["connect.sid=" + self.accessToken]
 //         Submit the entity data
         let (body, contentTypeHeader) = UwaziMultipartFormDataBuilder.createBodyWith(
             keyValues: entityData,
@@ -91,8 +95,8 @@ class UwaziEntityViewModel: ObservableObject {
         )
 
         let response = UwaziServerRepository().submitEntity(
-            serverURL: serverURL,
-            cookieList: cookieList,
+            serverURL: self.server?.url ?? "",
+            cookie: self.server?.cookie ?? "",
             multipartHeader: contentTypeHeader,
             multipartBody: body
         )
