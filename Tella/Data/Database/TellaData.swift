@@ -64,7 +64,16 @@ class TellaData : ObservableObject {
     
     func getServers(){
         servers.value = database.getServers()
-        dump(servers)
+    }
+    
+    func getUwaziServer(serverId: Int) -> UwaziServer? {
+        do {
+            return try database.getUwaziServer(serverId: serverId)
+            
+        }catch {
+            debugLog(error)
+            return nil
+        }
     }
     
     func getAutoUploadServer() -> Server? {

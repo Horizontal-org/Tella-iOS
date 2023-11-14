@@ -40,7 +40,7 @@ struct TemplateCardView: View {
                 if type == .delete {
                     showDeleteTemplateConfirmationView()
                 } else {
-                    navigateTo(destination: CreateEntityView(appModel: mainAppModel, templateId: templateCardViewModel.id!, server: templateCardViewModel.server).environmentObject(sheetManager))
+                    navigateTo(destination: CreateEntityView(appModel: mainAppModel, templateId: templateCardViewModel.id!, serverId: templateCardViewModel.server.id!).environmentObject(sheetManager))
                                         sheetManager.hide()
                 }
             })
