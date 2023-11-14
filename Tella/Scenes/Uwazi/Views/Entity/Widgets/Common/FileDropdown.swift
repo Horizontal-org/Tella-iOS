@@ -28,13 +28,13 @@ struct FileDropdown: View {
     
     var dropdownHeader: some View {
         HStack {
-            Text("\(files.count) \(LocalizableUwazi.uwaziEntitySelectFilesDropdownTitle.localized)")
+            Text("\(files.count) \(files.count == 1 ? LocalizableUwazi.uwaziEntitySelectFilesDropdownTitleSingle.localized : LocalizableUwazi.uwaziEntitySelectFilesDropdownTitle.localized)")
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
             Spacer()
             Text(showFiles ? LocalizableUwazi.uwaziEntitySelectFilesDropdownHide.localized : LocalizableUwazi.uwaziEntitySelectFilesDropdownShow.localized)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                .foregroundColor(.yellow)
-            Image(systemName: showFiles ? "chevron.up" : "chevron.down")
+                .font(.custom(Styles.Fonts.boldFontName, size: 14))
+                .foregroundColor(Styles.Colors.yellow)
+            Image(showFiles ? "uwazi.chevron-up" : "uwazi.chevron-down")
         }
         .padding(.bottom, 12)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -72,7 +72,7 @@ struct FileItems: View {
                     }
                     .padding(.horizontal, 17)
                 }
-                .padding(.bottom, 17)
+                .padding(.vertical, 8)
                 .padding(.horizontal, 17)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }

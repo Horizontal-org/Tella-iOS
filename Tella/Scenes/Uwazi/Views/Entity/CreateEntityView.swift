@@ -56,7 +56,7 @@ struct CreateEntityView: View {
                             .environmentObject(sheetManager)
                             .environmentObject(entityViewModel)
                     }
-                }.padding(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16))
+                }.padding(EdgeInsets(top: 12, leading: 16, bottom: 0, trailing: 16))
             }
         }
     }
@@ -108,7 +108,7 @@ struct CreateEntityView: View {
             ConfirmBottomSheet(titleText: LocalizableUwazi.uwaziEntityExitSheetTitle.localized,
                                msgText: LocalizableUwazi.uwaziEntityExitSheetExpl.localized,
                                cancelText: LocalizableReport.exitCancel.localized.uppercased(),
-                               actionText: LocalizableReport.exitSave.localized.uppercased(),
+                               actionText: LocalizableSettings.UwaziLanguageCancel.localized.uppercased(),
                                didConfirmAction: {
                 
             }, didCancelAction: {

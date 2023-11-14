@@ -335,6 +335,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Uwazi_Entity_SummaryDetail_Submit_Action" = "SUBMIT";
 "Uwazi_Entity_SelectFiles" = "Select Files";
 "Uwazi_Entity_SelectFiles_Dropdown_Title" = "files attached";
+"Uwazi_Entity_SelectFiles_Dropdown_TitleSingle" = "file attached";
 "Uwazi_Entity_SelectFiles_Dropdown_Hide" = "Hide files";
 "Uwazi_Entity_SelectFiles_Dropdown_Show" = "Show files";
 

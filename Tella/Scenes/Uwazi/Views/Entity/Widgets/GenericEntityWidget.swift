@@ -36,7 +36,7 @@ struct GenericEntityWidget<Content: View>: View {
                     UwaziEntityMandatoryTextView()
                 }
                 content
-            }
+            }.padding(.vertical, 14)
         }
     }
 }
