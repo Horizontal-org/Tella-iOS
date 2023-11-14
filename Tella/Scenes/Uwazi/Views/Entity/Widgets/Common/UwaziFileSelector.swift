@@ -25,8 +25,7 @@ struct UwaziFileSelector: View {
                 SelectFileComponent(title: title)
             }
             .background(Color.white.opacity(0.08))
-            .cornerRadius(12)
-            .padding(.bottom, 12)
+            .cornerRadius(15)
         }
     }
 }
@@ -37,12 +36,12 @@ struct SelectFileComponent: View {
     var body: some View {
         HStack {
             Image("uwazi.add-files")
-                .padding()
+                .padding(.vertical, 20)
             Text(title)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(Color.white.opacity(0.87))
                 .frame(maxWidth: .infinity, alignment: .leading)
-        }
+        }.padding(.horizontal, 16)
     }
 }
 
