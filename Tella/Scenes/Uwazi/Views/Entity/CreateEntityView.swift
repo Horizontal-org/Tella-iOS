@@ -14,15 +14,18 @@ struct CreateEntityView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     let modelHeight = 200.0
     
-    init(appModel: MainAppModel, templateId: Int) {
-        _entityViewModel = StateObject(wrappedValue: UwaziEntityViewModel(mainAppModel: appModel,
-                                                                          templateId: templateId))
+    init(appModel: MainAppModel, templateId: Int, server: Server) {
+        _entityViewModel = StateObject(wrappedValue: UwaziEntityViewModel(mainAppModel: appModel, templateId:templateId, server: server))
     }
     var body: some View {
         ContainerView {
             contentView
+            
+            photoVideoPickerView
         }
         .navigationBarHidden(true)
+        .overlay(cameraView)
+        .overlay(recordView)
     }
     
     fileprivate var contentView: some View {
@@ -50,15 +53,21 @@ struct CreateEntityView: View {
                 VStack(alignment: .leading) {
                     ForEach(entityViewModel.entryPrompts, id: \.id) { prompt in
                         RenderPropertyComponentView(prompt: prompt)
+                            .environmentObject(sheetManager)
+                            .environmentObject(entityViewModel)
                     }
-                }.padding(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16))
+                }.padding(EdgeInsets(top: 12, leading: 16, bottom: 0, trailing: 16))
             }
         }
     }
     
     fileprivate var bottomActionView: some View {
         Button(action: {
-            self.entityViewModel.handleMandatoryProperties()
+            let checkMandatoryFields = self.entityViewModel.handleMandatoryProperties()
+            
+            if !checkMandatoryFields {
+                navigateTo(destination: SubmitEntityView(entityViewModel: entityViewModel))
+            }
         }) {
             Text(LocalizableUwazi.uwaziEntityActionNext.localized)
                 .frame(maxWidth: .infinity, alignment: .trailing)
@@ -67,13 +76,39 @@ struct CreateEntityView: View {
         }
         .buttonStyle(PlainButtonStyle())
     }
+    
+    var cameraView : some View {
+        entityViewModel.showingCamera ?
+        CameraView(sourceView: SourceView.addReportFile,
+                   showingCameraView: $entityViewModel.showingCamera,
+                   resultFile: $entityViewModel.resultFile,
+                   mainAppModel: entityViewModel.mainAppModel,
+                   rootFile: entityViewModel.mainAppModel.vaultManager.root) : nil
+    }
+    
+    var recordView : some View {
+        entityViewModel.showingRecordView ?
+        RecordView(appModel: entityViewModel.mainAppModel,
+                   rootFile: entityViewModel.mainAppModel.vaultManager.root,
+                    sourceView: .addReportFile,
+                    showingRecoredrView: $entityViewModel.showingRecordView,
+                    resultFile: $entityViewModel.resultFile) : nil
+        }
+    
+    var photoVideoPickerView : some View {
+        PhotoVideoPickerView(showingImagePicker: $entityViewModel.showingImagePicker,
+                             showingImportDocumentPicker: $entityViewModel.showingImportDocumentPicker,
+                             appModel: entityViewModel.mainAppModel,
+                             resultFile: $entityViewModel.resultFile,
+                             rootFile:  $entityViewModel.mainAppModel.vaultManager.root)
+    }
 
     private func showSaveEntityConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: modelHeight) {
             ConfirmBottomSheet(titleText: LocalizableUwazi.uwaziEntityExitSheetTitle.localized,
                                msgText: LocalizableUwazi.uwaziEntityExitSheetExpl.localized,
                                cancelText: LocalizableReport.exitCancel.localized.uppercased(),
-                               actionText: LocalizableReport.exitSave.localized.uppercased(),
+                               actionText: LocalizableSettings.UwaziLanguageCancel.localized.uppercased(),
                                didConfirmAction: {
                 
             }, didCancelAction: {
@@ -86,4 +121,5 @@ struct CreateEntityView: View {
         sheetManager.hide()
         self.presentationMode.wrappedValue.dismiss()
     }
+    
 }

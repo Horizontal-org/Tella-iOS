@@ -28,3 +28,14 @@ enum UwaziEntityPropertyType: String, CodingKey {
     case dataTypeGeneratedID = "generatedid"
     case dataTypeDivider = "divider"
 }
+
+struct UwaziEntityMetadataKeys {
+    static let attachments = "attachments"
+    static let documents = "documents"
+    static let template = "template"
+    static let metadata = "metadata"
+    static let entity = "entity"
+    static let title = "title"
+    static let value = "value"
+    static let label = "label"
+}
