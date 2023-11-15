@@ -10,7 +10,7 @@ struct FeedbackView: View {
     @State var showSaveDraftSheet : Bool = false
     @EnvironmentObject var appModel : MainAppModel
     @EnvironmentObject var sheetManager : SheetManager
-
+    
     init(mainAppModel:MainAppModel) {
         _feedbackViewModel = StateObject(wrappedValue: FeedbackViewModel(mainAppModel: mainAppModel))
     }
@@ -22,20 +22,17 @@ struct FeedbackView: View {
             handleFeedbackSentSuccessfully()
         }.onReceive(feedbackViewModel.$showErrorToast) { _ in
             handleErrorToast()
-
         }
     }
-
+    
     var content : some View {
         
         ZStack {
             
             feedbackContentView
             
-            submitButton
-            
             confirmBottomSheet
-
+            
             if feedbackViewModel.showOfflineToast {
                 OfflineFeedbackToast()
             }
@@ -47,26 +44,49 @@ struct FeedbackView: View {
     }
     
     var feedbackContentView: some View {
+        
         VStack() {
             
-            VStack(spacing: 24) {
-                
-                CloseHeaderView(title: LocalizableSettings.settFeedbackAppBar.localized) {
-                    showSaveFeedbackConfirmationView()
-                }
-                
-                introductionView
-                
-                dividerView
-                
-                manageFeedbackView
-                
-                feedbackTextView
-            }
+            CloseHeaderView(title: LocalizableSettings.settFeedbackAppBar.localized) {
+                showSaveFeedbackConfirmationView()
+            }.frame(height: 45)
             
-            Spacer()
+            GeometryReader { geometry in
+                
+                ScrollView {
+                    
+                    VStack() {
+                        
+                        VStack(spacing: 24) {
+                            
+                            introductionView
+                                .frame( height: 145)
+                            
+                            dividerView
+                            
+                            manageFeedbackView
+                        }.background(Styles.Colors.backgroundMain)
+                        
+                        
+                            .onTapGesture {
+                                UIApplication.shared.endEditing()
+                            }
+                        
+                        Spacer()
+                            .frame( minHeight: 40)
+                        
+                        feedbackTextView
+                            .frame( height: 120)
+                        
+                        Spacer()
+                            .frame( minHeight: 20)
+                        
+                        submitButton
+                        
+                    }.frame( minHeight: geometry.size.height)
+                }
+            }
         }
-        
     }
     
     var introductionView : some View {
@@ -102,7 +122,7 @@ struct FeedbackView: View {
             }
         }
     }
-
+    
     @ViewBuilder
     var feedbackTextView : some View {
         if $appModel.settings.shareFeedback.wrappedValue {
@@ -116,19 +136,16 @@ struct FeedbackView: View {
     
     var submitButton : some View {
         
-        VStack() {
-            Spacer()
-            TellaButtonView<AnyView> (title:  LocalizableSettings.submit.localized ,
-                                      nextButtonAction: .action,
-                                      buttonType: .yellow,
-                                      isValid: $feedbackViewModel.feedbackIsValid) {
-                feedbackViewModel.submitFeedback()
-                
-            } .padding(EdgeInsets(top: 0, leading: 16, bottom: 20, trailing: 16))
-        }
+        TellaButtonView<AnyView> (title:  LocalizableSettings.submit.localized ,
+                                  nextButtonAction: .action,
+                                  buttonType: .yellow,
+                                  isValid: $feedbackViewModel.feedbackIsValid) {
+            feedbackViewModel.submitFeedback()
+            
+        } .padding(EdgeInsets(top: 0, leading: 16, bottom: 20, trailing: 16))
     }
     
- 
+    
     private func showSaveFeedbackConfirmationView() {
         if feedbackViewModel.shouldShowSaveDraftSheet  {
             self.showSaveDraftSheet = true
