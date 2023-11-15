@@ -19,7 +19,7 @@ struct CreateDraftHeaderView: View {
             closeButton()
             titleText()
             Spacer()
-            saveButton()
+//            saveButton()
         }.frame(height: 56)
     }
     fileprivate func closeButton() -> Button<some View> {
