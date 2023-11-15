@@ -80,13 +80,15 @@ struct SubmitEntityView: View {
         HStack {
             Spacer()
             Button {
-                entityViewModel.submitEntity()
+                entityViewModel.submitEntity {
+                        navigateTo(destination: UwaziView().environmentObject(UwaziViewModel(mainAppModel: entityViewModel.mainAppModel, server: entityViewModel.server!)))
+                    }
             } label: {
                 if entityViewModel.isLoading {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle(tint: .white))
                         .frame(maxWidth:.infinity)
-                        .frame(height: 55) // Ensures the progress view has the same height as your button for consistent layout
+                        .frame(height: 55)
                 } else {
                     Text(LocalizableUwazi.uwaziEntitySummaryDetailSubmitAction.localized)
                         .frame(maxWidth:.infinity)

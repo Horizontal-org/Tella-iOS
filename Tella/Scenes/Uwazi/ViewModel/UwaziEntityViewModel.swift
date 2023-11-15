@@ -18,6 +18,7 @@ class UwaziEntityViewModel: ObservableObject {
     @Published var entryPrompts: [UwaziEntryPrompt] = []
     @Published var accessToken: String = ""
     @Published var serverURL: String = ""
+    @Published var server: Server? = nil
     
     // files
     @Published var files : Set <VaultFile> = []
@@ -38,6 +39,8 @@ class UwaziEntityViewModel: ObservableObject {
     init(mainAppModel : MainAppModel, templateId: Int, server: Server) {
         self.mainAppModel = mainAppModel
         self.template = self.getTemplateById(id: templateId)
+        // this will be removed in the refactor branch of UwaziServer
+        self.server = server
         self.accessToken = server.accessToken ?? ""
         self.serverURL = server.url ?? ""
         self.bindVaultFileTaken()
@@ -72,7 +75,7 @@ class UwaziEntityViewModel: ObservableObject {
         return hasMandatoryErrors
     }
     
-    func submitEntity() {
+    func submitEntity(onCompletion: @escaping () -> Void) {
         self.isLoading = true
         // Extract entity data and metadata
         let entityData = extractEntityDataAndMetadata()
@@ -101,6 +104,7 @@ class UwaziEntityViewModel: ObservableObject {
                 case .finished:
                     debugLog("Finished")
                     Toast.displayToast(message: "Entity submitted succesfully")
+                    onCompletion()
                 case .failure(let error):
                     debugLog(error.localizedDescription)
                 }
