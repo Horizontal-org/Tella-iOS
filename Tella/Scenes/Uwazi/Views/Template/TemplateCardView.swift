@@ -18,7 +18,7 @@ struct TemplateCardView: View {
 //                MoreButtonView(imageName: "uwazi.star", action: {
 //                    //add this template to favorie
 //                })
-                ConnectionCardDetail(title: templateCardViewModel.translatedName, subtitle: templateCardViewModel.server.name!)
+                ConnectionCardDetail(title: templateCardViewModel.translatedName, subtitle: templateCardViewModel.serverName)
                 Spacer()
                 MoreButtonView(imageName: "reports.more", action: {
                     //show detail
@@ -40,7 +40,11 @@ struct TemplateCardView: View {
                 if type == .delete {
                     showDeleteTemplateConfirmationView()
                 } else {
-                    navigateTo(destination: CreateEntityView(appModel: mainAppModel, templateId: templateCardViewModel.id!, serverId: templateCardViewModel.server.id!).environmentObject(sheetManager))
+                    navigateTo(destination: CreateEntityView(
+                        appModel: mainAppModel,
+                        templateId: templateCardViewModel.id!,
+                        serverId: templateCardViewModel.serverId
+                    ).environmentObject(sheetManager))
                                         sheetManager.hide()
                 }
             })
