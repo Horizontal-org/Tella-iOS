@@ -135,7 +135,7 @@ extension UwaziServerRepository {
     ///   - server: Server Object to get the information about the Uwazi server
     ///   - locale: UwaziLocale Object that has the locale information about language that the user selected when adding a new Uwazi server
     /// - Returns: Collection of CollectedTemplate
-    func handleTemplate(server: Server, locale: String) async throws  -> AnyPublisher<[UwaziTemplateRow], Error> {
+    func handleTemplate(server: UwaziServer, locale: String) async throws  -> AnyPublisher<[UwaziTemplateRow], Error> {
         guard let serverURL = server.url else {
             return Fail(error: APIError.unexpectedResponse).eraseToAnyPublisher()
         }
@@ -167,7 +167,7 @@ extension UwaziServerRepository {
         .eraseToAnyPublisher()
     }
 
-    fileprivate func getAllowedTemplates(server: Server, settings: UwaziSettingDTO, templates: [UwaziTemplateRowDTO]?) -> [UwaziTemplateRowDTO] {
+    fileprivate func getAllowedTemplates(server: UwaziServer, settings: UwaziSettingDTO, templates: [UwaziTemplateRowDTO]?) -> [UwaziTemplateRowDTO] {
         // Check whether the server instance is public and if public then only use the whitelisted templates are added to resultTemplates
         var tempTemplates: [UwaziTemplateRowDTO] = []
         if !self.isPublic(server: server) {
@@ -186,7 +186,7 @@ extension UwaziServerRepository {
         return tempTemplates
     }
 
-    fileprivate func isPublic(server: Server) -> Bool {
+    fileprivate func isPublic(server: UwaziServer) -> Bool {
         return (server.username?.isEmpty ?? true) || (server.password?.isEmpty ?? true)
     }
 

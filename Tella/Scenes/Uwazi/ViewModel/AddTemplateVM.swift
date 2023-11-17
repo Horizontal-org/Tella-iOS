@@ -18,27 +18,30 @@ class AddTemplateViewModel: ObservableObject {
     @Published var templateItemsViewModel : [TemplateItemViewModel] = []
     
     @Published var isLoading: Bool = false
-    var serverName : String
+    var serverName : String = ""
     var subscribers = Set<AnyCancellable>()
-    var server: Server
+    var server: UwaziServer? = nil
     
     var tellaData: TellaData? {
         return self.mainAppModel.vaultManager.tellaData
     }
     
-    init(mainAppModel : MainAppModel, server: Server) {
+    init(mainAppModel : MainAppModel, serverId: Int) {
         
         self.mainAppModel = mainAppModel
-        self.server = server
-        self.serverName = server.name ?? ""
+        self.server = self.getServerById(id: serverId)
+        self.serverName = server?.name ?? ""
+    }
+    
+    func getServerById(id: Int) -> UwaziServer {
+        return (self.tellaData?.getUwaziServer(serverId: id))!
     }
     
     func getTemplates() {
         self.isLoading = true
         Task {
-            guard let id = self.server.id else { return }
-            guard let locale = self.tellaData?.getUwaziLocale(serverId: id) else { return }
-            let template = try await UwaziServerRepository().handleTemplate(server: self.server, locale: "es")
+            guard let id = self.server?.id else { return }
+            let template = try await UwaziServerRepository().handleTemplate(server: self.server!, locale: self.server?.locale ?? "")
             template.receive(on: DispatchQueue.main).sink { completion in
                 self.handleGetTemplateCompletion(completion)
             } receiveValue: { templates in
@@ -52,8 +55,8 @@ class AddTemplateViewModel: ObservableObject {
         return templates.map { template in
             return CollectedTemplate(serverId: serverId,
                                      templateId: template.id,
-                                     serverName: self.server.name ?? "",
-                                     username: self.server.username,
+                                     serverName: self.server?.name ?? "",
+                                     username: self.server?.username,
                                      entityRow: template,
                                      isDownloaded: false,
                                      isFavorite: false,
