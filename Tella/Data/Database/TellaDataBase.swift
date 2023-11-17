@@ -46,7 +46,6 @@ class TellaDataBase {
         createServerTable()
         createReportTable()
         createReportFilesTable()
-        createLanguageTableForUwazi()
         createTemplateTableForUwazi()
         createUwaziServerTable()
     }

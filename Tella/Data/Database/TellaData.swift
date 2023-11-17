@@ -153,24 +153,7 @@ class TellaData : ObservableObject {
         getReports()
     }
 }
-// MARK: - Extension for Uwazi Locale methods
-extension TellaData {
-    func getUwaziLocale(serverId: Int) -> UwaziLocale? {
-        return database.getUwaziLocale(serverId: serverId)
-    }
-    func deleteUwaziLocale(serverId : Int) {
-        database.deleteUwaziLocale(serverId: serverId)
-    }
-    @discardableResult
-    func addUwaziLocale(locale: UwaziLocale) -> Int? {
-        return database.addUwaziLocale(locale: locale)
-    }
 
-    @discardableResult
-    func updateLocale(localeId: Int, locale: String) -> Int? {
-        return database.updateLocale(localeId: localeId, locale: locale)
-    }
-}
 // MARK: - Extension for Uwazi Template methods
 extension TellaData {
     func addUwaziTemplate(template: CollectedTemplate) -> CollectedTemplate? {

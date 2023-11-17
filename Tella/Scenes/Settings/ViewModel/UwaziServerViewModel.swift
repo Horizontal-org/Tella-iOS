@@ -94,7 +94,6 @@ class UwaziServerViewModel: ObservableObject {
         debugLog(server)
         guard let id = mainAppModel.vaultManager.tellaData?.addUwaziServer(server: server) else { return }
         server.id = id
-        self.addUwaziLocaleFor(serverId: id)
         self.currentServer = server
     }
     
@@ -116,20 +115,6 @@ class UwaziServerViewModel: ObservableObject {
 
         guard let id = mainAppModel.vaultManager.tellaData?.updateServer(server: server) else { return }
         server.id = id
-        updateUwaziLocaleFor(serverId: currentServerId)
-    }
-    
-    func addUwaziLocaleFor(serverId: Int) {
-        guard let locale = self.selectedLanguage?.locale else { return }
-        mainAppModel.vaultManager.tellaData?.addUwaziLocale(locale: UwaziLocale(locale: locale, serverId: serverId))
-    }
-
-    func updateUwaziLocaleFor(serverId: Int) {
-        let selectedlocale = mainAppModel.vaultManager.tellaData?.getUwaziLocale(serverId: serverId)
-        guard let localeId = selectedlocale?.id, let locale = selectedLanguage?.locale else { return }
-        if selectedlocale?.locale != locale {
-            mainAppModel.vaultManager.tellaData?.updateLocale(localeId: localeId, locale: locale)
-        }
     }
 
     // MARK: - Get Language API Call Methods
@@ -164,12 +149,11 @@ class UwaziServerViewModel: ObservableObject {
     }
 
     fileprivate func handleRecieveValueForGetLanguage(_ wrapper: UwaziLanguage) {
-        debugLog("Finished")
         self.isLoading = false
         self.languages.append(contentsOf: wrapper.rows ?? [])
-        if let server = self.currentServer, let id = server.id {
-            let locale = self.mainAppModel.vaultManager.tellaData?.getUwaziLocale(serverId: id)
-            self.selectedLanguage = self.languages.compactMap{$0}.first(where: {$0.locale == locale?.locale})
+        if let server = self.currentServer {
+            let locale = server.locale
+            self.selectedLanguage = self.languages.compactMap{$0}.first(where: {$0.locale == locale})
         }
         self.showNextSuccessLoginView = true
     }
