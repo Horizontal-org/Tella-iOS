@@ -84,26 +84,18 @@ class UwaziServerViewModel: ObservableObject {
 
     func addServer() {
         let server = UwaziServer(name: setting?.siteName,
-                            serverURL: serverURL.getBaseURL(),
-                            username: username,
-                            password: password,
-                            accessToken: self.token,
-                            serverType: .uwazi,
-                            cookie: createCookie()
+                                 serverURL: serverURL.getBaseURL(),
+                                 username: username,
+                                 password: password,
+                                 accessToken: self.token,
+                                 locale: selectedLanguage?.locale,
+                                 serverType: .uwazi
         )
         debugLog(server)
         guard let id = mainAppModel.vaultManager.tellaData?.addUwaziServer(server: server) else { return }
         server.id = id
         self.addUwaziLocaleFor(serverId: id)
         self.currentServer = server
-    }
-    
-    func createCookie() -> String {
-        let accessToken = self.token ?? ""
-        let locale = self.selectedLanguage?.locale ?? ""
-        let cookieList = ["connect.sid=" + accessToken, "locale=" + locale]
-        
-        return cookieList.joined(separator: ";")
     }
     
     func updateServer() {

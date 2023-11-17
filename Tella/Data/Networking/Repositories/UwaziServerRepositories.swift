@@ -135,11 +135,11 @@ extension UwaziServerRepository {
     ///   - server: Server Object to get the information about the Uwazi server
     ///   - locale: UwaziLocale Object that has the locale information about language that the user selected when adding a new Uwazi server
     /// - Returns: Collection of CollectedTemplate
-    func handleTemplate(server: Server, locale: UwaziLocale) async throws  -> AnyPublisher<[UwaziTemplateRow], Error> {
+    func handleTemplate(server: Server, locale: String) async throws  -> AnyPublisher<[UwaziTemplateRow], Error> {
         guard let serverURL = server.url else {
             return Fail(error: APIError.unexpectedResponse).eraseToAnyPublisher()
         }
-        let cookieList = [server.accessToken ?? "", locale.locale ?? ""]
+        let cookieList = [server.accessToken ?? "", locale]
         let getTemplate = UwaziServerRepository().getTemplate(serverURL: serverURL, cookieList: cookieList)
         let getSetting = UwaziServerRepository().getSettings(serverURL: serverURL, cookieList: cookieList)
         let getDictionary = UwaziServerRepository().getDictionaries(serverURL: serverURL, cookieList: cookieList)
@@ -201,10 +201,12 @@ extension UwaziServerRepository {
         }
     }
 
-    fileprivate func translate(locale: UwaziLocale, resultTemplates: [UwaziTemplateRowDTO], translations: [UwaziTranslationRowDTO]?) {
+    fileprivate func translate(locale: String, resultTemplates: [UwaziTemplateRowDTO], translations: [UwaziTranslationRowDTO]?) {
+        dump("locale")
+        dump(locale)
         resultTemplates.forEach { template in
             // Get only the translations based on the language that user selected
-            let filteredTranslations = translations?.filter{$0.locale == locale.locale ?? ""}
+            let filteredTranslations = translations?.filter{$0.locale == locale}
             filteredTranslations?.first?.contexts.forEach{ context in
                 // Compare context id and template id to determine appropiate translations
                 if context.contextID == template.id {

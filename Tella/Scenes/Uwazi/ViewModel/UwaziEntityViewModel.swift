@@ -46,6 +46,7 @@ class UwaziEntityViewModel: ObservableObject {
         self.serverURL = server.url ?? ""
         self.bindVaultFileTaken()
         self.server = self.getServerById(id: serverId)
+        dump(server)
         entryPrompts = UwaziEntityParser(template: template!).getEntryPrompts()
     }
     

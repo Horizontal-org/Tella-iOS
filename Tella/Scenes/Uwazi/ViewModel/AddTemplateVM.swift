@@ -38,7 +38,7 @@ class AddTemplateViewModel: ObservableObject {
         Task {
             guard let id = self.server.id else { return }
             guard let locale = self.tellaData?.getUwaziLocale(serverId: id) else { return }
-            let template = try await UwaziServerRepository().handleTemplate(server: self.server, locale: locale)
+            let template = try await UwaziServerRepository().handleTemplate(server: self.server, locale: "es")
             template.receive(on: DispatchQueue.main).sink { completion in
                 self.handleGetTemplateCompletion(completion)
             } receiveValue: { templates in

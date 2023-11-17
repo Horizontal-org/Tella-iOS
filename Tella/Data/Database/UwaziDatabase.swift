@@ -90,8 +90,8 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
             cddl(D.cUsername, D.text),
             cddl(D.cPassword, D.text),
             cddl(D.cAccessToken, D.text),
-            cddl(D.cServerType, D.integer),
-            cddl(D.cCookie, D.text)
+            cddl(D.cLocale, D.text),
+            cddl(D.cServerType, D.integer)
         ]
         
         statementBuilder.createTable(tableName: D.tUwaziServer, columns: columns)
@@ -103,7 +103,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
                            KeyValue(key: D.cUsername, value: server.username),
                            KeyValue(key: D.cPassword, value: server.password ),
                            KeyValue(key: D.cAccessToken, value: server.accessToken),
-                           KeyValue(key: D.cCookie, value: server.cookie),
+                           KeyValue(key: D.cLocale, value: server.locale),
                            KeyValue(key: D.cServerType, value:server.serverType?.rawValue)
         ]
         
@@ -116,27 +116,27 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
                                                            andCondition: [KeyValue(key: D.cServerId, value: serverId)])
         guard let uwaziServerDict = response.first else { return nil }
         
-        return parseUwaziServer(dictionnary: uwaziServerDict)
+        return parseUwaziServer(dictionary: uwaziServerDict)
         
     }
     
-    func parseUwaziServer(dictionnary : [String:Any] ) -> UwaziServer {
-        let id = dictionnary[D.cServerId] as? Int
-        let name = dictionnary[D.cName] as? String
-        let url = dictionnary[D.cURL] as? String
-        let username = dictionnary[D.cUsername] as? String
-        let password = dictionnary[D.cPassword] as? String
-        let token = dictionnary[D.cAccessToken] as? String
-        let servertType = dictionnary[D.cServerType] as? Int
-        let cookie = dictionnary[D.cCookie] as? String
+    func parseUwaziServer(dictionary : [String:Any] ) -> UwaziServer {
+        let id = dictionary[D.cServerId] as? Int
+        let name = dictionary[D.cName] as? String
+        let url = dictionary[D.cURL] as? String
+        let username = dictionary[D.cUsername] as? String
+        let password = dictionary[D.cPassword] as? String
+        let token = dictionary[D.cAccessToken] as? String
+        let servertType = dictionary[D.cServerType] as? Int
+        let locale = dictionary[D.cLocale] as? String
         return UwaziServer(id:id,
-                      name: name,
-                      serverURL: url,
-                      username: username,
-                      password: password,
-                      accessToken: token,
-                      serverType: ServerConnectionType(rawValue: servertType ?? 0),
-                      cookie: cookie
+                           name: name,
+                           serverURL: url,
+                           username: username,
+                           password: password,
+                           accessToken: token,
+                           locale: locale,
+                           serverType: ServerConnectionType(rawValue: servertType ?? 0)
         )
     }
     func addUwaziLocale(locale: UwaziLocale) -> Int? {
