@@ -144,4 +144,15 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
                                        keyValue: valuesToUpdate,
                                        primarykeyValue: serverCondition)
     }
+    
+    func deleteUwaziServer(serverId : Int) {
+        let serverCondition = [KeyValue(key: D.cServerId, value: serverId)]
+
+        statementBuilder.delete(tableName: D.tUwaziServer,
+                                primarykeyValue: serverCondition)
+
+        statementBuilder.delete(tableName: D.tUwaziTemplate,
+                                primarykeyValue: serverCondition)
+
+    }
 }

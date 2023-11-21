@@ -55,6 +55,12 @@ class TellaData : ObservableObject {
         getServers()
         getReports()
     }
+    
+    func deleteUwaziServer(serverId: Int) {
+        database.deleteUwaziServer(serverId: serverId)
+        getServers()
+    }
+    
     @discardableResult
     func deleteAllServers() -> Int? {
         do {
