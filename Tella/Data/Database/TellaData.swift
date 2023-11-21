@@ -44,6 +44,12 @@ class TellaData : ObservableObject {
         return id
     }
     
+    func updateUwaziServer(server: UwaziServer) -> Int? {
+        let id = database.updateUwaziServer(server: server)
+        getServers()
+        return id
+    }
+    
     func deleteServer(serverId : Int) {
         database.deleteServer(serverId: serverId)
         getServers()

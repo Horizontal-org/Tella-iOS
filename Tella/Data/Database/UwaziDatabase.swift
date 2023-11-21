@@ -130,4 +130,18 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
                            serverType: ServerConnectionType(rawValue: servertType ?? 0)
         )
     }
+    
+    func updateUwaziServer(server: UwaziServer) -> Int? {
+        let valuesToUpdate = [KeyValue(key: D.cName, value: server.name),
+                              KeyValue(key: D.cURL, value: server.url),
+                              KeyValue(key: D.cUsername, value: server.username),
+                              KeyValue(key: D.cPassword, value: server.password),
+                              KeyValue(key: D.cAccessToken, value: server.accessToken),
+                              KeyValue(key: D.cLocale, value: server.locale)]
+
+        let serverCondition = [KeyValue(key: D.cServerId, value: server.id)]
+        return statementBuilder.update(tableName: D.tUwaziServer,
+                                       keyValue: valuesToUpdate,
+                                       primarykeyValue: serverCondition)
+    }
 }

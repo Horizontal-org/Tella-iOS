@@ -99,21 +99,16 @@ class UwaziServerViewModel: ObservableObject {
     
     func updateServer() {
         guard let currentServer = currentServer, let currentServerId = currentServer.id else { return }
-        let server = Server(id: currentServerId,
-                            name: setting?.siteName,
-                            serverURL: serverURL.getBaseURL(),
-                            username: username,
-                            password: password,
-                            accessToken: self.token,
-                            activatedMetadata: activatedMetadata,
-                            backgroundUpload: backgroundUpload,
-                            projectId: setting?.id,
-                            slug: "",
-                            autoUpload: autoUpload,
-                            autoDelete: autoDelete)
+        let server = UwaziServer(id: currentServerId,
+                                 name: setting?.siteName,
+                                 serverURL: serverURL.getBaseURL(),
+                                 username: username,
+                                 password: password,
+                                 accessToken: self.token,
+                                 locale: selectedLanguage?.locale)
 
 
-        guard let id = mainAppModel.vaultManager.tellaData?.updateServer(server: server) else { return }
+        guard let id = mainAppModel.vaultManager.tellaData?.updateUwaziServer(server: server) else { return }
         server.id = id
     }
 
