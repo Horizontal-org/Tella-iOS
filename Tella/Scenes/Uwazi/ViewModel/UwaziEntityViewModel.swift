@@ -16,9 +16,6 @@ class UwaziEntityViewModel: ObservableObject {
     
     @Published var template: CollectedTemplate? = nil
     @Published var entryPrompts: [UwaziEntryPrompt] = []
-    @Published var accessToken: String = ""
-    @Published var serverURL: String = ""
-    @Published var server: Server? = nil
     
     // files
     @Published var files : Set <VaultFile> = []
@@ -40,10 +37,6 @@ class UwaziEntityViewModel: ObservableObject {
     init(mainAppModel : MainAppModel, templateId: Int, serverId: Int) {
         self.mainAppModel = mainAppModel
         self.template = self.getTemplateById(id: templateId)
-        // this will be removed in the refactor branch of UwaziServer
-        self.server = server
-        self.accessToken = server.accessToken ?? ""
-        self.serverURL = server.url ?? ""
         self.bindVaultFileTaken()
         self.server = self.getServerById(id: serverId)
         entryPrompts = UwaziEntityParser(template: template!).getEntryPrompts()

@@ -27,13 +27,13 @@ class UwaziViewModel: ObservableObject {
     ]
     @Published var isLoading: Bool = false
     @Published var serverName : String
-    var server: Server
+    var server: UwaziServer
 
     var tellaData: TellaData? {
         return self.mainAppModel.vaultManager.tellaData
     }
     
-    init(mainAppModel : MainAppModel, server: Server) {
+    init(mainAppModel : MainAppModel, server: UwaziServer) {
         
         self.mainAppModel = mainAppModel
         self.server = server
