@@ -21,8 +21,8 @@ class ImportProgress: ObservableObject {
         }
     }
 
-    private var totalTime : Double = 0.0
-    private var timeRemaining : Double = 0.0
+    private var totalTime : TimeInterval = 0.0
+    private var timeRemaining : TimeInterval = 0.0
     private var timer = Timer()
     private let sizeImportedPerSecond = 140000000
                                          
