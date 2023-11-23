@@ -20,7 +20,7 @@ class UwaziEntryPrompt: Hashable, ObservableObject {
     let helpText: String?
     var selectValues: [SelectValue]?
     @Published var showMandatoryError: Bool
-    var value: UwaziValue
+    @Published var value: UwaziValue
     let name: String?
     @Published var showClear: Bool?
 

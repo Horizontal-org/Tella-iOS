@@ -200,4 +200,18 @@ class UwaziEntityViewModel: ObservableObject {
             }
         }
     }
+    
+    func clearValues(forId id: String) {
+        if id == "10242050" {
+            pdfDocuments.removeAll()
+        } else if id == "10242049" {
+            files.removeAll()
+        } else {
+            if let index = entryPrompts.firstIndex(where: { $0.id == id }) {
+                entryPrompts[index].value.stringValue = ""
+                entryPrompts[index].value.selectedValue = []
+            }
+
+        }
+    }
 }

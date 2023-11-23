@@ -18,7 +18,8 @@ struct RenderPropertyComponentView: View {
                             isRequired: prompt.required ?? false,
                             showMandatory: $prompt.showMandatoryError,
                             shouldRender:shouldRenderPrompt(forType: prompt.type),
-                            showClear: prompt.showClear ?? false
+                            showClear: prompt.showClear ?? false,
+                            onClearAction: { entityViewModel.clearValues(forId: prompt.id ?? "")}
         ) {
             renderPropertyComponent(
                 prompt: prompt

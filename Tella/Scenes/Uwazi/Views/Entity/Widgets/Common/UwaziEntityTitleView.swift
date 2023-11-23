@@ -12,6 +12,7 @@ struct UwaziEntityTitleView: View {
     var title: String
     @State var isRequired: Bool
     var showClear: Bool
+    var onClearAction: () -> Void
     var body: some View {
         Group {
             HStack {
@@ -29,7 +30,11 @@ struct UwaziEntityTitleView: View {
                 }
                 Spacer()
                 if(showClear) {
-                    Image("uwazi.cancel")
+                    Button(action: {
+                        onClearAction()
+                    }) {
+                        Image("uwazi.cancel")
+                    }
                 }
             }
         }
@@ -42,7 +47,7 @@ struct UwaziEntityTitleView_Previews: PreviewProvider {
         ZStack {
             Color.purple
                 .ignoresSafeArea()
-            UwaziEntityTitleView(title: "Hello", isRequired: true, showClear: false)
+            UwaziEntityTitleView(title: "Hello", isRequired: true, showClear: false, onClearAction: {})
         }
 
     }

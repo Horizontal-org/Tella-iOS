@@ -15,12 +15,14 @@ struct GenericEntityWidget<Content: View>: View {
     var shouldRender: Bool
     var showClear: Bool
     @Binding var showManatory: Bool
+    var onClearAction: () -> Void
     
     init(title: String = "",
          isRequired: Bool = false,
          showMandatory: Binding<Bool>,
          shouldRender: Bool = true,
          showClear: Bool = false,
+         onClearAction: @escaping () -> Void = {},
          @ViewBuilder content: () ->  Content)
           {
         self.title = title
@@ -29,12 +31,16 @@ struct GenericEntityWidget<Content: View>: View {
         self.shouldRender = shouldRender
         self.showClear = showClear
         self._showManatory = showMandatory
+        self.onClearAction = onClearAction
     }
 
     var body: some View {
         if shouldRender {
             VStack() {
-                UwaziEntityTitleView(title: title, isRequired: isRequired, showClear: showClear)
+                UwaziEntityTitleView(title: title,
+                                     isRequired: isRequired,
+                                     showClear: showClear,
+                                     onClearAction: onClearAction)
                 if showManatory {
                     UwaziEntityMandatoryTextView()
                 }
