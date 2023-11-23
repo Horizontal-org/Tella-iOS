@@ -12,7 +12,7 @@ struct UwaziSelectWidget: View {
     @State private var shouldShowMenu : Bool = false
     @EnvironmentObject var prompt: UwaziEntryPrompt
     @EnvironmentObject var entityViewModel: UwaziEntityViewModel
-    @State var value: UwaziValue
+    @ObservedObject var value: UwaziValue
     var body: some View {
         Button {
             DispatchQueue.main.async {
@@ -25,7 +25,7 @@ struct UwaziSelectWidget: View {
             .cornerRadius(12)
 
         if shouldShowMenu {
-            SelectListOptions(prompt: prompt, shouldShowMenu: $shouldShowMenu, value: $value).environmentObject(entityViewModel)
+            SelectListOptions(prompt: prompt, shouldShowMenu: $shouldShowMenu, value: value).environmentObject(entityViewModel)
         }
     }
 
@@ -60,7 +60,7 @@ struct SelectWidgetButton: View {
 struct SelectListOptions: View {
     var prompt: UwaziEntryPrompt
     @Binding var shouldShowMenu: Bool
-    @Binding var value: UwaziValue
+    @ObservedObject var value: UwaziValue
     @EnvironmentObject var entityViewModel: UwaziEntityViewModel
     var body: some View {
         VStack(spacing: 0) {
@@ -71,7 +71,7 @@ struct SelectListOptions: View {
                             selectedOption: selectedOptions,
                             promptId: prompt.id ?? "",
                             shouldShowMenu: $shouldShowMenu,
-                            value: $value
+                            value: value
                         ).environmentObject(entityViewModel)
                     }
                 }
@@ -89,7 +89,7 @@ struct SelectOptionButton: View {
     let selectedOption: SelectValue
     var promptId: String
     @Binding var shouldShowMenu: Bool
-    @Binding var value: UwaziValue
+    @ObservedObject var value: UwaziValue
     @EnvironmentObject var entityViewModel: UwaziEntityViewModel
     var body: some View {
         Button(action: {
