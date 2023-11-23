@@ -100,10 +100,11 @@ class UwaziEntityViewModel: ObservableObject {
                 switch completion {
                 case .finished:
                     debugLog("Finished")
-                    Toast.displayToast(message: "Entity submitted succesfully")
+                    Toast.displayToast(message: LocalizableUwazi.uwaziEntitySubmitted.localized)
                     onCompletion()
                 case .failure(let error):
                     debugLog(error.localizedDescription)
+                    Toast.displayToast(message: LocalizableUwazi.uwaziEntityFailedSubmission.localized)
                 }
             } receiveValue: { value in
                 debugLog(value)

@@ -328,6 +328,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Uwazi_Entity_Mandatory_Expl" = "This field is mandatory.";
 
 "Uwazi_Entity_Submitted" = "Entity submitted succesfully";
+"Uwazi_Entity_Submission_Failed" = "There was an error submitting the entity";
 "Uwazi_Entity_SummaryDetail_ToolbarItem" = "Summary";
 "Uwazi_Entity_SummaryDetail_ServerTitle" = "Server:";
 "Uwazi_Entity_SummaryDetail_TemplateTitle" = "Template:";
