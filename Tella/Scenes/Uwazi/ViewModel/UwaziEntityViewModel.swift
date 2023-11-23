@@ -171,12 +171,14 @@ class UwaziEntityViewModel: ObservableObject {
     private func bindVaultFileTaken() {
         $resultFile
             .compactMap { $0 }
-            .sink(receiveValue: { files in
+            .sink(receiveValue: { [self] files in
                 files.forEach { file in
                     if file.type == .document {
                         self.pdfDocuments.insert(file)
+                        toggleShowClear(forId: "10242050")
                     } else {
                         self.files.insert(file)
+                        toggleShowClear(forId: "10242049")
                     }
                 }
                 self.publishUpdates()
@@ -187,6 +189,15 @@ class UwaziEntityViewModel: ObservableObject {
     private func publishUpdates() {
         DispatchQueue.main.async {
             self.objectWillChange.send()
+        }
+    }
+    
+    func toggleShowClear(forId id: String) {
+        for entryPrompt in entryPrompts {
+            if entryPrompt.id == id {
+                entryPrompt.showClear = true
+                break
+            }
         }
     }
 }

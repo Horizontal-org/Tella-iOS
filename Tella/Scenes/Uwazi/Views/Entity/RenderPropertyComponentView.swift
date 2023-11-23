@@ -17,7 +17,8 @@ struct RenderPropertyComponentView: View {
         GenericEntityWidget(title: prompt.question,
                             isRequired: prompt.required ?? false,
                             showMandatory: $prompt.showMandatoryError,
-                            shouldRender:shouldRenderPrompt(forType: prompt.type)
+                            shouldRender:shouldRenderPrompt(forType: prompt.type),
+                            showClear: prompt.showClear ?? false
         ) {
             renderPropertyComponent(
                 prompt: prompt
@@ -33,6 +34,7 @@ struct RenderPropertyComponentView: View {
         case .dataTypeSelect, .dataTypeMultiSelect:
             UwaziSelectWidget(value: prompt.value)
                 .environmentObject(prompt)
+                .environmentObject(entityViewModel)
         case .dataTypeMultiFiles:
             SupportingFileWidget()
                 .environmentObject(prompt)

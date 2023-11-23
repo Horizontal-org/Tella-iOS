@@ -11,6 +11,7 @@ import SwiftUI
 struct UwaziSelectWidget: View {
     @State private var shouldShowMenu : Bool = false
     @EnvironmentObject var prompt: UwaziEntryPrompt
+    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
     @State var value: UwaziValue
     var body: some View {
         Button {
@@ -24,7 +25,7 @@ struct UwaziSelectWidget: View {
             .cornerRadius(12)
 
         if shouldShowMenu {
-            SelectListOptions(prompt: prompt, shouldShowMenu: $shouldShowMenu, value: $value)
+            SelectListOptions(prompt: prompt, shouldShowMenu: $shouldShowMenu, value: $value).environmentObject(entityViewModel)
         }
     }
 
@@ -36,6 +37,7 @@ struct UwaziSelectWidget: View {
 struct SelectWidgetButton: View {
     let title: String
     let shouldShowMenu: Bool
+    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
     var body: some View {
         HStack {
             Text(title)
@@ -59,7 +61,7 @@ struct SelectListOptions: View {
     var prompt: UwaziEntryPrompt
     @Binding var shouldShowMenu: Bool
     @Binding var value: UwaziValue
-
+    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
@@ -67,9 +69,10 @@ struct SelectListOptions: View {
                     ForEach(prompt.selectValues ?? [], id: \.self) { selectedOptions in
                         SelectOptionButton(
                             selectedOption: selectedOptions,
+                            promptId: prompt.id ?? "",
                             shouldShowMenu: $shouldShowMenu,
                             value: $value
-                        )
+                        ).environmentObject(entityViewModel)
                     }
                 }
                 .frame(minHeight: 40, maxHeight: 250)
@@ -84,14 +87,16 @@ struct SelectListOptions: View {
 
 struct SelectOptionButton: View {
     let selectedOption: SelectValue
+    var promptId: String
     @Binding var shouldShowMenu: Bool
     @Binding var value: UwaziValue
-
+    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
     var body: some View {
         Button(action: {
             shouldShowMenu = false
             value.selectedValue = [selectedOption]
             value.stringValue = selectedOption.translatedLabel ?? ""
+            entityViewModel.toggleShowClear(forId: promptId)
         }) {
             Text(selectedOption.translatedLabel ?? "")
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
