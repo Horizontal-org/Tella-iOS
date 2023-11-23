@@ -96,7 +96,7 @@ struct SelectOptionButton: View {
             shouldShowMenu = false
             value.selectedValue = [selectedOption]
             value.stringValue = selectedOption.translatedLabel ?? ""
-            entityViewModel.toggleShowClear(forId: promptId)
+            entityViewModel.toggleShowClear(forId: promptId, value: true)
         }) {
             Text(selectedOption.translatedLabel ?? "")
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))

@@ -175,10 +175,10 @@ class UwaziEntityViewModel: ObservableObject {
                 files.forEach { file in
                     if file.type == .document {
                         self.pdfDocuments.insert(file)
-                        toggleShowClear(forId: "10242050")
+                        toggleShowClear(forId: "10242050", value: true)
                     } else {
                         self.files.insert(file)
-                        toggleShowClear(forId: "10242049")
+                        toggleShowClear(forId: "10242049", value: true)
                     }
                 }
                 self.publishUpdates()
@@ -192,10 +192,10 @@ class UwaziEntityViewModel: ObservableObject {
         }
     }
     
-    func toggleShowClear(forId id: String) {
+    func toggleShowClear(forId id: String, value: Bool) {
         for entryPrompt in entryPrompts {
             if entryPrompt.id == id {
-                entryPrompt.showClear = true
+                entryPrompt.showClear = value
                 break
             }
         }
@@ -213,5 +213,7 @@ class UwaziEntityViewModel: ObservableObject {
             }
 
         }
+        
+        toggleShowClear(forId: id, value: false)
     }
 }

@@ -41,6 +41,7 @@ struct CreateEntityView: View {
     fileprivate var createEntityHeaderView: some View {
         CreateDraftHeaderView(title: entityViewModel.template!.entityRow?.name ?? "",
                               isDraft: true,
+                              hideSaveButton: true,
                               closeAction: { showSaveEntityConfirmationView() },
                               saveAction: { })
     }

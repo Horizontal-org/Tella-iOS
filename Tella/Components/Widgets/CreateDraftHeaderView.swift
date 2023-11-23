@@ -11,6 +11,7 @@ import SwiftUI
 struct CreateDraftHeaderView: View {
     var title: String
     var isDraft: Bool
+    var hideSaveButton: Bool? = false
     var closeAction: () -> Void
     var saveAction: () -> Void
 
@@ -19,7 +20,9 @@ struct CreateDraftHeaderView: View {
             closeButton()
             titleText()
             Spacer()
-//            saveButton()
+            if(!hideSaveButton!) {
+                saveButton()
+            }
         }.frame(height: 56)
     }
     fileprivate func closeButton() -> Button<some View> {
