@@ -49,14 +49,20 @@ struct AddTemplatesView: View {
     }
 
     fileprivate func headerView() -> some View {
+        let firstPart = Text(LocalizableUwazi.uwaziAddTemplateExpl.localized)
+            .foregroundColor(.white)
+        let secondPart = Text(LocalizableUwazi.uwaziAddTemplateSecondExpl.localized)
+            .foregroundColor(Styles.Colors.yellow)
+
         return Group {
-            Text(LocalizableUwazi.uwaziAddTemplateExpl.localized)
-                .foregroundColor(.white) +
-            Text(LocalizableUwazi.uwaziAddTemplateSecondExpl.localized)
-                .foregroundColor(Styles.Colors.yellow)
+            HStack {
+                firstPart + secondPart
+            }
+            .onTapGesture {
+                navigateTo(destination: ServersListView().environmentObject(ServersViewModel(mainAppModel: uwaziTemplateViewModel.mainAppModel)))
+            }
         }
         .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-        .foregroundColor(.white)
         .padding(.all, 18)
     }
 
