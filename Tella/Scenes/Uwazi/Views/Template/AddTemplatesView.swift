@@ -86,6 +86,7 @@ struct AddTemplatesView: View {
                 Group {
                     Spacer()
                     UwaziEmptyView(message: LocalizableUwazi.uwaziAddTemplateEmptydExpl.localized)
+                    Spacer()
                 }
             }
         }
