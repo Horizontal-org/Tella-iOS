@@ -21,7 +21,7 @@ class AddTemplateViewModel: ObservableObject {
     @Published var showToast: Bool = false
 
     var errorMessage: String = ""
-    var serverName : String
+    var serverName : String = ""
     var subscribers = Set<AnyCancellable>()
     var server: UwaziServer? = nil
     
@@ -44,8 +44,7 @@ class AddTemplateViewModel: ObservableObject {
         self.isLoading = true
         Task {
             guard let id = self.server?.id else { return }
-            guard let locale = self.tellaData?.getUwaziLocale(serverId: id) else { return }
-            let template = UwaziServerRepository().handleTemplate(server: self.server, locale: locale)
+            let template = UwaziServerRepository().handleTemplate(server: self.server!)
             template.receive(on: DispatchQueue.main).sink { completion in
                 self.handleGetTemplateCompletion(completion)
             } receiveValue: { templates in

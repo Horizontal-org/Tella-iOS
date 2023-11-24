@@ -83,7 +83,10 @@ struct AddTemplatesView: View {
                     .padding(.top, 0)
                 }
             } else {
-                EmptyReportView(message: LocalizableUwazi.uwaziAddTemplateEmptydExpl.localized)
+                Group {
+                    Spacer()
+                    UwaziEmptyView(message: LocalizableUwazi.uwaziAddTemplateEmptydExpl.localized)
+                }
             }
         }
         .onReceive(uwaziTemplateViewModel.$showToast, perform: { showToast in
