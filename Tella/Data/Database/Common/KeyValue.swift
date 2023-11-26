@@ -6,7 +6,7 @@
 import Foundation
 
 
-struct KeyValue {
+class KeyValue {
     var key : String
     var value : Any?
     var sqliteOperator : SQliteOperator

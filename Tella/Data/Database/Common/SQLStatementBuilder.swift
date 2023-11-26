@@ -284,34 +284,30 @@ class SQLiteStatementBuilder {
     }
     
     @discardableResult
-    func update(tableName:String, keyValue: [KeyValue?], primarykeyValue : [KeyValue?] ) throws -> Int {
+    func update(tableName:String, valuesToUpdate: [KeyValue?], equalCondition : [KeyValue?] = [], inCondition: [KeyValues] = [] ) throws -> Int {
         
-        let keyValue = keyValue.compactMap({$0})
-        let primarykeyValue = primarykeyValue.compactMap({$0})
+         let keyValue = valuesToUpdate.compactMap({$0})
+        let primarykeyValue = equalCondition.compactMap({$0})
+
+        let updateQuery = UpdateQuery.Builder()
+            .setTableName(tableName)
+            .setValuesToUpdate(keyValue)
+            .setEqualCondition(primarykeyValue)
+            .setInCondition(inCondition)
+            .build()
+            .getString()
+
+        debugLog("update: \(updateQuery)")
         
-        let setColumnNames = keyValue.compactMap{($0.key)}
-        let primaryKeyColumnNames = primarykeyValue.compactMap{($0.key)}
-        
-        let bindValues = keyValue + (primarykeyValue)
-        
-        var updateSql = "UPDATE \(tableName) SET "
-        
-        updateSql  += setColumnNames.map { "\($0) = :\($0)" }.joined(separator: ", ")
-        
-        if !primarykeyValue.isEmpty {
-            updateSql += " WHERE "
-            updateSql += primaryKeyColumnNames.map { "\($0) = :\($0)" }.joined(separator: " AND ")
-        }
-        
-        debugLog("update: \(updateSql)")
-        
-        guard let updateStatement = try prepareStatement(sql: updateSql) else {
+        guard let updateStatement = try prepareStatement(sql: updateQuery) else {
             throw RuntimeError(errorMessage)
         }
         
+                let bindValues = keyValue + (primarykeyValue)
+
         if let stmt = bind(insertStatement: updateStatement, bindValues) {
             
-            let result = execute(stmt: stmt, sql: updateSql)
+            let result = execute(stmt: stmt, sql: updateQuery)
             
             if result == 0 {
                 throw RuntimeError(errorMessage)

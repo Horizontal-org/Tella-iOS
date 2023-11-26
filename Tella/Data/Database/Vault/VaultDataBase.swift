@@ -191,8 +191,8 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             let vaultCondition = [KeyValue(key: VaultD.cId, value: id)]
             
             try statementBuilder.update(tableName: VaultD.tVaultFile,
-                                        keyValue: valuesToUpdate,
-                                        primarykeyValue: vaultCondition)
+                                        valuesToUpdate: valuesToUpdate,
+                                        equalCondition: vaultCondition)
             return .success(true)
         } catch let error {
             debugLog(error)
@@ -208,12 +208,15 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         do {
             
             let valuesToUpdate = [KeyValue(key: VaultD.cParentId, value: parentId)]
-            //            let vaultCondition = [KeyValue(key: VaultD.cId, value: id)]
-            let vaultCondition = fileIds.compactMap({KeyValue(key: VaultD.cId, value: $0) })
+
+//            let vaultCondition = fileIds.compactMap({KeyValue(key: VaultD.cId, value: $0, sqliteOperator: .or) })
+//            vaultCondition.first?.sqliteOperator = .empty
             
+            let vaultCondition = [KeyValues(key: VaultD.cId, value: fileIds)]
+
             try statementBuilder.update(tableName: VaultD.tVaultFile,
-                                        keyValue: valuesToUpdate,
-                                        primarykeyValue: vaultCondition)
+                                        valuesToUpdate: valuesToUpdate,
+                                        inCondition: vaultCondition)
             return .success(true)
             
         } catch let error {

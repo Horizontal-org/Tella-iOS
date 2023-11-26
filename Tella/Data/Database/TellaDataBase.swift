@@ -168,8 +168,8 @@ class TellaDataBase : DataBase {
             
             let serverCondition = [KeyValue(key: D.cServerId, value: server.id)]
             try statementBuilder.update(tableName: D.tServer,
-                                        keyValue: valuesToUpdate,
-                                        primarykeyValue: serverCondition)
+                                        valuesToUpdate: valuesToUpdate,
+                                        equalCondition: serverCondition)
             return .success(true)
         } catch let error {
             debugLog(error)
@@ -436,8 +436,8 @@ class TellaDataBase : DataBase {
             
             let reportCondition = [KeyValue(key: D.cReportId, value: report.id)]
             try statementBuilder.update(tableName: D.tReport,
-                                        keyValue: keyValueArray,
-                                        primarykeyValue: reportCondition)
+                                        valuesToUpdate: keyValueArray,
+                                        equalCondition: reportCondition)
             
             if let files = report.reportFiles {
                 let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: report.id as Any)]
@@ -480,8 +480,8 @@ class TellaDataBase : DataBase {
             let reportCondition = [KeyValue(key: D.cReportId, value: idReport)]
             
             try statementBuilder.update(tableName: D.tReport,
-                                        keyValue: valuesToUpdate,
-                                        primarykeyValue: reportCondition)
+                                        valuesToUpdate: valuesToUpdate,
+                                        equalCondition: reportCondition)
             return .success(true)
         } catch let error {
             debugLog(error)
@@ -504,8 +504,8 @@ class TellaDataBase : DataBase {
                 let reportCondition = [KeyValue(key: D.cReportId, value: reportID)]
                 
                 try statementBuilder.update(tableName: D.tReport,
-                                            keyValue: valuesToUpdate,
-                                            primarykeyValue:reportCondition)
+                                            valuesToUpdate: valuesToUpdate,
+                                            equalCondition:reportCondition)
             }
             
             return .success(true)
@@ -533,8 +533,8 @@ class TellaDataBase : DataBase {
             
             let primarykey = [KeyValue(key: D.cId, value: reportFile.id)]
             try statementBuilder.update(tableName: D.tReportInstanceVaultFile,
-                                        keyValue: keyValueArray,
-                                        primarykeyValue: primarykey)
+                                        valuesToUpdate: keyValueArray,
+                                        equalCondition: primarykey)
             return .success(true)
             
         } catch let error {
@@ -734,8 +734,8 @@ extension TellaDataBase {
             
             let feedbackCondition = [KeyValue(key: D.cId, value: feedback.id)]
             try statementBuilder.update(tableName: D.tFeedback,
-                                        keyValue: valuesToUpdate,
-                                        primarykeyValue: feedbackCondition)
+                                        valuesToUpdate: valuesToUpdate,
+                                        equalCondition: feedbackCondition)
             return .success(true)
             
         } catch(let error) {
