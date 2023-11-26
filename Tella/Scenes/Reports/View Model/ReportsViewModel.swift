@@ -16,12 +16,12 @@ class ReportsViewModel: ObservableObject {
     @Published var submittedReports : [Report] = []
     @Published var selectedReport : Report?
     @Published var selectedCell = Pages.draft
-
+    
     var pageViewItems : [PageViewItem] {
         [PageViewItem(title: LocalizableReport.draftTitle.localized, page: .draft, number: draftReports.count),
          PageViewItem(title: LocalizableReport.outboxTitle.localized, page: .outbox, number: outboxedReports.count),
          PageViewItem(title: LocalizableReport.submittedTitle.localized, page: .submitted, number: submittedReports.count)] }
-
+    
     var sheetItems : [ListActionSheetItem] { return [
         
         ListActionSheetItem(imageName: "view-icon",
@@ -33,6 +33,7 @@ class ReportsViewModel: ObservableObject {
     ]}
     
     private var subscribers = Set<AnyCancellable>()
+    private var delayTime = 0.1
     
     init(mainAppModel : MainAppModel) {
         
@@ -42,32 +43,48 @@ class ReportsViewModel: ObservableObject {
     }
     
     private func getReports() {
-        
+        getDraftReports()
+        getOutboxedReports()
+        getSubmittedReports()
+    }
+    
+    func getDraftReports() {
         self.mainAppModel.vaultManager.tellaData?.draftReports
             .receive(on: DispatchQueue.main)
             .sink { result in
             } receiveValue: { draftReports in
-                self.draftReports = draftReports
+                self.draftReports = []
+                DispatchQueue.main.asyncAfter(deadline: .now() + delayTime, execute: {
+                    self.draftReports = draftReports
+                })
             }.store(in: &subscribers)
-        
+    }
+    
+    func getOutboxedReports() {
         self.mainAppModel.vaultManager.tellaData?.outboxedReports
             .receive(on: DispatchQueue.main)
             .sink { result in
-            } receiveValue: { draftReports in
-                self.outboxedReports = draftReports
-            }.store(in: &subscribers)
-        
-        self.mainAppModel.vaultManager.tellaData?.submittedReports
-            .receive(on: DispatchQueue.main)
-            .sink { result in
-            } receiveValue: { draftReports in
-                DispatchQueue.main.async {
-                    self.submittedReports = draftReports
-                }
+            } receiveValue: { outboxedReports in
+                self.outboxedReports = []
+                DispatchQueue.main.asyncAfter(deadline: .now() + delayTime, execute: {
+                    self.outboxedReports = outboxedReports
+                })
                 
             }.store(in: &subscribers)
     }
-
+    
+    func getSubmittedReports() {
+        self.mainAppModel.vaultManager.tellaData?.submittedReports
+            .receive(on: DispatchQueue.main)
+            .sink { result in
+            } receiveValue: { submittedReports in
+                self.submittedReports = []
+                DispatchQueue.main.asyncAfter(deadline: .now() + delayTime, execute: {
+                    self.submittedReports = submittedReports
+                })
+            }.store(in: &subscribers)
+    }
+    
     func deleteReport() {
         mainAppModel.deleteReport(reportId: selectedReport?.id)
     }
