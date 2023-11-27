@@ -54,7 +54,7 @@ class ReportsViewModel: ObservableObject {
             .sink { result in
             } receiveValue: { draftReports in
                 self.draftReports = []
-                DispatchQueue.main.asyncAfter(deadline: .now() + delayTime, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + self.delayTime, execute: {
                     self.draftReports = draftReports
                 })
             }.store(in: &subscribers)
@@ -66,7 +66,7 @@ class ReportsViewModel: ObservableObject {
             .sink { result in
             } receiveValue: { outboxedReports in
                 self.outboxedReports = []
-                DispatchQueue.main.asyncAfter(deadline: .now() + delayTime, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + self.delayTime, execute: {
                     self.outboxedReports = outboxedReports
                 })
                 
@@ -79,7 +79,7 @@ class ReportsViewModel: ObservableObject {
             .sink { result in
             } receiveValue: { submittedReports in
                 self.submittedReports = []
-                DispatchQueue.main.asyncAfter(deadline: .now() + delayTime, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + self.delayTime, execute: {
                     self.submittedReports = submittedReports
                 })
             }.store(in: &subscribers)
