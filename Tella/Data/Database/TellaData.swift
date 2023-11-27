@@ -69,11 +69,12 @@ class TellaData : ObservableObject {
             
             self.draftReports.value = self.database.getReports(reportStatus: [ReportStatus.draft])
             self.outboxedReports.value = self.database.getReports(reportStatus: [.finalized,
-                                                                            .submissionError,
-                                                                            .submissionPending,
-                                                                            .submissionPaused,
-                                                                            .submissionInProgress,
-                                                                            .submissionAutoPaused])
+                                                                                 .submissionError,
+                                                                                 .submissionPending,
+                                                                                 .submissionPaused,
+                                                                                 .submissionInProgress,
+                                                                                 .submissionAutoPaused,
+                                                                                 .submissionScheduled])
             
             self.submittedReports.value = self.database.getReports(reportStatus: [ReportStatus.submitted])
         }
