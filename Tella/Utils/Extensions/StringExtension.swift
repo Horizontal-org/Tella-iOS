@@ -6,7 +6,7 @@
 import Foundation
 import MobileCoreServices
 import UniformTypeIdentifiers
-
+import UIKit
 
 extension String {
     func getDate() -> Date? {
@@ -116,10 +116,29 @@ extension String {
         case _ where type.conforms(to: .audio):
             return .audio
         case _ where type.conforms(to: .pdf) || type.conforms(to: .presentation) || type.conforms(to: .spreadsheet):
-            return .video
+            return .document
         default:
             return .other
         }
     }
+    
+    var smallIconImage: UIImage {
+        switch self.tellaFileType {
+        case .audio:
+            return #imageLiteral(resourceName: "filetype.small_audio")
+        case .document:
+            return #imageLiteral(resourceName: "filetype.small_document")
+        case .video:
+            return #imageLiteral(resourceName: "filetype.small_video")
+        case .image:
+            return UIImage()
+        case .other:
+            return #imageLiteral(resourceName: "filetype.small_document")
+            
+        default:
+            return #imageLiteral(resourceName: "filetype.small_document")
+        }
+    }
+
 }
 

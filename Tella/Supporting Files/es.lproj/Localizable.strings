@@ -294,3 +294,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettFeedback_ExitFeedback_SheetExpl" = "You can come back anytime to submit your feedback.";
 "Settings_SettFeedback_ExitFeedback_Exit_SheetAction" = "Exit without saving";
 "Settings_SettFeedback_ExitFeedback_Save_SheetAction" = "Save draft";
+
+
+"BackgroundActivities_SheetTitle" = "Background activities";
+"BackgroundActivities_SheetExpl" = "These are the activities currently ongoing in the background.";

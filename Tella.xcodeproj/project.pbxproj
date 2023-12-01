@@ -161,6 +161,7 @@
 		125D2324271F891500250FBB /* PinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2323271F891500250FBB /* PinView.swift */; };
 		125D2326271F896400250FBB /* CustomPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2325271F896400250FBB /* CustomPinView.swift */; };
 		125D2328271F8B6600250FBB /* LockConfirmPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2327271F8B6600250FBB /* LockConfirmPinView.swift */; };
+		125D233C2B17344D001EFB8B /* BackgroundActivitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D233B2B17344D001EFB8B /* BackgroundActivitiesView.swift */; };
 		125DD9C92796CB090053619D /* ImportFilesProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DD9C82796CB090053619D /* ImportFilesProgressView.swift */; };
 		125EDDAD271DBD5200E2789A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E65B023E3207D000F93E5 /* ContentView.swift */; };
 		125EDDB1271E40CA00E2789A /* LockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125EDDB0271E40CA00E2789A /* LockViewModel.swift */; };
@@ -179,6 +180,9 @@
 		12607D5E27904F5300E2B8CC /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12607D5D27904F5300E2B8CC /* PlayerView.swift */; };
 		12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12619B8A27A01F6600999FDA /* BundleExtension.swift */; };
 		12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12623DCB299EA31400E033ED /* ReportVaultFile.swift */; };
+		126684412B18B67500561650 /* BackgroundActivityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684402B18B67500561650 /* BackgroundActivityModel.swift */; };
+		126684432B18B6A400561650 /* BackgroundActivityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684422B18B6A400561650 /* BackgroundActivityType.swift */; };
+		126684452B18B78200561650 /* BackgroundActivityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684442B18B78200561650 /* BackgroundActivityStatus.swift */; };
 		126818BF2A376A0E004606BD /* OOXMLContentTypeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126818BE2A376A0E004606BD /* OOXMLContentTypeParser.swift */; };
 		126818C12A38B0C2004606BD /* FileInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126818C02A38B0C2004606BD /* FileInformation.swift */; };
 		126818C32A38B69E004606BD /* FileTypeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126818C22A38B69E004606BD /* FileTypeHelper.swift */; };
@@ -281,6 +285,9 @@
 		12ADF98D28BD16A400FA96EB /* SettingsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADF98C28BD16A400FA96EB /* SettingsCardView.swift */; };
 		12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */; };
 		12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE8D1D278CD4900007C781 /* IntExtension.swift */; };
+		12B2BECE2B17D84F00DC223F /* BackgroundActivitiesItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B2BECD2B17D84F00DC223F /* BackgroundActivitiesItemView.swift */; };
+		12B370332B18D53A00DDA9E9 /* BackgroundActivitiesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B370322B18D53A00DDA9E9 /* BackgroundActivitiesViewModel.swift */; };
+		12B370392B19109600DDA9E9 /* LocalizableBackgroundActivities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B370382B19109600DDA9E9 /* LocalizableBackgroundActivities.swift */; };
 		12B3AD8A28C0DD0200AC9AF9 /* ServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B3AD8928C0DD0200AC9AF9 /* ServerLoginView.swift */; };
 		12B3AD8C28C1090700AC9AF9 /* SuccessLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B3AD8B28C1090700AC9AF9 /* SuccessLoginView.swift */; };
 		12B5257B2848FC2800B3D1C0 /* LockTimeoutOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */; };
@@ -290,6 +297,8 @@
 		12B6AF7D283E4C7200D697F6 /* LocalizableVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B6AF7C283E4C7200D697F6 /* LocalizableVault.swift */; };
 		12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */; };
 		12BAFA7728B3B8D300930451 /* UIImageOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BAFA7628B3B8D300930451 /* UIImageOrientation.swift */; };
+		12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07ECB2B06603A0030AD6E /* EncryptionService.swift */; };
+		12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07F042B0748D50030AD6E /* TopSheetView.swift */; };
 		12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C2BDE72847676100488060 /* LockTimeoutView.swift */; };
 		12CCDC5428D8E05300C3BE4E /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CCDC5328D8E05300C3BE4E /* Project.swift */; };
 		12D37A942721752B00E43BDB /* TellaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A932721752B00E43BDB /* TellaApp.swift */; };
@@ -556,6 +565,7 @@
 		125D2323271F891500250FBB /* PinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinView.swift; sourceTree = "<group>"; };
 		125D2325271F896400250FBB /* CustomPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPinView.swift; sourceTree = "<group>"; };
 		125D2327271F8B6600250FBB /* LockConfirmPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockConfirmPinView.swift; sourceTree = "<group>"; };
+		125D233B2B17344D001EFB8B /* BackgroundActivitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivitiesView.swift; sourceTree = "<group>"; };
 		125DD9C82796CB090053619D /* ImportFilesProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesProgressView.swift; sourceTree = "<group>"; };
 		125EDDB0271E40CA00E2789A /* LockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockViewModel.swift; sourceTree = "<group>"; };
 		125EFACC274A447000D93DF6 /* FileSortMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSortMenu.swift; sourceTree = "<group>"; };
@@ -573,6 +583,9 @@
 		12607D5D27904F5300E2B8CC /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		12619B8A27A01F6600999FDA /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
 		12623DCB299EA31400E033ED /* ReportVaultFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportVaultFile.swift; sourceTree = "<group>"; };
+		126684402B18B67500561650 /* BackgroundActivityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityModel.swift; sourceTree = "<group>"; };
+		126684422B18B6A400561650 /* BackgroundActivityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityType.swift; sourceTree = "<group>"; };
+		126684442B18B78200561650 /* BackgroundActivityStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityStatus.swift; sourceTree = "<group>"; };
 		126818BE2A376A0E004606BD /* OOXMLContentTypeParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OOXMLContentTypeParser.swift; sourceTree = "<group>"; };
 		126818C02A38B0C2004606BD /* FileInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInformation.swift; sourceTree = "<group>"; };
 		126818C22A38B69E004606BD /* FileTypeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTypeHelper.swift; sourceTree = "<group>"; };
@@ -676,6 +689,9 @@
 		12ADF98C28BD16A400FA96EB /* SettingsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCardView.swift; sourceTree = "<group>"; };
 		12AE8D1B278CD46A0007C781 /* FileManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtension.swift; sourceTree = "<group>"; };
 		12AE8D1D278CD4900007C781 /* IntExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtension.swift; sourceTree = "<group>"; };
+		12B2BECD2B17D84F00DC223F /* BackgroundActivitiesItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivitiesItemView.swift; sourceTree = "<group>"; };
+		12B370322B18D53A00DDA9E9 /* BackgroundActivitiesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivitiesViewModel.swift; sourceTree = "<group>"; };
+		12B370382B19109600DDA9E9 /* LocalizableBackgroundActivities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableBackgroundActivities.swift; sourceTree = "<group>"; };
 		12B3AD8928C0DD0200AC9AF9 /* ServerLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerLoginView.swift; sourceTree = "<group>"; };
 		12B3AD8B28C1090700AC9AF9 /* SuccessLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessLoginView.swift; sourceTree = "<group>"; };
 		12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutOption.swift; sourceTree = "<group>"; };
@@ -685,6 +701,9 @@
 		12B6AF7C283E4C7200D697F6 /* LocalizableVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableVault.swift; sourceTree = "<group>"; };
 		12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreFileActionButton.swift; sourceTree = "<group>"; };
 		12BAFA7628B3B8D300930451 /* UIImageOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageOrientation.swift; sourceTree = "<group>"; };
+		12C07EC92B0660240030AD6E /* EncryptionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionOperation.swift; sourceTree = "<group>"; };
+		12C07ECB2B06603A0030AD6E /* EncryptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionService.swift; sourceTree = "<group>"; };
+		12C07F042B0748D50030AD6E /* TopSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSheetView.swift; sourceTree = "<group>"; };
 		12C2BDE72847676100488060 /* LockTimeoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutView.swift; sourceTree = "<group>"; };
 		12CCDC5328D8E05300C3BE4E /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		12D37A932721752B00E43BDB /* TellaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaApp.swift; sourceTree = "<group>"; };
@@ -1108,6 +1127,7 @@
 		1231A45B294C76990057DA85 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				12B370342B18E3EE00DDA9E9 /* BackgroundActivities */,
 				1293F6782AD88B4F00F6CFBD /* Feedback */,
 				121C5D7829422DF400A64123 /* DomainModel.swift */,
 				1231A45C294C771E0057DA85 /* Report */,
@@ -1278,6 +1298,7 @@
 			children = (
 				125F9B972AD965800073748C /* FeedbackOperation.swift */,
 				122B61352AE72D8D00631403 /* FeedbackService.swift */,
+				12C07EC82B065FD00030AD6E /* EncryptionService */,
 			);
 			path = Feedback;
 			sourceTree = "<group>";
@@ -1662,6 +1683,42 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		12B370342B18E3EE00DDA9E9 /* BackgroundActivities */ = {
+			isa = PBXGroup;
+			children = (
+				126684402B18B67500561650 /* BackgroundActivityModel.swift */,
+				126684422B18B6A400561650 /* BackgroundActivityType.swift */,
+				126684442B18B78200561650 /* BackgroundActivityStatus.swift */,
+			);
+			path = BackgroundActivities;
+			sourceTree = "<group>";
+		};
+		12B370352B18F47800DDA9E9 /* BackgroundActivities */ = {
+			isa = PBXGroup;
+			children = (
+				12B370362B18F49A00DDA9E9 /* Views */,
+				12B370372B18F4A200DDA9E9 /* ViewModels */,
+			);
+			path = BackgroundActivities;
+			sourceTree = "<group>";
+		};
+		12B370362B18F49A00DDA9E9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				125D233B2B17344D001EFB8B /* BackgroundActivitiesView.swift */,
+				12B2BECD2B17D84F00DC223F /* BackgroundActivitiesItemView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		12B370372B18F4A200DDA9E9 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				12B370322B18D53A00DDA9E9 /* BackgroundActivitiesViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		12B5257C2848FC5A00B3D1C0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -1686,8 +1743,26 @@
 				126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */,
 				12E8129927A1570A007DDDC0 /* LocalizableSettings.swift */,
 				CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */,
+				12B370382B19109600DDA9E9 /* LocalizableBackgroundActivities.swift */,
 			);
 			path = Localizable;
+			sourceTree = "<group>";
+		};
+		12C07EC82B065FD00030AD6E /* EncryptionService */ = {
+			isa = PBXGroup;
+			children = (
+				12C07EC92B0660240030AD6E /* EncryptionOperation.swift */,
+				12C07ECB2B06603A0030AD6E /* EncryptionService.swift */,
+			);
+			path = EncryptionService;
+			sourceTree = "<group>";
+		};
+		12C07F032B0748BE0030AD6E /* TopSheetView */ = {
+			isa = PBXGroup;
+			children = (
+				12C07F042B0748D50030AD6E /* TopSheetView.swift */,
+			);
+			path = TopSheetView;
 			sourceTree = "<group>";
 		};
 		12D37A922721736F00E43BDB /* Application */ = {
@@ -1713,6 +1788,7 @@
 		12D7F5F52743F28700EBA3A2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				12C07F032B0748BE0030AD6E /* TopSheetView */,
 				122E4D53291AD99A00562EB1 /* TellaButton */,
 				1272F25A27C919E40054F2E2 /* ImportFilesProgressView */,
 				0E99854E266E56A80019FDF4 /* Widgets */,
@@ -1863,6 +1939,7 @@
 			isa = PBXGroup;
 			children = (
 				D5D5696C262747E100C45416 /* MainView.swift */,
+				12B370352B18F47800DDA9E9 /* BackgroundActivities */,
 				12781F4827EA28D600FE9609 /* ContentView */,
 				12567FED2716B24700A2D356 /* Authentication */,
 				0D4D750E2662D14F00D7A635 /* Settings */,
@@ -2368,10 +2445,12 @@
 				126818C32A38B69E004606BD /* FileTypeHelper.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
 				127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */,
+				125D233C2B17344D001EFB8B /* BackgroundActivitiesView.swift in Sources */,
 				1293F6752AD8853500F6CFBD /* FeedbackRepository.swift in Sources */,
 				123048D2295F84BD0015CD96 /* ProgressFileItemViewModel.swift in Sources */,
 				12EC94D128ABB6FA0070E72B /* SecuritySettingsView.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
+				126684412B18B67500561650 /* BackgroundActivityModel.swift in Sources */,
 				CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */,
 				1293547B294A454900735ED0 /* AppDelegate.swift in Sources */,
 				12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */,
@@ -2391,6 +2470,7 @@
 				125AAD362953607D002194D6 /* UploadReportModels.swift in Sources */,
 				129B844F28BF5E4700F1B344 /* TextfieldView.swift in Sources */,
 				1203CDE92992C19D00D09073 /* JSONStringEncoder.swift in Sources */,
+				12B370332B18D53A00DDA9E9 /* BackgroundActivitiesViewModel.swift in Sources */,
 				125FA6D8278E2828004B9D06 /* DoubleExtension.swift in Sources */,
 				129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */,
 				1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */,
@@ -2412,6 +2492,7 @@
 				128B929B27D798E200E92ACF /* ManageFileView.swift in Sources */,
 				125389F82ACAD33500CE33AB /* FileWalker.swift in Sources */,
 				1237A71A278F18C000D7BC0F /* WebView.swift in Sources */,
+				12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */,
 				1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */,
 				125BC1DE2B21F08200A117D0 /* VaultFileDetailsToMerge.swift in Sources */,
 				12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */,
@@ -2457,6 +2538,7 @@
 				121C5D7729422D6800A64123 /* DataModel.swift in Sources */,
 				12EF3D692B136D6F007A2910 /* UpdateQuery.swift in Sources */,
 				125A9E0028CE52C700C0C3C8 /* TellaDataBase.swift in Sources */,
+				126684432B18B6A400561650 /* BackgroundActivityType.swift in Sources */,
 				12A2DB03273576D50094B856 /* AddFileView.swift in Sources */,
 				128D6E1C280480500082AB18 /* FileActionType.swift in Sources */,
 				D75F9E9C25342539006F6212 /* RecordViewModel.swift in Sources */,
@@ -2470,6 +2552,7 @@
 				12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */,
 				129B845328BFB7AC00F1B344 /* AddServerAccessChoiceView.swift in Sources */,
 				1293F6772AD88A0400F6CFBD /* FeedbackDTO.swift in Sources */,
+				12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */,
 				128B929D27D7A08700E92ACF /* FileItemsView.swift in Sources */,
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
 				1268554127D2ACB200385E18 /* RecentFilesListView.swift in Sources */,
@@ -2521,6 +2604,7 @@
 				CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */,
 				1217FCA328F99A7D00DD2D70 /* CircularLoader.swift in Sources */,
 				12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */,
+				12B370392B19109600DDA9E9 /* LocalizableBackgroundActivities.swift in Sources */,
 				122C54BE28C6351E003B2DBC /* AdvancedServerSettingsView.swift in Sources */,
 				122C54C028C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift in Sources */,
 				12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */,
@@ -2549,6 +2633,7 @@
 				126FE4D727A427E200AE4188 /* Constants.swift in Sources */,
 				122389BB293683930058593B /* ServerDataItem.swift in Sources */,
 				123AE5A329CFB7F000814CC7 /* UploadReportOperation.swift in Sources */,
+				126684452B18B78200561650 /* BackgroundActivityStatus.swift in Sources */,
 				12EC94CF28AA566C0070E72B /* GeneralView.swift in Sources */,
 				1240E6B22908123900692232 /* ReportListView.swift in Sources */,
 				1218E86528E48AEC00FE2E68 /* LoginResult.swift in Sources */,
@@ -2577,6 +2662,7 @@
 				122E6A5329A3812A00BDACAD /* ReportViewModel.swift in Sources */,
 				12A148982720B47100A1ADDC /* LockDescriptionView.swift in Sources */,
 				1221E05C2906CA6A00BC05F5 /* DraftReportVM.swift in Sources */,
+				12B2BECE2B17D84F00DC223F /* BackgroundActivitiesItemView.swift in Sources */,
 				129533C227399A1B0053FA4B /* PhotoVideoPickerView.swift in Sources */,
 				12AE8D1C278CD46A0007C781 /* FileManagerExtension.swift in Sources */,
 				1272F25D27C91ACD0054F2E2 /* ImportFileProgress.swift in Sources */,
