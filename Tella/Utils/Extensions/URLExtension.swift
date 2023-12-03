@@ -197,6 +197,13 @@ extension URL {
         }
         return nil
     }
-
+    
+    func getPath() -> String {
+        if #available(iOS 16.0, *) {
+            return self.path(percentEncoded: false)
+        } else {
+            return self.path
+        }
+    }
 }
 

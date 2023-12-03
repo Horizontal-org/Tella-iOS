@@ -62,7 +62,7 @@ class MainAppModel: ObservableObject {
 
                 self.initDataSource()
 
-                if self.vaultManager.rootIsExist() {
+                if settings.shouldMergeVaultFilesToDb ?? true {
                     self.mergeFileToDatabase(promise: promise)
                 } else {
                     self.sendReports()
@@ -74,6 +74,8 @@ class MainAppModel: ObservableObject {
 
     private func onSuccessLock() {
         vaultManager.onSuccessLock.sink(receiveValue: { key in
+            self.settings.shouldMergeVaultFilesToDb = false
+            self.saveSettings()
             self.initDataSource()
             self.initAutoUpload()
         }).store(in: &cancellable)
@@ -104,6 +106,9 @@ class MainAppModel: ObservableObject {
         do {
             try self.vaultFilesManager?.addVaultFiles(files: files)
             self.vaultManager.deleteRootFile()
+            self.settings.shouldMergeVaultFilesToDb = false
+            self.saveSettings()
+
         } catch (let error){
             debugLog(error)
         }
