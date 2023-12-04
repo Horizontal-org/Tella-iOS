@@ -13,7 +13,7 @@ class UploadService: NSObject {
     static var shared : UploadService = UploadService()
     
     fileprivate var activeOperations: [BaseUploadOperation] = []
-    
+
     var uploadQueue: OperationQueue!
     private var subscribers = Set<AnyCancellable>()
     

@@ -13,6 +13,7 @@ enum ButtonType {
 
 protocol TellaButtonStyleProtocol {
     var backgroundColor : Color {get}
+    var disabledBackgroundColor : Color {get}
     var pressedBackgroundColor : Color {get}
     var overlayColor : Color {get}
     
@@ -20,6 +21,7 @@ protocol TellaButtonStyleProtocol {
 
 struct ClearButtonStyle : TellaButtonStyleProtocol {
     var backgroundColor = Color.white.opacity(0.16)
+    var disabledBackgroundColor = Color.white.opacity(0.16)
     var pressedBackgroundColor = Color.white.opacity(0.32)
     var overlayColor = Color.white.opacity(0.64)
     
@@ -27,6 +29,7 @@ struct ClearButtonStyle : TellaButtonStyleProtocol {
 
 struct YellowButtonStyle : TellaButtonStyleProtocol {
     var backgroundColor = Styles.Colors.yellow
+    var disabledBackgroundColor = Styles.Colors.disabledYellow
     var pressedBackgroundColor = Color(UIColor(hexValue: 0xe0ad6a))
     var overlayColor = Color.white.opacity(0.64)
 }

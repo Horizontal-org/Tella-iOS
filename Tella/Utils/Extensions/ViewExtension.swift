@@ -9,6 +9,11 @@
 import Foundation
 import SwiftUI
 
+enum ViewPresentationType {
+    case push
+    case present
+}
+
 extension View {
     
     func navigateTo<Destination: View>( destination: Destination, title: String? = nil, largeTitle:Bool = false) {
@@ -27,6 +32,21 @@ extension View {
         
         UIApplication.shared.topNavigationController()?.pushViewController(hostingView, animated: true)
     }
+    
+    func present<Content: View>(style: UIModalPresentationStyle = .automatic, transitionStyle: UIModalTransitionStyle = .coverVertical, @ViewBuilder builder: () -> Content) {
+        let toPresent = UIHostingController(rootView: AnyView(EmptyView()))
+        toPresent.modalPresentationStyle = style
+        toPresent.modalTransitionStyle = transitionStyle
+        toPresent.rootView = AnyView(
+            builder()
+        )
+        UIApplication.shared.topNavigationController()?.present(toPresent, animated: false, completion: nil)
+    }
+    
+    func dismiss() {
+        UIApplication.shared.topNavigationController()?.dismiss(animated: false)
+    }
+
     
     @ViewBuilder
     func addNavigationLink<Destination: View>(isActive:Binding<Bool>, shouldAddEmptyView: Bool = false, destination: Destination) -> some View    {

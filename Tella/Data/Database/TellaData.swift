@@ -156,4 +156,27 @@ class TellaData : ObservableObject {
         return deleteSubmittedReportResult
 
     }
+    
+    func addFeedback(feedback : Feedback) -> Result<Int?, Error> {
+        database.addFeedback(feedback: feedback)
+    }
+    
+    func getDraftFeedback() -> Feedback? {
+        database.getDraftFeedback()
+    }
+    
+    func getUnsentFeedbacks() -> [Feedback] {
+        database.getUnsentFeedbacks()
+    }
+
+    func updateFeedback(feedback: Feedback) -> Result<Bool, Error> {
+        database.updateFeedback(feedback: feedback)
+    }
+    
+    @discardableResult
+    func deleteFeedback(feedbackId: Int) -> Result<Bool,Error> {
+        database.deleteFeedback(feedbackId: feedbackId)
+    }
 }
+
+

@@ -22,9 +22,8 @@ final class AppViewState: ObservableObject {
     @Published var networkMonitor : NetworkMonitor 
 
     init() {
-        let networkMonitor = NetworkMonitor()
+        let networkMonitor = NetworkMonitor.shared
         self.networkMonitor = networkMonitor
-
         homeViewModel = MainAppModel(networkMonitor:  networkMonitor)
         
         self.resetApp()

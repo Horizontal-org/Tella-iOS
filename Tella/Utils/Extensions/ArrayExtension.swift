@@ -13,4 +13,20 @@ extension Array {
         
         return array as! Array<T>
     }
+
+    func decode<T: Codable>(_ type: T.Type) throws -> [T] {
+        var items : [T] = []
+        self.forEach { item in
+            
+            guard let dictionaryItem = (item as? Dictionary<String,Any>) else {return}
+            do {
+                try items.append(dictionaryItem.decode(T.self))
+            } catch(let error) {
+                debugLog(error)
+            }
+        }
+        return items
+    }
+    
+    
 }

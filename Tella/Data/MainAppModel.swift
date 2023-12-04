@@ -198,7 +198,12 @@ extension MainAppModel {
     
     func sendReports() {
         UploadService.shared.initAutoUpload(mainAppModel: self)
+    }
+    
+    func sendPendingFiles() {
+        UploadService.shared.initAutoUpload(mainAppModel: self)
         UploadService.shared.sendUnsentReports(mainAppModel: self)
+        FeedbackService.shared.addUnsentFeedbacksOperation(mainAppModel: self)
     }
     
     @discardableResult

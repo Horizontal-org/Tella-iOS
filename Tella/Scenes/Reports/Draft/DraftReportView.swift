@@ -148,7 +148,7 @@ struct DraftReportView: View {
                     Spacer()
                         .frame(height: 34)
                     
-                    TextEditorView(placeholder:  LocalizableReport.reportsListDescription.localized,
+                    UnderlinedTextEditorView(placeholder:  LocalizableReport.reportsListDescription.localized,
                                    fieldContent: $reportViewModel.description,
                                    isValid: $reportViewModel.isValidDescription,
                                    shouldShowError: $reportViewModel.shouldShowError,

@@ -11,6 +11,7 @@ struct SettingToggleItem: View {
     @Binding var toggle: Bool
     @EnvironmentObject var appModel : MainAppModel
      var isDisabled: Bool = false
+    var onChange : (() -> ())?
 
     var body: some View {
         HStack{
@@ -28,6 +29,7 @@ struct SettingToggleItem: View {
             Toggle("", isOn: $toggle)
                 .onChange(of: toggle) { value in
                     appModel.saveSettings()
+                    onChange?()
                 }
                 .labelsHidden()
                 .disabled(isDisabled)

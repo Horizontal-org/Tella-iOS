@@ -25,7 +25,8 @@ class TellaDataBase : DataBase {
             switch oldVersion {
             case 0:
                 createTables()
-                
+            case 1:
+                createFeedbackTable()
             default :
                 break
             }
@@ -41,6 +42,7 @@ class TellaDataBase : DataBase {
         createServerTable()
         createReportTable()
         createReportFilesTable()
+        createFeedbackTable()
     }
     
     func createServerTable() {
@@ -662,4 +664,97 @@ class TellaDataBase : DataBase {
                       currentUpload: currentUpload == 0 ? false : true)
     }
     
+}
+
+extension TellaDataBase {
+    
+    func createFeedbackTable() {
+        
+        let columns = [
+            cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.ctext, D.text),
+            cddl(D.cStatus, D.integer),
+            cddl(D.cCreatedDate, D.float),
+            cddl(D.cUpdatedDate, D.float),
+        ]
+        statementBuilder.createTable(tableName: D.tFeedback, columns: columns)
+        
+    }
+    
+    func getDraftFeedback() -> Feedback? {
+        do {
+            let feedbackCondition = [KeyValue(key: D.cStatus, value: FeedbackStatus.draft.rawValue)]
+            
+            let feedbackDict = try statementBuilder.getSelectQuery(tableName: D.tFeedback,
+                                                                   equalCondition: feedbackCondition)
+            return try feedbackDict.first?.decode(Feedback.self)
+        } catch (let error) {
+            debugLog(error)
+            return nil
+        }
+    }
+    
+    func getUnsentFeedbacks() -> [Feedback] {
+        do {
+            let feedbackCondition = [KeyValue(key: D.cStatus, value: FeedbackStatus.pending.rawValue)]
+            
+            let feedbackDict = try statementBuilder.getSelectQuery(tableName: D.tFeedback,
+                                                                   equalCondition: feedbackCondition)
+            return try feedbackDict.decode(Feedback.self)
+        } catch (let error) {
+            debugLog(error)
+            return []
+        }
+    }
+    
+    func addFeedback(feedback : Feedback) -> Result<Int?, Error> {
+        do {
+            let valuesToAdd = [KeyValue(key: D.ctext, value: feedback.text),
+                               KeyValue(key: D.cStatus, value: feedback.status?.rawValue),
+                               KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
+                               KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
+            
+            let idResult = try statementBuilder.insertInto(tableName: D.tFeedback,
+                                                           keyValue: valuesToAdd)
+            return .success(idResult)
+            
+        } catch(let error) {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
+    
+    func updateFeedback(feedback : Feedback) -> Result<Bool, Error> {
+        
+        do {
+            
+            let valuesToUpdate = [ KeyValue(key: D.ctext, value: feedback.text),
+                                   KeyValue(key: D.cStatus, value: feedback.status?.rawValue),
+                                   KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
+            
+            let feedbackCondition = [KeyValue(key: D.cId, value: feedback.id)]
+            try statementBuilder.update(tableName: D.tFeedback,
+                                        keyValue: valuesToUpdate,
+                                        primarykeyValue: feedbackCondition)
+            return .success(true)
+            
+        } catch(let error) {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
+
+    func deleteFeedback(feedbackId: Int) -> Result<Bool,Error> {
+        
+        do {
+            let feedbackCondition = [KeyValue(key: D.cId, value: feedbackId as Any)]
+            
+            try statementBuilder.delete(tableName: D.tFeedback,
+                                        primarykeyValue:feedbackCondition)
+            return .success(true)
+        } catch (let error) {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
 }
