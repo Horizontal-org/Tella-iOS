@@ -117,12 +117,8 @@ class BaseUploadOperation : Operation {
         let report = Report(id: self.report?.id,
                             status: reportStatus,
                             apiID: apiID)
-        do {
-            try mainAppModel.vaultManager.tellaData?.updateReport(report: report)
-            
-        } catch {
-            
-        }
+        
+        mainAppModel.vaultManager.tellaData?.updateReport(report: report)
     }
     
     func updateReportFile(fileStatus:FileStatus, id:Int?, bytesSent:Int? = nil, current:Int? = nil ) -> Int {
@@ -146,13 +142,9 @@ class BaseUploadOperation : Operation {
         let file = self.reportVaultFiles?.first(where: {$0.instanceId == id})
         let totalBytesSent = (file?.current ?? 0)  + (file?.bytesSent ?? 0)
         
-        do {
-            try mainAppModel.vaultManager.tellaData?.updateReportFile(reportFile: ReportFile(id: id,
-                                                                                             status: fileStatus,
-                                                                                             bytesSent: totalBytesSent))
-        } catch {
-            
-        }
+        mainAppModel.vaultManager.tellaData?.updateReportFile(reportFile: ReportFile(id: id,
+                                                                                     status: fileStatus,
+                                                                                     bytesSent: totalBytesSent))
         return totalBytesSent
     }
     
@@ -180,14 +172,13 @@ class BaseUploadOperation : Operation {
     }
     
     func deleteCurrentAutoReport() {
-        do {
-            try mainAppModel.vaultManager.tellaData?.deleteReport(reportId: self.report?.id)
-        } catch {
-            
-        }
-        guard let reportVaultFiles = self.reportVaultFiles else { return }
-        mainAppModel.vaultManager.delete(files: reportVaultFiles, parent: mainAppModel.vaultManager.root)
+        let deleteReportResult = mainAppModel.vaultManager.tellaData?.deleteReport(reportId: self.report?.id)
         
+        if case .success = deleteReportResult {
+            guard let reportVaultFiles = self.reportVaultFiles else {return}
+            let reportVaultFilesIds = reportVaultFiles.compactMap{ $0.id}
+            mainAppModel.vaultFilesManager?.deleteVaultFile(fileIds: reportVaultFilesIds)
+        }
     }
     
     func sendReport() {
@@ -220,13 +211,13 @@ class BaseUploadOperation : Operation {
             
             guard let apiID = self.report?.apiID, let accessToken = report?.server?.accessToken, let serverUrl = report?.server?.url else { return }
             
-            if let filesToUpload = reportVaultFiles?.filter{$0.status != .submitted} {
+            if let filesToUpload = reportVaultFiles?.filter({$0.status != .submitted}) {
                 if filesToUpload.isEmpty {
                     self.checkAllFilesAreUploaded()
                 } else {
                     filesToUpload.forEach({ reportVaultFile in
                         
-                        let vaultFileInfo = mainAppModel.loadFilesInfos(file: reportVaultFile,offsetSize: 0)
+                        let vaultFileInfo = mainAppModel.vaultManager.loadFilesInfos(file: reportVaultFile,offsetSize: 0)
                         
                         guard let vaultFileInfo else { return }
                         
@@ -235,7 +226,7 @@ class BaseUploadOperation : Operation {
                                                         accessToken: accessToken,
                                                         serverURL: serverUrl,
                                                         data: vaultFileInfo.data,
-                                                        fileName: reportVaultFile.fileName,
+                                                        fileName: reportVaultFile.name,
                                                         fileExtension: reportVaultFile.fileExtension,
                                                         fileId: reportVaultFile.id,
                                                         fileSize: reportVaultFile.size,
@@ -306,7 +297,7 @@ class BaseUploadOperation : Operation {
             let data = fileToUpload.data?.extract(size:size)
             
             if size != 0 {
-                if let fileUrlPath = self.mainAppModel.saveDataToTempFile(data: data, fileName: fileToUpload.fileName, pathExtension: fileToUpload.fileExtension) {
+                if let fileUrlPath = self.mainAppModel.vaultManager.saveDataToTempFile(data: data, fileName: fileToUpload.fileName, pathExtension: fileToUpload.fileExtension) {
                     fileToUpload.fileUrlPath = fileUrlPath
                 }
                 fileToUpload.data = data

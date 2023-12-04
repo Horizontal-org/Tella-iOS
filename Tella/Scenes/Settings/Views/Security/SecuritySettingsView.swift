@@ -14,8 +14,8 @@ struct SecuritySettingsView: View {
     @State var passwordTypeString : String = ""
     
     
-    init(appModel: MainAppModel) {
-        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .update, appModel: appModel))
+    init(appModel: MainAppModel, appViewState: AppViewState) {
+        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .update, appModel: appModel, appViewState: appViewState))
     }
     
     var body: some View {
@@ -181,6 +181,6 @@ struct SecuritySettingsView: View {
 
 struct SecuritySettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SecuritySettingsView(appModel: MainAppModel.stub())
+        SecuritySettingsView(appModel: MainAppModel.stub(), appViewState: AppViewState())
     }
 }

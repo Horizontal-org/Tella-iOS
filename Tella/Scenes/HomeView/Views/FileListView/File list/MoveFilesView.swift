@@ -28,7 +28,7 @@ struct MoveFilesView: View {
                 
                 VStack {
                     ManageFileView()
-                    FileItemsView(files: fileListViewModel.getFiles())
+                    FileItemsView(files: fileListViewModel.vaultFiles)
                 }
                 .background(Color.white.opacity(0.12))
                 .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
@@ -68,9 +68,9 @@ struct MoveFilesView: View {
     var cancelButton: some View {
         Button {
             fileListViewModel.showingMoveFileView  = false
-            fileListViewModel.initSelectedFiles()
+            fileListViewModel.resetSelectedItems()
             fileListViewModel.initFolderPathArray()
-            fileListViewModel.rootFile = fileListViewModel.oldRootFile
+            fileListViewModel.rootFile = fileListViewModel.oldParentFile
         } label: {
             Text(LocalizableVault.moveFileActionCancel.localized)
                 .foregroundColor(.white)
@@ -83,13 +83,13 @@ struct MoveFilesView: View {
         Button {
             fileListViewModel.showingMoveFileView  = false
             fileListViewModel.moveFiles()
-            fileListViewModel.initSelectedFiles()
+            fileListViewModel.resetSelectedItems()
         } label: {
             Text(LocalizableVault.moveFileActionMove.localized)
-                .foregroundColor( fileListViewModel.oldRootFile == fileListViewModel.rootFile ? .white.opacity(0.4) : .white)
+                .foregroundColor( fileListViewModel.oldParentFile == fileListViewModel.rootFile ? .white.opacity(0.4) : .white)
                 .font(.custom(Styles.Fonts.boldFontName, size: 16))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }.disabled(fileListViewModel.oldRootFile == fileListViewModel.rootFile)
+        }.disabled(fileListViewModel.oldParentFile == fileListViewModel.rootFile)
     }
 }
 

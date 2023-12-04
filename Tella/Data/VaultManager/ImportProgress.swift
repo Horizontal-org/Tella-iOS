@@ -11,9 +11,9 @@ class ImportProgress: ObservableObject {
     var progressFile = CurrentValueSubject<String, Never>("")
     var progress = CurrentValueSubject<Double, Never>(0.0)
     var totalFiles : Int = 1
-    var isFinishing = PassthroughSubject<Bool, Never>()
+    var isFinishing = CurrentValueSubject<Bool, Never>(false)
     
-    var currentFile : Int = 0 {
+    var currentFile : Int = 1 {
         didSet {
             DispatchQueue.main.async {
                 self.progressFile.send("\(self.currentFile)/\(self.totalFiles)")
@@ -21,12 +21,13 @@ class ImportProgress: ObservableObject {
         }
     }
 
-    private var totalTime : Double = 0.0
-    private var timeRemaining : Double = 0.0
+    private var totalTime : TimeInterval = 0.0
+    private var timeRemaining : TimeInterval = 0.0
     private var timer = Timer()
-    private let sizeImportedPerSecond = 20563727
+    private let sizeImportedPerSecond = 140000000
+                                         
     
-    func start(currentFile : Int = 0, totalFiles : Int = 1, totalSize : Double = 0.0) {
+    func start(currentFile : Int = 1, totalFiles : Int = 1, totalSize : Double = 0.0) {
         DispatchQueue.main.async {
             self.progress.send(0)
             
@@ -37,7 +38,7 @@ class ImportProgress: ObservableObject {
             self.timeRemaining = self.totalTime
             
             self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.timerRunning), userInfo: nil, repeats: true)
-            
+             
         }
     }
     
@@ -64,7 +65,6 @@ class ImportProgress: ObservableObject {
     func finish() {
         DispatchQueue.main.async {
             self.timeRemaining = 0.0
-            //            self.timerIsOn = false
             self.timer.invalidate()
             self.progress.send(1)
             self.isFinishing.send(true)
@@ -72,6 +72,8 @@ class ImportProgress: ObservableObject {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
             self.progress.send(0)
+            self.isFinishing.send(false)
+
         }
     }
     

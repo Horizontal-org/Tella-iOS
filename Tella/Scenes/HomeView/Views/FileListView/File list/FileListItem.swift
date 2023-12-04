@@ -6,7 +6,7 @@ import SwiftUI
 
 struct FileListItem: View {
     
-    var file: VaultFile
+    var file: VaultFileDB
     
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var fileListViewModel : FileListViewModel
@@ -46,7 +46,7 @@ struct FileListItem: View {
                         )
                     VStack(alignment: .leading, spacing: 0){
                         Spacer()
-                        Text(file.fileName)
+                        Text(file.name)
                             .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                             .foregroundColor(Color.white)
                             .lineLimit(1)
@@ -113,7 +113,7 @@ struct FileListItemButtonStyle : ButtonStyle {
 
 struct FileListItem_Previews: PreviewProvider {
     static var previews: some View {
-        FileListItem(file: VaultFile.stub(type: .folder))
+        FileListItem(file: VaultFileDB.stub())
             .environmentObject(MainAppModel.stub())
             .environmentObject(FileListViewModel.stub())
     }

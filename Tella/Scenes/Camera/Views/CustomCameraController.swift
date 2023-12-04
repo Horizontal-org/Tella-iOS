@@ -80,7 +80,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
             guard let delegate = videoRecordingDelegate else {
                 return
             }
-
+            
             if let videoOutputConnection = self.videoOutput?.connection(with: .video) {
                 videoOutputConnection.videoOrientation = deviceOrientation.videoOrientation()
             }
@@ -144,11 +144,12 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         releasePreview()
         
         setupCaptureSession()
-        setupPhotoInputOutput()
+        
+        cameraType == .video ? setupVideoInputOutput() : setupPhotoInputOutput()
     }
     
     private func setupCaptureSession() {
-        captureSession.sessionPreset = AVCaptureSession.Preset.photo
+        captureSession.sessionPreset = AVCaptureSession.Preset.high
     }
     
     private func createTempFileURL() -> URL {
@@ -198,9 +199,9 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         
         // Video Output
         videoOutput = AVCaptureMovieFileOutput()
-        guard let photoOutput = videoOutput else { return }
-        if captureSession.canAddOutput(photoOutput) {
-            captureSession.addOutput(photoOutput)
+        guard let videoOutput = videoOutput else { return }
+        if captureSession.canAddOutput(videoOutput) {
+            captureSession.addOutput(videoOutput)
         }
         
         startRunningCaptureSession()
@@ -321,7 +322,7 @@ extension CameraService  {
         if let cgImageRepresentation = photo.cgImageRepresentation(),
            let orientationInt = photo.metadata[String(kCGImagePropertyOrientation)] as? UInt32,
            let imageOrientation = UIImage.Orientation.orientation(fromCGOrientationRaw: orientationInt) {
-            print("cgImageRepresentation")
+
             // Create image with proper orientation
             let cgImage = cgImageRepresentation
             let image = UIImage(cgImage: cgImage,
@@ -332,6 +333,7 @@ extension CameraService  {
             }
         }
     }
+    
     public func fileOutput(_ output: AVCaptureFileOutput,
                            didFinishRecordingTo outputFileURL: URL,
                            from connections: [AVCaptureConnection],

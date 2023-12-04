@@ -74,5 +74,7 @@ struct SelectingFilesHeaderView: View {
 struct SelectingFilesHeaderView_Previews: PreviewProvider {
     static var previews: some View {
         SelectingFilesHeaderView()
+            .environmentObject(FileListViewModel.stub())
+            .background(Styles.Colors.backgroundMain)
     }
 }

@@ -15,7 +15,7 @@ class DraftReportVM: ObservableObject {
     @Published var reportId : Int?
     @Published var title : String = ""
     @Published var description : String = ""
-    @Published var files :  Set <VaultFile> = []
+    @Published var files :  Set <VaultFileDB> = []
     @Published var server :  Server?
     @Published var status : ReportStatus?
     @Published var apiID : String?
@@ -27,14 +27,16 @@ class DraftReportVM: ObservableObject {
     @Published var reportIsValid : Bool = false
     @Published var reportIsDraft : Bool = false
     
-    @Published var resultFile : [VaultFile]?
+    @Published var resultFile : [VaultFileDB]?
     
-    @Published var showingSuccessMessage : Bool = false
     @Published var showingImagePicker : Bool = false
     @Published var showingImportDocumentPicker : Bool = false
     @Published var showingFileList : Bool = false
     @Published var showingRecordView : Bool = false
     @Published var showingCamera : Bool = false
+    
+    @Published var successSavingReport : Bool = false
+    @Published var failureSavingReport : Bool = false
     
     var serverArray : [Server] = []
     
@@ -127,13 +129,14 @@ class DraftReportVM: ObservableObject {
     func fillReportVM() {
         if let reportId = self.reportId ,let report = self.mainAppModel.vaultManager.tellaData?.getReport(reportId: reportId) {
             
-            var vaultFileResult : Set<VaultFile> = []
-            
             self.title = report.title ?? ""
             self.description = report.description ?? ""
             self.server = report.server
-            self.mainAppModel.vaultManager.root?.getFile(root: self.mainAppModel.vaultManager.root, vaultFileResult: &vaultFileResult, ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
-            self.files = vaultFileResult
+            
+            if let  vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [] ) {
+                let vaultFileResult  = Set(vaultFileResult)
+                self.files = vaultFileResult
+            }
             self.objectWillChange.send()
         }
         
@@ -146,9 +149,25 @@ class DraftReportVM: ObservableObject {
         }
     }
     
+    func saveDraftReport()  {
+        self.status = .draft
+        self.saveReport()
+    }
+    
+    func saveFinalizedReport()  {
+        self.status = .finalized
+        self.saveReport()
+    }
+    
+    func saveReportForSubmission()  {
+        self.status = .submissionInProgress
+        self.saveReport()
+    }
+    
     func saveReport() {
         
-        let report = Report(id: reportId, title: title,
+        let report = Report(id: reportId,
+                            title: title,
                             description: description,
                             status: status,
                             server: server,
@@ -158,22 +177,27 @@ class DraftReportVM: ObservableObject {
                                                                           createdDate: Date())},
                             apiID: apiID)
         
-        do {
-            if !isNewDraft {
-                try mainAppModel.vaultManager.tellaData?.updateReport(report: report)
-            } else {
-                let id = try mainAppModel.vaultManager.tellaData?.addReport(report: report)
-                self.reportId = id
-            }
-            
-            showingSuccessMessage = true
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                self.showingSuccessMessage = false
-            }
-            
-        } catch {
-            
+        !isNewDraft ? updateReport(report: report) : addReport(report: report)
+    }
+    
+    func updateReport(report:Report) {
+        let updateReportResult = mainAppModel.vaultManager.tellaData?.updateReport(report: report)
+        switch updateReportResult {
+        case .success:
+            self.successSavingReport = true
+        default:
+            self.failureSavingReport = true
+        }
+    }
+    
+    func addReport(report:Report) {
+        let idResult =  mainAppModel.vaultManager.tellaData?.addReport(report: report)
+        switch idResult {
+        case .success(let id ):
+            self.reportId = id
+            self.successSavingReport = true
+        default:
+            self.failureSavingReport = true
         }
     }
     
@@ -183,10 +207,6 @@ class DraftReportVM: ObservableObject {
     }
     
     func deleteReport() {
-        do {
-            try mainAppModel.deleteReport(reportId: reportId)
-        } catch let error {
-            debugLog(error)
-        }
+        mainAppModel.deleteReport(reportId: reportId)
     }
 }

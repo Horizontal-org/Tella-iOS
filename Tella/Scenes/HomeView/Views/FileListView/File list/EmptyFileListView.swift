@@ -6,7 +6,7 @@ import SwiftUI
 
 enum EmptyListType {
     case allFiles
-    case folder
+    case directory
 }
 
 struct EmptyFileListView: View {
@@ -40,5 +40,6 @@ struct EmptyFileListView: View {
 struct EmptyFileListView_Previews: PreviewProvider {
     static var previews: some View {
         EmptyFileListView(emptyListType: .allFiles)
+            .background(Styles.Colors.backgroundMain)
     }
 }

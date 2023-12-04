@@ -5,10 +5,10 @@
 import Foundation
 
 class ProgressFileItemViewModel {
-    var file : VaultFile
+    var file : VaultFileDB
     @Published var progression : String
     
-    init(file: VaultFile, progression: String) {
+    init(file: VaultFileDB, progression: String) {
         self.file = file
         self.progression = progression
     }

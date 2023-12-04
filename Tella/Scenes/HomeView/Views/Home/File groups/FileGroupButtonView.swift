@@ -5,15 +5,15 @@
 import SwiftUI
 
 struct FileGroupView<Destination:View>: View {
-
+    
     let groupName: String
     let iconName: String
     let destination: Destination
-
+    
     var body: some View {
         
         Button {
-             navigateTo(destination: destination)
+            navigateTo(destination: destination)
         } label: {
             ZStack(alignment: .trailing){
                 VStack(alignment: .trailing, spacing: 0){
@@ -39,6 +39,7 @@ struct FileGroupView<Destination:View>: View {
 struct FileGroupView_Previews: PreviewProvider {
     static var previews: some View {
         FileGroupView(groupName: "name", iconName: "files.documents", destination: EmptyView())
+            .background(Styles.Colors.backgroundMain)
     }
 }
 

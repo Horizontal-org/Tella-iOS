@@ -58,16 +58,11 @@ class UploadReportOperation: BaseUploadOperation {
     func prepareReportToSend(report:Report?) {
         
         var reportVaultFiles : [ReportVaultFile] = []
-        
-        var vaultFileResult : Set<VaultFile> = []
-        
-        mainAppModel.vaultManager.root?.getFile(root: mainAppModel.vaultManager.root,
-                                               vaultFileResult: &vaultFileResult,
-                                               ids: report?.reportFiles?.compactMap{$0.fileId} ?? [])
-        
-        
+
+        let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report?.reportFiles?.compactMap{$0.fileId} ?? [])
+
         report?.reportFiles?.forEach({ reportFile in
-            if let vaultFile = vaultFileResult.first(where: {reportFile.fileId == $0.id}) {
+            if let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}) {
                 let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
                 reportVaultFiles.append(reportVaultFile)
             }

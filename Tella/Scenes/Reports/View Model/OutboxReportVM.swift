@@ -128,16 +128,13 @@ class OutboxReportVM: ObservableObject {
     func initVaultFile(reportId: Int?) {
         
         if let reportId, let report = self.mainAppModel.vaultManager.tellaData?.getReport(reportId: reportId) {
-            
-            var vaultFileResult : Set<VaultFile> = []
-            
-            mainAppModel.vaultManager.root?.getFile(root: mainAppModel.vaultManager.root,
-                                                   vaultFileResult: &vaultFileResult,
-                                                   ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
+
+            let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
+
             var files : [ReportVaultFile] = []
             
             report.reportFiles?.forEach({ reportFile in
-                if let vaultFile = vaultFileResult.first(where: {reportFile.fileId == $0.id}) {
+                if let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}) {
                     let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
                     files.append(reportVaultFile)
                 }
@@ -156,7 +153,7 @@ class OutboxReportVM: ObservableObject {
     
     func initializeProgressionInfos() {
         
-        let totalSize = self.reportViewModel.files.reduce(0) { $0 + $1.size}
+        let totalSize = self.reportViewModel.files.reduce(0) { $0 + ($1.size) }
         let bytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent)}
         
         if totalSize > 0 {
@@ -174,7 +171,7 @@ class OutboxReportVM: ObservableObject {
                 self.percentUploaded = Float(percentUploaded)
                 self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
                 
-                self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: ($0.bytesSent.getFormattedFileSize()) + "/" + $0.size.getFormattedFileSize())}
+                self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: ($0.bytesSent.getFormattedFileSize()) + "/" + ($0.size.getFormattedFileSize()))}
                 
                 self.objectWillChange.send()
                 
@@ -231,11 +228,11 @@ class OutboxReportVM: ObservableObject {
             return currentFile
         }
         
-        guard  let currentFile = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId}) else { return}
+        guard  let _ = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId}) else { return}
         
         // All Files
         let totalBytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent)}
-        let totalSize = self.reportViewModel.files.reduce(0) { $0 + $1.size}
+        let totalSize = self.reportViewModel.files.reduce(0) { $0 + ($1.size)}
         
         // current file
         
@@ -257,7 +254,11 @@ class OutboxReportVM: ObservableObject {
                     
                     //Progress File Item
                     if let currentItem = self.progressFileItems.first(where: {$0.file.id == uploadProgressInfo.fileId}) {
-                        currentItem.progression = "\(currentFileTotalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit())/\(currentItem.file.size.getFormattedFileSize())"
+                        
+                        let size = currentItem.file.size.getFormattedFileSize()
+                        let currentFileTotalBytesSent = currentFileTotalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
+                        
+                        currentItem.progression = "\(currentFileTotalBytesSent)/\(size )"
                     }
                     self.objectWillChange.send()
                 }
@@ -272,22 +273,11 @@ class OutboxReportVM: ObservableObject {
         self.reportViewModel.status = reportStatus
         
         guard let id = reportViewModel.id else { return  }
-        
-        do {
-            try mainAppModel.vaultManager.tellaData?.updateReportStatus(idReport: id, status: reportStatus)
-            
-        } catch let error {
-            debugLog(error)
-        }
+
+        mainAppModel.vaultManager.tellaData?.updateReportStatus(idReport: id, status: reportStatus)
     }
     
     func deleteReport() {
-        
-        do {
-            try mainAppModel.deleteReport(reportId: reportViewModel.id)
-        } catch let error {
-            debugLog(error)
-        }
-
+        mainAppModel.deleteReport(reportId: reportViewModel.id)
     }
 }

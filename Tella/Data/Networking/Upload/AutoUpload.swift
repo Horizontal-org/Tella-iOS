@@ -45,14 +45,14 @@ class AutoUpload: BaseUploadOperation {
         }
     }
     
-    func addFile(file:VaultFile) {
+    func addFile(file:VaultFileDB) {
         self.response.send(UploadResponse.initial)
         self.autoPauseReport()
         self.filesToUpload.removeAll()
         startUploadReportAndFiles(file: file)
     }
     
-    func startUploadReportAndFiles(file:VaultFile) {
+    func startUploadReportAndFiles(file:VaultFileDB) {
         
         let currentReport = self.mainAppModel.vaultManager.tellaData?.getCurrentReport()
         
@@ -64,21 +64,18 @@ class AutoUpload: BaseUploadOperation {
         }
     }
     
-    func addReportFile(file:VaultFile, report:Report) {
-        do {
-            guard let reportId = report.id else { return  }
-            self.report = report
-
-            let addedReportFile = try self.mainAppModel.vaultManager.tellaData?.addReportFile(fileId: file.id, reportId: reportId)
-            
-            if let addedReportFile {
-                report.reportFiles?.append(addedReportFile)
-            }
-        } catch {
+    func addReportFile(file:VaultFileDB, report:Report) {
+        guard let reportId = report.id else { return }
+        self.report = report
+        
+        let addedReportFile = self.mainAppModel.vaultManager.tellaData?.addReportFile(fileId: file.id, reportId: reportId)
+        
+        if let addedReportFile{
+            report.reportFiles?.append(addedReportFile)
         }
     }
     
-    func createNewReport(file:VaultFile) {
+    func createNewReport(file:VaultFileDB) {
         
         let reportToAdd = Report(title: "Auto-report" + Date().getFormattedDateString(format: DateFormat.autoReportNameName.rawValue),
                                  description: "",
@@ -91,14 +88,10 @@ class AutoUpload: BaseUploadOperation {
                                                          updatedDate: Date())],
                                  currentUpload:true)
         
-        do {
-            // files
-            let report = try self.mainAppModel.vaultManager.tellaData?.addCurrentUploadReport(report: reportToAdd)
-            self.report = report
-            self.checkReport()
-        } catch {
-            
-        }
+        // files
+        let report = self.mainAppModel.vaultManager.tellaData?.addCurrentUploadReport(report: reportToAdd)
+        self.report = report
+        self.checkReport()
     }
     
     private func checkReport() {
@@ -123,12 +116,8 @@ class AutoUpload: BaseUploadOperation {
     }
     
     func prepareReportToSend(report:Report?) {
-        
-        var vaultFileResult : Set<VaultFile> = []
-        
-        mainAppModel.vaultManager.root?.getFile(root: mainAppModel.vaultManager.root,
-                                               vaultFileResult: &vaultFileResult,
-                                               ids: report?.reportFiles?.compactMap{$0.fileId} ?? [])
+
+        let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report?.reportFiles?.compactMap{$0.fileId} ?? [])
         
         self.report = report
         
@@ -138,7 +127,7 @@ class AutoUpload: BaseUploadOperation {
         
         report?.reportFiles?.forEach({ reportFile in
             
-            if let vaultFile = vaultFileResult.first(where: {reportFile.fileId == $0.id}) {
+            if let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}) {
                 let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
                 reportVaultFiles.append(reportVaultFile)
             }

@@ -7,7 +7,7 @@ import SwiftUI
 struct FileItemsView: View {
     
     @EnvironmentObject var fileListViewModel : FileListViewModel
-    var files : [VaultFile]
+    var files : [VaultFileDB]
     
     private var gridLayout: [GridItem] {
         [GridItem(.adaptive(minimum: 80),spacing: 6)]
@@ -51,9 +51,9 @@ struct FileItemsView: View {
 
 struct FileItemsView_Previews: PreviewProvider {
     static var previews: some View {
-        FileItemsView(files: [VaultFile.stub(type: .folder),
-                              VaultFile.stub(type: .folder)])
+        FileItemsView(files: [VaultFileDB.stub(),
+                              VaultFileDB.stub()])
             .environmentObject(FileListViewModel.stub())
-        
+            .background(Styles.Colors.backgroundMain)
     }
 }

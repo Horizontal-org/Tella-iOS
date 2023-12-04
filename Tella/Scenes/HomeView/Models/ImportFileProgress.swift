@@ -6,6 +6,7 @@ import Foundation
 
 struct  ImportFilesProgress : ImportFilesProgressProtocol {
     
+    
 
     var progressType: ProgressType {
         return .number

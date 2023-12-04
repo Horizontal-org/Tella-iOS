@@ -8,9 +8,9 @@ class PageViewItem {
     
     var title : String
     var page : Pages
-    var number : String
+    var number : Int
     
-    init(title: String, page: Pages, number: String) {
+    init(title: String, page: Pages, number: Int) {
         self.title = title
         self.page = page
         self.number = number
@@ -20,7 +20,7 @@ class PageViewItem {
 public struct PageView: View {
     
     @Binding var selectedOption: Pages
-    @Binding var pageViewItems : [PageViewItem]
+     var pageViewItems : [PageViewItem]
     
     public var body: some View {
         HStack(spacing: 20) {

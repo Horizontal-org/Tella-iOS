@@ -16,10 +16,12 @@ class ReportsViewModel: ObservableObject {
     @Published var submittedReports : [Report] = []
     @Published var selectedReport : Report?
     @Published var selectedCell = Pages.draft
-    @Published var pageViewItems : [PageViewItem] = [PageViewItem(title: LocalizableReport.draftTitle.localized, page: .draft, number: "") ,
-                                                     PageViewItem(title: LocalizableReport.outboxTitle.localized, page: .outbox, number: ""),
-                                                     PageViewItem(title: LocalizableReport.submittedTitle.localized, page: .submitted, number: "")]
-    
+
+    var pageViewItems : [PageViewItem] {
+        [PageViewItem(title: LocalizableReport.draftTitle.localized, page: .draft, number: draftReports.count),
+         PageViewItem(title: LocalizableReport.outboxTitle.localized, page: .outbox, number: outboxedReports.count),
+         PageViewItem(title: LocalizableReport.submittedTitle.localized, page: .submitted, number: submittedReports.count)] }
+
     var sheetItems : [ListActionSheetItem] { return [
         
         ListActionSheetItem(imageName: "view-icon",
@@ -46,8 +48,6 @@ class ReportsViewModel: ObservableObject {
             .sink { result in
             } receiveValue: { draftReports in
                 self.draftReports = draftReports
-                self.updateDraftReportsNumber()
-                
             }.store(in: &subscribers)
         
         self.mainAppModel.vaultManager.tellaData?.outboxedReports
@@ -55,55 +55,19 @@ class ReportsViewModel: ObservableObject {
             .sink { result in
             } receiveValue: { draftReports in
                 self.outboxedReports = draftReports
-                self.updateOutboxReportsNumber()
-                
             }.store(in: &subscribers)
         
         self.mainAppModel.vaultManager.tellaData?.submittedReports
             .receive(on: DispatchQueue.main)
             .sink { result in
             } receiveValue: { draftReports in
-                self.submittedReports = draftReports
-                self.updateSubmittedReportsNumber()
+                DispatchQueue.main.async {
+                    self.submittedReports = draftReports
+                }
                 
             }.store(in: &subscribers)
     }
-    
-    private func updateDraftReportsNumber() {
-        if let row = self.pageViewItems.firstIndex(where: {$0.page == .draft}) {
-            if draftReports.count > 0 {
-                pageViewItems[row].number = "(\(draftReports.count))"
-            }
-            else {
-                pageViewItems[row].number = ""
-            }
-        }
-    }
-    
-    private func updateOutboxReportsNumber() {
-        if let row = self.pageViewItems.firstIndex(where: {$0.page == .outbox}) {
-            
-            if outboxedReports.count > 0 {
-                pageViewItems[row].number = "(\(outboxedReports.count))"
-            }
-            else {
-                pageViewItems[row].number = ""
-            }
-        }
-    }
-    
-    private func updateSubmittedReportsNumber() {
-        if let row = self.pageViewItems.firstIndex(where: {$0.page == .submitted}) {
-            
-            if submittedReports.count > 0 {
-                pageViewItems[row].number = "(\(submittedReports.count))"
-            }
-            else {
-                pageViewItems[row].number = ""
-            }
-        }
-    }
-    
+
     func deleteReport() {
         mainAppModel.deleteReport(reportId: selectedReport?.id)
     }

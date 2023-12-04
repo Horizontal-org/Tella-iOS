@@ -6,11 +6,11 @@ import Foundation
 
 class VaultFileInfo {
     
-    var vaultFile : VaultFile
+    var vaultFile : VaultFileDB
     var data : Data
     var url : URL
     
-    init(vaultFile: VaultFile, data: Data, url: URL) {
+    init(vaultFile: VaultFileDB, data: Data, url: URL) {
         self.vaultFile = vaultFile
         self.data = data
         self.url = url

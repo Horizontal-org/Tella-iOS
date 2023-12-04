@@ -10,7 +10,7 @@ import AVFoundation
 struct CameraView: View {
     
     // MARK: - Public properties
-//    var sourceView : SourceView
+    //    var sourceView : SourceView
     var showingCameraView : Binding<Bool>
     
     // MARK: - Private properties
@@ -26,18 +26,20 @@ struct CameraView: View {
     
     init(sourceView: SourceView,
          showingCameraView: Binding<Bool>,
-         resultFile: Binding<[VaultFile]?>? = nil,
+         resultFile: Binding<[VaultFileDB]?>? = nil,
          mainAppModel: MainAppModel,
-         rootFile:VaultFile?) {
+         rootFile:VaultFileDB? = nil,
+         shouldReloadVaultFiles: Binding<Bool>? = nil) {
         
         self.showingCameraView = showingCameraView
         
         _cameraViewModel = StateObject(wrappedValue: CameraViewModel(mainAppModel: mainAppModel,
                                                                      rootFile: rootFile,
                                                                      resultFile: resultFile,
-                                                                     sourceView: sourceView))
+                                                                     sourceView: sourceView,
+                                                                     shouldReloadVaultFiles: shouldReloadVaultFiles))
     }
-
+    
     var body: some View {
         
         NavigationContainerView(backgroundColor: Color.black) {
@@ -70,7 +72,7 @@ struct CameraView: View {
                     showProgressView()
                 }
             }
-
+        
             .onReceive(model.$shouldCloseCamera) { value in
                 if value {
                     if cameraViewModel.sourceView == .tab {
@@ -78,25 +80,20 @@ struct CameraView: View {
                     } else {
                         showingCameraView.wrappedValue = false
                     }
-                    mainAppModel.clearTmpDirectory()
+                    mainAppModel.vaultManager.clearTmpDirectory()
                 }
             }
         
-            .onReceive(model.$imageCompletion) { value in
-                guard let value = value else { return }
-                
-                cameraViewModel.image = value.image
-                cameraViewModel.imageData = value.imageData
-//                showProgressView()
+            .onReceive(model.service.$imageCompletion) { imageCompletion in
+                guard let imageCompletion else { return }
+                cameraViewModel.image = imageCompletion.image
+                cameraViewModel.imageData = imageCompletion.imageData
                 cameraViewModel.saveImage()
-
             }
         
             .onReceive(model.$videoURLCompletion) { videoURL in
                 guard let videoURL = videoURL else { return }
-                
                 cameraViewModel.videoURL = videoURL
-                showProgressView()
                 cameraViewModel.saveVideo()
             }
         
@@ -140,11 +137,11 @@ struct CameraView: View {
     }
     
     func showProgressView() {
-        sheetManager.showBottomSheet( modalHeight: 190,
-                                      shouldHideOnTap: false,
-                                      content: {
-            ImportFilesProgressView(importFilesProgressProtocol: ImportFilesFromCameraProgress())
-            
+        sheetManager.showBottomSheet(modalHeight: 190,
+                                     shouldHideOnTap: false,
+                                     content: {
+            ImportFilesProgressView(progress: cameraViewModel.progressFile,
+                                    importFilesProgressProtocol: ImportFilesFromCameraProgress())
         })
     }
 }

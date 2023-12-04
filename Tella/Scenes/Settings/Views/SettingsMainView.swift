@@ -8,6 +8,8 @@ import SwiftUI
 struct SettingsMainView: View {
     
     @EnvironmentObject var appModel : MainAppModel
+    @EnvironmentObject var appViewState : AppViewState
+
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @StateObject var settingsViewModel : SettingsViewModel
     @StateObject var serversViewModel : ServersViewModel
@@ -72,7 +74,7 @@ struct SettingsMainView: View {
     }
     
     var securitySettingsView: some View {
-        SecuritySettingsView(appModel: MainAppModel.stub())
+        SecuritySettingsView(appModel: MainAppModel.stub(), appViewState: appViewState)
             .environmentObject(settingsViewModel)
     }
 }

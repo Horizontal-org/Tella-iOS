@@ -8,7 +8,7 @@ struct FileInfoView: View {
     
     @ObservedObject var viewModel : FileListViewModel
     
-    var file: VaultFile
+    var file: VaultFileDB
     
     var body: some View {
         
@@ -16,20 +16,20 @@ struct FileInfoView: View {
             Styles.Colors.backgroundMain
                 .edgesIgnoringSafeArea(.all)
             VStack(alignment: .leading, spacing: 12){
-                FileInfoItem(title: LocalizableVault.verifInfoFileName.localized, content: file.fileName)
+                FileInfoItem(title: LocalizableVault.verifInfoFileName.localized, content: file.name)
                 
-                if file.type != .folder {
+                if file.tellaFileType != .folder {
                     FileInfoItem(title: LocalizableVault.verifInfoSize.localized, content: file.size.getFormattedFileSize())
                     FileInfoItem(title: LocalizableVault.verifInfoFormat.localized, content: file.fileExtension)
                 }
                 
                 FileInfoItem(title: LocalizableVault.verifInfoCreated.localized, content: "\(file.longFormattedCreationDate)")
                 
-                if (file.type == .video) || (file.type == .image)  {
+                if (file.tellaFileType == .video) || (file.tellaFileType == .image)  {
                     FileInfoItem(title: LocalizableVault.verifInfoResolution.localized, content: file.formattedResolution ?? "")
                 }
                 
-                if file.type == .video || file.type == .audio {
+                if file.tellaFileType == .video || file.tellaFileType == .audio {
                     FileInfoItem(title: LocalizableVault.verifInfoLength.localized, content: file.formattedDuration ?? "")
                 }
                 

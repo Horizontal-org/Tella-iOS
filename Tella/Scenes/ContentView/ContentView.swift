@@ -7,8 +7,8 @@ struct ContentView: View {
     @EnvironmentObject private var appViewState: AppViewState
     @StateObject var lockViewModel : LockViewModel
     
-    init(mainAppModel:MainAppModel) {
-        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .new, appModel: mainAppModel))
+    init(mainAppModel:MainAppModel, appViewState: AppViewState) {
+        _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .new, appModel: mainAppModel, appViewState: appViewState))
     }
     var body: some View {
         

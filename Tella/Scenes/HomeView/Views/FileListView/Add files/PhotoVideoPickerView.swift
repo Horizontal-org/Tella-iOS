@@ -20,13 +20,15 @@ struct PhotoVideoPickerView: View {
     init(showingImagePicker: Binding<Bool>,
          showingImportDocumentPicker: Binding<Bool>,
          appModel: MainAppModel,
-         resultFile : Binding<[VaultFile]?>? = nil,
-         rootFile:Binding<VaultFile?>) {
+         resultFile : Binding<[VaultFileDB]?>? = nil,
+         rootFile:Binding<VaultFileDB?>? = nil,
+         shouldReloadVaultFiles: Binding<Bool>) {
         
         _viewModel = StateObject(wrappedValue: PhotoVideoViewModel(mainAppModel: appModel,
                                                                    folderPathArray: [],
                                                                    resultFile: resultFile,
-                                                                   rootFile: rootFile))
+                                                                   rootFile: rootFile, 
+                                                                   shouldReloadVaultFiles: shouldReloadVaultFiles))
         self.showingImagePicker = showingImagePicker
         self.showingImportDocumentPicker = showingImportDocumentPicker
     }
@@ -61,7 +63,7 @@ struct PhotoVideoPickerView: View {
                 onCompletion: { result in
                     if let urls = try? result.get() {
                         showProgressView()
-                        viewModel.addDocument(files: urls)
+                        viewModel.addFiles(urlfiles: urls)
                     }
                 }
             )
@@ -71,7 +73,9 @@ struct PhotoVideoPickerView: View {
         sheetManager.showBottomSheet(modalHeight: 190,
                                      shouldHideOnTap: false,
                                      content: {
-            ImportFilesProgressView(importFilesProgressProtocol: ImportFilesProgress())
+              ImportFilesProgressView(progress: viewModel.progressFile,
+                                    importFilesProgressProtocol: ImportFilesProgress())
+
         })
     }
 }

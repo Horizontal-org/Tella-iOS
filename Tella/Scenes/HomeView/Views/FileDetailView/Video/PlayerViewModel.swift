@@ -17,14 +17,14 @@ final class PlayerViewModel: ObservableObject {
     @Published var shouldDisableRewind = false
     @Published var shouldDisableFastForward = false
     @Published var videoSize: CGSize?
-    @Published var currentFile: VaultFile?
+    @Published var currentFile: VaultFileDB?
 
     private var cancellable: Set<AnyCancellable> = []
     private var timeObserver: Any?
     
     var appModel: MainAppModel?
     
-    var playList : [VaultFile?] = [] {
+    var playList : [VaultFileDB?] = [] {
         didSet {
             guard let item = playList[currentItemIndex]  else {return}
             self.setCurrentItem(item)
@@ -53,7 +53,7 @@ final class PlayerViewModel: ObservableObject {
         }
     }
     
-    init(appModel: MainAppModel?, currentFile: VaultFile?, playList: [VaultFile?]) {
+    init(appModel: MainAppModel?, currentFile: VaultFileDB?, playList: [VaultFileDB?]) {
         
         self.appModel = appModel
         self.currentFile = currentFile
@@ -115,10 +115,10 @@ final class PlayerViewModel: ObservableObject {
         }
     }
     
-    func setCurrentItem(_ file: VaultFile?) {
+    func setCurrentItem(_ file: VaultFileDB?) {
         
         guard let file = file else { return   }
-        guard let videoURL = appModel?.vaultManager.loadVideo(file: file)  else {return}
+        guard let videoURL = appModel?.vaultManager.loadVaultFileToURL(file: file)  else {return}
         let playerItem = AVPlayerItem(url:videoURL)
         
         currentPosition = .zero

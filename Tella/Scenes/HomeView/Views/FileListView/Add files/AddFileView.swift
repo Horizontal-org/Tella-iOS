@@ -8,11 +8,6 @@ struct AddFileView: View {
 
     @State private var fieldContent: String = ""
     @State private var isValid = false
-    
-//    @State var showingImagePicker : Bool = false
-//    @State var showingImportDocumentPicker : Bool = false
-//    @State var showingMicrophone : Bool = false
-//    @State var showingCamera : Bool = false
 
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var fileListViewModel: FileListViewModel
@@ -29,28 +24,28 @@ struct AddFileView: View {
             PhotoVideoPickerView(showingImagePicker: $fileListViewModel.showingImagePicker,
                                  showingImportDocumentPicker: $fileListViewModel.showingImportDocumentPicker,
                                  appModel: appModel,
-                                 rootFile: $fileListViewModel.rootFile)
+                                 rootFile: $fileListViewModel.rootFile, 
+                                 shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
         }
         .overlay(fileListViewModel.showingCamera ?
                  CameraView(sourceView: .addFile,
                             showingCameraView: $fileListViewModel.showingCamera,
-                           mainAppModel: appModel,
-                           rootFile: fileListViewModel.rootFile) : nil)
-        
-//        CameraViewModel(mainAppModel: appModel,
-//                                         rootFile: fileListViewModel.rootFile)
-        
+                            mainAppModel: appModel,
+                            rootFile: fileListViewModel.rootFile,
+                            shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles ) : nil)
+
         .overlay(fileListViewModel.showingMicrophone ?
                  RecordView(appModel: appModel,
                             rootFile: fileListViewModel.rootFile,
                             sourceView: .addFile,
-                            showingRecoredrView: $fileListViewModel.showingMicrophone) : nil)
+                            showingRecoredrView: $fileListViewModel.showingMicrophone, 
+                            shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles) : nil)
         
     }
     
     func showAddFileSheet() {
-        sheetManager.showBottomSheet( modalHeight: CGFloat(manageFilesItems.count * 50 + 90), content: {
-            ActionListBottomSheet(items: manageFilesItems,
+        sheetManager.showBottomSheet( modalHeight: CGFloat(fileListViewModel.manageFilesItems.count * 50 + 90), content: {
+            ActionListBottomSheet(items: fileListViewModel.manageFilesItems,
                                   headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
                                   action:  {item in
                 self.handleActions(item : item)
@@ -64,7 +59,7 @@ struct AddFileView: View {
                                      validateButtonText: LocalizableVault.createNewFolderCreateSheetAction.localized,
                                      cancelButtonText: LocalizableVault.createNewFolderCancelSheetAction.localized,
                                      fieldContent: $fieldContent) {
-                fileListViewModel.add(folder: fieldContent)
+                fileListViewModel.addFolder(name: fieldContent)
             }
         })
     }

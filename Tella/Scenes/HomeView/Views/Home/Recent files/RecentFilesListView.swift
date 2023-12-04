@@ -8,17 +8,20 @@ struct RecentFilesListView: View {
     
     @EnvironmentObject var appModel: MainAppModel
     @State private var moreRecentFilesLoaded = false
-    
-    var recentFiles : [RecentFile]
+    var recentFiles : Binding<[VaultFileDB]>
     
     private var number : Int {
-        return moreRecentFilesLoaded ? recentFiles.count : 3
+        if moreRecentFilesLoaded {
+            return recentFiles.wrappedValue.count
+        } else {
+            return recentFiles.wrappedValue.count <= 3 ? recentFiles.wrappedValue.count :  3
+        }
     }
     
     var body: some View {
         
-        if recentFiles.count > 0 {
-            VStack(alignment: .leading, spacing: 16){
+        if recentFiles.wrappedValue.count > 0 {
+            VStack(alignment: .leading, spacing: 16) {
                 Text(LocalizableHome.recentFilesSubhead.localized)
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                     .foregroundColor(.white)
@@ -31,53 +34,34 @@ struct RecentFilesListView: View {
     
     var recentFilesView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            
-            if (recentFiles.count > 3) {
-                allFilesItems
-            } else {
-                firstFilesItems
-            }
-        }.frame(height: 75)
-    }
-    
-    var allFilesItems : some View {
-        HStack(spacing: 7) {
-            // The 3 first or all items
-            ForEach(0..<number, id: \.self) { i in
-                RecentFileCell(recentFile: recentFiles[i].file,
-                               desination: FileDetailView(appModel: appModel,
-                                                          file: recentFiles[i].file,
-                                                          rootFile: recentFiles[i].rootFile,
-                                                          folderPathArray: recentFiles[i].folderPathArray))
-            }
-            // More button
-            if !moreRecentFilesLoaded && recentFiles.count >  3 {
-                Button {
-                    moreRecentFilesLoaded = true
-                } label: {
-                    LoadMoreCell(fileNumber: recentFiles.count - 3)
-                }
-            }
-        }.padding(.trailing, 17)
-    }
-    
-    var firstFilesItems : some View {
-        HStack(spacing: 7) {
-            
-            ForEach(recentFiles, id: \.self) { recentFile in
+            HStack(spacing: 7) {
                 
-                RecentFileCell(recentFile: recentFile.file,
-                               desination: FileDetailView(appModel: appModel,
-                                                          file: recentFile.file,
-                                                          rootFile: recentFile.rootFile,
-                                                          folderPathArray: recentFile.folderPathArray))
-            }
-        }.padding(.trailing, 17)
+                // The 3 first or all items
+                ForEach(0..<number, id: \.self) { i in
+                    RecentFileCell(recentFile: recentFiles[i].wrappedValue,
+                                   desination: FileDetailView()
+                    )
+                }
+                
+                // More button
+                if !moreRecentFilesLoaded && recentFiles.wrappedValue.count >  3 {
+                    Button {
+                        moreRecentFilesLoaded = true
+                    } label: {
+                        LoadMoreCell(fileNumber: recentFiles.wrappedValue.count - 3)
+                    }
+                }
+            }.padding(.trailing, 17)
+            
+        }.frame(height: 75)
     }
 }
 
 struct ReventFilesListView_Previews: PreviewProvider {
     static var previews: some View {
-        RecentFilesListView(recentFiles: [])
+        RecentFilesListView(recentFiles: .constant([VaultFileDB.stub()]))
+            .background(Styles.Colors.backgroundMain)
+            .environmentObject(MainAppModel.stub())
+        
     }
 }

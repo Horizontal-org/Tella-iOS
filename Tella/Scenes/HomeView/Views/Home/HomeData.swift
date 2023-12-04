@@ -12,27 +12,27 @@ import SwiftUI
 struct HomeFileItem : Hashable {
     var title : String
     var imageName : String
-    var fileType: [TellaFileType]?
+    var filterType: FilterType
 }
 
 var homeFileItems : [HomeFileItem] { return [ HomeFileItem(title: LocalizableHome.tellaFilesAllFiles.localized,
-                                                    imageName: "files.all_files",
-                                                    fileType: nil),
+                                                           imageName: "files.all_files",
+                                                           filterType: .all),
                                               HomeFileItem(title: LocalizableHome.tellaFilesImages.localized,
-                                                    imageName: "files.gallery",
-                                                    fileType: [.image]),
+                                                           imageName: "files.gallery",
+                                                           filterType: .photo),
                                               HomeFileItem(title: LocalizableHome.tellaFilesVideos.localized,
-                                                    imageName: "files.gallery",
-                                                    fileType: [.video]),
+                                                           imageName: "files.gallery",
+                                                           filterType: .video),
                                               HomeFileItem(title: LocalizableHome.tellaFilesAudio.localized,
-                                                    imageName: "files.audio",
-                                                    fileType: [.audio]),
+                                                           imageName: "files.audio",
+                                                           filterType: .audio),
                                               HomeFileItem(title: LocalizableHome.tellaFilesDocuments.localized,
-                                                    imageName: "files.documents",
-                                                    fileType: [.document]),
+                                                           imageName: "files.documents",
+                                                           filterType: .documents),
                                               HomeFileItem(title: LocalizableHome.tellaFilesOthers.localized,
-                                                    imageName: "files.others",
-                                                    fileType: [.other]),
+                                                           imageName: "files.others",
+                                                           filterType: .others),
 ]
     
 }

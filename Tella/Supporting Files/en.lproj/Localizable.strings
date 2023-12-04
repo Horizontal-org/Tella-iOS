@@ -1,4 +1,7 @@
 "AppName" = "Tella";
+
+"Common_Error" = "An error has occurred";
+
 "Onboarding_Intro_Head" = "Welcome to Tella";
 "Onboarding_Intro_Subhead" = "Document & Protect";
 "Onboarding_Intro_Action_GetStarted" = "GET STARTED";
