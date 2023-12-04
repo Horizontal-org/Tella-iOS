@@ -135,8 +135,6 @@
 		125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299E02AD0515600191CAB /* VaultFilesManager.swift */; };
 		125389F82ACAD33500CE33AB /* FileWalker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125389F72ACAD33500CE33AB /* FileWalker.swift */; };
 		125595382AFCFAA400F71DFE /* SelectQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125595372AFCFAA400F71DFE /* SelectQuery.swift */; };
-		125389F82ACAD33500CE33AB /* FileWalker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125389F72ACAD33500CE33AB /* FileWalker.swift */; };
-		12558CF62AE95CBB001D0C80 /* OfflineFeedbackToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12558CF52AE95CBB001D0C80 /* OfflineFeedbackToast.swift */; };
 		12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12567FEE2716B38F00A2D356 /* LockChoiceView.swift */; };
 		12567FF22716E33500A2D356 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12567FF02716E33500A2D356 /* OpenSans-Bold.ttf */; };
 		12567FF32716E33500A2D356 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12567FF12716E33500A2D356 /* OpenSans-Regular.ttf */; };
@@ -169,7 +167,6 @@
 		125EFACE274A834300D93DF6 /* FileActionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213C82680288B00526995 /* FileActionMenu.swift */; };
 		125F9B932AD92FC00073748C /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125F9B922AD92FC00073748C /* Feedback.swift */; };
 		125F9B952AD933AB0073748C /* FeedbackStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125F9B942AD933AB0073748C /* FeedbackStatus.swift */; };
-		125F9B982AD965800073748C /* FeedbackOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125F9B972AD965800073748C /* FeedbackOperation.swift */; };
 		125F9B9B2AD9B4770073748C /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125F9B9A2AD9B4770073748C /* DictionaryExtension.swift */; };
 		125FA6D6278DE49A004B9D06 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125FA6D5278DE49A004B9D06 /* URLExtension.swift */; };
 		125FA6D8278E2828004B9D06 /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125FA6D7278E2828004B9D06 /* DoubleExtension.swift */; };
@@ -231,6 +228,8 @@
 		128B929927D796E800E92ACF /* FolderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128B929827D796E800E92ACF /* FolderListView.swift */; };
 		128B929B27D798E200E92ACF /* ManageFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128B929A27D798E200E92ACF /* ManageFileView.swift */; };
 		128B929D27D7A08700E92ACF /* FileItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128B929C27D7A08700E92ACF /* FileItemsView.swift */; };
+		128BEB202B1E4B3D00420923 /* FeedbackOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125F9B972AD965800073748C /* FeedbackOperation.swift */; };
+		128BEB222B1E4B7600420923 /* OfflineFeedbackToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128BEB212B1E4B7600420923 /* OfflineFeedbackToast.swift */; };
 		128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C7BC32745AB0100A680B3 /* FileListViewModel.swift */; };
 		128D6E182804531B0082AB18 /* AddPhotoVideoItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E172804531B0082AB18 /* AddPhotoVideoItems.swift */; };
 		128D6E1A28045C090082AB18 /* ManageFileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E1928045C090082AB18 /* ManageFileType.swift */; };
@@ -623,6 +622,7 @@
 		128B929827D796E800E92ACF /* FolderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListView.swift; sourceTree = "<group>"; };
 		128B929A27D798E200E92ACF /* ManageFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageFileView.swift; sourceTree = "<group>"; };
 		128B929C27D7A08700E92ACF /* FileItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItemsView.swift; sourceTree = "<group>"; };
+		128BEB212B1E4B7600420923 /* OfflineFeedbackToast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OfflineFeedbackToast.swift; sourceTree = "<group>"; };
 		128C7BC32745AB0100A680B3 /* FileListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListViewModel.swift; sourceTree = "<group>"; };
 		128D6E172804531B0082AB18 /* AddPhotoVideoItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoVideoItems.swift; sourceTree = "<group>"; };
 		128D6E1928045C090082AB18 /* ManageFileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageFileType.swift; sourceTree = "<group>"; };
@@ -1606,7 +1606,7 @@
 			isa = PBXGroup;
 			children = (
 				1293F6652AD7E52800F6CFBD /* FeedbackView.swift */,
-				12558CF52AE95CBB001D0C80 /* OfflineFeedbackToast.swift */,
+				128BEB212B1E4B7600420923 /* OfflineFeedbackToast.swift */,
 			);
 			path = Feedback;
 			sourceTree = "<group>";
@@ -2425,6 +2425,7 @@
 				125A89582A965BA4009347C3 /* VaultFileDB.swift in Sources */,
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,
+				128BEB202B1E4B3D00420923 /* FeedbackOperation.swift in Sources */,
 				128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */,
 				1289B98727C5397200315FCE /* ScreenExtension.swift in Sources */,
 				1227FC8F2922BDBC002FD6FB /* CameraModel.swift in Sources */,
@@ -2438,6 +2439,7 @@
 				121C945E28FF3DCC00570EB4 /* EmptyReportView.swift in Sources */,
 				CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */,
 				1216123C28DE13AC00E6D7B6 /* DatabaseUtilities.swift in Sources */,
+				128BEB222B1E4B7600420923 /* OfflineFeedbackToast.swift in Sources */,
 				12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */,
 				128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */,
 				12CCDC5428D8E05300C3BE4E /* Project.swift in Sources */,
@@ -2473,7 +2475,7 @@
 				1289B45628B62A99005DA687 /* DeviceOrientationHelper.swift in Sources */,
 				125DD9C92796CB090053619D /* ImportFilesProgressView.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */,
-				12558CF62AE95CBB001D0C80 /* OfflineFeedbackToast.swift in Sources */,
+				12558CF62AE95CBB001D0C80 /* (null) in Sources */,
 				12B3AD8A28C0DD0200AC9AF9 /* ServerLoginView.swift in Sources */,
 				1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */,
 				128FD0B427F774FB00B24915 /* RecentFile.swift in Sources */,
