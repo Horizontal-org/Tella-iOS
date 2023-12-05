@@ -7,12 +7,13 @@
 //
 
 import Foundation
+import AVFoundation
 
 protocol AudioRecorderManager {
     func startRecording()
     func pauseRecording()
     func stopRecording(fileName:String)
-    func discardRecord()
+    func discardRecord(audioChunks:[AVURLAsset]?)
     
     func playRecord()
     func pauseRecord()

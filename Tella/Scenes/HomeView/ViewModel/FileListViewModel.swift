@@ -119,7 +119,7 @@ class FileListViewModel: ObservableObject {
         return vaultFileStatusArray.filter{$0.isSelected == true}.count == vaultFileStatusArray.count
     }
     var shouldHideViewsForGallery: Bool {
-        return (fileListType == .cameraGallery || fileListType == .recordList || filterType != .all)
+        return (fileListType == .cameraGallery || fileListType == .recordList)
     }
     
     var shouldHideAddFileButton: Bool {

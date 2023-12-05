@@ -11,6 +11,7 @@ struct SettingToggleItem: View {
     @Binding var toggle: Bool
     @EnvironmentObject var appModel : MainAppModel
      var isDisabled: Bool = false
+    var withPadding: Bool = true
     var onChange : (() -> ())?
 
     var body: some View {
@@ -34,6 +35,8 @@ struct SettingToggleItem: View {
                 .labelsHidden()
                 .disabled(isDisabled)
         }
-        .padding()
+        .if(withPadding, transform: { view in
+            view.padding()
+        })
     }
 }

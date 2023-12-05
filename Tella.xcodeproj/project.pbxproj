@@ -306,6 +306,7 @@
 		12EC94CF28AA566C0070E72B /* GeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EC94CE28AA566C0070E72B /* GeneralView.swift */; };
 		12EC94D128ABB6FA0070E72B /* SecuritySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EC94D028ABB6FA0070E72B /* SecuritySettingsView.swift */; };
 		12EC94D828ABCCED0070E72B /* SettingsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EC94D728ABCCED0070E72B /* SettingsItemView.swift */; };
+		12EF3D692B136D6F007A2910 /* UpdateQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EF3D682B136D6F007A2910 /* UpdateQuery.swift */; };
 		12F5D28D27A326EB00BF3309 /* AboutAndHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */; };
 		12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC0CE2799FF230068EC2B /* ImportProgress.swift */; };
 		12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */; };
@@ -698,6 +699,7 @@
 		12EC94CE28AA566C0070E72B /* GeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralView.swift; sourceTree = "<group>"; };
 		12EC94D028ABB6FA0070E72B /* SecuritySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsView.swift; sourceTree = "<group>"; };
 		12EC94D728ABCCED0070E72B /* SettingsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItemView.swift; sourceTree = "<group>"; };
+		12EF3D682B136D6F007A2910 /* UpdateQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateQuery.swift; sourceTree = "<group>"; };
 		12F5D28C27A326EB00BF3309 /* AboutAndHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAndHelpView.swift; sourceTree = "<group>"; };
 		12FAC0CE2799FF230068EC2B /* ImportProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportProgress.swift; sourceTree = "<group>"; };
 		12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableHome.swift; sourceTree = "<group>"; };
@@ -918,6 +920,7 @@
 				1236EE7F28E1B40200973EEA /* DataBaseHelper.swift */,
 				124190432A42F3A700E177F3 /* SQLStatementBuilder.swift */,
 				125595372AFCFAA400F71DFE /* SelectQuery.swift */,
+				12EF3D682B136D6F007A2910 /* UpdateQuery.swift */,
 				124190452A43230000E177F3 /* SQLiteStatementBuilderExtension.swift */,
 				1236EE8128E1E1D700973EEA /* DatabaseExtension.swift */,
 				1216123B28DE13AC00E6D7B6 /* DatabaseUtilities.swift */,
@@ -2448,6 +2451,7 @@
 				1290743B274CEB9B00F38A81 /* FileGridItem.swift in Sources */,
 				1289B45A28B64221005DA687 /* UIDeviceOrientationExtension.swift in Sources */,
 				121C5D7729422D6800A64123 /* DataModel.swift in Sources */,
+				12EF3D692B136D6F007A2910 /* UpdateQuery.swift in Sources */,
 				125A9E0028CE52C700C0C3C8 /* TellaDataBase.swift in Sources */,
 				12A2DB03273576D50094B856 /* AddFileView.swift in Sources */,
 				128D6E1C280480500082AB18 /* FileActionType.swift in Sources */,

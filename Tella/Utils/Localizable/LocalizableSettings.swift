@@ -96,6 +96,7 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settFeedbackExpl = "Settings_SettFeedback_Expl"
     case enableFeedbackTitle = "Settings_SettFeedback_EnableFeedback_Title"
     case enableFeedbackExpl = "Settings_SettFeedback_EnableFeedback_Expl"
+    case enableFeedbackLearnMore = "Settings_SettFeedback_EnableFeedback_LearnMore"
     case selectFeedback = "Settings_SettFeedback_Select_Feedback"
     case submit = "Settings_SettFeedback_Action_Submit"
     case offlineToast = "Settings_SettFeedback_Offline_Toast"

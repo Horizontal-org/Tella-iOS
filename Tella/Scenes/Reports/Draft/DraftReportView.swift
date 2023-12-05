@@ -284,7 +284,7 @@ struct DraftReportView: View {
             handleSuccessSavingDraft()
         case .finalized:
             handleSuccessSavingOutbox()
-        case .submissionInProgress:
+        case .submissionScheduled:
             handleSuccessSavingReportForSubmission()
         default:
             break

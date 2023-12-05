@@ -294,34 +294,37 @@ class BaseUploadOperation : Operation {
             
             guard  let fileToUpload = filesToUpload.first(where: {$0.fileId == fileId}) else {return}
             
-            let data = fileToUpload.data?.extract(size:size)
-            
-            if size != 0 {
-                if let fileUrlPath = self.mainAppModel.vaultManager.saveDataToTempFile(data: data, fileName: fileToUpload.fileName, pathExtension: fileToUpload.fileExtension) {
-                    fileToUpload.fileUrlPath = fileUrlPath
+            if let data = fileToUpload.data?.extract(size:size) {
+                
+                if size != 0 {
+                    if let fileUrlPath = self.mainAppModel.vaultManager.saveDataToTempFile(data: data, fileName: fileToUpload.fileName, pathExtension: fileToUpload.fileExtension) {
+                        fileToUpload.fileUrlPath = fileUrlPath
+                    }
+                    fileToUpload.data = data
                 }
-                fileToUpload.data = data
-            }
-            
-            let api = ReportRepository.API.putReportFile((fileToUpload))
-            
-            do {
                 
-                let request = try api.urlRequest()
-                request.curlRepresentation()
-                let fileURL = api.fileToUpload?.url
+                let api = ReportRepository.API.putReportFile((fileToUpload))
                 
-                let _ = fileURL?.startAccessingSecurityScopedResource()
-                defer { fileURL?.stopAccessingSecurityScopedResource() }
-                
-                guard let task = self.urlSession?.uploadTask(with: request, fromFile: fileURL!) else { return}
-                task.resume()
-                taskType = .uploadTask
-                
-                uploadTasksDict[task] = UploadTask(task: task, response: .progress(fileId: fileToUpload.fileId, type: .putReportFile))
-                
-            } catch {
-                
+                do {
+                    
+                    let request = try api.urlRequest()
+                    request.curlRepresentation()
+                    let fileURL = api.fileToUpload?.url
+                    
+                    let _ = fileURL?.startAccessingSecurityScopedResource()
+                    defer { fileURL?.stopAccessingSecurityScopedResource() }
+                    
+                    guard let task = self.urlSession?.uploadTask(with: request, fromFile: fileURL!) else { return}
+                    task.resume()
+                    taskType = .uploadTask
+                    
+                    uploadTasksDict[task] = UploadTask(task: task, response: .progress(fileId: fileToUpload.fileId, type: .putReportFile))
+                    
+                } catch {
+                    
+                }
+            } else {
+                self.postReportFile(fileId: fileId)
             }
             
         } else {
@@ -400,6 +403,10 @@ class BaseUploadOperation : Operation {
                         self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.uploaded)))
                         
                         postReportFile(fileId: fileId)
+                        
+                        if let fileUrlPath = filesToUpload.first(where: {$0.fileId == fileId})?.fileUrlPath {
+                            mainAppModel.vaultManager.deleteFiles(files: [fileUrlPath])
+                        }
                     }
                     uploadTasksDict[task] = nil
                     

@@ -44,6 +44,11 @@ class SettingsModel: ObservableObject, Codable {
     /// Whether feedback sharing is enabled
     @Published var shareFeedback: Bool = false
     
+    ///  should Merge Vault Files to database : 
+    ///  - on unlock it returns the saved value, if it doesn't exist it returns true,
+    ///  - on lock it returns false
+    @Published var shouldMergeVaultFilesToDb: Bool? = nil
+
     enum CodingKeys: CodingKey {
         case offlineMode
         case quickDelete
@@ -57,7 +62,7 @@ class SettingsModel: ObservableObject, Codable {
         case screenSecurity
         case preserveMetadata
         case shareFeedback
-        
+        case shouldMergeVaultFilesToDb
     }
     
     init() {
@@ -81,7 +86,7 @@ class SettingsModel: ObservableObject, Codable {
         screenSecurity = try container.decode(Bool.self, forKey: .screenSecurity)
         preserveMetadata = try container.decode(Bool.self, forKey: .preserveMetadata)
         shareFeedback = try container.decode(Bool.self, forKey: .shareFeedback)
-        
+        shouldMergeVaultFilesToDb = try container.decode(Bool.self, forKey: .shouldMergeVaultFilesToDb)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -98,6 +103,6 @@ class SettingsModel: ObservableObject, Codable {
         try container.encode(screenSecurity, forKey: .screenSecurity)
         try container.encode(preserveMetadata, forKey: .preserveMetadata)
         try container.encode(shareFeedback, forKey: .shareFeedback)
-        
+        try container.encode(shouldMergeVaultFilesToDb, forKey: .shouldMergeVaultFilesToDb)
     }
 }

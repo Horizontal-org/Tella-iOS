@@ -60,7 +60,6 @@ struct FeedbackView: View {
                         VStack(spacing: 24) {
                             
                             introductionView
-                                .frame( height: 145)
                             
                             dividerView
                             
@@ -96,13 +95,15 @@ struct FeedbackView: View {
                 
                 Image("settings.share-data")
                 
-                Spacer().frame(width: 24)
+                Spacer().frame(width: 25)
                 
                 Text(LocalizableSettings.settFeedbackExpl.localized)
                     .font(.custom(Styles.Fonts.regularFontName, size: 12))
                     .foregroundColor(.white)
-                
-            }.padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 18))
+                    .fixedSize(horizontal: false, vertical: true)
+                Spacer()
+            }
+            .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 25))
         }
     }
     
@@ -115,11 +116,20 @@ struct FeedbackView: View {
     
     var manageFeedbackView : some View {
         CardFrameView {
-            SettingToggleItem(title: LocalizableSettings.enableFeedbackTitle.localized,
-                              description: LocalizableSettings.enableFeedbackExpl.localized ,
-                              toggle: $appModel.settings.shareFeedback) {
-                feedbackViewModel.deleteCurrentDraft()
-            }
+            VStack (alignment: .leading, spacing: 0) {
+                SettingToggleItem(title: LocalizableSettings.enableFeedbackTitle.localized,
+                                  description: LocalizableSettings.enableFeedbackExpl.localized ,
+                                  toggle: $appModel.settings.shareFeedback,
+                                  withPadding: false) {
+                    feedbackViewModel.deleteCurrentDraft()
+                }
+                
+                Link(destination: URL(string:TellaUrls.feedbackURL)!) {
+                    Text(LocalizableSettings.enableFeedbackLearnMore.localized)
+                        .foregroundColor(Styles.Colors.yellow)
+                        .font(.custom(Styles.Fonts.regularFontName, size: 12))
+                }
+            }.padding()
         }
     }
     

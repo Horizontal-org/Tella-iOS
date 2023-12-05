@@ -33,7 +33,6 @@
 "LockUnlock_UnlockPin_Subhead" = "Enter your PIN to unlock Tella";
 "LockUnlock_UnlockUpdatePin_Subhead" = "Enter your PIN to change your lock method";
 "LockUnlock_UnlockUpdatePin_Error_IncorrectPIN" = "Incorrect PIN, please try again";
-"LockUnlock_UnlockPin_Action_Ok" = "சரி";
 "Home_TabBar" = "Home";
 "Home_AppBar" = "Tella";
 "Home_RecentFiles_Subhead" = "Recent files";
@@ -270,7 +269,9 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettFeedback_AppBar" = "Feedback";
 "Settings_SettFeedback_Expl" = "Tell us if you are experiencing a bug, have a request for a new feature, or have any other feedback.\n\nThis feedback is anonymous, so make sure to include contact information if you want a response from us.";
 "Settings_SettFeedback_EnableFeedback_Title" = "Enable feedback sharing";
-"Settings_SettFeedback_EnableFeedback_Expl" = "WARNING: using this feature may reveal to someone observing the network that you use Tella. Only use if you feel comfortable with this risk. Learn more.";
+"Settings_SettFeedback_EnableFeedback_Expl" = "WARNING: using this feature may reveal to someone observing the network that you use Tella. Only use if you feel comfortable with this risk.";
+"Settings_SettFeedback_EnableFeedback_LearnMore" = "Learn more.";
+
 "Settings_SettFeedback_Select_Feedback" = "Feedback";
 "Settings_SettFeedback_Action_Submit" = "Submit";
 "Settings_SettFeedback_Offline_Toast" = "You are not connected to the internet. Your feedback will be sent automatically when you are connected.";

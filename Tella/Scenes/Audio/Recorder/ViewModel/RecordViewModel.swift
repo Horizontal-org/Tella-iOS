@@ -97,9 +97,6 @@ class RecordViewModel: ObservableObject {
     private func handleSuccessAddingFiles(vaultFile:VaultFileDB) {
         self.updateResultFile(vaultFile: vaultFile)
         self.sendAutoReport(vaultFile: vaultFile)
-        DispatchQueue.main.async {
-            self.resetRecording()
-        }
     }
 
     private func sendAutoReport(vaultFile:VaultFileDB)  {
@@ -157,6 +154,11 @@ class RecordViewModel: ObservableObject {
         }
         
         self.audioBackend.stopRecording(fileName: fileName)
+        
+        DispatchQueue.main.async {
+            self.resetRecording()
+        }
+
     }
     
     private func resetRecording() {
@@ -168,7 +170,7 @@ class RecordViewModel: ObservableObject {
     }
     
     func onDiscardRecording() {
-        self.audioBackend.discardRecord()
+        self.audioBackend.discardRecord(audioChunks: nil)
         
     }
     

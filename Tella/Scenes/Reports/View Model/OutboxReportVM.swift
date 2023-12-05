@@ -183,7 +183,6 @@ class OutboxReportVM: ObservableObject {
         if isSubmissionInProgress {
             self.updateReportStatus(reportStatus: .submissionPaused)
             self.reportRepository.pause(reportId: self.reportViewModel.id)
-            //            self.isSubmissionInProgress = false
         }
         
     }
@@ -200,10 +199,11 @@ class OutboxReportVM: ObservableObject {
                             apiID: self.reportViewModel.apiID)
         
         if isSubmissionInProgress == false {
-            
-            //            self.isSubmissionInProgress = true
             self.updateReportStatus(reportStatus: .submissionInProgress)
             
+            guard let reportID = reportViewModel.id,
+                  let report = self.mainAppModel.vaultManager.tellaData?.getReport(reportId:reportID) else { return }
+
             treat(uploadResponse: self.reportRepository.sendReport(report: report, mainAppModel: mainAppModel))
         }
     }

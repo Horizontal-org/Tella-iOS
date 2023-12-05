@@ -160,7 +160,7 @@ class DraftReportVM: ObservableObject {
     }
     
     func saveReportForSubmission()  {
-        self.status = .submissionInProgress
+        self.status = .submissionScheduled
         self.saveReport()
     }
     

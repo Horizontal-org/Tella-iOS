@@ -49,6 +49,8 @@ class VaultFilesManager : VaultFilesManagerInterface {
                 
                 await filesActor.add(vaultFile: fileDetail.file)
                 
+                vaultManager?.deleteFiles(files: [fileDetail.fileUrl])
+                
                 if await filesActor.files.count == filePaths.count {
                     importProgress.finish()
                     await subject.send(.fileAdded(filesActor.files))
@@ -145,7 +147,7 @@ class VaultFilesManager : VaultFilesManagerInterface {
                                           mimeType: pathExtension.mimeType(),
                                           width: width,
                                           height: height)
-        return (VaultFileDetails(file: vaultFile, data: data))
+        return (VaultFileDetails(file: vaultFile, data: data, fileUrl: filePath))
     }
     
     func getFilesTotalSize(filePaths: [URL]) -> Int  {

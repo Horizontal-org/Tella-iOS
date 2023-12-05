@@ -5,10 +5,10 @@
 import SwiftUI
 
 struct AddFileView: View {
-
+    
     @State private var fieldContent: String = ""
     @State private var isValid = false
-
+    
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var fileListViewModel: FileListViewModel
     @EnvironmentObject var sheetManager: SheetManager
@@ -26,7 +26,7 @@ struct AddFileView: View {
                                  appModel: appModel,
                                  rootFile: $fileListViewModel.rootFile, 
                                  shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
-        }
+        }.ignoresSafeArea(.keyboard, edges: .bottom)
         .overlay(fileListViewModel.showingCamera ?
                  CameraView(sourceView: .addFile,
                             showingCameraView: $fileListViewModel.showingCamera,

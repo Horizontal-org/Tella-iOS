@@ -75,20 +75,14 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
         self.audioChunks.append(asset)
     }
 
-    func discardRecord() {
-        for asset in self.audioChunks {
+    func discardRecord(audioChunks:[AVURLAsset]?) {
+
+        for asset in audioChunks ?? self.audioChunks {
             do {
                 try FileManager.default.removeItem(at: asset.url)
             } catch {
                 
             }
-        }
-        guard let currentFileURL else { return  }
-        
-        do {
-            try FileManager.default.removeItem(at: currentFileURL)
-        } catch {
-            
         }
     }
     
@@ -132,8 +126,9 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
         let composition = AVMutableComposition()
         
         var insertAt = CMTimeRange(start: CMTime.zero, end: CMTime.zero)
-        
-        for asset in self.audioChunks {
+        let audioChunks = self.audioChunks
+        self.audioChunks = [AVURLAsset]()
+        for asset in audioChunks {
             let assetTimeRange = CMTimeRange(
                 start: CMTime.zero,
                 end:   asset.duration)
@@ -174,19 +169,15 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
                 self.currentFileURL = exportSession?.outputURL
                 
                 if let url = exportSession?.outputURL {
-//                    self.mainAppModel.add(audioFilePath: url, to: self.rootFile, type: .audio, fileName: fileName)
                     self.fileURL.send(url)
-
                 }
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                    self.discardRecord()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
+                    self.discardRecord(audioChunks: audioChunks)
                 })
-                
-                self.audioChunks = [AVURLAsset]()
+
                 exportSession?.cancelExport()
-                
-                
+
             case .failed?: break
             case .cancelled?: break
             case .none: break

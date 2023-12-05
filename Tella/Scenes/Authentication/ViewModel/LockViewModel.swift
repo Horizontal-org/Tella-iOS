@@ -43,7 +43,7 @@ class LockViewModel: ObservableObject {
         PinKeyboardModel(text: "9",  type: .number),
         PinKeyboardModel(imageName:"lock.backspace", type: .delete),
         PinKeyboardModel(text: "0",  type: .number),
-        PinKeyboardModel(text: LocalizableLock.unlockPinActionOk.localized, type: .done)] }()
+        PinKeyboardModel(text: "OK", type: .done)] }()
     
     var shouldShowErrorMessage : Bool {
         return password != confirmPassword

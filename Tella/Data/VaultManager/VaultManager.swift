@@ -151,7 +151,7 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     
     func rootIsExist() -> Bool {
         let rootFileURL = containerURL(for: self.rootFileName)
-        return fileManager.fileExists(filePath: rootFileURL.absoluteString)
+        return fileManager.fileExists(filePath: rootFileURL.getPath())
     }
     
     func deleteFiles(files: [URL]) {
