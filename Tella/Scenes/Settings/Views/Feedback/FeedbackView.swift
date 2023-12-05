@@ -95,14 +95,15 @@ struct FeedbackView: View {
                 
                 Image("settings.share-data")
                 
-                Spacer().frame(width: 24)
+                Spacer().frame(width: 25)
                 
                 Text(LocalizableSettings.settFeedbackExpl.localized)
                     .font(.custom(Styles.Fonts.regularFontName, size: 12))
                     .foregroundColor(.white)
                     .fixedSize(horizontal: false, vertical: true)
-                
-            }.padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 18))
+                Spacer()
+            }
+            .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 25))
         }
     }
     
