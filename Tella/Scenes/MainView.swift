@@ -25,8 +25,7 @@ struct MainView: View  {
                      backgroundColor: sheetManager.backgroundColor,
                      isShown: $sheetManager.isPresented) {
                 sheetManager.content
-            } 
-
+            }
             
             securityScreenView
         }.navigationBarHidden(false)
