@@ -91,6 +91,12 @@ class UploadService: NSObject {
     }
     
     func addAutoUpload(file: VaultFileDB)  {
+        
+        let nonAutoUploadOperation = activeOperations.first(where: {$0.report?.currentUpload == true && $0.type != .autoUpload})
+        if let nonAutoUploadOperation {
+            cancelSendingReport(reportId: nonAutoUploadOperation.report?.id)
+        }
+
         if let operation: AutoUpload = activeOperations.first(where:{$0.type == .autoUpload }) as? AutoUpload {
             operation.addFile(file:file)
         }

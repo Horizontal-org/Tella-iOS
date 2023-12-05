@@ -13,5 +13,5 @@ struct FileDetails {
 struct VaultFileDetails {
     var file : VaultFileDB
     var data : Data
-    
+    var fileUrl : URL
 }
