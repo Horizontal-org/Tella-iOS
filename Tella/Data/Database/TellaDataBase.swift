@@ -584,7 +584,7 @@ class TellaDataBase : DataBase {
             let valuesToUpdate = [KeyValue(key: D.cVaultFileInstanceId, value: newID)]
             
             if !vaultFileInstanceIDs.isEmpty {
-                let inCondition = [KeyValues(key: D.cReportInstanceId, value: vaultFileInstanceIDs)]
+                let inCondition = [KeyValues(key: D.cId, value: vaultFileInstanceIDs)]
                 try statementBuilder.update(tableName: D.tReportInstanceVaultFile,
                                             valuesToUpdate: valuesToUpdate,
                                             inCondition: inCondition)
