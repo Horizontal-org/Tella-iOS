@@ -8,33 +8,31 @@ import UniformTypeIdentifiers
 struct HomeView: View {
     
     @EnvironmentObject var appModel: MainAppModel
-    @StateObject var viewModel : HomeViewModel
-    @StateObject var serversViewModel: ServersViewModel
     @EnvironmentObject private var appViewState: AppViewState
+    @StateObject var viewModel : HomeViewModel
     
     init(appModel: MainAppModel) {
         _viewModel = StateObject(wrappedValue: HomeViewModel(appModel: appModel))
-        _serversViewModel = StateObject(wrappedValue: ServersViewModel(mainAppModel: appModel))
     }
     
     var body: some View {
         
         ContainerView {
-          
+            
             VStack() {
                 
-                     
+                
                 Spacer()
                     .frame( height: !viewModel.serverDataItemArray.isEmpty ? 16 : 0 )
                 ConnectionsView()
                 
                 Spacer()
-                    .frame( height: (!viewModel.serverDataItemArray.isEmpty && viewModel.getFiles().count > 0) ? 16 : 0 )
-
+                    .frame( height: (!viewModel.serverDataItemArray.isEmpty && viewModel.recentFiles.count > 0) ? 16 : 0 )
+                
                 if appModel.settings.showRecentFiles {
                     Spacer()
-                        .frame( height: viewModel.getFiles().count > 0 ? 16 : 0 )
-                    RecentFilesListView(recentFiles: viewModel.getFiles())
+                        .frame( height: viewModel.recentFiles.count > 0 ? 16 : 0 )
+                    RecentFilesListView(recentFiles: $viewModel.recentFiles)
                 }
                 
                 Spacer()
@@ -46,12 +44,12 @@ struct HomeView: View {
                     SwipeToActionView(completion: {
                         if(appModel.settings.deleteVault) {
                             // removes files and folders
-                            appModel.removeAllFiles()
+                            viewModel.deleteAllVaultFiles()
                         }
                         
                         if(appModel.settings.deleteServerSettings) {
                             // remove servers connections
-                            serversViewModel.deleteAllServersConnection()
+                            viewModel.deleteAllServersConnection()
                         }
                         
                         appViewState.resetToUnlock()
@@ -59,13 +57,15 @@ struct HomeView: View {
                 }
             }
         }
+        .onAppear{
+            viewModel.getFiles()
+        }
         .environmentObject(viewModel)
         .navigationBarTitle(LocalizableHome.appBar.localized, displayMode: .inline)
     }
 }
 
 struct HomeView_Previews: PreviewProvider {
-    
     static var previews: some View {
         HomeView(appModel: MainAppModel.stub())
     }

@@ -6,242 +6,57 @@ import UIKit
 import SwiftUI
 import Combine
 
-protocol VaultManagerInterface {
-    
-    var containerPath: String { get }
-    
-    func load(name: String) -> VaultFile?
-    func load(file: VaultFile) -> Data?
-    func load(files vaultFiles: [VaultFile]) -> [URL]
-    func loadFilesInfos(file vaultFile: VaultFile, offsetSize:Int ) -> VaultFileInfo?
-    func save(_ data: Data, vaultFile: VaultFile, parent: VaultFile?) -> Bool?
-    func save<T: Datable>(_ object: T, vaultFile: VaultFile, parent: VaultFile? ) -> Bool?
-    func createNewFolder(name: String, parent: VaultFile?, folderPathArray : [VaultFile])
-    func rename(file : VaultFile, parent: VaultFile?)
-    func delete(files: [VaultFile], parent: VaultFile?)
-    func removeAllFiles()
-    func saveDataToTempFile(data: Data, pathExtension:String) -> URL?
-    func saveDataToTempFile(data: Data?, fileName: String, pathExtension:String) -> URL?
-}
+class VaultManager : VaultManagerInterface, ObservableObject{
 
-class VaultManager: VaultManagerInterface, ObservableObject {
-    
-    func rename(file: VaultFile, parent: VaultFile?) {
-        save(file: root)
-    }
-
-    private let encoder = JSONEncoder()
-    private let decoder = JSONDecoder()
-    
     private let cryptoManager: CryptoManager = CryptoManager.shared
     private let fileManager: FileManagerInterface = DefaultFileManager()
     private let rootFileName: String = "root"
-    private var cancellable: Set<AnyCancellable> = []
+    private let containerPath: String = "Containers"
     
-    internal let containerPath: String = "Containers"
+    var cancellable: Set<AnyCancellable> = []
     
-    @Published var root: VaultFile?
     @Published var tellaData : TellaData?
     
-    @Published var progress :  ImportProgress = ImportProgress()
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
+    
+    var onSuccessLock = PassthroughSubject<String,Never>()
+    
+    var key: String? {
+        return cryptoManager.metaPrivateKey?.getString()
+    }
 
-    func initialize(with key:String?) {
-        
-        self.tellaData = TellaData(key: key)
-        
-        root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
-        
-        do {
-            try FileManager.default.createDirectory(at: containerURL, withIntermediateDirectories: true, attributes: nil)
-        } catch let error {
-            debugLog(error)
-        }
-    }
-    
-    func resetData() {
-        self.tellaData = nil
-        self.root = nil
-    }
-    
-    func initFiles() -> AnyPublisher<Bool,Never> {
-        return Deferred {
-            
-            Future <Bool,Never> {  [weak self] promise in
-                guard let self = self else { return }
-                Task {
-                    self.initRoot()
-                    self.root?.updateIds()
-                    await self.recoverFiles()
-                    self.save(file: self.root)
-                    self.clearTmpDirectory()
-                    promise(.success(true))
-                }
-            }
-        }.eraseToAnyPublisher()
-    }
-    
-    func initRoot() {
-        if let root = self.load(name: self.rootFileName) {
-            self.root = root
-        } else {
-            self.save(file: self.root)
-        }
-    }
-    
-    func importFile(files: [URL], to parentFolder: VaultFile?, type: TellaFileType, folderPathArray : [VaultFile]) async throws -> [VaultFile] {
-        //        Task {
-        do{
-            let filesInfo = try await self.getFilesInfo(files: files, folderPathArray: folderPathArray)
-            
-            self.progress.start(totalFiles: files.count, totalSize: filesInfo.1)
-            
-            let queue = DispatchQueue.global(qos: .background)
-            
-            var backgroundWorkItem : DispatchWorkItem?
-            
-            backgroundWorkItem = DispatchWorkItem { [weak self]  in
-                for (index, item) in filesInfo.0.enumerated() {
-                    if (backgroundWorkItem?.isCancelled)! {
-                        break
-                    }
-                    self?.progress.currentFile = index
-                    self?.importFileAndEncrypt(data: item.0, vaultFile: item.1, parentFolder: parentFolder, type: type, folderPathArray: folderPathArray)
-                }
-                if let root = self?.root {
-                    self?.save(file: root)
-                    
-                }
-                self?.progress.finish()
-                
-                backgroundWorkItem?.cancel()
-                backgroundWorkItem = nil
-            }
-            
-            queue.async(execute: backgroundWorkItem!)
-            
-            self.shouldCancelImportAndEncryption.sink(receiveValue: { [weak self] value in
-                if value {
-                    backgroundWorkItem?.cancel()
-                    self?.progress.stop()
-                    self?.shouldCancelImportAndEncryption.value = false
-                }
-                
-            }).store(in: &self.cancellable)
-            
-            return filesInfo.0.compactMap{$0.1}
-        }
-        catch {
-            return []
-            
-        }
-        //        }
-    }
-    
-    func importFile(audioFilePath: URL, to parentFolder: VaultFile?, type: TellaFileType, fileName: String, folderPathArray : [VaultFile]) async throws -> VaultFile? {
-        
-        debugLog("\(audioFilePath)", space: .files)
-        
-        let _ = audioFilePath.startAccessingSecurityScopedResource()
-        defer { audioFilePath.stopAccessingSecurityScopedResource() }
-        do {
-            
-            let data = try Data(contentsOf: audioFilePath)
-            
-            let fileExtension = audioFilePath.pathExtension
-            
-            let path = audioFilePath.path
-            
-            let duration =  audioFilePath.getDuration()
-            let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
-            let containerName = UUID().uuidString
-            let pathArray = folderPathArray.compactMap{$0.containerName}
-            
-            let vaultFile = VaultFile(type: audioFilePath.fileType,
-                                      fileName: fileName,
-                                      containerName: containerName,
-                                      files: nil,
-                                      thumbnail: nil,
-                                      fileExtension: fileExtension,
-                                      size:size,
-                                      resolution: nil,
-                                      duration: duration,
-                                      pathArray: pathArray)
-            
-            
-            
-            if let _ = save(data, vaultFile: vaultFile, parent: parentFolder) {
-                save(file: root)
-            }
-            
-            return vaultFile
-        } catch let error {
-            debugLog(error)
+    func save(_ data: Data, vaultFileId: String?) -> Bool? {
+        guard let vaultFileId else { return false }
+        debugLog("\(data.count); \(vaultFileId) ", space: .files)
+        let fileURL = containerURL(for: vaultFileId)
+        guard let encrypted = cryptoManager.encrypt(data),
+              fileManager.createFile(atPath: fileURL, contents: encrypted) else {
+            debugLog("encryption failed \(String(describing: vaultFileId))", level: .debug, space: .crypto)
             return nil
         }
-        
+        return true
     }
     
-    private func importFileAndEncrypt(data : Data, vaultFile:VaultFile, parentFolder :VaultFile?, type: TellaFileType, folderPathArray : [VaultFile]?) {
+    func loadFileData(fileName: String?) -> Data? {
+        guard let fileId = fileName else { return nil}
         
-        if let _ = self.save(data, vaultFile: vaultFile, parent: parentFolder) {
-        }
-    }
-    
-    func createNewFolder(name: String, parent: VaultFile?, folderPathArray : [VaultFile])  {
-        debugLog("\(name)", space: .files)
-        let pathArray = folderPathArray.compactMap{$0.containerName}
-        let vaultFile = VaultFile(type: .folder, fileName: name, files: nil, pathArray: pathArray)
-        parent?.add(file: vaultFile)
-        save(file: root)
-    }
-    
-    func move(files: [VaultFile], from originalParentFolder: VaultFile?, to newParentFolder: VaultFile?) {
-        debugLog("moving files")
+        debugLog("\(fileId)", space: .files)
         
-        files.forEach { file in
-            debugLog("\(file.fileName)", space: .files)
-            newParentFolder?.add(file: file)
-            originalParentFolder?.remove(file: file)
-        }
-        save(file: root)
-    }
-    
-    func load(name: String) -> VaultFile? {
-        debugLog("\(name)", space: .files)
+        let fileURL = containerURL(for: fileId)
         
-        let fileURL = containerURL(for: name)
-        debugLog("loading \(fileURL)")
-        do {
-            let encryptedData = try Data(contentsOf: fileURL)
-            if let decrypted = cryptoManager.decrypt(encryptedData) {
-                return try decoder.decode(VaultFile.self, from: decrypted)
-            } else {
-                debugLog("file load failed \(name)")
-            }
-        } catch let error {
-            debugLog(error)
-        }
-        return nil
-    }
-    
-    func load(file vaultFile: VaultFile) -> Data? {
-        debugLog("\(vaultFile)", space: .files)
-        
-        let fileURL = containerURL(for: vaultFile.containerName)
         guard let encryptedData = fileManager.contents(atPath: fileURL) else {
             return nil
         }
         return cryptoManager.decrypt(encryptedData)
     }
     
-    func loadVideo(file vaultFile: VaultFile) -> URL? {
+    func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL? {
         
-        let videoData = self.load(file: vaultFile)
+        let data = self.loadFileData(fileName: vaultFile.id)
         
-        let tmpFileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(vaultFile.fileName).appendingPathExtension(vaultFile.fileExtension)
+        let tmpFileURL = createTempFileURL(fileName: vaultFile.name, pathExtension: vaultFile.fileExtension)
         
-        guard (fileManager.createFile(atPath: tmpFileURL, contents: videoData))
+        guard (fileManager.createFile(atPath: tmpFileURL, contents: data))
                 
         else {
             return nil
@@ -249,34 +64,27 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         return tmpFileURL
     }
     
-    
-    func load(files vaultFiles: [VaultFile]) -> [URL] {
+    func loadVaultFilesToURL(files vaultFiles: [VaultFileDB]) -> [URL] {
         
         var tmpUrlArray : [URL] = []
         
         vaultFiles.forEach { vaultFile in
-            if vaultFile.type != .folder {
-                let data = self.load(file: vaultFile)
-                
-                let tmpFileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(vaultFile.fileName).appendingPathExtension(vaultFile.fileExtension)
-                
-                if fileManager.createFile(atPath: tmpFileURL, contents: data) {
-                    tmpUrlArray.append(tmpFileURL)
-                }
+            if vaultFile.type != .directory {
+                guard let url = self.loadVaultFileToURL(file: vaultFile) else { return }
+                tmpUrlArray.append(url)
             }
         }
         return tmpUrlArray
     }
     
-    
-    func loadFilesInfos(file vaultFile: VaultFile, offsetSize:Int ) -> VaultFileInfo? {
+    func loadFilesInfos(file vaultFile: VaultFileDB, offsetSize:Int ) -> VaultFileInfo? {
         
-        if vaultFile.type != .folder {
-            guard var data = self.load(file: vaultFile) else {return nil }
+        if vaultFile.type != .directory {
+            guard var data = self.loadFileData(fileName: vaultFile.id) else {return nil }
             
             guard let extractedData = (data.extract(size: offsetSize)) else {return nil }
             
-            let tmpFileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(vaultFile.fileName).appendingPathExtension(vaultFile.fileExtension)
+            let tmpFileURL = createTempFileURL(fileName: vaultFile.name, pathExtension: vaultFile.fileExtension)
             
             if fileManager.createFile(atPath: tmpFileURL, contents: extractedData) {
                 return VaultFileInfo(vaultFile: vaultFile,data: extractedData,url: tmpFileURL)
@@ -285,45 +93,11 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         return nil
     }
     
-    func save(file vaultFile: VaultFile?) {
-        guard let vaultFile else {return}
-        debugLog("\(vaultFile)", space: .files)
-        
-        let fileURL = containerURL(for: vaultFile.containerName)
-        do {
-            let encodedData = try encoder.encode(vaultFile)
-            if let encrypted = cryptoManager.encrypt(encodedData) {
-                fileManager.createFile(atPath: fileURL, contents: encrypted)
-            } else {
-                debugLog("encryption failed")
-            }
-        } catch let error {
-            debugLog("\(error)")
-        }
-        debugLog("saved: \(fileURL) \(vaultFile.containerName)")
+    func saveDataToTempFile(data: Data?, pathExtension: String) -> URL? {
+        self.saveDataToTempFile(data: data, fileName: nil, pathExtension: pathExtension)
     }
     
-    func save(_ data: Data, vaultFile: VaultFile, parent: VaultFile?) -> Bool? {
-        debugLog("\(data.count); \(vaultFile.type); \(vaultFile.fileName); \nparent:\(String(describing: parent))", space: .files)
-        
-        let fileURL = containerURL(for: vaultFile.containerName)
-        guard let encrypted = cryptoManager.encrypt(data),
-              fileManager.createFile(atPath: fileURL, contents: encrypted) else {
-            debugLog("encryption failed \(String(describing: vaultFile.fileName))", level: .debug, space: .crypto)
-            return nil
-        }
-        parent?.add(file: vaultFile)
-        return true
-    }
-    
-    func save<T: Datable>(_ object: T, vaultFile: VaultFile, parent: VaultFile? ) -> Bool? {
-        guard let data = object.data else {
-            return nil
-        }
-        return save(data, vaultFile: vaultFile, parent: parent)
-    }
-    
-    func saveDataToTempFile(data: Data, pathExtension: String) -> URL? {
+    func saveDataToTempFile(data: Data?, fileName: String?, pathExtension: String) -> URL? {
         let tmpFileURL = self.createTempFileURL(pathExtension: pathExtension)
         guard (fileManager.createFile(atPath: tmpFileURL, contents: data))
                 
@@ -332,57 +106,57 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         }
         return tmpFileURL
     }
-
+    
     func createTempFileURL(pathExtension: String) -> URL {
-        return URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent("\(Int(Date().timeIntervalSince1970))").appendingPathExtension(pathExtension)
+        self.createTempFileURL(fileName: nil, pathExtension: pathExtension)
     }
     
-    func saveDataToTempFile(data: Data?, fileName: String, pathExtension:String) -> URL? {
-        let tmpFileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(fileName).appendingPathExtension(pathExtension)
-        
-        guard (fileManager.createFile(atPath: tmpFileURL, contents: data))
-                
-        else {
-            return nil
-        }
-        return tmpFileURL
+    func createTempFileURL(fileName: String?, pathExtension: String) -> URL {
+        let fileName = fileName ?? "\(Int(Date().timeIntervalSince1970))"
+        return URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(fileName).appendingPathExtension(pathExtension)
     }
     
-    func removeAllFiles() {
-        guard let root else { return }
+    
+    func deleteAllVaultFilesFromDevice() {
         debugLog("", space: .files)
-        delete(files: root.files, parent: root)
-        self.root = VaultFile.rootFile(fileName: "..", containerName: rootFileName)
-        save(file: root)
+        fileManager.removeItem(at: containerURL)
     }
     
-    func delete(files: [VaultFile], parent: VaultFile?) {
-        for file in files {
-            debugLog("\(file)", space: .files)
-            if file.type == .folder {
-                if file.files.count > 0 {
-                    delete(files: file.files, parent: file)
-                }
-                parent?.remove(file: file)
-            } else {
-                delete(file: file, parent: parent)
-            }
+    func deleteVaultFile(filesIds: [String]) {
+        filesIds.forEach { fileId in
+            debugLog("\(fileId)", space: .files)
+            let fileURL = containerURL(for: fileId)
+            fileManager.removeItem(at: fileURL)
         }
-        save(file: root)
-    }
-    
-    func delete(file: VaultFile, parent: VaultFile?) {
-        parent?.remove(file: file)
-        
-        let fileURL = containerURL(for: file.containerName)
-        fileManager.removeItem(at: fileURL)
     }
     
     func clearTmpDirectory() {
-        let tmpDirectory =  fileManager.contentsOfDirectory(atPath: NSTemporaryDirectory())
-        tmpDirectory.forEach {[unowned self] file in
-            let path = String.init(format: "%@%@", NSTemporaryDirectory(), file)
-            fileManager.removeItem(at: path)
+        
+        fileManager.removeContainerDirectory(directoryPath: NSTemporaryDirectory())
+    }
+    
+    func deleteContainerDirectory() {
+        
+        let urlPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+        
+        let fileName = fileManager.contentsOfDirectory(atPath: urlPath)
+        
+        fileManager.removeContainerDirectory(fileName: fileName, paths: urlPath)
+    }
+    
+    func deleteRootFile() {
+        let rootFileURL = containerURL(for: self.rootFileName)
+        fileManager.removeItem(at: rootFileURL)
+    }
+    
+    func rootIsExist() -> Bool {
+        let rootFileURL = containerURL(for: self.rootFileName)
+        return fileManager.fileExists(filePath: rootFileURL.getPath())
+    }
+    
+    func deleteFiles(files: [URL]) {
+        files.forEach { url in
+            fileManager.removeItem(at: url)
         }
     }
     
@@ -397,85 +171,35 @@ class VaultManager: VaultManagerInterface, ObservableObject {
         return url
     }
     
-    func deleteContainerDirectory() {
-
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
-
-        let fileName = fileManager.contentsOfDirectory(atPath: paths)
-
-        fileManager.removeContainerDirectory(fileName: fileName, paths: paths)
-    }
-    
-    private func getFilesInfo(files: [URL], folderPathArray:[VaultFile]) async throws ->([(Data,VaultFile)], Double)  {
-        
-        var totalSizeArray : [Double] = []
-        var vaultFileArray : [(Data,VaultFile)] = []
-        
-        try await withThrowingTaskGroup(of: (Data,VaultFile).self, body: { group in
-            
-            for filePath in files {
-                group.addTask {
-                    
-                    let _ = filePath.startAccessingSecurityScopedResource()
-                    defer { filePath.stopAccessingSecurityScopedResource() }
-                    
-                    let data = try Data(contentsOf: filePath)
-                    async let thumnail = await filePath.thumbnail()
-                    let fileName = filePath.deletingPathExtension().lastPathComponent
-                    let fileExtension = filePath.pathExtension
-                    let path = filePath.path
-                    let resolution = filePath.resolution()
-                    let duration =  filePath.getDuration()
-                    let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
-                    let containerName = UUID().uuidString
-                    let pathArray = folderPathArray.compactMap({$0.containerName})
-                    
-                    let vaultFile = await VaultFile(type: filePath.fileType,
-                                                    fileName: fileName,
-                                                    containerName: containerName,
-                                                    files: nil,
-                                                    thumbnail: thumnail,
-                                                    fileExtension: fileExtension,
-                                                    size:size,
-                                                    resolution: resolution,
-                                                    duration: duration,
-                                                    pathArray: pathArray)
-                    return (data,vaultFile)
-                }
-            }
-            for try await image in group {
-                vaultFileArray += [image]
-            }
-        })
-        
-        totalSizeArray = vaultFileArray.compactMap{Double($0.1.size)}
-        
-        let size = totalSizeArray.reduce(0.0, +)
-        
-        return (vaultFileArray,size)
-    }
 }
 
-///  VaultManager extension contains the methods used for authentication
+//  VaultManager extension contains the methods used for authentication
 
 extension VaultManager {
     
     func keysInitialized() -> Bool {
         return self.cryptoManager.keysInitialized()
     }
-    
-    func login(password:String?) -> Bool {
-        do {
-            guard let key = try self.recoverKey(password: password)?.getString() else { return false}
-            self.initialize(with: key)
-            return true
-        }
-        catch let error {
-            debugLog(error)
-            return false
-        }
+
+    func login(password:String?) -> AnyPublisher<Bool,Never> {
+
+        return Deferred {
+            Future <Bool,Never> {  [weak self] promise in
+                guard let self = self else { return }
+
+                do {
+                    guard let _ = try self.recoverKey(password: password)?.getString() else { return promise(.success(false))  }
+                    promise(.success(true))
+                }
+                catch let error {
+                    debugLog(error)
+                    promise(.success(false))
+
+                }
+            }
+        }.eraseToAnyPublisher()
     }
-    
+
     private func recoverKey( password:String? = nil) throws -> SecKey?  {
         return cryptoManager.recoverKey(.PRIVATE, password: password)
     }
@@ -483,8 +207,8 @@ extension VaultManager {
     func initKeys(_ type: PasswordTypeEnum, password:String) {
         do {
             try cryptoManager.initKeys(type, password: password)
-            let key = try self.recoverKey(password: password)?.getString()
-            self.initialize(with: key)
+            guard let key = try self.recoverKey(password: password)?.getString() else { return }
+            onSuccessLock.send(key)
         }
         catch let error {
             debugLog(error)
@@ -504,114 +228,60 @@ extension VaultManager {
     func getPasswordType() -> PasswordTypeEnum {
         return cryptoManager.passwordType
     }
-
+    
+     func initialize(with key:String?) throws {
+        self.tellaData = try TellaData(key: key)
+        fileManager.createDirectory(atPath: containerURL)
+    }
 }
 
-//  VaultManager extension contains the methods used to restore files
+//  VaultManager extension contains the methods used for merging root files to vault db
 
 extension VaultManager {
     
-    func load(fileURL: URL) -> Data? {
-        debugLog("\(fileURL)", space: .files)
-        
-        guard let encryptedData = fileManager.contents(atPath: fileURL) else {
-            return nil
-        }
-        return cryptoManager.decrypt(encryptedData)
-    }
-    
-    func recoverFiles() async {
-        let filesToRestore = self.getFilesToRestore()
-        await self.recoverFiles(filesToRestore: filesToRestore)
-    }
-    
-    func getFilesToRestore() -> [String] {
-        var vaultFileResult : [VaultFile] = []
-        self.root?.getAllFiles(vaultFileResult: &vaultFileResult)
-        let rootContainerName = vaultFileResult.compactMap{$0.containerName }
-        
-        // return all the content of directory
-        let containerURLContent =  fileManager.contentsOfDirectory(atPath: containerURL)
-        let allContainerName = containerURLContent.compactMap{$0.lastPathComponent }
-        
-        let rootContainerNameSet:Set<String> = Set(rootContainerName)
-        var allContainerNameSet:Set<String> = Set(allContainerName)
-        
-        allContainerNameSet.subtract(rootContainerNameSet)
-        
-        return Array(allContainerNameSet)
-        
-        
-    }
-    
-    func saveRetoredFilesToTempFiles(fileToRestore:String) -> URL? {
-        
-        let fileURL = containerURL(for: fileToRestore)
-        
-        if fileToRestore != self.rootFileName {
-            
-            guard let fileData = load(fileURL: fileURL) , var fileExtension = fileData.fileExtension(vaultManager: self) else { return nil}
-            
-            if fileExtension == FileType.zip.rawValue {
-                guard let fileTmpPath = saveDataToTempFile(data: fileData, pathExtension: fileExtension) else { return nil}
-                guard let officeExtension =  fileTmpPath.getOfficeExtension() else { return nil }
-                fileExtension = officeExtension
+    func getFilesToMergeToDatabase() -> AnyPublisher<[VaultFileDetailsToMerge],Never> {
+        return Deferred {
+            Future <[VaultFileDetailsToMerge],Never> {  [weak self] promise in
+                guard let self = self else { return }
+                promise(.success(self.getFilesInRoot()))
             }
-            let fileName = fileExtension.getRecoveredFileName()
-            return saveDataToTempFile(data: fileData, fileName: fileName, pathExtension: fileExtension)
-        }
-        
-        return nil
+        }.eraseToAnyPublisher()
     }
     
-    func recoverFiles(filesToRestore: [String]) async {
+    func getFilesInRoot() -> [VaultFileDetailsToMerge] {
+        guard let root = self.load(name: self.rootFileName) else {return []}
+        var vaultFileResult : [VaultFileDetailsToMerge] = []
+        getFiles(root: root, vaultFileResult: &vaultFileResult)
+        return vaultFileResult
+    }
+    
+    func getFiles(root: VaultFile, vaultFileResult: inout [VaultFileDetailsToMerge], parentId: String? = nil) {
+        
+        root.files.forEach { file in
+            
+            let vaultFile = VaultFileDB(vaultFile:file)
+            vaultFileResult.append(VaultFileDetailsToMerge(vaultFileDB: vaultFile,parentId: parentId,oldId: file.id))
+            if file.type == .folder {
+                getFiles(root: file, vaultFileResult: &vaultFileResult, parentId: file.containerName)
+            }
+        }
+    }
+    
+    // To decrypt root
+    
+    private func load(name: String) -> VaultFile? {
+        debugLog("\(name)", space: .files)
+        
+        let decoder = JSONDecoder()
+        
+        guard let decryptedData = self.loadFileData(fileName: name) else { return nil}
         
         do {
-            for fileToRestore in filesToRestore {
-                
-                guard let fileDetail = try await self.getFilesInfos(fileToRestore: fileToRestore) else {continue}
-                
-                autoreleasepool {
-                    
-                    self.importFileAndEncrypt(data: fileDetail.data, vaultFile: fileDetail.file, parentFolder: self.root, type: .image, folderPathArray: [])
-                    
-                    self.fileManager.removeItem(at: fileDetail.fileUrl)
-                }
-            }
+            return try decoder.decode(VaultFile.self, from: decryptedData)
+            
+        } catch let error {
+            debugLog(error)
         }
-        catch {
-            debugLog("Failed to get files infos")
-        }
-    }
-    
-    func getFilesInfos(fileToRestore: String) async throws -> FileDetails?  {
-        
-        guard  let filePath =  self.saveRetoredFilesToTempFiles(fileToRestore: fileToRestore) else { return nil}
-        
-        let _ = filePath.startAccessingSecurityScopedResource()
-        defer { filePath.stopAccessingSecurityScopedResource() }
-        
-        let data = try Data(contentsOf: filePath)
-        
-        async let thumnail = await filePath.thumbnail()
-        let fileName = filePath.deletingPathExtension().lastPathComponent
-        let path = filePath.path
-        let pathExtension = filePath.pathExtension
-        let resolution = filePath.resolution()
-        let duration =  filePath.getDuration()
-        let size = FileManager.default.sizeOfFile(atPath: path) ?? 0
-        let pathArray = [""]
-        let vaultFile = await VaultFile(type: filePath.fileType,
-                                        fileName: fileName,
-                                        containerName: fileToRestore,
-                                        files: nil,
-                                        thumbnail: thumnail,
-                                        fileExtension: pathExtension,
-                                        size:size,
-                                        resolution: resolution,
-                                        duration: duration,
-                                        pathArray: pathArray)
-        
-        return (FileDetails(file: vaultFile, data: data, fileUrl: filePath))
+        return nil
     }
 }

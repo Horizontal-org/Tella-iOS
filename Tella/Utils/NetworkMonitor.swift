@@ -20,8 +20,8 @@ class NetworkMonitor: ObservableObject {
         monitor.pathUpdateHandler = { path in
             DispatchQueue.main.async {
                 let newStatus =  path.status == .satisfied
-                self.connectionDidChange.send(newStatus)
                 self.isConnected = newStatus
+                self.connectionDidChange.send(newStatus)
             }
         }
         monitor.start(queue: queue)

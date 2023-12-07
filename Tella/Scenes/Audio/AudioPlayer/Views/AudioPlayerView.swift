@@ -9,7 +9,7 @@ struct AudioPlayerView: View {
     @StateObject var viewModel = AudioPlayerViewModel()
     @EnvironmentObject private var homeViewModel: MainAppModel
     
-    var vaultFile : VaultFile
+    var vaultFile : VaultFileDB
     
     var body: some View {
         
@@ -32,7 +32,7 @@ struct AudioPlayerView: View {
             }
         }
         .onAppear {
-            self.viewModel.audioPlayerManager.currentAudioData = homeViewModel.vaultManager.load(file: vaultFile)
+            self.viewModel.audioPlayerManager.currentAudioData = homeViewModel.vaultManager.loadFileData(fileName: vaultFile.id)
             self.viewModel.audioPlayerManager.initPlayer()
         }
         .onDisappear {
@@ -141,7 +141,7 @@ struct AudioPlayerView: View {
 
 struct AudioPlayerView_Previews: PreviewProvider {
     static var previews: some View {
-        AudioPlayerView(vaultFile: VaultFile(type: .folder, fileName: "folder", pathArray: []))
+        AudioPlayerView(vaultFile: VaultFileDB.stub())
     }
 }
 

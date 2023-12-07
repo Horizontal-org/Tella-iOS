@@ -71,7 +71,6 @@ struct MainView: View  {
             
             if appModel.selectedTab == .mic {
                 RecordView(appModel: appModel,
-                           rootFile: appModel.vaultManager.root,
                            sourceView: .tab,
                            showingRecoredrView: $showingRecoredrView)
             }
@@ -79,8 +78,7 @@ struct MainView: View  {
             if appModel.selectedTab == .camera {
                 CameraView(sourceView: .tab,
                            showingCameraView: $appViewState.shouldHidePresentedView,
-                           mainAppModel: appModel,
-                           rootFile: appModel.vaultManager.root)
+                           mainAppModel: appModel)
             }
         }
     }

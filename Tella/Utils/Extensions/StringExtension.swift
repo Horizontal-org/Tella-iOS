@@ -4,6 +4,9 @@
 //
 
 import Foundation
+import MobileCoreServices
+import UniformTypeIdentifiers
+
 
 extension String {
     func getDate() -> Date? {
@@ -72,6 +75,51 @@ extension String {
         
         return "\(fileType)-\(Date().getDate())"
     }
+
+
     
+}
+
+extension String {
+
+    func mimeType() -> String? {
+         if let type = UTType(filenameExtension: self) {
+            if let mimetype = type.preferredMIMEType {
+                return mimetype as String
+            }
+        }
+        return nil
+    }
+    
+    func getExtension() -> String {
+        
+        let unmanagedFileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, self as CFString, nil)?.takeRetainedValue()
+       guard let fileExtension = UTTypeCopyPreferredTagWithClass((unmanagedFileUTI)!, kUTTagClassFilenameExtension)?.takeRetainedValue()
+        else { return ""}
+        
+        return fileExtension as String
+    }
+
+    
+    
+    var tellaFileType: TellaFileType {
+
+        guard let type = UTType(mimeType: self) else {
+            return .other
+        }
+        
+        switch type {
+        case _ where type.conforms(to: .video) || type.conforms(to: .movie):
+            return .video
+        case _ where type.conforms(to: .image):
+            return .image
+        case _ where type.conforms(to: .audio):
+            return .audio
+        case _ where type.conforms(to: .pdf) || type.conforms(to: .presentation) || type.conforms(to: .spreadsheet):
+            return .video
+        default:
+            return .other
+        }
+    }
 }
 

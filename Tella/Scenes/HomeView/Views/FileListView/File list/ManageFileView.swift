@@ -75,5 +75,7 @@ struct ManageFileView: View {
 struct ManageFileView_Previews: PreviewProvider {
     static var previews: some View {
         ManageFileView()
+            .environmentObject(FileListViewModel.stub())
+
     }
 }

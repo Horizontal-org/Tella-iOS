@@ -2,7 +2,7 @@
 //  LockViewModel.swift
 //  Tella
 //
-//   
+//
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
@@ -19,14 +19,18 @@ class LockViewModel: ObservableObject {
     @Published var shouldShowUnlockError : Bool = false
     @Published var unlockAttempts : Int
     var maxAttempts : Int
-
+    
     private var cancellables = Set<AnyCancellable>()
-
+    
     var unlockType : UnlockType = .new
     var shouldDismiss = CurrentValueSubject<Bool, Never>(false)
     var appModel:MainAppModel
+    var appViewState: AppViewState
     
-
+    @Published var isLoading : Bool = false
+    @Published var presentingLockChoice : Bool = false
+    
+    
     var unlockKeyboardNumbers: [PinKeyboardModel] = { return [
         PinKeyboardModel(text: "1", type: .number),
         PinKeyboardModel(text: "2", type: .number),
@@ -39,8 +43,8 @@ class LockViewModel: ObservableObject {
         PinKeyboardModel(text: "9",  type: .number),
         PinKeyboardModel(imageName:"lock.backspace", type: .delete),
         PinKeyboardModel(text: "0",  type: .number),
-        PinKeyboardModel(text: LocalizableLock.unlockPinActionOk.localized, type: .done)] }()
-
+        PinKeyboardModel(text: "OK", type: .done)] }()
+    
     var shouldShowErrorMessage : Bool {
         return password != confirmPassword
     }
@@ -53,9 +57,10 @@ class LockViewModel: ObservableObject {
         return maxAttempts - unlockAttempts
     }
     
-    init(unlockType: UnlockType, appModel:MainAppModel) {
+    init(unlockType: UnlockType, appModel:MainAppModel, appViewState:AppViewState) {
         self.unlockType = unlockType
         self.appModel = appModel
+        self.appViewState = appViewState
         
         self.unlockAttempts = appModel.settings.unlockAttempts
         self.maxAttempts = appModel.settings.deleteAfterFail.numberOfAttempts
@@ -75,19 +80,63 @@ class LockViewModel: ObservableObject {
     }
     
     func login() {
-        let authorized = appModel.login(password: loginPassword)
-        shouldShowUnlockError = !authorized
+        isLoading = true
+        
+        self.appModel.vaultManager.login(password: self.loginPassword)
+            .subscribe(on: DispatchQueue.global(qos: .userInteractive))
+            .receive(on: DispatchQueue.main)
+            .sink { authorized in
+                
+                if authorized {
+                    self.successLogin()
+                } else {
+                    self.checkUnlockAttempts()
+                }
+                
+            }.store(in: &self.cancellables)
+        
+    }
+    
+    private func successLogin() {
+        resetUnlockAttempts()
+        if  unlockType == .new {
+            loadData()
+        } else {
+            isLoading = false
+            presentingLockChoice = true
+        }
+    }
+    
+    private func checkUnlockAttempts() {
+        isLoading = false
+        shouldShowUnlockError = true
+        increaseUnlockAttempts()
+        
+        if(unlockAttempts ==  maxAttempts) {
+            removeFilesAndConnections()
+            appViewState.resetApp()
+        }
+    }
+    
+    private func loadData() {
+        appViewState.homeViewModel.loadData()
+            .subscribe(on: DispatchQueue.global(qos: .userInteractive))
+            .receive(on: DispatchQueue.main)
+            .sink { recoverResult in
+                self.isLoading = false
+                self.appViewState.showMainView()
+            }.store(in: &self.cancellables)
     }
     
     func initKeys(passwordTypeEnum:PasswordTypeEnum) {
-        appModel.initKeys(passwordTypeEnum,
-                          password: password)
+        appModel.vaultManager.initKeys(passwordTypeEnum,
+                                       password: password)
     }
     
     func updateKeys(passwordTypeEnum:PasswordTypeEnum) {
-        appModel.updateKeys(passwordTypeEnum,
-                            newPassword: password,
-                            oldPassword: loginPassword)
+        appModel.vaultManager.updateKeys(passwordTypeEnum,
+                                         newPassword: password,
+                                         oldPassword: loginPassword)
     }
     
     func initUnlockData() {
@@ -112,8 +161,10 @@ class LockViewModel: ObservableObject {
     }
     
     func resetUnlockAttempts () -> Void {
-        appModel.settings.unlockAttempts = 0
-        appModel.saveSettings()
+        DispatchQueue.main.async {
+            self.appModel.settings.unlockAttempts = 0
+            self.appModel.saveSettings()
+        }
     }
     
     func increaseUnlockAttempts () -> Void {

@@ -35,15 +35,16 @@ struct AddNewFolderView: View {
                                      cancelButtonText: LocalizableVault.createNewFolderCancelSheetAction.localized,
                                      fieldContent: $fieldContent,
                                      didConfirmAction:  {
-                fileListViewModel.add(folder: fieldContent)
+                fileListViewModel.addFolder(name: fieldContent)
             })
             
         })
     }
 }
 
-struct CreateNewFolderView_Previews: PreviewProvider {
+struct AddNewFolderView_Previews: PreviewProvider {
     static var previews: some View {
         AddNewFolderView()
+            .background(Styles.Colors.backgroundMain)
     }
 }

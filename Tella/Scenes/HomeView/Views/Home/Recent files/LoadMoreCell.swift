@@ -28,6 +28,7 @@ struct LoadMoreCell: View {
 
 struct LoadMoreCell_Previews: PreviewProvider {
     static var previews: some View {
-        LoadMoreCell()
+        LoadMoreCell(fileNumber: 3)
+            .background(Styles.Colors.backgroundMain)
     }
 }

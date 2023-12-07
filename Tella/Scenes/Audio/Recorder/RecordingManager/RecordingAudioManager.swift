@@ -11,7 +11,7 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
     private var recorder: AVAudioRecorder!
     private var queuePlayer = QueuePlayer()
     private var audioChunks = [AVURLAsset]()
-    private var currentFileName: URL?
+    private var currentFileURL: URL?
     private var timer = Timer()
     
     var currentTime = CurrentValueSubject<TimeInterval, Never>(0.0)
@@ -29,9 +29,6 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
     ]
     
     init() {
-       
-//        self.mainAppModel = mainAppModel
-//        self.rootFile = rootFile
 
         guard
             self.configureSession()
@@ -45,13 +42,13 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
         
         self.queuePlayer.pauseAudio()
         
-        guard let fileName = self.getFileName()
+        guard let fileURL = self.getFileURL()
         else { return }
         
-        self.currentFileName = fileName
+        self.currentFileURL = fileURL
 
         do {
-            self.recorder = try AVAudioRecorder(url: fileName, settings: settings)
+            self.recorder = try AVAudioRecorder(url: fileURL, settings: settings)
             self.recorder.record()
             
             initialiseTimerRunning()
@@ -78,20 +75,14 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
         self.audioChunks.append(asset)
     }
 
-    func discardRecord() {
-        for asset in self.audioChunks {
+    func discardRecord(audioChunks:[AVURLAsset]?) {
+
+        for asset in audioChunks ?? self.audioChunks {
             do {
                 try FileManager.default.removeItem(at: asset.url)
             } catch {
                 
             }
-        }
-        guard let fileName = currentFileName else { return  }
-        
-        do {
-            try FileManager.default.removeItem(at: fileName)
-        } catch {
-            
         }
     }
     
@@ -110,9 +101,10 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
         queuePlayer.pauseAudio()
     }
     
-    fileprivate func getFileName() -> URL? {
+    fileprivate func getFileURL(fileName:String? = nil) -> URL? {
         let pathURL = URL(fileURLWithPath:NSTemporaryDirectory())
-        return pathURL.appendingPathComponent("\(Int(Date().timeIntervalSince1970)).m4a")
+        let fileName = fileName ?? "\(Int(Date().timeIntervalSince1970))"
+        return pathURL.appendingPathComponent("\(fileName).m4a")
     }
     
     fileprivate func configureSession() -> Bool {
@@ -134,8 +126,9 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
         let composition = AVMutableComposition()
         
         var insertAt = CMTimeRange(start: CMTime.zero, end: CMTime.zero)
-        
-        for asset in self.audioChunks {
+        let audioChunks = self.audioChunks
+        self.audioChunks = [AVURLAsset]()
+        for asset in audioChunks {
             let assetTimeRange = CMTimeRange(
                 start: CMTime.zero,
                 end:   asset.duration)
@@ -160,7 +153,7 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
         
         
         exportSession?.outputFileType = AVFileType.m4a
-        exportSession?.outputURL = self.getFileName()
+        exportSession?.outputURL = self.getFileURL(fileName: fileName) // fileName true
         
         
         exportSession?.canPerformMultiplePassesOverSourceMediaData = true
@@ -173,22 +166,18 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
             case .exporting?: break
             case .completed?:
                 
-                self.currentFileName = exportSession?.outputURL
+                self.currentFileURL = exportSession?.outputURL
                 
                 if let url = exportSession?.outputURL {
-//                    self.mainAppModel.add(audioFilePath: url, to: self.rootFile, type: .audio, fileName: fileName)
                     self.fileURL.send(url)
-
                 }
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                    self.discardRecord()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
+                    self.discardRecord(audioChunks: audioChunks)
                 })
-                
-                self.audioChunks = [AVURLAsset]()
+
                 exportSession?.cancelExport()
-                
-                
+
             case .failed?: break
             case .cancelled?: break
             case .none: break

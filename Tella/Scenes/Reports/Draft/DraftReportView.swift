@@ -16,7 +16,7 @@ struct DraftReportView: View {
     @EnvironmentObject var sheetManager : SheetManager
     @EnvironmentObject var reportsViewModel : ReportsViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-
+    
     init(mainAppModel: MainAppModel, reportId:Int? = nil) {
         _reportViewModel = StateObject(wrappedValue: DraftReportVM(mainAppModel: mainAppModel,reportId:reportId))
     }
@@ -36,6 +36,16 @@ struct DraftReportView: View {
         .navigationBarHidden(true)
         .onTapGesture {
             shouldShowMenu = false
+        }
+        .onReceive(reportViewModel.$successSavingReport)  { successSavingReport in
+            if successSavingReport {
+                handleSuccessSavingReport()
+            }
+        }
+        .onReceive(reportViewModel.$failureSavingReport)  { failureSavingReport in
+            if failureSavingReport {
+                handleReportFailure()
+            }
         }
         
         .overlay(recordView)
@@ -75,7 +85,7 @@ struct DraftReportView: View {
             
             
             Button {
-                saveDraftReport()
+                reportViewModel.saveDraftReport()
             } label: {
                 Image("reports.save")
                     .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
@@ -138,7 +148,7 @@ struct DraftReportView: View {
                     Spacer()
                         .frame(height: 34)
                     
-                    TextEditorView(placeholder:  LocalizableReport.reportsListDescription.localized,
+                    UnderlinedTextEditorView(placeholder:  LocalizableReport.reportsListDescription.localized,
                                    fieldContent: $reportViewModel.description,
                                    isValid: $reportViewModel.isValidDescription,
                                    shouldShowError: $reportViewModel.shouldShowError,
@@ -153,14 +163,6 @@ struct DraftReportView: View {
                     
                 }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
             }
-        }
-    }
-    
-    @ViewBuilder
-    var successView: some View {
-        if reportViewModel.showingSuccessMessage {
-            SaveSuccessView(text: LocalizableReport.audioSavedCorrectly.localized,
-                            isPresented: $reportViewModel.showingSuccessMessage)
         }
     }
     
@@ -207,7 +209,7 @@ struct DraftReportView: View {
             
             // Submit later button
             Button {
-                submitReportLater()
+                reportViewModel.saveFinalizedReport()
             } label: {
                 Image("reports.submit-later")
                     .opacity(reportViewModel.reportIsValid ? 1 : 0.4)
@@ -232,28 +234,17 @@ struct DraftReportView: View {
         .environmentObject(reportsViewModel)
     }
     
-    var fileListView : some View {
-        FileListView(appModel: mainAppModel,
-                     rootFile: mainAppModel.vaultManager.root,
-                     fileType: nil,
-                     title: LocalizableReport.selectFiles.localized,
-                     fileListType: .selectFiles,
-                     resultFile: $reportViewModel.resultFile)
-    }
-    
     var cameraView : some View {
         reportViewModel.showingCamera ?
         CameraView(sourceView: SourceView.addReportFile,
                    showingCameraView: $reportViewModel.showingCamera,
                    resultFile: $reportViewModel.resultFile,
-                   mainAppModel: mainAppModel,
-                   rootFile: mainAppModel.vaultManager.root) : nil
+                   mainAppModel: mainAppModel) : nil
     }
     
     var recordView : some View {
         reportViewModel.showingRecordView ?
         RecordView(appModel: mainAppModel,
-                   rootFile: mainAppModel.vaultManager.root,
                    sourceView: .addReportFile,
                    showingRecoredrView: $reportViewModel.showingRecordView,
                    resultFile: $reportViewModel.resultFile) : nil
@@ -264,34 +255,14 @@ struct DraftReportView: View {
                              showingImportDocumentPicker: $reportViewModel.showingImportDocumentPicker,
                              appModel: mainAppModel,
                              resultFile: $reportViewModel.resultFile,
-                             rootFile: self.$mainAppModel.vaultManager.root)
+                             shouldReloadVaultFiles: .constant(false))
     }
     
     
     private func submitReport() {
-        reportViewModel.status = .finalized
-        reportViewModel.saveReport()
-        
-        DispatchQueue.main.async {
-            navigateTo(destination: outboxDetailsView)
-        }
-    }
-    
-    private func submitReportLater() {
-        reportViewModel.status = .finalized
-        reportViewModel.saveReport()
-        reportsViewModel.selectedCell = .outbox
-        dismissViews()
-       Toast.displayToast(message: LocalizableReport.outboxSavedToast.localized)
 
-    }
-    
-    private func saveDraftReport() {
-        reportViewModel.status = .draft
-        reportViewModel.saveReport()
-        reportsViewModel.selectedCell = .draft
-        dismissViews()
-       Toast.displayToast(message: LocalizableReport.draftSavedToast.localized)
+        reportViewModel.saveReportForSubmission()
+        
     }
     
     private func showSaveReportConfirmationView() {
@@ -300,12 +271,49 @@ struct DraftReportView: View {
                                msgText: LocalizableReport.exitMessage.localized,
                                cancelText: LocalizableReport.exitCancel.localized.uppercased(),
                                actionText:LocalizableReport.exitSave.localized.uppercased(), didConfirmAction: {
-                saveDraftReport()
+                reportViewModel.saveDraftReport()
             }, didCancelAction: {
                 dismissViews()
             })
         }
     }
+    
+    private func handleSuccessSavingReport() {
+        switch reportViewModel.status {
+        case .draft:
+            handleSuccessSavingDraft()
+        case .finalized:
+            handleSuccessSavingOutbox()
+        case .submissionScheduled:
+            handleSuccessSavingReportForSubmission()
+        default:
+            break
+        }
+    }
+    
+    private func handleReportFailure() {
+        dismissViews()
+        Toast.displayToast(message: LocalizableCommon.commonError.localized)
+    }
+    
+    private func handleSuccessSavingDraft() {
+        reportsViewModel.selectedCell = .draft
+        dismissViews()
+        Toast.displayToast(message: LocalizableReport.draftSavedToast.localized)
+    }
+    
+    private func handleSuccessSavingOutbox() {
+        reportsViewModel.selectedCell = .outbox
+        dismissViews()
+        Toast.displayToast(message: LocalizableReport.outboxSavedToast.localized)
+    }
+    
+    private func handleSuccessSavingReportForSubmission() {
+        DispatchQueue.main.async {
+            navigateTo(destination: outboxDetailsView)
+        }
+    }
+
     
     private func dismissViews() {
         sheetManager.hide()

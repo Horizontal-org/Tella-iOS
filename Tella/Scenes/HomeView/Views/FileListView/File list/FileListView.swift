@@ -14,8 +14,18 @@ struct FileListView: View {
     
     var title : String = ""
     
-    init(appModel: MainAppModel, rootFile: VaultFile? , fileType: [TellaFileType]? , title : String = "", fileListType : FileListType = .fileList, resultFile: Binding<[VaultFile]?>? = nil) {
-        _fileListViewModel = StateObject(wrappedValue: FileListViewModel(appModel: appModel,fileType:fileType, rootFile: rootFile, folderPathArray: [], fileListType :  fileListType, resultFile: resultFile))
+    init(appModel: MainAppModel, 
+         rootFile: VaultFileDB? = nil ,
+         filterType: FilterType ,
+         title : String = "",
+         fileListType : FileListType = .fileList,
+         resultFile: Binding<[VaultFileDB]?>? = nil) {
+        
+        _fileListViewModel = StateObject(wrappedValue: FileListViewModel(appModel: appModel,
+                                                                         filterType:filterType,
+                                                                         rootFile: rootFile,
+                                                                         fileListType : fileListType,
+                                                                         resultFile: resultFile))
         self.title = title
     }
     
@@ -31,26 +41,25 @@ struct FileListView: View {
                     
                     SelectingFilesHeaderView()
                     
-                    if (appModel.vaultManager.root?.files.isEmpty ?? true) {
+                    if (fileListViewModel.vaultFiles.isEmpty) && fileListViewModel.rootFile == nil  {
                         EmptyFileListView(emptyListType: .allFiles)
                         
                     } else {
                         if fileListViewModel.folderPathArray.count > 0 {
                             FolderListView()
                         }
-                        if fileListViewModel.getFiles().isEmpty {
-                            EmptyFileListView(emptyListType: .folder)
+                        if fileListViewModel.vaultFiles.isEmpty {
+                            EmptyFileListView(emptyListType: .directory)
                             
                         } else {
                             ManageFileView()
-                            FileItemsView(files: fileListViewModel.getFiles())
+                            FileItemsView(files: fileListViewModel.vaultFiles)
                         }
                     }
                 }
                 
                 if !fileListViewModel.shouldHideAddFileButton {
                     AddFileView()
-                    
                 }
                 
                 FileActionMenu()
@@ -67,14 +76,13 @@ struct FileListView: View {
                 navigateTo(destination: fileDetailView)
             }
         }
+        .onAppear(perform: {
+            fileListViewModel.fileActionSource = .listView
+        })
     }
     
     var fileDetailView: some View {
-        FileDetailView(appModel: appModel ,
-                       file: self.fileListViewModel.currentSelectedVaultFile,
-                       videoFilesArray: fileListViewModel.rootFile?.getVideos().sorted(by: fileListViewModel.sortBy),
-                       rootFile: fileListViewModel.rootFile,
-                       folderPathArray: fileListViewModel.folderPathArray)
+        FileDetailView().environmentObject(fileListViewModel)
     }
     
     @ViewBuilder
@@ -119,8 +127,8 @@ struct FileListView_Previews: PreviewProvider {
         ZStack(alignment: .top) {
             Styles.Colors.backgroundMain.edgesIgnoringSafeArea(.all)
             FileListView(appModel: MainAppModel.stub(),
-                         rootFile: VaultFile.stub(type: .folder),
-                         fileType: [.folder])
+                         rootFile: VaultFileDB.stub(),
+                         filterType: .all)
         }
         .background(Styles.Colors.backgroundMain)
         .environmentObject(MainAppModel.stub())

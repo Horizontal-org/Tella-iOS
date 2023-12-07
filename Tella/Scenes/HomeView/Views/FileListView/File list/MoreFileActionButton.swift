@@ -20,7 +20,7 @@ struct MoreFileActionButton: View {
     
     @State var fileNameToUpdate : String = ""
     
-    var file: VaultFile? = nil
+    var file: VaultFileDB? = nil
     var moreButtonType : MoreButtonType
     
     private var modalHeight : CGFloat {
@@ -93,11 +93,11 @@ struct MoreFileActionButton: View {
         case .move:
             self.hideMenu()
             fileListViewModel.showingMoveFileView = true
-            fileListViewModel.oldRootFile = fileListViewModel.rootFile
+            fileListViewModel.oldParentFile = fileListViewModel.rootFile
             
         case .rename:
             if fileListViewModel.selectedFiles.count == 1 {
-                fileNameToUpdate = fileListViewModel.selectedFiles[0].fileName
+                fileNameToUpdate = fileListViewModel.selectedFiles[0].name
                 showRenameFileSheet()
             }
             
@@ -127,10 +127,10 @@ struct MoreFileActionButton: View {
                                      validateButtonText: LocalizableVault.renameFileSaveSheetAction.localized,
                                      cancelButtonText:LocalizableVault.renameFileCancelSheetAction.localized,
                                      fieldContent: $fileNameToUpdate,
-                                     fileName: fileListViewModel.selectedFiles.count == 1 ? fileListViewModel.selectedFiles[0].fileName : "",
+                                     fileName: fileListViewModel.selectedFiles.count == 1 ? fileListViewModel.selectedFiles[0].name : "",
                                      didConfirmAction: {
-                fileListViewModel.selectedFiles[0].fileName = fileNameToUpdate
-                appModel.rename(file: fileListViewModel.selectedFiles[0], parent: fileListViewModel.rootFile)
+                fileListViewModel.selectedFiles[0].name = fileNameToUpdate
+                fileListViewModel.renameSelectedFile()
             })
             
         })
@@ -144,8 +144,8 @@ struct MoreFileActionButton: View {
                                actionText: LocalizableVault.deleteFileDeleteSheetAction.localized,
                                destructive: true,
                                didConfirmAction:{
-                appModel.delete(files: fileListViewModel.selectedFiles, from: fileListViewModel.rootFile)
-
+                
+                fileListViewModel.deleteSelectedFiles()
                 fileListViewModel.selectingFiles = false
                 fileListViewModel.resetSelectedItems()
 

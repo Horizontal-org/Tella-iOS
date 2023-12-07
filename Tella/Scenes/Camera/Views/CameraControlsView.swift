@@ -256,8 +256,7 @@ struct CameraControlsView: View {
     
     func getFileListView() -> some View {
         FileListView(appModel: mainAppModel,
-                     rootFile: mainAppModel.vaultManager.root,
-                     fileType: [.image, .video],
+                     filterType: .photoVideo,
                      title: LocalizableCamera.appBar.localized,
                      fileListType: .cameraGallery)
     }

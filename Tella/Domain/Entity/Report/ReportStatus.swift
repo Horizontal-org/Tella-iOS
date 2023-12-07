@@ -15,6 +15,7 @@ enum  ReportStatus : Int {
     case submissionPaused = 7  // Submission paused
     case submissionInProgress = 8  // Submission launched
     case submissionAutoPaused = 9  // Submission paused for auto report
+    case submissionScheduled = 10  // Submission scheduled
 
 }
 

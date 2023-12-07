@@ -8,6 +8,9 @@ import SwiftUI
 struct SettingsMainView: View {
     
     @EnvironmentObject var appModel : MainAppModel
+    @EnvironmentObject var appViewState : AppViewState
+
+    @EnvironmentObject var sheetManager : SheetManager
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @StateObject var settingsViewModel : SettingsViewModel
     @StateObject var serversViewModel : ServersViewModel
@@ -30,6 +33,9 @@ struct SettingsMainView: View {
                                                  securityView.eraseToAnyView(),
                                                  serversView.eraseToAnyView(),
                                                  helpView.eraseToAnyView()])
+                
+                SettingsCardView(cardViewArray: [feedbackView.eraseToAnyView()])
+                
                 Spacer()
             }
         }
@@ -51,7 +57,7 @@ struct SettingsMainView: View {
     }
     
     
-
+    
     var securityView: some View {
         SettingsItemView(imageName: "settings.lock",
                          title: LocalizableSettings.settSecAppBar.localized,
@@ -72,9 +78,21 @@ struct SettingsMainView: View {
     }
     
     var securitySettingsView: some View {
-        SecuritySettingsView(appModel: MainAppModel.stub())
+        SecuritySettingsView(appModel: MainAppModel.stub(), appViewState: appViewState)
             .environmentObject(settingsViewModel)
     }
+    
+    
+    var feedbackView: some View {
+        SettingsItemView(imageName: "settings.feedback",
+                         title: LocalizableSettings.settFeedback.localized,
+                         presentationType: .present,
+                         destination:
+                            FeedbackView(mainAppModel: appModel)
+            .environmentObject(appModel)
+            .environmentObject(sheetManager))
+    }
+    
 }
 
 struct SettingsMainView_Previews: PreviewProvider {

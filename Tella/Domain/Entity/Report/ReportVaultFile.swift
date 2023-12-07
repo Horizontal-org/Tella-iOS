@@ -5,7 +5,7 @@
 import Foundation
 
 
-class ReportVaultFile : VaultFile {
+class ReportVaultFile : VaultFileDB {
     
     var instanceId : Int?
     var status : FileStatus?
@@ -13,28 +13,26 @@ class ReportVaultFile : VaultFile {
     var createdDate : Date?
     var updatedDate : Date?
     var current : Int = 0
-
-    init(reportFile: ReportFile, vaultFile : VaultFile) {
+    
+    init(reportFile: ReportFile, vaultFile : VaultFileDB) {
+        
         super.init(id:vaultFile.id,
                    type: vaultFile.type,
-                   fileName: vaultFile.fileName,
-                   containerName: vaultFile.containerName,
-                   files: vaultFile.files,
                    thumbnail: vaultFile.thumbnail,
-                   created: vaultFile.created,
-                   fileExtension: vaultFile.fileExtension,
-                   size:vaultFile.size,
-                   resolution: vaultFile.resolution,
+                   name: vaultFile.name,
                    duration: vaultFile.duration,
-                   pathArray: vaultFile.pathArray)
-
+                   size: vaultFile.size,
+                   mimeType: vaultFile.mimeType,
+                   width: vaultFile.width,
+                   height: vaultFile.height)
+        
         self.instanceId = reportFile.id
         self.status = reportFile.status
         self.bytesSent = reportFile.bytesSent ?? 0
         self.createdDate = reportFile.createdDate
         self.updatedDate = reportFile.updatedDate
     }
-
+    
     required init(from decoder: Decoder) throws {
         try super.init(from: decoder)
         

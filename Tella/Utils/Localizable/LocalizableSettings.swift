@@ -14,7 +14,8 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settConnections = "Settings_Sett_Connections"
     case settSecurity = "Settings_Sett_Security"
     case settAbout = "Settings_Sett_About"
-    
+    case settFeedback = "Settings_Sett_Feedback"
+
     // General
     case settGenAppBar = "Settings_SettGen_AppBar"
     case settGenLanguage = "Settings_SettGen_Language"
@@ -89,7 +90,24 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settAboutSubhead = "Settings_SettAbout_Subhead"
     case settAboutContactUs = "Settings_SettAbout_ContactUs"
     case settAboutPrivacyPolicy = "Settings_SettAbout_PrivacyPolicy"
-}
+    
+    // Feedback
+    case settFeedbackAppBar = "Settings_SettFeedback_AppBar"
+    case settFeedbackExpl = "Settings_SettFeedback_Expl"
+    case enableFeedbackTitle = "Settings_SettFeedback_EnableFeedback_Title"
+    case enableFeedbackExpl = "Settings_SettFeedback_EnableFeedback_Expl"
+    case enableFeedbackLearnMore = "Settings_SettFeedback_EnableFeedback_LearnMore"
+    case selectFeedback = "Settings_SettFeedback_Select_Feedback"
+    case submit = "Settings_SettFeedback_Action_Submit"
+    case offlineToast = "Settings_SettFeedback_Offline_Toast"
+    case successSentToast = "Settings_SettFeedback_SuccessSent_Toast"
+    case backgroundSuccessSentToast = "Settings_SettFeedback_BackgroundSuccessSent_Toast"
+    case exitFeedbackTitle = "Settings_SettFeedback_ExitFeedback_SheetTitle"
+    case exitFeedbackSheetExpl = "Settings_SettFeedback_ExitFeedback_SheetExpl"
+    case exitFeedbackSheetAction = "Settings_SettFeedback_ExitFeedback_Exit_SheetAction"
+    case exitFeedbackSaveSheetAction = "Settings_SettFeedback_ExitFeedback_Save_SheetAction"
+
+ }
 
 
 protocol LocalizableDelegate {

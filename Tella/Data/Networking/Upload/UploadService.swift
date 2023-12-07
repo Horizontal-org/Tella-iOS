@@ -13,7 +13,7 @@ class UploadService: NSObject {
     static var shared : UploadService = UploadService()
     
     fileprivate var activeOperations: [BaseUploadOperation] = []
-    
+
     var uploadQueue: OperationQueue!
     private var subscribers = Set<AnyCancellable>()
     
@@ -90,7 +90,13 @@ class UploadService: NSObject {
         return operation.response
     }
     
-    func addAutoUpload(file: VaultFile)  {
+    func addAutoUpload(file: VaultFileDB)  {
+        
+        let nonAutoUploadOperation = activeOperations.first(where: {$0.report?.currentUpload == true && $0.type != .autoUpload})
+        if let nonAutoUploadOperation {
+            cancelSendingReport(reportId: nonAutoUploadOperation.report?.id)
+        }
+
         if let operation: AutoUpload = activeOperations.first(where:{$0.type == .autoUpload }) as? AutoUpload {
             operation.addFile(file:file)
         }
@@ -182,7 +188,7 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
             
             operation?.update(responseFromDelegate: URLSessionTaskResponse(task: task , data: nil, response: task.response as? HTTPURLResponse))
             
-        } else if let code = (error as? NSError)?.code {
+        } else if let _ = (error as? NSError)?.code {
             operation?.update(responseFromDelegate: URLSessionTaskResponse(task: task , data: nil, response: nil, error: error))
             
         } else {

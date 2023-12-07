@@ -116,10 +116,14 @@ extension SQLiteStatementBuilder  {
             flag = self.bind(insertStatement: insertStatement, value.datatypeValue, atIndex: idx)
         } else if let value = value as? Bool {
             flag = self.bind(insertStatement: insertStatement, value.datatypeValue, atIndex: idx)
+        } else if let value = value as? Data {
+            value.withUnsafeBytes { buffer in
+                let ptr = buffer.baseAddress!
+                flag = sqlite3_bind_blob(insertStatement, Int32(idx), ptr, Int32(value.count), SQLITE_TRANSIENT)
+             }
         } else if let _ = value {
             return 0
         }
-        
         return flag
     }
     
@@ -153,7 +157,7 @@ extension SQLiteStatementBuilder  {
     func prepareStatement(sql: String) throws -> OpaquePointer? {
         var statement: OpaquePointer?
         guard sqlite3_prepare_v2(dbPointer, sql, -1, &statement, nil) == SQLITE_OK else {
-            throw SqliteError(message: errorMessage)
+            throw RuntimeError(errorMessage)
         }
         return statement
     }

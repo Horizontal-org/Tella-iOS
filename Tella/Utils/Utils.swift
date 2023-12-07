@@ -6,16 +6,22 @@ import UIKit
 import AVFoundation
 import SwiftUI
 
-
-
 struct RuntimeError: Error {
+    
     let message: String
-
+    
     init(_ message: String) {
         self.message = message
     }
-
+    
     public var localizedDescription: String {
+        return message
+    }
+}
+
+extension RuntimeError: LocalizedError {
+    
+    public var errorDescription: String? {
         return message
     }
 }

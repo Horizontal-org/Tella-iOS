@@ -22,9 +22,8 @@ final class AppViewState: ObservableObject {
     @Published var networkMonitor : NetworkMonitor 
 
     init() {
-        let networkMonitor = NetworkMonitor()
+        let networkMonitor = NetworkMonitor.shared
         self.networkMonitor = networkMonitor
-
         homeViewModel = MainAppModel(networkMonitor:  networkMonitor)
         
         self.resetApp()
@@ -48,7 +47,7 @@ final class AppViewState: ObservableObject {
     }
 
     func resetToUnlock() {
-        homeViewModel.resetVaultManager()
+        homeViewModel.resetData()
         viewStack = [.UNLOCK]
     }
 
@@ -61,7 +60,7 @@ final class AppViewState: ObservableObject {
     }
 
     func resetApp() {
-        homeViewModel.keysInitialized() ? self.resetToUnlock() : self.resetToLock()
+        homeViewModel.vaultManager.keysInitialized() ? self.resetToUnlock() : self.resetToLock()
     }
     
     func initLanguage() {

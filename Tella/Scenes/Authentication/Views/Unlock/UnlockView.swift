@@ -15,14 +15,10 @@ enum UnlockType {
 }
 
 struct UnlockView: View {
-    @State private var presentingLockChoice : Bool = false
-    
-    @EnvironmentObject private var appViewState: AppViewState
-    
+
     @EnvironmentObject private var viewModel: LockViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @State private var cancellable: Set<AnyCancellable> = []
-    @State private var isLoading : Bool = false
+
     var type : PasswordTypeEnum
     var body: some View {
         ContainerView {
@@ -44,7 +40,7 @@ struct UnlockView: View {
                     Spacer()
                 }
                 
-    
+                
                 if(type == .tellaPassword) {
                     TellaPasswordView
                 } else {
@@ -54,7 +50,7 @@ struct UnlockView: View {
                 Spacer()
             }
             
-            if  isLoading {
+            if  viewModel.isLoading {
                 CircularActivityIndicatory()
             }
             
@@ -70,7 +66,7 @@ struct UnlockView: View {
     var titleString: String {
         let unlockErrorString: String
         let unlockSubheadString: String
-
+        
         switch type {
         case .tellaPin:
             unlockErrorString = viewModel.shouldShowUnlockError ? LocalizableLock.unlockUpdatePinErrorIncorrectPIN.localized : ""
@@ -79,7 +75,7 @@ struct UnlockView: View {
             unlockErrorString = viewModel.shouldShowUnlockError ? LocalizableLock.unlockUpdatePasswordErrorIncorrectPassword.localized : ""
             unlockSubheadString = viewModel.unlockType == .new ? LocalizableLock.unlockPasswordSubhead.localized : LocalizableLock.unlockUpdatePasswordSubhead.localized
         }
-
+        
         return unlockErrorString.isEmpty ? unlockSubheadString : unlockErrorString
     }
     
@@ -87,7 +83,7 @@ struct UnlockView: View {
         PasswordTextFieldView(fieldContent: $viewModel.loginPassword,
                               isValid: .constant(true),
                               shouldShowError: $viewModel.shouldShowUnlockError) {
-            loginActions()
+            viewModel.login()
         }
     }
     
@@ -102,54 +98,14 @@ struct UnlockView: View {
             
             PinView(fieldContent: $viewModel.loginPassword,
                     keyboardNumbers: viewModel.unlockKeyboardNumbers) {
-                loginActions()
+                viewModel.login()
             }
         }
     }
-
-    
     var lockChoiceView : some View {
-        presentingLockChoice ? LockChoiceView( isPresented: $presentingLockChoice) : nil
+        viewModel.presentingLockChoice ? LockChoiceView( isPresented: $viewModel.presentingLockChoice) : nil
     }
     
-    private func loginActions() {
-        viewModel.login()
-        if !viewModel.shouldShowUnlockError {
-            successLogin()
-        } else {
-            checkUnlockAttempts()
-        }
-    }
-    
-    private func successLogin() {
-        viewModel.resetUnlockAttempts()
-        if viewModel.unlockType == .new {
-             isLoading = true
-             initRoot()
-        } else {
-            presentingLockChoice = true
-        }
-    }
-    
-    private func checkUnlockAttempts() {
-        viewModel.increaseUnlockAttempts()
-                                
-        if(viewModel.unlockAttempts == viewModel.maxAttempts) {
-            viewModel.removeFilesAndConnections()
-            appViewState.resetApp()
-        }
-    }
-    
-    private func initRoot() {
-        DispatchQueue.main.async {
-            appViewState.homeViewModel.initFiles()
-                .receive(on: DispatchQueue.main)
-                .sink { recoverResult in
-                    isLoading = false
-                    appViewState.showMainView()
-                }.store(in: &self.cancellable)
-        }
-    }
 }
 
 struct UnlockView_Previews: PreviewProvider {

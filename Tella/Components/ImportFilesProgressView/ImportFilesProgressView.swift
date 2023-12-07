@@ -8,6 +8,7 @@ struct ImportFilesProgressView: View {
     
     @EnvironmentObject var mainAppModel : MainAppModel
     @EnvironmentObject var sheetManager: SheetManager
+    @ObservedObject var progress : ProgressFile
     
     var importFilesProgressProtocol : ImportFilesProgressProtocol
     var modalHeight : CGFloat = 215
@@ -33,12 +34,12 @@ struct ImportFilesProgressView: View {
                     .frame(height: 10)
                 
                 if importFilesProgressProtocol.progressType == .number {
-                    Text(String.init(format:importFilesProgressProtocol.progressMessage ,  mainAppModel.vaultManager.progress.progressFile.value))
+                    Text(String.init(format:importFilesProgressProtocol.progressMessage ,  progress.progressFile))
                         .font(.custom(Styles.Fonts.regularFontName, size: 14))
                         .foregroundColor(.white)
                     
                 } else {
-                    Text(String.init(format:importFilesProgressProtocol.progressMessage + " " , Int(mainAppModel.vaultManager.progress.progress.value * 100)))
+                    Text(String.init(format:importFilesProgressProtocol.progressMessage + " " , Int(progress.progress * 100)))
                     
                         .font(.custom(Styles.Fonts.regularFontName, size: 14))
                         .foregroundColor(.white)
@@ -47,7 +48,7 @@ struct ImportFilesProgressView: View {
                 Spacer()
                     .frame(height: 8)
                 
-                ProgressView("", value: mainAppModel.vaultManager.progress.progress.value, total: 1)
+                ProgressView("", value: progress.progress, total: 1)
                     .accentColor(.green)
                 
                 Spacer()
@@ -55,7 +56,6 @@ struct ImportFilesProgressView: View {
                 HStack {
                     Spacer()
                     Button(importFilesProgressProtocol.cancelImportButtonTitle) {
-                        mainAppModel.vaultManager.progress.pause()
                         showCancelImportView()
                     }
                     .foregroundColor(Color.white)
@@ -64,12 +64,9 @@ struct ImportFilesProgressView: View {
             }
         }
         .padding(EdgeInsets(top: 25, leading: 25, bottom: 35, trailing: 25))
-        .onReceive(mainAppModel.vaultManager.progress.isFinishing) { isFinishing in
+        .onReceive( progress.$isFinishing) { isFinishing in
             if isFinishing {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                    sheetManager.hide()
-//                    mainAppModel.vaultManager.clearTmpDirectory()
-                }
+                sheetManager.hide()
             }
         }
     }
@@ -78,14 +75,15 @@ struct ImportFilesProgressView: View {
         sheetManager.showBottomSheet( modalHeight: 152,
                                       shouldHideOnTap: false,
                                       content: {
-            CancelImportView(mainAppModel: mainAppModel,
-                             importFilesProgressProtocol: importFilesProgressProtocol)
+            CancelImportView(importFilesProgressProtocol: importFilesProgressProtocol)
         })
     }
 }
 
 struct ImportFilesProgressView_Previews: PreviewProvider {
     static var previews: some View {
-        ImportFilesProgressView(importFilesProgressProtocol: ImportFilesProgress())
+        ImportFilesProgressView(progress: ProgressFile(),
+                                importFilesProgressProtocol: ImportFilesProgress())
+        .background(Styles.Colors.backgroundMain)
     }
 }

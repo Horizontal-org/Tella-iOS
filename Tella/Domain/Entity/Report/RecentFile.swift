@@ -6,18 +6,18 @@ import Foundation
 
 class RecentFile : Hashable {
     static func == (lhs: RecentFile, rhs: RecentFile) -> Bool {
-        lhs.file.containerName == rhs.file.containerName
+        lhs.file.id == rhs.file.id
     }
 
     func hash(into hasher: inout Hasher){
-        hasher.combine(file.containerName.hashValue)
+        hasher.combine(file.id.hashValue)
     }
 
-    var file : VaultFile
-    var rootFile : VaultFile
-    var folderPathArray : [VaultFile]?
+    var file : VaultFileDB
+    var rootFile : VaultFileDB
+    var folderPathArray : [VaultFileDB]?
 
-    init(file : VaultFile, rootFile : VaultFile, folderPathArray : [VaultFile]?) {
+    init(file : VaultFileDB, rootFile : VaultFileDB, folderPathArray : [VaultFileDB]?) {
         self.file = file
         self.rootFile = rootFile
         self.folderPathArray = folderPathArray

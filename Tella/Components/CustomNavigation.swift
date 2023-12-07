@@ -15,16 +15,24 @@ struct CustomNavigation<Content:View>: View {
     }
     
     var body: some View {
+        
         if #available(iOS 16.0, *) {
-            NavigationStack {
-                self.content()
+            if #available(iOS 17.0, *) {
+                NavigationView{
+                    self.content()
+                    
+                } .navigationViewStyle(.stack)
+            } else {
+                NavigationStack {
+                    self.content()
+                }
             }
         } else {
             NavigationView{
                 self.content()
-
+                
             } .navigationViewStyle(.stack)
-       }
+        }
         
     }
 }
