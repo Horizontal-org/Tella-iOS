@@ -102,9 +102,10 @@ class MainAppModel: ObservableObject {
         
     }
     
-    private func saveFiles(files: [(VaultFileDB,String?)]) {
+    private func saveFiles(files: [VaultFileDetailsToMerge]) {
         do {
             try self.vaultFilesManager?.addVaultFiles(files: files)
+            try self.vaultManager.tellaData?.updateReportIdFile(files: files)
             self.vaultManager.deleteRootFile()
             self.settings.shouldMergeVaultFilesToDb = false
             self.saveSettings()

@@ -144,6 +144,18 @@ class TellaData : ObservableObject {
           database.updateReportFile(reportFile: reportFile)
     }
     
+    
+    func updateReportIdFile(files:[VaultFileDetailsToMerge]) throws {
+        
+        try files.forEach { fileDetails in
+            let addVaultFileResult = database.updateReportIdFile(oldId: fileDetails.oldId, newID: fileDetails.vaultFileDB.id)
+
+            if case .failure = addVaultFileResult {
+                throw RuntimeError("Error updating Report Id File")
+            }
+        }
+    }
+    
     func deleteReport(reportId : Int?) -> Result<Bool, Error> {
         let deleteReportResult = database.deleteReport(reportId: reportId)
         getReports()

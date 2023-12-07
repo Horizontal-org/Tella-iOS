@@ -154,6 +154,7 @@
 		125AAD3129534259002194D6 /* UploadProgressInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD3029534259002194D6 /* UploadProgressInfo.swift */; };
 		125AAD34295348EC002194D6 /* UploadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD33295348EC002194D6 /* UploadService.swift */; };
 		125AAD362953607D002194D6 /* UploadReportModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD352953607D002194D6 /* UploadReportModels.swift */; };
+		125BC1DE2B21F08200A117D0 /* VaultFileDetailsToMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125BC1DD2B21F08200A117D0 /* VaultFileDetailsToMerge.swift */; };
 		125D231C271F119D00250FBB /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231B271F119D00250FBB /* Validator.swift */; };
 		125D231F271F12A000250FBB /* NSRegularExpressionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */; };
 		125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2320271F823100250FBB /* UIApplicationExtension.swift */; };
@@ -548,6 +549,7 @@
 		125AAD3029534259002194D6 /* UploadProgressInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProgressInfo.swift; sourceTree = "<group>"; };
 		125AAD33295348EC002194D6 /* UploadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadService.swift; sourceTree = "<group>"; };
 		125AAD352953607D002194D6 /* UploadReportModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadReportModels.swift; sourceTree = "<group>"; };
+		125BC1DD2B21F08200A117D0 /* VaultFileDetailsToMerge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileDetailsToMerge.swift; sourceTree = "<group>"; };
 		125D231B271F119D00250FBB /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRegularExpressionExtension.swift; sourceTree = "<group>"; };
 		125D2320271F823100250FBB /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
@@ -928,6 +930,7 @@
 				1221CB7028DB1B5A0042F15F /* KeyValue.swift */,
 				1216123F28DE144200E6D7B6 /* JoinCondition.swift */,
 				1216123D28DE142D00E6D7B6 /* JoinItem.swift */,
+				125BC1DD2B21F08200A117D0 /* VaultFileDetailsToMerge.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2410,6 +2413,7 @@
 				125389F82ACAD33500CE33AB /* FileWalker.swift in Sources */,
 				1237A71A278F18C000D7BC0F /* WebView.swift in Sources */,
 				1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */,
+				125BC1DE2B21F08200A117D0 /* VaultFileDetailsToMerge.swift in Sources */,
 				12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */,
 				125A895F2A965C33009347C3 /* VaultFileType.swift in Sources */,
 				123AE5A129CFAD7F00814CC7 /* OutboxReportVM.swift in Sources */,
@@ -2479,7 +2483,6 @@
 				1289B45628B62A99005DA687 /* DeviceOrientationHelper.swift in Sources */,
 				125DD9C92796CB090053619D /* ImportFilesProgressView.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */,
-				12558CF62AE95CBB001D0C80 /* (null) in Sources */,
 				12B3AD8A28C0DD0200AC9AF9 /* ServerLoginView.swift in Sources */,
 				1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */,
 				128FD0B427F774FB00B24915 /* RecentFile.swift in Sources */,
