@@ -27,6 +27,7 @@ class TellaDataBase : DataBase {
                 createTables()
             case 1:
                 createFeedbackTable()
+                renameUpdatedDateColumn()
             default :
                 break
             }
@@ -94,6 +95,23 @@ class TellaDataBase : DataBase {
         ]
         statementBuilder.createTable(tableName: D.tReportInstanceVaultFile, columns: columns)
         
+    }
+    
+    /// Rename the cUpatedDate column to cUpdatedDate column in tReport and tReportInstanceVaultFile tables
+    /// It was a typo
+    func renameUpdatedDateColumn() {
+        do {
+            try statementBuilder.addColumnOn(tableName: D.tReport, columnName: D.cUpdatedDate, type: D.float)
+            try statementBuilder.updateColumnOn(tableName: D.tReport, oldColumn: D.cUpatedDate, newColumn: D.cUpdatedDate)
+            try statementBuilder.dropColumnOn(tableName: D.tReport, columnName: D.cUpatedDate)
+            
+            try statementBuilder.addColumnOn(tableName: D.tReportInstanceVaultFile, columnName: D.cUpdatedDate, type: D.float)
+            try statementBuilder.updateColumnOn(tableName: D.tReportInstanceVaultFile, oldColumn: D.cUpatedDate, newColumn: D.cUpdatedDate)
+            try statementBuilder.dropColumnOn(tableName: D.tReportInstanceVaultFile, columnName: D.cUpatedDate)
+
+        } catch let error {
+            debugLog(error)
+        }
     }
     
     func addServer(server : Server)  -> Result<Int, Error> {
@@ -524,6 +542,10 @@ class TellaDataBase : DataBase {
             if let status = reportFile.status {
                 keyValueArray.append(KeyValue(key: D.cStatus, value: status.rawValue))
             }
+
+            if let status = reportFile.status {
+                keyValueArray.append(KeyValue(key: D.cStatus, value: status.rawValue))
+            }
             
             if let bytesSent = reportFile.bytesSent {
                 keyValueArray.append(KeyValue(key: D.cBytesSent, value: bytesSent))
@@ -543,6 +565,38 @@ class TellaDataBase : DataBase {
         }
     }
     
+    func updateReportIdFile(oldId:String?,newID:String?) -> Result<Bool,Error> {
+        do {
+            // Get the vault file instance array where cVaultFileInstanceId equal to the old vault file ID
+            var vaultFileInstanceIDs : [Int] = []
+
+            let condition = [KeyValue(key: D.cVaultFileInstanceId, value: oldId)]
+            let responseDict = try statementBuilder.selectQuery(tableName: D.tReportInstanceVaultFile,
+                                                                andCondition: condition)
+
+            responseDict.forEach { dict in
+                if let id = dict[D.cId] as? Int {
+                    vaultFileInstanceIDs.append(id)
+                }
+            }
+
+            // Update the cVaultFileInstanceId value with the new vault file ID
+            let valuesToUpdate = [KeyValue(key: D.cVaultFileInstanceId, value: newID)]
+            
+            if !vaultFileInstanceIDs.isEmpty {
+                let inCondition = [KeyValues(key: D.cReportInstanceId, value: vaultFileInstanceIDs)]
+                try statementBuilder.update(tableName: D.tReportInstanceVaultFile,
+                                            valuesToUpdate: valuesToUpdate,
+                                            inCondition: inCondition)
+            }
+            return .success(true)
+            
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
+
     func addReportFile(fileId:String?, reportId:Int) -> Result<Int,Error> {
         
         do {

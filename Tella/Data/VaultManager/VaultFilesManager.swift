@@ -93,9 +93,9 @@ class VaultFilesManager : VaultFilesManagerInterface {
         return stream
     }
     
-    func addVaultFiles(files: [(VaultFileDB,String?)]) throws {
-        try files.forEach { (file, parentId) in
-            let addVaultFileResult = self.vaultDataBase.addVaultFile(file: file, parentId: parentId)
+    func addVaultFiles(files: [VaultFileDetailsToMerge]) throws {
+        try files.forEach { fileDetails in
+            let addVaultFileResult = self.vaultDataBase.addVaultFile(file: fileDetails.vaultFileDB, parentId: fileDetails.parentId)
             
             if case .failure = addVaultFileResult {
                 throw RuntimeError("Error adding file")

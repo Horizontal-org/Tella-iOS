@@ -63,9 +63,9 @@ struct D {
     static let cVaultFileInstanceId = "c_vault_file_instance_id";
     static let cBytesSent = "c_bytes_Sent"
     static let cCreatedDate = "c_created_date"
+    static let cUpatedDate = "c_upated_date"
     static let cUpdatedDate = "c_updated_date"
-    
-        
+
     static let ctext = "c_text"
 
 }

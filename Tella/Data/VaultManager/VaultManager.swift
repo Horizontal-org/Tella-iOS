@@ -239,28 +239,28 @@ extension VaultManager {
 
 extension VaultManager {
     
-    func getFilesToMergeToDatabase() -> AnyPublisher<[(VaultFileDB,String?)],Never> {
+    func getFilesToMergeToDatabase() -> AnyPublisher<[VaultFileDetailsToMerge],Never> {
         return Deferred {
-            Future <[(VaultFileDB,String?)],Never> {  [weak self] promise in
+            Future <[VaultFileDetailsToMerge],Never> {  [weak self] promise in
                 guard let self = self else { return }
                 promise(.success(self.getFilesInRoot()))
             }
         }.eraseToAnyPublisher()
     }
     
-    func getFilesInRoot() -> [(VaultFileDB,String?)] {
+    func getFilesInRoot() -> [VaultFileDetailsToMerge] {
         guard let root = self.load(name: self.rootFileName) else {return []}
-        var vaultFileResult : [(VaultFileDB,String?)] = []
+        var vaultFileResult : [VaultFileDetailsToMerge] = []
         getFiles(root: root, vaultFileResult: &vaultFileResult)
         return vaultFileResult
     }
     
-    func getFiles(root: VaultFile, vaultFileResult: inout [(VaultFileDB,String?)], parentId: String? = nil) {
+    func getFiles(root: VaultFile, vaultFileResult: inout [VaultFileDetailsToMerge], parentId: String? = nil) {
         
         root.files.forEach { file in
             
             let vaultFile = VaultFileDB(vaultFile:file)
-            vaultFileResult.append((vaultFile, parentId))
+            vaultFileResult.append(VaultFileDetailsToMerge(vaultFileDB: vaultFile,parentId: parentId,oldId: file.id))
             if file.type == .folder {
                 getFiles(root: file, vaultFileResult: &vaultFileResult, parentId: file.containerName)
             }

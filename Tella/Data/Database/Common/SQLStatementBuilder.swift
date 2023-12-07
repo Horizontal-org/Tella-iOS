@@ -298,8 +298,7 @@ class SQLiteStatementBuilder {
             .getString()
 
         debugLog("update: \(updateQuery)")
-        
-        guard let updateStatement = try prepareStatement(sql: updateQuery) else {
+         guard let updateStatement = try prepareStatement(sql: updateQuery) else {
             throw RuntimeError(errorMessage)
         }
         
@@ -381,6 +380,57 @@ class SQLiteStatementBuilder {
             if deletedCount == 0 {
                 throw RuntimeError(errorMessage)
             }
+        }
+    }
+
+    func addColumnOn(tableName:String, columnName : String, type: String) throws {
+        
+        let query = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + type
+        
+        debugLog("Add Column query: \(query)")
+
+        guard let addColumnStatement = try prepareStatement(sql:query) else {
+            throw RuntimeError(errorMessage)
+        }
+        
+        let result = execute(stmt: addColumnStatement, sql: query)
+        
+        if result == 0 {
+            throw RuntimeError(errorMessage)
+        }
+      }
+
+    func updateColumnOn(tableName:String, oldColumn : String, newColumn: String) throws {
+        
+        let query = "UPDATE " + tableName + " SET " + newColumn + " = " + oldColumn
+
+        debugLog("Update table:  set a Column to an other column query: \(query)")
+        
+        guard let updateColumnStatement = try prepareStatement(sql:query ) else {
+            throw RuntimeError(errorMessage)
+        }
+        
+        let result = execute(stmt: updateColumnStatement, sql: query)
+        
+        if result == 0 {
+            throw RuntimeError(errorMessage)
+        }
+    }
+    
+    func dropColumnOn(tableName:String, columnName : String) throws {
+        
+        let query = "ALTER TABLE " + tableName + " DROP COLUMN " + columnName
+
+        debugLog("ALTER TABLE drop column query: \(query)")
+        
+        guard let dropColumnStatement = try prepareStatement(sql:query ) else {
+            throw RuntimeError(errorMessage)
+        }
+        
+        let result = execute(stmt: dropColumnStatement, sql: query)
+        
+        if result == 0 {
+            throw RuntimeError(errorMessage)
         }
     }
 }
