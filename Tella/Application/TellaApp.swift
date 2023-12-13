@@ -30,8 +30,10 @@ struct TellaApp: App {
         }.onChange(of: scenePhase) { phase in
             switch phase {
             case .background:
+                UIApplication.getTopViewController()?.dismiss(animated: false)
                 self.saveData(lockApptype: .enterInBackground)
             case .active:
+                UIApplication.getTopViewController()?.dismiss(animated: false)
                 self.resetApp()
             case .inactive:
                 appViewState.homeViewModel.shouldShowSecurityScreen = true

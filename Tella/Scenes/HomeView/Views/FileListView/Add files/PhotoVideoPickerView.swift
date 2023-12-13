@@ -38,15 +38,15 @@ struct PhotoVideoPickerView: View {
         imagePickerView
     }
 
-
-
     var imagePickerView: some View {
         HStack{}
             .sheet(isPresented:  showingImagePicker, content: {
                 ImagePickerSheet { imagePickerCompletion in
                     self.showingImagePicker.wrappedValue = false
-                    if imagePickerCompletion != nil {
-                        showProgressView()
+                    if imagePickerCompletion != nil  {
+                        if viewModel.shouldShowProgressView {
+                            showProgressView()
+                        }
                         viewModel.handleAddingFile(imagePickerCompletion)
                     }
                 }
@@ -62,7 +62,9 @@ struct PhotoVideoPickerView: View {
                 allowsMultipleSelection: true,
                 onCompletion: { result in
                     if let urls = try? result.get() {
-                        showProgressView()
+                        if viewModel.shouldShowProgressView {
+                            showProgressView()
+                        }
                         viewModel.addFiles(urlfiles: urls)
                     }
                 }

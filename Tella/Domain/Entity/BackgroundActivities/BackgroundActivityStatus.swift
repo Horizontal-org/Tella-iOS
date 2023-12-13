@@ -4,7 +4,7 @@
 
 import Foundation
 
-enum  BackgroundActivityStatus {
+enum BackgroundActivityStatus {
     case inProgress
     case completed
     case failed

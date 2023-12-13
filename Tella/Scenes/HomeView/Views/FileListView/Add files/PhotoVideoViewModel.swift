@@ -28,6 +28,9 @@ class PhotoVideoViewModel : ObservableObject {
     var  resultFile : Binding<[VaultFileDB]?>?
     var  rootFile : Binding<VaultFileDB?>?
     var  shouldReloadVaultFiles : Binding<Bool>?
+    var shouldShowProgressView : Bool {
+        return resultFile != nil
+    }
     
     private var cancellable: Set<AnyCancellable> = []
     
@@ -83,17 +86,29 @@ class PhotoVideoViewModel : ObservableObject {
         
         let filteredURLfiles = urlfiles.compactMap({$0})
         
-        self.mainAppModel.vaultFilesManager?.addVaultFile(filePaths: filteredURLfiles, parentId: self.rootFile?.wrappedValue?.id)
+        if shouldShowProgressView {
+            addVaultFileWithProgressView(urlfiles: filteredURLfiles, originalURLs: originalURLs)
+        } else {
+            addVaultFileInBackground(urlfiles: filteredURLfiles, originalURLs: originalURLs)
+        }
+    }
+    
+    private func addVaultFileWithProgressView(urlfiles: [URL], originalURLs: [URL?]? = nil) {
+        self.mainAppModel.vaultFilesManager?.addVaultFile(filePaths: urlfiles, parentId: self.rootFile?.wrappedValue?.id)
             .sink { importVaultFileResult in
                 
                 switch importVaultFileResult {
                 case .fileAdded(let vaultFiles):
-                    self.handleSuccessAddingFiles(urlfiles: filteredURLfiles, originalURLs: originalURLs, vaultFiles: vaultFiles)
+                    self.handleSuccessAddingFiles(urlfiles: urlfiles, originalURLs: originalURLs, vaultFiles: vaultFiles)
                 case .importProgress(let importProgress):
                     self.updateProgress(importProgress:importProgress)
                 }
                 
             }.store(in: &cancellable)
+    }
+    
+    private func addVaultFileInBackground(urlfiles: [URL], originalURLs: [URL?]? = nil) {
+        self.mainAppModel.addVaultFile(filePaths: urlfiles, parentId: self.rootFile?.wrappedValue?.id, shouldReloadVaultFiles : self.shouldReloadVaultFiles)
     }
     
     private func handleSuccessAddingFiles(urlfiles: [URL], originalURLs: [URL?]?,vaultFiles:[VaultFileDB] ) {

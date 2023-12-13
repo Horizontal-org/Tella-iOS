@@ -11,7 +11,7 @@ class EncryptionOperation:Operation, WebRepository {
     public var mainAppModel :MainAppModel!
     
     private var cancellable: AnyCancellable?
-    private var subscribers : Set<AnyCancellable> = []
+    private var subscribers = Set<AnyCancellable>()
     
     init(mainAppModel :MainAppModel) {
         super.init()
@@ -20,24 +20,34 @@ class EncryptionOperation:Operation, WebRepository {
     
     override func main() {
         super.main()
-        addVaultFile()
     }
     
-    public func addVaultFile() {
+    public func addVaultFile(filePath: URL, parentId: String?, mainAppModel: MainAppModel) -> CurrentValueSubject<ImportVaultFileInBackgroundResult,Never> {
         
-        self.mainAppModel.vaultFilesManager?.addVaultFile(filePaths: filteredURLfiles, parentId: self.rootFile?.wrappedValue?.id)
-            .sink { importVaultFileResult in
-                
-                switch importVaultFileResult {
-                case .fileAdded(let vaultFiles):
-                    self.handleSuccessAddingFiles(urlfiles: filteredURLfiles, originalURLs: originalURLs, vaultFiles: vaultFiles)
-                case .importProgress(let importProgress):
-                    self.updateProgress(importProgress:importProgress)
+        let backgroundActivityModel = BackgroundActivityModel(type: .file)
+        
+        
+        let subject = CurrentValueSubject<ImportVaultFileInBackgroundResult, Never>(.fileAdded(backgroundActivityModel))
+        
+        Task {
+            
+            do {
+                if let fileDetail = try await self.mainAppModel.vaultFilesManager?.getFileDetails(filePath: filePath) {
+                    backgroundActivityModel.updateWith(vaultFile:fileDetail.file)
+                    subject.send(.fileUpdated(backgroundActivityModel))
+                    
+                    self.mainAppModel.vaultFilesManager?.addVaultFile(fileDetail: fileDetail, filePath: filePath, parentId: parentId)
+                        .sink(receiveValue: { importVaultFileResult in
+                            backgroundActivityModel.status = importVaultFileResult
+                            subject.send(.fileUpdated(backgroundActivityModel))
+                        }).store(in: &subscribers)
                 }
                 
-            }.store(in: &cancellable)
+            } catch {
+            }
+        }
+        return subject
     }
-    
 }
 
 

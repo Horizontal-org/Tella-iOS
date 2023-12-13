@@ -68,7 +68,26 @@ class VaultFilesManager : VaultFilesManagerInterface {
         
         return subject.eraseToAnyPublisher()
     }
-    
+
+    func addVaultFile(fileDetail:VaultFileDetails,filePath: URL, parentId: String?) -> AnyPublisher<BackgroundActivityStatus,Never> {
+        
+        let subject = CurrentValueSubject<BackgroundActivityStatus, Never>(.inProgress)
+        
+        if  let isSaved = self.vaultManager?.save(fileDetail.data, vaultFileId: fileDetail.file.id) {
+            
+            if isSaved {
+                self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: parentId)
+                // self.vaultManager?.deleteFiles(files: [fileDetail.fileUrl])
+                subject.send(.completed)
+            }
+            
+        } else {
+            subject.send( BackgroundActivityStatus.failed)
+        }
+        
+        return subject.eraseToAnyPublisher()
+    }
+
     func getFileDetailsStream(_ filePaths: [URL]) -> AsyncStream<VaultFileDetails> {
         
         // Init AsyncStream with element type = `VaultFileDetails`
@@ -130,7 +149,7 @@ class VaultFilesManager : VaultFilesManagerInterface {
         var width : Double?
         var height :  Double?
         
-        if let resolution = filePath.resolution()  {
+        if let resolution = filePath.resolution() {
             width = resolution.width
             height = resolution.height
         }
@@ -150,7 +169,7 @@ class VaultFilesManager : VaultFilesManagerInterface {
         return (VaultFileDetails(file: vaultFile, data: data, fileUrl: filePath))
     }
     
-    func getFilesTotalSize(filePaths: [URL]) -> Int  {
+    func getFilesTotalSize(filePaths: [URL]) -> Int {
         
         var totalSizeArray : [Int] = []
         

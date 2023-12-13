@@ -8,9 +8,10 @@ class MainAppModel: ObservableObject {
     
     enum Tabs: Hashable {
         case home
-        case forms
         case camera
         case mic
+        case settings
+
     }
     
     enum ImportOption: CaseIterable {
@@ -30,6 +31,8 @@ class MainAppModel: ObservableObject {
     
     @Published var vaultManager :VaultManagerInterface = VaultManager()
     
+    @Published var encryptionService : EncryptionService?
+
     @Published var vaultFilesManager : VaultFilesManager?
     
     @Published var selectedTab: Tabs = .home
@@ -87,7 +90,8 @@ class MainAppModel: ObservableObject {
 
             let database = try VaultDatabase(key: self.vaultManager.key)
             self.vaultFilesManager = try VaultFilesManager(vaultDataBase: database, vaultManager: self.vaultManager)
-        } catch {
+            encryptionService = EncryptionService(vaultFilesManager: self.vaultFilesManager)
+         } catch {
             Toast.displayToast(message: "Error opening the app")
         }
     }
@@ -217,6 +221,14 @@ extension MainAppModel {
         UploadService.shared.cancelSendingReport(reportId: reportId)
         return vaultManager.tellaData?.deleteReport(reportId: reportId)
     }
+}
+
+extension MainAppModel {
+
+    func addVaultFile(filePaths: [URL], parentId: String?, shouldReloadVaultFiles:Binding<Bool>?) {
+        encryptionService?.addVaultFile(filePaths: filePaths, parentId: parentId, mainAppModel: self, shouldReloadVaultFiles: shouldReloadVaultFiles)
+    }
+    
 }
 
 extension MainAppModel {

@@ -7,26 +7,36 @@ import Foundation
 class BackgroundActivityModel {
     
     var id: String
-    var name: String
+    var name: String = ""
     var type: BackgroundActivityType = .file
-    var mimeType: String
+    var mimeType: String = ""
     var thumb: Data? = nil
     var status: BackgroundActivityStatus = .inProgress
     
-    init(id: String, name: String, type: BackgroundActivityType, mimeType: String, thumb: Data? = nil, status: BackgroundActivityStatus) {
-        self.id = id
+    init(type: BackgroundActivityType) {
+        self.id = UUID().uuidString
+    }
+
+    init(name: String = "", type: BackgroundActivityType, mimeType: String = "", thumb: Data? = nil, status: BackgroundActivityStatus) {
+        self.id = UUID().uuidString
         self.name = name
         self.type = type
         self.mimeType = mimeType
         self.thumb = thumb
         self.status = status
     }
+    
+    func updateWith(vaultFile:VaultFileDB) {
+        self.name = vaultFile.name
+        self.mimeType = vaultFile.mimeType ?? ""
+        self.thumb = vaultFile.thumbnail
+
+    }
 }
 
 extension BackgroundActivityModel {
     static func stub() -> BackgroundActivityModel {
-        return BackgroundActivityModel(id: "1234", 
-                                       name: "Uploading “Report 345”",
+        return BackgroundActivityModel(name: "Uploading “Report 345”",
                                        type: .file,
                                        mimeType: "application/pdf",
                                        thumb: nil,

@@ -5,21 +5,16 @@
 import Foundation
 import Combine
 
-class BackgroundActivitiesViewModel:ObservableObject {
+class MainViewModel : ObservableObject {
     
     @Published var items : [BackgroundActivityModel] = []
     private var subscribers = Set<AnyCancellable>()
     
-    init(mainAppModel:MainAppModel) {
-        
-        mainAppModel.encryptionService?.$items
+    init(appModel: MainAppModel) {
+
+        appModel.encryptionService?.$items
             .sink(receiveValue: { items in
                 self.items = items
             }).store(in: &subscribers)
-        
-        
-        
     }
 }
-
-

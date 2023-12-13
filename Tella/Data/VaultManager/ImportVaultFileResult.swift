@@ -9,3 +9,7 @@ enum ImportVaultFileResult {
     case fileAdded([VaultFileDB])
 }
 
+enum ImportVaultFileInBackgroundResult {
+    case fileUpdated(BackgroundActivityModel)
+    case fileAdded(BackgroundActivityModel)
+}

@@ -125,6 +125,6 @@ struct TopSheetView<Content:View>: View {
 }
 
 #Preview {
-    TopSheetView(content: BackgroundActivitiesView())
+    TopSheetView(content: BackgroundActivitiesView(mainAppModel: MainAppModel.stub()))
         .background(Styles.Colors.backgroundMain)
 }

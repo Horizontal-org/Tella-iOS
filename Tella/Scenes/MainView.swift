@@ -3,6 +3,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct MainView: View  {
     
@@ -11,8 +12,11 @@ struct MainView: View  {
     @EnvironmentObject private var appModel: MainAppModel
     @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject private var sheetManager: SheetManager
+    @State private var shouldReload : Bool = false
+    @StateObject var viewModel : MainViewModel
     
-    init() {
+    init(mainAppModel: MainAppModel) {
+        _viewModel = StateObject(wrappedValue: MainViewModel(appModel: mainAppModel))
         setupApperance()
     }
     
@@ -55,8 +59,14 @@ struct MainView: View  {
                             Image("tab.mic")
                             Text(LocalizableRecorder.tabBar.localized)
                         }.tag(MainAppModel.Tabs.mic)
+                    
+                    SettingsMainView(appModel: appModel)
+                        .tabItem {
+                            Image("home.settings")
+                            Text(LocalizableHome.tabBar.localized)
+                        }.tag(MainAppModel.Tabs.settings)
+                    
                 }
-                
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         leadingView
@@ -65,7 +75,8 @@ struct MainView: View  {
                         trailingView
                     }
                 }
-                .navigationBarTitle(LocalizableHome.appBar.localized, displayMode: .inline)
+                .navigationBarTitle(appModel.selectedTab == .home ? LocalizableHome.appBar.localized : "", displayMode: .inline)
+                
             }
             .accentColor(.white)
             
@@ -124,13 +135,16 @@ struct MainView: View  {
     
     @ViewBuilder
     private var leadingView : some View {
-        if appModel.selectedTab == .home {
+        if appModel.selectedTab == .home, viewModel.items.count > 0 {
             Button() {
-                navigateTo(destination: SettingsMainView(appModel: appModel))
+                showTopSheetView(content: BackgroundActivitiesView(mainAppModel: appModel))
             } label: {
-                Image("home.settings")
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 35, height: 35)
+                Text("\(viewModel.items.count)")
+                    .frame(width: 30, height: 30)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 11))
+                    .foregroundColor(.white)
+                    .background(Color.white.opacity(0.24))
+                    .clipShape(Circle())
             }
         }
     }
@@ -152,7 +166,7 @@ struct MainView: View  {
 
 struct AppView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView()
+        MainView(mainAppModel: MainAppModel.stub())
             .preferredColorScheme(.light)
             .previewLayout(.device)
             .previewDevice("iPhone 8")

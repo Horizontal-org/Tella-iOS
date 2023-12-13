@@ -6,7 +6,12 @@ import SwiftUI
 
 struct BackgroundActivitiesView: View {
     
-    @StateObject var viewModel: BackgroundActivitiesViewModel =  BackgroundActivitiesViewModel()
+    @StateObject var viewModel: BackgroundActivitiesViewModel
+    @EnvironmentObject var mainAppModel : MainAppModel
+    
+    init(mainAppModel: MainAppModel) {
+        _viewModel = StateObject(wrappedValue: BackgroundActivitiesViewModel(mainAppModel: mainAppModel))
+    }
     
     var body: some View {
         
@@ -56,6 +61,6 @@ struct BackgroundActivitiesView: View {
 }
 
 #Preview {
-    BackgroundActivitiesView()
+    BackgroundActivitiesView(mainAppModel: MainAppModel.stub())
         .background(Styles.Colors.backgroundTab)
 }
