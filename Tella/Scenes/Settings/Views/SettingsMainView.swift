@@ -39,11 +39,7 @@ struct SettingsMainView: View {
                 Spacer()
             }
         }
-        
-        .toolbar {
-            LeadingTitleToolbar(title: LocalizableSettings.settAppBar.localized)
-        }
-        
+
         .onDisappear {
             appModel.publishUpdates()
         }
