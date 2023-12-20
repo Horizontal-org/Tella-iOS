@@ -18,6 +18,9 @@ class AddTemplateViewModel: ObservableObject {
     @Published var templateItemsViewModel : [TemplateItemViewModel] = []
     
     @Published var isLoading: Bool = false
+    @Published var showToast: Bool = false
+
+    var errorMessage: String = ""
     var serverName : String = ""
     var subscribers = Set<AnyCancellable>()
     var server: UwaziServer? = nil
@@ -41,7 +44,7 @@ class AddTemplateViewModel: ObservableObject {
         self.isLoading = true
         Task {
             guard let id = self.server?.id else { return }
-            let template = try await UwaziServerRepository().handleTemplate(server: self.server!)
+            let template = UwaziServerRepository().handleTemplate(server: self.server!)
             template.receive(on: DispatchQueue.main).sink { completion in
                 self.handleGetTemplateCompletion(completion)
             } receiveValue: { templates in
@@ -70,12 +73,13 @@ class AddTemplateViewModel: ObservableObject {
         self.templateItemsViewModel.first(where: {template.templateId == $0.id})?.isDownloaded = true
     }
     
-    fileprivate func handleGetTemplateCompletion(_ completion: Subscribers.Completion<Error>) {
+    fileprivate func handleGetTemplateCompletion(_ completion: Subscribers.Completion<APIError>) {
         switch completion {
         case .finished:
             debugLog("Fetching template completed.")
         case .failure(let error):
-            debugLog("Error: \(error.localizedDescription)")
+            showToast = true
+            errorMessage = error.errorDescription ?? ""
         }
         self.isLoading = false
     }

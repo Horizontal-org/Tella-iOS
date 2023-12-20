@@ -14,17 +14,22 @@ struct TemplateCardView: View {
     var templateCardViewModel: TemplateCardViewModel
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
-//                MoreButtonView(imageName: "uwazi.star", action: {
-//                    //add this template to favorie
-//                })
-                ConnectionCardDetail(title: templateCardViewModel.translatedName, subtitle: templateCardViewModel.serverName)
-                Spacer()
-                MoreButtonView(imageName: "reports.more", action: {
-                    //show detail
-                    showtemplateActionBottomSheet()
-                })
-            }.padding(.all, 16)
+            Button(action: {
+                showtemplateActionBottomSheet()
+            }) {
+                HStack {
+//                    MoreButtonView(imageName: "uwazi.star", action: {
+//                        //add this template to favorite
+//                    })
+                    ConnectionCardDetail(title: templateCardViewModel.translatedName, subtitle: templateCardViewModel.serverName)
+                    Spacer()
+                    MoreButtonView(imageName: "reports.more", action: {
+                        //show detail
+                        showtemplateActionBottomSheet()
+                    })
+                }
+                .padding(.all, 16)
+            }
         }
         .background(Color.white.opacity(0.08))
         .cornerRadius(15)

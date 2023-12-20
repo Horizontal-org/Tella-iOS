@@ -100,10 +100,11 @@ class UwaziEntityViewModel: ObservableObject {
                 switch completion {
                 case .finished:
                     debugLog("Finished")
-                    Toast.displayToast(message: "Entity submitted succesfully")
+                    Toast.displayToast(message: LocalizableUwazi.uwaziEntitySubmitted.localized)
                     onCompletion()
                 case .failure(let error):
                     debugLog(error.localizedDescription)
+                    Toast.displayToast(message: LocalizableUwazi.uwaziEntityFailedSubmission.localized)
                 }
             } receiveValue: { value in
                 debugLog(value)
@@ -171,12 +172,14 @@ class UwaziEntityViewModel: ObservableObject {
     private func bindVaultFileTaken() {
         $resultFile
             .compactMap { $0 }
-            .sink(receiveValue: { files in
+            .sink(receiveValue: { [self] files in
                 files.forEach { file in
                     if file.type == .document {
                         self.pdfDocuments.insert(file)
+                        toggleShowClear(forId: "10242050", value: true)
                     } else {
                         self.files.insert(file)
+                        toggleShowClear(forId: "10242049", value: true)
                     }
                 }
                 self.publishUpdates()
@@ -188,5 +191,30 @@ class UwaziEntityViewModel: ObservableObject {
         DispatchQueue.main.async {
             self.objectWillChange.send()
         }
+    }
+    
+    func toggleShowClear(forId id: String, value: Bool) {
+        for entryPrompt in entryPrompts {
+            if entryPrompt.id == id {
+                entryPrompt.showClear = value
+                break
+            }
+        }
+    }
+    
+    func clearValues(forId id: String) {
+        if id == "10242050" {
+            pdfDocuments.removeAll()
+        } else if id == "10242049" {
+            files.removeAll()
+        } else {
+            if let index = entryPrompts.firstIndex(where: { $0.id == id }) {
+                entryPrompts[index].value.stringValue = ""
+                entryPrompts[index].value.selectedValue = []
+            }
+
+        }
+        
+        toggleShowClear(forId: id, value: false)
     }
 }

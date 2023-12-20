@@ -27,8 +27,8 @@ class DownloadedTemplatesViewModel: ObservableObject {
         self.server = self.getServerById(id: serverId)
     }
 
-    func getServerById(id: Int) -> UwaziServer {
-        return (self.tellaData?.getUwaziServer(serverId: id))!
+    func getServerById(id: Int) -> UwaziServer? {
+        return (self.tellaData?.getUwaziServer(serverId: id))
     }
     
     func getDownloadedTemplates() {
