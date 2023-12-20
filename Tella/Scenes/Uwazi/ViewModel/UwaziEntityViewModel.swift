@@ -16,9 +16,6 @@ class UwaziEntityViewModel: ObservableObject {
     
     @Published var template: CollectedTemplate? = nil
     @Published var entryPrompts: [UwaziEntryPrompt] = []
-    @Published var accessToken: String = ""
-    @Published var serverURL: String = ""
-    @Published var server: Server? = nil
     
     // files
     @Published var files : Set <VaultFile> = []
@@ -33,17 +30,15 @@ class UwaziEntityViewModel: ObservableObject {
     @Published var showingCamera : Bool = false
     
     @Published var isLoading : Bool = false
+    @Published var server: UwaziServer? = nil
     
     var subscribers = Set<AnyCancellable>()
 
-    init(mainAppModel : MainAppModel, templateId: Int, server: Server) {
+    init(mainAppModel : MainAppModel, templateId: Int, serverId: Int) {
         self.mainAppModel = mainAppModel
         self.template = self.getTemplateById(id: templateId)
-        // this will be removed in the refactor branch of UwaziServer
-        self.server = server
-        self.accessToken = server.accessToken ?? ""
-        self.serverURL = server.url ?? ""
         self.bindVaultFileTaken()
+        self.server = self.getServerById(id: serverId)
         entryPrompts = UwaziEntityParser(template: template!).getEntryPrompts()
     }
     
@@ -55,6 +50,11 @@ class UwaziEntityViewModel: ObservableObject {
     func getTemplateById (id: Int) -> CollectedTemplate {
         return (self.tellaData?.getUwaziTemplateById(id: id))!
     }
+    
+    func getServerById(id: Int) -> UwaziServer {
+        return (self.tellaData?.getUwaziServer(serverId: id))!
+    }
+    
     
     func getEntityTitle() -> String {
         return self.entryPrompts.first(where: { $0.name == UwaziEntityMetadataKeys.title })?.value.stringValue ?? ""
@@ -80,9 +80,6 @@ class UwaziEntityViewModel: ObservableObject {
         // Extract entity data and metadata
         let entityData = extractEntityDataAndMetadata()
         
-        // Prepare server URL and cookie list
-        let serverURL = self.serverURL
-        let cookieList = ["connect.sid=" + self.accessToken]
 //         Submit the entity data
         let (body, contentTypeHeader) = UwaziMultipartFormDataBuilder.createBodyWith(
             keyValues: entityData,
@@ -91,8 +88,8 @@ class UwaziEntityViewModel: ObservableObject {
         )
 
         let response = UwaziServerRepository().submitEntity(
-            serverURL: serverURL,
-            cookieList: cookieList,
+            serverURL: self.server?.url ?? "",
+            cookie: self.server?.cookie ?? "",
             multipartHeader: contentTypeHeader,
             multipartBody: body
         )
@@ -103,10 +100,11 @@ class UwaziEntityViewModel: ObservableObject {
                 switch completion {
                 case .finished:
                     debugLog("Finished")
-                    Toast.displayToast(message: "Entity submitted succesfully")
+                    Toast.displayToast(message: LocalizableUwazi.uwaziEntitySubmitted.localized)
                     onCompletion()
                 case .failure(let error):
                     debugLog(error.localizedDescription)
+                    Toast.displayToast(message: LocalizableUwazi.uwaziEntityFailedSubmission.localized)
                 }
             } receiveValue: { value in
                 debugLog(value)
@@ -174,12 +172,14 @@ class UwaziEntityViewModel: ObservableObject {
     private func bindVaultFileTaken() {
         $resultFile
             .compactMap { $0 }
-            .sink(receiveValue: { files in
+            .sink(receiveValue: { [self] files in
                 files.forEach { file in
                     if file.type == .document {
                         self.pdfDocuments.insert(file)
+                        toggleShowClear(forId: "10242050", value: true)
                     } else {
                         self.files.insert(file)
+                        toggleShowClear(forId: "10242049", value: true)
                     }
                 }
                 self.publishUpdates()
@@ -191,5 +191,30 @@ class UwaziEntityViewModel: ObservableObject {
         DispatchQueue.main.async {
             self.objectWillChange.send()
         }
+    }
+    
+    func toggleShowClear(forId id: String, value: Bool) {
+        for entryPrompt in entryPrompts {
+            if entryPrompt.id == id {
+                entryPrompt.showClear = value
+                break
+            }
+        }
+    }
+    
+    func clearValues(forId id: String) {
+        if id == "10242050" {
+            pdfDocuments.removeAll()
+        } else if id == "10242049" {
+            files.removeAll()
+        } else {
+            if let index = entryPrompts.firstIndex(where: { $0.id == id }) {
+                entryPrompts[index].value.stringValue = ""
+                entryPrompts[index].value.selectedValue = []
+            }
+
+        }
+        
+        toggleShowClear(forId: id, value: false)
     }
 }

@@ -73,55 +73,86 @@ extension TellaDataBase: UwaziTemplateProtocol {
 }
 // MARK: - Methods related to UwaziServerLanguageProtocol
 extension TellaDataBase: UwaziServerLanguageProtocol {
-    func createLanguageTableForUwazi() {
+    func createUwaziServerTable() {
         let columns = [
-            cddl(D.cLocaleId, D.integer, primaryKey: true, autoIncrement: true),
-            cddl(D.cServerId, D.integer),
+            cddl(D.cServerId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cName, D.text),
+            cddl(D.cURL, D.text),
+            cddl(D.cUsername, D.text),
+            cddl(D.cPassword, D.text),
+            cddl(D.cAccessToken, D.text),
             cddl(D.cLocale, D.text),
+            cddl(D.cServerType, D.integer)
         ]
-        statementBuilder.createTable(tableName: D.tUwaziServerLanguage, columns: columns)
+        
+        statementBuilder.createTable(tableName: D.tUwaziServer, columns: columns)
     }
-    func addUwaziLocale(locale: UwaziLocale) -> Int? {
-        return statementBuilder.insertInto(tableName: D.tUwaziServerLanguage, keyValue: [
-            KeyValue(key: D.cLocale, value: locale.locale),
-            KeyValue(key: D.cServerId, value: locale.serverId),
-        ])
+    
+    func addUwaziServer(server: UwaziServer) -> Int? {
+        let valuesToAdd = [KeyValue(key: D.cName, value: server.name),
+                           KeyValue(key: D.cURL, value: server.url),
+                           KeyValue(key: D.cUsername, value: server.username),
+                           KeyValue(key: D.cPassword, value: server.password ),
+                           KeyValue(key: D.cAccessToken, value: server.accessToken),
+                           KeyValue(key: D.cLocale, value: server.locale),
+                           KeyValue(key: D.cServerType, value:server.serverType?.rawValue)
+        ]
+        
+        
+        return statementBuilder.insertInto(tableName: D.tUwaziServer, keyValue: valuesToAdd)
     }
+    
+    func getUwaziServer(serverId: Int) throws -> UwaziServer? {
+        let response = try statementBuilder.selectQuery(tableName: D.tUwaziServer,
+                                                           andCondition: [KeyValue(key: D.cServerId, value: serverId)])
+        guard let uwaziServerDict = response.first else { return nil }
+        
+        return parseUwaziServer(dictionary: uwaziServerDict)
+        
+    }
+    
+    func parseUwaziServer(dictionary : [String:Any] ) -> UwaziServer {
+        let id = dictionary[D.cServerId] as? Int
+        let name = dictionary[D.cName] as? String
+        let url = dictionary[D.cURL] as? String
+        let username = dictionary[D.cUsername] as? String
+        let password = dictionary[D.cPassword] as? String
+        let token = dictionary[D.cAccessToken] as? String
+        let servertType = dictionary[D.cServerType] as? Int
+        let locale = dictionary[D.cLocale] as? String
+        return UwaziServer(id:id,
+                           name: name,
+                           serverURL: url,
+                           username: username,
+                           password: password,
+                           accessToken: token,
+                           locale: locale,
+                           serverType: ServerConnectionType(rawValue: servertType ?? 0)
+        )
+    }
+    
+    func updateUwaziServer(server: UwaziServer) -> Int? {
+        let valuesToUpdate = [KeyValue(key: D.cName, value: server.name),
+                              KeyValue(key: D.cURL, value: server.url),
+                              KeyValue(key: D.cUsername, value: server.username),
+                              KeyValue(key: D.cPassword, value: server.password),
+                              KeyValue(key: D.cAccessToken, value: server.accessToken),
+                              KeyValue(key: D.cLocale, value: server.locale)]
 
-    func updateLocale(localeId: Int, locale: String) -> Int? {
-        let valuesToUpdate = [KeyValue(key: D.cLocale, value: locale)]
-        let serverCondition = [KeyValue(key: D.cLocaleId, value: localeId)]
-        return statementBuilder.update(tableName: D.tUwaziServerLanguage,
+        let serverCondition = [KeyValue(key: D.cServerId, value: server.id)]
+        return statementBuilder.update(tableName: D.tUwaziServer,
                                        keyValue: valuesToUpdate,
                                        primarykeyValue: serverCondition)
     }
+    
+    func deleteUwaziServer(serverId : Int) {
+        let serverCondition = [KeyValue(key: D.cServerId, value: serverId)]
 
-    func getUwaziLocale(serverId: Int) -> UwaziLocale? {
-        do {
-            let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziServerLanguage,
-                                                               andCondition: [KeyValue(key: D.cServerId, value: serverId)])
-            guard let locale = serversDict.first else { return nil }
-            return try JSONDecoder().decode(UwaziLocale.self, from: locale)
-        }catch let error {
-            debugLog(error.localizedDescription)
-            return nil
-        }
-    }
-    func getAllUwaziLocale() throws -> [UwaziLocale] {
-        let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziServerLanguage,
-                                                           andCondition: [])
-        if !serversDict.isEmpty {
-            return try JSONDecoder().decode([UwaziLocale].self, from: serversDict)
-        }
-        return []
-    }
+        statementBuilder.delete(tableName: D.tUwaziServer,
+                                primarykeyValue: serverCondition)
 
-    func deleteUwaziLocale(serverId : Int) {
-        statementBuilder.delete(tableName: D.tUwaziServerLanguage,
-                                primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
-    }
+        statementBuilder.delete(tableName: D.tUwaziTemplate,
+                                primarykeyValue: serverCondition)
 
-    func deleteAllUwaziLocale() throws -> Int {
-        return try statementBuilder.deleteAll(tableNames: [D.tUwaziServerLanguage])
     }
 }

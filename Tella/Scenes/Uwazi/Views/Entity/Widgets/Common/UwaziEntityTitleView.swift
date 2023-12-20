@@ -11,6 +11,8 @@ import SwiftUI
 struct UwaziEntityTitleView: View {
     var title: String
     @State var isRequired: Bool
+    var showClear: Bool
+    var onClearAction: () -> Void
     var body: some View {
         Group {
             HStack {
@@ -26,6 +28,14 @@ struct UwaziEntityTitleView: View {
                         .foregroundColor(Styles.Colors.yellow)
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
+                Spacer()
+                if(showClear) {
+                    Button(action: {
+                        onClearAction()
+                    }) {
+                        Image("uwazi.cancel")
+                    }
+                }
             }
         }
 
@@ -37,7 +47,7 @@ struct UwaziEntityTitleView_Previews: PreviewProvider {
         ZStack {
             Color.purple
                 .ignoresSafeArea()
-            UwaziEntityTitleView(title: "Hello", isRequired: true)
+            UwaziEntityTitleView(title: "Hello", isRequired: true, showClear: false, onClearAction: {})
         }
 
     }

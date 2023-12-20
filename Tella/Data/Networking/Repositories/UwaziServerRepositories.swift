@@ -73,9 +73,9 @@ class UwaziServerRepository: WebRepository {
     ///  Get all the templetes related to the Uwazi server
     /// - Parameters:
     ///   - serverURL: the URL of the server
-    ///   - cookieList:  The array of string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
+    ///   - cookieList:  string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
     /// - Returns: AnyPublisher with UwaziTemplateResult or APIError if any
-    func getTemplate(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziTemplateDTO, APIError> {
+    func getTemplate(serverURL: String, cookieList: String) -> AnyPublisher<UwaziTemplateDTO, APIError> {
         let apiResponse: APIResponse<UwaziTemplateDTO> = getAPIResponse(endpoint: API.getTemplate(serverURL: serverURL, cookieList: cookieList))
         return apiResponse
             .compactMap{$0.0}
@@ -84,9 +84,9 @@ class UwaziServerRepository: WebRepository {
     ///  Get all the setting related to the Uwazi server to determine the whitelisted templates
     /// - Parameters:
     ///   - serverURL: the URL of the server
-    ///   - cookieList:  The array of string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
+    ///   - cookieList:  string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
     /// - Returns: AnyPublisher with UwaziSettingResult or APIError if any
-    func getSettings(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziSettingDTO, APIError> {
+    func getSettings(serverURL: String, cookieList: String) -> AnyPublisher<UwaziSettingDTO, APIError> {
         let apiResponse:  APIResponse<UwaziSettingDTO> = getAPIResponse(endpoint: API.getSetting(serverURL: serverURL, cookieList: cookieList))
         return apiResponse
             .compactMap{$0.0}
@@ -95,9 +95,9 @@ class UwaziServerRepository: WebRepository {
     ///  Get all the options that are related to properties of the template related to the selected Uwazi server
     /// - Parameters:
     ///   - serverURL: the URL of the server
-    ///   - cookieList:  The array of string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
+    ///   - cookieList:  string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
     /// - Returns: AnyPublisher with UwaziDictionaryResult or APIError if any
-    func getDictionaries(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziDictionaryDTO, APIError> {
+    func getDictionaries(serverURL: String, cookieList: String) -> AnyPublisher<UwaziDictionaryDTO, APIError> {
         let apiResponse: APIResponse<UwaziDictionaryDTO> = getAPIResponse(endpoint: API.getDictionary(serverURL: serverURL, cookieList: cookieList))
         return apiResponse
             .compactMap{$0.0}
@@ -106,9 +106,9 @@ class UwaziServerRepository: WebRepository {
     ///  Get all the translation of the text related to the selected Uwazi server
     /// - Parameters:
     ///   - serverURL: the URL of the server
-    ///   - cookieList:  The array of string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
+    ///   - cookieList:  string which consist of  token and the locale of the selected uwazi server if public instance then the array is empty
     /// - Returns: AnyPublisher with UwaziTranslationResult or APIError if any
-    func getTranslations(serverURL: String, cookieList: [String]) -> AnyPublisher<UwaziTranslationDTO, APIError> {
+    func getTranslations(serverURL: String, cookieList: String) -> AnyPublisher<UwaziTranslationDTO, APIError> {
         let apiResponse: APIResponse<UwaziTranslationDTO> = getAPIResponse(endpoint: API.getTranslations(serverURL: serverURL, cookieList: cookieList))
         return apiResponse
             .compactMap{$0.0}
@@ -122,8 +122,8 @@ class UwaziServerRepository: WebRepository {
             .eraseToAnyPublisher()
     }
     
-    func submitEntity(serverURL: String, cookieList: [String], multipartHeader: String, multipartBody: Data) -> AnyPublisher<EntityCreationResponse, APIError> {
-        let apiResponse: APIResponse<EntityCreationResponse> = getAPIResponse(endpoint: API.submitEntity(serverURL: serverURL, cookieList: cookieList, multipartHeader: multipartHeader, multipartBody: multipartBody))
+    func submitEntity(serverURL: String, cookie: String, multipartHeader: String, multipartBody: Data) -> AnyPublisher<EntityCreationResponse, APIError> {
+        let apiResponse: APIResponse<EntityCreationResponse> = getAPIResponse(endpoint: API.submitEntity(serverURL: serverURL, cookie: cookie, multipartHeader: multipartHeader, multipartBody: multipartBody))
             return apiResponse
                 .compactMap{$0.0}
                 .eraseToAnyPublisher()
@@ -133,17 +133,16 @@ extension UwaziServerRepository {
     /// Return a collection of CollectedTemplate which is used to created after all the manpulation is done to prepare the template data for storage
     /// - Parameters:
     ///   - server: Server Object to get the information about the Uwazi server
-    ///   - locale: UwaziLocale Object that has the locale information about language that the user selected when adding a new Uwazi server
     /// - Returns: Collection of CollectedTemplate
-    func handleTemplate(server: Server, locale: UwaziLocale) async throws  -> AnyPublisher<[UwaziTemplateRow], Error> {
+    func handleTemplate(server: UwaziServer) -> AnyPublisher<[UwaziTemplateRow], APIError> {
         guard let serverURL = server.url else {
             return Fail(error: APIError.unexpectedResponse).eraseToAnyPublisher()
         }
-        let cookieList = [server.accessToken ?? "", locale.locale ?? ""]
-        let getTemplate = UwaziServerRepository().getTemplate(serverURL: serverURL, cookieList: cookieList)
-        let getSetting = UwaziServerRepository().getSettings(serverURL: serverURL, cookieList: cookieList)
-        let getDictionary = UwaziServerRepository().getDictionaries(serverURL: serverURL, cookieList: cookieList)
-        let getTranslation = UwaziServerRepository().getTranslations(serverURL: serverURL, cookieList: cookieList)
+        let cookie = server.cookie ?? ""
+        let getTemplate = UwaziServerRepository().getTemplate(serverURL: serverURL, cookieList: cookie)
+        let getSetting = UwaziServerRepository().getSettings(serverURL: serverURL, cookieList: cookie)
+        let getDictionary = UwaziServerRepository().getDictionaries(serverURL: serverURL, cookieList: cookie)
+        let getTranslation = UwaziServerRepository().getTranslations(serverURL: serverURL, cookieList: cookie)
 
         return Publishers.Zip4(
             getTemplate,
@@ -161,13 +160,14 @@ extension UwaziServerRepository {
             self.handleMapping(templates, dictionary)
             // Check whether the server instance is public and if public then only use the whitelisted templates are added to resultTemplates
             let resultTemplates = self.getAllowedTemplates(server: server, settings: settings, templates: templates)
-            self.translate(locale: locale, resultTemplates: resultTemplates, translations: translations)
+            self.translate(locale: server.locale ?? "", resultTemplates: resultTemplates, translations: translations)
             return resultTemplates.compactMap({$0.toDomain() as? UwaziTemplateRow})
         })
+        .mapError{$0 as! APIError}
         .eraseToAnyPublisher()
     }
 
-    fileprivate func getAllowedTemplates(server: Server, settings: UwaziSettingDTO, templates: [UwaziTemplateRowDTO]?) -> [UwaziTemplateRowDTO] {
+    fileprivate func getAllowedTemplates(server: UwaziServer, settings: UwaziSettingDTO, templates: [UwaziTemplateRowDTO]?) -> [UwaziTemplateRowDTO] {
         // Check whether the server instance is public and if public then only use the whitelisted templates are added to resultTemplates
         var tempTemplates: [UwaziTemplateRowDTO] = []
         if !self.isPublic(server: server) {
@@ -186,7 +186,7 @@ extension UwaziServerRepository {
         return tempTemplates
     }
 
-    fileprivate func isPublic(server: Server) -> Bool {
+    fileprivate func isPublic(server: UwaziServer) -> Bool {
         return (server.username?.isEmpty ?? true) || (server.password?.isEmpty ?? true)
     }
 
@@ -201,10 +201,10 @@ extension UwaziServerRepository {
         }
     }
 
-    fileprivate func translate(locale: UwaziLocale, resultTemplates: [UwaziTemplateRowDTO], translations: [UwaziTranslationRowDTO]?) {
+    fileprivate func translate(locale: String, resultTemplates: [UwaziTemplateRowDTO], translations: [UwaziTranslationRowDTO]?) {
         resultTemplates.forEach { template in
             // Get only the translations based on the language that user selected
-            let filteredTranslations = translations?.filter{$0.locale == locale.locale ?? ""}
+            let filteredTranslations = translations?.filter{$0.locale == locale}
             filteredTranslations?.first?.contexts.forEach{ context in
                 // Compare context id and template id to determine appropiate translations
                 if context.contextID == template.id {
@@ -260,11 +260,11 @@ extension UwaziServerRepository {
                                       password: String,
                                       token: String,
                                       serverURL: String))
-        case getTemplate(serverURL: String, cookieList:[String])
-        case getSetting(serverURL: String, cookieList:[String])
-        case getDictionary(serverURL: String, cookieList:[String])
-        case getTranslations(serverURL: String, cookieList:[String])
-        case submitEntity(serverURL: String, cookieList: [String], multipartHeader: String, multipartBody: Data)
+        case getTemplate(serverURL: String, cookieList:String)
+        case getSetting(serverURL: String, cookieList:String)
+        case getDictionary(serverURL: String, cookieList:String)
+        case getTranslations(serverURL: String, cookieList:String)
+        case submitEntity(serverURL: String, cookie: String, multipartHeader: String, multipartBody: Data)
     }
 }
 
@@ -288,12 +288,10 @@ extension UwaziServerRepository.API: APIRequest {
         case .login, .getProjetDetails, .checkURL, .getLanguage, .twoFactorAuthentication:
             return [HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
         case .getTemplate(_,let cookieList), .getSetting(_,let cookieList), .getDictionary(_,let cookieList), .getTranslations(_,let cookieList):
-            let cookiesString = cookieList.joined(separator: "; ")
-            return [HTTPHeaderField.cookie.rawValue: cookiesString,
+            return [HTTPHeaderField.cookie.rawValue: cookieList,
                     HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
-        case .submitEntity(_, let cookieList, _, _):
-                    let cookiesString = cookieList.joined(separator: ";")
-            return [HTTPHeaderField.cookie.rawValue: cookiesString,
+        case .submitEntity(_, let cookie, _, _):
+            return [HTTPHeaderField.cookie.rawValue: cookie,
                     HTTPHeaderField.xRequestedWith.rawValue: XRequestedWithValue.xmlHttp.rawValue,
                     HTTPHeaderField.contentType.rawValue : ContentType.data.rawValue ]
         }
@@ -356,7 +354,7 @@ extension UwaziServerRepository.API: APIRequest {
             return serverURL
         case .getTemplate(serverURL: let serverURL, cookieList: _):
             return serverURL
-        case .getSetting(serverURL: let serverURL, cookieList: _), .getDictionary(serverURL: let serverURL, cookieList: _),.getTranslations(serverURL: let serverURL, cookieList: _), .submitEntity(serverURL: let serverURL, cookieList: _, _, _):
+        case .getSetting(serverURL: let serverURL, cookieList: _), .getDictionary(serverURL: let serverURL, cookieList: _),.getTranslations(serverURL: let serverURL, cookieList: _), .submitEntity(serverURL: let serverURL, _, _, _):
             return serverURL
         }
     }

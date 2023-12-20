@@ -31,9 +31,21 @@ class TellaData : ObservableObject {
         
     }
     
+    func addUwaziServer(server: UwaziServer) -> Int? {
+        let id = database.addUwaziServer(server: server)
+        getServers()
+        return id
+    }
+    
     @discardableResult
     func updateServer(server : Server) -> Int? {
         let id = database.updateServer(server: server)
+        getServers()
+        return id
+    }
+    
+    func updateUwaziServer(server: UwaziServer) -> Int? {
+        let id = database.updateUwaziServer(server: server)
         getServers()
         return id
     }
@@ -43,6 +55,12 @@ class TellaData : ObservableObject {
         getServers()
         getReports()
     }
+    
+    func deleteUwaziServer(serverId: Int) {
+        database.deleteUwaziServer(serverId: serverId)
+        getServers()
+    }
+    
     @discardableResult
     func deleteAllServers() -> Int? {
         do {
@@ -58,6 +76,16 @@ class TellaData : ObservableObject {
     
     func getServers(){
         servers.value = database.getServers()
+    }
+    
+    func getUwaziServer(serverId: Int) -> UwaziServer? {
+        do {
+            return try database.getUwaziServer(serverId: serverId)
+            
+        }catch {
+            debugLog(error)
+            return nil
+        }
     }
     
     func getAutoUploadServer() -> Server? {
@@ -137,24 +165,7 @@ class TellaData : ObservableObject {
         getReports()
     }
 }
-// MARK: - Extension for Uwazi Locale methods
-extension TellaData {
-    func getUwaziLocale(serverId: Int) -> UwaziLocale? {
-        return database.getUwaziLocale(serverId: serverId)
-    }
-    func deleteUwaziLocale(serverId : Int) {
-        database.deleteUwaziLocale(serverId: serverId)
-    }
-    @discardableResult
-    func addUwaziLocale(locale: UwaziLocale) -> Int? {
-        return database.addUwaziLocale(locale: locale)
-    }
 
-    @discardableResult
-    func updateLocale(localeId: Int, locale: String) -> Int? {
-        return database.updateLocale(localeId: localeId, locale: locale)
-    }
-}
 // MARK: - Extension for Uwazi Template methods
 extension TellaData {
     func addUwaziTemplate(template: CollectedTemplate) -> CollectedTemplate? {

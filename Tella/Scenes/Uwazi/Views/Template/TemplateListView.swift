@@ -29,7 +29,7 @@ struct TemplateListView: View {
                     }
                 }
             } else {
-                EmptyReportView(message: message)
+                UwaziEmptyView(message: message)
             }
         }
         .onAppear {

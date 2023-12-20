@@ -52,16 +52,27 @@ extension TellaDataBase {
     }
 
     func getServers() -> [Server] {
-        var servers : [Server] = []
-        do {
-            let serversDict = try statementBuilder.selectQuery(tableName: D.tServer, andCondition: [])
-            serversDict.forEach { dict in
-                servers.append(getServer(dictionnary: dict))
+        var servers: [Server] = []
+        
+        // Function to append servers from a given table
+        func appendServers(fromTable tableName: String) {
+            do {
+                let serversDict = try statementBuilder.selectQuery(tableName: tableName, andCondition: [])
+                serversDict.forEach { dict in
+                    servers.append(getServer(dictionnary: dict))
+                }
+            } catch {
+                debugLog("Error while fetching servers from \(tableName): \(error)")
             }
-            return servers
-        } catch {
-            return []
         }
+
+        // Query tella servers
+        appendServers(fromTable: D.tServer)
+
+        // Query uwaziServers
+        appendServers(fromTable: D.tUwaziServer)
+
+        return servers
     }
 
     func getAutoUploadServer() -> Server? {
@@ -92,6 +103,7 @@ extension TellaDataBase {
         let autoUpload = dictionnary[D.cAutoUpload] as? Int
         let autoDelete = dictionnary[D.cAutoDelete] as? Int
         let servertType = dictionnary[D.cServerType] as? Int
+        let cookie = dictionnary[D.cCookie] as? String
         return Server(id:id,
                       name: name,
                       serverURL: url,
@@ -104,7 +116,8 @@ extension TellaDataBase {
                       slug:slug,
                       autoUpload: autoUpload == 0 ? false : true,
                       autoDelete: autoDelete == 0 ? false : true,
-                      serverType: ServerConnectionType(rawValue: servertType ?? 0)
+                      serverType: ServerConnectionType(rawValue: servertType ?? 0),
+                      cookie: cookie
         )
     }
 
@@ -160,6 +173,6 @@ extension TellaDataBase {
     }
 
     func deleteAllServers() throws -> Int {
-        return try statementBuilder.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile, D.tUwaziServerLanguage, D.tUwaziTemplate])
+        return try statementBuilder.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile, D.tUwaziServer, D.tUwaziTemplate])
     }
 }

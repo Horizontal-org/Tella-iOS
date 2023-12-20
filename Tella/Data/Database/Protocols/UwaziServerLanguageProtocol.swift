@@ -9,10 +9,11 @@
 import Foundation
 
 protocol UwaziServerLanguageProtocol {
-    func createLanguageTableForUwazi()
-    func addUwaziLocale(locale: UwaziLocale) -> Int?
-    func getUwaziLocale(serverId: Int) throws -> UwaziLocale?
-    func getAllUwaziLocale() throws -> [UwaziLocale]
-    func deleteUwaziLocale(serverId : Int) throws
-    func deleteAllUwaziLocale() throws -> Int
+    func createUwaziServerTable()
+    
+    func addUwaziServer(server: UwaziServer) -> Int?
+    
+    func getUwaziServer(serverId: Int) throws -> UwaziServer?
+    
+    func parseUwaziServer(dictionary : [String:Any] ) -> UwaziServer 
 }

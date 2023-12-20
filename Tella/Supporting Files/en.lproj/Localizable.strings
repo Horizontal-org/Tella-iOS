@@ -311,8 +311,8 @@ If you want to take a picture or a video, proceed in the following way:\
 "Uwazi_Server_Delete_SheetAction" = "Delete";
 
 "Uwazi_PageViewItem_Template" = "Templates";
-"Uwazi_Template_TemplateList_Expl" = "These are uwazi templates you can fil out.";
-"Uwazi_Template_TemplateList_EmptyExpl" = "You don't have any downloaded templates";
+"Uwazi_Template_TemplateList_Expl" = "These are uwazi templates you can fill out.";
+"Uwazi_Template_TemplateList_EmptyExpl" = "You have no saved templates. Tap the “+” button to add a new template.";
 "Uwazi_Template_CreateEntity_SheetAction" = "Create an entity";
 "Uwazi_Template_Delete_SheetAction" = " Delete from this device";
 
@@ -336,6 +336,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Uwazi_Entity_Mandatory_Expl" = "This field is mandatory.";
 
 "Uwazi_Entity_Submitted" = "Entity submitted succesfully";
+"Uwazi_Entity_Submission_Failed" = "There was an error submitting the entity";
 "Uwazi_Entity_SummaryDetail_ToolbarItem" = "Summary";
 "Uwazi_Entity_SummaryDetail_ServerTitle" = "Server:";
 "Uwazi_Entity_SummaryDetail_TemplateTitle" = "Template:";
