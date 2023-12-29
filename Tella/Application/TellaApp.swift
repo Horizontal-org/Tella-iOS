@@ -14,6 +14,7 @@ struct TellaApp: App {
     private var appViewState = AppViewState()
     @Environment(\.scenePhase) var scenePhase
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    let delayTimeInSecond = 1.0
     
     var body: some Scene {
         WindowGroup {
@@ -40,36 +41,32 @@ struct TellaApp: App {
             }
         }
     }
-    
+
     func saveData(lockApptype:LockApptype) {
-        
-        appViewState.homeViewModel.saveLockTimeoutStartDate()
-        
+        let homeViewModel = appViewState.homeViewModel
+        homeViewModel.saveLockTimeoutStartDate()
         UploadService.shared.cancelTasksIfNeeded()
-        
-         let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
-//        let hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
-        
-      let  hasFileOnBackground = lockApptype == .enterInBackground ? UploadService.shared.hasFilesToUploadOnBackground : false
-            
-         if shouldResetApp && !hasFileOnBackground {
-            
-            appViewState.homeViewModel.appEnterInBackground = true
-            appViewState.homeViewModel.shouldSaveCurrentData = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+        handleResetApp(lockApptype)
+    }
+    
+    fileprivate func handleResetApp(_ lockApptype: LockApptype) {
+        let homeViewModel = appViewState.homeViewModel
+        let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
+        let  hasFileOnBackground = lockApptype == .enterInBackground ? UploadService.shared.hasFilesToUploadOnBackground : false
+        if shouldResetApp && !hasFileOnBackground {
+            homeViewModel.appEnterInBackground = true
+            homeViewModel.shouldSaveCurrentData = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond, execute: {
                 appViewState.homeViewModel.vaultManager.clearTmpDirectory() // TO FIX for server doesn't allow upload in Background
                 appViewState.resetApp()
             })
-            // appViewState.homeViewModel.saveLockTimeoutStartDate()
-            appViewState.homeViewModel.shouldSaveCurrentData = false
+            homeViewModel.shouldSaveCurrentData = false
         }
     }
-    
     func resetApp() {
-         if appViewState.homeViewModel.shouldResetApp() == true,
-           appViewState.homeViewModel.appEnterInBackground == true {
-            
-            
+        let homeViewModel = appViewState.homeViewModel
+        if homeViewModel.shouldResetApp() == true,
+           homeViewModel.appEnterInBackground == true {
             DispatchQueue.main.async {
                 appViewState.shouldHidePresentedView = true
                 appViewState.homeViewModel.vaultManager.clearTmpDirectory()
@@ -77,8 +74,8 @@ struct TellaApp: App {
                 appViewState.shouldHidePresentedView = false
             }
         }
-        appViewState.homeViewModel.appEnterInBackground = false
-        appViewState.homeViewModel.shouldShowSecurityScreen = false
+        homeViewModel.appEnterInBackground = false
+        homeViewModel.shouldShowSecurityScreen = false
     }
 }
 

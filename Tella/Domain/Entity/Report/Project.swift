@@ -18,6 +18,8 @@ class Server : Hashable {
     var slug : String?
     var autoUpload: Bool?
     var autoDelete: Bool?
+    var serverType: ServerConnectionType?
+    var cookie: String?
 
     init(id: Int? = nil,
          name: String? = nil,
@@ -30,7 +32,10 @@ class Server : Hashable {
          projectId: String? = nil,
          slug: String? = nil,
          autoUpload: Bool?,
-         autoDelete: Bool) {
+         autoDelete: Bool,
+         serverType: ServerConnectionType? = nil,
+         cookie: String? = nil
+        ) {
         self.id = id
         self.name = name
         self.url = serverURL
@@ -43,6 +48,8 @@ class Server : Hashable {
         self.slug = slug
         self.autoUpload = autoUpload
         self.autoDelete = autoDelete
+        self.serverType = serverType
+        self.cookie = cookie
     }
     
     init() {
@@ -56,5 +63,4 @@ class Server : Hashable {
     func hash(into hasher: inout Hasher){
         hasher.combine(id.hashValue)
     }
-    
 }

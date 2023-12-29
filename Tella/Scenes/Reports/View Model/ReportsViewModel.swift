@@ -15,12 +15,10 @@ class ReportsViewModel: ObservableObject {
     @Published var outboxedReports : [Report] = []
     @Published var submittedReports : [Report] = []
     @Published var selectedReport : Report?
-    @Published var selectedCell = Pages.draft
-    
-    var pageViewItems : [PageViewItem] {
-        [PageViewItem(title: LocalizableReport.draftTitle.localized, page: .draft, number: draftReports.count),
-         PageViewItem(title: LocalizableReport.outboxTitle.localized, page: .outbox, number: outboxedReports.count),
-         PageViewItem(title: LocalizableReport.submittedTitle.localized, page: .submitted, number: submittedReports.count)] }
+    @Published var selectedCell: Int = ReportPages.draft.rawValue
+    @Published var pageViewItems : [PageViewItem] = [PageViewItem(title: LocalizableReport.draftTitle.localized, page: ReportPages.draft.rawValue, number: "") ,
+                                                     PageViewItem(title: LocalizableReport.outboxTitle.localized, page: ReportPages.outbox.rawValue, number: ""),
+                                                     PageViewItem(title: LocalizableReport.submittedTitle.localized, page: ReportPages.submitted.rawValue, number: "")]
     
     var sheetItems : [ListActionSheetItem] { return [
         
@@ -83,6 +81,41 @@ class ReportsViewModel: ObservableObject {
                     self.submittedReports = submittedReports
                 })
             }.store(in: &subscribers)
+    }
+    
+    private func updateDraftReportsNumber() {
+        if let row = self.pageViewItems.firstIndex(where: {$0.page == ReportPages.draft.rawValue}) {
+            if draftReports.count > 0 {
+                pageViewItems[row].number = "(\(draftReports.count))"
+            }
+            else {
+                pageViewItems[row].number = ""
+            }
+        }
+    }
+    
+    private func updateOutboxReportsNumber() {
+        if let row = self.pageViewItems.firstIndex(where: {$0.page == ReportPages.outbox.rawValue}) {
+            
+            if outboxedReports.count > 0 {
+                pageViewItems[row].number = "(\(outboxedReports.count))"
+            }
+            else {
+                pageViewItems[row].number = ""
+            }
+        }
+    }
+    
+    private func updateSubmittedReportsNumber() {
+        if let row = self.pageViewItems.firstIndex(where: {$0.page == ReportPages.submitted.rawValue}) {
+            
+            if submittedReports.count > 0 {
+                pageViewItems[row].number = "(\(submittedReports.count))"
+            }
+            else {
+                pageViewItems[row].number = ""
+            }
+        }
     }
     
     func deleteReport() {

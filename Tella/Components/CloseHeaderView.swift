@@ -30,7 +30,9 @@ struct CloseHeaderView: View {
     }
 }
 
-#Preview {
-    CloseHeaderView( title: "Test", isPresented: .constant(false))
-        .background(Styles.Colors.backgroundMain)
+struct CloseHeaderView_Previews: PreviewProvider {
+    static var previews: some View {
+        CloseHeaderView( title: "Test", isPresented: .constant(false))
+            .background(Styles.Colors.backgroundMain)
+    }
 }

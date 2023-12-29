@@ -10,6 +10,7 @@ struct ServersListView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
     @EnvironmentObject var sheetManager: SheetManager
     @EnvironmentObject var mainAppModel : MainAppModel
+    @EnvironmentObject var settingViewModel : SettingsViewModel
     
     @State var shouldShowEditServer : Bool = false
     
@@ -56,34 +57,50 @@ struct ServersListView: View {
                                   action:  {item in
                 
                 serversViewModel.currentServer = server
-                
-                self.handleActions(item : item)
+                self.handleActions(item : item, server: server)
             })
         }
     }
-    
-    private func showDeleteServerConfirmationView() {
-        sheetManager.showBottomSheet(modalHeight: 200) {
-            ConfirmBottomSheet(titleText: "Delete “Election monitoring” server?",
-                               msgText: "If you delete this server, all draft and submitted forms will be deleted from your device.",
-                               cancelText: "CANCEL",
-                               actionText: "DELETE", didConfirmAction: {
-                serversViewModel.deleteServer()
-                sheetManager.hide()
-            })
-        }
-    }
-    
-    private func handleActions(item: ListActionSheetItem) {
+    private func handleActions(item: ListActionSheetItem, server: Server) {
         guard let type = item.type as? ServerActionType else { return  }
-        
         switch type {
         case .edit:
-            shouldShowEditServer = true
+            handleEditServer(server)
             sheetManager.hide()
         case .delete:
-            showDeleteServerConfirmationView()
+            let deleteMessages = DeleteServerTexts(server: server)
+            showDeleteServerConfirmationView(message: deleteMessages)
         }
+    }
+
+    fileprivate func handleEditServer(_ server: Server) {
+        guard let serverType = server.serverType else { return }
+        switch serverType {
+        case .tella:
+            shouldShowEditServer = true
+        case .uwazi:
+            navigateToUwaziAddServerView(
+                UwaziServer(
+                    id: server.id, name: server.name, serverURL: server.url, accessToken: server.accessToken)
+            )
+        default:
+            break
+        }
+    }
+    private func showDeleteServerConfirmationView(message: DeleteServerTexts) {
+        sheetManager.showBottomSheet(modalHeight: 210) {
+            ConfirmBottomSheet(titleText: message.titleText,
+                                      msgText: message.messageText,
+                                      cancelText: message.cancelText,
+                                      actionText: message.actionText, didConfirmAction: {
+                serversViewModel.deleteServer()
+            })
+        }
+    }
+
+    fileprivate func navigateToUwaziAddServerView(_ server: UwaziServer) {
+        navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel, server: server)
+            .environmentObject(serversViewModel))
     }
 }
 

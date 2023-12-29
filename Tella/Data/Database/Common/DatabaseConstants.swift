@@ -8,6 +8,7 @@ import SQLite3
 
 struct D {
     /* DATABASE */
+    // MARK: - DATABASE
     static let databaseName = "tella_vault.db"
     
     /* DATABASE VERSION */
@@ -15,6 +16,7 @@ struct D {
     static let databaseVersion = 2
 
     /* DEFAULT TYPES FOR DATABASE */
+    // MARK: - DEFAULT TYPES FOR DATABASE
     static let integer = " INTEGER "
     static let text = " TEXT ";
     static let blob = " BLOB ";
@@ -22,14 +24,17 @@ struct D {
 
     
     /* DATABASE TABLES */
-    
+    // MARK: - DATABASE TABLES
     static let tServer = "t_server"
     static let tReport = "t_report"
+    static let tUwaziServerLanguage = "t_uwazi_server_language"
     static let tReportInstanceVaultFile = "t_report_instance_vault_file";
+    static let tUwaziTemplate = "t_uwazi_template"
+    static let tUwaziServer = "t_uwazi_server"
     static let tFeedback = "t_feedback"
 
     /* DATABASE COLUMNS */
-    
+    // MARK: - DATABASE COLUMNS
     static let cId = "c_id"
     static let cName = "c_name"
     static let cServerURL = "c_server_url"
@@ -48,12 +53,12 @@ struct D {
     static let cApiProjectId = "c_api_project_id"
     static let cSlug = "c_slug"
 
-    
     static let cTitle = "c_title"
     static let cDescription = "c_description"
     static let cDate = "c_date"
     static let cStatus = "c_status"
     static let cServerId = "c_server_id"
+    static let cServerType = "c_server_type"
     
     static let cReportId = "c_report_id"
     static let cApiReportId = "c_api_report_id"
@@ -65,6 +70,18 @@ struct D {
     static let cCreatedDate = "c_created_date"
     static let cUpatedDate = "c_upated_date"
     static let cUpdatedDate = "c_updated_date"
+    // MARK: Uwazi Locale
+    static let cLocale = "c_locale"
+    static let cLocaleId = "c_locale_id"
+
+    static let cTemplateId = "c_template_id"
+    static let cEntity = "c_entity"
+    static let cDownloaded = "c_downloaded"
+    static let cUpdated = "c_updated"
+    static let cFavorite = "c_favorite"
+    static let cServerName = "c_server_name"
+    static let cCookie = "c_cookie"
+
 
     static let ctext = "c_text"
 

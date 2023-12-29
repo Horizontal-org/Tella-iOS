@@ -31,11 +31,23 @@ class TellaData : ObservableObject {
         return addServerResult
     }
     
+    func addUwaziServer(server: UwaziServer) -> Int? {
+        let id = database.addUwaziServer(server: server)
+        getServers()
+        return id
+    }
+    
     @discardableResult
     func updateServer(server : Server) -> Result<Bool, Error> {
         let updateServerResult = database.updateServer(server: server)
         getServers()
         return updateServerResult
+    }
+
+    func updateUwaziServer(server: UwaziServer) -> Int? {
+        let id = database.updateUwaziServer(server: server)
+        getServers()
+        return id
     }
     
     @discardableResult
@@ -53,10 +65,25 @@ class TellaData : ObservableObject {
         getReports()
         return deleteAllServersResult
     }
+
+    func deleteUwaziServer(serverId: Int) {
+        database.deleteUwaziServer(serverId: serverId)
+        getServers()
+    }
     
     func getServers(){
         DispatchQueue.main.async {
-            self.servers.value = self.database.getServer()
+            self.servers.value = self.database.getServers()
+        }
+    }
+
+    func getUwaziServer(serverId: Int) -> UwaziServer? {
+        do {
+            return try database.getUwaziServer(serverId: serverId)
+            
+        }catch {
+            debugLog(error)
+            return nil
         }
     }
     
@@ -189,6 +216,37 @@ class TellaData : ObservableObject {
     @discardableResult
     func deleteFeedback(feedbackId: Int) -> Result<Bool,Error> {
         database.deleteFeedback(feedbackId: feedbackId)
+    }
+}
+
+// MARK: - Extension for Uwazi Template methods
+extension TellaData {
+    func addUwaziTemplate(template: CollectedTemplate) -> CollectedTemplate? {
+        return database.addUwaziTemplate(template: template)
+    }
+
+    func deleteAllUwaziTemplate(templateId: String) {
+        return database.deleteUwaziTemplate(templateId: templateId)
+    }
+    func getAllUwaziTemplate() -> [CollectedTemplate] {
+        do {
+            return try database.getAllUwaziTemplate()
+        } catch let error {
+            debugLog(error)
+            return []
+        }
+
+    }
+    func getUwaziTemplateById(id: Int) -> CollectedTemplate? {
+        do {
+            return try database.getUwaziTemplate(templateId: id)
+        } catch let error {
+            debugLog(error)
+            return nil
+        }
+    }
+    func deleteAllUwaziTemplate(id: Int) {
+        database.deleteUwaziTemplate(id: id)
     }
 }
 

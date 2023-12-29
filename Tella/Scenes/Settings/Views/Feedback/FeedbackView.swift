@@ -196,8 +196,9 @@ struct FeedbackView: View {
     }
 }
 
-#Preview {
-    FeedbackView(mainAppModel: MainAppModel.stub())
-        .environmentObject(MainAppModel.stub())
-    
+struct FeedbackView_Previews: PreviewProvider {
+    static var previews: some View {
+        FeedbackView(mainAppModel: MainAppModel.stub())
+            .environmentObject(MainAppModel.stub())
+    }
 }

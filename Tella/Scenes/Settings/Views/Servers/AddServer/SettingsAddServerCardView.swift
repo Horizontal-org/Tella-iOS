@@ -9,6 +9,7 @@ struct SettingsAddServerCardView: View {
     
     @EnvironmentObject var serversViewModel : ServersViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
+    @EnvironmentObject var settingViewModel: SettingsViewModel
     
     var body: some View {
         ZStack {
@@ -26,7 +27,8 @@ struct SettingsAddServerCardView: View {
                 Spacer()
                 
                 Button {
-                    navigateTo(destination: AddServerURLView(appModel: mainAppModel)  )
+                    //navigateTo(destination: AddServerURLView(appModel: mainAppModel))
+                    navigateTo(destination: ServerSelectionView(appModel: mainAppModel).environmentObject(serversViewModel))
                 } label: {
                     Image("settings.add")
                         .padding(.all, 14)
@@ -46,5 +48,7 @@ struct SettingsAddServerCardView: View {
 struct SettingsAddServerCardView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsAddServerCardView()
+            .environmentObject(ServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
+            .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
     }
 }

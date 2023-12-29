@@ -14,9 +14,14 @@ public enum HTTPHeaderField: String {
     case contentType = "Content-Type"
     case authorization = "Authorization"
     case bearer = "Bearer "
+    case cookie = "Cookie"
+    case xRequestedWith = "X-Requested-With"
     case tellaPlatform = "X-Tella-Platform"
 }
 
+public enum XRequestedWithValue: String {
+    case xmlHttp = "XMLHttpRequest"
+}
 public enum Encoding {
     case json
     case form

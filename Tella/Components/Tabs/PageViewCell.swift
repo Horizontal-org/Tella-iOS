@@ -7,11 +7,11 @@ import SwiftUI
 struct  PageViewCell: View {
     
     let title: String
-    let number: Int
+    let number: String
     
-    let page: Pages
+    let page: Int
     
-    @Binding var selectedOption: Pages
+    @Binding var selectedOption: Int
     
     public var body: some View {
         
@@ -26,7 +26,7 @@ struct  PageViewCell: View {
                         .font(.custom(Styles.Fonts.boldFontName, size: 15))
                         .foregroundColor(selected ? .white : .white.opacity(0.5))
                         .padding(.bottom, 1)
-                    if number > 0 {
+                    if !number.isEmpty {
                         Text("(\(number))")
                             .font(.custom(Styles.Fonts.boldFontName, size: 15))
                             .foregroundColor(Styles.Colors.yellow)

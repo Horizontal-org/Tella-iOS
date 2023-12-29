@@ -134,7 +134,7 @@ struct SubmittedDetailsView: View {
     
     private func dismissViews() {
         self.popTo(UIHostingController<ReportsView>.self)
-        self.reportsViewModel.selectedCell = .submitted
+        self.reportsViewModel.selectedCell = ReportPages.submitted.rawValue
     }
     
     private func showDeleteReportConfirmationView() {

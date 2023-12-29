@@ -94,7 +94,6 @@ struct SettingsMainView: View {
     }
     
 }
-
 struct SettingsMainView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsMainView(appModel: MainAppModel.stub())

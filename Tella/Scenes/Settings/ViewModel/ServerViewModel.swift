@@ -45,20 +45,15 @@ class ServerViewModel: ObservableObject {
     }
     
     init(mainAppModel : MainAppModel, currentServer: Server?) {
-        
         self.mainAppModel = mainAppModel
         self.currentServer = currentServer
-        
         cancellable = $validUsername.combineLatest($validPassword).sink(receiveValue: { validUsername, validPassword  in
             self.validCredentials = validUsername && validPassword
         })
-        
         fillReportVM()
-        
     }
     
     func addServer(token: String, project: ProjectAPI) {
-        
         let server = Server(name: project.name,
                             serverURL: projectURL.getBaseURL(),
                             username: username,
@@ -115,10 +110,7 @@ class ServerViewModel: ObservableObject {
                     }
                 },
                 receiveValue: { result in
-//
-                    
                     self.getProjetSlug(token: result.accessToken)
-
                 }
             )
             .store(in: &subscribers)
@@ -164,8 +156,6 @@ class ServerViewModel: ObservableObject {
             backgroundUpload = server.backgroundUpload ?? false
             autoUpload = server.autoUpload ?? false
             autoDelete = server.autoDelete ?? false
-
-
         }
     }
     

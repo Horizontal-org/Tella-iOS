@@ -204,6 +204,32 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettLockTimeout_OneHour_SheetSelect" = "1 hora";
 "Settings_SettLockTimeout_Cancel_SheetAction" = "CANCELAR";
 "Settings_SettLockTimeout_Save_SheetAction" = "SAVE";
+
+"Setting_SettServer_Selection_Title" = "What type of server would you like to connect to?";
+"Setting_SettServer_Selection_Message" = "If you are not sure, please ask your organization.";
+"Setting_SettServer_TellaWeb" = "TELLA WEB";
+"Setting_SettServer_Uwazi" = "UWAZI";
+"Setting_SettServer_No_Internet" = "No Internet connection. Try again when you are connected to the Internet.";
+"Setting_SettServer_Server_URL_Incorrect" = "Error: The server URL is incorrect";
+
+"Setting_Server_Uwazi_Server_URL" = "Enter the server URL";
+"Setting_Server_Uwazi_Access_Title" = "Log in if you have a username and password, or access the server as a public instance.";
+"Setting_Server_Uwazi_Login" = "LOG IN";
+"Setting_Server_Uwazi_Access_Public" = "ACCESS AS PUBLIC INSTANCE";
+"Setting_Server_Uwazi_Login_Access" = "Log in to access the server";
+"Setting_Server_Uwazi_Username" = "Username";
+"Setting_Server_Uwazi_Password" = "Password";
+"Setting_Server_Uwazi_Two_Step_Title" = "Two-step verification";
+"Setting_Server_Uwazi_Two_Step_Message" = "This Uwazi instance requires two-step verification. Enter here the 6-digit code from your authenticator app.";
+"Setting_Server_Uwazi_Authentication_Placeholder" = "Authentication code";
+"Setting_Server_Uwazi_Authentication_Verify" = "VERIFY";
+"Setting_Server_Uwazi_Language_Title" = "Uwazi language";
+"Setting_Server_Uwazi_Language_Message" = "This Uwazi collection is available in several languages. Please select in which language you would like to download templates.";
+"Setting_Server_Uwazi_Language_Ok" = "OK";
+"Setting_Server_Uwazi_Language_Cancel" = "CANCEL";
+"Setting_Server_Uwazi_Connect_Server" = "Connected to server";
+"Setting_Server_Uwazi_Success_Message" = "You have successfully connected to the server and will be able to share your data.";
+
 "Settings_SettDeleteAfterFail_SheetTitle" = "Delete after failed unlock";
 "Settings_SettDeleteAfterFail_SheetExpl" = "Decide how many failed unlock attempts are allowed before everything inside Tella is deleted.";
 "Settings_SettDeleteAfterFail_Off_SheetSelect" = "Off (Do not delete data) ";
@@ -214,8 +240,10 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettDeleteAfterFail_Off_Toast" = "Your tella data won't be deleted after failed attempts";
 "Settings_SettDeleteAfterFail_Cancel_SheetAction" = "CANCEL";
 "Settings_SettDeleteAfterFail_Save_SheetAction" = "SAVE";
+
 "Settings_SettServers_AppBar" = "Servidores";
 "Settings_SettAbout_AppBar" = "Acerca de y Ayuda";
+
 "Settings_SettAbout_Head" = "Tella";
 "Settings_SettAbout_Subhead" = "Versión";
 "Settings_SettAbout_ContactUs" = "Contáctanos";
@@ -266,6 +294,48 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_DeleteDraftReport_SheetExpl" = "¿Estás segura(o) de querer eliminar este borrador?";
 "Reports_DeleteOutboxReport_SheetExpl" = "Are you sure you want to delete this upload?";
 "Reports_DeleteSubmittedReport_SheetExpl" = "¿Tienes seguridad de querer borrar este reporte enviado de tus registros?";
+
+"Uwazi_AppBar" = "Uwazi";
+"Uwazi_Server_Edit_SheetAction" = "Edit";
+"Uwazi_Server_Delete_SheetAction" = "Delete";
+
+"Uwazi_PageViewItem_Template" = "Templates";
+"Uwazi_Template_TemplateList_Expl" = "These are uwazi templates you can fill out.";
+"Uwazi_Template_TemplateList_EmptyExpl" = "You have no saved templates. Tap the “+” button to add a new template.";
+"Uwazi_Template_CreateEntity_SheetAction" = "Create an entity";
+"Uwazi_Template_Delete_SheetAction" = " Delete from this device";
+
+"Uwazi_Template_AddTemplate_Title" = "Add Templates";
+"Uwazi_Template_AddTemplate_Expl" = "These are the templates available on the Uwazi instances you are connected to. You can ";
+"Uwazi_Template_AddTemplate_SecondExpl" = "manage your Uwazi instances here.";
+"Uwazi_Template_AddTemplateSaved_Toast" = "successfully added to your Uwazi templates.";
+"Uwazi_Template_AddTemplate_EmptyExpl" = "There are no templates";
+"Uwazi_DeleteTemplate_SheetExpl" = "Are you sure you want to delete this Template?";
+
+"Uwazi_Entity_MultiFile_PrimaryDocument" = "Primary Documents";
+"Uwazi_Entity_MultiFile_AttachManyPDFFiles" = "Attach as many PDF files as you wish";
+"Uwazi_Entity_MultiFile_AttachManyPDFFiles_SelectTitle" = "Select PDF files";
+"Uwazi_Entity_MultiFile_SupportingFiles" = "Supporting files";
+"Uwazi_Entity_MultiFile_SupportingFiles_HelpText" = "Select as many files as you wish";
+"Uwazi_Entity_ExitEntity_SheetTitle" = "Exit entity?";
+"Uwazi_Entity_ExitEntity_SheetExpl" = "Your draft will be lost";
+"Uwazi_Entity_Property_Unsopported" = "Unsupported property type";
+"Uwazi_Entity_Action_Next" = "Next";
+"Uwazi_Entity_Mandatory_Expl" = "This field is mandatory.";
+
+"Uwazi_Entity_Submitted" = "Entity submitted succesfully";
+"Uwazi_Entity_Submission_Failed" = "There was an error submitting the entity";
+"Uwazi_Entity_SummaryDetail_ToolbarItem" = "Summary";
+"Uwazi_Entity_SummaryDetail_ServerTitle" = "Server:";
+"Uwazi_Entity_SummaryDetail_TemplateTitle" = "Template:";
+"Uwazi_Entity_SummaryDetail_EntityResponse_Title" = "Entity Response";
+"Uwazi_Entity_SummaryDetail_Submit_Action" = "SUBMIT";
+"Uwazi_Entity_SelectFiles" = "Select Files";
+"Uwazi_Entity_SelectFiles_Dropdown_Title" = "files attached";
+"Uwazi_Entity_SelectFiles_Dropdown_TitleSingle" = "file attached";
+"Uwazi_Entity_SelectFiles_Dropdown_Hide" = "Hide files";
+"Uwazi_Entity_SelectFiles_Dropdown_Show" = "Show files";
+
 "Settings_SettLang_Arabic_Expl" = "Árabe";
 "Settings_SettLang_Belarusian_Expl" = "Belarusian";
 "Settings_SettLang_Persian_Expl" = "Persian";
@@ -278,6 +348,8 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_ReportSubmitted_Toast" = "Upload complete: “%@”";
 "Reports_OutboxSaved_Toast" = "The report was saved to your Outbox. You can submit it when you are ready.";
 "Reports_AllReportDeleted_Toast" =  "Your submitted reports have been cleared.";
+
+"Uwazi_Home_Server_Title" = "Uwazi";
 
 "Settings_SettFeedback_AppBar" = "Feedback";
 "Settings_SettFeedback_Expl" = "Tell us if you are experiencing a bug, have a request for a new feature, or have any other feedback.\n\nThis feedback is anonymous, so make sure to include contact information if you want a response from us.";
