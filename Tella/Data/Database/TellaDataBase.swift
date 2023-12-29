@@ -101,22 +101,6 @@ class TellaDataBase : DataBase {
         }
     }
     
-    func getServer() -> [Server] {
-        var servers : [Server] = []
-        do {
-            let serversDict = try statementBuilder.selectQuery(tableName: D.tServer, andCondition: [])
-            
-            serversDict.forEach { dict in
-                servers.append(getServer(dictionnary: dict))
-            }
-            
-            return servers
-            
-        } catch {
-            return []
-        }
-    }
-    
     func getReports(reportStatus:[ReportStatus]) -> [Report] {
         
         var reports : [Report] = []
@@ -542,36 +526,6 @@ class TellaDataBase : DataBase {
                                     inCondition: reportCondition)
         
     }
-    
-//    private func getServer(dictionnary : [String:Any] ) -> Server {
-//        
-//        let id = dictionnary[D.cServerId] as? Int
-//        let name = dictionnary[D.cName] as? String
-//        let url = dictionnary[D.cURL] as? String
-//        let username = dictionnary[D.cUsername] as? String
-//        let password = dictionnary[D.cPassword] as? String
-//        let token = dictionnary[D.cAccessToken] as? String
-//        let activatedMetadata = dictionnary[D.cActivatedMetadata] as? Int
-//        let backgroundUpload = dictionnary[D.cBackgroundUpload] as? Int
-//        let apiProjectId = dictionnary[D.cApiProjectId] as? String
-//        let slug = dictionnary[D.cSlug] as? String
-//        let autoUpload = dictionnary[D.cAutoUpload] as? Int
-//        let autoDelete = dictionnary[D.cAutoDelete] as? Int
-//        
-//        return Server(id:id,
-//                      name: name,
-//                      serverURL: url,
-//                      username: username,
-//                      password: password,
-//                      accessToken: token,
-//                      activatedMetadata: activatedMetadata == 0 ? false : true ,
-//                      backgroundUpload: backgroundUpload == 0 ? false : true,
-//                      projectId: apiProjectId,
-//                      slug:slug,
-//                      autoUpload: autoUpload == 0 ? false : true,
-//                      autoDelete: autoDelete == 0 ? false : true)
-//        
-//    }
     
     private func getReport(dictionnary : [String:Any] ) -> Report {
         
