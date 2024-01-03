@@ -196,11 +196,11 @@ class VaultFilesManager : VaultFilesManagerInterface {
     
     func deleteVaultFile(vaultFiles : [VaultFileDB]) -> Result<Bool, Error>? {
         var resultFiles : [VaultFileDB] = []
-//        let fileWalker = FileWalker(vaultDatabase: self.vaultDataBase)
+       let fileWalker = FileWalker(vaultDatabase: self.vaultDataBase)
         
         vaultFiles.forEach { file in
             if file.type == .directory {
-//                resultFiles.append(contentsOf: fileWalker.walkWithDirectories(root: file))
+               resultFiles.append(contentsOf: fileWalker.walkWithDirectories(root: file))
             }
             resultFiles.append(file)
         }
