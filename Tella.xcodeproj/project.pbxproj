@@ -294,6 +294,7 @@
 		12D37A942721752B00E43BDB /* TellaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A932721752B00E43BDB /* TellaApp.swift */; };
 		12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A952721A49D00E43BDB /* NavigationContainerView.swift */; };
 		12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */; };
+		12D4E8322B45964E00E7FCE7 /* FileWalker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D4E8312B45964E00E7FCE7 /* FileWalker.swift */; };
 		12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7D11B28E3581E008121C8 /* URLRequest.swift */; };
 		12D7D11F28E36123008121C8 /* ServerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7D11E28E36123008121C8 /* ServerRepository.swift */; };
 		12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */; };
@@ -769,6 +770,7 @@
 		12D37A932721752B00E43BDB /* TellaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaApp.swift; sourceTree = "<group>"; };
 		12D37A952721A49D00E43BDB /* NavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContainerView.swift; sourceTree = "<group>"; };
 		12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinKeyboardModel.swift; sourceTree = "<group>"; };
+		12D4E8312B45964E00E7FCE7 /* FileWalker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileWalker.swift; sourceTree = "<group>"; };
 		12D7D11B28E3581E008121C8 /* URLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequest.swift; sourceTree = "<group>"; };
 		12D7D11E28E36123008121C8 /* ServerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerRepository.swift; sourceTree = "<group>"; };
 		12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveAudioConfirmationView.swift; sourceTree = "<group>"; };
@@ -1260,6 +1262,7 @@
 			isa = PBXGroup;
 			children = (
 				D5DAFDCD265384C4002F3942 /* MainAppModel.swift */,
+				12D4E8312B45964E00E7FCE7 /* FileWalker.swift */,
 				1203CDE429915C6600D09073 /* Database */,
 				1236EE8328E2226F00973EEA /* Networking */,
 				D53B76DB2601C9EC0001CD34 /* VaultManager */,
@@ -2993,6 +2996,7 @@
 				128B929D27D7A08700E92ACF /* FileItemsView.swift in Sources */,
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
 				1268554127D2ACB200385E18 /* RecentFilesListView.swift in Sources */,
+				12D4E8322B45964E00E7FCE7 /* FileWalker.swift in Sources */,
 				E1E7C57F2AAB5DB500DDB07E /* UwaziSetting.swift in Sources */,
 				E1E7C57B2AAB54BE00DDB07E /* UwaziCommonProperty.swift in Sources */,
 				127C155827DA486A009EC15B /* TransitionView.swift in Sources */,
