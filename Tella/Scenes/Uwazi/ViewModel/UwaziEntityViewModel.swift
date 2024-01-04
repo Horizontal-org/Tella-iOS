@@ -132,6 +132,8 @@ class UwaziEntityViewModel: ObservableObject {
                 entityData[propertyName] = entryPrompt.value.stringValue
             case .dataTypeText, .dataTypeNumeric:
                 metadata[propertyName] = [[UwaziEntityMetadataKeys.value: entryPrompt.value.stringValue]]
+            case .dataTypeDate:
+                metadata[propertyName] = [[UwaziEntityMetadataKeys.value: Int(entryPrompt.value.stringValue)]]
             case .dataTypeSelect, .dataTypeMultiSelect:
                 if let selectedValue = entryPrompt.value.selectedValue.first {
                     metadata[propertyName] = [[UwaziEntityMetadataKeys.value: selectedValue.id, UwaziEntityMetadataKeys.label: selectedValue.label]]

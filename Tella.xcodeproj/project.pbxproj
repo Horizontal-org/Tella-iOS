@@ -319,6 +319,7 @@
 		CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0797BD2A8D46CB00AAE63F /* UnlockView.swift */; };
 		CC0D56ED2AC4B46F00AA5D81 /* DownloadedTemplatesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0D56EC2AC4B46F00AA5D81 /* DownloadedTemplatesVM.swift */; };
 		CC0D56EF2AC4B59B00AA5D81 /* AddTemplateVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0D56EE2AC4B59B00AA5D81 /* AddTemplateVM.swift */; };
+		CC0F1DD42B47320F00720010 /* UwaziDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0F1DD32B47320F00720010 /* UwaziDatePicker.swift */; };
 		CC1313822A5CB0DB0057271C /* DeleteAfterFailOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1313812A5CB0DB0057271C /* DeleteAfterFailOption.swift */; };
 		CC1313842A5CB3590057271C /* DeleteAfterFailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1313832A5CB3590057271C /* DeleteAfterFailView.swift */; };
 		CC1313882A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1313872A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift */; };
@@ -798,6 +799,7 @@
 		CC0797BD2A8D46CB00AAE63F /* UnlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockView.swift; sourceTree = "<group>"; };
 		CC0D56EC2AC4B46F00AA5D81 /* DownloadedTemplatesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedTemplatesVM.swift; sourceTree = "<group>"; };
 		CC0D56EE2AC4B59B00AA5D81 /* AddTemplateVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTemplateVM.swift; sourceTree = "<group>"; };
+		CC0F1DD32B47320F00720010 /* UwaziDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziDatePicker.swift; sourceTree = "<group>"; };
 		CC1313812A5CB0DB0057271C /* DeleteAfterFailOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAfterFailOption.swift; sourceTree = "<group>"; };
 		CC1313832A5CB3590057271C /* DeleteAfterFailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAfterFailView.swift; sourceTree = "<group>"; };
 		CC1313872A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAfterFailOptionsStatus.swift; sourceTree = "<group>"; };
@@ -2366,6 +2368,7 @@
 				CCEAE5932AE7188F0069204A /* UwaziSelectWidget.swift */,
 				CCF8D5C12AE994BF000D27C5 /* SupportingFileWidget.swift */,
 				CCF8D5C32AE9AA08000D27C5 /* PrimaryDocuments.swift */,
+				CC0F1DD32B47320F00720010 /* UwaziDatePicker.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -2744,6 +2747,7 @@
 				125D2328271F8B6600250FBB /* LockConfirmPinView.swift in Sources */,
 				125D231F271F12A000250FBB /* NSRegularExpressionExtension.swift in Sources */,
 				E1E7C5872AAB7EA200DDB07E /* UwaziTranslation.swift in Sources */,
+				CC0F1DD42B47320F00720010 /* UwaziDatePicker.swift in Sources */,
 				1209FD3027AD8AC400D8C17E /* AudioPlayerManager.swift in Sources */,
 				12BAFA7728B3B8D300930451 /* UIImageOrientation.swift in Sources */,
 				CCE875B32A96699000C576B9 /* LocalizableUwazi.swift in Sources */,

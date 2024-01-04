@@ -49,8 +49,35 @@ struct Entity: Decodable {
 }
 
 struct MetaDataItem: Decodable {
-    let value: String
+    let value: MetaDataType
     let label: String?
+
+    enum MetaDataType {
+        case stringValue(String)
+        case intValue(Int)
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        if let intValue = try? container.decode(Int.self, forKey: .value) {
+            self.value = .intValue(intValue)
+        } else if let stringValue = try? container.decode(String.self, forKey: .value) {
+            self.value = .stringValue(stringValue)
+        } else {
+            throw DecodingError.typeMismatch(
+                MetaDataType.self,
+                DecodingError.Context(
+                    codingPath: decoder.codingPath,
+                    debugDescription: "Expected value to be either Int or String"
+                )
+            )
+        }
+        label = try container.decodeIfPresent(String.self, forKey: .label)
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case value, label
+    }
 }
 
 struct Permission: Decodable {
