@@ -49,7 +49,7 @@ struct RenderPropertyComponentView: View {
         case .dataTypeDivider:
             UwaziDividerWidget()
         case .dataTypeDate:
-            UwaziDatePicker()
+            UwaziDatePicker(value: prompt.value)
                 .environmentObject(prompt)
         default:
             EmptyView()
