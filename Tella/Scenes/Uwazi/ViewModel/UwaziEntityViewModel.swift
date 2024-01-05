@@ -130,7 +130,7 @@ class UwaziEntityViewModel: ObservableObject {
             switch UwaziEntityPropertyType(rawValue: entryPrompt.type) {
             case .dataTypeText where propertyName == UwaziEntityMetadataKeys.title:
                 entityData[propertyName] = entryPrompt.value.stringValue
-            case .dataTypeText, .dataTypeNumeric:
+            case .dataTypeText, .dataTypeNumeric, .dataTypeMarkdown:
                 metadata[propertyName] = [[UwaziEntityMetadataKeys.value: entryPrompt.value.stringValue]]
             case .dataTypeDate:
                 metadata[propertyName] = [[UwaziEntityMetadataKeys.value: Int(entryPrompt.value.stringValue)]]
