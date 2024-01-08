@@ -19,28 +19,29 @@ struct EditSettingsServerView: View {
     var body: some View {
         
         ContainerView {
-            
-            VStack {
-                
-                editServerHeaderView
-                
-                SettingsCardView(cardViewArray: [serverNameView.eraseToAnyView(),
-                                                 serverURLView.eraseToAnyView(),
-                                                 serverUsernameView.eraseToAnyView()
-                                                ])
-                
-                SettingsCardView(cardViewArray: [
-                    AutoUploadView(autoUpload: $serverViewModel.autoUpload,
-                                   isDisabled: serverViewModel.isAutoUploadServerExist).eraseToAnyView(),
-                    $serverViewModel.autoUpload.wrappedValue ? AutoDeleteView(autoDelete: $serverViewModel.autoDelete).eraseToAnyView() : nil,
-                    BackgroundUploadView(backgroundUpload: $serverViewModel.backgroundUpload).eraseToAnyView()
-                    // ShareInfoView(shareInfo: $serverViewModel.activatedMetadata).eraseToAnyView()
-                ])
-                
-                
-                Spacer()
-                
-                bottomView
+            ScrollView {
+                VStack {
+                    
+                    editServerHeaderView
+                    
+                    SettingsCardView(cardViewArray: [serverNameView.eraseToAnyView(),
+                                                     serverURLView.eraseToAnyView(),
+                                                     serverUsernameView.eraseToAnyView()
+                                                    ])
+                    
+                    SettingsCardView(cardViewArray: [
+                        AutoUploadView(autoUpload: $serverViewModel.autoUpload,
+                                       isDisabled: serverViewModel.isAutoUploadServerExist).eraseToAnyView(),
+                        $serverViewModel.autoUpload.wrappedValue ? AutoDeleteView(autoDelete: $serverViewModel.autoDelete).eraseToAnyView() : nil,
+                        BackgroundUploadView(backgroundUpload: $serverViewModel.backgroundUpload).eraseToAnyView()
+                        // ShareInfoView(shareInfo: $serverViewModel.activatedMetadata).eraseToAnyView()
+                    ])
+                    
+                    
+                    Spacer()
+                    
+                    bottomView
+                }
             }
         }
     }
