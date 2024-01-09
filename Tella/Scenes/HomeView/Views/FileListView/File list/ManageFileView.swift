@@ -31,19 +31,10 @@ struct ManageFileView: View {
         if !fileListViewModel.showingMoveFileView {
             
             Button {
-                
-                
-                if fileListViewModel.selectingFiles {
-                    fileListViewModel.filesAreAllSelected ? fileListViewModel.resetSelectedItems() :  fileListViewModel.selectAll()
-                } else {
-                    fileListViewModel.selectingFiles = !fileListViewModel.selectingFiles
-                    fileListViewModel.initVaultFileStatusArray()
-                }
-                
+                manageSelectionFiles()
             } label: {
                 
                 HStack {
-                    
                     if fileListViewModel.selectingFiles {
                         Image(fileListViewModel.filesAreAllSelected ? "files.selected" : "files.unselected")
                     } else {
@@ -70,12 +61,23 @@ struct ManageFileView: View {
         }
     }
     
+    private func manageSelectionFiles() {
+        DispatchQueue.main.async {
+            if fileListViewModel.selectingFiles {
+                fileListViewModel.filesAreAllSelected ? fileListViewModel.resetSelectedItems() :  fileListViewModel.selectAll()
+            } else {
+                fileListViewModel.selectingFiles = !fileListViewModel.selectingFiles
+                fileListViewModel.initVaultFileStatusArray()
+            }
+        }
+    }
+    
 }
 
 struct ManageFileView_Previews: PreviewProvider {
     static var previews: some View {
         ManageFileView()
             .environmentObject(FileListViewModel.stub())
-
+        
     }
 }

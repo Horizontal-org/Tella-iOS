@@ -43,32 +43,33 @@ struct TellaApp: App {
     
     func saveData(lockApptype:LockApptype) {
         
+        
         appViewState.homeViewModel.saveLockTimeoutStartDate()
         
         UploadService.shared.cancelTasksIfNeeded()
         
-         let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
-//        let hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
+        appViewState.homeViewModel.appEnterInBackground = true
         
-      let  hasFileOnBackground = lockApptype == .enterInBackground ? UploadService.shared.hasFilesToUploadOnBackground : false
+        let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
+        let  hasFileOnBackground = lockApptype == .enterInBackground ? UploadService.shared.hasFilesToUploadOnBackground : false
+        
+        if shouldResetApp && !hasFileOnBackground {
             
-         if shouldResetApp && !hasFileOnBackground {
-            
-            appViewState.homeViewModel.appEnterInBackground = true
             appViewState.homeViewModel.shouldSaveCurrentData = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
                 appViewState.homeViewModel.vaultManager.clearTmpDirectory() // TO FIX for server doesn't allow upload in Background
                 appViewState.resetApp()
             })
-            // appViewState.homeViewModel.saveLockTimeoutStartDate()
             appViewState.homeViewModel.shouldSaveCurrentData = false
         }
     }
     
     func resetApp() {
-         if appViewState.homeViewModel.shouldResetApp() == true,
-           appViewState.homeViewModel.appEnterInBackground == true {
-            
+        let  hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
+        let appEnterInBackground = appViewState.homeViewModel.appEnterInBackground
+        let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
+
+        if shouldResetApp && appEnterInBackground && !hasFileOnBackground {
             
             DispatchQueue.main.async {
                 appViewState.shouldHidePresentedView = true
