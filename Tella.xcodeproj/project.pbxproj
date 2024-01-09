@@ -133,7 +133,6 @@
 		125299DD2AD02E6F00191CAB /* ImportVaultFileResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299DC2AD02E6F00191CAB /* ImportVaultFileResult.swift */; };
 		125299DF2AD02E9D00191CAB /* FilesActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299DE2AD02E9D00191CAB /* FilesActor.swift */; };
 		125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299E02AD0515600191CAB /* VaultFilesManager.swift */; };
-		125389F82ACAD33500CE33AB /* FileWalker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125389F72ACAD33500CE33AB /* FileWalker.swift */; };
 		125595382AFCFAA400F71DFE /* SelectQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125595372AFCFAA400F71DFE /* SelectQuery.swift */; };
 		12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12567FEE2716B38F00A2D356 /* LockChoiceView.swift */; };
 		12567FF22716E33500A2D356 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12567FF02716E33500A2D356 /* OpenSans-Bold.ttf */; };
@@ -295,6 +294,7 @@
 		12D37A942721752B00E43BDB /* TellaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A932721752B00E43BDB /* TellaApp.swift */; };
 		12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A952721A49D00E43BDB /* NavigationContainerView.swift */; };
 		12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */; };
+		12D4E8322B45964E00E7FCE7 /* FileWalker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D4E8312B45964E00E7FCE7 /* FileWalker.swift */; };
 		12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7D11B28E3581E008121C8 /* URLRequest.swift */; };
 		12D7D11F28E36123008121C8 /* ServerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7D11E28E36123008121C8 /* ServerRepository.swift */; };
 		12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */; };
@@ -528,7 +528,6 @@
 		125299DC2AD02E6F00191CAB /* ImportVaultFileResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportVaultFileResult.swift; sourceTree = "<group>"; };
 		125299DE2AD02E9D00191CAB /* FilesActor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesActor.swift; sourceTree = "<group>"; };
 		125299E02AD0515600191CAB /* VaultFilesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFilesManager.swift; sourceTree = "<group>"; };
-		125389F72ACAD33500CE33AB /* FileWalker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FileWalker.swift; path = ../../../../../Downloads/FileWalker.swift; sourceTree = "<group>"; };
 		125595372AFCFAA400F71DFE /* SelectQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectQuery.swift; sourceTree = "<group>"; };
 		12567FEE2716B38F00A2D356 /* LockChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockChoiceView.swift; sourceTree = "<group>"; };
 		12567FF02716E33500A2D356 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
@@ -583,7 +582,6 @@
 		126FE4D627A427E200AE4188 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1270EA9E2A4B4B07000851BA /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1270EAA02A4B4B07000851BA /* be */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = be; path = be.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1270EAA12A4B4B07000851BA /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1270EAA22A4B4B07000851BA /* my */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = my; path = my.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1270EAA72A4DAA79000851BA /* fa-IR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fa-IR"; path = "fa-IR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1270EAA82A4DB008000851BA /* ta */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ta; path = ta.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -690,6 +688,7 @@
 		12D37A932721752B00E43BDB /* TellaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaApp.swift; sourceTree = "<group>"; };
 		12D37A952721A49D00E43BDB /* NavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContainerView.swift; sourceTree = "<group>"; };
 		12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinKeyboardModel.swift; sourceTree = "<group>"; };
+		12D4E8312B45964E00E7FCE7 /* FileWalker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileWalker.swift; sourceTree = "<group>"; };
 		12D7D11B28E3581E008121C8 /* URLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequest.swift; sourceTree = "<group>"; };
 		12D7D11E28E36123008121C8 /* ServerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerRepository.swift; sourceTree = "<group>"; };
 		12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveAudioConfirmationView.swift; sourceTree = "<group>"; };
@@ -1096,7 +1095,7 @@
 			isa = PBXGroup;
 			children = (
 				D5DAFDCD265384C4002F3942 /* MainAppModel.swift */,
-				125389F72ACAD33500CE33AB /* FileWalker.swift */,
+				12D4E8312B45964E00E7FCE7 /* FileWalker.swift */,
 				1203CDE429915C6600D09073 /* Database */,
 				1236EE8328E2226F00973EEA /* Networking */,
 				D53B76DB2601C9EC0001CD34 /* VaultManager */,
@@ -2120,7 +2119,6 @@
 				ar,
 				"ku-CKB",
 				be,
-				"es-419",
 				my,
 				"fa-IR",
 				ta,
@@ -2410,7 +2408,6 @@
 				1231A45E294C779D0057DA85 /* ReportStatus.swift in Sources */,
 				12607D562790416400E2B8CC /* PlayerViewModel.swift in Sources */,
 				128B929B27D798E200E92ACF /* ManageFileView.swift in Sources */,
-				125389F82ACAD33500CE33AB /* FileWalker.swift in Sources */,
 				1237A71A278F18C000D7BC0F /* WebView.swift in Sources */,
 				1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */,
 				125BC1DE2B21F08200A117D0 /* VaultFileDetailsToMerge.swift in Sources */,
@@ -2473,6 +2470,7 @@
 				128B929D27D7A08700E92ACF /* FileItemsView.swift in Sources */,
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
 				1268554127D2ACB200385E18 /* RecentFilesListView.swift in Sources */,
+				12D4E8322B45964E00E7FCE7 /* FileWalker.swift in Sources */,
 				127C155827DA486A009EC15B /* TransitionView.swift in Sources */,
 				1204520028C7AC2800D572A7 /* ServerActionType.swift in Sources */,
 				125F9B9B2AD9B4770073748C /* DictionaryExtension.swift in Sources */,
@@ -2645,7 +2643,6 @@
 				12A697B72840C54200BE5E9C /* es */,
 				1270EA9E2A4B4B07000851BA /* ar */,
 				1270EAA02A4B4B07000851BA /* be */,
-				1270EAA12A4B4B07000851BA /* es-419 */,
 				1270EAA22A4B4B07000851BA /* my */,
 				1270EAA72A4DAA79000851BA /* fa-IR */,
 				1270EAA82A4DB008000851BA /* ta */,
@@ -2852,7 +2849,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 57;
+				CURRENT_PROJECT_VERSION = 59;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
@@ -2879,7 +2876,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 57;
+				CURRENT_PROJECT_VERSION = 59;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6ZG9T42688;

@@ -16,7 +16,7 @@ struct FolderListView: View {
                 Button() {
                     fileListViewModel.rootFile = nil
                     fileListViewModel.folderPathArray.removeAll()
-                    
+                    fileListViewModel.selectingFiles = false
                 } label: {
                     Image("files.folder")
                         .resizable()
@@ -40,7 +40,7 @@ struct FolderListView: View {
                             
                             // Remove the next folders after the selected folder
                             fileListViewModel.initFolderPathArray(for: file)
-                            
+                            fileListViewModel.selectingFiles = false
                         } label: {
                             Text(file.name)
                                 .foregroundColor(.white).opacity(0.72)
