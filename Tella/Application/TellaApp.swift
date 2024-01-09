@@ -43,30 +43,34 @@ struct TellaApp: App {
     }
 
     func saveData(lockApptype:LockApptype) {
-        let homeViewModel = appViewState.homeViewModel
-        homeViewModel.saveLockTimeoutStartDate()
+        
+        
+        appViewState.homeViewModel.saveLockTimeoutStartDate()
+        
         UploadService.shared.cancelTasksIfNeeded()
-        handleResetApp(lockApptype)
-    }
-    
-    fileprivate func handleResetApp(_ lockApptype: LockApptype) {
-        let homeViewModel = appViewState.homeViewModel
+        
+        appViewState.homeViewModel.appEnterInBackground = true
+        
         let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
         let  hasFileOnBackground = lockApptype == .enterInBackground ? UploadService.shared.hasFilesToUploadOnBackground : false
+        
         if shouldResetApp && !hasFileOnBackground {
-            homeViewModel.appEnterInBackground = true
-            homeViewModel.shouldSaveCurrentData = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond, execute: {
+            
+            appViewState.homeViewModel.shouldSaveCurrentData = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
                 appViewState.homeViewModel.vaultManager.clearTmpDirectory() // TO FIX for server doesn't allow upload in Background
                 appViewState.resetApp()
             })
-            homeViewModel.shouldSaveCurrentData = false
+            appViewState.homeViewModel.shouldSaveCurrentData = false
         }
     }
     func resetApp() {
-        let homeViewModel = appViewState.homeViewModel
-        if homeViewModel.shouldResetApp() == true,
-           homeViewModel.appEnterInBackground == true {
+        let  hasFileOnBackground = UploadService.shared.hasFilesToUploadOnBackground
+        let appEnterInBackground = appViewState.homeViewModel.appEnterInBackground
+        let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
+
+        if shouldResetApp && appEnterInBackground && !hasFileOnBackground {
+            
             DispatchQueue.main.async {
                 appViewState.shouldHidePresentedView = true
                 appViewState.homeViewModel.vaultManager.clearTmpDirectory()

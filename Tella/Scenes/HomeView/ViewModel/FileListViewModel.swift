@@ -344,7 +344,9 @@ extension FileListViewModel {
     func addFolder(name: String) {
         let addFolderFileResult = appModel.vaultFilesManager?.addFolderFile(name: name, parentId: self.rootFile?.id)
         if case .success = addFolderFileResult {
-            getFiles()
+            DispatchQueue.main.async {
+                self.getFiles()
+            }
         }
     }
     
@@ -352,7 +354,9 @@ extension FileListViewModel {
         let selectedFilesIds = selectedFiles.compactMap({$0.id})
         let moveVaultFileResult = appModel.vaultFilesManager?.moveVaultFile(fileIds: selectedFilesIds, newParentId: rootFile?.id)
         if case .success = moveVaultFileResult {
-            getFiles()
+            DispatchQueue.main.async {
+                self.getFiles()
+            }
         }
     }
     

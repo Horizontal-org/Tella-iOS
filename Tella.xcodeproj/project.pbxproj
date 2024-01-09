@@ -663,7 +663,6 @@
 		126FEE092AC4993900B99298 /* ReportPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportPages.swift; sourceTree = "<group>"; };
 		1270EA9E2A4B4B07000851BA /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1270EAA02A4B4B07000851BA /* be */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = be; path = be.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1270EAA12A4B4B07000851BA /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1270EAA22A4B4B07000851BA /* my */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = my; path = my.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1270EAA72A4DAA79000851BA /* fa-IR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fa-IR"; path = "fa-IR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1270EAA82A4DB008000851BA /* ta */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ta; path = ta.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2595,7 +2594,6 @@
 				ar,
 				"ku-CKB",
 				be,
-				"es-419",
 				my,
 				"fa-IR",
 				ta,
@@ -3198,7 +3196,6 @@
 				12A697B72840C54200BE5E9C /* es */,
 				1270EA9E2A4B4B07000851BA /* ar */,
 				1270EAA02A4B4B07000851BA /* be */,
-				1270EAA12A4B4B07000851BA /* es-419 */,
 				1270EAA22A4B4B07000851BA /* my */,
 				1270EAA72A4DAA79000851BA /* fa-IR */,
 				1270EAA82A4DB008000851BA /* ta */,

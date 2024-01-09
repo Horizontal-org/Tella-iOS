@@ -33,7 +33,7 @@ struct SelectingFilesHeaderView: View {
                 }
                 
             }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 23))
-                .frame( height: 45)
+                .frame( height: 56)
         }
     }
     
