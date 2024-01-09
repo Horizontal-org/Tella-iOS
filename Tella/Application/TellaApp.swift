@@ -78,8 +78,8 @@ struct TellaApp: App {
                 appViewState.shouldHidePresentedView = false
             }
         }
-        homeViewModel.appEnterInBackground = false
-        homeViewModel.shouldShowSecurityScreen = false
+        appViewState.homeViewModel.appEnterInBackground = false
+        appViewState.homeViewModel.shouldShowSecurityScreen = false
     }
 }
 
