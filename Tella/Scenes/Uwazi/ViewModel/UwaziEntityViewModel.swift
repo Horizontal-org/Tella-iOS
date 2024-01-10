@@ -77,6 +77,7 @@ class UwaziEntityViewModel: ObservableObject {
     
     func submitEntity(onCompletion: @escaping () -> Void) {
         self.isLoading = true
+        let isPublic = server?.accessToken == nil
         // Extract entity data and metadata
         let entityData = extractEntityDataAndMetadata()
         
@@ -91,7 +92,8 @@ class UwaziEntityViewModel: ObservableObject {
             serverURL: self.server?.url ?? "",
             cookie: self.server?.cookie ?? "",
             multipartHeader: contentTypeHeader,
-            multipartBody: body
+            multipartBody: body,
+            isPublic: isPublic
         )
         response
             .receive(on: DispatchQueue.main)
