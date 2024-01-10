@@ -83,41 +83,6 @@ class ReportsViewModel: ObservableObject {
             }.store(in: &subscribers)
     }
     
-    private func updateDraftReportsNumber() {
-        if let row = self.pageViewItems.firstIndex(where: {$0.page == ReportPages.draft.rawValue}) {
-            if draftReports.count > 0 {
-                pageViewItems[row].number = "(\(draftReports.count))"
-            }
-            else {
-                pageViewItems[row].number = ""
-            }
-        }
-    }
-    
-    private func updateOutboxReportsNumber() {
-        if let row = self.pageViewItems.firstIndex(where: {$0.page == ReportPages.outbox.rawValue}) {
-            
-            if outboxedReports.count > 0 {
-                pageViewItems[row].number = "(\(outboxedReports.count))"
-            }
-            else {
-                pageViewItems[row].number = ""
-            }
-        }
-    }
-    
-    private func updateSubmittedReportsNumber() {
-        if let row = self.pageViewItems.firstIndex(where: {$0.page == ReportPages.submitted.rawValue}) {
-            
-            if submittedReports.count > 0 {
-                pageViewItems[row].number = "(\(submittedReports.count))"
-            }
-            else {
-                pageViewItems[row].number = ""
-            }
-        }
-    }
-    
     func deleteReport() {
         mainAppModel.deleteReport(reportId: selectedReport?.id)
     }

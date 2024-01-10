@@ -26,14 +26,11 @@ class TellaDataBase : DataBase {
             case 0:
                 createTables()
             case 1:
-                alterTable()
-                createTables()
+                createFeedbackTable()
                 renameUpdatedDateColumn()
             case 2:
-                createFeedbackTable()
                 createTemplateTableForUwazi()
                 createUwaziServerTable()
-                renameUpdatedDateColumn()
             default :
                 break
             }

@@ -25,7 +25,6 @@ struct ConfirmBottomSheet : View {
     
     var contentView: some View {
         VStack(alignment: .leading, spacing: 9) {
-            Spacer(minLength: 10)
             Text(self.titleText)
                 .foregroundColor(.white)
                 .font(Font.custom(Styles.Fonts.semiBoldFontName, size: 17))
