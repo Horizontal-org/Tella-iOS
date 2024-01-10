@@ -38,6 +38,7 @@ struct UwaziLanguageSelectionView: View {
         }
     }
     fileprivate func bottomView() -> some View {
+        let isDisable = uwaziServerViewModel.selectedLanguage == nil
         return HStack{
             Spacer()
             SettingsBottomView(cancelAction: {
@@ -46,7 +47,7 @@ struct UwaziLanguageSelectionView: View {
                 uwaziServerViewModel.handleServerAction()
                 navigateTo(destination: UwaziSuccessView())
 
-            }, saveActionTitle: "OK")
+            }, saveActionTitle: LocalizableSettings.UwaziLanguageOk.localized, isDisable: isDisable)
         }
         .padding(.trailing, 20)
         .padding(.top, 12)
