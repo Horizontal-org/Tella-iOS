@@ -57,7 +57,7 @@ struct TellaApp: App {
         if shouldResetApp && !hasFileOnBackground {
             
             appViewState.homeViewModel.shouldSaveCurrentData = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond, execute: {
                 appViewState.homeViewModel.vaultManager.clearTmpDirectory() // TO FIX for server doesn't allow upload in Background
                 appViewState.resetApp()
             })
