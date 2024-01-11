@@ -109,7 +109,7 @@ extension TellaDataBase {
         let autoUpload = dictionnary[D.cAutoUpload] as? Int
         let autoDelete = dictionnary[D.cAutoDelete] as? Int
         let servertType = dictionnary[D.cServerType] as? Int
-        let cookie = dictionnary[D.cCookie] as? String
+
         return Server(id:id,
                       name: name,
                       serverURL: url,
@@ -122,8 +122,7 @@ extension TellaDataBase {
                       slug:slug,
                       autoUpload: autoUpload == 0 ? false : true,
                       autoDelete: autoDelete == 0 ? false : true,
-                      serverType: ServerConnectionType(rawValue: servertType ?? 0),
-                      cookie: cookie
+                      serverType: ServerConnectionType(rawValue: servertType ?? 0)
         )
     }
     

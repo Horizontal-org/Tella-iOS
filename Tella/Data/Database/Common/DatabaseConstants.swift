@@ -27,7 +27,6 @@ struct D {
     // MARK: - DATABASE TABLES
     static let tServer = "t_server"
     static let tReport = "t_report"
-    static let tUwaziServerLanguage = "t_uwazi_server_language"
     static let tReportInstanceVaultFile = "t_report_instance_vault_file";
     static let tUwaziTemplate = "t_uwazi_template"
     static let tUwaziServer = "t_uwazi_server"
@@ -72,7 +71,6 @@ struct D {
     static let cUpdatedDate = "c_updated_date"
     // MARK: Uwazi Locale
     static let cLocale = "c_locale"
-    static let cLocaleId = "c_locale_id"
 
     static let cTemplateId = "c_template_id"
     static let cEntity = "c_entity"
@@ -80,7 +78,6 @@ struct D {
     static let cUpdated = "c_updated"
     static let cFavorite = "c_favorite"
     static let cServerName = "c_server_name"
-    static let cCookie = "c_cookie"
 
 
     static let ctext = "c_text"
