@@ -24,6 +24,9 @@ struct RenderPropertyComponentView: View {
             renderPropertyComponent(
                 prompt: prompt
             )
+            if(prompt.showMandatoryError) {
+                UwaziEntityMandatoryTextView()
+            }
         }
     }
     

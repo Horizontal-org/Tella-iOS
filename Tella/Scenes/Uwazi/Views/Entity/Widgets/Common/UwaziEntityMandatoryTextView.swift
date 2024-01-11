@@ -11,9 +11,10 @@ import SwiftUI
 struct UwaziEntityMandatoryTextView: View {
     var body: some View {
         Text(LocalizableUwazi.uwaziEntityMandatoryExpl.localized)
-            .font(Font.custom(Styles.Fonts.boldFontName, size: 12))
+            .font(Font.custom(Styles.Fonts.regularFontName, size: 12))
             .foregroundColor(Styles.Colors.yellow)
             .frame(maxWidth: .infinity, alignment: .topLeading)
+            .padding(.top, 4)
     }
 }
 

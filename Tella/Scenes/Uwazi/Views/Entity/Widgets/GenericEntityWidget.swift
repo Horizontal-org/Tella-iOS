@@ -41,9 +41,6 @@ struct GenericEntityWidget<Content: View>: View {
                                      isRequired: isRequired,
                                      showClear: showClear,
                                      onClearAction: onClearAction)
-                if showManatory {
-                    UwaziEntityMandatoryTextView()
-                }
                 content
             }.padding(.vertical, 14)
         }

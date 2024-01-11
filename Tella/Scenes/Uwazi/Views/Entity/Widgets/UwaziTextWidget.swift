@@ -13,13 +13,16 @@ struct UwaziTextWidget: View {
     @State var value: UwaziValue
     var body: some View {
         VStack(alignment: .leading) {
-                TextfieldView(
-                    fieldContent: $value.stringValue,
-                    isValid: $isValidText,
-                    shouldShowError: .constant(false),
-                    fieldType: .text
-                )
-            }
+            TextField("", text: $value.stringValue)
+            .keyboardType(.default)
+            .textFieldStyle(TextfieldStyle(shouldShowError: false))
+            .frame( height: 22)
+            
+            Divider()
+            .frame(height: 1)
+            .background(Color.white)
+            .opacity(0.64)
+        }
     }
 }
 struct UwaziTextWidget_Previews: PreviewProvider {
