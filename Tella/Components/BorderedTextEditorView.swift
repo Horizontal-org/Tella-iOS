@@ -86,14 +86,12 @@ struct BorderedTextEditorView: View {
     }
 }
 
-struct BorderedTextEditorView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContainerView {
-            BorderedTextEditorView(placeholder: "Placeholder",
-                                   fieldContent: .constant(""),
-                                   isValid: .constant(true))
-            .padding()
-        }
+#Preview {
+    ContainerView {
+        BorderedTextEditorView(placeholder: "Placeholder",
+                               fieldContent: .constant(""),
+                               isValid: .constant(true))
+        .padding()
     }
 }
 

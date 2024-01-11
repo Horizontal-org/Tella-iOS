@@ -42,8 +42,6 @@ struct OfflineFeedbackToast: View {
             .ignoresSafeArea()    }
 }
 
-struct OfflineFeedbackToast_Previews: PreviewProvider {
-    static var previews: some View {
-        OfflineFeedbackToast()
-    }
+#Preview {
+    OfflineFeedbackToast()
 }

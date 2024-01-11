@@ -21,11 +21,9 @@ struct CardFrameView<Content:View>: View {
     }
 }
 
-struct CardFrameView_Previews: PreviewProvider {
-    static var previews: some View {
-        CardFrameView(content: {
+#Preview {
+    CardFrameView(content: {
             Text("Test")
-        })
-    }
+    })
 }
 
