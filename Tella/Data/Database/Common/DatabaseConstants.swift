@@ -57,7 +57,6 @@ struct D {
     static let cDate = "c_date"
     static let cStatus = "c_status"
     static let cServerId = "c_server_id"
-    static let cServerType = "c_server_type"
     
     static let cReportId = "c_report_id"
     static let cApiReportId = "c_api_report_id"

@@ -9,11 +9,6 @@
 import Foundation
 // MARK: - Methods related to Uwazi Server
 extension TellaDataBase {
-    func alterTable() {
-        let column = cddl(D.cServerType,D.integer, true, ServerConnectionType.tella.rawValue)
-        statementBuilder.alterTable(tableName: D.tServer, column: column)
-    }
-
     func createServerTable() {
         let columns = [
             cddl(D.cServerId, D.integer, primaryKey: true, autoIncrement: true),
@@ -27,8 +22,7 @@ extension TellaDataBase {
             cddl(D.cApiProjectId, D.text),
             cddl(D.cSlug, D.text),
             cddl(D.cAutoUpload, D.integer),
-            cddl(D.cAutoDelete, D.integer),
-            cddl(D.cServerType, D.integer)
+            cddl(D.cAutoDelete, D.integer)
         ]
         statementBuilder.createTable(tableName: D.tServer, columns: columns)
     }
@@ -45,8 +39,7 @@ extension TellaDataBase {
                                KeyValue(key: D.cApiProjectId, value: server.projectId),
                                KeyValue(key: D.cSlug, value: server.slug),
                                KeyValue(key: D.cAutoUpload, value:server.autoUpload == false ? 0 : 1),
-                               KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1),
-                               KeyValue(key: D.cServerType, value:server.serverType?.rawValue)]
+                               KeyValue(key: D.cAutoDelete, value:server.autoDelete == false ? 0 : 1)]
             
             let serverId = try statementBuilder.insertInto(tableName: D.tServer,
                                                            keyValue: valuesToAdd)
@@ -61,11 +54,11 @@ extension TellaDataBase {
         var servers: [Server] = []
         
         // Function to append servers from a given table
-        func appendServers(fromTable tableName: String) {
+        func appendServers(fromTable tableName: String, serverType: ServerConnectionType) {
             do {
                 let serversDict = try statementBuilder.selectQuery(tableName: tableName, andCondition: [])
                 serversDict.forEach { dict in
-                    servers.append(getServer(dictionnary: dict))
+                    servers.append(getServer(dictionnary: dict, serverType: serverType))
                 }
             } catch {
                 debugLog("Error while fetching servers from \(tableName): \(error)")
@@ -73,10 +66,10 @@ extension TellaDataBase {
         }
 
         // Query tella servers
-        appendServers(fromTable: D.tServer)
+        appendServers(fromTable: D.tServer, serverType: .tella)
 
         // Query uwaziServers
-        appendServers(fromTable: D.tUwaziServer)
+        appendServers(fromTable: D.tUwaziServer, serverType: .uwazi)
 
         return servers
     }
@@ -87,7 +80,7 @@ extension TellaDataBase {
             let serversDict = try statementBuilder.selectQuery(tableName: D.tServer,
                                                                andCondition:serverCondition)
             if !serversDict.isEmpty, let dict = serversDict.first {
-                return getServer(dictionnary: dict)
+                return getServer(dictionnary: dict, serverType: .tella)
             }
             return nil
         } catch {
@@ -95,7 +88,7 @@ extension TellaDataBase {
         }
     }
 
-    func getServer(dictionnary : [String:Any] ) -> Server {
+    func getServer(dictionnary : [String:Any], serverType: ServerConnectionType ) -> Server {
         let id = dictionnary[D.cServerId] as? Int
         let name = dictionnary[D.cName] as? String
         let url = dictionnary[D.cURL] as? String
@@ -108,7 +101,6 @@ extension TellaDataBase {
         let slug = dictionnary[D.cSlug] as? String
         let autoUpload = dictionnary[D.cAutoUpload] as? Int
         let autoDelete = dictionnary[D.cAutoDelete] as? Int
-        let servertType = dictionnary[D.cServerType] as? Int
 
         return Server(id:id,
                       name: name,
@@ -122,7 +114,7 @@ extension TellaDataBase {
                       slug:slug,
                       autoUpload: autoUpload == 0 ? false : true,
                       autoDelete: autoDelete == 0 ? false : true,
-                      serverType: ServerConnectionType(rawValue: servertType ?? 0)
+                      serverType: ServerConnectionType(rawValue: serverType.rawValue)
         )
     }
     

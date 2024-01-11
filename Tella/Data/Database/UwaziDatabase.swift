@@ -99,7 +99,6 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
             cddl(D.cPassword, D.text),
             cddl(D.cAccessToken, D.text),
             cddl(D.cLocale, D.text),
-            cddl(D.cServerType, D.integer)
         ]
         
         statementBuilder.createTable(tableName: D.tUwaziServer, columns: columns)
@@ -112,8 +111,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
                                KeyValue(key: D.cUsername, value: server.username),
                                KeyValue(key: D.cPassword, value: server.password ),
                                KeyValue(key: D.cAccessToken, value: server.accessToken),
-                               KeyValue(key: D.cLocale, value: server.locale),
-                               KeyValue(key: D.cServerType, value:server.serverType?.rawValue)
+                               KeyValue(key: D.cLocale, value: server.locale)
             ]
             
             
@@ -140,7 +138,6 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
         let username = dictionary[D.cUsername] as? String
         let password = dictionary[D.cPassword] as? String
         let token = dictionary[D.cAccessToken] as? String
-        let servertType = dictionary[D.cServerType] as? Int
         let locale = dictionary[D.cLocale] as? String
         return UwaziServer(id:id,
                            name: name,
@@ -149,7 +146,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
                            password: password,
                            accessToken: token,
                            locale: locale,
-                           serverType: ServerConnectionType(rawValue: servertType ?? 0)
+                           serverType: ServerConnectionType(rawValue: 1)
         )
     }
     
