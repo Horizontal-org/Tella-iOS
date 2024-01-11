@@ -122,18 +122,22 @@ class UwaziServerRepository: WebRepository {
             .eraseToAnyPublisher()
     }
     
-    func submitEntity(serverURL: String, cookie: String, multipartHeader: String, multipartBody: Data, isPublic: Bool) -> AnyPublisher<EntityCreationResponse, APIError> {
+    func submitEntity(serverURL: String, cookie: String, multipartHeader: String, multipartBody: Data, isPublic: Bool) -> AnyPublisher<EntityResult, APIError> {
             if isPublic {
-                let apiResponse: APIResponse<EntityCreationResponse> = getAPIResponse(endpoint: API.submitPublicEntity(serverURL: serverURL, cookie: cookie, multipartHeader: multipartHeader, multipartBody: multipartBody))
+                let apiResponse: APIResponse<Entity> = getAPIResponse(endpoint: API.submitPublicEntity(serverURL: serverURL, cookie: cookie, multipartHeader: multipartHeader, multipartBody: multipartBody))
                     return apiResponse
-                        .compactMap{$0.0}
-                        .eraseToAnyPublisher()
+                    .compactMap{ response in
+                        EntityResult.publicEntity(response.0)
+                    }
+                    .eraseToAnyPublisher()
             }
         
             let apiResponse: APIResponse<EntityCreationResponse> = getAPIResponse(endpoint: API.submitEntity(serverURL: serverURL, cookie: cookie, multipartHeader: multipartHeader, multipartBody: multipartBody))
                 return apiResponse
-                    .compactMap{$0.0}
-                    .eraseToAnyPublisher()
+            .compactMap{response in
+                EntityResult.authorizedEntity(response.0)
+            }
+            .eraseToAnyPublisher()
         }
 }
 extension UwaziServerRepository {

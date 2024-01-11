@@ -8,6 +8,11 @@
 
 import Foundation
 
+enum EntityResult {
+    case publicEntity(Entity)
+    case authorizedEntity(EntityCreationResponse)
+}
+
 struct EntityCreationResponse: Decodable {
     let entity: Entity
     let errors: [UwaziError]?
@@ -24,8 +29,8 @@ struct Entity: Decodable {
     let creationDate: Int64
     let editDate: Int64
     let metadata: [String: [MetaDataItem]]
-    let user: String
-    let permissions: [Permission]
+    let user: String?
+    let permissions: [Permission]?
     let __v: Int
     let documents: [Attachment]?
     let attachments: [Attachment]?
