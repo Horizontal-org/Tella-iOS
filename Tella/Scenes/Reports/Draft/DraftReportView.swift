@@ -297,13 +297,13 @@ struct DraftReportView: View {
     }
     
     private func handleSuccessSavingDraft() {
-        reportsViewModel.selectedCell = ReportPages.draft.rawValue
+        reportsViewModel.selectedCell = .draft
         dismissViews()
         Toast.displayToast(message: LocalizableReport.draftSavedToast.localized)
     }
     
     private func handleSuccessSavingOutbox() {
-        reportsViewModel.selectedCell = ReportPages.outbox.rawValue
+        reportsViewModel.selectedCell = .outbox
         dismissViews()
         Toast.displayToast(message: LocalizableReport.outboxSavedToast.localized)
     }

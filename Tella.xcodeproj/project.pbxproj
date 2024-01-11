@@ -312,6 +312,7 @@
 		12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC0CE2799FF230068EC2B /* ImportProgress.swift */; };
 		12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */; };
 		12FFEFA528BE96E00081DDB2 /* AddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */; };
+		15EE30FE2B5073E20033BBBB /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE30FD2B5073E20033BBBB /* Pages.swift */; };
 		1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
 		379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */; };
@@ -786,6 +787,7 @@
 		12FAC0CE2799FF230068EC2B /* ImportProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportProgress.swift; sourceTree = "<group>"; };
 		12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableHome.swift; sourceTree = "<group>"; };
 		12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerURLView.swift; sourceTree = "<group>"; };
+		15EE30FD2B5073E20033BBBB /* Pages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pages.swift; sourceTree = "<group>"; };
 		1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheet.swift; sourceTree = "<group>"; };
 		1EAE6BF424146C2100114244 /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
 		21FEB79B83E10A1CBE4AA323 /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1053,6 +1055,7 @@
 			children = (
 				0ECC7816267A533E00A2ACF2 /* PageViewCell.swift */,
 				0ECC7818267A53A700A2ACF2 /* PageView.swift */,
+				15EE30FD2B5073E20033BBBB /* Pages.swift */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -2956,6 +2959,7 @@
 				121F87AA2964383D00E6BA0D /* SubmittedReportVM.swift in Sources */,
 				0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */,
 				121C5D7529422C0800A64123 /* ProjectDetailsResult.swift in Sources */,
+				15EE30FE2B5073E20033BBBB /* Pages.swift in Sources */,
 				CCC1B4272AC75A380075B819 /* CreateEntityView.swift in Sources */,
 				121C945E28FF3DCC00570EB4 /* EmptyReportView.swift in Sources */,
 				CCF47F442ABE18D7000ABBBC /* TemplateActionType.swift in Sources */,

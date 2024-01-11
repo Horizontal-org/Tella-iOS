@@ -18,12 +18,9 @@ class UwaziViewModel: ObservableObject {
     @Published var draftEntities : [Report] = []
     @Published var outboxedEntities : [Report] = []
     @Published var submittedEntities : [Report] = []
-    @Published var selectedCell:Int = UwaziPages.templates.rawValue
+    @Published var selectedCell = Pages.template
     @Published var pageViewItems : [PageViewItem] = [
-        PageViewItem(title: LocalizableUwazi.uwaziPageViewTemplate.localized, page: UwaziPages.templates.rawValue, number: ""),
-//        PageViewItem(title: LocalizableReport.draftTitle.localized, page: UwaziPages.draft.rawValue, number: ""),
-//        PageViewItem(title: LocalizableReport.outboxTitle.localized, page: UwaziPages.outbox.rawValue, number: ""),
-//        PageViewItem(title: LocalizableReport.submittedTitle.localized, page: UwaziPages.submitted.rawValue, number: "")
+        PageViewItem(title: LocalizableUwazi.uwaziPageViewTemplate.localized, page: .template, number: 0)
     ]
     @Published var isLoading: Bool = false
     @Published var serverName : String

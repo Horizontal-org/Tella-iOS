@@ -22,14 +22,14 @@ struct UwaziView: View {
         ContainerView {
             VStack(alignment: .center) {
                 
-                PageView(selectedOption: $uwaziViewModel.selectedCell, pageViewItems: $uwaziViewModel.pageViewItems)
+                PageView(selectedOption: $uwaziViewModel.selectedCell, pageViewItems: uwaziViewModel.pageViewItems)
                     .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
                 
                 VStack (spacing: 0) {
                     Spacer()
-                    switch UwaziPages(rawValue:uwaziViewModel.selectedCell) {
+                    switch self.uwaziViewModel.selectedCell {
                         
-                    case .templates:
+                    case .template:
                         TemplateListView(
                             message: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized, serverName: uwaziViewModel.serverName)
                         .environmentObject(DownloadedTemplatesViewModel(mainAppModel: uwaziViewModel.mainAppModel, serverId: uwaziViewModel.server.id!))
@@ -45,8 +45,6 @@ struct UwaziView: View {
                     case .submitted:
                         ReportListView(reportArray: $uwaziViewModel.submittedEntities,
                                        message: LocalizableReport.reportsSubmitedEmpty.localized)
-                    case .none:
-                        EmptyView()
                     }
                     
                     Spacer()

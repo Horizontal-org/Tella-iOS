@@ -15,10 +15,12 @@ class ReportsViewModel: ObservableObject {
     @Published var outboxedReports : [Report] = []
     @Published var submittedReports : [Report] = []
     @Published var selectedReport : Report?
-    @Published var selectedCell: Int = ReportPages.draft.rawValue
-    @Published var pageViewItems : [PageViewItem] = [PageViewItem(title: LocalizableReport.draftTitle.localized, page: ReportPages.draft.rawValue, number: "") ,
-                                                     PageViewItem(title: LocalizableReport.outboxTitle.localized, page: ReportPages.outbox.rawValue, number: ""),
-                                                     PageViewItem(title: LocalizableReport.submittedTitle.localized, page: ReportPages.submitted.rawValue, number: "")]
+    @Published var selectedCell = Pages.draft
+    
+    var pageViewItems : [PageViewItem] {
+        [PageViewItem(title: LocalizableReport.draftTitle.localized, page: .draft, number: draftReports.count),
+         PageViewItem(title: LocalizableReport.outboxTitle.localized, page: .outbox, number: outboxedReports.count),
+         PageViewItem(title: LocalizableReport.submittedTitle.localized, page: .submitted, number: submittedReports.count)] }
     
     var sheetItems : [ListActionSheetItem] { return [
         
