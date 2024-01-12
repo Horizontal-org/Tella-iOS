@@ -52,4 +52,5 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     case uwaziEntitySelectFilesDropdownTitleSingle = "Uwazi_Entity_SelectFiles_Dropdown_TitleSingle"
     case uwaziEntitySelectFilesDropdownHide = "Uwazi_Entity_SelectFiles_Dropdown_Hide"
     case uwaziEntitySelectFilesDropdownShow = "Uwazi_Entity_SelectFiles_Dropdown_Show"
+    case uwaziEntitySelectDateTitle = "Uwazi_Entity_SelectDate_Title"
 }

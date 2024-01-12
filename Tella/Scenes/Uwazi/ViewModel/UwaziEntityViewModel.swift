@@ -77,6 +77,7 @@ class UwaziEntityViewModel: ObservableObject {
     
     func submitEntity(onCompletion: @escaping () -> Void) {
         self.isLoading = true
+        let isPublic = server?.accessToken == nil
         // Extract entity data and metadata
         let entityData = extractEntityDataAndMetadata()
         
@@ -91,7 +92,8 @@ class UwaziEntityViewModel: ObservableObject {
             serverURL: self.server?.url ?? "",
             cookie: self.server?.cookie ?? "",
             multipartHeader: contentTypeHeader,
-            multipartBody: body
+            multipartBody: body,
+            isPublic: isPublic
         )
         response
             .receive(on: DispatchQueue.main)
@@ -130,8 +132,10 @@ class UwaziEntityViewModel: ObservableObject {
             switch UwaziEntityPropertyType(rawValue: entryPrompt.type) {
             case .dataTypeText where propertyName == UwaziEntityMetadataKeys.title:
                 entityData[propertyName] = entryPrompt.value.stringValue
-            case .dataTypeText, .dataTypeNumeric:
+            case .dataTypeText, .dataTypeNumeric, .dataTypeMarkdown:
                 metadata[propertyName] = [[UwaziEntityMetadataKeys.value: entryPrompt.value.stringValue]]
+            case .dataTypeDate:
+                metadata[propertyName] = [[UwaziEntityMetadataKeys.value: Int(entryPrompt.value.stringValue)]]
             case .dataTypeSelect, .dataTypeMultiSelect:
                 if let selectedValue = entryPrompt.value.selectedValue.first {
                     metadata[propertyName] = [[UwaziEntityMetadataKeys.value: selectedValue.id, UwaziEntityMetadataKeys.label: selectedValue.label]]
