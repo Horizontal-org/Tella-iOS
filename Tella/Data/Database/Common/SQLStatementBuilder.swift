@@ -31,7 +31,7 @@ class SQLiteStatementBuilder {
         
     }
 
-    func alterTable(tableName: String, column: String) {
+    func addColumnToExistingTable(tableName: String, column: String) {
         let sqlExpression = "ALTER TABLE " + tableName + " ADD COLUMN " + column
         let ret = sqlite3_exec(dbPointer, sqlExpression, nil, nil, nil)
 
