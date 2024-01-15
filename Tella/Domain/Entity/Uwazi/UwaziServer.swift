@@ -8,15 +8,8 @@
 
 import Foundation
 
-class UwaziServer : Hashable {
-    var id : Int?
-    var name : String?
-    var url : String?
-    var username : String?
-    var password : String?
-    var accessToken : String?
+class UwaziServer : Server {
     var locale: String?
-    var serverType: ServerConnectionType?
     var cookie: String?
     init(id: Int? = nil,
          name: String? = nil,
@@ -25,31 +18,12 @@ class UwaziServer : Hashable {
          password: String? = nil,
          accessToken: String? = nil,
          locale: String? = nil,
-         serverType: ServerConnectionType? = nil
+         serverType: ServerConnectionType? = .uwazi
         ) {
-        self.id = id
-        self.name = name
-        self.url = serverURL
-        self.username = username
-        self.password = password
-        self.accessToken = accessToken
-        self.serverType = serverType
         self.locale = locale
+        super.init(id: id, name: name, serverURL: serverURL, username: username, password: password, accessToken: accessToken,autoUpload: false, autoDelete: false, serverType: serverType)
         self.cookie = createCookie()
     }
-    
-    init() {
-        self.cookie = createCookie()
-    }
-    
-    static func == (lhs: UwaziServer, rhs: UwaziServer) -> Bool {
-        lhs.id  == rhs.id
-    }
-    
-    func hash(into hasher: inout Hasher){
-        hasher.combine(id.hashValue)
-    }
-    
     private func createCookie() -> String {
         let accessTokenValue = accessToken ?? ""
         let localeValue = locale ?? ""

@@ -19,7 +19,6 @@ class Server : Hashable {
     var autoUpload: Bool?
     var autoDelete: Bool?
     var serverType: ServerConnectionType?
-    var cookie: String?
 
     init(id: Int? = nil,
          name: String? = nil,
@@ -33,8 +32,7 @@ class Server : Hashable {
          slug: String? = nil,
          autoUpload: Bool?,
          autoDelete: Bool,
-         serverType: ServerConnectionType? = nil,
-         cookie: String? = nil
+         serverType: ServerConnectionType? = nil
         ) {
         self.id = id
         self.name = name
@@ -49,7 +47,6 @@ class Server : Hashable {
         self.autoUpload = autoUpload
         self.autoDelete = autoDelete
         self.serverType = serverType
-        self.cookie = cookie
     }
     
     init() {
