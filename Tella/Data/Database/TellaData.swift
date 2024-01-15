@@ -12,6 +12,7 @@ class TellaData : ObservableObject {
     
     // Servers
     var servers = CurrentValueSubject<[Server], Error>([])
+    var tellaServers = CurrentValueSubject<[TellaServer], Error>([])
     
     // Reports
     var draftReports = CurrentValueSubject<[Report], Error>([])
@@ -21,6 +22,7 @@ class TellaData : ObservableObject {
     init(key: String?) throws {
         self.database = try TellaDataBase(key: key)
         getServers()
+        getTellaServers()
         getReports()
     }
     
@@ -76,6 +78,12 @@ class TellaData : ObservableObject {
             self.servers.value = self.database.getServers()
         }
     }
+    
+    func getTellaServers() {
+        DispatchQueue.main.async {
+            self.tellaServers.value = self.database.getTellaServers()
+        }
+    }
 
     func getUwaziServer(serverId: Int) -> UwaziServer? {
         do {
@@ -87,7 +95,7 @@ class TellaData : ObservableObject {
         }
     }
     
-    func getAutoUploadServer() -> Server? {
+    func getAutoUploadServer() -> TellaServer? {
         return database.getAutoUploadServer()
     }
     

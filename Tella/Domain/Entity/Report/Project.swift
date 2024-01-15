@@ -61,3 +61,35 @@ class Server : Hashable {
         hasher.combine(id.hashValue)
     }
 }
+
+class TellaServer : Server {
+    init(id: Int? = nil,
+         name: String? = nil,
+         serverURL: String? = nil,
+         username: String? = nil,
+         password: String? = nil,
+         accessToken: String? = nil,
+         activatedMetadata: Bool? = nil,
+         backgroundUpload: Bool? = nil,
+         projectId: String? = nil,
+         slug: String? = nil,         
+         autoUpload: Bool,
+         autoDelete: Bool,
+         serverType: ServerConnectionType? = .tella
+    ) {
+        super.init(id: id,
+                   name: name,
+                   serverURL: serverURL,
+                   username: username,
+                   password: password,
+                   accessToken: accessToken,
+                   activatedMetadata: activatedMetadata,
+                   backgroundUpload: backgroundUpload,
+                   projectId: projectId,
+                   slug: slug,
+                   autoUpload: autoUpload,
+                   autoDelete: autoDelete,
+                   serverType: serverType
+        )
+    }
+}

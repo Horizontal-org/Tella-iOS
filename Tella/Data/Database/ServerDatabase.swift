@@ -74,13 +74,13 @@ extension TellaDataBase {
         return servers
     }
 
-    func getAutoUploadServer() -> Server? {
+    func getAutoUploadServer() -> TellaServer? {
         do {
             let serverCondition = [KeyValue(key: D.cAutoUpload, value: 1)]
             let serversDict = try statementBuilder.selectQuery(tableName: D.tServer,
                                                                andCondition:serverCondition)
             if !serversDict.isEmpty, let dict = serversDict.first {
-                return getServer(dictionnary: dict, serverType: .tella)
+                return getTellaServer(dictionnary: dict)
             }
             return nil
         } catch {
@@ -115,6 +115,51 @@ extension TellaDataBase {
                       autoUpload: autoUpload == 0 ? false : true,
                       autoDelete: autoDelete == 0 ? false : true,
                       serverType: ServerConnectionType(rawValue: serverType.rawValue)
+        )
+    }
+    
+    func getTellaServers() -> [TellaServer] {
+        var servers: [TellaServer] = []
+        
+        do {
+            let serversDict = try statementBuilder.selectQuery(tableName: D.tServer, andCondition: [])
+            serversDict.forEach { dict in
+                servers.append(getTellaServer(dictionnary: dict))
+            }
+        } catch {
+            debugLog("Error while fetching servers from \(D.tServer): \(error)")
+        }
+
+        return servers
+    }
+    
+    func getTellaServer(dictionnary : [String:Any]) -> TellaServer {
+        let id = dictionnary[D.cServerId] as? Int
+        let name = dictionnary[D.cName] as? String
+        let url = dictionnary[D.cURL] as? String
+        let username = dictionnary[D.cUsername] as? String
+        let password = dictionnary[D.cPassword] as? String
+        let token = dictionnary[D.cAccessToken] as? String
+        let activatedMetadata = dictionnary[D.cActivatedMetadata] as? Int
+        let backgroundUpload = dictionnary[D.cBackgroundUpload] as? Int
+        let apiProjectId = dictionnary[D.cApiProjectId] as? String
+        let slug = dictionnary[D.cSlug] as? String
+        let autoUpload = dictionnary[D.cAutoUpload] as? Int
+        let autoDelete = dictionnary[D.cAutoDelete] as? Int
+
+        return TellaServer(id:id,
+                      name: name,
+                      serverURL: url,
+                      username: username,
+                      password: password,
+                      accessToken: token,
+                      activatedMetadata: activatedMetadata == 0 ? false : true ,
+                      backgroundUpload: backgroundUpload == 0 ? false : true,
+                      projectId: apiProjectId,
+                      slug:slug,
+                      autoUpload: autoUpload == 0 ? false : true,
+                      autoDelete: autoDelete == 0 ? false : true,
+                           serverType: ServerConnectionType(rawValue: ServerConnectionType.tella.rawValue)
         )
     }
     

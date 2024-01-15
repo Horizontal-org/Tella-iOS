@@ -541,7 +541,7 @@ class TellaDataBase : DataBase {
                       createdDate: createdDate?.getDate() ?? Date(),
                       updatedDate: updatedDate?.getDate() ?? Date(),
                       status: ReportStatus(rawValue: status ?? 0) ?? .draft,
-                      server: getServer(dictionnary: dictionnary, serverType: .tella),
+                      server: getTellaServer(dictionnary: dictionnary),
                       vaultFiles: getVaultFiles(reportID: reportID),
                       apiID: apiReportId,
                       currentUpload: currentUpload == 0 ? false : true)

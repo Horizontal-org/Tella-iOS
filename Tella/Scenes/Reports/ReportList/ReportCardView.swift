@@ -120,7 +120,7 @@ struct ReportCardView_Previews: PreviewProvider {
             ReportCardView(report: .constant(Report(title: LocalizableReport.reportsListTitle.localized,
                                                     description: LocalizableReport.reportsListDescription.localized,
                                                     status: .draft,
-                                                    server: Server(), vaultFiles: [])))
+                                                    server: TellaServer(autoUpload: false, autoDelete: true), vaultFiles: [])))
         }
     }
 }

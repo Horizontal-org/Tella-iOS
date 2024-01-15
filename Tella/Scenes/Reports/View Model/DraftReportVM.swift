@@ -16,7 +16,7 @@ class DraftReportVM: ObservableObject {
     @Published var title : String = ""
     @Published var description : String = ""
     @Published var files :  Set <VaultFileDB> = []
-    @Published var server :  Server?
+    @Published var server :  TellaServer?
     @Published var status : ReportStatus?
     @Published var apiID : String?
     
@@ -38,7 +38,7 @@ class DraftReportVM: ObservableObject {
     @Published var successSavingReport : Bool = false
     @Published var failureSavingReport : Bool = false
     
-    var serverArray : [Server] = []
+    var serverArray : [TellaServer] = []
     
     var cancellable : Cancellable? = nil
     private var subscribers = Set<AnyCancellable>()
@@ -103,7 +103,8 @@ class DraftReportVM: ObservableObject {
     }
     
     private func getServers() {
-        serverArray = mainAppModel.vaultManager.tellaData?.servers.value.filter{ $0.serverType == .tella } ?? []
+        serverArray = mainAppModel.vaultManager.tellaData?.tellaServers.value ?? []
+        dump(serverArray)
     }
     
     private func initcurrentReportVM(reportId:Int?) {
