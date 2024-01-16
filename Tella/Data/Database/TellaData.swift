@@ -13,6 +13,7 @@ class TellaData : ObservableObject {
     // Servers
     var servers = CurrentValueSubject<[Server], Error>([])
     var tellaServers = CurrentValueSubject<[TellaServer], Error>([])
+    var uwaziServers = CurrentValueSubject<[UwaziServer], Error>([])
     
     // Reports
     var draftReports = CurrentValueSubject<[Report], Error>([])
@@ -22,11 +23,10 @@ class TellaData : ObservableObject {
     init(key: String?) throws {
         self.database = try TellaDataBase(key: key)
         getServers()
-        getTellaServers()
         getReports()
     }
     
-    func addServer(server : Server) -> Result<Int, Error> {
+    func addServer(server : TellaServer) -> Result<Int, Error> {
         let addServerResult = database.addServer(server: server)
         getServers()
         
@@ -40,7 +40,7 @@ class TellaData : ObservableObject {
     }
     
     @discardableResult
-    func updateServer(server : Server) -> Result<Bool, Error> {
+    func updateServer(server : TellaServer) -> Result<Bool, Error> {
         let updateServerResult = database.updateServer(server: server)
         getServers()
         return updateServerResult
@@ -75,16 +75,22 @@ class TellaData : ObservableObject {
     
     func getServers(){
         DispatchQueue.main.async {
-            self.servers.value = self.database.getServers()
-        }
-    }
-    
-    func getTellaServers() {
-        DispatchQueue.main.async {
             self.tellaServers.value = self.database.getTellaServers()
+            self.uwaziServers.value = self.database.getUwaziServers()
+            
+            self.servers.value = self.tellaServers.value + self.uwaziServers.value
         }
     }
 
+    func getTellaServer(serverId: Int) -> TellaServer? {
+        do {
+            return try database.getTellaServerById(id: serverId)
+        } catch {
+            debugLog(error)
+            return nil
+        }
+    }
+    
     func getUwaziServer(serverId: Int) -> UwaziServer? {
         do {
             return try database.getUwaziServer(serverId: serverId)

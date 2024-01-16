@@ -88,8 +88,7 @@ class UwaziServerViewModel: ObservableObject {
                                  username: username,
                                  password: password,
                                  accessToken: self.token,
-                                 locale: selectedLanguage?.locale,
-                                 serverType: .uwazi
+                                 locale: selectedLanguage?.locale
         )
         debugLog(server)
         guard let id = mainAppModel.vaultManager.tellaData?.addUwaziServer(server: server) else { return }

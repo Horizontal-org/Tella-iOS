@@ -27,7 +27,7 @@ extension TellaDataBase {
         statementBuilder.createTable(tableName: D.tServer, columns: columns)
     }
     
-    func addServer(server : Server)  -> Result<Int, Error> {
+    func addServer(server : TellaServer)  -> Result<Int, Error> {
         do {
             let valuesToAdd = [KeyValue(key: D.cName, value: server.name),
                                KeyValue(key: D.cURL, value: server.url),
@@ -50,30 +50,6 @@ extension TellaDataBase {
         }
     }
 
-    func getServers() -> [Server] {
-        var servers: [Server] = []
-        
-        // Function to append servers from a given table
-        func appendServers(fromTable tableName: String, serverType: ServerConnectionType) {
-            do {
-                let serversDict = try statementBuilder.selectQuery(tableName: tableName, andCondition: [])
-                serversDict.forEach { dict in
-                    servers.append(getServer(dictionnary: dict, serverType: serverType))
-                }
-            } catch {
-                debugLog("Error while fetching servers from \(tableName): \(error)")
-            }
-        }
-
-        // Query tella servers
-        appendServers(fromTable: D.tServer, serverType: .tella)
-
-        // Query uwaziServers
-        appendServers(fromTable: D.tUwaziServer, serverType: .uwazi)
-
-        return servers
-    }
-
     func getAutoUploadServer() -> TellaServer? {
         do {
             let serverCondition = [KeyValue(key: D.cAutoUpload, value: 1)]
@@ -86,36 +62,6 @@ extension TellaDataBase {
         } catch {
             return nil
         }
-    }
-
-    func getServer(dictionnary : [String:Any], serverType: ServerConnectionType ) -> Server {
-        let id = dictionnary[D.cServerId] as? Int
-        let name = dictionnary[D.cName] as? String
-        let url = dictionnary[D.cURL] as? String
-        let username = dictionnary[D.cUsername] as? String
-        let password = dictionnary[D.cPassword] as? String
-        let token = dictionnary[D.cAccessToken] as? String
-        let activatedMetadata = dictionnary[D.cActivatedMetadata] as? Int
-        let backgroundUpload = dictionnary[D.cBackgroundUpload] as? Int
-        let apiProjectId = dictionnary[D.cApiProjectId] as? String
-        let slug = dictionnary[D.cSlug] as? String
-        let autoUpload = dictionnary[D.cAutoUpload] as? Int
-        let autoDelete = dictionnary[D.cAutoDelete] as? Int
-
-        return Server(id:id,
-                      name: name,
-                      serverURL: url,
-                      username: username,
-                      password: password,
-                      accessToken: token,
-                      activatedMetadata: activatedMetadata == 0 ? false : true ,
-                      backgroundUpload: backgroundUpload == 0 ? false : true,
-                      projectId: apiProjectId,
-                      slug:slug,
-                      autoUpload: autoUpload == 0 ? false : true,
-                      autoDelete: autoDelete == 0 ? false : true,
-                      serverType: ServerConnectionType(rawValue: serverType.rawValue)
-        )
     }
     
     func getTellaServers() -> [TellaServer] {
@@ -131,6 +77,13 @@ extension TellaDataBase {
         }
 
         return servers
+    }
+    
+    func getTellaServerById(id: Int) throws -> TellaServer? {
+        let response = try statementBuilder.selectQuery(tableName: D.tServer, andCondition: [KeyValue(key: D.cServerId, value: id)])
+        
+        guard let tellaServerDict = response.first else { return nil }
+        return getTellaServer(dictionnary: tellaServerDict)
     }
     
     func getTellaServer(dictionnary : [String:Any]) -> TellaServer {
@@ -158,12 +111,11 @@ extension TellaDataBase {
                       projectId: apiProjectId,
                       slug:slug,
                       autoUpload: autoUpload == 0 ? false : true,
-                      autoDelete: autoDelete == 0 ? false : true,
-                           serverType: ServerConnectionType(rawValue: ServerConnectionType.tella.rawValue)
+                      autoDelete: autoDelete == 0 ? false : true
         )
     }
     
-    func updateServer(server : Server) -> Result<Bool, Error> {
+    func updateServer(server : TellaServer) -> Result<Bool, Error> {
         do {
             
             let valuesToUpdate = [KeyValue(key: D.cName, value: server.name),

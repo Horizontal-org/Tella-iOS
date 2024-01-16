@@ -104,7 +104,6 @@ class DraftReportVM: ObservableObject {
     
     private func getServers() {
         serverArray = mainAppModel.vaultManager.tellaData?.tellaServers.value ?? []
-        dump(serverArray)
     }
     
     private func initcurrentReportVM(reportId:Int?) {

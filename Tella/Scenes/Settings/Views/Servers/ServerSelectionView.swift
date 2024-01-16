@@ -15,7 +15,7 @@ struct ServerSelectionView: View {
     @State var selectedServerType: ServerConnectionType = .unknown
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    init(appModel:MainAppModel, server: Server? = nil) {
+    init(appModel:MainAppModel, server: TellaServer? = nil) {
         _serverViewModel = StateObject(wrappedValue: ServerViewModel(mainAppModel: appModel, currentServer: server))
     }
     var body: some View {

@@ -121,6 +121,20 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
             return nil
         }
     }
+
+    func getUwaziServers() -> [UwaziServer] {
+        var servers: [UwaziServer] = []
+        do {
+            let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziServer, andCondition: [])
+            serversDict.forEach { dict in
+                servers.append(parseUwaziServer(dictionary: dict))
+            }
+        } catch {
+            debugLog("Error while fetching servers from \(D.tUwaziServer): \(error)")
+        }
+        
+        return servers
+    }
     
     func getUwaziServer(serverId: Int) throws -> UwaziServer? {
         let response = try statementBuilder.selectQuery(tableName: D.tUwaziServer,
@@ -145,8 +159,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
                            username: username,
                            password: password,
                            accessToken: token,
-                           locale: locale,
-                           serverType: ServerConnectionType(rawValue: 1)
+                           locale: locale
         )
     }
     

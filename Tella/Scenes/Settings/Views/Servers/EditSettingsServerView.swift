@@ -11,7 +11,7 @@ struct EditSettingsServerView: View {
     
     @StateObject private var serverViewModel : ServerViewModel
     
-    init(appModel:MainAppModel, isPresented : Binding<Bool>, server: Server? = nil) {
+    init(appModel:MainAppModel, isPresented : Binding<Bool>, server: TellaServer? = nil) {
         _serverViewModel = StateObject(wrappedValue: ServerViewModel(mainAppModel: appModel, currentServer: server))
         self.isPresented = isPresented
     }

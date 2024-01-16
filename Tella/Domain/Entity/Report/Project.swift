@@ -12,12 +12,6 @@ class Server : Hashable {
     var username : String?
     var password : String?
     var accessToken : String?
-    var activatedMetadata : Bool?
-    var backgroundUpload : Bool?
-    var projectId : String?
-    var slug : String?
-    var autoUpload: Bool?
-    var autoDelete: Bool?
     var serverType: ServerConnectionType?
 
     init(id: Int? = nil,
@@ -40,12 +34,6 @@ class Server : Hashable {
         self.username = username
         self.password = password
         self.accessToken = accessToken
-        self.activatedMetadata = activatedMetadata
-        self.backgroundUpload = backgroundUpload
-        self.projectId = projectId
-        self.slug = slug
-        self.autoUpload = autoUpload
-        self.autoDelete = autoDelete
         self.serverType = serverType
     }
     
@@ -63,6 +51,12 @@ class Server : Hashable {
 }
 
 class TellaServer : Server {
+    var activatedMetadata : Bool?
+    var backgroundUpload : Bool?
+    var projectId : String?
+    var slug : String?
+    var autoUpload: Bool?
+    var autoDelete: Bool?
     init(id: Int? = nil,
          name: String? = nil,
          serverURL: String? = nil,
@@ -77,6 +71,12 @@ class TellaServer : Server {
          autoDelete: Bool,
          serverType: ServerConnectionType? = .tella
     ) {
+        self.activatedMetadata = activatedMetadata
+        self.backgroundUpload = backgroundUpload
+        self.projectId = projectId
+        self.slug = slug
+        self.autoUpload = autoUpload
+        self.autoDelete = autoDelete
         super.init(id: id,
                    name: name,
                    serverURL: serverURL,
