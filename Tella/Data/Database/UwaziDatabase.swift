@@ -92,7 +92,7 @@ extension TellaDataBase: UwaziTemplateProtocol {
 extension TellaDataBase: UwaziServerLanguageProtocol {
     func createUwaziServerTable() {
         let columns = [
-            cddl(D.cServerId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
             cddl(D.cName, D.text),
             cddl(D.cURL, D.text),
             cddl(D.cUsername, D.text),
@@ -138,7 +138,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
     
     func getUwaziServer(serverId: Int) throws -> UwaziServer? {
         let response = try statementBuilder.selectQuery(tableName: D.tUwaziServer,
-                                                           andCondition: [KeyValue(key: D.cServerId, value: serverId)])
+                                                           andCondition: [KeyValue(key: D.cId, value: serverId)])
         guard let uwaziServerDict = response.first else { return nil }
         
         return parseUwaziServer(dictionary: uwaziServerDict)
@@ -146,7 +146,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
     }
     
     func parseUwaziServer(dictionary : [String:Any] ) -> UwaziServer {
-        let id = dictionary[D.cServerId] as? Int
+        let id = dictionary[D.cId] as? Int
         let name = dictionary[D.cName] as? String
         let url = dictionary[D.cURL] as? String
         let username = dictionary[D.cUsername] as? String
@@ -172,7 +172,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
                                   KeyValue(key: D.cAccessToken, value: server.accessToken),
                                   KeyValue(key: D.cLocale, value: server.locale)]
 
-            let serverCondition = [KeyValue(key: D.cServerId, value: server.id)]
+            let serverCondition = [KeyValue(key: D.cId, value: server.id)]
             return try statementBuilder.update(tableName: D.tUwaziServer,
                                            valuesToUpdate: valuesToUpdate,
                                            equalCondition: serverCondition)
@@ -184,7 +184,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
     
     func deleteUwaziServer(serverId : Int) {
         do {
-            let serverCondition = [KeyValue(key: D.cServerId, value: serverId)]
+            let serverCondition = [KeyValue(key: D.cId, value: serverId)]
 
             try statementBuilder.delete(tableName: D.tUwaziServer,
                                     primarykeyValue: serverCondition)
