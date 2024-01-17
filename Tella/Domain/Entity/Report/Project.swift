@@ -20,12 +20,6 @@ class Server : Hashable {
          username: String? = nil,
          password: String? = nil,
          accessToken: String? = nil,
-         activatedMetadata: Bool? = nil,
-         backgroundUpload: Bool? = nil,
-         projectId: String? = nil,
-         slug: String? = nil,
-         autoUpload: Bool?,
-         autoDelete: Bool,
          serverType: ServerConnectionType? = nil
         ) {
         self.id = id
@@ -83,12 +77,6 @@ class TellaServer : Server {
                    username: username,
                    password: password,
                    accessToken: accessToken,
-                   activatedMetadata: activatedMetadata,
-                   backgroundUpload: backgroundUpload,
-                   projectId: projectId,
-                   slug: slug,
-                   autoUpload: autoUpload,
-                   autoDelete: autoDelete,
                    serverType: serverType
         )
     }

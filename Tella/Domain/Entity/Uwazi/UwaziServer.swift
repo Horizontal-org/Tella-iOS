@@ -21,7 +21,7 @@ class UwaziServer : Server {
          serverType: ServerConnectionType? = .uwazi
         ) {
         self.locale = locale
-        super.init(id: id, name: name, serverURL: serverURL, username: username, password: password, accessToken: accessToken,autoUpload: false, autoDelete: false, serverType: serverType)
+        super.init(id: id, name: name, serverURL: serverURL, username: username, password: password, accessToken: accessToken, serverType: serverType)
         self.cookie = createCookie()
     }
     private func createCookie() -> String {
