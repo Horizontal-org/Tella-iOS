@@ -12,6 +12,7 @@ enum DateFormat : String {
     case dataBase = "yyyy-MM-dd'T'HH:mm:ssZ"
     case submittedReport = "dd.MM.yyyy, hh:mm a"
     case autoReportNameName = "yyyy.MM.dd - HH.mm"
+    case uwaziDate = "dd/MM/yyyy"
 
 }
 
@@ -49,6 +50,10 @@ extension Date{
     
     func getDate() -> String {
         return "\(Int(self.timeIntervalSince1970 * 1000))"
+    }
+    
+    func getUnixTimestamp() -> Int {
+        return Int(self.timeIntervalSince1970)
     }
 
     private func getTimeAgoSinceNow() -> String {

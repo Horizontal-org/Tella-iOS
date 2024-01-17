@@ -59,7 +59,7 @@ struct UwaziDatePicker: View {
     }
     
     private func updatePromptWithDate(_ date: Date) {
-        let unixTimestamp = Int(date.timeIntervalSince1970)
+        let unixTimestamp = date.getUnixTimestamp()
         prompt.value.stringValue = String(unixTimestamp)
         entityViewModel.toggleShowClear(forId: prompt.id ?? "", value: true)
     }
@@ -69,15 +69,8 @@ struct UwaziDatePicker: View {
             return dateString
         }
         
-        return Self.dateFormatter.string(from: Date(timeIntervalSince1970: unixTimeStamp))
+        return unixTimeStamp.getDate()?.getFormattedDateString(format: DateFormat.uwaziDate.rawValue) ?? ""
     }
-
-    private static let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MM-yyyy"
-        return formatter
-    }()
-
 }
 
 struct UwaziDatePicker_Previews: PreviewProvider {
