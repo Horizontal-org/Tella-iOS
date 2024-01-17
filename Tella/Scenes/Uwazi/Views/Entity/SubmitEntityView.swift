@@ -47,7 +47,7 @@ struct SubmitEntityView: View {
     
     var templateData: some View {
         VStack {
-            Text("\(LocalizableUwazi.uwaziEntitySummaryDetailServerTitle.localized) \(entityViewModel.template?.serverName ?? "")")
+            Text("\(LocalizableUwazi.uwaziEntitySummaryDetailServerTitle.localized) \(entityViewModel.server?.name ?? "")")
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
