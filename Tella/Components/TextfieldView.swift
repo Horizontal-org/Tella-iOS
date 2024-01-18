@@ -5,7 +5,13 @@
 
 import SwiftUI
 import Combine
-
+enum FieldType {
+    case url
+    case username
+    case text
+    case password
+    case code
+}
 struct TextfieldView : View {
     
     @Binding var fieldContent : String
@@ -19,6 +25,7 @@ struct TextfieldView : View {
     var placeholder : String = ""
     var shouldShowTitle : Bool = false
     var onCommit : (() -> Void)? =  ({})
+    var keyboardType: UIKeyboardType = .default
     
     @State private var shouldShowPassword : Bool = false
     
@@ -35,6 +42,7 @@ struct TextfieldView : View {
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .frame(maxWidth: .infinity,alignment: .leading)
                     .contentShape(Rectangle())
+
                     .foregroundColor(fieldContent.isEmpty ? .white : .white.opacity(0.8))
                     .scaleEffect(fieldContent.isEmpty ? 1 : 0.88, anchor: .leading)
                     .transaction { transaction in
@@ -46,7 +54,7 @@ struct TextfieldView : View {
                     }
 
                 // Textfield
-                if fieldType == .password {
+                if fieldType == .password || fieldType == .code {
                     passwordTextfieldView
                 } else {
                     textfieldView
@@ -67,9 +75,13 @@ struct TextfieldView : View {
     
     var textfieldView : some View {
         
-        TextField("", text: $fieldContent,onCommit: {
+        TextField("",
+                  text: $fieldContent,
+                  onCommit: {
             self.onCommit?()
-        }).onChange(of: fieldContent, perform: { value in
+        })
+        .keyboardType(keyboardType)
+        .onChange(of: fieldContent, perform: { value in
             validateField(value: value)
             self.pfieldContent = value
         })
@@ -91,6 +103,7 @@ struct TextfieldView : View {
                         self.onCommit?()
                     })
                 }}
+            .keyboardType(keyboardType)
             .textFieldStyle(TextfieldStyle(shouldShowError: shouldShowError))
             .onChange(of: fieldContent, perform: { value in
                 validateField(value: value)
@@ -142,6 +155,8 @@ struct TextfieldView : View {
         case .password:
             self.isValid = value.passwordValidator()
             
+        case .code:
+            self.isValid = value.codeValidator()
         }
         self.shouldShowError = false
     }
@@ -171,10 +186,3 @@ struct TextfieldView_Previews: PreviewProvider {
     }
 }
 
-
-enum FieldType {
-    case url
-    case username
-    case text
-    case password
-}

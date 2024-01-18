@@ -13,7 +13,7 @@ class Report : Hashable {
     var createdDate : Date?
     var updatedDate : Date?
     var status : ReportStatus?
-    var server : Server?
+    var server : TellaServer?
     var reportFiles : [ReportFile]?
     var apiID : String?
     var currentUpload: Bool?
@@ -24,7 +24,7 @@ class Report : Hashable {
          createdDate: Date? = nil,
          updatedDate: Date? = nil,
          status: ReportStatus? = nil,
-         server: Server? = nil,
+         server: TellaServer? = nil,
          vaultFiles: [ReportFile]? = nil,
          apiID: String? = nil,
          currentUpload: Bool? = nil ) {

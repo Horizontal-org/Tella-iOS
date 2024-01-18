@@ -23,9 +23,7 @@ struct CardFrameView<Content:View>: View {
 
 #Preview {
     CardFrameView(content: {
-        Text("Test")
+            Text("Test")
     })
-    
 }
-
 

@@ -116,7 +116,7 @@ extension String {
         case _ where type.conforms(to: .audio):
             return .audio
         case _ where type.conforms(to: .pdf) || type.conforms(to: .presentation) || type.conforms(to: .spreadsheet):
-            return .video
+            return .document
         default:
             return .other
         }

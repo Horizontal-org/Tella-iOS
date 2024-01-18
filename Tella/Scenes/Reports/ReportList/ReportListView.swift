@@ -36,7 +36,7 @@ struct ReportListView_Previews: PreviewProvider {
             ReportListView(reportArray: .constant([Report(title: LocalizableReport.reportsListTitle.localized,
                                                           description: LocalizableReport.reportsListDescription.localized,
                                                           status: ReportStatus.draft,
-                                                          server: Server(), vaultFiles: [])]),
+                                                          server: TellaServer(autoUpload: false, autoDelete: true), vaultFiles: [])]),
                            message: LocalizableReport.reportsListMessage.localized)
         }
     }

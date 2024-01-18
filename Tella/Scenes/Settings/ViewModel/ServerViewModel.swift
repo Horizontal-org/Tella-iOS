@@ -38,28 +38,23 @@ class ServerViewModel: ObservableObject {
     private var cancellable: Cancellable? = nil
     var subscribers = Set<AnyCancellable>()
 
-    var currentServer : Server?
+    var currentServer : TellaServer?
     
     var isAutoUploadServerExist: Bool {
         return mainAppModel.vaultManager.tellaData?.getAutoUploadServer() != nil && self.currentServer?.autoUpload == false
     }
     
-    init(mainAppModel : MainAppModel, currentServer: Server?) {
-        
+    init(mainAppModel : MainAppModel, currentServer: TellaServer?) {
         self.mainAppModel = mainAppModel
         self.currentServer = currentServer
-        
         cancellable = $validUsername.combineLatest($validPassword).sink(receiveValue: { validUsername, validPassword  in
             self.validCredentials = validUsername && validPassword
         })
-        
         fillReportVM()
-        
     }
     
     func addServer(token: String, project: ProjectAPI) {
-        
-        let server = Server(name: project.name,
+        let server = TellaServer(name: project.name,
                             serverURL: projectURL.getBaseURL(),
                             username: username,
                             password: password,
@@ -115,10 +110,7 @@ class ServerViewModel: ObservableObject {
                     }
                 },
                 receiveValue: { result in
-//
-                    
                     self.getProjetSlug(token: result.accessToken)
-
                 }
             )
             .store(in: &subscribers)
@@ -164,8 +156,6 @@ class ServerViewModel: ObservableObject {
             backgroundUpload = server.backgroundUpload ?? false
             autoUpload = server.autoUpload ?? false
             autoDelete = server.autoDelete ?? false
-
-
         }
     }
     

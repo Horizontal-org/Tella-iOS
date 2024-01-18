@@ -80,5 +80,7 @@ struct SuccessLoginView: View {
 struct SuccessLoginView_Previews: PreviewProvider {
     static var previews: some View {
         SuccessLoginView()
+            .environmentObject(MainAppModel.stub())
+            .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
     }
 }
