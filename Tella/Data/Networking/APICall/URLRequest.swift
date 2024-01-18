@@ -33,9 +33,7 @@ extension WebRepository {
         }
     }
 }
-
 // MARK: - Helpers
-
 extension Publisher where Output == URLSession.DataTaskPublisher.Output {
     func requestJSON<Value>() -> APIResponse<Value> where Value: Decodable {
         return requestData()
@@ -43,7 +41,14 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
                 let decodedData : Value = try data.decoded()
                 return (decodedData, allHeaderFields)
             })
-            .mapError{ _ in APIError.unexpectedResponse }
+            .mapError{
+                if let error = $0 as? APIError {
+                    return error
+                } else {
+                    return APIError.unexpectedResponse
+                }
+
+            }
             .eraseToAnyPublisher()
     }
 }
@@ -54,14 +59,25 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
             guard let code = ($0.1 as? HTTPURLResponse)?.statusCode else {
                 throw APIError.unexpectedResponse
             }
+
             guard HTTPCodes.success.contains(code) else {
                 debugLog("Error code: \(code)")
                 throw APIError.httpCode(code)
             }
             return ($0.0, ($0.1 as? HTTPURLResponse)?.allHeaderFields)
         }
-        .mapError{  error in
-            return APIError.unexpectedResponse
+        .mapError{ error in
+            if let error = error as? APIError {
+                return error
+            } else  {
+                let error = error as NSError
+                if error.domain == NSURLErrorDomain {
+                    return APIError.badServer
+                } else {
+                    return APIError.httpCode(error._code)
+                }
+
+            }
         }
         .eraseToAnyPublisher()
     }

@@ -279,5 +279,6 @@ class OutboxReportVM: ObservableObject {
     
     func deleteReport() {
         mainAppModel.deleteReport(reportId: reportViewModel.id)
+        mainAppModel.deleteReport(reportId: reportViewModel.id)
     }
 }

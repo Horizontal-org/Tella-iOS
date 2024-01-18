@@ -53,6 +53,8 @@ struct ReportsView: View {
                     case .submitted:
                         ReportListView(reportArray: $reportsViewModel.submittedReports,
                                        message: LocalizableReport.reportsSubmitedEmpty.localized)
+                    default:
+                        EmptyView()
                     }
                     
                     Spacer()

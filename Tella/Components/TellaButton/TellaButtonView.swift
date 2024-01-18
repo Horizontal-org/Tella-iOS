@@ -10,6 +10,7 @@ struct TellaButtonView<Destination:View> : View {
     var title : String
     var nextButtonAction : NextButtonAction
     var buttonType : ButtonType = .clear
+    var isOverlay: Bool = false
     
     var destination : Destination?
     @Binding var isValid : Bool
@@ -18,7 +19,6 @@ struct TellaButtonView<Destination:View> : View {
     
     
     var buttonStyle : TellaButtonStyleProtocol {
-        
         switch  buttonType {
         case .yellow:
             return YellowButtonStyle()
@@ -47,6 +47,9 @@ struct TellaButtonView<Destination:View> : View {
         }.cornerRadius(20)
             .buttonStyle(TellaButtonStyle(buttonStyle: buttonStyle, isValid: isValid))
             .disabled(isValid == false)
+            .overlay(self.isOverlay ?
+                     RoundedRectangle(cornerRadius: 20)
+                .stroke(.white, lineWidth: 4) : nil)
     }
 }
 

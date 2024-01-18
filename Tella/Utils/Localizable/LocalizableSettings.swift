@@ -82,6 +82,31 @@ enum LocalizableSettings: String, LocalizableDelegate {
     
     // Servers
     case settServersAppBar = "Settings_SettServers_AppBar"
+    case settServerSelectionTitle = "Setting_SettServer_Selection_Title"
+    case settServerSelectionMessage = "Setting_SettServer_Selection_Message"
+    case settServerTellaWeb = "Setting_SettServer_TellaWeb"
+    case settServerUwazi = "Setting_SettServer_Uwazi"
+    case settServerNoInternetConnection = "Setting_SettServer_No_Internet"
+    case settServerServerURLIncorrect = "Setting_SettServer_Server_URL_Incorrect"
+
+    // Uwazi
+    case UwaziServerURL = "Setting_Server_Uwazi_Server_URL"
+    case UwaziAccessServerTitle = "Setting_Server_Uwazi_Access_Title"
+    case UwaziLogin = "Setting_Server_Uwazi_Login"
+    case UwaziPublicInstance = "Setting_Server_Uwazi_Access_Public"
+    case UwaziLoginAccess = "Setting_Server_Uwazi_Login_Access"
+    case UwaziUsername = "Setting_Server_Uwazi_Username"
+    case UwaziPassword = "Setting_Server_Uwazi_Password"
+    case UwaziTwoStepTitle = "Setting_Server_Uwazi_Two_Step_Title"
+    case UwaziTwoStepMessage = "Setting_Server_Uwazi_Two_Step_Message"
+    case UwaziAuthenticationPlaceholder = "Setting_Server_Uwazi_Authentication_Placeholder"
+    case UwaziAuthenticationVerify = "Setting_Server_Uwazi_Authentication_Verify"
+    case UwaziLanguageTitle = "Setting_Server_Uwazi_Language_Title"
+    case UwaziLanguageMessage = "Setting_Server_Uwazi_Language_Message"
+    case UwaziLanguageOk = "Setting_Server_Uwazi_Language_Ok"
+    case UwaziLanguageCancel = "Setting_Server_Uwazi_Language_Cancel"
+    case UwaziSuccess = "Setting_Server_Uwazi_Connect_Server"
+    case UwaziSuccessMessage = "Setting_Server_Uwazi_Success_Message"
     
     // About & Help
     

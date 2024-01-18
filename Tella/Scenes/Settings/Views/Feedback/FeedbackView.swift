@@ -199,5 +199,4 @@ struct FeedbackView: View {
 #Preview {
     FeedbackView(mainAppModel: MainAppModel.stub())
         .environmentObject(MainAppModel.stub())
-    
 }

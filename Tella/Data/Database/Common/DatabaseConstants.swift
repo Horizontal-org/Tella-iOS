@@ -8,13 +8,15 @@ import SQLite3
 
 struct D {
     /* DATABASE */
+    // MARK: - DATABASE
     static let databaseName = "tella_vault.db"
     
     /* DATABASE VERSION */
 
-    static let databaseVersion = 2
+    static let databaseVersion = 3
 
     /* DEFAULT TYPES FOR DATABASE */
+    // MARK: - DEFAULT TYPES FOR DATABASE
     static let integer = " INTEGER "
     static let text = " TEXT ";
     static let blob = " BLOB ";
@@ -22,14 +24,16 @@ struct D {
 
     
     /* DATABASE TABLES */
-    
+    // MARK: - DATABASE TABLES
     static let tServer = "t_server"
     static let tReport = "t_report"
     static let tReportInstanceVaultFile = "t_report_instance_vault_file";
+    static let tUwaziTemplate = "t_uwazi_template"
+    static let tUwaziServer = "t_uwazi_server"
     static let tFeedback = "t_feedback"
 
     /* DATABASE COLUMNS */
-    
+    // MARK: - DATABASE COLUMNS
     static let cId = "c_id"
     static let cName = "c_name"
     static let cServerURL = "c_server_url"
@@ -48,7 +52,6 @@ struct D {
     static let cApiProjectId = "c_api_project_id"
     static let cSlug = "c_slug"
 
-    
     static let cTitle = "c_title"
     static let cDescription = "c_description"
     static let cDate = "c_date"
@@ -65,6 +68,15 @@ struct D {
     static let cCreatedDate = "c_created_date"
     static let cUpatedDate = "c_upated_date"
     static let cUpdatedDate = "c_updated_date"
+    // MARK: Uwazi Locale
+    static let cLocale = "c_locale"
+
+    static let cTemplateId = "c_template_id"
+    static let cEntity = "c_entity"
+    static let cDownloaded = "c_downloaded"
+    static let cUpdated = "c_updated"
+    static let cFavorite = "c_favorite"
+
 
     static let ctext = "c_text"
 
