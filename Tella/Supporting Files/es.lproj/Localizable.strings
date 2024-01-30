@@ -82,7 +82,13 @@
 "Vault_CreateNewFolder_Cancel_SheetAction" = "CANCELAR";
 "Vault_CreateNewFolder_Create_SheetAction" = "CREATE";
 "Vault_DeleteFile_SheetTitle" = "¿Eliminar archivo?";
-"Vault_DeleteFile_SheetExpl" = "The selected files will be permanently deleted from Tella.";
+"Vault_DeleteFile_SheetExpl" = "1 file will be permanently deleted from Tella.";
+"Vault_DeleteFolder_SheetTitle" = "Delete folder?";
+"Vault_DeleteFolder_SheetExpl" = "1 folder and the %i files inside it will be permanently deleted from tella";
+"Vault_DeleteFolderSingleFile_SheetExpl" = "1 folder and 1 file inside it will be permanently deleted from tella";
+"Vault_DeleteFolders_SheetTitle" = "Delete folders?";
+"Vault_DeleteFolders_SheetExpl" = "%i folders and the %i files inside it will be permanently deleted from tella";
+"vault_DeleteFoldersSingleFile_SheetExpl" = "%i folders and 1 file inside it will be permanently deleted from tella";
 "Vault_DeleteFile_Cancel_SheetAction" = "CANCELAR";
 "Vault_DeleteFile_Delete_SheetAction" = "DELETE";
 "Vault_SaveToDevice_SheetTitle" = "¿Guardar en la galería del dispositivo?";
@@ -261,7 +267,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Draft_SelectFiles_ImportFromDevice_SheetSelect" = "Seleccione desde su dispositivo";
 "Reports_Outbox_PercentangeUploaded_Expl" = "Esperando por la conexión";
 "Vault_DeleteFiles_SheetTitle" = "Delete files?";
-"Vault_DeleteFiles_SheetExpl" = "The selected files will be permanently deleted from Tella.";
+"Vault_DeleteFiles_SheetExpl" = "%i files will be permanently deleted from Tella.";
 "Reports_DeleteDraftReport_SheetExpl" = "¿Estás segura(o) de querer eliminar este borrador?";
 "Reports_DeleteOutboxReport_SheetExpl" = "Are you sure you want to delete this upload?";
 "Reports_DeleteSubmittedReport_SheetExpl" = "¿Tienes seguridad de querer borrar este reporte enviado de tus registros?";
