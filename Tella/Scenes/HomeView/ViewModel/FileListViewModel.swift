@@ -389,3 +389,54 @@ extension FileListViewModel {
         return FileListViewModel(appModel: MainAppModel.stub(), filterType: .all, rootFile: VaultFileDB.stub())
     }
 }
+
+extension FileListViewModel {
+    
+    func getFilesInFolder(parentId: String) ->  Int{
+        let vFiles =  appModel.vaultFilesManager?.getVaultFiles(parentId: parentId, filter: self.filterType, sort: self.sortBy) ?? []
+        return vFiles.count
+    }
+
+    var deleteConfirmationTitle: String {
+        let folderCount = selectedFiles.filter { $0.type == .directory }.count
+        let fileCount = selectedFiles.count - folderCount
+
+        switch (fileCount, folderCount) {
+        case (0, 1):
+            return LocalizableVault.deleteFolderSheetTitle.localized
+        case (0, _):
+            return LocalizableVault.deleteFoldersSheetTitle.localized
+        case (1, 0):
+            return LocalizableVault.deleteFileSheetTitle.localized
+        default:
+            return LocalizableVault.deleteFilesSheetTitle.localized
+        }
+    }
+
+    var deleteConfirmationMessage: String {
+        let selectedFolders = selectedFiles.filter { $0.type == .directory }
+        let folderCount = selectedFiles.filter { $0.type == .directory }.count
+        let fileCount = selectedFiles.count - folderCount
+        
+        let totalFilesInsideFolders = selectedFolders.reduce(0) { count, folder in
+            count + getFilesInFolder(parentId: folder.id ?? "")
+        }
+        
+        switch (fileCount, folderCount) {
+        case (0, 1): // 0 files 1 folder selected
+            if(totalFilesInsideFolders == 1) {
+                return LocalizableVault.deleteFolderSingleFileSheetExpl.localized
+            }
+            return String.init(format: LocalizableVault.deleteFolderSheetExpl.localized, totalFilesInsideFolders)
+        case (0, _): // 0 files multiple folders selected
+            if(totalFilesInsideFolders == 1) {
+                return String.init(format: LocalizableVault.deleteFoldersSingleFileSheetExpl.localized, totalFilesInsideFolders)
+            }
+            return String.init(format: LocalizableVault.deleteFoldersSheetExpl.localized, folderCount, totalFilesInsideFolders)
+        case (1, 0): // 1 file 0 folders selected
+            return LocalizableVault.deleteFileSheetExpl.localized
+        default:
+            return String.init(format: LocalizableVault.deleteFilesSheetExpl.localized, fileCount + totalFilesInsideFolders)
+        }
+    }
+}

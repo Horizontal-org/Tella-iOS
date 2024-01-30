@@ -29,11 +29,11 @@ struct MoreFileActionButton: View {
     }
     
     private var deleteTitle :String {
-       return fileListViewModel.selectedFiles.count > 1 ? LocalizableVault.deleteFilesSheetTitle.localized : LocalizableVault.deleteFileSheetTitle.localized
+        return fileListViewModel.deleteConfirmationTitle
     }
     
     private var deleteMessage :String {
-       return fileListViewModel.selectedFiles.count > 1 ? LocalizableVault.deleteFilesSheetExpl.localized : LocalizableVault.deleteFileSheetExpl.localized
+        return fileListViewModel.deleteConfirmationMessage
     }
 
     var body: some View {
