@@ -393,8 +393,8 @@ extension FileListViewModel {
 extension FileListViewModel {
     
     func getFilesInFolder(parentId: String) ->  Int{
-        let vFiles =  appModel.vaultFilesManager?.getVaultFiles(parentId: parentId, filter: self.filterType, sort: self.sortBy) ?? []
-        return vFiles.count
+        let files =  appModel.vaultFilesManager?.getVaultFiles(parentId: parentId, filter: self.filterType, sort: self.sortBy) ?? []
+        return files.count
     }
 
     var deleteConfirmationTitle: String {
@@ -424,19 +424,27 @@ extension FileListViewModel {
         
         switch (fileCount, folderCount) {
         case (0, 1): // 0 files 1 folder selected
-            if(totalFilesInsideFolders == 1) {
-                return LocalizableVault.deleteFolderSingleFileSheetExpl.localized
-            }
-            return String.init(format: LocalizableVault.deleteFolderSheetExpl.localized, totalFilesInsideFolders)
+            return folderMessageForSingleFolder(totalFilesInsideFolders)
         case (0, _): // 0 files multiple folders selected
-            if(totalFilesInsideFolders == 1) {
-                return String.init(format: LocalizableVault.deleteFoldersSingleFileSheetExpl.localized, totalFilesInsideFolders)
-            }
-            return String.init(format: LocalizableVault.deleteFoldersSheetExpl.localized, folderCount, totalFilesInsideFolders)
+            return folderMessageForMultipleFolders(folderCount, totalFilesInsideFolders)
         case (1, 0): // 1 file 0 folders selected
             return LocalizableVault.deleteFileSheetExpl.localized
         default:
             return String.init(format: LocalizableVault.deleteFilesSheetExpl.localized, fileCount + totalFilesInsideFolders)
         }
+    }
+    
+    private func folderMessageForSingleFolder(_ totalFiles: Int) -> String {
+        if totalFiles == 1 {
+            return LocalizableVault.deleteFolderSingleFileSheetExpl.localized
+        }
+        return String(format: LocalizableVault.deleteFolderSheetExpl.localized, totalFiles)
+    }
+
+    private func folderMessageForMultipleFolders(_ folderCount: Int, _ totalFiles: Int) -> String {
+        if totalFiles == 1 {
+            return String(format: LocalizableVault.deleteFoldersSingleFileSheetExpl.localized, totalFiles)
+        }
+        return String(format: LocalizableVault.deleteFoldersSheetExpl.localized, folderCount, totalFiles)
     }
 }
