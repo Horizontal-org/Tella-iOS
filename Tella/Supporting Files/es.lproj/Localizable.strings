@@ -84,11 +84,11 @@
 "Vault_DeleteFile_SheetTitle" = "¿Eliminar archivo?";
 "Vault_DeleteFile_SheetExpl" = "1 file will be permanently deleted from Tella.";
 "Vault_DeleteFolder_SheetTitle" = "Delete folder?";
-"Vault_DeleteFolder_SheetExpl" = "1 folder and the %i files inside it will be permanently deleted from tella";
-"Vault_DeleteFolderSingleFile_SheetExpl" = "1 folder and 1 file inside it will be permanently deleted from tella";
+"Vault_DeleteFolder_SheetExpl" = "1 folder and the %i files inside it will be permanently deleted from Tella";
+"Vault_DeleteFolderSingleFile_SheetExpl" = "1 folder and 1 file inside it will be permanently deleted from Tella";
 "Vault_DeleteFolders_SheetTitle" = "Delete folders?";
-"Vault_DeleteFolders_SheetExpl" = "%i folders and the %i files inside it will be permanently deleted from tella";
-"vault_DeleteFoldersSingleFile_SheetExpl" = "%i folders and 1 file inside it will be permanently deleted from tella";
+"Vault_DeleteFolders_SheetExpl" = "%i folders and the %i files inside it will be permanently deleted from Tella";
+"vault_DeleteFoldersSingleFile_SheetExpl" = "%i folders and 1 file inside it will be permanently deleted from Tella";
 "Vault_DeleteFile_Cancel_SheetAction" = "CANCELAR";
 "Vault_DeleteFile_Delete_SheetAction" = "DELETE";
 "Vault_SaveToDevice_SheetTitle" = "¿Guardar en la galería del dispositivo?";
@@ -337,7 +337,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettDeleteAfterFail_TenAttempts_SheetSelect" = "10 attempts";
 "Settings_SettDeleteAfterFail_TwentyAttempts_SheetSelect" = "20 attempts";
 "Settings_SettDeleteAfterFail_Toast" = "Your Tella data will be deleted after %i failed unlock attempts";
-"Settings_SettDeleteAfterFail_Off_Toast" = "Your tella data won't be deleted after failed attempts";
+"Settings_SettDeleteAfterFail_Off_Toast" = "Your Tella data won't be deleted after failed attempts";
 "Settings_SettDeleteAfterFail_Cancel_SheetAction" = "CANCELAR";
 "Settings_SettDeleteAfterFail_Save_SheetAction" = "SAVE";
 "Reports_Submitted_ClearAll_SheetTitle" = "Clear all Submitted reports?";
