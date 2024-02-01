@@ -31,9 +31,7 @@ struct TemplateCardView: View {
                 .padding(.all, 16)
             }
         }
-        .background(Color.white.opacity(0.08))
-        .cornerRadius(15)
-        .padding(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
+        .customCardStyle()
     }
     
     private func showtemplateActionBottomSheet() {
