@@ -30,21 +30,10 @@ struct AddTemplatesView: View {
         .navigationBarTitle("", displayMode: .inline)
         .toolbar {
             LeadingTitleToolbar(title: LocalizableUwazi.uwaziAddTemplateTitle.localized)
-            reloadTemplatesButton()
+            reloadButton(action: { self.uwaziTemplateViewModel.getTemplates() })
         }
         .onAppear {
             self.uwaziTemplateViewModel.getTemplates()
-        }
-    }
-    fileprivate func reloadTemplatesButton() -> ToolbarItem<(), Button<some View>> {
-        return ToolbarItem(placement: .navigationBarTrailing) {
-            Button {
-                self.uwaziTemplateViewModel.getTemplates()
-            } label: {
-                Image("arrow.clockwise")
-                    .resizable()
-                    .frame(width: 24, height: 24)
-            }
         }
     }
 
