@@ -315,7 +315,15 @@
 		15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15622F492B72B1FF00289816 /* DeleteConfirmation.swift */; };
 		15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C192B6AC34100D67C74 /* ResourcesView.swift */; };
 		15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C1B2B6AC63200D67C74 /* ReloadButton.swift */; };
+		15791C202B6C2D8C00D67C74 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C1F2B6C2D8C00D67C74 /* Resource.swift */; };
+		15791C232B6C2E9100D67C74 /* ResourcesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */; };
 		15EE30FE2B5073E20033BBBB /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE30FD2B5073E20033BBBB /* Pages.swift */; };
+		15F64C9D2B6D7904008A57AA /* DownloadedResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */; };
+		15F64CA02B6D794B008A57AA /* SectionTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64C9F2B6D794B008A57AA /* SectionTitle.swift */; };
+		15F64CA22B6D797C008A57AA /* SectionMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64CA12B6D797C008A57AA /* SectionMessage.swift */; };
+		15F64CA42B6D7CA1008A57AA /* AvailableResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64CA32B6D7CA1008A57AA /* AvailableResources.swift */; };
+		15F64CA62B6D80F7008A57AA /* ResourceCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64CA52B6D80F7008A57AA /* ResourceCardViewModel.swift */; };
+		15F64CA82B6D852D008A57AA /* ResourceCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64CA72B6D852D008A57AA /* ResourceCard.swift */; };
 		1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
 		379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */; };
@@ -796,7 +804,15 @@
 		1589A6212B7672430048C775 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		15791C192B6AC34100D67C74 /* ResourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesView.swift; sourceTree = "<group>"; };
 		15791C1B2B6AC63200D67C74 /* ReloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReloadButton.swift; sourceTree = "<group>"; };
+		15791C1F2B6C2D8C00D67C74 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
+		15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesViewModel.swift; sourceTree = "<group>"; };
 		15EE30FD2B5073E20033BBBB /* Pages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pages.swift; sourceTree = "<group>"; };
+		15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResources.swift; sourceTree = "<group>"; };
+		15F64C9F2B6D794B008A57AA /* SectionTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitle.swift; sourceTree = "<group>"; };
+		15F64CA12B6D797C008A57AA /* SectionMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionMessage.swift; sourceTree = "<group>"; };
+		15F64CA32B6D7CA1008A57AA /* AvailableResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableResources.swift; sourceTree = "<group>"; };
+		15F64CA52B6D80F7008A57AA /* ResourceCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCardViewModel.swift; sourceTree = "<group>"; };
+		15F64CA72B6D852D008A57AA /* ResourceCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCard.swift; sourceTree = "<group>"; };
 		1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheet.swift; sourceTree = "<group>"; };
 		1EAE6BF424146C2100114244 /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
 		21FEB79B83E10A1CBE4AA323 /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -2017,9 +2033,49 @@
 		15791C182B6AC32B00D67C74 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				15F64C9B2B6D78D8008A57AA /* Views */,
+				15791C212B6C2E7800D67C74 /* ViewModel */,
+				15791C1E2B6C2D7C00D67C74 /* Models */,
 				15791C192B6AC34100D67C74 /* ResourcesView.swift */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		15791C1E2B6C2D7C00D67C74 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				15791C1F2B6C2D8C00D67C74 /* Resource.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		15791C212B6C2E7800D67C74 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */,
+				15F64CA52B6D80F7008A57AA /* ResourceCardViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		15F64C9B2B6D78D8008A57AA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				15F64C9E2B6D792A008A57AA /* Common */,
+				15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */,
+				15F64CA32B6D7CA1008A57AA /* AvailableResources.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		15F64C9E2B6D792A008A57AA /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				15F64C9F2B6D794B008A57AA /* SectionTitle.swift */,
+				15F64CA12B6D797C008A57AA /* SectionMessage.swift */,
+				15F64CA72B6D852D008A57AA /* ResourceCard.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		4CE85B832408B1AF00CF24AF /* Resources */ = {
@@ -2777,6 +2833,7 @@
 				CCE875B32A96699000C576B9 /* LocalizableUwazi.swift in Sources */,
 				123CE84429126B52003C251F /* ServerViewModel.swift in Sources */,
 				122DA88F29CB1F21003801CD /* AutoUpload.swift in Sources */,
+				15F64CA02B6D794B008A57AA /* SectionTitle.swift in Sources */,
 				CC1313882A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift in Sources */,
 				1293F67A2AD88B8400F6CFBD /* FeedbackAPI.swift in Sources */,
 				D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */,
@@ -2886,6 +2943,7 @@
 				0ECC7817267A533E00A2ACF2 /* PageViewCell.swift in Sources */,
 				128B929727D7920300E92ACF /* SelectingFilesHeaderView.swift in Sources */,
 				1236EE8028E1B40200973EEA /* DataBaseHelper.swift in Sources */,
+				15791C202B6C2D8C00D67C74 /* Resource.swift in Sources */,
 				125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */,
 				1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */,
 				126818C32A38B69E004606BD /* FileTypeHelper.swift in Sources */,
@@ -2919,6 +2977,7 @@
 				1203CDE92992C19D00D09073 /* JSONStringEncoder.swift in Sources */,
 				125FA6D8278E2828004B9D06 /* DoubleExtension.swift in Sources */,
 				CCEAE5942AE7188F0069204A /* UwaziSelectWidget.swift in Sources */,
+				15F64C9D2B6D7904008A57AA /* DownloadedResources.swift in Sources */,
 				129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */,
 				E1EEE2A729F7E1A8009FE227 /* UwaziLanguageSelectionView.swift in Sources */,
 				CCAEA0522A97E038008190E0 /* CreateDraftHeaderView.swift in Sources */,
@@ -2935,11 +2994,13 @@
 				0E87C875268BDDFB00EB5E34 /* ImageViewer.swift in Sources */,
 				1233076729F15A290019DF7C /* NetworkMonitor.swift in Sources */,
 				1249B3832AD43AA7009A7023 /* VaultFilesManagerInterface.swift in Sources */,
+				15F64CA62B6D80F7008A57AA /* ResourceCardViewModel.swift in Sources */,
 				0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */,
 				CCEAE5922AE6F6EE0069204A /* EntityCreationResponse.swift in Sources */,
 				1289B98927C53A9C00315FCE /* CameraType.swift in Sources */,
 				0E78B3A72656B03600F9BDBC /* DragView.swift in Sources */,
 				1231A45E294C779D0057DA85 /* ReportStatus.swift in Sources */,
+				15F64CA82B6D852D008A57AA /* ResourceCard.swift in Sources */,
 				E16D20D12ABEB5C7001708CC /* TemplateCardViewModel.swift in Sources */,
 				12607D562790416400E2B8CC /* PlayerViewModel.swift in Sources */,
 				128B929B27D798E200E92ACF /* ManageFileView.swift in Sources */,
@@ -3063,6 +3124,7 @@
 				129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */,
 				1203CDDC298C5B9100D09073 /* ReportActionType.swift in Sources */,
 				E16D20CF2ABEAAB1001708CC /* TemplateItemViewModel.swift in Sources */,
+				15F64CA42B6D7CA1008A57AA /* AvailableResources.swift in Sources */,
 				12476E1F2A5B7D2F00069048 /* TrailingButtonToolbar.swift in Sources */,
 				12199C3A2941260D0041BD38 /* OutboxDetailsItemView.swift in Sources */,
 				128D6E1E2804DA2A0082AB18 /* ListActionSheetItem.swift in Sources */,
@@ -3084,6 +3146,7 @@
 				122389B929367ABA0058593B /* ServerType.swift in Sources */,
 				CCD586D42A7C294800014F87 /* TemplateItemView.swift in Sources */,
 				CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */,
+				15F64CA22B6D797C008A57AA /* SectionMessage.swift in Sources */,
 				E18BD4332AA0C39A00EE62E2 /* UwaziLanguage.swift in Sources */,
 				1217FCA328F99A7D00DD2D70 /* CircularLoader.swift in Sources */,
 				12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */,
@@ -3116,6 +3179,7 @@
 				12A43B4F29941574003EF33E /* ReportFile.swift in Sources */,
 				0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */,
 				12935479294A3BFC00735ED0 /* MIMEType.swift in Sources */,
+				15791C232B6C2E9100D67C74 /* ResourcesViewModel.swift in Sources */,
 				E1E7C5822AAB707C00DDB07E /* UwaziDictionary.swift in Sources */,
 				126FE4D727A427E200AE4188 /* Constants.swift in Sources */,
 				122389BB293683930058593B /* ServerDataItem.swift in Sources */,
