@@ -12,11 +12,11 @@ struct AvailableResources: View {
     var availableResources : [ResourceCardViewModel]
     var body: some View {
         VStack {
-            SectionTitle(text: "Available for download")
+            SectionTitle(text: LocalizableResources.resourcesAvailableTitle.localized)
             if availableResources.isEmpty {
-                SectionMessage(text: "There are no resources available for download from your Tella Web project(s). ")
+                SectionMessage(text: LocalizableResources.resourcesAvailableEmpty.localized)
             } else {
-                SectionMessage(text: "These are the resources available for download from your Tella Web project(s).")
+                SectionMessage(text: LocalizableResources.resourcesAvailableMsg.localized)
                 ForEach(availableResources) { resource in
                     ResourceCard(
                         title: resource.title,

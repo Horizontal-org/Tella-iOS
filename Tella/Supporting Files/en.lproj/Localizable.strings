@@ -377,3 +377,12 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Settings_SettFeedback_ExitFeedback_SheetExpl" = "You can come back anytime to submit your feedback.";
 "Settings_SettFeedback_ExitFeedback_Exit_SheetAction" = "Exit without saving";
 "Settings_SettFeedback_ExitFeedback_Save_SheetAction" = "Save draft";
+
+"Resources_Home_Serve_title" = "Resources";
+"Resources_Downloaded_Title" = "Downloaded";
+"Resources_Downloaded_Empty" = "You have not downloaded any resources. Tap on the “download” icon next to each resource below to get started.";
+"Resources_Downloaded_Empty_SecondMsg" = "You have not downloaded any resources.";
+"Resources_Available_Title" = "Available for download";
+"Resources_Available_Msg" = "These are the resources available for download from your Tella Web project(s).";
+"Resources_Available_Empty" = "There are no resources available for download from your Tella Web project(s).";
+
