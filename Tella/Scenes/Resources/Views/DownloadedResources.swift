@@ -12,9 +12,9 @@ struct DownloadedResources: View {
     var downloadedResources: [ResourceCardViewModel]
     var body: some View {
         VStack {
-            SectionTitle(text: "Downloaded")
+            SectionTitle(text: LocalizableResources.resourcesDownloadedTitle.localized)
             if downloadedResources.isEmpty {
-                SectionMessage(text: "You have not downloaded any resources. Tap on the “download” icon next to each resource below to get started.")
+                SectionMessage(text: LocalizableResources.resourcesDownloadedEmpty.localized)
             } else {
                 ForEach(downloadedResources) { resource in
                     ResourceCard(title: resource.title,

@@ -13,8 +13,8 @@ class ResourcesViewModel: ObservableObject {
     @Published var availableResources: [ResourceCardViewModel] = []
     
     init() {
-        self.downloadedResources = getDownloadedResources()
-        self.availableResources = getAvailableForDownloadResources()
+        self.downloadedResources = []
+        self.availableResources = []
     }
     
     func getDownloadedResources () -> [ResourceCardViewModel] {
