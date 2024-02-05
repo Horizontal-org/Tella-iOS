@@ -43,6 +43,20 @@ let ListOfAvailableResources = [
         fileName: "important_contact_info",
         size: "49338",
         createdAt: "2024-01-22T15:35:38.000Z"
+    ),
+    Resource(
+        id: "d9be243e-af3e-4b0f-b4bf-bfa9bdd76075",
+        title: "Important contact info",
+        fileName: "important_contact_info",
+        size: "49338",
+        createdAt: "2024-01-22T15:35:38.000Z"
+    ),
+    Resource(
+        id: "d9be243e-af3e-4b0f-b4bf-bfa9bdd76076",
+        title: "Important contact info",
+        fileName: "important_contact_info",
+        size: "49338",
+        createdAt: "2024-01-22T15:35:38.000Z"
     )
 ]
 
@@ -60,5 +74,5 @@ let ListOfDownloadedResources = [
         fileName: "how_to_submit.pdf",
         size: "49338",
         createdAt: "2024-01-22T15:35:38.000Z"
-    )
+    ),
 ]

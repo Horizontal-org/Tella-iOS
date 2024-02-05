@@ -16,14 +16,18 @@ struct AvailableResources: View {
             if availableResources.isEmpty {
                 SectionMessage(text: LocalizableResources.resourcesAvailableEmpty.localized)
             } else {
-                SectionMessage(text: LocalizableResources.resourcesAvailableMsg.localized)
-                ForEach(availableResources) { resource in
-                    ResourceCard(
-                        title: resource.title,
-                        serverName: resource.serverName,
-                        rightButtonImage: "save-icon",
-                        rightButtonAction: {}
-                    )
+                VStack {
+                    SectionMessage(text: LocalizableResources.resourcesAvailableMsg.localized)
+                }
+                ScrollView {
+                    ForEach(availableResources) { resource in
+                        ResourceCard(
+                            title: resource.title,
+                            serverName: resource.serverName,
+                            rightButtonImage: "save-icon",
+                            rightButtonAction: {}
+                        )
+                    }
                 }
             }
         }
