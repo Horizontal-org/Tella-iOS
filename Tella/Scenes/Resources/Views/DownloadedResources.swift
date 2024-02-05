@@ -16,14 +16,18 @@ struct DownloadedResources: View {
             if downloadedResources.isEmpty {
                 SectionMessage(text: LocalizableResources.resourcesDownloadedEmpty.localized)
             } else {
-                ForEach(downloadedResources) { resource in
-                    ResourceCard(title: resource.title,
-                                 serverName: resource.serverName,
-                                 rightButtonImage: "reports.more",
-                                 rightButtonAction: {})
-                }
+                ScrollView {
+                    LazyVStack {
+                        ForEach(downloadedResources) { resource in
+                            ResourceCard(title: resource.title,
+                                         serverName: resource.serverName,
+                                         rightButtonImage: "reports.more",
+                                         rightButtonAction: {})
+                        }
+                    }
+                }.frame(maxHeight: CGFloat(downloadedResources.count) * 90)
             }
-        }.padding(.bottom, 12)
+        }.padding(.bottom, 24)
     }
 }
 
