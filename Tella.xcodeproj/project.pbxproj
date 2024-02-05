@@ -312,16 +312,6 @@
 		12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FAC0CE2799FF230068EC2B /* ImportProgress.swift */; };
 		12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */; };
 		12FFEFA528BE96E00081DDB2 /* AddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */; };
-		1501401D2B71243A00991D69 /* LocalizableResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401C2B71243A00991D69 /* LocalizableResources.swift */; };
-		1501401F2B7199FD00991D69 /* DownloadedResourcesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401E2B7199FD00991D69 /* DownloadedResourcesVM.swift */; };
-		150140212B719A0B00991D69 /* AvailableResourcesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150140202B719A0B00991D69 /* AvailableResourcesVM.swift */; };
-		150913422B841C3F001E782A /* ResourceActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150913412B841C3F001E782A /* ResourceActionType.swift */; };
-		15459DC82B7FE42900E7ECE7 /* ResourceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15459DC72B7FE42900E7ECE7 /* ResourceService.swift */; };
-		155369232B7E9CC100129F2F /* ResourceDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155369222B7E9CC100129F2F /* ResourceDatabase.swift */; };
-		15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15622F492B72B1FF00289816 /* DeleteConfirmation.swift */; };
-		1501401D2B71243A00991D69 /* LocalizableResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401C2B71243A00991D69 /* LocalizableResources.swift */; };
-		1501401F2B7199FD00991D69 /* DownloadedResourcesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401E2B7199FD00991D69 /* DownloadedResourcesVM.swift */; };
-		150140212B719A0B00991D69 /* AvailableResourcesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150140202B719A0B00991D69 /* AvailableResourcesVM.swift */; };
 		15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15622F492B72B1FF00289816 /* DeleteConfirmation.swift */; };
 		15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C192B6AC34100D67C74 /* ResourcesView.swift */; };
 		15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C1B2B6AC63200D67C74 /* ReloadButton.swift */; };
