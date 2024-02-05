@@ -389,3 +389,12 @@ This feedback is anonymous, so make sure to include contact information if you w
 "BackgroundActivities_Exit_SheetExpl" = "There are files being encrypted in the background. Do you want to exit and lose the files?";
 "BackgroundActivities_Exit_Cancel_SheetAction" = "CANCEL";
 "BackgroundActivities_Exit_Discard_SheetAction" = "Exit and discard files";
+
+"Resources_Home_Serve_title" = "Resources";
+"Resources_Downloaded_Title" = "Downloaded";
+"Resources_Downloaded_Empty" = "You have not downloaded any resources. Tap on the “download” icon next to each resource below to get started.";
+"Resources_Downloaded_Empty_SecondMsg" = "You have not downloaded any resources.";
+"Resources_Available_Title" = "Available for download";
+"Resources_Available_Msg" = "These are the resources available for download from your Tella Web project(s).";
+"Resources_Available_Empty" = "There are no resources available for download from your Tella Web project(s).";
+
