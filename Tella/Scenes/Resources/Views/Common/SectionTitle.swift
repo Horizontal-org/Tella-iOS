@@ -13,7 +13,7 @@ struct SectionTitle: View {
     var body: some View {
         Text(text)
             .foregroundColor(.white)
-            .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
+            .font(.custom(Styles.Fonts.boldFontName, size: 14))
             .fontWeight(.semibold)
             .padding(.bottom, 8)
             .frame(maxWidth: .infinity, alignment: .leading)

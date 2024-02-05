@@ -16,6 +16,7 @@ struct SectionMessage: View {
             .font(.custom(Styles.Fonts.regularFontName, size: 14))
             .fontWeight(.regular)
             .frame(maxWidth: .infinity, alignment: .leading)
+            .fixedSize(horizontal: false, vertical: true)
     }
 }
 

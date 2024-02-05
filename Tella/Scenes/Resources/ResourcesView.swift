@@ -20,10 +20,10 @@ struct ResourcesView: View {
             ZStack {
                 VStack {
                     // Downloaded
-                    DownloadedResources(downloadedResources: resourcesViewModel.downloadedResources)
+                    DownloadedResources(downloadedResources: resourcesViewModel.downloadedResourcesVM.downloadedResources)
                     
                     // available for download
-                    AvailableResources(availableResources: resourcesViewModel.availableResources)
+                    AvailableResources(availableResources: resourcesViewModel.availableResourcesVM.availableResources)
                     
                     Spacer()
                 }.padding(.all, 18)

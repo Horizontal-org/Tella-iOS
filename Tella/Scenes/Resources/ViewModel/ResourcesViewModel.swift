@@ -9,32 +9,12 @@
 import Foundation
 
 class ResourcesViewModel: ObservableObject {
-    @Published var downloadedResources: [ResourceCardViewModel] = []
-    @Published var availableResources: [ResourceCardViewModel] = []
+    @Published var downloadedResourcesVM : DownloadedResourcesVM
+    @Published var availableResourcesVM : AvailableResourcesVM
     
     init() {
-        self.downloadedResources = []
-        self.availableResources = []
+        self.downloadedResourcesVM = DownloadedResourcesVM()
+        self.availableResourcesVM = AvailableResourcesVM()
     }
     
-    func getDownloadedResources () -> [ResourceCardViewModel] {
-        return ListOfDownloadedResources.map({ resource in
-            ResourceCardViewModel(
-                id: resource.id,
-                title: resource.title,
-                serverName: "CLEEN Foundation" //change to the real server name
-            )
-            
-        })
-    }
-    
-    func getAvailableForDownloadResources () -> [ResourceCardViewModel] {
-        return ListOfAvailableResources.map({ resource in
-            ResourceCardViewModel(
-                id: resource.id,
-                title: resource.title,
-                serverName: "CLEEN Foundation"
-            )
-        })
-    }
 }

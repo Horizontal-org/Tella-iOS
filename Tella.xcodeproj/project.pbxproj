@@ -327,6 +327,8 @@
 		12FFEFA528BE96E00081DDB2 /* AddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */; };
 		15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15622F492B72B1FF00289816 /* DeleteConfirmation.swift */; };
 		1501401D2B71243A00991D69 /* LocalizableResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401C2B71243A00991D69 /* LocalizableResources.swift */; };
+		1501401F2B7199FD00991D69 /* DownloadedResourcesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401E2B7199FD00991D69 /* DownloadedResourcesVM.swift */; };
+		150140212B719A0B00991D69 /* AvailableResourcesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150140202B719A0B00991D69 /* AvailableResourcesVM.swift */; };
 		15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C192B6AC34100D67C74 /* ResourcesView.swift */; };
 		15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C1B2B6AC63200D67C74 /* ReloadButton.swift */; };
 		15791C202B6C2D8C00D67C74 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C1F2B6C2D8C00D67C74 /* Resource.swift */; };
@@ -830,6 +832,8 @@
 		1589A6202B7672390048C775 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1589A6212B7672430048C775 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1501401C2B71243A00991D69 /* LocalizableResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableResources.swift; sourceTree = "<group>"; };
+		1501401E2B7199FD00991D69 /* DownloadedResourcesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResourcesVM.swift; sourceTree = "<group>"; };
+		150140202B719A0B00991D69 /* AvailableResourcesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableResourcesVM.swift; sourceTree = "<group>"; };
 		15791C192B6AC34100D67C74 /* ResourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesView.swift; sourceTree = "<group>"; };
 		15791C1B2B6AC63200D67C74 /* ReloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReloadButton.swift; sourceTree = "<group>"; };
 		15791C1F2B6C2D8C00D67C74 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
@@ -2143,6 +2147,8 @@
 			children = (
 				15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */,
 				15F64CA52B6D80F7008A57AA /* ResourceCardViewModel.swift */,
+				1501401E2B7199FD00991D69 /* DownloadedResourcesVM.swift */,
+				150140202B719A0B00991D69 /* AvailableResourcesVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -2924,6 +2930,7 @@
 				123CE84429126B52003C251F /* ServerViewModel.swift in Sources */,
 				122DA88F29CB1F21003801CD /* AutoUpload.swift in Sources */,
 				15F64CA02B6D794B008A57AA /* SectionTitle.swift in Sources */,
+				150140212B719A0B00991D69 /* AvailableResourcesVM.swift in Sources */,
 				CC1313882A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift in Sources */,
 				1293F67A2AD88B8400F6CFBD /* FeedbackAPI.swift in Sources */,
 				D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */,
@@ -3061,6 +3068,7 @@
 				1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */,
 				15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */,
 				123048D5295F95A40015CD96 /* SubmittedDetailsView.swift in Sources */,
+				1501401F2B7199FD00991D69 /* DownloadedResourcesVM.swift in Sources */,
 				1293F6682AD7EF3900F6CFBD /* CloseHeaderView.swift in Sources */,
 				1278B66127EB364500C9AC4D /* Utils.swift in Sources */,
 				125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */,
