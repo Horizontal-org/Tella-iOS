@@ -399,30 +399,17 @@ extension FileListViewModel {
         return allFilesInFolder.filter { $0.type != .directory }.count
     }
 
-    private var deleteConfirmation: DeleteConfirmation {
+    var deleteConfirmation: DeleteConfirmation {
         let selectedFolders = selectedFiles.filter { $0.type == .directory }
         let fileCount = selectedFiles.count - selectedFolders.count
         let totalFilesInsideFolders = selectedFolders.reduce(0) { count, folder in
             count + getTotalFilesInFolder(folder: folder)
         }
 
-        switch (fileCount, selectedFolders.count) {
-        case (0, 1):
-            return .singleFolder(totalFilesInsideFolders)
-        case (0, _):
-            return .multipleFolders(selectedFolders.count, totalFilesInsideFolders)
-        case (1, 0):
-            return .singleFile
-        default:
-            return .multiple(fileCount + totalFilesInsideFolders)
-        }
-    }
-
-    var deleteConfirmationTitle: String {
-        return deleteConfirmation.title
-    }
-
-    var deleteConfirmationMessage: String {
-        return deleteConfirmation.message
+        let selectionCountDetails = SelectionCountDetails(fileCount: fileCount,
+                            foldersCount: selectedFolders.count,
+                            filesInsideFoldersCount: totalFilesInsideFolders)
+            
+        return DeleteConfirmation(selectionCountDetails: selectionCountDetails)
     }
 }

@@ -8,11 +8,30 @@
 
 import Foundation
 
+struct SelectionCountDetails {
+     var fileCount : Int
+     var foldersCount : Int
+     var filesInsideFoldersCount : Int
+ }
+
 enum DeleteConfirmation {
     case singleFolder(Int)  // Int represents the number of files in the folder
     case multipleFolders(Int, Int) // First Int is folder count, second is total file count
     case singleFile
     case multiple(Int) // Int is the total count of files and folders
+    
+    init(selectionCountDetails: SelectionCountDetails) {
+        switch (selectionCountDetails.fileCount, selectionCountDetails.foldersCount) {
+        case (0, 1):
+            self = .singleFolder(selectionCountDetails.filesInsideFoldersCount)
+        case (0, _):
+            self =  .multipleFolders(selectionCountDetails.foldersCount, selectionCountDetails.filesInsideFoldersCount)
+        case (1, 0):
+            self =  .singleFile
+        default:
+            self =  .multiple(selectionCountDetails.fileCount + selectionCountDetails.filesInsideFoldersCount)
+        }
+    }
 
     var title: String {
         switch self {
