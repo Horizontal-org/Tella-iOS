@@ -392,59 +392,37 @@ extension FileListViewModel {
 
 extension FileListViewModel {
     
-    func getFilesInFolder(parentId: String) ->  Int{
-        let files =  appModel.vaultFilesManager?.getVaultFiles(parentId: parentId, filter: self.filterType, sort: self.sortBy) ?? []
-        return files.count
+    func getTotalFilesInFolder(folder: VaultFileDB) -> Int {
+        let fileWalker = FileWalker(vaultDatabase: self.appModel.vaultFilesManager!.vaultDataBase)
+        let allFilesInFolder = fileWalker.walkWithDirectories(root: folder)
+
+        return allFilesInFolder.filter { $0.type != .directory }.count
+    }
+
+    private var deleteConfirmation: DeleteConfirmation {
+        let selectedFolders = selectedFiles.filter { $0.type == .directory }
+        let fileCount = selectedFiles.count - selectedFolders.count
+        let totalFilesInsideFolders = selectedFolders.reduce(0) { count, folder in
+            count + getTotalFilesInFolder(folder: folder)
+        }
+
+        switch (fileCount, selectedFolders.count) {
+        case (0, 1):
+            return .singleFolder(totalFilesInsideFolders)
+        case (0, _):
+            return .multipleFolders(selectedFolders.count, totalFilesInsideFolders)
+        case (1, 0):
+            return .singleFile
+        default:
+            return .multiple(fileCount + totalFilesInsideFolders)
+        }
     }
 
     var deleteConfirmationTitle: String {
-        let folderCount = selectedFiles.filter { $0.type == .directory }.count
-        let fileCount = selectedFiles.count - folderCount
-
-        switch (fileCount, folderCount) {
-        case (0, 1):
-            return LocalizableVault.deleteFolderSheetTitle.localized
-        case (0, _):
-            return LocalizableVault.deleteFoldersSheetTitle.localized
-        case (1, 0):
-            return LocalizableVault.deleteFileSheetTitle.localized
-        default:
-            return LocalizableVault.deleteFilesSheetTitle.localized
-        }
+        return deleteConfirmation.title
     }
 
     var deleteConfirmationMessage: String {
-        let selectedFolders = selectedFiles.filter { $0.type == .directory }
-        let folderCount = selectedFiles.filter { $0.type == .directory }.count
-        let fileCount = selectedFiles.count - folderCount
-        
-        let totalFilesInsideFolders = selectedFolders.reduce(0) { count, folder in
-            count + getFilesInFolder(parentId: folder.id ?? "")
-        }
-        
-        switch (fileCount, folderCount) {
-        case (0, 1): // 0 files 1 folder selected
-            return folderMessageForSingleFolder(totalFilesInsideFolders)
-        case (0, _): // 0 files multiple folders selected
-            return folderMessageForMultipleFolders(folderCount, totalFilesInsideFolders)
-        case (1, 0): // 1 file 0 folders selected
-            return LocalizableVault.deleteFileSheetExpl.localized
-        default:
-            return String.init(format: LocalizableVault.deleteFilesSheetExpl.localized, fileCount + totalFilesInsideFolders)
-        }
-    }
-    
-    private func folderMessageForSingleFolder(_ totalFiles: Int) -> String {
-        if totalFiles == 1 {
-            return LocalizableVault.deleteFolderSingleFileSheetExpl.localized
-        }
-        return String(format: LocalizableVault.deleteFolderSheetExpl.localized, totalFiles)
-    }
-
-    private func folderMessageForMultipleFolders(_ folderCount: Int, _ totalFiles: Int) -> String {
-        if totalFiles == 1 {
-            return String(format: LocalizableVault.deleteFoldersSingleFileSheetExpl.localized, totalFiles)
-        }
-        return String(format: LocalizableVault.deleteFoldersSheetExpl.localized, folderCount, totalFiles)
+        return deleteConfirmation.message
     }
 }
