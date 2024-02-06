@@ -4,10 +4,19 @@
 
 import Foundation
 import LocalAuthentication
+import CommonCrypto
+import CryptoKit
+
+enum CryptoOperationEnum {
+    case encrypt
+    case decrypt
+}
 
 protocol CryptoManagerInterface {
     func encrypt(_ data: Data) -> Data?
     func decrypt(_ data: Data) -> Data?
+    func encryptFilePath(inputFileURL: URL, outputFileURL: URL) -> Bool
+    func decryptfilePath(inputFileURL: URL, outputFileURL: URL) -> Bool
 }
 
 enum KeyEnum {
@@ -144,10 +153,10 @@ class CryptoManager {
         if type == .PRIVATE {
             self.metaPrivateKey = key
         }
-
+        
         return key
     }
-
+    
     @discardableResult
     func deleteMetaKeypair(_ keyID: String, password:String) -> Bool {
         let query = metaPrivateKeyQuery(keyID,password: password)
@@ -302,6 +311,142 @@ class CryptoManager {
         }
         return clearText
     }
+    
+    
+    
+    func cryptFile(inputFileURL: URL, outputFileURL:URL, key: SecKey, operation: CryptoOperationEnum) throws {
+        
+        let bufferSize = 1024 * 1024
+        
+        let _ = inputFileURL.startAccessingSecurityScopedResource()
+        defer { inputFileURL.stopAccessingSecurityScopedResource() }
+        
+        let _ = outputFileURL.startAccessingSecurityScopedResource()
+        defer { outputFileURL.stopAccessingSecurityScopedResource() }
+        
+        let inputFile = try FileHandle(forReadingFrom: inputFileURL)
+        let outputFile = try FileHandle(forWritingTo: outputFileURL)
+        
+        var stop = false
+        
+        while true {
+            
+            try autoreleasepool {
+                
+                let inputBuffer = inputFile.readData(ofLength: bufferSize) as Data
+                
+                if inputBuffer.isEmpty {
+                    inputFile.closeFile()
+                    outputFile.closeFile()
+                    stop = true
+                }
+                
+                let outputBuffer = operation == .encrypt ? encrypt(inputBuffer, key) : self.decrypt(inputBuffer, key)
+                
+                guard let outputBuffer else {
+                    inputFile.closeFile()
+                    outputFile.closeFile()
+                    stop = true
+                    return
+                }
+                try outputFile.write(contentsOf: outputBuffer)
+            }
+            if stop { break }
+        }
+    }
+
+    func cryptFile(inputFileURL: URL, outputFileURL:URL, encryptionKeyData: Data, operation: CryptoOperationEnum) throws {
+
+        let bufferSize = 1024 * 1024 // 1MB buffer size
+        
+        let _ = inputFileURL.startAccessingSecurityScopedResource()
+        defer { inputFileURL.stopAccessingSecurityScopedResource() }
+        
+        let _ = outputFileURL.startAccessingSecurityScopedResource()
+        defer { outputFileURL.stopAccessingSecurityScopedResource() }
+        
+        let inputFile = try FileHandle(forReadingFrom: inputFileURL)
+        let outputFile = try FileHandle(forWritingTo: outputFileURL)
+        
+        var stop = false
+        
+        while true {
+            
+            try autoreleasepool {
+                
+                let inputBuffer = inputFile.readData(ofLength: bufferSize) as Data
+                
+                if inputBuffer.isEmpty {
+                    inputFile.closeFile()
+                    outputFile.closeFile()
+                    stop = true
+                }
+
+                guard let outputBuffer = getEncryptedData(data:inputBuffer, key: encryptionKeyData, cryptoOperation: operation) else {
+                    inputFile.closeFile()
+                    outputFile.closeFile()
+                    stop = true
+                    return
+                }
+                
+                try outputFile.write(contentsOf: outputBuffer)
+            }
+            if stop { break }
+        }
+    }
+
+    func getEncryptedData(data: Data, key: Data, cryptoOperation: CryptoOperationEnum) -> Data? {
+
+        var iv = Data(count: kCCBlockSizeAES128)
+
+        let dataLength = UInt(data.count)
+        let keySize = size_t(kCCKeySizeAES256)
+        
+        var buffer  =  Data(count: Int(dataLength) + kCCBlockSizeAES128)
+
+        var operation: CCOperation
+        if cryptoOperation == .encrypt {
+            operation = UInt32(kCCEncrypt)
+        } else {
+            operation = UInt32(kCCDecrypt)
+        }
+        
+        let algoritm: CCAlgorithm = UInt32(kCCAlgorithmAES)
+        var options: CCOptions
+
+        if dataLength % UInt(keySize) != 0 {
+            options = UInt32(kCCOptionPKCS7Padding)
+        } else {
+            options = 0
+        }
+        
+        var encryptedByteCount: UInt = 0
+        
+        let operationResult = data.withUnsafeBytes { inputBytes in
+            buffer.withUnsafeMutableBytes { outputBytes in
+                key.withUnsafeBytes { keyBytes in
+                    iv.withUnsafeMutableBytes { ivBytes in
+                        CCCrypt(operation,
+                                algoritm,
+                                options,
+                                keyBytes.baseAddress, keySize,
+                                ivBytes.baseAddress!,
+                                inputBytes.baseAddress, inputBytes.count,
+                                outputBytes.baseAddress, outputBytes.count,
+                                &encryptedByteCount)
+                    }
+                }
+            }
+        }
+
+        if operationResult !=  kCCSuccess {
+            debugLog("Error encryption \(operationResult)", space: .crypto)
+            return nil
+        }
+
+        buffer.count = Int(encryptedByteCount)
+        return buffer
+     }
 
 }
 
@@ -316,7 +461,7 @@ extension CryptoManager: CryptoManagerInterface {
     }
     
     func decrypt(_ data: Data) -> Data? {
-
+        
         guard let metaPrivateKey = self.metaPrivateKey else {
             debugLog("Failed to recover private key", space: .crypto)
             return nil
@@ -324,6 +469,52 @@ extension CryptoManager: CryptoManagerInterface {
         return decrypt(data, metaPrivateKey)
     }
     
+    func encryptFilePath(inputFileURL: URL, outputFileURL: URL) -> Bool {
+        do {
+            
+            guard let publicKey = recoverKey(.PUBLIC) else {
+                debugLog("Failed to recover public key", space: .crypto)
+                return false
+            }
+            
+            guard let encryptionKeyData = publicKey.getData() else {
+                debugLog("Failed to recover private key data", space: .crypto)
+                return false
+            }
+            
+            try cryptFile(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData: encryptionKeyData, operation: .encrypt)
+
+            return true
+        }
+        catch {
+            debugLog("Error encrypt", space: .crypto)
+            return false
+        }
+    }
+    
+    func decryptfilePath(inputFileURL: URL, outputFileURL: URL) -> Bool {
+        do {
+            
+            guard let metaPrivateKey = self.metaPrivateKey else {
+                debugLog("Failed to recover private key", space: .crypto)
+                return false
+            }
+            
+            guard let encryptionKeyData = metaPrivateKey.getData() else {
+                debugLog("Failed to recover private key data", space: .crypto)
+                return false
+            }
+
+            try cryptFile(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData:encryptionKeyData, operation: .decrypt)
+
+            return true
+            
+        }
+        catch  {
+            debugLog("Error decrypt", space: .crypto)
+            return false
+        }
+    }
 }
 
 
@@ -336,4 +527,14 @@ extension SecKey {
         }
         return nil
     }
+    
+    func getData() -> Data? {
+        var error:Unmanaged<CFError>?
+        if let cfdata = SecKeyCopyExternalRepresentation(self, &error) {
+            let data:Data = cfdata as Data
+            return data
+        }
+        return nil
+    }
+    
 }

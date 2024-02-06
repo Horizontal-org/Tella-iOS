@@ -22,11 +22,14 @@ protocol VaultManagerInterface {
     
     func getFilesToMergeToDatabase() -> AnyPublisher<[VaultFileDetailsToMerge],Never>
     func loadFileData(fileName: String?) -> Data?
+    func loadFileData1(file vaultFile: VaultFileDB) -> Data?
     func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL?
+    func loadVaultFileToURL1(file vaultFile: VaultFileDB) -> URL?
     func loadVaultFilesToURL(files vaultFiles: [VaultFileDB]) -> [URL]
     func loadFilesInfos(file vaultFile: VaultFileDB, offsetSize:Int ) -> VaultFileInfo?
     
     func save(_ data: Data, vaultFileId: String?) -> Bool?
+    func save(_ filePath: URL, vaultFileId: String?) -> Bool?
     
     func saveDataToTempFile(data: Data?, pathExtension: String) -> URL?
     func saveDataToTempFile(data: Data?, fileName: String?, pathExtension: String) -> URL?

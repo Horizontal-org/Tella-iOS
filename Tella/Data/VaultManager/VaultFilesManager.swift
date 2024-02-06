@@ -41,7 +41,7 @@ class VaultFilesManager : VaultFilesManagerInterface {
                     return
                 }
                 
-                guard let isSaved = self.vaultManager?.save(fileDetail.data, vaultFileId: fileDetail.file.id) else { return }
+                guard let isSaved = self.vaultManager?.save(fileDetail.fileUrl, vaultFileId: fileDetail.file.id) else { return }
                 
                 if isSaved {
                     self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: parentId)
@@ -72,9 +72,9 @@ class VaultFilesManager : VaultFilesManagerInterface {
     func addVaultFile(fileDetail:VaultFileDetails,filePath: URL, parentId: String?) -> AnyPublisher<BackgroundActivityStatus,Never> {
         
         let subject = CurrentValueSubject<BackgroundActivityStatus, Never>(.inProgress)
-        
-        if  let isSaved = self.vaultManager?.save(fileDetail.data, vaultFileId: fileDetail.file.id) {
-            
+
+        if let  isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetail.file.id) {
+
             if isSaved {
                 self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: parentId)
                 // self.vaultManager?.deleteFiles(files: [fileDetail.fileUrl])
@@ -137,9 +137,7 @@ class VaultFilesManager : VaultFilesManagerInterface {
         let id = UUID().uuidString
         let _ = filePath.startAccessingSecurityScopedResource()
         defer { filePath.stopAccessingSecurityScopedResource() }
-        
-        let data = try Data(contentsOf: filePath)
-        
+
         async let thumnail = await filePath.thumbnail()
         
         let fileName = filePath.deletingPathExtension().lastPathComponent
@@ -166,7 +164,7 @@ class VaultFilesManager : VaultFilesManagerInterface {
                                           mimeType: pathExtension.mimeType(),
                                           width: width,
                                           height: height)
-        return (VaultFileDetails(file: vaultFile, data: data, fileUrl: filePath))
+        return (VaultFileDetails(file: vaultFile, fileUrl: filePath))
     }
     
     func getFilesTotalSize(filePaths: [URL]) -> Int {

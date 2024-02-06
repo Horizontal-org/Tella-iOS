@@ -118,7 +118,7 @@ final class PlayerViewModel: ObservableObject {
     func setCurrentItem(_ file: VaultFileDB?) {
         
         guard let file = file else { return   }
-        guard let videoURL = appModel?.vaultManager.loadVaultFileToURL(file: file)  else {return}
+        guard let videoURL = appModel?.vaultManager.loadVaultFileToURL1(file: file)  else {return}
         let playerItem = AVPlayerItem(url:videoURL)
         
         currentPosition = .zero
