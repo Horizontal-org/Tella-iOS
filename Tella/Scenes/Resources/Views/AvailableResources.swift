@@ -9,18 +9,21 @@
 import SwiftUI
 
 struct AvailableResources: View {
-    var availableResources : [ResourceCardViewModel]
+    @ObservedObject var viewModel: AvailableResourcesVM
     var body: some View {
         VStack {
             SectionTitle(text: LocalizableResources.resourcesAvailableTitle.localized)
-            if availableResources.isEmpty {
+            if viewModel.isLoading {
+                CircularActivityIndicatory()
+            }
+            else if viewModel.availableResources.isEmpty {
                 SectionMessage(text: LocalizableResources.resourcesAvailableEmpty.localized)
             } else {
                 VStack {
                     SectionMessage(text: LocalizableResources.resourcesAvailableMsg.localized)
                 }
                 ScrollView {
-                    ForEach(availableResources) { resource in
+                    ForEach(viewModel.availableResources) { resource in
                         ResourceCard(
                             title: resource.title,
                             serverName: resource.serverName,
@@ -35,5 +38,5 @@ struct AvailableResources: View {
 }
 
 #Preview {
-    AvailableResources(availableResources: [ResourceCardViewModel(id: "Resource", title: "title", serverName: "serverName")])
+    AvailableResources(viewModel: AvailableResourcesVM())
 }

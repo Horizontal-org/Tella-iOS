@@ -23,7 +23,7 @@ struct ResourcesView: View {
                     DownloadedResources(downloadedResources: resourcesViewModel.downloadedResourcesVM.downloadedResources)
                     
                     // available for download
-                    AvailableResources(availableResources: resourcesViewModel.availableResourcesVM.availableResources)
+                    AvailableResources(viewModel: resourcesViewModel.availableResourcesVM)
                     
                     Spacer()
                 }.padding(.all, 18)
