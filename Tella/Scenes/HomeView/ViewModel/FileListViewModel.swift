@@ -391,19 +391,10 @@ extension FileListViewModel {
 }
 
 extension FileListViewModel {
-    
-    func getTotalFilesInFolder(folder: VaultFileDB) -> Int {
-        let allFilesInFolder = self.appModel.vaultFilesManager!.getVaultFile(vaultFilesFolders: [folder])
-
-        return allFilesInFolder.filter { $0.type != .directory }.count
-    }
-
     var deleteConfirmation: DeleteConfirmation {
         let selectedFolders = selectedFiles.filter { $0.type == .directory }
         let fileCount = selectedFiles.count - selectedFolders.count
-        let totalFilesInsideFolders = selectedFolders.reduce(0) { count, folder in
-            count + getTotalFilesInFolder(folder: folder)
-        }
+        let  totalFilesInsideFolders = self.appModel.vaultFilesManager!.getVaultFile(vaultFilesFolders: selectedFolders).count
 
         let selectionCountDetails = SelectionCountDetails(fileCount: fileCount,
                             foldersCount: selectedFolders.count,
