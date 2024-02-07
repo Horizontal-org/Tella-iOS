@@ -27,14 +27,6 @@ struct MoreFileActionButton: View {
         let dividerHeight = fileListViewModel.fileActionItems.filter{$0.viewType == ActionSheetItemType.divider}.count * 20
         return CGFloat((fileListViewModel.fileActionItems.count * 50) - dividerHeight  + 90)
     }
-    
-    private var deleteTitle :String {
-       return fileListViewModel.selectedFiles.count > 1 ? LocalizableVault.deleteFilesSheetTitle.localized : LocalizableVault.deleteFileSheetTitle.localized
-    }
-    
-    private var deleteMessage :String {
-       return fileListViewModel.selectedFiles.count > 1 ? LocalizableVault.deleteFilesSheetExpl.localized : LocalizableVault.deleteFileSheetExpl.localized
-    }
 
     var body: some View {
         
@@ -137,9 +129,10 @@ struct MoreFileActionButton: View {
     }
     
     func showDeleteConfirmationSheet() {
+        let deleteConfirmation = fileListViewModel.deleteConfirmation
         sheetManager.showBottomSheet( modalHeight: 165, content: {
-            ConfirmBottomSheet(titleText: deleteTitle,
-                               msgText: deleteMessage,
+            ConfirmBottomSheet(titleText: deleteConfirmation.title,
+                               msgText: deleteConfirmation.message,
                                cancelText: LocalizableVault.deleteFileCancelSheetAction.localized,
                                actionText: LocalizableVault.deleteFileDeleteSheetAction.localized,
                                destructive: true,
