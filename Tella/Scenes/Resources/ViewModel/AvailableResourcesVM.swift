@@ -8,6 +8,7 @@
 
 import Combine
 import Foundation
+import Combine
 
 class AvailableResourcesVM: ObservableObject {
     @Published var availableResources: [ResourceCardViewModel] = []
