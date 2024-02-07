@@ -27,4 +27,19 @@ class FileWalker {
         })
         return resultFiles
     }
+    
+    func walk(root:VaultFileDB) -> [VaultFileDB] {
+        
+        let vaultFiles = vaultDatabase?.getVaultFiles(parentId: root.id, filter: .all, sort: nil)
+        
+        vaultFiles?.forEach({ vaultFile in
+
+            if vaultFile.type == .directory {
+                _ = self.walk(root: vaultFile)
+            } else {
+                resultFiles.append(vaultFile)
+            }
+        })
+        return resultFiles
+    }
 }

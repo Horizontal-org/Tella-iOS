@@ -389,3 +389,17 @@ extension FileListViewModel {
         return FileListViewModel(appModel: MainAppModel.stub(), filterType: .all, rootFile: VaultFileDB.stub())
     }
 }
+
+extension FileListViewModel {
+    var deleteConfirmation: DeleteConfirmation {
+        let selectedFolders = selectedFiles.filter { $0.type == .directory }
+        let fileCount = selectedFiles.count - selectedFolders.count
+        let  totalFilesInsideFolders = self.appModel.vaultFilesManager!.getVaultFile(vaultFilesFolders: selectedFolders).count
+
+        let selectionCountDetails = SelectionCountDetails(fileCount: fileCount,
+                            foldersCount: selectedFolders.count,
+                            filesInsideFoldersCount: totalFilesInsideFolders)
+            
+        return DeleteConfirmation(selectionCountDetails: selectionCountDetails)
+    }
+}
