@@ -393,8 +393,7 @@ extension FileListViewModel {
 extension FileListViewModel {
     
     func getTotalFilesInFolder(folder: VaultFileDB) -> Int {
-        let fileWalker = FileWalker(vaultDatabase: self.appModel.vaultFilesManager!.vaultDataBase)
-        let allFilesInFolder = fileWalker.walkWithDirectories(root: folder)
+        let allFilesInFolder = self.appModel.vaultFilesManager!.getVaultFile(vaultFilesFolders: [folder])
 
         return allFilesInFolder.filter { $0.type != .directory }.count
     }
