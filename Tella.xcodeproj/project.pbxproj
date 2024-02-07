@@ -325,10 +325,10 @@
 		12FAC12D2B226DEF00DD9615 /* EncryptionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07EC92B0660240030AD6E /* EncryptionOperation.swift */; };
 		12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */; };
 		12FFEFA528BE96E00081DDB2 /* AddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */; };
-		15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15622F492B72B1FF00289816 /* DeleteConfirmation.swift */; };
 		1501401D2B71243A00991D69 /* LocalizableResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401C2B71243A00991D69 /* LocalizableResources.swift */; };
 		1501401F2B7199FD00991D69 /* DownloadedResourcesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401E2B7199FD00991D69 /* DownloadedResourcesVM.swift */; };
 		150140212B719A0B00991D69 /* AvailableResourcesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150140202B719A0B00991D69 /* AvailableResourcesVM.swift */; };
+		15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15622F492B72B1FF00289816 /* DeleteConfirmation.swift */; };
 		15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C192B6AC34100D67C74 /* ResourcesView.swift */; };
 		15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C1B2B6AC63200D67C74 /* ReloadButton.swift */; };
 		15791C202B6C2D8C00D67C74 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C1F2B6C2D8C00D67C74 /* Resource.swift */; };
@@ -340,6 +340,8 @@
 		15F64CA42B6D7CA1008A57AA /* AvailableResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64CA32B6D7CA1008A57AA /* AvailableResources.swift */; };
 		15F64CA62B6D80F7008A57AA /* ResourceCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64CA52B6D80F7008A57AA /* ResourceCardViewModel.swift */; };
 		15F64CA82B6D852D008A57AA /* ResourceCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64CA72B6D852D008A57AA /* ResourceCard.swift */; };
+		15FABA362B73F96800B2EFEE /* ResourceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FABA352B73F96800B2EFEE /* ResourceRepository.swift */; };
+		15FABA382B7405B800B2EFEE /* ResourceDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FABA372B7405B800B2EFEE /* ResourceDTO.swift */; };
 		1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
 		379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */; };
@@ -834,6 +836,7 @@
 		1501401C2B71243A00991D69 /* LocalizableResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableResources.swift; sourceTree = "<group>"; };
 		1501401E2B7199FD00991D69 /* DownloadedResourcesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResourcesVM.swift; sourceTree = "<group>"; };
 		150140202B719A0B00991D69 /* AvailableResourcesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableResourcesVM.swift; sourceTree = "<group>"; };
+		15622F492B72B1FF00289816 /* DeleteConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmation.swift; sourceTree = "<group>"; };
 		15791C192B6AC34100D67C74 /* ResourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesView.swift; sourceTree = "<group>"; };
 		15791C1B2B6AC63200D67C74 /* ReloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReloadButton.swift; sourceTree = "<group>"; };
 		15791C1F2B6C2D8C00D67C74 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
@@ -845,6 +848,8 @@
 		15F64CA32B6D7CA1008A57AA /* AvailableResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableResources.swift; sourceTree = "<group>"; };
 		15F64CA52B6D80F7008A57AA /* ResourceCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCardViewModel.swift; sourceTree = "<group>"; };
 		15F64CA72B6D852D008A57AA /* ResourceCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCard.swift; sourceTree = "<group>"; };
+		15FABA352B73F96800B2EFEE /* ResourceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceRepository.swift; sourceTree = "<group>"; };
+		15FABA372B7405B800B2EFEE /* ResourceDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDTO.swift; sourceTree = "<group>"; };
 		1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheet.swift; sourceTree = "<group>"; };
 		1EAE6BF424146C2100114244 /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
 		21FEB79B83E10A1CBE4AA323 /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1223,6 +1228,7 @@
 				E17736412A84034A00FE01C0 /* UwaziTranslationRowDTO.swift */,
 				CCEAE5912AE6F6EE0069204A /* EntityCreationResponse.swift */,
 				1293F6762AD88A0400F6CFBD /* FeedbackDTO.swift */,
+				15FABA372B7405B800B2EFEE /* ResourceDTO.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2010,6 +2016,7 @@
 				121AD8212943A2F00056AC2A /* ReportRepository.swift */,
 				E131BA3A2A1B45A30095BC91 /* UwaziServerRepositories.swift */,
 				1293F6742AD8853500F6CFBD /* FeedbackRepository.swift */,
+				15FABA352B73F96800B2EFEE /* ResourceRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -3312,6 +3319,7 @@
 				CCE8CCDD2AF41E410088B61D /* UwaziFileUtility.swift in Sources */,
 				122E6A5529A396C400BDACAD /* ServerFileSize.swift in Sources */,
 				125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */,
+				15FABA362B73F96800B2EFEE /* ResourceRepository.swift in Sources */,
 				CCD586C72A7ABDE800014F87 /* TemplateCardView.swift in Sources */,
 				12607D58279042CE00E2B8CC /* VideoPlayer.swift in Sources */,
 				121AD8222943A2F00056AC2A /* ReportRepository.swift in Sources */,
@@ -3329,6 +3337,7 @@
 				127C155C27DA69FF009EC15B /* TransitionViewData.swift in Sources */,
 				D516397C2631113B003A11B5 /* Styles.swift in Sources */,
 				12F5D28D27A326EB00BF3309 /* AboutAndHelpView.swift in Sources */,
+				15FABA382B7405B800B2EFEE /* ResourceDTO.swift in Sources */,
 				15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */,
 				1230BE4727CD6D440055F854 /* AudioAuthorizationStatus.swift in Sources */,
 				122E6A5329A3812A00BDACAD /* ReportViewModel.swift in Sources */,
