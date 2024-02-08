@@ -11,8 +11,8 @@ import SwiftUI
 struct ResourcesView: View {
     @StateObject private var resourcesViewModel : ResourcesViewModel
     
-    init() {
-        _resourcesViewModel = StateObject(wrappedValue: ResourcesViewModel())
+    init(mainAppModel: MainAppModel) {
+        _resourcesViewModel = StateObject(wrappedValue: ResourcesViewModel(mainAppModel: mainAppModel))
     }
 
     var body: some View {
@@ -38,5 +38,5 @@ struct ResourcesView: View {
 }
 
 #Preview {
-    ResourcesView()
+    ResourcesView(mainAppModel: MainAppModel.stub())
 }
