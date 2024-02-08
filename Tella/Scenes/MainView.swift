@@ -143,17 +143,11 @@ struct MainView: View  {
     @ToolbarContentBuilder
     private var homeToolbar : some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            if viewModel.items.count > 0 {
-                Button() {
-                    showTopSheetView(content: BackgroundActivitiesView(mainAppModel: appModel))
-                } label: {
-                    Text("\(viewModel.items.count)")
-                        .frame(width: 30, height: 30)
-                        .font(.custom(Styles.Fonts.regularFontName, size: 11))
-                        .foregroundColor(.white)
-                        .background(Color.white.opacity(0.24))
-                        .clipShape(Circle())
-                }
+            Button() {
+                showTopSheetView(content: BackgroundActivitiesView(mainAppModel: appModel))
+            } label: {
+                Image(viewModel.items.count > 0 ? "home.notification_badge" : "home.notificaiton")
+                    .padding()
             }
         }
         

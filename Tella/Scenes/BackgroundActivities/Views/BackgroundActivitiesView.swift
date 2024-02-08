@@ -15,13 +15,10 @@ struct BackgroundActivitiesView: View {
     
     var body: some View {
         
-        GeometryReader { geometry in
             contentView
                 .padding(EdgeInsets(top: 28 , leading: 16, bottom: 0, trailing: 16))
-                .frame(height: geometry.size.height)
                 .frame(alignment: .topLeading)
                 .clipped()
-        }
     }
     
     private var contentView : some View {
@@ -34,28 +31,28 @@ struct BackgroundActivitiesView: View {
     
     private var headerView: some View {
         Group {
-            HStack(spacing: 14) {
-                
-                Image("home.progress-circle")
-                
-                Text(LocalizableBackgroundActivities.sheetTitle.localized)
-                    .font(.custom(Styles.Fonts.boldFontName, size: 16))
-                    .foregroundColor(.white)
-            }
             
-            Text(LocalizableBackgroundActivities.sheetExpl.localized)
+            Text(LocalizableBackgroundActivities.sheetTitle.localized)
+                .font(.custom(Styles.Fonts.boldFontName, size: 16))
+                .foregroundColor(.white)
+            
+            Text(viewModel.items.count > 0 ? LocalizableBackgroundActivities.sheetExpl.localized : "There are currently no ongoing activities in the background.")
                 .font(.custom(Styles.Fonts.regularFontName, size: 13))
                 .foregroundColor(.white)
         }
     }
-    
+    @ViewBuilder
     private var activitiesItemView : some View {
+        if viewModel.items.count > 0 {
+             
+    
         ScrollView() {
             LazyVStack(alignment: .leading, spacing: 8) {
                 ForEach($viewModel.items, id: \.id) { item in
                     BackgroundActivitiesItemView(item: item)
                 }
             }
+        }
         }
     }
 }

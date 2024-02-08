@@ -7,15 +7,19 @@ import SwiftUI
 struct TopSheetView<Content:View>: View {
     
     //MARK: - Properties
-    private let kMinHeight: CGFloat = 320.0 + safeArea.top
+    private var kMinHeight: CGFloat {
+        return childSize.height > 130 ? 320.0 + safeArea.top : 163 + safeArea.top
+    }
+    
     private let kmaxDrag: CGFloat =  UIScreen.main.bounds.height - 50
     private let kMinVelocity: CGFloat = -300
-
+    
     @State private var offset: CGFloat = 0.0
     @State private var currentDrag: CGFloat = 0.0
     @State private var currentHeight: CGFloat = 320.0 + safeArea.top
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @State var childSize: CGSize = .zero
     
     var content :  Content
     
@@ -49,8 +53,18 @@ struct TopSheetView<Content:View>: View {
         VStack(alignment: .center) {
             Spacer()
                 .frame(height: safeArea.top)
-
             self.content
+                .background(
+                    GeometryReader { proxy in
+                        Color.clear
+                            .onAppear {
+                                print(proxy.size.height)
+                                self.childSize = proxy.size
+                                currentHeight = childSize.height > 130 ? 320.0 + safeArea.top : 163 + safeArea.top
+                            }
+                    }
+                )
+            Spacer()
             
             Image("encryption.up")
                 .padding(EdgeInsets(top: 32, leading: 0, bottom: 16, trailing: 0))
@@ -63,6 +77,7 @@ struct TopSheetView<Content:View>: View {
             .if(offset == -kMinHeight, transform: { view in
                 view.animation(.interpolatingSpring(stiffness: 1000, damping: 100, initialVelocity: 50))
             })
+        
         
     }
     private var dragGesture: some Gesture {
@@ -82,7 +97,7 @@ struct TopSheetView<Content:View>: View {
                 
                 let velocity = (value.velocity)
                 let drag = (value.location.y - value.startLocation.y)
-
+                
                 let newHeight = self.currentHeight + (value.location.y - value.startLocation.y)
                 
                 if (drag < 0 && newHeight < self.kMinHeight && velocity.height < kMinVelocity) {
