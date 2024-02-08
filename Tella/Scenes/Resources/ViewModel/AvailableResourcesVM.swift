@@ -6,55 +6,55 @@
 //  Copyright © 2024 HORIZONTAL. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 class AvailableResourcesVM: ObservableObject {
     @Published var availableResources: [ResourceCardViewModel] = []
     @Published var isLoading: Bool = false
+    @Published var servers: [TellaServer] = []
     private var cancellables: Set<AnyCancellable> = []
-
-    init() {
+    init(mainAppModel: MainAppModel) {
+        self.servers = mainAppModel.vaultManager.tellaData?.tellaServers.value ?? []
+        
         getAvailableForDownloadResources()
     }
 
     func getAvailableForDownloadResources() {
         self.isLoading = true
-        // replace this with the real data
-        let serverURL = "https://api.beta.web.tella-app.org"
-        let projectIds = [
-            "8a228ad7-73dc-458b-93c1-4814325768bb",
-            "6df06a36-3a4b-4109-8bd5-f4bebd921850",
-        ]
-
-        ResourceRepository().getResourcesByProject(
-            serverUrl: serverURL, projectIds: projectIds
-        )
-        .receive(on: DispatchQueue.main)
-        .sink(
-            receiveCompletion: { completion in
-                // Handle completion if needed
-                switch completion {
-                case .finished:
-                    self.isLoading = false
-                    break
-                case .failure(let error):
-                    print("Error: \(error)")
-                }
-            },
-            receiveValue: { response in
-                let resourcesArray = response.flatMap { res in
-                    res.resources.map { resource in
-                        ResourceCardViewModel(
-                            id: resource.id,
-                            title: resource.title,
-                            serverName: res.name
-                        )
+        
+        let resourceRepository = ResourceRepository()
+        servers.forEach { server in
+            resourceRepository.getResourcesByProject(
+                server: server
+            )
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { completion in
+                    switch completion {
+                    case .finished:
+                        self.isLoading = false
+                        break
+                    case .failure(let error):
+                        print("Error: \(error)")
                     }
+                },
+                receiveValue: { response in
+                    let resourcesArray = response.flatMap { res in
+                        res.resources.map { resource in
+                            ResourceCardViewModel(
+                                id: resource.id,
+                                title: resource.title,
+                                serverName: res.name
+                            )
+                        }
+                    }
+                    self.availableResources.append(contentsOf: resourcesArray)
+                    self.isLoading = false
                 }
-                self.availableResources = resourcesArray
-            }
-        )
-        .store(in: &cancellables)
+            )
+            .store(in: &cancellables)
+        }
     }
 }
+

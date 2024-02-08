@@ -10,8 +10,8 @@ import Foundation
 import Combine
 
 struct ResourceRepository: WebRepository {
-    func getResourcesByProject(serverUrl: String, projectIds: [String]) -> AnyPublisher<[ResourceDTO], APIError> {
-        let apiResponse: APIResponse<[ResourceDTO]> = getAPIResponse(endpoint: API.getResourcesByProject(serverUrl: serverUrl, projectIds: projectIds))
+    func getResourcesByProject(server: TellaServer) -> AnyPublisher<[ResourceDTO], APIError> {
+        let apiResponse: APIResponse<[ResourceDTO]> = getAPIResponse(endpoint: API.getResourcesByProject(serverUrl: server.url ?? "", projectId: server.projectId ?? "", token: server.accessToken ?? ""))
         return apiResponse
             .compactMap{$0.0}
             .eraseToAnyPublisher()
@@ -20,14 +20,18 @@ struct ResourceRepository: WebRepository {
 
 extension ResourceRepository {
     enum API {
-        case getResourcesByProject(serverUrl: String, projectIds: [String])
+        case getResourcesByProject(serverUrl: String, projectId: String, token: String)
     }
 }
 
 extension ResourceRepository.API: APIRequest {
     
+    // replace with server.accessToken in the future
     var token: String? {
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ZDhmMDYwNy1lOGQ2LTQzYjMtYmVmOC05YTk0NDkwYzg4ZDIiLCJ0eXBlIjoid2ViIiwiaWF0IjoxNzA3MzMwOTUzLCJleHAiOjE3MDc0MTczNTN9.9esvNWiNUfHVEpxFMHrjRsPqGv5LVu3Ns3W9BGNg1_A"
+        switch self {
+        case.getResourcesByProject(_, _, let token):
+            return token
+        }
     }
     
     var keyValues: [Key : Value?]? {
@@ -37,17 +41,15 @@ extension ResourceRepository.API: APIRequest {
     var baseURL: String {
         switch self {
 
-        case .getResourcesByProject(let serverUrl, _):
+        case .getResourcesByProject(let serverUrl, _, _):
             return serverUrl
         }
     }
     
     var path: String {
         switch self {
-        case.getResourcesByProject(_, let projectIds):
-            let projectIdParams = projectIds.map { "projectId[]=\($0)" }.joined(separator: "&")
-            
-            return "/resource/projects?\(projectIdParams)"
+        case.getResourcesByProject(_, let projectId, _):
+            return "/resource/projects?projectId[]=\(projectId)"
         }
     }
     
@@ -56,7 +58,7 @@ extension ResourceRepository.API: APIRequest {
     }
     var headers: [String : String]? {
         switch self {
-        case .getResourcesByProject(_, _):
+        case .getResourcesByProject(_, _, _):
             return [HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
         }
     }

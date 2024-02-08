@@ -44,7 +44,7 @@ struct ConnectionsView: View {
                                         destination: ReportsView(mainAppModel: appModel))
                     ConnectionsItemView(title: LocalizableResources.resourcesServerTitle.localized,
                                         image: "home.resources",
-                                        destination: ResourcesView(),
+                                        destination: ResourcesView(mainAppModel: appModel),
                                         largeTitle: false,
                                         showTitle: false
                     )

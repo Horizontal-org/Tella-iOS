@@ -12,9 +12,9 @@ class ResourcesViewModel: ObservableObject {
     @Published var downloadedResourcesVM : DownloadedResourcesVM
     @Published var availableResourcesVM : AvailableResourcesVM
     
-    init() {
+    init(mainAppModel: MainAppModel) {
         self.downloadedResourcesVM = DownloadedResourcesVM()
-        self.availableResourcesVM = AvailableResourcesVM()
+        self.availableResourcesVM = AvailableResourcesVM(mainAppModel: mainAppModel)
     }
     
 }

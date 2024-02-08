@@ -38,5 +38,5 @@ struct AvailableResources: View {
 }
 
 #Preview {
-    AvailableResources(viewModel: AvailableResourcesVM())
+    AvailableResources(viewModel: AvailableResourcesVM(mainAppModel: MainAppModel.stub()))
 }
