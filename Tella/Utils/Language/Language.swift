@@ -21,6 +21,8 @@ enum Language: String, CaseIterable {
     case kurdish = "ku"
     case burmese = "my"
     case tamil = "ta"
+    case russian = "ru"
+    case portuguese = "pt"
 
     var code : String {
         switch self {
@@ -44,6 +46,10 @@ enum Language: String, CaseIterable {
             return "my"
         case .tamil:
             return "ta"
+        case .russian:
+            return "ru"
+        case .portuguese:
+            return "pt-BR"
         }
     }
     
@@ -69,6 +75,10 @@ enum Language: String, CaseIterable {
             return "မြန်မာ"
         case .tamil:
             return "தமிழ்"
+        case .russian:
+            return "Русский"
+        case .portuguese:
+            return "Português"
 
         }
     }
@@ -95,6 +105,10 @@ enum Language: String, CaseIterable {
             return LocalizableSettings.settLangBurmese.localized
         case .tamil:
             return LocalizableSettings.settLangTamil.localized
+        case .russian:
+            return LocalizableSettings.settLangRussian.localized
+        case .portuguese:
+            return LocalizableSettings.settLangPortuguese.localized
         }
     }
     

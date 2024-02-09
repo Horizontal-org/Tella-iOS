@@ -351,6 +351,8 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_OutboxSaved_Toast" = "El reporte fue guardado en tu Bandeja de salida";
 "Reports_AllReportDeleted_Toast" = "Your submitted reports have been cleared.";
 "Settings_SettLang_Tamil_Expl" = "Tamil";
+"Settings_SettLang_Portuguese_Expl" = "Portuguese";
+"Settings_SettLang_Russian_Expl" = "Russian";
 "Settings_SettFeedback_AppBar" = "Feedback";
 "Settings_SettFeedback_Expl" = "Tell us if you are experiencing a bug, have a request for a new feature, or have any other feedback.\
 \
