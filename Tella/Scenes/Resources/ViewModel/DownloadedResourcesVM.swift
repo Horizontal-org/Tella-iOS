@@ -19,6 +19,7 @@ class DownloadedResourcesVM : ObservableObject {
             ResourceCardViewModel(
                 id: resource.id,
                 title: resource.title,
+                fileName: resource.fileName,
                 serverName: "CLEEN Foundation" //change to the real server name
             )
             

@@ -32,5 +32,5 @@ struct DownloadedResources: View {
 }
 
 #Preview {
-    DownloadedResources(downloadedResources: [ResourceCardViewModel(id: "Resource", title: "title", serverName: "serverName")])
+    DownloadedResources(downloadedResources: [ResourceCardViewModel(id: "Resource", title: "title",fileName: "title.pdf", serverName: "serverName")])
 }
