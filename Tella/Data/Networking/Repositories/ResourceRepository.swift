@@ -16,20 +16,27 @@ struct ResourceRepository: WebRepository {
             .compactMap{$0.0}
             .eraseToAnyPublisher()
     }
+    
+    func getResourceByFileName(server: TellaServer, fileName: String) -> AnyPublisher<Data, APIError> {
+        let apiResponse: APIResponse<Data> = getAPIResponse(endpoint: API.getResourceByFileName(serverUrl: server.url ?? "", fileName: fileName, token: server.accessToken ?? ""))
+        
+        return apiResponse
+            .compactMap{$0.0}
+            .eraseToAnyPublisher()
+    }
 }
 
 extension ResourceRepository {
     enum API {
         case getResourcesByProject(serverUrl: String, projectId: String, token: String)
+        case getResourceByFileName(serverUrl: String, fileName: String, token: String)
     }
 }
 
 extension ResourceRepository.API: APIRequest {
-    
-    // replace with server.accessToken in the future
     var token: String? {
         switch self {
-        case.getResourcesByProject(_, _, let token):
+        case .getResourcesByProject(_, _, let token), .getResourceByFileName(_, _, let token):
             return token
         }
     }
@@ -41,15 +48,17 @@ extension ResourceRepository.API: APIRequest {
     var baseURL: String {
         switch self {
 
-        case .getResourcesByProject(let serverUrl, _, _):
+        case .getResourcesByProject(let serverUrl, _, _), .getResourceByFileName(let serverUrl, _, _):
             return serverUrl
         }
     }
     
     var path: String {
         switch self {
-        case.getResourcesByProject(_, let projectId, _):
+        case .getResourcesByProject(_, let projectId, _):
             return "/resource/projects?projectId[]=\(projectId)"
+        case .getResourceByFileName(_, let fileName, _):
+            return "/resource/mobile/asset/\(fileName)"
         }
     }
     
@@ -58,7 +67,7 @@ extension ResourceRepository.API: APIRequest {
     }
     var headers: [String : String]? {
         switch self {
-        case .getResourcesByProject(_, _, _):
+        case .getResourcesByProject(_, _, _), .getResourceByFileName(_, _, _):
             return [HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
         }
     }

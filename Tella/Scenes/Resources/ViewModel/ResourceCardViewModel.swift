@@ -11,15 +11,18 @@ import Foundation
 class ResourceCardViewModel: Hashable, Identifiable {
     var id: String
     var title: String
+    var fileName: String
     var serverName: String
     
     init(
         id: String,
         title: String,
+        fileName: String,
         serverName: String
     ) {
         self.id = id
         self.title = title
+        self.fileName = fileName
         self.serverName = serverName
     }
     

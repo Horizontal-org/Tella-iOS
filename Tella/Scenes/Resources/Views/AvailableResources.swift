@@ -28,7 +28,7 @@ struct AvailableResources: View {
                             title: resource.title,
                             serverName: resource.serverName,
                             rightButtonImage: "save-icon",
-                            rightButtonAction: {}
+                            rightButtonAction: {viewModel.downloadResource(serverName: resource.serverName, fileName: resource.fileName)}
                         )
                     }
                 }
