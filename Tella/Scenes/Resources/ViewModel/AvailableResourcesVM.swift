@@ -45,6 +45,7 @@ class AvailableResourcesVM: ObservableObject {
                             ResourceCardViewModel(
                                 id: resource.id,
                                 title: resource.title,
+                                fileName: resource.fileName,
                                 serverName: res.name
                             )
                         }
@@ -56,5 +57,22 @@ class AvailableResourcesVM: ObservableObject {
             .store(in: &cancellables)
         }
     }
+    
+    func downloadResource(serverName: String, fileName: String) -> Void {
+        let selectedServer = self.servers.first(where: {$0.name == serverName})
+        
+        ResourceRepository().getResourceByFileName(server: selectedServer!, fileName: fileName)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print("Error downloading file: \(error)")
+                }
+            }, receiveValue: { data in
+                dump(data) //save this data in the device
+            })
+            .store(in: &cancellables)
+    }
 }
-
