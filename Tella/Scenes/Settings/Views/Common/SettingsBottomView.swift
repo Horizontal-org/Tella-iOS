@@ -1,5 +1,5 @@
 //
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import SwiftUI
@@ -8,6 +8,8 @@ struct SettingsBottomView: View {
   
     var cancelAction : (() -> Void)
     var saveAction : (() -> Void)
+    var saveActionTitle = LocalizableSettings.settLockTimeoutSaveSheetAction.localized
+    var isDisable: Bool = false
 
     var body: some View {
         
@@ -18,7 +20,7 @@ struct SettingsBottomView: View {
             Button {
                 cancelAction()
             } label: {
-                Text("CANCEL")
+                Text(LocalizableSettings.UwaziLanguageCancel.localized)
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                     .foregroundColor(.white)
                     .padding(EdgeInsets(top: 10, leading: 25, bottom: 10, trailing: 25))
@@ -29,14 +31,14 @@ struct SettingsBottomView: View {
             Button {
                 saveAction()
             } label: {
-                Text("SAVE")
+                Text(saveActionTitle)
                     .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                     .foregroundColor(.white)
                     .padding(EdgeInsets(top: 10, leading: 25, bottom: 10, trailing: 25))
                     .background(Styles.Colors.yellow)
+                    .opacity(isDisable ? 0.8 : 1)
                     .cornerRadius(25)
-                
-            }
+            }.disabled(isDisable)
             
         }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
       }

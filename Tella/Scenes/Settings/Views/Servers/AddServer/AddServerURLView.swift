@@ -17,7 +17,7 @@ struct AddServerURLView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
     @StateObject var serverViewModel : ServerViewModel
     
-    init(appModel:MainAppModel, server: Server? = nil) {
+    init(appModel:MainAppModel, server: TellaServer? = nil) {
         _serverViewModel = StateObject(wrappedValue: ServerViewModel(mainAppModel: appModel, currentServer: server))
     }
     

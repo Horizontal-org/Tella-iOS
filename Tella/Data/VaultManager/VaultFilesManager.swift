@@ -131,7 +131,16 @@ class VaultFilesManager : VaultFilesManagerInterface {
         return self.vaultDataBase.getVaultFiles(parentId: parentId, filter: filter, sort: sort)
     }
     
-    
+    func getVaultFile(vaultFilesFolders: [VaultFileDB]) -> [VaultFileDB] {
+        var resultFiles: [VaultFileDB] = []
+
+        vaultFilesFolders.forEach { file in
+            let fileWalker = FileWalker(vaultDatabase: self.vaultDataBase)
+            resultFiles.append(contentsOf: fileWalker.walk(root: file))
+        }
+        return resultFiles
+    }
+
     func getFileDetails(filePath: URL) async throws -> VaultFileDetails?  {
         
         let id = UUID().uuidString
@@ -213,11 +222,11 @@ class VaultFilesManager : VaultFilesManagerInterface {
     
     func deleteVaultFile(vaultFiles : [VaultFileDB]) -> Result<Bool, Error>? {
         var resultFiles : [VaultFileDB] = []
-        let fileWalker = FileWalker(vaultDatabase: self.vaultDataBase)
+       let fileWalker = FileWalker(vaultDatabase: self.vaultDataBase)
         
         vaultFiles.forEach { file in
             if file.type == .directory {
-                resultFiles.append(contentsOf: fileWalker.walkWithDirectories(root: file))
+               resultFiles.append(contentsOf: fileWalker.walkWithDirectories(root: file))
             }
             resultFiles.append(file)
         }

@@ -31,7 +31,6 @@ struct MainView: View  {
                      isShown: $sheetManager.isPresented) {
                 sheetManager.content
             }
-            
             securityScreenView
             
         }.navigationBarHidden(false)
@@ -40,7 +39,6 @@ struct MainView: View  {
     private var contentView: some View {
         
         ZStack {
-            
             CustomNavigation() {
                 tabbarContentView
             }.accentColor(.white)

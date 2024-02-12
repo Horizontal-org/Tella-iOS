@@ -16,7 +16,7 @@ class DraftReportVM: ObservableObject {
     @Published var title : String = ""
     @Published var description : String = ""
     @Published var files :  Set <VaultFileDB> = []
-    @Published var server :  Server?
+    @Published var server :  TellaServer?
     @Published var status : ReportStatus?
     @Published var apiID : String?
     
@@ -38,10 +38,11 @@ class DraftReportVM: ObservableObject {
     @Published var successSavingReport : Bool = false
     @Published var failureSavingReport : Bool = false
     
-    var serverArray : [Server] = []
+    var serverArray : [TellaServer] = []
     
     var cancellable : Cancellable? = nil
     private var subscribers = Set<AnyCancellable>()
+    var delayTime = 2.0
     
     var serverName : String {
         guard let serverName = server?.name else { return LocalizableReport.selectProject.localized }
@@ -102,7 +103,7 @@ class DraftReportVM: ObservableObject {
     }
     
     private func getServers() {
-        serverArray = mainAppModel.vaultManager.tellaData?.servers.value ?? []
+        serverArray = mainAppModel.vaultManager.tellaData?.tellaServers.value ?? []
     }
     
     private func initcurrentReportVM(reportId:Int?) {
@@ -139,7 +140,6 @@ class DraftReportVM: ObservableObject {
             }
             self.objectWillChange.send()
         }
-        
         DispatchQueue.main.async {
             self.isValidTitle =  self.title.textValidator()
             self.isValidDescription = self.description.textValidator()
@@ -207,6 +207,7 @@ class DraftReportVM: ObservableObject {
     }
     
     func deleteReport() {
+        mainAppModel.deleteReport(reportId: reportId)
         mainAppModel.deleteReport(reportId: reportId)
     }
 }

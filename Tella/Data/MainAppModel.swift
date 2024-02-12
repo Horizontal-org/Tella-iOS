@@ -65,7 +65,7 @@ class MainAppModel: ObservableObject {
 
                 self.initDataSource()
 
-                if settings.shouldMergeVaultFilesToDb ?? true {
+                if self.settings.shouldMergeVaultFilesToDb ?? true {
                     self.mergeFileToDatabase(promise: promise)
                 } else {
                     self.sendReports()
@@ -152,17 +152,7 @@ extension MainAppModel {
     }
     
     func resetSettings() {
-        settings.unlockAttempts = 0
-        settings.deleteAfterFail = .off
-        settings.quickDelete = false
-        settings.offlineMode = false
-        settings.deleteServerSettings = false
-        settings.showRecentFiles = false
-        settings.lockTimeout = .immediately
-        settings.screenSecurity = true
-        settings.deleteVault = false
-        settings.showUnlockAttempts = false
-        
+        settings = SettingsModel()
         saveSettings()
     }
     

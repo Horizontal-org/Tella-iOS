@@ -24,13 +24,12 @@ struct ConfirmBottomSheet : View {
     }
     
     var contentView: some View {
-        
         VStack(alignment: .leading, spacing: 9) {
-            
             Text(self.titleText)
                 .foregroundColor(.white)
                 .font(Font.custom(Styles.Fonts.semiBoldFontName, size: 17))
-            
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
             Text(self.msgText)
                 .foregroundColor(.white)
                 .font(Font.custom(Styles.Fonts.regularFontName, size: 14))
@@ -38,9 +37,7 @@ struct ConfirmBottomSheet : View {
                 .fixedSize(horizontal: false, vertical: true)
             Spacer()
             HStack(alignment: .lastTextBaseline ){
-                
                 Spacer()
-                
                 Button(action: {
                     didCancelAction?()
                     sheetManager.hide()
@@ -48,8 +45,6 @@ struct ConfirmBottomSheet : View {
                 }){
                     Text(self.cancelText)
                 }.buttonStyle(ButtonSheetStyle())
-                
-                
                 if let discardText = discardText {
                     Spacer()
                         .frame(width: 10)
@@ -63,7 +58,6 @@ struct ConfirmBottomSheet : View {
                     }.buttonStyle(ButtonSheetStyle())
                     
                 }
-                
                 Spacer()
                     .frame(width: 10)
                 

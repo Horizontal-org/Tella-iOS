@@ -13,6 +13,7 @@ struct Regex {
     static let textRegex = "^.{1,}"
     static let usernameRegex = "^.{3,}"
     static let urlRegex = #"^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$"#
+    static let codeRegex = "^[0-9]{6,6}$"
 }
 
 func validateRegex(value: String, pattern:String) -> Bool {
@@ -25,6 +26,14 @@ func validateRegex(value: String, pattern:String) -> Bool {
 }
 
 extension String {
+
+    func codeValidator() -> Bool {
+        guard !self.isEmpty else {
+            return false
+        }
+        guard validateRegex(value: self, pattern: Regex.codeRegex) else { return false }
+        return true
+    }
     
     func passwordValidator() -> Bool {
         guard !self.isEmpty else {
@@ -65,6 +74,5 @@ extension String {
         }
         return true
     }
-
 }
 

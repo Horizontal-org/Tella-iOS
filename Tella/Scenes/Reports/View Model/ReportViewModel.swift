@@ -1,5 +1,5 @@
 //
-//  Copyright © 2023 INTERNEWS. All rights reserved.
+//  Copyright © 2023 HORIZONTAL. All rights reserved.
 //
 
 import Foundation
@@ -10,7 +10,7 @@ class ReportViewModel {
     @Published var description : String = ""
     @Published var files : [ReportVaultFile] = []
     @Published var reportFiles : [ReportFile] = []
-    @Published var server : Server?
+    @Published var server : TellaServer?
     @Published var status : ReportStatus?
     @Published var apiID : String?
     
@@ -18,7 +18,7 @@ class ReportViewModel {
         
     }
     
-    init(id: Int?, title: String, description: String, files: [ReportVaultFile], reportFiles : [ReportFile], server: Server?, status: ReportStatus?, apiID: String?) {
+    init(id: Int?, title: String, description: String, files: [ReportVaultFile], reportFiles : [ReportFile], server: TellaServer?, status: ReportStatus?, apiID: String?) {
         self.id = id
         self.title = title
         self.description = description

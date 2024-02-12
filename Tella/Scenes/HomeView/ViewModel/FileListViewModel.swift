@@ -344,7 +344,9 @@ extension FileListViewModel {
     func addFolder(name: String) {
         let addFolderFileResult = appModel.vaultFilesManager?.addFolderFile(name: name, parentId: self.rootFile?.id)
         if case .success = addFolderFileResult {
-            getFiles()
+            DispatchQueue.main.async {
+                self.getFiles()
+            }
         }
     }
     
@@ -352,7 +354,9 @@ extension FileListViewModel {
         let selectedFilesIds = selectedFiles.compactMap({$0.id})
         let moveVaultFileResult = appModel.vaultFilesManager?.moveVaultFile(fileIds: selectedFilesIds, newParentId: rootFile?.id)
         if case .success = moveVaultFileResult {
-            getFiles()
+            DispatchQueue.main.async {
+                self.getFiles()
+            }
         }
     }
     
@@ -383,5 +387,19 @@ extension FileListViewModel {
 extension FileListViewModel {
     static func stub() -> FileListViewModel {
         return FileListViewModel(appModel: MainAppModel.stub(), filterType: .all, rootFile: VaultFileDB.stub())
+    }
+}
+
+extension FileListViewModel {
+    var deleteConfirmation: DeleteConfirmation {
+        let selectedFolders = selectedFiles.filter { $0.type == .directory }
+        let fileCount = selectedFiles.count - selectedFolders.count
+        let  totalFilesInsideFolders = self.appModel.vaultFilesManager!.getVaultFile(vaultFilesFolders: selectedFolders).count
+
+        let selectionCountDetails = SelectionCountDetails(fileCount: fileCount,
+                            foldersCount: selectedFolders.count,
+                            filesInsideFoldersCount: totalFilesInsideFolders)
+            
+        return DeleteConfirmation(selectionCountDetails: selectionCountDetails)
     }
 }
