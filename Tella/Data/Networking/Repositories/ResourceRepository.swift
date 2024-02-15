@@ -18,10 +18,10 @@ struct ResourceRepository: WebRepository {
     }
     
     func getResourceByFileName(server: TellaServer, fileName: String) -> AnyPublisher<Data, APIError> {
-        let apiResponse: APIResponse<Data> = getAPIResponse(endpoint: API.getResourceByFileName(serverUrl: server.url ?? "", fileName: fileName, token: server.accessToken ?? ""))
-        
+        let apiResponse = getAPIResponseForBinaryData(endpoint: API.getResourceByFileName(serverUrl: server.url ?? "", fileName: fileName, token: server.accessToken ?? ""))
+            
         return apiResponse
-            .compactMap{$0.0}
+            .compactMap { $0.0 }
             .eraseToAnyPublisher()
     }
 }
