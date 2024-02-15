@@ -12,25 +12,48 @@ typealias APIDataResponse = AnyPublisher<(Data,[AnyHashable:Any]?), APIError>
 protocol WebRepository {}
 
 extension WebRepository {
-    func getAPIResponse<Value>(endpoint: any APIRequest) -> APIResponse<Value>
-    where Value: Decodable {
+    private func fetchData(endpoint: any APIRequest) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
         do {
-            guard (NetworkMonitor.shared.isConnected) else {
+            guard NetworkMonitor.shared.isConnected else {
                 return Fail(error: APIError.noInternetConnection)
                     .eraseToAnyPublisher()
             }
             let request = try endpoint.urlRequest()
-            request.curlRepresentation()
             let configuration = URLSessionConfiguration.default
             configuration.waitsForConnectivity = false
-            
+
             return URLSession(configuration: configuration)
                 .dataTaskPublisher(for: request)
-                .requestJSON()
-        } catch _ {
+                .mapError { $0 as Error }
+                .eraseToAnyPublisher()
+        } catch {
             return Fail(error: APIError.invalidURL)
                 .eraseToAnyPublisher()
         }
+    }
+
+    func getAPIResponse<Value>(endpoint: any APIRequest) -> APIResponse<Value>
+    where Value: Decodable {
+        fetchData(endpoint: endpoint)
+            .requestJSON()
+            .eraseToAnyPublisher()
+    }
+
+    func getAPIResponseForBinaryData(endpoint: any APIRequest) -> APIResponse<Data> {
+        fetchData(endpoint: endpoint)
+            .tryMap { output in
+                guard let httpResponse = output.response as? HTTPURLResponse else {
+                    throw APIError.unexpectedResponse
+                }
+                guard httpResponse.statusCode == 200 || httpResponse.statusCode == 206 else {
+                    throw APIError.httpCode(httpResponse.statusCode)
+                }
+                return (output.data, httpResponse.allHeaderFields)
+            }
+            .mapError { error in
+                (error as? APIError) ?? APIError.unexpectedResponse
+            }
+            .eraseToAnyPublisher()
     }
 }
 // MARK: - Helpers
