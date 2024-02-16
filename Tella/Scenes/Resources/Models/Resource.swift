@@ -20,6 +20,20 @@ struct Resource: Codable, Identifiable {
     }
 }
 
+struct DownloadedResource: Codable, Identifiable {
+    let id: Int?
+    let externalId: String
+    let title: String
+    let fileName: String
+    let size: String
+    let serverId: Int?
+    let createdAt: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id, externalId, title, fileName, size, serverId, createdAt
+    }
+}
+
 
 // Mock data --- to be removed after API implementation
 let ListOfAvailableResources = [

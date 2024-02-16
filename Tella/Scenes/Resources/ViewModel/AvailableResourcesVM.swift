@@ -11,13 +11,17 @@ import Foundation
 import Combine
 
 class AvailableResourcesVM: ObservableObject {
+    @Published var appModel: MainAppModel
     @Published var availableResources: [ResourceCardViewModel] = []
+    @Published var downloadedResourcesVM : DownloadedResourcesVM?
     @Published var isLoading: Bool = false
     @Published var servers: [TellaServer] = []
     private var cancellables: Set<AnyCancellable> = []
-    init(mainAppModel: MainAppModel) {
+    
+    init(mainAppModel: MainAppModel, downloadedVM: DownloadedResourcesVM? = nil) {
+        self.appModel = mainAppModel
         self.servers = mainAppModel.vaultManager.tellaData?.tellaServers.value ?? []
-        
+        self.downloadedResourcesVM = downloadedVM
         getAvailableForDownloadResources()
     }
 
@@ -47,7 +51,9 @@ class AvailableResourcesVM: ObservableObject {
                                 id: resource.id,
                                 title: resource.title,
                                 fileName: resource.fileName,
-                                serverName: res.name
+                                serverName: res.name,
+                                size: resource.size,
+                                createdAt: resource.createdAt
                             )
                         }
                     }
@@ -59,10 +65,10 @@ class AvailableResourcesVM: ObservableObject {
         }
     }
     
-    func downloadResource(serverName: String, fileName: String) -> Void {
+    func downloadResource(serverName: String, resource: Resource) -> Void {
         let selectedServer = self.servers.first(where: {$0.name == serverName})
         
-        ResourceRepository().getResourceByFileName(server: selectedServer!, fileName: fileName)
+        ResourceRepository().getResourceByFileName(server: selectedServer!, fileName: resource.fileName)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 switch completion {
@@ -75,5 +81,9 @@ class AvailableResourcesVM: ObservableObject {
                 dump(data) //save this data in the device
             })
             .store(in: &cancellables)
+        
+        self.appModel.vaultManager.tellaData?.addResource(resource: resource, serverId: (selectedServer?.id!)!)
+        
+        self.downloadedResourcesVM?.fetchDownloadedResources()
     }
 }
