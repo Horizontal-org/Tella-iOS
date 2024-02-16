@@ -13,8 +13,10 @@ class ResourcesViewModel: ObservableObject {
     @Published var availableResourcesVM : AvailableResourcesVM
     
     init(mainAppModel: MainAppModel) {
-        self.downloadedResourcesVM = DownloadedResourcesVM()
-        self.availableResourcesVM = AvailableResourcesVM(mainAppModel: mainAppModel)
+        let downloadedVM = DownloadedResourcesVM(mainAppModel: mainAppModel)
+        
+        self.downloadedResourcesVM = downloadedVM
+        self.availableResourcesVM = AvailableResourcesVM(mainAppModel: mainAppModel, downloadedVM: downloadedVM)
     }
     
 }
