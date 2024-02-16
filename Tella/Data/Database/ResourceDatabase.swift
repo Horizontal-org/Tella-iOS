@@ -71,7 +71,7 @@ extension TellaDataBase {
             ]
             
             let resourceId = try statementBuilder.insertInto(tableName: D.tResource, keyValue: valuesToAdd)
-            return .success(1)
+            return .success(resourceId)
         } catch let error {
             debugLog(error)
             return .failure(error)

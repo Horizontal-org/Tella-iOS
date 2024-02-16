@@ -18,5 +18,4 @@ class ResourcesViewModel: ObservableObject {
         self.downloadedResourcesVM = downloadedVM
         self.availableResourcesVM = AvailableResourcesVM(mainAppModel: mainAppModel, downloadedVM: downloadedVM)
     }
-    
 }
