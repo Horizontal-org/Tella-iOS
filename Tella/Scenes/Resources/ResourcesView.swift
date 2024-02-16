@@ -32,7 +32,9 @@ struct ResourcesView: View {
         .navigationBarTitle("", displayMode: .inline)
         .toolbar {
             LeadingTitleToolbar(title: "Resources")
-            ReloadButton(action: {})
+            ReloadButton(action: {
+                resourcesViewModel.availableResourcesVM.getAvailableForDownloadResources()
+            })
         }
     }
 }
