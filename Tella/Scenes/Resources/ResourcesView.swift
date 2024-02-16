@@ -20,7 +20,7 @@ struct ResourcesView: View {
             ZStack {
                 VStack {
                     // Downloaded
-                    DownloadedResources(downloadedResources: resourcesViewModel.downloadedResourcesVM.downloadedResources)
+                    DownloadedResources(viewModel: resourcesViewModel.downloadedResourcesVM)
                     
                     // available for download
                     AvailableResources(viewModel: resourcesViewModel.availableResourcesVM)

@@ -9,28 +9,28 @@
 import SwiftUI
 
 struct DownloadedResources: View {
-    var downloadedResources: [ResourceCardViewModel]
+    @ObservedObject var viewModel: DownloadedResourcesVM
     var body: some View {
         VStack {
             SectionTitle(text: LocalizableResources.resourcesDownloadedTitle.localized)
-            if downloadedResources.isEmpty {
+            if viewModel.downloadedResources.isEmpty {
                 SectionMessage(text: LocalizableResources.resourcesDownloadedEmpty.localized)
             } else {
                 ScrollView {
                     LazyVStack {
-                        ForEach(downloadedResources) { resource in
+                        ForEach(viewModel.downloadedResources) { resource in
                             ResourceCard(title: resource.title,
                                          serverName: resource.serverName,
                                          rightButtonImage: "reports.more",
                                          rightButtonAction: {})
                         }
                     }
-                }.frame(maxHeight: CGFloat(downloadedResources.count) * 90)
+                }.frame(maxHeight: CGFloat(viewModel.downloadedResources.count) * 90)
             }
         }.padding(.bottom, 24)
     }
 }
 
 #Preview {
-    DownloadedResources(downloadedResources: [ResourceCardViewModel(id: "Resource", title: "title",fileName: "title.pdf", serverName: "serverName")])
+    DownloadedResources(viewModel: DownloadedResourcesVM(mainAppModel: MainAppModel.stub()))
 }
