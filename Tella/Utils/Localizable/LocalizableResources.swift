@@ -17,4 +17,5 @@ enum LocalizableResources : String, LocalizableDelegate {
     case resourcesAvailableTitle = "Resources_Available_Title"
     case resourcesAvailableMsg = "Resources_Available_Msg"
     case resourcesAvailableEmpty = "Resources_Available_Empty"
+    case resourcesAvailableErrorMsg = "Resources_Available_ErrorMsg"
 }

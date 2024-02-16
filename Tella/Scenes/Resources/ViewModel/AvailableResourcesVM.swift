@@ -43,6 +43,7 @@ class AvailableResourcesVM: ObservableObject {
                         break
                     case .failure(let error):
                         self.isLoading = false
+                        Toast.displayToast(message: LocalizableResources.resourcesAvailableErrorMsg.localized)
                         print("Error: \(error)")
                     }
 
