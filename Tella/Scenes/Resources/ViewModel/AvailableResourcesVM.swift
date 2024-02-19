@@ -65,7 +65,7 @@ class AvailableResourcesVM: ObservableObject {
             result in
             switch result {
             case .success(let data):
-                dump(data)  // Save this data in the device
+               self.saveToVault(data: data, fileName: resource.fileName)
                 self.appModel.vaultManager.tellaData?.addResource(
                     resource: resource, serverId: selectedServer.id!)
                 self.downloadedResourcesVM?.fetchDownloadedResources()
@@ -73,5 +73,27 @@ class AvailableResourcesVM: ObservableObject {
                 print("Error downloading file: \(error)")
             }
         }
+    }
+    
+    private func saveToVault(data: Data, fileName: String) {
+        guard let tempUrl = self.appModel.vaultFilesManager!.vaultManager?.createTempFileURL(fileName: fileName, pathExtension: "pdf") else {
+            return
+        }
+        do {
+            try data.write(to: tempUrl)
+        } catch {
+            print("Error writing file to temporary URL")
+            return
+        }
+        
+        _ = self.appModel.vaultFilesManager!.addVaultFile(filePaths: [tempUrl], parentId: nil)
+            .sink(receiveValue: { result in
+                switch result {
+                case .fileAdded(let files):
+                    print("File added to vault: \(files)")
+                case .importProgress(let progress):
+                    print("Import progress: \(progress.currentFile) of \(progress.totalFiles)")
+                }
+            })
     }
 }
