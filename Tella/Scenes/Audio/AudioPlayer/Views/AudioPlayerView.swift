@@ -32,7 +32,7 @@ struct AudioPlayerView: View {
             }
         }
         .onAppear {
-            self.viewModel.audioPlayerManager.currentAudioData = homeViewModel.vaultManager.loadFileData(fileName: vaultFile.id)
+            self.viewModel.audioPlayerManager.currentAudioData = homeViewModel.vaultManager.loadFileData(file: vaultFile)
             self.viewModel.audioPlayerManager.initPlayer()
         }
         .onDisappear {

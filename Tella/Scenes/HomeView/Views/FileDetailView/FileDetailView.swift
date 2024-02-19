@@ -31,7 +31,7 @@ struct FileDetailView: View {
             case .video:
                 VideoViewer(appModel: appModel, currentFile: file, playList: self.fileListViewModel.getVideoFiles())
             case .image:
-                ImageViewer(imageData: appModel.vaultManager.loadFileData1(file: file))
+                ImageViewer(imageData: appModel.vaultManager.loadFileData(file: file))
             case .folder:
                 EmptyView()
                 

@@ -11,6 +11,10 @@ protocol VaultDataBaseProtocol {
     func addVaultFile(file : VaultFileDB, parentId: String?) -> Result<Int,Error>
     func getVaultFiles(parentId: String?, filter: FilterType?, sort: FileSortOptions?) -> [VaultFileDB]
     func getVaultFile(id: String?) -> VaultFileDB?
+     func getNonUpdatedVaultFiles() -> [VaultFileDB]
+    @discardableResult
+    func updateEncryptionVaultFile(id: String?) -> Result<Bool, Error>
+    
     func getVaultFiles(ids: [String]) -> [VaultFileDB]
     func getRecentVaultFiles() -> [VaultFileDB]
     func renameVaultFile(id: String?, name: String?) -> Result<Bool, Error>
@@ -44,7 +48,8 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             switch oldVersion {
             case 0:
                 createTables()
-                
+            case 1:
+                addEncryptionMethod()
             default :
                 break
             }
@@ -77,6 +82,18 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         ]
         statementBuilder.createTable(tableName: VaultD.tVaultFile, columns: columns)
     }
+    
+    func addEncryptionMethod() {
+        do {
+            try statementBuilder.addColumnOn(tableName: VaultD.tVaultFile, 
+                                             columnName: VaultD.cEncryptionUpdated,
+                                             type: VaultD.real,
+                                             defaultValue: "0")
+        } catch let error {
+            debugLog(error)
+        }
+    }
+    
     
     func addVaultFile(file : VaultFileDB, parentId: String?) -> Result<Int,Error> {
         
@@ -146,7 +163,39 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             return nil
         }
     }
+
+    func getNonUpdatedVaultFiles() -> [VaultFileDB] {
+        do {
+            let vaultFilesDict = try statementBuilder.getSelectQuery(tableName: VaultD.tVaultFile,
+                                                                     equalCondition:[KeyValue(key: VaultD.cEncryptionUpdated, value: false)])
+            
+            let vaultFiles = vaultFilesDict.compactMap{VaultFileDB.init(dictionnary: $0)}
+            return vaultFiles
+            
+        } catch {
+            return []
+        }
+    }
     
+    @discardableResult
+    func updateEncryptionVaultFile(id: String?) -> Result<Bool, Error> {
+        
+        do {
+            
+            let valuesToUpdate = [KeyValue(key: VaultD.cEncryptionUpdated, value: 1)]
+            let vaultCondition = [KeyValue(key: VaultD.cId, value: id)]
+            
+            try statementBuilder.update(tableName: VaultD.tVaultFile,
+                                        valuesToUpdate: valuesToUpdate,
+                                        equalCondition: vaultCondition)
+            return .success(true)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+            
+        }
+    }
+
     func getVaultFiles(ids: [String]) -> [VaultFileDB] {
         do {
             

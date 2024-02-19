@@ -15,7 +15,7 @@ struct UwaziFileUtility {
     
     func getFilesInfo() -> [UwaziAttachment] {
         return files.compactMap { file in
-            if let fileData = self.mainAppModel?.vaultManager.loadFileData(fileName: file.id) {
+            if let fileData = self.mainAppModel?.vaultManager.loadFileDataOld(fileName: file.id) {
                 return UwaziAttachment(filename: file.name, data: fileData, fileExtension: file.fileExtension)
             } else {
                 return nil

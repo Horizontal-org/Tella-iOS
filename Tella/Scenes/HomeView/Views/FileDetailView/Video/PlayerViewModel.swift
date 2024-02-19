@@ -18,6 +18,7 @@ final class PlayerViewModel: ObservableObject {
     @Published var shouldDisableFastForward = false
     @Published var videoSize: CGSize?
     @Published var currentFile: VaultFileDB?
+    @Published var videoIsReady = false
 
     private var cancellable: Set<AnyCancellable> = []
     private var timeObserver: Any?
@@ -117,21 +118,30 @@ final class PlayerViewModel: ObservableObject {
     
     func setCurrentItem(_ file: VaultFileDB?) {
         
-        guard let file = file else { return   }
-        guard let videoURL = appModel?.vaultManager.loadVaultFileToURL1(file: file)  else {return}
-        let playerItem = AVPlayerItem(url:videoURL)
+        videoIsReady = false
+        self.currentPosition = .zero
+        self.videoDuration = nil
+        self.player.pause()
+        self.player.replaceCurrentItem(with: nil)
         
-        currentPosition = .zero
-        videoDuration = nil
-        player.replaceCurrentItem(with: playerItem)
-        player.play()
+        guard let file = file else { return }
         
-        playerItem.publisher(for: \.status)
-            .filter({ $0 == .readyToPlay })
-            .sink(receiveValue: { [weak self] _ in
-                self?.videoDuration = playerItem.asset.duration.seconds
-            })
-            .store(in: &cancellable)
+        DispatchQueue.main.async {
+            guard let videoURL = self.appModel?.vaultManager.loadVaultFileToURL(file: file)  else {return}
+            let playerItem = AVPlayerItem(url:videoURL)
+            
+            self.player.replaceCurrentItem(with: playerItem)
+            self.player.play()
+            self.videoIsReady = true
+
+            playerItem.publisher(for: \.status)
+                .filter({ $0 == .readyToPlay })
+                .sink(receiveValue: { [weak self] _ in
+                    self?.videoDuration = playerItem.asset.duration.seconds
+                })
+                .store(in: &self.cancellable)
+
+        }
     }
     
     func playVideo()  {
@@ -145,14 +155,17 @@ final class PlayerViewModel: ObservableObject {
     
     func showNextVideo() {
         if playList.count - 1 > currentItemIndex {
+            removeTmpFile()
             self.currentItemIndex += 1
             self.setCurrentItem(playList[self.currentItemIndex])
             self.currentFile = playList[self.currentItemIndex]
+            
         }
     }
     
     func showPreviousVideo() {
         if currentItemIndex > 0 {
+            removeTmpFile()
             self.currentItemIndex -= 1
             self.setCurrentItem(playList[self.currentItemIndex])
             self.currentFile = playList[self.currentItemIndex]
@@ -178,5 +191,18 @@ final class PlayerViewModel: ObservableObject {
             self.isSeekInProgress = false
             self.player.play()
         }
+    }
+    
+    func removeTmpFile() {
+        guard let item = playList[currentItemIndex] else {return}
+        guard let url = self.player.currentItem?.url else {return}
+        appModel?.vaultManager.deleteFiles(files: [url])
+    }
+}
+
+
+extension AVPlayerItem {
+    var url: URL? {
+        return (asset as? AVURLAsset)?.url
     }
 }

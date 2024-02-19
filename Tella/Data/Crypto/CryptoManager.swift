@@ -5,7 +5,6 @@
 import Foundation
 import LocalAuthentication
 import CommonCrypto
-import CryptoKit
 
 enum CryptoOperationEnum {
     case encrypt
@@ -355,7 +354,7 @@ class CryptoManager {
         }
     }
 
-    func cryptFile(inputFileURL: URL, outputFileURL:URL, encryptionKeyData: Data, operation: CryptoOperationEnum) throws {
+    func ccryptFile(inputFileURL: URL, outputFileURL:URL, encryptionKeyData: Data, operation: CryptoOperationEnum) throws {
 
         let bufferSize = 1024 * 1024 // 1MB buffer size
         
@@ -447,6 +446,159 @@ class CryptoManager {
         buffer.count = Int(encryptedByteCount)
         return buffer
      }
+    
+    
+    func cryptFile(inputFileURL: URL, outputFileURL:URL, encryptionKeyData: Data, cryptoOperation: CryptoOperationEnum) throws {
+        
+        let bufferSize = 1024 * 1024 * 200 // 1MB buffer size
+        
+        let _ = inputFileURL.startAccessingSecurityScopedResource()
+        defer { inputFileURL.stopAccessingSecurityScopedResource() }
+        
+        let _ = outputFileURL.startAccessingSecurityScopedResource()
+        defer { outputFileURL.stopAccessingSecurityScopedResource() }
+        
+        let keySize = size_t(kCCKeySizeAES256)
+        
+        
+        // Set up the encryption context
+        var cryptor: CCCryptorRef?
+        let algorithm = CCAlgorithm(kCCAlgorithmAES)
+        let options = CCOptions(ccNoPadding)
+        let mode = CCMode(kCCModeCTR)
+        var operation: CCOperation
+        if cryptoOperation == .encrypt {
+            operation = UInt32(kCCEncrypt)
+        } else {
+            operation = UInt32(kCCDecrypt)
+        }
+
+        let operationResult = encryptionKeyData.withUnsafeBytes { keyBytes in
+            
+            CCCryptorCreateWithMode(
+                operation,
+                algorithm,
+                mode,
+                options,
+                nil, // Initialization Vector
+                keyBytes.baseAddress, // Encryption Key
+                keySize,
+                nil,
+                0,
+                0,
+                CCModeOptions(kCCModeOptionCTR_BE),
+                &cryptor
+            )
+        }
+        
+        if operationResult !=  kCCSuccess {
+            debugLog("Error encryption \(operationResult)", space: .crypto)
+            throw CryptoError.cryptorCreationFailed
+        }
+        
+        
+        
+        //        defer {
+        //            CCCryptorRelease(cryptor!)
+        //        }
+        
+        // Open the input and output file handles
+        let inputFile = try FileHandle(forReadingFrom: inputFileURL)
+        let outputFile = try FileHandle(forWritingTo: outputFileURL)
+        
+        //        defer {
+        //            inputStream.closeFile()
+        //            outputStream.closeFile()
+        //        }
+        
+        var stop = false
+        
+        // Process the file in chunks
+        while true {
+            
+            try autoreleasepool {
+                
+                // Read a chunk from the input file
+
+                let inputBuffer = inputFile.readData(ofLength: bufferSize) as Data
+                
+                let dataLength = Int(inputBuffer.count)
+                // Get the correct output length
+                let outputLength = CCCryptorGetOutputLength(cryptor, (dataLength), true)
+                var encryptedData = Data(count: Int(bufferSize) + kCCBlockSizeAES128)
+                
+                if inputBuffer.isEmpty {
+                    // Reached end of file
+                    stop = true
+                }
+
+                // Update the encryption context with the input chunk and write the output to the output file
+                var encryptedByteCount = 0
+                
+                let operationResult = inputBuffer.withUnsafeBytes { inputBytes in
+                    encryptedData.withUnsafeMutableBytes { outputBytes in
+                        CCCryptorUpdate(
+                            cryptor!,
+                            inputBytes.baseAddress, inputBytes.count,
+                            outputBytes.baseAddress, outputBytes.count,
+                            &encryptedByteCount
+                        )
+                    }
+                }
+                
+                if operationResult != kCCSuccess {
+                    print(operationResult)
+                    inputFile.closeFile()
+                    outputFile.closeFile()
+                    throw CryptoError.encryptionFailed
+                }
+                
+                // Write the encrypted data to the output file
+                print("inputBuffer",inputBuffer)
+                print("encryptedData.count",encryptedData.count)
+                encryptedData.count = Int(encryptedByteCount)
+                
+                try outputFile.write(contentsOf: encryptedData)
+                
+            }
+            if stop {
+                break
+            }
+        }
+        
+        // Finalize encryption (if any)
+        var finalData = Data(count: Int(bufferSize) + kCCBlockSizeAES128)
+        
+        var bytesEncrypted = 0
+        
+        let finalStatus = finalData.withUnsafeMutableBytes { finalData in
+            CCCryptorFinal(
+                cryptor!,
+                finalData.baseAddress, finalData.count,
+                &bytesEncrypted
+            )
+        }
+        
+        if finalStatus != kCCSuccess  {
+            inputFile.closeFile()
+            outputFile.closeFile()
+            
+            throw CryptoError.finalizationFailed
+        }
+        
+        // Write the final encrypted data to the output file
+        print("finalData.count",finalData.count)
+        CCCryptorRelease(cryptor!)
+        
+        try outputFile.write(contentsOf: finalData)
+    }
+    
+    // Enum to handle encryption errors
+    enum CryptoError: Error {
+        case cryptorCreationFailed
+        case encryptionFailed
+        case finalizationFailed
+    }
 
 }
 
@@ -482,11 +634,13 @@ extension CryptoManager: CryptoManagerInterface {
                 return false
             }
             
-            try cryptFile(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData: encryptionKeyData, operation: .encrypt)
+            try cryptFile(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData: encryptionKeyData, cryptoOperation: .encrypt)
 
             return true
         }
-        catch {
+        catch let error {
+            print(error)
+            
             debugLog("Error encrypt", space: .crypto)
             return false
         }
@@ -505,7 +659,7 @@ extension CryptoManager: CryptoManagerInterface {
                 return false
             }
 
-            try cryptFile(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData:encryptionKeyData, operation: .decrypt)
+            try cryptFile(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData:encryptionKeyData, cryptoOperation: .decrypt)
 
             return true
             

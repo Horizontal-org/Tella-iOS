@@ -25,18 +25,6 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         return cryptoManager.metaPrivateKey?.getString()
     }
 
-    func save(_ data: Data, vaultFileId: String?) -> Bool? {
-        guard let vaultFileId else { return false }
-        debugLog("\(data.count); \(vaultFileId) ", space: .files)
-        let fileURL = containerURL(for: vaultFileId)
-        guard let encrypted = cryptoManager.encrypt(data),
-              fileManager.createFile(atPath: fileURL, contents: encrypted) else {
-            debugLog("encryption failed \(String(describing: vaultFileId))", level: .debug, space: .crypto)
-            return nil
-        }
-        return true
-    }
-    
     func save(_ filePath: URL, vaultFileId: String?) -> Bool? {
         guard let vaultFileId else { return false }
         debugLog("\(filePath)", space: .files)
@@ -55,25 +43,12 @@ class VaultManager : VaultManagerInterface, ObservableObject{
 
         return true
     }
-
-    func loadFileData(fileName: String?) -> Data? {
-        guard let fileId = fileName else { return nil}
-        
-        debugLog("\(fileId)", space: .files)
-        
-        let fileURL = containerURL(for: fileId)
-        
-        guard let encryptedData = fileManager.contents(atPath: fileURL) else {
-            return nil
-        }
-        return cryptoManager.decrypt(encryptedData)
-    }
-    
-    func loadFileData1(file vaultFile: VaultFileDB) -> Data? {
+ 
+    func loadFileData(file vaultFile: VaultFileDB) -> Data? {
         
         debugLog("\(vaultFile)", space: .files)
         
-        guard let fileURL = loadVaultFileToURL1(file: vaultFile) else {
+        guard let fileURL = loadVaultFileToURL(file: vaultFile) else {
             return nil
         }
         
@@ -81,20 +56,6 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     }
 
     func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL? {
-        
-        let data = self.loadFileData(fileName: vaultFile.id)
-        
-        let tmpFileURL = createTempFileURL(fileName: vaultFile.name, pathExtension: vaultFile.fileExtension)
-        
-        guard (fileManager.createFile(atPath: tmpFileURL, contents: data))
-                
-        else {
-            return nil
-        }
-        return tmpFileURL
-    }
-    
-    func loadVaultFileToURL1(file vaultFile: VaultFileDB) -> URL? {
 
         let tmpFileURL = createTempFileURL(pathExtension: vaultFile.fileExtension)
         
@@ -129,10 +90,37 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         return tmpUrlArray
     }
     
+    func loadFileDataOld(fileName: String?) -> Data? {
+        guard let fileId = fileName else { return nil}
+        
+        debugLog("\(fileId)", space: .files)
+        
+        let fileURL = containerURL(for: fileId)
+        
+        guard let encryptedData = fileManager.contents(atPath: fileURL) else {
+            return nil
+        }
+        return cryptoManager.decrypt(encryptedData)
+    }
+
+    func loadVaultFileToURLOld(file vaultFile: VaultFileDB) -> URL? {
+        
+        guard let data = self.loadFileDataOld(fileName: vaultFile.id) else { return nil }
+        
+        let tmpFileURL = createTempFileURL(pathExtension: vaultFile.fileExtension)
+        
+        guard (fileManager.createFile(atPath: tmpFileURL, contents: data))
+                
+        else {
+            return nil
+        }
+        return tmpFileURL
+    }
+
     func loadFilesInfos(file vaultFile: VaultFileDB, offsetSize:Int ) -> VaultFileInfo? {
         
         if vaultFile.type != .directory {
-            guard var data = self.loadFileData1(file: vaultFile) else {return nil }
+            guard var data = self.loadFileData(file: vaultFile) else {return nil }
             
             guard let extractedData = (data.extract(size: offsetSize)) else {return nil }
             
@@ -290,17 +278,8 @@ extension VaultManager {
 //  VaultManager extension contains the methods used for merging root files to vault db
 
 extension VaultManager {
-    
-    func getFilesToMergeToDatabase() -> AnyPublisher<[VaultFileDetailsToMerge],Never> {
-        return Deferred {
-            Future <[VaultFileDetailsToMerge],Never> {  [weak self] promise in
-                guard let self = self else { return }
-                promise(.success(self.getFilesInRoot()))
-            }
-        }.eraseToAnyPublisher()
-    }
-    
-    func getFilesInRoot() -> [VaultFileDetailsToMerge] {
+
+    func getFilesToMergeToDatabase() -> [VaultFileDetailsToMerge] {
         guard let root = self.load(name: self.rootFileName) else {return []}
         var vaultFileResult : [VaultFileDetailsToMerge] = []
         getFiles(root: root, vaultFileResult: &vaultFileResult)
@@ -326,7 +305,7 @@ extension VaultManager {
         
         let decoder = JSONDecoder()
         
-        guard let decryptedData = self.loadFileData(fileName: name) else { return nil}
+        guard let decryptedData = self.loadFileDataOld(fileName: name) else { return nil}
         
         do {
             return try decoder.decode(VaultFile.self, from: decryptedData)

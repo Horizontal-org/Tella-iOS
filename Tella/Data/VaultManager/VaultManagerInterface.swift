@@ -20,15 +20,15 @@ protocol VaultManagerInterface {
     func getPasswordType() -> PasswordTypeEnum
     func initialize(with key:String?) throws
     
-    func getFilesToMergeToDatabase() -> AnyPublisher<[VaultFileDetailsToMerge],Never>
-    func loadFileData(fileName: String?) -> Data?
-    func loadFileData1(file vaultFile: VaultFileDB) -> Data?
+    func getFilesToMergeToDatabase() -> [VaultFileDetailsToMerge]
+    func loadFileData(file vaultFile: VaultFileDB) -> Data?
     func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL?
-    func loadVaultFileToURL1(file vaultFile: VaultFileDB) -> URL?
     func loadVaultFilesToURL(files vaultFiles: [VaultFileDB]) -> [URL]
     func loadFilesInfos(file vaultFile: VaultFileDB, offsetSize:Int ) -> VaultFileInfo?
     
-    func save(_ data: Data, vaultFileId: String?) -> Bool?
+    func loadVaultFileToURLOld(file vaultFile: VaultFileDB) -> URL?
+    func loadFileDataOld(fileName: String?) -> Data?
+
     func save(_ filePath: URL, vaultFileId: String?) -> Bool?
     
     func saveDataToTempFile(data: Data?, pathExtension: String) -> URL?

@@ -122,6 +122,21 @@ class VaultFilesManager : VaultFilesManagerInterface {
         }
     }
     
+    func updateEncryptionVaultFile() {
+
+        let nonUpdatedVaultFiles = self.vaultDataBase.getNonUpdatedVaultFiles()
+
+        print("nonUpdatedVaultFiles.count", nonUpdatedVaultFiles.count)
+        
+        nonUpdatedVaultFiles.forEach { file in
+            guard let url = self.vaultManager?.loadVaultFileToURLOld(file: file), let fileID = file.id  else { return }
+            guard let isSaved = self.vaultManager?.save(url, vaultFileId: fileID) else { return }
+            if isSaved {
+                self.vaultDataBase.updateEncryptionVaultFile(id: fileID)
+            }
+        }
+    }
+    
     func addFolderFile(name: String, parentId: String?) -> Result<Int,Error>? {
         let file = VaultFileDB(type: .directory, name: name)
         return self.vaultDataBase.addVaultFile(file: file, parentId: parentId)

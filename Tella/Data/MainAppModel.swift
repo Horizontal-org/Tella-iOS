@@ -66,11 +66,13 @@ class MainAppModel: ObservableObject {
                 self.initDataSource()
 
                 if self.settings.shouldMergeVaultFilesToDb ?? true {
-                    self.mergeFileToDatabase(promise: promise)
-                } else {
-                    self.sendReports()
-                    promise(.success(true))
+                    self.mergeFileToDatabase()
                 }
+
+                self.vaultFilesManager?.updateEncryptionVaultFile()
+
+                self.sendReports()
+                promise(.success(true))
             }
         }.eraseToAnyPublisher()
     }
@@ -96,16 +98,21 @@ class MainAppModel: ObservableObject {
         }
     }
     
-    private func mergeFileToDatabase(promise:  @escaping (Result<Bool,Never>) -> Void) {
-        self.vaultManager.getFilesToMergeToDatabase()
-            .sink(receiveValue: { files in
-                self.saveFiles(files: files)
-                self.sendReports()
-                promise(.success(true))
-            }).store(in: &self.cancellable)
-        
-    }
+//    private func mergeFileToDatabase(promise:  @escaping (Result<Bool,Never>) -> Void) {
+//        self.vaultManager.getFilesToMergeToDatabase()
+//            .sink(receiveValue: { files in
+//                self.saveFiles(files: files)
+//                self.sendReports()
+//                promise(.success(true))
+//            }).store(in: &self.cancellable)
+//        
+//    }
     
+    private func mergeFileToDatabase() {
+        let files = self.vaultManager.getFilesToMergeToDatabase()
+        self.saveFiles(files: files)
+    }
+
     private func saveFiles(files: [VaultFileDetailsToMerge]) {
         do {
             try self.vaultFilesManager?.addVaultFiles(files: files)

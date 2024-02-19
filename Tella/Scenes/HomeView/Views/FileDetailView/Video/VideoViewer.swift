@@ -17,10 +17,16 @@ struct VideoViewer: View {
     }
     
     var body: some View {
-        VStack {
-            CustomVideoPlayer(playerVM: playerVM)
-                .overlay(CustomVideoControlsView(playerVM: playerVM)
-                         ,alignment: .bottom)
+        ZStack {
+            VStack {
+                CustomVideoPlayer(playerVM: playerVM)
+                    .overlay(CustomVideoControlsView(playerVM: playerVM)
+                             ,alignment: .bottom)
+                
+            }
+            if !playerVM.videoIsReady {
+                ProgressView()
+            }
         }
         .toolbar {
             LeadingTitleToolbar(title: playerVM.currentFile?.name ?? "")
