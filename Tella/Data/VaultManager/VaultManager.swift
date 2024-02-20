@@ -60,7 +60,7 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         let tmpFileURL = createTempFileURL(pathExtension: vaultFile.fileExtension)
         
         guard (fileManager.createEmptyFile(atPath: tmpFileURL)) else {
-            print("File not created.")
+            debugLog("File not created.")
             return nil
         }
 

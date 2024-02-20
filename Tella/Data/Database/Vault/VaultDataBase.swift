@@ -87,7 +87,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         do {
             try statementBuilder.addColumnOn(tableName: VaultD.tVaultFile, 
                                              columnName: VaultD.cEncryptionUpdated,
-                                             type: VaultD.real,
+                                             type: VaultD.integer,
                                              defaultValue: "0")
         } catch let error {
             debugLog(error)

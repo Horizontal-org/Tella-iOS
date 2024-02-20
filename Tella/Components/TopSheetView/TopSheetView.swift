@@ -58,7 +58,6 @@ struct TopSheetView<Content:View>: View {
                     GeometryReader { proxy in
                         Color.clear
                             .onAppear {
-                                print(proxy.size.height)
                                 self.childSize = proxy.size
                                 currentHeight = childSize.height > 130 ? 320.0 + safeArea.top : 163 + safeArea.top
                             }

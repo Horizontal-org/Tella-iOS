@@ -126,8 +126,6 @@ class VaultFilesManager : VaultFilesManagerInterface {
 
         let nonUpdatedVaultFiles = self.vaultDataBase.getNonUpdatedVaultFiles()
 
-        print("nonUpdatedVaultFiles.count", nonUpdatedVaultFiles.count)
-        
         nonUpdatedVaultFiles.forEach { file in
             guard let url = self.vaultManager?.loadVaultFileToURLOld(file: file), let fileID = file.id  else { return }
             guard let isSaved = self.vaultManager?.save(url, vaultFileId: fileID) else { return }

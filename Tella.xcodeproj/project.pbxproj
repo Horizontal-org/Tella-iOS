@@ -209,6 +209,7 @@
 		12781F4427E9FCE200FE9609 /* PasswordTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12781F4327E9FCE200FE9609 /* PasswordTypeEnum.swift */; };
 		12781F4727EA247500FE9609 /* DocumentPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEFD547268943CC0014EADE /* DocumentPickerView.swift */; };
 		12781F4B27EA315600FE9609 /* BundleInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F3DC3E42523951C0024B4A0 /* BundleInfo.swift */; };
+		12782B4A2B8400E500B5BC36 /* Cryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12782B492B8400E500B5BC36 /* Cryptor.swift */; };
 		1278B66127EB364500C9AC4D /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD4C039240F547300491438 /* Utils.swift */; };
 		1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1278B66427EB9C1400C9AC4D /* CameraView.swift */; };
 		127A5B2228538E0800FAAEB0 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127A5B2128538DFB00FAAEB0 /* Language.swift */; };
@@ -700,6 +701,7 @@
 		12776A9427BA761C00CDC5DC /* CustomCameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraController.swift; sourceTree = "<group>"; };
 		12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
 		12781F4327E9FCE200FE9609 /* PasswordTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTypeEnum.swift; sourceTree = "<group>"; };
+		12782B492B8400E500B5BC36 /* Cryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cryptor.swift; sourceTree = "<group>"; };
 		1278B66427EB9C1400C9AC4D /* CameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		127A5B2128538DFB00FAAEB0 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		127B56D4279AC28200F902C9 /* CancelImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelImportView.swift; sourceTree = "<group>"; };
@@ -1135,6 +1137,7 @@
 			children = (
 				D50727BE2625561400BBC370 /* KeychainManager.swift */,
 				D5B823EF262775D80008E04B /* CryptoManager.swift */,
+				12782B492B8400E500B5BC36 /* Cryptor.swift */,
 				D538C8AB264CE8D300D457B0 /* CryptoFileManager.swift */,
 				12781F4327E9FCE200FE9609 /* PasswordTypeEnum.swift */,
 			);
@@ -2908,6 +2911,7 @@
 				E177363C2A83AE4800FE01C0 /* UwaziTemplateDTO.swift in Sources */,
 				125D231C271F119D00250FBB /* Validator.swift in Sources */,
 				D51639802631130E003A11B5 /* HomeView.swift in Sources */,
+				12782B4A2B8400E500B5BC36 /* Cryptor.swift in Sources */,
 				1293F6702AD8295400F6CFBD /* BorderedTextEditorView.swift in Sources */,
 				129B845928BFED9700F1B344 /* TellaButtonView.swift in Sources */,
 				123048D7295F95BB0015CD96 /* SubmittedDetailsItemView.swift in Sources */,
