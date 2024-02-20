@@ -31,6 +31,7 @@ class ResourceService {
         return DownloadedResourceCardViewModel(
             id: resource.id!,
             externalId: resource.externalId,
+            vaultFileId: resource.vaultFileId,
             title: resource.title,
             fileName: resource.fileName,
             serverName: selectedServer?.name ?? "",
