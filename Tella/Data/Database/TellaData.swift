@@ -130,7 +130,10 @@ class TellaData : ObservableObject {
     }
     
     func addResource(resource: Resource, serverId: Int) -> Void {
-        let addResourceResult = database.addDownloadedResource(resource: resource, serverId: serverId)
+        let _ = database.addDownloadedResource(resource: resource, serverId: serverId)
+    }
+    func deleteDownloadedResource(resourceId: Int) -> Void {
+        let _ = database.deleteDownloadedResource(resourceId: resourceId)
     }
     func getCurrentReport() -> Report? {
         return database.getCurrentReport()

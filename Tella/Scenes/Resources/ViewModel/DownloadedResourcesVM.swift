@@ -10,7 +10,7 @@ import Foundation
 
 class DownloadedResourcesVM : ObservableObject {
     @Published var appModel: MainAppModel
-    @Published var downloadedResources: [ResourceCardViewModel] = []
+    @Published var downloadedResources: [DownloadedResourceCardViewModel] = []
     
     init(mainAppModel: MainAppModel) {
         self.appModel = mainAppModel
@@ -19,5 +19,14 @@ class DownloadedResourcesVM : ObservableObject {
     
     func fetchDownloadedResources() {
         downloadedResources = ResourceService().getDownloadedResources(from: appModel)
+    }
+    
+    func deleteResource(resourceId: Int) -> Void {
+        self.appModel.vaultManager.tellaData?.deleteDownloadedResource(resourceId: resourceId)
+        self.fetchDownloadedResources()
+    }
+    
+    func openResource(fileName: String) {
+//        let url = self.appModel.vaultManager.loadVaultFileToURL(file: VaultFileDB)
     }
 }

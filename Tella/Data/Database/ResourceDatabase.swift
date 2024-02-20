@@ -71,9 +71,21 @@ extension TellaDataBase {
             ]
             
             let resourceId = try statementBuilder.insertInto(tableName: D.tResource, keyValue: valuesToAdd)
+            
             return .success(resourceId)
         } catch let error {
             debugLog(error)
+            return .failure(error)
+        }
+    }
+    
+    func deleteDownloadedResource(resourceId: Int) -> Result <Bool, Error> {
+        do {
+            let condition = [KeyValue(key: D.cId, value: resourceId)]
+            
+            try statementBuilder.delete(tableName: D.tResource, primarykeyValue: condition)
+            return .success(true)
+        } catch let error {
             return .failure(error)
         }
     }

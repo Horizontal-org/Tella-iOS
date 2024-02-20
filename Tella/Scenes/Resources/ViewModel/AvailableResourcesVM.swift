@@ -65,7 +65,7 @@ class AvailableResourcesVM: ObservableObject {
             result in
             switch result {
             case .success(let data):
-               self.saveToVault(data: data, fileName: resource.fileName)
+                self.saveToVault(data: data, fileName: resource.fileName)
                 self.appModel.vaultManager.tellaData?.addResource(
                     resource: resource, serverId: selectedServer.id!)
                 self.downloadedResourcesVM?.fetchDownloadedResources()
