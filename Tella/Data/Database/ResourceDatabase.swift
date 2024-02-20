@@ -13,6 +13,7 @@ extension TellaDataBase {
         let columns = [
             cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
             cddl(D.cExternalId, D.text),
+            cddl(D.cVaultFileId, D.text),
             cddl(D.cFilename, D.text),
             cddl(D.cTitle, D.cTitle),
             cddl(D.cSize, D.text),
@@ -43,6 +44,7 @@ extension TellaDataBase {
     private func getResource(dictionnary: [String: Any]) -> DownloadedResource {
         let id = dictionnary[D.cId] as? Int
         let externalId = dictionnary[D.cExternalId] as? String
+        let vaultFileId = dictionnary[D.cVaultFileId] as? String
         let filename = dictionnary[D.cFilename] as? String
         let title = dictionnary[D.cTitle] as? String
         let size = dictionnary[D.cSize] as? String
@@ -52,6 +54,7 @@ extension TellaDataBase {
         return DownloadedResource(
             id: id,
             externalId: externalId ?? "",
+            vaultFileId: vaultFileId ?? "",
             title: title ?? "",
             fileName: filename ?? "",
             size: size ?? "",
@@ -60,9 +63,10 @@ extension TellaDataBase {
         )
     }
     
-    func addDownloadedResource(resource: Resource, serverId: Int)  -> Result<Int, Error> {
+    func addDownloadedResource(resource: Resource, serverId: Int, vaultFileId: String)  -> Result<Int, Error> {
         do {
             let valuesToAdd = [KeyValue(key: D.cExternalId, value: resource.id),
+                               KeyValue(key: D.cVaultFileId, value: vaultFileId),
                                KeyValue(key: D.cFilename, value: resource.fileName),
                                KeyValue(key: D.cTitle, value: resource.title),
                                KeyValue(key: D.cSize, value: resource.size),

@@ -85,6 +85,7 @@ struct D {
     static let cFilename = "c_filename"
     static let cExternalId = "c_external_id"
     static let cSize = "c_size"
+    static let cVaultFileId = "c_vault_file_id"
 
 }
 

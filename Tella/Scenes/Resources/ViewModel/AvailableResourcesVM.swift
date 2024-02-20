@@ -65,18 +65,15 @@ class AvailableResourcesVM: ObservableObject {
             result in
             switch result {
             case .success(let data):
-                self.saveToVault(data: data, fileName: resource.fileName)
-                self.appModel.vaultManager.tellaData?.addResource(
-                    resource: resource, serverId: selectedServer.id!)
-                self.downloadedResourcesVM?.fetchDownloadedResources()
+                self.saveToVault(data: data, resource: resource, serverId: selectedServer.id!)
             case .failure(let error):
                 print("Error downloading file: \(error)")
             }
         }
     }
     
-    private func saveToVault(data: Data, fileName: String) {
-        guard let tempUrl = self.appModel.vaultFilesManager!.vaultManager?.createTempFileURL(fileName: fileName, pathExtension: "pdf") else {
+    private func saveToVault(data: Data, resource: Resource, serverId: Int) {
+        guard let tempUrl = self.appModel.vaultFilesManager!.vaultManager?.createTempFileURL(fileName: resource.fileName, pathExtension: "pdf") else {
             return
         }
         do {
@@ -86,14 +83,23 @@ class AvailableResourcesVM: ObservableObject {
             return
         }
         
-        _ = self.appModel.vaultFilesManager!.addVaultFile(filePaths: [tempUrl], parentId: nil)
+        self.appModel.vaultFilesManager!.addVaultFile(filePaths: [tempUrl], parentId: nil)
+            .receive(on: DispatchQueue.main)
             .sink(receiveValue: { result in
                 switch result {
-                case .fileAdded(let files):
-                    print("File added to vault: \(files)")
-                case .importProgress(let progress):
-                    print("Import progress: \(progress.currentFile) of \(progress.totalFiles)")
+                case .fileAdded(let vaultFiles):
+                    guard let vaultFile = vaultFiles.first else { return  }
+                    self.insertResources(vaultFile: vaultFile, resource: resource, serverId: serverId)
+                case .importProgress(_):
+                    break
                 }
-            })
+            }).store(in: &cancellables)
+    }
+    
+    private func insertResources(vaultFile: VaultFileDB, resource: Resource, serverId: Int) -> Void {
+        dump(vaultFile.id)
+        self.appModel.vaultManager.tellaData?.addResource(
+            resource: resource, serverId: serverId, vaultFileId: vaultFile.id!)
+        self.downloadedResourcesVM?.fetchDownloadedResources()
     }
 }

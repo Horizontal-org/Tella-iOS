@@ -44,6 +44,7 @@ class ResourceCardViewModel: Hashable, Identifiable {
 class DownloadedResourceCardViewModel: Hashable, Identifiable {
     var id: Int
     var externalId: String
+    var vaultFileId: String
     var title: String
     var fileName: String
     var serverName: String
@@ -53,6 +54,7 @@ class DownloadedResourceCardViewModel: Hashable, Identifiable {
     init(
         id: Int,
         externalId: String,
+        vaultFileId: String,
         title: String,
         fileName: String,
         serverName: String,
@@ -61,6 +63,7 @@ class DownloadedResourceCardViewModel: Hashable, Identifiable {
     ) {
         self.id = id
         self.externalId = externalId
+        self.vaultFileId = vaultFileId
         self.title = title
         self.fileName = fileName
         self.serverName = serverName
