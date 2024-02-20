@@ -40,3 +40,39 @@ class ResourceCardViewModel: Hashable, Identifiable {
         hasher.combine(id)
     }
 }
+
+class DownloadedResourceCardViewModel: Hashable, Identifiable {
+    var id: Int
+    var externalId: String
+    var title: String
+    var fileName: String
+    var serverName: String
+    var size: String
+    var createdAt: String
+    
+    init(
+        id: Int,
+        externalId: String,
+        title: String,
+        fileName: String,
+        serverName: String,
+        size: String,
+        createdAt: String
+    ) {
+        self.id = id
+        self.externalId = externalId
+        self.title = title
+        self.fileName = fileName
+        self.serverName = serverName
+        self.size = size
+        self.createdAt = createdAt
+    }
+    
+    static func == (lhs: DownloadedResourceCardViewModel, rhs: DownloadedResourceCardViewModel) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}

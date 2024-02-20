@@ -315,6 +315,7 @@
 		1501401D2B71243A00991D69 /* LocalizableResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401C2B71243A00991D69 /* LocalizableResources.swift */; };
 		1501401F2B7199FD00991D69 /* DownloadedResourcesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401E2B7199FD00991D69 /* DownloadedResourcesVM.swift */; };
 		150140212B719A0B00991D69 /* AvailableResourcesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150140202B719A0B00991D69 /* AvailableResourcesVM.swift */; };
+		150913422B841C3F001E782A /* ResourceActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150913412B841C3F001E782A /* ResourceActionType.swift */; };
 		15459DC82B7FE42900E7ECE7 /* ResourceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15459DC72B7FE42900E7ECE7 /* ResourceService.swift */; };
 		155369232B7E9CC100129F2F /* ResourceDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155369222B7E9CC100129F2F /* ResourceDatabase.swift */; };
 		15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15622F492B72B1FF00289816 /* DeleteConfirmation.swift */; };
@@ -816,6 +817,7 @@
 		1501401C2B71243A00991D69 /* LocalizableResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableResources.swift; sourceTree = "<group>"; };
 		1501401E2B7199FD00991D69 /* DownloadedResourcesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResourcesVM.swift; sourceTree = "<group>"; };
 		150140202B719A0B00991D69 /* AvailableResourcesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableResourcesVM.swift; sourceTree = "<group>"; };
+		150913412B841C3F001E782A /* ResourceActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActionType.swift; sourceTree = "<group>"; };
 		15459DC72B7FE42900E7ECE7 /* ResourceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceService.swift; sourceTree = "<group>"; };
 		155369222B7E9CC100129F2F /* ResourceDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDatabase.swift; sourceTree = "<group>"; };
 		15622F492B72B1FF00289816 /* DeleteConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmation.swift; sourceTree = "<group>"; };
@@ -2077,6 +2079,7 @@
 			isa = PBXGroup;
 			children = (
 				15791C1F2B6C2D8C00D67C74 /* Resource.swift */,
+				150913412B841C3F001E782A /* ResourceActionType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3159,6 +3162,7 @@
 				125D2326271F896400250FBB /* CustomPinView.swift in Sources */,
 				E1EEE29A29EECF25009FE227 /* UwaziAddServerURLView.swift in Sources */,
 				CC13138C2A5DB79B0057271C /* BottomButtonsView.swift in Sources */,
+				150913422B841C3F001E782A /* ResourceActionType.swift in Sources */,
 				129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */,
 				1203CDDC298C5B9100D09073 /* ReportActionType.swift in Sources */,
 				E16D20CF2ABEAAB1001708CC /* TemplateItemViewModel.swift in Sources */,
