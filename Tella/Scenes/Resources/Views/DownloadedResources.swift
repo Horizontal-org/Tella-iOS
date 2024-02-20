@@ -23,34 +23,42 @@ struct DownloadedResources: View {
                             ResourceCard(title: resource.title,
                                          serverName: resource.serverName,
                                          rightButtonImage: "reports.more",
-                                         rightButtonAction: {showResourceBottomSheet(resourceTitle: resource.title, resourceId: resource.id)})
+                                         rightButtonAction: {showResourceBottomSheet(resourceTitle: resource.title, resourceId: resource.id, resourceVaultFile: resource.vaultFileId)})
                         }
                     }
                 }.frame(maxHeight: CGFloat(viewModel.downloadedResources.count) * 90)
             }
         }.padding(.bottom, 24)
+        .sheet(isPresented: $viewModel.isOpenFile, onDismiss: {
+            viewModel.pdfFile = nil
+        }) {
+            if let file = viewModel.pdfFile {
+                // todo: add header
+                QuickLookView(file: file)
+            }
+        }
     }
     
-    private func showResourceBottomSheet(resourceTitle: String, resourceId: Int) {
+    private func showResourceBottomSheet(resourceTitle: String, resourceId: Int, resourceVaultFile: String) {
         sheetManager.showBottomSheet(modalHeight: 176) {
             ActionListBottomSheet(items: ResourceActionItems, headerTitle: resourceTitle, action: { item in
                     let type = item.type as? ResourceActionType
                     if type == .delete {
-                        showDeleteResourceConfirmationView(resourceTitle: resourceTitle, resourceId: resourceId)
+                        showDeleteResourceConfirmationView(resourceTitle: resourceTitle, resourceId: resourceId, resourceVaultFile: resourceVaultFile)
                     } else {
-                        dump("View resource")
+                        viewModel.openResource(vaultFileId: resourceVaultFile)
                     }
                 })
         }
     }
     
-    private func showDeleteResourceConfirmationView(resourceTitle: String, resourceId: Int) {
+    private func showDeleteResourceConfirmationView(resourceTitle: String, resourceId: Int, resourceVaultFile: String) {
         sheetManager.showBottomSheet(modalHeight: 200) {
             return ConfirmBottomSheet(titleText: "Remove from downloads",
                                       msgText: "Are you sure you want to remove this resource? You can always download it again",
                                       cancelText: "CANCEL",
                                       actionText: "REMOVE") {
-                viewModel.deleteResource(resourceId: resourceId)
+                viewModel.deleteResource(resourceId: resourceId, vaultFileId: resourceVaultFile)
                 Toast.displayToast(message: "“\(resourceTitle)” has been removed from your downloads")
             }
         }
