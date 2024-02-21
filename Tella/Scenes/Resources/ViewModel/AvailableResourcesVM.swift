@@ -32,6 +32,7 @@ class AvailableResourcesVM: ObservableObject {
 
     func getAvailableForDownloadResources() {
         self.isLoading = true
+        self.availableResources = []
 
         resourceService.getAvailableResources(appModel: appModel, servers: servers)
             .receive(on: DispatchQueue.main)
@@ -97,7 +98,6 @@ class AvailableResourcesVM: ObservableObject {
     }
     
     private func insertResources(vaultFile: VaultFileDB, resource: Resource, serverId: Int) -> Void {
-        dump(vaultFile.id)
         self.appModel.vaultManager.tellaData?.addResource(
             resource: resource, serverId: serverId, vaultFileId: vaultFile.id!)
         self.downloadedResourcesVM?.fetchDownloadedResources()
