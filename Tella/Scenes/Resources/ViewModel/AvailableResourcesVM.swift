@@ -27,7 +27,9 @@ class AvailableResourcesVM: ObservableObject {
         self.servers = mainAppModel.vaultManager.tellaData?.tellaServers.value ?? []
         self.downloadedResourcesVM = downloadedVM
         self.resourceService = resourceService
-        getAvailableForDownloadResources()
+        self.getAvailableForDownloadResources()
+        
+        self.listenDownloadDeletion()
     }
 
     func getAvailableForDownloadResources() {
@@ -50,7 +52,13 @@ class AvailableResourcesVM: ObservableObject {
 
                 },
                 receiveValue: { resources in
-                    self.availableResources.append(contentsOf: resources)
+                    resources.forEach { resource in
+                        let isDownloaded = self.downloadedResourcesVM?.downloadedResources.contains(where: { $0.externalId == resource.id })
+                        
+                        if(!isDownloaded!) {
+                            self.availableResources.append(resource)
+                        }
+                    }
                     self.isLoading = false
 
                 }
@@ -81,9 +89,18 @@ class AvailableResourcesVM: ObservableObject {
             
             if save {
                 self.downloadedResourcesVM?.fetchDownloadedResources()
+                self.availableResources.removeAll { $0.id == resource.id}
             }
         } catch {
             debugLog(error)
         }
+    }
+    
+    private func listenDownloadDeletion() {
+        self.downloadedResourcesVM?.resourceDeleted
+            .sink { [weak self] _ in
+                self?.getAvailableForDownloadResources()
+            }
+            .store(in: &cancellables)
     }
 }
