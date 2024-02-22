@@ -74,32 +74,16 @@ class AvailableResourcesVM: ObservableObject {
     }
     
     private func saveToVault(data: Data, resource: Resource, serverId: Int) {
-        guard let tempUrl = self.appModel.vaultFilesManager!.vaultManager?.createTempFileURL(fileName: resource.fileName, pathExtension: "pdf") else {
-            return
-        }
-        do {
-            try data.write(to: tempUrl)
-        } catch {
-            print("Error writing file to temporary URL")
-            return
-        }
         
-        self.appModel.vaultFilesManager!.addVaultFile(filePaths: [tempUrl], parentId: nil)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { result in
-                switch result {
-                case .fileAdded(let vaultFiles):
-                    guard let vaultFile = vaultFiles.first else { return  }
-                    self.insertResources(vaultFile: vaultFile, resource: resource, serverId: serverId)
-                case .importProgress(_):
-                    break
-                }
-            }).store(in: &cancellables)
-    }
-    
-    private func insertResources(vaultFile: VaultFileDB, resource: Resource, serverId: Int) -> Void {
-        self.appModel.vaultManager.tellaData?.addResource(
-            resource: resource, serverId: serverId, vaultFileId: vaultFile.id!)
-        self.downloadedResourcesVM?.fetchDownloadedResources()
+        do {
+            let resourceId = try self.appModel.vaultManager.tellaData?.addResource(resource: resource, serverId: serverId)
+            guard let save = self.appModel.vaultManager.save(data, vaultFileId: resourceId) else { return }
+            
+            if save {
+                self.downloadedResourcesVM?.fetchDownloadedResources()
+            }
+        } catch {
+            debugLog(error)
+        }
     }
 }

@@ -49,19 +49,20 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         }
         return cryptoManager.decrypt(encryptedData)
     }
-    
-    func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL? {
         
-        let data = self.loadFileData(fileName: vaultFile.id)
+    func loadFileToURL(fileName: String, fileExtension: String, identifier: String) -> URL? {
+        let data = self.loadFileData(fileName: identifier)
         
-        let tmpFileURL = createTempFileURL(fileName: vaultFile.name, pathExtension: vaultFile.fileExtension)
+        let tmpFileURL = createTempFileURL(fileName: fileName, pathExtension: fileExtension)
         
-        guard (fileManager.createFile(atPath: tmpFileURL, contents: data))
-                
-        else {
+        guard fileManager.createFile(atPath: tmpFileURL, contents: data) else {
             return nil
         }
         return tmpFileURL
+    }
+
+    func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL? {
+        return loadFileToURL(fileName: vaultFile.name, fileExtension: vaultFile.fileExtension, identifier: vaultFile.id!)
     }
     
     func loadVaultFilesToURL(files vaultFiles: [VaultFileDB]) -> [URL] {
