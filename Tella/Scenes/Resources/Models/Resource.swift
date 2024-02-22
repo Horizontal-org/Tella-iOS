@@ -21,9 +21,8 @@ struct Resource: Codable, Identifiable {
 }
 
 struct DownloadedResource: Codable, Identifiable {
-    let id: Int?
+    let id: String
     let externalId: String
-    let vaultFileId: String
     let title: String
     let fileName: String
     let size: String
@@ -31,6 +30,6 @@ struct DownloadedResource: Codable, Identifiable {
     let createdAt: String
     
     enum CodingKeys: String, CodingKey {
-        case id, externalId, vaultFileId, title, fileName, size, serverId, createdAt
+        case id, externalId, title, fileName, size, serverId, createdAt
     }
 }

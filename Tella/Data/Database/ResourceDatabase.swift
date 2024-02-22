@@ -11,9 +11,8 @@ import Foundation
 extension TellaDataBase {
     func createResourceTable() {
         let columns = [
-            cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cId, D.text, primaryKey: true, autoIncrement: false),
             cddl(D.cExternalId, D.text),
-            cddl(D.cVaultFileId, D.text),
             cddl(D.cFilename, D.text),
             cddl(D.cTitle, D.cTitle),
             cddl(D.cSize, D.text),
@@ -42,7 +41,7 @@ extension TellaDataBase {
     }
     
     private func getResource(dictionnary: [String: Any]) -> DownloadedResource {
-        let id = dictionnary[D.cId] as? Int
+        let id = dictionnary[D.cId] as? String
         let externalId = dictionnary[D.cExternalId] as? String
         let vaultFileId = dictionnary[D.cVaultFileId] as? String
         let filename = dictionnary[D.cFilename] as? String
@@ -52,9 +51,8 @@ extension TellaDataBase {
         let serverId = dictionnary[D.cServerId] as? Int
         
         return DownloadedResource(
-            id: id,
+            id: id ?? "",
             externalId: externalId ?? "",
-            vaultFileId: vaultFileId ?? "",
             title: title ?? "",
             fileName: filename ?? "",
             size: size ?? "",
@@ -63,10 +61,11 @@ extension TellaDataBase {
         )
     }
     
-    func addDownloadedResource(resource: Resource, serverId: Int, vaultFileId: String)  -> Result<Int, Error> {
+    func addDownloadedResource(resource: Resource, serverId: Int)  -> Result<String, Error> {
         do {
-            let valuesToAdd = [KeyValue(key: D.cExternalId, value: resource.id),
-                               KeyValue(key: D.cVaultFileId, value: vaultFileId),
+            let uniqueId = UUID().uuidString
+            let valuesToAdd = [KeyValue(key: D.cId, value: uniqueId),
+                               KeyValue(key: D.cExternalId, value: resource.id),
                                KeyValue(key: D.cFilename, value: resource.fileName),
                                KeyValue(key: D.cTitle, value: resource.title),
                                KeyValue(key: D.cSize, value: resource.size),
@@ -74,16 +73,16 @@ extension TellaDataBase {
                                KeyValue(key: D.cServerId, value: serverId)
             ]
             
-            let resourceId = try statementBuilder.insertInto(tableName: D.tResource, keyValue: valuesToAdd)
-            
-            return .success(resourceId)
+            try statementBuilder.insertInto(tableName: D.tResource, keyValue: valuesToAdd)
+
+            return .success(uniqueId)
         } catch let error {
             debugLog(error)
             return .failure(error)
         }
     }
     
-    func deleteDownloadedResource(resourceId: Int) -> Result <Bool, Error> {
+    func deleteDownloadedResource(resourceId: String) -> Result <Bool, Error> {
         do {
             let condition = [KeyValue(key: D.cId, value: resourceId)]
             
