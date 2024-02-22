@@ -14,7 +14,8 @@ class AvailableResourcesVM: ObservableObject {
     @Published var appModel: MainAppModel
     @Published var availableResources: [ResourceCardViewModel] = []
     @Published var downloadedResourcesVM: DownloadedResourcesVM?
-    @Published var isLoading: Bool = false
+    @Published var isLoadingList: Bool = false
+    @Published var isLoadingCard: Bool = false
     @Published var servers: [TellaServer] = []
     private let resourceService: ResourceService
     private var cancellables: Set<AnyCancellable> = []
@@ -33,7 +34,7 @@ class AvailableResourcesVM: ObservableObject {
     }
 
     func getAvailableForDownloadResources() {
-        self.isLoading = true
+        self.isLoadingList = true
         self.availableResources = []
 
         resourceService.getAvailableResources(appModel: appModel, servers: servers)
@@ -42,10 +43,10 @@ class AvailableResourcesVM: ObservableObject {
                 receiveCompletion: { completion in
                     switch completion {
                     case .finished:
-                        self.isLoading = false
+                        self.isLoadingList = false
                         break
                     case .failure(let error):
-                        self.isLoading = false
+                        self.isLoadingList = false
                         Toast.displayToast(message: LocalizableResources.resourcesAvailableErrorMsg.localized)
                         print("Error: \(error)")
                     }
@@ -59,13 +60,14 @@ class AvailableResourcesVM: ObservableObject {
                             self.availableResources.append(resource)
                         }
                     }
-                    self.isLoading = false
+                    self.isLoadingList = false
 
                 }
             ).store(in: &cancellables)
     }
 
     func downloadResource(serverName: String, resource: Resource) {
+        self.isLoadingCard = true
         guard let selectedServer = servers.first(where: { $0.name == serverName }) else {
             return
         }
@@ -91,6 +93,8 @@ class AvailableResourcesVM: ObservableObject {
                 self.downloadedResourcesVM?.fetchDownloadedResources()
                 self.availableResources.removeAll { $0.id == resource.id}
             }
+            
+            self.isLoadingCard = false
         } catch {
             debugLog(error)
         }
