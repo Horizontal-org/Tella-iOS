@@ -23,6 +23,7 @@ protocol VaultManagerInterface {
     func getFilesToMergeToDatabase() -> [VaultFileDetailsToMerge]
     func loadFileData(file vaultFile: VaultFileDB) -> Data?
     func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL?
+    func loadFileToURL(fileName: String, fileExtension: String, identifier: String) -> URL?
     func loadVaultFilesToURL(files vaultFiles: [VaultFileDB]) -> [URL]
     func extract(from inputFileURL: URL, offsetSize:Int)
     func loadVaultFileToURLOld(file vaultFile: VaultFileDB) -> URL?

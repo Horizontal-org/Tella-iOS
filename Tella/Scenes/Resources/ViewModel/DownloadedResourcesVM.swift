@@ -23,16 +23,15 @@ class DownloadedResourcesVM : ObservableObject {
         downloadedResources = ResourceService().getDownloadedResources(from: appModel)
     }
     
-    func deleteResource(resourceId: Int, vaultFileId: String) -> Void {
-        self.appModel.vaultFilesManager?.deleteVaultFile(fileIds: [vaultFileId])
+    func deleteResource(resourceId: String) -> Void {
+        self.appModel.vaultManager.deleteVaultFile(filesIds: [resourceId])
         self.appModel.vaultManager.tellaData?.deleteDownloadedResource(resourceId: resourceId)
         self.fetchDownloadedResources()
     }
     
-    func openResource(vaultFileId: String) {
-        guard let vaultFileDB = self.appModel.vaultFilesManager?.getVaultFile(id: vaultFileId) else { return }
-
-        let url = self.appModel.vaultManager.loadVaultFileToURL(file: vaultFileDB)
+    func openResource(resourceId: String, fileName: String) {
+        let url = self.appModel.vaultManager.loadFileToURL(fileName: fileName, fileExtension: "pdf", identifier: resourceId)
+        
         self.pdfFile = url
         self.isOpenFile = true
     }

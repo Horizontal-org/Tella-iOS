@@ -23,7 +23,7 @@ struct DownloadedResources: View {
                             ResourceCard(title: resource.title,
                                          serverName: resource.serverName,
                                          rightButtonImage: "reports.more",
-                                         rightButtonAction: {showResourceBottomSheet(resourceTitle: resource.title, resourceId: resource.id, resourceVaultFile: resource.vaultFileId)})
+                                         rightButtonAction: {showResourceBottomSheet(resourceTitle: resource.title, resourceId: resource.id)})
                         }
                     }
                 }.frame(maxHeight: CGFloat(viewModel.downloadedResources.count) * 90)
@@ -39,26 +39,27 @@ struct DownloadedResources: View {
         }
     }
     
-    private func showResourceBottomSheet(resourceTitle: String, resourceId: Int, resourceVaultFile: String) {
+    private func showResourceBottomSheet(resourceTitle: String, resourceId: String) {
         sheetManager.showBottomSheet(modalHeight: 176) {
             ActionListBottomSheet(items: ResourceActionItems, headerTitle: resourceTitle, action: { item in
                     let type = item.type as? ResourceActionType
                     if type == .delete {
-                        showDeleteResourceConfirmationView(resourceTitle: resourceTitle, resourceId: resourceId, resourceVaultFile: resourceVaultFile)
+                        showDeleteResourceConfirmationView(resourceTitle: resourceTitle, resourceId: resourceId)
                     } else {
-                        viewModel.openResource(vaultFileId: resourceVaultFile)
+                        viewModel.openResource(resourceId: resourceId, fileName: resourceTitle)
+                        sheetManager.hide()
                     }
                 })
         }
     }
     
-    private func showDeleteResourceConfirmationView(resourceTitle: String, resourceId: Int, resourceVaultFile: String) {
+    private func showDeleteResourceConfirmationView(resourceTitle: String, resourceId: String) {
         sheetManager.showBottomSheet(modalHeight: 200) {
             return ConfirmBottomSheet(titleText: "Remove from downloads",
                                       msgText: "Are you sure you want to remove this resource? You can always download it again",
                                       cancelText: "CANCEL",
                                       actionText: "REMOVE") {
-                viewModel.deleteResource(resourceId: resourceId, vaultFileId: resourceVaultFile)
+                viewModel.deleteResource(resourceId: resourceId)
                 Toast.displayToast(message: "“\(resourceTitle)” has been removed from your downloads")
             }
         }
