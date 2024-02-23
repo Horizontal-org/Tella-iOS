@@ -12,8 +12,6 @@ import Combine
 class DownloadedResourcesVM : ObservableObject {
     @Published var appModel: MainAppModel
     @Published var downloadedResources: [DownloadedResourceCardViewModel] = []
-    @Published var pdfFile: URL? = nil
-    @Published var isOpenFile: Bool = false
     
     let resourceDeleted = PassthroughSubject<Void, Never>()
     
@@ -33,10 +31,8 @@ class DownloadedResourcesVM : ObservableObject {
         resourceDeleted.send()
     }
     
-    func openResource(resourceId: String, fileName: String) {
-        let url = self.appModel.vaultManager.loadFileToURL(fileName: fileName, fileExtension: "pdf", identifier: resourceId)
-        
-        self.pdfFile = url
-        self.isOpenFile = true
+    func openResource(resourceId: String, fileName: String) -> URL? {
+        guard let url = self.appModel.vaultManager.loadFileToURL(fileName: fileName, fileExtension: "pdf", identifier: resourceId) else { return nil }
+        return url
     }
 }

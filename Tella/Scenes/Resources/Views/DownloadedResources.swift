@@ -30,14 +30,7 @@ struct DownloadedResources: View {
                 }.frame(maxHeight: CGFloat(viewModel.downloadedResources.count) * 90)
             }
         }.padding(.bottom, 24)
-        .sheet(isPresented: $viewModel.isOpenFile, onDismiss: {
-            viewModel.pdfFile = nil
-        }) {
-            if let file = viewModel.pdfFile {
-                // todo: add header
-                QuickLookView(file: file)
-            }
-        }
+
     }
     
     private func showResourceBottomSheet(resourceTitle: String, resourceId: String) {
@@ -47,8 +40,7 @@ struct DownloadedResources: View {
                     if type == .delete {
                         showDeleteResourceConfirmationView(resourceTitle: resourceTitle, resourceId: resourceId)
                     } else {
-                        viewModel.openResource(resourceId: resourceId, fileName: resourceTitle)
-                        sheetManager.hide()
+                        navigateToPDFView(resourceId: resourceId, resourceTitle: resourceTitle)
                     }
                 })
         }
@@ -64,6 +56,13 @@ struct DownloadedResources: View {
                 Toast.displayToast(message: "“\(resourceTitle)” has been removed from your downloads")
             }
         }
+    }
+    
+    private func navigateToPDFView(resourceId: String, resourceTitle: String) {
+        if let file = viewModel.openResource(resourceId: resourceId, fileName: resourceTitle) {
+            navigateTo(destination: ResourcePDFView(file: file, resourceTitle: resourceTitle))
+        }
+        sheetManager.hide()
     }
 }
 

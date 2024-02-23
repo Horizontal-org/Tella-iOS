@@ -319,10 +319,7 @@
 		15459DC82B7FE42900E7ECE7 /* ResourceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15459DC72B7FE42900E7ECE7 /* ResourceService.swift */; };
 		155369232B7E9CC100129F2F /* ResourceDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155369222B7E9CC100129F2F /* ResourceDatabase.swift */; };
 		15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15622F492B72B1FF00289816 /* DeleteConfirmation.swift */; };
-		1501401D2B71243A00991D69 /* LocalizableResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401C2B71243A00991D69 /* LocalizableResources.swift */; };
-		1501401F2B7199FD00991D69 /* DownloadedResourcesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401E2B7199FD00991D69 /* DownloadedResourcesVM.swift */; };
-		150140212B719A0B00991D69 /* AvailableResourcesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150140202B719A0B00991D69 /* AvailableResourcesVM.swift */; };
-		15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15622F492B72B1FF00289816 /* DeleteConfirmation.swift */; };
+		156986252B88FCB600534720 /* ResourcePDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156986242B88FCB600534720 /* ResourcePDFView.swift */; };
 		15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C192B6AC34100D67C74 /* ResourcesView.swift */; };
 		15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C1B2B6AC63200D67C74 /* ReloadButton.swift */; };
 		15791C202B6C2D8C00D67C74 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C1F2B6C2D8C00D67C74 /* Resource.swift */; };
@@ -811,9 +808,6 @@
 		12FAC0CE2799FF230068EC2B /* ImportProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportProgress.swift; sourceTree = "<group>"; };
 		12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableHome.swift; sourceTree = "<group>"; };
 		12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerURLView.swift; sourceTree = "<group>"; };
-		15622F492B72B1FF00289816 /* DeleteConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmation.swift; sourceTree = "<group>"; };
-		1589A6202B7672390048C775 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1589A6212B7672430048C775 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1501401C2B71243A00991D69 /* LocalizableResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableResources.swift; sourceTree = "<group>"; };
 		1501401E2B7199FD00991D69 /* DownloadedResourcesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResourcesVM.swift; sourceTree = "<group>"; };
 		150140202B719A0B00991D69 /* AvailableResourcesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableResourcesVM.swift; sourceTree = "<group>"; };
@@ -821,10 +815,13 @@
 		15459DC72B7FE42900E7ECE7 /* ResourceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceService.swift; sourceTree = "<group>"; };
 		155369222B7E9CC100129F2F /* ResourceDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDatabase.swift; sourceTree = "<group>"; };
 		15622F492B72B1FF00289816 /* DeleteConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmation.swift; sourceTree = "<group>"; };
+		156986242B88FCB600534720 /* ResourcePDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcePDFView.swift; sourceTree = "<group>"; };
 		15791C192B6AC34100D67C74 /* ResourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesView.swift; sourceTree = "<group>"; };
 		15791C1B2B6AC63200D67C74 /* ReloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReloadButton.swift; sourceTree = "<group>"; };
 		15791C1F2B6C2D8C00D67C74 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesViewModel.swift; sourceTree = "<group>"; };
+		1589A6202B7672390048C775 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1589A6212B7672430048C775 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		15EE30FD2B5073E20033BBBB /* Pages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pages.swift; sourceTree = "<group>"; };
 		15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResources.swift; sourceTree = "<group>"; };
 		15F64C9F2B6D794B008A57AA /* SectionTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitle.swift; sourceTree = "<group>"; };
@@ -2101,6 +2098,7 @@
 				15F64C9E2B6D792A008A57AA /* Common */,
 				15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */,
 				15F64CA32B6D7CA1008A57AA /* AvailableResources.swift */,
+				156986242B88FCB600534720 /* ResourcePDFView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3101,6 +3099,7 @@
 				E1EAA0552AA74FEC00492078 /* UwaziLanguageContext.swift in Sources */,
 				12CCDC5428D8E05300C3BE4E /* Project.swift in Sources */,
 				126818C12A38B0C2004606BD /* FileInformation.swift in Sources */,
+				156986252B88FCB600534720 /* ResourcePDFView.swift in Sources */,
 				129354772949F04700735ED0 /* EmptyResult.swift in Sources */,
 				1290743B274CEB9B00F38A81 /* FileGridItem.swift in Sources */,
 				1289B45A28B64221005DA687 /* UIDeviceOrientationExtension.swift in Sources */,
