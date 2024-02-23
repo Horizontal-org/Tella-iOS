@@ -31,7 +31,7 @@ struct ResourcesView: View {
         }
         .navigationBarTitle("", displayMode: .inline)
         .toolbar {
-            LeadingTitleToolbar(title: "Resources")
+            LeadingTitleToolbar(title: LocalizableResources.resourcesServerTitle.localized)
             ReloadButton(action: {
                 resourcesViewModel.availableResourcesVM.getAvailableForDownloadResources()
             })

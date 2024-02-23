@@ -15,7 +15,7 @@ enum ResourceActionType: ActionType {
 }
 
 var ResourceActionItems : [ListActionSheetItem] { return [
-    ListActionSheetItem(imageName: "edit-icon",
+    ListActionSheetItem(imageName: "view-icon",
                         content: LocalizableResources.resourcesDownloadViewSheetSelect.localized,
                         type: ResourceActionType.viewResource),
     ListActionSheetItem(imageName: "delete-icon-white",
