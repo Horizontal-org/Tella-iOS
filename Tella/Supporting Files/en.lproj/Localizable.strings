@@ -386,4 +386,10 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Resources_Available_Msg" = "These are the resources available for download from your Tella Web project(s).";
 "Resources_Available_Empty" = "There are no resources available for download from your Tella Web project(s).";
 "Resources_Available_ErrorMsg" = "There was an error fetching resources";
-
+"Resources_Downloaded_Remove_SheetTitle" = "Remove from downloads";
+"Resources_Downloaded_Remove_SheetExpl" = "Are you sure you want to remove this resource? You can always download it again";
+"Resources_Downloaded_Remove_Cancel_SheetAction" = "CANCEL";
+"Resources_Downloaded_Remove_Confirm_SheetAction" = "REMOVE";
+"Resources_Downloaded_Remove_Toast" = "has been removed from your downloads";
+"Resources_Downloaded_View_SheetSelect" = "View";
+"Resource_Downloaded_Remove_SheetSelect" = "Remove from downloads";
