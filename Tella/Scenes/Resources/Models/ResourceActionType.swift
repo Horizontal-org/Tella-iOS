@@ -16,10 +16,10 @@ enum ResourceActionType: ActionType {
 
 var ResourceActionItems : [ListActionSheetItem] { return [
     ListActionSheetItem(imageName: "edit-icon",
-                        content: "View",
+                        content: LocalizableResources.resourcesDownloadViewSheetSelect.localized,
                         type: ResourceActionType.viewResource),
     ListActionSheetItem(imageName: "delete-icon-white",
-                        content: "Remove from downloads",
+                        content: LocalizableResources.resourcesDownloadedRemoveSheetSelect.localized,
                         type: ResourceActionType.delete)
     ]
 }

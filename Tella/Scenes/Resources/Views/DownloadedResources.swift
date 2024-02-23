@@ -48,12 +48,12 @@ struct DownloadedResources: View {
     
     private func showDeleteResourceConfirmationView(resourceTitle: String, resourceId: String) {
         sheetManager.showBottomSheet(modalHeight: 200) {
-            return ConfirmBottomSheet(titleText: "Remove from downloads",
-                                      msgText: "Are you sure you want to remove this resource? You can always download it again",
-                                      cancelText: "CANCEL",
-                                      actionText: "REMOVE") {
+            return ConfirmBottomSheet(titleText: LocalizableResources.resourcesDownloadRemoveSheetTitle.localized,
+                                      msgText: LocalizableResources.resourcesDownloadRemoveSheetExpl.localized,
+                                      cancelText: LocalizableResources.resourcesDownloadRemoveCancelSheetAction.localized,
+                                      actionText: LocalizableResources.resourccesDownloadRemoveConfirmSheetAction.localized) {
                 viewModel.deleteResource(resourceId: resourceId)
-                Toast.displayToast(message: "“\(resourceTitle)” has been removed from your downloads")
+                Toast.displayToast(message: "“\(resourceTitle)” \(LocalizableResources.resourcesDownloadRemoveToast.localized)")
             }
         }
     }
