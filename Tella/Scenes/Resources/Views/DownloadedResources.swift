@@ -20,7 +20,8 @@ struct DownloadedResources: View {
                 ScrollView {
                     LazyVStack {
                         ForEach(viewModel.downloadedResources) { resource in
-                            ResourceCard(title: resource.title,
+                            ResourceCard(isLoading: false,
+                                         title: resource.title,
                                          serverName: resource.serverName,
                                          rightButtonImage: "reports.more",
                                          rightButtonAction: {showResourceBottomSheet(resourceTitle: resource.title, resourceId: resource.id)})

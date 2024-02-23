@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct ResourceCard: View {
+    var isLoading: Bool
     var title: String
     var serverName: String
     var rightButtonImage: String
@@ -21,7 +22,7 @@ struct ResourceCard: View {
                     .padding()
                 ConnectionCardDetail(title: title, subtitle: serverName)
                 Spacer()
-                MoreButtonView(imageName: rightButtonImage, action: rightButtonAction)
+                MoreButtonView(imageName: rightButtonImage, action: rightButtonAction).disabled(isLoading)
             }.padding(.all, 8)
         }
         .customCardStyle()
@@ -29,5 +30,5 @@ struct ResourceCard: View {
 }
 
 #Preview {
-    ResourceCard(title: "How to submit a form", serverName: "CLEEN Foundation", rightButtonImage: "save-icon", rightButtonAction: {})
+    ResourceCard(isLoading: false, title: "How to submit a form", serverName: "CLEEN Foundation", rightButtonImage: "save-icon", rightButtonAction: {})
 }
