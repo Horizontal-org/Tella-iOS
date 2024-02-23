@@ -26,7 +26,8 @@ class BackgroundActivityModel {
         self.status = status
     }
     
-    func updateWith(vaultFile:VaultFileDB) {
+    init(vaultFile:VaultFileDB) {
+        self.id = vaultFile.id ?? UUID().uuidString
         self.name = vaultFile.name
         self.mimeType = vaultFile.mimeType ?? ""
         self.thumb = vaultFile.thumbnail

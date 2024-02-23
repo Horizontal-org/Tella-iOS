@@ -10,7 +10,7 @@ struct VideoViewer: View {
     @EnvironmentObject var appModel: MainAppModel
     @StateObject private var playerVM : PlayerViewModel
     
-    init(appModel: MainAppModel, currentFile : VaultFileDB, playList: [VaultFileDB?]) {
+    init(appModel: MainAppModel, currentFile : VaultFileDB?, playList: [VaultFileDB?]) {
         _playerVM = StateObject(wrappedValue: PlayerViewModel(appModel: appModel,
                                                               currentFile: currentFile,
                                                               playList: playList))
@@ -33,6 +33,9 @@ struct VideoViewer: View {
             fileActionTrailingView()
         }
         .ignoresSafeArea()
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: backButton)
+
     }
     
     func fileActionTrailingView() -> some ToolbarContent {
@@ -41,4 +44,27 @@ struct VideoViewer: View {
         }
     }
     
+    var backButton : some View {
+        BackButton {
+            playerVM.deleteTmpFile()
+        }
+    }
 }
+
+struct BackButton: View {
+    
+    var action : (() -> ())
+    
+    var body: some View {
+             Button {
+                self.popToRoot()
+                 action()
+            } label: {
+                Image("back")
+                    .flipsForRightToLeftLayoutDirection(true)
+                    .padding(EdgeInsets(top: -3, leading: -8, bottom: 0, trailing: 12))
+            }
+ 
+    }
+}
+

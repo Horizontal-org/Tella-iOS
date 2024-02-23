@@ -92,7 +92,7 @@ class MainAppModel: ObservableObject {
 
             let database = try VaultDatabase(key: self.vaultManager.key)
             self.vaultFilesManager = try VaultFilesManager(vaultDataBase: database, vaultManager: self.vaultManager)
-            encryptionService = EncryptionService(vaultFilesManager: self.vaultFilesManager)
+            encryptionService = EncryptionService(vaultFilesManager: self.vaultFilesManager, mainAppModel: self)
          } catch {
             Toast.displayToast(message: "Error opening the app")
         }
@@ -223,7 +223,7 @@ extension MainAppModel {
 extension MainAppModel {
 
     func addVaultFile(filePaths: [URL], parentId: String?, shouldReloadVaultFiles:Binding<Bool>?) {
-        encryptionService?.addVaultFile(filePaths: filePaths, parentId: parentId, mainAppModel: self, shouldReloadVaultFiles: shouldReloadVaultFiles)
+        encryptionService?.addVaultFile(filePaths: filePaths, parentId: parentId, shouldReloadVaultFiles: shouldReloadVaultFiles)
     }
     
 }

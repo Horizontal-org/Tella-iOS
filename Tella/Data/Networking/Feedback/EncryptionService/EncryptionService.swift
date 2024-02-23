@@ -10,50 +10,65 @@ class EncryptionService: ObservableObject {
     
     private var operationQueue: OperationQueue!
     private var subscribers : Set<AnyCancellable> = []
-    
     var vaultFilesManager : VaultFilesManager?
+    var mainAppModel: MainAppModel
     
     @Published var items : [BackgroundActivityModel] = []
     
-    init(vaultFilesManager:VaultFilesManager?) {
+    init(vaultFilesManager:VaultFilesManager?, mainAppModel: MainAppModel) {
         let queue = OperationQueue()
         queue.qualityOfService = .background
         operationQueue = queue
-        // operationQueue.maxConcurrentOperationCount = 1
+         operationQueue.maxConcurrentOperationCount = 1
         self.vaultFilesManager = vaultFilesManager
+        self.mainAppModel = mainAppModel
+        
     }
     
-    func addVaultFile(filePaths: [URL], parentId: String?, mainAppModel: MainAppModel, shouldReloadVaultFiles:Binding<Bool>?) {
+    func addVaultFile(filePaths: [URL], parentId: String?, shouldReloadVaultFiles:Binding<Bool>?) {
         
-        for filePath in filePaths {
+        Task {
+            let fileDetails = await getFileDetails(filePaths: filePaths)
             
-            let operation = EncryptionOperation(mainAppModel: mainAppModel)
-            
-            operation.addVaultFile(filePath: filePath, parentId: parentId, mainAppModel: mainAppModel)
-                .receive(on: DispatchQueue.main)
-                .sink(receiveValue: { backgroundResult in
-                    self.handleImportVaultFileInBackgroundResult(backgroundResult: backgroundResult, shouldReloadVaultFiles: shouldReloadVaultFiles)
-                }).store(in: &subscribers)
-            
-            operationQueue.addOperations([operation], waitUntilFinished: true)
+            addEncryptionOperations(fileDetails: fileDetails, parentId: parentId, shouldReloadVaultFiles: shouldReloadVaultFiles)
         }
     }
     
-    func handleImportVaultFileInBackgroundResult(backgroundResult:ImportVaultFileInBackgroundResult, shouldReloadVaultFiles:Binding<Bool>?)  {
+    
+    func getFileDetails(filePaths: [URL]) async -> [VaultFileDetails] {
         
-        switch backgroundResult {
-        case .fileAdded(let item):
-            self.items.append(item)
-        case .fileUpdated(let item):
-            switch item.status {
-            case .completed:
-                self.items.removeAll(where: {$0.id == item.id})
-                shouldReloadVaultFiles?.wrappedValue = true
-            default:
-                if let row = self.items.firstIndex(where: {$0.id == item.id}) {
-                    self.items[row] = item
-                }
+        var fileDetails : [VaultFileDetails] = []
+        
+        for filePath in filePaths {
+            
+            guard let fileDetail = await mainAppModel.vaultFilesManager?.getFileDetails(filePath: filePath) else { continue }
+            fileDetails.append(fileDetail)
+
+            let backgroundActivityModel = BackgroundActivityModel(vaultFile: fileDetail.file)
+            DispatchQueue.main.async {
+                self.items.append(backgroundActivityModel)
             }
+        }
+        
+        return fileDetails
+    }
+    
+    func addEncryptionOperations( fileDetails:[VaultFileDetails], parentId: String?, shouldReloadVaultFiles:Binding<Bool>?) {
+        
+        for fileDetail in fileDetails {
+            operationQueue.addOperation({
+               
+                let operation = EncryptionOperation(mainAppModel: self.mainAppModel)
+                
+                operation.addVaultFile(fileDetail: fileDetail, filePath: fileDetail.fileUrl, parentId: parentId, mainAppModel: self.mainAppModel)?
+                    .receive(on: DispatchQueue.main)
+                    .sink(receiveValue: { backgroundResult in
+                        self.items.removeAll(where: {$0.id == fileDetail.file.id})
+                        shouldReloadVaultFiles?.wrappedValue = true
+                        
+                    }).store(in: &self.subscribers)
+                
+            })
         }
     }
 }

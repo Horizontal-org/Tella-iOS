@@ -67,10 +67,11 @@ class PhotoVideoViewModel : ObservableObject {
                 if completion.type == .image {
                     guard let data = mediaURL.contents()?.byRemovingEXIF() else {return}
                     url = mainAppModel.vaultManager.saveDataToTempFile(data: data, pathExtension: mediaURL.pathExtension)
-                    
+                    mainAppModel.vaultManager.deleteFiles(files: [mediaURL])
                 } else {
                     let tmpFileURL = self.mainAppModel.vaultManager.createTempFileURL(pathExtension: mediaURL.pathExtension)
                     url = await mediaURL.returnVideoURLWithoutMetadata(destinationURL: tmpFileURL)
+                    mainAppModel.vaultManager.deleteFiles(files: [mediaURL])
                 }
             }
             

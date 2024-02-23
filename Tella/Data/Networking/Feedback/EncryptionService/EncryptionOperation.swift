@@ -22,32 +22,10 @@ class EncryptionOperation:Operation, WebRepository {
         super.main()
     }
     
-    public func addVaultFile(filePath: URL, parentId: String?, mainAppModel: MainAppModel) -> CurrentValueSubject<ImportVaultFileInBackgroundResult,Never> {
-        
-        let backgroundActivityModel = BackgroundActivityModel(type: .file)
-        
-        
-        let subject = CurrentValueSubject<ImportVaultFileInBackgroundResult, Never>(.fileAdded(backgroundActivityModel))
-        
-        Task {
-            
-            do {
-                if let fileDetail = try await self.mainAppModel.vaultFilesManager?.getFileDetails(filePath: filePath) {
-                    backgroundActivityModel.updateWith(vaultFile:fileDetail.file)
-                    subject.send(.fileUpdated(backgroundActivityModel))
-                    
-                    self.mainAppModel.vaultFilesManager?.addVaultFile(fileDetail: fileDetail, filePath: filePath, parentId: parentId)
-                        .sink(receiveValue: { importVaultFileResult in
-                            backgroundActivityModel.status = importVaultFileResult
-                            subject.send(.fileUpdated(backgroundActivityModel))
-                        }).store(in: &subscribers)
-                }
-                
-            } catch {
-            }
-        }
-        return subject
+    public func addVaultFile(fileDetail: VaultFileDetails, filePath: URL, parentId: String?, mainAppModel: MainAppModel) -> AnyPublisher<BackgroundActivityStatus,Never>? {
+        return self.mainAppModel.vaultFilesManager?.addVaultFile(fileDetail: fileDetail, filePath: filePath, parentId: parentId)
     }
+    
 }
 
 

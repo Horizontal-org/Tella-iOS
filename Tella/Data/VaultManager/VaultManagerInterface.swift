@@ -24,8 +24,7 @@ protocol VaultManagerInterface {
     func loadFileData(file vaultFile: VaultFileDB) -> Data?
     func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL?
     func loadVaultFilesToURL(files vaultFiles: [VaultFileDB]) -> [URL]
-    func loadFilesInfos(file vaultFile: VaultFileDB, offsetSize:Int ) -> VaultFileInfo?
-    
+    func extract(from inputFileURL: URL, offsetSize:Int)
     func loadVaultFileToURLOld(file vaultFile: VaultFileDB) -> URL?
     func loadFileDataOld(fileName: String?) -> Data?
 
@@ -40,6 +39,7 @@ protocol VaultManagerInterface {
     func deleteAllVaultFilesFromDevice()
     func deleteVaultFile(filesIds: [String])
     func deleteFiles(files: [URL])
+    func deleteTmpFiles(files: [URL])
     func clearTmpDirectory()
     func deleteContainerDirectory()
     func deleteRootFile()

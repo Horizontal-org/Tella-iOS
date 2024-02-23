@@ -64,7 +64,7 @@ final class PlayerViewModel: ObservableObject {
              currentItemIndex = index
         }
 
-        if let item = playList[currentItemIndex]   {
+        if playList.count >= currentItemIndex + 1, let item = playList[currentItemIndex]   {
             self.setCurrentItem(item)
         }
 
@@ -155,7 +155,7 @@ final class PlayerViewModel: ObservableObject {
     
     func showNextVideo() {
         if playList.count - 1 > currentItemIndex {
-            removeTmpFile()
+            deleteTmpFile()
             self.currentItemIndex += 1
             self.setCurrentItem(playList[self.currentItemIndex])
             self.currentFile = playList[self.currentItemIndex]
@@ -165,7 +165,7 @@ final class PlayerViewModel: ObservableObject {
     
     func showPreviousVideo() {
         if currentItemIndex > 0 {
-            removeTmpFile()
+            deleteTmpFile()
             self.currentItemIndex -= 1
             self.setCurrentItem(playList[self.currentItemIndex])
             self.currentFile = playList[self.currentItemIndex]
@@ -193,8 +193,7 @@ final class PlayerViewModel: ObservableObject {
         }
     }
     
-    func removeTmpFile() {
-        guard let item = playList[currentItemIndex] else {return}
+    func deleteTmpFile() {
         guard let url = self.player.currentItem?.url else {return}
         appModel?.vaultManager.deleteFiles(files: [url])
     }

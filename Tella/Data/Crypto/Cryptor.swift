@@ -17,7 +17,7 @@ enum CryptoError: Error {
 
 class Cryptor {
     
-    static let bufferSize = 1024 * 1024 * 200 // 200 MB buffer size
+    static let bufferSize = 1024 * 1024 * 8  // 8 MB buffer size
     
     private var cryptor: CCCryptorRef?
     private var cryptoOperation: CryptoOperationEnum
@@ -134,7 +134,7 @@ class Cryptor {
     
     private func finalize() throws {
         // Finalize encryption (if any)
-        var finalData = Data(count: Int(Self.bufferSize) + kCCBlockSizeAES128)
+        var finalData = Data(count: 0)
         
         var bytesEncrypted = 0
         
@@ -159,9 +159,4 @@ class Cryptor {
         
     }
     
-    deinit {
-        if cryptor != nil {
-            CCCryptorRelease(cryptor)
-        }
-    }
 }

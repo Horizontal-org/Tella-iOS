@@ -5,9 +5,11 @@
 import SwiftUI
 
 struct ImageViewer: View {
-    var imageData: Data?
+    
+    var imageData : Data?
     
     var body: some View {
+        
         GeometryReader { geometry in
             VStack(alignment: .center) {
                 Spacer()
@@ -22,3 +24,4 @@ struct ImageViewer: View {
         }
     }
 }
+

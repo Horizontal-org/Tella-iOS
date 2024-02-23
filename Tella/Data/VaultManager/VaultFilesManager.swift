@@ -48,9 +48,7 @@ class VaultFilesManager : VaultFilesManagerInterface {
                 }
                 
                 await filesActor.add(vaultFile: fileDetail.file)
-                
-                vaultManager?.deleteFiles(files: [fileDetail.fileUrl])
-                
+
                 if await filesActor.files.count == filePaths.count {
                     importProgress.finish()
                     await subject.send(.fileAdded(filesActor.files))
@@ -77,12 +75,11 @@ class VaultFilesManager : VaultFilesManagerInterface {
 
             if isSaved {
                 self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: parentId)
-                // self.vaultManager?.deleteFiles(files: [fileDetail.fileUrl])
                 subject.send(.completed)
             }
             
         } else {
-            subject.send( BackgroundActivityStatus.failed)
+            subject.send(BackgroundActivityStatus.failed)
         }
         
         return subject.eraseToAnyPublisher()
@@ -154,7 +151,7 @@ class VaultFilesManager : VaultFilesManagerInterface {
         return resultFiles
     }
 
-    func getFileDetails(filePath: URL) async throws -> VaultFileDetails?  {
+    func getFileDetails(filePath: URL) async -> VaultFileDetails?  {
         
         let id = UUID().uuidString
         let _ = filePath.startAccessingSecurityScopedResource()

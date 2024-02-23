@@ -9,35 +9,47 @@ struct FileDetailView: View {
     
     @EnvironmentObject var fileListViewModel: FileListViewModel
     @EnvironmentObject var appModel: MainAppModel
-
+    
+    @StateObject var viewModel : FileDetailsViewModel
+    
+    init(  appModel: MainAppModel, currentFile: VaultFileDB?) {
+        _viewModel = StateObject(wrappedValue: FileDetailsViewModel(appModel: appModel, currentFile: currentFile))
+    }
+    
     var body: some View {
         ZStack {
             detailsView()
             FileActionMenu()
             toolbar()
+            if !viewModel.documentIsReady && viewModel.currentFile?.tellaFileType != .video {
+                ProgressView()
+            }
+            
         }
-         .environmentObject(fileListViewModel)
-         .onAppear(perform: {
-             self.fileListViewModel.fileActionSource = .details
-         })
+        .environmentObject(fileListViewModel)
+        .onAppear(perform: {
+            self.fileListViewModel.fileActionSource = .details
+        })
     }
     
     @ViewBuilder
     func detailsView() -> some View {
-        if let file = self.fileListViewModel.selectedFiles.first {
-            switch file.tellaFileType {
-            case .audio:
-                AudioPlayerView(vaultFile: file)
-            case .video:
-                VideoViewer(appModel: appModel, currentFile: file, playList: self.fileListViewModel.getVideoFiles())
-            case .image:
-                ImageViewer(imageData: appModel.vaultManager.loadFileData(file: file))
-            case .folder:
-                EmptyView()
-                
-            default:
-                if let file = appModel.vaultManager.loadVaultFileToURL(file: file) {
-                    QuickLookView(file: file)
+        
+        if viewModel.currentFile?.tellaFileType == .video {
+            VideoViewer(appModel: appModel, currentFile: viewModel.currentFile, playList: self.fileListViewModel.getVideoFiles())
+        } else {
+            if viewModel.documentIsReady {
+                switch viewModel.currentFile?.tellaFileType {
+                case .audio:
+                    AudioPlayerView(currentData: viewModel.data)
+                case .image:
+                    ImageViewer(imageData: viewModel.data)
+                case .folder:
+                    EmptyView()
+                default:
+                    if let urlDocument = viewModel.urlDocument {
+                        QuickLookView(file: urlDocument)
+                    }
                 }
             }
         }

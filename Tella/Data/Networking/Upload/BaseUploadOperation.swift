@@ -217,15 +217,14 @@ class BaseUploadOperation : Operation {
                 } else {
                     filesToUpload.forEach({ reportVaultFile in
                         
-                        let vaultFileInfo = mainAppModel.vaultManager.loadFilesInfos(file: reportVaultFile,offsetSize: 0)
-                        
-                        guard let vaultFileInfo else { return }
-                        
+                        let url = mainAppModel.vaultManager.loadVaultFileToURL(file: reportVaultFile)
+
+                        guard let url else { return }
+
                         let fileToUpload = FileToUpload(idReport: apiID,
-                                                        fileUrlPath: vaultFileInfo.url,
+                                                        fileUrlPath: url,
                                                         accessToken: accessToken,
                                                         serverURL: serverUrl,
-                                                        data: vaultFileInfo.data,
                                                         fileName: reportVaultFile.name,
                                                         fileExtension: reportVaultFile.fileExtension,
                                                         fileId: reportVaultFile.id,
@@ -274,36 +273,19 @@ class BaseUploadOperation : Operation {
         }
     }
     
+    
+
     func putReportFile(fileId: String?, size:Int) {
-        
-        //        _ =  self.filesToUpload.compactMap { _ in
-        //            let file = self.filesToUpload.first(where: {$0.fileId == fileId})
-        //
-        //            if size != 0, let file {
-        //
-        //                let data = file.data?.extract(size:size)
-        //                if let fileUrlPath = self.mainAppModel.saveDataToTempFile(data:data , fileName: file.fileName, pathExtension: file.fileExtension) {
-        //                    file.fileUrlPath = fileUrlPath
-        //                }
-        //                file.data = data
-        //            }
-        //            return file
-        //        }
-        
-        if self.mainAppModel.networkMonitor.isConnected {
-            
+
+        if self.mainAppModel.networkMonitor.isConnected  {
+
             guard  let fileToUpload = filesToUpload.first(where: {$0.fileId == fileId}) else {return}
             
-            if let data = fileToUpload.data?.extract(size:size) {
-                
-                if size != 0 {
-                    if let fileUrlPath = self.mainAppModel.vaultManager.saveDataToTempFile(data: data, fileName: fileToUpload.fileName, pathExtension: fileToUpload.fileExtension) {
-                        fileToUpload.fileUrlPath = fileUrlPath
-                    }
-                    fileToUpload.data = data
-                }
-                
-                let api = ReportRepository.API.putReportFile((fileToUpload))
+            if size != 0 {
+                 self.mainAppModel.vaultManager.extract(from: fileToUpload.fileUrlPath, offsetSize: size)
+            }
+
+            let api = ReportRepository.API.putReportFile((fileToUpload))
                 
                 do {
                     
@@ -323,13 +305,8 @@ class BaseUploadOperation : Operation {
                 } catch {
                     
                 }
-            } else {
-                self.postReportFile(fileId: fileId)
-            }
-            
         } else {
             self.updateReport(reportStatus: .submissionPending)
-            
         }
         
     }
@@ -420,6 +397,7 @@ class BaseUploadOperation : Operation {
                 
                 let result:UploadDecode<EmptyResult,EmptyDomainModel>  = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
                 
+                print("result :>>>>>>>>>>>>>>", result)
                 if let _ = result.error {
                     // headReportFile
                     self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
@@ -431,6 +409,9 @@ class BaseUploadOperation : Operation {
                         self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
                         return
                     }
+                    
+                    print("size from headReportFile :::::>>>>>>>>>>>>", size)
+                    
                     
                     self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(bytesSent: size, current:0 ,fileId: fileId, status: FileStatus.partialSubmitted)))
                     

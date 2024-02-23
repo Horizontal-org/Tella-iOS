@@ -343,7 +343,7 @@ extension CryptoManager: CryptoManagerInterface {
                 debugLog("Failed to recover private key data", space: .crypto)
                 return false
             }
-            
+
             let crypt = try Cryptor(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData: encryptionKeyData, cryptoOperation: .encrypt)
             try crypt.cryptFile()
 

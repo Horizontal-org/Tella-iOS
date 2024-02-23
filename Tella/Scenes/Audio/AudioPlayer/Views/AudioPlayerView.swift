@@ -6,10 +6,12 @@ import SwiftUI
 
 struct AudioPlayerView: View {
     
-    @StateObject var viewModel = AudioPlayerViewModel()
+    @StateObject var viewModel : AudioPlayerViewModel
     @EnvironmentObject private var homeViewModel: MainAppModel
     
-    var vaultFile : VaultFileDB
+    init(currentData : Data?) {
+        _viewModel = StateObject(wrappedValue: AudioPlayerViewModel(currentData: currentData))
+    }
     
     var body: some View {
         
@@ -30,10 +32,6 @@ struct AudioPlayerView: View {
                 Spacer()
                     .frame( height: 108)
             }
-        }
-        .onAppear {
-            self.viewModel.audioPlayerManager.currentAudioData = homeViewModel.vaultManager.loadFileData(file: vaultFile)
-            self.viewModel.audioPlayerManager.initPlayer()
         }
         .onDisappear {
             self.viewModel.onStopPlaying()
@@ -63,8 +61,14 @@ struct AudioPlayerView: View {
             Button(action: {
                 self.viewModel.onStartPlaying()
             }) {
-                Image("mic.play-audio")
-                    .frame(width: 75, height: 75)
+                
+                ZStack {
+                    Image("mic.play-audio")
+                        .frame(width: 75, height: 75)
+//                    if !self.viewModel.audioIsReady {
+//                        ProgressView()
+//                    }
+                }
             }
             
             Button(action: {
@@ -139,11 +143,11 @@ struct AudioPlayerView: View {
     }
 }
 
-struct AudioPlayerView_Previews: PreviewProvider {
-    static var previews: some View {
-        AudioPlayerView(vaultFile: VaultFileDB.stub())
-    }
-}
-
-
+//struct AudioPlayerView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AudioPlayerView(vaultFile: VaultFileDB.stub())
+//    }
+//}
+//
+//
 

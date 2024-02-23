@@ -41,6 +41,7 @@ class VaultManager : VaultManagerInterface, ObservableObject{
                 return nil
             }
 
+        deleteTmpFiles(files: [filePath])
         return true
     }
  
@@ -52,7 +53,11 @@ class VaultManager : VaultManagerInterface, ObservableObject{
             return nil
         }
         
-        return fileManager.contents(atPath: fileURL)
+        let data = fileManager.contents(atPath: fileURL)
+       
+        deleteFiles(files: [fileURL])
+        
+        return data
     }
 
     func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL? {
@@ -117,22 +122,98 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         return tmpFileURL
     }
 
-    func loadFilesInfos(file vaultFile: VaultFileDB, offsetSize:Int ) -> VaultFileInfo? {
-        
-        if vaultFile.type != .directory {
-            guard var data = self.loadFileData(file: vaultFile) else {return nil }
+//    func loadFilesInfos(file vaultFile: VaultFileDB) -> VaultFileInfo? {
+//        
+//        if vaultFile.type != .directory {
+//            
+//            guard let fileURL = loadVaultFileToURL(file: vaultFile) else {
+//                return nil
+//            }
+//
+//            let tmpFileURL = createTempFileURL(pathExtension: vaultFile.fileExtension)
+//            do {
+//                try copyFile(from: fileURL, to: tmpFileURL, offsetSize: offsetSize)
+//                //            guard var data = self.loadFileData(file: vaultFile) else {return nil }
+//                
+//                //            guard let extractedData = (data.extract(size: offsetSize)) else {return nil }
+//                //
+//                //            let tmpFileURL = createTempFileURL(fileName: vaultFile.name, pathExtension: vaultFile.fileExtension)
+//                
+//                //            if fileManager.createFile(atPath: tmpFileURL, contents: extractedData) {
+//            } catch {
+//                return nil
+//
+//            }
+//            return VaultFileInfo(vaultFile: vaultFile,url: fileURL)
+////            }
+//        }
+//        return nil
+//    }
+    
+    
+    
+    
+    
+    
+    
+    func extract(from inputFileURL: URL, offsetSize:Int)   {
+
+        do {
+            try copyFile(from: inputFileURL, offsetSize: offsetSize)
             
-            guard let extractedData = (data.extract(size: offsetSize)) else {return nil }
-            
-            let tmpFileURL = createTempFileURL(fileName: vaultFile.name, pathExtension: vaultFile.fileExtension)
-            
-            if fileManager.createFile(atPath: tmpFileURL, contents: extractedData) {
-                return VaultFileInfo(vaultFile: vaultFile,data: extractedData,url: tmpFileURL)
-            }
+            // Open the file in read-write mode
+            let fileHandle = try FileHandle(forUpdating: inputFileURL)
+
+            // Move the file pointer to the start offset
+            try fileHandle.seek(toOffset: UInt64(offsetSize))
+
+            // Read the content after the subrange
+            let remainingData = fileHandle.readDataToEndOfFile()
+
+            try fileHandle.seek(toOffset: 0)
+
+            // Write back the content after the subrange
+            fileHandle.write(remainingData)
+            print("remainingData.count ::::::: OOOOOOOOOOOOOOOO :::::::",remainingData.count)
+            // Truncate the file to the new size
+            fileHandle.truncateFile(atOffset: UInt64(remainingData.count))
+
+            // Close the file handle
+            fileHandle.closeFile()
+
+//            return inputFileURL
+        } catch let error {
+            debugLog(error)
         }
-        return nil
     }
     
+    func copyFile(from inputFileURL: URL, offsetSize:Int) throws {
+        
+        do {
+            // Open the file in read-write mode
+            let fileHandle = try FileHandle(forUpdating: inputFileURL)
+
+            // Move the file pointer to the start offset
+            try fileHandle.seek(toOffset: UInt64(offsetSize))
+
+            // Read the content after the subrange
+            let remainingData = fileHandle.readDataToEndOfFile()
+
+            try fileHandle.seek(toOffset: 0)
+
+            // Write back the content after the subrange
+            fileHandle.write(remainingData)
+            print("remainingData.count ::::::: OOOOOOOOOOOOOOOO :::::::",remainingData.count)
+            // Truncate the file to the new size
+            fileHandle.truncateFile(atOffset: UInt64(remainingData.count))
+
+            // Close the file handle
+            fileHandle.closeFile()
+        } catch let error {
+            print("Error removing subrange from file: \(error)")
+        }   
+    }
+
     func saveDataToTempFile(data: Data?, pathExtension: String) -> URL? {
         self.saveDataToTempFile(data: data, fileName: nil, pathExtension: pathExtension)
     }
@@ -199,6 +280,15 @@ class VaultManager : VaultManagerInterface, ObservableObject{
             fileManager.removeItem(at: url)
         }
     }
+    
+    func deleteTmpFiles(files: [URL]) {
+        files.forEach { url in
+            if NSTemporaryDirectory() == url.deletingLastPathComponent().getPath() {
+                fileManager.removeItem(at: url)
+            }
+         }
+    }
+
     
     private func containerURL(for containerName: String) -> URL {
         return containerURL.appendingPathComponent(containerName)
