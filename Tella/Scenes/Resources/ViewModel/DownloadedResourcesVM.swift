@@ -7,12 +7,15 @@
 //
 
 import Foundation
+import Combine
 
 class DownloadedResourcesVM : ObservableObject {
     @Published var appModel: MainAppModel
     @Published var downloadedResources: [DownloadedResourceCardViewModel] = []
     @Published var pdfFile: URL? = nil
     @Published var isOpenFile: Bool = false
+    
+    let resourceDeleted = PassthroughSubject<Void, Never>()
     
     init(mainAppModel: MainAppModel) {
         self.appModel = mainAppModel
@@ -27,6 +30,7 @@ class DownloadedResourcesVM : ObservableObject {
         self.appModel.vaultManager.deleteVaultFile(filesIds: [resourceId])
         self.appModel.vaultManager.tellaData?.deleteDownloadedResource(resourceId: resourceId)
         self.fetchDownloadedResources()
+        resourceDeleted.send()
     }
     
     func openResource(resourceId: String, fileName: String) {
