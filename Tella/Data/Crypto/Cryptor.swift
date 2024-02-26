@@ -41,17 +41,16 @@ class Cryptor {
         self.outputFile = try FileHandle(forWritingTo: outputFileURL)
         
         self.cryptoOperation = cryptoOperation
-        self.cryptoOperation = cryptoOperation
         self.encryptionKeyData = encryptionKeyData
     }
     
     func cryptFile() throws {
-        try create()
-        try update()
-        try finalize()
+        try cryptorCreate()
+        try cryptorUpdate()
+        try cryptorFinal()
     }
     
-    private func create() throws  {
+    private func cryptorCreate() throws  {
         // Setup the encryption context
         let keySize = size_t(kCCKeySizeAES256)
         let algorithm = CCAlgorithm(kCCAlgorithmAES)
@@ -83,7 +82,7 @@ class Cryptor {
         }
     }
     
-    private func update() throws {
+    private func cryptorUpdate() throws {
         var stop = false
         
         // Process the file in chunks
@@ -132,7 +131,7 @@ class Cryptor {
         }
     }
     
-    private func finalize() throws {
+    private func cryptorFinal() throws {
         // Finalize encryption (if any)
         var finalData = Data(count: 0)
         

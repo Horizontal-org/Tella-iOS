@@ -71,7 +71,7 @@ class MainAppModel: ObservableObject {
 
                 self.vaultFilesManager?.updateEncryptionVaultFile()
 
-                self.sendReports()
+                self.sendPendingFiles()
                 promise(.success(true))
             }
         }.eraseToAnyPublisher()
@@ -97,17 +97,7 @@ class MainAppModel: ObservableObject {
             Toast.displayToast(message: "Error opening the app")
         }
     }
-    
-//    private func mergeFileToDatabase(promise:  @escaping (Result<Bool,Never>) -> Void) {
-//        self.vaultManager.getFilesToMergeToDatabase()
-//            .sink(receiveValue: { files in
-//                self.saveFiles(files: files)
-//                self.sendReports()
-//                promise(.success(true))
-//            }).store(in: &self.cancellable)
-//        
-//    }
-    
+
     private func mergeFileToDatabase() {
         let files = self.vaultManager.getFilesToMergeToDatabase()
         self.saveFiles(files: files)
@@ -202,11 +192,7 @@ extension MainAppModel {
     func initAutoUpload() {
         UploadService.shared.initAutoUpload(mainAppModel: self)
     }
-    
-    func sendReports() {
-        UploadService.shared.initAutoUpload(mainAppModel: self)
-    }
-    
+
     func sendPendingFiles() {
         UploadService.shared.initAutoUpload(mainAppModel: self)
         UploadService.shared.sendUnsentReports(mainAppModel: self)

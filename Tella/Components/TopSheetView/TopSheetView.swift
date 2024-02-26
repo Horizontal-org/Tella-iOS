@@ -8,7 +8,7 @@ struct TopSheetView<Content:View>: View {
     
     //MARK: - Properties
     private var kMinHeight: CGFloat {
-        return childSize.height > 130 ? 320.0 + safeArea.top : 163 + safeArea.top
+        return childSize.height > 130 ? 320.0 + safeArea.top : 200 + safeArea.top
     }
     
     private let kmaxDrag: CGFloat =  UIScreen.main.bounds.height - 50
@@ -59,7 +59,7 @@ struct TopSheetView<Content:View>: View {
                         Color.clear
                             .onAppear {
                                 self.childSize = proxy.size
-                                currentHeight = childSize.height > 130 ? 320.0 + safeArea.top : 163 + safeArea.top
+                                currentHeight = childSize.height > 130 ? 320.0 + safeArea.top : 200 + safeArea.top
                             }
                     }
                 )
