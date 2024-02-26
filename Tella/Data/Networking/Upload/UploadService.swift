@@ -164,9 +164,6 @@ extension UploadService: URLSessionTaskDelegate, URLSessionDelegate, URLSessionD
             
             let operation = activeOperations.first{$0.uploadTasksDict[task] != nil}
             operation?.update(responseFromDelegate: URLSessionTaskResponse(current: Int(totalBytesSent), task: task as? URLSessionUploadTask))
-            
-            
-            print("totalBytesSent::::::::::::::::",totalBytesSent)
         }
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {

@@ -396,8 +396,7 @@ class BaseUploadOperation : Operation {
                 //                let file = self.reportVaultFiles?.first(where: {$0.id == fileId})
                 
                 let result:UploadDecode<EmptyResult,EmptyDomainModel>  = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
-                
-                print("result :>>>>>>>>>>>>>>", result)
+
                 if let _ = result.error {
                     // headReportFile
                     self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
@@ -409,10 +408,7 @@ class BaseUploadOperation : Operation {
                         self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
                         return
                     }
-                    
-                    print("size from headReportFile :::::>>>>>>>>>>>>", size)
-                    
-                    
+
                     self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(bytesSent: size, current:0 ,fileId: fileId, status: FileStatus.partialSubmitted)))
                     
                     let fileToUpload = filesToUpload.first(where: {$0.fileId == fileId})

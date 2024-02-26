@@ -122,44 +122,9 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         return tmpFileURL
     }
 
-//    func loadFilesInfos(file vaultFile: VaultFileDB) -> VaultFileInfo? {
-//        
-//        if vaultFile.type != .directory {
-//            
-//            guard let fileURL = loadVaultFileToURL(file: vaultFile) else {
-//                return nil
-//            }
-//
-//            let tmpFileURL = createTempFileURL(pathExtension: vaultFile.fileExtension)
-//            do {
-//                try copyFile(from: fileURL, to: tmpFileURL, offsetSize: offsetSize)
-//                //            guard var data = self.loadFileData(file: vaultFile) else {return nil }
-//                
-//                //            guard let extractedData = (data.extract(size: offsetSize)) else {return nil }
-//                //
-//                //            let tmpFileURL = createTempFileURL(fileName: vaultFile.name, pathExtension: vaultFile.fileExtension)
-//                
-//                //            if fileManager.createFile(atPath: tmpFileURL, contents: extractedData) {
-//            } catch {
-//                return nil
-//
-//            }
-//            return VaultFileInfo(vaultFile: vaultFile,url: fileURL)
-////            }
-//        }
-//        return nil
-//    }
-    
-    
-    
-    
-    
-    
-    
     func extract(from inputFileURL: URL, offsetSize:Int)   {
 
         do {
-            try copyFile(from: inputFileURL, offsetSize: offsetSize)
             
             // Open the file in read-write mode
             let fileHandle = try FileHandle(forUpdating: inputFileURL)
@@ -174,44 +139,16 @@ class VaultManager : VaultManagerInterface, ObservableObject{
 
             // Write back the content after the subrange
             fileHandle.write(remainingData)
-            print("remainingData.count ::::::: OOOOOOOOOOOOOOOO :::::::",remainingData.count)
+
             // Truncate the file to the new size
             fileHandle.truncateFile(atOffset: UInt64(remainingData.count))
 
             // Close the file handle
             fileHandle.closeFile()
 
-//            return inputFileURL
         } catch let error {
             debugLog(error)
         }
-    }
-    
-    func copyFile(from inputFileURL: URL, offsetSize:Int) throws {
-        
-        do {
-            // Open the file in read-write mode
-            let fileHandle = try FileHandle(forUpdating: inputFileURL)
-
-            // Move the file pointer to the start offset
-            try fileHandle.seek(toOffset: UInt64(offsetSize))
-
-            // Read the content after the subrange
-            let remainingData = fileHandle.readDataToEndOfFile()
-
-            try fileHandle.seek(toOffset: 0)
-
-            // Write back the content after the subrange
-            fileHandle.write(remainingData)
-            print("remainingData.count ::::::: OOOOOOOOOOOOOOOO :::::::",remainingData.count)
-            // Truncate the file to the new size
-            fileHandle.truncateFile(atOffset: UInt64(remainingData.count))
-
-            // Close the file handle
-            fileHandle.closeFile()
-        } catch let error {
-            print("Error removing subrange from file: \(error)")
-        }   
     }
 
     func saveDataToTempFile(data: Data?, pathExtension: String) -> URL? {
