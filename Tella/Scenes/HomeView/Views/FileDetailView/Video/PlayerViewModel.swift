@@ -132,11 +132,11 @@ final class PlayerViewModel: ObservableObject {
             
             self.player.replaceCurrentItem(with: playerItem)
             self.player.play()
-            self.videoIsReady = true
 
             playerItem.publisher(for: \.status)
                 .filter({ $0 == .readyToPlay })
                 .sink(receiveValue: { [weak self] _ in
+                    self?.videoIsReady = true
                     self?.videoDuration = playerItem.asset.duration.seconds
                 })
                 .store(in: &self.cancellable)

@@ -49,7 +49,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             case 0:
                 createTables()
             case 1:
-                addEncryptionMethod()
+                addEncryptionUpdate()
             default :
                 break
             }
@@ -83,7 +83,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         statementBuilder.createTable(tableName: VaultD.tVaultFile, columns: columns)
     }
     
-    func addEncryptionMethod() {
+    func addEncryptionUpdate() {
         do {
             try statementBuilder.addColumnOn(tableName: VaultD.tVaultFile, 
                                              columnName: VaultD.cEncryptionUpdated,
