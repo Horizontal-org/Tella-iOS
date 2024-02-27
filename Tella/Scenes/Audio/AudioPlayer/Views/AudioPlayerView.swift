@@ -65,9 +65,6 @@ struct AudioPlayerView: View {
                 ZStack {
                     Image("mic.play-audio")
                         .frame(width: 75, height: 75)
-//                    if !self.viewModel.audioIsReady {
-//                        ProgressView()
-//                    }
                 }
             }
             
@@ -143,11 +140,11 @@ struct AudioPlayerView: View {
     }
 }
 
-//struct AudioPlayerView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AudioPlayerView(vaultFile: VaultFileDB.stub())
-//    }
-//}
-//
-//
+struct AudioPlayerView_Previews: PreviewProvider {
+    static var previews: some View {
+        AudioPlayerView(currentData: nil)
+    }
+}
+
+
 

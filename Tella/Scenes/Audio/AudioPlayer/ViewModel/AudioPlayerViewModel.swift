@@ -51,22 +51,16 @@ class AudioPlayerViewModel: ObservableObject {
             
         }.store(in: &self.cancellable)
         
-        
         loadAudio()
-        
     }
     
     func loadAudio() {
-        
-//        audioIsReady = false
-        
+
         guard let currentData else { return }
         
         DispatchQueue.main.async {
             self.audioPlayerManager.currentAudioData = currentData
             self.audioPlayerManager.initPlayer()
-//            self.audioIsReady = true
-
         }
     }
 
