@@ -44,7 +44,10 @@ struct ConnectionsView: View {
                                         destination: ReportsView(mainAppModel: appModel))
                     ConnectionsItemView(title: LocalizableResources.resourcesServerTitle.localized,
                                         image: "home.resources",
-                                        destination: ResourcesView())
+                                        destination: ResourcesView(),
+                                        largeTitle: false,
+                                        showTitle: false
+                    )
                 case .uwazi:
                     ConnectionsItemView(title: LocalizableHome.uwaziServerTitle.localized,
                                         image: "home.uwazi",
@@ -77,10 +80,15 @@ struct ConnectionsItemView<Destination:View>: View {
     var title : String
     var image : String
     var destination : Destination
+    var largeTitle : Bool = true
+    var showTitle : Bool = true
     
     var body: some View {
         Button {
-            navigateTo(destination: destination, title: title, largeTitle: true)
+            navigateTo(
+                destination: destination,
+                title: showTitle ? title : nil,
+                largeTitle: largeTitle)
         } label: {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.white.opacity(0.2))
