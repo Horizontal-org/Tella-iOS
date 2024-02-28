@@ -32,7 +32,7 @@ struct ResourcesView: View {
         .navigationBarTitle("", displayMode: .inline)
         .toolbar {
             LeadingTitleToolbar(title: "Resources")
-            reloadButton(action: {})
+            ReloadButton(action: {})
         }
     }
 }

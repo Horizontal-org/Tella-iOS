@@ -30,7 +30,7 @@ struct AddTemplatesView: View {
         .navigationBarTitle("", displayMode: .inline)
         .toolbar {
             LeadingTitleToolbar(title: LocalizableUwazi.uwaziAddTemplateTitle.localized)
-            reloadButton(action: { self.uwaziTemplateViewModel.getTemplates() })
+            ReloadButton(action: { self.uwaziTemplateViewModel.getTemplates() })
         }
         .onAppear {
             self.uwaziTemplateViewModel.getTemplates()
