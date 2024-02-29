@@ -12,8 +12,8 @@ struct ResourceCard: View {
     var isLoading: Bool
     var title: String
     var serverName: String
-    var rightButtonImage: String
-    var rightButtonAction: () -> Void
+    var type: ResourceCardType
+    var action: () -> Void
     
     var body: some View {
         VStack(spacing: 0) {
@@ -22,7 +22,7 @@ struct ResourceCard: View {
                     .padding()
                 ConnectionCardDetail(title: title, subtitle: serverName)
                 Spacer()
-                MoreButtonView(imageName: rightButtonImage, action: rightButtonAction).disabled(isLoading)
+                ImageButtonView(imageName: type.imageName, action: action).disabled(isLoading)
             }.padding(.all, 8)
         }
         .customCardStyle()
@@ -30,5 +30,5 @@ struct ResourceCard: View {
 }
 
 #Preview {
-    ResourceCard(isLoading: false, title: "How to submit a form", serverName: "CLEEN Foundation", rightButtonImage: "save-icon", rightButtonAction: {})
+    ResourceCard(isLoading: false, title: "How to submit a form", serverName: "CLEEN Foundation",type: .save, action: {})
 }

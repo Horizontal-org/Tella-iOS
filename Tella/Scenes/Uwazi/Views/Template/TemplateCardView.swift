@@ -23,7 +23,7 @@ struct TemplateCardView: View {
 //                    })
                     ConnectionCardDetail(title: templateCardViewModel.translatedName, subtitle: templateCardViewModel.serverName)
                     Spacer()
-                    MoreButtonView(imageName: "reports.more", action: {
+                    ImageButtonView(imageName: "reports.more", action: {
                         //show detail
                         showtemplateActionBottomSheet()
                     })
