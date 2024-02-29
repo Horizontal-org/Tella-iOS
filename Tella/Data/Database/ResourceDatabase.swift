@@ -14,7 +14,7 @@ extension TellaDataBase {
             cddl(D.cId, D.text, primaryKey: true, autoIncrement: false),
             cddl(D.cExternalId, D.text),
             cddl(D.cFilename, D.text),
-            cddl(D.cTitle, D.cTitle),
+            cddl(D.cTitle, D.text),
             cddl(D.cSize, D.text),
             cddl(D.cCreatedDate, D.text),
             cddl(D.cServerId, D.integer, tableName: D.tServer, referenceKey: D.cServerId)
@@ -88,6 +88,7 @@ extension TellaDataBase {
             try statementBuilder.delete(tableName: D.tResource, primarykeyValue: condition)
             return .success(true)
         } catch let error {
+            debugLog(error)
             return .failure(error)
         }
     }
