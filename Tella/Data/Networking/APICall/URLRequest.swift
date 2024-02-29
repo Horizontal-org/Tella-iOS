@@ -41,18 +41,7 @@ extension WebRepository {
 
     func getAPIResponseForBinaryData(endpoint: any APIRequest) -> APIResponse<Data> {
         fetchData(endpoint: endpoint)
-            .tryMap { output in
-                guard let httpResponse = output.response as? HTTPURLResponse else {
-                    throw APIError.unexpectedResponse
-                }
-                guard httpResponse.statusCode == 200 || httpResponse.statusCode == 206 else {
-                    throw APIError.httpCode(httpResponse.statusCode)
-                }
-                return (output.data, httpResponse.allHeaderFields)
-            }
-            .mapError { error in
-                (error as? APIError) ?? APIError.unexpectedResponse
-            }
+            .requestData()
             .eraseToAnyPublisher()
     }
 }
