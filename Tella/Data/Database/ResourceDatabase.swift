@@ -43,7 +43,6 @@ extension TellaDataBase {
     private func getResource(dictionnary: [String: Any]) -> DownloadedResource {
         let id = dictionnary[D.cId] as? String
         let externalId = dictionnary[D.cExternalId] as? String
-        let vaultFileId = dictionnary[D.cVaultFileId] as? String
         let filename = dictionnary[D.cFilename] as? String
         let title = dictionnary[D.cTitle] as? String
         let size = dictionnary[D.cSize] as? String
