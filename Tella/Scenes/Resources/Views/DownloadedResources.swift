@@ -24,7 +24,9 @@ struct DownloadedResources: View {
                                          title: resource.title,
                                          serverName: resource.serverName,
                                          type: .more,
-                                         action: {showResourceBottomSheet(resourceTitle: resource.title, resourceId: resource.id)})
+                                         action: {showResourceBottomSheet(resourceTitle: resource.title, resourceId: resource.id)}).onTapGesture {
+                                navigateToPDFView(resourceId: resource.id, resourceTitle: resource.title)
+                            }
                         }
                     }
                 }.frame(maxHeight: CGFloat(viewModel.downloadedResources.count) * 90)
