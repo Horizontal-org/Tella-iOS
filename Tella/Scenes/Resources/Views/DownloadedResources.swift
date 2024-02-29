@@ -23,8 +23,8 @@ struct DownloadedResources: View {
                             ResourceCard(isLoading: false,
                                          title: resource.title,
                                          serverName: resource.serverName,
-                                         rightButtonImage: "reports.more",
-                                         rightButtonAction: {showResourceBottomSheet(resourceTitle: resource.title, resourceId: resource.id)})
+                                         type: .more,
+                                         action: {showResourceBottomSheet(resourceTitle: resource.title, resourceId: resource.id)})
                         }
                     }
                 }.frame(maxHeight: CGFloat(viewModel.downloadedResources.count) * 90)

@@ -27,13 +27,13 @@ struct TemplateItemView: View {
             Spacer()
             
             if(!templateItemViewModel.isDownloaded) {
-                MoreButtonView(imageName: "template.add", 
+                ImageButtonView(imageName: "template.add",
                                action: {
                     templateItemViewModel.downloadTemplate()
                     Toast.displayToast(message: "“\(templateItemViewModel.name )” \(LocalizableUwazi.uwaziAddTemplateSavedToast.localized)")
                 })
             } else {
-                MoreButtonView(imageName: "reports.more", action: {
+                ImageButtonView(imageName: "reports.more", action: {
                     showTemplateActionBottomSheet()
                 }).padding(.trailing, 8)
             }

@@ -28,8 +28,8 @@ struct AvailableResources: View {
                             isLoading: viewModel.isLoadingDownload,
                             title: resource.title,
                             serverName: resource.serverName,
-                            rightButtonImage: "save-icon",
-                            rightButtonAction: {viewModel.downloadResource(serverName: resource.serverName, resource: Resource(
+                            type: .save,
+                            action: {viewModel.downloadResource(serverName: resource.serverName, resource: Resource(
                                 id: resource.id, title: resource.title, fileName: resource.fileName, size: resource.size, createdAt: resource.createdAt
                                 ))}
                         )
