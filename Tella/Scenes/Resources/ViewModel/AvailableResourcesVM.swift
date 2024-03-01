@@ -25,7 +25,7 @@ class AvailableResourcesVM: ObservableObject {
         resourceService: ResourceService = ResourceService()
     ) {
         self.appModel = mainAppModel
-        self.servers = mainAppModel.vaultManager.tellaData?.tellaServers.value ?? []
+        self.servers = mainAppModel.tellaData?.tellaServers.value ?? []
         self.downloadedResourcesVM = downloadedVM
         self.resourceService = resourceService
         self.getAvailableForDownloadResources()
@@ -85,7 +85,7 @@ class AvailableResourcesVM: ObservableObject {
     private func saveToVault(data: Data, resource: Resource, serverId: Int) {
         
         do {
-            let resourceId = try self.appModel.vaultManager.tellaData?.addResource(resource: resource, serverId: serverId)
+            let resourceId = try self.appModel.tellaData?.addResource(resource: resource, serverId: serverId)
             guard let save = self.appModel.vaultManager.save(data, vaultFileId: resourceId) else { return }
             
             if save {

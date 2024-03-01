@@ -91,7 +91,7 @@ class UwaziServerViewModel: ObservableObject {
                                  locale: selectedLanguage?.locale
         )
         debugLog(server)
-        guard let id = mainAppModel.vaultManager.tellaData?.addUwaziServer(server: server) else { return }
+        guard let id = mainAppModel.tellaData?.addUwaziServer(server: server) else { return }
         server.id = id
         self.currentServer = server
     }
@@ -107,7 +107,7 @@ class UwaziServerViewModel: ObservableObject {
                                  locale: selectedLanguage?.locale)
 
 
-        guard let id = mainAppModel.vaultManager.tellaData?.updateUwaziServer(server: server) else { return }
+        guard let id = mainAppModel.tellaData?.updateUwaziServer(server: server) else { return }
         server.id = id
     }
 

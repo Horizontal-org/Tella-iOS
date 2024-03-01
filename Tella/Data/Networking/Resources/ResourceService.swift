@@ -12,7 +12,7 @@ import Combine
 class ResourceService {
     private var cancellables: Set<AnyCancellable> = []
     func getDownloadedResources(from appModel: MainAppModel) -> [DownloadedResourceCardViewModel] {
-        guard let resources = appModel.vaultManager.tellaData?.getResources() else {
+        guard let resources = appModel.tellaData?.getResources() else {
             return []
         }
 
@@ -24,7 +24,7 @@ class ResourceService {
     private func createResourceCardViewModel(
         from resource: DownloadedResource, in appModel: MainAppModel
     ) -> DownloadedResourceCardViewModel {
-        let selectedServer = appModel.vaultManager.tellaData?.tellaServers.value.first {
+        let selectedServer = appModel.tellaData?.tellaServers.value.first {
             $0.id == resource.serverId
         }
 
