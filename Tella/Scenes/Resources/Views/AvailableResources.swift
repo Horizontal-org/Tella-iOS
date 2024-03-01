@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct AvailableResources: View {
-    @ObservedObject var viewModel: AvailableResourcesVM
+    @EnvironmentObject var viewModel : ResourcesViewModel
     var body: some View {
         VStack {
             SectionTitle(text: LocalizableResources.resourcesAvailableTitle.localized)
@@ -41,5 +41,5 @@ struct AvailableResources: View {
 }
 
 #Preview {
-    AvailableResources(viewModel: AvailableResourcesVM(mainAppModel: MainAppModel.stub()))
+    AvailableResources()
 }

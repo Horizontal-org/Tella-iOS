@@ -20,10 +20,12 @@ struct ResourcesView: View {
             ZStack {
                 VStack {
                     // Downloaded
-                    DownloadedResources(viewModel: resourcesViewModel.downloadedResourcesVM)
+                    DownloadedResources()
+                        .environmentObject(resourcesViewModel)
                     
                     // available for download
-                    AvailableResources(viewModel: resourcesViewModel.availableResourcesVM)
+                    AvailableResources()
+                        .environmentObject(resourcesViewModel)
                     
                     Spacer()
                 }.padding(.all, 18)
@@ -33,7 +35,7 @@ struct ResourcesView: View {
         .toolbar {
             LeadingTitleToolbar(title: LocalizableResources.resourcesServerTitle.localized)
             ReloadButton(action: {
-                resourcesViewModel.availableResourcesVM.getAvailableForDownloadResources()
+                resourcesViewModel.getAvailableForDownloadResources()
             })
         }
     }

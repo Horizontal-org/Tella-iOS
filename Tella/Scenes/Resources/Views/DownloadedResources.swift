@@ -10,7 +10,7 @@ import SwiftUI
 
 struct DownloadedResources: View {
     @EnvironmentObject var sheetManager: SheetManager
-    @ObservedObject var viewModel: DownloadedResourcesVM
+    @EnvironmentObject var viewModel: ResourcesViewModel
     var body: some View {
         VStack {
             SectionTitle(text: LocalizableResources.resourcesDownloadedTitle.localized)
@@ -69,5 +69,5 @@ struct DownloadedResources: View {
 }
 
 #Preview {
-    DownloadedResources(viewModel: DownloadedResourcesVM(mainAppModel: MainAppModel.stub()))
+    DownloadedResources()
 }
