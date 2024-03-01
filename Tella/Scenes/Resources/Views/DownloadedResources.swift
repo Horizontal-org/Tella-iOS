@@ -14,7 +14,10 @@ struct DownloadedResources: View {
     var body: some View {
         VStack {
             SectionTitle(text: LocalizableResources.resourcesDownloadedTitle.localized)
-            if viewModel.downloadedResources.isEmpty {
+            if viewModel.downloadedResources.isEmpty && viewModel.availableResources.isEmpty {
+                SectionMessage(text: LocalizableResources.resourcesDownloadedSecondMsg.localized)
+            }
+            else if viewModel.downloadedResources.isEmpty {
                 SectionMessage(text: LocalizableResources.resourcesDownloadedEmpty.localized)
             } else {
                 ScrollView {

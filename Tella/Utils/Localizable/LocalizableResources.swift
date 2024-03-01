@@ -13,6 +13,7 @@ enum LocalizableResources : String, LocalizableDelegate {
 
     case resourcesDownloadedTitle = "Resources_Downloaded_Title"
     case resourcesDownloadedEmpty = "Resources_Downloaded_Empty"
+    case resourcesDownloadedSecondMsg = "Resources_Downloaded_Empty_SecondMsg"
     case resourcesDownloadedRemoveSheetSelect = "Resource_Downloaded_Remove_SheetSelect"
     case resourcesDownloadViewSheetSelect = "Resources_Downloaded_View_SheetSelect"
     case resourcesDownloadRemoveSheetTitle = "Resources_Downloaded_Remove_SheetTitle"
