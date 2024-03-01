@@ -72,9 +72,11 @@ class TellaData : ObservableObject {
             return
         }
         
-        deleteTellaServer(serverId: serverId)
         let resourcesId = getResourceByServerId(serverId: serverId)
+        dump("------resourcesId")
+        dump(resourcesId)
         vaultManager?.deleteVaultFile(filesIds: resourcesId)
+        deleteTellaServer(serverId: serverId)
         
     }
     
