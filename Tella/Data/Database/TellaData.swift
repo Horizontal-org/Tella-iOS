@@ -81,6 +81,12 @@ class TellaData : ObservableObject {
     
     @discardableResult
     func deleteAllServers() -> Result<Bool, Error>{
+        let resources = getResources()
+        let resourcesId = resources.map { res in
+            return res.id
+        }
+        
+        vaultManager?.deleteVaultFile(filesIds: resourcesId)
         let deleteAllServersResult = database.deleteAllServers()
         getServers()
         getReports()
