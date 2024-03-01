@@ -25,7 +25,7 @@ struct AvailableResources: View {
                 ScrollView {
                     ForEach(viewModel.availableResources) { resource in
                         ResourceCard(
-                            isLoading: viewModel.isLoadingDownload,
+                            isLoading: viewModel.isDownloading,
                             title: resource.title,
                             serverName: resource.serverName,
                             type: .save,

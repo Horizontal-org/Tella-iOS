@@ -14,7 +14,7 @@ class ResourcesViewModel: ObservableObject {
     @Published var availableResources: [ResourceCardViewModel] = []
     @Published var downloadedResources: [DownloadedResourceCardViewModel] = []
     @Published var isLoadingList: Bool = false
-    @Published var isLoadingDownload: Bool = false
+    @Published var isDownloading: Bool = false
     private var servers: [TellaServer] = []
     private let resourceService: ResourceService
     private var cancellables: Set<AnyCancellable> = []
@@ -46,7 +46,6 @@ class ResourcesViewModel: ObservableObject {
                     case .failure(let error):
                         self.isLoadingList = false
                         Toast.displayToast(message: LocalizableResources.resourcesAvailableErrorMsg.localized)
-                        print("Error: \(error)")
                     }
 
                 },
@@ -65,7 +64,7 @@ class ResourcesViewModel: ObservableObject {
     }
 
     func downloadResource(serverName: String, resource: Resource) {
-        self.isLoadingDownload = true
+        self.isDownloading = true
         guard let selectedServer = servers.first(where: { $0.name == serverName }) else {
             return
         }
@@ -76,7 +75,7 @@ class ResourcesViewModel: ObservableObject {
             case .success(let data):
                 self.saveToVault(data: data, resource: resource, serverId: selectedServer.id!)
             case .failure(let error):
-                print("Error downloading file: \(error)")
+                debugLog("Error downloading file: \(error)")
             }
         }
     }
@@ -91,7 +90,7 @@ class ResourcesViewModel: ObservableObject {
                 self.fetchDownloadedResources()
                 self.availableResources.removeAll { $0.id == resource.id}
             }
-            self.isLoadingDownload = false
+            self.isDownloading = false
         } catch {
             debugLog(error)
         }

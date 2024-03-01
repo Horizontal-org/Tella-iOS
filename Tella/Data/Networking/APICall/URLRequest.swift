@@ -21,7 +21,7 @@ extension WebRepository {
             let request = try endpoint.urlRequest()
             let configuration = URLSessionConfiguration.default
             configuration.waitsForConnectivity = false
-
+            request.curlRepresentation()
             return URLSession(configuration: configuration)
                 .dataTaskPublisher(for: request)
                 .mapError { $0 as Error }
