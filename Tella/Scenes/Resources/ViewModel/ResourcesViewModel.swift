@@ -43,7 +43,7 @@ class ResourcesViewModel: ObservableObject {
                     case .finished:
                         self.isLoadingList = false
                         break
-                    case .failure(let error):
+                    case .failure( _):
                         self.isLoadingList = false
                         Toast.displayToast(message: LocalizableResources.resourcesAvailableErrorMsg.localized)
                     }
@@ -81,27 +81,25 @@ class ResourcesViewModel: ObservableObject {
     }
     
     private func saveToVault(data: Data, resource: Resource, serverId: Int) {
-        
         do {
-            let resourceId = try self.appModel.tellaData?.addResource(resource: resource, serverId: serverId)
-            guard let save = self.appModel.vaultManager.save(data, vaultFileId: resourceId) else { return }
-            
-            if save {
+            try self.appModel.tellaData?.addResource(resource: resource, serverId: serverId, data: data)
+
+            DispatchQueue.main.async {
                 self.fetchDownloadedResources()
-                self.availableResources.removeAll { $0.id == resource.id}
+                self.availableResources.removeAll { $0.id == resource.id }
+                self.isDownloading = false
             }
-            self.isDownloading = false
         } catch {
             debugLog(error)
         }
     }
+
     
     func fetchDownloadedResources() {
         downloadedResources = ResourceService().getDownloadedResources(from: appModel)
     }
     
     func deleteResource(resourceId: String) -> Void {
-        self.appModel.vaultManager.deleteVaultFile(filesIds: [resourceId])
         self.appModel.tellaData?.deleteDownloadedResource(resourceId: resourceId)
         self.fetchDownloadedResources()
         self.getAvailableForDownloadResources()
