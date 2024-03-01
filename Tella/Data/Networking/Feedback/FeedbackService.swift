@@ -24,7 +24,7 @@ class FeedbackService: NSObject {
     
     func addUnsentFeedbacksOperation(mainAppModel: MainAppModel) {
         
-        let unsentFeedbacks = mainAppModel.vaultManager.tellaData?.getUnsentFeedbacks()
+        let unsentFeedbacks = mainAppModel.tellaData?.getUnsentFeedbacks()
         
         unsentFeedbacks?.forEach({ feedback in
             let operation = FeedbackOperation(mainAppModel: mainAppModel)

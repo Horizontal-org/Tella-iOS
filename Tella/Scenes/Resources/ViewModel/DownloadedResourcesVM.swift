@@ -26,7 +26,7 @@ class DownloadedResourcesVM : ObservableObject {
     
     func deleteResource(resourceId: String) -> Void {
         self.appModel.vaultManager.deleteVaultFile(filesIds: [resourceId])
-        self.appModel.vaultManager.tellaData?.deleteDownloadedResource(resourceId: resourceId)
+        self.appModel.tellaData?.deleteDownloadedResource(resourceId: resourceId)
         self.fetchDownloadedResources()
         resourceDeleted.send()
     }

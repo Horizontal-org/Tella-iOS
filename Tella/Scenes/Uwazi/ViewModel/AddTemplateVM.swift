@@ -26,7 +26,7 @@ class AddTemplateViewModel: ObservableObject {
     var server: UwaziServer? = nil
     
     var tellaData: TellaData? {
-        return self.mainAppModel.vaultManager.tellaData
+        return self.mainAppModel.tellaData
     }
     
     init(mainAppModel : MainAppModel, serverId: Int) {

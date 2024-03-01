@@ -9,7 +9,8 @@ import Combine
 class TellaData : ObservableObject {
     
     var database : TellaDataBase
-    
+    var vaultManager : VaultManagerInterface?
+
     // Servers
     var servers = CurrentValueSubject<[Server], Error>([])
     var tellaServers = CurrentValueSubject<[TellaServer], Error>([])
@@ -20,8 +21,11 @@ class TellaData : ObservableObject {
     var submittedReports = CurrentValueSubject<[Report], Error>([])
     var outboxedReports = CurrentValueSubject<[Report], Error>([])
     
-    init(key: String?) throws {
-        self.database = try TellaDataBase(key: key)
+    
+    init(database : TellaDataBase, vaultManager: VaultManagerInterface? = nil) throws {
+        self.database = database
+        self.vaultManager = vaultManager
+ 
         getServers()
         getReports()
     }

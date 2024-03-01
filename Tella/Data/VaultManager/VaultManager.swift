@@ -296,8 +296,7 @@ extension VaultManager {
         return cryptoManager.passwordType
     }
     
-     func initialize(with key:String?) throws {
-        self.tellaData = try TellaData(key: key)
+     func initialize() throws {
         fileManager.createDirectory(atPath: containerURL)
     }
 }

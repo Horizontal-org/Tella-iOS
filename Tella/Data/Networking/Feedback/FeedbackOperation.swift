@@ -53,7 +53,7 @@ class FeedbackOperation:Operation, WebRepository {
         case .finished:
             let message = String(format: LocalizableSettings.backgroundSuccessSentToast.localized)
             Toast.displayToast(message: message)
-            self.mainAppModel.vaultManager.tellaData?.deleteFeedback(feedbackId: feedbackId)
+            self.mainAppModel.tellaData?.deleteFeedback(feedbackId: feedbackId)
             self.cancel()
         default:
             break

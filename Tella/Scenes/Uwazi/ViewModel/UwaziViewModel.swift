@@ -27,7 +27,7 @@ class UwaziViewModel: ObservableObject {
     var server: UwaziServer
 
     var tellaData: TellaData? {
-        return self.mainAppModel.vaultManager.tellaData
+        return self.mainAppModel.tellaData
     }
     
     init(mainAppModel : MainAppModel, server: UwaziServer) {

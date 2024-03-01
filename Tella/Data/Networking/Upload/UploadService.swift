@@ -55,7 +55,7 @@ class UploadService: NSObject {
     
     func initAutoUpload(mainAppModel: MainAppModel ) {
         
-        let autoUploadServer = mainAppModel.vaultManager.tellaData?.getAutoUploadServer()
+        let autoUploadServer = mainAppModel.tellaData?.getAutoUploadServer()
         
         let urlSession = URLSession(
             configuration: autoUploadServer?.autoUpload ?? false ? .background(withIdentifier: "org.wearehorizontal.tella") : .default ,
@@ -104,7 +104,7 @@ class UploadService: NSObject {
     
     func sendUnsentReports(mainAppModel:MainAppModel) {
         
-        guard let unsentReports = mainAppModel.vaultManager.tellaData?.getUnsentReports() else { return }
+        guard let unsentReports = mainAppModel.tellaData?.getUnsentReports() else { return }
         
         unsentReports.forEach { report in
             let urlSession = URLSession(

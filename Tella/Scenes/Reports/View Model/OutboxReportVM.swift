@@ -127,7 +127,7 @@ class OutboxReportVM: ObservableObject {
     
     func initVaultFile(reportId: Int?) {
         
-        if let reportId, let report = self.mainAppModel.vaultManager.tellaData?.getReport(reportId: reportId) {
+        if let reportId, let report = self.mainAppModel.tellaData?.getReport(reportId: reportId) {
 
             let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
 
@@ -202,7 +202,7 @@ class OutboxReportVM: ObservableObject {
             self.updateReportStatus(reportStatus: .submissionInProgress)
             
             guard let reportID = reportViewModel.id,
-                  let report = self.mainAppModel.vaultManager.tellaData?.getReport(reportId:reportID) else { return }
+                  let report = self.mainAppModel.tellaData?.getReport(reportId:reportID) else { return }
 
             treat(uploadResponse: self.reportRepository.sendReport(report: report, mainAppModel: mainAppModel))
         }
@@ -274,7 +274,7 @@ class OutboxReportVM: ObservableObject {
         
         guard let id = reportViewModel.id else { return  }
 
-        mainAppModel.vaultManager.tellaData?.updateReportStatus(idReport: id, status: reportStatus)
+        mainAppModel.tellaData?.updateReportStatus(idReport: id, status: reportStatus)
     }
     
     func deleteReport() {
