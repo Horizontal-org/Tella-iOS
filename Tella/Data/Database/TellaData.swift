@@ -57,11 +57,25 @@ class TellaData : ObservableObject {
     }
     
     @discardableResult
-    func deleteServer(serverId : Int) -> Result<Bool, Error> {
+    func deleteTellaServer(serverId : Int) -> Result<Bool, Error> {
         let deleteServerResult = database.deleteServer(serverId: serverId)
         getServers()
         getReports()
         return deleteServerResult
+    }
+    
+    func deleteServer(server: Server) {
+        guard let serverId = server.id else { return }
+        
+        if server.serverType == .uwazi {
+            deleteUwaziServer(serverId: serverId)
+            return
+        }
+        
+        deleteTellaServer(serverId: serverId)
+        let resourcesId = getResourceByServerId(serverId: serverId)
+        vaultManager?.deleteVaultFile(filesIds: resourcesId)
+        
     }
     
     @discardableResult
@@ -145,6 +159,17 @@ class TellaData : ObservableObject {
     }
     func deleteDownloadedResource(resourceId: String) -> Void {
         let _ = database.deleteDownloadedResource(resourceId: resourceId)
+    }
+    func getResourceByServerId(serverId: Int) -> [String] {
+        let resourcesResult = database.getResourcesByServerId(serverId: serverId)
+        
+        switch resourcesResult {
+        case .success(let ids):
+            return ids
+        default:
+            return []
+        }
+        
     }
     func getCurrentReport() -> Report? {
         return database.getCurrentReport()

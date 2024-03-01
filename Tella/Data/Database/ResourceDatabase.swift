@@ -92,4 +92,22 @@ extension TellaDataBase {
             return .failure(error)
         }
     }
+    
+    func getResourcesByServerId(serverId: Int) -> Result<[String], Error> {
+        do {
+            var resourcesId: [String] = []
+            let condition = [KeyValue(key: D.cServerId, value: serverId)]
+            
+            let responseDict = try statementBuilder.selectQuery(tableName: D.tResource, andCondition: condition)
+            
+            responseDict.forEach { dict in
+                resourcesId.append(dict[D.cId] as! String)
+            }
+            
+            return .success(resourcesId)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
 }
