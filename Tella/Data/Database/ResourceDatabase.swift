@@ -25,39 +25,28 @@ extension TellaDataBase {
     
     func getDownloadedResources() -> [DownloadedResource] {
         
-        var resources: [DownloadedResource] = []
-        
         do {
             let responseDict = try statementBuilder.selectQuery(tableName: D.tResource)
             
-            responseDict.forEach { dict in
-                resources.append(getResource(dictionnary: dict))
-            }
+            let decodedResources = try responseDict.decode(DownloadedResource.self)
             
-            return resources
+            return decodedResources
         } catch {
             return []
         }
     }
     
-    private func getResource(dictionnary: [String: Any]) -> DownloadedResource {
-        let id = dictionnary[D.cId] as? String
-        let externalId = dictionnary[D.cExternalId] as? String
-        let filename = dictionnary[D.cFilename] as? String
-        let title = dictionnary[D.cTitle] as? String
-        let size = dictionnary[D.cSize] as? String
-        let createdAt = dictionnary[D.cCreatedDate] as? String
-        let serverId = dictionnary[D.cServerId] as? Int
-        
-        return DownloadedResource(
-            id: id ?? "",
-            externalId: externalId ?? "",
-            title: title ?? "",
-            fileName: filename ?? "",
-            size: size ?? "",
-            serverId: serverId,
-            createdAt: createdAt ?? ""
-        )
+    func getUnsentFeedbacksw() -> [Feedback] {
+        do {
+            let feedbackCondition = [KeyValue(key: D.cStatus, value: FeedbackStatus.pending.rawValue)]
+            
+            let feedbackDict = try statementBuilder.getSelectQuery(tableName: D.tFeedback,
+                                                                   equalCondition: feedbackCondition)
+            return try feedbackDict.decode(Feedback.self)
+        } catch (let error) {
+            debugLog(error)
+            return []
+        }
     }
     
     func addDownloadedResource(resource: Resource, serverId: Int)  -> Result<String, Error> {
