@@ -7,9 +7,11 @@ import SwiftUI
 struct CardFrameView<Content:View>: View {
     
     var content : () -> Content
+    var padding: EdgeInsets
     
-    init(@ViewBuilder content : @escaping () -> Content) {
+    init(padding: EdgeInsets, @ViewBuilder content : @escaping () -> Content) {
         self.content = content
+        self.padding = padding
     }
     
     var body: some View {
@@ -17,12 +19,12 @@ struct CardFrameView<Content:View>: View {
             self.content()
         }.background(Color.white.opacity(0.08))
             .cornerRadius(15)
-            .padding(EdgeInsets(top: 6, leading: 17, bottom: 6, trailing: 17))
+            .padding(padding)
     }
 }
 
 #Preview {
-    CardFrameView(content: {
+    CardFrameView(padding: EdgeInsets(top: 6, leading: 17, bottom: 6, trailing: 17), content: {
             Text("Test")
     })
 }
