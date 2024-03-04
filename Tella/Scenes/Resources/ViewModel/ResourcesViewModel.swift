@@ -51,13 +51,9 @@ class ResourcesViewModel: ObservableObject {
                 },
                 receiveValue: { resources in
                     self.isLoadingList = false
-                    resources.forEach { resource in
-                        let isDownloaded = self.downloadedResources.contains(where: { $0.externalId == resource.id })
-
-                        if(!isDownloaded) {
-                            self.availableResources.append(resource)
-                        }
-                    }
+                    let downloadedIds = Set(self.downloadedResources.map { $0.externalId })
+                    let newResources = resources.filter { !downloadedIds.contains($0.id) }
+                    self.availableResources.append(contentsOf: newResources)
 
                 }
             ).store(in: &cancellables)
