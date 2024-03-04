@@ -37,12 +37,3 @@ extension View {
         AnyView(self)
     }
 }
-
-extension View {
-    func customCardStyle() -> some View {
-        self
-            .background(Color.white.opacity(0.08))
-            .cornerRadius(15)
-            .padding(.top, 6)
-    }
-}

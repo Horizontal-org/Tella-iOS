@@ -16,16 +16,17 @@ struct ResourceCard: View {
     var action: () -> Void
     
     var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                Image("resources.pdf")
-                    .padding()
-                ConnectionCardDetail(title: title, subtitle: serverName)
-                Spacer()
-                ImageButtonView(imageName: type.imageName, action: action).disabled(isLoading)
-            }.padding(.all, 8)
+        CardFrameView(padding: EdgeInsets(top: 6, leading: 0, bottom: 0, trailing: 0) ) {
+            VStack(spacing: 0) {
+                HStack {
+                    Image("resources.pdf")
+                        .padding()
+                    ConnectionCardDetail(title: title, subtitle: serverName)
+                    Spacer()
+                    ImageButtonView(imageName: type.imageName, action: action).disabled(isLoading)
+                }.padding(.all, 8)
+            }
         }
-        .customCardStyle()
     }
 }
 
