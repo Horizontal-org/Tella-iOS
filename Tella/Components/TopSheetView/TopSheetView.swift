@@ -40,7 +40,7 @@ struct TopSheetView<Content:View>: View {
                 .edgesIgnoringSafeArea(.all)
                 .frame(width: geometry.size.width, height: geometry.size.height)
                 .background(
-                    Color.black.opacity(0.6 * fraction_progress(lowerLimit: 0,
+                    Color.black.opacity(0.6 * fractionProgress(lowerLimit: 0,
                                                                 upperLimit: kmaxDrag,
                                                                 current: self.currentHeight + currentDrag,
                                                                 inverted: true)
@@ -84,58 +84,59 @@ struct TopSheetView<Content:View>: View {
         DragGesture()
         
             .onChanged { value in
-                let drag = (value.location.y - value.startLocation.y)
-                
-                if (drag < 0 && self.currentHeight == kMinHeight) {
-                    self.offset = drag
-                } else {
-                    self.currentDrag = drag
-                }
+                onChangedDragGesture(dragValue: value)
             }
             .onEnded({ value in
-                
-                let velocity = (value.velocity)
-                let drag = (value.location.y - value.startLocation.y)
-                
-                let newHeight = self.currentHeight + (value.location.y - value.startLocation.y)
-                
-                if (drag < 0 && newHeight < self.kMinHeight && velocity.height < kMinVelocity) {
-                    offset = -kMinHeight
-                    self.presentationMode.wrappedValue.dismiss()
-                }
-                
-                if (drag < 0 && newHeight < self.kMinHeight && velocity.height > kMinVelocity) {
-                    self.offset = 0
-                }
-                
-                if (drag < 0 && newHeight > self.kMinHeight) {
-                    self.currentHeight = kMinHeight
-                }
-                
-                if drag > 0 {
-                    self.currentHeight = kmaxDrag
-                }
-                
-                self.currentDrag = .zero
+                onEndedDragGesture(dragValue: value)
             })
     }
-    
-    private func fraction_progress(lowerLimit: Double = 0, upperLimit:Double, current:Double, inverted:Bool = false) -> Double{
-        var val:Double = 0
-        if current >= upperLimit {
-            val = 1
-        } else if current <= lowerLimit {
-            val = 0
-        } else {
-            val = (current + lowerLimit)/(upperLimit + lowerLimit)
-        }
+    private func onChangedDragGesture(dragValue:DragGesture.Value) {
+        let drag = (dragValue.location.y - dragValue.startLocation.y)
         
-        if inverted {
-            return val
+        if (drag < 0 && self.currentHeight == kMinHeight) {
+            self.offset = drag
         } else {
-            return (1 - val)
+            self.currentDrag = drag
         }
     }
+    
+    private func onEndedDragGesture(dragValue:DragGesture.Value ) {
+        
+        let velocity = (dragValue.velocity)
+        let drag = (dragValue.location.y - dragValue.startLocation.y)
+        
+        let newHeight = self.currentHeight + (dragValue.location.y - dragValue.startLocation.y)
+        
+        if (drag < 0 && newHeight < self.kMinHeight && velocity.height < kMinVelocity) {
+            offset = -kMinHeight
+            self.presentationMode.wrappedValue.dismiss()
+        }
+        
+        if (drag < 0 && newHeight < self.kMinHeight && velocity.height > kMinVelocity) {
+            self.offset = 0
+        }
+        
+        if (drag < 0 && newHeight > self.kMinHeight) {
+            self.currentHeight = kMinHeight
+        }
+        
+        if drag > 0 {
+            self.currentHeight = kmaxDrag
+        }
+        
+        self.currentDrag = .zero
+    }
+
+    private func fractionProgress(lowerLimit: Double = 0, 
+                                  upperLimit:Double,
+                                  current:Double,
+                                  inverted:Bool = false) -> Double {
+        
+        let clampedCurrent = min(max(current, lowerLimit), upperLimit)
+        let fraction = (clampedCurrent - lowerLimit) / (upperLimit - lowerLimit)
+        return inverted ? fraction : 1 - fraction
+    }
+
 }
 
 #Preview {
