@@ -78,11 +78,7 @@ class UwaziServerViewModel: ObservableObject {
         if currentServer != nil {
             updateServer()
         } else {
-            if self.isPublicInstance == true {
-                addServer()
-                return
-            }
-            addPrivateInstanceServer()
+            self.isPublicInstance == true ? addServer() : addPrivateInstanceServer()
         }
     }
 
@@ -343,19 +339,11 @@ class UwaziServerViewModel: ObservableObject {
     
     fileprivate func handleCompletionForSettings(_ completion: Subscribers.Completion<APIError>) {
         switch completion {
-        case .finished:
-            debugLog("Finished")
-            self.isLoading = false
+        case .finished: break
         case .failure(let error):
-            debugLog(error)
-            switch error {
-            case .noInternetConnection:
-                Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
-            default:
-                break
-            }
-            self.isLoading = false
+            Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
         }
+        self.isLoading = false
     }
 }
 
