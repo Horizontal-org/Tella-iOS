@@ -13,9 +13,7 @@ class RecordViewModel: ObservableObject {
     @Published var fileName: String = ""
     @Published var time: String = ""
     @Published var shouldShowSettingsAlert: Bool = false
-    //    @Published var shouldReloadVaultFiles = false
-    
-    //    @Published var showingRecoredrView: Bool = false
+
     var showingRecoredrView: Binding<Bool> = .constant(false)
     
     private var audioBackend: RecordingAudioManager
