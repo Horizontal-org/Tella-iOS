@@ -45,6 +45,15 @@ class Cryptor {
     }
     
     func cryptFile() throws {
+        defer {
+            inputFile.closeFile()
+            outputFile.closeFile()
+          
+            if let cryptor {
+                CCCryptorRelease(cryptor)
+            }
+        }
+        
         try cryptorCreate()
         try cryptorUpdate()
         try cryptorFinal()
@@ -76,7 +85,7 @@ class Cryptor {
             )
         }
         
-        if operationResult !=  kCCSuccess {
+        guard operationResult ==  kCCSuccess else {
             debugLog("Error encryption \(operationResult)", space: .crypto)
             throw CryptoError.cryptorCreationFailed
         }
@@ -114,13 +123,11 @@ class Cryptor {
                         )
                     }
                 }
-                
-                if operationResult != kCCSuccess {
-                    inputFile.closeFile()
-                    outputFile.closeFile()
-                    throw CryptoError.encryptionFailed
+
+                guard operationResult == kCCSuccess else {
+                  throw CryptoError.encryptionFailed
                 }
-                
+
                 // Write the encrypted data to the output file
                 encryptedData.count = Int(encryptedByteCount)
                 try outputFile.write(contentsOf: encryptedData)
@@ -145,14 +152,11 @@ class Cryptor {
             )
         }
         
-        if finalStatus != kCCSuccess  {
-            inputFile.closeFile()
-            outputFile.closeFile()
+        guard finalStatus == kCCSuccess  else {
+            debugLog("Error encryption \(finalStatus)", space: .crypto)
             throw CryptoError.finalizationFailed
         }
-        
-        CCCryptorRelease(cryptor!)
-        
+                
         // Write the final encrypted data to the output file
         try outputFile.write(contentsOf: finalData)
         
