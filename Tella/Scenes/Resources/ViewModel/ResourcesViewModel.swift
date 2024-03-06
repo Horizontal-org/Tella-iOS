@@ -16,26 +16,23 @@ class ResourcesViewModel: ObservableObject {
     @Published var isLoadingList: Bool = false
     @Published var isDownloading: Bool = false
     private var servers: [TellaServer] = []
-    private let resourceService: ResourceService
     private var cancellables: Set<AnyCancellable> = []
 
     init(
-        mainAppModel: MainAppModel,
-        resourceService: ResourceService = ResourceService()
+        mainAppModel: MainAppModel
     ) {
         self.appModel = mainAppModel
         self.servers = mainAppModel.tellaData?.tellaServers.value ?? []
 
-        self.resourceService = resourceService
         self.getAvailableForDownloadResources()
-        self.fetchDownloadedResources()
+        self.getDownloadedResources()
     }
 
     func getAvailableForDownloadResources() {
         self.isLoadingList = true
         self.availableResources = []
 
-        resourceService.getAvailableResources(appModel: appModel, servers: servers)
+        fetchAvailableResources()
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { completion in
@@ -58,6 +55,35 @@ class ResourcesViewModel: ObservableObject {
                 }
             ).store(in: &cancellables)
     }
+    
+    func fetchAvailableResources() -> AnyPublisher<
+        [ResourceCardViewModel], APIError
+    > {
+        // Logic to fetch available resources
+        let resourceRepository = ResourceRepository()
+        let publishers = self.servers.map { server in
+            resourceRepository.getResourcesByProject(server: server)
+                .map { response in
+                    response.flatMap { res in
+                        res.resources.map { resource in
+                            ResourceCardViewModel(
+                                id: resource.id,
+                                title: resource.title,
+                                fileName: resource.fileName,
+                                serverName: res.name,
+                                size: resource.size,
+                                createdAt: resource.createdAt
+                            )
+                        }
+                    }
+                }
+        }
+
+        return Publishers.MergeMany(publishers)
+            .collect()
+            .map { $0.flatMap { $0 } }
+            .eraseToAnyPublisher()
+    }
 
     func downloadResource(serverName: String, resource: Resource) {
         self.isDownloading = true
@@ -65,7 +91,7 @@ class ResourcesViewModel: ObservableObject {
             return
         }
 
-        resourceService.downloadResource(server: selectedServer, resource: resource) {
+        fetchResourceFromServer(server: selectedServer, resource: resource) {
             result in
             switch result {
             case .success(let data):
@@ -76,12 +102,35 @@ class ResourcesViewModel: ObservableObject {
         }
     }
     
+
+    func fetchResourceFromServer(
+        server: TellaServer, resource: Resource,
+        completion: @escaping (Result<Data, APIError>) -> Void
+    ) {
+        let resourceRepository = ResourceRepository()
+        resourceRepository.getResourceByFileName(
+            server: server, fileName: resource.fileName
+        )
+        .receive(on: DispatchQueue.main)
+        .sink(
+            receiveCompletion: { comp in
+                if case .failure(let error) = comp {
+                    completion(.failure(error))
+                }
+            },
+            receiveValue: { data in
+                completion(.success(data))
+            }
+        )
+        .store(in: &cancellables)
+    }
+    
     private func saveToVault(data: Data, resource: Resource, serverId: Int) {
         do {
             try self.appModel.tellaData?.addResource(resource: resource, serverId: serverId, data: data)
 
             DispatchQueue.main.async {
-                self.fetchDownloadedResources()
+                self.getDownloadedResources()
                 self.availableResources.removeAll { $0.id == resource.id }
                 self.isDownloading = false
             }
@@ -91,13 +140,40 @@ class ResourcesViewModel: ObservableObject {
     }
 
     
-    func fetchDownloadedResources() {
-        downloadedResources = ResourceService().getDownloadedResources(from: appModel)
+    func getDownloadedResources() {
+        downloadedResources = fetchDownloadedResources()
+    }
+    
+    func fetchDownloadedResources() -> [DownloadedResourceCardViewModel] {
+        guard let resources = self.appModel.tellaData?.getResources() else {
+            return []
+        }
+
+        return resources.map { resource in
+            return createResourceCardViewModel(resource: resource)
+        }
+    }
+
+    private func createResourceCardViewModel(resource: DownloadedResource
+    ) -> DownloadedResourceCardViewModel {
+        let selectedServer = self.appModel.tellaData?.tellaServers.value.first {
+            $0.id == resource.serverId
+        }
+
+        return DownloadedResourceCardViewModel(
+            id: resource.id,
+            externalId: resource.externalId,
+            title: resource.title,
+            fileName: resource.fileName,
+            serverName: selectedServer?.name ?? "",
+            size: resource.size,
+            createdAt: resource.createdAt
+        )
     }
     
     func deleteResource(resourceId: String) -> Void {
         self.appModel.tellaData?.deleteDownloadedResource(resourceId: resourceId)
-        self.fetchDownloadedResources()
+        self.getDownloadedResources()
         self.getAvailableForDownloadResources()
     }
     

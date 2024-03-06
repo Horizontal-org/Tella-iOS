@@ -327,7 +327,6 @@
 		12FFEFA528BE96E00081DDB2 /* AddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */; };
 		1501401D2B71243A00991D69 /* LocalizableResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401C2B71243A00991D69 /* LocalizableResources.swift */; };
 		150913422B841C3F001E782A /* ResourceActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150913412B841C3F001E782A /* ResourceActionType.swift */; };
-		15459DC82B7FE42900E7ECE7 /* ResourceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15459DC72B7FE42900E7ECE7 /* ResourceService.swift */; };
 		155369232B7E9CC100129F2F /* ResourceDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155369222B7E9CC100129F2F /* ResourceDatabase.swift */; };
 		15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15622F492B72B1FF00289816 /* DeleteConfirmation.swift */; };
 		156986252B88FCB600534720 /* ResourcePDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156986242B88FCB600534720 /* ResourcePDFView.swift */; };
@@ -835,7 +834,6 @@
 		12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerURLView.swift; sourceTree = "<group>"; };
 		1501401C2B71243A00991D69 /* LocalizableResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableResources.swift; sourceTree = "<group>"; };
 		150913412B841C3F001E782A /* ResourceActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActionType.swift; sourceTree = "<group>"; };
-		15459DC72B7FE42900E7ECE7 /* ResourceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceService.swift; sourceTree = "<group>"; };
 		155369222B7E9CC100129F2F /* ResourceDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDatabase.swift; sourceTree = "<group>"; };
 		15622F492B72B1FF00289816 /* DeleteConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmation.swift; sourceTree = "<group>"; };
 		156986242B88FCB600534720 /* ResourcePDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcePDFView.swift; sourceTree = "<group>"; };
@@ -1402,7 +1400,6 @@
 		1236EE8328E2226F00973EEA /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				15459DC62B7FE41100E7ECE7 /* Resources */,
 				1203CDEC2992C63C00D09073 /* APICall */,
 				125F9B962AD965520073748C /* Feedback */,
 				125AAD32295348D2002194D6 /* Upload */,
@@ -2135,14 +2132,6 @@
 				1293F66B2AD80DB100F6CFBD /* CardFrameView.swift */,
 			);
 			path = Common;
-			sourceTree = "<group>";
-		};
-		15459DC62B7FE41100E7ECE7 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				15459DC72B7FE42900E7ECE7 /* ResourceService.swift */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		15791C182B6AC32B00D67C74 /* Resources */ = {
@@ -3328,7 +3317,6 @@
 				1218E86528E48AEC00FE2E68 /* LoginResult.swift in Sources */,
 				1204F64327D928C9006E40EE /* FileTypeExtension.swift in Sources */,
 				0DA213C72680286F00526995 /* FileListItem.swift in Sources */,
-				15459DC82B7FE42900E7ECE7 /* ResourceService.swift in Sources */,
 				124F8E0829119E9400FBB7AC /* StringExtension.swift in Sources */,
 				CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */,
 				122389B3293630DA0058593B /* SaveSuccessView.swift in Sources */,
