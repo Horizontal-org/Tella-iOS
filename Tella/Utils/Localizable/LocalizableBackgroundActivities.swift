@@ -8,4 +8,6 @@ enum LocalizableBackgroundActivities: String, LocalizableDelegate {
 
     case sheetTitle = "BackgroundActivities_SheetTitle"
     case sheetExpl = "BackgroundActivities_SheetExpl"
+    case encryptionFailToast = "BackgroundActivities_EncryptionFail_Toast"
+
 }

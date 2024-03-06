@@ -43,7 +43,7 @@ class EncryptionService: ObservableObject {
             
             guard let fileDetail = await mainAppModel.vaultFilesManager?.getFileDetails(filePath: filePath) else { continue }
             fileDetails.append(fileDetail)
-
+            
             let backgroundActivityModel = BackgroundActivityModel(vaultFile: fileDetail.file)
             DispatchQueue.main.async {
                 self.items.append(backgroundActivityModel)
@@ -57,18 +57,26 @@ class EncryptionService: ObservableObject {
         
         for fileDetail in fileDetails {
             operationQueue.addOperation({
-               
+                
                 let operation = EncryptionOperation(mainAppModel: self.mainAppModel)
                 
                 operation.addVaultFile(fileDetail: fileDetail, filePath: fileDetail.fileUrl, parentId: parentId, mainAppModel: self.mainAppModel)?
                     .receive(on: DispatchQueue.main)
                     .sink(receiveValue: { backgroundResult in
+                        
+                        if backgroundResult == .failed {
+                            self.displayEncryptionFailToast(title: fileDetail.file.name)
+                        }
                         self.items.removeAll(where: {$0.id == fileDetail.file.id})
                         shouldReloadVaultFiles?.wrappedValue = true
                         
                     }).store(in: &self.subscribers)
-                
             })
         }
+    }
+    
+    func displayEncryptionFailToast(title: String?) {
+        let message = String(format: LocalizableBackgroundActivities.encryptionFailToast.localized, title ?? "")
+        Toast.displayToast(message: message)
     }
 }

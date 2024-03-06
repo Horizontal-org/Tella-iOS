@@ -356,3 +356,4 @@ This feedback is anonymous, so make sure to include contact information if you w
 
 "BackgroundActivities_SheetTitle" = "Background activities";
 "BackgroundActivities_SheetExpl" = "These are the activities currently ongoing in the background.";
+"BackgroundActivities_EncryptionFail_Toast" = "The encryption process has failed: %@";

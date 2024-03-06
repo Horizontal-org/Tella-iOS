@@ -1296,6 +1296,7 @@
 			children = (
 				D5DAFDCD265384C4002F3942 /* MainAppModel.swift */,
 				12D4E8312B45964E00E7FCE7 /* FileWalker.swift */,
+				12C07EC82B065FD00030AD6E /* EncryptionService */,
 				1203CDE429915C6600D09073 /* Database */,
 				1236EE8328E2226F00973EEA /* Networking */,
 				D53B76DB2601C9EC0001CD34 /* VaultManager */,
@@ -1482,7 +1483,6 @@
 			children = (
 				125F9B972AD965800073748C /* FeedbackOperation.swift */,
 				122B61352AE72D8D00631403 /* FeedbackService.swift */,
-				12C07EC82B065FD00030AD6E /* EncryptionService */,
 			);
 			path = Feedback;
 			sourceTree = "<group>";
