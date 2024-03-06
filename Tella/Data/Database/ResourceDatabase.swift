@@ -36,19 +36,6 @@ extension TellaDataBase {
         }
     }
     
-    func getUnsentFeedbacksw() -> [Feedback] {
-        do {
-            let feedbackCondition = [KeyValue(key: D.cStatus, value: FeedbackStatus.pending.rawValue)]
-            
-            let feedbackDict = try statementBuilder.getSelectQuery(tableName: D.tFeedback,
-                                                                   equalCondition: feedbackCondition)
-            return try feedbackDict.decode(Feedback.self)
-        } catch (let error) {
-            debugLog(error)
-            return []
-        }
-    }
-    
     func addDownloadedResource(resource: Resource, serverId: Int)  -> Result<String, Error> {
         do {
             let uniqueId = UUID().uuidString
