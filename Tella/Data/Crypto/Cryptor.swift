@@ -15,7 +15,7 @@ enum CryptoError: Error {
     case finalizationFailed
 }
 
-class Cryptor {
+class FileCryptor {
     
     static let bufferSize = 1024 * 1024 * 8  // 8 MB buffer size
     

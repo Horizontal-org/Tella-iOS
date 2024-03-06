@@ -344,8 +344,8 @@ extension CryptoManager: CryptoManagerInterface {
                 return false
             }
 
-            let crypt = try Cryptor(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData: encryptionKeyData, cryptoOperation: .encrypt)
-            try crypt.cryptFile()
+            let fileCryptor = try FileCryptor(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData: encryptionKeyData, cryptoOperation: .encrypt)
+            try fileCryptor.cryptFile()
 
             return true
         }
@@ -368,8 +368,8 @@ extension CryptoManager: CryptoManagerInterface {
                 return false
             }
 
-            let crypt = try Cryptor(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData: encryptionKeyData, cryptoOperation: .decrypt)
-            try crypt.cryptFile()
+            let fileCryptor = try FileCryptor(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData: encryptionKeyData, cryptoOperation: .decrypt)
+            try fileCryptor.cryptFile()
 
             return true
             
