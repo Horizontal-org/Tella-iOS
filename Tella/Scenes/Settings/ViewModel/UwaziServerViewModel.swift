@@ -78,12 +78,16 @@ class UwaziServerViewModel: ObservableObject {
         if currentServer != nil {
             updateServer()
         } else {
-            addServer()
+            if self.isPublicInstance == true {
+                addServer()
+                return
+            }
+            addPrivateInstanceServer()
         }
     }
 
     func addServer() {
-        let server = UwaziServer(name: setting?.siteName,
+        let server = UwaziServer(name: self.name,
                                  serverURL: serverURL.getBaseURL(),
                                  username: username,
                                  password: password,
@@ -99,7 +103,7 @@ class UwaziServerViewModel: ObservableObject {
     func updateServer() {
         guard let currentServer = currentServer, let currentServerId = currentServer.id else { return }
         let server = UwaziServer(id: currentServerId,
-                                 name: setting?.siteName,
+                                 name: self.name,
                                  serverURL: serverURL.getBaseURL(),
                                  username: username,
                                  password: password,
@@ -141,7 +145,6 @@ class UwaziServerViewModel: ObservableObject {
             self.isLoading = false
         }
     }
-
     fileprivate func handleRecieveValueForGetLanguage(_ wrapper: UwaziLanguage) {
         self.isLoading = false
         self.languages.append(contentsOf: wrapper.rows ?? [])
@@ -151,7 +154,6 @@ class UwaziServerViewModel: ObservableObject {
         }
         self.showNextSuccessLoginView = true
     }
-
 
     // MARK: - Check URL API Call Methods
     func checkURL() {
@@ -176,6 +178,8 @@ class UwaziServerViewModel: ObservableObject {
             switch error {
             case .noInternetConnection:
                 Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+            case .httpCode(401):
+                handlePrivateInstance()
             default:
                 debugLog(error)
                 urlErrorMessage = error.errorDescription ?? error.localizedDescription
@@ -184,9 +188,14 @@ class UwaziServerViewModel: ObservableObject {
         }
     }
 
+    fileprivate func handlePrivateInstance() {
+        self.isLoading = false
+        self.isPublicInstance = false
+    }
 
     fileprivate func handleRecieveValueForCheckURL(_ wrapper: UwaziCheckURL) {
         self.setting = wrapper
+        self.name = wrapper.siteName
         debugLog("Finished")
         self.isLoading = false
         self.isPublicInstance = true
@@ -313,6 +322,40 @@ class UwaziServerViewModel: ObservableObject {
         guard let server = self.currentServer else { return }
         self.username = server.username ?? ""
         self.password = server.password ?? ""
+    }
+    
+    
+    fileprivate func addPrivateInstanceServer() {
+        isLoading = true
+        guard let baseURL = serverURL.getBaseURL() else { return }
+        guard let token = self.token else { return }
+        let cookie = "connect.sid=\(token)"
+        // get settings endpoint to get the name of the server
+        UwaziServerRepository().getSettings(serverURL: baseURL, cookieList: cookie)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                self.handleCompletionForSettings(completion)
+            }, receiveValue: { wrapper in
+                self.name = wrapper.siteName
+                self.addServer()
+            }).store(in: &subscribers)
+    }
+    
+    fileprivate func handleCompletionForSettings(_ completion: Subscribers.Completion<APIError>) {
+        switch completion {
+        case .finished:
+            debugLog("Finished")
+            self.isLoading = false
+        case .failure(let error):
+            debugLog(error)
+            switch error {
+            case .noInternetConnection:
+                Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+            default:
+                break
+            }
+            self.isLoading = false
+        }
     }
 }
 
