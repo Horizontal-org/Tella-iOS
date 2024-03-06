@@ -67,16 +67,17 @@ class TellaData : ObservableObject {
     func deleteServer(server: Server) {
         guard let serverId = server.id else { return }
         
-        if server.serverType == .uwazi {
+        switch (server.serverType) {
+        case .tella:
+            let resourcesId = getResourceByServerId(serverId: serverId)
+            
+            vaultManager?.deleteVaultFile(filesIds: resourcesId)
+            deleteTellaServer(serverId: serverId)
+        case .uwazi:
             deleteUwaziServer(serverId: serverId)
-            return
+        default:
+            break
         }
-        
-        let resourcesId = getResourceByServerId(serverId: serverId)
-        
-        vaultManager?.deleteVaultFile(filesIds: resourcesId)
-        deleteTellaServer(serverId: serverId)
-        
     }
     
     @discardableResult
