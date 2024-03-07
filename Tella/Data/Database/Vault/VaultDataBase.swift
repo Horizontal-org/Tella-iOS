@@ -141,7 +141,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
                                                                      likeConditions: filterConditions.likeConditions,
                                                                      notLikeConditions: filterConditions.notLikeConditions )
             
-            let vaultFiles = vaultFilesDict.compactMap{VaultFileDB.init(dictionnary: $0)}
+            let vaultFiles = vaultFilesDict.getVaultFiles()
             return vaultFiles
             
         } catch {
@@ -154,7 +154,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             
             let vaultFilesDict = try statementBuilder.getSelectQuery(tableName: VaultD.tVaultFile,
                                                                      equalCondition:[KeyValue(key: VaultD.cId, value: id)])
-            let vaultFiles = vaultFilesDict.compactMap{VaultFileDB.init(dictionnary: $0)}
+            let vaultFiles = vaultFilesDict.getVaultFiles()
             
             return vaultFiles.first
             
@@ -169,7 +169,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             let vaultFilesDict = try statementBuilder.getSelectQuery(tableName: VaultD.tVaultFile,
                                                                      equalCondition:[KeyValue(key: VaultD.cEncryptionUpdated, value: false)])
             
-            let vaultFiles = vaultFilesDict.compactMap{VaultFileDB.init(dictionnary: $0)}
+            let vaultFiles = vaultFilesDict.getVaultFiles()
             return vaultFiles
             
         } catch {
@@ -203,7 +203,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             
             let vaultFilesDict = try statementBuilder.getSelectQuery(tableName: VaultD.tVaultFile,
                                                                      inCondition: vaultCondition)
-            let vaultFiles = vaultFilesDict.compactMap{VaultFileDB.init(dictionnary: $0)}
+            let vaultFiles = vaultFilesDict.getVaultFiles()
             return vaultFiles
             
         } catch {
@@ -223,7 +223,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
                                                                      sortCondition: [sortCondition],
                                                                      limit: 10)
             
-            let vaultFiles = vaultFilesDict.compactMap{VaultFileDB.init(dictionnary: $0)}
+            let vaultFiles = vaultFilesDict.getVaultFiles()
             return vaultFiles
             
         } catch {
