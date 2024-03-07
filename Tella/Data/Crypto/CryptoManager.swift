@@ -13,9 +13,9 @@ enum CryptoOperationEnum {
 
 protocol CryptoManagerInterface {
     func encrypt(_ data: Data) -> Data?
-    func decrypt(_ data: Data) -> Data?
-    func encryptFilePath(inputFileURL: URL, outputFileURL: URL) -> Bool
-    func decryptfilePath(inputFileURL: URL, outputFileURL: URL) -> Bool
+    func decrypt(_ data: Data) -> Data?    
+    func encryptFile(at inputFileURL: URL, outputTo outputFileURL: URL) -> Bool
+    func decryptFile(at inputFileURL: URL, outputTo outputFileURL: URL) -> Bool
 }
 
 enum KeyEnum {
@@ -298,7 +298,7 @@ class CryptoManager {
     }
     
     // Uses the given private key to decrypt the data. Returns nil on failure.
-    func decrypt(_ data: Data, _ privateKey: SecKey) -> Data? {
+    private func decrypt(_ data: Data, _ privateKey: SecKey) -> Data? {
         guard SecKeyIsAlgorithmSupported(privateKey, .decrypt, CryptoManager.algorithm) else {
             debugLog("Algorithm is not supported")
             return nil
@@ -309,6 +309,28 @@ class CryptoManager {
             return nil
         }
         return clearText
+    }
+
+    /// Encrypt the content of an input file to an output file using the encryption key data
+    /// - Parameters:
+    ///   - inputFileURL: It represents the URL of the file to be encrypted.
+    ///   - outputFileURL: It represents the URL where the encrypted data will be written.
+    ///   - encryptionKeyData: It represents the secret key data used for encryption.
+    /// - Throws,  An error if the file encryption fails.
+    private func encryptFile(at inputFileURL: URL, outputTo outputFileURL: URL, encryptionKeyData: Data) throws {
+        let fileCryptor = try FileCryptor(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData: encryptionKeyData, cryptoOperation: .encrypt)
+        try fileCryptor.cryptFile()
+    }
+
+    /// Decrypt the content of an input file to an output file using the decryption key data
+    /// - Parameters:
+    ///   - inputFileURL: It represents the URL of the file to be decrypted.
+    ///   - outputFileURL: It represents the URL where the decrypted data will be written.
+    ///   - decryptionKeyData: It represents the secret key data used for decryption.
+    /// - Throws,  An error if the file decryption fails.
+    private func decryptFile(at inputFileURL: URL, outputTo outputFileURL: URL, decryptionKeyData: Data) throws {
+        let fileCryptor = try FileCryptor(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData: decryptionKeyData, cryptoOperation: .decrypt)
+        try fileCryptor.cryptFile()
     }
 }
 
@@ -330,8 +352,14 @@ extension CryptoManager: CryptoManagerInterface {
         }
         return decrypt(data, metaPrivateKey)
     }
-    
-    func encryptFilePath(inputFileURL: URL, outputFileURL: URL) -> Bool {
+
+    /// Encrypt the content of an input file to an output file
+    /// - Parameters:
+    ///   - inputFileURL: It represents the URL of the file to be encrypted.
+    ///   - outputFileURL: It represents the URL where the encrypted data will be written.
+    /// - Returns: A boolean value (bool). true indicates successful file encryption in OutputFileURL,
+    ///            and false indicates failure of encryption, recovering public key or converting the publicKey to data .
+    func encryptFile(at inputFileURL: URL, outputTo outputFileURL: URL) -> Bool {
         do {
             
             guard let publicKey = recoverKey(.PUBLIC) else {
@@ -344,18 +372,23 @@ extension CryptoManager: CryptoManagerInterface {
                 return false
             }
 
-            let fileCryptor = try FileCryptor(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData: encryptionKeyData, cryptoOperation: .encrypt)
-            try fileCryptor.cryptFile()
+            try encryptFile(at: inputFileURL, outputTo: outputFileURL,encryptionKeyData: encryptionKeyData)
 
             return true
         }
-        catch let error {
-            debugLog("Error encrypt\(error)", space: .crypto)
+        catch let encryptionError {
+            debugLog("Error encrypt\(encryptionError)", space: .crypto)
             return false
         }
     }
     
-    func decryptfilePath(inputFileURL: URL, outputFileURL: URL) -> Bool {
+    /// Decrypt the content of an input file to an output file
+    /// - Parameters:
+    ///   - inputFileURL: It represents the URL of the file to be decrypted.
+    ///   - outputFileURL: It represents the URL where the decrypted data will be written.
+    /// - Returns: A boolean value (bool). true indicates successful file decryption in OutputFileURL, and false indicates failure.
+    ///            and false indicates failure of decryption, recovering metaPrivateKey  or converting the metaPrivateKey to data .
+    func decryptFile(at inputFileURL: URL, outputTo outputFileURL: URL) -> Bool {
         do {
             
             guard let metaPrivateKey = self.metaPrivateKey else {
@@ -363,19 +396,17 @@ extension CryptoManager: CryptoManagerInterface {
                 return false
             }
             
-            guard let encryptionKeyData = metaPrivateKey.getData() else {
+            guard let decryptionKeyData = metaPrivateKey.getData() else {
                 debugLog("Failed to recover private key data", space: .crypto)
                 return false
             }
 
-            let fileCryptor = try FileCryptor(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData: encryptionKeyData, cryptoOperation: .decrypt)
-            try fileCryptor.cryptFile()
-
+            try decryptFile(at: inputFileURL, outputTo: outputFileURL, decryptionKeyData: decryptionKeyData)
             return true
             
         }
-        catch let error {
-            debugLog("Error decrypt\(error)", space: .crypto)
+        catch let decryptionError {
+            debugLog("Error decrypt\(decryptionError)", space: .crypto)
             return false
         }
     }

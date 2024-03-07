@@ -36,7 +36,7 @@ class VaultManager : VaultManagerInterface, ObservableObject{
             return nil
         }
 
-        guard cryptoManager.encryptFilePath(inputFileURL: filePath, outputFileURL: outputFileURL) else {
+        guard cryptoManager.encryptFile(at: filePath, outputTo: outputFileURL) else {
             debugLog("Encryption failed \(String(describing: vaultFileId))", level: .debug, space: .crypto)
                 return nil
             }
@@ -75,7 +75,7 @@ class VaultManager : VaultManagerInterface, ObservableObject{
 
         let inputFileURL = containerURL(for: fileId)
 
-        guard cryptoManager.decryptfilePath(inputFileURL: inputFileURL, outputFileURL: tmpFileURL) else {
+        guard cryptoManager.decryptFile(at: inputFileURL, outputTo: tmpFileURL) else {
             return nil
         }
 

@@ -44,6 +44,8 @@ class FileCryptor {
         self.encryptionKeyData = encryptionKeyData
     }
     
+    ///  Performes encryption and decryption: creates a cryptographic context, processes the data from the input file and writes it to the provided output file 
+    ///  and finally marks the final stage of the encryption or decryption process to the provided output file
     func cryptFile() throws {
         defer {
             inputFile.closeFile()
@@ -59,7 +61,8 @@ class FileCryptor {
         try cryptorFinal()
     }
     
-    private func cryptorCreate() throws  {
+    /// Creates a cryptographic context that can be used for encryption or decryption operation
+    private func cryptorCreate() throws {
         // Setup the encryption context
         let keySize = size_t(kCCKeySizeAES256)
         let algorithm = CCAlgorithm(kCCAlgorithmAES)
@@ -68,7 +71,8 @@ class FileCryptor {
         let operation: CCOperation = cryptoOperation == .encrypt ? UInt32(kCCEncrypt) : UInt32(kCCDecrypt)
         
         let operationResult = encryptionKeyData.withUnsafeBytes { keyBytes in
-            
+            // CCCryptorCreateWithMode is used for creating a cryptographic context that can be
+            // used for encryption or decryption operations with a specified algorithm and mode.
             CCCryptorCreateWithMode(
                 operation,
                 algorithm,
@@ -90,7 +94,10 @@ class FileCryptor {
             throw CryptoError.cryptorCreationFailed
         }
     }
-    
+
+    /// It loops through the inputFile and reads the data by buffer. It processes the buffer according to the algorithm and mode defined
+    /// in the cryptographic context with CCCryptorUpdate function.
+    /// It writes the processed data (encrypted or decrypted) to the provided output file.
     private func cryptorUpdate() throws {
         var stop = false
         
@@ -115,6 +122,7 @@ class FileCryptor {
                 
                 let operationResult = inputBuffer.withUnsafeBytes { inputBytes in
                     encryptedData.withUnsafeMutableBytes { outputBytes in
+                        // CCCryptorUpdate is a function for Updating Cryptographic Operations in CommonCrypto (Decryption or Encryption)
                         CCCryptorUpdate(
                             cryptor!,
                             inputBytes.baseAddress, inputBytes.count,
@@ -137,7 +145,7 @@ class FileCryptor {
             }
         }
     }
-    
+    /// Marks the final stage of the encryption or decryption process to the provided output file
     private func cryptorFinal() throws {
         // Finalize encryption (if any)
         var finalData = Data(count: 0)
@@ -145,6 +153,7 @@ class FileCryptor {
         var bytesEncrypted = 0
         
         let finalStatus = finalData.withUnsafeMutableBytes { finalData in
+            // This function specifically marks the final stage of the encryption or decryption process
             CCCryptorFinal(
                 cryptor!,
                 finalData.baseAddress, finalData.count,
