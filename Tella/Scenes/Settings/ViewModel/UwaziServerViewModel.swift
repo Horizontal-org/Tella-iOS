@@ -78,7 +78,7 @@ class UwaziServerViewModel: ObservableObject {
         if currentServer != nil {
             updateServer()
         } else {
-            addServer()
+            self.isPublicInstance == true ? addServer() : checkURL()
         }
     }
 
@@ -115,7 +115,8 @@ class UwaziServerViewModel: ObservableObject {
     func getLanguage() {
         isLoading = true
         guard let baseURL = serverURL.getBaseURL() else { return }
-        UwaziServerRepository().getLanguage(serverURL: baseURL)
+        let cookie = "connect.sid=\(self.token ?? "")"
+        UwaziServerRepository().getLanguage(serverURL: baseURL, cookie: cookie)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 self.handleCompletionForGetLanguage(completion)
@@ -141,23 +142,23 @@ class UwaziServerViewModel: ObservableObject {
             self.isLoading = false
         }
     }
-
     fileprivate func handleRecieveValueForGetLanguage(_ wrapper: UwaziLanguage) {
         self.isLoading = false
         self.languages.append(contentsOf: wrapper.rows ?? [])
         if let server = self.currentServer {
             let locale = server.locale
+            dump(locale)
             self.selectedLanguage = self.languages.compactMap{$0}.first(where: {$0.locale == locale})
         }
         self.showNextSuccessLoginView = true
     }
 
-
     // MARK: - Check URL API Call Methods
     func checkURL() {
         self.isLoading = true
         guard let baseURL = serverURL.getBaseURL() else { return }
-        UwaziServerRepository().checkServerURL(serverURL: baseURL)
+        let cookie = "connect.sid=\(self.token ?? "")"
+        UwaziServerRepository().checkServerURL(serverURL: baseURL, cookie: cookie)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 self.handleCompletionForCheckURL(completion)
@@ -176,6 +177,8 @@ class UwaziServerViewModel: ObservableObject {
             switch error {
             case .noInternetConnection:
                 Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+            case .httpCode(HTTPErrorCodes.unauthorized.rawValue):
+                handlePrivateInstance()
             default:
                 debugLog(error)
                 urlErrorMessage = error.errorDescription ?? error.localizedDescription
@@ -184,12 +187,22 @@ class UwaziServerViewModel: ObservableObject {
         }
     }
 
-
-    fileprivate func handleRecieveValueForCheckURL(_ wrapper: UwaziCheckURL) {
-        self.setting = wrapper
-        debugLog("Finished")
+    fileprivate func handlePrivateInstance() {
         self.isLoading = false
-        self.isPublicInstance = true
+        self.isPublicInstance = false
+    }
+
+    fileprivate func handleRecieveValueForCheckURL(_ result: UwaziCheckURL) {
+        guard let isPrivate = result.isPrivate else { return }
+        
+        self.setting = result
+        self.isLoading = false
+        
+        if isPrivate {
+            addServer()
+        } else {
+            self.isPublicInstance = true
+        }
     }
     
     // MARK: - Login API Call Methods
