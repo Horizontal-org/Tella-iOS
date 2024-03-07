@@ -8,18 +8,6 @@
 
 import Foundation
 
-struct Resource: Codable, Identifiable {
-    let id: String
-    let title: String
-    let fileName: String
-    let size: String
-    let createdAt: String
-
-    enum CodingKeys: String, CodingKey {
-        case id, title, fileName, size, createdAt
-    }
-}
-
 struct DownloadedResource: Codable, Identifiable {
     let id: String
     let externalId: String
