@@ -415,21 +415,18 @@ extension CryptoManager: CryptoManagerInterface {
 
 extension SecKey {
     func getString() -> String? {
-        var error:Unmanaged<CFError>?
-        if let cfdata = SecKeyCopyExternalRepresentation(self, &error) {
-            let data:Data = cfdata as Data
-            return data.base64EncodedString()
+        guard let data = getData() else {
+            return nil
         }
-        return nil
+        return data.base64EncodedString()
     }
     
     func getData() -> Data? {
         var error:Unmanaged<CFError>?
-        if let cfdata = SecKeyCopyExternalRepresentation(self, &error) {
-            let data:Data = cfdata as Data
-            return data
+        guard let cfdata = SecKeyCopyExternalRepresentation(self, &error) else {
+            return nil
         }
-        return nil
+        let data:Data = cfdata as Data
+        return data
     }
-    
 }
