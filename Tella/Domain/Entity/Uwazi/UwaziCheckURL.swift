@@ -11,9 +11,11 @@ import Foundation
 class UwaziCheckURL: DomainModel {
     var id: String?
     var siteName: String?
+    var isPrivate: Bool?
 
-    init(id: String?, siteName: String?) {
+    init(id: String?, siteName: String?, isPrivate: Bool?) {
         self.id = id
         self.siteName = siteName
+        self.isPrivate = isPrivate
     }
 }

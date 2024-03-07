@@ -78,12 +78,12 @@ class UwaziServerViewModel: ObservableObject {
         if currentServer != nil {
             updateServer()
         } else {
-            self.isPublicInstance == true ? addServer() : addPrivateInstanceServer()
+            self.isPublicInstance == true ? addServer() : checkURL()
         }
     }
 
     func addServer() {
-        let server = UwaziServer(name: self.name,
+        let server = UwaziServer(name: setting?.siteName,
                                  serverURL: serverURL.getBaseURL(),
                                  username: username,
                                  password: password,
@@ -99,7 +99,7 @@ class UwaziServerViewModel: ObservableObject {
     func updateServer() {
         guard let currentServer = currentServer, let currentServerId = currentServer.id else { return }
         let server = UwaziServer(id: currentServerId,
-                                 name: self.name,
+                                 name: setting?.siteName,
                                  serverURL: serverURL.getBaseURL(),
                                  username: username,
                                  password: password,
@@ -115,7 +115,8 @@ class UwaziServerViewModel: ObservableObject {
     func getLanguage() {
         isLoading = true
         guard let baseURL = serverURL.getBaseURL() else { return }
-        UwaziServerRepository().getLanguage(serverURL: baseURL)
+        let cookie = "connect.sid=\(self.token ?? "")"
+        UwaziServerRepository().getLanguage(serverURL: baseURL, cookie: cookie)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 self.handleCompletionForGetLanguage(completion)
@@ -146,6 +147,7 @@ class UwaziServerViewModel: ObservableObject {
         self.languages.append(contentsOf: wrapper.rows ?? [])
         if let server = self.currentServer {
             let locale = server.locale
+            dump(locale)
             self.selectedLanguage = self.languages.compactMap{$0}.first(where: {$0.locale == locale})
         }
         self.showNextSuccessLoginView = true
@@ -155,7 +157,8 @@ class UwaziServerViewModel: ObservableObject {
     func checkURL() {
         self.isLoading = true
         guard let baseURL = serverURL.getBaseURL() else { return }
-        UwaziServerRepository().checkServerURL(serverURL: baseURL)
+        let cookie = "connect.sid=\(self.token ?? "")"
+        UwaziServerRepository().checkServerURL(serverURL: baseURL, cookie: cookie)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 self.handleCompletionForCheckURL(completion)
@@ -174,7 +177,7 @@ class UwaziServerViewModel: ObservableObject {
             switch error {
             case .noInternetConnection:
                 Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
-            case .httpCode(401):
+            case .httpCode(HTTPErrorCodes.unauthorized.rawValue):
                 handlePrivateInstance()
             default:
                 debugLog(error)
@@ -189,12 +192,17 @@ class UwaziServerViewModel: ObservableObject {
         self.isPublicInstance = false
     }
 
-    fileprivate func handleRecieveValueForCheckURL(_ wrapper: UwaziCheckURL) {
-        self.setting = wrapper
-        self.name = wrapper.siteName
-        debugLog("Finished")
+    fileprivate func handleRecieveValueForCheckURL(_ result: UwaziCheckURL) {
+        guard let isPrivate = result.isPrivate else { return }
+        
+        self.setting = result
         self.isLoading = false
-        self.isPublicInstance = true
+        
+        if isPrivate {
+            addServer()
+        } else {
+            self.isPublicInstance = true
+        }
     }
     
     // MARK: - Login API Call Methods
@@ -318,32 +326,6 @@ class UwaziServerViewModel: ObservableObject {
         guard let server = self.currentServer else { return }
         self.username = server.username ?? ""
         self.password = server.password ?? ""
-    }
-    
-    
-    fileprivate func addPrivateInstanceServer() {
-        isLoading = true
-        guard let baseURL = serverURL.getBaseURL() else { return }
-        guard let token = self.token else { return }
-        let cookie = "connect.sid=\(token)"
-        // get settings endpoint to get the name of the server
-        UwaziServerRepository().getSettings(serverURL: baseURL, cookieList: cookie)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                self.handleCompletionForSettings(completion)
-            }, receiveValue: { wrapper in
-                self.name = wrapper.siteName
-                self.addServer()
-            }).store(in: &subscribers)
-    }
-    
-    fileprivate func handleCompletionForSettings(_ completion: Subscribers.Completion<APIError>) {
-        switch completion {
-        case .finished: break
-        case .failure(let error):
-            Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
-        }
-        self.isLoading = false
     }
 }
 
