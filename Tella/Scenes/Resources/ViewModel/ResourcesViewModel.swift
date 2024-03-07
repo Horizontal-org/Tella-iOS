@@ -64,24 +64,22 @@ class ResourcesViewModel: ObservableObject {
         let publishers = self.servers.map { server in
             resourceRepository.getResourcesByProject(server: server)
                 .map { response in
-                    response.flatMap { res in
-                        res.resources.map { resource in
-                            ResourceCardViewModel(
-                                id: resource.id,
-                                title: resource.title,
-                                fileName: resource.fileName,
-                                serverName: res.name,
-                                size: resource.size,
-                                createdAt: resource.createdAt
-                            )
-                        }
+                    response.map { resource -> ResourceCardViewModel in
+                        ResourceCardViewModel(
+                            id: resource.id,
+                            title: resource.title,
+                            fileName: resource.fileName,
+                            serverName: server.name ?? "",
+                            size: resource.size,
+                            createdAt: resource.createdAt
+                        )
                     }
                 }
         }
 
         return Publishers.MergeMany(publishers)
             .collect()
-            .map { $0.flatMap { $0 } }
+            .map { $0.flatMap { $0 } } 
             .eraseToAnyPublisher()
     }
 
