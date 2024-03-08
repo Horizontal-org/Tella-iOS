@@ -11,7 +11,7 @@ protocol VaultDataBaseProtocol {
     func addVaultFile(file : VaultFileDB, parentId: String?) -> Result<Int,Error>
     func getVaultFiles(parentId: String?, filter: FilterType?, sort: FileSortOptions?) -> [VaultFileDB]
     func getVaultFile(id: String?) -> VaultFileDB?
-     func getNonUpdatedVaultFiles() -> [VaultFileDB]
+    func getNonUpdatedEncryptionVaultFiles() -> [VaultFileDB]
     @discardableResult
     func updateEncryptionVaultFile(id: String?) -> Result<Bool, Error>
     
@@ -144,7 +144,8 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             let vaultFiles = vaultFilesDict.getVaultFiles()
             return vaultFiles
             
-        } catch {
+        } catch let error {
+            debugLog(error)
             return []
         }
     }
@@ -164,7 +165,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         }
     }
 
-    func getNonUpdatedVaultFiles() -> [VaultFileDB] {
+    func getNonUpdatedEncryptionVaultFiles() -> [VaultFileDB] {
         do {
             let vaultFilesDict = try statementBuilder.getSelectQuery(tableName: VaultD.tVaultFile,
                                                                      equalCondition:[KeyValue(key: VaultD.cEncryptionUpdated, value: false)])
@@ -172,13 +173,20 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             let vaultFiles = vaultFilesDict.getVaultFiles()
             return vaultFiles
             
-        } catch {
+        } catch let error {
+            debugLog(error)
             return []
         }
     }
     
     @discardableResult
     func updateEncryptionVaultFile(id: String?) -> Result<Bool, Error> {
+        
+        guard let id else {
+            let error = RuntimeError("Vault file Id is null")
+            debugLog(error)
+            return .failure(error)
+        }
         
         do {
             
@@ -206,7 +214,8 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             let vaultFiles = vaultFilesDict.getVaultFiles()
             return vaultFiles
             
-        } catch {
+        } catch let error {
+            debugLog(error)
             return []
         }
     }
@@ -226,10 +235,11 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             let vaultFiles = vaultFilesDict.getVaultFiles()
             return vaultFiles
             
-        } catch {
+        } catch let error {
+            debugLog(error)
             return []
         }
-        
+
     }
     
     func renameVaultFile(id: String?, name: String?) -> Result<Bool, Error> {

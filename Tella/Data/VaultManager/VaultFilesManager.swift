@@ -121,7 +121,7 @@ class VaultFilesManager : VaultFilesManagerInterface {
     
     func updateEncryptionVaultFile() {
 
-        let nonUpdatedVaultFiles = self.vaultDataBase.getNonUpdatedVaultFiles()
+        let nonUpdatedVaultFiles = self.vaultDataBase.getNonUpdatedEncryptionVaultFiles()
 
         nonUpdatedVaultFiles.forEach { file in
             guard let url = self.vaultManager?.loadVaultFileToURLOld(file: file), let fileID = file.id  else { return }
