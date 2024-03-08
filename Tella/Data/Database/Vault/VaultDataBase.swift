@@ -88,7 +88,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             try statementBuilder.addColumnOn(tableName: VaultD.tVaultFile, 
                                              columnName: VaultD.cEncryptionUpdated,
                                              type: VaultD.integer,
-                                             defaultValue: "0")
+                                             defaultValue: false)
         } catch let error {
             debugLog(error)
         }
@@ -190,7 +190,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         
         do {
             
-            let valuesToUpdate = [KeyValue(key: VaultD.cEncryptionUpdated, value: 1)]
+            let valuesToUpdate = [KeyValue(key: VaultD.cEncryptionUpdated, value: true)]
             let vaultCondition = [KeyValue(key: VaultD.cId, value: id)]
             
             try statementBuilder.update(tableName: VaultD.tVaultFile,
