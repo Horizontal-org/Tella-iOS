@@ -81,14 +81,17 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
         .mapError{ error in
             if let error = error as? APIError {
                 return error
-            } else  {
-                let error = error as NSError
-                if error.domain == NSURLErrorDomain {
-                    return APIError.badServer
-                } else {
-                    return APIError.httpCode(error._code)
-                }
-
+            }
+            
+            let nsError = error as NSError
+            
+            switch (nsError.code, nsError.domain) {
+            case (NSURLErrorNotConnectedToInternet, _):
+                return APIError.noInternetConnection
+            case(_, NSURLErrorDomain):
+                return APIError.badServer
+            default:
+                return APIError.httpCode(nsError.code)
             }
         }
         .eraseToAnyPublisher()
