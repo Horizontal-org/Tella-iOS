@@ -14,7 +14,6 @@ class ResourcesViewModel: ObservableObject {
     @Published var availableResources: [ResourceCardViewModel] = []
     @Published var downloadedResources: [DownloadedResourceCardViewModel] = []
     @Published var isLoadingList: Bool = false
-    @Published var isDownloading: Bool = false
     private var servers: [TellaServer] = []
     private var cancellables: Set<AnyCancellable> = []
 
@@ -89,7 +88,7 @@ class ResourcesViewModel: ObservableObject {
     }
 
     func downloadResource(serverName: String, resource: Resource) {
-        self.isDownloading = true
+        toggleIsLoadingResource(id: resource.id)
         guard let selectedServer = servers.first(where: { $0.name == serverName }) else {
             return
         }
@@ -108,7 +107,7 @@ class ResourcesViewModel: ObservableObject {
                     debugLog("Error downloading file: \(error)")
                     Toast.displayToast(message: error.localizedDescription)
                 }
-                self.isDownloading = false
+                self.toggleIsLoadingResource(id: resource.id)
             }
         }
     }
@@ -139,7 +138,7 @@ class ResourcesViewModel: ObservableObject {
     private func saveToVault(data: Data, resource: Resource, serverId: Int) {
         do {
             guard let resourceIsSaved = try self.appModel.tellaData?.addResource(resource: resource, serverId: serverId, data: data) else {
-                isDownloading = false
+                toggleIsLoadingResource(id: resource.id)
                 return
             }
 
@@ -147,7 +146,6 @@ class ResourcesViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.getDownloadedResources()
                     self.availableResources.removeAll { $0.id == resource.id }
-                    self.isDownloading = false
                 }
             }
         } catch {
@@ -204,5 +202,12 @@ class ResourcesViewModel: ObservableObject {
     func openResource(resourceId: String, fileName: String) -> URL? {
         guard let url = self.appModel.vaultManager.loadFileToURL(fileName: fileName, fileExtension: "pdf", identifier: resourceId) else { return nil }
         return url
+    }
+    
+    private func toggleIsLoadingResource(id: String) {
+        if let index = self.availableResources.firstIndex(where: { $0.id == id }) {
+            self.availableResources[index].isLoading = !self.availableResources[index].isLoading
+            self.availableResources = self.availableResources.map { $0 }
+        }
     }
 }
