@@ -10,11 +10,12 @@ struct CircularActivityIndicatory: View {
     @State private var isCircleRotating = true
     @State private var animateStart = false
     @State private var animateEnd = true
+    var isTransparent: Bool = false
     
     var body: some View {
         ZStack {
             
-            Color.white.opacity(0.04)
+            Color.white.opacity(isTransparent ? 0 : 0.04)
                 .edgesIgnoringSafeArea(.all)
             
             ZStack {

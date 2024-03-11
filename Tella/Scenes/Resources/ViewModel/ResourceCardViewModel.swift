@@ -15,6 +15,7 @@ class ResourceCardViewModel: Hashable, Identifiable {
     var serverName: String
     var size: String
     var createdAt: String
+    var isLoading: Bool
     
     init(
         id: String,
@@ -22,7 +23,8 @@ class ResourceCardViewModel: Hashable, Identifiable {
         fileName: String,
         serverName: String,
         size: String,
-        createdAt: String
+        createdAt: String,
+        isLoading: Bool = false
     ) {
         self.id = id
         self.title = title
@@ -30,6 +32,7 @@ class ResourceCardViewModel: Hashable, Identifiable {
         self.serverName = serverName
         self.size = size
         self.createdAt = createdAt
+        self.isLoading = isLoading
     }
     
     static func == (lhs: ResourceCardViewModel, rhs: ResourceCardViewModel) -> Bool {

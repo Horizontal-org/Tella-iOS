@@ -23,7 +23,13 @@ struct ResourceCard: View {
                         .padding()
                     ConnectionCardDetail(title: title, subtitle: serverName)
                     Spacer()
-                    ImageButtonView(imageName: type.imageName, action: action).disabled(isLoading)
+                    ZStack {
+                        if(!isLoading) {
+                            ImageButtonView(imageName: type.imageName, action: action)
+                        } else {
+                            CircularActivityIndicatory(isTransparent: true)
+                        }
+                    }.frame(width: 50)
                 }.padding(.all, 8)
             }
         }

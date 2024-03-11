@@ -14,7 +14,7 @@ struct AvailableResources: View {
         VStack {
             SectionTitle(text: LocalizableResources.resourcesAvailableTitle.localized)
             if viewModel.isLoadingList {
-                CircularActivityIndicatory()
+                CircularActivityIndicatory(isTransparent: true)
             }
             else if viewModel.availableResources.isEmpty {
                 SectionMessage(text: LocalizableResources.resourcesAvailableEmpty.localized)
@@ -25,7 +25,7 @@ struct AvailableResources: View {
                 ScrollView {
                     ForEach(viewModel.availableResources) { resource in
                         ResourceCard(
-                            isLoading: viewModel.isDownloading,
+                            isLoading: resource.isLoading,
                             title: resource.title,
                             serverName: resource.serverName,
                             type: .save,
