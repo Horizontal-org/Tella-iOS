@@ -40,9 +40,14 @@ class ResourcesViewModel: ObservableObject {
                     case .finished:
                         self.isLoadingList = false
                         break
-                    case .failure( _):
+                    case .failure( let error):
+                        switch error {
+                        case .noInternetConnection:
+                            Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+                        default:
+                            Toast.displayToast(message: LocalizableResources.resourcesAvailableErrorMsg.localized)
+                        }
                         self.isLoadingList = false
-                        Toast.displayToast(message: LocalizableResources.resourcesAvailableErrorMsg.localized)
                     }
 
                 },
@@ -95,7 +100,15 @@ class ResourcesViewModel: ObservableObject {
             case .success(let data):
                 self.saveToVault(data: data, resource: resource, serverId: selectedServer.id!)
             case .failure(let error):
-                debugLog("Error downloading file: \(error)")
+                switch error {
+                case .noInternetConnection:
+                    debugLog("Error downloading file: \(error)")
+                    Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+                default:
+                    debugLog("Error downloading file: \(error)")
+                    Toast.displayToast(message: error.localizedDescription)
+                }
+                self.isDownloading = false
             }
         }
     }
@@ -182,6 +195,7 @@ class ResourcesViewModel: ObservableObject {
             self.getAvailableForDownloadResources()
         case .failure(let error):
             debugLog(error)
+            Toast.displayToast(message: error.localizedDescription)
         default:
             break
         }
