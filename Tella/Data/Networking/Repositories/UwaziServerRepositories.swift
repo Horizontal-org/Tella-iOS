@@ -56,15 +56,15 @@ class UwaziServerRepository: WebRepository {
         return nil
     }
 
-    func checkServerURL(serverURL: String) -> AnyPublisher<UwaziCheckURL, APIError> {
-        let apiResponse: APIResponse<UwaziCheckURLDTO> = getAPIResponse(endpoint: API.checkURL(serverURL: serverURL))
+    func checkServerURL(serverURL: String, cookie: String) -> AnyPublisher<UwaziCheckURL, APIError> {
+        let apiResponse: APIResponse<UwaziCheckURLDTO> = getAPIResponse(endpoint: API.checkURL(serverURL: serverURL, cookie: cookie))
         return apiResponse
             .compactMap{$0.0.toDomain() as? UwaziCheckURL}
             .eraseToAnyPublisher()
     }
 
-    func getLanguage(serverURL: String) -> AnyPublisher<UwaziLanguage, APIError> {
-        let apiResponse: APIResponse<UwaziLanguageDTO> = getAPIResponse(endpoint: API.getLanguage(serverURL: serverURL))
+    func getLanguage(serverURL: String, cookie: String) -> AnyPublisher<UwaziLanguage, APIError> {
+        let apiResponse: APIResponse<UwaziLanguageDTO> = getAPIResponse(endpoint: API.getLanguage(serverURL: serverURL, cookie: cookie))
         return apiResponse
             .compactMap{$0.0.toDomain() as? UwaziLanguage}
             .eraseToAnyPublisher()
@@ -265,8 +265,8 @@ extension UwaziServerRepository {
                     serverURL: String))
 
         case getProjetDetails((projectURL:String, token: String))
-        case checkURL(serverURL: String)
-        case getLanguage(serverURL: String)
+        case checkURL(serverURL: String, cookie: String)
+        case getLanguage(serverURL: String, cookie: String)
         case twoFactorAuthentication((username: String,
                                       password: String,
                                       token: String,
@@ -297,9 +297,9 @@ extension UwaziServerRepository.API: APIRequest {
 
     var headers: [String: String]? {
         switch self {
-        case .login, .getProjetDetails, .checkURL, .getLanguage, .twoFactorAuthentication:
+        case .login, .getProjetDetails, .twoFactorAuthentication:
             return [HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
-        case .getTemplate(_,let cookieList), .getSetting(_,let cookieList), .getDictionary(_,let cookieList), .getTranslations(_,let cookieList):
+        case .getTemplate(_,let cookieList), .getSetting(_,let cookieList), .getDictionary(_,let cookieList), .getTranslations(_,let cookieList), .checkURL(_, let cookieList), .getLanguage(_, let cookieList):
             return [HTTPHeaderField.cookie.rawValue: cookieList,
                     HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
         case .submitEntity(_, let cookie, _, _):
@@ -368,7 +368,7 @@ extension UwaziServerRepository.API: APIRequest {
             return serverURL
         case .getProjetDetails((let projectURL, _)):
             return projectURL
-        case .checkURL(serverURL: let serverURL) ,.getLanguage(serverURL: let serverURL):
+        case .checkURL(serverURL: let serverURL, _) ,.getLanguage(serverURL: let serverURL, _):
             return serverURL
         case .getTemplate(serverURL: let serverURL, cookieList: _):
             return serverURL
