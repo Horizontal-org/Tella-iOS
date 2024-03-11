@@ -125,12 +125,17 @@ class ResourcesViewModel: ObservableObject {
     
     private func saveToVault(data: Data, resource: Resource, serverId: Int) {
         do {
-            try self.appModel.tellaData?.addResource(resource: resource, serverId: serverId, data: data)
+            guard let resourceIsSaved = try self.appModel.tellaData?.addResource(resource: resource, serverId: serverId, data: data) else {
+                isDownloading = false
+                return
+            }
 
-            DispatchQueue.main.async {
-                self.getDownloadedResources()
-                self.availableResources.removeAll { $0.id == resource.id }
-                self.isDownloading = false
+            if resourceIsSaved {
+                DispatchQueue.main.async {
+                    self.getDownloadedResources()
+                    self.availableResources.removeAll { $0.id == resource.id }
+                    self.isDownloading = false
+                }
             }
         } catch {
             debugLog(error)
@@ -170,9 +175,16 @@ class ResourcesViewModel: ObservableObject {
     }
     
     func deleteResource(resourceId: String) -> Void {
-        self.appModel.tellaData?.deleteDownloadedResource(resourceId: resourceId)
-        self.getDownloadedResources()
-        self.getAvailableForDownloadResources()
+        let result = self.appModel.tellaData?.deleteDownloadedResource(resourceId: resourceId)
+        switch result {
+        case .success(_):
+            self.getDownloadedResources()
+            self.getAvailableForDownloadResources()
+        case .failure(let error):
+            debugLog(error)
+        default:
+            break
+        }
     }
     
     func openResource(resourceId: String, fileName: String) -> URL? {
