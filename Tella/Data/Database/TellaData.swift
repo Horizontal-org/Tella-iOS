@@ -155,19 +155,30 @@ class TellaData : ObservableObject {
         return database.getDownloadedResources()
     }
     
-    func addResource(resource: Resource, serverId: Int, data: Data) throws -> Void {
+    func addResource(resource: Resource, serverId: Int, data: Data) throws -> Bool {
         let result = database.addDownloadedResource(resource: resource, serverId: serverId)
         
         switch result {
         case .success(let resourceId):
-            let _ = self.vaultManager?.save(data, vaultFileId: resourceId)
+            guard (self.vaultManager?.save(data, vaultFileId: resourceId)) != nil else {
+                return false
+            }
+            
+            return true
         case .failure(let error):
             throw error
         }
     }
-    func deleteDownloadedResource(resourceId: String) -> Void {
+    func deleteDownloadedResource(resourceId: String) -> Result<Bool,Error> {
         self.vaultManager?.deleteVaultFile(filesIds: [resourceId])
-        let _ = database.deleteDownloadedResource(resourceId: resourceId)
+        let result = database.deleteDownloadedResource(resourceId: resourceId)
+        
+        switch result {
+        case.success(let result):
+            return .success(result)
+        case.failure(let error):
+            return .failure(error)
+        }
     }
     func getResourceByServerId(serverId: Int) -> [String] {
         let resourcesResult = database.getResourcesByServerId(serverId: serverId)
