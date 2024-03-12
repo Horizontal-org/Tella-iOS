@@ -6,15 +6,15 @@
 import SwiftUI
 
 struct CircularActivityIndicatory: View {
-    
-    @State private var isCircleRotating = true
-    @State private var animateStart = false
-    @State private var animateEnd = true
+    @State private var isCircleRotating = false
     var isTransparent: Bool = false
+    
+    let rotationAnimation = Animation.linear(duration: 1).repeatForever(autoreverses: false)
+    let trimAnimationStart = Animation.linear(duration: 1).delay(0.5).repeatForever(autoreverses: true)
+    let trimAnimationEnd = Animation.linear(duration: 1).delay(1).repeatForever(autoreverses: true)
     
     var body: some View {
         ZStack {
-            
             Color.white.opacity(isTransparent ? 0 : 0.04)
                 .edgesIgnoringSafeArea(.all)
             
@@ -25,33 +25,16 @@ struct CircularActivityIndicatory: View {
                     .frame(width: 25, height: 25)
                 
                 Circle()
-                    .trim(from: animateStart ? 1/3 : 1/9, to: animateEnd ? 2/5 : 1)
-                    .stroke(lineWidth: 4)
-                    .rotationEffect(.degrees(isCircleRotating ? -360 : 0))
+                    .trim(from: 1/9, to: 2/5)
+                    .stroke(Styles.Colors.yellow, lineWidth: 4)
+                    .rotationEffect(.degrees(isCircleRotating ? 360 : 0))
                     .frame(width: 25, height: 25)
-                
-                    .foregroundColor(Styles.Colors.yellow)
-                    .onAppear() {
-                        withAnimation(Animation
-                            .linear(duration: 1)
-                            .repeatForever(autoreverses: false)) {
-                                self.isCircleRotating.toggle()
-                            }
-                        withAnimation(Animation
-                            .linear(duration: 1)
-                            .delay(0.5)
-                            .repeatForever(autoreverses: true)) {
-                                self.animateStart.toggle()
-                            }
-                        withAnimation(Animation
-                            .linear(duration: 1)
-                            .delay(1)
-                            .repeatForever(autoreverses: true)) {
-                                self.animateEnd.toggle()
-                            }
+                    .onAppear {
+                        self.isCircleRotating = true
                     }
             }
         }
+        .animation(rotationAnimation, value: isCircleRotating)
     }
 }
 

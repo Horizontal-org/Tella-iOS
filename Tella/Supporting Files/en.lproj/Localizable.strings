@@ -405,3 +405,7 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Resources_Downloaded_Remove_Toast" = "has been removed from your downloads";
 "Resources_Downloaded_View_SheetSelect" = "View";
 "Resource_Downloaded_Remove_SheetSelect" = "Remove from downloads";
+"Resource_Exit_SheetTitle" = "Stop download and exit?";
+"Resource_Exit_SheetExpl" = "Your download progress will be lost. You can always come back later to download the resource again.";
+"Resource_Exit_Confirm_SheetSelect" = "EXIT";
+"Resource_Exit_Cancel_SheetSelect" = "KEEP DOWNLOADING";

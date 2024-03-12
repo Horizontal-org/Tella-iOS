@@ -26,4 +26,9 @@ enum LocalizableResources : String, LocalizableDelegate {
     case resourcesAvailableMsg = "Resources_Available_Msg"
     case resourcesAvailableEmpty = "Resources_Available_Empty"
     case resourcesAvailableErrorMsg = "Resources_Available_ErrorMsg"
+    
+    case resourceExitSheetTitle = "Resource_Exit_SheetTitle"
+    case resourceExitSheetExpl = "Resource_Exit_SheetExpl"
+    case resourceExitConfirmSheetSelect = "Resource_Exit_Confirm_SheetSelect"
+    case resourceExitCancelSheetSelect = "Resource_Exit_Cancel_SheetSelect"
 }
