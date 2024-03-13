@@ -23,18 +23,23 @@ struct DownloadedResources: View {
                 ScrollView {
                     LazyVStack {
                         ForEach(viewModel.downloadedResources) { resource in
-                            ResourceCard(isLoading: false,
-                                         title: resource.title,
-                                         serverName: resource.serverName,
-                                         type: .more,
-                                         action: {showResourceBottomSheet(resourceTitle: resource.title, resourceId: resource.id)}).onTapGesture {
-                                navigateToPDFView(resourceId: resource.id, resourceTitle: resource.title)
+                            ResourceCardView(isLoading: false,
+                                             resourceCard: resource.resourceCard
+                            ).onTapGesture {
+                                navigateToPDFView(resourceId: resource.id, resourceTitle: resource.resourceCard.title)
                             }
                         }
                     }
                 }.frame(maxHeight: CGFloat(viewModel.downloadedResources.count) * 90)
             }
-        }.padding(.bottom, 20)
+        }
+        .padding(.bottom, 20)
+        .onAppear {
+            viewModel.onShowResourceBottomSheet = {  resourceId, resourceTitle in
+                self.showResourceBottomSheet(resourceTitle: resourceTitle, resourceId: resourceId)
+            }
+        }
+        
 
     }
     
