@@ -8,12 +8,9 @@
 
 import SwiftUI
 
-struct ResourceCard: View {
+struct ResourceCardView: View {
     var isLoading: Bool
-    var title: String
-    var serverName: String
-    var type: ResourceCardType
-    var action: () -> Void
+    var resourceCard: ResourceCardViewModel
     
     var body: some View {
         CardFrameView(padding: EdgeInsets(top: 6, leading: 0, bottom: 0, trailing: 0) ) {
@@ -21,11 +18,11 @@ struct ResourceCard: View {
                 HStack {
                     Image("resources.pdf")
                         .padding()
-                    ConnectionCardDetail(title: title, subtitle: serverName)
+                    ConnectionCardDetail(title: resourceCard.title, subtitle: resourceCard.serverName)
                     Spacer()
                     ZStack {
                         if(!isLoading) {
-                            ImageButtonView(imageName: type.imageName, action: action)
+                            ImageButtonView(imageName: resourceCard.type.imageName, action: resourceCard.action)
                         } else {
                             CircularActivityIndicatory(isTransparent: true)
                         }
@@ -37,5 +34,5 @@ struct ResourceCard: View {
 }
 
 #Preview {
-    ResourceCard(isLoading: false, title: "How to submit a form", serverName: "CLEEN Foundation",type: .save, action: {})
+    ResourceCardView(isLoading: false, resourceCard: ResourceCardViewModel(title: "How to submit a form", serverName: "CLEEN foundation", type: .more, action: {}))
 }

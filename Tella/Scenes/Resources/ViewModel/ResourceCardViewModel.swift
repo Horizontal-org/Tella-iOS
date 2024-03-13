@@ -8,34 +8,45 @@
 
 import Foundation
 
-class ResourceCardViewModel: Hashable, Identifiable {
-    var id: String
+class ResourceCardViewModel : Identifiable {
     var title: String
-    var fileName: String
     var serverName: String
+    var type: ResourceCardType
+    var action: () -> Void
+    
+    init(title: String, serverName: String, type: ResourceCardType, action: @escaping () -> Void) {
+        self.title = title
+        self.serverName = serverName
+        self.type = type
+        self.action = action
+    }
+}
+
+class AvailableResourcesList: Hashable, Identifiable {
+    var id: String
+    var resourceCard: ResourceCardViewModel
+    var fileName: String
     var size: String
     var createdAt: String
     var isLoading: Bool
     
     init(
         id: String,
-        title: String,
+        resourceCard: ResourceCardViewModel,
         fileName: String,
-        serverName: String,
         size: String,
         createdAt: String,
         isLoading: Bool = false
     ) {
         self.id = id
-        self.title = title
+        self.resourceCard = resourceCard
         self.fileName = fileName
-        self.serverName = serverName
         self.size = size
         self.createdAt = createdAt
         self.isLoading = isLoading
     }
     
-    static func == (lhs: ResourceCardViewModel, rhs: ResourceCardViewModel) -> Bool {
+    static func == (lhs: AvailableResourcesList, rhs: AvailableResourcesList) -> Bool {
         lhs.id == rhs.id
     }
     
@@ -44,34 +55,31 @@ class ResourceCardViewModel: Hashable, Identifiable {
     }
 }
 
-class DownloadedResourceCardViewModel: Hashable, Identifiable {
+class DownloadedResourcesList: Hashable, Identifiable {
     var id: String
     var externalId: String
-    var title: String
+    var resourceCard: ResourceCardViewModel
     var fileName: String
-    var serverName: String
     var size: String
     var createdAt: String
     
     init(
         id: String,
         externalId: String,
-        title: String,
+        resourceCard: ResourceCardViewModel,
         fileName: String,
-        serverName: String,
         size: String,
         createdAt: String
     ) {
         self.id = id
         self.externalId = externalId
-        self.title = title
+        self.resourceCard = resourceCard
         self.fileName = fileName
-        self.serverName = serverName
         self.size = size
         self.createdAt = createdAt
     }
     
-    static func == (lhs: DownloadedResourceCardViewModel, rhs: DownloadedResourceCardViewModel) -> Bool {
+    static func == (lhs: DownloadedResourcesList, rhs: DownloadedResourcesList) -> Bool {
         lhs.id == rhs.id
     }
     

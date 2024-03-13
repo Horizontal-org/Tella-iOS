@@ -52,15 +52,10 @@ struct AvailableResources: View {
         }
     }
     
-    private func resourceCard(resource: ResourceCardViewModel) -> some View {
-        ResourceCard(
+    private func resourceCard(resource: AvailableResourcesList) -> some View {
+        ResourceCardView(
             isLoading: resource.isLoading,
-            title: resource.title,
-            serverName: resource.serverName,
-            type: .save,
-            action: {viewModel.downloadResource(serverName: resource.serverName, resource: Resource(
-                id: resource.id, title: resource.title, fileName: resource.fileName, size: resource.size, createdAt: resource.createdAt
-            ))}
+            resourceCard: resource.resourceCard
         )
     }
 }
