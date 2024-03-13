@@ -151,7 +151,7 @@ struct MainView: View  {
         
         ToolbarItem(placement: .topBarTrailing) {
             Button {
-                appViewState.resetToUnlock()
+                viewModel.items.count > 0 ? showBgEncryptionConfirmationView() : appViewState.resetToUnlock()
             } label: {
                 Image("home.close")
                     .aspectRatio(contentMode: .fit)
@@ -159,7 +159,19 @@ struct MainView: View  {
             }
         }
     }
-    
+
+    private func showBgEncryptionConfirmationView() {
+        sheetManager.showBottomSheet(modalHeight: 200) {
+            ConfirmBottomSheet(titleText: LocalizableBackgroundActivities.exitSheetTitle.localized,
+                               msgText: LocalizableBackgroundActivities.exitSheetExpl.localized,
+                               cancelText: LocalizableBackgroundActivities.exitcancelSheetAction.localized,
+                               actionText: LocalizableBackgroundActivities.exitDiscardSheetAction.localized, didConfirmAction: {
+                appViewState.resetToUnlock()
+                sheetManager.hide()
+            })
+        }
+    }
+
     @ToolbarContentBuilder
     private var settingsToolbar : some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {

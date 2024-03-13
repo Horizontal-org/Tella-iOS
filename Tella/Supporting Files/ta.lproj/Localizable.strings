@@ -380,3 +380,9 @@ This feedback is anonymous, so make sure to include contact information if you w
 "BackgroundActivities_SheetTitle" = "Background activities";
 "BackgroundActivities_SheetExpl" = "These are the activities currently ongoing in the background.";
 "BackgroundActivities_EncryptionFail_Toast" = "Error: Encryption failed for \"%@\"";
+
+
+"BackgroundActivities_Exit_SheetTitle" = "File encryption in progress";
+"BackgroundActivities_Exit_SheetExpl" = "There are files being encrypted in the background. Do you want to exit and lose the files?";
+"BackgroundActivities_Exit_Cancel_SheetAction" = "CANCEL";
+"BackgroundActivities_Exit_Discard_SheetAction" = "Exit and discard files";
