@@ -236,6 +236,7 @@ class BaseUploadOperation : Operation {
                         
                         if reportVaultFile.status == .uploaded ||  reportVaultFile.size == reportVaultFile.bytesSent{
                             self.postReportFile(fileId: reportVaultFile.id)
+                            mainAppModel.vaultManager.deleteTmpFiles(files: [fileToUpload.fileUrlPath])
                         } else {
                             self.checkFileSizeOnServer(fileToUpload: fileToUpload)
                         }
@@ -478,6 +479,93 @@ extension BaseUploadOperation {
         }
         catch {
             return UploadDecode(dto: nil, domain: nil, error: APIError.unexpectedResponse, headers: allHeaderFields)
+        }
+    }
+}
+
+
+
+
+public class AsyncOperation: Operation {
+    
+    // MARK: - AsyncOperation
+    
+    public enum State: String {
+        
+        case ready
+        case executing
+        case finished
+        
+        fileprivate var keyPath: String {
+            return "is" + rawValue.capitalized
+        }
+    }
+    
+    public var state = State.ready {
+        willSet {
+            willChangeValue(forKey: newValue.keyPath)
+            willChangeValue(forKey: state.keyPath)
+        }
+        didSet {
+            didChangeValue(forKey: oldValue.keyPath)
+            didChangeValue(forKey: state.keyPath)
+        }
+    }
+}
+
+public extension AsyncOperation {
+    
+    // MARK: - AsyncOperation+Addition
+    
+    override var isReady: Bool {
+        return super.isReady && state == .ready
+    }
+    
+    override var isExecuting: Bool {
+        return state == .executing
+    }
+    
+    override var isFinished: Bool {
+        return state == .finished
+    }
+    
+    override var isAsynchronous: Bool {
+        return true
+    }
+    
+    override func start() {
+        if isFinished {
+            return
+        }
+        
+        if isCancelled {
+            state = .finished
+            return
+        }
+        
+        main()
+        state = .executing
+    }
+    
+    override func cancel() {
+        super.cancel()
+        state = .finished
+    }
+    
+    //    override func main() {
+    //        preconditionFailure("Subclasses must implement `main`.")
+    //     }
+}
+
+// subclass
+final class AsyncLongAndHightPriorityOperation: AsyncOperation {
+    
+    override func main() {
+        print("started heavy operation")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            self.state = .finished
+            print("finished heavy operation")
         }
     }
 }

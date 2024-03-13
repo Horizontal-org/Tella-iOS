@@ -19,29 +19,37 @@ class EncryptionService: ObservableObject {
         let queue = OperationQueue()
         queue.qualityOfService = .background
         operationQueue = queue
-         operationQueue.maxConcurrentOperationCount = 1
+        operationQueue.maxConcurrentOperationCount = 1
         self.vaultFilesManager = vaultFilesManager
         self.mainAppModel = mainAppModel
         
     }
     
-    func addVaultFile(filePaths: [URL], parentId: String?, shouldReloadVaultFiles:Binding<Bool>?) {
+    func addVaultFile(importedFiles: [ImportedFile],
+                      parentId: String?,
+                      shouldReloadVaultFiles:Binding<Bool>?,
+                      deleteOriginal: Bool,
+                      autoUpload: Bool) {
         
         Task {
-            let fileDetails = await getFileDetails(filePaths: filePaths)
+            let fileDetails = await getFileDetails(importedFiles: importedFiles)
             
-            addEncryptionOperations(fileDetails: fileDetails, parentId: parentId, shouldReloadVaultFiles: shouldReloadVaultFiles)
+            addEncryptionOperations(fileDetails: fileDetails,
+                                    parentId: parentId,
+                                    shouldReloadVaultFiles: shouldReloadVaultFiles,
+                                    deleteOriginal:deleteOriginal,
+                                    autoUpload: autoUpload)
         }
     }
     
     
-    func getFileDetails(filePaths: [URL]) async -> [VaultFileDetails] {
+    private func getFileDetails(importedFiles: [ImportedFile]) async -> [VaultFileDetails] {
         
         var fileDetails : [VaultFileDetails] = []
         
-        for filePath in filePaths {
+        for importedFile in importedFiles {
             
-            guard let fileDetail = await mainAppModel.vaultFilesManager?.getFileDetails(filePath: filePath) else { continue }
+            guard let fileDetail = await mainAppModel.vaultFilesManager?.getFileDetails(importedFile: importedFile) else { continue }
             fileDetails.append(fileDetail)
             
             let backgroundActivityModel = BackgroundActivityModel(vaultFile: fileDetail.file)
@@ -53,29 +61,48 @@ class EncryptionService: ObservableObject {
         return fileDetails
     }
     
-    func addEncryptionOperations( fileDetails:[VaultFileDetails], parentId: String?, shouldReloadVaultFiles:Binding<Bool>?) {
+    private func addEncryptionOperations(fileDetails:[VaultFileDetails],
+                                         parentId: String?,
+                                         shouldReloadVaultFiles:Binding<Bool>?,
+                                         deleteOriginal: Bool,
+                                         autoUpload: Bool) {
         
         for fileDetail in fileDetails {
             operationQueue.addOperation({
                 
                 let operation = EncryptionOperation(mainAppModel: self.mainAppModel)
                 
-                operation.addVaultFile(fileDetail: fileDetail, filePath: fileDetail.fileUrl, parentId: parentId, mainAppModel: self.mainAppModel)?
+                operation.addVaultFile(fileDetail: fileDetail,
+                                       filePath: fileDetail.fileUrl,
+                                       parentId: parentId,
+                                       mainAppModel: self.mainAppModel,
+                                       deleteOriginal: deleteOriginal)?
                     .receive(on: DispatchQueue.main)
                     .sink(receiveValue: { backgroundResult in
-                        
-                        if backgroundResult == .failed {
-                            self.displayEncryptionFailToast(title: fileDetail.file.name)
-                        }
+                        self.handleBackgroundResult(result: backgroundResult, fileDetail: fileDetail, autoUpload: autoUpload)
                         self.items.removeAll(where: {$0.id == fileDetail.file.id})
                         shouldReloadVaultFiles?.wrappedValue = true
-                        
                     }).store(in: &self.subscribers)
             })
         }
     }
     
-    func displayEncryptionFailToast(title: String?) {
+    private func handleBackgroundResult(result : BackgroundActivityStatus,
+                                        fileDetail: VaultFileDetails,
+                                        autoUpload: Bool)  {
+        switch result {
+        case .completed(let vaultFile):
+            if autoUpload {
+                self.mainAppModel.sendAutoReportFile(file: vaultFile)
+            }
+        case .failed :
+            self.displayEncryptionFailToast(title: fileDetail.file.name)
+        default:
+            break
+        }
+    }
+    
+    private func displayEncryptionFailToast(title: String?) {
         let message = String(format: LocalizableBackgroundActivities.encryptionFailToast.localized, title ?? "")
         Toast.displayToast(message: message)
     }

@@ -38,6 +38,7 @@
 		120451FE28C7AB8100D572A7 /* AdvancedSettingsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120451FD28C7AB8100D572A7 /* AdvancedSettingsViews.swift */; };
 		1204520028C7AC2800D572A7 /* ServerActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120451FF28C7AC2800D572A7 /* ServerActionType.swift */; };
 		1204F64327D928C9006E40EE /* FileTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204F64227D928C8006E40EE /* FileTypeExtension.swift */; };
+		1205F9C22BA1DE52003DB9ED /* ImportedFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1205F9C12BA1DE52003DB9ED /* ImportedFile.swift */; };
 		1206CD4528F59DD100B38539 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1206CD4428F59DD100B38539 /* APIError.swift */; };
 		1209FD2B27AD851E00D8C17E /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD2A27AD851E00D8C17E /* AudioPlayerView.swift */; };
 		1209FD2E27AD89C800D8C17E /* AudioPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD2D27AD89C800D8C17E /* AudioPlayerViewModel.swift */; };
@@ -530,6 +531,7 @@
 		120451FD28C7AB8100D572A7 /* AdvancedSettingsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsViews.swift; sourceTree = "<group>"; };
 		120451FF28C7AC2800D572A7 /* ServerActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerActionType.swift; sourceTree = "<group>"; };
 		1204F64227D928C8006E40EE /* FileTypeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTypeExtension.swift; sourceTree = "<group>"; };
+		1205F9C12BA1DE52003DB9ED /* ImportedFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportedFile.swift; sourceTree = "<group>"; };
 		1206CD4428F59DD100B38539 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		1209FD2A27AD851E00D8C17E /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
 		1209FD2D27AD89C800D8C17E /* AudioPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerViewModel.swift; sourceTree = "<group>"; };
@@ -1314,6 +1316,7 @@
 				1293F6782AD88B4F00F6CFBD /* Feedback */,
 				121C5D7829422DF400A64123 /* DomainModel.swift */,
 				1231A45C294C771E0057DA85 /* Report */,
+				1205F9C12BA1DE52003DB9ED /* ImportedFile.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -3004,6 +3007,7 @@
 				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
 				1291A83228BE0086001A6055 /* SettingsAddServerCardView.swift in Sources */,
 				E1E7C56F2AA9822F00DDB07E /* DeleteServerTexts.swift in Sources */,
+				1205F9C22BA1DE52003DB9ED /* ImportedFile.swift in Sources */,
 				122B61362AE72D8D00631403 /* FeedbackService.swift in Sources */,
 				0E87C875268BDDFB00EB5E34 /* ImageViewer.swift in Sources */,
 				1233076729F15A290019DF7C /* NetworkMonitor.swift in Sources */,

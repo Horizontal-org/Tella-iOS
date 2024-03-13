@@ -71,8 +71,8 @@ class MainAppModel: ObservableObject {
 
                 self.vaultFilesManager?.updateEncryptionVaultFile()
 
-                self.sendPendingFiles()
                 promise(.success(true))
+                self.sendPendingFiles()
             }
         }.eraseToAnyPublisher()
     }
@@ -207,11 +207,29 @@ extension MainAppModel {
 }
 
 extension MainAppModel {
-
-    func addVaultFile(filePaths: [URL], parentId: String?, shouldReloadVaultFiles:Binding<Bool>?) {
-        encryptionService?.addVaultFile(filePaths: filePaths, parentId: parentId, shouldReloadVaultFiles: shouldReloadVaultFiles)
+    
+    func addVaultFile(filePaths: [URL], parentId: String?,
+                      shouldReloadVaultFiles:Binding<Bool>?,
+                      autoUpload:Bool) {
+        let ImportedFiles = filePaths.compactMap({ImportedFile(urlFile: $0)})
+        self.addVaultFile(importedFiles: ImportedFiles,
+                          parentId: parentId,
+                          shouldReloadVaultFiles: shouldReloadVaultFiles,
+                          deleteOriginal: false,
+                          autoUpload: autoUpload)
     }
     
+    func addVaultFile(importedFiles: [ImportedFile],
+                      parentId: String?,
+                      shouldReloadVaultFiles:Binding<Bool>?,
+                      deleteOriginal: Bool, 
+                      autoUpload:Bool = false) {
+        encryptionService?.addVaultFile(importedFiles: importedFiles,
+                                        parentId: parentId,
+                                        shouldReloadVaultFiles: shouldReloadVaultFiles,
+                                        deleteOriginal: deleteOriginal,
+                                        autoUpload: autoUpload)
+    }
 }
 
 extension MainAppModel {

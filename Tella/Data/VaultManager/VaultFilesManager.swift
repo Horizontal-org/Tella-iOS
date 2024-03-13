@@ -5,7 +5,7 @@
 import Foundation
 import Combine
 
-class VaultFilesManager : VaultFilesManagerInterface {
+class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
     
     var shouldCancelImportAndEncryption = CurrentValueSubject<Bool,Never>(false)
     var vaultDataBase : VaultDataBaseProtocol
@@ -13,13 +13,21 @@ class VaultFilesManager : VaultFilesManagerInterface {
     var vaultManager : VaultManagerInterface?
     var cancellable: Set<AnyCancellable> = []
     
+    var shouldReloadFiles = CurrentValueSubject<Bool, Never>(false)
+
     init(vaultDataBase: VaultDataBaseProtocol, vaultManager: VaultManagerInterface? = nil) throws {
         self.vaultDataBase = vaultDataBase
         self.vaultManager = vaultManager
     }
     
     func addVaultFile(filePaths: [URL], parentId: String?) -> AnyPublisher<ImportVaultFileResult,Never> {
+        let importedFiles = filePaths.compactMap({ImportedFile(urlFile: $0)})
+        return self.addVaultFile(importedFiles: importedFiles, parentId: parentId, deleteOriginal: false)
+    }
+    
+    func addVaultFile(importedFiles: [ImportedFile], parentId: String?, deleteOriginal:Bool) -> AnyPublisher<ImportVaultFileResult,Never> {
         
+        let filePaths = importedFiles.compactMap({$0.urlFile})
         let filesActor = FilesActor()
         let importProgress :  ImportProgress = ImportProgress()
         
@@ -28,7 +36,7 @@ class VaultFilesManager : VaultFilesManagerInterface {
         let filestotalSize = self.getFilesTotalSize(filePaths: filePaths)
         importProgress.start(totalFiles: filePaths.count, totalSize: Double(filestotalSize))
         
-        let fileDetailsStream = self.getFileDetailsStream(filePaths)
+        let fileDetailsStream = self.getFileDetailsStream(importedFiles)
         
         Task {
             
@@ -52,6 +60,9 @@ class VaultFilesManager : VaultFilesManagerInterface {
                 if await filesActor.files.count == filePaths.count {
                     importProgress.finish()
                     await subject.send(.fileAdded(filesActor.files))
+                    handleDeletionFiles(importedFiles:importedFiles, deleteOriginal: deleteOriginal)
+                    shouldReloadFiles.send(true)
+
                 } else {
                     importProgress.currentFile += 1
                 }
@@ -67,15 +78,35 @@ class VaultFilesManager : VaultFilesManagerInterface {
         return subject.eraseToAnyPublisher()
     }
 
-    func addVaultFile(fileDetail:VaultFileDetails,filePath: URL, parentId: String?) -> AnyPublisher<BackgroundActivityStatus,Never> {
+    func addVaultFile(fileDetail:VaultFileDetails,filePath: URL, parentId: String?, deleteOriginal:Bool) -> AnyPublisher<BackgroundActivityStatus,Never> {
         
         let subject = CurrentValueSubject<BackgroundActivityStatus, Never>(.inProgress)
 
         if let  isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetail.file.id) {
 
             if isSaved {
-                self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: parentId)
-                subject.send(.completed)
+                
+                 let result = self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: parentId)
+               
+                switch result {
+                case .success:
+                    guard let vaultFile = getVaultFile(id: fileDetail.file.id) else {
+                        subject.send(.failed)
+                        return subject.eraseToAnyPublisher()
+                    }
+                    
+                    shouldReloadFiles.send(true)
+
+                    // Delete original file
+                    let importedFile = ImportedFile(urlFile: fileDetail.fileUrl, originalUrl:fileDetail.originalURL)
+                    handleDeletionFiles(importedFiles:[importedFile], deleteOriginal: deleteOriginal)
+
+                    subject.send(.completed(vaultFile))
+
+                default:
+                    subject.send(.failed)
+
+                }
             }
             
         } else {
@@ -85,16 +116,16 @@ class VaultFilesManager : VaultFilesManagerInterface {
         return subject.eraseToAnyPublisher()
     }
 
-    func getFileDetailsStream(_ filePaths: [URL]) -> AsyncStream<VaultFileDetails> {
+    func getFileDetailsStream(_ importedFiles: [ImportedFile]) -> AsyncStream<VaultFileDetails> {
         
         // Init AsyncStream with element type = `VaultFileDetails`
         let stream = AsyncStream(VaultFileDetails.self) { continuation in
             
             Task { [weak self] in
-                for filePath in filePaths {
+                for filePath in importedFiles {
                     
                     // Get File Details
-                    guard let fileDetails = try await self?.getFileDetails(filePath: filePath) else { return }
+                    guard let fileDetails =  await self?.getFileDetails(importedFile: filePath) else { return }
                     
                     // Yield the element (Get File Details) when getFileInfos is completed
                     continuation.yield(fileDetails)
@@ -152,7 +183,9 @@ class VaultFilesManager : VaultFilesManagerInterface {
         return resultFiles
     }
 
-    func getFileDetails(filePath: URL) async -> VaultFileDetails?  {
+    func getFileDetails(importedFile: ImportedFile) async -> VaultFileDetails?  {
+        
+         let filePath = importedFile.urlFile
         
         let id = UUID().uuidString
         let _ = filePath.startAccessingSecurityScopedResource()
@@ -184,7 +217,7 @@ class VaultFilesManager : VaultFilesManagerInterface {
                                           mimeType: pathExtension.mimeType(),
                                           width: width,
                                           height: height)
-        return (VaultFileDetails(file: vaultFile, fileUrl: filePath))
+        return (VaultFileDetails(file: vaultFile, fileUrl: filePath, originalURL: importedFile.originalUrl))
     }
     
     func getFilesTotalSize(filePaths: [URL]) -> Int {
@@ -258,4 +291,47 @@ class VaultFilesManager : VaultFilesManagerInterface {
         self.shouldCancelImportAndEncryption.send(true)
     }
     
+}
+
+
+import Photos
+
+extension VaultFilesManager {
+    
+    private func handleDeletionFiles(importedFiles: [ImportedFile], deleteOriginal:Bool)  {
+        
+        if deleteOriginal {
+            var originalURLs : [URL?] = []
+            var urlfiles : [URL] = []
+            
+            importedFiles.forEach { importedFile in
+                
+                guard let originalUrl = importedFile.originalUrl
+                else {
+                    urlfiles.append(importedFile.urlFile)
+                    return
+                }
+                originalURLs.append(originalUrl)
+            }
+            
+            self.removeOriginalImage(imageUrls: originalURLs)
+            self.deleteFiles(files: urlfiles)
+        }
+    }
+    
+    private func removeOriginalImage(imageUrls: [URL?]) {
+        //        guard let imageUrls  else { return  }
+        let imageUrlss = imageUrls.compactMap({$0})
+        PHPhotoLibrary.shared().performChanges( {
+            let imageAssetToDelete = PHAsset.fetchAssets(withALAssetURLs: imageUrlss, options: nil)
+            PHAssetChangeRequest.deleteAssets(imageAssetToDelete)
+        },
+                                                completionHandler: { success, error in
+        })
+    }
+    
+    private func deleteFiles(files: [URL]) {
+        vaultManager?.deleteFiles(files: files)
+    }
+
 }

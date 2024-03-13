@@ -65,7 +65,7 @@ struct PhotoVideoPickerView: View {
                         if viewModel.shouldShowProgressView {
                             showProgressView()
                         }
-                        viewModel.addFiles(urlfiles: urls)
+                        viewModel.addDocuments(urls: urls)
                     }
                 }
             )

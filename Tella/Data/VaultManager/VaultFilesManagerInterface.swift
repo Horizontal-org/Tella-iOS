@@ -6,6 +6,7 @@ import Foundation
 import Combine
 
 protocol VaultFilesManagerInterface {
+    func addVaultFile(importedFiles: [ImportedFile], parentId: String?, deleteOriginal:Bool) -> AnyPublisher<ImportVaultFileResult,Never>
     func addVaultFile(filePaths: [URL], parentId: String?) -> AnyPublisher<ImportVaultFileResult,Never>
     func addVaultFiles(files: [VaultFileDetailsToMerge]) throws
     

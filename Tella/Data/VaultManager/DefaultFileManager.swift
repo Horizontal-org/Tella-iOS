@@ -56,6 +56,8 @@ class DefaultFileManager: FileManagerInterface {
     func removeItem(at path: URL) {
         debugLog("removing \(path.path)")
         do {
+            let _ = path.startAccessingSecurityScopedResource()
+            defer { path.stopAccessingSecurityScopedResource() }
             try fileManager.removeItem(at: path)
         } catch let error {
             debugLog(error)

@@ -21,7 +21,7 @@ class CameraViewModel: ObservableObject {
     @Published var formattedCurrentTime : String = "00:00:00"
     @Published var currentTime : TimeInterval = 0.0
     @Published var progressFile:ProgressFile = ProgressFile()
-    var  shouldReloadVaultFiles : Binding<Bool>?
+    @Published var  shouldReloadVaultFiles : Binding<Bool>?
     
     
     var imageData : Data?
@@ -34,6 +34,10 @@ class CameraViewModel: ObservableObject {
     var sourceView : SourceView
     var shouldShowProgressView : Bool {
         return resultFile != nil
+    }
+    
+    var autoUpload: Bool {
+        self.sourceView != .addReportFile
     }
     
     // MARK: - Private properties
@@ -51,14 +55,31 @@ class CameraViewModel: ObservableObject {
         
         self.mainAppModel = mainAppModel
         self.rootFile = rootFile
-        
-        self.lastImageOrVideoVaultFile = mainAppModel.vaultFilesManager?.getVaultFiles(parentId: nil, filter: FilterType.photoVideo, sort: FileSortOptions.newestToOldest).first
-        
+
         self.resultFile = resultFile
         
         self.sourceView = sourceView
         
         self.shouldReloadVaultFiles = shouldReloadVaultFiles
+       
+        self.updateLastItem()
+        
+        self.listenToshouldReloadFiles()
+        
+    }
+    
+    private func updateLastItem() {
+        DispatchQueue.main.async {
+            self.lastImageOrVideoVaultFile = self.mainAppModel?.vaultFilesManager?.getVaultFiles(parentId: nil, filter: FilterType.photoVideo, sort: FileSortOptions.newestToOldest).first
+        }
+    }
+    
+    private func listenToshouldReloadFiles() {
+        self.mainAppModel?.vaultFilesManager?.shouldReloadFiles.sink(receiveValue: { shouldReloadVaultFiles in
+            if (shouldReloadVaultFiles) {
+                self.updateLastItem()
+            }
+        }).store(in: &cancellable)
     }
     
     func saveImage() {
@@ -99,12 +120,11 @@ class CameraViewModel: ObservableObject {
     }
     
     private func addVaultFileInBackground(urlFile:URL) {
-        self.mainAppModel?.addVaultFile(filePaths: [urlFile], parentId: self.rootFile?.id, shouldReloadVaultFiles : self.shouldReloadVaultFiles)
+        self.mainAppModel?.addVaultFile(filePaths: [urlFile], parentId: self.rootFile?.id, shouldReloadVaultFiles : self.shouldReloadVaultFiles, autoUpload: autoUpload)
     }
     
     private func handleSuccessAddingFiles(vaultFiles:[VaultFileDB]) {
         self.updateResultFile(vaultFiles:vaultFiles)
-        self.sendAutoReport(vaultFiles: vaultFiles)
     }
     
     private func updateProgress(importProgress:ImportProgress) {
@@ -114,17 +134,7 @@ class CameraViewModel: ObservableObject {
             self.progressFile.isFinishing = importProgress.isFinishing.value
         }
     }
-    
-    private func sendAutoReport(vaultFiles:[VaultFileDB])  {
-        if self.sourceView != .addReportFile {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                if let file = vaultFiles.first {
-                    self.mainAppModel?.sendAutoReportFile(file: file)
-                }
-            }
-        }
-    }
-    
+
     private func updateResultFile(vaultFiles:[VaultFileDB])  {
         DispatchQueue.main.async {
             self.resultFile?.wrappedValue = vaultFiles

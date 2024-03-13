@@ -28,6 +28,9 @@ class RecordViewModel: ObservableObject {
     private var shouldShowProgressView : Bool {
         return resultFile != nil
     }
+    var autoUpload: Bool {
+        self.sourceView != .addReportFile
+    }
     
     init(mainAppModel: MainAppModel,
          rootFile: VaultFileDB?,
@@ -105,18 +108,11 @@ class RecordViewModel: ObservableObject {
     }
     
     private func addVaultFileInBackground(urlFile:URL) {
-        self.mainAppModel.addVaultFile(filePaths: [urlFile], parentId: self.rootFile?.id, shouldReloadVaultFiles : self.shouldReloadVaultFiles)
+        self.mainAppModel.addVaultFile(filePaths: [urlFile], parentId: self.rootFile?.id, shouldReloadVaultFiles : self.shouldReloadVaultFiles, autoUpload: autoUpload)
     }
     
     private func handleSuccessAddingFiles(vaultFile:VaultFileDB) {
         self.updateResultFile(vaultFile: vaultFile)
-        self.sendAutoReport(vaultFile: vaultFile)
-    }
-    
-    private func sendAutoReport(vaultFile:VaultFileDB)  {
-        if self.sourceView != .addReportFile {
-            self.mainAppModel.sendAutoReportFile(file: vaultFile)
-        }
     }
     
     private func updateResultFile(vaultFile:VaultFileDB)  {

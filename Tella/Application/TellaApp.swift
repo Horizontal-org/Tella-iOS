@@ -75,13 +75,14 @@ struct TellaApp: App {
             
             DispatchQueue.main.async {
                 appViewState.shouldHidePresentedView = true
-                appViewState.homeViewModel.vaultManager.clearTmpDirectory()
                 appViewState.resetApp()
                 appViewState.shouldHidePresentedView = false
             }
         }
         appViewState.homeViewModel.appEnterInBackground = false
         appViewState.homeViewModel.shouldShowSecurityScreen = false
+        appViewState.homeViewModel.vaultManager.clearTmpDirectory()
+
     }
 }
 
