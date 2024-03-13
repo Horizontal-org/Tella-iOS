@@ -23,14 +23,16 @@ struct ResourcesView: View {
                 VStack {
                     resourceHeaderView
                     
-                    DownloadedResources()
-                        .environmentObject(resourcesViewModel)
+                    VStack {
+                        DownloadedResources()
+                            .environmentObject(resourcesViewModel)
 
-                    AvailableResources()
-                        .environmentObject(resourcesViewModel)
+                        AvailableResources()
+                            .environmentObject(resourcesViewModel)
+                    }.padding(.top, 18)
                     
                     Spacer()
-                }.padding(.all, 18)
+                }.padding(.horizontal, 18)
             }
         }
         .navigationBarHidden(true)

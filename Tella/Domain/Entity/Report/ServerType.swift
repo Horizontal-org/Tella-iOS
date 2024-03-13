@@ -4,7 +4,7 @@
 
 import Foundation
 
-enum ServerConnectionType: Int, Decodable {
+enum ServerConnectionType: Int, Codable {
     case tella = 0
     case uwazi = 1
     case odkCollect = 3
