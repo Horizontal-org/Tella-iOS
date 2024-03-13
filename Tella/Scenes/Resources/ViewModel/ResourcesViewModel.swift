@@ -155,7 +155,7 @@ class ResourcesViewModel: ObservableObject {
 
     
     func getDownloadedResources() {
-        downloadedResources = fetchDownloadedResources()
+        self.downloadedResources = fetchDownloadedResources()
     }
     
     func fetchDownloadedResources() -> [DownloadedResourceCardViewModel] {
@@ -164,25 +164,16 @@ class ResourcesViewModel: ObservableObject {
         }
 
         return resources.map { resource in
-            return createResourceCardViewModel(resource: resource)
+            return DownloadedResourceCardViewModel(
+                id: resource.id,
+                externalId: resource.externalId,
+                title: resource.title,
+                fileName: resource.fileName,
+                serverName: resource.server?.name ?? "",
+                size: resource.size,
+                createdAt: resource.createdAt
+            )
         }
-    }
-
-    private func createResourceCardViewModel(resource: DownloadedResource
-    ) -> DownloadedResourceCardViewModel {
-        let selectedServer = self.appModel.tellaData?.tellaServers.value.first {
-            $0.id == resource.serverId
-        }
-
-        return DownloadedResourceCardViewModel(
-            id: resource.id,
-            externalId: resource.externalId,
-            title: resource.title,
-            fileName: resource.fileName,
-            serverName: selectedServer?.name ?? "",
-            size: resource.size,
-            createdAt: resource.createdAt
-        )
     }
     
     func deleteResource(resourceId: String) -> Void {

@@ -34,7 +34,7 @@ struct DownloadedResources: View {
                     }
                 }.frame(maxHeight: CGFloat(viewModel.downloadedResources.count) * 90)
             }
-        }.padding(.bottom, 24)
+        }.padding(.bottom, 20)
 
     }
     

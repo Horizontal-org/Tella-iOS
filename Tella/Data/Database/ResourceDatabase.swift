@@ -26,8 +26,11 @@ extension TellaDataBase {
     func getDownloadedResources() -> [DownloadedResource] {
         
         do {
-            let responseDict = try statementBuilder.selectQuery(tableName: D.tResource)
-            
+            let joinCondition = [JoinCondition(tableName: D.tServer,
+                                               firstItem: JoinItem(tableName: D.tResource, columnName: D.cServerId),
+                                               secondItem: JoinItem(tableName: D.tServer, columnName: D.cServerId))]
+            let responseDict = try statementBuilder.selectQuery(tableName: D.tResource, joinCondition: joinCondition)
+
             let decodedResources = try responseDict.decode(DownloadedResource.self)
             
             return decodedResources
