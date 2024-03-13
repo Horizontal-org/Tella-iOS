@@ -20,13 +20,15 @@ protocol VaultManagerInterface {
     func getPasswordType() -> PasswordTypeEnum
     func initialize(with key:String?) throws
     
-    func getFilesToMergeToDatabase() -> AnyPublisher<[VaultFileDetailsToMerge],Never>
-    func loadFileData(fileName: String?) -> Data?
+    func getFilesToMergeToDatabase() -> [VaultFileDetailsToMerge]
+    func loadFileData(file vaultFile: VaultFileDB) -> Data?
     func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL?
     func loadVaultFilesToURL(files vaultFiles: [VaultFileDB]) -> [URL]
-    func loadFilesInfos(file vaultFile: VaultFileDB, offsetSize:Int ) -> VaultFileInfo?
-    
-    func save(_ data: Data, vaultFileId: String?) -> Bool?
+    func extract(from inputFileURL: URL, offsetSize:Int)
+    func loadVaultFileToURLOld(file vaultFile: VaultFileDB) -> URL?
+    func loadFileDataOld(fileName: String?) -> Data?
+
+    func save(_ filePath: URL, vaultFileId: String?) -> Bool?
     
     func saveDataToTempFile(data: Data?, pathExtension: String) -> URL?
     func saveDataToTempFile(data: Data?, fileName: String?, pathExtension: String) -> URL?
@@ -37,6 +39,7 @@ protocol VaultManagerInterface {
     func deleteAllVaultFilesFromDevice()
     func deleteVaultFile(filesIds: [String])
     func deleteFiles(files: [URL])
+    func deleteTmpFiles(files: [URL])
     func clearTmpDirectory()
     func deleteContainerDirectory()
     func deleteRootFile()

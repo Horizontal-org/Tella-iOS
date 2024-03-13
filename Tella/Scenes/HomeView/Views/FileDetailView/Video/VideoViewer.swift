@@ -10,23 +10,32 @@ struct VideoViewer: View {
     @EnvironmentObject var appModel: MainAppModel
     @StateObject private var playerVM : PlayerViewModel
     
-    init(appModel: MainAppModel, currentFile : VaultFileDB, playList: [VaultFileDB?]) {
+    init(appModel: MainAppModel, currentFile : VaultFileDB?, playList: [VaultFileDB?]) {
         _playerVM = StateObject(wrappedValue: PlayerViewModel(appModel: appModel,
                                                               currentFile: currentFile,
                                                               playList: playList))
     }
     
     var body: some View {
-        VStack {
-            CustomVideoPlayer(playerVM: playerVM)
-                .overlay(CustomVideoControlsView(playerVM: playerVM)
-                         ,alignment: .bottom)
+        ZStack {
+            VStack {
+                CustomVideoPlayer(playerVM: playerVM)
+                    .overlay(CustomVideoControlsView(playerVM: playerVM)
+                             ,alignment: .bottom)
+                
+            }
+            if !playerVM.videoIsReady {
+                ProgressView()
+            }
         }
         .toolbar {
             LeadingTitleToolbar(title: playerVM.currentFile?.name ?? "")
             fileActionTrailingView()
         }
         .ignoresSafeArea()
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: backButton)
+
     }
     
     func fileActionTrailingView() -> some ToolbarContent {
@@ -35,4 +44,27 @@ struct VideoViewer: View {
         }
     }
     
+    var backButton : some View {
+        BackButton {
+            playerVM.deleteTmpFile()
+        }
+    }
 }
+
+struct BackButton: View {
+    
+    var action : (() -> ())
+    
+    var body: some View {
+             Button {
+                self.popToRoot()
+                 action()
+            } label: {
+                Image("back")
+                    .flipsForRightToLeftLayoutDirection(true)
+                    .padding(EdgeInsets(top: -3, leading: -8, bottom: 0, trailing: 12))
+            }
+ 
+    }
+}
+

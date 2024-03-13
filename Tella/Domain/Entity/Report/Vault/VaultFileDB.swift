@@ -291,3 +291,10 @@ extension VaultFileDB {
         }
     }
 }
+
+
+extension Array where Element == Dictionary<String,Any>{
+      func getVaultFiles() -> [VaultFileDB] {
+        return self.compactMap{VaultFileDB.init(dictionnary: $0)}
+    }
+}

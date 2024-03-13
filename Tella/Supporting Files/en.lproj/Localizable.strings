@@ -377,3 +377,9 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Settings_SettFeedback_ExitFeedback_SheetExpl" = "You can come back anytime to submit your feedback.";
 "Settings_SettFeedback_ExitFeedback_Exit_SheetAction" = "Exit without saving";
 "Settings_SettFeedback_ExitFeedback_Save_SheetAction" = "Save draft";
+
+
+
+"BackgroundActivities_SheetTitle" = "Background activities";
+"BackgroundActivities_SheetExpl" = "These are the activities currently ongoing in the background.";
+"BackgroundActivities_EncryptionFail_Toast" = "The encryption process has failed: %@";

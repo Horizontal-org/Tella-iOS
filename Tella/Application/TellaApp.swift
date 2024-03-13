@@ -31,8 +31,10 @@ struct TellaApp: App {
         }.onChange(of: scenePhase) { phase in
             switch phase {
             case .background:
+                UIApplication.getTopViewController()?.dismiss(animated: false)
                 self.saveData(lockApptype: .enterInBackground)
             case .active:
+                UIApplication.getTopViewController()?.dismiss(animated: false)
                 self.resetApp()
             case .inactive:
                 appViewState.homeViewModel.shouldShowSecurityScreen = true
@@ -73,13 +75,14 @@ struct TellaApp: App {
             
             DispatchQueue.main.async {
                 appViewState.shouldHidePresentedView = true
-                appViewState.homeViewModel.vaultManager.clearTmpDirectory()
                 appViewState.resetApp()
                 appViewState.shouldHidePresentedView = false
             }
         }
         appViewState.homeViewModel.appEnterInBackground = false
         appViewState.homeViewModel.shouldShowSecurityScreen = false
+        appViewState.homeViewModel.vaultManager.clearTmpDirectory()
+
     }
 }
 

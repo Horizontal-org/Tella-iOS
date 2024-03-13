@@ -59,7 +59,6 @@ struct HomeView: View {
             viewModel.getFiles()
         }
         .environmentObject(viewModel)
-        .navigationBarTitle(LocalizableHome.appBar.localized, displayMode: .inline)
     }
 }
 

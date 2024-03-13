@@ -363,3 +363,9 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Vault_DeleteFolders_SheetTitle" = "Delete folders?";
 "Vault_DeleteFolders_SheetExpl" = "%i folders and the %i files inside it will be permanently deleted from Tella";
 "vault_DeleteFoldersSingleFile_SheetExpl" = "%i folders and 1 file inside it will be permanently deleted from Tella";
+
+
+
+"BackgroundActivities_SheetTitle" = "Background activities";
+"BackgroundActivities_SheetExpl" = "These are the activities currently ongoing in the background.";
+"BackgroundActivities_EncryptionFail_Toast" = "The encryption process has failed: %@";

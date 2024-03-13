@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftUI
+import UIKit
 
 enum ViewPresentationType {
     case push
@@ -40,7 +41,10 @@ extension View {
         toPresent.rootView = AnyView(
             builder()
         )
-        UIApplication.shared.topNavigationController()?.present(toPresent, animated: false, completion: nil)
+        toPresent.view.isOpaque = false
+        toPresent.view.backgroundColor = .clear
+
+        UIApplication.getTopViewController()?.present(toPresent, animated: false, completion: nil)
     }
     
     func dismiss() {
@@ -105,5 +109,10 @@ extension View {
     func `if`<Transform: View>(_ condition: Bool, transform: (Self) -> Transform) -> some View {
         if condition { transform(self) }
         else { self }
+    }
+    
+    func showTopSheetView<Content:View>( content : Content) {
+        let viewToShow = TopSheetView(content:content)
+        self.present(style: .overCurrentContext, transitionStyle: .crossDissolve, builder: {viewToShow})
     }
 }

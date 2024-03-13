@@ -390,9 +390,13 @@ class SQLiteStatementBuilder {
         }
     }
 
-    func addColumnOn(tableName:String, columnName : String, type: String) throws {
+    func addColumnOn(tableName:String, columnName : String, type: String, defaultValue : Bool? = nil) throws {
         
-        let query = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + type
+        var query = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + type
+        
+        if let defaultValue  {
+            query += "DEFAULT " + "\(defaultValue)"
+        }
         
         debugLog("Add Column query: \(query)")
 

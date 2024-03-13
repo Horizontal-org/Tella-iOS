@@ -108,7 +108,7 @@ extension ReportRepository.API: APIRequest {
         case .putReportFile((let file)):
             
             let mimeType = MIMEType.mime(for: file.fileExtension)
-            return FileInfo(withFileURL: file.fileUrlPath, mimeType:mimeType , fileName: "name", name: file.fileName , data: file.data, fileId: file.fileId)
+            return FileInfo(withFileURL: file.fileUrlPath, mimeType:mimeType , fileName: "name", name: file.fileName, fileId: file.fileId)
 
         default:
             return nil

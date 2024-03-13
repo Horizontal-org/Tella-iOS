@@ -11,7 +11,7 @@ struct VaultD {
     
     /* DATABASE VERSION */
     
-    static let databaseVersion = 1
+    static let databaseVersion = 2
     
     /* DEFAULT TYPES FOR DATABASE */
     static let integer = " INTEGER "
@@ -41,5 +41,6 @@ struct VaultD {
     static let cMimeType = "c_mime_type"
     static let cWidth = "c_width"
     static let cHeight = "c_height"
+    static let cEncryptionUpdated = "c_encryption_updated"
 
 }

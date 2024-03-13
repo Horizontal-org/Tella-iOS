@@ -68,7 +68,7 @@ struct CameraView: View {
             }
         
             .onReceive(model.service.$shouldShowProgressView) { value in
-                if value {
+                if value, cameraViewModel.shouldShowProgressView {
                     showProgressView()
                 }
             }

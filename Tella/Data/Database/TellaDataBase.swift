@@ -120,7 +120,8 @@ class TellaDataBase : DataBase {
             
             return reports
             
-        } catch {
+        } catch let error {
+            debugLog(error)
             return []
         }
     }
@@ -236,10 +237,10 @@ class TellaDataBase : DataBase {
             }
             return reportFiles
             
-        } catch {
+        } catch let error {
+            debugLog(error)
             return []
         }
-        
     }
     
     func addReport(report : Report) -> Result<Int, Error> {

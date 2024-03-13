@@ -28,10 +28,17 @@ class PhotoVideoViewModel : ObservableObject {
     var  resultFile : Binding<[VaultFileDB]?>?
     var  rootFile : Binding<VaultFileDB?>?
     var  shouldReloadVaultFiles : Binding<Bool>?
+    var shouldShowProgressView : Bool {
+        return resultFile != nil
+    }
+    var shouldDeleteOriginal : Bool {
+        return self.mainAppModel.importOption == .deleteOriginal
+    }
     
     private var cancellable: Set<AnyCancellable> = []
     
     @Published var progressFile:ProgressFile = ProgressFile()
+    
     
     init(mainAppModel: MainAppModel,
          folderPathArray: [VaultFileDB],
@@ -64,31 +71,48 @@ class PhotoVideoViewModel : ObservableObject {
                 if completion.type == .image {
                     guard let data = mediaURL.contents()?.byRemovingEXIF() else {return}
                     url = mainAppModel.vaultManager.saveDataToTempFile(data: data, pathExtension: mediaURL.pathExtension)
-                    
+                    mainAppModel.vaultManager.deleteFiles(files: [mediaURL])
                 } else {
                     let tmpFileURL = self.mainAppModel.vaultManager.createTempFileURL(pathExtension: mediaURL.pathExtension)
                     url = await mediaURL.returnVideoURLWithoutMetadata(destinationURL: tmpFileURL)
+                    mainAppModel.vaultManager.deleteFiles(files: [mediaURL])
                 }
             }
-            
-            addFiles(urlfiles: [url], originalURLs: [completion.referenceURL])
+            guard let url else { return }
+            let importedFile = ImportedFile(urlFile: url, originalUrl: completion.referenceURL)
+            addFiles(importedFiles: [importedFile])
         }
     }
+    
     
     /// The function adds the file to the vault
     /// - Parameters:
     ///   - files:  Array of the URL of the videos
     ///   - type: Type of file
-    func addFiles(urlfiles: [URL?], originalURLs: [URL?]? = nil) {
+    func addFiles(importedFiles: [ImportedFile]?) {
         
-        let filteredURLfiles = urlfiles.compactMap({$0})
+        guard let importedFiles else { return }
         
-        self.mainAppModel.vaultFilesManager?.addVaultFile(filePaths: filteredURLfiles, parentId: self.rootFile?.wrappedValue?.id)
+        if shouldShowProgressView {
+            addVaultFileWithProgressView(importedFiles:importedFiles)
+        } else {
+            addVaultFileInBackground(importedFiles:importedFiles)
+        }
+    }
+    
+    func addDocuments(urls:[URL]) {
+        let importedFiles = urls.compactMap({ImportedFile(urlFile: $0,originalUrl: nil)})
+        addFiles(importedFiles: importedFiles)
+    }
+    
+    private func addVaultFileWithProgressView(importedFiles: [ImportedFile]) {
+
+        self.mainAppModel.vaultFilesManager?.addVaultFile(importedFiles: importedFiles, parentId: self.rootFile?.wrappedValue?.id,deleteOriginal: shouldDeleteOriginal)
             .sink { importVaultFileResult in
                 
                 switch importVaultFileResult {
                 case .fileAdded(let vaultFiles):
-                    self.handleSuccessAddingFiles(urlfiles: filteredURLfiles, originalURLs: originalURLs, vaultFiles: vaultFiles)
+                    self.handleSuccessAddingFiles(vaultFiles: vaultFiles)
                 case .importProgress(let importProgress):
                     self.updateProgress(importProgress:importProgress)
                 }
@@ -96,8 +120,11 @@ class PhotoVideoViewModel : ObservableObject {
             }.store(in: &cancellable)
     }
     
-    private func handleSuccessAddingFiles(urlfiles: [URL], originalURLs: [URL?]?,vaultFiles:[VaultFileDB] ) {
-        self.handleDeletionFiles(urlfiles: urlfiles, originalURLs: originalURLs)
+    private func addVaultFileInBackground(importedFiles: [ImportedFile]) {
+        self.mainAppModel.addVaultFile(importedFiles: importedFiles, parentId: self.rootFile?.wrappedValue?.id, shouldReloadVaultFiles : self.shouldReloadVaultFiles,deleteOriginal: shouldDeleteOriginal)
+    }
+    
+    private func handleSuccessAddingFiles(vaultFiles:[VaultFileDB] ) {
         self.updateResultFile(vaultFiles:vaultFiles)
     }
     
@@ -115,30 +142,5 @@ class PhotoVideoViewModel : ObservableObject {
             self.shouldReloadVaultFiles?.wrappedValue = true
         }
     }
-    
-    private func handleDeletionFiles(urlfiles: [URL], originalURLs: [URL?]?)  {
-        if self.mainAppModel.importOption == .deleteOriginal {
-            
-            if let originalURLs {
-                self.removeOriginalImage(imageUrls: originalURLs)
-            } else {
-                self.deleteFiles(files: urlfiles)
-            }
-        }
-    }
-    
-    private func removeOriginalImage(imageUrls: [URL?]) {
-        //        guard let imageUrls  else { return  }
-        let imageUrlss = imageUrls.compactMap({$0})
-        PHPhotoLibrary.shared().performChanges( {
-            let imageAssetToDelete = PHAsset.fetchAssets(withALAssetURLs: imageUrlss, options: nil)
-            PHAssetChangeRequest.deleteAssets(imageAssetToDelete)
-        },
-                                                completionHandler: { success, error in
-        })
-    }
-    
-    private func deleteFiles(files: [URL]) {
-        mainAppModel.vaultManager.deleteFiles(files: files)
-    }
 }
+

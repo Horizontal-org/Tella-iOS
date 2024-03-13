@@ -17,6 +17,8 @@ class AutoUpload: BaseUploadOperation {
     override func main() {
         handleResponse()
         super.main()
+        startUploadReportAndFiles()
+
     }
     
     private func setupNetworkMonitor() {

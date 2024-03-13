@@ -14,7 +14,7 @@ struct ContentView: View {
         
         ZStack {
             if appViewState.currentView == .MAIN {
-                MainView()
+                MainView(mainAppModel: appViewState.homeViewModel)
                     .environmentObject((appViewState.homeViewModel))
                     .environment(\.layoutDirection, LanguageManager.shared.currentLanguage.layoutDirection)
                     .environmentObject(SheetManager())
