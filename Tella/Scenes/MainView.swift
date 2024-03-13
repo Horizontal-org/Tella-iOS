@@ -3,6 +3,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct MainView: View  {
     
@@ -11,14 +12,19 @@ struct MainView: View  {
     @EnvironmentObject private var appModel: MainAppModel
     @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject private var sheetManager: SheetManager
+    @State private var shouldReload : Bool = false
+    @StateObject var viewModel : MainViewModel
     
-    init() {
+    init(mainAppModel: MainAppModel) {
+        _viewModel = StateObject(wrappedValue: MainViewModel(appModel: mainAppModel))
         setupApperance()
     }
     
     var body: some View {
         ZStack {
-            tabbar
+            
+            contentView
+            
             DragView(modalHeight: sheetManager.modalHeight,
                      shouldHideOnTap: sheetManager.shouldHideOnTap,
                      backgroundColor: sheetManager.backgroundColor,
@@ -26,42 +32,16 @@ struct MainView: View  {
                 sheetManager.content
             }
             securityScreenView
+            
         }.navigationBarHidden(false)
     }
     
-    private var tabbar: some View {
+    private var contentView: some View {
+        
         ZStack {
             CustomNavigation() {
-                TabView(selection: $appModel.selectedTab) {
-                    HomeView(appModel: appModel)
-                        .tabItem {
-                            Image("tab.home")
-                            Text(LocalizableHome.tabBar.localized)
-                        }.tag(MainAppModel.Tabs.home)
-                    
-                    ContainerView{}
-                        .tabItem {
-                            Image("tab.camera")
-                            Text(LocalizableCamera.tabBar.localized)
-                        }.tag(MainAppModel.Tabs.camera)
-                    
-                    ContainerView{}
-                        .tabItem {
-                            Image("tab.mic")
-                            Text(LocalizableRecorder.tabBar.localized)
-                        }.tag(MainAppModel.Tabs.mic)
-                }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        leadingView
-                    }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        trailingView
-                    }
-                }
-                .navigationBarTitle(LocalizableHome.appBar.localized, displayMode: .inline)
-            }
-            .accentColor(.white)
+                tabbarContentView
+            }.accentColor(.white)
 
             if appModel.selectedTab == .mic {
                 RecordView(appModel: appModel,
@@ -75,6 +55,50 @@ struct MainView: View  {
                            mainAppModel: appModel)
             }
         }
+    }
+    
+    var tabbarContentView: some View {
+        
+        TabView(selection: $appModel.selectedTab) {
+            HomeView(appModel: appModel)
+                .tabItem {
+                    Image("tab.home")
+                    Text(LocalizableHome.tabBar.localized)
+                }.tag(MainAppModel.Tabs.home)
+            
+            ContainerView{}
+                .tabItem {
+                    Image("tab.camera")
+                    Text(LocalizableCamera.tabBar.localized)
+                }.tag(MainAppModel.Tabs.camera)
+            
+            ContainerView{}
+                .tabItem {
+                    Image("tab.mic")
+                    Text(LocalizableRecorder.tabBar.localized)
+                }.tag(MainAppModel.Tabs.mic)
+            
+            SettingsMainView(appModel: appModel)
+                .tabItem {
+                    Image("tab.settings")
+                    Text(LocalizableSettings.settAppBar.localized)
+                }.tag(MainAppModel.Tabs.settings)
+        }
+        
+        
+        .navigationBarTitle(appModel.selectedTab == .home ? LocalizableHome.appBar.localized : "", displayMode: .inline)
+        
+        .if(appModel.selectedTab == .home, transform: { view in
+            view.toolbar {
+                homeToolbar
+            }
+        })
+        .if(appModel.selectedTab == .settings, transform: { view in
+            view.toolbar {
+                settingsToolbar
+            }
+        })
+        
     }
     
     @ViewBuilder
@@ -112,27 +136,20 @@ struct MainView: View  {
         
         UITableView.appearance().backgroundColor = .clear
         UITableViewCell.appearance().backgroundColor = .clear
-        
-        
     }
     
-    @ViewBuilder
-    private var leadingView : some View {
-        if appModel.selectedTab == .home {
+    @ToolbarContentBuilder
+    private var homeToolbar : some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
             Button() {
-                navigateTo(destination: SettingsMainView(appModel: appModel))
+                showTopSheetView(content: BackgroundActivitiesView(mainAppModel: appModel))
             } label: {
-                Image("home.settings")
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 35, height: 35)
+                Image(viewModel.items.count > 0 ? "home.notification_badge" : "home.notificaiton")
+                    .padding()
             }
         }
-    }
-    
-    @ViewBuilder
-    private var trailingView : some View {
         
-        if appModel.selectedTab == .home {
+        ToolbarItem(placement: .topBarTrailing) {
             Button {
                 appViewState.resetToUnlock()
             } label: {
@@ -142,11 +159,22 @@ struct MainView: View  {
             }
         }
     }
+    
+    @ToolbarContentBuilder
+    private var settingsToolbar : some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            Text(LocalizableSettings.settAppBar.localized)
+                .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
+                .foregroundColor(Color.white)
+                .frame(width: 260,height:25,alignment:.leading)
+        }
+    }
+    
 }
 
 struct AppView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView()
+        MainView(mainAppModel: MainAppModel.stub())
             .preferredColorScheme(.light)
             .previewLayout(.device)
             .previewDevice("iPhone 8")

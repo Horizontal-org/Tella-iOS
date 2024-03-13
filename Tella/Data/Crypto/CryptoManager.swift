@@ -4,10 +4,18 @@
 
 import Foundation
 import LocalAuthentication
+import CommonCrypto
+
+enum CryptoOperationEnum {
+    case encrypt
+    case decrypt
+}
 
 protocol CryptoManagerInterface {
     func encrypt(_ data: Data) -> Data?
-    func decrypt(_ data: Data) -> Data?
+    func decrypt(_ data: Data) -> Data?    
+    func encryptFile(at inputFileURL: URL, outputTo outputFileURL: URL) -> Bool
+    func decryptFile(at inputFileURL: URL, outputTo outputFileURL: URL) -> Bool
 }
 
 enum KeyEnum {
@@ -144,10 +152,10 @@ class CryptoManager {
         if type == .PRIVATE {
             self.metaPrivateKey = key
         }
-
+        
         return key
     }
-
+    
     @discardableResult
     func deleteMetaKeypair(_ keyID: String, password:String) -> Bool {
         let query = metaPrivateKeyQuery(keyID,password: password)
@@ -290,7 +298,7 @@ class CryptoManager {
     }
     
     // Uses the given private key to decrypt the data. Returns nil on failure.
-    func decrypt(_ data: Data, _ privateKey: SecKey) -> Data? {
+    private func decrypt(_ data: Data, _ privateKey: SecKey) -> Data? {
         guard SecKeyIsAlgorithmSupported(privateKey, .decrypt, CryptoManager.algorithm) else {
             debugLog("Algorithm is not supported")
             return nil
@@ -303,6 +311,27 @@ class CryptoManager {
         return clearText
     }
 
+    /// Encrypt the content of an input file to an output file using the encryption key data
+    /// - Parameters:
+    ///   - inputFileURL: It represents the URL of the file to be encrypted.
+    ///   - outputFileURL: It represents the URL where the encrypted data will be written.
+    ///   - encryptionKeyData: It represents the secret key data used for encryption.
+    /// - Throws,  An error if the file encryption fails.
+    private func encryptFile(at inputFileURL: URL, outputTo outputFileURL: URL, encryptionKeyData: Data) throws {
+        let fileCryptor = try FileCryptor(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData: encryptionKeyData, cryptoOperation: .encrypt)
+        try fileCryptor.cryptFile()
+    }
+
+    /// Decrypt the content of an input file to an output file using the decryption key data
+    /// - Parameters:
+    ///   - inputFileURL: It represents the URL of the file to be decrypted.
+    ///   - outputFileURL: It represents the URL where the decrypted data will be written.
+    ///   - decryptionKeyData: It represents the secret key data used for decryption.
+    /// - Throws,  An error if the file decryption fails.
+    private func decryptFile(at inputFileURL: URL, outputTo outputFileURL: URL, decryptionKeyData: Data) throws {
+        let fileCryptor = try FileCryptor(inputFileURL: inputFileURL, outputFileURL: outputFileURL, encryptionKeyData: decryptionKeyData, cryptoOperation: .decrypt)
+        try fileCryptor.cryptFile()
+    }
 }
 
 extension CryptoManager: CryptoManagerInterface {
@@ -316,24 +345,88 @@ extension CryptoManager: CryptoManagerInterface {
     }
     
     func decrypt(_ data: Data) -> Data? {
-
+        
         guard let metaPrivateKey = self.metaPrivateKey else {
             debugLog("Failed to recover private key", space: .crypto)
             return nil
         }
         return decrypt(data, metaPrivateKey)
     }
+
+    /// Encrypt the content of an input file to an output file
+    /// - Parameters:
+    ///   - inputFileURL: It represents the URL of the file to be encrypted.
+    ///   - outputFileURL: It represents the URL where the encrypted data will be written.
+    /// - Returns: A boolean value (bool). true indicates successful file encryption in OutputFileURL,
+    ///            and false indicates failure of encryption, recovering public key or converting the publicKey to data .
+    func encryptFile(at inputFileURL: URL, outputTo outputFileURL: URL) -> Bool {
+        do {
+            
+            guard let publicKey = recoverKey(.PUBLIC) else {
+                debugLog("Failed to recover public key", space: .crypto)
+                return false
+            }
+            
+            guard let encryptionKeyData = publicKey.getData() else {
+                debugLog("Failed to recover private key data", space: .crypto)
+                return false
+            }
+
+            try encryptFile(at: inputFileURL, outputTo: outputFileURL,encryptionKeyData: encryptionKeyData)
+
+            return true
+        }
+        catch let encryptionError {
+            debugLog("Error encrypt\(encryptionError)", space: .crypto)
+            return false
+        }
+    }
     
+    /// Decrypt the content of an input file to an output file
+    /// - Parameters:
+    ///   - inputFileURL: It represents the URL of the file to be decrypted.
+    ///   - outputFileURL: It represents the URL where the decrypted data will be written.
+    /// - Returns: A boolean value (bool). true indicates successful file decryption in OutputFileURL, and false indicates failure.
+    ///            and false indicates failure of decryption, recovering metaPrivateKey  or converting the metaPrivateKey to data .
+    func decryptFile(at inputFileURL: URL, outputTo outputFileURL: URL) -> Bool {
+        do {
+            
+            guard let metaPrivateKey = self.metaPrivateKey else {
+                debugLog("Failed to recover private key", space: .crypto)
+                return false
+            }
+            
+            guard let decryptionKeyData = metaPrivateKey.getData() else {
+                debugLog("Failed to recover private key data", space: .crypto)
+                return false
+            }
+
+            try decryptFile(at: inputFileURL, outputTo: outputFileURL, decryptionKeyData: decryptionKeyData)
+            return true
+            
+        }
+        catch let decryptionError {
+            debugLog("Error decrypt\(decryptionError)", space: .crypto)
+            return false
+        }
+    }
 }
 
 
 extension SecKey {
     func getString() -> String? {
-        var error:Unmanaged<CFError>?
-        if let cfdata = SecKeyCopyExternalRepresentation(self, &error) {
-            let data:Data = cfdata as Data
-            return data.base64EncodedString()
+        guard let data = getData() else {
+            return nil
         }
-        return nil
+        return data.base64EncodedString()
+    }
+    
+    func getData() -> Data? {
+        var error:Unmanaged<CFError>?
+        guard let cfdata = SecKeyCopyExternalRepresentation(self, &error) else {
+            return nil
+        }
+        let data:Data = cfdata as Data
+        return data
     }
 }

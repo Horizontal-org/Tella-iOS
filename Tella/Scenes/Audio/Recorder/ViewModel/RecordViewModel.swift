@@ -13,9 +13,7 @@ class RecordViewModel: ObservableObject {
     @Published var fileName: String = ""
     @Published var time: String = ""
     @Published var shouldShowSettingsAlert: Bool = false
-//    @Published var shouldReloadVaultFiles = false
 
-    //    @Published var showingRecoredrView: Bool = false
     var showingRecoredrView: Binding<Bool> = .constant(false)
     
     private var audioBackend: RecordingAudioManager
@@ -27,6 +25,12 @@ class RecordViewModel: ObservableObject {
     private var resultFile: Binding<[VaultFileDB]?>?
     
     private var shouldReloadVaultFiles : Binding<Bool>?
+    private var shouldShowProgressView : Bool {
+        return resultFile != nil
+    }
+    var autoUpload: Bool {
+        self.sourceView != .addReportFile
+    }
     
     init(mainAppModel: MainAppModel,
          rootFile: VaultFileDB?,
@@ -49,13 +53,13 @@ class RecordViewModel: ObservableObject {
         
         
         // Save the audio file and return the recorded file
-
+        
         audioBackend.fileURL.sink { url in
             
             guard let url else { return }
-            self.addVaultFile(fileURL: url)
+            self.addVaultFile(urlFile: url)
         } .store(in: &self.cancellable)
-
+        
         // Init the file name
         self.fileName = self.initialFileName
         
@@ -77,32 +81,38 @@ class RecordViewModel: ObservableObject {
         
     }
     
-    func addVaultFile(fileURL: URL) {
-
-        mainAppModel.vaultFilesManager?.addVaultFile(filePaths: [fileURL], parentId: rootFile?.id)
-                .sink { importVaultFileResult in
+    func addVaultFile(urlFile: URL) {
+        
+        if shouldShowProgressView {
+            addSynchronousVaultFile(urlFile: urlFile)
+        } else {
+            addVaultFileInBackground(urlFile: urlFile)
+        }
+    }
+    
+    private func addSynchronousVaultFile(urlFile:URL) {
+        
+        mainAppModel.vaultFilesManager?.addVaultFile(filePaths: [urlFile], parentId: rootFile?.id)
+            .sink { importVaultFileResult in
+                
+                switch importVaultFileResult {
                     
-                    switch importVaultFileResult {
-                        
-                    case .fileAdded(let vaultFiles):
-                        guard let vaultFile = vaultFiles.first else { return  }
-                        self.handleSuccessAddingFiles(vaultFile: vaultFile)
-                    case .importProgress:
-                        break
-                    }
-                    
-                }.store(in: &self.cancellable)
+                case .fileAdded(let vaultFiles):
+                    guard let vaultFile = vaultFiles.first else { return  }
+                    self.handleSuccessAddingFiles(vaultFile: vaultFile)
+                case .importProgress:
+                    break
+                }
+                
+            }.store(in: &self.cancellable)
+    }
+    
+    private func addVaultFileInBackground(urlFile:URL) {
+        self.mainAppModel.addVaultFile(filePaths: [urlFile], parentId: self.rootFile?.id, shouldReloadVaultFiles : self.shouldReloadVaultFiles, autoUpload: autoUpload)
     }
     
     private func handleSuccessAddingFiles(vaultFile:VaultFileDB) {
         self.updateResultFile(vaultFile: vaultFile)
-        self.sendAutoReport(vaultFile: vaultFile)
-    }
-
-    private func sendAutoReport(vaultFile:VaultFileDB)  {
-        if self.sourceView != .addReportFile {
-            self.mainAppModel.sendAutoReportFile(file: vaultFile)
-        }
     }
     
     private func updateResultFile(vaultFile:VaultFileDB)  {
@@ -111,7 +121,7 @@ class RecordViewModel: ObservableObject {
             self.shouldReloadVaultFiles?.wrappedValue = true
         }
     }
-
+    
     // Record audio
     func checkCameraAccess() {
         audioBackend.checkMicrophonePermission()
@@ -158,7 +168,6 @@ class RecordViewModel: ObservableObject {
         DispatchQueue.main.async {
             self.resetRecording()
         }
-
     }
     
     private func resetRecording() {

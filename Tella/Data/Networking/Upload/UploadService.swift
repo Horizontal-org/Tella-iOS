@@ -20,6 +20,7 @@ class UploadService: NSObject {
     override init() {
         let queue = OperationQueue()
         queue.qualityOfService = .background
+        queue.maxConcurrentOperationCount = 1
         uploadQueue = queue
     }
     
@@ -64,7 +65,6 @@ class UploadService: NSObject {
         let operation = AutoUpload(urlSession: urlSession, mainAppModel: mainAppModel, type: .autoUpload)
         activeOperations.append(operation)
         uploadQueue.addOperation(operation)
-        operation.startUploadReportAndFiles()
         
         displayReportToast(operation: operation)
     }

@@ -83,7 +83,8 @@ struct CustomVideoControlsView: View {
                             .font(.custom(Styles.Fonts.regularFontName, size: 11))
                             .foregroundColor(.white)
                         
-                    }
+                    }.disabled(!playerVM.videoIsReady)
+                    
                 }
                 .padding(EdgeInsets(top: 32, leading: 28, bottom: 35, trailing: 28))
                 

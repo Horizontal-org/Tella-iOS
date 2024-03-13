@@ -11,6 +11,10 @@ protocol VaultDataBaseProtocol {
     func addVaultFile(file : VaultFileDB, parentId: String?) -> Result<Int,Error>
     func getVaultFiles(parentId: String?, filter: FilterType?, sort: FileSortOptions?) -> [VaultFileDB]
     func getVaultFile(id: String?) -> VaultFileDB?
+    func getNonUpdatedEncryptionVaultFiles() -> [VaultFileDB]
+    @discardableResult
+    func updateEncryptionVaultFile(id: String?) -> Result<Bool, Error>
+    
     func getVaultFiles(ids: [String]) -> [VaultFileDB]
     func getRecentVaultFiles() -> [VaultFileDB]
     func renameVaultFile(id: String?, name: String?) -> Result<Bool, Error>
@@ -44,7 +48,8 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             switch oldVersion {
             case 0:
                 createTables()
-                
+            case 1:
+                addEncryptionUpdate()
             default :
                 break
             }
@@ -77,6 +82,18 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         ]
         statementBuilder.createTable(tableName: VaultD.tVaultFile, columns: columns)
     }
+    
+    func addEncryptionUpdate() {
+        do {
+            try statementBuilder.addColumnOn(tableName: VaultD.tVaultFile, 
+                                             columnName: VaultD.cEncryptionUpdated,
+                                             type: VaultD.integer,
+                                             defaultValue: false)
+        } catch let error {
+            debugLog(error)
+        }
+    }
+    
     
     func addVaultFile(file : VaultFileDB, parentId: String?) -> Result<Int,Error> {
         
@@ -124,10 +141,11 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
                                                                      likeConditions: filterConditions.likeConditions,
                                                                      notLikeConditions: filterConditions.notLikeConditions )
             
-            let vaultFiles = vaultFilesDict.compactMap{VaultFileDB.init(dictionnary: $0)}
+            let vaultFiles = vaultFilesDict.getVaultFiles()
             return vaultFiles
             
-        } catch {
+        } catch let error {
+            debugLog(error)
             return []
         }
     }
@@ -137,7 +155,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             
             let vaultFilesDict = try statementBuilder.getSelectQuery(tableName: VaultD.tVaultFile,
                                                                      equalCondition:[KeyValue(key: VaultD.cId, value: id)])
-            let vaultFiles = vaultFilesDict.compactMap{VaultFileDB.init(dictionnary: $0)}
+            let vaultFiles = vaultFilesDict.getVaultFiles()
             
             return vaultFiles.first
             
@@ -146,7 +164,46 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             return nil
         }
     }
+
+    func getNonUpdatedEncryptionVaultFiles() -> [VaultFileDB] {
+        do {
+            let vaultFilesDict = try statementBuilder.getSelectQuery(tableName: VaultD.tVaultFile,
+                                                                     equalCondition:[KeyValue(key: VaultD.cEncryptionUpdated, value: false)])
+            
+            let vaultFiles = vaultFilesDict.getVaultFiles()
+            return vaultFiles
+            
+        } catch let error {
+            debugLog(error)
+            return []
+        }
+    }
     
+    @discardableResult
+    func updateEncryptionVaultFile(id: String?) -> Result<Bool, Error> {
+        
+        guard let id else {
+            let error = RuntimeError("Vault file Id is null")
+            debugLog(error)
+            return .failure(error)
+        }
+        
+        do {
+            
+            let valuesToUpdate = [KeyValue(key: VaultD.cEncryptionUpdated, value: true)]
+            let vaultCondition = [KeyValue(key: VaultD.cId, value: id)]
+            
+            try statementBuilder.update(tableName: VaultD.tVaultFile,
+                                        valuesToUpdate: valuesToUpdate,
+                                        equalCondition: vaultCondition)
+            return .success(true)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+            
+        }
+    }
+
     func getVaultFiles(ids: [String]) -> [VaultFileDB] {
         do {
             
@@ -154,10 +211,11 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             
             let vaultFilesDict = try statementBuilder.getSelectQuery(tableName: VaultD.tVaultFile,
                                                                      inCondition: vaultCondition)
-            let vaultFiles = vaultFilesDict.compactMap{VaultFileDB.init(dictionnary: $0)}
+            let vaultFiles = vaultFilesDict.getVaultFiles()
             return vaultFiles
             
-        } catch {
+        } catch let error {
+            debugLog(error)
             return []
         }
     }
@@ -174,13 +232,14 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
                                                                      sortCondition: [sortCondition],
                                                                      limit: 10)
             
-            let vaultFiles = vaultFilesDict.compactMap{VaultFileDB.init(dictionnary: $0)}
+            let vaultFiles = vaultFilesDict.getVaultFiles()
             return vaultFiles
             
-        } catch {
+        } catch let error {
+            debugLog(error)
             return []
         }
-        
+
     }
     
     func renameVaultFile(id: String?, name: String?) -> Result<Bool, Error> {

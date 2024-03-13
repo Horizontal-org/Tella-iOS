@@ -39,7 +39,7 @@ struct RecentFilesListView: View {
                 // The 3 first or all items
                 ForEach(0..<number, id: \.self) { i in
                     RecentFileCell(recentFile: recentFiles[i].wrappedValue,
-                                   desination: FileDetailView()
+                                   desination: FileDetailView(appModel: appModel, currentFile: recentFiles[i].wrappedValue)
                     )
                 }
                 

@@ -217,15 +217,14 @@ class BaseUploadOperation : Operation {
                 } else {
                     filesToUpload.forEach({ reportVaultFile in
                         
-                        let vaultFileInfo = mainAppModel.vaultManager.loadFilesInfos(file: reportVaultFile,offsetSize: 0)
-                        
-                        guard let vaultFileInfo else { return }
-                        
+                        let url = mainAppModel.vaultManager.loadVaultFileToURL(file: reportVaultFile)
+
+                        guard let url else { return }
+
                         let fileToUpload = FileToUpload(idReport: apiID,
-                                                        fileUrlPath: vaultFileInfo.url,
+                                                        fileUrlPath: url,
                                                         accessToken: accessToken,
                                                         serverURL: serverUrl,
-                                                        data: vaultFileInfo.data,
                                                         fileName: reportVaultFile.name,
                                                         fileExtension: reportVaultFile.fileExtension,
                                                         fileId: reportVaultFile.id,
@@ -237,6 +236,7 @@ class BaseUploadOperation : Operation {
                         
                         if reportVaultFile.status == .uploaded ||  reportVaultFile.size == reportVaultFile.bytesSent{
                             self.postReportFile(fileId: reportVaultFile.id)
+                            mainAppModel.vaultManager.deleteTmpFiles(files: [fileToUpload.fileUrlPath])
                         } else {
                             self.checkFileSizeOnServer(fileToUpload: fileToUpload)
                         }
@@ -274,36 +274,19 @@ class BaseUploadOperation : Operation {
         }
     }
     
+    
+
     func putReportFile(fileId: String?, size:Int) {
-        
-        //        _ =  self.filesToUpload.compactMap { _ in
-        //            let file = self.filesToUpload.first(where: {$0.fileId == fileId})
-        //
-        //            if size != 0, let file {
-        //
-        //                let data = file.data?.extract(size:size)
-        //                if let fileUrlPath = self.mainAppModel.saveDataToTempFile(data:data , fileName: file.fileName, pathExtension: file.fileExtension) {
-        //                    file.fileUrlPath = fileUrlPath
-        //                }
-        //                file.data = data
-        //            }
-        //            return file
-        //        }
-        
-        if self.mainAppModel.networkMonitor.isConnected {
-            
+
+        if self.mainAppModel.networkMonitor.isConnected  {
+
             guard  let fileToUpload = filesToUpload.first(where: {$0.fileId == fileId}) else {return}
             
-            if let data = fileToUpload.data?.extract(size:size) {
-                
-                if size != 0 {
-                    if let fileUrlPath = self.mainAppModel.vaultManager.saveDataToTempFile(data: data, fileName: fileToUpload.fileName, pathExtension: fileToUpload.fileExtension) {
-                        fileToUpload.fileUrlPath = fileUrlPath
-                    }
-                    fileToUpload.data = data
-                }
-                
-                let api = ReportRepository.API.putReportFile((fileToUpload))
+            if size != 0 {
+                 self.mainAppModel.vaultManager.extract(from: fileToUpload.fileUrlPath, offsetSize: size)
+            }
+
+            let api = ReportRepository.API.putReportFile((fileToUpload))
                 
                 do {
                     
@@ -323,13 +306,8 @@ class BaseUploadOperation : Operation {
                 } catch {
                     
                 }
-            } else {
-                self.postReportFile(fileId: fileId)
-            }
-            
         } else {
             self.updateReport(reportStatus: .submissionPending)
-            
         }
         
     }
@@ -419,7 +397,7 @@ class BaseUploadOperation : Operation {
                 //                let file = self.reportVaultFiles?.first(where: {$0.id == fileId})
                 
                 let result:UploadDecode<EmptyResult,EmptyDomainModel>  = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
-                
+
                 if let _ = result.error {
                     // headReportFile
                     self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
@@ -431,7 +409,7 @@ class BaseUploadOperation : Operation {
                         self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
                         return
                     }
-                    
+
                     self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(bytesSent: size, current:0 ,fileId: fileId, status: FileStatus.partialSubmitted)))
                     
                     let fileToUpload = filesToUpload.first(where: {$0.fileId == fileId})
@@ -501,6 +479,93 @@ extension BaseUploadOperation {
         }
         catch {
             return UploadDecode(dto: nil, domain: nil, error: APIError.unexpectedResponse, headers: allHeaderFields)
+        }
+    }
+}
+
+
+
+
+public class AsyncOperation: Operation {
+    
+    // MARK: - AsyncOperation
+    
+    public enum State: String {
+        
+        case ready
+        case executing
+        case finished
+        
+        fileprivate var keyPath: String {
+            return "is" + rawValue.capitalized
+        }
+    }
+    
+    public var state = State.ready {
+        willSet {
+            willChangeValue(forKey: newValue.keyPath)
+            willChangeValue(forKey: state.keyPath)
+        }
+        didSet {
+            didChangeValue(forKey: oldValue.keyPath)
+            didChangeValue(forKey: state.keyPath)
+        }
+    }
+}
+
+public extension AsyncOperation {
+    
+    // MARK: - AsyncOperation+Addition
+    
+    override var isReady: Bool {
+        return super.isReady && state == .ready
+    }
+    
+    override var isExecuting: Bool {
+        return state == .executing
+    }
+    
+    override var isFinished: Bool {
+        return state == .finished
+    }
+    
+    override var isAsynchronous: Bool {
+        return true
+    }
+    
+    override func start() {
+        if isFinished {
+            return
+        }
+        
+        if isCancelled {
+            state = .finished
+            return
+        }
+        
+        main()
+        state = .executing
+    }
+    
+    override func cancel() {
+        super.cancel()
+        state = .finished
+    }
+    
+    //    override func main() {
+    //        preconditionFailure("Subclasses must implement `main`.")
+    //     }
+}
+
+// subclass
+final class AsyncLongAndHightPriorityOperation: AsyncOperation {
+    
+    override func main() {
+        print("started heavy operation")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            self.state = .finished
+            print("finished heavy operation")
         }
     }
 }

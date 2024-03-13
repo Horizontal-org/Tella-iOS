@@ -14,6 +14,7 @@ protocol FileManagerInterface {
     func removeContainerDirectory(directoryPath: String)
     @discardableResult
     func createFile(atPath path: URL, contents data: Data?) -> Bool
+    func createEmptyFile(atPath path: URL) -> Bool
     func createDirectory(atPath path:URL)
     func removeItem(at path: URL)
     func removeItem(at path: String)
@@ -55,6 +56,8 @@ class DefaultFileManager: FileManagerInterface {
     func removeItem(at path: URL) {
         debugLog("removing \(path.path)")
         do {
+            let _ = path.startAccessingSecurityScopedResource()
+            defer { path.stopAccessingSecurityScopedResource() }
             try fileManager.removeItem(at: path)
         } catch let error {
             debugLog(error)
@@ -83,6 +86,22 @@ class DefaultFileManager: FileManagerInterface {
         }
         return true
     }
+    
+    func createEmptyFile(atPath path: URL) -> Bool {
+        debugLog("creating \(path.path)")
+        do {
+            let _ = path.startAccessingSecurityScopedResource()
+            defer { path.stopAccessingSecurityScopedResource() }
+
+            try Data().write(to: path)
+
+        } catch let error {
+            debugLog(error)
+            return false
+        }
+        return true
+    }
+
     
     func createDirectory(atPath path:URL) {
         do {

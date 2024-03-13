@@ -22,9 +22,15 @@ class AudioPlayerViewModel: ObservableObject {
 
     private var cancellable: Set<AnyCancellable> = []
 
-     var audioPlayerManager: AudioPlayerManager = AudioPlayerManager()
-   
-    init() {
+    var audioPlayerManager: AudioPlayerManager = AudioPlayerManager()
+    
+     var currentData : Data?
+  
+    @Published var audioIsReady = false
+
+    init(currentData: Data?) {
+         self.currentData = currentData
+
         audioPlayerManager.audioPlayer.currentTime.sink { value in
             self.currentTime = value.stringFromTimeInterval()
         }.store(in: &self.cancellable)
@@ -44,7 +50,20 @@ class AudioPlayerViewModel: ObservableObject {
 
             
         }.store(in: &self.cancellable)
+        
+        loadAudio()
     }
+    
+    func loadAudio() {
+
+        guard let currentData else { return }
+        
+        DispatchQueue.main.async {
+            self.audioPlayerManager.currentAudioData = currentData
+            self.audioPlayerManager.initPlayer()
+        }
+    }
+
     
     func onStartPlaying() {
         

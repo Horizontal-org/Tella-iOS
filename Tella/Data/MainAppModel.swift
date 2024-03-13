@@ -8,9 +8,10 @@ class MainAppModel: ObservableObject {
     
     enum Tabs: Hashable {
         case home
-        case forms
         case camera
         case mic
+        case settings
+
     }
     
     enum ImportOption: CaseIterable {
@@ -30,6 +31,8 @@ class MainAppModel: ObservableObject {
     
     @Published var vaultManager :VaultManagerInterface = VaultManager()
     
+    @Published var encryptionService : EncryptionService?
+
     @Published var vaultFilesManager : VaultFilesManager?
     
     @Published var selectedTab: Tabs = .home
@@ -63,11 +66,13 @@ class MainAppModel: ObservableObject {
                 self.initDataSource()
 
                 if self.settings.shouldMergeVaultFilesToDb ?? true {
-                    self.mergeFileToDatabase(promise: promise)
-                } else {
-                    self.sendReports()
-                    promise(.success(true))
+                    self.mergeFileToDatabase()
                 }
+
+                self.vaultFilesManager?.updateEncryptionVaultFile()
+
+                promise(.success(true))
+                self.sendPendingFiles()
             }
         }.eraseToAnyPublisher()
     }
@@ -87,21 +92,17 @@ class MainAppModel: ObservableObject {
 
             let database = try VaultDatabase(key: self.vaultManager.key)
             self.vaultFilesManager = try VaultFilesManager(vaultDataBase: database, vaultManager: self.vaultManager)
-        } catch {
+            encryptionService = EncryptionService(vaultFilesManager: self.vaultFilesManager, mainAppModel: self)
+         } catch {
             Toast.displayToast(message: "Error opening the app")
         }
     }
-    
-    private func mergeFileToDatabase(promise:  @escaping (Result<Bool,Never>) -> Void) {
-        self.vaultManager.getFilesToMergeToDatabase()
-            .sink(receiveValue: { files in
-                self.saveFiles(files: files)
-                self.sendReports()
-                promise(.success(true))
-            }).store(in: &self.cancellable)
-        
+
+    private func mergeFileToDatabase() {
+        let files = self.vaultManager.getFilesToMergeToDatabase()
+        self.saveFiles(files: files)
     }
-    
+
     private func saveFiles(files: [VaultFileDetailsToMerge]) {
         do {
             try self.vaultFilesManager?.addVaultFiles(files: files)
@@ -191,11 +192,7 @@ extension MainAppModel {
     func initAutoUpload() {
         UploadService.shared.initAutoUpload(mainAppModel: self)
     }
-    
-    func sendReports() {
-        UploadService.shared.initAutoUpload(mainAppModel: self)
-    }
-    
+
     func sendPendingFiles() {
         UploadService.shared.initAutoUpload(mainAppModel: self)
         UploadService.shared.sendUnsentReports(mainAppModel: self)
@@ -206,6 +203,32 @@ extension MainAppModel {
     func deleteReport(reportId:Int?) -> Result<Bool, Error>? {
         UploadService.shared.cancelSendingReport(reportId: reportId)
         return vaultManager.tellaData?.deleteReport(reportId: reportId)
+    }
+}
+
+extension MainAppModel {
+    
+    func addVaultFile(filePaths: [URL], parentId: String?,
+                      shouldReloadVaultFiles:Binding<Bool>?,
+                      autoUpload:Bool) {
+        let ImportedFiles = filePaths.compactMap({ImportedFile(urlFile: $0)})
+        self.addVaultFile(importedFiles: ImportedFiles,
+                          parentId: parentId,
+                          shouldReloadVaultFiles: shouldReloadVaultFiles,
+                          deleteOriginal: false,
+                          autoUpload: autoUpload)
+    }
+    
+    func addVaultFile(importedFiles: [ImportedFile],
+                      parentId: String?,
+                      shouldReloadVaultFiles:Binding<Bool>?,
+                      deleteOriginal: Bool, 
+                      autoUpload:Bool = false) {
+        encryptionService?.addVaultFile(importedFiles: importedFiles,
+                                        parentId: parentId,
+                                        shouldReloadVaultFiles: shouldReloadVaultFiles,
+                                        deleteOriginal: deleteOriginal,
+                                        autoUpload: autoUpload)
     }
 }
 
