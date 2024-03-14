@@ -335,6 +335,7 @@
 		15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C1B2B6AC63200D67C74 /* ReloadButton.swift */; };
 		15791C202B6C2D8C00D67C74 /* DownloadedResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C1F2B6C2D8C00D67C74 /* DownloadedResource.swift */; };
 		15791C232B6C2E9100D67C74 /* ResourcesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */; };
+		157E4F532BA385B500147345 /* PDFKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157E4F522BA385B500147345 /* PDFKitView.swift */; };
 		15917D752B90FCC3005655AC /* ResourceCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15917D742B90FCC3005655AC /* ResourceCardType.swift */; };
 		15EE30FE2B5073E20033BBBB /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE30FD2B5073E20033BBBB /* Pages.swift */; };
 		15F64C9D2B6D7904008A57AA /* DownloadedResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */; };
@@ -843,6 +844,7 @@
 		15791C1B2B6AC63200D67C74 /* ReloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReloadButton.swift; sourceTree = "<group>"; };
 		15791C1F2B6C2D8C00D67C74 /* DownloadedResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResource.swift; sourceTree = "<group>"; };
 		15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesViewModel.swift; sourceTree = "<group>"; };
+		157E4F522BA385B500147345 /* PDFKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFKitView.swift; sourceTree = "<group>"; };
 		1589A6202B7672390048C775 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1589A6212B7672430048C775 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		15917D742B90FCC3005655AC /* ResourceCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCardType.swift; sourceTree = "<group>"; };
@@ -2182,6 +2184,7 @@
 				15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */,
 				15F64CA32B6D7CA1008A57AA /* AvailableResources.swift */,
 				156986242B88FCB600534720 /* ResourcePDFView.swift */,
+				157E4F522BA385B500147345 /* PDFKitView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3097,6 +3100,7 @@
 				125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */,
 				12234BE029DAEC4A00D6F981 /* CustomNavigation.swift in Sources */,
 				125D2324271F891500250FBB /* PinView.swift in Sources */,
+				157E4F532BA385B500147345 /* PDFKitView.swift in Sources */,
 				125AAD362953607D002194D6 /* UploadReportModels.swift in Sources */,
 				129B844F28BF5E4700F1B344 /* TextfieldView.swift in Sources */,
 				1203CDE92992C19D00D09073 /* JSONStringEncoder.swift in Sources */,

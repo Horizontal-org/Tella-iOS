@@ -11,16 +11,18 @@ import SwiftUI
 struct ResourcePDFView: View {
     var file: URL
     var resourceTitle: String
+    @State private var navigationBarHidden = false
     var body: some View {
         ZStack {
-            QuickLookView(file: file)
+            PDFKitView(url: file)
         }.toolbar {
             LeadingTitleToolbar(title: resourceTitle)
-        }
+        }.gesture(DragGesture().onChanged { value in
+            navigationBarHidden = value.translation.height < 0
+        }).navigationBarHidden(navigationBarHidden)
     }
 }
 
 #Preview {
-    
     ResourcePDFView(file: URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("temp.pdf"), resourceTitle: "resource title")
 }
