@@ -112,7 +112,8 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
                                KeyValue(key: VaultD.cDuration, value:file.duration),
                                KeyValue(key: VaultD.cSize, value:file.size),
                                KeyValue(key: VaultD.cWidth, value:file.width),
-                               KeyValue(key: VaultD.cHeight, value:file.height)
+                               KeyValue(key: VaultD.cHeight, value:file.height),
+                               KeyValue(key: VaultD.cEncryptionUpdated, value:true)
             ]
             // Set the encryptionUpdated field to true only if we have it in the database
             // this value is true because the new file to add is already encrypted with the new encryption
