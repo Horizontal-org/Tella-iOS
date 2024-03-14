@@ -25,6 +25,7 @@ class HomeViewModel: ObservableObject {
     init(appModel:MainAppModel) {
         self.appModel = appModel
         getServersList()
+        listenToShouldReloadFiles()
     }
     func getServersList() {            
         self.appModel.vaultManager.tellaData?.servers.sink { result in
@@ -55,4 +56,12 @@ class HomeViewModel: ObservableObject {
         appModel.vaultManager.tellaData?.deleteAllServers()
     }
 
+    private func listenToShouldReloadFiles() {
+        self.appModel.vaultFilesManager?.shouldReloadFiles
+            .sink(receiveValue: { shouldReloadVaultFiles in
+                DispatchQueue.main.async {
+                    self.getFiles()
+                }
+            }).store(in: &subscribers)
+    }
 }
