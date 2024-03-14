@@ -111,7 +111,8 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
                                KeyValue(key: VaultD.cDuration, value:file.duration),
                                KeyValue(key: VaultD.cSize, value:file.size),
                                KeyValue(key: VaultD.cWidth, value:file.width),
-                               KeyValue(key: VaultD.cHeight, value:file.height)
+                               KeyValue(key: VaultD.cHeight, value:file.height),
+                               KeyValue(key: VaultD.cEncryptionUpdated, value:true)
             ]
             
             let id = try statementBuilder.insertInto(tableName: VaultD.tVaultFile,
