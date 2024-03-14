@@ -31,7 +31,12 @@ extension TellaDataBase {
                                                secondItem: JoinItem(tableName: D.tServer, columnName: D.cServerId))]
             let responseDict = try statementBuilder.selectQuery(tableName: D.tResource, joinCondition: joinCondition)
 
-            let decodedResources = try responseDict.decode(DownloadedResource.self)
+            let decodedResources = try responseDict.compactMap({ dict in
+                var resource = try dict.decode(DownloadedResource.self)
+                let server = try dict.decode(Server.self)
+                resource.server = server
+                return resource
+            })
             
             return decodedResources
         } catch {
