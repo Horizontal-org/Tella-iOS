@@ -13,9 +13,7 @@ struct AvailableResources: View {
     var body: some View {
         VStack {
             SectionTitle(text: LocalizableResources.resourcesAvailableTitle.localized)
-            VStack {
-                availableResourceContent
-            }
+            availableResourceContent
         }
     }
     
