@@ -174,7 +174,6 @@ class ResourcesViewModel: ObservableObject {
         return resources.map { resource in
             return ResourceCardViewModel(
                 resource: resource,
-                serverName:  resource.server?.name ?? "",
                 type: .more,
                 action: { self.showResourceBottomSheet(resourceId: resource.id, resourceTitle: resource.title)}
             )
