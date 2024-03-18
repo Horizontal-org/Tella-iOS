@@ -33,6 +33,5 @@ class ServersViewModel: ObservableObject {
     
     func deleteAllServersConnection() {
         mainAppModel.tellaData?.deleteAllServers()
-        mainAppModel.tellaData?.deleteAllServers()
     }
 }
