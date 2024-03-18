@@ -77,7 +77,7 @@ class ResourcesViewModel: ObservableObject {
                                 title: resource.title,
                                 serverName: server.name ?? "",
                                 type: .save,
-                                action: {self.downloadResource(serverName: server.name ?? "", resource: resource)}
+                                action: {self.downloadResource(serverId: server.id ?? nil, resource: resource)}
                             ),
                             fileName: resource.fileName,
                             size: resource.size,
@@ -93,9 +93,9 @@ class ResourcesViewModel: ObservableObject {
             .eraseToAnyPublisher()
     }
 
-    func downloadResource(serverName: String, resource: Resource) {
+    func downloadResource(serverId: Int?, resource: Resource) {
         toggleIsLoadingResource(id: resource.id)
-        guard let selectedServer = servers.first(where: { $0.name == serverName }) else {
+        guard let selectedServer = servers.first(where: { $0.id == serverId }) else {
             return
         }
 
