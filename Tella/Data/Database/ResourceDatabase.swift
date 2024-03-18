@@ -15,8 +15,6 @@ extension TellaDataBase {
             cddl(D.cExternalId, D.text),
             cddl(D.cFilename, D.text),
             cddl(D.cTitle, D.text),
-            cddl(D.cSize, D.text),
-            cddl(D.cCreatedDate, D.text),
             cddl(D.cServerId, D.integer, tableName: D.tServer, referenceKey: D.cServerId)
         ]
         
@@ -51,8 +49,6 @@ extension TellaDataBase {
                                KeyValue(key: D.cExternalId, value: resource.id),
                                KeyValue(key: D.cFilename, value: resource.fileName),
                                KeyValue(key: D.cTitle, value: resource.title),
-                               KeyValue(key: D.cSize, value: resource.size),
-                               KeyValue(key: D.cCreatedDate, value: resource.createdAt),
                                KeyValue(key: D.cServerId, value: serverId)
             ]
             

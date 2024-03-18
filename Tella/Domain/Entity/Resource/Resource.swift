@@ -20,16 +20,14 @@ class Project: DomainModel {
 
 class Resource: DomainModel {
     var id: String
+    var externalId: String?
     var title: String
     var fileName: String
-    var size: String
-    var createdAt: String
     
-    init(id: String, title: String, fileName: String, size: String, createdAt: String) {
+    init(id: String,externalId: String? = nil, title: String, fileName: String) {
         self.id = id
+        self.externalId = externalId
         self.title = title
         self.fileName = fileName
-        self.size = size
-        self.createdAt = createdAt
     }
 }
