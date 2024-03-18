@@ -11,8 +11,8 @@ import Combine
 
 class ResourcesViewModel: ObservableObject {
     private var appModel: MainAppModel
-    @Published var availableResources: [AvailableResourcesList] = []
-    @Published var downloadedResources: [DownloadedResourcesList] = []
+    @Published var availableResources: [ResourceCardViewModel] = []
+    @Published var downloadedResources: [ResourceCardViewModel] = []
     @Published var isLoadingList: Bool = false
     private var servers: [TellaServer] = []
     private var cancellables: Set<AnyCancellable> = []
@@ -46,23 +46,19 @@ class ResourcesViewModel: ObservableObject {
     }
     
     func fetchAvailableResources() -> AnyPublisher<
-        [AvailableResourcesList], APIError
+        [ResourceCardViewModel], APIError
     > {
         // Logic to fetch available resources
         let resourceRepository = ResourceRepository()
         let publishers = self.servers.map { server in
             resourceRepository.getResourcesByProject(server: server)
                 .map { response in
-                    response.map { resource -> AvailableResourcesList in
-                        AvailableResourcesList(
-                            id: resource.id,
-                            resourceCard: ResourceCardViewModel(
-                                title: resource.title,
-                                serverName: server.name ?? "",
-                                type: .save,
-                                action: {self.downloadResource(serverId: server.id ?? nil, resource: resource)}
-                            ),
-                            fileName: resource.fileName
+                    response.map { resource -> ResourceCardViewModel in
+                        ResourceCardViewModel(
+                            resource: resource,
+                            serverName: server.name ?? "",
+                            type: .save,
+                            action: {self.downloadResource(serverId: server.id ?? nil, resource: resource)}
                         )
                     }
                 }
@@ -89,7 +85,7 @@ class ResourcesViewModel: ObservableObject {
         self.isLoadingList = false
     }
     
-    func handleReceiveValueForAvailableResource(_ resources: [AvailableResourcesList]) {
+    func handleReceiveValueForAvailableResource(_ resources: [ResourceCardViewModel]) {
         self.isLoadingList = false
         let downloadedIds = Set(self.downloadedResources.map { $0.externalId })
         let newResources = resources.filter { !downloadedIds.contains($0.id) }
@@ -170,22 +166,17 @@ class ResourcesViewModel: ObservableObject {
         self.downloadedResources = fetchDownloadedResources()
     }
     
-    func fetchDownloadedResources() -> [DownloadedResourcesList] {
+    func fetchDownloadedResources() -> [ResourceCardViewModel] {
         guard let resources = self.appModel.tellaData?.getResources() else {
             return []
         }
 
         return resources.map { resource in
-            return DownloadedResourcesList(
-                id: resource.id,
-                externalId: resource.externalId,
-                resourceCard: ResourceCardViewModel(
-                    title: resource.title,
-                    serverName: resource.server?.name ?? "",
-                    type: .more,
-                    action: { self.showResourceBottomSheet(resourceId: resource.id, resourceTitle: resource.title)}
-                ),
-                fileName: resource.fileName
+            return ResourceCardViewModel(
+                resource: resource,
+                serverName:  resource.server?.name ?? "",
+                type: .more,
+                action: { self.showResourceBottomSheet(resourceId: resource.id, resourceTitle: resource.title)}
             )
         }
     }

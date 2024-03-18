@@ -8,66 +8,26 @@
 
 import Foundation
 
-class ResourceCardViewModel : Identifiable {
+class ResourceCardViewModel : Hashable, Identifiable {
+    var id: String
+    var externalId: String?
     var title: String
     var serverName: String
     var type: ResourceCardType
     var action: () -> Void
+    @Published var isLoading: Bool
     
-    init(title: String, serverName: String, type: ResourceCardType, action: @escaping () -> Void) {
-        self.title = title
+    init(resource: Resource, serverName: String, type: ResourceCardType, action: @escaping () -> Void, isLoading: Bool = false) {
+        self.id = resource.id
+        self.externalId = resource.externalId
+        self.title = resource.title
         self.serverName = serverName
         self.type = type
         self.action = action
-    }
-}
-
-class AvailableResourcesList: Hashable, Identifiable {
-    var id: String
-    var resourceCard: ResourceCardViewModel
-    var fileName: String
-    var isLoading: Bool
-    
-    init(
-        id: String,
-        resourceCard: ResourceCardViewModel,
-        fileName: String,
-        isLoading: Bool = false
-    ) {
-        self.id = id
-        self.resourceCard = resourceCard
-        self.fileName = fileName
         self.isLoading = isLoading
     }
     
-    static func == (lhs: AvailableResourcesList, rhs: AvailableResourcesList) -> Bool {
-        lhs.id == rhs.id
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-}
-
-class DownloadedResourcesList: Hashable, Identifiable {
-    var id: String
-    var externalId: String
-    var resourceCard: ResourceCardViewModel
-    var fileName: String
-    
-    init(
-        id: String,
-        externalId: String,
-        resourceCard: ResourceCardViewModel,
-        fileName: String
-    ) {
-        self.id = id
-        self.externalId = externalId
-        self.resourceCard = resourceCard
-        self.fileName = fileName
-    }
-    
-    static func == (lhs: DownloadedResourcesList, rhs: DownloadedResourcesList) -> Bool {
+    static func == (lhs: ResourceCardViewModel, rhs: ResourceCardViewModel) -> Bool {
         lhs.id == rhs.id
     }
     

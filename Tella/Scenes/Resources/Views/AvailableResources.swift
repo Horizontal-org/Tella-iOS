@@ -50,10 +50,10 @@ struct AvailableResources: View {
         }
     }
     
-    private func resourceCard(resource: AvailableResourcesList) -> some View {
+    private func resourceCard(resource: ResourceCardViewModel) -> some View {
         ResourceCardView(
             isLoading: resource.isLoading,
-            resourceCard: resource.resourceCard
+            resourceCard: resource
         )
     }
 }

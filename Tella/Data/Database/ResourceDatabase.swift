@@ -21,7 +21,7 @@ extension TellaDataBase {
         statementBuilder.createTable(tableName: D.tResource, columns: columns)
     }
     
-    func getDownloadedResources() -> [DownloadedResource] {
+    func getDownloadedResources() -> [Resource] {
         
         do {
             let joinCondition = [JoinCondition(tableName: D.tServer,
@@ -30,7 +30,7 @@ extension TellaDataBase {
             let responseDict = try statementBuilder.selectQuery(tableName: D.tResource, joinCondition: joinCondition)
 
             let decodedResources = try responseDict.compactMap({ dict in
-                var resource = try dict.decode(DownloadedResource.self)
+                var resource = try dict.decode(Resource.self)
                 let server = try dict.decode(Server.self)
                 resource.server = server
                 return resource
