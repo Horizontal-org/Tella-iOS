@@ -37,27 +37,10 @@ class ResourcesViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { completion in
-                    switch completion {
-                    case .finished:
-                        self.isLoadingList = false
-                        break
-                    case .failure( let error):
-                        switch error {
-                        case .noInternetConnection:
-                            Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
-                        default:
-                            Toast.displayToast(message: LocalizableResources.resourcesAvailableErrorMsg.localized)
-                        }
-                        self.isLoadingList = false
-                    }
-
+                    self.handleCompletionForAvailableResources(completion)
                 },
                 receiveValue: { resources in
-                    self.isLoadingList = false
-                    let downloadedIds = Set(self.downloadedResources.map { $0.externalId })
-                    let newResources = resources.filter { !downloadedIds.contains($0.id) }
-                    self.availableResources.append(contentsOf: newResources)
-
+                    self.handleReceiveValueForAvailableResource(resources)
                 }
             ).store(in: &cancellables)
     }
@@ -92,6 +75,28 @@ class ResourcesViewModel: ObservableObject {
             .map { $0.flatMap { $0 } } 
             .eraseToAnyPublisher()
     }
+    
+    func handleCompletionForAvailableResources(_ completion: Subscribers.Completion<APIError>) {
+        switch completion {
+        case .failure( let error):
+            switch error {
+            case .noInternetConnection:
+                Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+            default:
+                Toast.displayToast(message: LocalizableResources.resourcesAvailableErrorMsg.localized)
+            }
+        default:
+            break
+        }
+        self.isLoadingList = false
+    }
+    
+    func handleReceiveValueForAvailableResource(_ resources: [AvailableResourcesList]) {
+        self.isLoadingList = false
+        let downloadedIds = Set(self.downloadedResources.map { $0.externalId })
+        let newResources = resources.filter { !downloadedIds.contains($0.id) }
+        self.availableResources.append(contentsOf: newResources)
+    }
 
     func downloadResource(serverId: Int?, resource: Resource) {
         toggleIsLoadingResource(id: resource.id)
@@ -105,19 +110,22 @@ class ResourcesViewModel: ObservableObject {
             case .success(let data):
                 self.saveToVault(data: data, resource: resource, serverId: selectedServer.id!)
             case .failure(let error):
-                switch error {
-                case .noInternetConnection:
-                    debugLog("Error downloading file: \(error)")
-                    Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
-                default:
-                    debugLog("Error downloading file: \(error)")
-                    Toast.displayToast(message: error.localizedDescription)
-                }
-                self.toggleIsLoadingResource(id: resource.id)
+                self.handleDownloadResourceError(error, resource)
             }
         }
     }
     
+    func handleDownloadResourceError(_ error: APIError, _ resource: Resource) {
+        switch error {
+        case .noInternetConnection:
+            debugLog("Error downloading file: \(error)")
+            Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+        default:
+            debugLog("Error downloading file: \(error)")
+            Toast.displayToast(message: error.localizedDescription)
+        }
+        self.toggleIsLoadingResource(id: resource.id)
+    }
 
     func fetchResourceFromServer(
         server: TellaServer, resource: Resource,
