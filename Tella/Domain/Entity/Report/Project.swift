@@ -43,7 +43,7 @@ class Server: Codable, Equatable, Hashable {
 
     
     static func == (lhs: Server, rhs: Server) -> Bool {
-        return lhs.id == rhs.id && lhs.name == rhs.name && lhs.url == rhs.url
+        return lhs.id == rhs.id
     }
     
     func hash(into hasher: inout Hasher){
