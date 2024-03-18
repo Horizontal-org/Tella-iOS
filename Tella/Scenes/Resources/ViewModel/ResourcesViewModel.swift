@@ -62,9 +62,7 @@ class ResourcesViewModel: ObservableObject {
                                 type: .save,
                                 action: {self.downloadResource(serverId: server.id ?? nil, resource: resource)}
                             ),
-                            fileName: resource.fileName,
-                            size: resource.size,
-                            createdAt: resource.createdAt
+                            fileName: resource.fileName
                         )
                     }
                 }
@@ -187,9 +185,7 @@ class ResourcesViewModel: ObservableObject {
                     type: .more,
                     action: { self.showResourceBottomSheet(resourceId: resource.id, resourceTitle: resource.title)}
                 ),
-                fileName: resource.fileName,
-                size: resource.size,
-                createdAt: resource.createdAt
+                fileName: resource.fileName
             )
         }
     }

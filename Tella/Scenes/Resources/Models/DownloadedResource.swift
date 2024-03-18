@@ -13,8 +13,6 @@ struct DownloadedResource: Codable, Identifiable {
     let externalId: String
     let title: String
     let fileName: String
-    let size: String
-    let createdAt: String
     var server: Server?
     
     enum CodingKeys: String, CodingKey {
@@ -22,8 +20,6 @@ struct DownloadedResource: Codable, Identifiable {
         case externalId = "c_external_id"
         case title = "c_title"
         case fileName = "c_filename"
-        case size = "c_size"
-        case createdAt = "c_created_date"
         case server
     }
 }

@@ -41,9 +41,7 @@ struct ResourceDTO: Codable, Identifiable, DataModel {
         return Resource(
             id: id,
             title: title,
-            fileName: fileName,
-            size: size,
-            createdAt: createdAt
+            fileName: fileName
         )
     }
 }

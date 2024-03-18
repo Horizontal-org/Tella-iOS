@@ -26,23 +26,17 @@ class AvailableResourcesList: Hashable, Identifiable {
     var id: String
     var resourceCard: ResourceCardViewModel
     var fileName: String
-    var size: String
-    var createdAt: String
     var isLoading: Bool
     
     init(
         id: String,
         resourceCard: ResourceCardViewModel,
         fileName: String,
-        size: String,
-        createdAt: String,
         isLoading: Bool = false
     ) {
         self.id = id
         self.resourceCard = resourceCard
         self.fileName = fileName
-        self.size = size
-        self.createdAt = createdAt
         self.isLoading = isLoading
     }
     
@@ -60,23 +54,17 @@ class DownloadedResourcesList: Hashable, Identifiable {
     var externalId: String
     var resourceCard: ResourceCardViewModel
     var fileName: String
-    var size: String
-    var createdAt: String
     
     init(
         id: String,
         externalId: String,
         resourceCard: ResourceCardViewModel,
-        fileName: String,
-        size: String,
-        createdAt: String
+        fileName: String
     ) {
         self.id = id
         self.externalId = externalId
         self.resourceCard = resourceCard
         self.fileName = fileName
-        self.size = size
-        self.createdAt = createdAt
     }
     
     static func == (lhs: DownloadedResourcesList, rhs: DownloadedResourcesList) -> Bool {
