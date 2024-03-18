@@ -34,5 +34,5 @@ struct ResourceCardView: View {
 }
 
 #Preview {
-    ResourceCardView(isLoading: false, resourceCard: ResourceCardViewModel(title: "How to submit a form", serverName: "CLEEN foundation", type: .more, action: {}))
+    ResourceCardView(isLoading: false, resourceCard: ResourceCardViewModel(resource: Resource(id: "1231", title: "title", fileName: "filename"), serverName: "serverName", type: .more, action: {}))
 }
