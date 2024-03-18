@@ -15,13 +15,18 @@ class ResourceCardViewModel : Hashable, Identifiable {
     var serverName: String
     var type: ResourceCardType
     var action: () -> Void
-    @Published var isLoading: Bool
+    var isLoading: Bool
     
-    init(resource: Resource, serverName: String, type: ResourceCardType, action: @escaping () -> Void, isLoading: Bool = false) {
+    init(resource: Resource,
+         serverName: String? = nil,
+         type: ResourceCardType,
+         action: @escaping () -> Void,
+         isLoading: Bool = false
+    ) {
         self.id = resource.id
         self.externalId = resource.externalId
         self.title = resource.title
-        self.serverName = serverName
+        self.serverName = resource.server?.name ?? serverName ?? ""
         self.type = type
         self.action = action
         self.isLoading = isLoading
