@@ -151,7 +151,7 @@ class TellaData : ObservableObject {
         return database.getReport(reportId: reportId)
     }
     
-    func getResources() -> [Resource] {
+    func getResources() -> [DownloadedResource] {
         return database.getDownloadedResources()
     }
     
