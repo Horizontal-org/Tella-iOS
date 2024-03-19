@@ -17,7 +17,8 @@ class ResourcesViewModel: ObservableObject {
     private var servers: [TellaServer] = []
     private var cancellables: Set<AnyCancellable> = []
     
-    var onShowResourceBottomSheet: ((String, String) -> Void)?
+    var onShowResourceBottomSheet: (() -> Void)?
+    var selectedResource: DownloadedResource?
 
     init(
         mainAppModel: MainAppModel
@@ -175,7 +176,7 @@ class ResourcesViewModel: ObservableObject {
             return ResourceCardViewModel(
                 resource: resource,
                 type: .more,
-                action: { self.showResourceBottomSheet(resourceId: resource.id, resourceTitle: resource.title)}
+                action: { self.showResourceBottomSheet(resource: resource)}
             )
         }
     }
@@ -206,7 +207,8 @@ class ResourcesViewModel: ObservableObject {
         }
     }
     
-    private func showResourceBottomSheet(resourceId: String, resourceTitle: String) {
-        self.onShowResourceBottomSheet?(resourceId, resourceTitle)
+    private func showResourceBottomSheet(resource: DownloadedResource) {
+        self.selectedResource = resource
+        self.onShowResourceBottomSheet?()
     }
 }
