@@ -43,18 +43,11 @@ struct AvailableResources: View {
             ScrollView {
                 LazyVStack {
                     ForEach(viewModel.availableResources) { resource in
-                        resourceCard(resource: resource)
+                        ResourceCardView(isLoading: resource.isLoading, resourceCard: resource)
                     }
                 }
             }
         }
-    }
-    
-    private func resourceCard(resource: ResourceCardViewModel) -> some View {
-        ResourceCardView(
-            isLoading: resource.isLoading,
-            resourceCard: resource
-        )
     }
 }
 

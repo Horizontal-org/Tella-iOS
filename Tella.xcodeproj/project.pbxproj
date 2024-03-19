@@ -335,6 +335,7 @@
 		15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C1B2B6AC63200D67C74 /* ReloadButton.swift */; };
 		15791C232B6C2E9100D67C74 /* ResourcesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */; };
 		157E4F532BA385B500147345 /* PDFKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157E4F522BA385B500147345 /* PDFKitView.swift */; };
+		1584B6D62BA8F2BB00D2A9AE /* DownloadedResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1584B6D52BA8F2BB00D2A9AE /* DownloadedResource.swift */; };
 		15917D752B90FCC3005655AC /* ResourceCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15917D742B90FCC3005655AC /* ResourceCardType.swift */; };
 		15EE30FE2B5073E20033BBBB /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE30FD2B5073E20033BBBB /* Pages.swift */; };
 		15F64C9D2B6D7904008A57AA /* DownloadedResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */; };
@@ -843,6 +844,7 @@
 		15791C1B2B6AC63200D67C74 /* ReloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReloadButton.swift; sourceTree = "<group>"; };
 		15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesViewModel.swift; sourceTree = "<group>"; };
 		157E4F522BA385B500147345 /* PDFKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFKitView.swift; sourceTree = "<group>"; };
+		1584B6D52BA8F2BB00D2A9AE /* DownloadedResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResource.swift; sourceTree = "<group>"; };
 		1589A6202B7672390048C775 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1589A6212B7672430048C775 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		15917D742B90FCC3005655AC /* ResourceCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCardType.swift; sourceTree = "<group>"; };
@@ -2161,6 +2163,7 @@
 			children = (
 				150913412B841C3F001E782A /* ResourceActionType.swift */,
 				15917D742B90FCC3005655AC /* ResourceCardType.swift */,
+				1584B6D52BA8F2BB00D2A9AE /* DownloadedResource.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2946,6 +2949,7 @@
 				125D2328271F8B6600250FBB /* LockConfirmPinView.swift in Sources */,
 				125D231F271F12A000250FBB /* NSRegularExpressionExtension.swift in Sources */,
 				E1E7C5872AAB7EA200DDB07E /* UwaziTranslation.swift in Sources */,
+				1584B6D62BA8F2BB00D2A9AE /* DownloadedResource.swift in Sources */,
 				CC0F1DD42B47320F00720010 /* UwaziDatePicker.swift in Sources */,
 				1209FD3027AD8AC400D8C17E /* AudioPlayerManager.swift in Sources */,
 				12BAFA7728B3B8D300930451 /* UIImageOrientation.swift in Sources */,

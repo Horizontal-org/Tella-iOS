@@ -18,7 +18,7 @@ class ResourceCardViewModel : Hashable, Identifiable {
     var isLoading: Bool
     
     init(resource: Resource,
-         serverName: String? = nil,
+         serverName: String,
          type: ResourceCardType,
          action: @escaping () -> Void,
          isLoading: Bool = false
@@ -26,7 +26,19 @@ class ResourceCardViewModel : Hashable, Identifiable {
         self.id = resource.id
         self.externalId = resource.externalId
         self.title = resource.title
-        self.serverName = resource.server?.name ?? serverName ?? ""
+        self.serverName = serverName
+        self.type = type
+        self.action = action
+        self.isLoading = isLoading
+    }
+    
+    init(resource: DownloadedResource, type: ResourceCardType, action: @escaping () -> Void,
+         isLoading: Bool = false ) {
+        
+        self.id = resource.id
+        self.externalId = resource.externalId
+        self.title = resource.title
+        self.serverName = resource.server?.name ?? ""
         self.type = type
         self.action = action
         self.isLoading = isLoading
