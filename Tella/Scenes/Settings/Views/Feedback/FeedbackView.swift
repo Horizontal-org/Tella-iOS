@@ -90,7 +90,7 @@ struct FeedbackView: View {
     
     var introductionView : some View {
         
-        CardFrameView {
+        CardFrameView(padding: EdgeInsets(top: 6, leading: 17, bottom: 6, trailing: 17)) {
             HStack(spacing: 0) {
                 
                 Image("settings.share-data")
@@ -115,7 +115,7 @@ struct FeedbackView: View {
     }
     
     var manageFeedbackView : some View {
-        CardFrameView {
+        CardFrameView(padding: EdgeInsets(top: 6, leading: 17, bottom: 6, trailing: 17)) {
             VStack (alignment: .leading, spacing: 0) {
                 SettingToggleItem(title: LocalizableSettings.enableFeedbackTitle.localized,
                                   description: LocalizableSettings.enableFeedbackExpl.localized ,

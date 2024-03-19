@@ -118,7 +118,7 @@ class BaseUploadOperation : Operation {
                             status: reportStatus,
                             apiID: apiID)
         
-        mainAppModel.vaultManager.tellaData?.updateReport(report: report)
+        mainAppModel.tellaData?.updateReport(report: report)
     }
     
     func updateReportFile(fileStatus:FileStatus, id:Int?, bytesSent:Int? = nil, current:Int? = nil ) -> Int {
@@ -142,7 +142,7 @@ class BaseUploadOperation : Operation {
         let file = self.reportVaultFiles?.first(where: {$0.instanceId == id})
         let totalBytesSent = (file?.current ?? 0)  + (file?.bytesSent ?? 0)
         
-        mainAppModel.vaultManager.tellaData?.updateReportFile(reportFile: ReportFile(id: id,
+        mainAppModel.tellaData?.updateReportFile(reportFile: ReportFile(id: id,
                                                                                      status: fileStatus,
                                                                                      bytesSent: totalBytesSent))
         return totalBytesSent
@@ -172,7 +172,7 @@ class BaseUploadOperation : Operation {
     }
     
     func deleteCurrentAutoReport() {
-        let deleteReportResult = mainAppModel.vaultManager.tellaData?.deleteReport(reportId: self.report?.id)
+        let deleteReportResult = mainAppModel.tellaData?.deleteReport(reportId: self.report?.id)
         
         if case .success = deleteReportResult {
             guard let reportVaultFiles = self.reportVaultFiles else {return}

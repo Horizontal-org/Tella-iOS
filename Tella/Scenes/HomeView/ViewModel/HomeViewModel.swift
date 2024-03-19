@@ -27,7 +27,7 @@ class HomeViewModel: ObservableObject {
         getServersList()
     }
     func getServersList() {            
-        self.appModel.vaultManager.tellaData?.servers.sink { result in
+        self.appModel.tellaData?.servers.sink { result in
             
         } receiveValue: { serverArray in
             self.serverDataItemArray.removeAll()
@@ -52,7 +52,7 @@ class HomeViewModel: ObservableObject {
     }
     
     func deleteAllServersConnection()   {
-        appModel.vaultManager.tellaData?.deleteAllServers()
+        appModel.tellaData?.deleteAllServers()
     }
 
 }

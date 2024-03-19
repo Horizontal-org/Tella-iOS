@@ -12,25 +12,37 @@ typealias APIDataResponse = AnyPublisher<(Data,[AnyHashable:Any]?), APIError>
 protocol WebRepository {}
 
 extension WebRepository {
-    func getAPIResponse<Value>(endpoint: any APIRequest) -> APIResponse<Value>
-    where Value: Decodable {
+    private func fetchData(endpoint: any APIRequest) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
         do {
-            guard (NetworkMonitor.shared.isConnected) else {
+            guard NetworkMonitor.shared.isConnected else {
                 return Fail(error: APIError.noInternetConnection)
                     .eraseToAnyPublisher()
             }
             let request = try endpoint.urlRequest()
-            request.curlRepresentation()
             let configuration = URLSessionConfiguration.default
             configuration.waitsForConnectivity = false
-            
+            request.curlRepresentation()
             return URLSession(configuration: configuration)
                 .dataTaskPublisher(for: request)
-                .requestJSON()
-        } catch _ {
+                .mapError { $0 as Error }
+                .eraseToAnyPublisher()
+        } catch {
             return Fail(error: APIError.invalidURL)
                 .eraseToAnyPublisher()
         }
+    }
+
+    func getAPIResponse<Value>(endpoint: any APIRequest) -> APIResponse<Value>
+    where Value: Decodable {
+        fetchData(endpoint: endpoint)
+            .requestJSON()
+            .eraseToAnyPublisher()
+    }
+
+    func getAPIResponseForBinaryData(endpoint: any APIRequest) -> APIResponse<Data> {
+        fetchData(endpoint: endpoint)
+            .requestData()
+            .eraseToAnyPublisher()
     }
 }
 // MARK: - Helpers
@@ -69,14 +81,17 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
         .mapError{ error in
             if let error = error as? APIError {
                 return error
-            } else  {
-                let error = error as NSError
-                if error.domain == NSURLErrorDomain {
-                    return APIError.badServer
-                } else {
-                    return APIError.httpCode(error._code)
-                }
-
+            }
+            
+            let nsError = error as NSError
+            
+            switch (nsError.code, nsError.domain) {
+            case (NSURLErrorNotConnectedToInternet, _):
+                return APIError.noInternetConnection
+            case(_, NSURLErrorDomain):
+                return APIError.badServer
+            default:
+                return APIError.httpCode(nsError.code)
             }
         }
         .eraseToAnyPublisher()

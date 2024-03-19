@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct MoreButtonView: View {
+struct ImageButtonView: View {
     var imageName : String
     var action : () -> Void
     var body: some View {
@@ -21,8 +21,6 @@ struct MoreButtonView: View {
     }
 }
 
-struct MoreButtonView_Previews: PreviewProvider {
-    static var previews: some View {
-        MoreButtonView(imageName: "", action: {})
-    }
+#Preview {
+    ImageButtonView(imageName: "", action: {})
 }

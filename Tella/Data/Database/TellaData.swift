@@ -9,7 +9,8 @@ import Combine
 class TellaData : ObservableObject {
     
     var database : TellaDataBase
-    
+    var vaultManager : VaultManagerInterface?
+
     // Servers
     var servers = CurrentValueSubject<[Server], Error>([])
     var tellaServers = CurrentValueSubject<[TellaServer], Error>([])
@@ -20,8 +21,11 @@ class TellaData : ObservableObject {
     var submittedReports = CurrentValueSubject<[Report], Error>([])
     var outboxedReports = CurrentValueSubject<[Report], Error>([])
     
-    init(key: String?) throws {
-        self.database = try TellaDataBase(key: key)
+    
+    init(database : TellaDataBase, vaultManager: VaultManagerInterface? = nil) throws {
+        self.database = database
+        self.vaultManager = vaultManager
+ 
         getServers()
         getReports()
     }
@@ -53,15 +57,37 @@ class TellaData : ObservableObject {
     }
     
     @discardableResult
-    func deleteServer(serverId : Int) -> Result<Bool, Error> {
+    func deleteTellaServer(serverId : Int) -> Result<Bool, Error> {
         let deleteServerResult = database.deleteServer(serverId: serverId)
         getServers()
         getReports()
         return deleteServerResult
     }
     
+    func deleteServer(server: Server) {
+        guard let serverId = server.id else { return }
+        
+        switch (server.serverType) {
+        case .tella:
+            let resourcesId = getResourceByServerId(serverId: serverId)
+            
+            vaultManager?.deleteVaultFile(filesIds: resourcesId)
+            deleteTellaServer(serverId: serverId)
+        case .uwazi:
+            deleteUwaziServer(serverId: serverId)
+        default:
+            break
+        }
+    }
+    
     @discardableResult
     func deleteAllServers() -> Result<Bool, Error>{
+        let resources = getResources()
+        let resourcesId = resources.map { res in
+            return res.id
+        }
+        
+        vaultManager?.deleteVaultFile(filesIds: resourcesId)
         let deleteAllServersResult = database.deleteAllServers()
         getServers()
         getReports()
@@ -125,6 +151,47 @@ class TellaData : ObservableObject {
         return database.getReport(reportId: reportId)
     }
     
+    func getResources() -> [DownloadedResource] {
+        return database.getDownloadedResources()
+    }
+    
+    func addResource(resource: Resource, serverId: Int, data: Data) throws -> Bool {
+        guard let tempFile = self.vaultManager?.saveDataToTempFile(data: data, fileName: resource.title, pathExtension: "pdf") else { return  false}
+        let result = database.addDownloadedResource(resource: resource, serverId: serverId)
+        
+        switch result {
+        case .success(let resourceId):
+            guard (self.vaultManager?.save(tempFile, vaultFileId: resourceId)) != nil else {
+                return false
+            }
+            
+            return true
+        case .failure(let error):
+            throw error
+        }
+    }
+    func deleteDownloadedResource(resourceId: String) -> Result<Bool,Error> {
+        self.vaultManager?.deleteVaultFile(filesIds: [resourceId])
+        let result = database.deleteDownloadedResource(resourceId: resourceId)
+        
+        switch result {
+        case.success(let result):
+            return .success(result)
+        case.failure(let error):
+            return .failure(error)
+        }
+    }
+    func getResourceByServerId(serverId: Int) -> [String] {
+        let resourcesResult = database.getResourcesByServerId(serverId: serverId)
+        
+        switch resourcesResult {
+        case .success(let ids):
+            return ids
+        default:
+            return []
+        }
+        
+    }
     func getCurrentReport() -> Report? {
         return database.getCurrentReport()
     }

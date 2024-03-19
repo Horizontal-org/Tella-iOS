@@ -325,8 +325,27 @@
 		12FAC12D2B226DEF00DD9615 /* EncryptionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07EC92B0660240030AD6E /* EncryptionOperation.swift */; };
 		12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */; };
 		12FFEFA528BE96E00081DDB2 /* AddServerURLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */; };
+		1501401D2B71243A00991D69 /* LocalizableResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1501401C2B71243A00991D69 /* LocalizableResources.swift */; };
+		150913422B841C3F001E782A /* ResourceActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150913412B841C3F001E782A /* ResourceActionType.swift */; };
+		1519BED82B9A5A52006FD290 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1519BED72B9A5A52006FD290 /* Resource.swift */; };
+		1535A5F12BAA06490009EA42 /* DownloadedResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1535A5F02BAA06490009EA42 /* DownloadedResource.swift */; };
+		155369232B7E9CC100129F2F /* ResourceDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155369222B7E9CC100129F2F /* ResourceDatabase.swift */; };
 		15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15622F492B72B1FF00289816 /* DeleteConfirmation.swift */; };
+		156986252B88FCB600534720 /* ResourcePDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156986242B88FCB600534720 /* ResourcePDFView.swift */; };
+		15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C192B6AC34100D67C74 /* ResourcesView.swift */; };
+		15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C1B2B6AC63200D67C74 /* ReloadButton.swift */; };
+		15791C232B6C2E9100D67C74 /* ResourcesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */; };
+		157E4F532BA385B500147345 /* PDFKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157E4F522BA385B500147345 /* PDFKitView.swift */; };
+		15917D752B90FCC3005655AC /* ResourceCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15917D742B90FCC3005655AC /* ResourceCardType.swift */; };
 		15EE30FE2B5073E20033BBBB /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE30FD2B5073E20033BBBB /* Pages.swift */; };
+		15F64C9D2B6D7904008A57AA /* DownloadedResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */; };
+		15F64CA02B6D794B008A57AA /* SectionTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64C9F2B6D794B008A57AA /* SectionTitle.swift */; };
+		15F64CA22B6D797C008A57AA /* SectionMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64CA12B6D797C008A57AA /* SectionMessage.swift */; };
+		15F64CA42B6D7CA1008A57AA /* AvailableResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64CA32B6D7CA1008A57AA /* AvailableResources.swift */; };
+		15F64CA62B6D80F7008A57AA /* ResourceCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64CA52B6D80F7008A57AA /* ResourceCardViewModel.swift */; };
+		15F64CA82B6D852D008A57AA /* ResourceCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64CA72B6D852D008A57AA /* ResourceCard.swift */; };
+		15FABA362B73F96800B2EFEE /* ResourceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FABA352B73F96800B2EFEE /* ResourceRepository.swift */; };
+		15FABA382B7405B800B2EFEE /* ResourceDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FABA372B7405B800B2EFEE /* ResourceDTO.swift */; };
 		1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
 		379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */; };
@@ -815,10 +834,29 @@
 		12FAC0CE2799FF230068EC2B /* ImportProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportProgress.swift; sourceTree = "<group>"; };
 		12FDEDD4272AFE99005C17AC /* LocalizableHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableHome.swift; sourceTree = "<group>"; };
 		12FFEFA428BE96E00081DDB2 /* AddServerURLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerURLView.swift; sourceTree = "<group>"; };
+		1501401C2B71243A00991D69 /* LocalizableResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableResources.swift; sourceTree = "<group>"; };
+		150913412B841C3F001E782A /* ResourceActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActionType.swift; sourceTree = "<group>"; };
+		1519BED72B9A5A52006FD290 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
+		1535A5F02BAA06490009EA42 /* DownloadedResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResource.swift; sourceTree = "<group>"; };
+		155369222B7E9CC100129F2F /* ResourceDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDatabase.swift; sourceTree = "<group>"; };
 		15622F492B72B1FF00289816 /* DeleteConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmation.swift; sourceTree = "<group>"; };
+		156986242B88FCB600534720 /* ResourcePDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcePDFView.swift; sourceTree = "<group>"; };
+		15791C192B6AC34100D67C74 /* ResourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesView.swift; sourceTree = "<group>"; };
+		15791C1B2B6AC63200D67C74 /* ReloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReloadButton.swift; sourceTree = "<group>"; };
+		15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesViewModel.swift; sourceTree = "<group>"; };
+		157E4F522BA385B500147345 /* PDFKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFKitView.swift; sourceTree = "<group>"; };
 		1589A6202B7672390048C775 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1589A6212B7672430048C775 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		15917D742B90FCC3005655AC /* ResourceCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCardType.swift; sourceTree = "<group>"; };
 		15EE30FD2B5073E20033BBBB /* Pages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pages.swift; sourceTree = "<group>"; };
+		15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResources.swift; sourceTree = "<group>"; };
+		15F64C9F2B6D794B008A57AA /* SectionTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitle.swift; sourceTree = "<group>"; };
+		15F64CA12B6D797C008A57AA /* SectionMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionMessage.swift; sourceTree = "<group>"; };
+		15F64CA32B6D7CA1008A57AA /* AvailableResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableResources.swift; sourceTree = "<group>"; };
+		15F64CA52B6D80F7008A57AA /* ResourceCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCardViewModel.swift; sourceTree = "<group>"; };
+		15F64CA72B6D852D008A57AA /* ResourceCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCard.swift; sourceTree = "<group>"; };
+		15FABA352B73F96800B2EFEE /* ResourceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceRepository.swift; sourceTree = "<group>"; };
+		15FABA372B7405B800B2EFEE /* ResourceDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDTO.swift; sourceTree = "<group>"; };
 		1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheet.swift; sourceTree = "<group>"; };
 		1EAE6BF424146C2100114244 /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
 		21FEB79B83E10A1CBE4AA323 /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1102,6 +1140,7 @@
 				125A89602A965CEF009347C3 /* Vault */,
 				E1CF5A242AB3477C00365036 /* UwaziDatabase.swift */,
 				E1CF5A2A2AB3533100365036 /* ServerDatabase.swift */,
+				155369222B7E9CC100129F2F /* ResourceDatabase.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -1197,6 +1236,7 @@
 				E17736412A84034A00FE01C0 /* UwaziTranslationRowDTO.swift */,
 				CCEAE5912AE6F6EE0069204A /* EntityCreationResponse.swift */,
 				1293F6762AD88A0400F6CFBD /* FeedbackDTO.swift */,
+				15FABA372B7405B800B2EFEE /* ResourceDTO.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1310,6 +1350,7 @@
 		1231A45B294C76990057DA85 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				1519BED42B9A5A2B006FD290 /* Resource */,
 				E18BD4312AA0C2EB00EE62E2 /* Uwazi */,
 				E1975EE52AB032350060228F /* UwaziEntity */,
 				12B370342B18E3EE00DDA9E9 /* BackgroundActivities */,
@@ -1945,6 +1986,7 @@
 				CC9C01B729D223FC00FDF341 /* LocalizableReport.swift */,
 				CCE875B22A96699000C576B9 /* LocalizableUwazi.swift */,
 				12B370382B19109600DDA9E9 /* LocalizableBackgroundActivities.swift */,
+				1501401C2B71243A00991D69 /* LocalizableResources.swift */,
 			);
 			path = Localizable;
 			sourceTree = "<group>";
@@ -1983,6 +2025,7 @@
 				121AD8212943A2F00056AC2A /* ReportRepository.swift */,
 				E131BA3A2A1B45A30095BC91 /* UwaziServerRepositories.swift */,
 				1293F6742AD8853500F6CFBD /* FeedbackRepository.swift */,
+				15FABA352B73F96800B2EFEE /* ResourceRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -2019,6 +2062,7 @@
 				1293F6672AD7EF3900F6CFBD /* CloseHeaderView.swift */,
 				12603DAB2A56C72900FB1492 /* ToastView.swift */,
 				122DBE002A5C1E0500D6561A /* Toast.swift */,
+				15791C1B2B6AC63200D67C74 /* ReloadButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2091,6 +2135,66 @@
 				CC1313892A5DB68E0057271C /* BottomSheetTitleView.swift */,
 				CC13138B2A5DB79B0057271C /* BottomButtonsView.swift */,
 				1293F66B2AD80DB100F6CFBD /* CardFrameView.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		1519BED42B9A5A2B006FD290 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				1519BED72B9A5A52006FD290 /* Resource.swift */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		15791C182B6AC32B00D67C74 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				15F64C9B2B6D78D8008A57AA /* Views */,
+				15791C212B6C2E7800D67C74 /* ViewModel */,
+				15791C1E2B6C2D7C00D67C74 /* Models */,
+				15791C192B6AC34100D67C74 /* ResourcesView.swift */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		15791C1E2B6C2D7C00D67C74 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				150913412B841C3F001E782A /* ResourceActionType.swift */,
+				15917D742B90FCC3005655AC /* ResourceCardType.swift */,
+				1535A5F02BAA06490009EA42 /* DownloadedResource.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		15791C212B6C2E7800D67C74 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */,
+				15F64CA52B6D80F7008A57AA /* ResourceCardViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		15F64C9B2B6D78D8008A57AA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				15F64C9E2B6D792A008A57AA /* Common */,
+				15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */,
+				15F64CA32B6D7CA1008A57AA /* AvailableResources.swift */,
+				156986242B88FCB600534720 /* ResourcePDFView.swift */,
+				157E4F522BA385B500147345 /* PDFKitView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		15F64C9E2B6D792A008A57AA /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				15F64C9F2B6D794B008A57AA /* SectionTitle.swift */,
+				15F64CA12B6D797C008A57AA /* SectionMessage.swift */,
+				15F64CA72B6D852D008A57AA /* ResourceCard.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2241,6 +2345,7 @@
 		D53B76DA2601C9E50001CD34 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				15791C182B6AC32B00D67C74 /* Resources */,
 				CC43D9DF2A72F7FB0030192E /* Uwazi */,
 				D5D5696C262747E100C45416 /* MainView.swift */,
 				120A14462B285E1400870157 /* MainViewModel.swift */,
@@ -2850,6 +2955,7 @@
 				CCE875B32A96699000C576B9 /* LocalizableUwazi.swift in Sources */,
 				123CE84429126B52003C251F /* ServerViewModel.swift in Sources */,
 				122DA88F29CB1F21003801CD /* AutoUpload.swift in Sources */,
+				15F64CA02B6D794B008A57AA /* SectionTitle.swift in Sources */,
 				CC1313882A5CB4550057271C /* DeleteAfterFailOptionsStatus.swift in Sources */,
 				1293F67A2AD88B8400F6CFBD /* FeedbackAPI.swift in Sources */,
 				D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */,
@@ -2878,6 +2984,7 @@
 				CC1313822A5CB0DB0057271C /* DeleteAfterFailOption.swift in Sources */,
 				1203CDEB2992C1CB00D09073 /* HTTPCodes.swift in Sources */,
 				122389B7293635790058593B /* SetExtension.swift in Sources */,
+				155369232B7E9CC100129F2F /* ResourceDatabase.swift in Sources */,
 				CCD586CD2A7AD94B00014F87 /* ConnectionCardDetail.swift in Sources */,
 				12607D5E27904F5300E2B8CC /* PlayerView.swift in Sources */,
 				125AAD34295348EC002194D6 /* UploadService.swift in Sources */,
@@ -2891,6 +2998,7 @@
 				1293F66A2AD7F29B00F6CFBD /* FeedbackViewModel.swift in Sources */,
 				1289B98B27C53C2400315FCE /* CameraTypeItemView.swift in Sources */,
 				126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */,
+				1535A5F12BAA06490009EA42 /* DownloadedResource.swift in Sources */,
 				E1E7C58B2AAB7F2000DDB07E /* UwaziTranslationContext.swift in Sources */,
 				E1E7C5732AAB4DCC00DDB07E /* CollectedTemplate.swift in Sources */,
 				E1CF5A252AB3477C00365036 /* UwaziDatabase.swift in Sources */,
@@ -2944,7 +3052,9 @@
 				CCBEE0482A8E9B780067884E /* TextView.swift in Sources */,
 				12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */,
 				128B929927D796E800E92ACF /* FolderListView.swift in Sources */,
+				1501401D2B71243A00991D69 /* LocalizableResources.swift in Sources */,
 				126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */,
+				15917D752B90FCC3005655AC /* ResourceCardType.swift in Sources */,
 				E1EAA0572AA7501800492078 /* UwaziCheckURL.swift in Sources */,
 				0E64C6A6265E7625005A7934 /* ActionListBottomSheet.swift in Sources */,
 				CCC1B4352AC75B550075B819 /* UwaziEntitySubtitleView.swift in Sources */,
@@ -2983,18 +3093,21 @@
 				12B5257B2848FC2800B3D1C0 /* LockTimeoutOption.swift in Sources */,
 				127A5B2228538E0800FAAEB0 /* Language.swift in Sources */,
 				1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */,
+				15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */,
 				123048D5295F95A40015CD96 /* SubmittedDetailsView.swift in Sources */,
 				1293F6682AD7EF3900F6CFBD /* CloseHeaderView.swift in Sources */,
 				1278B66127EB364500C9AC4D /* Utils.swift in Sources */,
 				125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */,
 				12234BE029DAEC4A00D6F981 /* CustomNavigation.swift in Sources */,
 				125D2324271F891500250FBB /* PinView.swift in Sources */,
+				157E4F532BA385B500147345 /* PDFKitView.swift in Sources */,
 				125AAD362953607D002194D6 /* UploadReportModels.swift in Sources */,
 				129B844F28BF5E4700F1B344 /* TextfieldView.swift in Sources */,
 				1203CDE92992C19D00D09073 /* JSONStringEncoder.swift in Sources */,
 				12B370332B18D53A00DDA9E9 /* BackgroundActivitiesViewModel.swift in Sources */,
 				125FA6D8278E2828004B9D06 /* DoubleExtension.swift in Sources */,
 				CCEAE5942AE7188F0069204A /* UwaziSelectWidget.swift in Sources */,
+				15F64C9D2B6D7904008A57AA /* DownloadedResources.swift in Sources */,
 				129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */,
 				E1EEE2A729F7E1A8009FE227 /* UwaziLanguageSelectionView.swift in Sources */,
 				CCAEA0522A97E038008190E0 /* CreateDraftHeaderView.swift in Sources */,
@@ -3012,11 +3125,13 @@
 				0E87C875268BDDFB00EB5E34 /* ImageViewer.swift in Sources */,
 				1233076729F15A290019DF7C /* NetworkMonitor.swift in Sources */,
 				1249B3832AD43AA7009A7023 /* VaultFilesManagerInterface.swift in Sources */,
+				15F64CA62B6D80F7008A57AA /* ResourceCardViewModel.swift in Sources */,
 				0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */,
 				CCEAE5922AE6F6EE0069204A /* EntityCreationResponse.swift in Sources */,
 				1289B98927C53A9C00315FCE /* CameraType.swift in Sources */,
 				0E78B3A72656B03600F9BDBC /* DragView.swift in Sources */,
 				1231A45E294C779D0057DA85 /* ReportStatus.swift in Sources */,
+				15F64CA82B6D852D008A57AA /* ResourceCard.swift in Sources */,
 				E16D20D12ABEB5C7001708CC /* TemplateCardViewModel.swift in Sources */,
 				12607D562790416400E2B8CC /* PlayerViewModel.swift in Sources */,
 				128B929B27D798E200E92ACF /* ManageFileView.swift in Sources */,
@@ -3050,6 +3165,7 @@
 				CCC1B42F2AC75AF60075B819 /* UwaziDividerWidget.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,
 				CC5CEB872AF037B600BF238B /* FileDropdown.swift in Sources */,
+				1519BED82B9A5A52006FD290 /* Resource.swift in Sources */,
 				128BEB202B1E4B3D00420923 /* FeedbackOperation.swift in Sources */,
 				128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */,
 				1289B98727C5397200315FCE /* ScreenExtension.swift in Sources */,
@@ -3078,6 +3194,7 @@
 				E1EAA0552AA74FEC00492078 /* UwaziLanguageContext.swift in Sources */,
 				12CCDC5428D8E05300C3BE4E /* Project.swift in Sources */,
 				126818C12A38B0C2004606BD /* FileInformation.swift in Sources */,
+				156986252B88FCB600534720 /* ResourcePDFView.swift in Sources */,
 				129354772949F04700735ED0 /* EmptyResult.swift in Sources */,
 				1290743B274CEB9B00F38A81 /* FileGridItem.swift in Sources */,
 				1289B45A28B64221005DA687 /* UIDeviceOrientationExtension.swift in Sources */,
@@ -3090,6 +3207,7 @@
 				128D6E1C280480500082AB18 /* FileActionType.swift in Sources */,
 				D75F9E9C25342539006F6212 /* RecordViewModel.swift in Sources */,
 				E1EEE2A129F6EA2B009FE227 /* UwaziLoginView.swift in Sources */,
+				15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */,
 				12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */,
 				120A14472B285E1400870157 /* MainViewModel.swift in Sources */,
 				1293F6662AD7E52800F6CFBD /* FeedbackView.swift in Sources */,
@@ -3140,9 +3258,11 @@
 				125D2326271F896400250FBB /* CustomPinView.swift in Sources */,
 				E1EEE29A29EECF25009FE227 /* UwaziAddServerURLView.swift in Sources */,
 				CC13138C2A5DB79B0057271C /* BottomButtonsView.swift in Sources */,
+				150913422B841C3F001E782A /* ResourceActionType.swift in Sources */,
 				129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */,
 				1203CDDC298C5B9100D09073 /* ReportActionType.swift in Sources */,
 				E16D20CF2ABEAAB1001708CC /* TemplateItemViewModel.swift in Sources */,
+				15F64CA42B6D7CA1008A57AA /* AvailableResources.swift in Sources */,
 				12476E1F2A5B7D2F00069048 /* TrailingButtonToolbar.swift in Sources */,
 				12FAC12D2B226DEF00DD9615 /* EncryptionOperation.swift in Sources */,
 				12199C3A2941260D0041BD38 /* OutboxDetailsItemView.swift in Sources */,
@@ -3165,6 +3285,7 @@
 				122389B929367ABA0058593B /* ServerType.swift in Sources */,
 				CCD586D42A7C294800014F87 /* TemplateItemView.swift in Sources */,
 				CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */,
+				15F64CA22B6D797C008A57AA /* SectionMessage.swift in Sources */,
 				E18BD4332AA0C39A00EE62E2 /* UwaziLanguage.swift in Sources */,
 				1217FCA328F99A7D00DD2D70 /* CircularLoader.swift in Sources */,
 				12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */,
@@ -3198,6 +3319,7 @@
 				12A43B4F29941574003EF33E /* ReportFile.swift in Sources */,
 				0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */,
 				12935479294A3BFC00735ED0 /* MIMEType.swift in Sources */,
+				15791C232B6C2E9100D67C74 /* ResourcesViewModel.swift in Sources */,
 				E1E7C5822AAB707C00DDB07E /* UwaziDictionary.swift in Sources */,
 				126FE4D727A427E200AE4188 /* Constants.swift in Sources */,
 				122389BB293683930058593B /* ServerDataItem.swift in Sources */,
@@ -3220,6 +3342,7 @@
 				CCE8CCDD2AF41E410088B61D /* UwaziFileUtility.swift in Sources */,
 				122E6A5529A396C400BDACAD /* ServerFileSize.swift in Sources */,
 				125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */,
+				15FABA362B73F96800B2EFEE /* ResourceRepository.swift in Sources */,
 				CCD586C72A7ABDE800014F87 /* TemplateCardView.swift in Sources */,
 				12607D58279042CE00E2B8CC /* VideoPlayer.swift in Sources */,
 				121AD8222943A2F00056AC2A /* ReportRepository.swift in Sources */,
@@ -3237,6 +3360,7 @@
 				127C155C27DA69FF009EC15B /* TransitionViewData.swift in Sources */,
 				D516397C2631113B003A11B5 /* Styles.swift in Sources */,
 				12F5D28D27A326EB00BF3309 /* AboutAndHelpView.swift in Sources */,
+				15FABA382B7405B800B2EFEE /* ResourceDTO.swift in Sources */,
 				15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */,
 				1230BE4727CD6D440055F854 /* AudioAuthorizationStatus.swift in Sources */,
 				122E6A5329A3812A00BDACAD /* ReportViewModel.swift in Sources */,

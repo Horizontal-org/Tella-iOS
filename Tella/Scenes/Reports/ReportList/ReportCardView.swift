@@ -30,7 +30,7 @@ struct ReportCardView : View {
                     
                     Spacer()
                     
-                    MoreButtonView(imageName: "reports.more", action: {
+                    ImageButtonView(imageName: "reports.more", action: {
                         reportsViewModel.selectedReport = report
                         showReportActionBottomSheet()
                     })
