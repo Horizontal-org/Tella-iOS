@@ -15,6 +15,7 @@ class ResourceCardViewModel : Hashable, Identifiable {
     var serverName: String
     var type: ResourceCardType
     var action: () -> Void
+    var onTap: () -> Void?
     var isLoading: Bool
     
     init(resource: Resource,
@@ -30,9 +31,13 @@ class ResourceCardViewModel : Hashable, Identifiable {
         self.type = type
         self.action = action
         self.isLoading = isLoading
+        self.onTap = {}
     }
     
-    init(resource: DownloadedResource, type: ResourceCardType, action: @escaping () -> Void,
+    init(resource: DownloadedResource,
+         type: ResourceCardType,
+         action: @escaping () -> Void,
+         onTap: @escaping () -> Void,
          isLoading: Bool = false ) {
         
         self.id = resource.id
@@ -41,6 +46,7 @@ class ResourceCardViewModel : Hashable, Identifiable {
         self.serverName = resource.server?.name ?? ""
         self.type = type
         self.action = action
+        self.onTap = onTap
         self.isLoading = isLoading
     }
     
