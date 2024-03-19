@@ -156,11 +156,12 @@ class TellaData : ObservableObject {
     }
     
     func addResource(resource: Resource, serverId: Int, data: Data) throws -> Bool {
+        guard let tempFile = self.vaultManager?.saveDataToTempFile(data: data, fileName: resource.title, pathExtension: "pdf") else { return  false}
         let result = database.addDownloadedResource(resource: resource, serverId: serverId)
         
         switch result {
         case .success(let resourceId):
-            guard (self.vaultManager?.save(data, vaultFileId: resourceId)) != nil else {
+            guard (self.vaultManager?.save(tempFile, vaultFileId: resourceId)) != nil else {
                 return false
             }
             
