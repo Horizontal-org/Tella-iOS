@@ -33,35 +33,35 @@ struct DownloadedResources: View {
         }
         .padding(.bottom, 20)
         .onAppear {
-            viewModel.onShowResourceBottomSheet = {  resourceId, resourceTitle in
-                self.showResourceBottomSheet(resourceTitle: resourceTitle, resourceId: resourceId)
+            viewModel.onShowResourceBottomSheet = {
+                self.showResourceBottomSheet()
             }
         }
         
 
     }
     
-    private func showResourceBottomSheet(resourceTitle: String, resourceId: String) {
+    private func showResourceBottomSheet() {
         sheetManager.showBottomSheet(modalHeight: 176) {
-            ActionListBottomSheet(items: ResourceActionItems, headerTitle: resourceTitle, action: { item in
+            ActionListBottomSheet(items: ResourceActionItems, headerTitle: viewModel.selectedResource?.title ?? "", action: { item in
                     let type = item.type as? ResourceActionType
                     if type == .delete {
-                        showDeleteResourceConfirmationView(resourceTitle: resourceTitle, resourceId: resourceId)
+                        showDeleteResourceConfirmationView()
                     } else {
-                        navigateToPDFView(resourceId: resourceId, resourceTitle: resourceTitle)
+                        navigateToPDFView(resourceId: viewModel.selectedResource?.id ?? "", resourceTitle: viewModel.selectedResource?.title ?? "")
                     }
                 })
         }
     }
     
-    private func showDeleteResourceConfirmationView(resourceTitle: String, resourceId: String) {
+    private func showDeleteResourceConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: 200) {
             return ConfirmBottomSheet(titleText: LocalizableResources.resourcesDownloadRemoveSheetTitle.localized,
                                       msgText: LocalizableResources.resourcesDownloadRemoveSheetExpl.localized,
                                       cancelText: LocalizableResources.resourcesDownloadRemoveCancelSheetAction.localized,
                                       actionText: LocalizableResources.resourccesDownloadRemoveConfirmSheetAction.localized) {
-                viewModel.deleteResource(resourceId: resourceId)
-                Toast.displayToast(message: "“\(resourceTitle)” \(LocalizableResources.resourcesDownloadRemoveToast.localized)")
+                viewModel.deleteResource(resourceId: viewModel.selectedResource?.id ?? "")
+                Toast.displayToast(message: "“\(viewModel.selectedResource?.title ?? "")” \(LocalizableResources.resourcesDownloadRemoveToast.localized)")
             }
         }
     }
