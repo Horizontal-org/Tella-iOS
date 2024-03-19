@@ -11,24 +11,16 @@ import SwiftUI
 struct DownloadedResources: View {
     @EnvironmentObject var sheetManager: SheetManager
     @EnvironmentObject var viewModel: ResourcesViewModel
+    
     var body: some View {
         VStack {
             SectionTitle(text: LocalizableResources.resourcesDownloadedTitle.localized)
             if viewModel.downloadedResources.isEmpty && viewModel.availableResources.isEmpty {
-                SectionMessage(text: LocalizableResources.resourcesDownloadedSecondMsg.localized)
-            }
+                emptyView            }
             else if viewModel.downloadedResources.isEmpty {
-                SectionMessage(text: LocalizableResources.resourcesDownloadedEmpty.localized)
+                emptyDownloadedResources
             } else {
-                ScrollView {
-                    LazyVStack {
-                        ForEach(viewModel.downloadedResources) { resource in
-                            ResourceCardView(isLoading: false, resourceCard: resource).onTapGesture {
-                                navigateToPDFView(resourceId: resource.id, resourceTitle: resource.title)
-                            }
-                        }
-                    }
-                }.frame(maxHeight: CGFloat(viewModel.downloadedResources.count) * 90)
+                downloadedResourcesContent
             }
         }
         .padding(.bottom, 20)
@@ -37,8 +29,27 @@ struct DownloadedResources: View {
                 self.showResourceBottomSheet()
             }
         }
-        
-
+    }
+    
+    private var emptyView: some View {
+        SectionMessage(text: LocalizableResources.resourcesDownloadedSecondMsg.localized)
+    }
+    
+    private var emptyDownloadedResources: some View {
+        SectionMessage(text: LocalizableResources.resourcesDownloadedEmpty.localized)
+    }
+    
+    private var downloadedResourcesContent: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach(viewModel.downloadedResources) { resource in
+                    ResourceCardView(isLoading: false, resourceCard: resource).onTapGesture {
+                        resource.onTap()
+                        navigateToPDFView()
+                    }
+                }
+            }
+        }.frame(maxHeight: CGFloat(viewModel.downloadedResources.count) * 90)
     }
     
     private func showResourceBottomSheet() {
@@ -48,7 +59,7 @@ struct DownloadedResources: View {
                     if type == .delete {
                         showDeleteResourceConfirmationView()
                     } else {
-                        navigateToPDFView(resourceId: viewModel.selectedResource?.id ?? "", resourceTitle: viewModel.selectedResource?.title ?? "")
+                        navigateToPDFView()
                     }
                 })
         }
@@ -66,9 +77,9 @@ struct DownloadedResources: View {
         }
     }
     
-    private func navigateToPDFView(resourceId: String, resourceTitle: String) {
-        if let file = viewModel.openResource(resourceId: resourceId, fileName: resourceTitle) {
-            navigateTo(destination: ResourcePDFView(file: file, resourceTitle: resourceTitle))
+    private func navigateToPDFView() {
+        if let file = viewModel.openResource() {
+            navigateTo(destination: ResourcePDFView(file: file, resourceTitle: viewModel.selectedResource?.title ?? ""))
         }
         sheetManager.hide()
     }

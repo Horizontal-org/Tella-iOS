@@ -176,7 +176,8 @@ class ResourcesViewModel: ObservableObject {
             return ResourceCardViewModel(
                 resource: resource,
                 type: .more,
-                action: { self.showResourceBottomSheet(resource: resource)}
+                action: { self.showResourceBottomSheet(resource: resource)},
+                onTap: { self.selectResource(resource: resource)}
             )
         }
     }
@@ -195,8 +196,8 @@ class ResourcesViewModel: ObservableObject {
         }
     }
     
-    func openResource(resourceId: String, fileName: String) -> URL? {
-        guard let url = self.appModel.vaultManager.loadFileToURL(fileName: fileName, fileExtension: "pdf", identifier: resourceId) else { return nil }
+    func openResource() -> URL? {
+        guard let url = self.appModel.vaultManager.loadFileToURL(fileName: selectedResource?.title ?? "", fileExtension: "pdf", identifier: selectedResource?.id ?? "") else { return nil }
         return url
     }
     
@@ -210,5 +211,9 @@ class ResourcesViewModel: ObservableObject {
     private func showResourceBottomSheet(resource: DownloadedResource) {
         self.selectedResource = resource
         self.onShowResourceBottomSheet?()
+    }
+    
+    private func selectResource(resource: DownloadedResource) {
+        self.selectedResource = resource
     }
 }
