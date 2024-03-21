@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct UwaziDatePicker: View {
-    @State private var selectedDate = Date()
+    @State private var selectedDate: Date
     @State private var dateString: String
     @EnvironmentObject var prompt: UwaziEntryPrompt
     @EnvironmentObject var entityViewModel: UwaziEntityViewModel
@@ -18,6 +18,7 @@ struct UwaziDatePicker: View {
     init(value: UwaziValue) {
         self.value = value
         _dateString = State(initialValue: LocalizableUwazi.uwaziEntitySelectDateTitle.localized)
+        _selectedDate = State(initialValue: Date())
     }
     
     var body: some View {
@@ -30,8 +31,11 @@ struct UwaziDatePicker: View {
                 
             }
         }.frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.white.opacity(0.08))
-            .cornerRadius(12)
+        .background(Color.white.opacity(0.08))
+        .cornerRadius(12)
+        .onAppear{
+            selectedDate = Date()
+        }
     }
     
     private func TransparentDatePicker(selection: Binding<Date>, onChange: @escaping (Date) -> Void) -> some View {
