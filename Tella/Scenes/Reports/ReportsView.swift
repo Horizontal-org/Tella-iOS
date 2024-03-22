@@ -69,6 +69,8 @@ struct ReportsView: View {
                 
             }.background(Styles.Colors.backgroundMain)
                 .padding(EdgeInsets(top: 15, leading: 20, bottom: 16, trailing: 20))
+                .navigationBarBackButtonHidden(true)
+                .navigationBarItems(leading: backButton)
         }
 
         .if(self.reportsViewModel.selectedCell == .submitted && self.reportsViewModel.submittedReports.count > 0, transform: { view in
@@ -96,6 +98,16 @@ struct ReportsView: View {
                 reportsViewModel.deleteSubmittedReport()
                 Toast.displayToast(message: LocalizableReport.allReportDeletedToast.localized)
             })
+        }
+    }
+    
+    var backButton : some View {
+        Button {
+            self.popToRoot()
+        } label: {
+            Image("back")
+                .flipsForRightToLeftLayoutDirection(true)
+                .padding(EdgeInsets(top: -3, leading: -8, bottom: 0, trailing: 12))
         }
     }
 }
