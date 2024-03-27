@@ -30,6 +30,24 @@ class SQLiteStatementBuilder {
         return userVersion
         
     }
+    
+    func columnExists(tableName: String, column: String) -> Bool {
+        
+        do {
+            let statement = String(format: "PRAGMA table_info(%@)", tableName)
+            guard let selectStatement = try prepareStatement(sql: statement) else {
+                throw RuntimeError(errorMessage)
+            }
+            
+            let tableInfo =  query(stmt: selectStatement)
+            let test = tableInfo.filter({ col in col["name"] as? String  == column })
+            return !test.isEmpty
+            
+        } catch {
+            logDbErr("Error table info")
+            return false
+        }
+    }
 
     func addColumnToExistingTable(tableName: String, column: String) {
         let sqlExpression = "ALTER TABLE " + tableName + " ADD COLUMN " + column
