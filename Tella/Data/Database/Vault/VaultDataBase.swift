@@ -83,6 +83,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         statementBuilder.createTable(tableName: VaultD.tVaultFile, columns: columns)
     }
     
+    /// Add Encryption Update field, true: when the file is merged to the new encryption process
     func addEncryptionUpdate() {
         do {
             try statementBuilder.addColumnOn(tableName: VaultD.tVaultFile, 
@@ -101,7 +102,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             let parentId = parentId ?? VaultD.rootId
             let defaultThumbnail = "".data(using: .utf8)
             
-            let valuesToAdd = [KeyValue(key: VaultD.cId, value: file.id),
+            var valuesToAdd = [KeyValue(key: VaultD.cId, value: file.id),
                                KeyValue(key: VaultD.cParentId, value: parentId),
                                KeyValue(key: VaultD.cType, value: file.type.rawValue),
                                KeyValue(key: VaultD.cMimeType, value: file.mimeType),
@@ -113,7 +114,15 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
                                KeyValue(key: VaultD.cWidth, value:file.width),
                                KeyValue(key: VaultD.cHeight, value:file.height)
             ]
+            // Set the encryptionUpdated field to true only if we have it in the database
+            // this value is true because the new file to add is already encrypted with the new encryption
+            let encryptionUpdatedColumnExist =  statementBuilder.columnExists(tableName: VaultD.tVaultFile,
+                                                                               column: VaultD.cEncryptionUpdated)
+            if encryptionUpdatedColumnExist {
+                valuesToAdd.append(KeyValue(key: VaultD.cEncryptionUpdated, value:true))
+            }
             
+            // Insert the VaultFile values in the database
             let id = try statementBuilder.insertInto(tableName: VaultD.tVaultFile,
                                                      keyValue: valuesToAdd)
             
