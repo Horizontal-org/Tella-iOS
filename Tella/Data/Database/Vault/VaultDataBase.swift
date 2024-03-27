@@ -116,7 +116,7 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
             ]
             // Set the encryptionUpdated field to true only if we have it in the database
             // this value is true because the new file to add is already encrypted with the new encryption
-            let encryptionUpdatedColumnExist =  statementBuilder.columnIsExist(tableName: VaultD.tVaultFile,
+            let encryptionUpdatedColumnExist =  statementBuilder.columnExists(tableName: VaultD.tVaultFile,
                                                                                column: VaultD.cEncryptionUpdated)
             if encryptionUpdatedColumnExist {
                 valuesToAdd.append(KeyValue(key: VaultD.cEncryptionUpdated, value:true))

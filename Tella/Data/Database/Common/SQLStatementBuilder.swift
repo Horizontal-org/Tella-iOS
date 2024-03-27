@@ -31,7 +31,7 @@ class SQLiteStatementBuilder {
         
     }
     
-    func columnIsExist(tableName: String, column: String) -> Bool {
+    func columnExists(tableName: String, column: String) -> Bool {
         
         do {
             guard let selectStatement = try prepareStatement(sql: "PRAGMA table_info(\(tableName))") else {
