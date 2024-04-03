@@ -10,16 +10,18 @@ import SwiftUI
 
 struct EntitySelectorView: View {
     @State var selectedEntities: [EntityRelationshipItem] = []
+    @State private var searchText: String = ""
+    
     var body: some View {
         ContainerView {
             VStack {
-                SearchBarView()
+                SearchBarView(searchText: $searchText)
                 Text("Search for or select the entities you want to connect to this property.")
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(Color.white.opacity(0.87))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
-                ForEach(MockDataProvider.values) {entity in
+                ForEach(filteredEntities()) {entity in
                     entityListOptionsView(entity: entity, selectedEntities: $selectedEntities, isSelected: isSelected(entity: entity))
                 }
                 Spacer()
@@ -42,6 +44,15 @@ struct EntitySelectorView: View {
         if selectedEntities.contains(where: { $0.id == entity.id}) { return true }
         
         return false
+    }
+    
+    func filteredEntities() -> [EntityRelationshipItem] {
+        if searchText.isEmpty {
+            return MockDataProvider.values
+        } else {
+            return MockDataProvider.values.filter { $0.label.lowercased().contains(searchText.lowercased())
+            }
+        }
     }
 }
 
