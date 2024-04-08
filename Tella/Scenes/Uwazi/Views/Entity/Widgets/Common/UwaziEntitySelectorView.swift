@@ -9,12 +9,19 @@
 import SwiftUI
 
 struct EntitySelectorView: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var selectedEntities: [EntityRelationshipItem] = []
     @State private var searchText: String = ""
     
     var body: some View {
         ContainerView {
             VStack {
+                NavigationHeaderView(backButtonAction: {presentationMode.wrappedValue.dismiss()},
+                                     reloadAction: {presentationMode.wrappedValue.dismiss()},
+                                     title: "incident",
+                                     type: .save,
+                                     showRightButton: !selectedEntities.isEmpty )
+                .padding(.horizontal, 18)
                 SearchBarView(searchText: $searchText)
                 Text("Search for or select the entities you want to connect to this property.")
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
@@ -27,17 +34,7 @@ struct EntitySelectorView: View {
                 Spacer()
             }
         }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack {
-                    Text("incident")
-                        .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-            }
-        }
+        .navigationBarHidden(true)
     }
     
     func isSelected(entity: EntityRelationshipItem) -> Bool {
