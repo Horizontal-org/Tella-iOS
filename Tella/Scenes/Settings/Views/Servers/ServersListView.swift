@@ -30,7 +30,7 @@ struct ServersListView: View {
             }
         }
         .fullScreenCover(isPresented: $shouldShowEditServer, content: {
-            EditSettingsServerView(appModel: mainAppModel, isPresented: $shouldShowEditServer, server: mainAppModel.vaultManager.tellaData?.getTellaServer(serverId: (serversViewModel.currentServer?.id)!))
+            EditSettingsServerView(appModel: mainAppModel, isPresented: $shouldShowEditServer, server: mainAppModel.tellaData?.getTellaServer(serverId: (serversViewModel.currentServer?.id)!))
         })
         
         .toolbar {

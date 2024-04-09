@@ -103,7 +103,7 @@ class DraftReportVM: ObservableObject {
     }
     
     private func getServers() {
-        serverArray = mainAppModel.vaultManager.tellaData?.tellaServers.value ?? []
+        serverArray = mainAppModel.tellaData?.tellaServers.value ?? []
     }
     
     private func initcurrentReportVM(reportId:Int?) {
@@ -128,7 +128,7 @@ class DraftReportVM: ObservableObject {
     }
     
     func fillReportVM() {
-        if let reportId = self.reportId ,let report = self.mainAppModel.vaultManager.tellaData?.getReport(reportId: reportId) {
+        if let reportId = self.reportId ,let report = self.mainAppModel.tellaData?.getReport(reportId: reportId) {
             
             self.title = report.title ?? ""
             self.description = report.description ?? ""
@@ -181,7 +181,7 @@ class DraftReportVM: ObservableObject {
     }
     
     func updateReport(report:Report) {
-        let updateReportResult = mainAppModel.vaultManager.tellaData?.updateReport(report: report)
+        let updateReportResult = mainAppModel.tellaData?.updateReport(report: report)
         switch updateReportResult {
         case .success:
             self.successSavingReport = true
@@ -191,7 +191,7 @@ class DraftReportVM: ObservableObject {
     }
     
     func addReport(report:Report) {
-        let idResult =  mainAppModel.vaultManager.tellaData?.addReport(report: report)
+        let idResult =  mainAppModel.tellaData?.addReport(report: report)
         switch idResult {
         case .success(let id ):
             self.reportId = id

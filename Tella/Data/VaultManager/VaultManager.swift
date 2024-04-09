@@ -7,7 +7,7 @@ import SwiftUI
 import Combine
 
 class VaultManager : VaultManagerInterface, ObservableObject{
-
+    
     private let cryptoManager: CryptoManager = CryptoManager.shared
     private let fileManager: FileManagerInterface = DefaultFileManager()
     private let rootFileName: String = "root"
@@ -58,6 +58,23 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         deleteFiles(files: [fileURL])
         
         return data
+    }
+    
+    func loadFileToURL(fileName: String, fileExtension: String, identifier: String) -> URL? {
+        let tmpFileURL = createTempFileURL(pathExtension: fileExtension)
+        
+        guard (fileManager.createEmptyFile(atPath: tmpFileURL)) else {
+            debugLog("File not created.")
+            return nil
+        }
+        
+        let inputFileURL = containerURL(for: identifier)
+
+        guard cryptoManager.decryptFile(at: inputFileURL, outputTo: tmpFileURL) else {
+            return nil
+        }
+
+        return tmpFileURL
     }
 
     func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL? {
@@ -296,8 +313,7 @@ extension VaultManager {
         return cryptoManager.passwordType
     }
     
-     func initialize(with key:String?) throws {
-        self.tellaData = try TellaData(key: key)
+     func initialize() throws {
         fileManager.createDirectory(atPath: containerURL)
     }
 }

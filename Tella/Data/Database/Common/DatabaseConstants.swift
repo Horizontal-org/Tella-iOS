@@ -13,7 +13,7 @@ struct D {
     
     /* DATABASE VERSION */
 
-    static let databaseVersion = 3
+    static let databaseVersion = 4
 
     /* DEFAULT TYPES FOR DATABASE */
     // MARK: - DEFAULT TYPES FOR DATABASE
@@ -31,6 +31,7 @@ struct D {
     static let tUwaziTemplate = "t_uwazi_template"
     static let tUwaziServer = "t_uwazi_server"
     static let tFeedback = "t_feedback"
+    static let tResource = "t_resource"
 
     /* DATABASE COLUMNS */
     // MARK: - DATABASE COLUMNS
@@ -79,6 +80,11 @@ struct D {
 
 
     static let ctext = "c_text"
+    
+    //resources
+    static let cFilename = "c_filename"
+    static let cExternalId = "c_external_id"
+    static let cSize = "c_size"
 
 }
 
