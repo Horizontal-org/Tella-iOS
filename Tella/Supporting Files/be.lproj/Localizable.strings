@@ -375,6 +375,8 @@ This feedback is anonymous, so make sure to include contact information if you w
 "BackgroundActivities_Exit_Cancel_SheetAction" = "CANCEL";
 "BackgroundActivities_Exit_Discard_SheetAction" = "Exit and discard files";
 
+"BackgroundActivities_Encrypting" = "Encrypting “%@”";
+
 "Resources_Home_Serve_title" = "Resources";
 "Resources_Downloaded_Title" = "Downloaded";
 "Resources_Downloaded_Empty" = "You have not downloaded any resources. Tap on the “download” icon next to each resource below to get started.";
