@@ -4,6 +4,7 @@
 
 import Foundation
 import Combine
+import UIKit
 
 class BackgroundActivitiesViewModel:ObservableObject {
     
@@ -15,6 +16,7 @@ class BackgroundActivitiesViewModel:ObservableObject {
         mainAppModel.encryptionService?.$items
             .sink(receiveValue: { items in
                 self.items = items
+                UIApplication.shared.isIdleTimerDisabled = !self.items.isEmpty
             }).store(in: &subscribers)
         
         
