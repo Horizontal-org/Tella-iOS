@@ -6,8 +6,7 @@ import Foundation
 import Combine
 
 protocol VaultManagerInterface {
-    
-    var tellaData : TellaData? { get set }
+
     var key : String? { get }
     var shouldCancelImportAndEncryption : CurrentValueSubject<Bool,Never> { get set }
     var onSuccessLock : PassthroughSubject<String,Never> { get set }
@@ -18,11 +17,12 @@ protocol VaultManagerInterface {
     func initKeys(_ type: PasswordTypeEnum, password:String)
     func updateKeys(_ type: PasswordTypeEnum, newPassword:String, oldPassword:String)
     func getPasswordType() -> PasswordTypeEnum
-    func initialize(with key:String?) throws
+    func initialize() throws
     
     func getFilesToMergeToDatabase() -> [VaultFileDetailsToMerge]
     func loadFileData(file vaultFile: VaultFileDB) -> Data?
     func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL?
+    func loadFileToURL(fileName: String, fileExtension: String, identifier: String) -> URL?
     func loadVaultFilesToURL(files vaultFiles: [VaultFileDB]) -> [URL]
     func extract(from inputFileURL: URL, offsetSize:Int)
     func loadVaultFileToURLOld(file vaultFile: VaultFileDB) -> URL?

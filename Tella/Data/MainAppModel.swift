@@ -34,7 +34,8 @@ class MainAppModel: ObservableObject {
     @Published var encryptionService : EncryptionService?
 
     @Published var vaultFilesManager : VaultFilesManager?
-    
+    @Published var tellaData : TellaData?
+
     @Published var selectedTab: Tabs = .home
     
     @UserDefaultsProperty(key: lockTimeoutStartDateKey) private var lockTimeoutStartDate: Date?
@@ -88,12 +89,15 @@ class MainAppModel: ObservableObject {
 
     private func initDataSource() {
         do {
-            try self.vaultManager.initialize(with: self.vaultManager.key)
+            try self.vaultManager.initialize()
 
-            let database = try VaultDatabase(key: self.vaultManager.key)
-            self.vaultFilesManager = try VaultFilesManager(vaultDataBase: database, vaultManager: self.vaultManager)
+            let vaultDatabase = try VaultDatabase(key: self.vaultManager.key)
+            let tellaDataBase = try TellaDataBase(key: self.vaultManager.key)
+
+            self.vaultFilesManager = try VaultFilesManager(vaultDataBase: vaultDatabase, vaultManager: self.vaultManager)
             encryptionService = EncryptionService(vaultFilesManager: self.vaultFilesManager, mainAppModel: self)
-         } catch {
+             self.tellaData = try TellaData(database: tellaDataBase, vaultManager: self.vaultManager)
+        } catch {
             Toast.displayToast(message: "Error opening the app")
         }
     }
@@ -106,7 +110,7 @@ class MainAppModel: ObservableObject {
     private func saveFiles(files: [VaultFileDetailsToMerge]) {
         do {
             try self.vaultFilesManager?.addVaultFiles(files: files)
-            try self.vaultManager.tellaData?.updateReportIdFile(files: files)
+            try self.tellaData?.updateReportIdFile(files: files)
             self.vaultManager.deleteRootFile()
             self.settings.shouldMergeVaultFilesToDb = false
             self.saveSettings()
@@ -184,7 +188,7 @@ extension MainAppModel {
 extension MainAppModel {
     
     func sendAutoReportFile(file: VaultFileDB) {
-        if vaultManager.tellaData?.getAutoUploadServer() != nil {
+        if tellaData?.getAutoUploadServer() != nil {
             UploadService.shared.addAutoUpload(file: file)
         }
     }
@@ -202,7 +206,7 @@ extension MainAppModel {
     @discardableResult
     func deleteReport(reportId:Int?) -> Result<Bool, Error>? {
         UploadService.shared.cancelSendingReport(reportId: reportId)
-        return vaultManager.tellaData?.deleteReport(reportId: reportId)
+        return tellaData?.deleteReport(reportId: reportId)
     }
 }
 

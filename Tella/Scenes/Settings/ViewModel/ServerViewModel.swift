@@ -41,7 +41,7 @@ class ServerViewModel: ObservableObject {
     var currentServer : TellaServer?
     
     var isAutoUploadServerExist: Bool {
-        return mainAppModel.vaultManager.tellaData?.getAutoUploadServer() != nil && self.currentServer?.autoUpload == false
+        return mainAppModel.tellaData?.getAutoUploadServer() != nil && self.currentServer?.autoUpload == false
     }
     
     init(mainAppModel : MainAppModel, currentServer: TellaServer?) {
@@ -67,7 +67,7 @@ class ServerViewModel: ObservableObject {
                             autoDelete: autoDelete)
         
         
-        let addServerResult = mainAppModel.vaultManager.tellaData?.addServer(server: server)
+        let addServerResult = mainAppModel.tellaData?.addServer(server: server)
         
         if case .success(let id) = addServerResult {
             server.id = id
@@ -84,7 +84,7 @@ class ServerViewModel: ObservableObject {
             currentServer.autoUpload = autoUpload
             currentServer.autoDelete = autoDelete
 
-            mainAppModel.vaultManager.tellaData?.updateServer(server: currentServer)
+            mainAppModel.tellaData?.updateServer(server: currentServer)
      }
 
     func login() {

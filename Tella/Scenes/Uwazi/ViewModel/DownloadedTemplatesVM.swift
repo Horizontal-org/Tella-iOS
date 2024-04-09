@@ -19,7 +19,7 @@ class DownloadedTemplatesViewModel: ObservableObject {
     @Published var templateCardsViewModel : [TemplateCardViewModel] = []
 
     var tellaData: TellaData? {
-        return self.mainAppModel.vaultManager.tellaData
+        return self.mainAppModel.tellaData
     }
     
     init(mainAppModel : MainAppModel, serverId: Int) {

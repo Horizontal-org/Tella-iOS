@@ -19,26 +19,19 @@ class ServersViewModel: ObservableObject {
         
         self.mainAppModel = mainAppModel
         
-        mainAppModel.vaultManager.tellaData?.servers.sink { completion in
+        mainAppModel.tellaData?.servers.sink { completion in
         } receiveValue: { serverArray in
             self.serverArray = serverArray
         }.store(in: &subscribers)
     }
     
     func deleteServer() {
-        guard let serverId = self.currentServer?.id else { return  }
-
-        if currentServer?.serverType == .uwazi {
-            mainAppModel.vaultManager.tellaData?.deleteUwaziServer(serverId: serverId)
-            
-            return
-        }
+        guard let server = self.currentServer else { return }
         
-        mainAppModel.vaultManager.tellaData?.deleteServer(serverId: serverId)
+        mainAppModel.tellaData?.deleteServer(server: server)
     }
     
     func deleteAllServersConnection() {
-        mainAppModel.vaultManager.tellaData?.deleteAllServers()
-        mainAppModel.vaultManager.tellaData?.deleteAllServers()
+        mainAppModel.tellaData?.deleteAllServers()
     }
 }

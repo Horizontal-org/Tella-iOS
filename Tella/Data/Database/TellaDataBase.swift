@@ -31,6 +31,8 @@ class TellaDataBase : DataBase {
             case 2:
                 createTemplateTableForUwazi()
                 createUwaziServerTable()
+            case 3:
+                createResourceTable()
             default :
                 break
             }
@@ -47,6 +49,7 @@ class TellaDataBase : DataBase {
         createFeedbackTable()
         createTemplateTableForUwazi()
         createUwaziServerTable()
+        createResourceTable()
     }
     
     func createReportTable() {

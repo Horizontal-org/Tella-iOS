@@ -39,7 +39,7 @@ class AutoUpload: BaseUploadOperation {
         
         self.response.send(UploadResponse.initial)
 
-        let currentReport = self.mainAppModel.vaultManager.tellaData?.getCurrentReport()
+        let currentReport = self.mainAppModel.tellaData?.getCurrentReport()
         
         if let currentReport  {
             self.report = currentReport
@@ -56,7 +56,7 @@ class AutoUpload: BaseUploadOperation {
     
     func startUploadReportAndFiles(file:VaultFileDB) {
         
-        let currentReport = self.mainAppModel.vaultManager.tellaData?.getCurrentReport()
+        let currentReport = self.mainAppModel.tellaData?.getCurrentReport()
         
         if let currentReport {
             self.addReportFile(file: file, report: currentReport)
@@ -70,7 +70,7 @@ class AutoUpload: BaseUploadOperation {
         guard let reportId = report.id else { return }
         self.report = report
         
-        let addedReportFile = self.mainAppModel.vaultManager.tellaData?.addReportFile(fileId: file.id, reportId: reportId)
+        let addedReportFile = self.mainAppModel.tellaData?.addReportFile(fileId: file.id, reportId: reportId)
         
         if let addedReportFile{
             report.reportFiles?.append(addedReportFile)
@@ -82,7 +82,7 @@ class AutoUpload: BaseUploadOperation {
         let reportToAdd = Report(title: "Auto-report" + Date().getFormattedDateString(format: DateFormat.autoReportNameName.rawValue),
                                  description: "",
                                  status: .finalized,
-                                 server: self.mainAppModel.vaultManager.tellaData?.getAutoUploadServer(),
+                                 server: self.mainAppModel.tellaData?.getAutoUploadServer(),
                                  vaultFiles: [ReportFile(fileId: file.id,
                                                          status: .notSubmitted,
                                                          bytesSent: 0,
@@ -91,7 +91,7 @@ class AutoUpload: BaseUploadOperation {
                                  currentUpload:true)
         
         // files
-        let report = self.mainAppModel.vaultManager.tellaData?.addCurrentUploadReport(report: reportToAdd)
+        let report = self.mainAppModel.tellaData?.addCurrentUploadReport(report: reportToAdd)
         self.report = report
         self.checkReport()
     }

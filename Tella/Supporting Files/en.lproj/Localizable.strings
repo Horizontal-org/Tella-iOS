@@ -389,3 +389,25 @@ This feedback is anonymous, so make sure to include contact information if you w
 "BackgroundActivities_Exit_SheetExpl" = "There are files being encrypted in the background. Do you want to exit and lose the files?";
 "BackgroundActivities_Exit_Cancel_SheetAction" = "CANCEL";
 "BackgroundActivities_Exit_Discard_SheetAction" = "Exit and discard files";
+
+"BackgroundActivities_Encrypting" = "Encrypting “%@”";
+
+"Resources_Home_Serve_title" = "Resources";
+"Resources_Downloaded_Title" = "Downloaded";
+"Resources_Downloaded_Empty" = "You have not downloaded any resources. Tap on the “download” icon next to each resource below to get started.";
+"Resources_Downloaded_Empty_SecondMsg" = "You have not downloaded any resources.";
+"Resources_Available_Title" = "Available for download";
+"Resources_Available_Msg" = "These are the resources available for download from your Tella Web project(s).";
+"Resources_Available_Empty" = "There are no resources available for download from your Tella Web project(s).";
+"Resources_Available_ErrorMsg" = "There was an error fetching resources";
+"Resources_Downloaded_Remove_SheetTitle" = "Remove from downloads";
+"Resources_Downloaded_Remove_SheetExpl" = "Are you sure you want to remove this resource? You can always download it again";
+"Resources_Downloaded_Remove_Cancel_SheetAction" = "CANCEL";
+"Resources_Downloaded_Remove_Confirm_SheetAction" = "REMOVE";
+"Resources_Downloaded_Remove_Toast" = "has been removed from your downloads";
+"Resources_Downloaded_View_SheetSelect" = "View";
+"Resource_Downloaded_Remove_SheetSelect" = "Remove from downloads";
+"Resource_Exit_SheetTitle" = "Stop download and exit?";
+"Resource_Exit_SheetExpl" = "Your download progress will be lost. You can always come back later to download the resource again.";
+"Resource_Exit_Confirm_SheetSelect" = "EXIT";
+"Resource_Exit_Cancel_SheetSelect" = "KEEP DOWNLOADING";

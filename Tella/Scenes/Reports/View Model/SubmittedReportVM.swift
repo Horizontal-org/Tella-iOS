@@ -34,7 +34,7 @@ class SubmittedReportVM: ObservableObject {
     
     func fillReportVM(reportId:Int?) {
         
-        if let reportId ,let report = self.mainAppModel.vaultManager.tellaData?.getReport(reportId: reportId) {
+        if let reportId ,let report = self.mainAppModel.tellaData?.getReport(reportId: reportId) {
             
             // Init file
 //            var vaultFileResult : Set<VaultFileDB> = []

@@ -24,7 +24,7 @@ class FeedbackViewModel : ObservableObject {
     }
     
     var tellaData: TellaData?  {
-        return self.mainAppModel.vaultManager.tellaData
+        return self.mainAppModel.tellaData
     }
     
     var isNewFeedback: Bool {
@@ -37,7 +37,7 @@ class FeedbackViewModel : ObservableObject {
     }
     
     private func initFeedback() {
-        let feedback = self.mainAppModel.vaultManager.tellaData?.getDraftFeedback()
+        let feedback = self.mainAppModel.tellaData?.getDraftFeedback()
         self.feedback = feedback
         self.feedbackContent = self.feedback?.text ?? ""
         feedbackIsValid = self.feedback?.text != nil
@@ -124,7 +124,7 @@ class FeedbackViewModel : ObservableObject {
             initFeedback()
             return
         }
-        self.mainAppModel.vaultManager.tellaData?.deleteFeedback(feedbackId: feedbackId)
+        self.mainAppModel.tellaData?.deleteFeedback(feedbackId: feedbackId)
         initFeedback()
     }
 }

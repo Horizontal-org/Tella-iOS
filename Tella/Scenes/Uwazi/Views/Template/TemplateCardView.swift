@@ -13,27 +13,26 @@ struct TemplateCardView: View {
     @EnvironmentObject var mainAppModel: MainAppModel
     var templateCardViewModel: TemplateCardViewModel
     var body: some View {
-        VStack(spacing: 0) {
-            Button(action: {
-                showtemplateActionBottomSheet()
-            }) {
-                HStack {
-//                    MoreButtonView(imageName: "uwazi.star", action: {
-//                        //add this template to favorite
-//                    })
-                    ConnectionCardDetail(title: templateCardViewModel.translatedName, subtitle: templateCardViewModel.serverName)
-                    Spacer()
-                    MoreButtonView(imageName: "reports.more", action: {
-                        //show detail
-                        showtemplateActionBottomSheet()
-                    })
+        CardFrameView(padding: EdgeInsets(top: 6, leading: 0, bottom: 0, trailing: 0)) {
+            VStack(spacing: 0) {
+                Button(action: {
+                    showtemplateActionBottomSheet()
+                }) {
+                    HStack {
+    //                    MoreButtonView(imageName: "uwazi.star", action: {
+    //                        //add this template to favorite
+    //                    })
+                        ConnectionCardDetail(title: templateCardViewModel.translatedName, subtitle: templateCardViewModel.serverName)
+                        Spacer()
+                        ImageButtonView(imageName: "reports.more", action: {
+                            //show detail
+                            showtemplateActionBottomSheet()
+                        })
+                    }
+                    .padding(.all, 16)
                 }
-                .padding(.all, 16)
             }
         }
-        .background(Color.white.opacity(0.08))
-        .cornerRadius(15)
-        .padding(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
     }
     
     private func showtemplateActionBottomSheet() {

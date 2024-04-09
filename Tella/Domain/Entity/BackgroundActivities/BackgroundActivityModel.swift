@@ -28,10 +28,9 @@ class BackgroundActivityModel {
     
     init(vaultFile:VaultFileDB) {
         self.id = vaultFile.id ?? UUID().uuidString
-        self.name = vaultFile.name
+        self.name =  String.init(format: LocalizableBackgroundActivities.encrypting.localized, vaultFile.name)
         self.mimeType = vaultFile.mimeType ?? ""
         self.thumb = vaultFile.thumbnail
-
     }
 }
 

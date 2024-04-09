@@ -16,4 +16,7 @@ enum LocalizableBackgroundActivities: String, LocalizableDelegate {
     case exitSheetExpl = "BackgroundActivities_Exit_SheetExpl"
     case exitcancelSheetAction = "BackgroundActivities_Exit_Cancel_SheetAction"
     case exitDiscardSheetAction  = "BackgroundActivities_Exit_Discard_SheetAction"
+    
+    case encrypting = "BackgroundActivities_Encrypting"
+
 }

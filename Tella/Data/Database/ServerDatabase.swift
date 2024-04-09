@@ -162,6 +162,9 @@ extension TellaDataBase {
             try statementBuilder.delete(tableName: D.tReport,
                                         primarykeyValue: serverCondition)
             
+            try statementBuilder.delete(tableName: D.tResource,
+                                        primarykeyValue: serverCondition)
+            
             if !reportIDs.isEmpty {
                 let reportCondition = [KeyValues(key: D.cReportInstanceId, value: reportIDs)]
                 try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
@@ -176,7 +179,7 @@ extension TellaDataBase {
     
     func deleteAllServers() -> Result<Bool,Error> {
         do {
-            try statementBuilder.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile, D.tUwaziServer, D.tUwaziTemplate])
+            try statementBuilder.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile, D.tUwaziServer, D.tUwaziTemplate, D.tResource])
             return .success(true)
         } catch let error {
             debugLog(error)

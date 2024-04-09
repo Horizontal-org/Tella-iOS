@@ -5,15 +5,25 @@
 
 import Foundation
 
-class Server : Hashable {
-    var id : Int?
-    var name : String?
-    var url : String?
-    var username : String?
-    var password : String?
-    var accessToken : String?
+class Server: Codable, Equatable, Hashable {
+    var id: Int?
+    var name: String?
+    var url: String?
+    var username: String?
+    var password: String?
+    var accessToken: String?
     var serverType: ServerConnectionType?
 
+    enum CodingKeys: String, CodingKey {
+        case id = "c_server_id"
+        case name = "c_name"
+        case url = "c_url"
+        case username = "c_username"
+        case password = "c_password"
+        case accessToken = "c_access_token"
+        case serverType
+    }
+    
     init(id: Int? = nil,
          name: String? = nil,
          serverURL: String? = nil,
@@ -30,19 +40,17 @@ class Server : Hashable {
         self.accessToken = accessToken
         self.serverType = serverType
     }
-    
-    init() {
-        
-    }
+
     
     static func == (lhs: Server, rhs: Server) -> Bool {
-        lhs.id  == rhs.id
+        return lhs.id == rhs.id
     }
     
     func hash(into hasher: inout Hasher){
         hasher.combine(id.hashValue)
     }
 }
+
 
 class TellaServer : Server {
     var activatedMetadata : Bool?
@@ -51,6 +59,7 @@ class TellaServer : Server {
     var slug : String?
     var autoUpload: Bool?
     var autoDelete: Bool?
+    
     init(id: Int? = nil,
          name: String? = nil,
          serverURL: String? = nil,
@@ -79,5 +88,9 @@ class TellaServer : Server {
                    accessToken: accessToken,
                    serverType: serverType
         )
+    }
+    
+    required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
     }
 }
