@@ -52,8 +52,26 @@ class UwaziEntityViewModel: ObservableObject {
         templateName = template.entityRow?.name ?? ""
         
         self.bindVaultFileTaken()
+        self.server = self.getServerById(id: serverId)
+        entryPrompts = UwaziEntityParser(template: template!).getEntryPrompts()
+
+        fetchRelationshipEntities()
     }
     
+    func fetchRelationshipEntities() {
+        UwaziServerRepository().getRelationshipEntities(serverURL: self.server?.url ?? "", cookie: self.server?.cookie ?? "")
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    dump(error)
+                }
+            }, receiveValue: { uwaziRelationshipDTO in
+                dump(uwaziRelationshipDTO)
+            })
+            .store(in: &subscribers)
+    }
     var tellaData: TellaData? {
         return self.mainAppModel.tellaData
     }
