@@ -14,7 +14,7 @@ struct UwaziRelationshipDTO: Codable {
 
 struct UwaziRelationshipRowDTO: Codable, DataModel {
     let id, name: String
-    let values: [ThesauriValue]
+    let values: [EntityRelationshipItem]
     let type: String?
 
     enum CodingKeys: String, CodingKey {
@@ -29,20 +29,12 @@ struct UwaziRelationshipRowDTO: Codable, DataModel {
     }
 }
 
-
-struct ThesauriValue: Codable {
-    let label: String
-    let id: String
-    let values: [ThesauriValue]?
-}
-
-
 class UwaziRelationshipList: DomainModel, Codable {
     let id, name: String
-    let values: [ThesauriValue]
+    let values: [EntityRelationshipItem]
     let type: String
 
-    init(id: String, name: String, values: [ThesauriValue], type: String) {
+    init(id: String, name: String, values: [EntityRelationshipItem], type: String) {
         self.id = id
         self.name = name
         self.values = values

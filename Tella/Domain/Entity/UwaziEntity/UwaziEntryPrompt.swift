@@ -62,7 +62,7 @@ class CommonUwaziEntryPrompt: Hashable {
     var type: UwaziEntityPropertyType = .unknown
     
     var question: String
-    
+    var content: String?
     var answer: String?
     
     var required: Bool?
@@ -81,6 +81,7 @@ class CommonUwaziEntryPrompt: Hashable {
          formIndex: String? = nil,
          type: String,
          question: String,
+         content: String? = nil,
          answer: String? = nil,
          required: Bool? = nil,
          helpText: String? = nil,
@@ -93,6 +94,7 @@ class CommonUwaziEntryPrompt: Hashable {
         self.formIndex = formIndex
         self.type = UwaziEntityPropertyType(rawValue: type) ?? .unknown
         self.question = question
+        self.content = content
         self.answer = answer
         self.required = required
         self.helpText = helpText
