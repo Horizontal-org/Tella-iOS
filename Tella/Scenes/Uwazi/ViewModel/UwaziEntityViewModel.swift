@@ -29,6 +29,7 @@ class UwaziEntityViewModel: ObservableObject {
     
     @Published var uwaziEntityParser : UwaziEntityParser?
     @Published var shouldHideView : Bool = false
+    @Published var relationshipEntities: [UwaziRelationshipList] = []
     
     var subscribers = Set<AnyCancellable>()
     
@@ -59,7 +60,17 @@ class UwaziEntityViewModel: ObservableObject {
     }
     
     func fetchRelationshipEntities() {
-        UwaziServerRepository().getRelationshipEntities(serverURL: self.server?.url ?? "", cookie: self.server?.cookie ?? "")
+        let relationshipProps = self.template?.entityRow?.properties.filter {$0.type == UwaziEntityPropertyType.dataRelationship.rawValue }
+        let templatesEntities = relationshipProps?.map{ tmp in
+            return tmp.content
+        }
+        
+        UwaziServerRepository().getRelationshipEntities(
+            serverURL: self.server?.url ?? "",
+            cookie: self.server?.cookie ?? "",
+            templatesIds: templatesEntities ?? []
+        )
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -67,8 +78,9 @@ class UwaziEntityViewModel: ObservableObject {
                 case .failure(let error):
                     dump(error)
                 }
-            }, receiveValue: { uwaziRelationshipDTO in
-                dump(uwaziRelationshipDTO)
+            }, receiveValue: { uwaziRelationshipList in
+                self.relationshipEntities = uwaziRelationshipList
+                dump(self.relationshipEntities)
             })
             .store(in: &subscribers)
     }
