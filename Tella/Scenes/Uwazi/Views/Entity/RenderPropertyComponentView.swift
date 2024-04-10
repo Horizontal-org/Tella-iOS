@@ -54,6 +54,9 @@ struct RenderPropertyComponentView: View {
         case .dataTypeDate:
             UwaziDatePicker(value: prompt.value)
                 .environmentObject(prompt)
+        case .dataRelationship:
+                    UwaziRelationshipWidget()
+                        .environmentObject(prompt)
         default:
             EmptyView()
         }
@@ -63,7 +66,7 @@ struct RenderPropertyComponentView: View {
         guard let propertyType = UwaziEntityPropertyType(rawValue: type) else { return false }
         
         switch propertyType {
-        case .dataTypeText, .dataTypeNumeric, .dataTypeSelect, .dataTypeMultiSelect, .dataTypeMultiFiles, .dataTypeMultiPDFFiles, .dataTypeDivider, .dataTypeDate, .dataTypeMarkdown:
+        case .dataTypeText, .dataTypeNumeric, .dataTypeSelect, .dataTypeMultiSelect, .dataTypeMultiFiles, .dataTypeMultiPDFFiles, .dataTypeDivider, .dataTypeDate, .dataTypeMarkdown, .dataRelationship:
             return true
         default:
             return false
