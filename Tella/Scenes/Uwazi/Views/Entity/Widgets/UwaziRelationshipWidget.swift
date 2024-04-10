@@ -18,7 +18,10 @@ struct UwaziRelationshipWidget: View {
                 .foregroundColor(Color.white.opacity(0.87))
                 .frame(maxWidth: .infinity, alignment: .leading)
             Button {
-                navigateTo(destination: EntitySelectorView())
+                navigateTo(destination: EntitySelectorView()
+                    .environmentObject(entityViewModel)
+                    .environmentObject(prompt)
+                )
             } label: {
                 entitiesSelect
             }

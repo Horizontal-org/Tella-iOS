@@ -10,6 +10,8 @@ import SwiftUI
 
 struct EntitySelectorView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @EnvironmentObject var prompt: UwaziEntryPrompt
+    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
     @State var selectedEntities: [EntityRelationshipItem] = []
     @State private var searchText: String = ""
     
@@ -28,8 +30,10 @@ struct EntitySelectorView: View {
                     .foregroundColor(Color.white.opacity(0.87))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
-                ForEach(filteredEntities()) {entity in
-                    entityListOptionsView(entity: entity, selectedEntities: $selectedEntities, isSelected: isSelected(entity: entity))
+                ScrollView {
+                    ForEach(filteredEntities()) {entity in
+                        entityListOptionsView(entity: entity, selectedEntities: $selectedEntities, isSelected: isSelected(entity: entity))
+                    }
                 }
                 Spacer()
             }
@@ -44,12 +48,10 @@ struct EntitySelectorView: View {
     }
     
     func filteredEntities() -> [EntityRelationshipItem] {
-        if searchText.isEmpty {
-            return MockDataProvider.values
-        } else {
-            return MockDataProvider.values.filter { $0.label.lowercased().contains(searchText.lowercased())
-            }
-        }
+        return entityViewModel.relationshipEntities
+            .first { $0.id == prompt.content }?
+            .values
+            .filter { searchText.isEmpty || $0.label.lowercased().contains(searchText.lowercased()) } ?? []
     }
 }
 

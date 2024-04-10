@@ -73,6 +73,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                              formIndex: $0.id,
                              type: $0.type ?? "",
                              question: $0.translatedLabel ?? "",
+                             content: $0.content ?? "",
                              required: $0.propertyRequired,
                              helpText: $0.translatedLabel,
                              selectValues: $0.values,
