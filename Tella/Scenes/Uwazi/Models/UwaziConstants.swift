@@ -28,6 +28,7 @@ enum UwaziEntityPropertyType: String, CodingKey {
     case dataTypeGeneratedID = "generatedid"
     case dataTypeDivider = "divider"
     case unknown = "unknown"
+    case dataRelationship = "relationship"
 }
 
 struct UwaziEntityMetadataKeys {
