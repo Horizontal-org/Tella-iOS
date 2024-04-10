@@ -348,6 +348,7 @@
 		15BD9CA92BC740B300C3932B /* UwaziRelationshipWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CA82BC740B300C3932B /* UwaziRelationshipWidget.swift */; };
 		15BD9CAB2BC740D700C3932B /* EntitySelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CAA2BC740D700C3932B /* EntitySelectorView.swift */; };
 		15BD9CAD2BC7410E00C3932B /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CAC2BC7410E00C3932B /* SearchBarView.swift */; };
+		15BD9CAF2BC7420C00C3932B /* EntityListMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CAE2BC7420C00C3932B /* EntityListMock.swift */; };
 		15EE30FE2B5073E20033BBBB /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE30FD2B5073E20033BBBB /* Pages.swift */; };
 		15F64C9D2B6D7904008A57AA /* DownloadedResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */; };
 		15F64CA02B6D794B008A57AA /* SectionTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64C9F2B6D794B008A57AA /* SectionTitle.swift */; };
@@ -874,6 +875,7 @@
 		15BD9CA82BC740B300C3932B /* UwaziRelationshipWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziRelationshipWidget.swift; sourceTree = "<group>"; };
 		15BD9CAA2BC740D700C3932B /* EntitySelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitySelectorView.swift; sourceTree = "<group>"; };
 		15BD9CAC2BC7410E00C3932B /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
+		15BD9CAE2BC7420C00C3932B /* EntityListMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityListMock.swift; sourceTree = "<group>"; };
 		15EE30FD2B5073E20033BBBB /* Pages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pages.swift; sourceTree = "<group>"; };
 		15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResources.swift; sourceTree = "<group>"; };
 		15F64C9F2B6D794B008A57AA /* SectionTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitle.swift; sourceTree = "<group>"; };
@@ -2390,6 +2392,7 @@
 				CCC1B43C2AC75C5D0075B819 /* UwaziConstants.swift */,
 				CC5CEB882AF0551900BF238B /* UwaziAttachment.swift */,
 				CCE8CCDE2AF4297B0088B61D /* UwaziAttachmentsActionItems.swift */,
+				15BD9CAE2BC7420C00C3932B /* EntityListMock.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3334,6 +3337,7 @@
 				125A9E0028CE52C700C0C3C8 /* TellaDataBase.swift in Sources */,
 				126684432B18B6A400561650 /* BackgroundActivityType.swift in Sources */,
 				12A2DB03273576D50094B856 /* AddFileView.swift in Sources */,
+				15BD9CAF2BC7420C00C3932B /* EntityListMock.swift in Sources */,
 				E1E7C5892AAB7ED700DDB07E /* UwaziTranslationRow.swift in Sources */,
 				128D6E1C280480500082AB18 /* FileActionType.swift in Sources */,
 				D75F9E9C25342539006F6212 /* RecordViewModel.swift in Sources */,

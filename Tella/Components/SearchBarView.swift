@@ -10,23 +10,24 @@
 import SwiftUI
 
 struct SearchBarView: View {
+    @Binding var searchText: String
     var body: some View {
         if #available(iOS 15.0, *) {
-            SearchBar()
+            SearchBar(searchText: $searchText)
         } else {
-            SearchBarNoFocus()
+            SearchBarNoFocus(searchText: $searchText)
         }
     }
 }
 
 @available(iOS 15.0, *)
 struct SearchBar: View {
-    @State var value: String = ""
+    @Binding var searchText: String
     @FocusState private var isInputActive:Bool
     var body: some View {
         HStack {
             Image("file.search")
-            TextField("", text: $value)
+            TextField("", text: $searchText)
             .keyboardType(.default)
             .textFieldStyle(TextfieldStyle(shouldShowError: false))
             .frame( height: 22)
@@ -42,11 +43,11 @@ struct SearchBar: View {
 }
 
 struct SearchBarNoFocus: View {
-    @State var value: String = ""
+    @Binding var searchText: String
     var body: some View {
         HStack {
             Image("file.search")
-            TextField("", text: $value)
+            TextField("", text: $searchText)
             .keyboardType(.default)
             .textFieldStyle(TextfieldStyle(shouldShowError: false))
             .frame( height: 22)
@@ -61,5 +62,5 @@ struct SearchBarNoFocus: View {
 }
 
 #Preview {
-    SearchBarView()
+    SearchBarView(searchText: .constant(""))
 }
