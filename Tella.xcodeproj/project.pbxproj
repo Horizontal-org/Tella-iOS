@@ -342,6 +342,7 @@
 		157E4F532BA385B500147345 /* PDFKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157E4F522BA385B500147345 /* PDFKitView.swift */; };
 		15917D752B90FCC3005655AC /* ResourceCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15917D742B90FCC3005655AC /* ResourceCardType.swift */; };
 		15BD9CA52BC47D5900C3932B /* NavigationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CA42BC47D5900C3932B /* NavigationHeaderView.swift */; };
+		15BD9CA72BC5B9E800C3932B /* UwaziRelationshipDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CA62BC5B9E800C3932B /* UwaziRelationshipDTO.swift */; };
 		15EE30FE2B5073E20033BBBB /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE30FD2B5073E20033BBBB /* Pages.swift */; };
 		15F64C9D2B6D7904008A57AA /* DownloadedResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */; };
 		15F64CA02B6D794B008A57AA /* SectionTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64C9F2B6D794B008A57AA /* SectionTitle.swift */; };
@@ -858,6 +859,7 @@
 		1589A6212B7672430048C775 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		15917D742B90FCC3005655AC /* ResourceCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCardType.swift; sourceTree = "<group>"; };
 		15BD9CA42BC47D5900C3932B /* NavigationHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationHeaderView.swift; sourceTree = "<group>"; };
+		15BD9CA62BC5B9E800C3932B /* UwaziRelationshipDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziRelationshipDTO.swift; sourceTree = "<group>"; };
 		15EE30FD2B5073E20033BBBB /* Pages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pages.swift; sourceTree = "<group>"; };
 		15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResources.swift; sourceTree = "<group>"; };
 		15F64C9F2B6D794B008A57AA /* SectionTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitle.swift; sourceTree = "<group>"; };
@@ -1247,6 +1249,7 @@
 				CCEAE5912AE6F6EE0069204A /* EntityCreationResponse.swift */,
 				1293F6762AD88A0400F6CFBD /* FeedbackDTO.swift */,
 				15FABA372B7405B800B2EFEE /* ResourceDTO.swift */,
+				15BD9CA62BC5B9E800C3932B /* UwaziRelationshipDTO.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3287,6 +3290,7 @@
 				128D6E1E2804DA2A0082AB18 /* ListActionSheetItem.swift in Sources */,
 				12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */,
 				15709BAF2BB2151C00834FCE /* SearchBarView.swift in Sources */,
+				15BD9CA72BC5B9E800C3932B /* UwaziRelationshipDTO.swift in Sources */,
 				125AAD3129534259002194D6 /* UploadProgressInfo.swift in Sources */,
 				D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */,
 				127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */,
