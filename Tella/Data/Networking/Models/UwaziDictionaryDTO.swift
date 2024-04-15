@@ -24,7 +24,7 @@ class UwaziDictionaryRowDTO: Codable {
     }
 }
 
-class SelectValue: Codable, Equatable, Hashable {
+class SelectValue: Codable, Equatable, Hashable, Identifiable {
     var label, id: String?
     var translatedLabel: String? = ""
     var values : [NestedSelectValue]? = []
