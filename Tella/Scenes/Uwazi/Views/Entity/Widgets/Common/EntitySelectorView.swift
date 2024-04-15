@@ -12,7 +12,7 @@ struct EntitySelectorView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var prompt: UwaziEntryPrompt
     @EnvironmentObject var entityViewModel: UwaziEntityViewModel
-    @State var selectedEntities: [EntityRelationshipItem] = []
+    @Binding var selectedValues: [SelectValue]
     @State private var searchText: String = ""
     var body: some View {
         ContainerView {
@@ -21,7 +21,7 @@ struct EntitySelectorView: View {
                                      reloadAction: {presentationMode.wrappedValue.dismiss()},
                                      title: "incident",
                                      type: .save,
-                                     showRightButton: !selectedEntities.isEmpty 
+                                     showRightButton: !selectedValues.isEmpty
                 ).padding(.horizontal, 18)
                 
                 SearchBarView(searchText: $searchText)
@@ -33,8 +33,7 @@ struct EntitySelectorView: View {
                 ScrollView {
                     ForEach(filteredEntities()) {entity in
                         entityListOptionsView(entity: entity,
-                                              selectedEntities: $selectedEntities,
-                                              value: prompt.value,
+                                              value: $prompt.value.selectedValue,
                                               isSelected: isSelected(entity: entity)
                         )
                     }
@@ -61,22 +60,19 @@ struct EntitySelectorView: View {
 
 struct entityListOptionsView: View {
     var entity: EntityRelationshipItem
-    @Binding var selectedEntities: [EntityRelationshipItem]
-    @ObservedObject var value: UwaziValue
+    @Binding var value: [SelectValue]
     var isSelected: Bool
 
     var body: some View {
         VStack {
             Button(action: {
                 if isSelected {
-                    selectedEntities.removeAll { $0.id == entity.id }
-                    value.selectedValue.removeAll{ $0.id == entity.id}
+                    value.removeAll{ $0.id == entity.id}
                 } else {
                     let selectedValue: SelectValue = SelectValue(
                         label: entity.label, id: entity.id, translatedLabel: entity.label, values: []
                     )
-                    selectedEntities.append(entity)
-                    value.selectedValue.append(selectedValue)
+                    value.append(selectedValue)
                 }
             }, label: {
                 entityOptionView
@@ -103,5 +99,5 @@ struct entityListOptionsView: View {
 }
 
 #Preview {
-    EntitySelectorView()
+    EntitySelectorView(selectedValues: .constant([]))
 }
