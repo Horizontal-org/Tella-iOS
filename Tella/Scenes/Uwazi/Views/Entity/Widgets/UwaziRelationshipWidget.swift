@@ -31,6 +31,10 @@ struct UwaziRelationshipWidget: View {
             if(!prompt.value.selectedValue.isEmpty) {
                 selectedEntities
             }
+        }.onChange(of: prompt.value.selectedValue) { newValue in
+            if !newValue.isEmpty {
+                entityViewModel.toggleShowClear(forId: prompt.id ?? "", value: true)
+            }
         }
     }
 
@@ -39,7 +43,7 @@ struct UwaziRelationshipWidget: View {
         HStack {
             Image("uwazi.add-files")
                 .padding(.vertical, 20)
-            Text("Select entities")
+            Text(prompt.value.selectedValue.isEmpty ? "Select entities" : "Add more entities")
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(Color.white.opacity(0.87))
                 .frame(maxWidth: .infinity, alignment: .leading)
