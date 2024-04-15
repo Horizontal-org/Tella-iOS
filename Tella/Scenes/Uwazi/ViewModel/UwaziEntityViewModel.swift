@@ -66,7 +66,6 @@ class UwaziEntityViewModel: ObservableObject {
                 }
             }, receiveValue: { uwaziRelationshipList in
                 self.relationshipEntities = uwaziRelationshipList
-                dump(self.relationshipEntities)
             })
             .store(in: &subscribers)
     }
@@ -168,6 +167,17 @@ class UwaziEntityViewModel: ObservableObject {
                 if let selectedValue = entryPrompt.value.selectedValue.first {
                     metadata[propertyName] = [[UwaziEntityMetadataKeys.value: selectedValue.id, UwaziEntityMetadataKeys.label: selectedValue.label]]
                 }
+            case .dataRelationship:
+                let entryPromptValues = entryPrompt.value.selectedValue
+                if !entryPromptValues.isEmpty {
+                    let value = entryPromptValues.compactMap{ entity in
+                        return [UwaziEntityMetadataKeys.value: entity.id, 
+                                UwaziEntityMetadataKeys.label: entity.label,
+                                UwaziEntityMetadataKeys.type: UwaziEntityMetadataKeys.entity
+                        ]
+                    }
+                    metadata[propertyName] = value
+                }
             default:
                 break
             }
@@ -251,5 +261,16 @@ class UwaziEntityViewModel: ObservableObject {
         }
         
         toggleShowClear(forId: id, value: false)
+    }
+}
+
+
+struct RelationshipValue {
+    let id, label, type: String
+    
+    init(id: String, label: String, type: String) {
+        self.id = id
+        self.label = label
+        self.type = type
     }
 }

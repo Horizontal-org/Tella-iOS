@@ -32,7 +32,11 @@ struct EntitySelectorView: View {
                     .padding()
                 ScrollView {
                     ForEach(filteredEntities()) {entity in
-                        entityListOptionsView(entity: entity, selectedEntities: $selectedEntities, isSelected: isSelected(entity: entity))
+                        entityListOptionsView(entity: entity,
+                                              selectedEntities: $selectedEntities,
+                                              value: prompt.value,
+                                              isSelected: isSelected(entity: entity)
+                        )
                     }
                 }
                 Spacer()
@@ -42,7 +46,7 @@ struct EntitySelectorView: View {
     }
 
     func isSelected(entity: EntityRelationshipItem) -> Bool {
-        if selectedEntities.contains(where: { $0.id == entity.id}) { return true }
+        if prompt.value.selectedValue.contains(where: { $0.id == entity.id}) { return true }
 
         return false
     }
@@ -58,6 +62,7 @@ struct EntitySelectorView: View {
 struct entityListOptionsView: View {
     var entity: EntityRelationshipItem
     @Binding var selectedEntities: [EntityRelationshipItem]
+    @ObservedObject var value: UwaziValue
     var isSelected: Bool
 
     var body: some View {
@@ -65,8 +70,13 @@ struct entityListOptionsView: View {
             Button(action: {
                 if isSelected {
                     selectedEntities.removeAll { $0.id == entity.id }
+                    value.selectedValue.removeAll{ $0.id == entity.id}
                 } else {
+                    let selectedValue: SelectValue = SelectValue(
+                        label: entity.label, id: entity.id, translatedLabel: entity.label, values: []
+                    )
                     selectedEntities.append(entity)
+                    value.selectedValue.append(selectedValue)
                 }
             }, label: {
                 entityOptionView
