@@ -80,7 +80,6 @@ class UwaziEntityViewModel: ObservableObject {
                 }
             }, receiveValue: { uwaziRelationshipList in
                 self.relationshipEntities = uwaziRelationshipList
-                dump(self.relationshipEntities)
             })
             .store(in: &subscribers)
     }
@@ -171,5 +170,16 @@ class UwaziEntityViewModel: ObservableObject {
         DispatchQueue.main.async {
             self.objectWillChange.send()
         }
+    }
+}
+
+
+struct RelationshipValue {
+    let id, label, type: String
+    
+    init(id: String, label: String, type: String) {
+        self.id = id
+        self.label = label
+        self.type = type
     }
 }
