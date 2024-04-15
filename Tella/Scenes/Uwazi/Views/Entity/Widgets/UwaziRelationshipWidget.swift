@@ -48,7 +48,7 @@ struct UwaziRelationshipWidget: View {
     
     var selectedEntities: some View {
         VStack {
-            Text("\(prompt.value.selectedValue.count.description) entities connected")
+            Text("\(prompt.value.selectedValue.count) \(prompt.value.selectedValue.count == 1 ? "entity" : "entities") connected")
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(Color.white.opacity(0.87))
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -58,7 +58,7 @@ struct UwaziRelationshipWidget: View {
                     HStack{
                         RoundedRectangle(cornerRadius: 5)
                             .fill(Color.white.opacity(0.2))
-                            .frame(width: 35, height: 35, alignment: .center)
+                            .frame(width: 35, height: 38, alignment: .center)
                             .overlay(
                                 Image("files.list")
                             )
@@ -69,7 +69,6 @@ struct UwaziRelationshipWidget: View {
                             .padding(.horizontal, 4)
                     }
                     .padding(.vertical, 4)
-//                    .padding(.horizontal, 16)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
