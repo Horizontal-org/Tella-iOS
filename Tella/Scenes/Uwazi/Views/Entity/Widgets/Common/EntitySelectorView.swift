@@ -25,7 +25,7 @@ struct EntitySelectorView: View {
                 ).padding(.horizontal, 18)
                 
                 SearchBarView(searchText: $searchText)
-                Text("Search for or select the entities you want to connect to this property.")
+                Text(LocalizableUwazi.uwaziRelationshipListExpl.localized)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(Color.white.opacity(0.87))
                     .frame(maxWidth: .infinity, alignment: .leading)
