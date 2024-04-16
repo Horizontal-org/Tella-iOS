@@ -13,7 +13,7 @@ struct UwaziRelationshipWidget: View {
     @EnvironmentObject var entityViewModel: UwaziEntityViewModel
     var body: some View {
         VStack {
-            Text("Select the entities you want to connect to this property.")
+            Text(LocalizableUwazi.uwaziEntityRelationshipExpl.localized)
                 .font(.custom(Styles.Fonts.regularFontName, size: 12))
                 .foregroundColor(Color.white.opacity(0.87))
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -43,7 +43,9 @@ struct UwaziRelationshipWidget: View {
         HStack {
             Image("uwazi.add-files")
                 .padding(.vertical, 20)
-            Text(prompt.value.selectedValue.isEmpty ? "Select entities" : "Add more entities")
+            Text(prompt.value.selectedValue.isEmpty ?
+                    LocalizableUwazi.uwaziEntityRelationshipSelectTitle.localized :
+                    LocalizableUwazi.uwaziEntityRelationshipAddMoreTitle.localized)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(Color.white.opacity(0.87))
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -52,7 +54,8 @@ struct UwaziRelationshipWidget: View {
     
     var selectedEntities: some View {
         VStack {
-            Text("\(prompt.value.selectedValue.count) \(prompt.value.selectedValue.count == 1 ? "entity" : "entities") connected")
+            Text("\(prompt.value.selectedValue.count) \(prompt.value.selectedValue.count == 1 ? LocalizableUwazi.uwaziEntityRelationshipSingleConnection.localized : LocalizableUwazi.uwaziEntityRelationshipMultipleConnections.localized)"
+                )
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(Color.white.opacity(0.87))
                 .frame(maxWidth: .infinity, alignment: .leading)

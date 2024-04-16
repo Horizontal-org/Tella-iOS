@@ -65,4 +65,12 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     case editDraft = "Uwazi_Draft_Edit_SheetSelect"
     case deleteDraft = "Uwazi_Draft_Delete_SheetSelect"
 
+    
+    case uwaziEntityRelationshipExpl = "Uwazi_Entity_Relationship_Expl"
+    case uwaziEntityRelationshipSelectTitle = "Uwazi_Entity_Relationship_Select_title"
+    case uwaziEntityRelationshipAddMoreTitle = "Uwazi_Entity_Relationship_AddMore_title"
+    case uwaziEntityRelationshipSingleConnection = "Uwazi_Entity_Relationship_SingleConnection"
+    case uwaziEntityRelationshipMultipleConnections = "Uwazi_Entity_Relationship_MultipleConnections"
+    case uwaziRelationshipListExpl = "Search for or select the entities you want to connect to this property."
+    case uwaziRelationshipSearchTitle = "Uwazi_Relationship_SearchBar_Title"
 }
