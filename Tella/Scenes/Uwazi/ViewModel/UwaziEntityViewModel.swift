@@ -171,8 +171,9 @@ class UwaziEntityViewModel: ObservableObject {
                 let entryPromptValues = entryPrompt.value.selectedValue
                 if !entryPromptValues.isEmpty {
                     let value = entryPromptValues.compactMap{ entity in
-                        return [UwaziEntityMetadataKeys.value: entity.id, 
-                                UwaziEntityMetadataKeys.label: entity.label,
+                        dump(entity.id)
+                        return [UwaziEntityMetadataKeys.value: entity.id ?? "",
+                                UwaziEntityMetadataKeys.label: entity.label ?? "",
                                 UwaziEntityMetadataKeys.type: UwaziEntityMetadataKeys.entity
                         ]
                     }
