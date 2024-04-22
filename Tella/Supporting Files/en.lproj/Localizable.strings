@@ -74,7 +74,7 @@
 "Vault_MoreActions_Save_SheetSelect" = "Save to device";
 "Vault_MoreActions_FileInformation_SheetSelect" = "File information";
 "Vault_MoreActions_Delete_SheetSelect" = "Delete";
-"Vault_RenameFile_SheetTitle" = "Rename file";
+"Vault_RenameFile_SheetTitle" = "Rename";
 "Vault_RenameFile_Cancel_SheetAction" = "CANCEL";
 "Vault_RenameFile_Save_SheetAction" = "SAVE";
 "Vault_CreateNewFolder_SheetTitle" = "Create new folder";
