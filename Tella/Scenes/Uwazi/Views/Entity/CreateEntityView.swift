@@ -11,12 +11,14 @@ import SwiftUI
 struct CreateEntityView: View {
     @StateObject var entityViewModel : UwaziEntityViewModel
     @EnvironmentObject var sheetManager : SheetManager
+    @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     let modelHeight = 200.0
     
-    init(appModel: MainAppModel, templateId: Int, serverId: Int) {
-        _entityViewModel = StateObject(wrappedValue: UwaziEntityViewModel(mainAppModel: appModel, templateId:templateId, serverId: serverId))
+    init(appModel: MainAppModel, templateId: Int?, entityInstanceID:Int? = nil) {
+        _entityViewModel = StateObject(wrappedValue: UwaziEntityViewModel(mainAppModel: appModel, templateId:templateId, entityInstanceId: entityInstanceID))
     }
+
     var body: some View {
         ContainerView {
             contentView
@@ -39,7 +41,7 @@ struct CreateEntityView: View {
     }
 
     fileprivate var createEntityHeaderView: some View {
-        CreateDraftHeaderView(title: entityViewModel.template!.entityRow?.name ?? "",
+        CreateDraftHeaderView(title: entityViewModel.templateName,
                               isDraft: true,
                               hideSaveButton: true,
                               closeAction: { showSaveEntityConfirmationView() },
@@ -67,7 +69,9 @@ struct CreateEntityView: View {
             let checkMandatoryFields = self.entityViewModel.handleMandatoryProperties()
             
             if !checkMandatoryFields {
-                navigateTo(destination: SubmitEntityView(entityViewModel: entityViewModel))
+                entityViewModel.saveAnswersToEntityInstance()
+                navigateTo(destination: SummaryEntityView(mainAppModel: mainAppModel,
+                                                          entityInstance: entityViewModel.entityInstance))
             }
         }) {
             Text(LocalizableUwazi.uwaziEntityActionNext.localized)

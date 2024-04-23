@@ -21,7 +21,7 @@ struct FileDropdown: View {
             }
             
             if showFiles {
-                FileItems(files: $files)
+                FileItems(files: files)
             }
         }
     }
@@ -44,7 +44,7 @@ struct FileDropdown: View {
 
 
 struct FileItems: View {
-    @Binding var files: Set<VaultFileDB>
+     var files: Set<VaultFileDB>
     var body: some View {
         VStack {
             ForEach(files.sorted{$0.created < $1.created}, id: \.id) { file in

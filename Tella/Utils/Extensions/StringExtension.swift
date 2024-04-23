@@ -139,6 +139,16 @@ extension String {
             return #imageLiteral(resourceName: "filetype.small_document")
         }
     }
+    
+    var isPDF: Bool {
+
+        guard let type = UTType(mimeType: self) else {
+            return false
+        }
+
+        return type.conforms(to: .pdf)
+    }
+
 
 }
 

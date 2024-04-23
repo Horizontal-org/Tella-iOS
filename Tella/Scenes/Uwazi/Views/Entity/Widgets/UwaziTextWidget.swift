@@ -9,15 +9,20 @@
 import SwiftUI
 
 struct UwaziTextWidget: View {
-    @State var isValidText = false
-    @State var value: UwaziValue
+    
+    @ObservedObject var prompt: UwaziTextEntryPrompt
+    @EnvironmentObject var uwaziEntityViewModel : UwaziEntityViewModel
     var body: some View {
         VStack(alignment: .leading) {
-            TextField("", text: $value.stringValue)
+            TextField("", text: $prompt.value.value)
             .keyboardType(.default)
             .textFieldStyle(TextfieldStyle(shouldShowError: false))
             .frame( height: 22)
-            
+            .onChange(of: prompt.value.value, perform: { value in
+                prompt.showClear = !value.isEmpty
+                uwaziEntityViewModel.publishUpdates()
+            })
+
             Divider()
             .frame(height: 1)
             .background(Color.white)
@@ -25,10 +30,10 @@ struct UwaziTextWidget: View {
         }
     }
 }
-struct UwaziTextWidget_Previews: PreviewProvider {
-    static var previews: some View {
-        ContainerView {
-            UwaziTextWidget(value:UwaziValue.defaultValue())
-        }
-    }
-}
+//struct UwaziTextWidget_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContainerView {
+//            UwaziTextWidget()
+//        }
+//    }
+//}

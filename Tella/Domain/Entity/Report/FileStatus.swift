@@ -4,7 +4,7 @@
 
 import Foundation
 
-enum FileStatus: Int {
+enum FileStatus: Int, Codable {
     case unknown = 0
     case notSubmitted = 1
     case submitted = 2

@@ -334,6 +334,19 @@ If you want to take a picture or a video, proceed in the following way:\
 "Uwazi_Template_AddTemplate_EmptyExpl" = "There are no templates";
 "Uwazi_DeleteTemplate_SheetExpl" = "Are you sure you want to delete this Template?";
 
+
+"Uwazi_Draft_DraftList_Expl" = "These are entities you have not submitted. Tap on an entity to continue working on it.";
+
+"Uwazi_Draft_Delete_SheetTitle" = "Delete “%@”?";
+"Uwazi_Draft_Delete_SheetExpl" = "Are you sure you want to delete this draft?";
+"Uwazi_Draft_Delete_NO_SheetAction" = "NO";
+"Uwazi_Draft_Delete_YES_SheetAction" = "YES";
+
+
+"Uwazi_Draft_Edit_SheetSelect" = "Edit draft";
+"Uwazi_Draft_Delete_SheetSelect" = "Delete draft";
+
+
 "Uwazi_Entity_MultiFile_PrimaryDocument" = "Primary Documents";
 "Uwazi_Entity_MultiFile_AttachManyPDFFiles" = "Attach as many PDF files as you wish";
 "Uwazi_Entity_MultiFile_AttachManyPDFFiles_SelectTitle" = "Select PDF files";

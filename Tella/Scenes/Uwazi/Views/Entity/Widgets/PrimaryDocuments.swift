@@ -9,17 +9,19 @@
 import SwiftUI
 
 struct PrimaryDocuments: View {
-    @EnvironmentObject var prompt: UwaziEntryPrompt
+     @ObservedObject var prompt: UwaziFilesEntryPrompt
     @EnvironmentObject var sheetManager: SheetManager
     @EnvironmentObject var entityViewModel: UwaziEntityViewModel
     
     var body: some View {
-        UwaziFileSelector(addFiles: {
+        UwaziFileSelector(prompt: prompt, addFiles: {
             UIApplication.shared.endEditing()
             showAddFileSheet()
         }, title: LocalizableUwazi.uwaziMultiFileWidgetAttachManyPDFFilesSelectTitle.localized)
-            .environmentObject(prompt)
-        FileItems(files: $entityViewModel.pdfDocuments)
+//            .environmentObject(prompt)
+//        FileItems(files: $entityViewModel.pdfDocuments)
+        FileItems(files: prompt.value.value)
+
     }
     
     func showAddFileSheet() {
@@ -64,8 +66,8 @@ struct PrimaryDocuments: View {
         }
 }
 
-struct PrimaryDocuments_Previews: PreviewProvider {
-    static var previews: some View {
-        PrimaryDocuments()
-    }
-}
+//struct PrimaryDocuments_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PrimaryDocuments()
+//    }
+//}

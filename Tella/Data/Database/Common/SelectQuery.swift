@@ -57,7 +57,7 @@ class SelectQuery {
         if let joinCondition {
             joinCondition.forEach { joinCondition in
                 
-                let condition = "LEFT JOIN " + joinCondition.tableName + " ON " + "(" + joinCondition.firstItem.format() + "=" +  joinCondition.secondItem.format() + ")"
+                let condition = "LEFT JOIN " + joinCondition.tableName + " ON " + "(" + joinCondition.firstItem.format() + "=" +  joinCondition.secondItem.format() + ") "
                 
                 joinConditionStr = joinConditionStr + condition
             }
