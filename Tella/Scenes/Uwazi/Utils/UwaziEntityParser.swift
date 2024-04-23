@@ -162,7 +162,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
             case .dataTypeSelect, .dataTypeMultiSelect:
                 guard let entryPrompt = entryPrompt as? UwaziSelectEntryPrompt else { continue }
                 guard !entryPrompt.isEmpty else { continue }
-                metadata[propertyName] = entryPrompt.values.arraydDictionnary.first
+                metadata[propertyName] = entryPrompt.values.arraydDictionnary
                 
             case .dataTypeMultiFiles:
                 guard let entryPrompt = entryPrompt as? UwaziFilesEntryPrompt else { continue }
