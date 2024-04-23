@@ -46,8 +46,8 @@ struct TemplateCardView: View {
                 } else {
                     navigateTo(destination: CreateEntityView(
                         appModel: mainAppModel,
-                        templateId: templateCardViewModel.id!,
-                        serverId: templateCardViewModel.serverId
+                        templateId: templateCardViewModel.id!
+//                        serverId: templateCardViewModel.serverId
                     ).environmentObject(sheetManager))
                                         sheetManager.hide()
                 }

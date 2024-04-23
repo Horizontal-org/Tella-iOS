@@ -10,21 +10,22 @@ import Foundation
 
 
 struct UwaziFileUtility {
-    var files: Set<VaultFileDB>
+    var files: Set<VaultFileDB>?
     var mainAppModel: MainAppModel?
     
     func getFilesInfo() -> [UwaziAttachment] {
-        return files.compactMap { file in
+        return files?.compactMap { file in
             if let fileData = self.mainAppModel?.vaultManager.loadFileData(file: file) {
                 return UwaziAttachment(filename: file.name, data: fileData, fileExtension: file.fileExtension)
             } else {
                 return nil
             }
-        }
+        } ?? []
     }
     
     func extractFilesAsAttachments() ->[[String: Any]] {
         var attachments = [[String: Any]]()
+        guard let files else { return [] }
         for file in files {
             let attachment = [
                 "originalname": "\(file.name).\(file.fileExtension)",

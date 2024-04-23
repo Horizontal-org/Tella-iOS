@@ -9,18 +9,18 @@
 import SwiftUI
 
 struct SupportingFileWidget: View {
-    @EnvironmentObject var prompt: UwaziEntryPrompt
+    @ObservedObject var prompt: UwaziFilesEntryPrompt
     @EnvironmentObject var sheetManager: SheetManager
     @EnvironmentObject var entityViewModel: UwaziEntityViewModel
     
     var body: some View {
-        UwaziFileSelector(addFiles: {
+        UwaziFileSelector(prompt: prompt, addFiles: {
             UIApplication.shared.endEditing()
             showAddFileSheet()
         }, title: LocalizableUwazi.uwaziEntitySelectFiles.localized)
             .environmentObject(prompt)
-        if(entityViewModel.files.count > 0) {
-            FileDropdown(files: $entityViewModel.files)
+        if(prompt.value.value.count > 0) {
+            FileDropdown(files: $prompt.value.value)
         }
     }
     
@@ -75,8 +75,8 @@ struct SupportingFileWidget: View {
         }
 }
 
-struct SupportingFileWidget_Previews: PreviewProvider {
-    static var previews: some View {
-        SupportingFileWidget()
-    }
-}
+//struct SupportingFileWidget_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SupportingFileWidget()
+//    }
+//}

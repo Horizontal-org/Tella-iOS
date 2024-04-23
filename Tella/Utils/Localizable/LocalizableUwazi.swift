@@ -53,4 +53,16 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     case uwaziEntitySelectFilesDropdownHide = "Uwazi_Entity_SelectFiles_Dropdown_Hide"
     case uwaziEntitySelectFilesDropdownShow = "Uwazi_Entity_SelectFiles_Dropdown_Show"
     case uwaziEntitySelectDateTitle = "Uwazi_Entity_SelectDate_Title"
+    
+    
+    case draftListExpl = "Uwazi_Draft_DraftList_Expl"
+
+    case deleteDraftSheetTitle = "Uwazi_Draft_Delete_SheetTitle"
+    case deleteDraftSheetExpl = "Uwazi_Draft_Delete_SheetExpl"
+    case noSheetAction = "Uwazi_Draft_Delete_NO_SheetAction"
+    case yesSheetAction = "Uwazi_Draft_Delete_YES_SheetAction"
+
+    case editDraft = "Uwazi_Draft_Edit_SheetSelect"
+    case deleteDraft = "Uwazi_Draft_Delete_SheetSelect"
+
 }

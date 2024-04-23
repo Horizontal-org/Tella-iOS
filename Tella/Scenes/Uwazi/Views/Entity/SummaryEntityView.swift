@@ -8,10 +8,14 @@
 
 import SwiftUI
 
-struct SubmitEntityView: View {
-    @ObservedObject var entityViewModel: UwaziEntityViewModel
+struct SummaryEntityView: View {
+    
+    @StateObject var summaryViewModel : SummaryViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-
+    
+    init(mainAppModel: MainAppModel, entityInstance: UwaziEntityInstance?) {
+        _summaryViewModel = StateObject(wrappedValue: SummaryViewModel(mainAppModel: mainAppModel, entityInstance: entityInstance))
+    }
     var body: some View {
         ContainerView {
             VStack {
@@ -47,11 +51,11 @@ struct SubmitEntityView: View {
     
     var templateData: some View {
         VStack {
-            Text("\(LocalizableUwazi.uwaziEntitySummaryDetailServerTitle.localized) \(entityViewModel.server?.name ?? "")")
+            Text(summaryViewModel.serverName)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            Text("\(LocalizableUwazi.uwaziEntitySummaryDetailTemplateTitle.localized) \(entityViewModel.template!.entityRow?.name ?? "")")
+            Text(summaryViewModel.templateName)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -60,49 +64,52 @@ struct SubmitEntityView: View {
     
     var entityTitle: some View {
         VStack {
-            Text(entityViewModel.getEntityTitle())
+            Text(summaryViewModel.entityTitle)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 16))
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding()
     }
-    
+
     var entityContent: some View {
         VStack {
             entityResponseItem
-            FileItems(files: $entityViewModel.pdfDocuments)
-            FileItems(files: $entityViewModel.files)
+            FileItems(files: summaryViewModel.entityInstance?.documents ?? [])
+            FileItems(files: summaryViewModel.entityInstance?.attachments ?? [])
         }
     }
     
     var bottomActionView: some View {
         HStack {
-            Spacer()
-            Button {
-                entityViewModel.submitEntity {
-                        navigateTo(destination: UwaziView().environmentObject(UwaziViewModel(mainAppModel: entityViewModel.mainAppModel, server: entityViewModel.server!)))
-                    }
-            } label: {
-                if entityViewModel.isLoading {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                        .frame(maxWidth:.infinity)
-                        .frame(height: 55)
-                } else {
-                    Text(LocalizableUwazi.uwaziEntitySummaryDetailSubmitAction.localized)
-                        .frame(maxWidth:.infinity)
-                        .frame(height: 55)
-                        .contentShape(Rectangle())
-                }
+            
+            
+            TellaButtonView<AnyView> (title: "SUBMIT LATER",
+                                      nextButtonAction: .action,
+                                      buttonType: .clear,
+                                      isValid: .constant(true)) {
+                
+                
+                
             }
-            .disabled(entityViewModel.isLoading)
-            .frame(width: UIScreen.main.bounds.width / 2, alignment: .trailing)
-            .cornerRadius(50)
-            .buttonStyle(TellaButtonStyle(buttonStyle: YellowButtonStyle(), isValid: true))
+            
+            Spacer()
+            
+            TellaButtonView<AnyView> (title: "SUBMIT",
+                                      nextButtonAction: .action,
+                                      buttonType: .yellow,
+                                      isValid: .constant(true)) {
+                
+                summaryViewModel.submitEntity {
+                    navigateTo(destination: UwaziView()
+                               // .environmentObject(UwaziViewModel(mainAppModel: entityViewModel.mainAppModel, server: entityViewModel.server!)))
+                    )}
+                
+            }
+            
         }.padding(.horizontal)
     }
-
+    
     var entityResponseItem: some View {
         HStack {
             RoundedRectangle(cornerRadius: 5)
@@ -112,8 +119,8 @@ struct SubmitEntityView: View {
                     ZStack{
                         Image("document")
                     }
-                    .frame(width: 48, height: 48)
-                    .cornerRadius(5)
+                        .frame(width: 48, height: 48)
+                        .cornerRadius(5)
                 )
             VStack(alignment: .leading) {
                 Text(LocalizableUwazi.uwaziEntitySummaryDetailEntityResponseTitle.localized)
@@ -124,7 +131,7 @@ struct SubmitEntityView: View {
                 Spacer()
                     .frame(height: 2)
                 
-                Text(entityViewModel.getEntityResponseSize())
+                Text(summaryViewModel.getEntityResponseSize())
                     .font(.custom(Styles.Fonts.regularFontName, size: 10))
                     .foregroundColor(Color.white)
             }
