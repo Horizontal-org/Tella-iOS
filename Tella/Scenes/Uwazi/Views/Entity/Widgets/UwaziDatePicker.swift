@@ -11,12 +11,12 @@ import SwiftUI
 struct UwaziDatePicker: View {
     @State private var selectedDate = Date()
     @State private var dateString: String
-    @EnvironmentObject var prompt: UwaziEntryPrompt
+    @EnvironmentObject var prompt: UwaziTextEntryPrompt
     @EnvironmentObject var entityViewModel: UwaziEntityViewModel
-    @ObservedObject var value: UwaziValue
+//    @ObservedObject var value: UwaziValue
         
-    init(value: UwaziValue) {
-        self.value = value
+    init() {
+//        self.value = value
         _dateString = State(initialValue: LocalizableUwazi.uwaziEntitySelectDateTitle.localized)
     }
     
@@ -49,7 +49,7 @@ struct UwaziDatePicker: View {
             HStack(alignment: .top) {
                 HStack {
                     Image("uwazi.date")
-                    Text(parseDateFromPrompt(value.stringValue))
+                    Text(parseDateFromPrompt(prompt.value.value))
                         .font(.custom(Styles.Fonts.regularFontName, size: 14))
                         .foregroundColor(.white)
                         .padding(.horizontal, 8)
@@ -60,8 +60,8 @@ struct UwaziDatePicker: View {
     
     private func updatePromptWithDate(_ date: Date) {
         let unixTimestamp = date.getUnixTimestamp()
-        prompt.value.stringValue = String(unixTimestamp)
-        entityViewModel.toggleShowClear(forId: prompt.id ?? "", value: true)
+        prompt.value.value = String(unixTimestamp)
+//        entityViewModel.toggleShowClear(forId: prompt.id ?? "", value: true)
     }
     
     private func parseDateFromPrompt(_ date: String) -> String {
@@ -73,8 +73,10 @@ struct UwaziDatePicker: View {
     }
 }
 
-struct UwaziDatePicker_Previews: PreviewProvider {
-    static var previews: some View {
-        UwaziDatePicker(value: UwaziValue(stringValue: "", selectedValue: []))
-    }
-}
+//struct UwaziDatePicker_Previews: PreviewProvider {
+//    static var previews: some View {
+//        UwaziDatePicker(value: UwaziValue(type: UwaziEntityPropertyType.dataTypeText,
+//                                          stringValue: "",
+//                                          selectedValue: []))
+//    }
+//}

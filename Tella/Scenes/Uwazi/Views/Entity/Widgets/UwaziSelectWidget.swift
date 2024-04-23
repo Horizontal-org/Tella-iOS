@@ -9,35 +9,36 @@
 import SwiftUI
 
 struct UwaziSelectWidget: View {
+    
     @State private var shouldShowMenu : Bool = false
-    @EnvironmentObject var prompt: UwaziEntryPrompt
-    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
-    @ObservedObject var value: UwaziValue
+    @ObservedObject var prompt: UwaziSelectEntryPrompt
+    
     var body: some View {
         Button {
             DispatchQueue.main.async {
                 shouldShowMenu = true
             }
-
+            
         } label: {
-            SelectWidgetButton(title: selectTitle(value: value.stringValue), shouldShowMenu: shouldShowMenu)
+            SelectWidgetButton(title: selectTitle(), shouldShowMenu: shouldShowMenu)
         }.background(Color.white.opacity(0.08))
             .cornerRadius(12)
-
+        
         if shouldShowMenu {
-            SelectListOptions(prompt: prompt, shouldShowMenu: $shouldShowMenu, value: value).environmentObject(entityViewModel)
+            SelectListOptions(shouldShowMenu: $shouldShowMenu, prompt: prompt)
         }
     }
-
-    func selectTitle(value: String) -> String {
-        return value.isEmpty ? "Select" : value
+    
+    func selectTitle() -> String {
+        guard let item = prompt.selectValues?.filter({$0.id == prompt.values.first?.value}).first else {return "Select"}
+        return item.translatedLabel ?? ""
     }
 }
 
 struct SelectWidgetButton: View {
     let title: String
     let shouldShowMenu: Bool
-    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
+    
     var body: some View {
         HStack {
             Text(title)
@@ -45,7 +46,7 @@ struct SelectWidgetButton: View {
                 .foregroundColor(Color.white.opacity(0.87))
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
-
+            
             if(shouldShowMenu) {
                 Image("select.arrow.up")
                     .padding()
@@ -58,10 +59,9 @@ struct SelectWidgetButton: View {
 }
 
 struct SelectListOptions: View {
-    var prompt: UwaziEntryPrompt
     @Binding var shouldShowMenu: Bool
-    @ObservedObject var value: UwaziValue
-    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
+    var prompt: UwaziSelectEntryPrompt
+    
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
@@ -69,10 +69,9 @@ struct SelectListOptions: View {
                     ForEach(prompt.selectValues ?? [], id: \.self) { selectedOptions in
                         SelectOptionButton(
                             selectedOption: selectedOptions,
-                            promptId: prompt.id ?? "",
                             shouldShowMenu: $shouldShowMenu,
-                            value: value
-                        ).environmentObject(entityViewModel)
+                            prompt: prompt
+                        )
                     }
                 }
                 .frame(minHeight: 40, maxHeight: 250)
@@ -87,16 +86,16 @@ struct SelectListOptions: View {
 
 struct SelectOptionButton: View {
     let selectedOption: SelectValue
-    var promptId: String
     @Binding var shouldShowMenu: Bool
-    @ObservedObject var value: UwaziValue
-    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
+    var prompt: UwaziSelectEntryPrompt
+    @EnvironmentObject  var uwaziEntityViewModel : UwaziEntityViewModel
+    
     var body: some View {
         Button(action: {
             shouldShowMenu = false
-            value.selectedValue = [selectedOption]
-            value.stringValue = selectedOption.translatedLabel ?? ""
-            entityViewModel.toggleShowClear(forId: promptId, value: true)
+            guard let id = selectedOption.id else { return }
+            prompt.values = [UwaziValue(value: id,label: selectedOption.label)]
+            uwaziEntityViewModel.publishUpdates()
         }) {
             Text(selectedOption.translatedLabel ?? "")
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
@@ -104,6 +103,6 @@ struct SelectOptionButton: View {
                 .foregroundColor(.white)
                 .padding(.all, 14)
         }
-        .background(value.stringValue == selectedOption.translatedLabel ?  Color.white.opacity(0.16) : Color.white.opacity(0.08))
+        .background(prompt.values.first?.value == selectedOption.id ?  Color.white.opacity(0.16) : Color.white.opacity(0.08))
     }
 }

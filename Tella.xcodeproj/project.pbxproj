@@ -128,9 +128,11 @@
 		1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141627E357E80037D469 /* LoadMoreCell.swift */; };
 		1244141927E35D120037D469 /* VaultFileImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141827E35D120037D469 /* VaultFileImages.swift */; };
 		12476E1F2A5B7D2F00069048 /* TrailingButtonToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12476E1E2A5B7D2F00069048 /* TrailingButtonToolbar.swift */; };
+		12494A482BC0570E00766DFF /* UwaziSubmissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */; };
 		1249B3812AD43A8D009A7023 /* VaultManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */; };
 		1249B3832AD43AA7009A7023 /* VaultFilesManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1249B3822AD43AA7009A7023 /* VaultFilesManagerInterface.swift */; };
 		124F8E0829119E9400FBB7AC /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F8E0729119E9400FBB7AC /* StringExtension.swift */; };
+		1251C3902BB45616002E9898 /* EntityInstancesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251C38F2BB45616002E9898 /* EntityInstancesListView.swift */; };
 		125299DD2AD02E6F00191CAB /* ImportVaultFileResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299DC2AD02E6F00191CAB /* ImportVaultFileResult.swift */; };
 		125299DF2AD02E9D00191CAB /* FilesActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299DE2AD02E9D00191CAB /* FilesActor.swift */; };
 		125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299E02AD0515600191CAB /* VaultFilesManager.swift */; };
@@ -220,6 +222,7 @@
 		127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C4AAE27E4A74B00B1A1D3 /* ShareFileView.swift */; };
 		1283C257272AA6F6009180CA /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */; };
 		1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285BF3F2A3C5D63005D5D23 /* OpenXmlFormats.swift */; };
+		128754D92BBCE09B00D215B5 /* SummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128754D82BBCE09B00D215B5 /* SummaryViewModel.swift */; };
 		128777C52718D25E000624E2 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 128777C42718D25D000624E2 /* OpenSans-Light.ttf */; };
 		1289B45628B62A99005DA687 /* DeviceOrientationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289B45528B62A99005DA687 /* DeviceOrientationHelper.swift */; };
 		1289B45828B63187005DA687 /* RotationViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289B45728B63187005DA687 /* RotationViewModifier.swift */; };
@@ -263,6 +266,9 @@
 		1293F67A2AD88B8400F6CFBD /* FeedbackAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293F6792AD88B8400F6CFBD /* FeedbackAPI.swift */; };
 		129533C227399A1B0053FA4B /* PhotoVideoPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129533C127399A1B0053FA4B /* PhotoVideoPickerView.swift */; };
 		129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129533C32739D5BC0053FA4B /* TextFieldBottomSheetView.swift */; };
+		12964D8B2BA9C6F8003E1E0A /* EntityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12964D8A2BA9C6F8003E1E0A /* EntityStatus.swift */; };
+		12964D8D2BA9CF0D003E1E0A /* UwaziEntityInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12964D8C2BA9CF0D003E1E0A /* UwaziEntityInstance.swift */; };
+		12964D922BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12964D912BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift */; };
 		129B844F28BF5E4700F1B344 /* TextfieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B844E28BF5E4700F1B344 /* TextfieldView.swift */; };
 		129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845028BF6C7800F1B344 /* ServersViewModel.swift */; };
 		129B845328BFB7AC00F1B344 /* AddServerAccessChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */; };
@@ -342,7 +348,7 @@
 		CC13138C2A5DB79B0057271C /* BottomButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC13138B2A5DB79B0057271C /* BottomButtonsView.swift */; };
 		CC1C734D2AF5439600D736F8 /* UwaziMultipartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1C734C2AF5439600D736F8 /* UwaziMultipartData.swift */; };
 		CC43D9E12A72F8260030192E /* UwaziView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC43D9E02A72F8260030192E /* UwaziView.swift */; };
-		CC4864E92AF94AF300293F62 /* SubmitEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4864E82AF94AF300293F62 /* SubmitEntityView.swift */; };
+		CC4864E92AF94AF300293F62 /* SummaryEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4864E82AF94AF300293F62 /* SummaryEntityView.swift */; };
 		CC5CEB872AF037B600BF238B /* FileDropdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5CEB862AF037B600BF238B /* FileDropdown.swift */; };
 		CC5CEB892AF0551900BF238B /* UwaziAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5CEB882AF0551900BF238B /* UwaziAttachment.swift */; };
 		CC5DF8782B02B06A0068F622 /* UwaziServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5DF8772B02B06A0068F622 /* UwaziServer.swift */; };
@@ -620,9 +626,11 @@
 		1244141627E357E80037D469 /* LoadMoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCell.swift; sourceTree = "<group>"; };
 		1244141827E35D120037D469 /* VaultFileImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileImages.swift; sourceTree = "<group>"; };
 		12476E1E2A5B7D2F00069048 /* TrailingButtonToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailingButtonToolbar.swift; sourceTree = "<group>"; };
+		12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSubmissionViewModel.swift; sourceTree = "<group>"; };
 		1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManagerInterface.swift; sourceTree = "<group>"; };
 		1249B3822AD43AA7009A7023 /* VaultFilesManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFilesManagerInterface.swift; sourceTree = "<group>"; };
 		124F8E0729119E9400FBB7AC /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		1251C38F2BB45616002E9898 /* EntityInstancesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityInstancesListView.swift; sourceTree = "<group>"; };
 		125299DC2AD02E6F00191CAB /* ImportVaultFileResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportVaultFileResult.swift; sourceTree = "<group>"; };
 		125299DE2AD02E9D00191CAB /* FilesActor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesActor.swift; sourceTree = "<group>"; };
 		125299E02AD0515600191CAB /* VaultFilesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFilesManager.swift; sourceTree = "<group>"; };
@@ -712,6 +720,7 @@
 		127C4AAE27E4A74B00B1A1D3 /* ShareFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareFileView.swift; sourceTree = "<group>"; };
 		1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		1285BF3F2A3C5D63005D5D23 /* OpenXmlFormats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenXmlFormats.swift; sourceTree = "<group>"; };
+		128754D82BBCE09B00D215B5 /* SummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewModel.swift; sourceTree = "<group>"; };
 		128777C42718D25D000624E2 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		1289B45528B62A99005DA687 /* DeviceOrientationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceOrientationHelper.swift; sourceTree = "<group>"; };
 		1289B45728B63187005DA687 /* RotationViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotationViewModifier.swift; sourceTree = "<group>"; };
@@ -754,6 +763,9 @@
 		1293F6792AD88B8400F6CFBD /* FeedbackAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackAPI.swift; sourceTree = "<group>"; };
 		129533C127399A1B0053FA4B /* PhotoVideoPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoVideoPickerView.swift; sourceTree = "<group>"; };
 		129533C32739D5BC0053FA4B /* TextFieldBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldBottomSheetView.swift; sourceTree = "<group>"; };
+		12964D8A2BA9C6F8003E1E0A /* EntityStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityStatus.swift; sourceTree = "<group>"; };
+		12964D8C2BA9CF0D003E1E0A /* UwaziEntityInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityInstance.swift; sourceTree = "<group>"; };
+		12964D912BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityInstanceFile.swift; sourceTree = "<group>"; };
 		129B844E28BF5E4700F1B344 /* TextfieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldView.swift; sourceTree = "<group>"; };
 		129B845028BF6C7800F1B344 /* ServersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersViewModel.swift; sourceTree = "<group>"; };
 		129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerAccessChoiceView.swift; sourceTree = "<group>"; };
@@ -839,7 +851,7 @@
 		CC13138B2A5DB79B0057271C /* BottomButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomButtonsView.swift; sourceTree = "<group>"; };
 		CC1C734C2AF5439600D736F8 /* UwaziMultipartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziMultipartData.swift; sourceTree = "<group>"; };
 		CC43D9E02A72F8260030192E /* UwaziView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziView.swift; sourceTree = "<group>"; };
-		CC4864E82AF94AF300293F62 /* SubmitEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitEntityView.swift; sourceTree = "<group>"; };
+		CC4864E82AF94AF300293F62 /* SummaryEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryEntityView.swift; sourceTree = "<group>"; };
 		CC5CEB862AF037B600BF238B /* FileDropdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDropdown.swift; sourceTree = "<group>"; };
 		CC5CEB882AF0551900BF238B /* UwaziAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziAttachment.swift; sourceTree = "<group>"; };
 		CC5DF8772B02B06A0068F622 /* UwaziServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziServer.swift; sourceTree = "<group>"; };
@@ -1095,6 +1107,7 @@
 		1203CDE429915C6600D09073 /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				12964D902BAB44B9003E1E0A /* Models */,
 				1203CDE62991682800D09073 /* Common */,
 				E1F4A8E02AAF3F4E001C8E61 /* Protocols */,
 				12351C1B28D220BA00F3CB7C /* TellaData.swift */,
@@ -1372,6 +1385,14 @@
 				1261AC9B2AFEDDA1005A8325 /* Constants */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		1251C38E2BB455E5002E9898 /* EntityInstances */ = {
+			isa = PBXGroup;
+			children = (
+				1251C38F2BB45616002E9898 /* EntityInstancesListView.swift */,
+			);
+			path = EntityInstances;
 			sourceTree = "<group>";
 		};
 		12567FED2716B24700A2D356 /* Authentication */ = {
@@ -1847,6 +1868,14 @@
 			path = Feedback;
 			sourceTree = "<group>";
 		};
+		12964D902BAB44B9003E1E0A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				12964D912BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		12A1488D27209EF200A1ADDC /* Lock */ = {
 			isa = PBXGroup;
 			children = (
@@ -2135,7 +2164,7 @@
 				CCC1B4262AC75A380075B819 /* CreateEntityView.swift */,
 				CCC1B4282AC75A8E0075B819 /* RenderPropertyComponentView.swift */,
 				E1F4A8E52AAF431F001C8E61 /* Widgets */,
-				CC4864E82AF94AF300293F62 /* SubmitEntityView.swift */,
+				CC4864E82AF94AF300293F62 /* SummaryEntityView.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -2149,6 +2178,8 @@
 				CC0D56EC2AC4B46F00AA5D81 /* DownloadedTemplatesVM.swift */,
 				CC0D56EE2AC4B59B00AA5D81 /* AddTemplateVM.swift */,
 				CCC1B4242AC759F70075B819 /* UwaziEntityViewModel.swift */,
+				128754D82BBCE09B00D215B5 /* SummaryViewModel.swift */,
+				12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -2160,7 +2191,6 @@
 				CCF47F422ABE18B4000ABBBC /* Models */,
 				E10412112A9474D9003DCE6A /* Views */,
 				CC387D5A2A7857C900853F2E /* ViewModel */,
-				CC43D9E02A72F8260030192E /* UwaziView.swift */,
 			);
 			path = Uwazi;
 			sourceTree = "<group>";
@@ -2313,6 +2343,8 @@
 		E10412112A9474D9003DCE6A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CC43D9E02A72F8260030192E /* UwaziView.swift */,
+				1251C38E2BB455E5002E9898 /* EntityInstances */,
 				CCC60CD02B0D2C3700A3DB8C /* Common */,
 				CC284CCC2AC76B0300DFD7D6 /* Entity */,
 				CCD586BE2A7AB0E300014F87 /* Template */,
@@ -2338,6 +2370,8 @@
 				E1EAA0562AA7501800492078 /* UwaziCheckURL.swift */,
 				E1E7C5722AAB4DCC00DDB07E /* CollectedTemplate.swift */,
 				CC5DF8772B02B06A0068F622 /* UwaziServer.swift */,
+				12964D8A2BA9C6F8003E1E0A /* EntityStatus.swift */,
+				12964D8C2BA9CF0D003E1E0A /* UwaziEntityInstance.swift */,
 			);
 			path = Uwazi;
 			sourceTree = "<group>";
@@ -2605,6 +2639,7 @@
 				F66E65A623E3207D000F93E5 /* Frameworks */,
 				F66E65A723E3207D000F93E5 /* Resources */,
 				D53B76EE2601CA0D0001CD34 /* Embed Frameworks */,
+				1C6E32627384701007D1DCA7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2643,6 +2678,7 @@
 				F66E65C623E32080000F93E5 /* Sources */,
 				F66E65C723E32080000F93E5 /* Frameworks */,
 				F66E65C823E32080000F93E5 /* Resources */,
+				7E2FC9F69C6C891AD531FCC3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2756,6 +2792,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1C6E32627384701007D1DCA7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tella/Pods-Tella-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tella/Pods-Tella-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tella/Pods-Tella-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		36C5FA1BF18AC473E32B7C1A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2798,6 +2851,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7E2FC9F69C6C891AD531FCC3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E862C66ACF881D11B7202E0F /* [CP] Check Pods Manifest.lock */ = {
@@ -2894,6 +2964,7 @@
 				E1E7C58B2AAB7F2000DDB07E /* UwaziTranslationContext.swift in Sources */,
 				E1E7C5732AAB4DCC00DDB07E /* CollectedTemplate.swift in Sources */,
 				E1CF5A252AB3477C00365036 /* UwaziDatabase.swift in Sources */,
+				128754D92BBCE09B00D215B5 /* SummaryViewModel.swift in Sources */,
 				125680002717907900A2D356 /* LockPasswordView.swift in Sources */,
 				1224DAF2271A3393001C0ED0 /* AppViewState.swift in Sources */,
 				D7F55FCD25348FB80028739E /* AudioRecorderManager.swift in Sources */,
@@ -2994,6 +3065,7 @@
 				1203CDE92992C19D00D09073 /* JSONStringEncoder.swift in Sources */,
 				12B370332B18D53A00DDA9E9 /* BackgroundActivitiesViewModel.swift in Sources */,
 				125FA6D8278E2828004B9D06 /* DoubleExtension.swift in Sources */,
+				12964D8D2BA9CF0D003E1E0A /* UwaziEntityInstance.swift in Sources */,
 				CCEAE5942AE7188F0069204A /* UwaziSelectWidget.swift in Sources */,
 				129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */,
 				E1EEE2A729F7E1A8009FE227 /* UwaziLanguageSelectionView.swift in Sources */,
@@ -3068,6 +3140,7 @@
 				CCC1B4272AC75A380075B819 /* CreateEntityView.swift in Sources */,
 				121C945E28FF3DCC00570EB4 /* EmptyReportView.swift in Sources */,
 				CCF47F442ABE18D7000ABBBC /* TemplateActionType.swift in Sources */,
+				1251C3902BB45616002E9898 /* EntityInstancesListView.swift in Sources */,
 				CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */,
 				1216123C28DE13AC00E6D7B6 /* DatabaseUtilities.swift in Sources */,
 				CCC1B4392AC75B8D0075B819 /* UwaziEntityParser.swift in Sources */,
@@ -3123,7 +3196,7 @@
 				1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */,
 				12B3AD8A28C0DD0200AC9AF9 /* ServerLoginView.swift in Sources */,
 				1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */,
-				CC4864E92AF94AF300293F62 /* SubmitEntityView.swift in Sources */,
+				CC4864E92AF94AF300293F62 /* SummaryEntityView.swift in Sources */,
 				128FD0B427F774FB00B24915 /* RecentFile.swift in Sources */,
 				12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */,
 				E1EEE29E29EEDA4B009FE227 /* UwaziServerAccessSelectionView.swift in Sources */,
@@ -3145,6 +3218,7 @@
 				E16D20CF2ABEAAB1001708CC /* TemplateItemViewModel.swift in Sources */,
 				12476E1F2A5B7D2F00069048 /* TrailingButtonToolbar.swift in Sources */,
 				12FAC12D2B226DEF00DD9615 /* EncryptionOperation.swift in Sources */,
+				12494A482BC0570E00766DFF /* UwaziSubmissionViewModel.swift in Sources */,
 				12199C3A2941260D0041BD38 /* OutboxDetailsItemView.swift in Sources */,
 				128D6E1E2804DA2A0082AB18 /* ListActionSheetItem.swift in Sources */,
 				12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */,
@@ -3153,6 +3227,7 @@
 				127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */,
 				12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */,
 				CC1313842A5CB3590057271C /* DeleteAfterFailView.swift in Sources */,
+				12964D922BAB44C8003E1E0A /* UwaziEntityInstanceFile.swift in Sources */,
 				0DC267A6267AED7C00E55AFA /* VaultFile.swift in Sources */,
 				12751EAA2A13A22100FAD7C6 /* SettingsModel.swift in Sources */,
 				1203CDDE298D7C1300D09073 /* FileToUpload.swift in Sources */,
@@ -3254,6 +3329,7 @@
 				122389BE293698010058593B /* ConnectionsView.swift in Sources */,
 				122C54BC28C614C2003B2DBC /* TellaButtonStyleProtocol.swift in Sources */,
 				E1F4A8E22AAF3F62001C8E61 /* UwaziServerLanguageProtocol.swift in Sources */,
+				12964D8B2BA9C6F8003E1E0A /* EntityStatus.swift in Sources */,
 				0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */,
 				123125422930241500D3BCD5 /* PhotoVideoViewModel.swift in Sources */,
 				0D4D7518266470A700D7A635 /* SettingToggleItem.swift in Sources */,

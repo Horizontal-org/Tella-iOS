@@ -19,7 +19,7 @@ extension TellaDataBase: UwaziTemplateProtocol {
             cddl(D.cUpdated, D.integer),
             cddl(D.cFavorite, D.integer),
             cddl(D.cServerId, D.integer, tableName: D.tServer, referenceKey: D.cServerId)
-
+            
         ]
         statementBuilder.createTable(tableName: D.tUwaziTemplate, columns: columns)
     }
@@ -72,7 +72,7 @@ extension TellaDataBase: UwaziTemplateProtocol {
     func deleteUwaziTemplate(templateId: String) {
         do{
             try statementBuilder.delete(tableName: D.tUwaziTemplate,
-                                    primarykeyValue: [KeyValue(key: D.cTemplateId, value: templateId)])
+                                        primarykeyValue: [KeyValue(key: D.cTemplateId, value: templateId)])
         } catch let error {
             debugLog(error)
         }
@@ -80,7 +80,7 @@ extension TellaDataBase: UwaziTemplateProtocol {
     func deleteUwaziTemplate(id: Int) {
         do {
             try statementBuilder.delete(tableName: D.tUwaziTemplate,
-                                    primarykeyValue: [KeyValue(key: D.cId, value: id)])
+                                        primarykeyValue: [KeyValue(key: D.cId, value: id)])
         } catch let error {
             debugLog(error)
         }
@@ -89,15 +89,13 @@ extension TellaDataBase: UwaziTemplateProtocol {
 // MARK: - Methods related to UwaziServerLanguageProtocol
 extension TellaDataBase: UwaziServerLanguageProtocol {
     func createUwaziServerTable() {
-        let columns = [
-            cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
-            cddl(D.cName, D.text),
-            cddl(D.cURL, D.text),
-            cddl(D.cUsername, D.text),
-            cddl(D.cPassword, D.text),
-            cddl(D.cAccessToken, D.text),
-            cddl(D.cLocale, D.text),
-        ]
+        let columns = [ cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
+                        cddl(D.cName, D.text),
+                        cddl(D.cURL, D.text),
+                        cddl(D.cUsername, D.text),
+                        cddl(D.cPassword, D.text),
+                        cddl(D.cAccessToken, D.text),
+                        cddl(D.cLocale, D.text)]
         
         statementBuilder.createTable(tableName: D.tUwaziServer, columns: columns)
     }
@@ -112,14 +110,13 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
                                KeyValue(key: D.cLocale, value: server.locale)
             ]
             
-            
             return try statementBuilder.insertInto(tableName: D.tUwaziServer, keyValue: valuesToAdd)
         } catch let error {
             debugLog(error)
             return nil
         }
     }
-
+    
     func getUwaziServers() -> [UwaziServer] {
         var servers: [UwaziServer] = []
         do {
@@ -136,7 +133,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
     
     func getUwaziServer(serverId: Int) throws -> UwaziServer? {
         let response = try statementBuilder.selectQuery(tableName: D.tUwaziServer,
-                                                           andCondition: [KeyValue(key: D.cId, value: serverId)])
+                                                        andCondition: [KeyValue(key: D.cId, value: serverId)])
         guard let uwaziServerDict = response.first else { return nil }
         
         return parseUwaziServer(dictionary: uwaziServerDict)
@@ -169,11 +166,11 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
                                   KeyValue(key: D.cPassword, value: server.password),
                                   KeyValue(key: D.cAccessToken, value: server.accessToken),
                                   KeyValue(key: D.cLocale, value: server.locale)]
-
+            
             let serverCondition = [KeyValue(key: D.cId, value: server.id)]
             return try statementBuilder.update(tableName: D.tUwaziServer,
-                                           valuesToUpdate: valuesToUpdate,
-                                           equalCondition: serverCondition)
+                                               valuesToUpdate: valuesToUpdate,
+                                               equalCondition: serverCondition)
         } catch let error {
             debugLog(error)
             return nil
@@ -183,15 +180,172 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
     func deleteUwaziServer(serverId : Int) {
         do {
             let serverCondition = [KeyValue(key: D.cId, value: serverId)]
-
+            
             try statementBuilder.delete(tableName: D.tUwaziServer,
-                                    primarykeyValue: serverCondition)
-
+                                        primarykeyValue: serverCondition)
+            
             try statementBuilder.delete(tableName: D.tUwaziTemplate,
-                                    primarykeyValue: serverCondition)
+                                        primarykeyValue: serverCondition)
         } catch let error {
             debugLog(error)
         }
-
+        
     }
+}
+
+
+protocol UwaziEntityInstanceProtocol {
+    func createUwaziEntityInstancesTable()
+    
+}
+
+// MARK: - Methods related to UwaziEntityInstance
+
+extension TellaDataBase:UwaziEntityInstanceProtocol {
+    
+    func createUwaziEntityInstancesTable() {
+        let columns = [
+            cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cLocalTemplateId, D.integer, true),
+            cddl(D.cMetadata, D.text, true),
+            cddl(D.cTitle, D.text, true),
+            cddl(D.cStatus, D.integer, true , 0),
+            cddl(D.cUpdatedDate, D.integer, true , 0),
+            cddl(D.cType, D.text, true),
+            cddl(D.cServerId, D.integer, tableName: D.tServer, referenceKey: D.cServerId)
+        ]
+        statementBuilder.createTable(tableName: D.tUwaziEntityInstances, columns: columns)
+    }
+    
+    func createUwaziEntityInstanceVaultFileTable() {
+        let columns = [
+            cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cVaultFileInstanceId, D.integer, true),
+            cddl(D.cStatus, D.integer, true , 0),
+            cddl(D.cUwaziEntityInstanceId, D.integer, tableName: D.tUwaziEntityInstances, referenceKey: D.cId)
+        ]
+        statementBuilder.createTable(tableName: D.tUwaziEntityInstanceVaultFile, columns: columns)
+    }
+    
+    
+    func addUwaziEntityInstance(entityInstance : UwaziEntityInstance) -> Result<Int, Error> {
+        
+        do {
+            
+            let entityInstanceDictionnary = entityInstance.dictionary
+            
+            let valuesToAdd = entityInstanceDictionnary.compactMap({KeyValue(key: $0.key, value: $0.value)})
+            
+            let entityInstanceId = try statementBuilder.insertInto(tableName: D.tUwaziEntityInstances,
+                                                                   keyValue:valuesToAdd)
+            
+            try entityInstance.files.forEach({ widgetMediaFiles in
+                
+                let fileValuesToAdd = [KeyValue(key: D.cVaultFileInstanceId, value: entityInstanceId),
+                                       KeyValue(key: D.cUwaziEntityInstanceId, value: entityInstanceId)]
+                
+                try statementBuilder.insertInto(tableName: D.tUwaziEntityInstanceVaultFile,
+                                                keyValue: fileValuesToAdd)
+            })
+            return .success(entityInstanceId)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
+    
+    func getUwaziEntityInstance(entityStatus:[EntityStatus]) -> [UwaziEntityInstance] {
+        
+        do {
+            let serverJoinCondition = JoinCondition(tableName: D.tUwaziServer,
+                                                    firstItem: JoinItem(tableName: D.tUwaziEntityInstances, columnName: D.cServerId),
+                                                    secondItem: JoinItem(tableName: D.tUwaziServer, columnName: D.cId))
+            
+            let templateJoinCondition = JoinCondition(tableName: D.tUwaziTemplate,
+                                                      firstItem: JoinItem(tableName: D.tUwaziEntityInstances, columnName: D.cLocalTemplateId),
+                                                      secondItem: JoinItem(tableName: D.tUwaziTemplate, columnName: D.cId))
+            
+            let joinCondition = [serverJoinCondition, templateJoinCondition]
+            let statusArray = entityStatus.compactMap{ $0.rawValue }
+            
+            let responseDict = try statementBuilder.getSelectQuery(tableName: D.tUwaziEntityInstances,
+                                                                   inCondition: [KeyValues(key:D.cStatus, value: statusArray)],
+                                                                   joinCondition: joinCondition)
+            
+            return try responseDict.compactMap({ dict in
+                let entityInstance = try dict.decode(UwaziEntityInstance.self)
+                
+                let server = try dict.decode(UwaziServer.self)
+                entityInstance.server = server
+                
+                let collectedTemplate = try dict.decode(CollectedTemplate.self)
+                entityInstance.collectedTemplate = collectedTemplate
+                
+                entityInstance.files = getVaultFiles(instanceId: entityInstance.id)
+                return entityInstance
+            })
+        } catch let error {
+            debugLog(error)
+            return []
+        }
+    }
+    
+    func getUwaziEntityInstance(entityId:Int) -> UwaziEntityInstance? {
+        
+        do {
+            let entityInstanceCondition = [KeyValue(key: D.cId, value: entityId)]
+            let responseDict = try statementBuilder.selectQuery(tableName: D.tUwaziEntityInstances,
+                                                                andCondition: entityInstanceCondition)
+            
+            return try responseDict.first?.decode(UwaziEntityInstance.self)
+            
+        } catch let error {
+            debugLog(error)
+            return nil
+        }
+    }
+    
+    func getVaultFiles(instanceId:Int?) -> [UwaziEntityInstanceFile] {
+        
+        do {
+            guard let instanceId else {return [] }
+            let instanceCondition = [KeyValue(key: D.cUwaziEntityInstanceId, value: instanceId)]
+            let responseDict = try statementBuilder.selectQuery(tableName: D.tUwaziEntityInstanceVaultFile,
+                                                                andCondition: instanceCondition)
+            let entityInstances = try responseDict.decode(UwaziEntityInstanceFile.self)
+            return entityInstances
+            
+        } catch {
+            return []
+        }
+    }
+    
+    func deleteEntityInstance(entityId : Int) -> Result<Bool,Error> {
+        
+        do {
+            
+            guard let entity = self.getUwaziEntityInstance(entityId: entityId) else {
+                return .failure(RuntimeError("No Entity is selected"))
+            }
+            
+            try deleteEntityInstanceFiles(entityIds: [entityId])
+            
+            let entityCondition = [KeyValue(key: D.cId, value: entity.id as Any)]
+            
+            try statementBuilder.delete(tableName: D.tUwaziEntityInstances,
+                                        primarykeyValue: entityCondition)
+            return .success(true)
+            
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
+    
+    private func deleteEntityInstanceFiles(entityIds:[Int]) throws {
+        let entityCondition = [KeyValues(key: D.cUwaziEntityInstanceId, value: entityIds)]
+        try statementBuilder.delete(tableName: D.tUwaziEntityInstanceVaultFile,
+                                    inCondition: entityCondition)
+    }
+    
 }

@@ -37,3 +37,32 @@ class TemplateCardViewModel: Hashable {
     }
 
 }
+
+class EntityInstanceCardViewModel: Hashable {
+    
+    var id : Int?
+    var templateId: Int?
+    var title: String
+    var deleteTemplate: (() -> Void)
+    var serverName: String
+
+    init(instance : UwaziEntityInstance,
+         deleteTemplate: @escaping (() -> Void)) {
+        self.id = instance.id
+        self.templateId = instance.templateId
+
+        self.title = instance.title ?? ""
+        self.deleteTemplate = deleteTemplate
+        self.serverName = instance.server?.name ?? ""
+    }
+
+    static func == (lhs: EntityInstanceCardViewModel, rhs: EntityInstanceCardViewModel) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+}
+

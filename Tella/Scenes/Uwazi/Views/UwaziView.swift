@@ -34,17 +34,16 @@ struct UwaziView: View {
                             message: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized, serverName: uwaziViewModel.serverName)
                         .environmentObject(DownloadedTemplatesViewModel(mainAppModel: uwaziViewModel.mainAppModel, serverId: uwaziViewModel.server.id!))
                     case .draft:
-                        ReportListView(reportArray: $uwaziViewModel.draftEntities,
-                                       message: LocalizableReport.reportsDraftEmpty.localized)
+                        EntityInstancesListView(message: LocalizableUwazi.draftListExpl.localized,
+                                                uwaziEntityInstance: $uwaziViewModel.draftEntitiesViewModel)
                         
                     case .outbox:
-                        
-                        ReportListView(reportArray: $uwaziViewModel.outboxedEntities,
-                                       message: LocalizableReport.reportsOutboxEmpty.localized)
+                        EntityInstancesListView(message: "outbox", 
+                                                uwaziEntityInstance: $uwaziViewModel.outboxedEntitiesViewModel)
                         
                     case .submitted:
-                        ReportListView(reportArray: $uwaziViewModel.submittedEntities,
-                                       message: LocalizableReport.reportsSubmitedEmpty.localized)
+                        EntityInstancesListView(message: "submitted",
+                                                uwaziEntityInstance: $uwaziViewModel.submittedEntitiesViewModel)
                     }
                     
                     Spacer()

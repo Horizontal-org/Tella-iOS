@@ -32,3 +32,15 @@ var downloadTemplateActionItems : [ListActionSheetItem] { return [
                         type: DownloadedTemplateActionType.delete)
     ]
 }
+
+
+
+var uwaziDraftActionItems : [ListActionSheetItem] { return [
+    ListActionSheetItem(imageName: "edit-icon",
+                        content: LocalizableUwazi.editDraft.localized,
+                        type: DownloadedTemplateActionType.createEntity),
+    ListActionSheetItem(imageName: "delete-icon-white",
+                        content: LocalizableUwazi.deleteDraft.localized,
+                        type: DownloadedTemplateActionType.delete)
+    ]
+}

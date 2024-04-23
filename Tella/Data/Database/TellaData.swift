@@ -20,6 +20,8 @@ class TellaData : ObservableObject {
     var submittedReports = CurrentValueSubject<[Report], Error>([])
     var outboxedReports = CurrentValueSubject<[Report], Error>([])
     
+    var shouldReloadUwaziInstances = CurrentValueSubject<Bool, Never>(false)
+    
     init(key: String?) throws {
         self.database = try TellaDataBase(key: key)
         getServers()
@@ -45,7 +47,7 @@ class TellaData : ObservableObject {
         getServers()
         return updateServerResult
     }
-
+    
     func updateUwaziServer(server: UwaziServer) -> Int? {
         let id = database.updateUwaziServer(server: server)
         getServers()
@@ -67,7 +69,7 @@ class TellaData : ObservableObject {
         getReports()
         return deleteAllServersResult
     }
-
+    
     func deleteUwaziServer(serverId: Int) {
         database.deleteUwaziServer(serverId: serverId)
         getServers()
@@ -81,9 +83,10 @@ class TellaData : ObservableObject {
             self.servers.value = self.tellaServers.value + self.uwaziServers.value
         }
     }
-
-    func getTellaServer(serverId: Int) -> TellaServer? {
+    
+    func getTellaServer(serverId: Int?) -> TellaServer? {
         do {
+            guard let serverId else { return nil }
             return try database.getTellaServerById(id: serverId)
         } catch {
             debugLog(error)
@@ -91,8 +94,9 @@ class TellaData : ObservableObject {
         }
     }
     
-    func getUwaziServer(serverId: Int) -> UwaziServer? {
+    func getUwaziServer(serverId: Int?) -> UwaziServer? {
         do {
+            guard let serverId else { return nil }
             return try database.getUwaziServer(serverId: serverId)
             
         }catch {
@@ -144,7 +148,7 @@ class TellaData : ObservableObject {
     func addCurrentUploadReport(report : Report) -> Report?   {
         database.resetCurrentUploadReport()
         let addReportResult = database.addReport(report: report)
-
+        
         switch addReportResult {
         case .success(let id):
             return getReport(reportId: id)
@@ -182,7 +186,7 @@ class TellaData : ObservableObject {
     
     @discardableResult
     func updateReportFile(reportFile: ReportFile) -> Result<Bool, Error>{
-          database.updateReportFile(reportFile: reportFile)
+        database.updateReportFile(reportFile: reportFile)
     }
     
     
@@ -190,7 +194,7 @@ class TellaData : ObservableObject {
         
         try files.forEach { fileDetails in
             let addVaultFileResult = database.updateReportIdFile(oldId: fileDetails.oldId, newID: fileDetails.vaultFileDB.id)
-
+            
             if case .failure = addVaultFileResult {
                 throw RuntimeError("Error updating Report Id File")
             }
@@ -208,7 +212,7 @@ class TellaData : ObservableObject {
         let deleteSubmittedReportResult = database.deleteSubmittedReport()
         getReports()
         return deleteSubmittedReportResult
-
+        
     }
     
     func addFeedback(feedback : Feedback) -> Result<Int?, Error> {
@@ -222,7 +226,7 @@ class TellaData : ObservableObject {
     func getUnsentFeedbacks() -> [Feedback] {
         database.getUnsentFeedbacks()
     }
-
+    
     func updateFeedback(feedback: Feedback) -> Result<Bool, Error> {
         database.updateFeedback(feedback: feedback)
     }
@@ -238,7 +242,7 @@ extension TellaData {
     func addUwaziTemplate(template: CollectedTemplate) -> CollectedTemplate? {
         return database.addUwaziTemplate(template: template)
     }
-
+    
     func deleteAllUwaziTemplate(templateId: String) {
         return database.deleteUwaziTemplate(templateId: templateId)
     }
@@ -249,10 +253,11 @@ extension TellaData {
             debugLog(error)
             return []
         }
-
+        
     }
-    func getUwaziTemplateById(id: Int) -> CollectedTemplate? {
+    func getUwaziTemplateById(id: Int?) -> CollectedTemplate? {
         do {
+            guard let id else { return nil }
             return try database.getUwaziTemplate(templateId: id)
         } catch let error {
             debugLog(error)
@@ -264,4 +269,37 @@ extension TellaData {
     }
 }
 
-
+extension TellaData {
+    
+    func addUwaziEntityInstance(entityInstance:UwaziEntityInstance) -> Bool  {
+        
+        var addEntityInstanceResult = database.addUwaziEntityInstance(entityInstance: entityInstance)
+        
+        if case .success = addEntityInstanceResult {
+            self.shouldReloadUwaziInstances.send(true)
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func getDraftUwaziEntityInstances() -> [UwaziEntityInstance] {
+        return database.getUwaziEntityInstance(entityStatus: [.draft])
+    }
+    
+    func getSubmittedUwaziEntityInstances() -> [UwaziEntityInstance] {
+        return database.getUwaziEntityInstance(entityStatus: [.finalized,
+                                                              .submissionError,
+                                                              .submissionPending])
+    }
+    
+    func getOutboxUwaziEntityInstances() -> [UwaziEntityInstance] {
+        return database.getUwaziEntityInstance(entityStatus: [.submitted])
+        
+    }
+    
+    func deleteUwaziEntityInstance(entityId:Int) -> Result<Bool,Error> {
+        database.deleteEntityInstance(entityId: entityId)
+    }
+    
+}

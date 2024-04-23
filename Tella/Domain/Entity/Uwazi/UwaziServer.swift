@@ -24,6 +24,11 @@ class UwaziServer : Server {
         super.init(id: id, name: name, serverURL: serverURL, username: username, password: password, accessToken: accessToken, serverType: serverType)
         self.cookie = createCookie()
     }
+    
+    required init(from decoder: Decoder) throws {
+        super.init()
+    }
+
     private func createCookie() -> String {
         let accessTokenValue = accessToken ?? ""
         let localeValue = locale ?? ""

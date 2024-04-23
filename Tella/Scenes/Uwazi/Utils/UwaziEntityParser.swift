@@ -8,14 +8,21 @@
 
 import Foundation
 class UwaziEntityParser: UwaziEntityParserProtocol {
-    var entryPrompts: [UwaziEntryPrompt] = []
+    var entryPrompts: [any UwaziEntryPrompt] = []
     var template: CollectedTemplate
     let uwaziTitleString = "title"
-
-    init(template: CollectedTemplate) {
+    var entityInstance: UwaziEntityInstance?
+    let appModel : MainAppModel
+    
+    init(template: CollectedTemplate,
+         appModel : MainAppModel,
+         entityInstance: UwaziEntityInstance? = nil) {
         self.template = template
+        self.entityInstance = entityInstance
+        self.appModel = appModel
         handleEntryPrompts()
     }
+    
     func handleEntryPrompts() {
         handlePdfsPrompt()
         handleSupportPrompt()
@@ -23,62 +30,213 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
         handleTitlePrompt()
         handleEntryPromptForProperties()
     }
-
-
+    
+    
     fileprivate func handlePdfsPrompt() {
-        let pdfPrompt = UwaziEntryPrompt(id: "10242050",
-                                         formIndex: "10242050",
-                                         type: UwaziEntityPropertyType.dataTypeMultiPDFFiles.rawValue,
-                                         question: LocalizableUwazi.uwaziMultiFileWidgetPrimaryDocuments.localized,
-                                         required: false,
-                                         helpText: LocalizableUwazi.uwaziMultiFileWidgetAttachManyPDFFiles.localized,
-                                         name: UwaziEntityPropertyType.dataTypeMultiPDFFiles.rawValue)
+        let pdfPrompt = UwaziFilesEntryPrompt(id: "10242050",
+                                              formIndex: "10242050",
+                                              type: UwaziEntityPropertyType.dataTypeMultiPDFFiles.rawValue,
+                                              question: LocalizableUwazi.uwaziMultiFileWidgetPrimaryDocuments.localized,
+                                              required: false,
+                                              helpText: LocalizableUwazi.uwaziMultiFileWidgetAttachManyPDFFiles.localized,
+                                              name: UwaziEntityPropertyType.dataTypeMultiPDFFiles.rawValue)
         entryPrompts.append(pdfPrompt)
     }
     fileprivate func handleSupportPrompt() {
-        let supportPrompt = UwaziEntryPrompt(id: "10242049",
-                                             formIndex: "10242049",
-                                             type: UwaziEntityPropertyType.dataTypeMultiFiles.rawValue,
-                                             question: LocalizableUwazi.uwaziMultiFileWidgetSupportingFiles.localized,
-                                             required: false,
-                                             helpText: LocalizableUwazi.uwaziMultiFileWidgetSelectManyFiles.localized,
-                                             name: UwaziEntityPropertyType.dataTypeMultiFiles.rawValue)
+        let supportPrompt = UwaziFilesEntryPrompt(id: "10242049",
+                                                  formIndex: "10242049",
+                                                  type: UwaziEntityPropertyType.dataTypeMultiFiles.rawValue,
+                                                  question: LocalizableUwazi.uwaziMultiFileWidgetSupportingFiles.localized,
+                                                  required: false,
+                                                  helpText: LocalizableUwazi.uwaziMultiFileWidgetSelectManyFiles.localized,
+                                                  name: UwaziEntityPropertyType.dataTypeMultiFiles.rawValue)
         entryPrompts.append(supportPrompt)
     }
     fileprivate func handleDividerPrompt() {
-        let dividerPrompt = UwaziEntryPrompt(id: "",
-                                             formIndex: "",
-                                             type: UwaziEntityPropertyType.dataTypeDivider.rawValue,
-                                             question: "",
-                                             required: false,
-                                             helpText: "",
-                                             name: "")
+        let dividerPrompt = UwaziDividerEntryPrompt (id: "",
+                                                     formIndex: "",
+                                                     type: UwaziEntityPropertyType.dataTypeDivider.rawValue,
+                                                     question: "",
+                                                     required: false,
+                                                     helpText: "",
+                                                     name: "")
         entryPrompts.append(dividerPrompt)
     }
-
+    
     fileprivate func handleTitlePrompt() {
         guard let titleProperty = template.entityRow?.commonProperties.first (where:{ $0.name == uwaziTitleString }) else { return }
-        let titlePrompt = UwaziEntryPrompt(id: titleProperty.id ?? "",
-                                           formIndex: titleProperty.id,
-                                           type: titleProperty.type ?? "",
-                                           question: titleProperty.translatedLabel ?? "",
-                                           required: true,
-                                           helpText: titleProperty.translatedLabel,
-                                           name:titleProperty.name)
+        let titlePrompt = UwaziTextEntryPrompt(id: titleProperty.id ?? "",
+                                               formIndex: titleProperty.id,
+                                               type: titleProperty.type ?? "",
+                                               question: titleProperty.translatedLabel ?? "",
+                                               required: true,
+                                               helpText: titleProperty.translatedLabel,
+                                               name:titleProperty.name)
         self.entryPrompts.append(titlePrompt)
     }
     fileprivate func handleEntryPromptForProperties() {
-        let entryPromptyProperties = template.entityRow?.properties.compactMap {
-            UwaziEntryPrompt(id: $0.id ?? "",
-                             formIndex: $0.id,
-                             type: $0.type ?? "",
-                             question: $0.translatedLabel ?? "",
-                             required: $0.propertyRequired,
-                             helpText: $0.translatedLabel,
-                             selectValues: $0.values,
-                             name: $0.name)
-
-        } ?? []
-        entryPrompts.append(contentsOf: entryPromptyProperties)
+        
+        
+        
+        template.entityRow?.properties.forEach {
+            
+            var prompt : any UwaziEntryPrompt
+            
+            switch UwaziEntityPropertyType(rawValue: $0.type ?? "") {
+                
+            case .dataTypeText:
+                
+                prompt = UwaziTextEntryPrompt(id: $0.id ?? "",
+                                              formIndex: $0.id,
+                                              type: $0.type ?? "",
+                                              question: $0.translatedLabel ?? "",
+                                              required: $0.propertyRequired,
+                                              helpText: $0.translatedLabel,
+                                              selectValues: $0.values,
+                                              name: $0.name)
+                
+            case .dataTypeSelect, .dataTypeMultiSelect:
+                prompt = UwaziSelectEntryPrompt(id: $0.id ?? "",
+                                                formIndex: $0.id,
+                                                type: $0.type ?? "",
+                                                question: $0.translatedLabel ?? "",
+                                                required: $0.propertyRequired,
+                                                helpText: $0.translatedLabel,
+                                                selectValues: $0.values,
+                                                name: $0.name)
+                
+                
+            default:
+                prompt = UwaziTextEntryPrompt(id: $0.id ?? "",
+                                              formIndex: $0.id,
+                                              type: $0.type ?? "",
+                                              question: $0.translatedLabel ?? "",
+                                              required: $0.propertyRequired,
+                                              helpText: $0.translatedLabel,
+                                              selectValues: $0.values,
+                                              name: $0.name)
+                
+            }
+            
+            entryPrompts.append(prompt)
+        }
     }
+    
+    
+    
+    //    func parseInstance(instance: String): UwaziFormView {
+    //        entityInstance = Gson().fromJson(instance, UwaziEntityInstance::class.java)
+    //        template = entityInstance.collectTemplate
+    //        return prepareFormView()
+    //    }
+    //
+    //    func parseTemplate(templateString: String): UwaziFormView {
+    //        template = Gson().fromJson(templateString, CollectTemplate::class.java)
+    //        entityInstance.collectTemplate = template
+    //        entityInstance.template = template?.entityRow?.name.toString()
+    //        return prepareFormView()
+    //    }
+    
+    
+    func saveAnswersToEntityInstance(status:EntityStatus) {
+        
+        var metadata: [String: Any] = [:]
+        var uwaziEntityInstanceFile : [UwaziEntityInstanceFile] = []
+        let entityInstance = self.entityInstance == nil ? UwaziEntityInstance() : self.entityInstance
+        
+        for entryPrompt in entryPrompts {
+            
+            guard let propertyName = entryPrompt.name else { break }
+            
+            switch entryPrompt.type {
+                
+            case .dataTypeText where propertyName == UwaziEntityMetadataKeys.title:
+                guard let entryPrompt = entryPrompt as? UwaziTextEntryPrompt else { continue }
+                entityInstance?.title = entryPrompt.value.value
+                
+            case .dataTypeText, .dataTypeNumeric, .dataTypeMarkdown,.dataTypeDate:
+                guard let entryPrompt = entryPrompt as? UwaziTextEntryPrompt else { continue }
+                guard !entryPrompt.isEmpty else { continue }
+                metadata[propertyName] = entryPrompt.value.dictionary
+                
+            case .dataTypeSelect, .dataTypeMultiSelect:
+                guard let entryPrompt = entryPrompt as? UwaziSelectEntryPrompt else { continue }
+                guard !entryPrompt.isEmpty else { continue }
+                metadata[propertyName] = entryPrompt.values.arraydDictionnary.first
+                
+            case .dataTypeMultiFiles:
+                guard let entryPrompt = entryPrompt as? UwaziFilesEntryPrompt else { continue }
+                let attachments = entryPrompt.value.value
+                let attachedVaultFiles = attachments.compactMap({UwaziEntityInstanceFile(vaultFileInstanceId: $0.id , entityInstanceId:self.entityInstance?.id )})
+                uwaziEntityInstanceFile.append(contentsOf: attachedVaultFiles)
+                entityInstance?.attachments = attachments
+            case .dataTypeMultiPDFFiles:
+                guard let entryPrompt = entryPrompt as? UwaziFilesEntryPrompt else { continue }
+                let attachments = entryPrompt.value.value
+                let attachedVaultFiles = attachments.compactMap({UwaziEntityInstanceFile(vaultFileInstanceId: $0.id , entityInstanceId:self.entityInstance?.id )})
+                uwaziEntityInstanceFile.append(contentsOf: attachedVaultFiles)
+                entityInstance?.attachments = attachments
+            default:
+                break
+            }
+        }
+        
+        entityInstance?.status = status
+        entityInstance?.templateId = template.id
+        entityInstance?.metadata = metadata
+        entityInstance?.updatedDate = Date()
+        entityInstance?.server = appModel.vaultManager.tellaData?.getUwaziServer(serverId: template.serverId)
+        entityInstance?.collectedTemplate = appModel.vaultManager.tellaData?.getUwaziTemplateById(id: template.id)
+        entityInstance?.files = uwaziEntityInstanceFile
+        self.entityInstance = entityInstance
+    }
+    
+    func putAnswers() { // db ---> prompt
+        
+        let metadata = self.entityInstance?.metadata
+        
+        let vaultFilesID = self.entityInstance?.files.compactMap{$0.vaultFileInstanceId} ?? []
+        let vaultFiles = appModel.vaultFilesManager?.getVaultFiles(ids: vaultFilesID) ?? []
+        
+        self.entityInstance?.documents = Set(vaultFiles.filter({$0.mimeType?.isPDF ?? false}))
+        self.entityInstance?.attachments = Set(vaultFiles.filter({!($0.mimeType?.isPDF ?? true)}))
+        
+        for entryPrompt in entryPrompts {
+            let propertyName = entryPrompt.name
+            let value = metadata?[propertyName ?? ""]
+            
+            switch  entryPrompt.type {
+                
+            case .dataTypeText where propertyName == UwaziEntityMetadataKeys.title:
+                guard let entryPrompt = entryPrompt as? UwaziTextEntryPrompt else { continue }
+                entryPrompt.value.value = self.entityInstance?.title ?? ""
+                
+            case .dataTypeText, .dataTypeNumeric, .dataTypeMarkdown, .dataTypeDate:
+                guard let entryPrompt = entryPrompt as? UwaziTextEntryPrompt else { continue }
+                let valueDict = value as? [String:Any]
+                guard let decoded = try? valueDict?.decode(UwaziValue<String>.self) else { continue }
+                entryPrompt.value = decoded
+                
+            case .dataTypeSelect, .dataTypeMultiSelect:
+                let uwaziString = value as? [[String:Any]]
+                guard let entryPrompt = entryPrompt as? UwaziSelectEntryPrompt else { continue }
+                guard let decoded = try? uwaziString?.decode(UwaziValue<String>.self) else { continue }
+                entryPrompt.values = decoded
+                
+            case .dataTypeMultiFiles:
+                guard let entryPrompt = entryPrompt as? UwaziFilesEntryPrompt else { continue }
+                entryPrompt.value.value = Set(self.entityInstance?.attachments ?? [])
+                
+            case .dataTypeMultiPDFFiles:
+                guard let entryPrompt = entryPrompt as? UwaziFilesEntryPrompt else { continue }
+                entryPrompt.value.value = Set(self.entityInstance?.documents ?? [])
+                
+            default:
+                break
+            }
+            
+            entryPrompt.displayClearButton()
+        }
+    }
+    
 }

@@ -13,27 +13,32 @@ struct GenericEntityWidget<Content: View>: View {
     let content: Content
     var isRequired: Bool
     var shouldRender: Bool
+    //   var showClear: Binding<Bool>
+    //  var showManatory: Binding<Bool>
     var showClear: Bool
-    @Binding var showManatory: Bool
+    var showManatory: Bool
+    
     var onClearAction: () -> Void
     
     init(title: String = "",
          isRequired: Bool = false,
-         showMandatory: Binding<Bool>,
+         //         showMandatory: Binding<Bool>,
+         //         showClear: Binding<Bool>,
+         showMandatory: Bool,
+         showClear: Bool,
          shouldRender: Bool = true,
-         showClear: Bool = false,
          onClearAction: @escaping () -> Void = {},
          @ViewBuilder content: () ->  Content)
-          {
+    {
         self.title = title
         self.content = content()
         self.isRequired = isRequired
         self.shouldRender = shouldRender
         self.showClear = showClear
-        self._showManatory = showMandatory
+        self.showManatory = showMandatory
         self.onClearAction = onClearAction
     }
-
+    
     var body: some View {
         if shouldRender {
             VStack() {
@@ -47,10 +52,11 @@ struct GenericEntityWidget<Content: View>: View {
     }
 }
 
-struct GenericEntityWidget_Previews: PreviewProvider {
-    static var previews: some View {
-        GenericEntityWidget(showMandatory: .constant(false)) {
-            Text("")
-        }
-    }
-}
+//struct GenericEntityWidget_Previews: PreviewProvider {
+//    static var previews: some View {
+//        GenericEntityWidget(showMandatory: .constant(true),
+//                            showClear: .constant(true)) {
+//            Text("Test")
+//        }.background(Styles.Colors.backgroundMain)
+//    }
+//}

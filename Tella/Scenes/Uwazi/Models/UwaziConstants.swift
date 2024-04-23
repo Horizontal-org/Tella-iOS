@@ -27,6 +27,7 @@ enum UwaziEntityPropertyType: String, CodingKey {
     case dataTypeMultiPDFFiles = "multipdffiles"
     case dataTypeGeneratedID = "generatedid"
     case dataTypeDivider = "divider"
+    case unknown = "unknown"
 }
 
 struct UwaziEntityMetadataKeys {
