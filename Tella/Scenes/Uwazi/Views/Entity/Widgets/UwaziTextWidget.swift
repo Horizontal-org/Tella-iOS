@@ -14,7 +14,7 @@ struct UwaziTextWidget: View {
     @EnvironmentObject var uwaziEntityViewModel : UwaziEntityViewModel
     var body: some View {
         VStack(alignment: .leading) {
-            TextField("", text: $prompt.value.value)
+            TextField("", text: $prompt.values.first?.value ?? .constant(""))
             .keyboardType(.default)
             .textFieldStyle(TextfieldStyle(shouldShowError: false))
             .frame( height: 22)
