@@ -126,14 +126,14 @@ class UwaziTextEntryPrompt: CommonUwaziEntryPrompt,UwaziEntryPrompt {
     
     typealias Value = String
     
-    @Published  var value: UwaziValue<Value> = UwaziValue(value: "") {
+    @Published  var value: UwaziValue<String> = UwaziValue(value: "")
+    
+    @Published var values: [UwaziValue<Value>] = [UwaziValue(value: "")] {
         didSet {
             displayClearButton()
         }
     }
-    
-    @Published var values: [UwaziValue<Value>] = []
-    
+
     func empty() {
         self.value.value = ""
     }
