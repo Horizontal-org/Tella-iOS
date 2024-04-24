@@ -152,12 +152,12 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                 
             case .dataTypeText where propertyName == UwaziEntityMetadataKeys.title:
                 guard let entryPrompt = entryPrompt as? UwaziTextEntryPrompt else { continue }
-                entityInstance?.title = entryPrompt.value.value
+                entityInstance?.title = entryPrompt.values.first?.value
                 
             case .dataTypeText, .dataTypeNumeric, .dataTypeMarkdown,.dataTypeDate:
                 guard let entryPrompt = entryPrompt as? UwaziTextEntryPrompt else { continue }
                 guard !entryPrompt.isEmpty else { continue }
-                metadata[propertyName] = entryPrompt.value.dictionary
+                metadata[propertyName] = entryPrompt.values.arraydDictionnary
                 
             case .dataTypeSelect, .dataTypeMultiSelect:
                 guard let entryPrompt = entryPrompt as? UwaziSelectEntryPrompt else { continue }
