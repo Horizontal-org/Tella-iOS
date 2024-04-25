@@ -262,19 +262,24 @@ extension TellaDataBase:UwaziEntityInstanceProtocol {
             
             let entityInstanceDictionnary = entityInstance.dictionary
             
-            let valuesToAdd = entityInstanceDictionnary.compactMap({KeyValue(key: $0.key, value: $0.value)})
+            let valuesToUpdate = entityInstanceDictionnary.compactMap({KeyValue(key: $0.key, value: $0.value)})
+            let entityInstanceCondition = [KeyValue(key: D.cId, value: entityInstance.id)]
+
+            let entityInstanceId = try statementBuilder.update(tableName: D.tUwaziEntityInstances, 
+                                                               valuesToUpdate: valuesToUpdate,
+                                                               equalCondition: entityInstanceCondition)
             
-            let entityInstanceId = try statementBuilder.insertInto(tableName: D.tUwaziEntityInstances,
-                                                                   keyValue:valuesToAdd)
-            
-            try entityInstance.files.forEach({ widgetMediaFiles in
-                
-                let fileValuesToAdd = [KeyValue(key: D.cVaultFileInstanceId, value: entityInstanceId),
-                                       KeyValue(key: D.cUwaziEntityInstanceId, value: entityInstanceId)]
-                
-                try statementBuilder.insertInto(tableName: D.tUwaziEntityInstanceVaultFile,
-                                                keyValue: fileValuesToAdd)
-            })
+//            let entityInstanceId = try statementBuilder.insertInto(tableName: D.tUwaziEntityInstances,
+//                                                                   keyValue:valuesToAdd)
+//            
+//            try entityInstance.files.forEach({ widgetMediaFiles in
+//                
+//                let fileValuesToAdd = [KeyValue(key: D.cVaultFileInstanceId, value: entityInstanceId),
+//                                       KeyValue(key: D.cUwaziEntityInstanceId, value: entityInstanceId)]
+//                
+//                try statementBuilder.insertInto(tableName: D.tUwaziEntityInstanceVaultFile,
+//                                                keyValue: fileValuesToAdd)
+//            })
             return .success(entityInstanceId)
         } catch let error {
             debugLog(error)
