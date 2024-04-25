@@ -11,13 +11,10 @@ import SwiftUI
 
 
 
-protocol UwaziEntryPrompt: /*Hashable,*/ ObservableObject {
+protocol UwaziEntryPrompt: ObservableObject {
     
     associatedtype Value: Codable
-    var value: UwaziValue<Value> { get set }
-    var values: [UwaziValue<Value>] { get set }
-    
-    
+    var value: Value { get set }
     var id: String? { get set }
     var formIndex: String? { get set}
     var type: UwaziEntityPropertyType { get set }
@@ -32,12 +29,6 @@ protocol UwaziEntryPrompt: /*Hashable,*/ ObservableObject {
     var shouldShowMandatoryError: Bool { get set }
     
     var isEmpty : Bool { get }
-    //    static func == (lhs: UwaziEntryPrompt, rhs: UwaziEntryPrompt) -> Bool {
-    //        lhs.id == rhs.id
-    //    }
-    //    public func hash(into hasher: inout Hasher) {
-    //        return hasher.combine(id)
-    //    }
     
     func showMandatoryError()
     func displayClearButton()
@@ -46,13 +37,12 @@ protocol UwaziEntryPrompt: /*Hashable,*/ ObservableObject {
 
 extension UwaziEntryPrompt {
     
-    
     var isEmpty: Bool {
-        return false
+        return true
     }
     
     func displayClearButton() {
-        self.showClear = !self.isEmpty
+        self.showClear = !isEmpty
     }
     
     func empty() {
@@ -63,7 +53,7 @@ extension UwaziEntryPrompt {
     }
 }
 
-class CommonUwaziEntryPrompt  {
+class CommonUwaziEntryPrompt: Hashable {
     
     var id: String?
     
@@ -89,7 +79,7 @@ class CommonUwaziEntryPrompt  {
     
     init(id: String? = nil,
          formIndex: String? = nil,
-         type: String, 
+         type: String,
          question: String,
          answer: String? = nil,
          required: Bool? = nil,
@@ -111,14 +101,21 @@ class CommonUwaziEntryPrompt  {
         self.showClear = showClear
         self.shouldShowMandatoryError = shouldShowMandatoryError
     }
+    
+    static func == (lhs: CommonUwaziEntryPrompt, rhs: CommonUwaziEntryPrompt) -> Bool {
+        lhs.id == rhs.id
+    }
+    public func hash(into hasher: inout Hasher) {
+        return hasher.combine(id)
+    }
 }
 
 class UwaziDividerEntryPrompt:  CommonUwaziEntryPrompt,UwaziEntryPrompt {
     
     typealias Value = String
     
-    @Published  var value: UwaziValue<Value> = UwaziValue(value: "")
-    @Published var values: [UwaziValue<Value>] = []
+    @Published  var value: Value = ""
+    @Published var values: [Value] = []
     
 }
 
@@ -126,59 +123,57 @@ class UwaziTextEntryPrompt: CommonUwaziEntryPrompt,UwaziEntryPrompt {
     
     typealias Value = String
     
-    @Published  var value: UwaziValue<String> = UwaziValue(value: "")
+    var isEmpty: Bool {
+        return self.value.isEmpty
+    }
     
-    @Published var values: [UwaziValue<Value>] = [UwaziValue(value: "")] {
+    @Published  var value: String = "" {
         didSet {
             displayClearButton()
         }
     }
-
-    func empty() {
-        self.value.value = ""
-    }
     
+    func empty() {
+        self.value = ""
+    }
 }
 
 class UwaziSelectEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
     
-    typealias Value = String
+    typealias Value = [String]
     
     var isEmpty: Bool {
-        return self.values.isEmpty
+        return self.value.isEmpty
     }
     
-    @Published  var value: UwaziValue<String> = UwaziValue(value: "")
-    
-    @Published var values: [UwaziValue<Value>] = [] {
+    @Published  var value: [String] = [] {
         didSet {
             displayClearButton()
         }
     }
     
+    
     func empty() {
-        self.values = []
+        self.value = []
     }
     
 }
 
 class UwaziFilesEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
-
+    
     typealias Value = Set<VaultFileDB>
     
     var isEmpty: Bool {
-        return self.value.value.isEmpty
+        return self.value.isEmpty
     }
     
-    @Published  var value: UwaziValue<Value> = UwaziValue(value: []) {
+    @Published  var value: Value =  [] {
         didSet {
             displayClearButton()
         }
     }
-    @Published  var values: [UwaziValue<Value>] = []
     
     func empty() {
-        self.value.value = []
+        self.value = []
     }
-    
 }

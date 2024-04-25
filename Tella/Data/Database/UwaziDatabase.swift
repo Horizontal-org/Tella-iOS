@@ -254,6 +254,34 @@ extension TellaDataBase:UwaziEntityInstanceProtocol {
         }
     }
     
+    // MARK: TODO
+    func updateUwaziEntityInstance(entityInstance : UwaziEntityInstance) -> Result<Int, Error> {
+        
+        
+        do {
+            
+            let entityInstanceDictionnary = entityInstance.dictionary
+            
+            let valuesToAdd = entityInstanceDictionnary.compactMap({KeyValue(key: $0.key, value: $0.value)})
+            
+            let entityInstanceId = try statementBuilder.insertInto(tableName: D.tUwaziEntityInstances,
+                                                                   keyValue:valuesToAdd)
+            
+            try entityInstance.files.forEach({ widgetMediaFiles in
+                
+                let fileValuesToAdd = [KeyValue(key: D.cVaultFileInstanceId, value: entityInstanceId),
+                                       KeyValue(key: D.cUwaziEntityInstanceId, value: entityInstanceId)]
+                
+                try statementBuilder.insertInto(tableName: D.tUwaziEntityInstanceVaultFile,
+                                                keyValue: fileValuesToAdd)
+            })
+            return .success(entityInstanceId)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
+    
     func getUwaziEntityInstance(entityStatus:[EntityStatus]) -> [UwaziEntityInstance] {
         
         do {

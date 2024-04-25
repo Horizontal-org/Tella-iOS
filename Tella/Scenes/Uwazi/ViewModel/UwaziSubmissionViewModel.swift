@@ -44,7 +44,6 @@ class UwaziSubmissionViewModel {
         response
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
-                // self?.isLoading = false
                 switch completion {
                 case .finished:
                     debugLog("Finished")
@@ -62,33 +61,29 @@ class UwaziSubmissionViewModel {
     
     private func extractEntityDataAndMetadata() -> ([String: Any]) {
         
-        let attachments = UwaziFileUtility(files: Set(entityInstance?.attachments ?? [])).extractFilesAsAttachments()
-        let documents = UwaziFileUtility(files: Set(entityInstance?.documents ?? [])).extractFilesAsAttachments()
+        let attachments =  entityInstance?.attachments.compactMap({EntityAttachment(vaultFile: $0)})
+        let documents = entityInstance?.documents.compactMap({EntityAttachment(vaultFile: $0)})
+        let template = entityInstance?.collectedTemplate?.templateId
+        let title = entityInstance?.title
+        let metadata = entityInstance?.metadata
         
-        var entityData: [String: Any?] = [
-            UwaziEntityMetadataKeys.attachments: attachments ,
-            UwaziEntityMetadataKeys.documents: documents,
-            UwaziEntityMetadataKeys.template: entityInstance?.collectedTemplate?.templateId,
-            UwaziEntityMetadataKeys.title: entityInstance?.title
-        ]
+        let entityInstanceToSend = EntityInstanceToSend(attachments: attachments,
+                                                        documents: documents,
+                                                        template: template,
+                                                        title: title,
+                                                        metadata: metadata)
         
-        var metadata = entityInstance?.metadata
-        
+        var entityData = entityInstanceToSend.dictionary
         entityData[UwaziEntityMetadataKeys.metadata] = metadata
-
         return [UwaziEntityMetadataKeys.entity: entityData]
     }
-
+    
     func getEntityResponseSize() -> String {
-        do {
-            let entityData = extractEntityDataAndMetadata()
-            let jsonData = try JSONSerialization.data(withJSONObject: entityData, options: [])
-            let sizeInBytes = Int(jsonData.count)
-            let sizeInMB = sizeInBytes.getFormattedFileSize()
-            return sizeInMB
-        } catch {
-            debugLog(error)
-            return "\(error)"
-        }
+        let sizeInBytes = extractEntityDataAndMetadata().jsonData?.count
+        guard let sizeInMB = sizeInBytes?.getFormattedFileSize() else { return "" }
+        return sizeInMB
     }
 }
+
+
+
