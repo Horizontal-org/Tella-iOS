@@ -47,6 +47,7 @@ extension UIApplication {
         let nvc = window?.rootViewController?.children.last as? UINavigationController
         
         nvc?.viewControllers.forEach({ vc in
+            print("vc",vc)
             if vc.isKind(of: classType) {
                 nvc?.popToViewController(vc, animated: true)
             }

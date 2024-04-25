@@ -105,7 +105,6 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                                 selectValues: $0.values,
                                                 name: $0.name)
                 
-                
             default:
                 prompt = UwaziTextEntryPrompt(id: $0.id ?? "",
                                               formIndex: $0.id,
@@ -115,28 +114,11 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                               helpText: $0.translatedLabel,
                                               selectValues: $0.values,
                                               name: $0.name)
-                
             }
             
             entryPrompts.append(prompt)
         }
     }
-    
-    
-    
-    //    func parseInstance(instance: String): UwaziFormView {
-    //        entityInstance = Gson().fromJson(instance, UwaziEntityInstance::class.java)
-    //        template = entityInstance.collectTemplate
-    //        return prepareFormView()
-    //    }
-    //
-    //    func parseTemplate(templateString: String): UwaziFormView {
-    //        template = Gson().fromJson(templateString, CollectTemplate::class.java)
-    //        entityInstance.collectTemplate = template
-    //        entityInstance.template = template?.entityRow?.name.toString()
-    //        return prepareFormView()
-    //    }
-    
     
     func saveAnswersToEntityInstance(status:EntityStatus) {
         
@@ -152,27 +134,27 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                 
             case .dataTypeText where propertyName == UwaziEntityMetadataKeys.title:
                 guard let entryPrompt = entryPrompt as? UwaziTextEntryPrompt else { continue }
-                entityInstance?.title = entryPrompt.values.first?.value
+                entityInstance?.title = entryPrompt.value
                 
             case .dataTypeText, .dataTypeNumeric, .dataTypeMarkdown,.dataTypeDate:
                 guard let entryPrompt = entryPrompt as? UwaziTextEntryPrompt else { continue }
                 guard !entryPrompt.isEmpty else { continue }
-                metadata[propertyName] = entryPrompt.values.arraydDictionnary
+                metadata[propertyName] = [UwaziValue(value: entryPrompt.value)].arraydDictionnary
                 
             case .dataTypeSelect, .dataTypeMultiSelect:
                 guard let entryPrompt = entryPrompt as? UwaziSelectEntryPrompt else { continue }
                 guard !entryPrompt.isEmpty else { continue }
-                metadata[propertyName] = entryPrompt.values.arraydDictionnary
+                metadata[propertyName] = entryPrompt.value.compactMap({UwaziValue(value: $0)}).arraydDictionnary
                 
             case .dataTypeMultiFiles:
                 guard let entryPrompt = entryPrompt as? UwaziFilesEntryPrompt else { continue }
-                let attachments = entryPrompt.value.value
+                let attachments = entryPrompt.value
                 let attachedVaultFiles = attachments.compactMap({UwaziEntityInstanceFile(vaultFileInstanceId: $0.id , entityInstanceId:self.entityInstance?.id )})
                 uwaziEntityInstanceFile.append(contentsOf: attachedVaultFiles)
                 entityInstance?.attachments = attachments
             case .dataTypeMultiPDFFiles:
                 guard let entryPrompt = entryPrompt as? UwaziFilesEntryPrompt else { continue }
-                let attachments = entryPrompt.value.value
+                let attachments = entryPrompt.value
                 let attachedVaultFiles = attachments.compactMap({UwaziEntityInstanceFile(vaultFileInstanceId: $0.id , entityInstanceId:self.entityInstance?.id )})
                 uwaziEntityInstanceFile.append(contentsOf: attachedVaultFiles)
                 entityInstance?.attachments = attachments
@@ -191,7 +173,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
         self.entityInstance = entityInstance
     }
     
-    func putAnswers() { // db ---> prompt
+    func putAnswers() {
         
         let metadata = self.entityInstance?.metadata
         
@@ -209,27 +191,27 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                 
             case .dataTypeText where propertyName == UwaziEntityMetadataKeys.title:
                 guard let entryPrompt = entryPrompt as? UwaziTextEntryPrompt else { continue }
-                entryPrompt.value.value = self.entityInstance?.title ?? ""
+                entryPrompt.value = self.entityInstance?.title ?? ""
                 
             case .dataTypeText, .dataTypeNumeric, .dataTypeMarkdown, .dataTypeDate:
                 guard let entryPrompt = entryPrompt as? UwaziTextEntryPrompt else { continue }
                 let valueDict = value as? [String:Any]
                 guard let decoded = try? valueDict?.decode(UwaziValue<String>.self) else { continue }
-                entryPrompt.value = decoded
+                entryPrompt.value = decoded.value
                 
             case .dataTypeSelect, .dataTypeMultiSelect:
                 let uwaziString = value as? [[String:Any]]
                 guard let entryPrompt = entryPrompt as? UwaziSelectEntryPrompt else { continue }
-                guard let decoded = try? uwaziString?.decode(UwaziValue<String>.self) else { continue }
-                entryPrompt.values = decoded
+                guard let decoded =  uwaziString?.compactMap({ try? $0.decode(UwaziValue<String>.self)})  else { continue }
+                entryPrompt.value = decoded.compactMap({$0.value})
                 
             case .dataTypeMultiFiles:
                 guard let entryPrompt = entryPrompt as? UwaziFilesEntryPrompt else { continue }
-                entryPrompt.value.value = Set(self.entityInstance?.attachments ?? [])
+                entryPrompt.value = Set(self.entityInstance?.attachments ?? [])
                 
             case .dataTypeMultiPDFFiles:
                 guard let entryPrompt = entryPrompt as? UwaziFilesEntryPrompt else { continue }
-                entryPrompt.value.value = Set(self.entityInstance?.documents ?? [])
+                entryPrompt.value = Set(self.entityInstance?.documents ?? [])
                 
             default:
                 break

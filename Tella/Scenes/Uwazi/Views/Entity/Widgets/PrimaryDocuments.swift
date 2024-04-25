@@ -20,7 +20,7 @@ struct PrimaryDocuments: View {
         }, title: LocalizableUwazi.uwaziMultiFileWidgetAttachManyPDFFilesSelectTitle.localized)
 //            .environmentObject(prompt)
 //        FileItems(files: $entityViewModel.pdfDocuments)
-        FileItems(files: prompt.value.value)
+        FileItems(files: prompt.value)
 
     }
     

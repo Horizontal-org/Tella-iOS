@@ -270,12 +270,18 @@ extension TellaData {
 }
 
 extension TellaData {
-    
+    @discardableResult
     func addUwaziEntityInstance(entityInstance:UwaziEntityInstance) -> Bool  {
         
-        var addEntityInstanceResult = database.addUwaziEntityInstance(entityInstance: entityInstance)
-        
-        if case .success = addEntityInstanceResult {
+        let result : Result<Int, Error>
+        if let _ = entityInstance.id {
+            result = database.addUwaziEntityInstance(entityInstance: entityInstance)
+
+        } else {
+            result = database.updateUwaziEntityInstance(entityInstance: entityInstance)
+        }
+
+        if case .success = result {
             self.shouldReloadUwaziInstances.send(true)
             return true
         } else {
@@ -287,13 +293,13 @@ extension TellaData {
         return database.getUwaziEntityInstance(entityStatus: [.draft])
     }
     
-    func getSubmittedUwaziEntityInstances() -> [UwaziEntityInstance] {
+    func getOutboxUwaziEntityInstances() -> [UwaziEntityInstance] {
         return database.getUwaziEntityInstance(entityStatus: [.finalized,
                                                               .submissionError,
                                                               .submissionPending])
     }
     
-    func getOutboxUwaziEntityInstances() -> [UwaziEntityInstance] {
+    func getSubmittedUwaziEntityInstances() -> [UwaziEntityInstance] {
         return database.getUwaziEntityInstance(entityStatus: [.submitted])
         
     }

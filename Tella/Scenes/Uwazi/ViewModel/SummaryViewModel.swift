@@ -15,6 +15,7 @@ class SummaryViewModel: ObservableObject {
     var uwaziSubmissionViewModel: UwaziSubmissionViewModel?
     
     @Published var isLoading: Bool = false
+    @Published var shouldHideView : Bool = false
     
     var entityTitle : String {
         guard let stringValue = self.entityInstance?.title else { return "" }
@@ -40,20 +41,39 @@ class SummaryViewModel: ObservableObject {
         uwaziSubmissionViewModel = UwaziSubmissionViewModel(entityInstance: entityInstance, mainAppModel: mainAppModel)
     }
     
-    
     func getEntityResponseSize() -> String {
         return uwaziSubmissionViewModel?.getEntityResponseSize() ?? ""
     }
     
-    func submitEntity(onCompletion: @escaping () -> Void) {
-        self.isLoading = true
+    func submitLater() {
+        
         guard let entityInstance = entityInstance else { return }
-        let result = tellaData?.addUwaziEntityInstance(entityInstance: entityInstance)
-        uwaziSubmissionViewModel?.submitEntity(onCompletion: {
-            
-        })
+        entityInstance.status = .finalized
+       
+        let isSaved = tellaData?.addUwaziEntityInstance(entityInstance: entityInstance) ?? false
+        
+        if isSaved {
+            self.shouldHideView = true
+        } else {
+            Toast.displayToast(message: "Error")
+        }
     }
     
-    
-    
+    func submitEntity() {
+        
+        self.isLoading = true
+        
+        guard let entityInstance = entityInstance else { return }
+        entityInstance.status = .submissionInProgress
+        
+        tellaData?.addUwaziEntityInstance(entityInstance: entityInstance)
+        
+        uwaziSubmissionViewModel?.submitEntity(onCompletion: {
+            self.isLoading = false
+            self.shouldHideView = true
+            entityInstance.status = .submitted
+            self.tellaData?.addUwaziEntityInstance(entityInstance: entityInstance)
+
+        })
+    }
 }

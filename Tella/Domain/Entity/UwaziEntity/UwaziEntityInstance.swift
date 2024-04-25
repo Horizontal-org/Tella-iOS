@@ -63,13 +63,8 @@ class UwaziEntityInstance: Codable {
         
         let metadataString = try container.decode(String.self, forKey: .metadata)
         
-        var dictionnary = metadataString.dictionnary
-        
-        dictionnary.forEach { (key, value) in
-            let valuestr = value as? String
-            dictionnary[key] = valuestr?.arraydDictionnary
-        }
-        
+        let dictionnary = metadataString.dictionnary
+
         self.metadata = dictionnary
         
         let status = try container.decode(Int.self, forKey: .status)

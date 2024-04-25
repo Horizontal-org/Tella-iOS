@@ -49,7 +49,7 @@ struct UwaziDatePicker: View {
             HStack(alignment: .top) {
                 HStack {
                     Image("uwazi.date")
-                    Text(parseDateFromPrompt(prompt.value.value))
+                    Text(parseDateFromPrompt(prompt.value))
                         .font(.custom(Styles.Fonts.regularFontName, size: 14))
                         .foregroundColor(.white)
                         .padding(.horizontal, 8)
@@ -60,7 +60,7 @@ struct UwaziDatePicker: View {
     
     private func updatePromptWithDate(_ date: Date) {
         let unixTimestamp = date.getUnixTimestamp()
-        prompt.value.value = String(unixTimestamp)
+        prompt.value = String(unixTimestamp)
 //        entityViewModel.toggleShowClear(forId: prompt.id ?? "", value: true)
     }
     

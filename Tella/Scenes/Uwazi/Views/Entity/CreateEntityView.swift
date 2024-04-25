@@ -28,6 +28,12 @@ struct CreateEntityView: View {
         .navigationBarHidden(true)
         .overlay(cameraView)
         .overlay(recordView)
+        .onReceive(entityViewModel.$shouldHideView, perform: { shouldHideView in
+            if shouldHideView {
+                dismissViews()
+            }
+        })
+
     }
     
     fileprivate var contentView: some View {
@@ -43,9 +49,9 @@ struct CreateEntityView: View {
     fileprivate var createEntityHeaderView: some View {
         CreateDraftHeaderView(title: entityViewModel.templateName,
                               isDraft: true,
-                              hideSaveButton: true,
+                              hideSaveButton: false,
                               closeAction: { showSaveEntityConfirmationView() },
-                              saveAction: { })
+                              saveAction: {entityViewModel.saveEntityDraft() })
     }
 
 
@@ -122,7 +128,10 @@ struct CreateEntityView: View {
     
     private func dismissViews() {
         sheetManager.hide()
-        self.presentationMode.wrappedValue.dismiss()
+        self.popTo(ViewClassType.uwaziView)
     }
-    
+ }
+
+struct ViewClassType {
+    static let uwaziView : AnyClass = UIHostingController<ModifiedContent<UwaziView, _EnvironmentKeyWritingModifier<UwaziViewModel?>>>.self
 }

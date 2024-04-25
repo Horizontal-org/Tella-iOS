@@ -19,7 +19,7 @@ class UwaziEntityViewModel: ObservableObject {
     
     @Published var entryPrompts: [any UwaziEntryPrompt] = []
     @Published var resultFile : [VaultFileDB]?
-
+    
     @Published var showingSuccessMessage : Bool = false
     @Published var showingImagePicker : Bool = false
     @Published var showingImportDocumentPicker : Bool = false
@@ -27,8 +27,8 @@ class UwaziEntityViewModel: ObservableObject {
     @Published var showingRecordView : Bool = false
     @Published var showingCamera : Bool = false
     
-    @Published var isLoading : Bool = false
     @Published var uwaziEntityParser : UwaziEntityParser?
+    @Published var shouldHideView : Bool = false
     
     var subscribers = Set<AnyCancellable>()
     
@@ -77,43 +77,9 @@ class UwaziEntityViewModel: ObservableObject {
         return (self.tellaData?.database.getUwaziEntityInstance(entityId: entityId))
     }
     
-//    func getEntityTitle() -> String {
-//        return self.entryPrompts.first(where: { $0.name == UwaziEntityMetadataKeys.title })?.value.stringValue ?? ""
-//    }
-    
-    func handleMandatoryProperties() -> Bool {
-        let requiredPrompts = entryPrompts.filter({$0.required ?? false})
-        var hasMandatoryErrors = false
-        
-        requiredPrompts.forEach { prompt in
-            
-//            let isEmpty = (prompt.value.value as AnyObject).isEmpty
-//            prompt.showMandatoryError = isEmpty ?? false
-            prompt.showMandatoryError()
-            publishUpdates()
-
-        }
-        hasMandatoryErrors = requiredPrompts.compactMap({$0.shouldShowMandatoryError}).contains(true)
-        
-        return hasMandatoryErrors
-    }
-    
-//    // MARK: Submit Entity
-//    
-//    func submitEntityLaterr(onCompletion: @escaping () -> Void) {
-////        saveEntity(status: .finalized)
-//    }
-    
-    
-    func saveAnswersToEntityInstance() {
-        uwaziEntityParser?.saveAnswersToEntityInstance(status: .draft)
-    }
-
-    // files
     private func bindVaultFileTaken() {
         $resultFile
             .sink(receiveValue: { [weak self] files in
-                // Unwrap files safely
                 
                 guard let self = self, let files = files else { return }
                 
@@ -124,9 +90,9 @@ class UwaziEntityViewModel: ObservableObject {
                 files.forEach { vaultFileDB in
                     let isPDF = vaultFileDB.mimeType?.isPDF ?? false
                     if isPDF {
-                        pdfPrompt?.value.value.insert(files)
+                        pdfPrompt?.value.insert(files)
                     } else {
-                        multiFilesPrompt?.value.value.insert(files)
+                        multiFilesPrompt?.value.insert(files)
                     }
                     
                     self.publishUpdates()
@@ -135,8 +101,43 @@ class UwaziEntityViewModel: ObservableObject {
             .store(in: &subscribers)
     }
     
+    func handleMandatoryProperties() -> Bool {
+        let requiredPrompts = entryPrompts.filter({$0.required ?? false})
+        var hasMandatoryErrors = false
+        
+        requiredPrompts.forEach { prompt in
+            prompt.showMandatoryError()
+            publishUpdates()
+        }
+        hasMandatoryErrors = requiredPrompts.compactMap({$0.shouldShowMandatoryError}).contains(true)
+        
+        return hasMandatoryErrors
+    }
     
-   func publishUpdates() {
+    func saveAnswersToEntityInstance() {
+        uwaziEntityParser?.saveAnswersToEntityInstance(status: .draft)
+    }
+    
+    func saveEntityDraft() {
+        
+        let checkMandatoryFields = self.handleMandatoryProperties()
+        
+        if !checkMandatoryFields {
+            
+            saveAnswersToEntityInstance()
+            guard let entityInstance = uwaziEntityParser?.entityInstance else { return }
+            guard let isSaved = tellaData?.addUwaziEntityInstance(entityInstance: entityInstance) else { return }
+            
+            if isSaved {
+                self.shouldHideView = true
+                Toast.displayToast(message: "Entity is saved as draft.")
+            } else {
+                Toast.displayToast(message: "Error")
+            }
+        }
+    }
+    
+    func publishUpdates() {
         DispatchQueue.main.async {
             self.objectWillChange.send()
         }
