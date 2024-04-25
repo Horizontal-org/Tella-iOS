@@ -367,6 +367,23 @@ extension FileListViewModel {
         }
     }
     
+    
+    func checkReportsBeforeDelete() -> Bool {
+        // check reports before deleting files
+        
+        let fileIds = selectedFiles.compactMap { $0.id }
+        let fileIsInReport = appModel.tellaData?.database.checkFilesInReports(ids: fileIds)
+
+        if fileIsInReport == true {
+            // Show pop up
+            return  true
+        } else {
+            deleteSelectedFiles()
+            return false
+        }
+        
+    }
+    
     func deleteSelectedFiles() {
         let deleteVaultFileResult = appModel.vaultFilesManager?.deleteVaultFile(vaultFiles: selectedFiles)
         if case .success = deleteVaultFileResult {

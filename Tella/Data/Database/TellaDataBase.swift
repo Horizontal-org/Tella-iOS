@@ -4,7 +4,6 @@
 //
 
 import Foundation
-import SQLite3
 import SQLCipher
 
 class TellaDataBase : DataBase {
@@ -82,6 +81,22 @@ class TellaDataBase : DataBase {
         ]
         statementBuilder.createTable(tableName: D.tReportInstanceVaultFile, columns: columns)
         
+    }
+    
+    func checkFilesInReports(ids: [String]) -> Bool {
+        var isFileInReport = false
+        do {
+            try ids.forEach({ vaultId in
+                let condition = [KeyValue(key: D.cVaultFileInstanceId, value: vaultId)]
+                let responseDict = try statementBuilder.selectQuery(tableName: D.tReportInstanceVaultFile,
+                                                                    andCondition: condition)
+                isFileInReport = !responseDict.isEmpty
+            })
+            return isFileInReport
+        } catch let error {
+            debugLog(error)
+            return isFileInReport
+        }
     }
     
     /// Rename the cUpatedDate column to cUpdatedDate column in tReport and tReportInstanceVaultFile tables
