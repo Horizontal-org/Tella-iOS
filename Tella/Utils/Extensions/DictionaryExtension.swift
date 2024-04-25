@@ -24,6 +24,15 @@ extension Dictionary {
         }
         return String(data: theJSONData, encoding: .ascii)
     }
+    
+    var jsonData: Data? {
+        guard let theJSONData = try? JSONSerialization.data(withJSONObject: self,
+                                                            options: [.prettyPrinted]) else {
+            return nil
+        }
+        return theJSONData
+    }
+
 }
 
 extension Encodable {

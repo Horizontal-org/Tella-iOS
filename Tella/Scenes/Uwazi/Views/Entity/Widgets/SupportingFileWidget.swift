@@ -19,8 +19,8 @@ struct SupportingFileWidget: View {
             showAddFileSheet()
         }, title: LocalizableUwazi.uwaziEntitySelectFiles.localized)
             .environmentObject(prompt)
-        if(prompt.value.value.count > 0) {
-            FileDropdown(files: $prompt.value.value)
+        if(prompt.value.count > 0) {
+            FileDropdown(files: $prompt.value)
         }
     }
     

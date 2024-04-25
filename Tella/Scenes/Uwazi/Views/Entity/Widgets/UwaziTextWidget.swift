@@ -14,11 +14,11 @@ struct UwaziTextWidget: View {
     @EnvironmentObject var uwaziEntityViewModel : UwaziEntityViewModel
     var body: some View {
         VStack(alignment: .leading) {
-            TextField("", text: $prompt.values.first?.value ?? .constant(""))
+            TextField("", text: $prompt.value)
             .keyboardType(.default)
             .textFieldStyle(TextfieldStyle(shouldShowError: false))
             .frame( height: 22)
-            .onChange(of: prompt.value.value, perform: { value in
+            .onChange(of: prompt.value, perform: { value in
                 prompt.showClear = !value.isEmpty
                 uwaziEntityViewModel.publishUpdates()
             })

@@ -35,6 +35,11 @@ struct SummaryEntityView: View {
                 
                 bottomActionView
             }
+            
+            if summaryViewModel.isLoading {
+                CircularActivityIndicatory()
+            }
+
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -47,6 +52,12 @@ struct SummaryEntityView: View {
                 }
             }
         }
+        .onReceive(summaryViewModel.$shouldHideView, perform: { shouldHideView in
+            if shouldHideView {
+                dismissViews()
+            }
+        })
+
     }
     
     var templateData: some View {
@@ -90,7 +101,7 @@ struct SummaryEntityView: View {
                                       isValid: .constant(true)) {
                 
                 
-                
+                summaryViewModel.submitLater()
             }
             
             Spacer()
@@ -100,10 +111,7 @@ struct SummaryEntityView: View {
                                       buttonType: .yellow,
                                       isValid: .constant(true)) {
                 
-                summaryViewModel.submitEntity {
-                    navigateTo(destination: UwaziView()
-                               // .environmentObject(UwaziViewModel(mainAppModel: entityViewModel.mainAppModel, server: entityViewModel.server!)))
-                    )}
+                summaryViewModel.submitEntity() 
                 
             }
             
@@ -142,5 +150,8 @@ struct SummaryEntityView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
     
+    private func dismissViews() {
+        self.popTo(ViewClassType.uwaziView)
+    }
 }
 

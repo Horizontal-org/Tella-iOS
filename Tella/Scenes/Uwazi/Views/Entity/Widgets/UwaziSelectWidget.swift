@@ -30,7 +30,7 @@ struct UwaziSelectWidget: View {
     }
     
     func selectTitle() -> String {
-        guard let item = prompt.selectValues?.filter({$0.id == prompt.values.first?.value}).first else {return "Select"}
+        guard let item = prompt.selectValues?.filter({$0.id == prompt.value.first}).first else {return "Select"}
         return item.translatedLabel ?? ""
     }
 }
@@ -94,7 +94,7 @@ struct SelectOptionButton: View {
         Button(action: {
             shouldShowMenu = false
             guard let id = selectedOption.id else { return }
-            prompt.values = [UwaziValue(value: id,label: selectedOption.label)]
+            prompt.value = [id]
             uwaziEntityViewModel.publishUpdates()
         }) {
             Text(selectedOption.translatedLabel ?? "")
@@ -103,6 +103,6 @@ struct SelectOptionButton: View {
                 .foregroundColor(.white)
                 .padding(.all, 14)
         }
-        .background(prompt.values.first?.value == selectedOption.id ?  Color.white.opacity(0.16) : Color.white.opacity(0.08))
+        .background(prompt.value.first == selectedOption.id ?  Color.white.opacity(0.16) : Color.white.opacity(0.08))
     }
 }
