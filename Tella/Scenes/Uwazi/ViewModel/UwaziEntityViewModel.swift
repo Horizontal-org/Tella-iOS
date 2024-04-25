@@ -63,6 +63,12 @@ class UwaziEntityViewModel: ObservableObject {
                     break
                 case .failure(let error):
                     dump(error)
+                    switch(error) {
+                    case .noInternetConnection:
+                        self.relationshipEntities = self.template?.relationships ?? []
+                    default:
+                        break
+                    }
                 }
             }, receiveValue: { uwaziRelationshipList in
                 self.relationshipEntities = uwaziRelationshipList
