@@ -341,10 +341,9 @@ extension TellaData {
         
         let result : Result<Int, Error>
         if let _ = entityInstance.id {
-            result = database.addUwaziEntityInstance(entityInstance: entityInstance)
-
-        } else {
             result = database.updateUwaziEntityInstance(entityInstance: entityInstance)
+        } else {
+            result = database.addUwaziEntityInstance(entityInstance: entityInstance)
         }
 
         if case .success = result {
