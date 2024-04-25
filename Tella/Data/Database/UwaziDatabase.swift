@@ -64,6 +64,28 @@ extension TellaDataBase: UwaziTemplateProtocol {
             return nil
         }
     }
+    
+    func updateUwaziTemplate(template: CollectedTemplate) -> Int? {
+        do {
+            let valuesToUpdate = [
+                KeyValue(key: D.cTemplateId, value: template.templateId),
+                KeyValue(key: D.cDownloaded, value: 1),
+                KeyValue(key: D.cUpdated, value: 1),
+                KeyValue(key: D.cFavorite, value: 0),
+                KeyValue(key: D.cServerId, value: template.serverId),
+                KeyValue(key: D.cEntity, value: template.entityRowString),
+                KeyValue(key: D.cRelationships, value: template.relationshipsString)
+            ]
+            
+            let templateCondition = [KeyValue(key: D.cId, value: template.id)]
+            return try statementBuilder.update(tableName: D.tUwaziTemplate,
+                                           valuesToUpdate: valuesToUpdate,
+                                           equalCondition: templateCondition)
+        } catch let error {
+            debugLog(error)
+            return nil
+        }
+    }
     func deleteAllUwaziTemplate() {
         do {
             try statementBuilder.deleteAll(tableNames: [D.tUwaziTemplate])

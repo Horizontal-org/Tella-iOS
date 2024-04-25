@@ -70,8 +70,13 @@ class UwaziEntityViewModel: ObservableObject {
                         break
                     }
                 }
-            }, receiveValue: { uwaziRelationshipList in
+            }, receiveValue: { [self] uwaziRelationshipList in
                 self.relationshipEntities = uwaziRelationshipList
+                self.template?.relationships = uwaziRelationshipList
+                
+                guard let updatedTemplate = self.template else { return }
+                _ = tellaData?.updateUwaziTemplate(template: updatedTemplate)
+
             })
             .store(in: &subscribers)
     }
