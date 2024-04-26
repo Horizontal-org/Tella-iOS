@@ -74,7 +74,7 @@ struct SearchBarNoFocus: View {
 struct PlaceholderText: View {
     @Binding var searchText: String
     var body: some View {
-        Text("Search")
+        Text(LocalizableUwazi.uwaziRelationshipSearchTitle.localized)
             .font(.custom(Styles.Fonts.regularFontName, size: 14))
             .offset(x: searchText.isEmpty ? 42 : 0, y: searchText.isEmpty ? 0 : -40)
             .frame(maxWidth: .infinity,alignment: .leading)

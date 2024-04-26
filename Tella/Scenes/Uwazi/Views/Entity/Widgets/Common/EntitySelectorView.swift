@@ -10,7 +10,9 @@ import SwiftUI
 
 struct EntitySelectorView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @State var selectedEntities: [EntityRelationshipItem] = []
+    @EnvironmentObject var prompt: UwaziEntryPrompt
+    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
+    @Binding var selectedValues: [SelectValue]
     @State private var searchText: String = ""
     var body: some View {
         ContainerView {
@@ -19,17 +21,22 @@ struct EntitySelectorView: View {
                                      reloadAction: {presentationMode.wrappedValue.dismiss()},
                                      title: "incident",
                                      type: .save,
-                                     showRightButton: !selectedEntities.isEmpty 
+                                     showRightButton: !selectedValues.isEmpty
                 ).padding(.horizontal, 18)
                 
                 SearchBarView(searchText: $searchText)
-                Text("Search for or select the entities you want to connect to this property.")
+                Text(LocalizableUwazi.uwaziRelationshipListExpl.localized)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(Color.white.opacity(0.87))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
-                ForEach(filteredEntities()) {entity in
-                    entityListOptionsView(entity: entity, selectedEntities: $selectedEntities, isSelected: isSelected(entity: entity))
+                ScrollView {
+                    ForEach(filteredEntities()) {entity in
+                        entityListOptionsView(entity: entity,
+                                              value: $prompt.value.selectedValue,
+                                              isSelected: isSelected(entity: entity)
+                        )
+                    }
                 }
                 Spacer()
             }
@@ -38,33 +45,34 @@ struct EntitySelectorView: View {
     }
 
     func isSelected(entity: EntityRelationshipItem) -> Bool {
-        if selectedEntities.contains(where: { $0.id == entity.id}) { return true }
+        if prompt.value.selectedValue.contains(where: { $0.id == entity.id}) { return true }
 
         return false
     }
     
     func filteredEntities() -> [EntityRelationshipItem] {
-        if searchText.isEmpty {
-            return MockDataProvider.values
-        } else {
-            return MockDataProvider.values.filter { $0.label.lowercased().contains(searchText.lowercased())
-            }
-        }
+        return entityViewModel.relationshipEntities
+            .first { $0.id == prompt.content }?
+            .values
+            .filter { searchText.isEmpty || $0.label.lowercased().contains(searchText.lowercased()) } ?? []
     }
 }
 
 struct entityListOptionsView: View {
     var entity: EntityRelationshipItem
-    @Binding var selectedEntities: [EntityRelationshipItem]
+    @Binding var value: [SelectValue]
     var isSelected: Bool
 
     var body: some View {
         VStack {
             Button(action: {
                 if isSelected {
-                    selectedEntities.removeAll { $0.id == entity.id }
+                    value.removeAll{ $0.id == entity.id}
                 } else {
-                    selectedEntities.append(entity)
+                    let selectedValue: SelectValue = SelectValue(
+                        label: entity.label, id: entity.id, translatedLabel: entity.label, values: []
+                    )
+                    value.append(selectedValue)
                 }
             }, label: {
                 entityOptionView
@@ -91,5 +99,5 @@ struct entityListOptionsView: View {
 }
 
 #Preview {
-    EntitySelectorView()
+    EntitySelectorView(selectedValues: .constant([]))
 }

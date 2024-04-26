@@ -31,6 +31,7 @@ class UwaziEntityViewModel: ObservableObject {
     
     @Published var isLoading : Bool = false
     @Published var server: UwaziServer? = nil
+    @Published var relationshipEntities: [UwaziRelationshipList] = []
     
     var subscribers = Set<AnyCancellable>()
 
@@ -40,8 +41,45 @@ class UwaziEntityViewModel: ObservableObject {
         self.bindVaultFileTaken()
         self.server = self.getServerById(id: serverId)
         entryPrompts = UwaziEntityParser(template: template!).getEntryPrompts()
+        
+        fetchRelationshipEntities()
     }
     
+    func fetchRelationshipEntities() {
+        let relationshipProps = self.template?.entityRow?.properties.filter {$0.type == UwaziEntityPropertyType.dataRelationship.rawValue }
+        let templatesEntities = relationshipProps?.map{ tmp in
+            return tmp.content
+        }
+        
+        UwaziServerRepository().getRelationshipEntities(
+            serverURL: self.server?.url ?? "",
+            cookie: self.server?.cookie ?? "",
+            templatesIds: templatesEntities ?? []
+        )
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    dump(error)
+                    switch(error) {
+                    case .noInternetConnection:
+                        self.relationshipEntities = self.template?.relationships ?? []
+                    default:
+                        break
+                    }
+                }
+            }, receiveValue: { [self] uwaziRelationshipList in
+                self.relationshipEntities = uwaziRelationshipList
+                self.template?.relationships = uwaziRelationshipList
+                
+                guard let updatedTemplate = self.template else { return }
+                _ = tellaData?.updateUwaziTemplate(template: updatedTemplate)
+
+            })
+            .store(in: &subscribers)
+    }
     var tellaData: TellaData? {
         return self.mainAppModel.tellaData
     }
@@ -140,6 +178,18 @@ class UwaziEntityViewModel: ObservableObject {
                 if let selectedValue = entryPrompt.value.selectedValue.first {
                     metadata[propertyName] = [[UwaziEntityMetadataKeys.value: selectedValue.id, UwaziEntityMetadataKeys.label: selectedValue.label]]
                 }
+            case .dataRelationship:
+                let entryPromptValues = entryPrompt.value.selectedValue
+                if !entryPromptValues.isEmpty {
+                    let value = entryPromptValues.compactMap{ entity in
+                        dump(entity.id)
+                        return [UwaziEntityMetadataKeys.value: entity.id ?? "",
+                                UwaziEntityMetadataKeys.label: entity.label ?? "",
+                                UwaziEntityMetadataKeys.type: UwaziEntityMetadataKeys.entity
+                        ]
+                    }
+                    metadata[propertyName] = value
+                }
             default:
                 break
             }
@@ -223,5 +273,16 @@ class UwaziEntityViewModel: ObservableObject {
         }
         
         toggleShowClear(forId: id, value: false)
+    }
+}
+
+
+struct RelationshipValue {
+    let id, label, type: String
+    
+    init(id: String, label: String, type: String) {
+        self.id = id
+        self.label = label
+        self.type = type
     }
 }

@@ -39,4 +39,5 @@ struct UwaziEntityMetadataKeys {
     static let title = "title"
     static let value = "value"
     static let label = "label"
+    static let type = "type"
 }

@@ -68,8 +68,7 @@ class AddTemplateViewModel: ObservableObject {
     }
     
     func downloadTemplate(template: CollectedTemplate) {
-        var template = template
-        self.downloadTemplate(template: &template)
+        self.downloadTemplateWithRelationships(template: template)
         self.templateItemsViewModel.first(where: {template.templateId == $0.id})?.isDownloaded = true
     }
     
@@ -120,13 +119,11 @@ class AddTemplateViewModel: ObservableObject {
     
     /// Save the template to the database
     /// - Parameter template: The template that we need to save into the database
-    func saveTemplate( template: inout CollectedTemplate) {
+    func saveTemplate(template: CollectedTemplate) {
         let savedTemplateid = self.getAllDownloadedTemplate()?.compactMap({$0.templateId})
         if let savedTemplate = savedTemplateid,let templateId = template.templateId {
-            // To only save the template if it is not already saved Not necessary because the UI will not have a download button if it is already downloaded
             if !savedTemplate.contains(templateId) {
-                guard let savedItem = self.tellaData?.addUwaziTemplate(template: template) else { return }
-                template = savedItem
+                guard (self.tellaData?.addUwaziTemplate(template: template)) != nil else { return }
             }
         }
     }
@@ -148,9 +145,37 @@ class AddTemplateViewModel: ObservableObject {
     }
     
     
-    func downloadTemplate(template: inout CollectedTemplate) -> Void {
-        isLoading = true
-        self.saveTemplate(template: &template)
-        isLoading = false
+    func fetchRelationshipEntities(template: CollectedTemplate, completion: @escaping([UwaziRelationshipList]) -> Void) {
+        let relationshipProps = template.entityRow?.properties.filter {$0.type == UwaziEntityPropertyType.dataRelationship.rawValue }
+        let templatesEntities = relationshipProps?.map{ tmp in
+            return tmp.content
+        }
+        
+        UwaziServerRepository().getRelationshipEntities(
+            serverURL: self.server?.url ?? "",
+            cookie: self.server?.cookie ?? "",
+            templatesIds: templatesEntities ?? []
+        )
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    dump(error)
+                }
+            }, receiveValue: { uwaziRelationshipList in
+                completion(uwaziRelationshipList)
+            })
+            .store(in: &subscribers)
+    }
+    
+    func downloadTemplateWithRelationships(template: CollectedTemplate) -> Void {
+        self.isLoading = true
+        fetchRelationshipEntities(template: template) { relationships in
+            template.relationships = relationships
+            self.saveTemplate(template: template)
+            self.isLoading = false
+        }
     }
 }

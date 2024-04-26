@@ -15,6 +15,7 @@ class CollectedTemplate: Codable, Hashable {
     var serverName: String?
     var username: String?
     var entityRow: UwaziTemplateRow?
+    var relationships: [UwaziRelationshipList]?
     var isDownloaded: Bool?
     var isFavorite: Bool?
     var isUpdated: Bool?
@@ -25,6 +26,7 @@ class CollectedTemplate: Codable, Hashable {
          serverName: String? = nil,
          username: String? = nil,
          entityRow: UwaziTemplateRow,
+         relationships: [UwaziRelationshipList]? = nil,
          isDownloaded: Bool? = nil,
          isFavorite: Bool? = nil,
          isUpdated: Bool? = nil) {
@@ -34,6 +36,7 @@ class CollectedTemplate: Codable, Hashable {
         self.serverId = serverId
         self.serverName = serverName
         self.username = username
+        self.relationships = relationships
         self.entityRow = entityRow
         self.isDownloaded = isDownloaded
         self.isFavorite = isFavorite
@@ -47,6 +50,7 @@ class CollectedTemplate: Codable, Hashable {
         case serverName = "c_server_name"
         case username
         case entityRow = "c_entity"
+        case relationships = "c_relationships"
         case isDownloaded = "c_downloaded"
         case isFavorite = "c_favorite"
         case isUpdated = "c_updated"
@@ -72,6 +76,14 @@ class CollectedTemplate: Codable, Hashable {
                 throw DecodingError.dataCorruptedError(forKey: .entityRow, in: container, debugDescription: "entityRow issue")
             }
         }
+        
+        if let relationshipsString = try container.decodeIfPresent(String.self, forKey: .relationships) {
+            if let jsonData = relationshipsString.data(using: .utf8) {
+                relationships = try JSONDecoder().decode([UwaziRelationshipList].self, from: jsonData)
+            } else {
+                throw DecodingError.dataCorruptedError(forKey: .relationships, in: container, debugDescription: "Relationships data corrupted")
+            }
+        }
         isDownloaded = try container.decodeIfPresent(Int.self, forKey: .isDownloaded) == 1 ? true : false
         isFavorite = try container.decodeIfPresent(Int.self, forKey: .isFavorite) == 1 ? true : false
         isUpdated = try container.decodeIfPresent(Int.self, forKey: .isUpdated) == 1 ? true : false
@@ -81,6 +93,17 @@ class CollectedTemplate: Codable, Hashable {
         if let jsonData = try? JSONEncoder().encode(entityRow), let json = String(bytes: jsonData, encoding: .utf8) {
             return json
         } else {
+            return nil
+        }
+    }
+
+    var relationshipsString: String? {
+        guard let relationships = relationships else { return nil }
+        do {
+            let jsonData = try JSONEncoder().encode(relationships)
+            return String(data: jsonData, encoding: .utf8)
+        } catch {
+            debugLog("Failed to encode relationships: \(error)")
             return nil
         }
     }

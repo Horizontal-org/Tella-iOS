@@ -139,6 +139,22 @@ class UwaziServerRepository: WebRepository {
             }
             .eraseToAnyPublisher()
         }
+    
+    func getRelationshipEntities(serverURL: String, cookie: String, templatesIds: [String?]) -> AnyPublisher<[UwaziRelationshipList], APIError> {
+        let apiResponse: APIResponse<UwaziRelationshipDTO> = getAPIResponse(endpoint: API.getRelationshipEntities(serverURL:serverURL, cookie:cookie))
+
+        return apiResponse
+            .compactMap{ $0.0 }
+            .map { dto in
+                dto.rows
+                    .filter{ $0.type == "template" }
+                    .filter { relationship in
+                        templatesIds.contains(relationship.id)
+                    }
+                    .compactMap{ $0.toDomain() as? UwaziRelationshipList }
+            }
+            .eraseToAnyPublisher()
+    }
 }
 extension UwaziServerRepository {
     /// Return a collection of CollectedTemplate which is used to created after all the manpulation is done to prepare the template data for storage
@@ -277,6 +293,7 @@ extension UwaziServerRepository {
         case getTranslations(serverURL: String, cookieList:String)
         case submitEntity(serverURL: String, cookie: String, multipartHeader: String, multipartBody: Data)
         case submitPublicEntity(serverURL: String, cookie: String, multipartHeader: String, multipartBody: Data)
+        case getRelationshipEntities(serverURL: String, cookie: String)
     }
 }
 
@@ -290,7 +307,7 @@ extension UwaziServerRepository.API: APIRequest {
             return token
         case .checkURL, .getLanguage:
             return nil
-        case .getTemplate,.getSetting, .getDictionary, .getTranslations, .submitEntity, .submitPublicEntity:
+        case .getTemplate,.getSetting, .getDictionary, .getTranslations, .submitEntity, .submitPublicEntity, .getRelationshipEntities:
             return nil
         }
     }
@@ -299,7 +316,7 @@ extension UwaziServerRepository.API: APIRequest {
         switch self {
         case .login, .getProjetDetails, .twoFactorAuthentication:
             return [HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
-        case .getTemplate(_,let cookieList), .getSetting(_,let cookieList), .getDictionary(_,let cookieList), .getTranslations(_,let cookieList), .checkURL(_, let cookieList), .getLanguage(_, let cookieList):
+        case .getTemplate(_,let cookieList), .getSetting(_,let cookieList), .getDictionary(_,let cookieList), .getTranslations(_,let cookieList), .checkURL(_, let cookieList), .getLanguage(_, let cookieList), .getRelationshipEntities(serverURL: _, let cookieList):
             return [HTTPHeaderField.cookie.rawValue: cookieList,
                     HTTPHeaderField.contentType.rawValue : ContentType.json.rawValue]
         case .submitEntity(_, let cookie, _, _):
@@ -340,7 +357,7 @@ extension UwaziServerRepository.API: APIRequest {
                 "password": password,
                 "token": token
             ]
-        case .checkURL, .getLanguage, .getTemplate, .getSetting,.getDictionary,.getTranslations, .submitEntity(_, _, _, _), .submitPublicEntity:
+        case .checkURL, .getLanguage, .getTemplate, .getSetting,.getDictionary,.getTranslations, .submitEntity(_, _, _, _), .submitPublicEntity, .getRelationshipEntities:
             return nil
         }
     }
@@ -372,7 +389,7 @@ extension UwaziServerRepository.API: APIRequest {
             return serverURL
         case .getTemplate(serverURL: let serverURL, cookieList: _):
             return serverURL
-        case .getSetting(serverURL: let serverURL, cookieList: _), .getDictionary(serverURL: let serverURL, cookieList: _),.getTranslations(serverURL: let serverURL, cookieList: _), .submitEntity(serverURL: let serverURL, _, _, _), .submitPublicEntity(let serverURL, _, _, _):
+        case .getSetting(serverURL: let serverURL, cookieList: _), .getDictionary(serverURL: let serverURL, cookieList: _),.getTranslations(serverURL: let serverURL, cookieList: _), .submitEntity(serverURL: let serverURL, _, _, _), .submitPublicEntity(let serverURL, _, _, _), .getRelationshipEntities(let serverURL, _):
             return serverURL
         }
     }
@@ -397,6 +414,8 @@ extension UwaziServerRepository.API: APIRequest {
             return "/api/entities"
         case .submitPublicEntity:
             return "/api/public"
+        case .getRelationshipEntities:
+            return "/api/thesauris"
         }
     }
 
@@ -406,7 +425,7 @@ extension UwaziServerRepository.API: APIRequest {
             return HTTPMethod.post
         case .getProjetDetails(_):
             return HTTPMethod.get
-        case .checkURL, .getLanguage, .getSetting, .getTemplate,.getDictionary,.getTranslations:
+        case .checkURL, .getLanguage, .getSetting, .getTemplate,.getDictionary,.getTranslations, .getRelationshipEntities:
             return HTTPMethod.get
         }
     }
