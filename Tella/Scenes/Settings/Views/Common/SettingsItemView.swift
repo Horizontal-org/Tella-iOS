@@ -39,6 +39,7 @@ struct SettingsItemView<T:View> : View {
                 Text(title)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(.white)
+                    .multilineTextAlignment(.leading)
                 Spacer()
                 Text(value)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
