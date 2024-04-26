@@ -78,6 +78,10 @@
 "Vault_RenameFile_SheetTitle" = "Renombrar archivo";
 "Vault_RenameFile_Cancel_SheetAction" = "CANCELAR";
 "Vault_RenameFile_Save_SheetAction" = "SAVE";
+
+"Vault_Confirm_delete_Description" = "Algunos de los archivos son actualmente utilizados en tu conexión. Borrarlos puede impactar en formas y reportes que no han sido enviados aún.";
+"Vault_Warning_Title"= "Warning";
+"Vault_Delete_anyway" = "Borrar de todos modos";
 "Vault_CreateNewFolder_SheetTitle" = "Create new folder";
 "Vault_CreateNewFolder_Cancel_SheetAction" = "CANCELAR";
 "Vault_CreateNewFolder_Create_SheetAction" = "CREATE";

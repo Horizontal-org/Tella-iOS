@@ -78,6 +78,9 @@
 "Vault_RenameFile_SheetTitle" = "ဖိုင်အမည်ပြောင်းမည်";
 "Vault_RenameFile_Cancel_SheetAction" = "CANCEL";
 "Vault_RenameFile_Save_SheetAction" = "SAVE";
+"Vault_Confirm_delete_Description" = "ရွေးချယ်ထားသော ဖိုင်များအနက် အချို့ကို သင်၏ ပရောဂျက်နှင့် ချိတ်ဆက်မှုများ၌ အသုံးပြုနေဆဲဖြစ်သည်။ ထိုဖိုင်များကို ဖျက်လိုက်ပါက ပေးပို့ရခြင်းမရှိသော ဖောင်များနှင့် အစီရင်ခံချက်များကို ထိခိုက်စေနိုင်ပါသည်။";
+"Vault_Warning_Title"= "Warning";
+"Vault_Delete_anyway" = "ရရာနည်းဖြင့် ဖျက်မည်";
 "Vault_CreateNewFolder_SheetTitle" = "Create new folder";
 "Vault_CreateNewFolder_Cancel_SheetAction" = "CANCEL";
 "Vault_CreateNewFolder_Create_SheetAction" = "CREATE";

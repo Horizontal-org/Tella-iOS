@@ -78,6 +78,9 @@
 "Vault_RenameFile_SheetTitle" = "ناوگۆڕینی فایل";
 "Vault_RenameFile_Cancel_SheetAction" = "CANCEL";
 "Vault_RenameFile_Save_SheetAction" = "SAVE";
+"Vault_Confirm_delete_Description" = "هەندێک لە فایلە هەڵبژێردراوەکان لە ئێستادا لە پەیوەندییەکانتدا بەکار دەبرێن. سڕینەوە ڕەنگە کاریگەریی لەسەر ئەو فۆرم و ڕاپۆرتانە هەبێت کە هێشتا نەنێردراون.";
+"Vault_Warning_Title"= "Warning";
+"Vault_Delete_anyway" = "بە هەر حاڵ بیسڕەوە";
 "Vault_CreateNewFolder_SheetTitle" = "Create new folder";
 "Vault_CreateNewFolder_Cancel_SheetAction" = "CANCEL";
 "Vault_CreateNewFolder_Create_SheetAction" = "CREATE";

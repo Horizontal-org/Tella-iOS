@@ -78,6 +78,9 @@
 "Vault_RenameFile_SheetTitle" = "Rename file";
 "Vault_RenameFile_Cancel_SheetAction" = "CANCEL";
 "Vault_RenameFile_Save_SheetAction" = "SAVE";
+"Vault_Confirm_delete_Description" = "Some of the selected files are currently used in your connections. Deleting may impact forms and reports that haven’t been sent yet";
+"Vault_Warning_Title"= "Warning";
+"Vault_Delete_anyway" = "Delete anyway";
 "Vault_CreateNewFolder_SheetTitle" = "Create new folder";
 "Vault_CreateNewFolder_Cancel_SheetAction" = "CANCEL";
 "Vault_CreateNewFolder_Create_SheetAction" = "CREATE";
