@@ -70,9 +70,6 @@ struct RecordView: View {
                 self.viewModel.onStopRecording()
             }
         }
-        .onReceive(viewModel.$fileName) { value in
-            fileName = viewModel.fileName
-        }
         
         .alert(isPresented: self.$viewModel.shouldShowSettingsAlert) {
             getSettingsAlertView()
