@@ -15,6 +15,7 @@ extension TellaDataBase: UwaziTemplateProtocol {
             cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
             cddl(D.cTemplateId, D.text),
             cddl(D.cEntity, D.text),
+            cddl(D.cRelationships, D.text),
             cddl(D.cDownloaded, D.integer),
             cddl(D.cUpdated, D.integer),
             cddl(D.cFavorite, D.integer),
@@ -52,11 +53,34 @@ extension TellaDataBase: UwaziTemplateProtocol {
                 KeyValue(key: D.cFavorite, value: 0),
                 KeyValue(key: D.cServerId, value: template.serverId),
                 KeyValue(key: D.cEntity, value: template.entityRowString),
+                KeyValue(key: D.cRelationships, value: template.relationshipsString)
             ])
             template.id = id
             template.isUpdated = true
             template.isDownloaded = true
             return template
+        } catch let error {
+            debugLog(error)
+            return nil
+        }
+    }
+    
+    func updateUwaziTemplate(template: CollectedTemplate) -> Int? {
+        do {
+            let valuesToUpdate = [
+                KeyValue(key: D.cTemplateId, value: template.templateId),
+                KeyValue(key: D.cDownloaded, value: 1),
+                KeyValue(key: D.cUpdated, value: 1),
+                KeyValue(key: D.cFavorite, value: 0),
+                KeyValue(key: D.cServerId, value: template.serverId),
+                KeyValue(key: D.cEntity, value: template.entityRowString),
+                KeyValue(key: D.cRelationships, value: template.relationshipsString)
+            ]
+            
+            let templateCondition = [KeyValue(key: D.cId, value: template.id)]
+            return try statementBuilder.update(tableName: D.tUwaziTemplate,
+                                           valuesToUpdate: valuesToUpdate,
+                                           equalCondition: templateCondition)
         } catch let error {
             debugLog(error)
             return nil

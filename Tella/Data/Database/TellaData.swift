@@ -306,6 +306,11 @@ extension TellaData {
         return database.addUwaziTemplate(template: template)
     }
 
+    func updateUwaziTemplate(template: CollectedTemplate) -> Int? {
+        let id = database.updateUwaziTemplate(template: template)
+        
+        return id
+    }
     func deleteAllUwaziTemplate(templateId: String) {
         return database.deleteUwaziTemplate(templateId: templateId)
     }

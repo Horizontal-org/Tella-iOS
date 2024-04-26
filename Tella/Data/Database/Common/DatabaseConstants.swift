@@ -77,6 +77,7 @@ struct D {
     static let cDownloaded = "c_downloaded"
     static let cUpdated = "c_updated"
     static let cFavorite = "c_favorite"
+    static let cRelationships = "c_relationships"
 
 
     static let ctext = "c_text"
