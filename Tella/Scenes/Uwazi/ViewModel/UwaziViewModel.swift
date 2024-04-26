@@ -70,7 +70,7 @@ class UwaziViewModel: ObservableObject {
     }
     
     func listenToUpdates() {
-        self.mainAppModel.vaultManager.tellaData?.shouldReloadUwaziInstances
+        self.mainAppModel.tellaData?.shouldReloadUwaziInstances
             .receive(on: DispatchQueue.main)
             .sink { result in
             } receiveValue: { draftReports in

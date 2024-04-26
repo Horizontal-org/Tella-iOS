@@ -167,8 +167,8 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
         entityInstance?.templateId = template.id
         entityInstance?.metadata = metadata
         entityInstance?.updatedDate = Date()
-        entityInstance?.server = appModel.vaultManager.tellaData?.getUwaziServer(serverId: template.serverId)
-        entityInstance?.collectedTemplate = appModel.vaultManager.tellaData?.getUwaziTemplateById(id: template.id)
+        entityInstance?.server = appModel.tellaData?.getUwaziServer(serverId: template.serverId)
+        entityInstance?.collectedTemplate = appModel.tellaData?.getUwaziTemplateById(id: template.id)
         entityInstance?.files = uwaziEntityInstanceFile
         self.entityInstance = entityInstance
     }

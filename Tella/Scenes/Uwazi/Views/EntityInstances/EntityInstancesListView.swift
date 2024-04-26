@@ -49,7 +49,7 @@ struct EntityInstanceItemView: View {
             
             Spacer()
             
-            MoreButtonView(imageName: "reports.more", action: {
+            ImageButtonView(imageName: "reports.more", action: {
                 showtemplateActionBottomSheet()
             })
         }.padding(.all, 16)
