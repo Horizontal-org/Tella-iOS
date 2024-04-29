@@ -43,7 +43,9 @@ enum LocalizableVault: String, LocalizableDelegate {
     case renameFileSheetTitle = "Vault_RenameFile_SheetTitle"
     case renameFileCancelSheetAction = "Vault_RenameFile_Cancel_SheetAction"
     case renameFileSaveSheetAction = "Vault_RenameFile_Save_SheetAction"
-    
+    case confirmDeleteDescription = "Vault_Confirm_delete_Description"
+    case warningTitle = "Vault_Warning_Title"
+    case deleteAnyway = "Vault_Delete_anyway"
     
     case createNewFolderSheetTitle = "Vault_CreateNewFolder_SheetTitle"
     case createNewFolderCancelSheetAction = "Vault_CreateNewFolder_Cancel_SheetAction"

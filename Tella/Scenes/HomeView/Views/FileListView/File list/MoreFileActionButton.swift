@@ -101,8 +101,12 @@ struct MoreFileActionButton: View {
             self.hideMenu()
             
         case .delete:
-            showDeleteConfirmationSheet()
             
+            if fileListViewModel.checkReportsBeforeDelete() {
+                showDeleteAnywaySheet()
+            } else {
+                showDeleteConfirmationSheet()
+            }
         default:
             break
         }
@@ -137,13 +141,7 @@ struct MoreFileActionButton: View {
                                actionText: LocalizableVault.deleteFileDeleteSheetAction.localized,
                                destructive: true,
                                didConfirmAction:{
-                if fileListViewModel.checkReportsBeforeDelete() {
-                    showDeleteAnywaySheet()
-                } else {
-                    fileListViewModel.deleteSelectedFiles()
-                    fileListViewModel.selectingFiles = false
-                    fileListViewModel.resetSelectedItems()
-                }
+                deleteAction()
                 if fileListViewModel.fileActionSource == .details {
                     self.presentationMode.wrappedValue.dismiss()
                 }
@@ -151,16 +149,21 @@ struct MoreFileActionButton: View {
         })
     }
     
+    private func deleteAction() {
+        fileListViewModel.deleteSelectedFiles()
+        fileListViewModel.selectingFiles = false
+        fileListViewModel.resetSelectedItems()
+    }
+    
     func showDeleteAnywaySheet() {
-        
-        sheetManager.showBottomSheet( modalHeight: 165, content: {
-            ConfirmBottomSheet(titleText: "Warning",
-                               msgText: "You have files in your reports",
+        sheetManager.showBottomSheet(modalHeight: 194, content: {
+            ConfirmBottomSheet(titleText: LocalizableVault.warningTitle.localized,
+                               msgText:  LocalizableVault.confirmDeleteDescription.localized,
                                cancelText: LocalizableVault.deleteFileCancelSheetAction.localized,
-                               actionText: LocalizableVault.deleteFileDeleteSheetAction.localized,
+                               actionText: LocalizableVault.deleteAnyway.localized,
                                destructive: true,
                                didConfirmAction:{
-                fileListViewModel.deleteSelectedFiles()
+                deleteAction()
             })
         })
     }
