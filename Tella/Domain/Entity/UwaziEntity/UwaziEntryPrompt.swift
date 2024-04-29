@@ -179,3 +179,24 @@ class UwaziFilesEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
         self.value = []
     }
 }
+
+class UwaziRelationshipEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
+    
+    typealias Value = [EntityRelationshipItem]
+    
+    var isEmpty: Bool {
+        return self.value.isEmpty
+    }
+    
+    @Published  var value: [EntityRelationshipItem] = [] {
+        didSet {
+            displayClearButton()
+        }
+    }
+    
+    
+    func empty() {
+        self.value = []
+    }
+    
+}

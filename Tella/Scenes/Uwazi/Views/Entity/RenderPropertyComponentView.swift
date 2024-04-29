@@ -41,8 +41,7 @@ struct RenderPropertyComponentView: View {
                 case .dataTypeDate:
                     UwaziDatePicker()
                 case .dataRelationship:
-                    UwaziRelationshipWidget()
-                        .environmentObject(prompt)
+                    UwaziRelationshipWidget(prompt: prompt as! UwaziRelationshipEntryPrompt)
                 default:
                     EmptyView()
                 }

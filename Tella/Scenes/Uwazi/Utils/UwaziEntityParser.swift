@@ -104,6 +104,16 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                                 helpText: $0.translatedLabel,
                                                 selectValues: $0.values,
                                                 name: $0.name)
+            case .dataRelationship:
+                prompt = UwaziRelationshipEntryPrompt(id: $0.id ?? "",
+                                                      formIndex: $0.id,
+                                                      type: $0.type ?? "",
+                                                      question: $0.translatedLabel ?? "",
+                                                      content: $0.content ?? "",
+                                                      required: $0.propertyRequired,
+                                                      helpText: $0.translatedLabel,
+                                                      selectValues: $0.values,
+                                                      name: $0.name)
                 
             default:
                 prompt = UwaziTextEntryPrompt(id: $0.id ?? "",
@@ -159,6 +169,15 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                 let attachedVaultFiles = attachments.compactMap({UwaziEntityInstanceFile(vaultFileInstanceId: $0.id , entityInstanceId:self.entityInstance?.id )})
                 uwaziEntityInstanceFile.append(contentsOf: attachedVaultFiles)
                 entityInstance?.attachments = attachments
+            case .dataRelationship:
+                guard let entryPrompt = entryPrompt as? UwaziRelationshipEntryPrompt else { continue }
+                let value = entryPrompt.value.compactMap { entity in
+                    return [
+                        UwaziEntityMetadataKeys.value: entity.id,
+                        UwaziEntityMetadataKeys.label: entity.label
+                    ]
+                }
+                metadata[propertyName] = value
             default:
                 break
             }
@@ -213,6 +232,11 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
             case .dataTypeMultiPDFFiles:
                 guard let entryPrompt = entryPrompt as? UwaziFilesEntryPrompt else { continue }
                 entryPrompt.value = Set(self.entityInstance?.documents ?? [])
+            case .dataRelationship:
+                guard let entryPrompt = entryPrompt as? UwaziRelationshipEntryPrompt else { continue }
+                dump("relationshipssss")
+                dump(entryPrompt.value)
+                dump("----------")
                 
             default:
                 break

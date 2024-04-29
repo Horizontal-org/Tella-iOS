@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct UwaziRelationshipWidget: View {
-    @EnvironmentObject var prompt: UwaziEntryPrompt
+    @ObservedObject var prompt: UwaziRelationshipEntryPrompt
     @EnvironmentObject var entityViewModel: UwaziEntityViewModel
     var body: some View {
         VStack {
@@ -18,7 +18,7 @@ struct UwaziRelationshipWidget: View {
                 .foregroundColor(Color.white.opacity(0.87))
                 .frame(maxWidth: .infinity, alignment: .leading)
             Button {
-                navigateTo(destination: EntitySelectorView(selectedValues: $prompt.value.selectedValue)
+                navigateTo(destination: EntitySelectorView(selectedValues: $prompt.value)
                     .environmentObject(entityViewModel)
                     .environmentObject(prompt)
                 )
@@ -28,14 +28,15 @@ struct UwaziRelationshipWidget: View {
             .background(Color.white.opacity(0.08))
             .cornerRadius(15)
             
-            if(!prompt.value.selectedValue.isEmpty) {
+            if(!prompt.value.isEmpty) {
                 selectedEntities
             }
-        }.onChange(of: prompt.value.selectedValue) { newValue in
-            if !newValue.isEmpty {
-                entityViewModel.toggleShowClear(forId: prompt.id ?? "", value: true)
-            }
         }
+//        .onChange(of: prompt.value) { newValue in
+//            if !newValue.isEmpty {
+//                entityViewModel.toggleShowClear(forId: prompt.id ?? "", value: true)
+//            }
+//        }
     }
 
 
@@ -43,7 +44,7 @@ struct UwaziRelationshipWidget: View {
         HStack {
             Image("uwazi.add-files")
                 .padding(.vertical, 20)
-            Text(prompt.value.selectedValue.isEmpty ?
+            Text(prompt.value.isEmpty ?
                     LocalizableUwazi.uwaziEntityRelationshipSelectTitle.localized :
                     LocalizableUwazi.uwaziEntityRelationshipAddMoreTitle.localized)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
@@ -54,14 +55,14 @@ struct UwaziRelationshipWidget: View {
     
     var selectedEntities: some View {
         VStack {
-            Text("\(prompt.value.selectedValue.count) \(prompt.value.selectedValue.count == 1 ? LocalizableUwazi.uwaziEntityRelationshipSingleConnection.localized : LocalizableUwazi.uwaziEntityRelationshipMultipleConnections.localized)"
+            Text("\(prompt.value.count) \(prompt.value.count == 1 ? LocalizableUwazi.uwaziEntityRelationshipSingleConnection.localized : LocalizableUwazi.uwaziEntityRelationshipMultipleConnections.localized)"
                 )
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(Color.white.opacity(0.87))
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             VStack {
-                ForEach(prompt.value.selectedValue) {entity in
+                ForEach(prompt.value) {entity in
                     HStack{
                         RoundedRectangle(cornerRadius: 5)
                             .fill(Color.white.opacity(0.2))
@@ -69,7 +70,7 @@ struct UwaziRelationshipWidget: View {
                             .overlay(
                                 Image("files.list")
                             )
-                        Text(entity.label ?? "")
+                        Text(entity.label)
                             .font(.custom(Styles.Fonts.regularFontName, size: 14))
                             .foregroundColor(Color.white)
                             .lineLimit(1)
@@ -82,6 +83,6 @@ struct UwaziRelationshipWidget: View {
         }
     }
 }
-#Preview {
-    UwaziRelationshipWidget()
-}
+//#Preview {
+//    UwaziRelationshipWidget()
+//}

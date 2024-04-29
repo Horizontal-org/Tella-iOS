@@ -29,7 +29,7 @@ struct UwaziRelationshipRowDTO: Codable, DataModel {
     }
 }
 
-class UwaziRelationshipList: DomainModel, Codable {
+class UwaziRelationshipList: DomainModel, Codable, Identifiable {
     let id, name: String
     let values: [EntityRelationshipItem]
     let type: String

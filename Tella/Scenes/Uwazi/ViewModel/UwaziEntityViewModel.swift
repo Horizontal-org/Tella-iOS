@@ -51,12 +51,11 @@ class UwaziEntityViewModel: ObservableObject {
         
         serverName = template.serverName ?? ""
         templateName = template.entityRow?.name ?? ""
-        
         self.bindVaultFileTaken()
-        self.server = self.getServerById(id: serverId)
-        entryPrompts = UwaziEntityParser(template: template!).getEntryPrompts()
-
-        fetchRelationshipEntities()
+        
+        // preload entities in relationship array in case the endpoint fails
+        self.relationshipEntities = template.relationships ?? []
+        self.fetchRelationshipEntities()
     }
     
     func fetchRelationshipEntities() {
@@ -64,10 +63,11 @@ class UwaziEntityViewModel: ObservableObject {
         let templatesEntities = relationshipProps?.map{ tmp in
             return tmp.content
         }
-        
+        let server = self.getServerById(id: self.template?.serverId)
+
         UwaziServerRepository().getRelationshipEntities(
-            serverURL: self.server?.url ?? "",
-            cookie: self.server?.cookie ?? "",
+            serverURL: server?.url ?? "",
+            cookie: server?.cookie ?? "",
             templatesIds: templatesEntities ?? []
         )
             .receive(on: DispatchQueue.main)
@@ -79,7 +79,7 @@ class UwaziEntityViewModel: ObservableObject {
                     dump(error)
                     switch(error) {
                     case .noInternetConnection:
-                        self.relationshipEntities = self.template?.relationships ?? []
+                        dump("error")
                     default:
                         break
                     }
@@ -100,6 +100,10 @@ class UwaziEntityViewModel: ObservableObject {
     
     var entityInstance: UwaziEntityInstance? {
         return self.uwaziEntityParser?.entityInstance
+    }
+    
+    var template: CollectedTemplate? {
+        return self.uwaziEntityParser?.template
     }
     
     func getTemplateById (id: Int) -> CollectedTemplate? {
@@ -166,8 +170,8 @@ class UwaziEntityViewModel: ObservableObject {
             
             saveAnswersToEntityInstance()
             guard let entityInstance = uwaziEntityParser?.entityInstance else { return }
-            guard let isSaved = tellaData?.addUwaziEntityInstance(entityInstance: entityInstance) else { return }
-            
+
+            guard let isSaved = tellaData?.addUwaziEntityInstance(entityInstance: entityInstance) else { return }        
             if isSaved {
                 self.shouldHideView = true
                 Toast.displayToast(message: "Entity is saved as draft.")

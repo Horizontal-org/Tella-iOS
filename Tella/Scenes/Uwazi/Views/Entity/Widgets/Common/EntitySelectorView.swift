@@ -10,9 +10,9 @@ import SwiftUI
 
 struct EntitySelectorView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var prompt: UwaziEntryPrompt
+    @EnvironmentObject var prompt: UwaziRelationshipEntryPrompt
     @EnvironmentObject var entityViewModel: UwaziEntityViewModel
-    @Binding var selectedValues: [SelectValue]
+    @Binding var selectedValues: [EntityRelationshipItem]
     @State private var searchText: String = ""
     var body: some View {
         ContainerView {
@@ -33,7 +33,7 @@ struct EntitySelectorView: View {
                 ScrollView {
                     ForEach(filteredEntities()) {entity in
                         entityListOptionsView(entity: entity,
-                                              value: $prompt.value.selectedValue,
+                                              value: $prompt.value,
                                               isSelected: isSelected(entity: entity)
                         )
                     }
@@ -45,7 +45,7 @@ struct EntitySelectorView: View {
     }
 
     func isSelected(entity: EntityRelationshipItem) -> Bool {
-        if prompt.value.selectedValue.contains(where: { $0.id == entity.id}) { return true }
+        if prompt.value.contains(where: { $0.id == entity.id}) { return true }
 
         return false
     }
@@ -60,7 +60,7 @@ struct EntitySelectorView: View {
 
 struct entityListOptionsView: View {
     var entity: EntityRelationshipItem
-    @Binding var value: [SelectValue]
+    @Binding var value: [EntityRelationshipItem]
     var isSelected: Bool
 
     var body: some View {
@@ -72,7 +72,7 @@ struct entityListOptionsView: View {
                     let selectedValue: SelectValue = SelectValue(
                         label: entity.label, id: entity.id, translatedLabel: entity.label, values: []
                     )
-                    value.append(selectedValue)
+                    value.append(entity)
                 }
             }, label: {
                 entityOptionView
