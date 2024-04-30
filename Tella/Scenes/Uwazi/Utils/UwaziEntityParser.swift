@@ -196,6 +196,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
     func putAnswers() {
         
         let metadata = self.entityInstance?.metadata
+
         
         let vaultFilesID = self.entityInstance?.files.compactMap{$0.vaultFileInstanceId} ?? []
         let vaultFiles = appModel.vaultFilesManager?.getVaultFiles(ids: vaultFilesID) ?? []
@@ -206,7 +207,6 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
         for entryPrompt in entryPrompts {
             let propertyName = entryPrompt.name
             let value = metadata?[propertyName ?? ""]
-            
             switch  entryPrompt.type {
                 
             case .dataTypeText where propertyName == UwaziEntityMetadataKeys.title:
@@ -234,10 +234,10 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                 entryPrompt.value = Set(self.entityInstance?.documents ?? [])
             case .dataRelationship:
                 guard let entryPrompt = entryPrompt as? UwaziRelationshipEntryPrompt else { continue }
-                dump("relationshipssss")
-                dump(entryPrompt.value)
-                dump("----------")
+                let uwaziString = value as? [[String:Any]]
+                guard let decoded = uwaziString?.compactMap({ try? $0.decode(EntityRelationshipItem.self)}) else { continue }
                 
+                entryPrompt.value = decoded
             default:
                 break
             }

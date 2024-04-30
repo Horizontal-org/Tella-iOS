@@ -14,7 +14,7 @@ struct UwaziRelationshipDTO: Codable {
 
 struct UwaziRelationshipRowDTO: Codable, DataModel {
     let id, name: String
-    let values: [EntityRelationshipItem]
+    let values: [EntityRelationshipItemDTO]
     let type: String?
 
     enum CodingKeys: String, CodingKey {
@@ -25,8 +25,21 @@ struct UwaziRelationshipRowDTO: Codable, DataModel {
     }
 
     func toDomain() -> DomainModel? {
-        UwaziRelationshipList(id: id, name: name, values: values, type: type ?? "")
+        let transformedValues = values.map { dto -> EntityRelationshipItem in
+            EntityRelationshipItem(id: dto.id, label: dto.label)
+        }
+        return UwaziRelationshipList(id: id,
+                                     name: name,
+                                     values: transformedValues,
+                                     type: type ?? ""
+        )
     }
+}
+
+struct EntityRelationshipItemDTO: Identifiable, Codable {
+    let id: String
+    let label: String
+    let value: [EntityRelationshipItemDTO]?
 }
 
 class UwaziRelationshipList: DomainModel, Codable, Identifiable {

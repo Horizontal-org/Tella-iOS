@@ -11,5 +11,10 @@ import Foundation
 struct EntityRelationshipItem: Identifiable, Codable {
     let id: String
     let label: String
-    let value: [EntityRelationshipItem]?
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "value"
+        case label
+    }
+
 }
