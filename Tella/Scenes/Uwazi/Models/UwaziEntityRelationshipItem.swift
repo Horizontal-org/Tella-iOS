@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct EntityRelationshipItem: Identifiable, Codable {
+struct EntityRelationshipItem: Identifiable, Codable, Equatable {
     let id: String
     let label: String
     

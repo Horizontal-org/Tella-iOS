@@ -32,11 +32,9 @@ struct UwaziRelationshipWidget: View {
                 selectedEntities
             }
         }
-//        .onChange(of: prompt.value) { newValue in
-//            if !newValue.isEmpty {
-//                entityViewModel.toggleShowClear(forId: prompt.id ?? "", value: true)
-//            }
-//        }
+        .onChange(of: prompt.value) { newValue in
+            entityViewModel.publishUpdates()
+        }
     }
 
 
