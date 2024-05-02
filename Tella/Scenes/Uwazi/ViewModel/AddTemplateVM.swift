@@ -19,7 +19,7 @@ class AddTemplateViewModel: ObservableObject {
     
     @Published var isLoading: Bool = false
     @Published var showToast: Bool = false
-
+    @Published var entityFetcher: UwaziEntityFetcher? = nil
     var errorMessage: String = ""
     var serverName : String = ""
     var subscribers = Set<AnyCancellable>()
@@ -34,6 +34,9 @@ class AddTemplateViewModel: ObservableObject {
         self.mainAppModel = mainAppModel
         self.server = self.getServerById(id: serverId)
         self.serverName = server?.name ?? ""
+        self.entityFetcher = UwaziEntityFetcher(
+            server: self.server, subscribers: subscribers
+        )
     }
     
     func getServerById(id: Int) -> UwaziServer {
@@ -145,34 +148,10 @@ class AddTemplateViewModel: ObservableObject {
     }
     
     
-    func fetchRelationshipEntities(template: CollectedTemplate, completion: @escaping([UwaziRelationshipList]) -> Void) {
-        let relationshipProps = template.entityRow?.properties.filter {$0.type == UwaziEntityPropertyType.dataRelationship.rawValue }
-        let templatesEntities = relationshipProps?.map{ tmp in
-            return tmp.content
-        }
-        
-        UwaziServerRepository().getRelationshipEntities(
-            serverURL: self.server?.url ?? "",
-            cookie: self.server?.cookie ?? "",
-            templatesIds: templatesEntities ?? []
-        )
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    dump(error)
-                }
-            }, receiveValue: { uwaziRelationshipList in
-                completion(uwaziRelationshipList)
-            })
-            .store(in: &subscribers)
-    }
     
     func downloadTemplateWithRelationships(template: CollectedTemplate) -> Void {
         self.isLoading = true
-        fetchRelationshipEntities(template: template) { relationships in
+        entityFetcher?.fetchRelationshipEntities(template: template) { relationships in
             template.relationships = relationships
             self.saveTemplate(template: template)
             self.isLoading = false

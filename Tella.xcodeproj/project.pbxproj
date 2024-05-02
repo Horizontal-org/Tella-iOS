@@ -337,6 +337,7 @@
 		150913422B841C3F001E782A /* ResourceActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150913412B841C3F001E782A /* ResourceActionType.swift */; };
 		1519BED82B9A5A52006FD290 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1519BED72B9A5A52006FD290 /* Resource.swift */; };
 		1535A5F12BAA06490009EA42 /* DownloadedResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1535A5F02BAA06490009EA42 /* DownloadedResource.swift */; };
+		153AACF72BE40BEA0075D5B2 /* UwaziEntityFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AACF62BE40BEA0075D5B2 /* UwaziEntityFetcher.swift */; };
 		155369232B7E9CC100129F2F /* ResourceDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155369222B7E9CC100129F2F /* ResourceDatabase.swift */; };
 		15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15622F492B72B1FF00289816 /* DeleteConfirmation.swift */; };
 		156986252B88FCB600534720 /* ResourcePDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156986242B88FCB600534720 /* ResourcePDFView.swift */; };
@@ -864,6 +865,7 @@
 		150913412B841C3F001E782A /* ResourceActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActionType.swift; sourceTree = "<group>"; };
 		1519BED72B9A5A52006FD290 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		1535A5F02BAA06490009EA42 /* DownloadedResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResource.swift; sourceTree = "<group>"; };
+		153AACF62BE40BEA0075D5B2 /* UwaziEntityFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityFetcher.swift; sourceTree = "<group>"; };
 		155369222B7E9CC100129F2F /* ResourceDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDatabase.swift; sourceTree = "<group>"; };
 		15622F492B72B1FF00289816 /* DeleteConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmation.swift; sourceTree = "<group>"; };
 		156986242B88FCB600534720 /* ResourcePDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcePDFView.swift; sourceTree = "<group>"; };
@@ -2672,6 +2674,7 @@
 				CCC1B4382AC75B8D0075B819 /* UwaziEntityParser.swift */,
 				CCE8CCDC2AF41E410088B61D /* UwaziFileUtility.swift */,
 				CC1C734C2AF5439600D736F8 /* UwaziMultipartData.swift */,
+				153AACF62BE40BEA0075D5B2 /* UwaziEntityFetcher.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -3475,6 +3478,7 @@
 				122389BB293683930058593B /* ServerDataItem.swift in Sources */,
 				CCC1B4252AC759F70075B819 /* UwaziEntityViewModel.swift in Sources */,
 				CCC1B42B2AC75AAE0075B819 /* GenericEntityWidget.swift in Sources */,
+				153AACF72BE40BEA0075D5B2 /* UwaziEntityFetcher.swift in Sources */,
 				123AE5A329CFB7F000814CC7 /* UploadReportOperation.swift in Sources */,
 				126684452B18B78200561650 /* BackgroundActivityStatus.swift in Sources */,
 				12EC94CF28AA566C0070E72B /* GeneralView.swift in Sources */,

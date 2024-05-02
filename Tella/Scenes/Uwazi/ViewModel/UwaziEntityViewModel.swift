@@ -30,6 +30,7 @@ class UwaziEntityViewModel: ObservableObject {
     @Published var uwaziEntityParser : UwaziEntityParser?
     @Published var shouldHideView : Bool = false
     @Published var relationshipEntities: [UwaziRelationshipList] = []
+    @Published var entityFetcher: UwaziEntityFetcher? = nil
     
     var subscribers = Set<AnyCancellable>()
     
@@ -40,14 +41,15 @@ class UwaziEntityViewModel: ObservableObject {
         self.mainAppModel = mainAppModel
         
         let entityInstance = getInstanceById(entityId: entityInstanceId)
-        
         let templateId  = templateId ?? entityInstance?.templateId
         
         guard let templateId, let template = getTemplateById(id: templateId)  else {return}
+        guard let server = getServerById(id: template.serverId) else { return }
         
         uwaziEntityParser = UwaziEntityParser(template: template, appModel: mainAppModel, entityInstance: entityInstance)
         entryPrompts = uwaziEntityParser?.getEntryPrompts() ?? []
         uwaziEntityParser?.putAnswers()
+        entityFetcher = UwaziEntityFetcher(server: server, subscribers: subscribers)
         
         serverName = template.serverName ?? ""
         templateName = template.entityRow?.name ?? ""
@@ -55,45 +57,19 @@ class UwaziEntityViewModel: ObservableObject {
         
         // preload entities in relationship array in case the endpoint fails
         self.relationshipEntities = template.relationships ?? []
-        self.fetchRelationshipEntities()
+        self.fetchRelationships()
     }
     
-    func fetchRelationshipEntities() {
-        let relationshipProps = self.template?.entityRow?.properties.filter {$0.type == UwaziEntityPropertyType.dataRelationship.rawValue }
-        let templatesEntities = relationshipProps?.map{ tmp in
-            return tmp.content
+    func fetchRelationships() {
+        guard let template = self.template else { return }
+        entityFetcher?.fetchRelationshipEntities(template: template) { relationships in
+            self.relationshipEntities = relationships
+            template.relationships = relationships
+    
+            _ = self.tellaData?.updateUwaziTemplate(template: template)
         }
-        let server = self.getServerById(id: self.template?.serverId)
-
-        UwaziServerRepository().getRelationshipEntities(
-            serverURL: server?.url ?? "",
-            cookie: server?.cookie ?? "",
-            templatesIds: templatesEntities ?? []
-        )
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    dump(error)
-                    switch(error) {
-                    case .noInternetConnection:
-                        dump("error")
-                    default:
-                        break
-                    }
-                }
-            }, receiveValue: { [self] uwaziRelationshipList in
-                self.relationshipEntities = uwaziRelationshipList
-                self.template?.relationships = uwaziRelationshipList
-                
-                guard let updatedTemplate = self.template else { return }
-                _ = tellaData?.updateUwaziTemplate(template: updatedTemplate)
-
-            })
-            .store(in: &subscribers)
     }
+    
     var tellaData: TellaData? {
         return self.mainAppModel.tellaData
     }
