@@ -146,10 +146,11 @@ class UwaziServerRepository: WebRepository {
         return apiResponse
             .compactMap{ $0.0 }
             .map { dto in
-                dto.rows
+                let shouldFetchAllTemplates = templatesIds.contains { $0?.isEmpty ?? false }
+                return dto.rows
                     .filter{ $0.type == "template" }
                     .filter { relationship in
-                        templatesIds.contains(relationship.id)
+                        shouldFetchAllTemplates || templatesIds.contains(where: { $0 == relationship.id })
                     }
                     .compactMap{ $0.toDomain() as? UwaziRelationshipList }
             }

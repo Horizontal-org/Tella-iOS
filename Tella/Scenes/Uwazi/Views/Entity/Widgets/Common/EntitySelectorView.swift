@@ -19,7 +19,7 @@ struct EntitySelectorView: View {
             VStack {
                 NavigationHeaderView(backButtonAction: {presentationMode.wrappedValue.dismiss()},
                                      reloadAction: {presentationMode.wrappedValue.dismiss()},
-                                     title: "incident",
+                                     title: prompt.question,
                                      type: .save,
                                      showRightButton: !selectedValues.isEmpty
                 ).padding(.horizontal, 18)
@@ -51,10 +51,16 @@ struct EntitySelectorView: View {
     }
     
     func filteredEntities() -> [EntityRelationshipItem] {
-        return entityViewModel.relationshipEntities
-            .first { $0.id == prompt.content }?
-            .values
-            .filter { searchText.isEmpty || $0.label.lowercased().contains(searchText.lowercased()) } ?? []
+        guard let content = prompt.content, !content.isEmpty else {
+            return entityViewModel.relationshipEntities.flatMap{ $0.values }
+                .filter { searchText.isEmpty ||  $0.label.lowercased().contains(searchText.lowercased()) }
+        }
+        
+        let relationshipItems = entityViewModel.relationshipEntities
+            .first { $0.id == content }?
+            .values ?? []
+        
+        return relationshipItems.filter { searchText.isEmpty || $0.label.lowercased().contains(searchText.lowercased()) }
     }
 }
 
