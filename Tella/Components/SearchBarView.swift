@@ -35,6 +35,11 @@ struct SearchBar: View {
                         .textFieldStyle(TextfieldStyle(shouldShowError: false))
                         .frame(height: 22)
                         .focused($isInputActive)
+                    if !searchText.isEmpty {
+                        Button(action: { searchText = "" }) {
+                            Image("uwazi.cancel")
+                        }
+                    }
                 }
                 .padding()
                 .overlay(
@@ -59,12 +64,17 @@ struct SearchBarNoFocus: View {
                         .keyboardType(.default)
                         .textFieldStyle(TextfieldStyle(shouldShowError: false))
                         .frame( height: 22)
+                    if !searchText.isEmpty {
+                        Button(action: { searchText = "" }) {
+                            Image("uwazi.cancel")
+                        }
                     }
-                    .padding()
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 6)
-                            .stroke(.white.opacity(0.64), lineWidth: 1)
-                    )
+                }
+                .padding()
+                .overlay(
+                    RoundedRectangle(cornerRadius: 6)
+                        .stroke(.white.opacity(0.64), lineWidth: 1)
+                )
                     .padding()
             }
         }.padding(.top, 8)
