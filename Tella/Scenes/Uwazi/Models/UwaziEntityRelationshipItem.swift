@@ -1,8 +1,8 @@
 //
-//  EntityListMock.swift
+//  UwaziEntityRelationshipItem.swift
 //  Tella
 //
-//  Created by gus valbuena on 4/10/24.
+//  Created by gus valbuena on 5/2/24.
 //  Copyright © 2024 HORIZONTAL. All rights reserved.
 //
 

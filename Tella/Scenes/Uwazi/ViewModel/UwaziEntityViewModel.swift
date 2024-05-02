@@ -163,14 +163,3 @@ class UwaziEntityViewModel: ObservableObject {
         }
     }
 }
-
-
-struct RelationshipValue {
-    let id, label, type: String
-    
-    init(id: String, label: String, type: String) {
-        self.id = id
-        self.label = label
-        self.type = type
-    }
-}
