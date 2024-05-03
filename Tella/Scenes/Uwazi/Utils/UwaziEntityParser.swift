@@ -197,7 +197,6 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
         
         let metadata = self.entityInstance?.metadata
 
-        
         let vaultFilesID = self.entityInstance?.files.compactMap{$0.vaultFileInstanceId} ?? []
         let vaultFiles = appModel.vaultFilesManager?.getVaultFiles(ids: vaultFilesID) ?? []
         
@@ -215,8 +214,8 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                 
             case .dataTypeText, .dataTypeNumeric, .dataTypeMarkdown, .dataTypeDate:
                 guard let entryPrompt = entryPrompt as? UwaziTextEntryPrompt else { continue }
-                let valueDict = value as? [String:Any]
-                guard let decoded = try? valueDict?.decode(UwaziValue<String>.self) else { continue }
+                let valueDict = value as? [[String:Any]]
+                guard let decoded = try? valueDict?.first?.decode(UwaziValue<String>.self) else { continue }
                 entryPrompt.value = decoded.value
                 
             case .dataTypeSelect, .dataTypeMultiSelect:

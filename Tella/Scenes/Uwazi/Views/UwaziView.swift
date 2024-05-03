@@ -27,23 +27,27 @@ struct UwaziView: View {
                 
                 VStack (spacing: 0) {
                     Spacer()
+                    
                     switch self.uwaziViewModel.selectedCell {
                         
                     case .template:
-                        TemplateListView(
-                            message: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized, serverName: uwaziViewModel.serverName)
-                        .environmentObject(DownloadedTemplatesViewModel(mainAppModel: uwaziViewModel.mainAppModel, serverId: uwaziViewModel.server.id!))
+                        UwaziListView(message: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized,
+                                                emptyMessage: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized,
+                                                cardsViewModel: $uwaziViewModel.templateCardsViewModel)
                     case .draft:
-                        EntityInstancesListView(message: LocalizableUwazi.draftListExpl.localized,
-                                                uwaziEntityInstance: $uwaziViewModel.draftEntitiesViewModel)
-                        
+                        UwaziListView(message: LocalizableUwazi.draftListExpl.localized,
+                                                emptyMessage: LocalizableUwazi.emptyDraftListExpl.localized,
+                                                cardsViewModel: $uwaziViewModel.draftEntitiesViewModel)
+
                     case .outbox:
-                        EntityInstancesListView(message: "outbox", 
-                                                uwaziEntityInstance: $uwaziViewModel.outboxedEntitiesViewModel)
+                        UwaziListView(message: LocalizableUwazi.outboxListExpl.localized,
+                                                emptyMessage: LocalizableUwazi.emptyOutboxListExpl.localized,
+                                                cardsViewModel: $uwaziViewModel.outboxedEntitiesViewModel)
                         
                     case .submitted:
-                        EntityInstancesListView(message: "submitted",
-                                                uwaziEntityInstance: $uwaziViewModel.submittedEntitiesViewModel)
+                        UwaziListView(message: LocalizableUwazi.submittedListExpl.localized,
+                                                emptyMessage: LocalizableUwazi.emptySubmittedListExpl.localized,
+                                                cardsViewModel: $uwaziViewModel.submittedEntitiesViewModel)
                     }
                     
                     Spacer()

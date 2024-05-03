@@ -13,16 +13,18 @@ class UwaziSubmissionViewModel {
     
     var entityInstance: UwaziEntityInstance?
     var mainAppModel : MainAppModel
-    private var subscribers = Set<AnyCancellable>()
     
     init(entityInstance: UwaziEntityInstance? = nil, mainAppModel: MainAppModel) {
         self.entityInstance = entityInstance
         self.mainAppModel = mainAppModel
     }
     
-    func submitEntity(onCompletion: @escaping () -> Void) {
+    func submitEntity() -> AnyPublisher<EntityResult, APIError> {
         //        self.isLoading = true
-        guard let server = entityInstance?.server else { return  }
+        guard let server = entityInstance?.server else {
+            return Fail(error: APIError.unexpectedResponse)
+                .eraseToAnyPublisher()
+        }
         let isPublic = server.accessToken == nil
         // Extract entity data and metadata
         let entityData = extractEntityDataAndMetadata()
@@ -41,22 +43,7 @@ class UwaziSubmissionViewModel {
             multipartBody: body,
             isPublic: isPublic
         )
-        response
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
-                switch completion {
-                case .finished:
-                    debugLog("Finished")
-                    Toast.displayToast(message: LocalizableUwazi.uwaziEntitySubmitted.localized)
-                    onCompletion()
-                case .failure(let error):
-                    debugLog(error.localizedDescription)
-                    Toast.displayToast(message: LocalizableUwazi.uwaziEntityFailedSubmission.localized)
-                }
-            } receiveValue: { value in
-                debugLog(value)
-            }
-            .store(in: &subscribers)
+        return response
     }
     
     private func extractEntityDataAndMetadata() -> ([String: Any]) {

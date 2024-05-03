@@ -16,9 +16,11 @@ class UwaziViewModel: ObservableObject {
     @Published var templates : [CollectedTemplate] = []
     @Published var downloadedTemplates : [CollectedTemplate] = []
     
-    @Published var draftEntitiesViewModel : [EntityInstanceCardViewModel] = []
-    @Published var outboxedEntitiesViewModel : [EntityInstanceCardViewModel] = []
-    @Published var submittedEntitiesViewModel : [EntityInstanceCardViewModel] = []
+    @Published var templateCardsViewModel : [UwaziCardViewModel] = []
+    
+    @Published var draftEntitiesViewModel : [UwaziCardViewModel] = []
+    @Published var outboxedEntitiesViewModel : [UwaziCardViewModel] = []
+    @Published var submittedEntitiesViewModel : [UwaziCardViewModel] = []
     
     @Published var selectedCell = Pages.template
     @Published var isLoading: Bool = false
@@ -42,6 +44,8 @@ class UwaziViewModel: ObservableObject {
         self.server = server
         self.serverName = server.name ?? ""
         
+        self.getDownloadedTemplates()
+        
         self.getUwaziInstances()
         self.listenToUpdates()
         
@@ -54,20 +58,31 @@ class UwaziViewModel: ObservableObject {
         let submittedEntities = tellaData?.getSubmittedUwaziEntityInstances() ?? []
         
         draftEntitiesViewModel = draftEntities.compactMap{ entity in
-            EntityInstanceCardViewModel(instance: entity,
-                                        deleteTemplate: { self.deleteEntity(entityId: entity.id)})
+            UwaziCardViewModel(instance: entity,
+                          deleteTemplate: { self.deleteEntity(entityId: entity.id)})
         }
         
         outboxedEntitiesViewModel = outboxedEntities.compactMap{ entity in
-            EntityInstanceCardViewModel(instance: entity,
-                                        deleteTemplate: { self.deleteEntity(entityId: entity.id)})
+            UwaziCardViewModel(instance: entity,
+                          deleteTemplate: { self.deleteEntity(entityId: entity.id)})
         }
         
         submittedEntitiesViewModel = submittedEntities.compactMap{ entity in
-            EntityInstanceCardViewModel(instance: entity,
-                                        deleteTemplate: { self.deleteEntity(entityId: entity.id)})
+            UwaziCardViewModel(instance: entity,
+                          deleteTemplate: { self.deleteEntity(entityId: entity.id)})
         }
     }
+    
+    private func getDownloadedTemplates() {
+        self.downloadedTemplates = self.tellaData?.getAllUwaziTemplate() ?? []
+        
+        self.templateCardsViewModel = self.downloadedTemplates.compactMap({ collectedTemplate in
+            
+            UwaziCardViewModel(template: collectedTemplate,
+                          deleteTemplate: {self.deleteDownloadedTemplate(templateId:collectedTemplate.id)})
+        })
+    }
+    
     
     func listenToUpdates() {
         self.mainAppModel.tellaData?.shouldReloadUwaziInstances
@@ -84,6 +99,14 @@ class UwaziViewModel: ObservableObject {
         guard let entityId else { return }
         self.tellaData?.deleteUwaziEntityInstance(entityId: entityId)
         getUwaziInstances()
+    }
+    
+    /// Delete the saved template from database using the template id of the template for downloaded template listing view
+    /// - Parameter template: The template object which we need to delete
+    func deleteDownloadedTemplate(templateId: Int?) {
+        guard let templateId else { return }
+        self.tellaData?.deleteAllUwaziTemplate(id: templateId)
+        getDownloadedTemplates()
     }
     
     

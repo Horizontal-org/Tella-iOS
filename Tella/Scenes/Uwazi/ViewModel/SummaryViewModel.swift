@@ -7,12 +7,14 @@
 //
 
 import Foundation
+import Combine
 
 class SummaryViewModel: ObservableObject {
     
     var mainAppModel : MainAppModel
     var entityInstance: UwaziEntityInstance?
     var uwaziSubmissionViewModel: UwaziSubmissionViewModel?
+    private var subscribers = Set<AnyCancellable>()
     
     @Published var isLoading: Bool = false
     @Published var shouldHideView : Bool = false
@@ -49,7 +51,7 @@ class SummaryViewModel: ObservableObject {
         
         guard let entityInstance = entityInstance else { return }
         entityInstance.status = .finalized
-       
+        
         let isSaved = tellaData?.addUwaziEntityInstance(entityInstance: entityInstance) ?? false
         
         if isSaved {
@@ -68,12 +70,30 @@ class SummaryViewModel: ObservableObject {
         
         tellaData?.addUwaziEntityInstance(entityInstance: entityInstance)
         
-        uwaziSubmissionViewModel?.submitEntity(onCompletion: {
-            self.isLoading = false
-            self.shouldHideView = true
-            entityInstance.status = .submitted
-            self.tellaData?.addUwaziEntityInstance(entityInstance: entityInstance)
-
-        })
+        uwaziSubmissionViewModel?.submitEntity()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                
+                self?.isLoading = false
+                self?.shouldHideView = true
+                
+                switch completion {
+                case .finished:
+                    Toast.displayToast(message: LocalizableUwazi.uwaziEntitySubmitted.localized)
+                    entityInstance.status = .submitted
+                    
+                case .failure(let error):
+                    debugLog(error.localizedDescription)
+                    Toast.displayToast(message: LocalizableUwazi.uwaziEntityFailedSubmission.localized)
+                    entityInstance.status = .submissionError
+                }
+                
+                self?.tellaData?.addUwaziEntityInstance(entityInstance: entityInstance)
+                
+            } receiveValue: { value in
+                debugLog(value)
+            }
+            .store(in: &subscribers)
+        
     }
 }

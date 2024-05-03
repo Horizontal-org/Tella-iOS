@@ -33,6 +33,7 @@ struct ReportCardView : View {
                     ImageButtonView(imageName: "reports.more", action: {
                         reportsViewModel.selectedReport = report
                         showReportActionBottomSheet()
+                        
                     })
                     
                 }.padding(.all, 16)

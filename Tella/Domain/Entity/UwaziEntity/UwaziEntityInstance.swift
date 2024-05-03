@@ -18,6 +18,9 @@ class UwaziEntityInstance: Codable {
     var title: String?
     var type: String = "entity"
     var updatedDate: Date?
+    
+    var serverId: Int?
+
     var server: UwaziServer?
     var collectedTemplate: CollectedTemplate?
     
@@ -74,5 +77,7 @@ class UwaziEntityInstance: Codable {
         self.updatedDate = updatedDate.getDate()
         
         self.title = try container.decode(String.self, forKey: .title)
+        self.serverId = try container.decode(Int.self, forKey: .serverId)
+
     }
 }

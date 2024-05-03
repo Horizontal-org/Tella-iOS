@@ -30,20 +30,30 @@ extension TellaDataBase: UwaziTemplateProtocol {
         guard let template = serversDict.first else { return nil }
         return try JSONDecoder().decode(CollectedTemplate.self, from: template)
     }
-    func getUwaziTemplate(templateId: Int) throws -> CollectedTemplate? {
+    func getUwaziTemplate(templateId: Int?) throws -> CollectedTemplate? {
         let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziTemplate,
                                                            andCondition: [KeyValue(key: D.cId, value: templateId)])
         guard let template = serversDict.first else { return nil }
         return try JSONDecoder().decode(CollectedTemplate.self, from: template)
     }
     func getAllUwaziTemplate() throws -> [CollectedTemplate] {
-        let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziTemplate,
-                                                           andCondition: [])
-        if !serversDict.isEmpty {
-            return try JSONDecoder().decode([CollectedTemplate].self, from: serversDict)
-        }
-        return []
+        
+        let serverJoinCondition = JoinCondition(tableName: D.tUwaziServer,
+                                                firstItem: JoinItem(tableName: D.tUwaziTemplate, columnName: D.cServerId),
+                                                secondItem: JoinItem(tableName: D.tUwaziServer, columnName: D.cId))
+        
+        let responseDict = try statementBuilder.selectQuery(tableName: D.tUwaziTemplate,
+                                                            joinCondition: [serverJoinCondition])
+        
+        return try responseDict.compactMap({ dict in
+            
+            let template =  try dict.decode(CollectedTemplate.self)
+            let server = try dict.decode(UwaziServer.self)
+            template.serverName = server.name
+            return template
+        })
     }
+    
     func addUwaziTemplate(template: CollectedTemplate) -> CollectedTemplate? {
         do {
             let id = try statementBuilder.insertInto(tableName: D.tUwaziTemplate, keyValue: [
@@ -79,8 +89,8 @@ extension TellaDataBase: UwaziTemplateProtocol {
             
             let templateCondition = [KeyValue(key: D.cId, value: template.id)]
             return try statementBuilder.update(tableName: D.tUwaziTemplate,
-                                           valuesToUpdate: valuesToUpdate,
-                                           equalCondition: templateCondition)
+                                               valuesToUpdate: valuesToUpdate,
+                                               equalCondition: templateCondition)
         } catch let error {
             debugLog(error)
             return nil
@@ -155,7 +165,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
         return servers
     }
     
-    func getUwaziServer(serverId: Int) throws -> UwaziServer? {
+    func getUwaziServer(serverId: Int?) throws -> UwaziServer? {
         let response = try statementBuilder.selectQuery(tableName: D.tUwaziServer,
                                                         andCondition: [KeyValue(key: D.cId, value: serverId)])
         guard let uwaziServerDict = response.first else { return nil }
@@ -288,22 +298,22 @@ extension TellaDataBase:UwaziEntityInstanceProtocol {
             
             let valuesToUpdate = entityInstanceDictionnary.compactMap({KeyValue(key: $0.key, value: $0.value)})
             let entityInstanceCondition = [KeyValue(key: D.cId, value: entityInstance.id)]
-
+            
             let entityInstanceId = try statementBuilder.update(tableName: D.tUwaziEntityInstances, 
                                                                valuesToUpdate: valuesToUpdate,
                                                                equalCondition: entityInstanceCondition)
             
-//            let entityInstanceId = try statementBuilder.insertInto(tableName: D.tUwaziEntityInstances,
-//                                                                   keyValue:valuesToAdd)
-//            
-//            try entityInstance.files.forEach({ widgetMediaFiles in
-//                
-//                let fileValuesToAdd = [KeyValue(key: D.cVaultFileInstanceId, value: entityInstanceId),
-//                                       KeyValue(key: D.cUwaziEntityInstanceId, value: entityInstanceId)]
-//                
-//                try statementBuilder.insertInto(tableName: D.tUwaziEntityInstanceVaultFile,
-//                                                keyValue: fileValuesToAdd)
-//            })
+            //            let entityInstanceId = try statementBuilder.insertInto(tableName: D.tUwaziEntityInstances,
+            //                                                                   keyValue:valuesToAdd)
+            //            
+            //            try entityInstance.files.forEach({ widgetMediaFiles in
+            //                
+            //                let fileValuesToAdd = [KeyValue(key: D.cVaultFileInstanceId, value: entityInstanceId),
+            //                                       KeyValue(key: D.cUwaziEntityInstanceId, value: entityInstanceId)]
+            //                
+            //                try statementBuilder.insertInto(tableName: D.tUwaziEntityInstanceVaultFile,
+            //                                                keyValue: fileValuesToAdd)
+            //            })
             return .success(entityInstanceId)
         } catch let error {
             debugLog(error)
@@ -314,28 +324,21 @@ extension TellaDataBase:UwaziEntityInstanceProtocol {
     func getUwaziEntityInstance(entityStatus:[EntityStatus]) -> [UwaziEntityInstance] {
         
         do {
-            let serverJoinCondition = JoinCondition(tableName: D.tUwaziServer,
-                                                    firstItem: JoinItem(tableName: D.tUwaziEntityInstances, columnName: D.cServerId),
-                                                    secondItem: JoinItem(tableName: D.tUwaziServer, columnName: D.cId))
             
-            let templateJoinCondition = JoinCondition(tableName: D.tUwaziTemplate,
-                                                      firstItem: JoinItem(tableName: D.tUwaziEntityInstances, columnName: D.cLocalTemplateId),
-                                                      secondItem: JoinItem(tableName: D.tUwaziTemplate, columnName: D.cId))
-            
-            let joinCondition = [serverJoinCondition, templateJoinCondition]
             let statusArray = entityStatus.compactMap{ $0.rawValue }
             
             let responseDict = try statementBuilder.getSelectQuery(tableName: D.tUwaziEntityInstances,
-                                                                   inCondition: [KeyValues(key:D.cStatus, value: statusArray)],
-                                                                   joinCondition: joinCondition)
+                                                                   inCondition: [KeyValues(key:D.cStatus, value: statusArray)])
             
             return try responseDict.compactMap({ dict in
                 let entityInstance = try dict.decode(UwaziEntityInstance.self)
                 
-                let server = try dict.decode(UwaziServer.self)
+                
+                let server = try getUwaziServer(serverId: entityInstance.serverId)
+                
                 entityInstance.server = server
                 
-                let collectedTemplate = try dict.decode(CollectedTemplate.self)
+                let collectedTemplate = try getUwaziTemplate(templateId: entityInstance.templateId)
                 entityInstance.collectedTemplate = collectedTemplate
                 
                 entityInstance.files = getVaultFiles(instanceId: entityInstance.id)
