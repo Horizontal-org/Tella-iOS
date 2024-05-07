@@ -37,19 +37,15 @@ extension TellaDataBase: UwaziTemplateProtocol {
         return try JSONDecoder().decode(CollectedTemplate.self, from: template)
     }
     func getAllUwaziTemplate() throws -> [CollectedTemplate] {
-        
-        let serverJoinCondition = JoinCondition(tableName: D.tUwaziServer,
-                                                firstItem: JoinItem(tableName: D.tUwaziTemplate, columnName: D.cServerId),
-                                                secondItem: JoinItem(tableName: D.tUwaziServer, columnName: D.cId))
-        
-        let responseDict = try statementBuilder.selectQuery(tableName: D.tUwaziTemplate,
-                                                            joinCondition: [serverJoinCondition])
+
+        let responseDict = try statementBuilder.selectQuery(tableName: D.tUwaziTemplate)
         
         return try responseDict.compactMap({ dict in
             
             let template =  try dict.decode(CollectedTemplate.self)
-            let server = try dict.decode(UwaziServer.self)
-            template.serverName = server.name
+            
+            let server = try getUwaziServer(serverId: template.serverId)
+            template.serverName = server?.name
             return template
         })
     }
@@ -111,12 +107,17 @@ extension TellaDataBase: UwaziTemplateProtocol {
             debugLog(error)
         }
     }
-    func deleteUwaziTemplate(id: Int) {
+    
+    func deleteUwaziTemplate(id: Int) -> Result<Bool,Error> {
+        
         do {
             try statementBuilder.delete(tableName: D.tUwaziTemplate,
                                         primarykeyValue: [KeyValue(key: D.cId, value: id)])
+            return .success(true)
+            
         } catch let error {
             debugLog(error)
+            return .failure(error)
         }
     }
 }

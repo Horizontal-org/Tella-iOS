@@ -60,8 +60,8 @@ struct EntityInstanceItemView: View {
                 
                 HStack {
                     
-                    if (cardViewModel.imageName != nil) {
-                        Image(cardViewModel.imageName!)
+                    if (cardViewModel.iconImageName != nil) {
+                        Image(cardViewModel.iconImageName!)
                         Spacer()
                             .frame(width: 12)
                     }
@@ -103,14 +103,13 @@ struct EntityInstanceItemView: View {
     }
     
     private func showDeleteTemplateConfirmationView() {
+        
         sheetManager.showBottomSheet(modalHeight: 200) {
             return ConfirmBottomSheet(titleText: cardViewModel.deleteTitle,
                                       msgText: cardViewModel.deleteMessage,
                                       cancelText: LocalizableUwazi.noSheetAction.localized,
                                       actionText: LocalizableUwazi.yesSheetAction.localized) {
                 cardViewModel.deleteAction()
-                // to ask
-                // Toast.displayToast(message: "“\(templateCardViewModel.translatedName)” \(LocalizableUwazi.uwaziDeleteEntitySheetExpl.localized)")
             }
         }
     }

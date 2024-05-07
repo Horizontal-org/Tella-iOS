@@ -31,7 +31,7 @@ struct UwaziView: View {
                     switch self.uwaziViewModel.selectedCell {
                         
                     case .template:
-                        UwaziListView(message: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized,
+                        UwaziListView(message: LocalizableUwazi.uwaziTemplateListExpl.localized,
                                                 emptyMessage: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized,
                                                 cardsViewModel: $uwaziViewModel.templateCardsViewModel)
                     case .draft:
@@ -63,6 +63,11 @@ struct UwaziView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: backButton)
+        .onReceive(uwaziViewModel.$shouldShowToast) { shouldShowToast in
+            if shouldShowToast {
+                Toast.displayToast(message: uwaziViewModel.toastMessage)
+            }
+        }
         
     }
     

@@ -22,7 +22,8 @@ class TellaData : ObservableObject {
     var outboxedReports = CurrentValueSubject<[Report], Error>([])
     
     var shouldReloadUwaziInstances = CurrentValueSubject<Bool, Never>(false)
-    
+    var shouldReloadUwaziTemplates = CurrentValueSubject<Bool, Never>(false)
+
     init(database : TellaDataBase, vaultManager: VaultManagerInterface? = nil) throws {
         self.database = database
         self.vaultManager = vaultManager
@@ -305,8 +306,16 @@ class TellaData : ObservableObject {
 
 // MARK: - Extension for Uwazi Template methods
 extension TellaData {
+    
     func addUwaziTemplate(template: CollectedTemplate) -> CollectedTemplate? {
-        return database.addUwaziTemplate(template: template)
+       
+        let collectedTemplate = database.addUwaziTemplate(template: template)
+        
+        guard let collectedTemplate else { return nil }
+
+        self.shouldReloadUwaziTemplates.send(true)
+        
+        return collectedTemplate
     }
 
     func updateUwaziTemplate(template: CollectedTemplate) -> Int? {
@@ -315,6 +324,10 @@ extension TellaData {
         return id
     }
     func deleteAllUwaziTemplate(templateId: String) {
+        
+        self.shouldReloadUwaziTemplates.send(true)
+
+        
         return database.deleteUwaziTemplate(templateId: templateId)
     }
     func getAllUwaziTemplate() -> [CollectedTemplate] {
@@ -335,7 +348,7 @@ extension TellaData {
             return nil
         }
     }
-    func deleteAllUwaziTemplate(id: Int) {
+    func deleteUwaziTemplate(id: Int) -> Result<Bool,Error> {
         database.deleteUwaziTemplate(id: id)
     }
 }
@@ -371,7 +384,6 @@ extension TellaData {
     
     func getSubmittedUwaziEntityInstances() -> [UwaziEntityInstance] {
         return database.getUwaziEntityInstance(entityStatus: [.submitted])
-        
     }
     
     func deleteUwaziEntityInstance(entityId:Int) -> Result<Bool,Error> {

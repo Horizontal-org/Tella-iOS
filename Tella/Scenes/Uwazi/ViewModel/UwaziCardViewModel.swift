@@ -15,7 +15,7 @@ enum CardType {
 }
 
 class UwaziCardViewModel: Hashable {
-
+    
     var id : String
     
     var templateId : Int?
@@ -25,13 +25,13 @@ class UwaziCardViewModel: Hashable {
     var deleteAction: (() -> Void)
     var serverName: String
     var serverId: Int?
+    
     var deleteTitle: String
     var deleteMessage: String
     var listActionSheetItem: [ListActionSheetItem]
     var type : CardType
     
-    var imageName: String? = nil
-    
+    var iconImageName: String? = nil
     
     init(template : CollectedTemplate,
          deleteTemplate: @escaping (() -> Void)) {
@@ -42,8 +42,8 @@ class UwaziCardViewModel: Hashable {
         self.deleteAction = deleteTemplate
         self.serverId = template.serverId
         self.serverName = template.serverName ?? ""
-        let titleText = String.init(format: LocalizableUwazi.deleteDraftSheetTitle.localized, "\"\(self.title)\"")
         
+        let titleText = String.init(format: LocalizableUwazi.deleteSheetTitle.localized, "\(self.title)")
         self.deleteTitle = titleText
         self.deleteMessage = LocalizableUwazi.uwaziDeleteTemplateExpl.localized
         listActionSheetItem = downloadTemplateActionItems
@@ -62,8 +62,8 @@ class UwaziCardViewModel: Hashable {
         self.deleteAction = deleteTemplate
         self.serverName = instance.server?.name ?? ""
         
-        let titleText = String.init(format: LocalizableUwazi.deleteDraftSheetTitle.localized, "\"\(self.title)\"")
         
+        let titleText = String.init(format: LocalizableUwazi.deleteSheetTitle.localized, "\(self.title)")
         self.deleteTitle = titleText
         self.deleteMessage = LocalizableUwazi.deleteDraftSheetExpl.localized
         
@@ -78,20 +78,20 @@ class UwaziCardViewModel: Hashable {
         
         switch instance.status {
         case .submitted:
-            imageName = "submitted"
+            iconImageName = "submitted"
         case .finalized:
-            imageName = "time.yellow"
+            iconImageName = "time.yellow"
         case .submissionError, .submissionPending:
-            imageName = "info-icon"
+            iconImageName = "info-icon"
         case .submissionInProgress:
-            imageName = "progress-circle.green"
+            iconImageName = "progress-circle.green"
         default:
             break
         }
         
         type = .entityInstance
     }
-
+    
     static func == (lhs: UwaziCardViewModel, rhs: UwaziCardViewModel) -> Bool {
         lhs.id == rhs.id
     }

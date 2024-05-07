@@ -26,6 +26,9 @@ class UwaziViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var serverName : String
     
+    @Published var shouldShowToast : Bool = false
+    @Published var toastMessage : String = ""
+    
     var pageViewItems : [PageViewItem] {
         [PageViewItem(title: LocalizableUwazi.uwaziPageViewTemplate.localized, page: .template, number: 0),
          PageViewItem(title: "Draft", page: .draft, number: draftEntitiesViewModel.count),
@@ -59,17 +62,17 @@ class UwaziViewModel: ObservableObject {
         
         draftEntitiesViewModel = draftEntities.compactMap{ entity in
             UwaziCardViewModel(instance: entity,
-                          deleteTemplate: { self.deleteEntity(entityId: entity.id)})
+                               deleteTemplate: { self.deleteEntity(entity: entity)})
         }
         
         outboxedEntitiesViewModel = outboxedEntities.compactMap{ entity in
             UwaziCardViewModel(instance: entity,
-                          deleteTemplate: { self.deleteEntity(entityId: entity.id)})
+                               deleteTemplate: { self.deleteEntity(entity: entity)})
         }
         
         submittedEntitiesViewModel = submittedEntities.compactMap{ entity in
             UwaziCardViewModel(instance: entity,
-                          deleteTemplate: { self.deleteEntity(entityId: entity.id)})
+                               deleteTemplate: { self.deleteEntity(entity: entity)})
         }
     }
     
@@ -79,10 +82,9 @@ class UwaziViewModel: ObservableObject {
         self.templateCardsViewModel = self.downloadedTemplates.compactMap({ collectedTemplate in
             
             UwaziCardViewModel(template: collectedTemplate,
-                          deleteTemplate: {self.deleteDownloadedTemplate(templateId:collectedTemplate.id)})
+                               deleteTemplate: {self.deleteDownloadedTemplate(template:collectedTemplate)})
         })
     }
-    
     
     func listenToUpdates() {
         self.mainAppModel.tellaData?.shouldReloadUwaziInstances
@@ -91,25 +93,57 @@ class UwaziViewModel: ObservableObject {
             } receiveValue: { draftReports in
                 self.getUwaziInstances()
             }.store(in: &subscribers)
+        
+        self.mainAppModel.tellaData?.shouldReloadUwaziTemplates
+            .receive(on: DispatchQueue.main)
+            .sink { result in
+            } receiveValue: { draftReports in
+                self.getDownloadedTemplates()
+            }.store(in: &subscribers)
     }
     
     /// Delete the saved template from database using the template id of the template for downloaded template listing view
     /// - Parameter template: The template object which we need to delete
-    func deleteEntity(entityId: Int?) {
-        guard let entityId else { return }
-        self.tellaData?.deleteUwaziEntityInstance(entityId: entityId)
-        getUwaziInstances()
+    func deleteEntity(entity:UwaziEntityInstance) {
+        
+        guard let entityId = entity.id else { return }
+        
+        let resultDeletion = self.tellaData?.deleteUwaziEntityInstance(entityId: entityId)
+        
+        var message = ""
+        if case .success = resultDeletion {
+            message = String.init(format: LocalizableUwazi.uwaziDeletedToast.localized, entity.title ?? "")
+            getUwaziInstances()
+            
+        } else {
+            message = LocalizableCommon.commonError.localized
+        }
+        
+        self.shouldShowToast = true
+        self.toastMessage = message
     }
     
     /// Delete the saved template from database using the template id of the template for downloaded template listing view
     /// - Parameter template: The template object which we need to delete
-    func deleteDownloadedTemplate(templateId: Int?) {
-        guard let templateId else { return }
-        self.tellaData?.deleteAllUwaziTemplate(id: templateId)
-        getDownloadedTemplates()
+    func deleteDownloadedTemplate(template:CollectedTemplate) {
+        
+        
+        guard let templateId = template.id  else { return }
+        
+        let resultDeletion =  self.tellaData?.deleteUwaziTemplate(id: templateId)
+        
+        var message = ""
+        if case .success = resultDeletion {
+            message = String.init(format: LocalizableUwazi.uwaziDeletedToast.localized, template.entityRow?.translatedName ?? "")
+            getDownloadedTemplates()
+            
+        } else {
+            message = LocalizableCommon.commonError.localized
+        }
+        
+        self.shouldShowToast = true
+        self.toastMessage = message
     }
-    
-    
 }
 
 

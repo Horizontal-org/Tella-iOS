@@ -16,5 +16,5 @@ protocol UwaziTemplateProtocol {
     func addUwaziTemplate(template: CollectedTemplate) throws -> CollectedTemplate?
     func deleteAllUwaziTemplate() throws 
     func deleteUwaziTemplate(templateId: String) throws
-    func deleteUwaziTemplate(id: Int) throws
+    func deleteUwaziTemplate(id: Int) -> Result<Bool,Error>  
 }

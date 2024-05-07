@@ -19,16 +19,17 @@ enum DownloadedTemplateActionType: ActionType {
 
 var templateActionItems : [ListActionSheetItem] { return [
     ListActionSheetItem(imageName: "delete-icon-white",
-                        content: LocalizableUwazi.uwaziDeleteEntitySheetExpl.localized,
+                        content: LocalizableUwazi.uwaziDeleteFromDevice.localized,
                         type: TemplateActionType.delete)
     ]
 }
+
 var downloadTemplateActionItems : [ListActionSheetItem] { return [
     ListActionSheetItem(imageName: "edit-icon",
                         content: LocalizableUwazi.uwaziCreateEntitySheetExpl.localized,
                         type: DownloadedTemplateActionType.createEntity),
     ListActionSheetItem(imageName: "delete-icon-white",
-                        content: LocalizableUwazi.uwaziDeleteEntitySheetExpl.localized,
+                        content: LocalizableUwazi.uwaziDeleteTemplate.localized,
                         type: DownloadedTemplateActionType.delete)
     ]
 }
