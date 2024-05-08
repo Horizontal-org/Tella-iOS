@@ -28,34 +28,3 @@ class UwaziEntityInstanceFile: Codable {
         self.entityInstanceId = entityInstanceId
     }
 }
-
-class UwaziEntityInstanceVaultFile : VaultFileDB {
-    
-    var instanceId: Int?
-    var vaultFileInstanceId: String?
-    var status : FileStatus?
-    var entityInstanceId : Int?
-    
-    init(uwaziEntityInstanceFile: UwaziEntityInstanceFile, vaultFile : VaultFileDB) {
-        
-        super.init(id:vaultFile.id,
-                   type: vaultFile.type,
-                   thumbnail: vaultFile.thumbnail,
-                   name: vaultFile.name,
-                   duration: vaultFile.duration,
-                   size: vaultFile.size,
-                   mimeType: vaultFile.mimeType,
-                   width: vaultFile.width,
-                   height: vaultFile.height)
-        
-        self.instanceId = uwaziEntityInstanceFile.id
-        self.status = uwaziEntityInstanceFile.status
-        self.entityInstanceId = uwaziEntityInstanceFile.entityInstanceId
-    }
-    
-    required init(from decoder: Decoder) throws {
-        try super.init(from: decoder)
-        
-    }
-}
-
