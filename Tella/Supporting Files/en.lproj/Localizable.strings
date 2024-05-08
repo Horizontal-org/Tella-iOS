@@ -326,6 +326,9 @@ If you want to take a picture or a video, proceed in the following way:\
 "Uwazi_Server_Delete_SheetAction" = "Delete";
 
 "Uwazi_PageViewItem_Template" = "Templates";
+"Uwazi_PageViewItem_Draft" = "Drafts";
+"Uwazi_PageViewItem_Outbox" = "Outbox";
+"Uwazi_PageViewItem_Submitted" = "Submitted";
 
 "Uwazi_Delete_SheetTitle" = "Delete “%@”?";
 

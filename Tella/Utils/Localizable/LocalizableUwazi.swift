@@ -16,6 +16,10 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     case uwaziServerDelete = "Uwazi_Server_Delete_SheetAction"
     
     case uwaziPageViewTemplate = "Uwazi_PageViewItem_Template"
+    case uwaziPageViewDraft = "Uwazi_PageViewItem_Draft"
+    case uwaziPageViewOutbox = "Uwazi_PageViewItem_Outbox"
+    case uwaziPageViewSubmitted = "Uwazi_PageViewItem_Submitted"
+    
     case uwaziTemplateListExpl = "Uwazi_Template_TemplateList_Expl"
     case uwaziTemplateListEmptyExpl = "Uwazi_Template_TemplateList_EmptyExpl"
     

@@ -30,10 +30,18 @@ class UwaziViewModel: ObservableObject {
     @Published var toastMessage : String = ""
     
     var pageViewItems : [PageViewItem] {
-        [PageViewItem(title: LocalizableUwazi.uwaziPageViewTemplate.localized, page: .template, number: 0),
-         PageViewItem(title: "Draft", page: .draft, number: draftEntitiesViewModel.count),
-         PageViewItem(title: "outbox", page: .outbox, number: outboxedEntitiesViewModel.count),
-         PageViewItem(title: "submitted", page: .submitted, number: submittedEntitiesViewModel.count)]}
+        [PageViewItem(title: LocalizableUwazi.uwaziPageViewTemplate.localized,
+                      page: .template,
+                      number: 0),
+         PageViewItem(title: LocalizableUwazi.uwaziPageViewDraft.localized,
+                      page: .draft,
+                      number: draftEntitiesViewModel.count),
+         PageViewItem(title: LocalizableUwazi.uwaziPageViewOutbox.localized,
+                      page: .outbox,
+                      number: outboxedEntitiesViewModel.count),
+         PageViewItem(title: LocalizableUwazi.uwaziPageViewSubmitted.localized, 
+                      page: .submitted,
+                      number: submittedEntitiesViewModel.count)]}
     
     var server: UwaziServer
     var tellaData: TellaData? {
