@@ -57,7 +57,7 @@ class SummaryViewModel: ObservableObject {
         if isSaved {
             self.shouldHideView = true
         } else {
-            Toast.displayToast(message: "Error")
+            Toast.displayToast(message: LocalizableCommon.commonError.localized)
         }
     }
     

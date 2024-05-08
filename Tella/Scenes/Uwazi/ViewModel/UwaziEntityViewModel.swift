@@ -152,7 +152,7 @@ class UwaziEntityViewModel: ObservableObject {
                 self.shouldHideView = true
                 Toast.displayToast(message: "Entity is saved as draft.")
             } else {
-                Toast.displayToast(message: "Error")
+                Toast.displayToast(message: LocalizableCommon.commonError.localized)
             }
         }
     }
