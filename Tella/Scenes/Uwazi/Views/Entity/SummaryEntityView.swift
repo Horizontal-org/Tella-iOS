@@ -13,8 +13,12 @@ struct SummaryEntityView: View {
     @StateObject var summaryViewModel : SummaryViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    init(mainAppModel: MainAppModel, entityInstance: UwaziEntityInstance?) {
-        _summaryViewModel = StateObject(wrappedValue: SummaryViewModel(mainAppModel: mainAppModel, entityInstance: entityInstance))
+    init(mainAppModel: MainAppModel, 
+         entityInstance: UwaziEntityInstance? = nil,
+         entityInstanceId: Int? = nil) {
+        _summaryViewModel = StateObject(wrappedValue: SummaryViewModel(mainAppModel: mainAppModel, 
+                                                                       entityInstance: entityInstance,
+                                                                       entityInstanceId:entityInstanceId))
     }
     var body: some View {
         ContainerView {
@@ -31,9 +35,11 @@ struct SummaryEntityView: View {
                 entityContent
                 
                 Spacer()
-                UwaziDividerWidget()
                 
-                bottomActionView
+                if summaryViewModel.shouldHideBottomActionView {
+                    UwaziDividerWidget()
+                    bottomActionView
+                }
             }
             
             if summaryViewModel.isLoading {

@@ -390,4 +390,8 @@ extension TellaData {
         database.deleteEntityInstance(entityId: entityId)
     }
     
+    func getUwaziEntityInstance(entityId:Int?) -> UwaziEntityInstance? {
+        guard let entityId else { return nil }
+        return database.getUwaziEntityInstance(entityId: entityId)
+    }
 }

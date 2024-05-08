@@ -55,7 +55,7 @@ struct EntityInstanceItemView: View {
         CardFrameView(padding: EdgeInsets(top: 6, leading: 0, bottom: 0, trailing: 0)) {
             
             Button(action: {
-                showCreateEntityView()
+                showEntityView()
             }) {
                 
                 HStack {
@@ -72,26 +72,42 @@ struct EntityInstanceItemView: View {
                     Spacer()
                     
                     ImageButtonView(imageName: "reports.more",
-                                    action: { showtemplateActionBottomSheet()})
+                                    action: { showBottomSheet()})
                     
                 }.padding(.all, 16)
             }
         }
     }
-
-    private func showtemplateActionBottomSheet() {
+    
+    private func showBottomSheet() {
         sheetManager.showBottomSheet(modalHeight: 176) {
             ActionListBottomSheet(items: cardViewModel.listActionSheetItem,
                                   headerTitle: cardViewModel.title,
                                   action:  {item in
-                let type = item.type as? DownloadedTemplateActionType
-                if type == .delete {
+                guard let type = item.type as? UwaziActionType else {return}
+                
+                switch type {
+                case .delete:
                     showDeleteTemplateConfirmationView()
-                } else {
+                case .createEntity:
                     showCreateEntityView()
+                    sheetManager.hide()
+                case .viewEntity:
+                    showSummaryEntityView()
                     sheetManager.hide()
                 }
             })
+        }
+    }
+    
+    private func showEntityView() {
+        switch cardViewModel.status {
+        case .unknown, .draft:
+            showCreateEntityView()
+            sheetManager.hide()
+        default:
+            showSummaryEntityView()
+            sheetManager.hide()
         }
     }
     
@@ -99,7 +115,11 @@ struct EntityInstanceItemView: View {
         navigateTo(destination: CreateEntityView(appModel: mainAppModel,
                                                  templateId: cardViewModel.templateId,
                                                  entityInstanceID: cardViewModel.entityInstanceID))
-        
+    }
+    
+    private func showSummaryEntityView() {
+        navigateTo(destination: SummaryEntityView(mainAppModel: mainAppModel,
+                                                  entityInstanceId: cardViewModel.entityInstanceID))
     }
     
     private func showDeleteTemplateConfirmationView() {

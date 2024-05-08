@@ -33,13 +33,25 @@ class SummaryViewModel: ObservableObject {
         String(format: "%@ %@", LocalizableUwazi.uwaziEntitySummaryDetailTemplateTitle.localized, entityInstance?.collectedTemplate?.entityRow?.name ?? "")
     }
     
+    var shouldHideBottomActionView: Bool {
+         return entityInstance?.status != .submitted
+    }
+    
     var tellaData: TellaData? {
         return self.mainAppModel.tellaData
     }
     
-    init(mainAppModel : MainAppModel, entityInstance: UwaziEntityInstance? = nil) {
+    init(mainAppModel : MainAppModel, 
+         entityInstance: UwaziEntityInstance? = nil,
+         entityInstanceId: Int? = nil) {
         self.mainAppModel = mainAppModel
-        self.entityInstance = entityInstance
+        
+        if let entityInstance {
+            self.entityInstance = entityInstance
+        } else {
+            self.entityInstance = tellaData?.getUwaziEntityInstance(entityId: entityInstanceId)
+        }
+
         uwaziSubmissionViewModel = UwaziSubmissionViewModel(entityInstance: entityInstance, mainAppModel: mainAppModel)
     }
     

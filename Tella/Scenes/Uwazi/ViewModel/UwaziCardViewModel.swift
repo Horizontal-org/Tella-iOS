@@ -25,7 +25,8 @@ class UwaziCardViewModel: Hashable {
     var deleteAction: (() -> Void)
     var serverName: String
     var serverId: Int?
-    
+    var status : EntityStatus = EntityStatus.unknown
+
     var deleteTitle: String
     var deleteMessage: String
     var listActionSheetItem: [ListActionSheetItem]
@@ -61,7 +62,7 @@ class UwaziCardViewModel: Hashable {
         self.title = instance.title ?? ""
         self.deleteAction = deleteTemplate
         self.serverName = instance.server?.name ?? ""
-        
+        self.status = instance.status
         
         let titleText = String.init(format: LocalizableUwazi.deleteSheetTitle.localized, "\(self.title)")
         self.deleteTitle = titleText
@@ -71,7 +72,7 @@ class UwaziCardViewModel: Hashable {
         case .draft:
             listActionSheetItem = uwaziDraftActionItems
         case .submitted:
-            listActionSheetItem = uwaziOutboxActionItems
+            listActionSheetItem = uwaziSubmittedActionItems
         default:
             listActionSheetItem = uwaziOutboxActionItems
         }

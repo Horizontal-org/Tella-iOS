@@ -11,9 +11,10 @@ import Foundation
 enum TemplateActionType: ActionType {
     case delete
 }
-enum DownloadedTemplateActionType: ActionType {
+enum UwaziActionType: ActionType {
     case delete
     case createEntity
+    case viewEntity
 }
 
 
@@ -27,10 +28,10 @@ var templateActionItems : [ListActionSheetItem] { return [
 var downloadTemplateActionItems : [ListActionSheetItem] { return [
     ListActionSheetItem(imageName: "edit-icon",
                         content: LocalizableUwazi.uwaziCreateEntitySheetExpl.localized,
-                        type: DownloadedTemplateActionType.createEntity),
+                        type: UwaziActionType.createEntity),
     ListActionSheetItem(imageName: "delete-icon-white",
                         content: LocalizableUwazi.uwaziDeleteTemplate.localized,
-                        type: DownloadedTemplateActionType.delete)
+                        type: UwaziActionType.delete)
     ]
 }
 
@@ -39,21 +40,30 @@ var downloadTemplateActionItems : [ListActionSheetItem] { return [
 var uwaziDraftActionItems : [ListActionSheetItem] { return [
     ListActionSheetItem(imageName: "edit-icon",
                         content: LocalizableUwazi.editDraft.localized,
-                        type: DownloadedTemplateActionType.createEntity),
+                        type: UwaziActionType.createEntity),
     ListActionSheetItem(imageName: "delete-icon-white",
                         content: LocalizableUwazi.deleteDraft.localized,
-                        type: DownloadedTemplateActionType.delete)
+                        type: UwaziActionType.delete)
     ]
 }
 
 var uwaziOutboxActionItems : [ListActionSheetItem] { return [
     ListActionSheetItem(imageName: "edit-icon",
                         content: LocalizableUwazi.viewSheetSelect.localized,
-                        type: DownloadedTemplateActionType.createEntity),
+                        type: UwaziActionType.viewEntity),
     ListActionSheetItem(imageName: "delete-icon-white",
                         content: LocalizableUwazi.deleteSheetSelect.localized,
-                        type: DownloadedTemplateActionType.delete)
+                        type: UwaziActionType.delete)
     ]
 }
 
+var uwaziSubmittedActionItems : [ListActionSheetItem] { return [
+    ListActionSheetItem(imageName: "edit-icon",
+                        content: LocalizableUwazi.viewSheetSelect.localized,
+                        type: UwaziActionType.viewEntity),
+    ListActionSheetItem(imageName: "delete-icon-white",
+                        content: LocalizableUwazi.deleteSheetSelect.localized,
+                        type: UwaziActionType.delete)
+    ]
+}
 
