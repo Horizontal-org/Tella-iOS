@@ -351,6 +351,8 @@ If you want to take a picture or a video, proceed in the following way:\
 "Uwazi_Draft_DraftList_Expl" = "These are entities you have not submitted. Tap on an entity to continue working on it.";
 "Uwazi_Draft_EmptyDraftList_Expl" = "Your Drafts is currently empty. Entities that you have not submitted will appear here.";
 
+"Uwazi_Draft_EntitySaved_Toast" =  "Entity is saved as draft.";
+
 "Uwazi_Draft_Delete_SheetExpl" = "Are you sure you want to delete this draft?";
 "Uwazi_Draft_Delete_NO_SheetAction" = "NO";
 "Uwazi_Draft_Delete_YES_SheetAction" = "YES";

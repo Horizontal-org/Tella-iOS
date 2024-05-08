@@ -23,6 +23,7 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     case uwaziAddTemplateExpl = "Uwazi_Template_AddTemplate_Expl"
     case uwaziAddTemplateSecondExpl = "Uwazi_Template_AddTemplate_SecondExpl"
     case uwaziAddTemplateSavedToast = "Uwazi_Template_AddTemplateSaved_Toast"
+    
     case uwaziAddTemplateEmptydExpl = "Uwazi_Template_AddTemplate_EmptyExpl"
     case uwaziDeleteTemplateExpl = "Uwazi_DeleteTemplate_SheetExpl"
     
@@ -65,6 +66,9 @@ enum LocalizableUwazi: String, LocalizableDelegate {
     case draftListExpl = "Uwazi_Draft_DraftList_Expl"
     case emptyDraftListExpl = "Uwazi_Draft_EmptyDraftList_Expl"
 
+    case draftEntitySaved = "Uwazi_Draft_EntitySaved_Toast"
+
+    
     case deleteSheetTitle = "Uwazi_Delete_SheetTitle"
     case deleteDraftSheetExpl = "Uwazi_Draft_Delete_SheetExpl"
     case noSheetAction = "Uwazi_Draft_Delete_NO_SheetAction"

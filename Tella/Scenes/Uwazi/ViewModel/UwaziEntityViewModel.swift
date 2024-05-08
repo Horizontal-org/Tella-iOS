@@ -150,7 +150,7 @@ class UwaziEntityViewModel: ObservableObject {
             guard let isSaved = tellaData?.addUwaziEntityInstance(entityInstance: entityInstance) else { return }        
             if isSaved {
                 self.shouldHideView = true
-                Toast.displayToast(message: "Entity is saved as draft.")
+                Toast.displayToast(message: LocalizableUwazi.draftEntitySaved.localized)
             } else {
                 Toast.displayToast(message: LocalizableCommon.commonError.localized)
             }
