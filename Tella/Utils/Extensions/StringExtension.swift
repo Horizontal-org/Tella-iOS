@@ -148,7 +148,39 @@ extension String {
 
         return type.conforms(to: .pdf)
     }
-
-
 }
 
+
+extension String {
+    var dictionnary: [String:Any] {
+        
+        guard let data = self.data(using: .utf8) else { return [:]}
+        do {
+            guard let jsonArray = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? Dictionary<String,Any> else { return [:]}
+            return jsonArray
+        } catch let error as NSError {
+            debugLog(error)
+            return [:]
+        }
+    }
+    
+    var arraydDictionnary: [[String:Any]] {
+        
+        guard let data = self.data(using: .utf8) else { return [[:]]}
+        do {
+            guard let jsonArray = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? [Dictionary<String,Any>] else { return[ [:]]}
+            return jsonArray
+        } catch let error as NSError {
+            debugLog(error)
+            return [[:]]
+        }
+    }
+
+    
+    func decode<T: Codable>(_ type: T.Type) throws -> T {
+        let data = try JSONSerialization.data(withJSONObject: self)
+        return try JSONDecoder().decode (type, from: data)
+    }
+
+    
+}

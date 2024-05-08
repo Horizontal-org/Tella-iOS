@@ -206,6 +206,7 @@
 		12730E69279F420400DC0135 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12730E68279F420400DC0135 /* SettingsViewModel.swift */; };
 		12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */; };
 		127369E327B3C4DA00CF7BE5 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127369E227B3C4DA00CF7BE5 /* UIDeviceExtension.swift */; };
+		12742C8F2BEB9FBC00919FAE /* EncodableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12742C8E2BEB9FBC00919FAE /* EncodableExtension.swift */; };
 		12751EAA2A13A22100FAD7C6 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12751EA92A13A22100FAD7C6 /* SettingsModel.swift */; };
 		12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A8F27BA742700CDC5DC /* CameraControlsView.swift */; };
 		12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9427BA761C00CDC5DC /* CustomCameraController.swift */; };
@@ -735,6 +736,7 @@
 		12730E68279F420400DC0135 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeadingTitleToolbar.swift; sourceTree = "<group>"; };
 		127369E227B3C4DA00CF7BE5 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
+		12742C8E2BEB9FBC00919FAE /* EncodableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodableExtension.swift; sourceTree = "<group>"; };
 		12751EA92A13A22100FAD7C6 /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		1276330D2A9E407700535D0D /* ku */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ku; path = ku.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12776A8F27BA742700CDC5DC /* CameraControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlsView.swift; sourceTree = "<group>"; };
@@ -1543,6 +1545,7 @@
 				121BAB7E29A7E30600D7E847 /* URLRequestExtension.swift */,
 				E1CF5A262AB3488E00365036 /* JSONDecoderExtension.swift */,
 				125F9B9A2AD9B4770073748C /* DictionaryExtension.swift */,
+				12742C8E2BEB9FBC00919FAE /* EncodableExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3423,6 +3426,7 @@
 				121AD8262943D52B0056AC2A /* SubmitReportResult.swift in Sources */,
 				1203CDE02991429200D09073 /* FileStatus.swift in Sources */,
 				120451FC28C795DC00D572A7 /* EditServerDisplayItemView.swift in Sources */,
+				12742C8F2BEB9FBC00919FAE /* EncodableExtension.swift in Sources */,
 				125F9B952AD933AB0073748C /* FeedbackStatus.swift in Sources */,
 				122389B929367ABA0058593B /* ServerType.swift in Sources */,
 				CCD586D42A7C294800014F87 /* TemplateItemView.swift in Sources */,
