@@ -276,7 +276,7 @@ extension TellaDataBase:UwaziEntityInstanceProtocol {
             
             try entityInstance.files.forEach({ widgetMediaFiles in
                 
-                let fileValuesToAdd = [KeyValue(key: D.cVaultFileInstanceId, value: entityInstanceId),
+                let fileValuesToAdd = [KeyValue(key: D.cVaultFileInstanceId, value: widgetMediaFiles.vaultFileInstanceId),
                                        KeyValue(key: D.cUwaziEntityInstanceId, value: entityInstanceId)]
                 
                 try statementBuilder.insertInto(tableName: D.tUwaziEntityInstanceVaultFile,
@@ -303,18 +303,20 @@ extension TellaDataBase:UwaziEntityInstanceProtocol {
             let entityInstanceId = try statementBuilder.update(tableName: D.tUwaziEntityInstances, 
                                                                valuesToUpdate: valuesToUpdate,
                                                                equalCondition: entityInstanceCondition)
+
+            let condition = [KeyValue(key: D.cUwaziEntityInstanceId, value: entityInstance.id)]
             
-            //            let entityInstanceId = try statementBuilder.insertInto(tableName: D.tUwaziEntityInstances,
-            //                                                                   keyValue:valuesToAdd)
-            //            
-            //            try entityInstance.files.forEach({ widgetMediaFiles in
-            //                
-            //                let fileValuesToAdd = [KeyValue(key: D.cVaultFileInstanceId, value: entityInstanceId),
-            //                                       KeyValue(key: D.cUwaziEntityInstanceId, value: entityInstanceId)]
-            //                
-            //                try statementBuilder.insertInto(tableName: D.tUwaziEntityInstanceVaultFile,
-            //                                                keyValue: fileValuesToAdd)
-            //            })
+            try statementBuilder.delete(tableName: D.tUwaziEntityInstanceVaultFile,
+                                        primarykeyValue:condition )
+
+            try entityInstance.files.forEach({ widgetMediaFiles in
+                
+                let fileValuesToAdd = [KeyValue(key: D.cVaultFileInstanceId, value: widgetMediaFiles.vaultFileInstanceId),
+                                       KeyValue(key: D.cUwaziEntityInstanceId, value: entityInstance.id)]
+                
+                try statementBuilder.insertInto(tableName: D.tUwaziEntityInstanceVaultFile,
+                                                keyValue: fileValuesToAdd)
+            })
             return .success(entityInstanceId)
         } catch let error {
             debugLog(error)
@@ -336,7 +338,6 @@ extension TellaDataBase:UwaziEntityInstanceProtocol {
                 
                 
                 let server = try getUwaziServer(serverId: entityInstance.serverId)
-                
                 entityInstance.server = server
                 
                 let collectedTemplate = try getUwaziTemplate(templateId: entityInstance.templateId)
@@ -358,8 +359,17 @@ extension TellaDataBase:UwaziEntityInstanceProtocol {
             let responseDict = try statementBuilder.selectQuery(tableName: D.tUwaziEntityInstances,
                                                                 andCondition: entityInstanceCondition)
             
-            return try responseDict.first?.decode(UwaziEntityInstance.self)
+            guard let entityInstance = try responseDict.first?.decode(UwaziEntityInstance.self) else  {return nil}
             
+            let server = try getUwaziServer(serverId: entityInstance.serverId)
+            entityInstance.server = server
+            
+            let collectedTemplate = try getUwaziTemplate(templateId: entityInstance.templateId)
+            entityInstance.collectedTemplate = collectedTemplate
+            
+            entityInstance.files = getVaultFiles(instanceId: entityInstance.id)
+            return entityInstance
+
         } catch let error {
             debugLog(error)
             return nil

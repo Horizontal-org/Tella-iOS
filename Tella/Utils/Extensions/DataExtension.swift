@@ -74,7 +74,7 @@ extension Data {
         for index in 0 ..< count {
             CGImageDestinationAddImageFromSource(destination, source, index, exifToRemove)
             if !CGImageDestinationFinalize(destination) {
-                print("Failed to finalize")
+                debugLog("Failed to finalize")
             }
         }
 

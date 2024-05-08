@@ -54,7 +54,7 @@ extension Encodable {
             }
             return dictionary
         } catch let error as NSError {
-            print(error)
+            debugLog(error)
             return [:]
         }
     }
@@ -67,7 +67,7 @@ extension Encodable {
             }
             return dictionary
         } catch let error as NSError {
-            print(error)
+            debugLog(error)
             return [[:]]
         }
     }
@@ -82,7 +82,7 @@ extension String {
             guard let jsonArray = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? Dictionary<String,Any> else { return [:]}
             return jsonArray
         } catch let error as NSError {
-            print(error)
+            debugLog(error)
             return [:]
         }
     }
@@ -94,7 +94,7 @@ extension String {
             guard let jsonArray = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? [Dictionary<String,Any>] else { return[ [:]]}
             return jsonArray
         } catch let error as NSError {
-            print(error)
+            debugLog(error)
             return [[:]]
         }
     }
@@ -114,7 +114,7 @@ func convertToDictionary(text: String) -> [String: Any]? {
         do {
             return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
         } catch {
-            print(error.localizedDescription)
+            debugLog(error.localizedDescription)
         }
     }
     return nil
