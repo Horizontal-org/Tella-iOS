@@ -23,22 +23,4 @@ struct UwaziFileUtility {
         } ?? []
     }
     
-    func extractFilesAsAttachments() ->[[String: Any]] {
-        var attachments = [[String: Any]]()
-        guard let files else { return [] }
-        for file in files {
-            let attachment = [
-                "originalname": "\(file.name).\(file.fileExtension)",
-                "filename": "\(file.name).\(file.fileExtension)",
-                "type": "attachment",
-                "mimetype": MIMEType.mime(for: file.fileExtension),
-                "entity": "NEW_ENTITY"
-            ] as [String: Any]
-                    
-            attachments.append(attachment)
-        }
-        
-        return attachments
-    }
-    
 }
