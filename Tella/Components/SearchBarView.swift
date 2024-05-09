@@ -12,70 +12,14 @@ import SwiftUI
 struct SearchBarView: View {
     @Binding var searchText: String
     var body: some View {
-        if #available(iOS 15.0, *) {
-            SearchBar(searchText: $searchText)
-        } else {
-            SearchBarNoFocus(searchText: $searchText)
-        }
-    }
-}
-
-@available(iOS 15.0, *)
-struct SearchBar: View {
-    @Binding var searchText: String
-    @FocusState private var isInputActive:Bool
-    var body: some View {
         VStack {
             ZStack {
                 PlaceholderText(searchText: $searchText)
-                HStack {
-                    Image("file.search")
-                    TextField("", text: $searchText)
-                        .keyboardType(.default)
-                        .textFieldStyle(TextfieldStyle(shouldShowError: false))
-                        .frame(height: 22)
-                        .focused($isInputActive)
-                    if !searchText.isEmpty {
-                        Button(action: { searchText = "" }) {
-                            Image("uwazi.cancel")
-                        }
-                    }
+                if #available(iOS 15.0, *) {
+                    FocusedSearchBar(searchText: $searchText)
+                } else {
+                    UnfocusedSearchBar(searchText: $searchText)
                 }
-                .padding()
-                .overlay(
-                  RoundedRectangle(cornerRadius: 6)
-                    .stroke(isInputActive ? Styles.Colors.yellow : .white.opacity(0.64), lineWidth: 1)
-                )
-                .padding()
-            }
-        }.padding(.top, 8)
-    }
-}
-
-struct SearchBarNoFocus: View {
-    @Binding var searchText: String
-    var body: some View {
-        VStack {
-            ZStack {
-                PlaceholderText(searchText: $searchText)
-                HStack {
-                    Image("file.search")
-                    TextField("", text: $searchText)
-                        .keyboardType(.default)
-                        .textFieldStyle(TextfieldStyle(shouldShowError: false))
-                        .frame( height: 22)
-                    if !searchText.isEmpty {
-                        Button(action: { searchText = "" }) {
-                            Image("uwazi.cancel")
-                        }
-                    }
-                }
-                .padding()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 6)
-                        .stroke(.white.opacity(0.64), lineWidth: 1)
-                )
-                    .padding()
             }
         }.padding(.top, 8)
     }
@@ -91,6 +35,60 @@ struct PlaceholderText: View {
             .contentShape(Rectangle())
             .foregroundColor(searchText.isEmpty ? .white : .white.opacity(0.8))
             .padding(.horizontal, 18)
+    }
+}
+
+@available(iOS 15.0, *)
+struct FocusedSearchBar: View {
+    @Binding var searchText: String
+    @FocusState private var isInputActive:Bool
+    var body: some View {
+        HStack {
+            Image("file.search")
+            TextField("", text: $searchText)
+                .keyboardType(.default)
+                .textFieldStyle(TextfieldStyle(shouldShowError: false))
+                .frame(height: 22)
+                .focused($isInputActive)
+            CancelButton(searchText: $searchText)
+        }
+        .padding()
+        .overlay(
+          RoundedRectangle(cornerRadius: 6)
+            .stroke(isInputActive ? Styles.Colors.yellow : .white.opacity(0.64), lineWidth: 1)
+        )
+        .padding()
+    }
+}
+
+struct UnfocusedSearchBar: View {
+    @Binding var searchText: String
+    var body: some View {
+        HStack {
+            Image("file.search")
+            TextField("", text: $searchText)
+                .keyboardType(.default)
+                .textFieldStyle(TextfieldStyle(shouldShowError: false))
+                .frame( height: 22)
+            CancelButton(searchText: $searchText)
+        }
+        .padding()
+        .overlay(
+            RoundedRectangle(cornerRadius: 6)
+                .stroke(.white.opacity(0.64), lineWidth: 1)
+        )
+        .padding()
+    }
+}
+
+struct CancelButton: View {
+    @Binding var searchText: String
+    var body: some View {
+        if !searchText.isEmpty {
+            Button(action: { searchText = "" }) {
+                Image("uwazi.cancel")
+            }
+        }
     }
 }
 #Preview {
