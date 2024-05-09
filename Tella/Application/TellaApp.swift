@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import GoogleSignIn
 
 @main
 struct TellaApp: App {
@@ -26,6 +27,13 @@ struct TellaApp: App {
                     if value {
                         self.saveData(lockApptype: .finishBackgroundTasks)
                     }
+                }.onAppear {
+                    GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+                      dump(user)
+                    }
+                }.onOpenURL { url in
+                    dump(url)
+                    GIDSignIn.sharedInstance.handle(url)
                 }
             
         }.onChange(of: scenePhase) { phase in

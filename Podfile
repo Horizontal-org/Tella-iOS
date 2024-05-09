@@ -9,6 +9,7 @@ target 'Tella' do
   pod 'SQLCipher', ">= 4.5.2"
   pod 'ZIPFoundation'
   pod 'Mantis', '~> 2.21.0'
+  pod 'GoogleSignIn'
 
   target 'TellaTests' do
     inherit! :search_paths

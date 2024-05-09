@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+import GoogleSignIn
+
 struct ServerSelectionView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
     @StateObject var serverViewModel : ServerViewModel
@@ -33,7 +35,24 @@ struct ServerSelectionView: View {
             }
         }
     }
-    fileprivate func buttonViews() -> Group<TupleView<(some View, some View)>> {
+    
+    func handleSignInButton() {
+      guard let rootViewController = UIApplication.shared.windows.first?.rootViewController else {
+        print("There is no root view controller!")
+        return
+      }
+
+        GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { signInResult, error in
+            if let error = error {
+                print("Error during Google Sign-In: \(error.localizedDescription)")
+                return
+            }
+            dump(signInResult)
+      }
+    }
+
+    
+    fileprivate func buttonViews() -> Group<TupleView<(some View, some View, some View)>> {
         return Group {
             TellaButtonView<AnyView>(title: LocalizableSettings.settServerTellaWeb.localized,
                                      nextButtonAction: .action,
@@ -48,6 +67,13 @@ struct ServerSelectionView: View {
                                      isValid: .constant(true), action: {
                 selectedServerType = .uwazi
             }).padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+            TellaButtonView<AnyView>(title: "GOOGLE DRIVE",
+                                     nextButtonAction: .action,
+//                                     isOverlay: selectedServerType == .uwazi,
+                                     isValid: .constant(true), action: {
+                handleSignInButton()
+            }).padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+//            GoogleSignInButton(action: handleSignInButton)
         }
     }
 
