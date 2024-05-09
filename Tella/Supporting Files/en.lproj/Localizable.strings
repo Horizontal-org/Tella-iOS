@@ -332,7 +332,7 @@ If you want to take a picture or a video, proceed in the following way:\
 
 "Uwazi_Delete_SheetTitle" = "Delete “%@”?";
 
-"Uwazi_Template_TemplateList_Expl" = "These are uwazi templates you can fill out.";
+"Uwazi_Template_TemplateList_Expl" = "These are Uwazi templates you can fill out.";
 "Uwazi_Template_TemplateList_EmptyExpl" = "You have no saved templates. Tap the “+” button to add a new template.";
 
 "Uwazi_Template_DeleteFromDevice_SheetAction" = " Delete from this device";

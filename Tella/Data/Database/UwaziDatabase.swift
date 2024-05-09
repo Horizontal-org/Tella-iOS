@@ -274,11 +274,12 @@ extension TellaDataBase:UwaziEntityInstanceProtocol {
             let entityInstanceId = try statementBuilder.insertInto(tableName: D.tUwaziEntityInstances,
                                                                    keyValue:valuesToAdd)
             
+            _ = entityInstance.files.compactMap({$0.entityInstanceId = entityInstanceId})
+            
             try entityInstance.files.forEach({ widgetMediaFiles in
                 
-                let fileValuesToAdd = [KeyValue(key: D.cVaultFileInstanceId, value: widgetMediaFiles.vaultFileInstanceId),
-                                       KeyValue(key: D.cUwaziEntityInstanceId, value: entityInstanceId)]
-                
+                let widgetMediaFilesDictionnary = widgetMediaFiles.dictionary
+                let fileValuesToAdd = widgetMediaFilesDictionnary.compactMap({KeyValue(key: $0.key, value: $0.value)})
                 try statementBuilder.insertInto(tableName: D.tUwaziEntityInstanceVaultFile,
                                                 keyValue: fileValuesToAdd)
             })
@@ -310,10 +311,8 @@ extension TellaDataBase:UwaziEntityInstanceProtocol {
                                         primarykeyValue:condition )
 
             try entityInstance.files.forEach({ widgetMediaFiles in
-                
-                let fileValuesToAdd = [KeyValue(key: D.cVaultFileInstanceId, value: widgetMediaFiles.vaultFileInstanceId),
-                                       KeyValue(key: D.cUwaziEntityInstanceId, value: entityInstance.id)]
-                
+                let widgetMediaFilesDictionnary = widgetMediaFiles.dictionary
+                let fileValuesToAdd = widgetMediaFilesDictionnary.compactMap({KeyValue(key: $0.key, value: $0.value)})
                 try statementBuilder.insertInto(tableName: D.tUwaziEntityInstanceVaultFile,
                                                 keyValue: fileValuesToAdd)
             })

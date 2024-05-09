@@ -8,7 +8,16 @@
 
 import Foundation
 
-class UwaziEntityInstanceFile: Codable {
+class UwaziEntityInstanceFile: Codable, Hashable {
+   
+    static func == (lhs: UwaziEntityInstanceFile, rhs: UwaziEntityInstanceFile) -> Bool {
+        lhs.id == rhs.id
+    }
+    public func hash(into hasher: inout Hasher) {
+        return hasher.combine(id)
+    }
+
+    
     
     var id: Int?
     var vaultFileInstanceId: String?
@@ -26,5 +35,43 @@ class UwaziEntityInstanceFile: Codable {
         self.vaultFileInstanceId = vaultFileInstanceId
         self.status = status
         self.entityInstanceId = entityInstanceId
+    }
+}
+
+class UwaziVaultFile : VaultFileDB {
+    
+    var instanceId : Int?
+    var status : FileStatus?
+    
+    init(uwaziFile: UwaziEntityInstanceFile, vaultFile : VaultFileDB) {
+        
+        super.init(id:vaultFile.id,
+                   type: vaultFile.type,
+                   thumbnail: vaultFile.thumbnail,
+                   name: vaultFile.name,
+                   duration: vaultFile.duration,
+                   size: vaultFile.size,
+                   mimeType: vaultFile.mimeType,
+                   width: vaultFile.width,
+                   height: vaultFile.height)
+        
+        self.instanceId = uwaziFile.id
+        self.status = uwaziFile.status
+    }
+    
+    required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+        
+    }
+}
+
+extension UwaziVaultFile  {
+    var statusIcon: String? {
+        switch status {
+        case .submitted:
+            return "report.submitted"
+        default:
+            return nil
+        }
     }
 }

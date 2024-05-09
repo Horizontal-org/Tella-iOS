@@ -355,20 +355,22 @@ extension TellaData {
 
 extension TellaData {
     @discardableResult
-    func addUwaziEntityInstance(entityInstance:UwaziEntityInstance) -> Bool  {
-        
-        let result : Result<Int, Error>
-        if let _ = entityInstance.id {
-            result = database.updateUwaziEntityInstance(entityInstance: entityInstance)
-        } else {
-            result = database.addUwaziEntityInstance(entityInstance: entityInstance)
-        }
+    func addUwaziEntityInstance(entityInstance:UwaziEntityInstance) -> Result<Int,Error>  {
 
-        if case .success = result {
-            self.shouldReloadUwaziInstances.send(true)
-            return true
+        if let instanceId = entityInstance.id {
+           let result = database.updateUwaziEntityInstance(entityInstance: entityInstance)
+            
+            if case .success = result {
+                self.shouldReloadUwaziInstances.send(true)
+                return .success(instanceId)
+            } else {
+                return .failure(RuntimeError(""))
+            }
+            
         } else {
-            return false
+            let result =  database.addUwaziEntityInstance(entityInstance: entityInstance)
+            self.shouldReloadUwaziInstances.send(true)
+            return result
         }
     }
     

@@ -40,8 +40,22 @@ class SummaryViewModel: ObservableObject {
     var tellaData: TellaData? {
         return self.mainAppModel.tellaData
     }
-    
-    init(mainAppModel : MainAppModel, 
+
+    func getUwaziVaultFiles() -> [UwaziVaultFile] {
+        var uwaziVaultFiles : [UwaziVaultFile] = []
+        let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: entityInstance?.files.compactMap{$0.vaultFileInstanceId} ?? [])
+
+        self.entityInstance?.files.forEach({ file in
+            if let vaultFile = vaultFileResult?.first(where: {file.vaultFileInstanceId == $0.id}) {
+                let uwaziVaultFile = UwaziVaultFile(uwaziFile: file, vaultFile: vaultFile)
+                uwaziVaultFiles.append(uwaziVaultFile)
+            }
+        })
+
+        return uwaziVaultFiles
+    }
+
+    init(mainAppModel : MainAppModel,
          entityInstance: UwaziEntityInstance? = nil,
          entityInstanceId: Int? = nil) {
         self.mainAppModel = mainAppModel
@@ -64,10 +78,10 @@ class SummaryViewModel: ObservableObject {
         guard let entityInstance = entityInstance else { return }
         entityInstance.status = .finalized
         
-        let isSaved = tellaData?.addUwaziEntityInstance(entityInstance: entityInstance) ?? false
+        let result = tellaData?.addUwaziEntityInstance(entityInstance: entityInstance)
         
-        if isSaved {
-            self.shouldHideView = true
+        if case .success = result {
+             self.shouldHideView = true
         } else {
             Toast.displayToast(message: LocalizableCommon.commonError.localized)
         }
@@ -80,32 +94,37 @@ class SummaryViewModel: ObservableObject {
         guard let entityInstance = entityInstance else { return }
         entityInstance.status = .submissionInProgress
         
-        tellaData?.addUwaziEntityInstance(entityInstance: entityInstance)
-        
-        uwaziSubmissionViewModel?.submitEntity()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
-                
-                self?.isLoading = false
-                self?.shouldHideView = true
-                
-                switch completion {
-                case .finished:
-                    Toast.displayToast(message: LocalizableUwazi.uwaziEntitySubmitted.localized)
-                    entityInstance.status = .submitted
+        let result = tellaData?.addUwaziEntityInstance(entityInstance: entityInstance)
+       
+        if case .success(let id) = result {
+            entityInstance.id = id
+            uwaziSubmissionViewModel?.submitEntity()
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] completion in
                     
-                case .failure(let error):
-                    debugLog(error.localizedDescription)
-                    Toast.displayToast(message: LocalizableUwazi.uwaziEntityFailedSubmission.localized)
-                    entityInstance.status = .submissionError
+                    self?.isLoading = false
+                    self?.shouldHideView = true
+                    
+                    switch completion {
+                    case .finished:
+                        Toast.displayToast(message: LocalizableUwazi.uwaziEntitySubmitted.localized)
+                        entityInstance.status = .submitted
+                        
+                    case .failure(let error):
+                        debugLog(error.localizedDescription)
+                        Toast.displayToast(message: LocalizableUwazi.uwaziEntityFailedSubmission.localized)
+                        entityInstance.status = .submissionError
+                    }
+                    entityInstance.files.compactMap({$0.status = .submitted})
+                    self?.tellaData?.addUwaziEntityInstance(entityInstance: entityInstance)
+                    
+                } receiveValue: { value in
+                    debugLog(value)
                 }
-                
-                self?.tellaData?.addUwaziEntityInstance(entityInstance: entityInstance)
-                
-            } receiveValue: { value in
-                debugLog(value)
-            }
-            .store(in: &subscribers)
+                .store(in: &subscribers)
+
+        }
+        
         
     }
 }

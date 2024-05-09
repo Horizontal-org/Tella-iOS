@@ -147,8 +147,8 @@ class UwaziEntityViewModel: ObservableObject {
             saveAnswersToEntityInstance()
             guard let entityInstance = uwaziEntityParser?.entityInstance else { return }
 
-            guard let isSaved = tellaData?.addUwaziEntityInstance(entityInstance: entityInstance) else { return }        
-            if isSaved {
+             let result = tellaData?.addUwaziEntityInstance(entityInstance: entityInstance)
+            if case .success = result {
                 self.shouldHideView = true
                 Toast.displayToast(message: LocalizableUwazi.draftEntitySaved.localized)
             } else {

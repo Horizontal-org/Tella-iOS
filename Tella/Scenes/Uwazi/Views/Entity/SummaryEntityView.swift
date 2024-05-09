@@ -92,9 +92,9 @@ struct SummaryEntityView: View {
     var entityContent: some View {
         VStack {
             entityResponseItem
-            FileItems(files: summaryViewModel.entityInstance?.documents ?? [])
-            FileItems(files: summaryViewModel.entityInstance?.attachments ?? [])
-        }
+            UwaziFileItems(files: summaryViewModel.getUwaziVaultFiles())
+        }           .padding(.horizontal, 16)
+
     }
     
     var bottomActionView: some View {
@@ -125,39 +125,34 @@ struct SummaryEntityView: View {
     }
     
     var entityResponseItem: some View {
-        HStack {
-            RoundedRectangle(cornerRadius: 5)
-                .fill(Color.white.opacity(0.2))
-                .frame(width: 48, height: 48, alignment: .center)
-                .overlay(
-                    ZStack{
-                        Image("document")
-                    }
-                        .frame(width: 48, height: 48)
-                        .cornerRadius(5)
-                )
-            VStack(alignment: .leading) {
-                Text(LocalizableUwazi.uwaziEntitySummaryDetailEntityResponseTitle.localized)
-                    .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                    .foregroundColor(Color.white)
-                    .lineLimit(1)
-                
-                Spacer()
-                    .frame(height: 2)
-                
-                Text(summaryViewModel.getEntityResponseSize())
-                    .font(.custom(Styles.Fonts.regularFontName, size: 10))
-                    .foregroundColor(Color.white)
-            }
-            .padding(.horizontal, 12)
-        }
+
+        VaultFileItemView(file: VaultFileItem(image: AnyView(Image("document")),
+                                              name: LocalizableUwazi.uwaziEntitySummaryDetailEntityResponseTitle.localized,
+                                              size: summaryViewModel.getEntityResponseSize()))
         .padding(.bottom, 17)
-        .padding(.horizontal, 12)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-    
+
     private func dismissViews() {
         self.popTo(ViewClassType.uwaziView)
     }
 }
 
+
+struct UwaziFileItems: View {
+    
+    var files: [UwaziVaultFile]
+    
+    var body: some View {
+        VStack {
+            ForEach(files.sorted{$0.created < $1.created}, id: \.id) { file in
+                VaultFileItemView(file: VaultFileItem(image: file.listImage,
+                                                      name: file.name,
+                                                      size: file.size.getFormattedFileSize(),
+                                                      iconName: file.statusIcon))
+                .padding(.bottom, 17)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+    }
+}
