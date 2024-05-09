@@ -56,8 +56,13 @@ class CollectedTemplate: Codable, Hashable {
         case isUpdated = "c_updated"
     }
 
-    static func == (lhs: CollectedTemplate, rhs: CollectedTemplate) -> Bool {
-        return (lhs.id == rhs.id) && (lhs.templateId == rhs.templateId)
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(templateId, forKey: .templateId)
+        try container.encode(serverId, forKey: .serverId)
+        try container.encode(entityRow?.jsonString, forKey: .entityRow)
+        try container.encode(relationships?.jsonString, forKey: .relationships)
     }
 
     required init(from decoder: Decoder) throws {
@@ -106,6 +111,10 @@ class CollectedTemplate: Codable, Hashable {
             debugLog("Failed to encode relationships: \(error)")
             return nil
         }
+    }
+    
+    static func == (lhs: CollectedTemplate, rhs: CollectedTemplate) -> Bool {
+        return (lhs.id == rhs.id) && (lhs.templateId == rhs.templateId)
     }
 
     public func hash(into hasher: inout Hasher) {

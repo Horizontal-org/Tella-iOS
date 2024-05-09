@@ -52,18 +52,9 @@ extension TellaDataBase: UwaziTemplateProtocol {
     
     func addUwaziTemplate(template: CollectedTemplate) -> CollectedTemplate? {
         do {
-            let id = try statementBuilder.insertInto(tableName: D.tUwaziTemplate, keyValue: [
-                KeyValue(key: D.cTemplateId, value: template.templateId),
-                KeyValue(key: D.cDownloaded, value: 1),
-                KeyValue(key: D.cUpdated, value: 1),
-                KeyValue(key: D.cFavorite, value: 0),
-                KeyValue(key: D.cServerId, value: template.serverId),
-                KeyValue(key: D.cEntity, value: template.entityRowString),
-                KeyValue(key: D.cRelationships, value: template.relationshipsString)
-            ])
-            template.id = id
-            template.isUpdated = true
-            template.isDownloaded = true
+            let templateDictionary = template.dictionary
+            let valuesToAdd = templateDictionary.compactMap({KeyValue(key: $0.key, value: $0.value)})
+            try statementBuilder.insertInto(tableName: D.tUwaziTemplate, keyValue: valuesToAdd)
             return template
         } catch let error {
             debugLog(error)
@@ -73,16 +64,8 @@ extension TellaDataBase: UwaziTemplateProtocol {
     
     func updateUwaziTemplate(template: CollectedTemplate) -> Int? {
         do {
-            let valuesToUpdate = [
-                KeyValue(key: D.cTemplateId, value: template.templateId),
-                KeyValue(key: D.cDownloaded, value: 1),
-                KeyValue(key: D.cUpdated, value: 1),
-                KeyValue(key: D.cFavorite, value: 0),
-                KeyValue(key: D.cServerId, value: template.serverId),
-                KeyValue(key: D.cEntity, value: template.entityRowString),
-                KeyValue(key: D.cRelationships, value: template.relationshipsString)
-            ]
-            
+            let templateDictionary = template.dictionary
+            let valuesToUpdate = templateDictionary.compactMap({ KeyValue(key: $0.key, value: $0.value )})
             let templateCondition = [KeyValue(key: D.cId, value: template.id)]
             return try statementBuilder.update(tableName: D.tUwaziTemplate,
                                                valuesToUpdate: valuesToUpdate,
