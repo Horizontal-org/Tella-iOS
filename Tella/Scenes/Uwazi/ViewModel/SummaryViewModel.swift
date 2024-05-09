@@ -41,19 +41,6 @@ class SummaryViewModel: ObservableObject {
         return self.mainAppModel.tellaData
     }
 
-    func getUwaziVaultFiles() -> [UwaziVaultFile] {
-        var uwaziVaultFiles : [UwaziVaultFile] = []
-        let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: entityInstance?.files.compactMap{$0.vaultFileInstanceId} ?? [])
-
-        self.entityInstance?.files.forEach({ file in
-            if let vaultFile = vaultFileResult?.first(where: {file.vaultFileInstanceId == $0.id}) {
-                let uwaziVaultFile = UwaziVaultFile(uwaziFile: file, vaultFile: vaultFile)
-                uwaziVaultFiles.append(uwaziVaultFile)
-            }
-        })
-
-        return uwaziVaultFiles
-    }
 
     init(mainAppModel : MainAppModel,
          entityInstance: UwaziEntityInstance? = nil,
@@ -73,6 +60,20 @@ class SummaryViewModel: ObservableObject {
         return uwaziSubmissionViewModel?.getEntityResponseSize() ?? ""
     }
     
+    func getUwaziVaultFiles() -> [UwaziVaultFile] {
+        var uwaziVaultFiles : [UwaziVaultFile] = []
+        let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: entityInstance?.files.compactMap{$0.vaultFileInstanceId} ?? [])
+
+        self.entityInstance?.files.forEach({ file in
+            if let vaultFile = vaultFileResult?.first(where: {file.vaultFileInstanceId == $0.id}) {
+                let uwaziVaultFile = UwaziVaultFile(uwaziFile: file, vaultFile: vaultFile)
+                uwaziVaultFiles.append(uwaziVaultFile)
+            }
+        })
+
+        return uwaziVaultFiles
+    }
+
     func submitLater() {
         
         guard let entityInstance = entityInstance else { return }
@@ -115,7 +116,7 @@ class SummaryViewModel: ObservableObject {
                         Toast.displayToast(message: LocalizableUwazi.uwaziEntityFailedSubmission.localized)
                         entityInstance.status = .submissionError
                     }
-                    entityInstance.files.compactMap({$0.status = .submitted})
+                    _ = entityInstance.files.compactMap({$0.status = .submitted})
                     self?.tellaData?.addUwaziEntityInstance(entityInstance: entityInstance)
                     
                 } receiveValue: { value in
@@ -124,7 +125,5 @@ class SummaryViewModel: ObservableObject {
                 .store(in: &subscribers)
 
         }
-        
-        
     }
 }

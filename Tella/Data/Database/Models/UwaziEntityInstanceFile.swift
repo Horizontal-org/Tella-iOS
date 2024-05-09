@@ -9,16 +9,7 @@
 import Foundation
 
 class UwaziEntityInstanceFile: Codable, Hashable {
-   
-    static func == (lhs: UwaziEntityInstanceFile, rhs: UwaziEntityInstanceFile) -> Bool {
-        lhs.id == rhs.id
-    }
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(id)
-    }
 
-    
-    
     var id: Int?
     var vaultFileInstanceId: String?
     var status : FileStatus?
@@ -30,12 +21,22 @@ class UwaziEntityInstanceFile: Codable, Hashable {
         case status = "c_status"
         case entityInstanceId = "c_uwazi_entity_instance_id"
     }
+    
     init(id: Int? = nil, vaultFileInstanceId: String? = nil, status: FileStatus? = .notSubmitted, entityInstanceId: Int? = nil) {
         self.id = id
         self.vaultFileInstanceId = vaultFileInstanceId
         self.status = status
         self.entityInstanceId = entityInstanceId
     }
+    
+    static func == (lhs: UwaziEntityInstanceFile, rhs: UwaziEntityInstanceFile) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        return hasher.combine(id)
+    }
+
 }
 
 class UwaziVaultFile : VaultFileDB {
