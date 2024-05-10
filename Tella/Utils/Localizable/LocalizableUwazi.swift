@@ -83,9 +83,24 @@ enum LocalizableUwazi: String, LocalizableDelegate {
 
     case outboxListExpl = "Uwazi_Outbox_OutboxList_Expl"
     case emptyOutboxListExpl = "Uwazi_Outbox_EmptyOutboxList_Expl"
+    case outboxDeleteSheetExpl = "Uwazi_Outbox_Delete_SheetExpl"
+
     
     case submittedListExpl = "Uwazi_Submitted_SubmittedList_Expl"
     case emptySubmittedListExpl = "Uwazi_Submitted_EmptySubmittedList_Expl"
+    case submitted_AppBar = "Uwazi_Submitted_AppBar"
+
+    
+    case uploadedOn = "Uwazi_Submitted_UploadedOn"
+    case submittedFiles = "Uwazi_Submitted_Files"
+    case submittedFile = "Uwazi_Submitted_File"
+
+    
+    
+    case submittedDeleteSheetTitle = "Uwazi_Submitted_Delete_SheetTitle"
+    case submittedDeleteSheetExpl = "Uwazi_Submitted_Delete_SheetExpl"
+    case submittedDeleteCancelAction = "Uwazi_Submitted_Delete_Cancel_SheetAction"
+    case submittedDeleteDeleteAction = "Uwazi_Submitted_Delete_Delete_SheetAction"
 
 
     case viewSheetSelect = "Uwazi_View_SheetSelect"

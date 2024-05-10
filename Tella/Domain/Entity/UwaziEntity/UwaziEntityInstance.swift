@@ -51,6 +51,7 @@ class UwaziEntityInstance: Codable {
         try container.encode(title, forKey: .title)
         try container.encode(templateId, forKey: .templateId)
         try container.encode(type, forKey: .type)
+        let updatedDate = Date().getDateDouble()
         try container.encode(updatedDate, forKey: .updatedDate)
         try container.encode(server?.id, forKey: .serverId)
         

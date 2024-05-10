@@ -14,7 +14,9 @@ enum TemplateActionType: ActionType {
 enum UwaziActionType: ActionType {
     case delete
     case createEntity
-    case viewEntity
+    case viewOutboxEntity
+    case viewSubmittedEntity
+
 }
 
 
@@ -50,7 +52,7 @@ var uwaziDraftActionItems : [ListActionSheetItem] { return [
 var uwaziOutboxActionItems : [ListActionSheetItem] { return [
     ListActionSheetItem(imageName: "edit-icon",
                         content: LocalizableUwazi.viewSheetSelect.localized,
-                        type: UwaziActionType.viewEntity),
+                        type: UwaziActionType.viewOutboxEntity),
     ListActionSheetItem(imageName: "delete-icon-white",
                         content: LocalizableUwazi.deleteSheetSelect.localized,
                         type: UwaziActionType.delete)
@@ -60,7 +62,7 @@ var uwaziOutboxActionItems : [ListActionSheetItem] { return [
 var uwaziSubmittedActionItems : [ListActionSheetItem] { return [
     ListActionSheetItem(imageName: "edit-icon",
                         content: LocalizableUwazi.viewSheetSelect.localized,
-                        type: UwaziActionType.viewEntity),
+                        type: UwaziActionType.viewSubmittedEntity),
     ListActionSheetItem(imageName: "delete-icon-white",
                         content: LocalizableUwazi.deleteSheetSelect.localized,
                         type: UwaziActionType.delete)

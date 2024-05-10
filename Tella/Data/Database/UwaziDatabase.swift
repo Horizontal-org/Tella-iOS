@@ -228,7 +228,7 @@ extension TellaDataBase:UwaziEntityInstanceProtocol {
             cddl(D.cMetadata, D.text, true),
             cddl(D.cTitle, D.text, true),
             cddl(D.cStatus, D.integer, true , 0),
-            cddl(D.cUpdatedDate, D.integer, true , 0),
+            cddl(D.cUpdatedDate, D.float, true , 0),
             cddl(D.cType, D.text, true),
             cddl(D.cServerId, D.integer, tableName: D.tServer, referenceKey: D.cServerId)
         ]

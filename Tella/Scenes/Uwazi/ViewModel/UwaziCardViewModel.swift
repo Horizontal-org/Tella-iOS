@@ -65,15 +65,19 @@ class UwaziCardViewModel: Hashable {
         self.status = instance.status
         
         let titleText = String.init(format: LocalizableUwazi.deleteSheetTitle.localized, "\(self.title)")
-        self.deleteTitle = titleText
-        self.deleteMessage = LocalizableUwazi.deleteDraftSheetExpl.localized
         
         switch instance.status {
         case .draft:
+            self.deleteTitle = titleText
+            self.deleteMessage = LocalizableUwazi.deleteDraftSheetExpl.localized
             listActionSheetItem = uwaziDraftActionItems
         case .submitted:
+            self.deleteTitle = LocalizableUwazi.submittedDeleteSheetTitle.localized
+            self.deleteMessage = LocalizableUwazi.submittedDeleteSheetExpl.localized
             listActionSheetItem = uwaziSubmittedActionItems
         default:
+            self.deleteTitle = LocalizableUwazi.submittedDeleteSheetTitle.localized
+            self.deleteMessage = LocalizableUwazi.outboxDeleteSheetExpl.localized
             listActionSheetItem = uwaziOutboxActionItems
         }
         

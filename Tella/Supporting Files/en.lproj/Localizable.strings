@@ -365,6 +365,8 @@ If you want to take a picture or a video, proceed in the following way:\
 "Uwazi_Draft_Delete_SheetSelect" = "Delete draft";
 
 
+"Uwazi_Outbox_Delete_SheetExpl" = "Are you sure you want to delete this entity?";
+
 "Uwazi_Outbox_OutboxList_Expl" = "These are entities currently being submitted.";
 "Uwazi_Outbox_EmptyOutboxList_Expl" = "Your Outbox is currently empty. Entities that are ready to send will appear here.";
 
@@ -375,6 +377,20 @@ If you want to take a picture or a video, proceed in the following way:\
 
 "Uwazi_Submitted_SubmittedList_Expl" = "These are entities that you have submitted successfully.";
 "Uwazi_Submitted_EmptySubmittedList_Expl" = "You have no submitted entities.";
+"Uwazi_Submitted_AppBar" = "Submitted entity";
+
+"Uwazi_Submitted_UploadedOn" =  "Uploaded on %@";
+"Uwazi_Submitted_Files" =  "%i files, %@";
+"Uwazi_Submitted_File" =  "%i file, %@";
+
+
+
+
+"Uwazi_Submitted_Delete_SheetTitle" = "Delete entity?";
+"Uwazi_Submitted_Delete_SheetExpl" = "Are you sure you want to delete this form from your device? Note that because it was already submitted, the data will remain on your orgenization’s server.";
+"Uwazi_Submitted_Delete_Cancel_SheetAction" = "CANCEL";
+"Uwazi_Submitted_Delete_Delete_SheetAction" = "DELETE";
+
 
 
 "Uwazi_Entity_MultiFile_PrimaryDocument" = "Primary Documents";

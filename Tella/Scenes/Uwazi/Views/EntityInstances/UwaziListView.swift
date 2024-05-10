@@ -92,8 +92,11 @@ struct EntityInstanceItemView: View {
                 case .createEntity:
                     showCreateEntityView()
                     sheetManager.hide()
-                case .viewEntity:
+                case .viewOutboxEntity:
                     showSummaryEntityView()
+                    sheetManager.hide()
+                case .viewSubmittedEntity:
+                    showSubmittedEntityView()
                     sheetManager.hide()
                 }
             })
@@ -104,6 +107,9 @@ struct EntityInstanceItemView: View {
         switch cardViewModel.status {
         case .unknown, .draft:
             showCreateEntityView()
+            sheetManager.hide()
+        case .submitted:
+            showSubmittedEntityView()
             sheetManager.hide()
         default:
             showSummaryEntityView()
@@ -120,6 +126,11 @@ struct EntityInstanceItemView: View {
     private func showSummaryEntityView() {
         navigateTo(destination: SummaryEntityView(mainAppModel: mainAppModel,
                                                   entityInstanceId: cardViewModel.entityInstanceID))
+    }
+    
+    private func showSubmittedEntityView() {
+        navigateTo(destination: SubmittedEntityView(mainAppModel: mainAppModel,
+                                                    entityInstanceId: cardViewModel.entityInstanceID))
     }
     
     private func showDeleteTemplateConfirmationView() {

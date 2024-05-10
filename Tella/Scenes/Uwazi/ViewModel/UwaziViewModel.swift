@@ -121,8 +121,6 @@ class UwaziViewModel: ObservableObject {
         var message = ""
         if case .success = resultDeletion {
             message = String.init(format: LocalizableUwazi.uwaziDeletedToast.localized, entity.title ?? "")
-            getUwaziInstances()
-            
         } else {
             message = LocalizableCommon.commonError.localized
         }

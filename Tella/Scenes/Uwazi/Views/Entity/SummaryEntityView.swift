@@ -92,7 +92,7 @@ struct SummaryEntityView: View {
     var entityContent: some View {
         VStack {
             entityResponseItem
-            UwaziFileItems(files: summaryViewModel.getUwaziVaultFiles())
+            UwaziFileItems(files: summaryViewModel.uwaziVaultFiles)
         }           .padding(.horizontal, 16)
 
     }

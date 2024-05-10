@@ -15,7 +15,8 @@ class SummaryViewModel: ObservableObject {
     var entityInstance: UwaziEntityInstance?
     var uwaziSubmissionViewModel: UwaziSubmissionViewModel?
     private var subscribers = Set<AnyCancellable>()
-    
+    var uwaziVaultFiles : [UwaziVaultFile] = []
+
     @Published var isLoading: Bool = false
     @Published var shouldHideView : Bool = false
     
@@ -54,13 +55,15 @@ class SummaryViewModel: ObservableObject {
         }
 
         uwaziSubmissionViewModel = UwaziSubmissionViewModel(entityInstance: entityInstance, mainAppModel: mainAppModel)
+        uwaziVaultFiles = self.getUwaziVaultFiles()
+
     }
     
     func getEntityResponseSize() -> String {
         return uwaziSubmissionViewModel?.getEntityResponseSize() ?? ""
     }
     
-    func getUwaziVaultFiles() -> [UwaziVaultFile] {
+    private func getUwaziVaultFiles() -> [UwaziVaultFile] {
         var uwaziVaultFiles : [UwaziVaultFile] = []
         let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: entityInstance?.files.compactMap{$0.vaultFileInstanceId} ?? [])
 

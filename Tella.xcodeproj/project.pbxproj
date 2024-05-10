@@ -27,6 +27,7 @@
 		0ECC7817267A533E00A2ACF2 /* PageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC7816267A533E00A2ACF2 /* PageViewCell.swift */; };
 		0ECC7819267A53A700A2ACF2 /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC7818267A53A700A2ACF2 /* PageView.swift */; };
 		0ECC781B267A542300A2ACF2 /* UwaziPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC781A267A542300A2ACF2 /* UwaziPages.swift */; };
+		1202D9562BEE39A800EAFAB3 /* TrailingImageButtonToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1202D9552BEE39A800EAFAB3 /* TrailingImageButtonToolBar.swift */; };
 		1203CDDC298C5B9100D09073 /* ReportActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203CDDB298C5B9100D09073 /* ReportActionType.swift */; };
 		1203CDDE298D7C1300D09073 /* FileToUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203CDDD298D7C1300D09073 /* FileToUpload.swift */; };
 		1203CDE02991429200D09073 /* FileStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203CDDF2991429200D09073 /* FileStatus.swift */; };
@@ -243,6 +244,8 @@
 		128BEB202B1E4B3D00420923 /* FeedbackOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125F9B972AD965800073748C /* FeedbackOperation.swift */; };
 		128BEB222B1E4B7600420923 /* OfflineFeedbackToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128BEB212B1E4B7600420923 /* OfflineFeedbackToast.swift */; };
 		128C236F2BECE62500539A65 /* VaultFileItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C236E2BECE62500539A65 /* VaultFileItemView.swift */; };
+		128C23712BED206800539A65 /* SubmittedEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C23702BED206800539A65 /* SubmittedEntityView.swift */; };
+		128C23732BEE1A8300539A65 /* SubmittedEntityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C23722BEE1A8300539A65 /* SubmittedEntityViewModel.swift */; };
 		128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C7BC32745AB0100A680B3 /* FileListViewModel.swift */; };
 		128D6E182804531B0082AB18 /* AddPhotoVideoItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E172804531B0082AB18 /* AddPhotoVideoItems.swift */; };
 		128D6E1A28045C090082AB18 /* ManageFileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128D6E1928045C090082AB18 /* ManageFileType.swift */; };
@@ -558,6 +561,7 @@
 		0ECC7818267A53A700A2ACF2 /* PageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageView.swift; sourceTree = "<group>"; };
 		0ECC781A267A542300A2ACF2 /* UwaziPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziPages.swift; sourceTree = "<group>"; };
 		0F3DC3E42523951C0024B4A0 /* BundleInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleInfo.swift; sourceTree = "<group>"; };
+		1202D9552BEE39A800EAFAB3 /* TrailingImageButtonToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailingImageButtonToolBar.swift; sourceTree = "<group>"; };
 		1203CDDB298C5B9100D09073 /* ReportActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportActionType.swift; sourceTree = "<group>"; };
 		1203CDDD298D7C1300D09073 /* FileToUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileToUpload.swift; sourceTree = "<group>"; };
 		1203CDDF2991429200D09073 /* FileStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStatus.swift; sourceTree = "<group>"; };
@@ -771,6 +775,8 @@
 		128B929C27D7A08700E92ACF /* FileItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItemsView.swift; sourceTree = "<group>"; };
 		128BEB212B1E4B7600420923 /* OfflineFeedbackToast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OfflineFeedbackToast.swift; sourceTree = "<group>"; };
 		128C236E2BECE62500539A65 /* VaultFileItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileItemView.swift; sourceTree = "<group>"; };
+		128C23702BED206800539A65 /* SubmittedEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittedEntityView.swift; sourceTree = "<group>"; };
+		128C23722BEE1A8300539A65 /* SubmittedEntityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittedEntityViewModel.swift; sourceTree = "<group>"; };
 		128C7BC32745AB0100A680B3 /* FileListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListViewModel.swift; sourceTree = "<group>"; };
 		128D6E172804531B0082AB18 /* AddPhotoVideoItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoVideoItems.swift; sourceTree = "<group>"; };
 		128D6E1928045C090082AB18 /* ManageFileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageFileType.swift; sourceTree = "<group>"; };
@@ -2104,6 +2110,7 @@
 				0E64C6A5265E7625005A7934 /* ActionListBottomSheet.swift */,
 				12732F86273C219700BCE0FB /* LeadingTitleToolbar.swift */,
 				12476E1E2A5B7D2F00069048 /* TrailingButtonToolbar.swift */,
+				1202D9552BEE39A800EAFAB3 /* TrailingImageButtonToolBar.swift */,
 				129533C32739D5BC0053FA4B /* TextFieldBottomSheetView.swift */,
 				1EAE6BF424146C2100114244 /* QuickLook.swift */,
 				1244141827E35D120037D469 /* VaultFileImages.swift */,
@@ -2310,6 +2317,7 @@
 				CCC1B4282AC75A8E0075B819 /* RenderPropertyComponentView.swift */,
 				E1F4A8E52AAF431F001C8E61 /* Widgets */,
 				CC4864E82AF94AF300293F62 /* SummaryEntityView.swift */,
+				128C23702BED206800539A65 /* SubmittedEntityView.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -2323,6 +2331,7 @@
 				CC0D56EE2AC4B59B00AA5D81 /* AddTemplateVM.swift */,
 				CCC1B4242AC759F70075B819 /* UwaziEntityViewModel.swift */,
 				128754D82BBCE09B00D215B5 /* SummaryViewModel.swift */,
+				128C23722BEE1A8300539A65 /* SubmittedEntityViewModel.swift */,
 				12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */,
 			);
 			path = ViewModel;
@@ -3103,6 +3112,7 @@
 				129B845528BFEC8600F1B344 /* TopServerView.swift in Sources */,
 				1209FD2B27AD851E00D8C17E /* AudioPlayerView.swift in Sources */,
 				128D6E182804531B0082AB18 /* AddPhotoVideoItems.swift in Sources */,
+				128C23712BED206800539A65 /* SubmittedEntityView.swift in Sources */,
 				12730E65279EAB9200DC0135 /* SettingsMainView.swift in Sources */,
 				12E0882427AD31F600CEB198 /* LocalizableAudio.swift in Sources */,
 				CC0D56EF2AC4B59B00AA5D81 /* AddTemplateVM.swift in Sources */,
@@ -3186,6 +3196,7 @@
 				1233007A28E3115500B8F7BA /* Request.swift in Sources */,
 				121C5D7D2942710600A64123 /* ProjectAPI.swift in Sources */,
 				1291F4F627B54300006A34D3 /* AudioPlayer.swift in Sources */,
+				1202D9562BEE39A800EAFAB3 /* TrailingImageButtonToolBar.swift in Sources */,
 				CCBEE0482A8E9B780067884E /* TextView.swift in Sources */,
 				12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */,
 				128B929927D796E800E92ACF /* FolderListView.swift in Sources */,
@@ -3462,6 +3473,7 @@
 				1203CDE129914FA300D09073 /* Value.swift in Sources */,
 				12D7D11F28E36123008121C8 /* ServerRepository.swift in Sources */,
 				D7CFC37F254260D300CCB352 /* RecordView.swift in Sources */,
+				128C23732BEE1A8300539A65 /* SubmittedEntityViewModel.swift in Sources */,
 				D7F55FC825348FA50028739E /* RecordState.swift in Sources */,
 				12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */,
 				0ECC781B267A542300A2ACF2 /* UwaziPages.swift in Sources */,
