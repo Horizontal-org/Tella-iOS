@@ -181,6 +181,11 @@ extension String {
         let data = try JSONSerialization.data(withJSONObject: self)
         return try JSONDecoder().decode (type, from: data)
     }
-
     
+    func decodeJSON<T: Codable>(_ type: T.Type) throws -> T {
+        guard let data = self.data(using: .utf8) else {
+            throw NSError(domain: "StringDecodeError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Cannot convert string to Data"])
+        }
+        return try JSONDecoder().decode(type, from: data)
+    }
 }

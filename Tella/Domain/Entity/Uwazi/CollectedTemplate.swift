@@ -73,44 +73,17 @@ class CollectedTemplate: Codable, Hashable {
         serverId = try container.decodeIfPresent(Int.self, forKey: .serverId)
         serverName = try container.decodeIfPresent(String.self, forKey: .serverName)
         username = try container.decodeIfPresent(String.self, forKey: .username)
-        // Decode entityRow as a string
+
         if let entityRowString = try container.decodeIfPresent(String.self, forKey: .entityRow) {
-            if let jsonData = entityRowString.data(using: .utf8), let array = try? JSONDecoder().decode(UwaziTemplateRow.self, from: jsonData) {
-                entityRow = array
-            } else {
-                throw DecodingError.dataCorruptedError(forKey: .entityRow, in: container, debugDescription: "entityRow issue")
-            }
+            entityRow = try entityRowString.decodeJSON(UwaziTemplateRow.self)
         }
         
         if let relationshipsString = try container.decodeIfPresent(String.self, forKey: .relationships) {
-            if let jsonData = relationshipsString.data(using: .utf8) {
-                relationships = try JSONDecoder().decode([UwaziRelationshipList].self, from: jsonData)
-            } else {
-                throw DecodingError.dataCorruptedError(forKey: .relationships, in: container, debugDescription: "Relationships data corrupted")
-            }
+            relationships = try relationshipsString.decodeJSON([UwaziRelationshipList].self)
         }
         isDownloaded = try container.decodeIfPresent(Int.self, forKey: .isDownloaded) == 1 ? true : false
         isFavorite = try container.decodeIfPresent(Int.self, forKey: .isFavorite) == 1 ? true : false
         isUpdated = try container.decodeIfPresent(Int.self, forKey: .isUpdated) == 1 ? true : false
-    }
-    // TODO: Ask if this also need to be changed
-    var entityRowString: String? {
-        if let jsonData = try? JSONEncoder().encode(entityRow), let json = String(bytes: jsonData, encoding: .utf8) {
-            return json
-        } else {
-            return nil
-        }
-    }
-
-    var relationshipsString: String? {
-        guard let relationships = relationships else { return nil }
-        do {
-            let jsonData = try JSONEncoder().encode(relationships)
-            return String(data: jsonData, encoding: .utf8)
-        } catch {
-            debugLog("Failed to encode relationships: \(error)")
-            return nil
-        }
     }
     
     static func == (lhs: CollectedTemplate, rhs: CollectedTemplate) -> Bool {
