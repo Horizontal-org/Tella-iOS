@@ -11,6 +11,8 @@ struct FileDetailView: View {
     @EnvironmentObject var appModel: MainAppModel
     
     @StateObject var viewModel : FileDetailsViewModel
+    @State private var isEditImagePresent = false
+
     
     init(  appModel: MainAppModel, currentFile: VaultFileDB?) {
         _viewModel = StateObject(wrappedValue: FileDetailsViewModel(appModel: appModel, currentFile: currentFile))
@@ -25,7 +27,19 @@ struct FileDetailView: View {
                 ProgressView()
             }
             
+        }      
+        .fullScreenCover(isPresented: $isEditImagePresent) {
+            
+        } content: {
+            
+            EditImageView(imageData: viewModel.data ?? Data(),
+//                          image: UIImage(data: viewModel.data) ?? UIImage(), 
+                          isPresented: $isEditImagePresent,
+                         
+                          currenFile: viewModel.currentFile,
+                          parentId: fileListViewModel.rootFile?.id)
         }
+
         .environmentObject(fileListViewModel)
         .onAppear(perform: {
             self.fileListViewModel.fileActionSource = .details
@@ -57,8 +71,22 @@ struct FileDetailView: View {
     
     func fileActionTrailingView() -> some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            MoreFileActionButton(file: self.fileListViewModel.selectedFiles.first, moreButtonType: .navigationBar)
+            HStack {
+                editView()
+                MoreFileActionButton(file: self.fileListViewModel.selectedFiles.first, moreButtonType: .navigationBar)
+            }
         }
+    }
+    
+    func editView() -> some View {
+        Button {
+            //open edit view
+            
+            isEditImagePresent = true
+                    } label: {
+            Image("file.edit")
+        }       
+
     }
     
     @ViewBuilder
