@@ -12,7 +12,7 @@ struct EntitySelectorView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var prompt: UwaziRelationshipEntryPrompt
     @EnvironmentObject var entityViewModel: UwaziEntityViewModel
-    @Binding var selectedValues: [EntityRelationshipItem]
+    @Binding var selectedValues: [String]
     @State private var searchText: String = ""
     var body: some View {
         ContainerView {
@@ -45,7 +45,7 @@ struct EntitySelectorView: View {
     }
 
     func isSelected(entity: EntityRelationshipItem) -> Bool {
-        if prompt.value.contains(where: { $0.id == entity.id}) { return true }
+        if prompt.value.contains(where: { $0 == entity.id}) { return true }
 
         return false
     }
@@ -66,19 +66,16 @@ struct EntitySelectorView: View {
 
 struct entityListOptionsView: View {
     var entity: EntityRelationshipItem
-    @Binding var value: [EntityRelationshipItem]
+    @Binding var value: [String]
     var isSelected: Bool
 
     var body: some View {
         VStack {
             Button(action: {
                 if isSelected {
-                    value.removeAll{ $0.id == entity.id}
+                    value.removeAll{ $0 == entity.id}
                 } else {
-                    let selectedValue: SelectValue = SelectValue(
-                        label: entity.label, id: entity.id, translatedLabel: entity.label, values: []
-                    )
-                    value.append(entity)
+                    value.append(entity.id)
                 }
             }, label: {
                 entityOptionView

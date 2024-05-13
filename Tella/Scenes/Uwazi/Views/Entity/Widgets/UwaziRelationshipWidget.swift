@@ -60,7 +60,7 @@ struct UwaziRelationshipWidget: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             VStack {
-                ForEach(prompt.value) {entity in
+                ForEach(prompt.value, id: \.self) {entity in
                     HStack{
                         RoundedRectangle(cornerRadius: 5)
                             .fill(Color.white.opacity(0.2))
@@ -68,7 +68,7 @@ struct UwaziRelationshipWidget: View {
                             .overlay(
                                 Image("files.list")
                             )
-                        Text(entity.label)
+                        Text(getEntityLabel(value: entity))
                             .font(.custom(Styles.Fonts.regularFontName, size: 14))
                             .foregroundColor(Color.white)
                             .lineLimit(1)
@@ -80,7 +80,9 @@ struct UwaziRelationshipWidget: View {
             }
         }
     }
+    
+    func getEntityLabel (value: String) -> String {
+        return entityViewModel.relationshipEntities.flatMap{ $0.values }
+            .first(where: { $0.id == value })?.label ?? ""
+    }
 }
-//#Preview {
-//    UwaziRelationshipWidget()
-//}

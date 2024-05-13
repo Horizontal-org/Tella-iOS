@@ -171,13 +171,8 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                 entityInstance?.attachments = attachments
             case .dataRelationship:
                 guard let entryPrompt = entryPrompt as? UwaziRelationshipEntryPrompt else { continue }
-                let value = entryPrompt.value.compactMap { entity in
-                    return [
-                        UwaziEntityMetadataKeys.value: entity.id,
-                        UwaziEntityMetadataKeys.label: entity.label
-                    ]
-                }
-                metadata[propertyName] = value
+                guard !entryPrompt.isEmpty else { continue }
+                metadata[propertyName] = entryPrompt.value.compactMap({ UwaziValue(value: $0)}).arraydDictionnary
             default:
                 break
             }
@@ -234,9 +229,9 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
             case .dataRelationship:
                 guard let entryPrompt = entryPrompt as? UwaziRelationshipEntryPrompt else { continue }
                 let uwaziString = value as? [[String:Any]]
-                guard let decoded = uwaziString?.compactMap({ try? $0.decode(EntityRelationshipItem.self)}) else { continue }
-                
-                entryPrompt.value = decoded
+                guard let decoded = uwaziString?.compactMap({ try? $0.decode(UwaziValue<String>.self)}) else { continue }
+
+                entryPrompt.value = decoded.compactMap({$0.value})
             default:
                 break
             }

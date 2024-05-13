@@ -182,13 +182,13 @@ class UwaziFilesEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
 
 class UwaziRelationshipEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
     
-    typealias Value = [EntityRelationshipItem]
+    typealias Value = [String]
     
     var isEmpty: Bool {
         return self.value.isEmpty
     }
     
-    @Published  var value: [EntityRelationshipItem] = [] {
+    @Published  var value: [String] = [] {
         didSet {
             displayClearButton()
         }
