@@ -41,17 +41,3 @@ struct EntityRelationshipItemDTO: Identifiable, Codable {
     let label: String
     let value: [EntityRelationshipItemDTO]?
 }
-
-class UwaziRelationshipList: DomainModel, Codable, Identifiable {
-    let id, name: String
-    let values: [EntityRelationshipItem]
-    let type: String
-
-    init(id: String, name: String, values: [EntityRelationshipItem], type: String) {
-        self.id = id
-        self.name = name
-        self.values = values
-        self.type = type
-    }
-}
-
