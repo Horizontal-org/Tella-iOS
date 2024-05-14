@@ -71,8 +71,13 @@ class AddTemplateViewModel: ObservableObject {
     }
     
     func downloadTemplate(template: CollectedTemplate) {
-        self.downloadTemplateWithRelationships(template: template)
-        self.templateItemsViewModel.first(where: {template.templateId == $0.id})?.isDownloaded = true
+        self.isLoading = true
+        entityFetcher?.fetchRelationshipEntities(template: template) { relationships in
+            template.relationships = relationships
+            self.saveTemplate(template: template)
+            self.isLoading = false
+            self.templateItemsViewModel.first(where: {template.templateId == $0.id})?.isDownloaded = true
+        }
     }
     
     fileprivate func handleGetTemplateCompletion(_ completion: Subscribers.Completion<APIError>) {
@@ -145,16 +150,5 @@ class AddTemplateViewModel: ObservableObject {
     /// - Returns: Collection of CollectedTemplate object which are stored in the database
     func getAllDownloadedTemplate() -> [CollectedTemplate]? {
         self.tellaData?.getAllUwaziTemplate()
-    }
-    
-    
-    
-    func downloadTemplateWithRelationships(template: CollectedTemplate) -> Void {
-        self.isLoading = true
-        entityFetcher?.fetchRelationshipEntities(template: template) { relationships in
-            template.relationships = relationships
-            self.saveTemplate(template: template)
-            self.isLoading = false
-        }
     }
 }
