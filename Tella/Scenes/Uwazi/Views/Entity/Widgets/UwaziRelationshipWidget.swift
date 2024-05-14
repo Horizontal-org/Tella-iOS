@@ -31,7 +31,7 @@ struct UwaziRelationshipWidget: View {
 
     var selectEntitiesButton : some View {
         Button {
-            navigateTo(destination: EntitySelectorView(selectedValues: $prompt.value)
+            navigateTo(destination: EntitySelectorView()
                 .environmentObject(entityViewModel)
                 .environmentObject(prompt)
             )

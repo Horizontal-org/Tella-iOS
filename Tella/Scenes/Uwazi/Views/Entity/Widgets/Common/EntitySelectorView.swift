@@ -12,7 +12,6 @@ struct EntitySelectorView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var prompt: UwaziRelationshipEntryPrompt
     @EnvironmentObject var entityViewModel: UwaziEntityViewModel
-    @Binding var selectedValues: [String]
     @State private var searchText: String = ""
     var body: some View {
         ContainerView {
@@ -21,7 +20,7 @@ struct EntitySelectorView: View {
                                      reloadAction: {presentationMode.wrappedValue.dismiss()},
                                      title: prompt.question,
                                      type: .save,
-                                     showRightButton: !selectedValues.isEmpty
+                                     showRightButton: !prompt.value.isEmpty
                 ).padding(.horizontal, 18)
                 
                 SearchBarView(searchText: $searchText)
@@ -102,5 +101,5 @@ struct entityListOptionsView: View {
 }
 
 #Preview {
-    EntitySelectorView(selectedValues: .constant([]))
+    EntitySelectorView()
 }
