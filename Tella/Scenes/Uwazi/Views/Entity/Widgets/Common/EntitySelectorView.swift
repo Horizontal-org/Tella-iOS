@@ -16,12 +16,10 @@ struct EntitySelectorView: View {
     var body: some View {
         ContainerView {
             VStack {
-                NavigationHeaderView(backButtonAction: {presentationMode.wrappedValue.dismiss()},
-                                     reloadAction: {presentationMode.wrappedValue.dismiss()},
+                NavigationHeaderView(rightButtonAction: {presentationMode.wrappedValue.dismiss()},
                                      title: prompt.question,
-                                     type: .save,
-                                     showRightButton: !prompt.value.isEmpty
-                ).padding(.horizontal, 18)
+                                     type: prompt.value.isEmpty ? .none : .validate
+                )
                 
                 SearchBarView(searchText: $searchText)
                 Text(LocalizableUwazi.uwaziRelationshipListExpl.localized)

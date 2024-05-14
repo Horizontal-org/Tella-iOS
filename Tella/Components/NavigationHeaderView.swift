@@ -10,39 +10,59 @@ import SwiftUI
 
 enum NavigationType {
     case save
+    case validate
     case reload
+    case none
+    case delete
 
     var imageName: String {
         switch self {
-        case .save: return "report.select-files"
+        case .save: return "reports.save"
+        case .validate: return "report.select-files"
         case .reload: return "arrow.clockwise"
+        case .delete: return "report.delete-outbox"
+        case .none: return ""
+        }
+    }
+    
+    var backButtonIcon: String {
+        switch self {
+        case .save: return "close"
+        default: return "back"
         }
     }
 }
 
 struct NavigationHeaderView: View {
-    var backButtonAction : () -> Void
-    var reloadAction: () -> Void
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    var backButtonAction : (() -> Void)? = nil
+    var rightButtonAction: (() -> Void)? = nil
     var title: String = ""
     var type: NavigationType
-    var showRightButton: Bool
 
     var body: some View {
         HStack(spacing: 0) {
             backButton
             headerTitleView
             Spacer()
-            if(showRightButton) {
+            if(type != .none) {
                 rightButton
             }
         }.frame(height: 56)
+        .padding(.horizontal, 18)
     }
 
     private var backButton: some View {
         Button {
-            backButtonAction()
+            if((backButtonAction) != nil) {
+                backButtonAction?()
+            } else {
+                presentationMode.wrappedValue.dismiss()
+            }
+            
         } label: {
-            Image("back")
+            Image(type.backButtonIcon)
                 .padding(EdgeInsets(top: 10, leading: 0, bottom: 5, trailing: 12))
         }
     }
@@ -54,7 +74,7 @@ struct NavigationHeaderView: View {
     }
 
     private var rightButton: some View {
-        Button(action: { reloadAction() }) {
+        Button(action: { rightButtonAction?() }) {
             Image(type.imageName)
                 .resizable()
                 .frame(width: 24, height: 24)
@@ -63,5 +83,5 @@ struct NavigationHeaderView: View {
 }
 
 #Preview {
-    NavigationHeaderView(backButtonAction: {}, reloadAction: {}, type: .save, showRightButton: false)
+    NavigationHeaderView(backButtonAction: {}, rightButtonAction: {}, type: .save)
 }

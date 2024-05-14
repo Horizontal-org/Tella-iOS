@@ -47,15 +47,14 @@ struct CreateEntityView: View {
     }
 
     fileprivate var createEntityHeaderView: some View {
-        CreateDraftHeaderView(title: entityViewModel.templateName,
-                              isDraft: true,
-                              hideSaveButton: false,
-                              closeAction: { showSaveEntityConfirmationView() },
-                              saveAction: {entityViewModel.saveEntityDraft() })
+        NavigationHeaderView(
+            backButtonAction: { showSaveEntityConfirmationView() },
+            rightButtonAction: {entityViewModel.saveEntityDraft() },
+            title: entityViewModel.templateName,
+            type: .save
+        )
     }
 
-
-    
     fileprivate var draftContentView: some View {
         GeometryReader { geometry in
             ScrollView {

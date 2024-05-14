@@ -394,7 +394,6 @@
 		CC9DEE5F2AE80ED400C8ED29 /* UwaziFileSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9DEE5E2AE80ED400C8ED29 /* UwaziFileSelector.swift */; };
 		CCA66C9C29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */; };
 		CCAE3A682AC217EC00A38C6D /* UwaziViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAE3A672AC217EC00A38C6D /* UwaziViewModel.swift */; };
-		CCAEA0522A97E038008190E0 /* CreateDraftHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAEA0512A97E038008190E0 /* CreateDraftHeaderView.swift */; };
 		CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */; };
 		CCBEE0482A8E9B780067884E /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBEE0472A8E9B780067884E /* TextView.swift */; };
 		CCC1B4252AC759F70075B819 /* UwaziEntityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4242AC759F70075B819 /* UwaziEntityViewModel.swift */; };
@@ -933,7 +932,6 @@
 		CC9DEE5E2AE80ED400C8ED29 /* UwaziFileSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziFileSelector.swift; sourceTree = "<group>"; };
 		CCA66C9B29C3CB22008C5AC4 /* ConfirmationBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationBottomSheet.swift; sourceTree = "<group>"; };
 		CCAE3A672AC217EC00A38C6D /* UwaziViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziViewModel.swift; sourceTree = "<group>"; };
-		CCAEA0512A97E038008190E0 /* CreateDraftHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDraftHeaderView.swift; sourceTree = "<group>"; };
 		CCBC2F6829A93E4900888779 /* SettingCheckboxItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCheckboxItem.swift; sourceTree = "<group>"; };
 		CCBEE0472A8E9B780067884E /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		CCC1B4242AC759F70075B819 /* UwaziEntityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityViewModel.swift; sourceTree = "<group>"; };
@@ -1161,7 +1159,6 @@
 			isa = PBXGroup;
 			children = (
 				0E998552266E57FC0019FDF4 /* HeaderView.swift */,
-				CCAEA0512A97E038008190E0 /* CreateDraftHeaderView.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
