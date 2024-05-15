@@ -39,7 +39,7 @@ struct RenderPropertyComponentView: View {
                 case .dataTypeDivider:
                     UwaziDividerWidget()
                 case .dataTypeDate:
-                    UwaziDatePicker()
+                    UwaziDatePicker(prompt: prompt as! UwaziTextEntryPrompt)
                 case .dataRelationship:
                     UwaziRelationshipWidget(prompt: prompt as! UwaziRelationshipEntryPrompt)
                 default:

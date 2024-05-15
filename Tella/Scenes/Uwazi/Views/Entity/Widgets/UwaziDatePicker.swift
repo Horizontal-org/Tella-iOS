@@ -11,12 +11,11 @@ import SwiftUI
 struct UwaziDatePicker: View {
     @State private var selectedDate: Date
     @State private var dateString: String
-    @EnvironmentObject var prompt: UwaziTextEntryPrompt
+    @ObservedObject var prompt: UwaziTextEntryPrompt
     @EnvironmentObject var entityViewModel: UwaziEntityViewModel
-//    @ObservedObject var value: UwaziValue
         
-    init() {
-//        self.value = value
+    init(prompt: UwaziTextEntryPrompt) {
+        self.prompt = prompt
         _dateString = State(initialValue: LocalizableUwazi.uwaziEntitySelectDateTitle.localized)
         _selectedDate = State(initialValue: Date())
     }
