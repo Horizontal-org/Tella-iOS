@@ -54,7 +54,7 @@ class SummaryViewModel: ObservableObject {
             self.entityInstance = tellaData?.getUwaziEntityInstance(entityId: entityInstanceId)
         }
 
-        uwaziSubmissionViewModel = UwaziSubmissionViewModel(entityInstance: entityInstance, mainAppModel: mainAppModel)
+        uwaziSubmissionViewModel = UwaziSubmissionViewModel(entityInstance: self.entityInstance, mainAppModel: mainAppModel)
         uwaziVaultFiles = self.getUwaziVaultFiles()
 
     }
