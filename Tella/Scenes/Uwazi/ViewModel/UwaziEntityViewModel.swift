@@ -29,7 +29,6 @@ class UwaziEntityViewModel: ObservableObject {
     
     @Published var uwaziEntityParser : UwaziEntityParser?
     @Published var shouldHideView : Bool = false
-    @Published var relationshipEntities: [UwaziRelationshipList] = []
     @Published var entityFetcher: UwaziEntityFetcher? = nil
     
     var subscribers = Set<AnyCancellable>()
@@ -56,16 +55,13 @@ class UwaziEntityViewModel: ObservableObject {
         self.bindVaultFileTaken()
         
         // preload entities in relationship array in case the endpoint fails
-        self.relationshipEntities = template.relationships ?? []
         self.fetchRelationships()
     }
     
     func fetchRelationships() {
         guard let template = self.template else { return }
         entityFetcher?.fetchRelationshipEntities(template: template) { relationships in
-            self.relationshipEntities = relationships
-            template.relationships = relationships
-    
+            self.uwaziEntityParser?.updateRelationships(relationships: relationships)
             _ = self.tellaData?.updateUwaziTemplate(template: template)
         }
     }

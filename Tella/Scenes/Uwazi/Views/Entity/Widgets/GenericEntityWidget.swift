@@ -13,8 +13,6 @@ struct GenericEntityWidget<Content: View>: View {
     let content: Content
     var isRequired: Bool
     var shouldRender: Bool
-    //   var showClear: Binding<Bool>
-    //  var showManatory: Binding<Bool>
     var showClear: Bool
     var showManatory: Bool
     
@@ -22,8 +20,6 @@ struct GenericEntityWidget<Content: View>: View {
     
     init(title: String = "",
          isRequired: Bool = false,
-         //         showMandatory: Binding<Bool>,
-         //         showClear: Binding<Bool>,
          showMandatory: Bool,
          showClear: Bool,
          shouldRender: Bool = true,

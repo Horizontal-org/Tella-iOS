@@ -9,10 +9,11 @@
 import SwiftUI
 
 struct EntitySelectorView: View {
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var prompt: UwaziRelationshipEntryPrompt
-    @EnvironmentObject var entityViewModel: UwaziEntityViewModel
     @State private var searchText: String = ""
+    
     var body: some View {
         ContainerView {
             VStack {
@@ -30,8 +31,8 @@ struct EntitySelectorView: View {
                 ScrollView {
                     ForEach(filteredEntities()) {entity in
                         entityListOptionsView(entity: entity,
-                                              value: $prompt.value,
-                                              isSelected: isSelected(entity: entity)
+                                              isSelected: isSelected(entity: entity), 
+                                              value: $prompt.value
                         )
                     }
                 }
@@ -41,30 +42,21 @@ struct EntitySelectorView: View {
         .navigationBarHidden(true)
     }
 
-    func isSelected(entity: EntityRelationshipItem) -> Bool {
+    func isSelected(entity: SelectValues) -> Bool {
         if prompt.value.contains(where: { $0 == entity.id}) { return true }
-
         return false
     }
     
-    func filteredEntities() -> [EntityRelationshipItem] {
-        guard let content = prompt.content, !content.isEmpty else {
-            return entityViewModel.relationshipEntities.flatMap{ $0.values }
-                .filter { searchText.isEmpty ||  $0.label.lowercased().contains(searchText.lowercased()) }
-        }
-        
-        let relationshipItems = entityViewModel.relationshipEntities
-            .first { $0.id == content }?
-            .values ?? []
-        
-        return relationshipItems.filter { searchText.isEmpty || $0.label.lowercased().contains(searchText.lowercased()) }
+    func filteredEntities() -> [SelectValues] {
+        return prompt.selectValues?.filter { searchText.isEmpty || ($0.label.lowercased().contains(searchText.lowercased())) } ?? []
     }
 }
 
 struct entityListOptionsView: View {
-    var entity: EntityRelationshipItem
-    @Binding var value: [String]
+   
+    var entity: SelectValues
     var isSelected: Bool
+    @Binding var value: [String]
 
     var body: some View {
         VStack {

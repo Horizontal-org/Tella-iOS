@@ -28,6 +28,7 @@
 		0ECC7819267A53A700A2ACF2 /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC7818267A53A700A2ACF2 /* PageView.swift */; };
 		0ECC781B267A542300A2ACF2 /* UwaziPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC781A267A542300A2ACF2 /* UwaziPages.swift */; };
 		1202D9562BEE39A800EAFAB3 /* TrailingImageButtonToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1202D9552BEE39A800EAFAB3 /* TrailingImageButtonToolBar.swift */; };
+		1202D9582BF4CFF200EAFAB3 /* SelectValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1202D9572BF4CFF200EAFAB3 /* SelectValues.swift */; };
 		1203CDDC298C5B9100D09073 /* ReportActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203CDDB298C5B9100D09073 /* ReportActionType.swift */; };
 		1203CDDE298D7C1300D09073 /* FileToUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203CDDD298D7C1300D09073 /* FileToUpload.swift */; };
 		1203CDE02991429200D09073 /* FileStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203CDDF2991429200D09073 /* FileStatus.swift */; };
@@ -563,6 +564,7 @@
 		0ECC781A267A542300A2ACF2 /* UwaziPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziPages.swift; sourceTree = "<group>"; };
 		0F3DC3E42523951C0024B4A0 /* BundleInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleInfo.swift; sourceTree = "<group>"; };
 		1202D9552BEE39A800EAFAB3 /* TrailingImageButtonToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailingImageButtonToolBar.swift; sourceTree = "<group>"; };
+		1202D9572BF4CFF200EAFAB3 /* SelectValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectValues.swift; sourceTree = "<group>"; };
 		1203CDDB298C5B9100D09073 /* ReportActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportActionType.swift; sourceTree = "<group>"; };
 		1203CDDD298D7C1300D09073 /* FileToUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileToUpload.swift; sourceTree = "<group>"; };
 		1203CDDF2991429200D09073 /* FileStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStatus.swift; sourceTree = "<group>"; };
@@ -2537,6 +2539,7 @@
 				1252F7042BDAB1C30076DF4B /* EntityInstanceToSend.swift */,
 				E1975EE62AB032B10060228F /* UwaziEntryPrompt.swift */,
 				1252F7062BDAB2000076DF4B /* EntityAttachment.swift */,
+				1202D9572BF4CFF200EAFAB3 /* SelectValues.swift */,
 			);
 			path = UwaziEntity;
 			sourceTree = "<group>";
@@ -3302,6 +3305,7 @@
 				12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */,
 				D572EAC7263A383900CE191A /* RecentFileCell.swift in Sources */,
 				CCF8D5C42AE9AA08000D27C5 /* PrimaryDocuments.swift in Sources */,
+				1202D9582BF4CFF200EAFAB3 /* SelectValues.swift in Sources */,
 				1268554027D2994500385E18 /* VaultFileStatus.swift in Sources */,
 				0D4BC3C5267577F900DCDC30 /* ReportsView.swift in Sources */,
 				12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */,

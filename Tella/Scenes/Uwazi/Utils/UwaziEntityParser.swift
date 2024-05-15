@@ -92,19 +92,34 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                               question: $0.translatedLabel ?? "",
                                               required: $0.propertyRequired,
                                               helpText: $0.translatedLabel,
-                                              selectValues: $0.values,
+                                              selectValues:[] ,
                                               name: $0.name)
                 
             case .dataTypeSelect, .dataTypeMultiSelect:
+              
+                let selectValues = $0.values?.compactMap({SelectValues(id: $0.id ?? "", label: $0.translatedLabel ?? "")})
+
                 prompt = UwaziSelectEntryPrompt(id: $0.id ?? "",
                                                 formIndex: $0.id,
                                                 type: $0.type ?? "",
                                                 question: $0.translatedLabel ?? "",
                                                 required: $0.propertyRequired,
                                                 helpText: $0.translatedLabel,
-                                                selectValues: $0.values,
+                                                selectValues: selectValues,
                                                 name: $0.name)
             case .dataRelationship:
+                
+                let content = $0.content ?? ""
+                
+                var relationshipValues : [EntityRelationshipItem] = []
+                if content.isEmpty {
+                    relationshipValues = self.template.relationships?.flatMap({$0.values}) ?? []
+                } else {
+                    relationshipValues = self.template.relationships?.first(where:{ $0.id == content})?.values ?? []
+                }
+                
+                let selectValues = relationshipValues.compactMap({SelectValues(id: $0.id, label: $0.label)})
+
                 prompt = UwaziRelationshipEntryPrompt(id: $0.id ?? "",
                                                       formIndex: $0.id,
                                                       type: $0.type ?? "",
@@ -112,7 +127,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                                       content: $0.content ?? "",
                                                       required: $0.propertyRequired,
                                                       helpText: $0.translatedLabel,
-                                                      selectValues: $0.values,
+                                                      selectValues: selectValues ,
                                                       name: $0.name)
                 
             default:
@@ -123,12 +138,22 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                               content: $0.content ?? "",
                                               required: $0.propertyRequired,
                                               helpText: $0.translatedLabel,
-                                              selectValues: $0.values,
+                                              selectValues: [],
                                               name: $0.name)
             }
             
             entryPrompts.append(prompt)
         }
+    }
+    
+    func updateRelationships(relationships: [UwaziRelationshipList]?) {
+         
+        guard let entryPrompts = entryPrompts.filter({$0.type == .dataRelationship}) as? [UwaziRelationshipEntryPrompt] else {return}
+        
+        _ = entryPrompts.compactMap({ prompt in
+            let values = relationships?.first (where: {$0.id == prompt.content } )?.values ?? []
+            return values.compactMap({SelectValues(id: $0.id, label: $0.label)})
+        })
     }
     
     func saveAnswersToEntityInstance(status:EntityStatus) {
