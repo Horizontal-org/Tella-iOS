@@ -29,7 +29,6 @@ struct ImageCropper: UIViewControllerRepresentable {
         let cropViewController: CustomCropViewController = Mantis.cropViewController(image: image!, config: config)
         cropViewController.delegate = context.coordinator
          let _ = cropViewController.isUpdatingImage.sink { value in
-             print("Received value: \(value)")
              context.coordinator.isUpdating = value
              cropViewController.crop()
          }.store(in: &context.coordinator.subscriptions)

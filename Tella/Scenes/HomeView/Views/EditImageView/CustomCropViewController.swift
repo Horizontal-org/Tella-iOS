@@ -14,7 +14,11 @@ class CustomCropViewController: Mantis.CropViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setUpNavigationItem()
+        setUpNavigationAppearance()
+    }
+    
+    private func setUpNavigationItem() {
         let close = UIBarButtonItem(
             image: UIImage.init(named: "close")?.withRenderingMode(.alwaysOriginal),
             style: .plain,
@@ -31,6 +35,16 @@ class CustomCropViewController: Mantis.CropViewController {
         navigationItem.leftBarButtonItem = close
         navigationItem.rightBarButtonItem = done
     }
+    
+    private func setUpNavigationAppearance() {
+        UINavigationBar.appearance().backgroundColor = .black
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .black
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+    }
+
     
     @objc private func onDoneClicked() {
         isUpdatingImage.send(false)
