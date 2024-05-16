@@ -5,6 +5,10 @@
 
 enum LocalizableVault: String, LocalizableDelegate {
     
+   case editFileConfirmExitTitle = "Edit_Dialog_confirm_exit_title"
+   case editFileConfirmExit = "Edit_Dialog_confirm_exit"
+   case editFileExitWithoutChanges = "action_exit_without_saving"
+
     // Sort By
     
     case rootDirectoryName = "Vault_RootDirectoryName"

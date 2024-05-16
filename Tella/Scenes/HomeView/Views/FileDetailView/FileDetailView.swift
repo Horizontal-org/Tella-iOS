@@ -31,15 +31,8 @@ struct FileDetailView: View {
         .fullScreenCover(isPresented: $isEditImagePresent) {
             
         } content: {
-            
-            EditImageView(imageData: viewModel.data ?? Data(),
-//                          image: UIImage(data: viewModel.data) ?? UIImage(), 
-                          isPresented: $isEditImagePresent,
-                         
-                          currenFile: viewModel.currentFile,
-                          parentId: fileListViewModel.rootFile?.id)
+            EditImageView(viewModel: EditImageViewModel(data: viewModel.data ?? Data(), mainAppModel: appModel, fileListViewModel: fileListViewModel, currenFile: viewModel.currentFile, parentId: fileListViewModel.rootFile?.id), isPresented: $isEditImagePresent)
         }
-
         .environmentObject(fileListViewModel)
         .onAppear(perform: {
             self.fileListViewModel.fileActionSource = .details
@@ -81,7 +74,6 @@ struct FileDetailView: View {
     func editView() -> some View {
         Button {
             //open edit view
-            
             isEditImagePresent = true
                     } label: {
             Image("file.edit")
