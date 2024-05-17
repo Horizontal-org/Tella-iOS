@@ -40,6 +40,7 @@ enum LocalizableVault: String, LocalizableDelegate {
     case moreActionsShareSheetSelect = "Vault_MoreActions_Share_SheetSelect"
     case moreActionsMoveSheetSelect = "Vault_MoreActions_Move_SheetSelect"
     case moreActionsRenameSheetSelect = "Vault_MoreActions_Rename_SheetSelect"
+    case moreActionsEditSheetSelect = "Vault_MoreActions_Edit_SheetSelect"
     case moreActionsSaveSheetSelect = "Vault_MoreActions_Save_SheetSelect"
     case moreActionsFileInformationSheetSelect = "Vault_MoreActions_FileInformation_SheetSelect"
     case moreActionsDeleteSheetSelect = "Vault_MoreActions_Delete_SheetSelect"

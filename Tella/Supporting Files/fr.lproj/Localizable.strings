@@ -75,6 +75,7 @@
 "Vault_MoreActions_Share_SheetSelect" = "Partager";
 "Vault_MoreActions_Move_SheetSelect" = "Déplacer vers un autre dossier";
 "Vault_MoreActions_Rename_SheetSelect" = "Renommer";
+"Vault_MoreActions_Edit_SheetSelect" = "Éditer";
 "Vault_MoreActions_Save_SheetSelect" = "Sauvegarder sur le dispositif";
 "Vault_MoreActions_FileInformation_SheetSelect" = "Informations sur le fichier";
 "Vault_MoreActions_Delete_SheetSelect" = "Supprimer";

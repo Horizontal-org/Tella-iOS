@@ -75,6 +75,7 @@
 "Vault_MoreActions_Share_SheetSelect" = "اشتراک‌گذاری";
 "Vault_MoreActions_Move_SheetSelect" = "انتقال به پوشه دیگر";
 "Vault_MoreActions_Rename_SheetSelect" = "تغییر نام";
+"Vault_MoreActions_Edit_SheetSelect" = "ویرایش";
 "Vault_MoreActions_Save_SheetSelect" = "ذخیره کردن در دستگاه";
 "Vault_MoreActions_FileInformation_SheetSelect" = "اطلاعات فایل";
 "Vault_MoreActions_Delete_SheetSelect" = "حذف";

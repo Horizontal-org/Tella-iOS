@@ -75,6 +75,7 @@
 "Vault_MoreActions_Share_SheetSelect" = "பகிர்";
 "Vault_MoreActions_Move_SheetSelect" = "Move to another folder";
 "Vault_MoreActions_Rename_SheetSelect" = "Rename";
+"Vault_MoreActions_Edit_SheetSelect" = "Edit";
 "Vault_MoreActions_Save_SheetSelect" = "சாதனத்தில் சேமி";
 "Vault_MoreActions_FileInformation_SheetSelect" = "File information";
 "Vault_MoreActions_Delete_SheetSelect" = "நீக்கு";

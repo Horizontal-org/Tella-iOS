@@ -75,6 +75,7 @@
 "Vault_MoreActions_Share_SheetSelect" = "မျှဝေပါ";
 "Vault_MoreActions_Move_SheetSelect" = "အခြားဖိုင်တွဲသို့ ရွှေ့မည်";
 "Vault_MoreActions_Rename_SheetSelect" = "အမည်ပြောင်းမည်";
+"Vault_MoreActions_Edit_SheetSelect" = "အမည်ပြောင်းမည်";
 "Vault_MoreActions_Save_SheetSelect" = "စက်ထဲ၌ သိမ်းမည်";
 "Vault_MoreActions_FileInformation_SheetSelect" = "ဖိုင် သတင်းအချက်အလက်";
 "Vault_MoreActions_Delete_SheetSelect" = "ဖျက်ရန်";

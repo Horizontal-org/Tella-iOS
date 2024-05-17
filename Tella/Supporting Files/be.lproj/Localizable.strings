@@ -75,6 +75,7 @@
 "Vault_MoreActions_Share_SheetSelect" = "Падзяліцца";
 "Vault_MoreActions_Move_SheetSelect" = "Move to another folder";
 "Vault_MoreActions_Rename_SheetSelect" = "Rename";
+"Vault_MoreActions_Edit_SheetSelect" = "Edit";
 "Vault_MoreActions_Save_SheetSelect" = "Захаваць на прыладзе";
 "Vault_MoreActions_FileInformation_SheetSelect" = "File information";
 "Vault_MoreActions_Delete_SheetSelect" = "Удалить";

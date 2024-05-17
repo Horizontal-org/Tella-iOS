@@ -75,6 +75,7 @@
 "Vault_MoreActions_Share_SheetSelect" = "المشاركة";
 "Vault_MoreActions_Move_SheetSelect" = "النقل إلى مجلد آخر";
 "Vault_MoreActions_Rename_SheetSelect" = "إعادة تسمية";
+"Vault_MoreActions_Edit_SheetSelect" = "تعديل";
 "Vault_MoreActions_Save_SheetSelect" = "الحفظ على الجهاز";
 "Vault_MoreActions_FileInformation_SheetSelect" = "معلومات الملف";
 "Vault_MoreActions_Delete_SheetSelect" = "حذف";

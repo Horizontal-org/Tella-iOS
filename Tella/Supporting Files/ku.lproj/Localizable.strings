@@ -75,6 +75,7 @@
 "Vault_MoreActions_Share_SheetSelect" = "هاوبەشکردن";
 "Vault_MoreActions_Move_SheetSelect" = "جووڵان بۆ فۆڵدەرێکی دیکە";
 "Vault_MoreActions_Rename_SheetSelect" = "ناوگۆڕین";
+"Vault_MoreActions_Edit_SheetSelect" = "ئیدیتکردن";
 "Vault_MoreActions_Save_SheetSelect" = "پاشەکەوتکردن لە ئامێرەکەدا";
 "Vault_MoreActions_FileInformation_SheetSelect" = "زانیاری فایل";
 "Vault_MoreActions_Delete_SheetSelect" = "سڕینەوە";
