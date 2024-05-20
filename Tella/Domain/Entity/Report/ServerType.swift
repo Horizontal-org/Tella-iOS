@@ -8,6 +8,7 @@ enum ServerConnectionType: Int, Codable {
     case tella = 0
     case uwazi = 1
     case odkCollect = 3
+    case gDrive = 4
     case unknown
 }
 
