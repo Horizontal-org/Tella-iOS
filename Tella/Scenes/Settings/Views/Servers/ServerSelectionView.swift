@@ -42,13 +42,16 @@ struct ServerSelectionView: View {
         return
       }
 
-        GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { signInResult, error in
-            if let error = error {
-                print("Error during Google Sign-In: \(error.localizedDescription)")
-                return
-            }
-            dump(signInResult)
-      }
+//        GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { signInResult, error in
+//            if let error = error {
+//                print("Error during Google Sign-In: \(error.localizedDescription)")
+//                return
+//            } else {
+//                dump(signInResult)
+//                navigateTo(destination: SelectDriveConnection(), title: "Select Google drive")
+//            }
+//      }
+        navigateTo(destination: SelectDriveConnection(), title: "Select Google drive")
     }
 
     
@@ -69,11 +72,10 @@ struct ServerSelectionView: View {
             }).padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
             TellaButtonView<AnyView>(title: "GOOGLE DRIVE",
                                      nextButtonAction: .action,
-//                                     isOverlay: selectedServerType == .uwazi,
+                                     isOverlay: selectedServerType == .gDrive,
                                      isValid: .constant(true), action: {
                 handleSignInButton()
             }).padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
-//            GoogleSignInButton(action: handleSignInButton)
         }
     }
 
