@@ -140,13 +140,13 @@ class UwaziServerRepository: WebRepository {
             .eraseToAnyPublisher()
         }
     
-    func getRelationshipEntities(serverURL: String, cookie: String, templatesIds: [String?]) -> AnyPublisher<[UwaziRelationshipList], APIError> {
+    func getRelationshipEntities(serverURL: String, cookie: String, templatesIds: [String]) -> AnyPublisher<[UwaziRelationshipList], APIError> {
         let apiResponse: APIResponse<UwaziRelationshipDTO> = getAPIResponse(endpoint: API.getRelationshipEntities(serverURL:serverURL, cookie:cookie))
 
         return apiResponse
             .compactMap{ $0.0 }
             .map { dto in
-                let shouldFetchAllTemplates = templatesIds.contains { $0?.isEmpty ?? false }
+                let shouldFetchAllTemplates = templatesIds.contains { $0.isEmpty }
                 return dto.rows
                     .filter{ $0.type == "template" }
                     .filter { relationship in
