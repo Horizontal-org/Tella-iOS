@@ -51,7 +51,7 @@ struct ServerSelectionView: View {
 //                navigateTo(destination: SelectDriveConnection(), title: "Select Google drive")
 //            }
 //      }
-        navigateTo(destination: SelectDriveConnection(), title: "Select Google drive")
+        navigateTo(destination: SelectDriveConnection())
     }
 
     

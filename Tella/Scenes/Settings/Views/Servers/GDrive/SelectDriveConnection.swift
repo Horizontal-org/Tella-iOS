@@ -75,7 +75,7 @@ struct SelectDriveConnection: View {
                                 nextAction: {
             switch selectedDriveConnectionType {
             case .shared:
-                dump("shared")
+                navigateTo(destination: SelectSharedDrive())
             case .personal:
                 dump("personal")
             default:
