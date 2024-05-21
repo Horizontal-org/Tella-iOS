@@ -14,7 +14,7 @@ class EditImageViewModel: ObservableObject {
         set: {self.croppedImageData = $0?.jpegData(compressionQuality: 0.5) ?? Data()}
     )
     
-    var fileListViewModel : FileListViewModel
+    @ObservedObject var fileListViewModel : FileListViewModel
     
     var croppedImageData: Data?
     var mainAppModel: MainAppModel
@@ -42,8 +42,7 @@ class EditImageViewModel: ObservableObject {
         guard let url = url else {
             return
         }
-        self.mainAppModel.addVaultFile(importedFiles: [ImportedFile(urlFile: url)], parentId: parentId, shouldReloadVaultFiles : .constant(false))
-        fileListViewModel.shouldReloadVaultFiles = true
+        self.mainAppModel.addVaultFile(importedFiles: [ImportedFile(urlFile: url)], parentId: parentId, shouldReloadVaultFiles : $fileListViewModel.shouldReloadVaultFiles)
     }
     
 }
