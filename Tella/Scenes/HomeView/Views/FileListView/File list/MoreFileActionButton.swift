@@ -22,20 +22,28 @@ struct MoreFileActionButton: View {
     
     var file: VaultFileDB? = nil
     var moreButtonType : MoreButtonType
-    
+    @State var isEditViewShown = false
+    @State var fileData: Data?
     private var modalHeight : CGFloat {
         let dividerHeight = fileListViewModel.fileActionItems.filter{$0.viewType == ActionSheetItemType.divider}.count * 20
         return CGFloat((fileListViewModel.fileActionItems.count * 50) - dividerHeight  + 90)
     }
-
     var body: some View {
-        
-        switch moreButtonType {
-        case .grid:
-            return gridMoreButton.eraseToAnyView()
-        case .list, .navigationBar:
-            return listMoreButton.eraseToAnyView()
+        ZStack{
+            switch moreButtonType {
+            case .grid:
+                gridMoreButton.eraseToAnyView()
+            case .list, .navigationBar:
+                listMoreButton.eraseToAnyView()
+            }
+            
         }
+        .fullScreenCover(isPresented: $isEditViewShown) {
+        } content: {
+            EditImageView(viewModel: EditImageViewModel(data: fileData ?? Data(),
+                                                        mainAppModel: appModel, fileListViewModel: fileListViewModel, currenFile: file, parentId: fileListViewModel.rootFile?.id), isPresented: $isEditViewShown)
+        }
+        
     }
     
     var listMoreButton: some View {
@@ -57,7 +65,7 @@ struct MoreFileActionButton: View {
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -6, trailing: -12))
         }.frame(width: 35, height: 35)
     }
-
+    
     private func showFileActionSheet() {
         if let file = file {
             fileListViewModel.updateSingleSelection(for: file)
@@ -102,7 +110,8 @@ struct MoreFileActionButton: View {
             
         case .delete:
             showDeleteConfirmationSheet()
-            
+        case .edit:
+            showEditImageView()
         default:
             break
         }
@@ -113,6 +122,13 @@ struct MoreFileActionButton: View {
         sheetManager.hide()
     }
     
+    private func showEditImageView() {
+        hideMenu()
+        guard let file = fileListViewModel.selectedFiles.first,
+              let loadedData = self.appModel.vaultManager.loadFileData(file: file) else { return }
+        fileData = loadedData
+        isEditViewShown = true
+    }
     func showRenameFileSheet() {
         sheetManager.showBottomSheet( modalHeight: 165, content: {
             TextFieldBottomSheetView(titleText: LocalizableVault.renameFileSheetTitle.localized,
