@@ -40,8 +40,10 @@ struct MoreFileActionButton: View {
         }
         .fullScreenCover(isPresented: $isEditViewShown) {
         } content: {
-            EditImageView(viewModel: EditImageViewModel(data: fileData ?? Data(),
-                                                        mainAppModel: appModel, fileListViewModel: fileListViewModel, currenFile: file, parentId: fileListViewModel.rootFile?.id), isPresented: $isEditViewShown)
+            EditImageView(viewModel: EditImageViewModel(mainAppModel: appModel,
+                                                        fileListViewModel: fileListViewModel,
+                                                        currenFile: fileListViewModel.selectedFiles.first),
+                          isPresented: $isEditViewShown)
         }
         
     }
@@ -111,7 +113,7 @@ struct MoreFileActionButton: View {
         case .delete:
             showDeleteConfirmationSheet()
         case .edit:
-            showEditImageView()
+            isEditViewShown = true
         default:
             break
         }
@@ -122,13 +124,6 @@ struct MoreFileActionButton: View {
         sheetManager.hide()
     }
     
-    private func showEditImageView() {
-        hideMenu()
-        guard let file = fileListViewModel.selectedFiles.first,
-              let loadedData = self.appModel.vaultManager.loadFileData(file: file) else { return }
-        fileData = loadedData
-        isEditViewShown = true
-    }
     func showRenameFileSheet() {
         sheetManager.showBottomSheet( modalHeight: 165, content: {
             TextFieldBottomSheetView(titleText: LocalizableVault.renameFileSheetTitle.localized,

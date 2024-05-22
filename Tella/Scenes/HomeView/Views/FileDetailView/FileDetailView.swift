@@ -31,7 +31,10 @@ struct FileDetailView: View {
         .fullScreenCover(isPresented: $isEditImagePresent) {
             
         } content: {
-            EditImageView(viewModel: EditImageViewModel(data: viewModel.data ?? Data(), mainAppModel: appModel, fileListViewModel: fileListViewModel, currenFile: viewModel.currentFile, parentId: fileListViewModel.rootFile?.id), isPresented: $isEditImagePresent)
+            EditImageView(viewModel: EditImageViewModel( mainAppModel: appModel,
+                                                         fileListViewModel: fileListViewModel,
+                                                         currenFile: viewModel.currentFile),
+                          isPresented: $isEditImagePresent)
         }
         .environmentObject(fileListViewModel)
         .onAppear(perform: {

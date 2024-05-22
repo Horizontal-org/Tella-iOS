@@ -17,14 +17,20 @@ struct EditImageView: View {
 
     var body: some View {
         ZStack {
-            ImageCropper(image: $viewModel.imageToEdit.wrappedValue) {
-                isPresented = false
-                viewModel.saveChanges()
-            } didCancelAction: {
-                isBottomSheetShown = true
+            if viewModel.isLoaded {
+                ImageCropper(image: $viewModel.imageToEdit.wrappedValue) {
+                    isPresented = false
+                    viewModel.saveChanges()
+                } didCancelAction: {
+                    isBottomSheetShown = true
+                }
+                .ignoresSafeArea()
+            } else {
+                ProgressView()
             }
-            .ignoresSafeArea()
             confirmExitBottomSheet
+        }.onAppear {
+            viewModel.loadFile()
         }
     }
     
