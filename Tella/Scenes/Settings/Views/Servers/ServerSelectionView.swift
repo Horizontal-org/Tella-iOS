@@ -8,8 +8,6 @@
 
 import SwiftUI
 
-import GoogleSignIn
-
 struct ServerSelectionView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
     @StateObject var serverViewModel : ServerViewModel

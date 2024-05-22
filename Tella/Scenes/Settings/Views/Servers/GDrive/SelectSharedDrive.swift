@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import GoogleAPIClientForREST
 
 struct SelectSharedDrive: View {
     @State var selectedDrive: String = ""
@@ -40,14 +41,14 @@ struct SelectSharedDrive: View {
 }
 
 struct DriveCardView: View {
-    var sharedDrive: SharedDrive
+    var sharedDrive: GTLRDrive_Drive
     @Binding var selectedDrive: String
     var body: some View {
         Button(action: {
             self.selectedDrive = sharedDrive.id
         }) {
             HStack {
-                Text(sharedDrive.name)
+                Text(sharedDrive.name ?? "")
                     .font(.custom(Styles.Fonts.regularFontName, size: 16))
                     .foregroundColor(.white)
                 Spacer()
