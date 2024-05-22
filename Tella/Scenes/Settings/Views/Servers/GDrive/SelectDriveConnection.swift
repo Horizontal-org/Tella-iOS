@@ -22,7 +22,7 @@ struct SelectDriveConnection: View {
                 connectionsButtons
                 Spacer()
                 bottomView
-            }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+            }.padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
             .toolbar {
                 LeadingTitleToolbar(title: "Select Google drive")
             }
@@ -77,7 +77,7 @@ struct SelectDriveConnection: View {
             case .shared:
                 navigateTo(destination: SelectSharedDrive())
             case .personal:
-                dump("personal")
+                navigateTo(destination: CreateDriveFolder())
             default:
                 break
             }
