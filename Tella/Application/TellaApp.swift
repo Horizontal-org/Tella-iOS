@@ -28,8 +28,13 @@ struct TellaApp: App {
                         self.saveData(lockApptype: .finishBackgroundTasks)
                     }
                 }.onAppear {
+                    guard let rootViewController = UIApplication.shared.windows.first?.rootViewController else {
+                      print("There is no root view controller!")
+                      return
+                    }
+                    
                     GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
-                      dump(user)
+                        user?.addScopes(["https://www.googleapis.com/auth/drive"], presenting: rootViewController)
                     }
                 }.onOpenURL { url in
                     dump(url)

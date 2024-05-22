@@ -10,7 +10,8 @@ target 'Tella' do
   pod 'ZIPFoundation'
   pod 'Mantis', '~> 2.21.0'
   pod 'GoogleSignIn'
-
+  pod 'GoogleAPIClientForREST/Drive'
+  
   target 'TellaTests' do
     inherit! :search_paths
     # Pods for testing

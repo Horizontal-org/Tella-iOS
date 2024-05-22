@@ -8,13 +8,12 @@
 
 import SwiftUI
 
-import GoogleSignIn
-
 struct ServerSelectionView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
     @StateObject var serverViewModel : ServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
     @State var selectedServerType: ServerConnectionType = .unknown
+    @ObservedObject var gDriveVM = GDriveAuthViewModel()
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     init(appModel:MainAppModel, server: TellaServer? = nil) {
@@ -36,25 +35,6 @@ struct ServerSelectionView: View {
         }
     }
     
-    func handleSignInButton() {
-      guard let rootViewController = UIApplication.shared.windows.first?.rootViewController else {
-        print("There is no root view controller!")
-        return
-      }
-
-//        GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { signInResult, error in
-//            if let error = error {
-//                print("Error during Google Sign-In: \(error.localizedDescription)")
-//                return
-//            } else {
-//                dump(signInResult)
-//                navigateTo(destination: SelectDriveConnection(), title: "Select Google drive")
-//            }
-//      }
-        navigateTo(destination: SelectDriveConnection())
-    }
-
-    
     fileprivate func buttonViews() -> Group<TupleView<(some View, some View, some View)>> {
         return Group {
             TellaButtonView<AnyView>(title: LocalizableSettings.settServerTellaWeb.localized,
@@ -74,7 +54,9 @@ struct ServerSelectionView: View {
                                      nextButtonAction: .action,
                                      isOverlay: selectedServerType == .gDrive,
                                      isValid: .constant(true), action: {
-                handleSignInButton()
+                gDriveVM.handleSignInButton {
+                    navigateTo(destination: SelectDriveConnection( dGriveServerViewModel: GDriveServerViewModel()), title: "Select Google drive")
+                }
             }).padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
         }
     }

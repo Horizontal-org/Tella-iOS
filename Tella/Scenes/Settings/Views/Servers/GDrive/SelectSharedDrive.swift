@@ -7,13 +7,15 @@
 //
 
 import SwiftUI
+import GoogleAPIClientForREST
 
 struct SelectSharedDrive: View {
     @State var selectedDrive: String = ""
+    @State var sharedDrives: [GTLRDrive_Drive] = []
     var body: some View {
         ContainerView {
             VStack(alignment: .leading){
-                ForEach(SharedDrivesList, id: \.id) { drive in
+                ForEach(sharedDrives, id: \.identifier) { drive in
                     DriveCardView(sharedDrive: drive, selectedDrive: $selectedDrive)
                 }
 
@@ -29,23 +31,23 @@ struct SelectSharedDrive: View {
 }
 
 struct DriveCardView: View {
-    var sharedDrive: SharedDrive
+    var sharedDrive: GTLRDrive_Drive
     @Binding var selectedDrive: String
     var body: some View {
         Button(action: {
-            self.selectedDrive = sharedDrive.name
+            self.selectedDrive = sharedDrive.identifier ?? ""
         }) {
             HStack {
-                Text(sharedDrive.name)
+                Text(sharedDrive.name ?? "")
                     .font(.custom(Styles.Fonts.regularFontName, size: 16))
                     .foregroundColor(.white)
                 Spacer()
-                if selectedDrive == sharedDrive.name {
+                if selectedDrive == sharedDrive.identifier {
                     Image("settings.done")
                 }
             }
             .padding(18)
-            .background(selectedDrive == sharedDrive.name ? Color.white.opacity(0.1) : Color.clear)
+            .background(selectedDrive == sharedDrive.identifier ? Color.white.opacity(0.1) : Color.clear)
         }
     }
 }
