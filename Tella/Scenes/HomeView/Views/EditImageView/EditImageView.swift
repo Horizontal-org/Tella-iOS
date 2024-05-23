@@ -21,6 +21,7 @@ struct EditImageView: View {
                 ImageCropper(image: $viewModel.imageToEdit.wrappedValue) {
                     isPresented = false
                     viewModel.saveChanges()
+                    sheetManager.hide()
                 } didCancelAction: {
                     isBottomSheetShown = true
                 }
