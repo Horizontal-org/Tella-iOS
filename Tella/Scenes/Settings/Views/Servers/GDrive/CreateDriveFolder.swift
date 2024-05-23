@@ -14,7 +14,10 @@ struct CreateDriveFolder: View {
         ContainerView {
             VStack(spacing: 20) {
                 Spacer()
-                headerView
+                GDriveHeaderView(
+                    title: "Create new folder",
+                    subtitle: "Your reports will be uploaded to a new folder on your Google Drive. Choose a name for this folder here."
+                )
                 TextfieldView(fieldContent: $fieldContent, isValid: .constant(true), shouldShowError: .constant(false), fieldType: .text, placeholder: "Folder name")
                     .padding(.vertical, 12)
                 Spacer()
@@ -22,20 +25,6 @@ struct CreateDriveFolder: View {
             }.padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
             .navigationBarHidden(true)
         }
-    }
-    
-    var headerView: some View {
-        VStack(spacing: 20) {
-            Image("gdrive.icon")
-            Text("Create new folder")
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
-            Text("Your reports will be uploaded to a new folder on your Google Drive. Choose a name for this folder here.")
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
-        }.padding(.horizontal, 20)
     }
     
     var bottomView: some View {

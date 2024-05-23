@@ -27,4 +27,20 @@ class GDriveAuthViewModel: ObservableObject {
             }
       }
     }
+    
+    func restorePreviousSignIn() {
+        guard let rootViewController = UIApplication.shared.windows.first?.rootViewController else {
+          print("There is no root view controller!")
+          return
+        }
+        
+        GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+            user?.addScopes(["https://www.googleapis.com/auth/drive"], presenting: rootViewController)
+            dump(user)
+        }
+    }
+    
+    func handleUrl(url: URL) {
+        GIDSignIn.sharedInstance.handle(url)
+    }
 }

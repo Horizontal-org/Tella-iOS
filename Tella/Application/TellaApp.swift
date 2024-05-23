@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-import GoogleSignIn
 
 @main
 struct TellaApp: App {
@@ -16,6 +15,7 @@ struct TellaApp: App {
     @Environment(\.scenePhase) var scenePhase
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     let delayTimeInSecond = 1.0
+    let gDriveAuthViewModel = GDriveAuthViewModel()
     
     var body: some Scene {
         WindowGroup {
@@ -28,17 +28,9 @@ struct TellaApp: App {
                         self.saveData(lockApptype: .finishBackgroundTasks)
                     }
                 }.onAppear {
-                    guard let rootViewController = UIApplication.shared.windows.first?.rootViewController else {
-                      print("There is no root view controller!")
-                      return
-                    }
-                    
-                    GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
-                        user?.addScopes(["https://www.googleapis.com/auth/drive"], presenting: rootViewController)
-                    }
+                    gDriveAuthViewModel.restorePreviousSignIn()
                 }.onOpenURL { url in
-                    dump(url)
-                    GIDSignIn.sharedInstance.handle(url)
+                    gDriveAuthViewModel.handleUrl(url: url)
                 }
             
         }.onChange(of: scenePhase) { phase in
