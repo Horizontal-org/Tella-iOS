@@ -25,6 +25,16 @@ struct SelectSharedDrive: View {
             .background(Color.white.opacity(0.03))
             .toolbar {
                 LeadingTitleToolbar(title: "Select shared drive")
+                // remove this after merging with uwazi relationships
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        navigateTo(destination: SuccessLoginView(navigateToAction: {}, type: .gDrive))
+                    }) {
+                        Image("report.select-files")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                    }
+                }
             }
         }
     }
@@ -51,6 +61,7 @@ struct DriveCardView: View {
         }
     }
 }
+
 
 #Preview {
     SelectSharedDrive()
