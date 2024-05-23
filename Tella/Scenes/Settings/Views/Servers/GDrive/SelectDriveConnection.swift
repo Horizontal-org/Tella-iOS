@@ -19,7 +19,10 @@ struct SelectDriveConnection: View {
         ContainerView {
             VStack(spacing: 20) {
                 Spacer()
-                headerView
+                GDriveHeaderView(
+                    title: "Select a Drive to connect to",
+                    subtitle: "You can either connect to an organizational Shared Drive or create a new folder in your personal Drive."
+                )
                 connectionsButtons
                 Spacer()
                 bottomView
@@ -27,20 +30,6 @@ struct SelectDriveConnection: View {
             .toolbar {
                 LeadingTitleToolbar(title: "Select Google drive")
             }
-        }
-    }
-    
-    var headerView: some View {
-        VStack(spacing: 20) {
-            Image("gdrive.icon")
-            Text("Select a Drive to connect to")
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
-            Text("You can either connect to an organizational Shared Drive or create a new folder in your personal Drive.")
-                .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
         }
     }
     
@@ -60,6 +49,13 @@ struct SelectDriveConnection: View {
                 isValid: .constant(true),
                 action: {selectedDriveConnectionType = .personal}
             ).padding(.vertical, 5)
+            moreInfoText
+        }
+    }
+    
+    
+    var moreInfoText: some View {
+        Link(destination: URL(string: "https://tella-app.org/gdrive")!) {
             Text("Learn more about the types of drives")
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(Styles.Colors.yellow)
