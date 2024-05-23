@@ -74,14 +74,16 @@ struct FileDetailView: View {
         }
     }
     
+    @ViewBuilder
     func editView() -> some View {
-        Button {
-            //open edit view
-            isEditImagePresent = true
-                    } label: {
-            Image("file.edit")
-        }       
-
+        if viewModel.currentFile?.tellaFileType == .image {
+            Button {
+                //open edit view
+                isEditImagePresent = true
+                        } label: {
+                Image("file.edit")
+            }
+        }
     }
     
     @ViewBuilder
