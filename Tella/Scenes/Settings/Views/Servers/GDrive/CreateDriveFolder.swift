@@ -43,7 +43,9 @@ struct CreateDriveFolder: View {
                                 nextButtonAction: .action,
                                 shouldHideNext: false,
                                 shouldHideBack: false,
-                                nextAction: {})
+                                nextAction: {
+            navigateTo(destination: SuccessLoginView(navigateToAction: {}, type: .gDrive))
+        })
 
     }
 }
