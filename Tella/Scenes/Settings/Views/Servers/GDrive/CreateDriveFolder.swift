@@ -11,6 +11,7 @@ import SwiftUI
 struct CreateDriveFolder: View {
     @State var fieldContent : String = ""
     @State var isValid : Bool = false
+    @EnvironmentObject var gDriveServerViewModel: GDriveServerViewModel
     var body: some View {
         ContainerView {
             VStack(spacing: 20) {
@@ -41,7 +42,9 @@ struct CreateDriveFolder: View {
                                 shouldHideNext: false,
                                 shouldHideBack: false,
                                 nextAction: {
-            navigateTo(destination: SuccessLoginView(navigateToAction: {}, type: .gDrive))
+            gDriveServerViewModel.createDriveFolder(folderName: fieldContent) {
+                navigateTo(destination: SuccessLoginView(navigateToAction: {}, type: .gDrive))
+            }
         })
 
     }

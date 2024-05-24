@@ -14,7 +14,7 @@ enum DriveConnectionType {
 }
 struct SelectDriveConnection: View {
     @State var selectedDriveConnectionType: DriveConnectionType = .none
-    @ObservedObject var dGriveServerViewModel: GDriveServerViewModel
+    @ObservedObject var gDriveServerViewModel: GDriveServerViewModel
     var body: some View {
         ContainerView {
             VStack(spacing: 24) {
@@ -72,9 +72,9 @@ struct SelectDriveConnection: View {
                                 nextAction: {
             switch selectedDriveConnectionType {
             case .shared:
-                navigateTo(destination: SelectSharedDrive(sharedDrives: dGriveServerViewModel.sharedDrives))
+                navigateTo(destination: SelectSharedDrive(sharedDrives: gDriveServerViewModel.sharedDrives))
             case .personal:
-                navigateTo(destination: CreateDriveFolder())
+                navigateTo(destination: CreateDriveFolder().environmentObject(gDriveServerViewModel))
             default:
                 break
             }
@@ -84,5 +84,5 @@ struct SelectDriveConnection: View {
 }
 
 #Preview {
-    SelectDriveConnection(selectedDriveConnectionType: .personal, dGriveServerViewModel: GDriveServerViewModel())
+    SelectDriveConnection(selectedDriveConnectionType: .personal, gDriveServerViewModel: GDriveServerViewModel())
 }
