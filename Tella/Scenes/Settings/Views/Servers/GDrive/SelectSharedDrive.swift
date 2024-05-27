@@ -11,11 +11,11 @@ import GoogleAPIClientForREST
 
 struct SelectSharedDrive: View {
     @State var selectedDrive: String = ""
-    @State var sharedDrives: [SharedDrive] = []
+    @EnvironmentObject var gDriveServerViewModel: GDriveServerViewModel
     var body: some View {
         ContainerView {
             VStack(alignment: .leading){
-                ForEach(sharedDrives, id: \.id) { drive in
+                ForEach(gDriveServerViewModel.sharedDrives, id: \.identifier) { drive in
                     DriveCardView(sharedDrive: drive, selectedDrive: $selectedDrive)
                 }
 
@@ -28,7 +28,9 @@ struct SelectSharedDrive: View {
                 // remove this after merging with uwazi relationships
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        navigateTo(destination: SuccessLoginView(navigateToAction: {}, type: .gDrive))
+                        gDriveServerViewModel.addServer(rootFolder: selectedDrive) {
+                            navigateTo(destination: SuccessLoginView(navigateToAction: {self.popToRoot()}, type: .gDrive))
+                        }
                     }) {
                         Image("report.select-files")
                             .resizable()
