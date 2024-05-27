@@ -15,6 +15,7 @@ class TellaData : ObservableObject {
     var servers = CurrentValueSubject<[Server], Error>([])
     var tellaServers = CurrentValueSubject<[TellaServer], Error>([])
     var uwaziServers = CurrentValueSubject<[UwaziServer], Error>([])
+    var gDriveServers = CurrentValueSubject<[GDriveServer], Error>([])
     
     // Reports
     var draftReports = CurrentValueSubject<[Report], Error>([])
@@ -45,6 +46,13 @@ class TellaData : ObservableObject {
         return id
     }
     
+    func addGDriveServer(server: GDriveServer) -> Result<Int, Error>{
+        let id = database.addGDriveServer(gDriveServer: server)
+        getServers()
+        
+        return id
+    }
+    
     @discardableResult
     func updateServer(server : TellaServer) -> Result<Bool, Error> {
         let updateServerResult = database.updateServer(server: server)
@@ -68,7 +76,6 @@ class TellaData : ObservableObject {
     
     func deleteServer(server: Server) {
         guard let serverId = server.id else { return }
-        
         switch (server.serverType) {
         case .tella:
             let resourcesId = getResourceByServerId(serverId: serverId)
@@ -77,6 +84,8 @@ class TellaData : ObservableObject {
             deleteTellaServer(serverId: serverId)
         case .uwazi:
             deleteUwaziServer(serverId: serverId)
+        case .gDrive:
+            deleteGDriveServer(serverId: serverId)
         default:
             break
         }
@@ -101,12 +110,20 @@ class TellaData : ObservableObject {
         getServers()
     }
     
+    func deleteGDriveServer(serverId: Int) {
+        database.deleteGDriveServer(serverId: serverId)
+        getServers()
+    }
+    
     func getServers(){
         DispatchQueue.main.async {
             self.tellaServers.value = self.database.getTellaServers()
             self.uwaziServers.value = self.database.getUwaziServers()
+            self.gDriveServers.value = self.database.getDriveServers()
             
-            self.servers.value = self.tellaServers.value + self.uwaziServers.value
+            self.servers.value = self.tellaServers.value + self.uwaziServers.value + self.gDriveServers.value
+            
+            dump(self.servers)
         }
     }
     

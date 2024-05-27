@@ -10,6 +10,7 @@ import Foundation
 import Combine
 
 class GDriveServerViewModel: ObservableObject {
+    var mainAppModel : MainAppModel
     private let gDriveRepository: GDriveRepositoryProtocol
     private var cancellables = Set<AnyCancellable>()
 
@@ -71,7 +72,18 @@ class GDriveServerViewModel: ObservableObject {
                 return
             }
             
+            guard let createdFile = file as? GTLRDrive_File else {
+                return
+            }
+            
+            self.addServer(rootFolder: createdFile.identifier ?? "")
             completion()
         }
+    }
+    
+    func addServer(rootFolder: String) {
+        let server = GDriveServer(rootFolder: rootFolder)
+        
+        _ = mainAppModel.tellaData?.addGDriveServer(server: server)
     }
 }

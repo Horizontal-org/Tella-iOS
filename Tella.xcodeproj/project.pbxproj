@@ -359,6 +359,8 @@
 		155369232B7E9CC100129F2F /* ResourceDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155369222B7E9CC100129F2F /* ResourceDatabase.swift */; };
 		155541B02C066F990031D3A5 /* ServerConnectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155541AF2C066F990031D3A5 /* ServerConnectionButton.swift */; };
 		155541B22C0672C20031D3A5 /* GDriveRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155541B12C0672C20031D3A5 /* GDriveRepository.swift */; };
+		155879FF2C0106FA0071389E /* GDriveDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155879FE2C0106FA0071389E /* GDriveDatabase.swift */; };
+		15587A012C010F1E0071389E /* GDriveServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15587A002C010F1E0071389E /* GDriveServer.swift */; };
 		15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15622F492B72B1FF00289816 /* DeleteConfirmation.swift */; };
 		156986252B88FCB600534720 /* ResourcePDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156986242B88FCB600534720 /* ResourcePDFView.swift */; };
 		15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C192B6AC34100D67C74 /* ResourcesView.swift */; };
@@ -909,6 +911,8 @@
 		155369222B7E9CC100129F2F /* ResourceDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDatabase.swift; sourceTree = "<group>"; };
 		155541AF2C066F990031D3A5 /* ServerConnectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConnectionButton.swift; sourceTree = "<group>"; };
 		155541B12C0672C20031D3A5 /* GDriveRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveRepository.swift; sourceTree = "<group>"; };
+		155879FE2C0106FA0071389E /* GDriveDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveDatabase.swift; sourceTree = "<group>"; };
+		15587A002C010F1E0071389E /* GDriveServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveServer.swift; sourceTree = "<group>"; };
 		15622F492B72B1FF00289816 /* DeleteConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmation.swift; sourceTree = "<group>"; };
 		156986242B88FCB600534720 /* ResourcePDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcePDFView.swift; sourceTree = "<group>"; };
 		15791C192B6AC34100D67C74 /* ResourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesView.swift; sourceTree = "<group>"; };
@@ -1223,6 +1227,7 @@
 				E1CF5A242AB3477C00365036 /* UwaziDatabase.swift */,
 				E1CF5A2A2AB3533100365036 /* ServerDatabase.swift */,
 				155369222B7E9CC100129F2F /* ResourceDatabase.swift */,
+				155879FE2C0106FA0071389E /* GDriveDatabase.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -2318,6 +2323,7 @@
 			isa = PBXGroup;
 			children = (
 				15994A102BFBF0E50017F153 /* SharedDrive.swift */,
+				15587A002C010F1E0071389E /* GDriveServer.swift */,
 			);
 			path = GDrive;
 			sourceTree = "<group>";
@@ -3650,8 +3656,10 @@
 				CC1C734D2AF5439600D736F8 /* UwaziMultipartData.swift in Sources */,
 				12781F4427E9FCE200FE9609 /* PasswordTypeEnum.swift in Sources */,
 				D5DA7F9B2648D05400B00FDA /* FileListView.swift in Sources */,
+				155879FF2C0106FA0071389E /* GDriveDatabase.swift in Sources */,
 				E1E7C5712AAB2BAB00DDB07E /* UwaziLanguageRow.swift in Sources */,
 				1237A71C278F5B2E00D7BC0F /* DateExtension.swift in Sources */,
+				15587A012C010F1E0071389E /* GDriveServer.swift in Sources */,
 				122E4D55291ADEB300562EB1 /* AddFilesToDraftView.swift in Sources */,
 				125299DD2AD02E6F00191CAB /* ImportVaultFileResult.swift in Sources */,
 				122DA89129CB1F45003801CD /* FileAPI.swift in Sources */,
