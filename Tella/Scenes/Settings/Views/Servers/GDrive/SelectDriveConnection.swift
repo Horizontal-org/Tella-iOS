@@ -72,9 +72,14 @@ struct SelectDriveConnection: View {
                                 nextAction: {
             switch selectedDriveConnectionType {
             case .shared:
-                navigateTo(destination: SelectSharedDrive(sharedDrives: gDriveServerViewModel.sharedDrives))
+                navigateTo(
+                    destination: SelectSharedDrive()
+                        .environmentObject(gDriveServerViewModel)
+                )
             case .personal:
-                navigateTo(destination: CreateDriveFolder().environmentObject(gDriveServerViewModel))
+                navigateTo(
+                    destination: CreateDriveFolder()
+                        .environmentObject(gDriveServerViewModel))
             default:
                 break
             }

@@ -76,14 +76,17 @@ class GDriveServerViewModel: ObservableObject {
                 return
             }
             
-            self.addServer(rootFolder: createdFile.identifier ?? "")
-            completion()
+            self.addServer(rootFolder: createdFile.identifier ?? "") {
+                completion()
+            }
         }
     }
     
-    func addServer(rootFolder: String) {
+    func addServer(rootFolder: String, completion: @escaping() -> Void ) {
         let server = GDriveServer(rootFolder: rootFolder)
-        
+
         _ = mainAppModel.tellaData?.addGDriveServer(server: server)
+        
+        completion()
     }
 }

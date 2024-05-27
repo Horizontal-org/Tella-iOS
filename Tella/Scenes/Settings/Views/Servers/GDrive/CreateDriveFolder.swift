@@ -43,7 +43,7 @@ struct CreateDriveFolder: View {
                                 shouldHideBack: false,
                                 nextAction: {
             gDriveServerViewModel.createDriveFolder(folderName: fieldContent) {
-                navigateTo(destination: SuccessLoginView(navigateToAction: {}, type: .gDrive))
+                navigateTo(destination: SuccessLoginView(navigateToAction: {self.popToRoot()}, type: .gDrive))
             }
         })
 
