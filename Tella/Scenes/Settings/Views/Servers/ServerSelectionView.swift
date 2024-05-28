@@ -54,9 +54,7 @@ struct ServerSelectionView: View {
                                      nextButtonAction: .action,
                                      isOverlay: selectedServerType == .gDrive,
                                      isValid: .constant(true), action: {
-                gDriveVM.handleSignInButton {
-                    navigateTo(destination: SelectDriveConnection( dGriveServerViewModel: GDriveServerViewModel()), title: "Select Google drive")
-                }
+                selectedServerType = .gDrive
             }).padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
         }
     }
@@ -72,6 +70,10 @@ struct ServerSelectionView: View {
                 navigateToTellaWebFlow()
             case .uwazi:
                 navigateToUwaziFlow()
+            case .gDrive:
+                gDriveVM.handleSignInButton {
+                    navigateTo(destination: SelectDriveConnection( dGriveServerViewModel: GDriveServerViewModel()), title: "Select Google drive")
+                }
             default:
                 break
             }
