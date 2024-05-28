@@ -64,9 +64,7 @@ struct ServerSelectionView: View {
             case .uwazi:
                 navigateToUwaziFlow()
             case .gDrive:
-                gDriveVM.handleSignInButton {
-                    navigateTo(destination: SelectDriveConnection( dGriveServerViewModel: GDriveServerViewModel()), title: "Select Google drive")
-                }
+                navigateToGDriveFlow()
             default:
                 break
             }
@@ -81,6 +79,12 @@ struct ServerSelectionView: View {
         navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel)
             .environmentObject(serverViewModel)
             .environmentObject(serversViewModel))
+    }
+    
+    fileprivate func navigateToGDriveFlow() {
+        gDriveVM.handleSignInButton {
+            navigateTo(destination: SelectDriveConnection( dGriveServerViewModel: GDriveServerViewModel()), title: "Select Google drive")
+        }
     }
 
 
