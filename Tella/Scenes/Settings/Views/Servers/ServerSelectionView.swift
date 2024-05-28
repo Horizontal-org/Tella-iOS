@@ -35,27 +35,20 @@ struct ServerSelectionView: View {
         }
     }
     
-    fileprivate func buttonViews() -> Group<TupleView<(some View, some View, some View)>> {
-        return Group {
-            TellaButtonView<AnyView>(title: LocalizableSettings.settServerTellaWeb.localized,
-                                     nextButtonAction: .action,
-                                     isOverlay: selectedServerType == .tella,
-                                     isValid: .constant(true),action: {
-                selectedServerType = .tella
-            })
-            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
-            TellaButtonView<AnyView>(title: LocalizableSettings.settServerUwazi.localized,
-                                     nextButtonAction: .action,
-                                     isOverlay: selectedServerType == .uwazi,
-                                     isValid: .constant(true), action: {
-                selectedServerType = .uwazi
-            }).padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
-            TellaButtonView<AnyView>(title: "GOOGLE DRIVE",
-                                     nextButtonAction: .action,
-                                     isOverlay: selectedServerType == .gDrive,
-                                     isValid: .constant(true), action: {
-                selectedServerType = .gDrive
-            }).padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+    fileprivate func buttonViews() -> some View {
+        Group {
+            ForEach(serverConnections, id: \.type) { connection in
+                TellaButtonView<AnyView>(
+                    title: connection.title,
+                    nextButtonAction: .action,
+                    isOverlay: selectedServerType == connection.type,
+                    isValid: .constant(true),
+                    action: {
+                        selectedServerType = connection.type
+                    }
+                )
+                .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+            }
         }
     }
 
