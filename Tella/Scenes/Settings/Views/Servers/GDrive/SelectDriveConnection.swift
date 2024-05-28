@@ -55,7 +55,7 @@ struct SelectDriveConnection: View {
     
     
     var moreInfoText: some View {
-        Link(destination: URL(string: "https://tella-app.org/gdrive")!) {
+        Link(destination: URL(string: TellaUrls.gDriveURL)!) {
             Text("Learn more about the types of drives")
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(Styles.Colors.yellow)
