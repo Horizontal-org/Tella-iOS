@@ -16,7 +16,8 @@ class GDriveServerViewModel: ObservableObject {
 
     @Published var sharedDrives: [SharedDrive] = []
 
-    init(repository: GDriveRepositoryProtocol = GDriveRepository.shared) {
+    init(repository: GDriveRepositoryProtocol = GDriveRepository.shared, mainAppModel: MainAppModel) {
+        self.mainAppModel = mainAppModel
         self.gDriveRepository = repository
         restorePreviousSignIn()
     }
