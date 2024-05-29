@@ -10,16 +10,24 @@ import SwiftUI
 
 struct CreateDriveFolder: View {
     @State var fieldContent : String = ""
+    @State var isValid : Bool = false
     var body: some View {
         ContainerView {
             VStack(spacing: 20) {
                 Spacer()
-                GDriveHeaderView(
+                ServerConnectionHeaderView(
                     title: "Create new folder",
                     subtitle: "Your reports will be uploaded to a new folder on your Google Drive. Choose a name for this folder here."
                 )
-                TextfieldView(fieldContent: $fieldContent, isValid: .constant(true), shouldShowError: .constant(false), fieldType: .text, placeholder: "Folder name")
+                TextfieldView(fieldContent: $fieldContent,
+                              isValid: .constant(true),
+                              shouldShowError: .constant(false),
+                              fieldType: .text,
+                              placeholder: "Folder name")
                     .padding(.vertical, 12)
+                    .onChange(of: fieldContent) { newValue in
+                        isValid = !newValue.isEmpty
+                    }
                 Spacer()
                 bottomView
             }.padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
@@ -28,7 +36,7 @@ struct CreateDriveFolder: View {
     }
     
     var bottomView: some View {
-        BottomLockView<AnyView>(isValid: .constant(true),
+        BottomLockView<AnyView>(isValid: $isValid,
                                 nextButtonAction: .action,
                                 shouldHideNext: false,
                                 shouldHideBack: false,
