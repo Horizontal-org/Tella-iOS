@@ -1,14 +1,14 @@
 //
-//  GDriveHeaderView.swift
+//  ServerConnectionHeaderView.swift
 //  Tella
 //
-//  Created by gus valbuena on 5/23/24.
+//  Created by gus valbuena on 5/29/24.
 //  Copyright © 2024 HORIZONTAL. All rights reserved.
 //
 
 import SwiftUI
 
-struct GDriveHeaderView: View {
+struct ServerConnectionHeaderView: View {
     var title: String
     var subtitle: String
     var body: some View {
@@ -27,5 +27,5 @@ struct GDriveHeaderView: View {
 }
 
 #Preview {
-    GDriveHeaderView(title: "", subtitle: "")
+    ServerConnectionHeaderView(title: "title", subtitle: "subtitle")
 }

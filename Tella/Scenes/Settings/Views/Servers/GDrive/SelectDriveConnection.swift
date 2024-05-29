@@ -19,7 +19,7 @@ struct SelectDriveConnection: View {
         ContainerView {
             VStack(spacing: 20) {
                 Spacer()
-                GDriveHeaderView(
+                ServerConnectionHeaderView(
                     title: "Select a Drive to connect to",
                     subtitle: "You can either connect to an organizational Shared Drive or create a new folder in your personal Drive."
                 )
