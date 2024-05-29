@@ -5,6 +5,11 @@
 
 enum LocalizableVault: String, LocalizableDelegate {
     
+    // Edit Image
+   case editFileConfirmExitTitle = "Vault_EditImage_Exit_SheetTitle"
+   case editFileConfirmExitExpl = "Vault_EditImage_Exit_SheetExpl"
+   case editFileExitSheetAction = "Vault_EditImage_Exit_SheetAction"
+
     // Sort By
     
     case rootDirectoryName = "Vault_RootDirectoryName"
@@ -36,6 +41,7 @@ enum LocalizableVault: String, LocalizableDelegate {
     case moreActionsShareSheetSelect = "Vault_MoreActions_Share_SheetSelect"
     case moreActionsMoveSheetSelect = "Vault_MoreActions_Move_SheetSelect"
     case moreActionsRenameSheetSelect = "Vault_MoreActions_Rename_SheetSelect"
+    case moreActionsEditSheetSelect = "Vault_MoreActions_Edit_SheetSelect"
     case moreActionsSaveSheetSelect = "Vault_MoreActions_Save_SheetSelect"
     case moreActionsFileInformationSheetSelect = "Vault_MoreActions_FileInformation_SheetSelect"
     case moreActionsDeleteSheetSelect = "Vault_MoreActions_Delete_SheetSelect"

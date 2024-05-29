@@ -102,6 +102,9 @@ class FileListViewModel: ObservableObject {
     var shouldActivateRename : Bool {
         selectedFiles.count == 1
     }
+    var shouldActivateEditFile : Bool {
+        selectedFiles.count == 1 && selectedFiles.first?.tellaFileType == .image
+    }
     
     var shouldActivateFileInformation : Bool {
         selectedFiles.count == 1
@@ -128,52 +131,49 @@ class FileListViewModel: ObservableObject {
     
     var fileActionItems: [ListActionSheetItem] {
         
-        var firstFileActionItems: [ListActionSheetItem] = []
+        var items: [ListActionSheetItem] = []
         
-        if shouldActivateShare {
-            firstFileActionItems.append(ListActionSheetItem(imageName: "share-icon",
-                                                            content: LocalizableVault.moreActionsShareSheetSelect.localized,
-                                                            type: FileActionType.share))
-        }
-        
-        var secondFileActionItems: [ListActionSheetItem] = []
         
         if !shouldHideViewsForGallery {
-            secondFileActionItems.append(ListActionSheetItem(imageName: "move-icon",
+            items.append(ListActionSheetItem(imageName: "move-icon",
                                                              content: LocalizableVault.moreActionsMoveSheetSelect.localized,
                                                              type: FileActionType.move))
         }
         
         if shouldActivateRename  {
-            secondFileActionItems.append(ListActionSheetItem(imageName: "edit-icon",
+            items.append(ListActionSheetItem(imageName: "edit-icon",
                                                              content: LocalizableVault.moreActionsRenameSheetSelect.localized,
                                                              type: FileActionType.rename))
         }
+        if shouldActivateEditFile {
+            items.append(ListActionSheetItem(imageName: "file.edit",
+                                                             content: LocalizableVault.moreActionsEditSheetSelect.localized,
+                                                             type: FileActionType.edit))
+
+            
+        }
+
         
         if shouldActivateShare {
-            secondFileActionItems.append(ListActionSheetItem(imageName: "save-icon",
-                                                             content: LocalizableVault.moreActionsSaveSheetSelect.localized,
+            items.append(ListActionSheetItem(imageName: "share-icon",
+                                             content: LocalizableVault.moreActionsShareSheetSelect.localized,
+                                             type: FileActionType.share))
+        }
+        if shouldActivateShare {
+            items.append(ListActionSheetItem(imageName: "save-icon",
+                                             content: LocalizableVault.moreActionsSaveSheetSelect.localized,
                                                              type: FileActionType.save))
         }
         
         if shouldActivateFileInformation {
-            secondFileActionItems.append(ListActionSheetItem(imageName: "info-icon",
+            items.append(ListActionSheetItem(imageName: "info-icon",
                                                              content: LocalizableVault.moreActionsFileInformationSheetSelect.localized,
                                                              type: FileActionType.info))
         }
-        
-        secondFileActionItems.append(ListActionSheetItem(imageName: "delete-icon",
+
+        items.append(ListActionSheetItem(imageName: "delete-icon",
                                                          content: LocalizableVault.moreActionsDeleteSheetSelect.localized,
                                                          type: FileActionType.delete))
-        
-        var items : [ListActionSheetItem] = []
-        items.append(contentsOf: firstFileActionItems.compactMap({$0}))
-        
-        if !firstFileActionItems.isEmpty {
-            items.append(ListActionSheetItem(viewType: .divider, type: FileActionType.none))
-        }
-        
-        items.append(contentsOf: secondFileActionItems)
         
         return items
     }

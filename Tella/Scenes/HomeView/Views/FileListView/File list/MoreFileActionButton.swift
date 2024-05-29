@@ -22,20 +22,28 @@ struct MoreFileActionButton: View {
     
     var file: VaultFileDB? = nil
     var moreButtonType : MoreButtonType
-    
+    @State var isEditViewShown = false
+    @State var fileData: Data?
     private var modalHeight : CGFloat {
-        let dividerHeight = fileListViewModel.fileActionItems.filter{$0.viewType == ActionSheetItemType.divider}.count * 20
-        return CGFloat((fileListViewModel.fileActionItems.count * 50) - dividerHeight  + 90)
+        return CGFloat((fileListViewModel.fileActionItems.count * 50) + 90)
     }
-
     var body: some View {
-        
-        switch moreButtonType {
-        case .grid:
-            return gridMoreButton.eraseToAnyView()
-        case .list, .navigationBar:
-            return listMoreButton.eraseToAnyView()
+        ZStack{
+            switch moreButtonType {
+            case .grid:
+                gridMoreButton.eraseToAnyView()
+            case .list, .navigationBar:
+                listMoreButton.eraseToAnyView()
+            }
+            
         }
+        .fullScreenCover(isPresented: $isEditViewShown) {
+        } content: {
+            EditImageView(viewModel: EditImageViewModel(mainAppModel: appModel,
+                                                        fileListViewModel: fileListViewModel),
+                          isPresented: $isEditViewShown)
+        }
+        
     }
     
     var listMoreButton: some View {
@@ -57,7 +65,7 @@ struct MoreFileActionButton: View {
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -6, trailing: -12))
         }.frame(width: 35, height: 35)
     }
-
+    
     private func showFileActionSheet() {
         if let file = file {
             fileListViewModel.updateSingleSelection(for: file)
@@ -68,7 +76,6 @@ struct MoreFileActionButton: View {
                                   headerTitle: fileListViewModel.fileActionsTitle , action: {item in
                 self.handleActions(item : item)
             })
-            
         })
     }
     
@@ -102,7 +109,8 @@ struct MoreFileActionButton: View {
             
         case .delete:
             showDeleteConfirmationSheet()
-            
+        case .edit:
+            isEditViewShown = true
         default:
             break
         }
@@ -124,7 +132,6 @@ struct MoreFileActionButton: View {
                 fileListViewModel.selectedFiles[0].name = fileNameToUpdate
                 fileListViewModel.renameSelectedFile()
             })
-            
         })
     }
     
@@ -141,7 +148,7 @@ struct MoreFileActionButton: View {
                 fileListViewModel.deleteSelectedFiles()
                 fileListViewModel.selectingFiles = false
                 fileListViewModel.resetSelectedItems()
-
+                
                 if fileListViewModel.fileActionSource == .details {
                     self.presentationMode.wrappedValue.dismiss()
                 }
@@ -158,7 +165,6 @@ struct MoreFileActionButton: View {
                                didConfirmAction: {
                 fileListViewModel.showingDocumentPicker = true
             })
-            
         })
     }
 }

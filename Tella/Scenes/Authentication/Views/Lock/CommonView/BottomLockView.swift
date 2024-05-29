@@ -57,7 +57,7 @@ struct BottomLockView<Destination:View>:View {
         }
         .font(.custom(Styles.Fonts.lightFontName, size: 16))
         .foregroundColor(isValid ? Color.white : Color.gray)
-        .padding(EdgeInsets(top: 17, leading: 34, bottom: 17, trailing: 34))
+        .padding(EdgeInsets(top: 17, leading: 34, bottom: 45, trailing: 34))
         .disabled(!isValid)
     }
 }
