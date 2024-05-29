@@ -102,4 +102,37 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         }
         .eraseToAnyPublisher()
     }
+    
+    func createDriveFolder(
+        googleUser: GIDGoogleUser?,
+        folderName: String,
+        completion: @escaping (String) -> Void
+    ) {
+        guard let user = googleUser else {
+            print("User not authenticated")
+            return
+        }
+        
+        let driveService = GTLRDriveService()
+        driveService.authorizer = user.fetcherAuthorizer
+        
+        let folder = GTLRDrive_File()
+        folder.name = folderName
+        folder.mimeType = "application/vnd.google-apps.folder"
+        
+        let query = GTLRDriveQuery_FilesCreate.query(withObject: folder, uploadParameters: nil)
+        
+        driveService.executeQuery(query) { (ticket, file, error) in
+            if let error = error {
+                print("Error creating folder: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let createdFile = file as? GTLRDrive_File else {
+                return
+            }
+            
+            completion(createdFile.identifier ?? "")
+        }
+    }
 }
