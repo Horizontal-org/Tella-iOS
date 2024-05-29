@@ -15,12 +15,12 @@ class CustomCropViewController: Mantis.CropViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpNavigationItem()
-        setUpNavigationAppearance(with: .black)
+        UIApplication.shared.setupApperance(with: .black)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        setUpNavigationAppearance(with: Styles.uiColor.backgroundMain)
+        UIApplication.shared.setupApperance()
     }
     
     private func setUpNavigationItem() {
@@ -41,15 +41,6 @@ class CustomCropViewController: Mantis.CropViewController {
         navigationItem.rightBarButtonItem = done
     }
     
-    private func setUpNavigationAppearance(with color: UIColor) {
-        UINavigationBar.appearance().backgroundColor = color
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = color
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().compactAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
-    }
-
     @objc private func onDoneClicked() {
         crop()
     }

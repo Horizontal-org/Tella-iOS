@@ -72,4 +72,31 @@ extension UIApplication {
         return base
     }
     
+    func setupApperance(with backgroundColor: UIColor = Styles.uiColor.backgroundMain) {
+        UITabBar.appearance().unselectedItemTintColor = UIColor.white.withAlphaComponent(0.38)
+        UITabBar.appearance().shadowImage = UIImage()
+        UITabBar.appearance().backgroundImage = UIImage()
+        UITabBar.appearance().isTranslucent = true
+        UITabBar.appearance().backgroundColor = backgroundColor
+        
+        let coloredAppearance = UINavigationBarAppearance()
+        coloredAppearance.configureWithTransparentBackground()
+        coloredAppearance.backgroundColor = backgroundColor
+        coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white,
+                                                 .font: UIFont(name: Styles.Fonts.boldFontName, size: 24)!]
+        coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white,
+                                                      .font: UIFont(name: Styles.Fonts.boldFontName, size: 35)!]
+        let image = UIImage(named: "back")
+        image?.imageFlippedForRightToLeftLayoutDirection()
+        
+        coloredAppearance.setBackIndicatorImage(image, transitionMaskImage: image)
+        
+        UINavigationBar.appearance().standardAppearance = coloredAppearance
+        UINavigationBar.appearance().compactAppearance = coloredAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
+        UINavigationBar.appearance().backgroundColor = backgroundColor
+        
+        UITableView.appearance().backgroundColor = .clear
+        UITableViewCell.appearance().backgroundColor = .clear
+    }
 }
