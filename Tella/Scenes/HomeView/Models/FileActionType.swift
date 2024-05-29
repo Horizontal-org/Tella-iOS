@@ -14,5 +14,6 @@ enum FileActionType: ActionType {
     case save
     case info
     case delete
+    case edit
     case none
 }

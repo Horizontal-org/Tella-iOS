@@ -32,6 +32,9 @@
 "LockUnlock_UnlockPin_Subhead" = "Enter your PIN to unlock Tella";
 "LockUnlock_UnlockUpdatePin_Subhead" = "Enter your PIN to change your lock method";
 "LockUnlock_UnlockUpdatePin_Error_IncorrectPIN" = "Incorrect PIN, please try again";
+"Vault_EditImage_Exit_SheetTitle" = "Unsaved changes";
+"Vault_EditImage_Exit_SheetExpl" = "Your changes have not been saved. Would you like to save before exiting?";
+"Vault_EditImage_Exit_SheetAction" = "EXIT WITHOUT SAVING";
 "LockUnlock_UnlockPin_Action_Ok" = "Está bem";
 "Home_TabBar" = "Home";
 "Home_AppBar" = "Tella";
@@ -72,6 +75,7 @@
 "Vault_MoreActions_Share_SheetSelect" = "Compartilhar";
 "Vault_MoreActions_Move_SheetSelect" = "Move to another folder";
 "Vault_MoreActions_Rename_SheetSelect" = "Rename";
+"Vault_MoreActions_Edit_SheetSelect" = "Editar";
 "Vault_MoreActions_Save_SheetSelect" = "Salvar no aparelho celular";
 "Vault_MoreActions_FileInformation_SheetSelect" = "File information";
 "Vault_MoreActions_Delete_SheetSelect" = "Excluir";

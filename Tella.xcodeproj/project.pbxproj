@@ -348,6 +348,10 @@
 		15FABA382B7405B800B2EFEE /* ResourceDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FABA372B7405B800B2EFEE /* ResourceDTO.swift */; };
 		1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
+		208A06532BF6057A004BA033 /* EditImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06522BF6057A004BA033 /* EditImageViewModel.swift */; };
+		208A06552BF607BF004BA033 /* ImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06542BF607BF004BA033 /* ImageCropper.swift */; };
+		20985A5D2BE158020092CCC2 /* EditImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20985A5C2BE158020092CCC2 /* EditImageView.swift */; };
+		20AE31922BF4BB0700FF4256 /* CustomCropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AE31912BF4BB0700FF4256 /* CustomCropViewController.swift */; };
 		379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */; };
 		89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */; };
 		CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0797BD2A8D46CB00AAE63F /* UnlockView.swift */; };
@@ -859,6 +863,10 @@
 		15FABA372B7405B800B2EFEE /* ResourceDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDTO.swift; sourceTree = "<group>"; };
 		1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheet.swift; sourceTree = "<group>"; };
 		1EAE6BF424146C2100114244 /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
+		208A06522BF6057A004BA033 /* EditImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageViewModel.swift; sourceTree = "<group>"; };
+		208A06542BF607BF004BA033 /* ImageCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropper.swift; sourceTree = "<group>"; };
+		20985A5C2BE158020092CCC2 /* EditImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageView.swift; sourceTree = "<group>"; };
+		20AE31912BF4BB0700FF4256 /* CustomCropViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCropViewController.swift; sourceTree = "<group>"; };
 		21FEB79B83E10A1CBE4AA323 /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		41C55359B3FCA6834440D9D8 /* Pods-Tella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.debug.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.debug.xcconfig"; sourceTree = "<group>"; };
 		6DD4C039240F547300491438 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -1698,6 +1706,7 @@
 		1283C258272AABC9009180CA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				20985A5B2BE157D00092CCC2 /* EditImageView */,
 				12AB30D1272C33D90020FFBF /* Home */,
 				D5DA7F992648D02C00B00FDA /* FileListView */,
 				0DA213CC268028AC00526995 /* FileDetailView */,
@@ -2197,6 +2206,17 @@
 				15F64CA72B6D852D008A57AA /* ResourceCard.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		20985A5B2BE157D00092CCC2 /* EditImageView */ = {
+			isa = PBXGroup;
+			children = (
+				20985A5C2BE158020092CCC2 /* EditImageView.swift */,
+				20AE31912BF4BB0700FF4256 /* CustomCropViewController.swift */,
+				208A06522BF6057A004BA033 /* EditImageViewModel.swift */,
+				208A06542BF607BF004BA033 /* ImageCropper.swift */,
+			);
+			path = EditImageView;
 			sourceTree = "<group>";
 		};
 		4CE85B832408B1AF00CF24AF /* Resources */ = {
@@ -2710,6 +2730,7 @@
 				F66E65A623E3207D000F93E5 /* Frameworks */,
 				F66E65A723E3207D000F93E5 /* Resources */,
 				D53B76EE2601CA0D0001CD34 /* Embed Frameworks */,
+				B87B7ACBFDD7CCADFA926C57 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2748,6 +2769,7 @@
 				F66E65C623E32080000F93E5 /* Sources */,
 				F66E65C723E32080000F93E5 /* Frameworks */,
 				F66E65C823E32080000F93E5 /* Resources */,
+				66DDF99B941478715A1B734C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2883,6 +2905,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		66DDF99B941478715A1B734C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		77D93700BCAA439EA3118052 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2903,6 +2942,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B87B7ACBFDD7CCADFA926C57 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tella/Pods-Tella-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tella/Pods-Tella-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tella/Pods-Tella-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E862C66ACF881D11B7202E0F /* [CP] Check Pods Manifest.lock */ = {
@@ -2993,6 +3049,7 @@
 				CCC1B4372AC75B700075B819 /* UwaziEntityTitleView.swift in Sources */,
 				CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */,
 				D5DAFDCF265384C4002F3942 /* MainAppModel.swift in Sources */,
+				20AE31922BF4BB0700FF4256 /* CustomCropViewController.swift in Sources */,
 				CCDC398A2AF2BCE400674735 /* MultipartRequest.swift in Sources */,
 				E108B75729FE79340045CCBE /* UwaziServerViewModel.swift in Sources */,
 				1293F66A2AD7F29B00F6CFBD /* FeedbackViewModel.swift in Sources */,
@@ -3110,6 +3167,7 @@
 				15F64C9D2B6D7904008A57AA /* DownloadedResources.swift in Sources */,
 				129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */,
 				E1EEE2A729F7E1A8009FE227 /* UwaziLanguageSelectionView.swift in Sources */,
+				208A06552BF607BF004BA033 /* ImageCropper.swift in Sources */,
 				CCAEA0522A97E038008190E0 /* CreateDraftHeaderView.swift in Sources */,
 				1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */,
 				E14E0CF629FAD68E004FC4CD /* UwaziSuccessView.swift in Sources */,
@@ -3227,6 +3285,7 @@
 				12D4E8322B45964E00E7FCE7 /* FileWalker.swift in Sources */,
 				E1E7C57F2AAB5DB500DDB07E /* UwaziSetting.swift in Sources */,
 				E1E7C57B2AAB54BE00DDB07E /* UwaziCommonProperty.swift in Sources */,
+				20985A5D2BE158020092CCC2 /* EditImageView.swift in Sources */,
 				127C155827DA486A009EC15B /* TransitionView.swift in Sources */,
 				1204520028C7AC2800D572A7 /* ServerActionType.swift in Sources */,
 				125F9B9B2AD9B4770073748C /* DictionaryExtension.swift in Sources */,
@@ -3251,6 +3310,7 @@
 				12607D5327903E9E00E2B8CC /* CustomVideoControlsView.swift in Sources */,
 				1216F8742901823100F5AEA5 /* UnderlinedTextEditorView.swift in Sources */,
 				12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */,
+				208A06532BF6057A004BA033 /* EditImageViewModel.swift in Sources */,
 				CCC1B43D2AC75C5D0075B819 /* UwaziConstants.swift in Sources */,
 				1268553E27D2572100385E18 /* FileInfoView.swift in Sources */,
 				1289B45828B63187005DA687 /* RotationViewModifier.swift in Sources */,
