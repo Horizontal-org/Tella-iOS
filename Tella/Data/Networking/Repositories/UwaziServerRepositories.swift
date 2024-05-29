@@ -148,7 +148,7 @@ class UwaziServerRepository: WebRepository {
             .map { dto in
                 let shouldFetchAllTemplates = templatesIds.contains { $0.isEmpty }
                 return dto.rows
-                    .filter{ $0.type == "template" }
+                    .filter{ $0.type == UwaziEntityMetadataKeys.template }
                     .filter { relationship in
                         shouldFetchAllTemplates || templatesIds.contains(where: { $0 == relationship.id })
                     }
@@ -343,7 +343,6 @@ extension UwaziServerRepository.API: APIRequest {
     }
 
     var keyValues: [Key : Value?]? {
-
         switch self {
         case .login((let username, let password, _ )):
             return [
@@ -358,7 +357,15 @@ extension UwaziServerRepository.API: APIRequest {
                 "password": password,
                 "token": token
             ]
-        case .checkURL, .getLanguage, .getTemplate, .getSetting,.getDictionary,.getTranslations, .submitEntity(_, _, _, _), .submitPublicEntity, .getRelationshipEntities:
+        case .checkURL,
+            .getLanguage,
+            .getTemplate,
+            .getSetting,
+            .getDictionary,
+            .getTranslations,
+            .submitEntity(_, _, _, _),
+            .submitPublicEntity,
+            .getRelationshipEntities:
             return nil
         }
     }
