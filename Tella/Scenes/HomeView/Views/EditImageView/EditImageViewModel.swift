@@ -9,9 +9,9 @@ import SwiftUI
 
 class EditImageViewModel: ObservableObject {
     
-    lazy var imageToEdit: Binding<UIImage?> = Binding(
+    lazy var imageToEdit: Binding<UIImage> = Binding(
         get: { return UIImage(data: self.data ?? Data(), scale: 1) ?? UIImage() },
-        set: {self.croppedImageData = $0?.jpegData(compressionQuality: 0.5) ?? Data()}
+        set: {self.croppedImageData = $0.jpegData(compressionQuality: 0.5) }
     )
     
     @ObservedObject private var fileListViewModel : FileListViewModel

@@ -12,7 +12,7 @@ import Combine
 
 struct ImageCropper: UIViewControllerRepresentable {
 
-    @Binding var image: UIImage?
+    @Binding var image: UIImage
     var didCropAction: () -> ()
     let didCancelAction: () -> ()
     
@@ -26,7 +26,7 @@ struct ImageCropper: UIViewControllerRepresentable {
         config.cropToolbarConfig.mode = .embedded
         config.cropViewConfig.showAttachedRotationControlView = false
         config.cropViewConfig.backgroundColor = .black
-        let cropViewController: CustomCropViewController = Mantis.cropViewController(image: image!, config: config)
+        let cropViewController: CustomCropViewController = Mantis.cropViewController(image: image, config: config)
         cropViewController.delegate = context.coordinator
          let _ = cropViewController.isUpdatingImage.sink { value in
              context.coordinator.isUpdating = value
