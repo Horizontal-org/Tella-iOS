@@ -80,9 +80,9 @@
 "Vault_RenameFile_SheetTitle" = "Переименовать файл";
 "Vault_RenameFile_Cancel_SheetAction" = "CANCEL";
 "Vault_RenameFile_Save_SheetAction" = "SAVE";
-"Vault_Confirm_delete_Description" = "Некоторые из выбранных файлов в настоящее время используются в ваших соединениях. Удаление может повлиять на формы и отчеты, которые еще не были отправлены.";
-"Vault_Warning_Title" ="Warning";
-"Vault_Delete_anyway" = "Удалить в любом случае";
+"Vault_DeleteFile_Warning_SheetDescription" = "Некоторые из выбранных файлов в настоящее время используются в ваших соединениях. Удаление может повлиять на формы и отчеты, которые еще не были отправлены.";
+"Vault_DeleteFile_Warning_SheetTitle" ="Warning";
+"Vault_DeleteFile_DeleteAnyway_SheetAction" = "Удалить в любом случае";
 "Vault_CreateNewFolder_SheetTitle" = "Create new folder";
 "Vault_CreateNewFolder_Cancel_SheetAction" = "CANCEL";
 "Vault_CreateNewFolder_Create_SheetAction" = "CREATE";

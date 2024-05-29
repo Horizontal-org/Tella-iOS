@@ -367,21 +367,12 @@ extension FileListViewModel {
         }
     }
     
-    
-    func checkReportsBeforeDelete() -> Bool {
-        // check reports before deleting files
-        
-        let fileIds = selectedFiles.compactMap { $0.id }
-        let fileIsInReport = appModel.tellaData?.database.checkFilesInReports(ids: fileIds)
+  
 
-        if fileIsInReport == true {
-            // Show pop up
-            return  true
-        } else {
-            deleteSelectedFiles()
-            return false
-        }
-        
+    func filesAreUsedInConnections() -> Bool {
+        guard let database = appModel.tellaData?.database else { return false }
+        let fileIds = selectedFiles.compactMap { $0.id }
+        return database.checkFilesInReports(ids: fileIds)
     }
     
     func deleteSelectedFiles() {

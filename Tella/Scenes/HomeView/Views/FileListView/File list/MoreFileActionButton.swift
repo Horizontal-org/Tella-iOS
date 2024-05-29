@@ -102,8 +102,8 @@ struct MoreFileActionButton: View {
             
         case .delete:
             
-            if fileListViewModel.checkReportsBeforeDelete() {
-                showDeleteAnywaySheet()
+            if fileListViewModel.filesAreUsedInConnections() {
+                showDeleteWarningSheet()
             } else {
                 showDeleteConfirmationSheet()
             }
@@ -155,12 +155,12 @@ struct MoreFileActionButton: View {
         fileListViewModel.resetSelectedItems()
     }
     
-    func showDeleteAnywaySheet() {
+    func showDeleteWarningSheet() {
         sheetManager.showBottomSheet(modalHeight: 194, content: {
-            ConfirmBottomSheet(titleText: LocalizableVault.warningTitle.localized,
-                               msgText:  LocalizableVault.confirmDeleteDescription.localized,
+            ConfirmBottomSheet(titleText: LocalizableVault.deleteFileWarningTitle.localized,
+                               msgText:  LocalizableVault.deleteFileWarningDescription.localized,
                                cancelText: LocalizableVault.deleteFileCancelSheetAction.localized,
-                               actionText: LocalizableVault.deleteAnyway.localized,
+                               actionText: LocalizableVault.deleteFileDeleteAnyway.localized,
                                destructive: true,
                                didConfirmAction:{
                 deleteAction()

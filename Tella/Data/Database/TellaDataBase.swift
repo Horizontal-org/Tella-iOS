@@ -82,23 +82,23 @@ class TellaDataBase : DataBase {
         statementBuilder.createTable(tableName: D.tReportInstanceVaultFile, columns: columns)
         
     }
-    
+
     func checkFilesInReports(ids: [String]) -> Bool {
-        var isFileInReport = false
         do {
-            try ids.forEach({ vaultId in
+            for vaultId in ids {
                 let condition = [KeyValue(key: D.cVaultFileInstanceId, value: vaultId)]
                 let responseDict = try statementBuilder.selectQuery(tableName: D.tReportInstanceVaultFile,
                                                                     andCondition: condition)
-                isFileInReport = !responseDict.isEmpty
-            })
-            return isFileInReport
+                if !responseDict.isEmpty {
+                    return true
+                }
+            }
         } catch let error {
             debugLog(error)
-            return isFileInReport
         }
+        return false
     }
-    
+
     /// Rename the cUpatedDate column to cUpdatedDate column in tReport and tReportInstanceVaultFile tables
     /// It was a typo
     func renameUpdatedDateColumn() {
