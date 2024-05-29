@@ -9,8 +9,6 @@
 import Foundation
 import SwiftUI
 
-
-
 protocol UwaziEntryPrompt: ObservableObject {
     
     associatedtype Value: Codable
@@ -79,7 +77,6 @@ class CommonUwaziEntryPrompt: Hashable {
     @Published  var showClear: Bool
     @Published  var shouldShowMandatoryError: Bool
     
-    
     init(id: String? = nil,
          formIndex: String? = nil,
          type: String,
@@ -121,7 +118,6 @@ class UwaziDividerEntryPrompt:  CommonUwaziEntryPrompt,UwaziEntryPrompt {
     
     @Published  var value: Value = ""
     @Published var values: [Value] = []
-    
 }
 
 class UwaziTextEntryPrompt: CommonUwaziEntryPrompt,UwaziEntryPrompt {
@@ -157,11 +153,9 @@ class UwaziSelectEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
         }
     }
     
-    
     func empty() {
         self.value = []
     }
-    
 }
 
 class UwaziFilesEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
@@ -201,5 +195,4 @@ class UwaziRelationshipEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
     func empty() {
         self.value = []
     }
-    
 }

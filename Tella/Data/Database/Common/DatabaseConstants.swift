@@ -80,7 +80,7 @@ struct D {
     static let cUpdated = "c_updated"
     static let cFavorite = "c_favorite"
     static let cRelationships = "c_relationships"
-   static let cLocalTemplateId = "c_local_template_id"
+    static let cLocalTemplateId = "c_local_template_id"
     static let cMetadata = "c_metadata"
     static let cType = "c_type"
     static let cUwaziEntityInstanceId = "c_uwazi_entity_instance_id"
