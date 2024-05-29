@@ -22,7 +22,7 @@ struct EntitySelectorView: View {
                                      type: prompt.value.isEmpty ? .none : .validate
                 )
                 
-                SearchBarView(searchText: $searchText)
+                SearchBarView(searchText: $searchText, placeholderText: LocalizableUwazi.uwaziRelationshipSearchTitle.localized)
                 Text(LocalizableUwazi.uwaziRelationshipListExpl.localized)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(Color.white.opacity(0.87))

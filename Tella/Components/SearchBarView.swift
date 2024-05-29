@@ -11,10 +11,11 @@ import SwiftUI
 
 struct SearchBarView: View {
     @Binding var searchText: String
+    var placeholderText: String
     var body: some View {
         VStack {
             ZStack {
-                PlaceholderText(searchText: $searchText)
+                SearchBarPlaceholderText(searchText: $searchText, placeholderText: placeholderText)
                 if #available(iOS 15.0, *) {
                     FocusedSearchBar(searchText: $searchText)
                 } else {
@@ -25,10 +26,11 @@ struct SearchBarView: View {
     }
 }
 
-struct PlaceholderText: View {
+struct SearchBarPlaceholderText: View {
     @Binding var searchText: String
+    var placeholderText: String
     var body: some View {
-        Text(LocalizableUwazi.uwaziRelationshipSearchTitle.localized)
+        Text(placeholderText)
             .font(.custom(Styles.Fonts.regularFontName, size: 14))
             .offset(x: searchText.isEmpty ? 42 : 0, y: searchText.isEmpty ? 0 : -40)
             .frame(maxWidth: .infinity,alignment: .leading)
@@ -50,7 +52,7 @@ struct FocusedSearchBar: View {
                 .textFieldStyle(TextfieldStyle(shouldShowError: false))
                 .frame(height: 22)
                 .focused($isInputActive)
-            CancelButton(searchText: $searchText)
+            SearchBarCancelButton(searchText: $searchText)
         }
         .padding()
         .overlay(
@@ -70,7 +72,7 @@ struct UnfocusedSearchBar: View {
                 .keyboardType(.default)
                 .textFieldStyle(TextfieldStyle(shouldShowError: false))
                 .frame( height: 22)
-            CancelButton(searchText: $searchText)
+            SearchBarCancelButton(searchText: $searchText)
         }
         .padding()
         .overlay(
@@ -81,7 +83,7 @@ struct UnfocusedSearchBar: View {
     }
 }
 
-struct CancelButton: View {
+struct SearchBarCancelButton: View {
     @Binding var searchText: String
     var body: some View {
         if !searchText.isEmpty {
@@ -92,5 +94,5 @@ struct CancelButton: View {
     }
 }
 #Preview {
-    SearchBarView(searchText: .constant(""))
+    SearchBarView(searchText: .constant(""), placeholderText: "placeholder")
 }

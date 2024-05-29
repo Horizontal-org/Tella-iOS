@@ -36,8 +36,8 @@ enum NavigationType {
 struct NavigationHeaderView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    var backButtonAction : (() -> Void)? = nil
-    var rightButtonAction: (() -> Void)? = nil
+    var backButtonAction : (() -> Void)?
+    var rightButtonAction: (() -> Void)?
     var title: String = ""
     var type: NavigationType
 
