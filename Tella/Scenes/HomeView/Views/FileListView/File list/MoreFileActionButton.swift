@@ -25,8 +25,7 @@ struct MoreFileActionButton: View {
     @State var isEditViewShown = false
     @State var fileData: Data?
     private var modalHeight : CGFloat {
-        let dividerHeight = fileListViewModel.fileActionItems.filter{$0.viewType == ActionSheetItemType.divider}.count * 20
-        return CGFloat((fileListViewModel.fileActionItems.count * 50) - dividerHeight  + 90)
+        return CGFloat((fileListViewModel.fileActionItems.count * 50) + 90)
     }
     var body: some View {
         ZStack{
@@ -41,8 +40,7 @@ struct MoreFileActionButton: View {
         .fullScreenCover(isPresented: $isEditViewShown) {
         } content: {
             EditImageView(viewModel: EditImageViewModel(mainAppModel: appModel,
-                                                        fileListViewModel: fileListViewModel,
-                                                        currenFile: fileListViewModel.selectedFiles.first),
+                                                        fileListViewModel: fileListViewModel),
                           isPresented: $isEditViewShown)
         }
         
@@ -78,7 +76,6 @@ struct MoreFileActionButton: View {
                                   headerTitle: fileListViewModel.fileActionsTitle , action: {item in
                 self.handleActions(item : item)
             })
-            
         })
     }
     
@@ -135,7 +132,6 @@ struct MoreFileActionButton: View {
                 fileListViewModel.selectedFiles[0].name = fileNameToUpdate
                 fileListViewModel.renameSelectedFile()
             })
-            
         })
     }
     
@@ -152,7 +148,7 @@ struct MoreFileActionButton: View {
                 fileListViewModel.deleteSelectedFiles()
                 fileListViewModel.selectingFiles = false
                 fileListViewModel.resetSelectedItems()
-
+                
                 if fileListViewModel.fileActionSource == .details {
                     self.presentationMode.wrappedValue.dismiss()
                 }
@@ -169,7 +165,6 @@ struct MoreFileActionButton: View {
                                didConfirmAction: {
                 fileListViewModel.showingDocumentPicker = true
             })
-            
         })
     }
 }

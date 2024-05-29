@@ -32,9 +32,9 @@
 "LockUnlock_UnlockPin_Subhead" = "Enter your PIN to unlock Tella";
 "LockUnlock_UnlockUpdatePin_Subhead" = "Enter your PIN to change your lock method";
 "LockUnlock_UnlockUpdatePin_Error_IncorrectPIN" = "Incorrect PIN, please try again";
-"Edit_Dialog_confirm_exit_title" = "Unsaved changes";
-"Edit_Dialog_confirm_exit" = "Your changes have not been saved. Would you like to save before exiting?";
-"action_exit_without_saving" = "EXIT WITHOUT SAVING";
+"Vault_EditImage_Exit_SheetTitle" = "Unsaved changes";
+"Vault_EditImage_Exit_SheetExpl" = "Your changes have not been saved. Would you like to save before exiting?";
+"Vault_EditImage_Exit_SheetAction" = "EXIT WITHOUT SAVING";
 "LockUnlock_UnlockPin_Action_Ok" = "အိုကေ";
 "Home_TabBar" = "မူလစာမျက်နှာ";
 "Home_AppBar" = "Tella";

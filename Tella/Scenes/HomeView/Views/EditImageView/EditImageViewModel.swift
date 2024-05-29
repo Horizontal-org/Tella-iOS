@@ -14,26 +14,25 @@ class EditImageViewModel: ObservableObject {
         set: {self.croppedImageData = $0?.jpegData(compressionQuality: 0.5) ?? Data()}
     )
     
-    @ObservedObject var fileListViewModel : FileListViewModel
-    @Published var isLoaded = false
-    var croppedImageData: Data?
-    var mainAppModel: MainAppModel
-    var currenFile: VaultFileDB?
+    @ObservedObject private var fileListViewModel : FileListViewModel
+    @Published var isDataLoaded = false
+    private var croppedImageData: Data?
+    private var mainAppModel: MainAppModel
+    private var currenFile: VaultFileDB?
     private var data: Data?
     
     init(mainAppModel: MainAppModel,
-         fileListViewModel: FileListViewModel,
-         currenFile: VaultFileDB? = nil) {
+         fileListViewModel: FileListViewModel) {
         self.fileListViewModel = fileListViewModel
         self.mainAppModel = mainAppModel
-        self.currenFile = currenFile
+        self.currenFile = fileListViewModel.currentSelectedVaultFile
     }
     
     func loadFile() {
         guard let file = currenFile,
               let loadedData = self.mainAppModel.vaultManager.loadFileData(file: file) else { return }
         self.data = loadedData
-        isLoaded = true
+        isDataLoaded = true
     }
     
     func saveChanges() {
@@ -41,7 +40,7 @@ class EditImageViewModel: ObservableObject {
         let url = mainAppModel.vaultManager.saveDataToTempFile(data: croppedImageData,
                                                                pathExtension: fileExtension)
         // save in tempFile
-        guard let url = url else {
+        guard let url else {
             return
         }
         self.mainAppModel.addVaultFile(importedFiles: [ImportedFile(urlFile: url)],

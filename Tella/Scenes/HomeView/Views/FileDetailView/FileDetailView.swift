@@ -32,8 +32,7 @@ struct FileDetailView: View {
             
         } content: {
             EditImageView(viewModel: EditImageViewModel( mainAppModel: appModel,
-                                                         fileListViewModel: fileListViewModel,
-                                                         currenFile: viewModel.currentFile),
+                                                         fileListViewModel: fileListViewModel),
                           isPresented: $isEditImagePresent)
         }
         .environmentObject(fileListViewModel)

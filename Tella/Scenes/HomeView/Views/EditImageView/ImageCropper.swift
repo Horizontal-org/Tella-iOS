@@ -43,19 +43,19 @@ struct ImageCropper: UIViewControllerRepresentable {
 class ImageCropperCoordinator: CropViewControllerDelegate {
     var subscriptions =  Set<AnyCancellable>()
     var isUpdating = false
-    var parent: ImageCropper
+    var imageCropper: ImageCropper
     var didCropAction: () -> ()
     let didCancelAction: () -> ()
-    init(_ parent: ImageCropper,
+    init(_ imageCropper: ImageCropper,
          _ didCropAction: @escaping () -> (),
          _ didCancelAction: @escaping () -> ()) {
-        self.parent = parent
+        self.imageCropper = imageCropper
         self.didCropAction = didCropAction
         self.didCancelAction = didCancelAction
     }
     
     func cropViewControllerDidCrop(_ cropViewController: Mantis.CropViewController, cropped: UIImage, transformation: Transformation, cropInfo: CropInfo) {
-        parent.image = cropped
+        imageCropper.image = cropped
         if !isUpdating {
             didCropAction()
         }

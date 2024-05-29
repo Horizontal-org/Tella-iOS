@@ -17,15 +17,8 @@ struct EditImageView: View {
 
     var body: some View {
         ZStack {
-            if viewModel.isLoaded {
-                ImageCropper(image: $viewModel.imageToEdit.wrappedValue) {
-                    isPresented = false
-                    viewModel.saveChanges()
-                    sheetManager.hide()
-                } didCancelAction: {
-                    isBottomSheetShown = true
-                }
-                .ignoresSafeArea()
+            if viewModel.isDataLoaded {
+                imageCropperView
             } else {
                 ProgressView()
             }
@@ -35,11 +28,22 @@ struct EditImageView: View {
         }
     }
     
+    var imageCropperView : some View {
+        ImageCropper(image: $viewModel.imageToEdit.wrappedValue) {
+            isPresented = false
+            viewModel.saveChanges()
+            sheetManager.hide()
+        } didCancelAction: {
+            isBottomSheetShown = true
+        }  
+        .ignoresSafeArea()
+    }
+
     var confirmExitBottomSheet: some View {
         DragView(modalHeight: 171, isShown: $isBottomSheetShown) {
             ConfirmBottomSheet(titleText: LocalizableVault.editFileConfirmExitTitle.localized,
-                               msgText: LocalizableVault.editFileConfirmExit.localized,
-                               cancelText: LocalizableVault.editFileExitWithoutChanges.localized,
+                               msgText: LocalizableVault.editFileConfirmExitExpl.localized,
+                               cancelText: LocalizableVault.editFileExitSheetAction.localized,
                                actionText:LocalizableVault.renameFileSaveSheetAction.localized, didConfirmAction: {
                 self.viewModel.saveChanges()
                 isPresented = false
