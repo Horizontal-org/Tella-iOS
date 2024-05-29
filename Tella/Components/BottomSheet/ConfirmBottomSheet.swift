@@ -65,7 +65,7 @@ struct ConfirmBottomSheet : View {
                     self.didConfirmAction()
                     sheetManager.hide()
                 }){
-                    Text(self.actionText)
+                    Text(self.actionText.uppercased())
                         .foregroundColor(destructive ? Color.red : Color.white)
                 }.buttonStyle(ButtonSheetStyle())
                 
