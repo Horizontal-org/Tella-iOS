@@ -19,3 +19,16 @@ func mapServerTypeFromInt(_ serverTypeInt: Int?) -> ServerConnectionType {
         return .unknown
     }
 }
+
+extension ServerConnectionType {
+    var successConnectionButtonContent: String {
+        switch self {
+        case .gDrive:
+            return "GO TO GOOGLE DRIVE"
+        case.tella:
+            return "GO TO REPORTS"
+        default:
+            return ""
+        }
+    }
+}

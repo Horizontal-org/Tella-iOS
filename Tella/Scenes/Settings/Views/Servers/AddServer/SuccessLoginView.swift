@@ -5,31 +5,15 @@
 
 import SwiftUI
 
-enum SuccessLoginType {
-    case gDrive
-    case tella
-    
-    var buttonContent: String {
-        switch self {
-        case .gDrive:
-            return "GO TO GOOGLE DRIVE"
-        case.tella:
-            return "GO TO REPORTS"
-        }
-    }
-    
-}
-
 struct SuccessLoginView: View {
-
     @EnvironmentObject var mainAppModel : MainAppModel
     @EnvironmentObject var serversViewModel : ServersViewModel
     @EnvironmentObject var serverViewModel : ServerViewModel
-    
     @EnvironmentObject private var appViewState: AppViewState
     @State var showNextView : Bool = false
+    
     var navigateToAction: () -> Void
-    var type: SuccessLoginType = .tella
+    var type: ServerConnectionType = .tella
     var body: some View {
         
         ContainerView {
@@ -43,7 +27,7 @@ struct SuccessLoginView: View {
                 Spacer()
                     .frame(height: 48)
                 
-                TellaButtonView<AnyView> (title: type.buttonContent,
+                TellaButtonView<AnyView> (title: type.successConnectionButtonContent,
                                           nextButtonAction: .action,
                                           buttonType: .yellow,
                                           isValid: .constant(true)) {
