@@ -85,8 +85,6 @@ struct ServerSelectionView: View {
         gDriveVM.handleSignIn {_ in 
             navigateTo(destination: SelectDriveConnection( dGriveServerViewModel: GDriveServerViewModel()), title: "Select Google drive")
         }
-        
-//        navigateTo(destination: SelectDriveConnection( dGriveServerViewModel: GDriveServerViewModel()), title: "Select Google drive")
     }
 
 
