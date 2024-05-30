@@ -15,7 +15,7 @@ struct SelectSharedDrive: View {
     var body: some View {
         ContainerView {
             VStack(alignment: .leading){
-                ForEach(gDriveServerViewModel.sharedDrives, id: \.identifier) { drive in
+                ForEach(gDriveServerViewModel.sharedDrives, id: \.id) { drive in
                     DriveCardView(sharedDrive: drive, selectedDrive: $selectedDrive)
                 }
 

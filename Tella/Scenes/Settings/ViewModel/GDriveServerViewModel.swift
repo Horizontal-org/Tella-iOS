@@ -55,7 +55,6 @@ class GDriveServerViewModel: ObservableObject {
     
     func createDriveFolder(folderName: String, completion: @escaping () -> Void) {
         gDriveRepository.createDriveFolder(
-            googleUser: self.googleUser,
             folderName: folderName) { folderName in
                 self.addServer(rootFolder: folderName) {
                     completion()

@@ -104,11 +104,10 @@ class GDriveRepository: GDriveRepositoryProtocol  {
     }
     
     func createDriveFolder(
-        googleUser: GIDGoogleUser?,
         folderName: String,
         completion: @escaping (String) -> Void
     ) {
-        guard let user = googleUser else {
+        guard let user = self.googleUser else {
             print("User not authenticated")
             return
         }
