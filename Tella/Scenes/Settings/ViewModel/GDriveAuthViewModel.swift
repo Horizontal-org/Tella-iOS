@@ -22,9 +22,7 @@ class GDriveAuthViewModel: ObservableObject {
     }
 
     func restorePreviousSignIn() {
-        gDriveRepository.restorePreviousSignIn() { _ in
-            
-        }
+        gDriveRepository.restorePreviousSignIn() {}
     }
 
     func handleUrl(url: URL) {

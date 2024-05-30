@@ -12,13 +12,16 @@ import GoogleAPIClientForREST
 
 protocol GDriveRepositoryProtocol {
     func handleSignIn(completion: @escaping (Result<Void, Error>) -> Void)
-    func restorePreviousSignIn(completion: ((_ user: GIDGoogleUser?) -> Void)?)
+    func restorePreviousSignIn(completion: (() -> Void)?)
     func handleUrl(url: URL)
-    func getSharedDrives(googleUser: GIDGoogleUser?, completion: @escaping (Result<[GTLRDrive_Drive], Error>) -> Void)
+    func getSharedDrives(completion: @escaping (Result<[SharedDrive], Error>) -> Void)
 }
 
-struct GDriveRepository: GDriveRepositoryProtocol  {
+class GDriveRepository: GDriveRepositoryProtocol  {
     static let shared = GDriveRepository()
+    
+    private var googleUser: GIDGoogleUser?
+    
     private var rootViewController: UIViewController? {
         return UIApplication.shared.windows.first?.rootViewController
     }
@@ -39,7 +42,7 @@ struct GDriveRepository: GDriveRepositoryProtocol  {
         }
     }
     
-    func restorePreviousSignIn(completion: ((_ user: GIDGoogleUser?) -> Void)? = nil) {
+    func restorePreviousSignIn(completion: (() -> Void)? = nil) {
         guard let rootViewController = self.rootViewController else {
             print("There is no root view controller!")
             return
@@ -48,7 +51,8 @@ struct GDriveRepository: GDriveRepositoryProtocol  {
         GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
             user?.addScopes([GoogleAuthScopes.gDriveScopes], presenting: rootViewController)
             
-            completion?(user)
+            self.googleUser = user
+            completion?()
         }
     }
     
@@ -56,8 +60,8 @@ struct GDriveRepository: GDriveRepositoryProtocol  {
         GIDSignIn.sharedInstance.handle(url)
     }
     
-    func getSharedDrives(googleUser: GIDGoogleUser?, completion: @escaping (Result<[GTLRDrive_Drive], Error>) -> Void) {
-        guard let user = googleUser else { return }
+    func getSharedDrives(completion: @escaping (Result<[SharedDrive], Error>) -> Void) {
+        guard let user = self.googleUser else { return }
         let driveService = GTLRDriveService()
         driveService.authorizer = user.fetcherAuthorizer
         
@@ -71,8 +75,12 @@ struct GDriveRepository: GDriveRepositoryProtocol  {
             guard let driveList = response as? GTLRDrive_DriveList, let drives = driveList.drives else {
                 return
             }
+            
+            let sharedDrives = drives.map { drive in
+                SharedDrive(id: drive.identifier ?? "", name: drive.name ?? "", kind: drive.kind ?? "")
+            }
 
-            completion(.success(drives))
+            completion(.success(sharedDrives))
         }
     }
 }
