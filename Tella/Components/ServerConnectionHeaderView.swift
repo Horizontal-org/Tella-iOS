@@ -12,8 +12,9 @@ struct ServerConnectionHeaderView: View {
     var title: String
     var subtitle: String
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 8) {
             Image("gdrive.icon")
+                .padding(.bottom, 16)
             Text(title)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
                 .foregroundColor(.white)

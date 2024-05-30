@@ -17,7 +17,7 @@ struct SelectDriveConnection: View {
     @ObservedObject var dGriveServerViewModel: GDriveServerViewModel
     var body: some View {
         ContainerView {
-            VStack(spacing: 20) {
+            VStack(spacing: 24) {
                 Spacer()
                 ServerConnectionHeaderView(
                     title: "Select a Drive to connect to",
@@ -34,21 +34,21 @@ struct SelectDriveConnection: View {
     }
     
     var connectionsButtons: some View {
-        VStack {
+        VStack(spacing: 14) {
             TellaButtonView<AnyView>(
                 title: "USE SHARED DRIVE",
                 nextButtonAction: .action,
                 isOverlay: selectedDriveConnectionType == .shared,
                 isValid: .constant(true),
                 action: { selectedDriveConnectionType = .shared }
-            ).padding(.vertical, 5)
+            )
             TellaButtonView<AnyView>(
                 title: "USE PERSONAL DRIVE",
                 nextButtonAction: .action,
                 isOverlay: selectedDriveConnectionType == .personal,
                 isValid: .constant(true),
                 action: {selectedDriveConnectionType = .personal}
-            ).padding(.vertical, 5)
+            )
             moreInfoText
         }
     }

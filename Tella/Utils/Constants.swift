@@ -10,3 +10,7 @@ struct TellaUrls {
     static let feedbackURL = "https://tella-app.org/features#feedback"
     static let gDriveURL = "https://tella-app.org/gdrive"
 }
+
+struct GoogleAuthScopes {
+    static let gDriveScopes = "https://www.googleapis.com/auth/drive"
+}

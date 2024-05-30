@@ -11,7 +11,7 @@ import GoogleSignIn
 import GoogleAPIClientForREST
 
 protocol GDriveRepositoryProtocol {
-    func handleSignInButton(completion: @escaping (Result<Void, Error>) -> Void)
+    func handleSignIn(completion: @escaping (Result<Void, Error>) -> Void)
     func restorePreviousSignIn(completion: ((_ user: GIDGoogleUser?) -> Void)?)
     func handleUrl(url: URL)
     func getSharedDrives(googleUser: GIDGoogleUser?, completion: @escaping (Result<[GTLRDrive_Drive], Error>) -> Void)
@@ -23,7 +23,7 @@ struct GDriveRepository: GDriveRepositoryProtocol  {
         return UIApplication.shared.windows.first?.rootViewController
     }
     
-    func handleSignInButton(completion: @escaping (Result<Void, Error>) -> Void) {
+    func handleSignIn(completion: @escaping (Result<Void, Error>) -> Void) {
         guard let rootViewController = self.rootViewController else {
             print("There is no root view controller!")
             return
@@ -46,7 +46,7 @@ struct GDriveRepository: GDriveRepositoryProtocol  {
         }
         
         GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
-            user?.addScopes(["https://www.googleapis.com/auth/drive"], presenting: rootViewController)
+            user?.addScopes([GoogleAuthScopes.gDriveScopes], presenting: rootViewController)
             
             completion?(user)
         }
