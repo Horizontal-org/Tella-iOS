@@ -5,19 +5,9 @@
 import Foundation
 
 enum ServerConnectionType: Int, Codable {
-    case tella = 0
-    case uwazi = 1
-    case odkCollect = 3
-    case gDrive = 4
-    case unknown
-}
-
-func mapServerTypeFromInt(_ serverTypeInt: Int?) -> ServerConnectionType {
-    if let serverType = serverTypeInt {
-        return ServerConnectionType(rawValue: serverType) ?? .unknown
-    } else {
-        return .unknown
-    }
+    case tella
+    case uwazi
+    case gDrive
 }
 
 extension ServerConnectionType {
@@ -29,6 +19,15 @@ extension ServerConnectionType {
             return "GO TO REPORTS"
         default:
             return ""
+        }
+    }
+    
+    var serverTitle: String {
+        switch self {
+        case .gDrive:
+            "GOOGLE DRIVE"
+        default:
+            ""
         }
     }
 }
