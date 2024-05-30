@@ -12,6 +12,7 @@ class ServersViewModel: ObservableObject {
     
     @Published var currentServer : Server?
     @Published var serverArray : [Server] = []
+    @Published var unavailableServers: [Server] = []
     
     private var subscribers = Set<AnyCancellable>()
     
@@ -22,6 +23,8 @@ class ServersViewModel: ObservableObject {
         mainAppModel.tellaData?.servers.sink { completion in
         } receiveValue: { serverArray in
             self.serverArray = serverArray
+            self.unavailableServers = serverArray.filter { $0.allowMultiple == false }
+            dump(self.unavailableServers.isEmpty)
         }.store(in: &subscribers)
     }
     
@@ -33,5 +36,16 @@ class ServersViewModel: ObservableObject {
     
     func deleteAllServersConnection() {
         mainAppModel.tellaData?.deleteAllServers()
+    }
+    
+    func filterServerConnections() -> [ServerConnectionButton] {
+        if(self.unavailableServers.isEmpty) {
+            return serverConnections
+        }
+        
+        return serverConnections.filter { connection in
+            unavailableServers.contains{ connection.type != $0.serverType }
+        }
+        
     }
 }

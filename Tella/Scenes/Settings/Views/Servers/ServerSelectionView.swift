@@ -12,7 +12,7 @@ struct ServerSelectionView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
     @StateObject var serverViewModel : ServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
-    @State var selectedServerType: ServerConnectionType = .unknown
+    @State var selectedServerType: ServerConnectionType? = nil
     @ObservedObject var gDriveVM = GDriveAuthViewModel()
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
@@ -21,11 +21,13 @@ struct ServerSelectionView: View {
     }
     var body: some View {
         ContainerView {
-
             VStack(spacing: 20) {
                 Spacer()
                 HeaderView()
                 buttonViews()
+                if(!serversViewModel.unavailableServers.isEmpty) {
+                    unavailableConnectionsView()
+                }
                 Spacer()
                 bottomView()
             }
@@ -36,8 +38,8 @@ struct ServerSelectionView: View {
     }
     
     fileprivate func buttonViews() -> some View {
-        Group {
-            ForEach(serverConnections, id: \.type) { connection in
+        return Group {
+            ForEach(serversViewModel.filterServerConnections(), id: \.type) { connection in
                 TellaButtonView<AnyView>(
                     title: connection.title,
                     nextButtonAction: .action,
@@ -87,6 +89,19 @@ struct ServerSelectionView: View {
         }
     }
 
+    fileprivate func unavailableConnectionsView() -> some View {
+        VStack(spacing: 20) {
+            SectionTitle(text: "Unavailable connections")
+            SectionMessage(text: "For the following categories, only one connection can be enabled at a time. To add a new connection, please delete the current one by going to Connections Settings.")
+            ForEach(serversViewModel.unavailableServers, id: \.id) { server in
+                TellaButtonView<AnyView>(
+                    title: server.serverType?.serverTitle ?? "",
+                    nextButtonAction: .action,
+                    isValid: .constant(false)
+                )
+            }
+        }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+    }
 
     struct HeaderView: View {
         var body: some View {
@@ -100,7 +115,7 @@ struct ServerSelectionView: View {
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
-            }
+            }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
         }
     }
 }
