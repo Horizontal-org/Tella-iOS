@@ -20,14 +20,11 @@ struct CreateDriveFolder: View {
                     subtitle: "Your reports will be uploaded to a new folder on your Google Drive. Choose a name for this folder here."
                 )
                 TextfieldView(fieldContent: $fieldContent,
-                              isValid: .constant(true),
+                              isValid: $isValid,
                               shouldShowError: .constant(false),
                               fieldType: .text,
                               placeholder: "Folder name")
                     .padding(.vertical, 12)
-                    .onChange(of: fieldContent) { newValue in
-                        isValid = !newValue.isEmpty
-                    }
                 Spacer()
                 bottomView
             }.padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))

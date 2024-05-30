@@ -15,8 +15,8 @@ class GDriveAuthViewModel: ObservableObject {
         self.gDriveRepository = repository
     }
 
-    func handleSignInButton(completion: @escaping (Result<Void, Error>) -> Void) {
-        gDriveRepository.handleSignInButton { result in
+    func handleSignIn(completion: @escaping (Result<Void, Error>) -> Void) {
+        gDriveRepository.handleSignIn { result in
             completion(result)
         }
     }
