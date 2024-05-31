@@ -11,14 +11,13 @@ import Foundation
 enum TemplateActionType: ActionType {
     case delete
 }
+
 enum UwaziActionType: ActionType {
     case delete
     case createEntity
     case viewOutboxEntity
     case viewSubmittedEntity
-
 }
-
 
 var templateActionItems : [ListActionSheetItem] { return [
     ListActionSheetItem(imageName: "delete-icon-white",
@@ -36,8 +35,6 @@ var downloadTemplateActionItems : [ListActionSheetItem] { return [
                         type: UwaziActionType.delete)
     ]
 }
-
-
 
 var uwaziDraftActionItems : [ListActionSheetItem] { return [
     ListActionSheetItem(imageName: "edit-icon",
@@ -68,4 +65,3 @@ var uwaziSubmittedActionItems : [ListActionSheetItem] { return [
                         type: UwaziActionType.delete)
     ]
 }
-
