@@ -73,9 +73,11 @@ class AddTemplateViewModel: ObservableObject {
     func downloadTemplate(template: CollectedTemplate) {
         self.isLoading = true
         entityFetcher?.fetchRelationshipEntities(template: template) { result in
-            self.handleRelationshipCompletion(template: template, result: result)
-            
-            self.isLoading = false
+            DispatchQueue.main.async {
+                self.handleRelationshipCompletion(template: template, result: result)
+                
+                self.isLoading = false
+            }
         }
     }
     
@@ -85,20 +87,26 @@ class AddTemplateViewModel: ObservableObject {
             template.relationships = relationships
             self.saveTemplate(template: template)
         case .failure(let error):
-            self.toastMessage = error.localizedDescription
-            self.showToast = true
+            DispatchQueue.main.async {
+                self.toastMessage = error.localizedDescription
+                self.showToast = true
+            }
         }
     }
     
     fileprivate func handleGetTemplateCompletion(_ completion: Subscribers.Completion<APIError>) {
         switch completion {
         case .finished:
-            debugLog("Fetching template completed.")
+            showToast = false
         case .failure(let error):
-            showToast = true
-            toastMessage = error.errorDescription ?? ""
+            DispatchQueue.main.async {
+                self.showToast = true
+                self.toastMessage = error.errorDescription ?? ""
+            }
         }
-        self.isLoading = false
+        DispatchQueue.main.async {
+            self.isLoading = false
+        }
     }
     
     fileprivate func handleRecieveValue(_ templates: [CollectedTemplate]) {
@@ -151,14 +159,17 @@ class AddTemplateViewModel: ObservableObject {
     func handleSaveTemplateCompletion(template: CollectedTemplate, result: Result<CollectedTemplate, Error>?) {
         switch result {
         case .success(let collectedTemplate):
-            dump(collectedTemplate)
-            self.templateItemsViewModel.first(where: {template.templateId == $0.id})?.isDownloaded = true
-            showToast = true
-            toastMessage = String.init(format: LocalizableUwazi.uwaziAddTemplateSavedToast.localized,
-                                       collectedTemplate.entityRow?.name ?? "")
+            DispatchQueue.main.async {
+                self.toastMessage = String.init(format: LocalizableUwazi.uwaziAddTemplateSavedToast.localized,
+                                           collectedTemplate.entityRow?.name ?? "")
+                self.showToast = true
+                self.templateItemsViewModel.first(where: {template.templateId == $0.id})?.isDownloaded = true
+            }
         case .failure(let error):
-            showToast = true
-            toastMessage = error.localizedDescription
+            DispatchQueue.main.async {
+                self.showToast = true
+                self.toastMessage = error.localizedDescription
+            }
         case .none: break
         }
     }
