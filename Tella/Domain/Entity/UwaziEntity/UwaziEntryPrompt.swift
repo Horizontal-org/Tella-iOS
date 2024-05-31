@@ -14,7 +14,6 @@ protocol UwaziEntryPrompt: ObservableObject {
     associatedtype Value: Codable
     var value: Value { get set }
     var id: String? { get set }
-    var formIndex: String? { get set}
     var type: UwaziEntityPropertyType { get set }
     var question: String { get set }
     var answer: String? { get set }
@@ -54,7 +53,6 @@ extension UwaziEntryPrompt {
 class CommonUwaziEntryPrompt: Hashable {
     
     var id: String?
-    var formIndex: String?
     var type: UwaziEntityPropertyType = .unknown
     var question: String
     var content: String?
@@ -67,7 +65,6 @@ class CommonUwaziEntryPrompt: Hashable {
     @Published  var shouldShowMandatoryError: Bool
     
     init(id: String? = nil,
-         formIndex: String? = nil,
          type: String,
          question: String,
          content: String? = nil,
@@ -80,7 +77,6 @@ class CommonUwaziEntryPrompt: Hashable {
          shouldShowMandatoryError: Bool = false) {
         
         self.id = id
-        self.formIndex = formIndex
         self.type = UwaziEntityPropertyType(rawValue: type) ?? .unknown
         self.question = question
         self.content = content

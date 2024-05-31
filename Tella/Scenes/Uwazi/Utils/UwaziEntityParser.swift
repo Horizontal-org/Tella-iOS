@@ -34,7 +34,6 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
     
     fileprivate func handlePdfsPrompt() {
         let pdfPrompt = UwaziFilesEntryPrompt(id: "10242050",
-                                              formIndex: "10242050",
                                               type: UwaziEntityPropertyType.dataTypeMultiPDFFiles.rawValue,
                                               question: LocalizableUwazi.uwaziMultiFileWidgetPrimaryDocuments.localized,
                                               required: false,
@@ -44,7 +43,6 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
     }
     fileprivate func handleSupportPrompt() {
         let supportPrompt = UwaziFilesEntryPrompt(id: "10242049",
-                                                  formIndex: "10242049",
                                                   type: UwaziEntityPropertyType.dataTypeMultiFiles.rawValue,
                                                   question: LocalizableUwazi.uwaziMultiFileWidgetSupportingFiles.localized,
                                                   required: false,
@@ -54,7 +52,6 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
     }
     fileprivate func handleDividerPrompt() {
         let dividerPrompt = UwaziDividerEntryPrompt (id: "",
-                                                     formIndex: "",
                                                      type: UwaziEntityPropertyType.dataTypeDivider.rawValue,
                                                      question: "",
                                                      required: false,
@@ -66,7 +63,6 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
     fileprivate func handleTitlePrompt() {
         guard let titleProperty = template.entityRow?.commonProperties.first (where:{ $0.name == uwaziTitleString }) else { return }
         let titlePrompt = UwaziTextEntryPrompt(id: titleProperty.id ?? "",
-                                               formIndex: titleProperty.id,
                                                type: titleProperty.type ?? "",
                                                question: titleProperty.translatedLabel ?? "",
                                                required: true,
@@ -87,7 +83,6 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
             case .dataTypeText:
                 
                 prompt = UwaziTextEntryPrompt(id: $0.id ?? "",
-                                              formIndex: $0.id,
                                               type: $0.type ?? "",
                                               question: $0.translatedLabel ?? "",
                                               required: $0.propertyRequired,
@@ -100,7 +95,6 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                 let selectValues = $0.values?.compactMap({SelectValues(id: $0.id ?? "", label: $0.translatedLabel ?? "")})
 
                 prompt = UwaziSelectEntryPrompt(id: $0.id ?? "",
-                                                formIndex: $0.id,
                                                 type: $0.type ?? "",
                                                 question: $0.translatedLabel ?? "",
                                                 required: $0.propertyRequired,
@@ -121,7 +115,6 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                 let selectValues = relationshipValues.compactMap({SelectValues(id: $0.id, label: $0.label)})
 
                 prompt = UwaziRelationshipEntryPrompt(id: $0.id ?? "",
-                                                      formIndex: $0.id,
                                                       type: $0.type ?? "",
                                                       question: $0.translatedLabel ?? "",
                                                       content: $0.content ?? "",
@@ -132,7 +125,6 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                 
             default:
                 prompt = UwaziTextEntryPrompt(id: $0.id ?? "",
-                                              formIndex: $0.id,
                                               type: $0.type ?? "",
                                               question: $0.translatedLabel ?? "",
                                               content: $0.content ?? "",
