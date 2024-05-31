@@ -21,12 +21,9 @@ protocol UwaziEntryPrompt: ObservableObject {
     var required: Bool? { get set }
     var helpText: String? { get set }
     var selectValues: [SelectValues]? { get set }
-
     var name: String? { get set }
-    
     var showClear: Bool { get set }
     var shouldShowMandatoryError: Bool { get set }
-    
     var isEmpty : Bool { get }
     
     func showMandatoryError()
@@ -57,23 +54,15 @@ extension UwaziEntryPrompt {
 class CommonUwaziEntryPrompt: Hashable {
     
     var id: String?
-    
     var formIndex: String?
-    
     var type: UwaziEntityPropertyType = .unknown
-    
     var question: String
     var content: String?
     var answer: String?
-    
     var required: Bool?
-    
     var helpText: String?
-    
     var selectValues: [SelectValues]?
-    
     var name: String?
-    
     @Published  var showClear: Bool
     @Published  var shouldShowMandatoryError: Bool
     
@@ -107,6 +96,7 @@ class CommonUwaziEntryPrompt: Hashable {
     static func == (lhs: CommonUwaziEntryPrompt, rhs: CommonUwaziEntryPrompt) -> Bool {
         lhs.id == rhs.id
     }
+    
     public func hash(into hasher: inout Hasher) {
         return hasher.combine(id)
     }
@@ -190,7 +180,6 @@ class UwaziRelationshipEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
             displayClearButton()
         }
     }
-    
     
     func empty() {
         self.value = []
