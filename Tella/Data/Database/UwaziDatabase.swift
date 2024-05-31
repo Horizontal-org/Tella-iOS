@@ -374,21 +374,16 @@ extension TellaDataBase:UwaziEntityInstanceProtocol {
     }
     
     func deleteEntityInstance(entityId : Int) -> Result<Bool,Error> {
-        
         do {
-            
             guard let entity = self.getUwaziEntityInstance(entityId: entityId) else {
                 return .failure(RuntimeError("No Entity is selected"))
             }
-            
             try deleteEntityInstanceFiles(entityIds: [entityId])
             
-            let entityCondition = [KeyValue(key: D.cId, value: entity.id as Any)]
-            
+            let entityCondition = [KeyValue(key: D.cId, value: entity.id)]
             try statementBuilder.delete(tableName: D.tUwaziEntityInstances,
                                         primarykeyValue: entityCondition)
             return .success(true)
-            
         } catch let error {
             debugLog(error)
             return .failure(error)
