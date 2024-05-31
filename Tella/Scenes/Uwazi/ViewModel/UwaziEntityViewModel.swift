@@ -60,9 +60,14 @@ class UwaziEntityViewModel: ObservableObject {
     
     func fetchRelationships() {
         guard let template = self.template else { return }
-        entityFetcher?.fetchRelationshipEntities(template: template) { relationships in
-            self.uwaziEntityParser?.updateRelationships(relationships: relationships)
-            _ = self.tellaData?.updateUwaziTemplate(template: template)
+        entityFetcher?.fetchRelationshipEntities(template: template) { result in
+            switch result {
+            case .success(let relationships):
+                self.uwaziEntityParser?.updateRelationships(relationships: relationships)
+                _ = self.tellaData?.updateUwaziTemplate(template: template)
+            case.failure(let error):
+                debugLog(error)
+            }
         }
     }
     

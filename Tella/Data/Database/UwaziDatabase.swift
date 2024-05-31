@@ -50,15 +50,14 @@ extension TellaDataBase: UwaziTemplateProtocol {
         })
     }
     
-    func addUwaziTemplate(template: CollectedTemplate) -> CollectedTemplate? {
+    func addUwaziTemplate(template: CollectedTemplate) -> Result<CollectedTemplate, Error> {
         do {
             let templateDictionary = template.dictionary
             let valuesToAdd = templateDictionary.compactMap({KeyValue(key: $0.key, value: $0.value)})
             try statementBuilder.insertInto(tableName: D.tUwaziTemplate, keyValue: valuesToAdd)
-            return template
+            return .success(template)
         } catch let error {
-            debugLog(error)
-            return nil
+            return .failure(error)
         }
     }
     

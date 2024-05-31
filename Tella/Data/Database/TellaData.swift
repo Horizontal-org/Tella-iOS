@@ -307,15 +307,17 @@ class TellaData : ObservableObject {
 // MARK: - Extension for Uwazi Template methods
 extension TellaData {
     
-    func addUwaziTemplate(template: CollectedTemplate) -> CollectedTemplate? {
+    func addUwaziTemplate(template: CollectedTemplate) -> Result<CollectedTemplate, Error> {
        
-        let collectedTemplate = database.addUwaziTemplate(template: template)
+        let result = database.addUwaziTemplate(template: template)
         
-        guard let collectedTemplate else { return nil }
-
-        self.shouldReloadUwaziTemplates.send(true)
-        
-        return collectedTemplate
+        switch result {
+        case .success(let collectedTemplate):
+            self.shouldReloadUwaziTemplates.send(true)
+            return .success(collectedTemplate)
+        case .failure(let error):
+            return .failure(error)
+        }
     }
 
     func updateUwaziTemplate(template: CollectedTemplate) -> Int? {

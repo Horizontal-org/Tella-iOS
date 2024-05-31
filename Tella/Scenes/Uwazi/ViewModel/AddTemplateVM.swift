@@ -20,7 +20,7 @@ class AddTemplateViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var showToast: Bool = false
     @Published var entityFetcher: UwaziEntityFetcher? = nil
-    var errorMessage: String = ""
+    var toastMessage: String = ""
     var serverName : String = ""
     var subscribers = Set<AnyCancellable>()
     var server: UwaziServer? = nil
@@ -72,11 +72,21 @@ class AddTemplateViewModel: ObservableObject {
     
     func downloadTemplate(template: CollectedTemplate) {
         self.isLoading = true
-        entityFetcher?.fetchRelationshipEntities(template: template) { relationships in
+        entityFetcher?.fetchRelationshipEntities(template: template) { result in
+            self.handleRelationshipCompletion(template: template, result: result)
+            
+            self.isLoading = false
+        }
+    }
+    
+    func handleRelationshipCompletion(template: CollectedTemplate, result: Result<[UwaziRelationshipList], APIError>) {
+        switch result {
+        case .success(let relationships):
             template.relationships = relationships
             self.saveTemplate(template: template)
-            self.isLoading = false
-            self.templateItemsViewModel.first(where: {template.templateId == $0.id})?.isDownloaded = true
+        case .failure(let error):
+            self.toastMessage = error.localizedDescription
+            self.showToast = true
         }
     }
     
@@ -86,7 +96,7 @@ class AddTemplateViewModel: ObservableObject {
             debugLog("Fetching template completed.")
         case .failure(let error):
             showToast = true
-            errorMessage = error.errorDescription ?? ""
+            toastMessage = error.errorDescription ?? ""
         }
         self.isLoading = false
     }
@@ -131,8 +141,25 @@ class AddTemplateViewModel: ObservableObject {
         let savedTemplateid = self.getAllDownloadedTemplate()?.compactMap({$0.templateId})
         if let savedTemplate = savedTemplateid,let templateId = template.templateId {
             if !savedTemplate.contains(templateId) {
-                guard (self.tellaData?.addUwaziTemplate(template: template)) != nil else { return }
+                let result = self.tellaData?.addUwaziTemplate(template: template)
+                
+                handleSaveTemplateCompletion(template: template, result: result)
             }
+        }
+    }
+    
+    func handleSaveTemplateCompletion(template: CollectedTemplate, result: Result<CollectedTemplate, Error>?) {
+        switch result {
+        case .success(let collectedTemplate):
+            dump(collectedTemplate)
+            self.templateItemsViewModel.first(where: {template.templateId == $0.id})?.isDownloaded = true
+            showToast = true
+            toastMessage = String.init(format: LocalizableUwazi.uwaziAddTemplateSavedToast.localized,
+                                       collectedTemplate.entityRow?.name ?? "")
+        case .failure(let error):
+            showToast = true
+            toastMessage = error.localizedDescription
+        case .none: break
         }
     }
     

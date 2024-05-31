@@ -31,8 +31,8 @@ struct TemplateItemView: View {
                                action: {
                     templateItemViewModel.downloadTemplate()
                     
-                    let message = String.init(format: LocalizableUwazi.uwaziAddTemplateSavedToast.localized, templateItemViewModel.name)
-                    Toast.displayToast(message:message)
+//                    let message = String.init(format: LocalizableUwazi.uwaziAddTemplateSavedToast.localized, templateItemViewModel.name)
+//                    Toast.displayToast(message:message)
                 })
             } else {
                 ImageButtonView(imageName: "reports.more", action: {

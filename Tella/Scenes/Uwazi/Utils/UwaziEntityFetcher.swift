@@ -20,7 +20,10 @@ class UwaziEntityFetcher {
         self.subscribers = subscribers
     }
     
-    func fetchRelationshipEntities(template: CollectedTemplate,completion: @escaping ([UwaziRelationshipList]) -> Void) {
+    func fetchRelationshipEntities(
+        template: CollectedTemplate,
+        completion: @escaping (Result<[UwaziRelationshipList], APIError>) -> Void
+    ) {
         let relationshipProps = template.entityRow?.properties.filter { $0.type == UwaziEntityPropertyType.dataRelationship.rawValue }
 
         let relatedEntityIds: [String] = relationshipProps?.map { $0.content } as! [String]
@@ -38,10 +41,10 @@ class UwaziEntityFetcher {
                 case .finished:
                     break
                 case .failure(let error):
-                    Toast.displayToast(message: error.localizedDescription)
+                    completion(.failure(error))
                 }
             }, receiveValue: { uwaziRelationshipList in
-                completion(uwaziRelationshipList)
+                completion(.success(uwaziRelationshipList))
             })
         .store(in: &subscribers)
     }

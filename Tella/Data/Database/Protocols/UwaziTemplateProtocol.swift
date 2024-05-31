@@ -13,7 +13,7 @@ protocol UwaziTemplateProtocol {
     func getUwaziTemplate(serverId: Int) throws -> CollectedTemplate?
     func getUwaziTemplate(templateId: Int?) throws -> CollectedTemplate?
     func getAllUwaziTemplate() throws -> [CollectedTemplate]
-    func addUwaziTemplate(template: CollectedTemplate) throws -> CollectedTemplate?
+    func addUwaziTemplate(template: CollectedTemplate) -> Result<CollectedTemplate, Error>
     func deleteAllUwaziTemplate() throws 
     func deleteUwaziTemplate(templateId: String) throws
     func deleteUwaziTemplate(id: Int) -> Result<Bool,Error>  
