@@ -39,14 +39,14 @@ extension UwaziEntryPrompt {
     }
     
     func displayClearButton() {
-        self.showClear = !isEmpty
+        showClear = !isEmpty
     }
     
     func empty() {
     }
     
     func showMandatoryError() {
-        self.shouldShowMandatoryError = self.isEmpty && self.required ?? false
+        shouldShowMandatoryError = isEmpty && (required ?? false)
     }
 }
 
@@ -61,8 +61,8 @@ class CommonUwaziEntryPrompt: Hashable {
     var helpText: String?
     var selectValues: [SelectValues]?
     var name: String?
-    @Published  var showClear: Bool
-    @Published  var shouldShowMandatoryError: Bool
+    @Published var showClear: Bool
+    @Published var shouldShowMandatoryError: Bool
     
     init(id: String? = nil,
          type: String,
@@ -111,7 +111,7 @@ class UwaziTextEntryPrompt: CommonUwaziEntryPrompt,UwaziEntryPrompt {
     typealias Value = String
     
     var isEmpty: Bool {
-        return self.value.isEmpty
+        return value.isEmpty
     }
     
     @Published  var value: String = "" {
@@ -121,7 +121,7 @@ class UwaziTextEntryPrompt: CommonUwaziEntryPrompt,UwaziEntryPrompt {
     }
     
     func empty() {
-        self.value = ""
+        value = ""
     }
 }
 
@@ -130,7 +130,7 @@ class UwaziSelectEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
     typealias Value = [String]
     
     var isEmpty: Bool {
-        return self.value.isEmpty
+        return value.isEmpty
     }
     
     @Published  var value: [String] = [] {
@@ -140,7 +140,7 @@ class UwaziSelectEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
     }
     
     func empty() {
-        self.value = []
+        value = []
     }
 }
 
@@ -149,7 +149,7 @@ class UwaziFilesEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
     typealias Value = Set<VaultFileDB>
     
     var isEmpty: Bool {
-        return self.value.isEmpty
+        return value.isEmpty
     }
     
     @Published  var value: Value =  [] {
@@ -159,7 +159,7 @@ class UwaziFilesEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
     }
     
     func empty() {
-        self.value = []
+        value = []
     }
 }
 
@@ -168,7 +168,7 @@ class UwaziRelationshipEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
     typealias Value = [String]
     
     var isEmpty: Bool {
-        return self.value.isEmpty
+        return value.isEmpty
     }
     
     @Published  var value: [String] = [] {
@@ -178,6 +178,6 @@ class UwaziRelationshipEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
     }
     
     func empty() {
-        self.value = []
+        value = []
     }
 }
