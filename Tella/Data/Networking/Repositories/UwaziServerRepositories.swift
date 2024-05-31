@@ -140,23 +140,23 @@ class UwaziServerRepository: WebRepository {
             .eraseToAnyPublisher()
         }
     
-    func getRelationshipEntities(serverURL: String, cookie: String, templatesIds: [String]) -> AnyPublisher<[UwaziRelationshipList], APIError> {
+    func getRelationshipEntities(serverURL: String, cookie: String, relatedEntityIds: [String]) -> AnyPublisher<[UwaziRelationshipList], APIError> {
         let apiResponse: APIResponse<UwaziRelationshipDTO> = getAPIResponse(endpoint: API.getRelationshipEntities(serverURL:serverURL, cookie:cookie))
-
         return apiResponse
             .compactMap{ $0.0 }
             .map { dto in
-                let shouldFetchAllTemplates = templatesIds.contains { $0.isEmpty }
+                let shouldFetchAllTemplates = relatedEntityIds.contains { $0.isEmpty }
                 return dto.rows
                     .filter{ $0.type == UwaziEntityMetadataKeys.template }
                     .filter { relationship in
-                        shouldFetchAllTemplates || templatesIds.contains(where: { $0 == relationship.id })
+                        shouldFetchAllTemplates || relatedEntityIds.contains(where: { $0 == relationship.id })
                     }
                     .compactMap{ $0.toDomain() as? UwaziRelationshipList }
             }
             .eraseToAnyPublisher()
     }
 }
+
 extension UwaziServerRepository {
     /// Return a collection of CollectedTemplate which is used to created after all the manpulation is done to prepare the template data for storage
     /// - Parameters:

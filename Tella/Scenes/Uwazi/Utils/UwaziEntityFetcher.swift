@@ -23,14 +23,14 @@ class UwaziEntityFetcher {
     func fetchRelationshipEntities(template: CollectedTemplate,completion: @escaping ([UwaziRelationshipList]) -> Void) {
         let relationshipProps = template.entityRow?.properties.filter { $0.type == UwaziEntityPropertyType.dataRelationship.rawValue }
 
-        let templatesEntities: [String] = relationshipProps?.map { $0.content } as! [String]
+        let relatedEntityIds: [String] = relationshipProps?.map { $0.content } as! [String]
             
         guard let serverURL = server?.url, let cookie = server?.cookie else { return }
 
         UwaziServerRepository().getRelationshipEntities(
             serverURL: serverURL,
             cookie: cookie,
-            templatesIds: templatesEntities
+            relatedEntityIds: relatedEntityIds
         )
         .receive(on: DispatchQueue.main)
         .sink(receiveCompletion: { completionStatus in
