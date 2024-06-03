@@ -393,5 +393,5 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Vault_EditImage_Exit_SheetTitle" = "التغييرات غير المحفوظة";
 "Vault_EditImage_Exit_SheetExpl" = "لم يتم حفظ تغييراتك. هل ترغب في الحفظ قبل الخروج؟";
 "Vault_EditImage_Exit_SheetAction" = "الخروج بدون حفظ";
-"Vault_EditImage_ImageSaved_Toast" = "تم حفظ التغييرات.";
 "Vault_MoreActions_Edit_SheetSelect" = "تعديل";
+"Vault_EditImage_ImageSaved_Toast" = "تم حفظ التغييرات.";

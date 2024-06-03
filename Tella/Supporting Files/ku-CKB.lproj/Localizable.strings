@@ -394,3 +394,4 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Vault_EditImage_Exit_SheetExpl" = "Your changes have not been saved. Would you like to save before exiting?";
 "Vault_EditImage_Exit_SheetAction" = "EXIT WITHOUT SAVING";
 "Vault_MoreActions_Edit_SheetSelect" = "ئیدیتکردن";
+"Vault_EditImage_ImageSaved_Toast" = "Your changes have been saved.";
