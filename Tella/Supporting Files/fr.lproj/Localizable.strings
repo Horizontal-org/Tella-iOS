@@ -393,4 +393,5 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Vault_EditImage_Exit_SheetTitle" = "Modifications non enregistrées";
 "Vault_EditImage_Exit_SheetExpl" = "Vos modifications n'ont pas été enregistrées. Souhaitez-vous sauvegarder avant de quitter ?";
 "Vault_EditImage_Exit_SheetAction" = "QUITTER SANS ENREGISTRER";
+"Vault_EditImage_ImageSaved_Toast" = "Vos modifications ont été enregistrées.";
 "Vault_MoreActions_Edit_SheetSelect" = "Éditer";
