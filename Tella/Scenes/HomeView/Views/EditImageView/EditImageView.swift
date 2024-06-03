@@ -30,9 +30,8 @@ struct EditImageView: View {
     
     var imageCropperView : some View {
         ImageCropper(image: $viewModel.imageToEdit.wrappedValue) {
-            isPresented = false
-            viewModel.saveChanges()
             sheetManager.hide()
+            handleSaveAction()
         } didCancelAction: {
             isBottomSheetShown = true
         }  
@@ -45,12 +44,17 @@ struct EditImageView: View {
                                msgText: LocalizableVault.editFileConfirmExitExpl.localized,
                                cancelText: LocalizableVault.editFileExitSheetAction.localized,
                                actionText:LocalizableVault.renameFileSaveSheetAction.localized, didConfirmAction: {
-                self.viewModel.saveChanges()
-                isPresented = false
+                handleSaveAction()
             }, didCancelAction: {
                 self.dismiss()
             })
         }
+    }
+    
+    private func handleSaveAction() {
+        self.viewModel.saveChanges()
+        isPresented = false
+        Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized)
     }
 }
 
