@@ -9,12 +9,13 @@
 import Foundation
 import GoogleSignIn
 import GoogleAPIClientForREST
+import Combine
 
 protocol GDriveRepositoryProtocol {
     func handleSignIn(completion: @escaping (Result<Void, Error>) -> Void)
     func restorePreviousSignIn(completion: (() -> Void)?)
     func handleUrl(url: URL)
-    func getSharedDrives(completion: @escaping (Result<[SharedDrive], Error>) -> Void)
+    func getSharedDrives() -> AnyPublisher<[SharedDrive], Error>
 }
 
 class GDriveRepository: GDriveRepositoryProtocol  {
@@ -60,27 +61,37 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         GIDSignIn.sharedInstance.handle(url)
     }
     
-    func getSharedDrives(completion: @escaping (Result<[SharedDrive], Error>) -> Void) {
-        guard let user = self.googleUser else { return }
-        let driveService = GTLRDriveService()
-        driveService.authorizer = user.fetcherAuthorizer
-        
-        let query = GTLRDriveQuery_DrivesList.query()
-        
-        driveService.executeQuery(query) { ticket, response, error in
-            if let error = error {
-                print("Error fetching drives: \(error.localizedDescription)")
-            }
+    func getSharedDrives() -> AnyPublisher<[SharedDrive], Error> {
+        Deferred {
+            Future { [weak self] promise in
+                guard let user = self?.googleUser else { return }
+                let driveService = GTLRDriveService()
+                driveService.authorizer = user.fetcherAuthorizer
 
-            guard let driveList = response as? GTLRDrive_DriveList, let drives = driveList.drives else {
-                return
-            }
-            
-            let sharedDrives = drives.map { drive in
-                SharedDrive(id: drive.identifier ?? "", name: drive.name ?? "", kind: drive.kind ?? "")
-            }
+                let query = GTLRDriveQuery_DrivesList.query()
 
-            completion(.success(sharedDrives))
+                driveService.executeQuery(query) { ticket, response, error in
+                    if let error = error {
+                        print("Error fetching drives: \(error.localizedDescription)")
+                        promise(.failure(error))
+                    }
+
+                    guard let driveList = response as? GTLRDrive_DriveList,
+                        let drives = driveList.drives
+                    else {
+                        return
+                    }
+
+                    let sharedDrives = drives.map { drive in
+                        SharedDrive(
+                            id: drive.identifier ?? "", name: drive.name ?? "",
+                            kind: drive.kind ?? "")
+                    }
+
+                    promise(.success(sharedDrives))
+                }
+            }
         }
+        .eraseToAnyPublisher()
     }
 }

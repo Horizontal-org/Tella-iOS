@@ -7,9 +7,11 @@
 //
 
 import Foundation
+import Combine
 
 class GDriveServerViewModel: ObservableObject {
     private let gDriveRepository: GDriveRepositoryProtocol
+    private var cancellables = Set<AnyCancellable>()
 
     @Published var sharedDrives: [SharedDrive] = []
 
@@ -25,13 +27,19 @@ class GDriveServerViewModel: ObservableObject {
     }
 
     func getSharedDrives() {
-        gDriveRepository.getSharedDrives() { [weak self] result in
-            switch result {
-            case .success(let drives):
+        gDriveRepository.getSharedDrives()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: {completion in
+                switch completion {
+                case .finished:
+                    break
+                case.failure(let error):
+                    debugLog("error fetching drives: \(error.localizedDescription)")
+                }
+            },
+            receiveValue: { [weak self] drives in
                 self?.sharedDrives = drives
-            case .failure(let error):
-                print("Error fetching drives: \(error.localizedDescription)")
-            }
-        }
+            })
+            .store(in: &cancellables)
     }
 }
