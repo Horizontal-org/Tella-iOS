@@ -6,10 +6,11 @@
 enum LocalizableVault: String, LocalizableDelegate {
     
     // Edit Image
-   case editFileConfirmExitTitle = "Vault_EditImage_Exit_SheetTitle"
-   case editFileConfirmExitExpl = "Vault_EditImage_Exit_SheetExpl"
-   case editFileExitSheetAction = "Vault_EditImage_Exit_SheetAction"
-
+    case editFileConfirmExitTitle = "Vault_EditImage_Exit_SheetTitle"
+    case editFileConfirmExitExpl = "Vault_EditImage_Exit_SheetExpl"
+    case editFileExitSheetAction = "Vault_EditImage_Exit_SheetAction"
+    case editFileSavedToast = "Vault_EditImage_ImageSaved_Toast";
+    
     // Sort By
     
     case rootDirectoryName = "Vault_RootDirectoryName"

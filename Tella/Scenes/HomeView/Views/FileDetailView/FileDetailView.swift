@@ -12,7 +12,6 @@ struct FileDetailView: View {
     
     @StateObject var viewModel : FileDetailsViewModel
     @State private var isEditImagePresent = false
-
     
     init(  appModel: MainAppModel, currentFile: VaultFileDB?) {
         _viewModel = StateObject(wrappedValue: FileDetailsViewModel(appModel: appModel, currentFile: currentFile))
@@ -25,11 +24,13 @@ struct FileDetailView: View {
             toolbar()
             if !viewModel.documentIsReady && viewModel.currentFile?.tellaFileType != .video {
                 ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
             }
             
-        }      
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Styles.Colors.backgroundMain)
         .fullScreenCover(isPresented: $isEditImagePresent) {
-            
         } content: {
             EditImageView(viewModel: EditImageViewModel( mainAppModel: appModel,
                                                          fileListViewModel: fileListViewModel),
@@ -79,7 +80,7 @@ struct FileDetailView: View {
             Button {
                 //open edit view
                 isEditImagePresent = true
-                        } label: {
+            } label: {
                 Image("file.edit")
             }
         }
