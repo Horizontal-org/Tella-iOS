@@ -398,5 +398,6 @@ This feedback is anonymous, so make sure to include contact information if you w
 ";
 "Vault_EditImage_Exit_SheetAction" = "ВЫХОД БЕЗ СОХРАНЕНИЯ\
 ";
-"Vault_EditImage_ImageSaved_Toast" = "Ваши изменения были сохранены.";
 "Vault_MoreActions_Edit_SheetSelect" = "Править";
+"Vault_EditImage_ImageSaved_Toast" = "Ваши изменения были сохранены.\
+";

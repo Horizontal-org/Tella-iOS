@@ -393,5 +393,5 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Vault_EditImage_Exit_SheetTitle" = "Alterações não salvas";
 "Vault_EditImage_Exit_SheetExpl" = "Suas alterações não foram salvas. Gostaria de salvar antes de sair?";
 "Vault_EditImage_Exit_SheetAction" = "SAIR SEM SALVAR";
-"Vault_EditImage_ImageSaved_Toast" = "Your changes have been saved.";
 "Vault_MoreActions_Edit_SheetSelect" = "Editar";
+"Vault_EditImage_ImageSaved_Toast" = "Suas alterações foram salvas.";
