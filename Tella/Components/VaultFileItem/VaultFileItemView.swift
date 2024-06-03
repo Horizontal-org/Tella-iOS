@@ -11,7 +11,7 @@ import SwiftUI
 
 struct VaultFileItemView: View {
     
-    var file : VaultFileItem
+    var file : VaultFileItemViewModel
     
     var body: some View {
         
@@ -49,9 +49,3 @@ struct VaultFileItemView: View {
 }
 
 
-struct VaultFileItem {
-    var image : AnyView
-    var name : String
-    var size : String
-    var iconName : String? = nil
-}

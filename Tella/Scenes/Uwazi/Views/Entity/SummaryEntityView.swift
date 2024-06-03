@@ -126,7 +126,7 @@ struct SummaryEntityView: View {
     
     var entityResponseItem: some View {
 
-        VaultFileItemView(file: VaultFileItem(image: AnyView(Image("document")),
+        VaultFileItemView(file: VaultFileItemViewModel(image: AnyView(Image("document")),
                                               name: LocalizableUwazi.uwaziEntitySummaryDetailEntityResponseTitle.localized,
                                               size: summaryViewModel.getEntityResponseSize()))
         .padding(.bottom, 17)
@@ -146,7 +146,7 @@ struct UwaziFileItems: View {
     var body: some View {
         VStack {
             ForEach(files.sorted{$0.created < $1.created}, id: \.id) { file in
-                VaultFileItemView(file: VaultFileItem(image: file.listImage,
+                VaultFileItemView(file: VaultFileItemViewModel(image: file.listImage,
                                                       name: file.name,
                                                       size: file.size.getFormattedFileSize(),
                                                       iconName: file.statusIcon))

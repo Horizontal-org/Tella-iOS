@@ -83,7 +83,7 @@ struct SubmittedEntityView: View {
     
     var entityResponseItem: some View {
         
-        VaultFileItemView(file: VaultFileItem(image: AnyView(Image("document")),
+        VaultFileItemView(file: VaultFileItemViewModel(image: AnyView(Image("document")),
                                               name: LocalizableUwazi.uwaziEntitySummaryDetailEntityResponseTitle.localized,
                                               size: submittedEntityViewModel.getEntityResponseSize(),
                                               iconName: "report.submitted"))

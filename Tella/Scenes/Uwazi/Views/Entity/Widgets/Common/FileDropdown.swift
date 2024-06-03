@@ -49,7 +49,7 @@ struct FileItems: View {
     var body: some View {
         VStack {
             ForEach(files.sorted{$0.created < $1.created}, id: \.id) { file in
-                VaultFileItemView(file: VaultFileItem(image: file.listImage,
+                VaultFileItemView(file: VaultFileItemViewModel(image: file.listImage,
                                                       name: file.name,
                                                       size: file.size.getFormattedFileSize()))
                 .padding(.vertical, 8)
