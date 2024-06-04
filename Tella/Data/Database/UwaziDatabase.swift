@@ -24,6 +24,13 @@ extension TellaDataBase: UwaziTemplateProtocol {
         ]
         statementBuilder.createTable(tableName: D.tUwaziTemplate, columns: columns)
     }
+    func addRelationshipColumnToUwaziTemplate() {
+        do {
+            try statementBuilder.addColumnOn(tableName: D.tUwaziTemplate, columnName: D.cRelationships, type: D.text)
+        } catch let error {
+            debugLog(error)
+        }
+    }
     func getUwaziTemplate(serverId: Int) throws -> CollectedTemplate? {
         let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziTemplate,
                                                            andCondition: [KeyValue(key: D.cServerId, value: serverId)])
