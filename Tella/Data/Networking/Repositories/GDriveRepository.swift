@@ -16,7 +16,8 @@ protocol GDriveRepositoryProtocol {
     func restorePreviousSignIn() async throws -> Void
     func handleUrl(url: URL)
     func getSharedDrives() -> AnyPublisher<[SharedDrive], Error>
-    func createDriveFolder(folderName: String, completion: @escaping (String) -> Void)
+    func createDriveFolder(folderName: String) -> AnyPublisher<String, Error>
+    func signOut() -> Void
 }
 
 class GDriveRepository: GDriveRepositoryProtocol  {
@@ -105,34 +106,42 @@ class GDriveRepository: GDriveRepositoryProtocol  {
     }
     
     func createDriveFolder(
-        folderName: String,
-        completion: @escaping (String) -> Void
-    ) {
-        guard let user = self.googleUser else {
-            print("User not authenticated")
-            return
-        }
-        
-        let driveService = GTLRDriveService()
-        driveService.authorizer = user.fetcherAuthorizer
-        
-        let folder = GTLRDrive_File()
-        folder.name = folderName
-        folder.mimeType = "application/vnd.google-apps.folder"
-        
-        let query = GTLRDriveQuery_FilesCreate.query(withObject: folder, uploadParameters: nil)
-        
-        driveService.executeQuery(query) { (ticket, file, error) in
-            if let error = error {
-                print("Error creating folder: \(error.localizedDescription)")
-                return
+        folderName: String
+    ) -> AnyPublisher<String, Error> {
+        Deferred {
+            Future { [weak self] promise in
+                guard let user = self?.googleUser else {
+                    print("User not authenticated")
+                    return
+                }
+                
+                let driveService = GTLRDriveService()
+                driveService.authorizer = user.fetcherAuthorizer
+                
+                let folder = GTLRDrive_File()
+                folder.name = folderName
+                folder.mimeType = "application/vnd.google-apps.folder"
+                
+                let query = GTLRDriveQuery_FilesCreate.query(withObject: folder, uploadParameters: nil)
+                
+                driveService.executeQuery(query) { (ticket, file, error) in
+                    if let error = error {
+                        print("Error creating folder: \(error.localizedDescription)")
+                        promise(.failure(error))
+                        return
+                    }
+                    
+                    guard let createdFile = file as? GTLRDrive_File else {
+                        return
+                    }
+                    
+                    promise(.success(createdFile.identifier ?? ""))
+                }
             }
-            
-            guard let createdFile = file as? GTLRDrive_File else {
-                return
-            }
-            
-            completion(createdFile.identifier ?? "")
-        }
+        }.eraseToAnyPublisher()
+    }
+    
+    func signOut() {
+        GIDSignIn.sharedInstance.signOut()
     }
 }

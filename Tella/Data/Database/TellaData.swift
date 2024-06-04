@@ -111,6 +111,7 @@ class TellaData : ObservableObject {
     }
     
     func deleteGDriveServer(serverId: Int) {
+        GDriveRepository().signOut()
         database.deleteGDriveServer(serverId: serverId)
         getServers()
     }
