@@ -15,6 +15,7 @@ extension TellaDataBase: UwaziTemplateProtocol {
             cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
             cddl(D.cTemplateId, D.text),
             cddl(D.cEntity, D.text),
+            cddl(D.cRelationships, D.text),
             cddl(D.cDownloaded, D.integer),
             cddl(D.cUpdated, D.integer),
             cddl(D.cFavorite, D.integer),
