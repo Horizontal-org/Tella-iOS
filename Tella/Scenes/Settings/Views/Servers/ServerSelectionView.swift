@@ -85,7 +85,10 @@ struct ServerSelectionView: View {
     
     fileprivate func navigateToGDriveFlow() {
         gDriveVM.handleSignIn { 
-            navigateTo(destination: SelectDriveConnection( dGriveServerViewModel: GDriveServerViewModel()), title: "Select Google drive")
+            navigateTo(
+                destination: SelectDriveConnection(gDriveServerViewModel: GDriveServerViewModel(mainAppModel: mainAppModel)),
+                title: "Select Google drive"
+            )
         }
     }
 
