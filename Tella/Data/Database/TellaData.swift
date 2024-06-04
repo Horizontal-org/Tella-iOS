@@ -123,8 +123,6 @@ class TellaData : ObservableObject {
             self.gDriveServers.value = self.database.getDriveServers()
             
             self.servers.value = self.tellaServers.value + self.uwaziServers.value + self.gDriveServers.value
-            
-            dump(self.servers)
         }
     }
     
