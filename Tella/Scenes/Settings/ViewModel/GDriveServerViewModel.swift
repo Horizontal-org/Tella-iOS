@@ -21,9 +21,19 @@ class GDriveServerViewModel: ObservableObject {
     }
 
     func restorePreviousSignIn() {
-        gDriveRepository.restorePreviousSignIn {
-            self.getSharedDrives()
-        }
+        gDriveRepository.restorePreviousSignIn()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    Toast.displayToast(message: error.localizedDescription)
+                }
+            },receiveValue: {_ in
+                self.getSharedDrives()
+            }).store(in: &cancellables)
+        
     }
 
     func getSharedDrives() {
@@ -34,7 +44,8 @@ class GDriveServerViewModel: ObservableObject {
                 case .finished:
                     break
                 case.failure(let error):
-                    debugLog("error fetching drives: \(error.localizedDescription)")
+                    debugLog(error)
+                    Toast.displayToast(message: error.localizedDescription)
                 }
             },
             receiveValue: { [weak self] drives in
