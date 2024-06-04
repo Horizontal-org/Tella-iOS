@@ -54,12 +54,22 @@ class GDriveServerViewModel: ObservableObject {
     
     
     func createDriveFolder(folderName: String, completion: @escaping () -> Void) {
-        gDriveRepository.createDriveFolder(
-            folderName: folderName) { folderName in
-                self.addServer(rootFolder: folderName) {
+        
+        gDriveRepository.createDriveFolder(folderName: folderName)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    Toast.displayToast(message: error.localizedDescription)
+                }
+            }, receiveValue: { folderId in
+                self.addServer(rootFolder: folderId) {
                     completion()
                 }
-            }
+            })
+            .store(in: &cancellables)
     }
     
     func addServer(rootFolder: String, completion: @escaping() -> Void ) {
