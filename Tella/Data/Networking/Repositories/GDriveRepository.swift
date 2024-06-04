@@ -16,6 +16,7 @@ protocol GDriveRepositoryProtocol {
     func restorePreviousSignIn() async throws -> Void
     func handleUrl(url: URL)
     func getSharedDrives() -> AnyPublisher<[SharedDrive], Error>
+    func createDriveFolder(folderName: String, completion: @escaping (String) -> Void)
 }
 
 class GDriveRepository: GDriveRepositoryProtocol  {
