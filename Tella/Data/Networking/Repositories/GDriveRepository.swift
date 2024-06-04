@@ -12,8 +12,8 @@ import GoogleAPIClientForREST
 import Combine
 
 protocol GDriveRepositoryProtocol {
-    func handleSignIn(completion: @escaping (Result<Void, Error>) -> Void)
-    func restorePreviousSignIn(completion: (() -> Void)?)
+    func handleSignIn() -> AnyPublisher<Bool, Error>
+    func restorePreviousSignIn() -> AnyPublisher<Bool, Error>
     func handleUrl(url: URL)
     func getSharedDrives() -> AnyPublisher<[SharedDrive], Error>
 }
@@ -27,34 +27,47 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         return UIApplication.shared.windows.first?.rootViewController
     }
     
-    func handleSignIn(completion: @escaping (Result<Void, Error>) -> Void) {
-        guard let rootViewController = self.rootViewController else {
-            print("There is no root view controller!")
-            return
-        }
-        
-        GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { signInResult, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            } else {
-                completion(.success(()))
+    func handleSignIn() -> AnyPublisher<Bool, Error> {
+        Deferred {
+            Future { [weak self] promise in
+                guard let rootViewController = self?.rootViewController else {
+                    print("There is no root view controller!")
+                    return
+                }
+                
+                GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { signInResult, error in
+                    if let error = error {
+                        promise(.failure(error))
+                        return
+                    } else {
+                        promise(.success(true))
+                    }
+                }
             }
-        }
+        }.eraseToAnyPublisher()
     }
     
-    func restorePreviousSignIn(completion: (() -> Void)? = nil) {
-        guard let rootViewController = self.rootViewController else {
-            print("There is no root view controller!")
-            return
-        }
-        
-        GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
-            user?.addScopes([GoogleAuthScopes.gDriveScopes], presenting: rootViewController)
-            
-            self.googleUser = user
-            completion?()
-        }
+    func restorePreviousSignIn() -> AnyPublisher<Bool, Error> {
+        Deferred {
+            Future { [weak self] promise in
+                guard let rootViewController = self?.rootViewController else {
+                    print("There is no root view controller!")
+                    return
+                }
+                
+                GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+                    if let error = error {
+                        promise(.failure(error))
+                        return
+                    }
+                    user?.addScopes([GoogleAuthScopes.gDriveScopes], presenting: rootViewController)
+                    
+                    self?.googleUser = user
+                    promise(.success(true))
+                }
+                
+            }
+        }.eraseToAnyPublisher()
     }
     
     func handleUrl(url: URL) {
