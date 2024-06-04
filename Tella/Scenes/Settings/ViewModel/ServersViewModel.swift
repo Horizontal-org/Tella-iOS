@@ -24,7 +24,6 @@ class ServersViewModel: ObservableObject {
         } receiveValue: { serverArray in
             self.serverArray = serverArray
             self.unavailableServers = serverArray.filter { $0.allowMultiple == false }
-            dump(self.unavailableServers.isEmpty)
         }.store(in: &subscribers)
     }
     
