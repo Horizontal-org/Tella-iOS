@@ -64,6 +64,7 @@ class UwaziEntityViewModel: ObservableObject {
             switch result {
             case .success(let relationships):
                 self.uwaziEntityParser?.updateRelationships(relationships: relationships)
+                template.relationships = relationships
                 _ = self.tellaData?.updateUwaziTemplate(template: template)
             case.failure(let error):
                 debugLog(error)

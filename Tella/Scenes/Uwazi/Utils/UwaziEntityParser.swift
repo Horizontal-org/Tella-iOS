@@ -139,12 +139,11 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
     }
     
     func updateRelationships(relationships: [UwaziRelationshipList]?) {
-         
         guard let entryPrompts = entryPrompts.filter({$0.type == .dataRelationship}) as? [UwaziRelationshipEntryPrompt] else {return}
-        
-        _ = entryPrompts.compactMap({ prompt in
+        entryPrompts.forEach({ prompt in
             let values = relationships?.first (where: {$0.id == prompt.content } )?.values ?? []
-            return values.compactMap({SelectValues(id: $0.id, label: $0.label)})
+            
+            prompt.selectValues = values.compactMap({SelectValues(id: $0.id, label: $0.label)})
         })
     }
     
