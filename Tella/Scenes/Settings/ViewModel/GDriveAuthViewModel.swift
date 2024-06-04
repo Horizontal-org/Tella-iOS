@@ -43,8 +43,7 @@ class GDriveAuthViewModel: ObservableObject {
                 switch(completion) {
                 case .finished:
                     break
-                case .failure(let error):
-                    Toast.displayToast(message: error.localizedDescription)
+                case .failure(_):
                     break
                 }
             }, receiveValue: { _ in
