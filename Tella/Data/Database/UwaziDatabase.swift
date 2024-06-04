@@ -15,7 +15,6 @@ extension TellaDataBase: UwaziTemplateProtocol {
             cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
             cddl(D.cTemplateId, D.text),
             cddl(D.cEntity, D.text),
-            cddl(D.cRelationships, D.text),
             cddl(D.cDownloaded, D.integer),
             cddl(D.cUpdated, D.integer),
             cddl(D.cFavorite, D.integer),
@@ -23,6 +22,13 @@ extension TellaDataBase: UwaziTemplateProtocol {
             
         ]
         statementBuilder.createTable(tableName: D.tUwaziTemplate, columns: columns)
+    }
+    func addRelationshipColumnToUwaziTemplate() {
+        do {
+            try statementBuilder.addColumnOn(tableName: D.tUwaziTemplate, columnName: D.cRelationships, type: D.text)
+        } catch let error {
+            debugLog(error)
+        }
     }
     func getUwaziTemplate(serverId: Int) throws -> CollectedTemplate? {
         let serversDict = try statementBuilder.selectQuery(tableName: D.tUwaziTemplate,

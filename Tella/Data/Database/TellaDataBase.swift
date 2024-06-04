@@ -35,6 +35,8 @@ class TellaDataBase : DataBase {
             case 4:
                 createUwaziEntityInstancesTable()
                 createUwaziEntityInstanceVaultFileTable()
+            case 5:
+                addRelationshipColumnToUwaziTemplate()
             default :
                 break
             }
@@ -54,6 +56,7 @@ class TellaDataBase : DataBase {
         createResourceTable()
         createUwaziEntityInstancesTable()
         createUwaziEntityInstanceVaultFileTable()
+        addRelationshipColumnToUwaziTemplate()
     }
     
     func createReportTable() {
