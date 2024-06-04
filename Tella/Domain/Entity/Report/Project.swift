@@ -69,7 +69,7 @@ class TellaServer : Server {
          activatedMetadata: Bool? = nil,
          backgroundUpload: Bool? = nil,
          projectId: String? = nil,
-         slug: String? = nil,         
+         slug: String? = nil,
          autoUpload: Bool,
          autoDelete: Bool,
          serverType: ServerConnectionType? = .tella

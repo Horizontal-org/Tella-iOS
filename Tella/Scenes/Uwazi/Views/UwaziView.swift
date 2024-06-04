@@ -27,24 +27,27 @@ struct UwaziView: View {
                 
                 VStack (spacing: 0) {
                     Spacer()
+                    
                     switch self.uwaziViewModel.selectedCell {
                         
                     case .template:
-                        TemplateListView(
-                            message: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized, serverName: uwaziViewModel.serverName)
-                        .environmentObject(DownloadedTemplatesViewModel(mainAppModel: uwaziViewModel.mainAppModel, serverId: uwaziViewModel.server.id!))
+                        UwaziListView(message: LocalizableUwazi.uwaziTemplateListExpl.localized,
+                                                emptyMessage: LocalizableUwazi.uwaziTemplateListEmptyExpl.localized,
+                                                cardsViewModel: $uwaziViewModel.templateCardsViewModel)
                     case .draft:
-                        ReportListView(reportArray: $uwaziViewModel.draftEntities,
-                                       message: LocalizableReport.reportsDraftEmpty.localized)
-                        
+                        UwaziListView(message: LocalizableUwazi.draftListExpl.localized,
+                                                emptyMessage: LocalizableUwazi.emptyDraftListExpl.localized,
+                                                cardsViewModel: $uwaziViewModel.draftEntitiesViewModel)
+
                     case .outbox:
-                        
-                        ReportListView(reportArray: $uwaziViewModel.outboxedEntities,
-                                       message: LocalizableReport.reportsOutboxEmpty.localized)
+                        UwaziListView(message: LocalizableUwazi.outboxListExpl.localized,
+                                                emptyMessage: LocalizableUwazi.emptyOutboxListExpl.localized,
+                                                cardsViewModel: $uwaziViewModel.outboxedEntitiesViewModel)
                         
                     case .submitted:
-                        ReportListView(reportArray: $uwaziViewModel.submittedEntities,
-                                       message: LocalizableReport.reportsSubmitedEmpty.localized)
+                        UwaziListView(message: LocalizableUwazi.submittedListExpl.localized,
+                                                emptyMessage: LocalizableUwazi.emptySubmittedListExpl.localized,
+                                                cardsViewModel: $uwaziViewModel.submittedEntitiesViewModel)
                     }
                     
                     Spacer()
@@ -60,6 +63,11 @@ struct UwaziView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: backButton)
+        .onReceive(uwaziViewModel.$shouldShowToast) { shouldShowToast in
+            if shouldShowToast {
+                Toast.displayToast(message: uwaziViewModel.toastMessage)
+            }
+        }
         
     }
     

@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct UwaziFileSelector: View {
-    @EnvironmentObject var prompt: UwaziEntryPrompt
+    @ObservedObject var prompt: UwaziFilesEntryPrompt
     var addFiles: () -> Void
     var title: String
     var body: some View {
@@ -45,8 +45,8 @@ struct SelectFileComponent: View {
     }
 }
 
-struct UwaziFileSelector_Previews: PreviewProvider {
-    static var previews: some View {
-        UwaziFileSelector(addFiles: {}, title: "Title")
-    }
-}
+//struct UwaziFileSelector_Previews: PreviewProvider {
+//    static var previews: some View {
+//        UwaziFileSelector(addFiles: {}, title: "Title")
+//    }
+//}

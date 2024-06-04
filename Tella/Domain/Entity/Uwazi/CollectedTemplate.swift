@@ -15,6 +15,7 @@ class CollectedTemplate: Codable, Hashable {
     var serverName: String?
     var username: String?
     var entityRow: UwaziTemplateRow?
+    var relationships: [UwaziRelationshipList]?
     var isDownloaded: Bool?
     var isFavorite: Bool?
     var isUpdated: Bool?
@@ -25,6 +26,7 @@ class CollectedTemplate: Codable, Hashable {
          serverName: String? = nil,
          username: String? = nil,
          entityRow: UwaziTemplateRow,
+         relationships: [UwaziRelationshipList]? = nil,
          isDownloaded: Bool? = nil,
          isFavorite: Bool? = nil,
          isUpdated: Bool? = nil) {
@@ -34,6 +36,7 @@ class CollectedTemplate: Codable, Hashable {
         self.serverId = serverId
         self.serverName = serverName
         self.username = username
+        self.relationships = relationships
         self.entityRow = entityRow
         self.isDownloaded = isDownloaded
         self.isFavorite = isFavorite
@@ -47,13 +50,19 @@ class CollectedTemplate: Codable, Hashable {
         case serverName = "c_server_name"
         case username
         case entityRow = "c_entity"
+        case relationships = "c_relationships"
         case isDownloaded = "c_downloaded"
         case isFavorite = "c_favorite"
         case isUpdated = "c_updated"
     }
 
-    static func == (lhs: CollectedTemplate, rhs: CollectedTemplate) -> Bool {
-        return (lhs.id == rhs.id) && (lhs.templateId == rhs.templateId)
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(templateId, forKey: .templateId)
+        try container.encode(serverId, forKey: .serverId)
+        try container.encode(entityRow?.jsonString, forKey: .entityRow)
+        try container.encode(relationships?.jsonString, forKey: .relationships)
     }
 
     required init(from decoder: Decoder) throws {
@@ -64,25 +73,21 @@ class CollectedTemplate: Codable, Hashable {
         serverId = try container.decodeIfPresent(Int.self, forKey: .serverId)
         serverName = try container.decodeIfPresent(String.self, forKey: .serverName)
         username = try container.decodeIfPresent(String.self, forKey: .username)
-        // Decode entityRow as a string
+
         if let entityRowString = try container.decodeIfPresent(String.self, forKey: .entityRow) {
-            if let jsonData = entityRowString.data(using: .utf8), let array = try? JSONDecoder().decode(UwaziTemplateRow.self, from: jsonData) {
-                entityRow = array
-            } else {
-                throw DecodingError.dataCorruptedError(forKey: .entityRow, in: container, debugDescription: "entityRow issue")
-            }
+            entityRow = try entityRowString.decodeJSON(UwaziTemplateRow.self)
+        }
+        
+        if let relationshipsString = try container.decodeIfPresent(String.self, forKey: .relationships) {
+            relationships = try relationshipsString.decodeJSON([UwaziRelationshipList].self)
         }
         isDownloaded = try container.decodeIfPresent(Int.self, forKey: .isDownloaded) == 1 ? true : false
         isFavorite = try container.decodeIfPresent(Int.self, forKey: .isFavorite) == 1 ? true : false
         isUpdated = try container.decodeIfPresent(Int.self, forKey: .isUpdated) == 1 ? true : false
     }
-    // TODO: Ask if this also need to be changed
-    var entityRowString: String? {
-        if let jsonData = try? JSONEncoder().encode(entityRow), let json = String(bytes: jsonData, encoding: .utf8) {
-            return json
-        } else {
-            return nil
-        }
+    
+    static func == (lhs: CollectedTemplate, rhs: CollectedTemplate) -> Bool {
+        return (lhs.id == rhs.id) && (lhs.templateId == rhs.templateId)
     }
 
     public func hash(into hasher: inout Hasher) {

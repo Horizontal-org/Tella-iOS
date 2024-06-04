@@ -87,7 +87,7 @@ struct AddTemplatesView: View {
         }
         .onReceive(uwaziTemplateViewModel.$showToast, perform: { showToast in
             if showToast {
-                Toast.displayToast(message: uwaziTemplateViewModel.errorMessage)
+                Toast.displayToast(message: uwaziTemplateViewModel.toastMessage)
             }
         })
     }
