@@ -19,8 +19,8 @@ class AddTemplateViewModel: ObservableObject {
     
     @Published var isLoading: Bool = false
     @Published var showToast: Bool = false
-
-    var errorMessage: String = ""
+    @Published var entityFetcher: UwaziEntityFetcher? = nil
+    var toastMessage: String = ""
     var serverName : String = ""
     var subscribers = Set<AnyCancellable>()
     var server: UwaziServer? = nil
@@ -34,6 +34,9 @@ class AddTemplateViewModel: ObservableObject {
         self.mainAppModel = mainAppModel
         self.server = self.getServerById(id: serverId)
         self.serverName = server?.name ?? ""
+        self.entityFetcher = UwaziEntityFetcher(
+            server: self.server, subscribers: subscribers
+        )
     }
     
     func getServerById(id: Int) -> UwaziServer {
@@ -68,18 +71,32 @@ class AddTemplateViewModel: ObservableObject {
     }
     
     func downloadTemplate(template: CollectedTemplate) {
-        var template = template
-        self.downloadTemplate(template: &template)
-        self.templateItemsViewModel.first(where: {template.templateId == $0.id})?.isDownloaded = true
+        self.isLoading = true
+        entityFetcher?.fetchRelationshipEntities(template: template) { result in
+            self.handleRelationshipCompletion(template: template, result: result)
+                
+            self.isLoading = false
+        }
+    }
+    
+    func handleRelationshipCompletion(template: CollectedTemplate, result: Result<[UwaziRelationshipList], APIError>) {
+        switch result {
+        case .success(let relationships):
+            template.relationships = relationships
+            self.saveTemplate(template: template)
+        case .failure(let error):
+            self.toastMessage = error.localizedDescription
+            self.showToast = true
+        }
     }
     
     fileprivate func handleGetTemplateCompletion(_ completion: Subscribers.Completion<APIError>) {
         switch completion {
         case .finished:
-            debugLog("Fetching template completed.")
+            showToast = false
         case .failure(let error):
-            showToast = true
-            errorMessage = error.errorDescription ?? ""
+            self.showToast = true
+            self.toastMessage = error.errorDescription ?? ""
         }
         self.isLoading = false
     }
@@ -120,14 +137,28 @@ class AddTemplateViewModel: ObservableObject {
     
     /// Save the template to the database
     /// - Parameter template: The template that we need to save into the database
-    func saveTemplate( template: inout CollectedTemplate) {
+    func saveTemplate(template: CollectedTemplate) {
         let savedTemplateid = self.getAllDownloadedTemplate()?.compactMap({$0.templateId})
         if let savedTemplate = savedTemplateid,let templateId = template.templateId {
-            // To only save the template if it is not already saved Not necessary because the UI will not have a download button if it is already downloaded
             if !savedTemplate.contains(templateId) {
-                guard let savedItem = self.tellaData?.addUwaziTemplate(template: template) else { return }
-                template = savedItem
+                let result = self.tellaData?.addUwaziTemplate(template: template)
+                
+                handleSaveTemplateCompletion(template: template, result: result)
             }
+        }
+    }
+    
+    func handleSaveTemplateCompletion(template: CollectedTemplate, result: Result<CollectedTemplate, Error>?) {
+        switch result {
+        case .success(let collectedTemplate):
+            self.toastMessage = String.init(format: LocalizableUwazi.uwaziAddTemplateSavedToast.localized,
+                                       collectedTemplate.entityRow?.name ?? "")
+            self.showToast = true
+            self.templateItemsViewModel.first(where: {template.templateId == $0.id})?.isDownloaded = true
+        case .failure(let error):
+            self.showToast = true
+            self.toastMessage = error.localizedDescription
+        case .none: break
         }
     }
     
@@ -145,12 +176,5 @@ class AddTemplateViewModel: ObservableObject {
     /// - Returns: Collection of CollectedTemplate object which are stored in the database
     func getAllDownloadedTemplate() -> [CollectedTemplate]? {
         self.tellaData?.getAllUwaziTemplate()
-    }
-    
-    
-    func downloadTemplate(template: inout CollectedTemplate) -> Void {
-        isLoading = true
-        self.saveTemplate(template: &template)
-        isLoading = false
     }
 }

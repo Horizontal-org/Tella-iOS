@@ -21,11 +21,13 @@ class TellaData : ObservableObject {
     var submittedReports = CurrentValueSubject<[Report], Error>([])
     var outboxedReports = CurrentValueSubject<[Report], Error>([])
     
-    
+    var shouldReloadUwaziInstances = CurrentValueSubject<Bool, Never>(false)
+    var shouldReloadUwaziTemplates = CurrentValueSubject<Bool, Never>(false)
+
     init(database : TellaDataBase, vaultManager: VaultManagerInterface? = nil) throws {
         self.database = database
         self.vaultManager = vaultManager
- 
+        
         getServers()
         getReports()
     }
@@ -49,7 +51,7 @@ class TellaData : ObservableObject {
         getServers()
         return updateServerResult
     }
-
+    
     func updateUwaziServer(server: UwaziServer) -> Int? {
         let id = database.updateUwaziServer(server: server)
         getServers()
@@ -93,7 +95,7 @@ class TellaData : ObservableObject {
         getReports()
         return deleteAllServersResult
     }
-
+    
     func deleteUwaziServer(serverId: Int) {
         database.deleteUwaziServer(serverId: serverId)
         getServers()
@@ -107,9 +109,10 @@ class TellaData : ObservableObject {
             self.servers.value = self.tellaServers.value + self.uwaziServers.value
         }
     }
-
-    func getTellaServer(serverId: Int) -> TellaServer? {
+    
+    func getTellaServer(serverId: Int?) -> TellaServer? {
         do {
+            guard let serverId else { return nil }
             return try database.getTellaServerById(id: serverId)
         } catch {
             debugLog(error)
@@ -117,8 +120,9 @@ class TellaData : ObservableObject {
         }
     }
     
-    func getUwaziServer(serverId: Int) -> UwaziServer? {
+    func getUwaziServer(serverId: Int?) -> UwaziServer? {
         do {
+            guard let serverId else { return nil }
             return try database.getUwaziServer(serverId: serverId)
             
         }catch {
@@ -211,7 +215,7 @@ class TellaData : ObservableObject {
     func addCurrentUploadReport(report : Report) -> Report?   {
         database.resetCurrentUploadReport()
         let addReportResult = database.addReport(report: report)
-
+        
         switch addReportResult {
         case .success(let id):
             return getReport(reportId: id)
@@ -249,7 +253,7 @@ class TellaData : ObservableObject {
     
     @discardableResult
     func updateReportFile(reportFile: ReportFile) -> Result<Bool, Error>{
-          database.updateReportFile(reportFile: reportFile)
+        database.updateReportFile(reportFile: reportFile)
     }
     
     
@@ -257,7 +261,7 @@ class TellaData : ObservableObject {
         
         try files.forEach { fileDetails in
             let addVaultFileResult = database.updateReportIdFile(oldId: fileDetails.oldId, newID: fileDetails.vaultFileDB.id)
-
+            
             if case .failure = addVaultFileResult {
                 throw RuntimeError("Error updating Report Id File")
             }
@@ -275,7 +279,7 @@ class TellaData : ObservableObject {
         let deleteSubmittedReportResult = database.deleteSubmittedReport()
         getReports()
         return deleteSubmittedReportResult
-
+        
     }
     
     func addFeedback(feedback : Feedback) -> Result<Int?, Error> {
@@ -289,7 +293,7 @@ class TellaData : ObservableObject {
     func getUnsentFeedbacks() -> [Feedback] {
         database.getUnsentFeedbacks()
     }
-
+    
     func updateFeedback(feedback: Feedback) -> Result<Bool, Error> {
         database.updateFeedback(feedback: feedback)
     }
@@ -302,11 +306,30 @@ class TellaData : ObservableObject {
 
 // MARK: - Extension for Uwazi Template methods
 extension TellaData {
-    func addUwaziTemplate(template: CollectedTemplate) -> CollectedTemplate? {
-        return database.addUwaziTemplate(template: template)
+    
+    func addUwaziTemplate(template: CollectedTemplate) -> Result<CollectedTemplate, Error> {
+       
+        let result = database.addUwaziTemplate(template: template)
+        
+        switch result {
+        case .success(let collectedTemplate):
+            self.shouldReloadUwaziTemplates.send(true)
+            return .success(collectedTemplate)
+        case .failure(let error):
+            return .failure(error)
+        }
     }
 
+    func updateUwaziTemplate(template: CollectedTemplate) -> Int? {
+        let id = database.updateUwaziTemplate(template: template)
+        
+        return id
+    }
     func deleteAllUwaziTemplate(templateId: String) {
+        
+        self.shouldReloadUwaziTemplates.send(true)
+
+        
         return database.deleteUwaziTemplate(templateId: templateId)
     }
     func getAllUwaziTemplate() -> [CollectedTemplate] {
@@ -316,19 +339,67 @@ extension TellaData {
             debugLog(error)
             return []
         }
-
+        
     }
-    func getUwaziTemplateById(id: Int) -> CollectedTemplate? {
+    func getUwaziTemplateById(id: Int?) -> CollectedTemplate? {
         do {
+            guard let id else { return nil }
             return try database.getUwaziTemplate(templateId: id)
         } catch let error {
             debugLog(error)
             return nil
         }
     }
-    func deleteAllUwaziTemplate(id: Int) {
+    func deleteUwaziTemplate(id: Int) -> Result<Bool,Error> {
         database.deleteUwaziTemplate(id: id)
     }
 }
 
+extension TellaData {
+    @discardableResult
+    func addUwaziEntityInstance(entityInstance:UwaziEntityInstance) -> Result<Int,Error>  {
 
+        if let instanceId = entityInstance.id {
+           let result = database.updateUwaziEntityInstance(entityInstance: entityInstance)
+            
+            if case .success = result {
+                self.shouldReloadUwaziInstances.send(true)
+                return .success(instanceId)
+            } else {
+                return .failure(RuntimeError(""))
+            }
+            
+        } else {
+            let result =  database.addUwaziEntityInstance(entityInstance: entityInstance)
+            self.shouldReloadUwaziInstances.send(true)
+            return result
+        }
+    }
+    
+    func getDraftUwaziEntityInstances() -> [UwaziEntityInstance] {
+        return database.getUwaziEntityInstance(entityStatus: [.draft])
+    }
+    
+    func getOutboxUwaziEntityInstances() -> [UwaziEntityInstance] {
+        return database.getUwaziEntityInstance(entityStatus: [.finalized,
+                                                              .submissionError,
+                                                              .submissionPending])
+    }
+    
+    func getSubmittedUwaziEntityInstances() -> [UwaziEntityInstance] {
+        return database.getUwaziEntityInstance(entityStatus: [.submitted])
+    }
+    
+    func deleteUwaziEntityInstance(entityId:Int) -> Result<Bool,Error> {
+        
+        let result = database.deleteEntityInstance(entityId: entityId)
+        self.shouldReloadUwaziInstances.send(true)
+        return result
+
+    }
+    
+    func getUwaziEntityInstance(entityId:Int?) -> UwaziEntityInstance? {
+        guard let entityId else { return nil }
+        return database.getUwaziEntityInstance(entityId: entityId)
+    }
+}

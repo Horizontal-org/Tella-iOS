@@ -4,7 +4,6 @@
 //
 
 import Foundation
-import SQLite3
 import SQLCipher
 
 class TellaDataBase : DataBase {
@@ -33,6 +32,9 @@ class TellaDataBase : DataBase {
                 createUwaziServerTable()
             case 3:
                 createResourceTable()
+            case 4:
+                createUwaziEntityInstancesTable()
+                createUwaziEntityInstanceVaultFileTable()
             default :
                 break
             }
@@ -50,6 +52,8 @@ class TellaDataBase : DataBase {
         createTemplateTableForUwazi()
         createUwaziServerTable()
         createResourceTable()
+        createUwaziEntityInstancesTable()
+        createUwaziEntityInstanceVaultFileTable()
     }
     
     func createReportTable() {

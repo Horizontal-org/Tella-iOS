@@ -9,53 +9,175 @@
 import Foundation
 import SwiftUI
 
-class UwaziEntryPrompt: Hashable, ObservableObject {
+protocol UwaziEntryPrompt: ObservableObject {
+    
+    associatedtype Value: Codable
+    var value: Value { get set }
+    var id: String? { get set }
+    var type: UwaziEntityPropertyType { get set }
+    var question: String { get set }
+    var answer: String? { get set }
+    var required: Bool? { get set }
+    var helpText: String? { get set }
+    var selectValues: [SelectValues]? { get set }
+    var name: String? { get set }
+    var showClear: Bool { get set }
+    var shouldShowMandatoryError: Bool { get set }
+    var isEmpty : Bool { get }
+    
+    func showMandatoryError()
+    func displayClearButton()
+    func empty()
+}
+
+
+
+extension UwaziEntryPrompt {
+    
+    var isEmpty: Bool {
+        return true
+    }
+    
+    func displayClearButton() {
+        showClear = !isEmpty
+    }
+    
+    func empty() {
+    }
+    
+    func showMandatoryError() {
+        shouldShowMandatoryError = isEmpty && (required ?? false)
+    }
+}
+
+class CommonUwaziEntryPrompt: Hashable {
+    
     var id: String?
-    let formIndex: String?
-    let type: String
+    var type: UwaziEntityPropertyType = .unknown
     var question: String
+    var content: String?
     var answer: String?
-    let required: Bool?
-    let readonly = false
-    let helpText: String?
-    var selectValues: [SelectValue]?
-    @Published var showMandatoryError: Bool
-    @Published var value: UwaziValue
-    let name: String?
-    @Published var showClear: Bool?
-
-
-    init(id: String,
-         formIndex: String?,
+    var required: Bool?
+    var helpText: String?
+    var selectValues: [SelectValues]?
+    var name: String?
+    @Published var showClear: Bool
+    @Published var shouldShowMandatoryError: Bool
+    
+    init(id: String? = nil,
          type: String,
          question: String,
+         content: String? = nil,
          answer: String? = nil,
-         required: Bool?,
-         helpText: String?,
-         selectValues: [SelectValue]? = nil,
-         showMandatoryError: Bool = false,
-         value: UwaziValue = UwaziValue.defaultValue(),
-         name: String?,
-         showClear: Bool = false
-    ) {
+         required: Bool? = nil,
+         helpText: String? = nil,
+         selectValues: [SelectValues]? = nil,
+         name: String? = nil,
+         showClear: Bool = false,
+         shouldShowMandatoryError: Bool = false) {
+        
         self.id = id
-        self.formIndex = formIndex
-        self.type = type
+        self.type = UwaziEntityPropertyType(rawValue: type) ?? .unknown
         self.question = question
+        self.content = content
         self.answer = answer
         self.required = required
         self.helpText = helpText
         self.selectValues = selectValues
-        self.showMandatoryError = showMandatoryError
-        self.value = value
         self.name = name
         self.showClear = showClear
+        self.shouldShowMandatoryError = shouldShowMandatoryError
     }
-    static func == (lhs: UwaziEntryPrompt, rhs: UwaziEntryPrompt) -> Bool {
+    
+    static func == (lhs: CommonUwaziEntryPrompt, rhs: CommonUwaziEntryPrompt) -> Bool {
         lhs.id == rhs.id
     }
+    
     public func hash(into hasher: inout Hasher) {
         return hasher.combine(id)
     }
 }
 
+class UwaziDividerEntryPrompt:  CommonUwaziEntryPrompt,UwaziEntryPrompt {
+    
+    typealias Value = String
+    
+    @Published  var value: Value = ""
+    @Published var values: [Value] = []
+}
+
+class UwaziTextEntryPrompt: CommonUwaziEntryPrompt,UwaziEntryPrompt {
+    
+    typealias Value = String
+    
+    var isEmpty: Bool {
+        return value.isEmpty
+    }
+    
+    @Published  var value: String = "" {
+        didSet {
+            displayClearButton()
+        }
+    }
+    
+    func empty() {
+        value = ""
+    }
+}
+
+class UwaziSelectEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
+    
+    typealias Value = [String]
+    
+    var isEmpty: Bool {
+        return value.isEmpty
+    }
+    
+    @Published  var value: [String] = [] {
+        didSet {
+            displayClearButton()
+        }
+    }
+    
+    func empty() {
+        value = []
+    }
+}
+
+class UwaziFilesEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
+    
+    typealias Value = Set<VaultFileDB>
+    
+    var isEmpty: Bool {
+        return value.isEmpty
+    }
+    
+    @Published  var value: Value =  [] {
+        didSet {
+            displayClearButton()
+        }
+    }
+    
+    func empty() {
+        value = []
+    }
+}
+
+class UwaziRelationshipEntryPrompt: CommonUwaziEntryPrompt, UwaziEntryPrompt {
+    
+    typealias Value = [String]
+    
+    var isEmpty: Bool {
+        return value.isEmpty
+    }
+    
+    @Published  var value: [String] = [] {
+        didSet {
+            displayClearButton()
+        }
+    }
+    
+    func empty() {
+        value = []
+    }
+}

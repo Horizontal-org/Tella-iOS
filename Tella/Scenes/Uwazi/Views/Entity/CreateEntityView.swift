@@ -11,12 +11,14 @@ import SwiftUI
 struct CreateEntityView: View {
     @StateObject var entityViewModel : UwaziEntityViewModel
     @EnvironmentObject var sheetManager : SheetManager
+    @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     let modelHeight = 200.0
     
-    init(appModel: MainAppModel, templateId: Int, serverId: Int) {
-        _entityViewModel = StateObject(wrappedValue: UwaziEntityViewModel(mainAppModel: appModel, templateId:templateId, serverId: serverId))
+    init(appModel: MainAppModel, templateId: Int? = nil, entityInstanceID:Int? = nil) {
+        _entityViewModel = StateObject(wrappedValue: UwaziEntityViewModel(mainAppModel: appModel, templateId:templateId, entityInstanceId: entityInstanceID))
     }
+
     var body: some View {
         ContainerView {
             contentView
@@ -26,6 +28,12 @@ struct CreateEntityView: View {
         .navigationBarHidden(true)
         .overlay(cameraView)
         .overlay(recordView)
+        .onReceive(entityViewModel.$shouldHideView, perform: { shouldHideView in
+            if shouldHideView {
+                dismissViews()
+            }
+        })
+
     }
     
     fileprivate var contentView: some View {
@@ -39,15 +47,14 @@ struct CreateEntityView: View {
     }
 
     fileprivate var createEntityHeaderView: some View {
-        CreateDraftHeaderView(title: entityViewModel.template!.entityRow?.name ?? "",
-                              isDraft: true,
-                              hideSaveButton: true,
-                              closeAction: { showSaveEntityConfirmationView() },
-                              saveAction: { })
+        NavigationHeaderView(
+            backButtonAction: { showSaveEntityConfirmationView() },
+            rightButtonAction: {entityViewModel.saveEntityDraft() },
+            title: entityViewModel.templateName,
+            type: .save
+        )
     }
 
-
-    
     fileprivate var draftContentView: some View {
         GeometryReader { geometry in
             ScrollView {
@@ -67,7 +74,9 @@ struct CreateEntityView: View {
             let checkMandatoryFields = self.entityViewModel.handleMandatoryProperties()
             
             if !checkMandatoryFields {
-                navigateTo(destination: SubmitEntityView(entityViewModel: entityViewModel))
+                entityViewModel.saveAnswersToEntityInstance()
+                navigateTo(destination: SummaryEntityView(mainAppModel: mainAppModel,
+                                                          entityInstance: entityViewModel.entityInstance))
             }
         }) {
             Text(LocalizableUwazi.uwaziEntityActionNext.localized)
@@ -118,7 +127,10 @@ struct CreateEntityView: View {
     
     private func dismissViews() {
         sheetManager.hide()
-        self.presentationMode.wrappedValue.dismiss()
+        self.popTo(ViewClassType.uwaziView)
     }
-    
+ }
+
+struct ViewClassType {
+    static let uwaziView : AnyClass = UIHostingController<ModifiedContent<UwaziView, _EnvironmentKeyWritingModifier<UwaziViewModel?>>>.self
 }

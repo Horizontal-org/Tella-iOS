@@ -13,7 +13,7 @@ protocol UwaziServerLanguageProtocol {
     
     func addUwaziServer(server: UwaziServer) -> Int?
     
-    func getUwaziServer(serverId: Int) throws -> UwaziServer?
+    func getUwaziServer(serverId: Int?) throws -> UwaziServer?
     
     func parseUwaziServer(dictionary : [String:Any] ) -> UwaziServer 
 }

@@ -551,21 +551,15 @@ public extension AsyncOperation {
         super.cancel()
         state = .finished
     }
-    
-    //    override func main() {
-    //        preconditionFailure("Subclasses must implement `main`.")
-    //     }
 }
 
 // subclass
 final class AsyncLongAndHightPriorityOperation: AsyncOperation {
     
     override func main() {
-        print("started heavy operation")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             self.state = .finished
-            print("finished heavy operation")
         }
     }
 }
