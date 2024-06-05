@@ -27,8 +27,6 @@ struct TellaApp: App {
                     if value {
                         self.saveData(lockApptype: .finishBackgroundTasks)
                     }
-                }.onAppear {
-                    gDriveAuthViewModel.restorePreviousSignIn()
                 }.onOpenURL { url in
                     gDriveAuthViewModel.handleUrl(url: url)
                 }
