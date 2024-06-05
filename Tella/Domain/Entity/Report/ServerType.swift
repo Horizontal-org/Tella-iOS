@@ -14,9 +14,9 @@ extension ServerConnectionType {
     var successConnectionButtonContent: String {
         switch self {
         case .gDrive:
-            return "GO TO GOOGLE DRIVE"
+            return LocalizableSettings.GDriveSuccessMessage.localized
         case.tella:
-            return "GO TO REPORTS"
+            return LocalizableSettings.settServerReportsSuccessMessage.localized
         default:
             return ""
         }
@@ -25,7 +25,7 @@ extension ServerConnectionType {
     var serverTitle: String {
         switch self {
         case .gDrive:
-            "GOOGLE DRIVE"
+            LocalizableSettings.settServerGDrive.localized
         default:
             ""
         }

@@ -17,14 +17,14 @@ struct CreateDriveFolder: View {
             VStack(spacing: 20) {
                 Spacer()
                 ServerConnectionHeaderView(
-                    title: "Create new folder",
-                    subtitle: "Your reports will be uploaded to a new folder on your Google Drive. Choose a name for this folder here."
+                    title: LocalizableSettings.GDriveCreatePersonalFolderTitle.localized,
+                    subtitle: LocalizableSettings.GDriveCreatePersonalFolderDesc.localized
                 )
                 TextfieldView(fieldContent: $fieldContent,
                               isValid: $isValid,
                               shouldShowError: .constant(false),
                               fieldType: .text,
-                              placeholder: "Folder name")
+                              placeholder: LocalizableSettings.GDriveCreatePersonalFolderPlaceholder.localized)
                     .padding(.vertical, 12)
                     .onChange(of: fieldContent) { newValue in
                         isValid = !newValue.isEmpty
