@@ -372,7 +372,7 @@ extension FileListViewModel {
     func filesAreUsedInConnections() -> Bool {
         guard let database = appModel.tellaData?.database else { return false }
         let fileIds = selectedFiles.compactMap { $0.id }
-        return database.checkFilesInReports(ids: fileIds)
+        return database.checkFilesInConnections(ids: fileIds)
     }
     
     func deleteSelectedFiles() {

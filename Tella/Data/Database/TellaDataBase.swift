@@ -90,13 +90,18 @@ class TellaDataBase : DataBase {
         
     }
 
-    func checkFilesInReports(ids: [String]) -> Bool {
+    func checkFilesInConnections(ids: [String]) -> Bool {
         do {
             for vaultId in ids {
                 let condition = [KeyValue(key: D.cVaultFileInstanceId, value: vaultId)]
-                let responseDict = try statementBuilder.selectQuery(tableName: D.tReportInstanceVaultFile,
+                let responseReportDict = try statementBuilder.selectQuery(tableName: D.tReportInstanceVaultFile,
                                                                     andCondition: condition)
-                if !responseDict.isEmpty {
+                if !responseReportDict.isEmpty {
+                    return true
+                }
+                let responseUwaziDict = try statementBuilder.selectQuery(tableName: D.tUwaziEntityInstanceVaultFile,
+                                                                    andCondition: condition)
+                if !responseUwaziDict.isEmpty {
                     return true
                 }
             }
