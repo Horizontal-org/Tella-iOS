@@ -87,20 +87,24 @@ struct ServerSelectionView: View {
         gDriveVM.handleSignIn { 
             navigateTo(
                 destination: SelectDriveConnection(gDriveServerViewModel: GDriveServerViewModel(mainAppModel: mainAppModel)),
-                title: "Select Google drive"
+                title: LocalizableSettings.settServerGDrive.localized
             )
         }
     }
 
     fileprivate func unavailableConnectionsView() -> some View {
         VStack(spacing: 20) {
-            SectionTitle(text: "Unavailable connections")
-            SectionMessage(text: "For the following categories, only one connection can be enabled at a time. To add a new connection, please delete the current one by going to Connections Settings.")
+            SectionTitle(text: LocalizableSettings.settServerUnavailableConnectionsTitle.localized)
+            SectionMessage(text: LocalizableSettings.settServerUnavailableConnectionsDesc.localized)
             ForEach(serversViewModel.unavailableServers, id: \.id) { server in
                 TellaButtonView<AnyView>(
-                    title: server.serverType?.serverTitle ?? "",
+                    title: server.serverType?.serverTitle ?? "" ,
                     nextButtonAction: .action,
-                    isValid: .constant(false)
+                    isOverlay: selectedServerType == server.serverType,
+                    isValid: .constant(true),
+                    action: {
+                        selectedServerType = server.serverType
+                    }
                 )
             }
         }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))

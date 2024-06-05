@@ -29,27 +29,27 @@ struct SelectDriveConnection: View {
     }
     
     var selectDriveToolbar: some View {
-        NavigationHeaderView(title: "Select Google drive" ,type: .none)
+        NavigationHeaderView(title: LocalizableSettings.GDriveSelectTypeToolbar.localized ,type: .none)
     }
     
     var headerView: some View {
         ServerConnectionHeaderView(
-            title: "Select a Drive to connect to",
-            subtitle: "You can either connect to an organizational Shared Drive or create a new folder in your personal Drive."
+            title: LocalizableSettings.GDriveSelectTypeTitle.localized,
+            subtitle: LocalizableSettings.GDriveSelectTypeDesc.localized
         )
     }
     
     var connectionsButtons: some View {
         VStack(spacing: 14) {
             TellaButtonView<AnyView>(
-                title: "USE SHARED DRIVE",
+                title: LocalizableSettings.GDriveSelectTypeShared.localized,
                 nextButtonAction: .action,
                 isOverlay: selectedDriveConnectionType == .shared,
                 isValid: .constant(true),
                 action: { selectedDriveConnectionType = .shared }
             )
             TellaButtonView<AnyView>(
-                title: "USE PERSONAL DRIVE",
+                title: LocalizableSettings.GDriveSelectTypePersonal.localized,
                 nextButtonAction: .action,
                 isOverlay: selectedDriveConnectionType == .personal,
                 isValid: .constant(true),
@@ -62,7 +62,7 @@ struct SelectDriveConnection: View {
     
     var moreInfoText: some View {
         Link(destination: URL(string: TellaUrls.gDriveURL)!) {
-            Text("Learn more about the types of drives")
+            Text(LocalizableSettings.GDriveSelectTypeMoreInfo.localized)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(Styles.Colors.yellow)
                 .multilineTextAlignment(.center)

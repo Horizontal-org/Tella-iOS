@@ -212,8 +212,11 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_SettServer_Selection_Message" = "If you are not sure, please ask your organization.";
 "Setting_SettServer_TellaWeb" = "TELLA WEB";
 "Setting_SettServer_Uwazi" = "UWAZI";
+"Setting_SettServer_GDrive" = "GOOGLE DRIVE"; 
 "Setting_SettServer_No_Internet" = "No Internet connection. Try again when you are connected to the Internet.";
 "Setting_SettServer_Server_URL_Incorrect" = "Error: The server URL is incorrect";
+"Setting_SettServer_UnavailableConnections_Title" = "Unavailable connections";
+"Setting_SettServer_UnavailableConnections_Description" = "For the following categories, only one connection can be enabled at a time. To add a new connection, please delete the current one by going to Connections Settings.";
 
 "Home_RecentFiles_Subhead" = "Recent files";
 
@@ -235,6 +238,20 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_Server_Uwazi_Language_Cancel" = "CANCEL";
 "Setting_Server_Uwazi_Connect_Server" = "Connected to server";
 "Setting_Server_Uwazi_Success_Message" = "You have successfully connected to the server and will be able to share your data.";
+
+"Setting_Server_GDrive_Select_Type_Toolbar" = "Select Google drive";
+"Setting_Server_GDrive_Select_Type_Title" = "Select a Drive to connect to";
+"Setting_Server_GDrive_Select_Type_Desc" = "You can either connect to an organizational Shared Drive or create a new folder in your personal Drive.";
+"Setting_Server_GDrive_Select_Type_Shared" = "USE SHARED DRIVE";
+"Setting_Server_GDrive_Select_Type_Personal" = "USE PERSONAL DRIVE";
+"Setting_Server_GDrive_Select_Type_More_Info" = "Learn more about the types of drives";
+"Setting_Server_GDrive_Select_Shared_Toolbar" = "Select shared drive";
+"Setting_Server_GDrive_Create_Personal_Title" = "Create new folder";
+"Setting_Server_GDrive_Create_Personal_Desc" = "Your reports will be uploaded to a new folder on your Google Drive. Choose a name for this folder here.";
+"Setting_Server_GDrive_Create_Personal_Placeholder" = "Folder name";
+"Setting_Server_GDrive_Success_Message" = "GO TO GOOGLE DRIVE";
+
+"Setting_Server_Reports_Success_Message" = "GO TO REPORTS";
 
 "Settings_SettAbout_AppBar" = "About & Help";
 "Settings_SettAbout_Head" = "Tella";
