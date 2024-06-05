@@ -33,6 +33,10 @@
 "LockUnlock_UnlockPin_Subhead" = "Enter your PIN to unlock Tella";
 "LockUnlock_UnlockUpdatePin_Subhead" = "Enter your PIN to change your lock method";
 "LockUnlock_UnlockUpdatePin_Error_IncorrectPIN" = "Incorrect PIN, please try again";
+"Vault_EditImage_Exit_SheetTitle" = "Unsaved changes";
+"Vault_EditImage_Exit_SheetExpl" = "Your changes have not been saved. Would you like to save before exiting?";
+"Vault_EditImage_Exit_SheetAction" = "EXIT WITHOUT SAVING";
+"Vault_EditImage_ImageSaved_Toast" = "Your changes have been saved.";
 "Home_TabBar" = "Home";
 "Home_AppBar" = "Tella";
 "Home_RecentFiles_MoreFiles" = "%i more files";
@@ -71,10 +75,11 @@
 "Vault_MoreActions_Share_SheetSelect" = "Share";
 "Vault_MoreActions_Move_SheetSelect" = "Move to another folder";
 "Vault_MoreActions_Rename_SheetSelect" = "Rename";
+"Vault_MoreActions_Edit_SheetSelect" = "Edit";
 "Vault_MoreActions_Save_SheetSelect" = "Save to device";
 "Vault_MoreActions_FileInformation_SheetSelect" = "File information";
 "Vault_MoreActions_Delete_SheetSelect" = "Delete";
-"Vault_RenameFile_SheetTitle" = "Rename file";
+"Vault_RenameFile_SheetTitle" = "Rename";
 "Vault_RenameFile_Cancel_SheetAction" = "CANCEL";
 "Vault_RenameFile_Save_SheetAction" = "SAVE";
 "Vault_DeleteFile_Warning_SheetDescription" = "Some of the selected files are currently used in your connections. Deleting may impact forms and reports that haven’t been sent yet";
@@ -324,18 +329,72 @@ If you want to take a picture or a video, proceed in the following way:\
 "Uwazi_Server_Delete_SheetAction" = "Delete";
 
 "Uwazi_PageViewItem_Template" = "Templates";
-"Uwazi_Template_TemplateList_Expl" = "These are uwazi templates you can fill out.";
+"Uwazi_PageViewItem_Draft" = "Drafts";
+"Uwazi_PageViewItem_Outbox" = "Outbox";
+"Uwazi_PageViewItem_Submitted" = "Submitted";
+
+"Uwazi_Delete_SheetTitle" = "Delete “%@”?";
+
+"Uwazi_Template_TemplateList_Expl" = "These are Uwazi templates you can fill out.";
 "Uwazi_Template_TemplateList_EmptyExpl" = "You have no saved templates. Tap the “+” button to add a new template.";
+
+"Uwazi_Template_DeleteFromDevice_SheetAction" = " Delete from this device";
+
 "Uwazi_Template_CreateEntity_SheetAction" = "Create an entity";
-"Uwazi_Template_Delete_SheetAction" = " Delete from this device";
+"Uwazi_Template_DeleteTemplate_SheetAction" = " Delete Template";
+
+ "Uwazi_Deleted_Toast" = "“%@” has been deleted.";
 
 
 "Uwazi_Template_AddTemplate_Title" = "Add Templates";
 "Uwazi_Template_AddTemplate_Expl" = "These are the templates available on the Uwazi instances you are connected to. You can ";
 "Uwazi_Template_AddTemplate_SecondExpl" = "manage your Uwazi instances here.";
-"Uwazi_Template_AddTemplateSaved_Toast" = "successfully added to your Uwazi templates.";
+"Uwazi_Template_AddTemplateSaved_Toast" = "“%@” successfully added to your Uwazi templates.";
 "Uwazi_Template_AddTemplate_EmptyExpl" = "There are no templates";
 "Uwazi_DeleteTemplate_SheetExpl" = "Are you sure you want to delete this Template?";
+
+
+"Uwazi_Draft_DraftList_Expl" = "These are entities you have not submitted. Tap on an entity to continue working on it.";
+"Uwazi_Draft_EmptyDraftList_Expl" = "Your Drafts is currently empty. Entities that you have not submitted will appear here.";
+
+"Uwazi_Draft_EntitySaved_Toast" =  "Entity is saved as draft.";
+
+"Uwazi_Draft_Delete_SheetExpl" = "Are you sure you want to delete this draft?";
+"Uwazi_Draft_Delete_NO_SheetAction" = "NO";
+"Uwazi_Draft_Delete_YES_SheetAction" = "YES";
+
+
+"Uwazi_Draft_Edit_SheetSelect" = "Edit draft";
+"Uwazi_Draft_Delete_SheetSelect" = "Delete draft";
+
+
+"Uwazi_Outbox_Delete_SheetExpl" = "Are you sure you want to delete this entity?";
+
+"Uwazi_Outbox_OutboxList_Expl" = "These are entities currently being submitted.";
+"Uwazi_Outbox_EmptyOutboxList_Expl" = "Your Outbox is currently empty. Entities that are ready to send will appear here.";
+
+"Uwazi_View_SheetSelect" = "View entity";
+"Uwazi_Delete_SheetSelect" = "Delete entity";
+
+
+
+"Uwazi_Submitted_SubmittedList_Expl" = "These are entities that you have submitted successfully.";
+"Uwazi_Submitted_EmptySubmittedList_Expl" = "You have no submitted entities.";
+"Uwazi_Submitted_AppBar" = "Submitted entity";
+
+"Uwazi_Submitted_UploadedOn" =  "Uploaded on %@";
+"Uwazi_Submitted_Files" =  "%i files, %@";
+"Uwazi_Submitted_File" =  "%i file, %@";
+
+
+
+
+"Uwazi_Submitted_Delete_SheetTitle" = "Delete entity?";
+"Uwazi_Submitted_Delete_SheetExpl" = "Are you sure you want to delete this form from your device? Note that because it was already submitted, the data will remain on your orgenization’s server.";
+"Uwazi_Submitted_Delete_Cancel_SheetAction" = "CANCEL";
+"Uwazi_Submitted_Delete_Delete_SheetAction" = "DELETE";
+
+
 
 "Uwazi_Entity_MultiFile_PrimaryDocument" = "Primary Documents";
 "Uwazi_Entity_MultiFile_AttachManyPDFFiles" = "Attach as many PDF files as you wish";
@@ -362,6 +421,14 @@ If you want to take a picture or a video, proceed in the following way:\
 "Uwazi_Entity_SelectFiles_Dropdown_Show" = "Show files";
 "Uwazi_Entity_SelectDate_Title" = "Select date";
 
+"Uwazi_Entity_Relationship_Expl" = "Select the entities you want to connect to this property.";
+"Uwazi_Entity_Relationship_Select_title" = "Select entities";
+"Uwazi_Entity_Relationship_AddMore_title" = "Add more entities";
+"Uwazi_Entity_Relationship_SingleConnection" = "entity connected";
+"Uwazi_Entity_Relationship_MultipleConnections" = "entities connected";
+
+"Uwazi_Relationship_List_Expl" = "Search for or select the entities you want to connect to this property.";
+"Uwazi_Relationship_SearchBar_Title" = "Search";
 
 
 "Settings_SettFeedback_AppBar" = "Feedback";

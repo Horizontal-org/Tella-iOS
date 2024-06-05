@@ -17,7 +17,7 @@ struct MainView: View  {
     
     init(mainAppModel: MainAppModel) {
         _viewModel = StateObject(wrappedValue: MainViewModel(appModel: mainAppModel))
-        setupApperance()
+        UIApplication.shared.setupApperance()
     }
     
     var body: some View {
@@ -107,35 +107,6 @@ struct MainView: View  {
             Color.white
                 .edgesIgnoringSafeArea(.all)
         }
-    }
-    
-    private func setupApperance() {
-        
-        UITabBar.appearance().unselectedItemTintColor = UIColor.white.withAlphaComponent(0.38)
-        UITabBar.appearance().shadowImage = UIImage()
-        UITabBar.appearance().backgroundImage = UIImage()
-        UITabBar.appearance().isTranslucent = true
-        UITabBar.appearance().backgroundColor = Styles.uiColor.backgroundTab
-        
-        let coloredAppearance = UINavigationBarAppearance()
-        coloredAppearance.configureWithTransparentBackground()
-        coloredAppearance.backgroundColor = Styles.uiColor.backgroundMain
-        coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white,
-                                                 .font: UIFont(name: Styles.Fonts.boldFontName, size: 24)!]
-        coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white,
-                                                      .font: UIFont(name: Styles.Fonts.boldFontName, size: 35)!]
-        let image = UIImage(named: "back")
-        image?.imageFlippedForRightToLeftLayoutDirection()
-        
-        coloredAppearance.setBackIndicatorImage(image, transitionMaskImage: image)
-        
-        UINavigationBar.appearance().standardAppearance = coloredAppearance
-        UINavigationBar.appearance().compactAppearance = coloredAppearance
-        UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
-        UINavigationBar.appearance().backgroundColor = Styles.uiColor.backgroundMain
-        
-        UITableView.appearance().backgroundColor = .clear
-        UITableViewCell.appearance().backgroundColor = .clear
     }
     
     @ToolbarContentBuilder

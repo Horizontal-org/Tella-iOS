@@ -226,7 +226,7 @@ extension MainAppModel {
     func addVaultFile(importedFiles: [ImportedFile],
                       parentId: String?,
                       shouldReloadVaultFiles:Binding<Bool>?,
-                      deleteOriginal: Bool, 
+                      deleteOriginal: Bool = false, 
                       autoUpload:Bool = false) {
         encryptionService?.addVaultFile(importedFiles: importedFiles,
                                         parentId: parentId,

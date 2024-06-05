@@ -4,7 +4,7 @@
 //
 
 import Foundation
-import SQLite3
+import SQLCipher
 
 struct D {
     /* DATABASE */
@@ -13,7 +13,7 @@ struct D {
     
     /* DATABASE VERSION */
 
-    static let databaseVersion = 4
+    static let databaseVersion = 5
 
     /* DEFAULT TYPES FOR DATABASE */
     // MARK: - DEFAULT TYPES FOR DATABASE
@@ -30,6 +30,8 @@ struct D {
     static let tReportInstanceVaultFile = "t_report_instance_vault_file";
     static let tUwaziTemplate = "t_uwazi_template"
     static let tUwaziServer = "t_uwazi_server"
+    static let tUwaziEntityInstances = "t_uwazi_entity_instances"
+    static let tUwaziEntityInstanceVaultFile = "t_uwazi_entity_instance_vault_file"
     static let tFeedback = "t_feedback"
     static let tResource = "t_resource"
 
@@ -69,7 +71,7 @@ struct D {
     static let cCreatedDate = "c_created_date"
     static let cUpatedDate = "c_upated_date"
     static let cUpdatedDate = "c_updated_date"
-    // MARK: Uwazi Locale
+    // MARK: Uwazi
     static let cLocale = "c_locale"
 
     static let cTemplateId = "c_template_id"
@@ -77,8 +79,11 @@ struct D {
     static let cDownloaded = "c_downloaded"
     static let cUpdated = "c_updated"
     static let cFavorite = "c_favorite"
-
-
+    static let cRelationships = "c_relationships"
+    static let cLocalTemplateId = "c_local_template_id"
+    static let cMetadata = "c_metadata"
+    static let cType = "c_type"
+    static let cUwaziEntityInstanceId = "c_uwazi_entity_instance_id"
     static let ctext = "c_text"
     
     //resources

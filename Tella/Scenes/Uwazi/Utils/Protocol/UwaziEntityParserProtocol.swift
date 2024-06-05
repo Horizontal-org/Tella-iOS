@@ -9,13 +9,13 @@
 import Foundation
 
 protocol UwaziEntityParserProtocol {
-    var entryPrompts: [UwaziEntryPrompt] { get set }
+    var entryPrompts: [any UwaziEntryPrompt] { get set }
     var template: CollectedTemplate { get set }
     func handleEntryPrompts()
-    func getEntryPrompts() -> [UwaziEntryPrompt]
+    func getEntryPrompts() -> [any UwaziEntryPrompt]
 }
 extension UwaziEntityParserProtocol {
-    func getEntryPrompts() -> [UwaziEntryPrompt] {
+    func getEntryPrompts() -> [any UwaziEntryPrompt] {
         return entryPrompts
     }
 }

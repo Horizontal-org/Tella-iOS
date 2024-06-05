@@ -22,19 +22,26 @@ struct MoreFileActionButton: View {
     
     var file: VaultFileDB? = nil
     var moreButtonType : MoreButtonType
-    
+    @State var isEditViewShown = false
+    @State var fileData: Data?
     private var modalHeight : CGFloat {
-        let dividerHeight = fileListViewModel.fileActionItems.filter{$0.viewType == ActionSheetItemType.divider}.count * 20
-        return CGFloat((fileListViewModel.fileActionItems.count * 50) - dividerHeight  + 90)
+        return CGFloat((fileListViewModel.fileActionItems.count * 50) + 90)
     }
-    
     var body: some View {
-        
-        switch moreButtonType {
-        case .grid:
-            return gridMoreButton.eraseToAnyView()
-        case .list, .navigationBar:
-            return listMoreButton.eraseToAnyView()
+        ZStack{
+            switch moreButtonType {
+            case .grid:
+                gridMoreButton.eraseToAnyView()
+            case .list, .navigationBar:
+                listMoreButton.eraseToAnyView()
+            }
+            
+        }
+        .fullScreenCover(isPresented: $isEditViewShown) {
+        } content: {
+            EditImageView(viewModel: EditImageViewModel(mainAppModel: appModel,
+                                                        fileListViewModel: fileListViewModel),
+                          isPresented: $isEditViewShown)
         }
     }
     
@@ -68,7 +75,6 @@ struct MoreFileActionButton: View {
                                   headerTitle: fileListViewModel.fileActionsTitle , action: {item in
                 self.handleActions(item : item)
             })
-            
         })
     }
     
@@ -101,12 +107,13 @@ struct MoreFileActionButton: View {
             self.hideMenu()
             
         case .delete:
-            
             if fileListViewModel.filesAreUsedInConnections() {
                 showDeleteWarningSheet()
             } else {
                 showDeleteConfirmationSheet()
             }
+        case .edit:
+            isEditViewShown = true
         default:
             break
         }
@@ -128,7 +135,6 @@ struct MoreFileActionButton: View {
                 fileListViewModel.selectedFiles[0].name = fileNameToUpdate
                 fileListViewModel.renameSelectedFile()
             })
-            
         })
     }
     
@@ -178,7 +184,6 @@ struct MoreFileActionButton: View {
                                didConfirmAction: {
                 fileListViewModel.showingDocumentPicker = true
             })
-            
         })
     }
 }

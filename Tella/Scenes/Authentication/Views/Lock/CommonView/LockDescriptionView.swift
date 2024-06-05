@@ -27,6 +27,7 @@ struct LockDescriptionView : View {
                 .foregroundColor(.white)
                 .lineSpacing(7)
                 .multilineTextAlignment(alignement)
+                .frame(height: 80)
         }
         .padding(EdgeInsets(top: 0, leading: 46, bottom: 0, trailing: 46))
     }

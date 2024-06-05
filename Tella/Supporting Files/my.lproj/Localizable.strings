@@ -3,7 +3,7 @@
 "Onboarding_Intro_Subhead" = "စာရွက်စာတမ်းနဲ့ ကာကွယ်မှု";
 "Onboarding_Intro_Action_GetStarted" = "GET STARTED";
 "Onboarding_LockSuccess_Head" = "အားလုံးပြီးစီးသွားပါပြီ။";
-"Onboarding_LockSuccess_Subhead" = "You can always continue changing your preferences in Settings.";
+"Onboarding_LockSuccess_Subhead" = "ဆက်တင်များတွင် သင့်စိတ်ကြိုက်ရွေးချယ်မှုများကို အချိန်မရွေး ပြောင်းလဲနိုင်သည်။";
 "Onboarding_LockSuccess_Action_GoToTella" = "GO TO TELLA";
 "LockUnlock_LockSelect_Subhead" = "Tella ကို ဘယ်လို လော့ခ်ချချင်လဲ။";
 "LockUnlock_LockSelect_Action_Password" = "PASSWORD";
@@ -33,7 +33,7 @@
 "LockUnlock_UnlockUpdatePin_Subhead" = "Enter your PIN to change your lock method";
 "LockUnlock_UnlockUpdatePin_Error_IncorrectPIN" = "Incorrect PIN, please try again";
 "LockUnlock_UnlockPin_Action_Ok" = "အိုကေ";
-"Home_TabBar" = "မူလစာမျက်နှာ";
+"Home_TabBar" = "ပင်မစခရင်";
 "Home_AppBar" = "Tella";
 "Home_RecentFiles_Subhead" = "မကြာမီက ဖိုင်များ";
 "Home_RecentFiles_MoreFiles" = "%i more files";
@@ -59,7 +59,7 @@
 "Vault_Item_AppBar" = "%i item";
 "Vault_ManageFiles_SheetTitle" = "ဖိုင်များကို စီမံခန့်ခွဲမည်";
 "Vault_ManageFiles_TakePhotoVideo_SheetSelect" = "ဓာတ်ပုံ/ဗီဒီယို ရိုက်မည်";
-"Vault_ManageFiles_RecordAudio_SheetSelect" = "အသံဖမ်းမည်";
+"Vault_ManageFiles_RecordAudio_SheetSelect" = "အသံသွင်းမည်";
 "Vault_ManageFiles_ImportFromDevice_SheetSelect" = "စက်ပစ္စည်းမှ ထည့်သွင်းမည်";
 "Vault_ImportDelete_Title" = "Import and delete original file?";
 "Vault_ImportDelete_Content" = "After importing the file into Tella, do you want to keep the original file on your device or delete it?";
@@ -69,11 +69,11 @@
 "Vault_ManageFiles_CreateNewFolder_SheetSelect" = "Create new folder";
 "Vault_ManageFiles_PhotoLibrary_SheetSelect" = "Photo Library";
 "Vault_ManageFiles_Document_SheetSelect" = "Document";
-"Vault_MoreActions_Share_SheetSelect" = "မျှဝေပါ";
+"Vault_MoreActions_Share_SheetSelect" = "မျှဝေမည်";
 "Vault_MoreActions_Move_SheetSelect" = "အခြားဖိုင်တွဲသို့ ရွှေ့မည်";
 "Vault_MoreActions_Rename_SheetSelect" = "အမည်ပြောင်းမည်";
 "Vault_MoreActions_Save_SheetSelect" = "စက်ထဲ၌ သိမ်းမည်";
-"Vault_MoreActions_FileInformation_SheetSelect" = "ဖိုင် သတင်းအချက်အလက်";
+"Vault_MoreActions_FileInformation_SheetSelect" = "ဖိုင်အချက်အလက်";
 "Vault_MoreActions_Delete_SheetSelect" = "ဖျက်ရန်";
 "Vault_RenameFile_SheetTitle" = "ဖိုင်အမည်ပြောင်းမည်";
 "Vault_RenameFile_Cancel_SheetAction" = "CANCEL";
@@ -126,7 +126,7 @@ Tap the “+” button below to import your first file, or go to the Camera or R
 "Recorder_DeviceTimeLeft_Minutes" = "min";
 "Recorder_AudioRecordings_AppBar" = "အသံမှတ်တမ်းများ";
 "Recorder_SaveRecording_SheetTitle" = "အသံသွင်းထားသောဖိုင်ကို သိမ်းမလား။";
-"Recorder_SaveRecording_SheetExpl" = "သင်၏ အသံသွင်းထားမှုကို မသိမ်းဆည်းပါ။ မထွက်ခင် သိမ်းထားလိုပါသလား။";
+"Recorder_SaveRecording_SheetExpl" = "သင်၏ အသံသွင်းထားမှုကို မသိမ်းထားပါ။ မထွက်ခင် သိမ်းလိုပါသလား။";
 "Recorder_SaveRecording_Cancel_SheetAction" = "CANCEL";
 "Recorder_SaveRecording_Discard_SheetAction" = "DISCARD";
 "Recorder_SaveRecording_Save_SheetAction" = "SAVE";
@@ -150,7 +150,7 @@ If you want to record a voice, proceed in the following way:\
 "Camera_EncryptingProgress_SheetTitle" = "လျှို့ဝှက်ဖိုင်......";
 "Camera_EncryptingProgress_SheetExpl" = "%i%% complete";
 "Camera_EncryptingProgress_Cancel_SheetAction" = "CANCEL";
-"Camera_CancelEncrypting_SheetTitle" = "လျှို့ဝှက်စာဝှက်ကို ပယ်ဖျက်ပြီး ဖိုင်ကိုဖျက်လိုပါသလား။";
+"Camera_CancelEncrypting_SheetTitle" = "ကုဒ်ဝှက်ခြင်းကို ပယ်ဖျက်ပြီး ဖိုင်ကို ဖျက်လိုပါသလား။";
 "Camera_CancelEncrypting_SheetExpl" = "If you cancel, your file will be lost.";
 "Camera_CancelEncrypting_Delete_SheetAction" = "ဖိုင်ကို ဖျက်မည်";
 "Camera_CancelEncrypting_Back_SheetAction" = "BACK";
@@ -167,7 +167,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_Sett_General" = "အထွေထွေ";
 "Settings_Sett_Servers" = "ဆာဗာများ";
 "Settings_Sett_Security" = "လုံခြုံရေး";
-"Settings_Sett_About" = "အကြောင်းနှင့် အကူအညီ";
+"Settings_Sett_About" = "အကြောင်းအရာနှင့် အကူအညီ";
 "Settings_SettGen_AppBar" = "အထွေထွေ";
 "Settings_SettGen_Language" = "ဘာသာစကား";
 "Settings_SettGen_RecentFiles" = "မကြာမီက ဖိုင်များ";
@@ -197,21 +197,21 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettLockTimeout_Cancel_SheetAction" = "CANCEL";
 "Settings_SettLockTimeout_Save_SheetAction" = "SAVE";
 "Settings_SettServers_AppBar" = "ဆာဗာများ";
-"Settings_SettAbout_AppBar" = "အကြောင်းနှင့် အကူအညီ";
+"Settings_SettAbout_AppBar" = "အကြောင်းအရာနှင့် အကူအညီ";
 "Settings_SettAbout_Head" = "Tella";
 "Settings_SettAbout_Subhead" = "ဗားရှင်း";
 "Settings_SettAbout_ContactUs" = "ကျွန်တော်တို့ကို ဆက်သွယ်ပါ";
 "Settings_SettAbout_PrivacyPolicy" = "ကိုယ်ရေးအချက်အလက် မူဝါဒ";
-"Reports_AppBar" = "မှတ်တမ်းများ";
+"Reports_AppBar" = "အစီရင်ခံချက်များ";
 "Reports_Report_AppBar" = "Report";
-"Reports_Draft_EmptyAllFiles_Expl" = "လက်ရှိတွင် သင်၏ Drafts မှာ အလွတ်ဖြစ်နေပါသည်။ ဤနေရာတွင် တင်ပြရန် အသင့်ဖြစ်သော အစီရင်ခံချက်များ ပေါ်လာပါမည်။";
-"Reports_Outbox_EmptyAllFiles_Expl" = "လက်ရှိတွင် သင်၏ Outbox မှာ အလွတ်ဖြစ်နေပါသည်။ ဤနေရာတွင် တင်ပြရန် အသင့်ဖြစ်သော အစီရင်ခံချက်များ ပေါ်လာပါမည်။";
+"Reports_Draft_EmptyAllFiles_Expl" = "လက်ရှိတွင် သင်၏ မူကြမ်းများ မှာ အလွတ်ဖြစ်နေပါသည်။ ဤနေရာတွင် မတင်သွင်းရသေးသော အစီရင်ခံချက်များ ပေါ်လာပါမည်။";
+"Reports_Outbox_EmptyAllFiles_Expl" = "လက်ရှိတွင် သင်၏ Outbox မှာ အလွတ်ဖြစ်နေပါသည်။ ဤနေရာတွင် ပေးပို့ရန် အသင့်ဖြစ်သော အစီရင်ခံချက်များ ပေါ်လာပါမည်။";
 "Reports_Submitted_EmptyAllFiles_Expl" = "သင်အနေဖြင့် အစီရင်ခံချက်တစ်ခုမျှ တင်ထားခြင်းမရှိပါ။";
 "Reports_Action_NewReport" = "အစီရင်ခံချက်အသစ်";
 "Reports_Draft_Select_Title" = "ခေါင်းစဉ်";
 "Reports_Draft_Select_Description" = "ဖော်ပြချက်";
 "Reports_Draft_Select_Message" = "Message";
-"Reports_Draft_SendTo" = "အစီရင်ခံချက် ပေးပို့မည့်နေရာ-";
+"Reports_Draft_SendTo" = "အစီရင်ခံချက် ပေးပို့ရန်-";
 "Reports_Draft_SuccessMessage" = "The audio recording was saved to your Tella files.";
 "Reports_Draft_Action_Submit" = "SUBMIT";
 "Reports_Draft__Action_Send" = "ပို့မည်";
@@ -232,12 +232,12 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_ManageReport_View_SheetAction" = "ကြည့်မည်";
 "Reports_ManageReport_Edit_SheetAction" = "ပြင်ဆင်မည်";
 "Reports_ManageReport_Open_SheetAction" = "Open";
-"Reports_Draft_Select_SelectProject" = "ပေးပိုလိုသည့် ပရောဂျက် ရွေးချယ်ပါ";
+"Reports_Draft_Select_SelectProject" = "သင့်ပရောဂျက်ကို ရွေးချယ်ပါ";
 "Reports_Draft_SelectFiles_TakePhotoVideo_SheetSelect" = "Take photo or video with camera";
-"Reports_Draft_Record_SheetSelect" = "အသံဖမ်းမည်";
+"Reports_Draft_Record_SheetSelect" = "အသံသွင်းမည်";
 "Reports_Draft_SelectFiles_TellaFiles_SheetSelect" = "Tella ဖိုင်များမှ ရွေးချယ်မည်";
 "Reports_Draft_SelectFiles_ImportFromDevice_SheetSelect" = "သင့်စက်မှ ရွေးချယ်မည်";
-"Reports_Outbox_PercentangeUploaded_Expl" = "ချိတ်ဆက်မှုကို စောင့်ဆိုင်းပေးပါ";
+"Reports_Outbox_PercentangeUploaded_Expl" = "ချိတ်ဆက်မှုရရန် စောင့်ဆိုင်းနေသည်";
 "Vault_DeleteFiles_SheetTitle" = "Delete files?";
 "Vault_DeleteFiles_SheetExpl" = "The selected files will be permanently deleted from Tella.";
 "Reports_DeleteDraftReport_SheetExpl" = "ဤမူကြမ်းကို ဖျက်လိုသည်မှာ သေချာပါသလား။";
@@ -253,14 +253,14 @@ If you want to take a picture or a video, proceed in the following way:\
 "LockUnlock_UnlockDeleteAfterFail_Warning_RemainingAttempts" = "You have %i attempts remaining until everything in your Tella is deleted.";
 "LockUnlock_UnlockDeleteAfterFail_Error_ContentDeleted" = "You have exceeded the maximum number of incorrect login attempts. All your Tella data has been deleted.";
 "Settings_Sett_Connections" = "ဆက်သွယ်မှုများ";
-"Settings_Sett_Feedback" = "Feedback";
-"Settings_SettSec_DeleteAfterFail" = "လော့ခ်ဖွင့်ရန် မအောင်မြင်ပြီးနောက် ဖျက်မည်";
+"Settings_Sett_Feedback" = "တုံ့ပြန်ချက်";
+"Settings_SettSec_DeleteAfterFail" = "လော့ခ်ဖွင့်ရန် မအောင်မြင်သည့်နောက် ဖျက်မည်";
 "Settings_SettSec_DeleteAfterFail_Off" = "ပိတ်မည်";
 "Settings_SettSec_ShowUnlockAttempts" = "Show unlock attempts remaining";
-"Settings_SettSec_ShowUnlockAttempts_Expl" = "Tella အကောင့်တွင်းရှိ ဒေတာအားလုံးကို မဖျက်မီ အကောင့်ဝင်ရောက်ရန် ကျန်ရှိသည့် ကြိုးပမ်းခွင့် အကြိမ်ရေကို လော့ခ်ဖွင့်ထားသည့် မျက်နှာပြင်တွင်  ပြသထားပါသည်။";
+"Settings_SettSec_ShowUnlockAttempts_Expl" = "Tella အကောင့်တွင်းရှိ ဒေတာအားလုံးကို မဖျက်မီ အကောင့်ဝင်ရောက်ရန် ကျန်ရှိသည့် ကြိုးပမ်းခွင့် အကြိမ်ရေကို လော့ခ်ဖွင့်ထားသည့် မျက်နှာပြင်တွင်  ပြသပါ";
 "Settings_SettSec_PreserveMetadata" = "Preserve metadata  when importing";
-"Settings_SettSec_PreserveMetadata_Expl" = "Tella အတွင်း ဓာတ်ပုံများနှင့် ဗီဒီယိုများ ထည့်သွင်းသည့်အခါ EXIF မက်တာဒေတာပါ ထည့်သွင်းပေးပါ။ ထိုထဲတွင် ဓာတ်ပုံ ရိုက်ကူးခဲ့သော အချိန်၊ ကင်မရာဆက်တင်များ၊  တည်နေရာ၊ စက် စသည့် ဒေတာများ ပါဝင်ပါသည်။";
-"Settings_SettDeleteAfterFail_SheetTitle" = "လော့ခ်ဖွင့်ရန် မအောင်မြင်ပြီးနောက် ဖျက်မည်";
+"Settings_SettSec_PreserveMetadata_Expl" = "Tella တွင် ဓာတ်ပုံများနှင့် ဗီဒီယိုများ ထည့်သွင်းသည့်အခါ EXIF မက်တာဒေတာကို ထည့်သွင်းပေးပါ။ ၎င်းတွင် ဓာတ်ပုံ ရိုက်ကူးခဲ့သော အချိန်၊ ကင်မရာဆက်တင်များ၊  တည်နေရာနှင့် သင်၏ စက် စသည့် ဒေတာများ ပါဝင်ပါသည်။";
+"Settings_SettDeleteAfterFail_SheetTitle" = "လော့ခ်ဖွင့်ရန် မအောင်မြင်သည့်နောက် ဖျက်မည်";
 "Settings_SettDeleteAfterFail_SheetExpl" = "Tella အတွင်းရှိ ဒေတာအားလုံးကို မဖျက်မီ မမှန်မကန် အကောင့်ဝင်ရောက်ရန် ကြိုးပမ်းခွင့် အကြိမ်ရေကို သတ်မှတ်ပါ။";
 "Settings_SettDeleteAfterFail_Off_SheetSelect" = "Off (Do not delete data) ";
 "Settings_SettDeleteAfterFail_FiveAttempts_SheetSelect" = "ကြိုးပမ်းခွင့် 5 ကြိမ်";
@@ -275,30 +275,28 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Submitted_ClearAll_Cancel_SheetAction" = "CANCEL";
 "Reports_Submitted_ClearAll_ClearSubmitted_SheetAction" = "CLEAR SUBMITTED";
 "Reports_Submitted_Clear_AppBar" = "ရှင်းလင်းသည်";
-"Reports_DraftSaved_Toast" = "အစီရင်ခံချက်ကို မူကြမ်းအဖြစ် သိမ်းဆည်းထားပါသည်။";
+"Reports_DraftSaved_Toast" = "အစီရင်ခံချက်ကို မူကြမ်းအဖြစ် သိမ်းဆည်းထားပါသည်";
 "Reports_ReportDeleted_Toast" = "“%@” has been deleted.";
 "Reports_ReportSubmitted_Toast" = "Upload complete: “%@”";
 "Reports_OutboxSaved_Toast" = "အစီရင်ခံချက်ကို သင်၏ Outbox တွင် သိမ်းဆည်ထားပါသည်။ သင်အဆင်သင့်ဖြစ်သည်နှင့် တင်သွင်းနိုင်ပါပြီ။";
 "Reports_AllReportDeleted_Toast" = "Your submitted reports have been cleared.";
 "Settings_SettLang_Tamil_Expl" = "Tamil";
-"Settings_SettLang_Portuguese_Expl" = "Portuguese";
-"Settings_SettLang_Russian_Expl" = "Russian";
-"Settings_SettFeedback_AppBar" = "Feedback";
+"Settings_SettFeedback_AppBar" = "တုံ့ပြန်ချက်";
 "Settings_SettFeedback_Expl" = "Tell us if you are experiencing a bug, have a request for a new feature, or have any other feedback.\
 \
 This feedback is anonymous, so make sure to include contact information if you want a response from us.";
-"Settings_SettFeedback_EnableFeedback_Title" = "Enable feedback sharing";
-"Settings_SettFeedback_EnableFeedback_Expl" = "WARNING: using this feature may reveal to someone observing the network that you use Tella. Only use if you feel comfortable with this risk.";
+"Settings_SettFeedback_EnableFeedback_Title" = "တုံ့ပြန်ချက် မျှဝေမှုကို ဖွင့်မည်";
+"Settings_SettFeedback_EnableFeedback_Expl" = "သတိပေးချက်- ဤအင်္ဂါရပ်ကို အသုံးပြုပါက သင် Tella သုံးကြောင်း ကွန်ရက်ကို စောင့်ကြည့်သူတစ်ဦးဦးက သိနိုင်ပါသည်။ ဤအန္တရာယ်ကို ကိုင်တွယ်နိုင်မှသာ အသုံးပြုပါ။";
 "Settings_SettFeedback_EnableFeedback_LearnMore" = "Learn more.";
-"Settings_SettFeedback_Select_Feedback" = "Feedback";
+"Settings_SettFeedback_Select_Feedback" = "တုံ့ပြန်ချက်";
 "Settings_SettFeedback_Action_Submit" = "ပို့မည်";
 "Settings_SettFeedback_Offline_Toast" = "You are not connected to the internet. Your feedback will be sent automatically when you are connected.";
-"Settings_SettFeedback_SuccessSent_Toast" = "Thanks for your feedback!";
-"Settings_SettFeedback_BackgroundSuccessSent_Toast" = "Your feedback has been sent";
-"Settings_SettFeedback_ExitFeedback_SheetTitle" = "Save draft?";
-"Settings_SettFeedback_ExitFeedback_SheetExpl" = "You can come back anytime to submit your feedback.";
+"Settings_SettFeedback_SuccessSent_Toast" = "တုံ့ပြန်ချက်အတွက် ကျေးဇူးတင်ပါသည်။";
+"Settings_SettFeedback_BackgroundSuccessSent_Toast" = "သင့်တုံ့ပြန်ချက်ကို ပို့ပြီးပါပြီ";
+"Settings_SettFeedback_ExitFeedback_SheetTitle" = "မူကြမ်းကို သိမ်းဆည်းမလား။";
+"Settings_SettFeedback_ExitFeedback_SheetExpl" = "သင့်တုံ့ပြန်ချက်ကို တင်သွင်းရန် အချိန်မရွေး ပြန်လာနိုင်ပါသည်။";
 "Settings_SettFeedback_ExitFeedback_Exit_SheetAction" = "Exit without saving";
-"Settings_SettFeedback_ExitFeedback_Save_SheetAction" = "မူကြမ်းကို သိမ်းဆည်းမည်";
+"Settings_SettFeedback_ExitFeedback_Save_SheetAction" = "မူကြမ်းကို သိမ်းမည်";
 "Setting_SettServer_Selection_Title" = "မည်သည့်ဆာဗာအမျိုးအစားကို သင်ချိတ်ဆက်လိုသနည်း။";
 "Setting_SettServer_Selection_Message" = "If you are not sure, please ask your organization.";
 "Setting_SettServer_TellaWeb" = "TELLA WEB";
@@ -309,11 +307,11 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Setting_Server_Uwazi_Access_Title" = "Log in if you have a username and password, or access the server as a public instance.";
 "Setting_Server_Uwazi_Login" = "LOG IN";
 "Setting_Server_Uwazi_Access_Public" = "ACCESS AS PUBLIC INSTANCE";
-"Setting_Server_Uwazi_Login_Access" = "ဆာဗာကို ဝင်ရောက်အသုံးပြုခွင့်ရရန် အကောင့်ဝင်ပါ";
+"Setting_Server_Uwazi_Login_Access" = "ဆာဗာကို ဝင်ရောက်အသုံးပြုနိုင်ရန် အကောင့်ဝင်ပါ";
 "Setting_Server_Uwazi_Username" = "အသုံးပြုသူအမည်";
 "Setting_Server_Uwazi_Password" = "လျှို့၀ှက်စကား၀ှက်";
 "Setting_Server_Uwazi_Two_Step_Title" = "နှစ်ဆင့်ခံ အတည်ပြုစနစ်";
-"Setting_Server_Uwazi_Two_Step_Message" = "ဤ Uwazi ဖြစ်ရပ်တွင် နှစ်ဆင့်ခံ အတည်ပြုစနစ် လိုအပ်ပါသည်။ သင်၏ အတည်ပြုချက်ပေး အက်ပ်မှ 6 လုံးပါ ကုဒ်ကို ဤနေရာတွင် ထည့်သွင်းပါ။";
+"Setting_Server_Uwazi_Two_Step_Message" = "ဤ Uwazi ဖြစ်ရပ်တွင် နှစ်ဆင့်ခံ အတည်ပြုစနစ် လိုအပ်ပါသည်။ သင်၏ အတည်ပြုအက်ပ်မှ ဂဏန်း 6 လုံးပါ ကုဒ်ကို ဤနေရာတွင် ထည့်ပါ။";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "Authentication code";
 "Setting_Server_Uwazi_Authentication_Verify" = "VERIFY";
 "Setting_Server_Uwazi_Language_Title" = "Uwazi ဘာသာစကား";
@@ -321,7 +319,7 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Setting_Server_Uwazi_Language_Ok" = "အိုကေ";
 "Setting_Server_Uwazi_Language_Cancel" = "CANCEL";
 "Setting_Server_Uwazi_Connect_Server" = "ဆာဗာသို့ ချိတ်ဆက်ထားသည်";
-"Setting_Server_Uwazi_Success_Message" = "ဆာဗာနှင့် အောင်မြင်စွာ ချိတ်ဆက်ထားပြီးပြီ ဖြစ်၍ ဒေတာများကို မျှဝေပေးပို့နိုင်ပြီဖြစ်သည်။";
+"Setting_Server_Uwazi_Success_Message" = "သင်သည် ဆာဗာနှင့် ချိတ်ဆက်ထားပြီးသောကြောင့် သင့်ဒေတာကို မျှဝေနိုင်ပါမည်။";
 "Uwazi_Home_Server_Title" = "Uwazi";
 "Uwazi_AppBar" = "Uwazi";
 "Uwazi_Server_Edit_SheetAction" = "ပြင်ဆင်မည်";
@@ -338,10 +336,10 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Uwazi_Template_AddTemplate_EmptyExpl" = "There are no templates";
 "Uwazi_DeleteTemplate_SheetExpl" = "Are you sure you want to delete this Template?";
 "Uwazi_Entity_MultiFile_PrimaryDocument" = "Primary Documents";
-"Uwazi_Entity_MultiFile_AttachManyPDFFiles" = "သင်ကြိုက်သလောက် PDF ဖိုင်ပမာဏကို တွဲထည့်ပါ";
+"Uwazi_Entity_MultiFile_AttachManyPDFFiles" = "သင့်စိတ်ကြိုက် PDF ဖိုင်အရေအတွက်ကို တွဲထည့်ပါ";
 "Uwazi_Entity_MultiFile_AttachManyPDFFiles_SelectTitle" = "PDF ဖိုင်များကို ရွေးချယ်ပါ";
 "Uwazi_Entity_MultiFile_SupportingFiles" = "အထောက်အကူပြု ဖိုင်များ";
-"Uwazi_Entity_MultiFile_SupportingFiles_HelpText" = "သင်ဆန္ဒရှိသလောက် ဖိုင်များစွာကို ရွေးချယ်ပါ";
+"Uwazi_Entity_MultiFile_SupportingFiles_HelpText" = "သင့်စိတ်ကြိုက် ဖိုင်အရေအတွက်ကို ရွေးချယ်ပါ";
 "Uwazi_Entity_ExitEntity_SheetTitle" = "Entity မှ ထွက်လိုပါသလား။";
 "Uwazi_Entity_ExitEntity_SheetExpl" = "Your draft will be lost";
 "Uwazi_Entity_Property_Unsopported" = "Unsupported property type";
@@ -366,20 +364,16 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Vault_DeleteFolders_SheetTitle" = "Delete folders?";
 "Vault_DeleteFolders_SheetExpl" = "%i folders and the %i files inside it will be permanently deleted from Tella";
 "vault_DeleteFoldersSingleFile_SheetExpl" = "%i folders and 1 file inside it will be permanently deleted from Tella";
-
-
+"Settings_SettLang_Portuguese_Expl" = "Portuguese";
+"Settings_SettLang_Russian_Expl" = "Russian";
 "BackgroundActivities_SheetTitle" = "Background activities";
 "BackgroundActivities_SheetExpl" = "These are the activities currently ongoing in the background.";
 "BackgroundActivities_EncryptionFail_Toast" = "Error: Encryption failed for \"%@\"";
-
-
 "BackgroundActivities_Exit_SheetTitle" = "File encryption in progress";
 "BackgroundActivities_Exit_SheetExpl" = "There are files being encrypted in the background. Do you want to exit and lose the files?";
 "BackgroundActivities_Exit_Cancel_SheetAction" = "CANCEL";
 "BackgroundActivities_Exit_Discard_SheetAction" = "Exit and discard files";
-
 "BackgroundActivities_Encrypting" = "Encrypting “%@”";
-
 "Resources_Home_Serve_title" = "Resources";
 "Resources_Downloaded_Title" = "Downloaded";
 "Resources_Downloaded_Empty" = "You have not downloaded any resources. Tap on the “download” icon next to each resource below to get started.";
@@ -393,9 +387,14 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Resources_Downloaded_Remove_Cancel_SheetAction" = "CANCEL";
 "Resources_Downloaded_Remove_Confirm_SheetAction" = "REMOVE";
 "Resources_Downloaded_Remove_Toast" = "has been removed from your downloads";
-"Resources_Downloaded_View_SheetSelect" = "View";
+"Resources_Downloaded_View_SheetSelect" = "ကြည့်မည်";
 "Resource_Downloaded_Remove_SheetSelect" = "Remove from downloads";
 "Resource_Exit_SheetTitle" = "Stop download and exit?";
 "Resource_Exit_SheetExpl" = "Your download progress will be lost. You can always come back later to download the resource again.";
 "Resource_Exit_Confirm_SheetSelect" = "EXIT";
 "Resource_Exit_Cancel_SheetSelect" = "KEEP DOWNLOADING";
+"Vault_EditImage_Exit_SheetTitle" = "မသိမ်းဆည်းရသေးသော ပြောင်းလဲချက်များ";
+"Vault_EditImage_Exit_SheetExpl" = "သင်၏ ပြောင်းလဲချက်များကို မသိမ်းဆည်းရသေးပါ။ အကောင့်မှ မထွက်မီ သိမ်းဆည်းလိုပါသလား။";
+"Vault_EditImage_Exit_SheetAction" = "မသိမ်းဘဲ ထွက်မည်";
+"Vault_MoreActions_Edit_SheetSelect" = "ပြင်ဆင်မည်";
+"Vault_EditImage_ImageSaved_Toast" = "သင့်ပြောင်းလဲချက်များကို သိမ်းဆည်းပြီးပါပြီ။";
