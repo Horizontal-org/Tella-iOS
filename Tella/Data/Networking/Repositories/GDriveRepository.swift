@@ -12,8 +12,8 @@ import GoogleAPIClientForREST
 import Combine
 
 protocol GDriveRepositoryProtocol {
-    func handleSignIn() -> AnyPublisher<Bool, Error>
-    func restorePreviousSignIn() -> AnyPublisher<Bool, Error>
+    func handleSignIn() async throws -> Void
+    func restorePreviousSignIn() async throws -> Void
     func handleUrl(url: URL)
     func getSharedDrives() -> AnyPublisher<[SharedDrive], Error>
 }
@@ -27,47 +27,42 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         return UIApplication.shared.windows.first?.rootViewController
     }
     
-    func handleSignIn() -> AnyPublisher<Bool, Error> {
-        Deferred {
-            Future { [weak self] promise in
-                guard let rootViewController = self?.rootViewController else {
-                    print("There is no root view controller!")
+    func handleSignIn() async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            DispatchQueue.main.async {
+                guard let rootViewController = self.rootViewController else {
                     return
                 }
-                
                 GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { signInResult, error in
                     if let error = error {
-                        promise(.failure(error))
-                        return
+                        continuation.resume(throwing: error)
                     } else {
-                        promise(.success(true))
+                        continuation.resume(returning: ())
                     }
                 }
             }
-        }.eraseToAnyPublisher()
+        }
     }
     
-    func restorePreviousSignIn() -> AnyPublisher<Bool, Error> {
-        Deferred {
-            Future { [weak self] promise in
-                guard let rootViewController = self?.rootViewController else {
-                    print("There is no root view controller!")
+    func restorePreviousSignIn() async throws {
+        try await withCheckedThrowingContinuation{ (continuation: CheckedContinuation<Void, Error>) in
+            DispatchQueue.main.async {
+                guard let rootViewController = self.rootViewController else {
                     return
                 }
                 
                 GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
                     if let error = error {
-                        promise(.failure(error))
+                        continuation.resume(throwing: error)
                         return
                     }
                     user?.addScopes([GoogleAuthScopes.gDriveScopes], presenting: rootViewController)
                     
-                    self?.googleUser = user
-                    promise(.success(true))
+                    self.googleUser = user
+                    continuation.resume(returning: ())
                 }
-                
             }
-        }.eraseToAnyPublisher()
+        }
     }
     
     func handleUrl(url: URL) {
