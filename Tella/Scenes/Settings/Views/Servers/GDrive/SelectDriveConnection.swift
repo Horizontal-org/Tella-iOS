@@ -7,30 +7,36 @@
 //
 
 import SwiftUI
-enum DriveConnectionType {
-    case shared
-    case personal
-    case none
-}
+
 struct SelectDriveConnection: View {
     @State var selectedDriveConnectionType: DriveConnectionType = .none
     @ObservedObject var gDriveServerViewModel: GDriveServerViewModel
     var body: some View {
         ContainerView {
-            VStack(spacing: 24) {
-                Spacer()
-                ServerConnectionHeaderView(
-                    title: "Select a Drive to connect to",
-                    subtitle: "You can either connect to an organizational Shared Drive or create a new folder in your personal Drive."
-                )
-                connectionsButtons
-                Spacer()
-                bottomView
-            }.padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
-            .toolbar {
-                LeadingTitleToolbar(title: "Select Google drive")
+            VStack {
+                selectDriveToolbar
+                VStack(spacing: 24) {
+                    Spacer()
+                    headerView
+                    connectionsButtons
+                    Spacer()
+                    bottomView
+                }
+                .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
             }
+            .navigationBarHidden(true)
         }
+    }
+    
+    var selectDriveToolbar: some View {
+        NavigationHeaderView(title: "Select Google drive" ,type: .none)
+    }
+    
+    var headerView: some View {
+        ServerConnectionHeaderView(
+            title: "Select a Drive to connect to",
+            subtitle: "You can either connect to an organizational Shared Drive or create a new folder in your personal Drive."
+        )
     }
     
     var connectionsButtons: some View {

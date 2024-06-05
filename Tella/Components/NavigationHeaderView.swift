@@ -10,6 +10,7 @@ import SwiftUI
 
 enum NavigationType {
     case save
+    case draft
     case validate
     case reload
     case none
@@ -17,17 +18,17 @@ enum NavigationType {
 
     var imageName: String {
         switch self {
-        case .save: return "reports.save"
+        case .draft: return "reports.save"
         case .validate: return "report.select-files"
         case .reload: return "arrow.clockwise"
         case .delete: return "report.delete-outbox"
-        case .none: return ""
+        case .none, .save: return ""
         }
     }
     
     var backButtonIcon: String {
         switch self {
-        case .save: return "close"
+        case .save, .draft: return "close"
         default: return "back"
         }
     }
@@ -46,7 +47,7 @@ struct NavigationHeaderView: View {
             backButton
             headerTitleView
             Spacer()
-            if(type != .none) {
+            if(!type.imageName.isEmpty) {
                 rightButton
             }
         }.frame(height: 56)

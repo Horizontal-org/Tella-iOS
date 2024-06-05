@@ -15,29 +15,31 @@ struct SelectSharedDrive: View {
     var body: some View {
         ContainerView {
             VStack(alignment: .leading){
-                ForEach(gDriveServerViewModel.sharedDrives, id: \.id) { drive in
-                    DriveCardView(sharedDrive: drive, selectedDrive: $selectedDrive)
-                }
-
-                Spacer()
-            }
-            .padding(.vertical, 8)
-            .background(Color.white.opacity(0.03))
-            .toolbar {
-                LeadingTitleToolbar(title: "Select shared drive")
-                // remove this after merging with uwazi relationships
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        gDriveServerViewModel.addServer(rootFolder: selectedDrive) {
-                            navigateTo(destination: SuccessLoginView(navigateToAction: {self.popToRoot()}, type: .gDrive))
-                        }
-                    }) {
-                        Image("report.select-files")
-                            .resizable()
-                            .frame(width: 24, height: 24)
+                selectSharedDriveHeader
+                VStack(alignment: .leading) {
+                    ForEach(gDriveServerViewModel.sharedDrives, id: \.id) { drive in
+                        DriveCardView(sharedDrive: drive, selectedDrive: $selectedDrive)
                     }
+
+                    Spacer()
                 }
+                .padding(.vertical, 8)
+                .background(Color.white.opacity(0.03))
             }
+            .navigationBarHidden(true)
+
+        }
+    }
+    
+    var selectSharedDriveHeader: some View {
+        NavigationHeaderView(backButtonAction:{ backButtonAction() },
+                             title: "Select shared drive",
+                             type: .save)
+    }
+    
+    func backButtonAction() -> Void {
+        gDriveServerViewModel.addServer(rootFolder: selectedDrive) {
+            navigateTo(destination: SuccessLoginView(navigateToAction: {self.popToRoot()}, type: .gDrive))
         }
     }
 }
