@@ -89,7 +89,28 @@ class TellaDataBase : DataBase {
         statementBuilder.createTable(tableName: D.tReportInstanceVaultFile, columns: columns)
         
     }
-    
+
+    func checkFilesInConnections(ids: [String]) -> Bool {
+        do {
+            for vaultId in ids {
+                let condition = [KeyValue(key: D.cVaultFileInstanceId, value: vaultId)]
+                let responseReportDict = try statementBuilder.selectQuery(tableName: D.tReportInstanceVaultFile,
+                                                                    andCondition: condition)
+                if !responseReportDict.isEmpty {
+                    return true
+                }
+                let responseUwaziDict = try statementBuilder.selectQuery(tableName: D.tUwaziEntityInstanceVaultFile,
+                                                                    andCondition: condition)
+                if !responseUwaziDict.isEmpty {
+                    return true
+                }
+            }
+        } catch let error {
+            debugLog(error)
+        }
+        return false
+    }
+
     /// Rename the cUpatedDate column to cUpdatedDate column in tReport and tReportInstanceVaultFile tables
     /// It was a typo
     func renameUpdatedDateColumn() {

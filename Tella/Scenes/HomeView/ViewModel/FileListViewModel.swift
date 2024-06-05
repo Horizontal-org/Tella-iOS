@@ -367,6 +367,14 @@ extension FileListViewModel {
         }
     }
     
+  
+
+    func filesAreUsedInConnections() -> Bool {
+        guard let database = appModel.tellaData?.database else { return false }
+        let fileIds = selectedFiles.compactMap { $0.id }
+        return database.checkFilesInConnections(ids: fileIds)
+    }
+    
     func deleteSelectedFiles() {
         let deleteVaultFileResult = appModel.vaultFilesManager?.deleteVaultFile(vaultFiles: selectedFiles)
         if case .success = deleteVaultFileResult {

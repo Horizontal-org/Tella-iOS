@@ -78,6 +78,9 @@
 "Vault_RenameFile_SheetTitle" = "Renommer le fichier";
 "Vault_RenameFile_Cancel_SheetAction" = "ANNULER";
 "Vault_RenameFile_Save_SheetAction" = "SAVE";
+"Vault_DeleteFile_Warning_SheetDescription" = "Certains des fichiers sélectionnés sont actuellement utilisés dans vos connexions. La suppression peut avoir un impact sur les formulaires et les rapports qui n\'ont pas encore été envoyés.";
+"Vault_DeleteFile_Warning_SheetTitle"= "Warning";
+"Vault_DeleteFile_DeleteAnyway_SheetAction" = "Supprimer quand même";
 "Vault_CreateNewFolder_SheetTitle" = "Create new folder";
 "Vault_CreateNewFolder_Cancel_SheetAction" = "ANNULER";
 "Vault_CreateNewFolder_Create_SheetAction" = "CREATE";

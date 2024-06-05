@@ -43,7 +43,6 @@ struct MoreFileActionButton: View {
                                                         fileListViewModel: fileListViewModel),
                           isPresented: $isEditViewShown)
         }
-        
     }
     
     var listMoreButton: some View {
@@ -108,7 +107,11 @@ struct MoreFileActionButton: View {
             self.hideMenu()
             
         case .delete:
-            showDeleteConfirmationSheet()
+            if fileListViewModel.filesAreUsedInConnections() {
+                showDeleteWarningSheet()
+            } else {
+                showDeleteConfirmationSheet()
+            }
         case .edit:
             isEditViewShown = true
         default:
@@ -144,17 +147,33 @@ struct MoreFileActionButton: View {
                                actionText: LocalizableVault.deleteFileDeleteSheetAction.localized,
                                destructive: true,
                                didConfirmAction:{
-                
-                fileListViewModel.deleteSelectedFiles()
-                fileListViewModel.selectingFiles = false
-                fileListViewModel.resetSelectedItems()
-                
+                deleteAction()
                 if fileListViewModel.fileActionSource == .details {
                     self.presentationMode.wrappedValue.dismiss()
                 }
             })
         })
     }
+    
+    private func deleteAction() {
+        fileListViewModel.deleteSelectedFiles()
+        fileListViewModel.selectingFiles = false
+        fileListViewModel.resetSelectedItems()
+    }
+    
+    func showDeleteWarningSheet() {
+        sheetManager.showBottomSheet(modalHeight: 194, content: {
+            ConfirmBottomSheet(titleText: LocalizableVault.deleteFileWarningTitle.localized,
+                               msgText:  LocalizableVault.deleteFileWarningDescription.localized,
+                               cancelText: LocalizableVault.deleteFileCancelSheetAction.localized,
+                               actionText: LocalizableVault.deleteFileDeleteAnyway.localized,
+                               destructive: true,
+                               didConfirmAction:{
+                deleteAction()
+            })
+        })
+    }
+    
     
     func showSaveConfirmationSheet() {
         sheetManager.showBottomSheet( modalHeight: 180, content: {
