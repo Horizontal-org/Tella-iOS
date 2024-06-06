@@ -10,35 +10,40 @@ import SwiftUI
 import GoogleAPIClientForREST
 
 struct SelectSharedDrive: View {
-    @State var selectedDrive: String = ""
     @EnvironmentObject var gDriveServerViewModel: GDriveServerViewModel
     var body: some View {
         ContainerView {
             VStack(alignment: .leading){
                 selectSharedDriveHeader
-                VStack(alignment: .leading) {
-                    ForEach(gDriveServerViewModel.sharedDrives, id: \.id) { drive in
-                        DriveCardView(sharedDrive: drive, selectedDrive: $selectedDrive)
-                    }
-
-                    Spacer()
-                }
-                .padding(.vertical, 8)
-                .background(Color.white.opacity(0.03))
+                sharedDriveList
             }
             .navigationBarHidden(true)
 
         }
     }
     
+    var sharedDriveList: some View {
+        VStack(alignment: .leading) {
+            ForEach(gDriveServerViewModel.sharedDrives, id: \.id) { drive in
+                DriveCardView(sharedDrive: drive,
+                              isSelected: drive.id == gDriveServerViewModel.selectedDrive?.id
+                )
+            }
+
+            Spacer()
+        }
+        .padding(.vertical, 8)
+        .background(Color.white.opacity(0.03))
+    }
+    
     var selectSharedDriveHeader: some View {
         NavigationHeaderView(backButtonAction:{ backButtonAction() },
-                             title: "Select shared drive",
+                             title: LocalizableSettings.GDriveSelectSharedDriveToolbar.localized,
                              type: .save)
     }
     
     func backButtonAction() -> Void {
-        gDriveServerViewModel.addServer(rootFolder: selectedDrive) {
+        gDriveServerViewModel.addServer(rootFolder: gDriveServerViewModel.selectedDrive?.id ?? "") {
             navigateTo(destination: SuccessLoginView(navigateToAction: {self.popToRoot()}, type: .gDrive))
         }
     }
@@ -46,22 +51,23 @@ struct SelectSharedDrive: View {
 
 struct DriveCardView: View {
     var sharedDrive: SharedDrive
-    @Binding var selectedDrive: String
+    var isSelected: Bool
+    @EnvironmentObject var gDriveServerViewModel: GDriveServerViewModel
     var body: some View {
         Button(action: {
-            self.selectedDrive = sharedDrive.id
+            gDriveServerViewModel.selectedDrive = sharedDrive
         }) {
             HStack {
                 Text(sharedDrive.name)
                     .font(.custom(Styles.Fonts.regularFontName, size: 16))
                     .foregroundColor(.white)
                 Spacer()
-                if selectedDrive == sharedDrive.id {
+                if isSelected {
                     Image("settings.done")
                 }
             }
             .padding(18)
-            .background(selectedDrive == sharedDrive.id ? Color.white.opacity(0.1) : Color.clear)
+            .background(isSelected ? Color.white.opacity(0.1) : Color.clear)
         }
     }
 }
