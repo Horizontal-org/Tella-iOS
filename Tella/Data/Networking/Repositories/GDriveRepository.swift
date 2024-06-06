@@ -12,8 +12,8 @@ import GoogleAPIClientForREST
 import Combine
 
 protocol GDriveRepositoryProtocol {
-    func handleSignIn() async throws -> Void
-    func restorePreviousSignIn() async throws -> Void
+    func handleSignIn() async throws
+    func restorePreviousSignIn() async throws
     func handleUrl(url: URL)
     func getSharedDrives() -> AnyPublisher<[SharedDrive], Error>
     func createDriveFolder(folderName: String) -> AnyPublisher<String, Error>
