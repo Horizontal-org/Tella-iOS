@@ -15,7 +15,7 @@ class GDriveServerViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     @Published var sharedDrives: [SharedDrive] = []
-
+    @Published var selectedDrive: SharedDrive? = nil
     init(repository: GDriveRepositoryProtocol = GDriveRepository.shared, mainAppModel: MainAppModel) {
         self.mainAppModel = mainAppModel
         self.gDriveRepository = repository
