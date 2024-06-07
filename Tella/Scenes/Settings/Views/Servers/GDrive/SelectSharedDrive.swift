@@ -55,7 +55,7 @@ struct DriveCardView: View {
     @EnvironmentObject var gDriveServerViewModel: GDriveServerViewModel
     var body: some View {
         Button(action: {
-            gDriveServerViewModel.selectedDrive = sharedDrive
+            gDriveServerViewModel.handleSelectedDrive(drive: sharedDrive)
         }) {
             HStack {
                 Text(sharedDrive.name)
