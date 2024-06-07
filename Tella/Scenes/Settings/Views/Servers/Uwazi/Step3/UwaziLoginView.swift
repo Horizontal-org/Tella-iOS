@@ -67,7 +67,7 @@ struct UwaziLoginView: View {
                              isValid: $uwaziServerViewModel.validPassword,
                              shouldShowError: $uwaziServerViewModel.shouldShowLoginError,
                              errorMessage: uwaziServerViewModel.loginErrorMessage,
-                             fieldType: .text,
+                             fieldType: .password,
                              placeholder : LocalizableSettings.UwaziPassword.localized)
         .autocapitalization(.none)
         .frame(height: 57)
