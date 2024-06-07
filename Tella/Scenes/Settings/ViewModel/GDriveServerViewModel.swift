@@ -79,4 +79,8 @@ class GDriveServerViewModel: ObservableObject {
         
         completion()
     }
+    
+    func handleSelectedDrive(drive: SharedDrive) -> Void {
+        self.selectedDrive = drive
+    }
 }
