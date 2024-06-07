@@ -31,7 +31,7 @@ struct UwaziSelectWidget: View {
     
     func selectTitle() -> String {
         guard let item = prompt.selectValues?.filter({$0.id == prompt.value.first}).first else {return "Select"}
-        return item.label ?? ""
+        return item.label
     }
 }
 
@@ -74,10 +74,11 @@ struct SelectListOptions: View {
                         )
                     }
                 }
-                .frame(minHeight: 40, maxHeight: 250)
-                .background(Styles.Colors.backgroundMain)
-                .cornerRadius(12)
             }
+            .frame(minHeight: 40, maxHeight: 200)
+            .background(Styles.Colors.backgroundMain)
+            .cornerRadius(12)
+            
             Spacer()
         }
         .background(Color.clear)

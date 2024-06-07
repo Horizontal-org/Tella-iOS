@@ -90,7 +90,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                               selectValues:[] ,
                                               name: $0.name)
                 
-            case .dataTypeSelect, .dataTypeMultiSelect:
+            case .dataTypeSelect:
               
                 let selectValues = $0.values?.compactMap({SelectValues(id: $0.id ?? "", label: $0.translatedLabel ?? "")})
 
@@ -174,7 +174,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                     metadata[propertyName] = [UwaziValue(value: value)].arraydDictionnary
                 }
                 
-            case .dataTypeSelect, .dataTypeMultiSelect:
+            case .dataTypeSelect:
                 guard let entryPrompt = entryPrompt as? UwaziSelectEntryPrompt else { continue }
                 guard !entryPrompt.isEmpty else { continue }
                 metadata[propertyName] = entryPrompt.value.compactMap({UwaziValue(value: $0)}).arraydDictionnary
@@ -235,7 +235,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                 guard let decoded = try? valueDict?.first?.decode(UwaziValue<String>.self) else { continue }
                 entryPrompt.value = decoded.value
                 
-            case .dataTypeSelect, .dataTypeMultiSelect:
+            case .dataTypeSelect:
                 let uwaziString = value as? [[String:Any]]
                 guard let entryPrompt = entryPrompt as? UwaziSelectEntryPrompt else { continue }
                 guard let decoded =  uwaziString?.compactMap({ try? $0.decode(UwaziValue<String>.self)})  else { continue }
