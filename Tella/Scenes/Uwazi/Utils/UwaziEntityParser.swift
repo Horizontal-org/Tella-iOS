@@ -90,7 +90,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                               selectValues:[] ,
                                               name: $0.name)
                 
-            case .dataTypeSelect, .dataTypeMultiSelect:
+            case .dataTypeSelect:
               
                 let selectValues = $0.values?.compactMap({SelectValues(id: $0.id ?? "", label: $0.translatedLabel ?? "")})
 
