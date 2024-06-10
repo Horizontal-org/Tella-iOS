@@ -9,25 +9,6 @@
 import Foundation
 import Combine
 
-enum ViewModelState<T: Equatable>: Equatable {
-    case loading
-    case loaded(T)
-    case error(String)
-    
-    static func == (lhs: ViewModelState<T>, rhs: ViewModelState<T>) -> Bool {
-        switch (lhs, rhs) {
-        case (.loading, .loading):
-            return true
-        case (.error(let lhsError), .error(let rhsError)):
-            return lhsError == rhsError
-        case (.loaded(let lhsValue), .loaded(let rhsValue)):
-            return lhsValue == rhsValue
-        default:
-            return false
-        }
-    }
-}
-
 class GDriveServerViewModel: ObservableObject {
     var mainAppModel : MainAppModel
     private let gDriveRepository: GDriveRepositoryProtocol
