@@ -98,13 +98,9 @@ struct ServerSelectionView: View {
             SectionMessage(text: LocalizableSettings.settServerUnavailableConnectionsDesc.localized)
             ForEach(serversViewModel.unavailableServers, id: \.id) { server in
                 TellaButtonView<AnyView>(
-                    title: server.serverType?.serverTitle ?? "" ,
+                    title: server.serverType?.serverTitle ?? "",
                     nextButtonAction: .action,
-                    isOverlay: selectedServerType == server.serverType,
-                    isValid: .constant(true),
-                    action: {
-                        selectedServerType = server.serverType
-                    }
+                    isValid: .constant(false)
                 )
             }
         }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
