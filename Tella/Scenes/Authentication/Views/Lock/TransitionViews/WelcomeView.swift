@@ -13,7 +13,7 @@ struct WelcomeView: View {
         NavigationContainerView {
             TransitionView(transitionViewData: WelcomeViewData()) {
                 shouldShowLockChoice = true
-                navigateTo(destination: LockChoiceView(isPresented: .constant(false)))
+                navigateTo(destination: LockChoiceView())
             }
         }
     }
