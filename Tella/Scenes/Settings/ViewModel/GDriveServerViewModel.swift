@@ -9,10 +9,23 @@
 import Foundation
 import Combine
 
-enum ViewModelState<T> {
+enum ViewModelState<T: Equatable>: Equatable {
     case loading
     case loaded(T)
     case error(String)
+    
+    static func == (lhs: ViewModelState<T>, rhs: ViewModelState<T>) -> Bool {
+        switch (lhs, rhs) {
+        case (.loading, .loading):
+            return true
+        case (.error(let lhsError), .error(let rhsError)):
+            return lhsError == rhsError
+        case (.loaded(let lhsValue), .loaded(let rhsValue)):
+            return lhsValue == rhsValue
+        default:
+            return false
+        }
+    }
 }
 
 class GDriveServerViewModel: ObservableObject {
@@ -22,7 +35,8 @@ class GDriveServerViewModel: ObservableObject {
 
     @Published var selectedDrive: SharedDrive? = nil
     @Published var sharedDriveState: ViewModelState<[SharedDrive]>? = nil
-
+    @Published var createFolderState: ViewModelState<String>? = nil
+    
     init(repository: GDriveRepositoryProtocol = GDriveRepository.shared, mainAppModel: MainAppModel) {
         self.mainAppModel = mainAppModel
         self.gDriveRepository = repository
@@ -61,7 +75,7 @@ class GDriveServerViewModel: ObservableObject {
     
     
     func createDriveFolder(folderName: String, completion: @escaping () -> Void) {
-        
+        self.createFolderState = .loading
         gDriveRepository.createDriveFolder(folderName: folderName)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
@@ -69,9 +83,10 @@ class GDriveServerViewModel: ObservableObject {
                 case .finished:
                     break
                 case .failure(let error):
-                    Toast.displayToast(message: error.localizedDescription)
+                    self.createFolderState = .error(error.localizedDescription)
                 }
             }, receiveValue: { folderId in
+                self.createFolderState = .loaded(folderId)
                 self.addServer(rootFolder: folderId) {
                     completion()
                 }
