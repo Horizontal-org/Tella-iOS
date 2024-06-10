@@ -15,25 +15,42 @@ struct SelectSharedDrive: View {
         ContainerView {
             VStack(alignment: .leading){
                 selectSharedDriveHeader
-                sharedDriveList
+                sharedDriveContent
             }
             .navigationBarHidden(true)
 
         }
+        .onAppear {
+            if case .error(let message) = gDriveServerViewModel.sharedDriveState {
+                Toast.displayToast(message: message)
+            }
+        }
     }
     
-    var sharedDriveList: some View {
+    var sharedDriveContent: some View {
         VStack(alignment: .leading) {
-            ForEach(gDriveServerViewModel.sharedDrives, id: \.id) { drive in
-                DriveCardView(sharedDrive: drive,
-                              isSelected: drive.id == gDriveServerViewModel.selectedDrive?.id
-                )
+            switch gDriveServerViewModel.sharedDriveState {
+            case .loading:
+                CircularActivityIndicatory()
+            case .loaded(let drives):
+                sharedDriveList(drives: drives)
+            default:
+                EmptyView()
             }
-
+            
             Spacer()
         }
         .padding(.vertical, 8)
         .background(Color.white.opacity(0.03))
+    }
+    
+    @ViewBuilder
+    func sharedDriveList(drives: [SharedDrive]) -> some View {
+        ForEach(drives, id: \.id) {drive in
+            DriveCardView(sharedDrive: drive,
+                          isSelected: drive.id == gDriveServerViewModel.selectedDrive?.id
+            )
+        }
     }
     
     var selectSharedDriveHeader: some View {

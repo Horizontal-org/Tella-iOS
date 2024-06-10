@@ -9,13 +9,20 @@
 import Foundation
 import Combine
 
+enum ViewModelState<T> {
+    case loading
+    case loaded(T)
+    case error(String)
+}
+
 class GDriveServerViewModel: ObservableObject {
     var mainAppModel : MainAppModel
     private let gDriveRepository: GDriveRepositoryProtocol
     private var cancellables = Set<AnyCancellable>()
 
-    @Published var sharedDrives: [SharedDrive] = []
     @Published var selectedDrive: SharedDrive? = nil
+    @Published var sharedDriveState: ViewModelState<[SharedDrive]>? = nil
+
     init(repository: GDriveRepositoryProtocol = GDriveRepository.shared, mainAppModel: MainAppModel) {
         self.mainAppModel = mainAppModel
         self.gDriveRepository = repository
@@ -35,6 +42,7 @@ class GDriveServerViewModel: ObservableObject {
     }
 
     func getSharedDrives() {
+        self.sharedDriveState = .loading
         gDriveRepository.getSharedDrives()
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: {completion in
@@ -42,12 +50,11 @@ class GDriveServerViewModel: ObservableObject {
                 case .finished:
                     break
                 case.failure(let error):
-                    debugLog(error)
-                    Toast.displayToast(message: error.localizedDescription)
+                    self.sharedDriveState = .error(error.localizedDescription)
                 }
             },
             receiveValue: { [weak self] drives in
-                self?.sharedDrives = drives
+                self?.sharedDriveState = .loaded(drives)
             })
             .store(in: &cancellables)
     }
