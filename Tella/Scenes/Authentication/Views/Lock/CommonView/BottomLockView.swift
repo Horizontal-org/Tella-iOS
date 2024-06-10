@@ -2,7 +2,7 @@
 //  BottomLockView.swift
 //  Tella
 //
-//  
+//
 //  Copyright © 2021 INTERNEWS. All rights reserved.
 //
 
@@ -12,7 +12,7 @@ struct BottomLockView<Destination:View>:View {
     
     @Binding  var isValid : Bool
     var shouldEnableBackButton :  Bool  = true
-
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var nextButtonAction: NextButtonAction
@@ -28,13 +28,17 @@ struct BottomLockView<Destination:View>:View {
                 BottomButtonActionView(title: LocalizableLock.actionBack.localized, isValid: true) {
                     self.backAction?()
                     self.presentationMode.wrappedValue.dismiss()
-
                 }
             }
             Spacer()
             if !shouldHideNext {
                 BottomButtonActionView(title: LocalizableLock.actionNext.localized,isValid: isValid) {
-                    self.nextAction?()
+                    if nextButtonAction == .action {
+                        self.nextAction?()
+                    }
+                    if (nextButtonAction == .destination) {
+                        navigateTo(destination: destination)
+                    }
                 }
             }
         }
@@ -44,14 +48,7 @@ struct BottomLockView<Destination:View>:View {
     func BottomButtonActionView(title:String,isValid:Bool, action: (() -> Void)?) -> some View {
         Button {
             UIApplication.shared.endEditing()
-            if nextButtonAction == .action {
-                action?()
-            }
-            
-            if (nextButtonAction == .destination) {
-                navigateTo(destination: destination)
-            }
-            
+            action?()
         } label: {
             Text(title)
         }

@@ -55,10 +55,13 @@ struct UnlockView: View {
             }
             
         }
-        
-        .overlay(lockChoiceView)
         .onAppear {
             viewModel.initUnlockData()
+        }
+        .onReceive(viewModel.$presentingLockChoice) { presentingLockChoice in
+            if presentingLockChoice {
+                showLockChoiceView()
+            }
         }
     }
     
@@ -102,10 +105,9 @@ struct UnlockView: View {
             }
         }
     }
-    var lockChoiceView : some View {
-        viewModel.presentingLockChoice ? LockChoiceView( isPresented: $viewModel.presentingLockChoice) : nil
+    private func showLockChoiceView() {
+        navigateTo(destination: LockChoiceView().environmentObject(viewModel))
     }
-    
 }
 
 struct UnlockView_Previews: PreviewProvider {

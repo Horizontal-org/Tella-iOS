@@ -131,6 +131,3 @@ struct CreateEntityView: View {
     }
  }
 
-struct ViewClassType {
-    static let uwaziView : AnyClass = UIHostingController<ModifiedContent<UwaziView, _EnvironmentKeyWritingModifier<UwaziViewModel?>>>.self
-}

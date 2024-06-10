@@ -104,6 +104,7 @@ class LockViewModel: ObservableObject {
         } else {
             isLoading = false
             presentingLockChoice = true
+            presentingLockChoice = false
         }
     }
     

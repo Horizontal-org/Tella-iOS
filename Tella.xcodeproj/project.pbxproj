@@ -71,6 +71,7 @@
 		121C945E28FF3DCC00570EB4 /* EmptyReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121C945D28FF3DCC00570EB4 /* EmptyReportView.swift */; };
 		121F87AA2964383D00E6BA0D /* SubmittedReportVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F87A92964383D00E6BA0D /* SubmittedReportVM.swift */; };
 		1220A72E292EB11B000BC24C /* ReportFileGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1220A72D292EB11B000BC24C /* ReportFileGridView.swift */; };
+		1220F22B2C17165400CFD20C /* ViewClassType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1220F22A2C17165400CFD20C /* ViewClassType.swift */; };
 		1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1221CB7028DB1B5A0042F15F /* KeyValue.swift */; };
 		1221E05C2906CA6A00BC05F5 /* DraftReportVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1221E05B2906CA6A00BC05F5 /* DraftReportVM.swift */; };
 		12234BE029DAEC4A00D6F981 /* CustomNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12234BDF29DAEC4A00D6F981 /* CustomNavigation.swift */; };
@@ -607,6 +608,7 @@
 		121C945D28FF3DCC00570EB4 /* EmptyReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyReportView.swift; sourceTree = "<group>"; };
 		121F87A92964383D00E6BA0D /* SubmittedReportVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittedReportVM.swift; sourceTree = "<group>"; };
 		1220A72D292EB11B000BC24C /* ReportFileGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportFileGridView.swift; sourceTree = "<group>"; };
+		1220F22A2C17165400CFD20C /* ViewClassType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewClassType.swift; sourceTree = "<group>"; };
 		1221CB7028DB1B5A0042F15F /* KeyValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValue.swift; sourceTree = "<group>"; };
 		1221E05B2906CA6A00BC05F5 /* DraftReportVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftReportVM.swift; sourceTree = "<group>"; };
 		12227E4468563A646AC52A27 /* Pods-Tella-TellaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella-TellaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Tella-TellaUITests/Pods-Tella-TellaUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1707,6 +1709,7 @@
 				12935478294A3BFC00735ED0 /* MIMEType.swift */,
 				1289B45528B62A99005DA687 /* DeviceOrientationHelper.swift */,
 				1233076629F15A290019DF7C /* NetworkMonitor.swift */,
+				1220F22A2C17165400CFD20C /* ViewClassType.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -3530,6 +3533,7 @@
 				E1E7C5792AAB515100DDB07E /* UwaziTemplateRow.swift in Sources */,
 				12567FFC27178EE200A2D356 /* LockButton.swift in Sources */,
 				127C155E27DA6C2E009EC15B /* EmptyFileListView.swift in Sources */,
+				1220F22B2C17165400CFD20C /* ViewClassType.swift in Sources */,
 				CC1C734D2AF5439600D736F8 /* UwaziMultipartData.swift in Sources */,
 				12781F4427E9FCE200FE9609 /* PasswordTypeEnum.swift in Sources */,
 				D5DA7F9B2648D05400B00FDA /* FileListView.swift in Sources */,
