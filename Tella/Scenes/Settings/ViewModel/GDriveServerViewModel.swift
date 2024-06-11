@@ -18,7 +18,7 @@ class GDriveServerViewModel: ObservableObject {
     @Published var sharedDriveState: ViewModelState<[SharedDrive]>? = nil
     @Published var createFolderState: ViewModelState<String>? = nil
     
-    init(repository: GDriveRepositoryProtocol = GDriveRepository.shared, mainAppModel: MainAppModel) {
+    init(repository: GDriveRepositoryProtocol, mainAppModel: MainAppModel) {
         self.mainAppModel = mainAppModel
         self.gDriveRepository = repository
         self.getSharedDrives()

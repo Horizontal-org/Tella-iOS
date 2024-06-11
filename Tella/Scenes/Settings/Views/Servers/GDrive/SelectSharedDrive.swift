@@ -33,7 +33,7 @@ struct SelectSharedDrive: View {
             case .loading:
                 CircularActivityIndicatory()
             case .loaded(let drives):
-                sharedDriveList(drives: drives)
+                sharedDriveList(drives: drives ?? [])
             default:
                 EmptyView()
             }
