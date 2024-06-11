@@ -29,6 +29,20 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         return UIApplication.shared.windows.first?.rootViewController
     }
     
+    init() {
+        Task {
+            await initializeRepository()
+        }
+    }
+    
+    private func initializeRepository() async {
+        do {
+            try await restorePreviousSignIn()
+        } catch {
+            print("Failed to restore previous sign in")
+        }
+    }
+    
     func handleSignIn() async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             DispatchQueue.main.async {
@@ -74,7 +88,9 @@ class GDriveRepository: GDriveRepositoryProtocol  {
     func getSharedDrives() -> AnyPublisher<[SharedDrive], Error> {
         Deferred {
             Future { [weak self] promise in
-                guard let user = self?.googleUser else { return }
+                guard let user = self?.googleUser else {
+                    return promise(.failure(APIError.noToken))
+                }
                 let driveService = GTLRDriveService()
                 driveService.authorizer = user.fetcherAuthorizer
 
@@ -111,8 +127,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         Deferred {
             Future { [weak self] promise in
                 guard let user = self?.googleUser else {
-                    print("User not authenticated")
-                    return
+                    return promise(.failure(APIError.noToken))
                 }
                 
                 let driveService = GTLRDriveService()
