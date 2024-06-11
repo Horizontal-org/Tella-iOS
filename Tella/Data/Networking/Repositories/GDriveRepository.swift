@@ -63,7 +63,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                         continuation.resume(throwing: error)
                         return
                     }
-                    user?.addScopes([GoogleAuthScopes.gDriveScopes], presenting: rootViewController)
+                    user?.addScopes([GoogleAuthConstants.gDriveScopes], presenting: rootViewController)
                     
                     self.googleUser = user
                     continuation.resume(returning: ())
@@ -126,7 +126,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 
                 let folder = GTLRDrive_File()
                 folder.name = folderName
-                folder.mimeType = "application/vnd.google-apps.folder"
+                folder.mimeType = GoogleAuthConstants.gDriveFolderMimeType
                 
                 let query = GTLRDriveQuery_FilesCreate.query(withObject: folder, uploadParameters: nil)
                 
