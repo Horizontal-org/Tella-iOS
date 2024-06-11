@@ -21,19 +21,7 @@ class GDriveServerViewModel: ObservableObject {
     init(repository: GDriveRepositoryProtocol = GDriveRepository.shared, mainAppModel: MainAppModel) {
         self.mainAppModel = mainAppModel
         self.gDriveRepository = repository
-        restorePreviousSignIn()
-    }
-
-    func restorePreviousSignIn() {
-        Task {
-            do {
-                try await gDriveRepository.restorePreviousSignIn()
-                self.getSharedDrives()
-            } catch let error {
-                Toast.displayToast(message: error.localizedDescription)
-            }
-        }
-        
+        self.getSharedDrives()
     }
 
     func getSharedDrives() {

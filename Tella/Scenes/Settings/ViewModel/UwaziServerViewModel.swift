@@ -244,6 +244,8 @@ class UwaziServerViewModel: ObservableObject {
                 }
             case .noInternetConnection:
                 Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+            default:
+                break
             }
         case .finished:
             self.shouldShowLoginError = false
@@ -303,6 +305,8 @@ class UwaziServerViewModel: ObservableObject {
                 }
             case .noInternetConnection:
                 Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+            default:
+                break
             }
             self.shouldShowAuthenticationError = true
         case .finished:
