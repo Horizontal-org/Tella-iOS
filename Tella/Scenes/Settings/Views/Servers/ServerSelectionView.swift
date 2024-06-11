@@ -13,11 +13,14 @@ struct ServerSelectionView: View {
     @StateObject var serverViewModel : ServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
     @State var selectedServerType: ServerConnectionType? = nil
-    @ObservedObject var gDriveVM = GDriveAuthViewModel()
+    @ObservedObject var gDriveVM: GDriveAuthViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    let gDriveDIContainer: GDriveDIContainer
     
-    init(appModel:MainAppModel, server: TellaServer? = nil) {
+    init(appModel:MainAppModel, server: TellaServer? = nil, gDriveDIContainer: GDriveDIContainer) {
+        self.gDriveDIContainer = gDriveDIContainer
         _serverViewModel = StateObject(wrappedValue: ServerViewModel(mainAppModel: appModel, currentServer: server))
+        _gDriveVM = ObservedObject(wrappedValue: GDriveAuthViewModel(repository: gDriveDIContainer.gDriveRepository))
     }
     var body: some View {
         ContainerView {
@@ -34,7 +37,12 @@ struct ServerSelectionView: View {
             .toolbar {
                 LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
             }
-        }
+        }.onChange(of: gDriveVM.signInState, perform: { state in
+            if case .error(let message) = state {
+                Toast.displayToast(message: message)
+            }
+        })
+        
     }
     
     fileprivate func buttonViews() -> some View {
@@ -85,8 +93,9 @@ struct ServerSelectionView: View {
     
     fileprivate func navigateToGDriveFlow() {
         gDriveVM.handleSignIn { 
+            let gDriveServerViewModel = GDriveServerViewModel(repository: gDriveDIContainer.gDriveRepository, mainAppModel: mainAppModel)
             navigateTo(
-                destination: SelectDriveConnection(gDriveServerViewModel: GDriveServerViewModel(mainAppModel: mainAppModel)),
+                destination: SelectDriveConnection(gDriveServerViewModel: gDriveServerViewModel),
                 title: LocalizableSettings.settServerGDrive.localized
             )
         }
@@ -125,7 +134,7 @@ struct ServerSelectionView: View {
 
 struct ServerSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ServerSelectionView(appModel: MainAppModel.stub())
+        ServerSelectionView(appModel: MainAppModel.stub(), gDriveDIContainer: GDriveDIContainer())
             .environmentObject(MainAppModel.stub())
             .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
     }

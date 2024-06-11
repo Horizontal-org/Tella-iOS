@@ -21,25 +21,15 @@ protocol GDriveRepositoryProtocol {
 }
 
 class GDriveRepository: GDriveRepositoryProtocol  {
-    static let shared = GDriveRepository()
-    
     private var googleUser: GIDGoogleUser?
     
     private var rootViewController: UIViewController? {
         return UIApplication.shared.windows.first?.rootViewController
     }
     
-    init() {
-        Task {
-            await initializeRepository()
-        }
-    }
-    
-    private func initializeRepository() async {
-        do {
+    private func ensureSignedIn() async throws {
+        if self.googleUser == nil {
             try await restorePreviousSignIn()
-        } catch {
-            print("Failed to restore previous sign in")
         }
     }
     
@@ -159,5 +149,14 @@ class GDriveRepository: GDriveRepositoryProtocol  {
     
     func signOut() {
         GIDSignIn.sharedInstance.signOut()
+    }
+}
+
+
+struct GDriveDIContainer {
+    let gDriveRepository: GDriveRepositoryProtocol
+    
+    init(gDriveRepository: GDriveRepositoryProtocol = GDriveRepository()) {
+        self.gDriveRepository = gDriveRepository
     }
 }
