@@ -29,7 +29,7 @@ extension APIError: LocalizedError {
         case .badServer:
             return LocalizableSettings.settServerServerURLIncorrect.localized
         case .noToken:
-            return "No token present, please connect again"
+            return LocalizableSettings.settServerNoTokenPresent.localized
         }
     }
     private func customErrorMessage(errorCode : Int) -> String {
