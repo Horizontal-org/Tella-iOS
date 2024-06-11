@@ -217,6 +217,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_SettServer_Server_URL_Incorrect" = "Error: The server URL is incorrect";
 "Setting_SettServer_UnavailableConnections_Title" = "Unavailable connections";
 "Setting_SettServer_UnavailableConnections_Description" = "For the following categories, only one connection can be enabled at a time. To add a new connection, please delete the current one by going to Connections Settings.";
+"Setting_SettServer_No_Token" = "No token present, please connect again";
 
 "Home_RecentFiles_Subhead" = "Recent files";
 

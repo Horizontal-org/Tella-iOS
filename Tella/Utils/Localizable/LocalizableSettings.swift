@@ -93,6 +93,7 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settServerServerURLIncorrect = "Setting_SettServer_Server_URL_Incorrect"
     case settServerUnavailableConnectionsTitle = "Setting_SettServer_UnavailableConnections_Title"
     case settServerUnavailableConnectionsDesc = "Setting_SettServer_UnavailableConnections_Description"
+    case settServerNoTokenPresent = "Setting_SettServer_No_Token"
 
     // Uwazi
     case UwaziServerURL = "Setting_Server_Uwazi_Server_URL"

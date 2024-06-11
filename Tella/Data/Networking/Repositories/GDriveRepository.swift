@@ -53,6 +53,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                     if let error = error {
                         continuation.resume(throwing: error)
                     } else {
+                        self.googleUser = signInResult?.user
                         continuation.resume(returning: ())
                     }
                 }
