@@ -43,6 +43,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                     if let error = error {
                         continuation.resume(throwing: error)
                     } else {
+                        signInResult?.user.addScopes([GoogleAuthConstants.gDriveScopes], presenting: rootViewController)
                         self.googleUser = signInResult?.user
                         continuation.resume(returning: ())
                     }
