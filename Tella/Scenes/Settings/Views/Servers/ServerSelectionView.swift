@@ -40,11 +40,11 @@ struct ServerSelectionView: View {
             .toolbar {
                 LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
             }
-        }.onChange(of: gDriveVM.signInState, perform: { state in
-            if case .error(let message) = state {
+        }.onReceive(gDriveVM.$signInState){ signInState in
+            if case .error(let message) = signInState {
                 Toast.displayToast(message: message)
             }
-        })
+        }
         
     }
     
