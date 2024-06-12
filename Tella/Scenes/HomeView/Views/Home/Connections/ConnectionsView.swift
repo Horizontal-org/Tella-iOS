@@ -52,10 +52,10 @@ struct ConnectionsView: View {
                     ConnectionsItemView(title: LocalizableHome.uwaziServerTitle.localized,
                                         image: "home.uwazi",
                                         destination: UwaziView().environmentObject(UwaziViewModel(mainAppModel: appModel, server: parseUwaziServer(server: server.servers[0]))))
-                default:
-                    ConnectionsItemView(title: LocalizableReport.reportsTitle.localized,
+                case .gDrive:
+                    ConnectionsItemView(title: "Drive",
                                         image: "home.report",
-                                        destination: ReportsView(mainAppModel: appModel))
+                                        destination: EmptyView())
                 }
                 
             }
