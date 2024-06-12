@@ -15,17 +15,15 @@ class GDriveServerViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     @Published var selectedDrive: SharedDrive? = nil
-    @Published var sharedDriveState: ViewModelState<[SharedDrive]>? = nil
-    @Published var createFolderState: ViewModelState<String>? = nil
+    @Published var sharedDriveState: ViewModelState<[SharedDrive]> = .loading
+    @Published var createFolderState: ViewModelState<String> = .loaded("")
     
     init(repository: GDriveRepositoryProtocol, mainAppModel: MainAppModel) {
         self.mainAppModel = mainAppModel
         self.gDriveRepository = repository
-        self.getSharedDrives()
     }
 
     func getSharedDrives() {
-        self.sharedDriveState = .loading
         gDriveRepository.getSharedDrives()
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: {completion in

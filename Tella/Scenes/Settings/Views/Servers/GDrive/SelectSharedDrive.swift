@@ -21,9 +21,7 @@ struct SelectSharedDrive: View {
 
         }
         .onAppear {
-            if case .error(let message) = gDriveServerViewModel.sharedDriveState {
-                Toast.displayToast(message: message)
-            }
+            gDriveServerViewModel.getSharedDrives()
         }
     }
     
@@ -33,9 +31,9 @@ struct SelectSharedDrive: View {
             case .loading:
                 CircularActivityIndicatory()
             case .loaded(let drives):
-                sharedDriveList(drives: drives ?? [])
-            default:
-                EmptyView()
+                sharedDriveList(drives: drives)
+            case .error(_):
+                sharedDriveError
             }
             
             Spacer()
@@ -51,6 +49,15 @@ struct SelectSharedDrive: View {
                           isSelected: drive.id == gDriveServerViewModel.selectedDrive?.id
             )
         }
+    }
+    
+    var sharedDriveError: some View {
+        EmptyView()
+            .onReceive(gDriveServerViewModel.$sharedDriveState){ sharedDriveState in
+                if case .error(let message) = sharedDriveState {
+                    Toast.displayToast(message: message)
+                }
+            }
     }
     
     var selectSharedDriveHeader: some View {

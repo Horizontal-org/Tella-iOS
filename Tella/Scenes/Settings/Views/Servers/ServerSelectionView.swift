@@ -14,6 +14,7 @@ struct ServerSelectionView: View {
     @EnvironmentObject var mainAppModel : MainAppModel
     @State var selectedServerType: ServerConnectionType? = nil
     @ObservedObject var gDriveVM: GDriveAuthViewModel
+    @ObservedObject var gDriveServerVM: GDriveServerViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     let gDriveDIContainer: GDriveDIContainer
     
@@ -21,7 +22,9 @@ struct ServerSelectionView: View {
         self.gDriveDIContainer = gDriveDIContainer
         _serverViewModel = StateObject(wrappedValue: ServerViewModel(mainAppModel: appModel, currentServer: server))
         _gDriveVM = ObservedObject(wrappedValue: GDriveAuthViewModel(repository: gDriveDIContainer.gDriveRepository))
+        _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveDIContainer.gDriveRepository, mainAppModel: appModel))
     }
+
     var body: some View {
         ContainerView {
             VStack(spacing: 20) {
@@ -92,10 +95,9 @@ struct ServerSelectionView: View {
     }
     
     fileprivate func navigateToGDriveFlow() {
-        gDriveVM.handleSignIn { 
-            let gDriveServerViewModel = GDriveServerViewModel(repository: gDriveDIContainer.gDriveRepository, mainAppModel: mainAppModel)
+        gDriveVM.handleSignIn {
             navigateTo(
-                destination: SelectDriveConnection(gDriveServerViewModel: gDriveServerViewModel),
+                destination: SelectDriveConnection(gDriveServerViewModel: gDriveServerVM),
                 title: LocalizableSettings.settServerGDrive.localized
             )
         }
