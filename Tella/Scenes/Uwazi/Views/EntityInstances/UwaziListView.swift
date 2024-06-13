@@ -22,7 +22,7 @@ struct UwaziListView: View {
             
             if cardsViewModel.isEmpty {
                 
-                UwaziEmptyView(message: emptyMessage)
+                ConnectionEmptyView(message: emptyMessage, type: .uwazi)
                 
             } else {
                 

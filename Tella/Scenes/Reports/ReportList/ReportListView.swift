@@ -24,7 +24,7 @@ struct ReportListView: View {
                     }
                 }
             } else {
-                EmptyReportView(message: message)
+                ConnectionEmptyView(message: message, type: .tella)
             }
         }
     }

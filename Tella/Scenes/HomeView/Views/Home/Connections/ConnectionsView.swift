@@ -55,7 +55,7 @@ struct ConnectionsView: View {
                 case .gDrive:
                     ConnectionsItemView(title: "Drive",
                                         image: "home.report",
-                                        destination: EmptyView())
+                                        destination: GDriveView(mainAppModel: appModel))
                 }
                 
             }
