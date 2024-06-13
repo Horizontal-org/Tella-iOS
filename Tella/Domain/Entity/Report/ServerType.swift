@@ -30,4 +30,15 @@ extension ServerConnectionType {
             ""
         }
     }
+    
+    var emptyIcon: String {
+        switch self {
+        case .gDrive:
+            return "drive.empty"
+        case .uwazi:
+            return "uwazi.empty"
+        case.tella:
+            return "reports.report"
+        }
+    }
 }
