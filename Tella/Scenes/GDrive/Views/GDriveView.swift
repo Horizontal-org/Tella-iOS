@@ -41,9 +41,19 @@ struct GDriveView: View {
                     }
                     Spacer()
                 }
+                createGDriveReportButton
             }
             .padding(EdgeInsets(top: 15, leading: 20, bottom: 16, trailing: 20))
         }
+    }
+    
+    var createGDriveReportButton: some View {
+        TellaButtonView<AnyView> (title: LocalizableReport.reportsCreateNew.localized,
+                                  nextButtonAction: .action,
+                                  buttonType: .yellow,
+                                  isValid: .constant(true)) {
+            navigateTo(destination: GDriveDraftView(mainAppModel: mainAppModel))
+        } .padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0))
     }
 }
 
