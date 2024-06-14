@@ -11,6 +11,7 @@ import SwiftUI
 struct GDriveView: View {
     @EnvironmentObject var mainAppModel: MainAppModel
     @StateObject var gDriveViewModel: GDriveViewModel
+    let gDriveDIContainer = GDriveDIContainer()
     
     init(mainAppModel: MainAppModel) {
         _gDriveViewModel = StateObject(wrappedValue: GDriveViewModel(mainAppModel: mainAppModel))
@@ -52,7 +53,7 @@ struct GDriveView: View {
                                   nextButtonAction: .action,
                                   buttonType: .yellow,
                                   isValid: .constant(true)) {
-            navigateTo(destination: GDriveDraftView(mainAppModel: mainAppModel))
+            navigateTo(destination: GDriveDraftView(mainAppModel: mainAppModel, gDriveDIContainer: gDriveDIContainer))
         } .padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0))
     }
 }
