@@ -43,7 +43,7 @@ class GDriveServerViewModel: ObservableObject {
     
     func createDriveFolder(folderName: String, completion: @escaping () -> Void) {
         self.createFolderState = .loading
-        gDriveRepository.createDriveFolder(folderName: folderName)
+        gDriveRepository.createDriveFolder(folderName: folderName, parentId: nil)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 switch completion {

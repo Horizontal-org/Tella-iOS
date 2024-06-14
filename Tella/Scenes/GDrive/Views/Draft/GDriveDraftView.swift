@@ -10,9 +10,14 @@ import SwiftUI
 
 struct GDriveDraftView: View {
     @StateObject var gDriveDraftVM: GDriveDraftViewModel
+    let gDriveDIContainer: GDriveDIContainer
     
-    init(mainAppModel: MainAppModel) {
-        _gDriveDraftVM = StateObject(wrappedValue: GDriveDraftViewModel(mainAppModel: mainAppModel))
+    init(mainAppModel: MainAppModel, gDriveDIContainer: GDriveDIContainer) {
+        self.gDriveDIContainer = gDriveDIContainer
+        _gDriveDraftVM = StateObject(wrappedValue: GDriveDraftViewModel(
+            mainAppModel: mainAppModel,
+            repository: gDriveDIContainer.gDriveRepository)
+        )
     }
     var body: some View {
         ContainerView {
@@ -77,12 +82,12 @@ struct GDriveDraftView: View {
         buttonType: .yellow,
         isValid: .constant(true)
       ) {
-        
+          gDriveDraftVM.submitReport()
       }.padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
     }
 
 }
 
 #Preview {
-    GDriveDraftView(mainAppModel: MainAppModel.stub())
+    GDriveDraftView(mainAppModel: MainAppModel.stub(), gDriveDIContainer: GDriveDIContainer())
 }
