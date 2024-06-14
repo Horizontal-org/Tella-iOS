@@ -156,7 +156,8 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         }
 
         let query = GTLRDriveQuery_FilesCreate.query(withObject: folder, uploadParameters: nil)
-
+        query.supportsAllDrives = true
+        
         driveService.executeQuery(query) { (ticket, file, error) in
             if let error = error {
                 print("Error creating folder: \(error.localizedDescription)")
