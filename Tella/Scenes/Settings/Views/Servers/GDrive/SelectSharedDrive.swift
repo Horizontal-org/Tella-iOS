@@ -32,8 +32,8 @@ struct SelectSharedDrive: View {
                 CircularActivityIndicatory()
             case .loaded(let drives):
                 sharedDriveList(drives: drives)
-            case .error(_):
-                sharedDriveError
+            case .error(let message):
+                ToastView(message: message)
             }
             
             Spacer()
@@ -51,14 +51,6 @@ struct SelectSharedDrive: View {
         }
     }
     
-    var sharedDriveError: some View {
-        EmptyView()
-            .onReceive(gDriveServerViewModel.$sharedDriveState){ sharedDriveState in
-                if case .error(let message) = sharedDriveState {
-                    Toast.displayToast(message: message)
-                }
-            }
-    }
     
     var selectSharedDriveHeader: some View {
         NavigationHeaderView(backButtonAction:{ backButtonAction() },
