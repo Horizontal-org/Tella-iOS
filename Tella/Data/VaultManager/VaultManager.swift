@@ -196,7 +196,7 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     }
 
     func createTempFileURL(fileName: String? , pathExtension: String?) -> URL {
-        let fileName = fileName ?? "\(Int(Date().timeIntervalSince1970))"
+        let fileName = fileName ?? "\(Int((Date().timeIntervalSince1970 * 1000.0).rounded()))"
         return URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(fileName).appendingPathExtension(pathExtension ?? "")
     }
 
