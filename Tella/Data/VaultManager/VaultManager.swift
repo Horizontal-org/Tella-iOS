@@ -8,6 +8,7 @@ import Combine
 
 class VaultManager : VaultManagerInterface, ObservableObject{
     
+    
     private let cryptoManager: CryptoManager = CryptoManager.shared
     private let fileManager: FileManagerInterface = DefaultFileManager()
     private let rootFileName: String = "root"
@@ -168,12 +169,16 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         }
     }
 
-    func saveDataToTempFile(data: Data?, pathExtension: String) -> URL? {
+    func saveDataToTempFile(data: Data?, pathExtension: String?) -> URL? {
         self.saveDataToTempFile(data: data, fileName: nil, pathExtension: pathExtension)
     }
     
-    func saveDataToTempFile(data: Data?, fileName: String?, pathExtension: String) -> URL? {
-        let tmpFileURL = self.createTempFileURL(pathExtension: pathExtension)
+    func saveDataToTempFile(data: Data?, fileName: String?) -> URL? {
+        self.saveDataToTempFile(data: data, fileName:fileName , pathExtension: nil )
+    }
+
+    func saveDataToTempFile(data: Data?, fileName: String?, pathExtension: String?) -> URL? {
+        let tmpFileURL = self.createTempFileURL(fileName: fileName, pathExtension: pathExtension)
         guard (fileManager.createFile(atPath: tmpFileURL, contents: data))
                 
         else {
@@ -181,17 +186,20 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         }
         return tmpFileURL
     }
-    
+
     func createTempFileURL(pathExtension: String) -> URL {
         self.createTempFileURL(fileName: nil, pathExtension: pathExtension)
     }
     
-    func createTempFileURL(fileName: String?, pathExtension: String) -> URL {
-        let fileName = fileName ?? "\(Int(Date().timeIntervalSince1970))"
-        return URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(fileName).appendingPathExtension(pathExtension)
+    func createTempFileURL(fileName: String?) -> URL {
+        self.createTempFileURL(fileName: fileName, pathExtension: nil)
     }
-    
-    
+
+    func createTempFileURL(fileName: String? , pathExtension: String?) -> URL {
+        let fileName = fileName ?? "\(Int(Date().timeIntervalSince1970))"
+        return URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(fileName).appendingPathExtension(pathExtension ?? "")
+    }
+
     func deleteAllVaultFilesFromDevice() {
         debugLog("", space: .files)
         fileManager.removeItem(at: containerURL)

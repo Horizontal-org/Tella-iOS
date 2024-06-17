@@ -54,33 +54,21 @@ class PhotoVideoViewModel : ObservableObject {
     
     /// To handle adding the image based on either the user want to preserve the metadata or not
     /// - Parameter completion: Object which contains all the information needed when the user selects a image from Gallery
-    func handleAddingFile(_ completion: ImagePickerCompletion?) {
+    func handleAddingFile(_ completion: PHPickerCompletion?) {
         
         Task {
-            guard let completion , let mediaURL = completion.mediaURL else {return}
+            guard let completion else {return}
             
             let isPreserveMetadataOn = mainAppModel.settings.preserveMetadata
             
-            let url : URL?
+            var importedFileArray : [ImportedFile] = []
             
-            if isPreserveMetadataOn {
-                url = mediaURL
-                
-            } else {
-                
-                if completion.type == .image {
-                    guard let data = mediaURL.contents()?.byRemovingEXIF() else {return}
-                    url = mainAppModel.vaultManager.saveDataToTempFile(data: data, pathExtension: mediaURL.pathExtension)
-                    mainAppModel.vaultManager.deleteFiles(files: [mediaURL])
-                } else {
-                    let tmpFileURL = self.mainAppModel.vaultManager.createTempFileURL(pathExtension: mediaURL.pathExtension)
-                    url = await mediaURL.returnVideoURLWithoutMetadata(destinationURL: tmpFileURL)
-                    mainAppModel.vaultManager.deleteFiles(files: [mediaURL])
-                }
+            completion.assets.enumerateObjects { (asset, _, _) in
+                importedFileArray.append(ImportedFile(asset: asset,
+                                                      shouldPreserveMetadata:isPreserveMetadataOn))
             }
-            guard let url else { return }
-            let importedFile = ImportedFile(urlFile: url, originalUrl: completion.referenceURL)
-            addFiles(importedFiles: [importedFile])
+            
+            addFiles(importedFiles: importedFileArray)
         }
     }
     
@@ -101,12 +89,15 @@ class PhotoVideoViewModel : ObservableObject {
     }
     
     func addDocuments(urls:[URL]) {
-        let importedFiles = urls.compactMap({ImportedFile(urlFile: $0,originalUrl: nil)})
+        let isPreserveMetadataOn = mainAppModel.settings.preserveMetadata
+        
+        let importedFiles = urls.compactMap({ImportedFile(urlFile: $0,
+                                                          shouldPreserveMetadata:isPreserveMetadataOn)})
         addFiles(importedFiles: importedFiles)
     }
     
     private func addVaultFileWithProgressView(importedFiles: [ImportedFile]) {
-
+        
         self.mainAppModel.vaultFilesManager?.addVaultFile(importedFiles: importedFiles, parentId: self.rootFile?.wrappedValue?.id,deleteOriginal: shouldDeleteOriginal)
             .sink { importVaultFileResult in
                 

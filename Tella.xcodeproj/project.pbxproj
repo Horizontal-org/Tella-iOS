@@ -163,6 +163,7 @@
 		125AAD3129534259002194D6 /* UploadProgressInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD3029534259002194D6 /* UploadProgressInfo.swift */; };
 		125AAD34295348EC002194D6 /* UploadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD33295348EC002194D6 /* UploadService.swift */; };
 		125AAD362953607D002194D6 /* UploadReportModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD352953607D002194D6 /* UploadReportModels.swift */; };
+		125B79F82C205F980061CF84 /* PHAssetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B79F72C205F980061CF84 /* PHAssetExtension.swift */; };
 		125BC1DE2B21F08200A117D0 /* VaultFileDetailsToMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125BC1DD2B21F08200A117D0 /* VaultFileDetailsToMerge.swift */; };
 		125D231C271F119D00250FBB /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231B271F119D00250FBB /* Validator.swift */; };
 		125D231F271F12A000250FBB /* NSRegularExpressionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */; };
@@ -228,6 +229,7 @@
 		127C155C27DA69FF009EC15B /* TransitionViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155B27DA69FF009EC15B /* TransitionViewData.swift */; };
 		127C155E27DA6C2E009EC15B /* EmptyFileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155D27DA6C2E009EC15B /* EmptyFileListView.swift */; };
 		127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C4AAE27E4A74B00B1A1D3 /* ShareFileView.swift */; };
+		127D4A812C1B2ED700E82EA8 /* VaultFilesManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D4A802C1B2ED700E82EA8 /* VaultFilesManagerExtension.swift */; };
 		1283C257272AA6F6009180CA /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */; };
 		1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285BF3F2A3C5D63005D5D23 /* OpenXmlFormats.swift */; };
 		128754D92BBCE09B00D215B5 /* SummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128754D82BBCE09B00D215B5 /* SummaryViewModel.swift */; };
@@ -699,6 +701,7 @@
 		125AAD3029534259002194D6 /* UploadProgressInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProgressInfo.swift; sourceTree = "<group>"; };
 		125AAD33295348EC002194D6 /* UploadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadService.swift; sourceTree = "<group>"; };
 		125AAD352953607D002194D6 /* UploadReportModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadReportModels.swift; sourceTree = "<group>"; };
+		125B79F72C205F980061CF84 /* PHAssetExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHAssetExtension.swift; sourceTree = "<group>"; };
 		125BC1DD2B21F08200A117D0 /* VaultFileDetailsToMerge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileDetailsToMerge.swift; sourceTree = "<group>"; };
 		125D231B271F119D00250FBB /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRegularExpressionExtension.swift; sourceTree = "<group>"; };
@@ -764,6 +767,7 @@
 		127C155B27DA69FF009EC15B /* TransitionViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionViewData.swift; sourceTree = "<group>"; };
 		127C155D27DA6C2E009EC15B /* EmptyFileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyFileListView.swift; sourceTree = "<group>"; };
 		127C4AAE27E4A74B00B1A1D3 /* ShareFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareFileView.swift; sourceTree = "<group>"; };
+		127D4A802C1B2ED700E82EA8 /* VaultFilesManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFilesManagerExtension.swift; sourceTree = "<group>"; };
 		1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		1285BF3F2A3C5D63005D5D23 /* OpenXmlFormats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenXmlFormats.swift; sourceTree = "<group>"; };
 		128754D82BBCE09B00D215B5 /* SummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewModel.swift; sourceTree = "<group>"; };
@@ -1570,6 +1574,7 @@
 				E1CF5A262AB3488E00365036 /* JSONDecoderExtension.swift */,
 				125F9B9A2AD9B4770073748C /* DictionaryExtension.swift */,
 				12742C8E2BEB9FBC00919FAE /* EncodableExtension.swift */,
+				125B79F72C205F980061CF84 /* PHAssetExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2462,6 +2467,7 @@
 				D53B77002601CA3A0001CD34 /* VaultManager.swift */,
 				1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */,
 				125299E02AD0515600191CAB /* VaultFilesManager.swift */,
+				127D4A802C1B2ED700E82EA8 /* VaultFilesManagerExtension.swift */,
 				1249B3822AD43AA7009A7023 /* VaultFilesManagerInterface.swift */,
 				0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */,
 				125299DC2AD02E6F00191CAB /* ImportVaultFileResult.swift */,
@@ -3232,6 +3238,7 @@
 				E1F6D7832AB17FB5000A9B64 /* UwaziValue.swift in Sources */,
 				CCE8CCDF2AF4297B0088B61D /* UwaziAttachmentsActionItems.swift in Sources */,
 				122DA89729CB2709003801CD /* SettingsBottomView.swift in Sources */,
+				125B79F82C205F980061CF84 /* PHAssetExtension.swift in Sources */,
 				1216124028DE144200E6D7B6 /* JoinCondition.swift in Sources */,
 				12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */,
 				E14FD87A2A6AB22200BC7523 /* UwaziLocale.swift in Sources */,
@@ -3363,6 +3370,7 @@
 				128BEB222B1E4B7600420923 /* OfflineFeedbackToast.swift in Sources */,
 				12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */,
 				128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */,
+				127D4A812C1B2ED700E82EA8 /* VaultFilesManagerExtension.swift in Sources */,
 				E1EAA0552AA74FEC00492078 /* UwaziLanguageContext.swift in Sources */,
 				12CCDC5428D8E05300C3BE4E /* Project.swift in Sources */,
 				126818C12A38B0C2004606BD /* FileInformation.swift in Sources */,

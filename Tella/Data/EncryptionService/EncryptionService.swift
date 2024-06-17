@@ -79,9 +79,14 @@ class EncryptionService: ObservableObject {
                                        deleteOriginal: deleteOriginal)?
                     .receive(on: DispatchQueue.main)
                     .sink(receiveValue: { backgroundResult in
-                        self.handleBackgroundResult(result: backgroundResult, fileDetail: fileDetail, autoUpload: autoUpload)
-                        self.items.removeAll(where: {$0.id == fileDetail.file.id})
-                        shouldReloadVaultFiles?.wrappedValue = true
+                        switch backgroundResult {
+                        case .failed, .completed:
+                            self.handleBackgroundResult(result: backgroundResult, fileDetail: fileDetail, autoUpload: autoUpload)
+                            self.items.removeAll(where: {$0.id == fileDetail.file.id})
+                            shouldReloadVaultFiles?.wrappedValue = true
+                        default:
+                            break
+                        }
                     }).store(in: &self.subscribers)
             })
         }

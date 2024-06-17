@@ -27,7 +27,7 @@ struct PhotoVideoPickerView: View {
         _viewModel = StateObject(wrappedValue: PhotoVideoViewModel(mainAppModel: appModel,
                                                                    folderPathArray: [],
                                                                    resultFile: resultFile,
-                                                                   rootFile: rootFile, 
+                                                                   rootFile: rootFile,
                                                                    shouldReloadVaultFiles: shouldReloadVaultFiles))
         self.showingImagePicker = showingImagePicker
         self.showingImportDocumentPicker = showingImportDocumentPicker
@@ -37,22 +37,21 @@ struct PhotoVideoPickerView: View {
         addFileDocumentImporter
         imagePickerView
     }
-
+    
     var imagePickerView: some View {
         HStack{}
             .sheet(isPresented:  showingImagePicker, content: {
-                ImagePickerSheet { imagePickerCompletion in
+                ImagePickerSheet { phPickerCompletion in
                     self.showingImagePicker.wrappedValue = false
-                    if imagePickerCompletion != nil  {
+                    if phPickerCompletion != nil  {
                         if viewModel.shouldShowProgressView {
                             showProgressView()
                         }
-                        viewModel.handleAddingFile(imagePickerCompletion)
+                        viewModel.handleAddingFile(phPickerCompletion)
                     }
                 }
             })
     }
-    
     
     var addFileDocumentImporter: some View {
         HStack{}
@@ -75,9 +74,9 @@ struct PhotoVideoPickerView: View {
         sheetManager.showBottomSheet(modalHeight: 190,
                                      shouldHideOnTap: false,
                                      content: {
-              ImportFilesProgressView(progress: viewModel.progressFile,
+            ImportFilesProgressView(progress: viewModel.progressFile,
                                     importFilesProgressProtocol: ImportFilesProgress())
-
+            
         })
     }
 }

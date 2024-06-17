@@ -5,67 +5,64 @@
 import SwiftUI
 import Photos
 import MobileCoreServices
+import PhotosUI
 
-
-struct ImagePickerCompletion {
-    enum MediaType {
-        case video
-        case image
-    }
-    let type: MediaType
-    var referenceURL: URL? = nil
-    var mediaURL: URL? = nil
-
+enum MediaType {
+    case video
+    case image
 }
 
-//  SwiftUI wrapper for ImagePickerController for <= iOS 14.0
+struct PHPickerCompletion {
+    var assets : PHFetchResult<PHAsset>
+}
+
 struct ImagePickerSheet: UIViewControllerRepresentable {
     
-    let completion: (ImagePickerCompletion?) -> ()
-
+    let completion: (PHPickerCompletion?) -> ()
+    
     func makeCoordinator() -> ImageCoordinator {
-      return ImageCoordinator(completion)
+        return ImageCoordinator(completion)
     }
-
+    
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePickerSheet>) ->
-        UIImagePickerController {
-            let picker = UIImagePickerController()
-            picker.delegate = context.coordinator
-            picker.mediaTypes = [(kUTTypeImage as String), (kUTTypeMovie as String)];
-            return picker
+    PHPickerViewController {
+        
+        
+        let photoLibrary = PHPhotoLibrary.shared()
+        
+        var configuration = PHPickerConfiguration(photoLibrary: photoLibrary)
+        configuration.selectionLimit = 1
+        configuration.filter = .any(of: [.images, .videos])
+        
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = context.coordinator
+        return picker
     }
-
+    
     //  this function must be here in order to fulfill recquirements, but nothing needs to go inside
-    func updateUIViewController(_ uiViewController: UIImagePickerController,
+    func updateUIViewController(_ uiViewController: PHPickerViewController,
                                 context: UIViewControllerRepresentableContext<ImagePickerSheet>) {
     }
 }
 
-//  Creating the Coordinator (the go between) for the ImagePicker
-class ImageCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+//  Creating the Coordinator (the go between) for the PHPicker
+class ImageCoordinator: NSObject, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
     
-    let completion: (ImagePickerCompletion?) -> ()
+    let completion: (PHPickerCompletion?) -> ()
     
-    init(_ completion: @escaping (ImagePickerCompletion?) -> ()) {
+    init(_ completion: @escaping (PHPickerCompletion?) -> ()) {
         self.completion = completion
     }
     
-    func imagePickerController(_ picker: UIImagePickerController,
-                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-
-        let mediaType = info[UIImagePickerController.InfoKey.mediaType] as AnyObject
-        let mediaURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL
-        let referenceURL = info[UIImagePickerController.InfoKey.referenceURL] as? URL
-        let imageURL = info[UIImagePickerController.InfoKey.imageURL] as? URL
-       
-        if mediaType as! CFString == kUTTypeImage {
-            completion(ImagePickerCompletion(type: .image, referenceURL: referenceURL, mediaURL: imageURL))
-        } else if mediaType as! CFString == kUTTypeMovie {
-            completion(ImagePickerCompletion(type: .video, referenceURL: referenceURL, mediaURL: mediaURL))
-        }
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        
+        let identifiers = results.compactMap(\.assetIdentifier)
+        let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
+        
+        completion(PHPickerCompletion(assets: fetchResult))
     }
     
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    func pickerDidCancel(_ picker: PHPickerViewController) {
         completion(nil)
     }
 }

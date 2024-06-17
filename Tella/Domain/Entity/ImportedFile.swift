@@ -6,8 +6,12 @@
 //
 
 import Foundation
+import MobileCoreServices
+import Photos
 
 struct ImportedFile {
-    var urlFile: URL
-    var originalUrl: URL?
+    var type: MediaType?
+    var urlFile: URL?
+    var asset : PHAsset? = nil
+    var shouldPreserveMetadata : Bool = false
 }
