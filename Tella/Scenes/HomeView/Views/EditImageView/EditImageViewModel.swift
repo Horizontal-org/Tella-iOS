@@ -43,7 +43,7 @@ class EditImageViewModel: ObservableObject {
         guard let url else {
             return
         }
-        self.mainAppModel.addVaultFile(importedFiles: [ImportedFile(urlFile: url)],
+        self.mainAppModel.addVaultFile(importedFiles: [ImportedFile(urlFile: url, fileSource: .editFile)],
                                        parentId: fileListViewModel.rootFile?.id,
                                        shouldReloadVaultFiles : $fileListViewModel.shouldReloadVaultFiles)
     }

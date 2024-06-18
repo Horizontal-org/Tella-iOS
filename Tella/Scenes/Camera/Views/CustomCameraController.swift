@@ -5,15 +5,15 @@
 import SwiftUI
 import AVFoundation
 import Combine
+import CoreLocation
 
 
 
 public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate, AVCaptureMetadataOutputObjectsDelegate {
-
+    
     struct CameraImageCompletion {
-        let image: UIImage
         let imageData: Data
-        // let metaData: [String: Any]
+        var currentLocation: CLLocation?
     }
     
     // MARK: - Private properties
@@ -25,6 +25,10 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     private var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
     private var  deviceOrientation : UIDeviceOrientation = UIDevice.current.orientation
     private let sessionQueue = DispatchQueue(label: "session queue")
+    
+    private var locationManager: CLLocationManager!
+    var currentLocation: CLLocation?
+    var shouldPreserveMetadata: Bool = false
     
     weak private var captureDelegate: AVCapturePhotoCaptureDelegate?
     weak private var videoRecordingDelegate: AVCaptureFileOutputRecordingDelegate?
@@ -49,14 +53,19 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     }
     
     func startRunningCaptureSession() {
+        if shouldPreserveMetadata {
+            initializeLocationManager()
+        }
         sessionQueue.async {
             self.captureSession.startRunning()
         }
     }
     
+    
     func stopRunningCaptureSession() {
         captureSession.stopRunning()
         shouldCloseCamera = false
+        stopUpdatingLocation()
     }
     
     func takePhoto() {
@@ -71,7 +80,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
         shouldShowProgressView = true
     }
     
-    func startCaptureVideo(){
+    func startCaptureVideo() {
         if let videoOutput = videoOutput, videoOutput.isRecording {
             videoOutput.stopRecording()
             shouldShowProgressView = true
@@ -84,6 +93,13 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
             if let videoOutputConnection = self.videoOutput?.connection(with: .video) {
                 videoOutputConnection.videoOrientation = deviceOrientation.videoOrientation()
             }
+            
+            if shouldPreserveMetadata {
+                // Add location to the video output
+                guard let currentLocation  else { return }
+                videoOutput?.add(location: currentLocation)
+            }
+            
             videoOutput?.startRecording(to: outFileUrl, recordingDelegate: delegate )
         }
     }
@@ -257,34 +273,31 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     
     func checkCameraPermission() {
         DispatchQueue.main.async {
-            
-      
-        
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-        case .authorized:
-            self.checkMicrophonePermission()
-            
-        case .notDetermined:
-            AVCaptureDevice.requestAccess(for: .video) { granted in
-                if granted {
-                    self.checkMicrophonePermission()
-                } else {
-                    self.shouldCloseCamera = true
+            switch AVCaptureDevice.authorizationStatus(for: .video) {
+            case .authorized:
+                self.checkMicrophonePermission()
+                
+            case .notDetermined:
+                AVCaptureDevice.requestAccess(for: .video) { granted in
+                    if granted {
+                        self.checkMicrophonePermission()
+                    } else {
+                        self.shouldCloseCamera = true
+                    }
                 }
+                
+            case .denied:
+                self.shouldShowPermission = true
+                self.shouldCloseCamera = false
+                
+            case .restricted:
+                self.shouldShowPermission = true
+                self.shouldCloseCamera = false
+                
+                return
+            @unknown default:
+                break
             }
-            
-        case .denied:
-            self.shouldShowPermission = true
-            self.shouldCloseCamera = false
-            
-        case .restricted:
-            self.shouldShowPermission = true
-            self.shouldCloseCamera = false
-            
-            return
-        @unknown default:
-            break
-        }
         }
     }
     
@@ -311,6 +324,24 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
             break
         }
     }
+    
+    // MARK: Location Manager
+    
+    func initializeLocationManager()  {
+        // Initialize location manager
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.distanceFilter = kCLDistanceFilterNone
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startMonitoringSignificantLocationChanges()
+    }
+    
+    func stopUpdatingLocation() {
+        guard let locationManager = self.locationManager else { return  }
+        locationManager.stopUpdatingLocation()
+    }
+
 }
 
 extension CameraService  {
@@ -318,19 +349,8 @@ extension CameraService  {
     public func photoOutput(_ output: AVCapturePhotoOutput,
                             didFinishProcessingPhoto photo: AVCapturePhoto,
                             error: Error?) {
-        
-        if let cgImageRepresentation = photo.cgImageRepresentation(),
-           let orientationInt = photo.metadata[String(kCGImagePropertyOrientation)] as? UInt32,
-           let imageOrientation = UIImage.Orientation.orientation(fromCGOrientationRaw: orientationInt) {
-
-            // Create image with proper orientation
-            let cgImage = cgImageRepresentation
-            let image = UIImage(cgImage: cgImage,
-                                scale: 1,
-                                orientation: imageOrientation)
-            if let data = image.data {
-                self.imageCompletion = CameraImageCompletion(image: image, imageData: data)
-            }
+        if let data = photo.fileDataRepresentation() {
+            self.imageCompletion = CameraImageCompletion(imageData: data, currentLocation: currentLocation)
         }
     }
     
@@ -341,8 +361,34 @@ extension CameraService  {
         self.videoURLCompletion =  outputFileURL
         self.isRecording = false
     }
-
+    
     public func fileOutput(_ output: AVCaptureFileOutput, didStartRecordingTo fileURL: URL, from connections: [AVCaptureConnection]) {
         self.isRecording = true
     }
 }
+
+extension CameraService : CLLocationManagerDelegate {
+    
+    // CLLocationManagerDelegate method
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        manager.desiredAccuracy = 1000 // 1km accuracy
+        
+        if locations.last!.horizontalAccuracy > manager.desiredAccuracy {
+            // This location is inaccurate. Throw it away and wait for the next call to the delegate.
+            return
+        }
+        
+        // This is where you do something with your location that's accurate enough.
+        guard let userLocation = locations.last else {
+            return
+        }
+        currentLocation = userLocation
+    }
+    
+    public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+    }
+}
+
+
+

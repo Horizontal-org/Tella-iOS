@@ -212,11 +212,11 @@ extension MainAppModel {
 
 extension MainAppModel {
     
-    func addVaultFile(filePaths: [URL], parentId: String?,
+    func addVaultFile(importedFiles: [ImportedFile], 
+                      parentId: String?,
                       shouldReloadVaultFiles:Binding<Bool>?,
                       autoUpload:Bool) {
-        let ImportedFiles = filePaths.compactMap({ImportedFile(urlFile: $0)})
-        self.addVaultFile(importedFiles: ImportedFiles,
+        self.addVaultFile(importedFiles: importedFiles,
                           parentId: parentId,
                           shouldReloadVaultFiles: shouldReloadVaultFiles,
                           deleteOriginal: false,

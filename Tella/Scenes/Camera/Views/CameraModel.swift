@@ -10,7 +10,7 @@ import UIKit
 
 final class CameraModel: ObservableObject {
     
-      let service = CameraService()
+    let service : CameraService = CameraService()
     
     @Published var imageCompletion: (CameraService.CameraImageCompletion)?
     @Published var videoURLCompletion: URL?
@@ -20,7 +20,8 @@ final class CameraModel: ObservableObject {
     @Published var shouldShowProgressView = false
 
     var session: AVCaptureSession
-    
+    var shouldPreserveMetadata: Bool = false
+
     private var subscriptions = Set<AnyCancellable>()
     
     init() {
@@ -51,6 +52,7 @@ final class CameraModel: ObservableObject {
     }
     
     func configure() {
+        service.shouldPreserveMetadata = shouldPreserveMetadata
         service.checkCameraPermission()
     }
     

@@ -9,6 +9,7 @@ import SwiftUI
 import AVFoundation
 import AVKit
 import AssetsLibrary
+import CoreLocation
 
 class CameraViewModel: ObservableObject {
     
@@ -25,7 +26,7 @@ class CameraViewModel: ObservableObject {
     
     
     var imageData : Data?
-    var image : UIImage?
+    var currentLocation:CLLocation?
     
     var videoURL : URL?
     var mainAppModel: MainAppModel?
@@ -84,14 +85,26 @@ class CameraViewModel: ObservableObject {
     
     func saveImage() {
         
-        guard let imageData = image?.fixedOrientation()?.pngData() else { return  }
-        guard let url = mainAppModel?.vaultManager.saveDataToTempFile(data: imageData, pathExtension: "png") else { return  }
+        guard let mainAppModel, let imageData else { return }
+        let isPreserveMetadataOn = mainAppModel.settings.preserveMetadata
         
-        saveFile(urlFile: url)
+        if currentLocation != nil && isPreserveMetadataOn {
+            let url = mainAppModel.vaultManager.createTempFileURL(pathExtension: "heic")
+            let isSaved = imageData.save(withLocation: currentLocation, fileURL: url)
+            if isSaved {
+                saveFile(urlFile: url)
+            }
+            
+        } else {
+            let url = mainAppModel.vaultManager.saveDataToTempFile(data: imageData, pathExtension: "heic")
+            if let url {
+                saveFile(urlFile: url)
+            }
+        }
     }
     
     func saveVideo() {
-        guard let videoURL = videoURL else { return  }
+        guard let videoURL = videoURL else { return }
         saveFile(urlFile: videoURL)
     }
     
@@ -105,7 +118,10 @@ class CameraViewModel: ObservableObject {
     }
     
     private func addVaultFileWithProgressView(urlFile:URL) {
-        self.mainAppModel?.vaultFilesManager?.addVaultFile(filePaths: [urlFile], parentId: self.rootFile?.id)
+        
+        let importedFiles = ImportedFile(urlFile: urlFile, fileSource: FileSource.camera)
+        
+        self.mainAppModel?.vaultFilesManager?.addVaultFile(importedFiles: [importedFiles], parentId: self.rootFile?.id)
             .sink { importVaultFileResult in
                 
                 switch importVaultFileResult {
@@ -120,7 +136,16 @@ class CameraViewModel: ObservableObject {
     }
     
     private func addVaultFileInBackground(urlFile:URL) {
-        self.mainAppModel?.addVaultFile(filePaths: [urlFile], parentId: self.rootFile?.id, shouldReloadVaultFiles : self.shouldReloadVaultFiles, autoUpload: autoUpload)
+        let isPreserveMetadataOn = mainAppModel?.settings.preserveMetadata ?? false
+        
+        let importedFile = ImportedFile(urlFile: urlFile,
+                                         shouldPreserveMetadata: isPreserveMetadataOn,
+                                         fileSource: .camera)
+        
+        self.mainAppModel?.addVaultFile(importedFiles:[importedFile],
+                                        parentId: self.rootFile?.id,
+                                        shouldReloadVaultFiles : self.shouldReloadVaultFiles,
+                                        autoUpload: autoUpload)
     }
     
     private func handleSuccessAddingFiles(vaultFiles:[VaultFileDB]) {

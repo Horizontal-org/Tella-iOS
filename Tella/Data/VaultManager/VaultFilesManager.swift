@@ -20,8 +20,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         self.vaultManager = vaultManager
     }
     
-    func addVaultFile(filePaths: [URL], parentId: String?) -> AnyPublisher<ImportVaultFileResult,Never> {
-        let importedFiles = filePaths.compactMap({ImportedFile(urlFile: $0)})
+    func addVaultFile(importedFiles : [ImportedFile], parentId: String?) -> AnyPublisher<ImportVaultFileResult,Never> {
         return self.addVaultFile(importedFiles: importedFiles, parentId: parentId, deleteOriginal: false)
     }
     

@@ -65,7 +65,8 @@ class PhotoVideoViewModel : ObservableObject {
             
             completion.assets.enumerateObjects { (asset, _, _) in
                 importedFileArray.append(ImportedFile(asset: asset,
-                                                      shouldPreserveMetadata:isPreserveMetadataOn))
+                                                      shouldPreserveMetadata:isPreserveMetadataOn,
+                                                      fileSource: .phPicker))
             }
             
             addFiles(importedFiles: importedFileArray)
@@ -92,7 +93,8 @@ class PhotoVideoViewModel : ObservableObject {
         let isPreserveMetadataOn = mainAppModel.settings.preserveMetadata
         
         let importedFiles = urls.compactMap({ImportedFile(urlFile: $0,
-                                                          shouldPreserveMetadata:isPreserveMetadataOn)})
+                                                          shouldPreserveMetadata:isPreserveMetadataOn,
+                                                          fileSource: .files)})
         addFiles(importedFiles: importedFiles)
     }
     

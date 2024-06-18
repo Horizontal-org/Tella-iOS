@@ -12,7 +12,7 @@ import Photos
 
 extension VaultFilesManager {
     
-    func updateURL( importedFile:inout ImportedFile) async {
+    func updateURL(importedFile:inout ImportedFile) async {
         
         do {
             
@@ -29,7 +29,7 @@ extension VaultFilesManager {
             
             switch asset.mediaType {
             case .image:
-                url = try await getImageUrl(importedFile:importedFile)
+                url = try await getImageUrlFromAsset(importedFile:importedFile)
             default:
                 url = try await asset.getAVAssetUrl()
             }
@@ -42,7 +42,7 @@ extension VaultFilesManager {
         }
     }
     
-    func getImageUrl(importedFile:ImportedFile) async throws -> URL? {
+    func getImageUrlFromAsset(importedFile:ImportedFile) async throws -> URL? {
         
         guard let asset = importedFile.asset else {
             throw RuntimeError("Asset is nil")
@@ -83,7 +83,7 @@ extension VaultFilesManager {
         
         guard let urlFile = importedFile.urlFile else { return nil}
         
-        if importedFile.shouldPreserveMetadata   {
+        if importedFile.shouldPreserveMetadata {
             return urlFile
         } else {
             let type = urlFile.fileType

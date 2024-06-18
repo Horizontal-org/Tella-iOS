@@ -14,4 +14,12 @@ struct ImportedFile {
     var urlFile: URL?
     var asset : PHAsset? = nil
     var shouldPreserveMetadata : Bool = false
+    var fileSource : FileSource
+}
+
+enum FileSource {
+    case phPicker
+    case files
+    case camera
+    case editFile
 }
