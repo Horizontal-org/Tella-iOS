@@ -77,8 +77,9 @@ extension ReportRepository.API: APIRequest {
     var path: String {
         switch self {
             
-        case .createReport:
-            return "/report"
+        case .createReport(let report):
+            let projectId = report.server?.projectId ?? ""
+            return "/project/\(projectId)"
             
         case .putReportFile((let file)), .postReportFile((let file)), .headReportFile((let file)):
             return "/file/\(file.idReport)/\(file.fileName.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)"
