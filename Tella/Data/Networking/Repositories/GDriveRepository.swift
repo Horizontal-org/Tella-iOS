@@ -16,7 +16,7 @@ protocol GDriveRepositoryProtocol {
     func restorePreviousSignIn() async throws
     func handleUrl(url: URL)
     func getSharedDrives() -> AnyPublisher<[SharedDrive], Error>
-    func createDriveFolder(folderName: String, parentId: String?) -> AnyPublisher<String, Error>
+    func createDriveFolder(folderName: String, parentId: String?, description: String?) -> AnyPublisher<String, Error>
     func signOut() -> Void
 }
 
@@ -115,7 +115,8 @@ class GDriveRepository: GDriveRepositoryProtocol  {
     
     func createDriveFolder(
         folderName: String,
-        parentId: String? = nil
+        parentId: String? = nil,
+        description: String?
     ) -> AnyPublisher<String, Error> {
         Deferred {
             Future { promise in
@@ -125,6 +126,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                         self.performCreateDriveFolder(
                             folderName: folderName,
                             parentId: parentId,
+                            description: description,
                             promise: promise)
                     } catch {
                         promise(.failure(error))
@@ -137,6 +139,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
     private func performCreateDriveFolder(
         folderName: String,
         parentId: String?,
+        description: String?,
         promise: @escaping (Result<String, Error>) -> Void
     ) {
         guard let user = googleUser else {
@@ -153,6 +156,10 @@ class GDriveRepository: GDriveRepositoryProtocol  {
 
         if let parentID = parentId {
             folder.parents = [parentID]
+        }
+        
+        if let description = description {
+            folder.descriptionProperty = description
         }
 
         let query = GTLRDriveQuery_FilesCreate.query(withObject: folder, uploadParameters: nil)

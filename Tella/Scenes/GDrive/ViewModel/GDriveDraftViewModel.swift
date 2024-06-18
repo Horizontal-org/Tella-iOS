@@ -30,7 +30,11 @@ class GDriveDraftViewModel: ObservableObject {
     }
     
     func submitReport() {
-        gDriveRepository.createDriveFolder(folderName: title, parentId: server?.rootFolder)
+        gDriveRepository.createDriveFolder(
+            folderName: self.title,
+            parentId: server?.rootFolder,
+            description: self.description
+        )
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { completion in

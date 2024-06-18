@@ -54,7 +54,7 @@ struct ConnectionsView: View {
                                         destination: UwaziView().environmentObject(UwaziViewModel(mainAppModel: appModel, server: parseUwaziServer(server: server.servers[0]))))
                 case .gDrive:
                     ConnectionsItemView(title: "Drive",
-                                        image: "home.report",
+                                        image: "home.drive",
                                         destination: GDriveView(mainAppModel: appModel))
                 }
                 
