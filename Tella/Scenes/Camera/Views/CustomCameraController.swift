@@ -170,8 +170,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     
     private func createTempFileURL() -> URL {
         let pathURL = URL(fileURLWithPath:NSTemporaryDirectory())
-        
-        return pathURL.appendingPathComponent("movie-\(Int(Date().timeIntervalSince1970)).mov")
+        return pathURL.appendingPathComponent("movie-\(Int(Date().timeIntervalSince1970)).\(FileExtension.mov)")
     }
     
     private func setupPhotoInputOutput() {

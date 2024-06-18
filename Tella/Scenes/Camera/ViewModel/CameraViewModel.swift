@@ -89,14 +89,15 @@ class CameraViewModel: ObservableObject {
         let isPreserveMetadataOn = mainAppModel.settings.preserveMetadata
         
         if currentLocation != nil && isPreserveMetadataOn {
-            let url = mainAppModel.vaultManager.createTempFileURL(pathExtension: "heic")
+            let url = mainAppModel.vaultManager.createTempFileURL(pathExtension: FileExtension.heic.rawValue)
             let isSaved = imageData.save(withLocation: currentLocation, fileURL: url)
             if isSaved {
                 saveFile(urlFile: url)
             }
             
         } else {
-            let url = mainAppModel.vaultManager.saveDataToTempFile(data: imageData, pathExtension: "heic")
+            let url = mainAppModel.vaultManager.saveDataToTempFile(data: imageData,
+                                                                   pathExtension: FileExtension.heic.rawValue)
             if let url {
                 saveFile(urlFile: url)
             }

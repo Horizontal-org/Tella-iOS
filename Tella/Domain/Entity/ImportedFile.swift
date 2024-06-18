@@ -23,3 +23,8 @@ enum FileSource {
     case camera
     case editFile
 }
+
+enum FileExtension : String {
+    case heic = "heic"
+    case mov = "mov"
+}
