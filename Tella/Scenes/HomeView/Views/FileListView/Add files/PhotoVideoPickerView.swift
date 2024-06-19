@@ -9,6 +9,7 @@
 import SwiftUI
 import Combine
 import Photos
+
 struct PhotoVideoPickerView: View {
     
     @StateObject var viewModel : PhotoVideoViewModel
@@ -19,6 +20,7 @@ struct PhotoVideoPickerView: View {
     @State private var showingLimitedPhotoAlert : Bool = false
     @State private var showingPicker = false
     private let delayTimeInSecond = 0.5
+    @State var authorizationStatus : PHAuthorizationStatus = .notDetermined
     
     @EnvironmentObject private var appModel: MainAppModel
     @EnvironmentObject var sheetManager: SheetManager
@@ -47,9 +49,7 @@ struct PhotoVideoPickerView: View {
         }.onReceive(Just(showingImagePicker.wrappedValue)) { showingImagePicker in
             checkPhotoLibraryAuthorization(showingImagePicker:showingImagePicker)
         } .alert(isPresented:$showingPermissionAlert) {
-            getDeniedPhotoLibraryAlertView()
-        } .alert(isPresented:$showingLimitedPhotoAlert) {
-            getLimitedPhotoLibraryAlertView()
+            authorizationStatus == .limited ? getLimitedPhotoLibraryAlertView() : getDeniedPhotoLibraryAlertView()
         }
     }
     
@@ -71,11 +71,11 @@ struct PhotoVideoPickerView: View {
     
     func checkPhotoLibraryAuthorization(showingImagePicker:Bool) {
         if showingImagePicker == true {
-            
             self.showingImagePicker.wrappedValue = false
             
             Task {
                 let authorizationStatus = await PHPhotoLibrary.checkPhotoLibraryAuthorization()
+                self.authorizationStatus =   authorizationStatus
                 
                 switch authorizationStatus {
                 case .authorized:
@@ -83,10 +83,11 @@ struct PhotoVideoPickerView: View {
                         showingImagePickerSheet = true
                     }
                 case .limited:
-                    showingLimitedPhotoAlert = true
-                    
-                default:
                     showingPermissionAlert = true
+                default:
+                    DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond) {
+                        showingPermissionAlert = true
+                    }
                 }
             }
         }
