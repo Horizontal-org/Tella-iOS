@@ -26,12 +26,11 @@ struct ImagePickerSheet: UIViewControllerRepresentable {
     
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePickerSheet>) ->
     PHPickerViewController {
-        
-        
+
         let photoLibrary = PHPhotoLibrary.shared()
         
         var configuration = PHPickerConfiguration(photoLibrary: photoLibrary)
-        configuration.selectionLimit = 1
+        configuration.selectionLimit = 0
         configuration.filter = .any(of: [.images, .videos])
         
         let picker = PHPickerViewController(configuration: configuration)

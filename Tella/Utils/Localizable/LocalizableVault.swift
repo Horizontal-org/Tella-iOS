@@ -116,4 +116,13 @@ enum LocalizableVault: String, LocalizableDelegate {
     case emptyFolderExpl = "Vault_EmptyFolder_Expl"
     
     case fileAudioUpdateSecondTime = "Vault_FileAudio_UpdateSecondTime"
+
+    case deniedPhotoLibraryPermissionExpl = "Vault_DeniedPhotoLibraryPermission_Expl"
+    case deniedPhotosPermissionSettings = "Vault_DeniedPhotosPermission_Action_Settings"
+    case deniedPhotosPermissionCancel = "Vault_DeniedPhotosPermission_Action_Cancel"
+
+    case limitedPhotoLibraryPermissionExpl = "Vault_LimitedPhotoLibraryPermission_Expl"
+    case limitedPhotoLibraryPermissionSettings = "Vault_LimitedPhotoLibraryPermission_Action_Settings"
+    case limitedPhotoLibraryPermissionCancel =  "Vault_LimitedPhotoLibraryPermission_Action_Cancel"
+
 }

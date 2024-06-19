@@ -191,6 +191,7 @@
 		12607D5E27904F5300E2B8CC /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12607D5D27904F5300E2B8CC /* PlayerView.swift */; };
 		12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12619B8A27A01F6600999FDA /* BundleExtension.swift */; };
 		12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12623DCB299EA31400E033ED /* ReportVaultFile.swift */; };
+		126634E82C2362560073A749 /* PHPhotoLibraryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126634E72C2362560073A749 /* PHPhotoLibraryExtension.swift */; };
 		126684412B18B67500561650 /* BackgroundActivityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684402B18B67500561650 /* BackgroundActivityModel.swift */; };
 		126684432B18B6A400561650 /* BackgroundActivityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684422B18B6A400561650 /* BackgroundActivityType.swift */; };
 		126684452B18B78200561650 /* BackgroundActivityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684442B18B78200561650 /* BackgroundActivityStatus.swift */; };
@@ -729,6 +730,7 @@
 		12607D5D27904F5300E2B8CC /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		12619B8A27A01F6600999FDA /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
 		12623DCB299EA31400E033ED /* ReportVaultFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportVaultFile.swift; sourceTree = "<group>"; };
+		126634E72C2362560073A749 /* PHPhotoLibraryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPhotoLibraryExtension.swift; sourceTree = "<group>"; };
 		126684402B18B67500561650 /* BackgroundActivityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityModel.swift; sourceTree = "<group>"; };
 		126684422B18B6A400561650 /* BackgroundActivityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityType.swift; sourceTree = "<group>"; };
 		126684442B18B78200561650 /* BackgroundActivityStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityStatus.swift; sourceTree = "<group>"; };
@@ -1578,6 +1580,7 @@
 				12742C8E2BEB9FBC00919FAE /* EncodableExtension.swift */,
 				125B79F72C205F980061CF84 /* PHAssetExtension.swift */,
 				125B79F92C2213920061CF84 /* AVCaptureMovieFileOutputExtension.swift */,
+				126634E72C2362560073A749 /* PHPhotoLibraryExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3347,6 +3350,7 @@
 				CCC1B42F2AC75AF60075B819 /* UwaziDividerWidget.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,
 				CC5CEB872AF037B600BF238B /* FileDropdown.swift in Sources */,
+				126634E82C2362560073A749 /* PHPhotoLibraryExtension.swift in Sources */,
 				1519BED82B9A5A52006FD290 /* Resource.swift in Sources */,
 				128BEB202B1E4B3D00420923 /* FeedbackOperation.swift in Sources */,
 				128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */,
