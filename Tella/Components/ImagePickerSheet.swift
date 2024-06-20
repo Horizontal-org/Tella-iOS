@@ -3,8 +3,6 @@
 //
 
 import SwiftUI
-import Photos
-import MobileCoreServices
 import PhotosUI
 
 enum MediaType {

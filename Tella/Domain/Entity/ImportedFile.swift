@@ -5,8 +5,6 @@
 //  Copyright © 2024 HORIZONTAL. All rights reserved.
 //
 
-import Foundation
-import MobileCoreServices
 import Photos
 
 struct ImportedFile {
