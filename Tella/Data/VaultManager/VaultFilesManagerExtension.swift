@@ -15,8 +15,6 @@ extension VaultFilesManager {
     func updateURL(importedFile:inout ImportedFile) async {
         
         do {
-            
-            var url : URL?
             guard let asset = importedFile.asset else {
                 return
             }
@@ -27,12 +25,10 @@ extension VaultFilesManager {
             
             switch asset.mediaType {
             case .image:
-                url = try await getImageUrlFromAsset(importedFile:importedFile)
+                importedFile.urlFile = try await getImageUrlFromAsset(importedFile:importedFile)
             default:
-                url = try await asset.getAVAssetUrl()
+                importedFile.urlFile = try await asset.getAVAssetUrl()
             }
-            
-            importedFile.urlFile = url
             
         } catch let error {
             debugLog(error)
