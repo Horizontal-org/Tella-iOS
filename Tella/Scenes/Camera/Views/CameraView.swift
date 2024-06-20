@@ -98,7 +98,12 @@ struct CameraView: View {
                 cameraViewModel.videoURL = videoURL
                 cameraViewModel.saveVideo()
             }
-        
+            .onReceive(cameraViewModel.$shouldShowToast) { shouldShowToast in
+                if shouldShowToast {
+                    Toast.displayToast(message: cameraViewModel.errorMessage)
+                }
+            }
+
             .alert(isPresented:$showingPermissionAlert) {
                 getSettingsAlertView()
             }

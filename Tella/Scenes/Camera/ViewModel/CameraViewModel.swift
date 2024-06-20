@@ -22,9 +22,9 @@ class CameraViewModel: ObservableObject {
     @Published var formattedCurrentTime : String = "00:00:00"
     @Published var currentTime : TimeInterval = 0.0
     @Published var progressFile:ProgressFile = ProgressFile()
-    @Published var  shouldReloadVaultFiles : Binding<Bool>?
-    
-    
+    @Published var shouldReloadVaultFiles : Binding<Bool>?
+    @Published var shouldShowToast : Bool = false
+
     var imageData : Data?
     var currentLocation:CLLocation?
     
@@ -40,6 +40,9 @@ class CameraViewModel: ObservableObject {
     var autoUpload: Bool {
         self.sourceView != .addReportFile
     }
+    
+    var errorMessage : String = ""
+
     
     // MARK: - Private properties
     
@@ -87,21 +90,28 @@ class CameraViewModel: ObservableObject {
         
         guard let mainAppModel, let imageData else { return }
         let isPreserveMetadataOn = mainAppModel.settings.preserveMetadata
-        
+
         if currentLocation != nil && isPreserveMetadataOn {
             let url = mainAppModel.vaultManager.createTempFileURL(pathExtension: FileExtension.heic.rawValue)
             let isSaved = imageData.save(withLocation: currentLocation, fileURL: url)
             if isSaved {
                 saveFile(urlFile: url)
+            } else {
+                displayError()
             }
-            
         } else {
-            let url = mainAppModel.vaultManager.saveDataToTempFile(data: imageData,
-                                                                   pathExtension: FileExtension.heic.rawValue)
-            if let url {
-                saveFile(urlFile: url)
+            guard let url = mainAppModel.vaultManager.saveDataToTempFile(data: imageData, pathExtension: FileExtension.heic.rawValue) else {
+                displayError()
+                return
             }
+            saveFile(urlFile: url)
         }
+    }
+    
+    func displayError() {
+        shouldShowToast = true
+        errorMessage = LocalizableCommon.commonError.localized
+        shouldShowToast = false
     }
     
     func saveVideo() {
