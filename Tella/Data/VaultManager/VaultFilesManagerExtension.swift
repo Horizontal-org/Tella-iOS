@@ -20,10 +20,8 @@ extension VaultFilesManager {
             guard let asset = importedFile.asset else {
                 return
             }
-            
-            let mediaType = asset.mediaType
-            
-            if (importedFile.urlFile != nil && mediaType == .image) {
+
+            if (importedFile.urlFile != nil && asset.mediaType == .image) {
                 return // Image data already saved into the temp fileURL
             }
             
