@@ -25,17 +25,13 @@ extension PHAsset {
         return try await withCheckedThrowingContinuation { continuation in
             
             PHImageManager.default().requestImageDataAndOrientation(for: self, options: nil) { (data, uti, orientation, info) in
-                
-                guard let data else {
-                    guard let error = info?[PHImageErrorKey] as? Error else {
-                        continuation.resume(throwing: RuntimeError("Unknown error occurred"))
-                        return
-                    }
+                if let data = data {
+                    continuation.resume(returning: data)
+                } else if let error = info?[PHImageErrorKey] as? Error {
                     continuation.resume(throwing: error)
-                    return
+                } else {
+                    continuation.resume(throwing: RuntimeError("Unknown error occurred"))
                 }
-                
-                continuation.resume(returning: data)
             }
         }
     }
@@ -53,17 +49,14 @@ extension PHAsset {
         return try await withCheckedThrowingContinuation { continuation in
             
             PHImageManager.default().requestAVAsset(forVideo: self, options: nil) { avAsset, audioMix, info in
-                
-                guard let url = (avAsset as? AVURLAsset)?.url else {
-                    guard let error = info?[PHImageErrorKey] as? Error else {
-                        continuation.resume(throwing: RuntimeError("Unknown error occurred"))
-                        return
-                    }
+               
+                if let url = (avAsset as? AVURLAsset)?.url {
+                    continuation.resume(returning: url)
+                } else if let error = info?[PHImageErrorKey] as? Error {
                     continuation.resume(throwing: error)
-                    return
+                } else {
+                    continuation.resume(throwing: RuntimeError("Unknown error occurred"))
                 }
-                
-                continuation.resume(returning: url)
             }
         }
     }
