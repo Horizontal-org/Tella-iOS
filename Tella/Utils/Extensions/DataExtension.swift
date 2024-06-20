@@ -2,10 +2,10 @@
 //  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 
-import Foundation
 import AVFoundation
 import AVKit
 import Combine
+import CoreLocation
 
 extension Data {
     
@@ -87,11 +87,6 @@ extension Data {
         return fileTypeHelper?.fileExtension
     }
 }
-
-
-import ImageIO
-import UniformTypeIdentifiers
-import CoreLocation
 
 extension Data {
     

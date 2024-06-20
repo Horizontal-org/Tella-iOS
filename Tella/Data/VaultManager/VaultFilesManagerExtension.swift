@@ -7,8 +7,6 @@
 //
 
 import Foundation
-import MobileCoreServices
-import Photos
 
 extension VaultFilesManager {
     
