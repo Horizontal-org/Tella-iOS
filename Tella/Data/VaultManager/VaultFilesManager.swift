@@ -55,10 +55,9 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                     return
                 }
                 
-                guard let filePath = await getModifiedURL(importedFile: fileDetail.importedFile) else { return }
-                
-                guard let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetail.file.id) else { return }
-                
+                guard let filePath = await getModifiedURL(importedFile: fileDetail.importedFile),
+                      let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetail.file.id) else { return }
+
                 if isSaved {
                     self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: parentId)
                 }
