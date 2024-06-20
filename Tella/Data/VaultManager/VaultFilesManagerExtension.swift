@@ -18,7 +18,7 @@ extension VaultFilesManager {
             guard let asset = importedFile.asset else {
                 return
             }
-
+            
             if (importedFile.urlFile != nil && asset.mediaType == .image) {
                 return // Image data already saved into the temp fileURL
             }
@@ -36,7 +36,7 @@ extension VaultFilesManager {
         }
     }
     
-    func getImageUrlFromAsset(importedFile:ImportedFile) async throws -> URL? {
+    private func getImageUrlFromAsset(importedFile:ImportedFile) async throws -> URL? {
         
         guard let asset = importedFile.asset else {
             throw RuntimeError("Asset is nil")
@@ -73,7 +73,7 @@ extension VaultFilesManager {
         return filePath
     }
     
-    func getModifiedUrlFromURL(importedFile:ImportedFile) async -> URL? {
+    private func getModifiedUrlFromURL(importedFile:ImportedFile) async -> URL? {
         
         guard let urlFile = importedFile.urlFile else { return nil}
         
@@ -98,7 +98,7 @@ extension VaultFilesManager {
         }
     }
     
-    func getUrlFromAsset(importedFile:ImportedFile) async -> URL? {
+    private func getUrlFromAsset(importedFile:ImportedFile) async -> URL? {
         
         do {
             guard let type = importedFile.asset?.mediaType  else {
@@ -117,7 +117,7 @@ extension VaultFilesManager {
         }
     }
     
-    func getModifiedAVAssetUrl(importedFile:ImportedFile) async throws -> URL? {
+    private func getModifiedAVAssetUrl(importedFile:ImportedFile) async throws -> URL? {
         
         guard let url = importedFile.urlFile else {
             throw RuntimeError("URL is nil")
