@@ -189,6 +189,8 @@
 		12607D58279042CE00E2B8CC /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12607D57279042CE00E2B8CC /* VideoPlayer.swift */; };
 		12607D5A2790457600E2B8CC /* VideoViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12607D592790457600E2B8CC /* VideoViewer.swift */; };
 		12607D5E27904F5300E2B8CC /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12607D5D27904F5300E2B8CC /* PlayerView.swift */; };
+		1260C2A02C25CC9E005CA4D6 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1260C29F2C25CC9E005CA4D6 /* LocationManager.swift */; };
+		1260C2A22C25CD49005CA4D6 /* CLLocationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1260C2A12C25CD49005CA4D6 /* CLLocationExtension.swift */; };
 		12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12619B8A27A01F6600999FDA /* BundleExtension.swift */; };
 		12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12623DCB299EA31400E033ED /* ReportVaultFile.swift */; };
 		126634E82C2362560073A749 /* PHPhotoLibraryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126634E72C2362560073A749 /* PHPhotoLibraryExtension.swift */; };
@@ -728,6 +730,8 @@
 		12607D57279042CE00E2B8CC /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
 		12607D592790457600E2B8CC /* VideoViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewer.swift; sourceTree = "<group>"; };
 		12607D5D27904F5300E2B8CC /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		1260C29F2C25CC9E005CA4D6 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		1260C2A12C25CD49005CA4D6 /* CLLocationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationExtension.swift; sourceTree = "<group>"; };
 		12619B8A27A01F6600999FDA /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
 		12623DCB299EA31400E033ED /* ReportVaultFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportVaultFile.swift; sourceTree = "<group>"; };
 		126634E72C2362560073A749 /* PHPhotoLibraryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPhotoLibraryExtension.swift; sourceTree = "<group>"; };
@@ -1581,6 +1585,7 @@
 				125B79F72C205F980061CF84 /* PHAssetExtension.swift */,
 				125B79F92C2213920061CF84 /* AVCaptureMovieFileOutputExtension.swift */,
 				126634E72C2362560073A749 /* PHPhotoLibraryExtension.swift */,
+				1260C2A12C25CD49005CA4D6 /* CLLocationExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1721,6 +1726,7 @@
 				1289B45528B62A99005DA687 /* DeviceOrientationHelper.swift */,
 				1233076629F15A290019DF7C /* NetworkMonitor.swift */,
 				1220F22A2C17165400CFD20C /* ViewClassType.swift */,
+				1260C29F2C25CC9E005CA4D6 /* LocationManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -3323,6 +3329,7 @@
 				1237A71A278F18C000D7BC0F /* WebView.swift in Sources */,
 				12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */,
 				1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */,
+				1260C2A22C25CD49005CA4D6 /* CLLocationExtension.swift in Sources */,
 				CCC1B4292AC75A8E0075B819 /* RenderPropertyComponentView.swift in Sources */,
 				125BC1DE2B21F08200A117D0 /* VaultFileDetailsToMerge.swift in Sources */,
 				12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */,
@@ -3524,6 +3531,7 @@
 				126FE4D727A427E200AE4188 /* Constants.swift in Sources */,
 				122389BB293683930058593B /* ServerDataItem.swift in Sources */,
 				CCC1B4252AC759F70075B819 /* UwaziEntityViewModel.swift in Sources */,
+				1260C2A02C25CC9E005CA4D6 /* LocationManager.swift in Sources */,
 				CCC1B42B2AC75AAE0075B819 /* GenericEntityWidget.swift in Sources */,
 				153AACF72BE40BEA0075D5B2 /* UwaziEntityFetcher.swift in Sources */,
 				123AE5A329CFB7F000814CC7 /* UploadReportOperation.swift in Sources */,

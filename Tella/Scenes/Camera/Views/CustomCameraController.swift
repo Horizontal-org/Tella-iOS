@@ -7,8 +7,6 @@ import AVFoundation
 import Combine
 import CoreLocation
 
-
-
 public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate, AVCaptureMetadataOutputObjectsDelegate {
     
     struct CameraImageCompletion {
@@ -26,7 +24,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     private var  deviceOrientation : UIDeviceOrientation = UIDevice.current.orientation
     private let sessionQueue = DispatchQueue(label: "session queue")
     
-    private var locationManager: CLLocationManager!
+    private var locationManager = LocationManager()
     var currentLocation: CLLocation?
     var shouldPreserveMetadata: Bool = false
     
@@ -54,7 +52,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     
     func startRunningCaptureSession() {
         if shouldPreserveMetadata {
-            initializeLocationManager()
+            locationManager.initializeLocationManager()
         }
         sessionQueue.async {
             self.captureSession.startRunning()
@@ -65,7 +63,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     func stopRunningCaptureSession() {
         captureSession.stopRunning()
         shouldCloseCamera = false
-        stopUpdatingLocation()
+        locationManager.stopUpdatingLocation()
     }
     
     func takePhoto() {
@@ -96,7 +94,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
             
             if shouldPreserveMetadata {
                 // Add location to the video output
-                guard let currentLocation  else { return }
+                guard let currentLocation = locationManager.currentLocation else { return }
                 videoOutput?.add(location: currentLocation)
             }
             
@@ -323,24 +321,6 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
             break
         }
     }
-    
-    // MARK: Location Manager
-    
-    func initializeLocationManager()  {
-        // Initialize location manager
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = kCLDistanceFilterNone
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startMonitoringSignificantLocationChanges()
-    }
-    
-    func stopUpdatingLocation() {
-        guard let locationManager = self.locationManager else { return  }
-        locationManager.stopUpdatingLocation()
-    }
-
 }
 
 extension CameraService  {
@@ -365,29 +345,3 @@ extension CameraService  {
         self.isRecording = true
     }
 }
-
-extension CameraService : CLLocationManagerDelegate {
-    
-    // CLLocationManagerDelegate method
-    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-        manager.desiredAccuracy = 1000 // 1km accuracy
-        
-        if locations.last!.horizontalAccuracy > manager.desiredAccuracy {
-            // This location is inaccurate. Throw it away and wait for the next call to the delegate.
-            return
-        }
-        
-        // This is where you do something with your location that's accurate enough.
-        guard let userLocation = locations.last else {
-            return
-        }
-        currentLocation = userLocation
-    }
-    
-    public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-    }
-}
-
-
-
