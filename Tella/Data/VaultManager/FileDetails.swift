@@ -12,6 +12,5 @@ struct FileDetails {
 
 struct VaultFileDetails {
     var file : VaultFileDB
-    var fileUrl : URL
-    var originalURL : URL?
+    var importedFile :ImportedFile
 }

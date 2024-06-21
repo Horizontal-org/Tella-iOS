@@ -10,8 +10,10 @@ import SwiftUI
 
 struct UwaziEntityTitleView: View {
     var title: String
-    @State var isRequired: Bool
+    var isRequired: Bool
     var showClear: Bool
+    // @Binding var showClear: Bool
+
     var onClearAction: () -> Void
     var body: some View {
         Group {
@@ -42,13 +44,16 @@ struct UwaziEntityTitleView: View {
     }
 }
 
-struct UwaziEntityTitleView_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack {
-            Color.purple
-                .ignoresSafeArea()
-            UwaziEntityTitleView(title: "Hello", isRequired: true, showClear: false, onClearAction: {})
-        }
-
-    }
-}
+//struct UwaziEntityTitleView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ZStack {
+//            Color.purple
+//                .ignoresSafeArea()
+//            UwaziEntityTitleView (title: "Hello", 
+//                                  isRequired: true,
+//                                  showClear: .constant(false), 
+//                                  onClearAction: {})
+//        }
+//
+//    }
+//}

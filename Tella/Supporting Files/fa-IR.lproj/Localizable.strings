@@ -78,6 +78,9 @@
 "Vault_RenameFile_SheetTitle" = "تغییر نام فایل";
 "Vault_RenameFile_Cancel_SheetAction" = "CANCEL";
 "Vault_RenameFile_Save_SheetAction" = "SAVE";
+"Vault_DeleteFile_Warning_SheetDescription" = "برخی از فایل‌های انتخاب‌شده هم‌اکنون در اتصال‌های شما به کار گرفته شده‌اند. حذف کردن آن‌ها ممکن است بر فرم‌ها و گزارش‌های ارسال‌نشده تاثیر بگذارد.";
+"Vault_DeleteFile_Warning_SheetTitle"= "Warning";
+"Vault_DeleteFile_DeleteAnyway_SheetAction" = "به هر حال حذف شود";
 "Vault_CreateNewFolder_SheetTitle" = "Create new folder";
 "Vault_CreateNewFolder_Cancel_SheetAction" = "CANCEL";
 "Vault_CreateNewFolder_Create_SheetAction" = "CREATE";

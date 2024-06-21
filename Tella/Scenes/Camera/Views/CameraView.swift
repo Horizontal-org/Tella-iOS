@@ -38,6 +38,7 @@ struct CameraView: View {
                                                                      resultFile: resultFile,
                                                                      sourceView: sourceView,
                                                                      shouldReloadVaultFiles: shouldReloadVaultFiles))
+        
     }
     
     var body: some View {
@@ -53,6 +54,7 @@ struct CameraView: View {
             .accentColor(.white)
             .environmentObject(cameraViewModel)
             .onAppear {
+                model.shouldPreserveMetadata = mainAppModel.settings.preserveMetadata
                 model.configure()
             }
             .onDisappear {
@@ -86,7 +88,7 @@ struct CameraView: View {
         
             .onReceive(model.service.$imageCompletion) { imageCompletion in
                 guard let imageCompletion else { return }
-                cameraViewModel.image = imageCompletion.image
+                cameraViewModel.currentLocation = imageCompletion.currentLocation
                 cameraViewModel.imageData = imageCompletion.imageData
                 cameraViewModel.saveImage()
             }
@@ -96,7 +98,12 @@ struct CameraView: View {
                 cameraViewModel.videoURL = videoURL
                 cameraViewModel.saveVideo()
             }
-        
+            .onReceive(cameraViewModel.$shouldShowToast) { shouldShowToast in
+                if shouldShowToast {
+                    Toast.displayToast(message: cameraViewModel.errorMessage)
+                }
+            }
+
             .alert(isPresented:$showingPermissionAlert) {
                 getSettingsAlertView()
             }

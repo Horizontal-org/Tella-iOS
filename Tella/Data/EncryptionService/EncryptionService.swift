@@ -26,18 +26,14 @@ class EncryptionService: ObservableObject {
     }
     
     func addVaultFile(importedFiles: [ImportedFile],
-                      parentId: String?,
                       shouldReloadVaultFiles:Binding<Bool>?,
-                      deleteOriginal: Bool,
                       autoUpload: Bool) {
         
         Task {
             let fileDetails = await getFileDetails(importedFiles: importedFiles)
             
             addEncryptionOperations(fileDetails: fileDetails,
-                                    parentId: parentId,
                                     shouldReloadVaultFiles: shouldReloadVaultFiles,
-                                    deleteOriginal:deleteOriginal,
                                     autoUpload: autoUpload)
         }
     }
@@ -62,9 +58,7 @@ class EncryptionService: ObservableObject {
     }
     
     private func addEncryptionOperations(fileDetails:[VaultFileDetails],
-                                         parentId: String?,
                                          shouldReloadVaultFiles:Binding<Bool>?,
-                                         deleteOriginal: Bool,
                                          autoUpload: Bool) {
         
         for fileDetail in fileDetails {
@@ -73,15 +67,17 @@ class EncryptionService: ObservableObject {
                 let operation = EncryptionOperation(mainAppModel: self.mainAppModel)
                 
                 operation.addVaultFile(fileDetail: fileDetail,
-                                       filePath: fileDetail.fileUrl,
-                                       parentId: parentId,
-                                       mainAppModel: self.mainAppModel,
-                                       deleteOriginal: deleteOriginal)?
+                                       mainAppModel: self.mainAppModel)?
                     .receive(on: DispatchQueue.main)
                     .sink(receiveValue: { backgroundResult in
-                        self.handleBackgroundResult(result: backgroundResult, fileDetail: fileDetail, autoUpload: autoUpload)
-                        self.items.removeAll(where: {$0.id == fileDetail.file.id})
-                        shouldReloadVaultFiles?.wrappedValue = true
+                        switch backgroundResult {
+                        case .failed, .completed:
+                            self.handleBackgroundResult(result: backgroundResult, fileDetail: fileDetail, autoUpload: autoUpload)
+                            self.items.removeAll(where: {$0.id == fileDetail.file.id})
+                            shouldReloadVaultFiles?.wrappedValue = true
+                        default:
+                            break
+                        }
                     }).store(in: &self.subscribers)
             })
         }

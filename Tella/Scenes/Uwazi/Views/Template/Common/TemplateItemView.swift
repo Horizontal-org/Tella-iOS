@@ -30,7 +30,9 @@ struct TemplateItemView: View {
                 ImageButtonView(imageName: "template.add",
                                action: {
                     templateItemViewModel.downloadTemplate()
-                    Toast.displayToast(message: "“\(templateItemViewModel.name )” \(LocalizableUwazi.uwaziAddTemplateSavedToast.localized)")
+                    
+//                    let message = String.init(format: LocalizableUwazi.uwaziAddTemplateSavedToast.localized, templateItemViewModel.name)
+//                    Toast.displayToast(message:message)
                 })
             } else {
                 ImageButtonView(imageName: "reports.more", action: {
@@ -48,7 +50,8 @@ struct TemplateItemView: View {
                                   action:  {item in
                 self.sheetManager.hide()
                 self.templateItemViewModel.deleteTemplate()
-                Toast.displayToast(message: "“\(templateItemViewModel.name )” \(LocalizableUwazi.uwaziDeleteEntitySheetExpl.localized)")
+                let message = String.init(format: LocalizableUwazi.uwaziDeletedToast.localized, templateItemViewModel.name)
+                Toast.displayToast(message: message)
             })
         }
     }

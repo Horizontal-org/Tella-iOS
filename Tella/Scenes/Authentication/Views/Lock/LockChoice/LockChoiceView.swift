@@ -11,7 +11,6 @@ import CoreMIDI
 
 struct LockChoiceView: View {
     
-    @Binding var isPresented : Bool
     @EnvironmentObject var lockViewModel : LockViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var appViewState: AppViewState
@@ -21,7 +20,7 @@ struct LockChoiceView: View {
         ContainerView {
             VStack {
                 if lockViewModel.unlockType == .update {
-                    LockChoiceHeaderView(isPresented: $isPresented)
+                    LockChoiceHeaderView()
                 }
                 
                 VStack(alignment: .center, spacing: 24) {
@@ -58,14 +57,12 @@ struct LockChoiceView: View {
 }
 
 struct LockChoiceHeaderView : View {
-    
-    @Binding var isPresented : Bool
-    
+
     var body: some View {
         
         HStack {
             Button {
-                isPresented = false
+                self.popTo(ViewClassType.securitySettingsView)
             } label: {
                 Image("close")
             }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 12))
@@ -127,6 +124,6 @@ struct LockButtonStyle : ButtonStyle {
 
 struct LockChoiceView_Previews: PreviewProvider {
     static var previews: some View {
-        LockChoiceView(isPresented: .constant(true))
+        LockChoiceView()
     }
 }

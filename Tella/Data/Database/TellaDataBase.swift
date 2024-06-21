@@ -4,7 +4,6 @@
 //
 
 import Foundation
-import SQLite3
 import SQLCipher
 
 class TellaDataBase : DataBase {
@@ -28,11 +27,18 @@ class TellaDataBase : DataBase {
             case 1:
                 createFeedbackTable()
                 renameUpdatedDateColumn()
+                fallthrough
             case 2:
                 createTemplateTableForUwazi()
                 createUwaziServerTable()
+                fallthrough
             case 3:
                 createResourceTable()
+                fallthrough
+            case 4:
+                createUwaziEntityInstancesTable()
+                createUwaziEntityInstanceVaultFileTable()
+                addRelationshipColumnToUwaziTemplate()
             default :
                 break
             }
@@ -50,6 +56,9 @@ class TellaDataBase : DataBase {
         createTemplateTableForUwazi()
         createUwaziServerTable()
         createResourceTable()
+        createUwaziEntityInstancesTable()
+        createUwaziEntityInstanceVaultFileTable()
+        addRelationshipColumnToUwaziTemplate()
     }
     
     func createReportTable() {
@@ -83,7 +92,28 @@ class TellaDataBase : DataBase {
         statementBuilder.createTable(tableName: D.tReportInstanceVaultFile, columns: columns)
         
     }
-    
+
+    func checkFilesInConnections(ids: [String]) -> Bool {
+        do {
+            for vaultId in ids {
+                let condition = [KeyValue(key: D.cVaultFileInstanceId, value: vaultId)]
+                let responseReportDict = try statementBuilder.selectQuery(tableName: D.tReportInstanceVaultFile,
+                                                                    andCondition: condition)
+                if !responseReportDict.isEmpty {
+                    return true
+                }
+                let responseUwaziDict = try statementBuilder.selectQuery(tableName: D.tUwaziEntityInstanceVaultFile,
+                                                                    andCondition: condition)
+                if !responseUwaziDict.isEmpty {
+                    return true
+                }
+            }
+        } catch let error {
+            debugLog(error)
+        }
+        return false
+    }
+
     /// Rename the cUpatedDate column to cUpdatedDate column in tReport and tReportInstanceVaultFile tables
     /// It was a typo
     func renameUpdatedDateColumn() {

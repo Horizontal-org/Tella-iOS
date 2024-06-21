@@ -3,7 +3,6 @@
 //  Copyright © 2022 INTERNEWS. All rights reserved.
 //
 
-import Foundation
 import MobileCoreServices
 import UniformTypeIdentifiers
 import UIKit
@@ -139,6 +138,53 @@ extension String {
             return #imageLiteral(resourceName: "filetype.small_document")
         }
     }
+    
+    var isPDF: Bool {
 
+        guard let type = UTType(mimeType: self) else {
+            return false
+        }
+
+        return type.conforms(to: .pdf)
+    }
 }
 
+
+extension String {
+    var dictionnary: [String:Any] {
+        
+        guard let data = self.data(using: .utf8) else { return [:]}
+        do {
+            guard let jsonArray = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? Dictionary<String,Any> else { return [:]}
+            return jsonArray
+        } catch let error as NSError {
+            debugLog(error)
+            return [:]
+        }
+    }
+    
+    var arraydDictionnary: [[String:Any]] {
+        
+        guard let data = self.data(using: .utf8) else { return [[:]]}
+        do {
+            guard let jsonArray = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? [Dictionary<String,Any>] else { return[ [:]]}
+            return jsonArray
+        } catch let error as NSError {
+            debugLog(error)
+            return [[:]]
+        }
+    }
+
+    
+    func decode<T: Codable>(_ type: T.Type) throws -> T {
+        let data = try JSONSerialization.data(withJSONObject: self)
+        return try JSONDecoder().decode (type, from: data)
+    }
+    
+    func decodeJSON<T: Codable>(_ type: T.Type) throws -> T {
+        guard let data = self.data(using: .utf8) else {
+            throw NSError(domain: "StringDecodeError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Cannot convert string to Data"])
+        }
+        return try JSONDecoder().decode(type, from: data)
+    }
+}

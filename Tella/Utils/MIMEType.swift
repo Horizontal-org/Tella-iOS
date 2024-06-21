@@ -5,7 +5,6 @@
 import Foundation
 
 import MobileCoreServices
-import UniformTypeIdentifiers
 
 class MIMEType {
     

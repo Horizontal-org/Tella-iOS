@@ -66,19 +66,6 @@ class RecordViewModel: ObservableObject {
         // Init the source view
         self.sourceView = sourceView
         self.showingRecoredrView = showingRecoredrView
-        
-        // Update the view while updating the permission
-        audioBackend.$audioPermission.sink { permission in
-            switch permission {
-            case .notDetermined:
-                break
-            case .authorized:
-                self.onStartRecording()
-            case .denied, .restricted:
-                self.shouldShowSettingsAlert = true
-            }
-        }.store(in: &cancellable)
-        
     }
     
     func addVaultFile(urlFile: URL) {
@@ -92,7 +79,9 @@ class RecordViewModel: ObservableObject {
     
     private func addSynchronousVaultFile(urlFile:URL) {
         
-        mainAppModel.vaultFilesManager?.addVaultFile(filePaths: [urlFile], parentId: rootFile?.id)
+        let importedFiles = ImportedFile(urlFile: urlFile, fileSource: FileSource.files)
+
+        mainAppModel.vaultFilesManager?.addVaultFile(importedFiles : [importedFiles])
             .sink { importVaultFileResult in
                 
                 switch importVaultFileResult {
@@ -108,7 +97,15 @@ class RecordViewModel: ObservableObject {
     }
     
     private func addVaultFileInBackground(urlFile:URL) {
-        self.mainAppModel.addVaultFile(filePaths: [urlFile], parentId: self.rootFile?.id, shouldReloadVaultFiles : self.shouldReloadVaultFiles, autoUpload: autoUpload)
+        let isPreserveMetadataOn = mainAppModel.settings.preserveMetadata
+        
+        let importedFile = ImportedFile(urlFile: urlFile,
+                                         shouldPreserveMetadata: isPreserveMetadataOn,
+                                         fileSource: .files)
+
+        self.mainAppModel.addVaultFile(importedFiles: [importedFile],
+                                       shouldReloadVaultFiles : self.shouldReloadVaultFiles,
+                                       autoUpload: autoUpload)
     }
     
     private func handleSuccessAddingFiles(vaultFile:VaultFileDB) {
@@ -124,7 +121,7 @@ class RecordViewModel: ObservableObject {
     
     // Record audio
     func checkCameraAccess() {
-        audioBackend.checkMicrophonePermission()
+        checkMicrophonePermission()
     }
     
     func onStartRecording() {
@@ -201,4 +198,22 @@ class RecordViewModel: ObservableObject {
     var initialFileName: String {
         return  LocalizableRecorder.suffixRecording.localized + " " + Date().getFormattedDateString(format: DateFormat.fileName.rawValue)
     }
+
+    func checkMicrophonePermission() {
+        switch AVCaptureDevice.authorizationStatus(for: .audio) {
+        case .denied, .restricted:
+            self.shouldShowSettingsAlert = true
+        case .authorized:
+            self.onStartRecording()
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .audio) { success in
+                if success {
+                    self.mainAppModel.changeTab(to: .mic)
+                }
+            }
+        @unknown default:
+            break
+        }
+    }
+
 }

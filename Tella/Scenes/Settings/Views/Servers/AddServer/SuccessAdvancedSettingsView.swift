@@ -25,8 +25,7 @@ struct SuccessAdvancedSettingsView: View {
                                           nextButtonAction: .action,
                                           buttonType: .yellow,
                                           isValid: .constant(true)) {
-                    self.popTo(UIHostingController<Optional<ModifiedContent<ServersListView, _EnvironmentKeyWritingModifier<Optional<ServersViewModel>>>>>.self)
-                    
+                    self.popTo(ViewClassType.serversListView)
                 }
                 
                 Spacer()

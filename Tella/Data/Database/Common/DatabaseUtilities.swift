@@ -4,7 +4,7 @@
 //
 
 import Foundation
-import SQLite3
+import SQLCipher
 
 extension DataBase {
 

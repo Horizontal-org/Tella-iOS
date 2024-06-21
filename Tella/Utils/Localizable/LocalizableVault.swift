@@ -50,7 +50,9 @@ enum LocalizableVault: String, LocalizableDelegate {
     case renameFileSheetTitle = "Vault_RenameFile_SheetTitle"
     case renameFileCancelSheetAction = "Vault_RenameFile_Cancel_SheetAction"
     case renameFileSaveSheetAction = "Vault_RenameFile_Save_SheetAction"
-    
+    case deleteFileWarningDescription = "Vault_DeleteFile_Warning_SheetDescription"
+    case deleteFileWarningTitle = "Vault_DeleteFile_Warning_SheetTitle"
+    case deleteFileDeleteAnyway = "Vault_DeleteFile_DeleteAnyway_SheetAction"
     
     case createNewFolderSheetTitle = "Vault_CreateNewFolder_SheetTitle"
     case createNewFolderCancelSheetAction = "Vault_CreateNewFolder_Cancel_SheetAction"
@@ -114,4 +116,13 @@ enum LocalizableVault: String, LocalizableDelegate {
     case emptyFolderExpl = "Vault_EmptyFolder_Expl"
     
     case fileAudioUpdateSecondTime = "Vault_FileAudio_UpdateSecondTime"
+
+    case deniedPhotoLibraryPermissionExpl = "Vault_DeniedPhotoLibraryPermission_Expl"
+    case deniedPhotosPermissionSettings = "Vault_DeniedPhotosPermission_Action_Settings"
+    case deniedPhotosPermissionCancel = "Vault_DeniedPhotosPermission_Action_Cancel"
+
+    case limitedPhotoLibraryPermissionExpl = "Vault_LimitedPhotoLibraryPermission_Expl"
+    case limitedPhotoLibraryPermissionSettings = "Vault_LimitedPhotoLibraryPermission_Action_Settings"
+    case limitedPhotoLibraryPermissionCancel =  "Vault_LimitedPhotoLibraryPermission_Action_Cancel"
+
 }

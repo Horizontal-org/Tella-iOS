@@ -30,11 +30,13 @@ protocol VaultManagerInterface {
 
     func save(_ filePath: URL, vaultFileId: String?) -> Bool?
     
-    func saveDataToTempFile(data: Data?, pathExtension: String) -> URL?
-    func saveDataToTempFile(data: Data?, fileName: String?, pathExtension: String) -> URL?
+    func saveDataToTempFile(data: Data?, pathExtension: String?) -> URL?
+    func saveDataToTempFile(data: Data?, fileName: String?) -> URL?
+    func saveDataToTempFile(data: Data?, fileName: String?, pathExtension: String?) -> URL?
     
     func createTempFileURL(pathExtension: String) -> URL
-    func createTempFileURL(fileName: String?, pathExtension: String) -> URL
+    func createTempFileURL(fileName: String?) -> URL
+    func createTempFileURL(fileName: String?, pathExtension: String?) -> URL
     
     func deleteAllVaultFilesFromDevice()
     func deleteVaultFile(filesIds: [String])

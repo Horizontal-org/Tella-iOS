@@ -5,9 +5,26 @@
 //  Copyright © 2024 HORIZONTAL. All rights reserved.
 //
 
-import Foundation
+import Photos
 
 struct ImportedFile {
-    var urlFile: URL
-    var originalUrl: URL?
+    var type: MediaType?
+    var urlFile: URL?
+    var asset : PHAsset? = nil
+    var parentId : String?
+    var shouldPreserveMetadata : Bool = false
+    var deleteOriginal : Bool = false
+    var fileSource : FileSource
+}
+
+enum FileSource {
+    case phPicker
+    case files
+    case camera
+    case editFile
+}
+
+enum FileExtension : String {
+    case heic = "heic"
+    case mov = "mov"
 }
