@@ -28,7 +28,6 @@ class EncryptionService: ObservableObject {
     func addVaultFile(importedFiles: [ImportedFile],
                       parentId: String?,
                       shouldReloadVaultFiles:Binding<Bool>?,
-                      deleteOriginal: Bool,
                       autoUpload: Bool) {
         
         Task {
@@ -37,7 +36,6 @@ class EncryptionService: ObservableObject {
             addEncryptionOperations(fileDetails: fileDetails,
                                     parentId: parentId,
                                     shouldReloadVaultFiles: shouldReloadVaultFiles,
-                                    deleteOriginal:deleteOriginal,
                                     autoUpload: autoUpload)
         }
     }
@@ -64,7 +62,6 @@ class EncryptionService: ObservableObject {
     private func addEncryptionOperations(fileDetails:[VaultFileDetails],
                                          parentId: String?,
                                          shouldReloadVaultFiles:Binding<Bool>?,
-                                         deleteOriginal: Bool,
                                          autoUpload: Bool) {
         
         for fileDetail in fileDetails {
@@ -75,8 +72,7 @@ class EncryptionService: ObservableObject {
                 operation.addVaultFile(fileDetail: fileDetail,
                                        filePath: fileDetail.fileUrl,
                                        parentId: parentId,
-                                       mainAppModel: self.mainAppModel,
-                                       deleteOriginal: deleteOriginal)?
+                                       mainAppModel: self.mainAppModel)?
                     .receive(on: DispatchQueue.main)
                     .sink(receiveValue: { backgroundResult in
                         switch backgroundResult {

@@ -231,7 +231,6 @@ extension MainAppModel {
         encryptionService?.addVaultFile(importedFiles: importedFiles,
                                         parentId: parentId,
                                         shouldReloadVaultFiles: shouldReloadVaultFiles,
-                                        deleteOriginal: deleteOriginal,
                                         autoUpload: autoUpload)
     }
 }

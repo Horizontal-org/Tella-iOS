@@ -55,8 +55,6 @@ class PhotoVideoViewModel : ObservableObject {
     /// To handle adding the image based on either the user want to preserve the metadata or not
     /// - Parameter completion: Object which contains all the information needed when the user selects a image from Gallery
     func handleAddingFile(_ completion: PHPickerCompletion?) {
-        
-        Task {
             guard let completion else {return}
             
             let isPreserveMetadataOn = mainAppModel.settings.preserveMetadata
@@ -66,11 +64,11 @@ class PhotoVideoViewModel : ObservableObject {
             completion.assets.enumerateObjects { (asset, _, _) in
                 importedFileArray.append(ImportedFile(asset: asset,
                                                       shouldPreserveMetadata:isPreserveMetadataOn,
+                                                      deleteOriginal: self.shouldDeleteOriginal,
                                                       fileSource: .phPicker))
             }
             
             addFiles(importedFiles: importedFileArray)
-        }
     }
     
     
@@ -94,13 +92,14 @@ class PhotoVideoViewModel : ObservableObject {
         
         let importedFiles = urls.compactMap({ImportedFile(urlFile: $0,
                                                           shouldPreserveMetadata:isPreserveMetadataOn,
+                                                          deleteOriginal: shouldDeleteOriginal, 
                                                           fileSource: .files)})
         addFiles(importedFiles: importedFiles)
     }
     
     private func addVaultFileWithProgressView(importedFiles: [ImportedFile]) {
         
-        self.mainAppModel.vaultFilesManager?.addVaultFile(importedFiles: importedFiles, parentId: self.rootFile?.wrappedValue?.id,deleteOriginal: shouldDeleteOriginal)
+        self.mainAppModel.vaultFilesManager?.addVaultFile(importedFiles: importedFiles, parentId: self.rootFile?.wrappedValue?.id)
             .sink { importVaultFileResult in
                 
                 switch importVaultFileResult {

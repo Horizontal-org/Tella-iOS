@@ -20,11 +20,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         self.vaultManager = vaultManager
     }
     
-    func addVaultFile(importedFiles : [ImportedFile], parentId: String?) -> AnyPublisher<ImportVaultFileResult,Never> {
-        return self.addVaultFile(importedFiles: importedFiles, parentId: parentId, deleteOriginal: false)
-    }
-    
-    func addVaultFile( importedFiles:  [ImportedFile], parentId: String?, deleteOriginal:Bool) -> AnyPublisher<ImportVaultFileResult,Never> {
+    func addVaultFile( importedFiles:  [ImportedFile], parentId: String?) -> AnyPublisher<ImportVaultFileResult,Never> {
         
         let filesActor = FilesActor()
         let importProgress :  ImportProgress = ImportProgress()
@@ -57,7 +53,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                 
                 guard let filePath = await getModifiedURL(importedFile: fileDetail.importedFile),
                       let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetail.file.id) else { return }
-
+                
                 if isSaved {
                     self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: parentId)
                 }
@@ -67,7 +63,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                 if await filesActor.files.count == filePaths.count {
                     importProgress.finish()
                     await subject.send(.fileAdded(filesActor.files))
-                    handleDeletionFiles(importedFiles:importedFiles, deleteOriginal: deleteOriginal)
+                    handleDeletionFiles(importedFiles:importedFiles)
                     shouldReloadFiles.send(true)
                     
                 } else {
@@ -85,12 +81,10 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         return subject.eraseToAnyPublisher()
     }
     
-//    - test that
-    
-    func addVaultFile(fileDetail:VaultFileDetails,filePath: URL, parentId: String?, deleteOriginal:Bool) -> AnyPublisher<BackgroundActivityStatus,Never> {
+    func addVaultFile(fileDetail:VaultFileDetails,filePath: URL, parentId: String?) -> AnyPublisher<BackgroundActivityStatus,Never> {
         
         let subject = CurrentValueSubject<BackgroundActivityStatus, Never>(.inProgress)
-       
+        
         Task {
             
             guard
@@ -100,14 +94,11 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                 subject.send(BackgroundActivityStatus.failed)
                 return
             }
-
+            
             if isSaved {
-                let result = self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: parentId)
-                
-                handleResult(result: result,
-                             fileDetails: fileDetail,
-                             deleteOriginal: deleteOriginal,
-                             subject: subject)
+                handleDatabaseAddition(fileDetails: fileDetail,
+                                       parentId: parentId,
+                                       subject: subject)
             } else {
                 subject.send(BackgroundActivityStatus.failed)
             }
@@ -116,13 +107,15 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         return subject.eraseToAnyPublisher()
     }
     
-    private func handleResult(result:Result<Int,Error>, 
-                              fileDetails:VaultFileDetails,
-                              deleteOriginal:Bool,
-                              subject : CurrentValueSubject<BackgroundActivityStatus, Never> ) {
+    private func handleDatabaseAddition(fileDetails:VaultFileDetails,
+                                        parentId: String?,
+                                        subject : CurrentValueSubject<BackgroundActivityStatus, Never> ) {
+        
+        let result = self.vaultDataBase.addVaultFile(file: fileDetails.file, parentId: parentId)
+
         switch result {
         case .success:
-
+            
             guard let vaultFile = getVaultFile(id: fileDetails.file.id) else {
                 subject.send(.failed)
                 return
@@ -131,7 +124,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             shouldReloadFiles.send(true)
             
             // Delete original file
-            handleDeletionFiles(importedFiles:[fileDetails.importedFile], deleteOriginal: deleteOriginal)
+            handleDeletionFiles(importedFiles:[fileDetails.importedFile])
             
             subject.send(.completed(vaultFile))
             
@@ -318,7 +311,6 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
     func cancelImportAndEncryption() {
         self.shouldCancelImportAndEncryption.send(true)
     }
-    
 }
 
 
@@ -326,13 +318,14 @@ import Photos
 
 extension VaultFilesManager {
     
-    private func handleDeletionFiles(importedFiles: [ImportedFile], deleteOriginal:Bool)  {
+    private func handleDeletionFiles(importedFiles: [ImportedFile])  {
         
-        if deleteOriginal {
-            var assets : [PHAsset] = []
-            var urlfiles : [URL?] = []
+        var assets : [PHAsset] = []
+        var urlfiles : [URL?] = []
+        
+        importedFiles.forEach { importedFile in
             
-            importedFiles.forEach { importedFile in
+            if importedFile.deleteOriginal {
                 
                 if let asset = importedFile.asset {
                     assets.append(asset)
@@ -340,10 +333,9 @@ extension VaultFilesManager {
                     urlfiles.append(importedFile.urlFile)
                 }
             }
-            
-            self.removeOriginalImage(assets: assets)
-            self.deleteFiles(urlfiles: urlfiles)
         }
+        self.removeOriginalImage(assets: assets)
+        self.deleteFiles(urlfiles: urlfiles)
     }
     
     private func removeOriginalImage(assets: [PHAsset]) {

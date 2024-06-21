@@ -12,6 +12,7 @@ struct ImportedFile {
     var urlFile: URL?
     var asset : PHAsset? = nil
     var shouldPreserveMetadata : Bool = false
+    var deleteOriginal : Bool = false
     var fileSource : FileSource
 }
 
