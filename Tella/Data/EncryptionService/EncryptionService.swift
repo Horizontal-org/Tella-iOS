@@ -70,7 +70,6 @@ class EncryptionService: ObservableObject {
                 let operation = EncryptionOperation(mainAppModel: self.mainAppModel)
                 
                 operation.addVaultFile(fileDetail: fileDetail,
-                                       filePath: fileDetail.fileUrl,
                                        parentId: parentId,
                                        mainAppModel: self.mainAppModel)?
                     .receive(on: DispatchQueue.main)

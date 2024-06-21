@@ -81,7 +81,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         return subject.eraseToAnyPublisher()
     }
     
-    func addVaultFile(fileDetail:VaultFileDetails,filePath: URL, parentId: String?) -> AnyPublisher<BackgroundActivityStatus,Never> {
+    func addVaultFile(fileDetail:VaultFileDetails, parentId: String?) -> AnyPublisher<BackgroundActivityStatus,Never> {
         
         let subject = CurrentValueSubject<BackgroundActivityStatus, Never>(.inProgress)
         
