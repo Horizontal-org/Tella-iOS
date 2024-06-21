@@ -28,7 +28,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         Task {
             
             var importedFiles = importedFiles
-
+            
             await updateImportedFilesURLs(&importedFiles)
             let filePaths = importedFiles.compactMap({$0.urlFile})
             let filestotalSize = self.getFilesTotalSize(filePaths: filePaths)
@@ -37,7 +37,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             
             let fileDetailsStream = self.getFileDetailsStream(importedFiles)
             
-            await processFileDetailsStream(fileDetailsStream, 
+            await processFileDetailsStream(fileDetailsStream,
                                            importProgress: importProgress,
                                            subject: subject,
                                            importedFiles: importedFiles)
@@ -56,13 +56,13 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         }
     }
     
-    private func processFileDetailsStream(_ fileDetailsStream: AsyncStream<VaultFileDetails>, 
+    private func processFileDetailsStream(_ fileDetailsStream: AsyncStream<VaultFileDetails>,
                                           importProgress: ImportProgress,
                                           subject: CurrentValueSubject<ImportVaultFileResult, Never>,
                                           importedFiles: [ImportedFile]) async {
         
         let filesActor = FilesActor()
-
+        
         for await fileDetail in fileDetailsStream {
             
             if self.shouldCancelImportAndEncryption.value {
@@ -94,7 +94,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             subject.send(.importProgress(importProgress:  importProgress))
         }
     }
-
+    
     func addVaultFile(fileDetail:VaultFileDetails) -> AnyPublisher<BackgroundActivityStatus,Never> {
         
         let subject = CurrentValueSubject<BackgroundActivityStatus, Never>(.inProgress)
@@ -124,7 +124,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                                         subject : CurrentValueSubject<BackgroundActivityStatus, Never> ) {
         
         let result = self.vaultDataBase.addVaultFile(file: fileDetails.file, parentId: fileDetails.importedFile.parentId)
-
+        
         switch result {
         case .success:
             
@@ -351,18 +351,21 @@ extension VaultFilesManager {
     }
     
     private func removeOriginalImage(assets: [PHAsset]) {
-        let localIdentifiers = assets.compactMap({$0.localIdentifier})
-        PHPhotoLibrary.shared().performChanges( {
-            let imageAssetToDelete = PHAsset.fetchAssets(withLocalIdentifiers: localIdentifiers, options: nil)
-            PHAssetChangeRequest.deleteAssets(imageAssetToDelete)
-        },
-                                                completionHandler: { success, error in
-        })
+        if !assets.isEmpty {
+            let localIdentifiers = assets.compactMap({$0.localIdentifier})
+            PHPhotoLibrary.shared().performChanges( {
+                let imageAssetToDelete = PHAsset.fetchAssets(withLocalIdentifiers: localIdentifiers, options: nil)
+                PHAssetChangeRequest.deleteAssets(imageAssetToDelete)
+            },
+                                                    completionHandler: { success, error in
+            })
+        }
     }
     
     private func deleteFiles(urlfiles: [URL?]) {
-        let urlfiles = urlfiles.compactMap({$0})
-        vaultManager?.deleteFiles(files: urlfiles)
+        if !urlfiles.isEmpty {
+            let urlfiles = urlfiles.compactMap({$0})
+            vaultManager?.deleteFiles(files: urlfiles)
+        }
     }
-    
 }
