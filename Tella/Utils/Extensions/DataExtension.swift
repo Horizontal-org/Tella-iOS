@@ -69,6 +69,7 @@ extension Data {
         let exifToRemove: CFDictionary = [
             kCGImagePropertyExifDictionary: kCFNull,
             kCGImagePropertyGPSDictionary: kCFNull,
+            kCGImagePropertyTIFFDictionary : kCFNull
         ] as CFDictionary
 
         for index in 0 ..< count {
