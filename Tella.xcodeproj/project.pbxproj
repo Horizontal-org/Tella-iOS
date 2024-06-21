@@ -163,6 +163,8 @@
 		125AAD3129534259002194D6 /* UploadProgressInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD3029534259002194D6 /* UploadProgressInfo.swift */; };
 		125AAD34295348EC002194D6 /* UploadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD33295348EC002194D6 /* UploadService.swift */; };
 		125AAD362953607D002194D6 /* UploadReportModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD352953607D002194D6 /* UploadReportModels.swift */; };
+		125B79F82C205F980061CF84 /* PHAssetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B79F72C205F980061CF84 /* PHAssetExtension.swift */; };
+		125B79FA2C2213920061CF84 /* AVCaptureMovieFileOutputExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B79F92C2213920061CF84 /* AVCaptureMovieFileOutputExtension.swift */; };
 		125BC1DE2B21F08200A117D0 /* VaultFileDetailsToMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125BC1DD2B21F08200A117D0 /* VaultFileDetailsToMerge.swift */; };
 		125D231C271F119D00250FBB /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231B271F119D00250FBB /* Validator.swift */; };
 		125D231F271F12A000250FBB /* NSRegularExpressionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */; };
@@ -187,8 +189,11 @@
 		12607D58279042CE00E2B8CC /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12607D57279042CE00E2B8CC /* VideoPlayer.swift */; };
 		12607D5A2790457600E2B8CC /* VideoViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12607D592790457600E2B8CC /* VideoViewer.swift */; };
 		12607D5E27904F5300E2B8CC /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12607D5D27904F5300E2B8CC /* PlayerView.swift */; };
+		1260C2A02C25CC9E005CA4D6 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1260C29F2C25CC9E005CA4D6 /* LocationManager.swift */; };
+		1260C2A22C25CD49005CA4D6 /* CLLocationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1260C2A12C25CD49005CA4D6 /* CLLocationExtension.swift */; };
 		12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12619B8A27A01F6600999FDA /* BundleExtension.swift */; };
 		12623DCC299EA31400E033ED /* ReportVaultFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12623DCB299EA31400E033ED /* ReportVaultFile.swift */; };
+		126634E82C2362560073A749 /* PHPhotoLibraryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126634E72C2362560073A749 /* PHPhotoLibraryExtension.swift */; };
 		126684412B18B67500561650 /* BackgroundActivityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684402B18B67500561650 /* BackgroundActivityModel.swift */; };
 		126684432B18B6A400561650 /* BackgroundActivityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684422B18B6A400561650 /* BackgroundActivityType.swift */; };
 		126684452B18B78200561650 /* BackgroundActivityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126684442B18B78200561650 /* BackgroundActivityStatus.swift */; };
@@ -228,6 +233,7 @@
 		127C155C27DA69FF009EC15B /* TransitionViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155B27DA69FF009EC15B /* TransitionViewData.swift */; };
 		127C155E27DA6C2E009EC15B /* EmptyFileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155D27DA6C2E009EC15B /* EmptyFileListView.swift */; };
 		127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C4AAE27E4A74B00B1A1D3 /* ShareFileView.swift */; };
+		127D4A812C1B2ED700E82EA8 /* VaultFilesManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D4A802C1B2ED700E82EA8 /* VaultFilesManagerExtension.swift */; };
 		1283C257272AA6F6009180CA /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */; };
 		1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285BF3F2A3C5D63005D5D23 /* OpenXmlFormats.swift */; };
 		128754D92BBCE09B00D215B5 /* SummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128754D82BBCE09B00D215B5 /* SummaryViewModel.swift */; };
@@ -699,6 +705,8 @@
 		125AAD3029534259002194D6 /* UploadProgressInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProgressInfo.swift; sourceTree = "<group>"; };
 		125AAD33295348EC002194D6 /* UploadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadService.swift; sourceTree = "<group>"; };
 		125AAD352953607D002194D6 /* UploadReportModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadReportModels.swift; sourceTree = "<group>"; };
+		125B79F72C205F980061CF84 /* PHAssetExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHAssetExtension.swift; sourceTree = "<group>"; };
+		125B79F92C2213920061CF84 /* AVCaptureMovieFileOutputExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVCaptureMovieFileOutputExtension.swift; sourceTree = "<group>"; };
 		125BC1DD2B21F08200A117D0 /* VaultFileDetailsToMerge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileDetailsToMerge.swift; sourceTree = "<group>"; };
 		125D231B271F119D00250FBB /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRegularExpressionExtension.swift; sourceTree = "<group>"; };
@@ -722,8 +730,11 @@
 		12607D57279042CE00E2B8CC /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
 		12607D592790457600E2B8CC /* VideoViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewer.swift; sourceTree = "<group>"; };
 		12607D5D27904F5300E2B8CC /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		1260C29F2C25CC9E005CA4D6 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		1260C2A12C25CD49005CA4D6 /* CLLocationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationExtension.swift; sourceTree = "<group>"; };
 		12619B8A27A01F6600999FDA /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
 		12623DCB299EA31400E033ED /* ReportVaultFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportVaultFile.swift; sourceTree = "<group>"; };
+		126634E72C2362560073A749 /* PHPhotoLibraryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPhotoLibraryExtension.swift; sourceTree = "<group>"; };
 		126684402B18B67500561650 /* BackgroundActivityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityModel.swift; sourceTree = "<group>"; };
 		126684422B18B6A400561650 /* BackgroundActivityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityType.swift; sourceTree = "<group>"; };
 		126684442B18B78200561650 /* BackgroundActivityStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivityStatus.swift; sourceTree = "<group>"; };
@@ -764,6 +775,7 @@
 		127C155B27DA69FF009EC15B /* TransitionViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionViewData.swift; sourceTree = "<group>"; };
 		127C155D27DA6C2E009EC15B /* EmptyFileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyFileListView.swift; sourceTree = "<group>"; };
 		127C4AAE27E4A74B00B1A1D3 /* ShareFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareFileView.swift; sourceTree = "<group>"; };
+		127D4A802C1B2ED700E82EA8 /* VaultFilesManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFilesManagerExtension.swift; sourceTree = "<group>"; };
 		1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		1285BF3F2A3C5D63005D5D23 /* OpenXmlFormats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenXmlFormats.swift; sourceTree = "<group>"; };
 		128754D82BBCE09B00D215B5 /* SummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewModel.swift; sourceTree = "<group>"; };
@@ -1570,6 +1582,10 @@
 				E1CF5A262AB3488E00365036 /* JSONDecoderExtension.swift */,
 				125F9B9A2AD9B4770073748C /* DictionaryExtension.swift */,
 				12742C8E2BEB9FBC00919FAE /* EncodableExtension.swift */,
+				125B79F72C205F980061CF84 /* PHAssetExtension.swift */,
+				125B79F92C2213920061CF84 /* AVCaptureMovieFileOutputExtension.swift */,
+				126634E72C2362560073A749 /* PHPhotoLibraryExtension.swift */,
+				1260C2A12C25CD49005CA4D6 /* CLLocationExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1710,6 +1726,7 @@
 				1289B45528B62A99005DA687 /* DeviceOrientationHelper.swift */,
 				1233076629F15A290019DF7C /* NetworkMonitor.swift */,
 				1220F22A2C17165400CFD20C /* ViewClassType.swift */,
+				1260C29F2C25CC9E005CA4D6 /* LocationManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2462,6 +2479,7 @@
 				D53B77002601CA3A0001CD34 /* VaultManager.swift */,
 				1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */,
 				125299E02AD0515600191CAB /* VaultFilesManager.swift */,
+				127D4A802C1B2ED700E82EA8 /* VaultFilesManagerExtension.swift */,
 				1249B3822AD43AA7009A7023 /* VaultFilesManagerInterface.swift */,
 				0DC267A7267AEDAD00E55AFA /* DefaultFileManager.swift */,
 				125299DC2AD02E6F00191CAB /* ImportVaultFileResult.swift */,
@@ -3232,6 +3250,7 @@
 				E1F6D7832AB17FB5000A9B64 /* UwaziValue.swift in Sources */,
 				CCE8CCDF2AF4297B0088B61D /* UwaziAttachmentsActionItems.swift in Sources */,
 				122DA89729CB2709003801CD /* SettingsBottomView.swift in Sources */,
+				125B79F82C205F980061CF84 /* PHAssetExtension.swift in Sources */,
 				1216124028DE144200E6D7B6 /* JoinCondition.swift in Sources */,
 				12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */,
 				E14FD87A2A6AB22200BC7523 /* UwaziLocale.swift in Sources */,
@@ -3310,6 +3329,7 @@
 				1237A71A278F18C000D7BC0F /* WebView.swift in Sources */,
 				12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */,
 				1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */,
+				1260C2A22C25CD49005CA4D6 /* CLLocationExtension.swift in Sources */,
 				CCC1B4292AC75A8E0075B819 /* RenderPropertyComponentView.swift in Sources */,
 				125BC1DE2B21F08200A117D0 /* VaultFileDetailsToMerge.swift in Sources */,
 				12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */,
@@ -3337,6 +3357,7 @@
 				CCC1B42F2AC75AF60075B819 /* UwaziDividerWidget.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,
 				CC5CEB872AF037B600BF238B /* FileDropdown.swift in Sources */,
+				126634E82C2362560073A749 /* PHPhotoLibraryExtension.swift in Sources */,
 				1519BED82B9A5A52006FD290 /* Resource.swift in Sources */,
 				128BEB202B1E4B3D00420923 /* FeedbackOperation.swift in Sources */,
 				128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */,
@@ -3363,6 +3384,7 @@
 				128BEB222B1E4B7600420923 /* OfflineFeedbackToast.swift in Sources */,
 				12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */,
 				128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */,
+				127D4A812C1B2ED700E82EA8 /* VaultFilesManagerExtension.swift in Sources */,
 				E1EAA0552AA74FEC00492078 /* UwaziLanguageContext.swift in Sources */,
 				12CCDC5428D8E05300C3BE4E /* Project.swift in Sources */,
 				126818C12A38B0C2004606BD /* FileInformation.swift in Sources */,
@@ -3387,6 +3409,7 @@
 				1293F6662AD7E52800F6CFBD /* FeedbackView.swift in Sources */,
 				1291A83428BE0D51001A6055 /* SettingsServerItemView.swift in Sources */,
 				12607D5A2790457600E2B8CC /* VideoViewer.swift in Sources */,
+				125B79FA2C2213920061CF84 /* AVCaptureMovieFileOutputExtension.swift in Sources */,
 				153AACFB2BE41C010075D5B2 /* UwaziEntityRelationshipItem.swift in Sources */,
 				12A8B09D2AFC0CEE007C838F /* LocalizableCommon.swift in Sources */,
 				1242135529B774A40002402D /* DeleteReportConfirmationView.swift in Sources */,
@@ -3508,6 +3531,7 @@
 				126FE4D727A427E200AE4188 /* Constants.swift in Sources */,
 				122389BB293683930058593B /* ServerDataItem.swift in Sources */,
 				CCC1B4252AC759F70075B819 /* UwaziEntityViewModel.swift in Sources */,
+				1260C2A02C25CC9E005CA4D6 /* LocationManager.swift in Sources */,
 				CCC1B42B2AC75AAE0075B819 /* GenericEntityWidget.swift in Sources */,
 				153AACF72BE40BEA0075D5B2 /* UwaziEntityFetcher.swift in Sources */,
 				123AE5A329CFB7F000814CC7 /* UploadReportOperation.swift in Sources */,

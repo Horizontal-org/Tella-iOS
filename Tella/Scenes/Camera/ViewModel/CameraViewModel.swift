@@ -9,6 +9,7 @@ import SwiftUI
 import AVFoundation
 import AVKit
 import AssetsLibrary
+import CoreLocation
 
 class CameraViewModel: ObservableObject {
     
@@ -21,11 +22,11 @@ class CameraViewModel: ObservableObject {
     @Published var formattedCurrentTime : String = "00:00:00"
     @Published var currentTime : TimeInterval = 0.0
     @Published var progressFile:ProgressFile = ProgressFile()
-    @Published var  shouldReloadVaultFiles : Binding<Bool>?
-    
-    
+    @Published var shouldReloadVaultFiles : Binding<Bool>?
+    @Published var shouldShowToast : Bool = false
+
     var imageData : Data?
-    var image : UIImage?
+    var currentLocation:CLLocation?
     
     var videoURL : URL?
     var mainAppModel: MainAppModel?
@@ -39,6 +40,9 @@ class CameraViewModel: ObservableObject {
     var autoUpload: Bool {
         self.sourceView != .addReportFile
     }
+    
+    var errorMessage : String = ""
+
     
     // MARK: - Private properties
     
@@ -84,14 +88,34 @@ class CameraViewModel: ObservableObject {
     
     func saveImage() {
         
-        guard let imageData = image?.fixedOrientation()?.pngData() else { return  }
-        guard let url = mainAppModel?.vaultManager.saveDataToTempFile(data: imageData, pathExtension: "png") else { return  }
-        
-        saveFile(urlFile: url)
+        guard let mainAppModel, let imageData else { return }
+        let isPreserveMetadataOn = mainAppModel.settings.preserveMetadata
+
+        if currentLocation != nil && isPreserveMetadataOn {
+            let url = mainAppModel.vaultManager.createTempFileURL(pathExtension: FileExtension.heic.rawValue)
+            let isSaved = imageData.save(withLocation: currentLocation, fileURL: url)
+            if isSaved {
+                saveFile(urlFile: url)
+            } else {
+                displayError()
+            }
+        } else {
+            guard let url = mainAppModel.vaultManager.saveDataToTempFile(data: imageData, pathExtension: FileExtension.heic.rawValue) else {
+                displayError()
+                return
+            }
+            saveFile(urlFile: url)
+        }
+    }
+    
+    func displayError() {
+        shouldShowToast = true
+        errorMessage = LocalizableCommon.commonError.localized
+        shouldShowToast = false
     }
     
     func saveVideo() {
-        guard let videoURL = videoURL else { return  }
+        guard let videoURL = videoURL else { return }
         saveFile(urlFile: videoURL)
     }
     
@@ -105,7 +129,12 @@ class CameraViewModel: ObservableObject {
     }
     
     private func addVaultFileWithProgressView(urlFile:URL) {
-        self.mainAppModel?.vaultFilesManager?.addVaultFile(filePaths: [urlFile], parentId: self.rootFile?.id)
+        
+        let importedFiles = ImportedFile(urlFile: urlFile,
+                                         parentId: self.rootFile?.id, 
+                                         fileSource: FileSource.camera)
+        
+        self.mainAppModel?.vaultFilesManager?.addVaultFile(importedFiles: [importedFiles])
             .sink { importVaultFileResult in
                 
                 switch importVaultFileResult {
@@ -120,7 +149,16 @@ class CameraViewModel: ObservableObject {
     }
     
     private func addVaultFileInBackground(urlFile:URL) {
-        self.mainAppModel?.addVaultFile(filePaths: [urlFile], parentId: self.rootFile?.id, shouldReloadVaultFiles : self.shouldReloadVaultFiles, autoUpload: autoUpload)
+        let isPreserveMetadataOn = mainAppModel?.settings.preserveMetadata ?? false
+        
+        let importedFile = ImportedFile(urlFile: urlFile,
+                                        parentId: self.rootFile?.id, 
+                                        shouldPreserveMetadata: isPreserveMetadataOn,
+                                        fileSource: .camera)
+        
+        self.mainAppModel?.addVaultFile(importedFiles:[importedFile],
+                                        shouldReloadVaultFiles : self.shouldReloadVaultFiles,
+                                        autoUpload: autoUpload)
     }
     
     private func handleSuccessAddingFiles(vaultFiles:[VaultFileDB]) {
