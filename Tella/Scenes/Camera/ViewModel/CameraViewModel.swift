@@ -130,9 +130,11 @@ class CameraViewModel: ObservableObject {
     
     private func addVaultFileWithProgressView(urlFile:URL) {
         
-        let importedFiles = ImportedFile(urlFile: urlFile, fileSource: FileSource.camera)
+        let importedFiles = ImportedFile(urlFile: urlFile,
+                                         parentId: self.rootFile?.id, 
+                                         fileSource: FileSource.camera)
         
-        self.mainAppModel?.vaultFilesManager?.addVaultFile(importedFiles: [importedFiles], parentId: self.rootFile?.id)
+        self.mainAppModel?.vaultFilesManager?.addVaultFile(importedFiles: [importedFiles])
             .sink { importVaultFileResult in
                 
                 switch importVaultFileResult {
@@ -150,11 +152,11 @@ class CameraViewModel: ObservableObject {
         let isPreserveMetadataOn = mainAppModel?.settings.preserveMetadata ?? false
         
         let importedFile = ImportedFile(urlFile: urlFile,
-                                         shouldPreserveMetadata: isPreserveMetadataOn,
-                                         fileSource: .camera)
+                                        parentId: self.rootFile?.id, 
+                                        shouldPreserveMetadata: isPreserveMetadataOn,
+                                        fileSource: .camera)
         
         self.mainAppModel?.addVaultFile(importedFiles:[importedFile],
-                                        parentId: self.rootFile?.id,
                                         shouldReloadVaultFiles : self.shouldReloadVaultFiles,
                                         autoUpload: autoUpload)
     }

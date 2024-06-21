@@ -26,7 +26,6 @@ class EncryptionService: ObservableObject {
     }
     
     func addVaultFile(importedFiles: [ImportedFile],
-                      parentId: String?,
                       shouldReloadVaultFiles:Binding<Bool>?,
                       autoUpload: Bool) {
         
@@ -34,7 +33,6 @@ class EncryptionService: ObservableObject {
             let fileDetails = await getFileDetails(importedFiles: importedFiles)
             
             addEncryptionOperations(fileDetails: fileDetails,
-                                    parentId: parentId,
                                     shouldReloadVaultFiles: shouldReloadVaultFiles,
                                     autoUpload: autoUpload)
         }
@@ -60,7 +58,6 @@ class EncryptionService: ObservableObject {
     }
     
     private func addEncryptionOperations(fileDetails:[VaultFileDetails],
-                                         parentId: String?,
                                          shouldReloadVaultFiles:Binding<Bool>?,
                                          autoUpload: Bool) {
         
@@ -70,7 +67,6 @@ class EncryptionService: ObservableObject {
                 let operation = EncryptionOperation(mainAppModel: self.mainAppModel)
                 
                 operation.addVaultFile(fileDetail: fileDetail,
-                                       parentId: parentId,
                                        mainAppModel: self.mainAppModel)?
                     .receive(on: DispatchQueue.main)
                     .sink(receiveValue: { backgroundResult in

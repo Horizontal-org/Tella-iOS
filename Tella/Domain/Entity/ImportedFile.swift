@@ -11,6 +11,7 @@ struct ImportedFile {
     var type: MediaType?
     var urlFile: URL?
     var asset : PHAsset? = nil
+    var parentId : String?
     var shouldPreserveMetadata : Bool = false
     var deleteOriginal : Bool = false
     var fileSource : FileSource

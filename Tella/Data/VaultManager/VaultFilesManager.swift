@@ -20,7 +20,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         self.vaultManager = vaultManager
     }
     
-    func addVaultFile( importedFiles:  [ImportedFile], parentId: String?) -> AnyPublisher<ImportVaultFileResult,Never> {
+    func addVaultFile( importedFiles:  [ImportedFile]) -> AnyPublisher<ImportVaultFileResult,Never> {
         
         let filesActor = FilesActor()
         let importProgress :  ImportProgress = ImportProgress()
@@ -55,7 +55,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                       let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetail.file.id) else { return }
                 
                 if isSaved {
-                    self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: parentId)
+                    self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: fileDetail.importedFile.parentId)
                 }
                 
                 await filesActor.add(vaultFile: fileDetail.file)
@@ -81,7 +81,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         return subject.eraseToAnyPublisher()
     }
     
-    func addVaultFile(fileDetail:VaultFileDetails, parentId: String?) -> AnyPublisher<BackgroundActivityStatus,Never> {
+    func addVaultFile(fileDetail:VaultFileDetails) -> AnyPublisher<BackgroundActivityStatus,Never> {
         
         let subject = CurrentValueSubject<BackgroundActivityStatus, Never>(.inProgress)
         
@@ -97,7 +97,6 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             
             if isSaved {
                 handleDatabaseAddition(fileDetails: fileDetail,
-                                       parentId: parentId,
                                        subject: subject)
             } else {
                 subject.send(BackgroundActivityStatus.failed)
@@ -108,10 +107,9 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
     }
     
     private func handleDatabaseAddition(fileDetails:VaultFileDetails,
-                                        parentId: String?,
                                         subject : CurrentValueSubject<BackgroundActivityStatus, Never> ) {
         
-        let result = self.vaultDataBase.addVaultFile(file: fileDetails.file, parentId: parentId)
+        let result = self.vaultDataBase.addVaultFile(file: fileDetails.file, parentId: fileDetails.importedFile.parentId)
 
         switch result {
         case .success:
@@ -238,7 +236,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                                           mimeType: pathExtension.mimeType(),
                                           width: width,
                                           height: height)
-        return (VaultFileDetails(file: vaultFile, fileUrl: filePath, importedFile: importedFile))
+        return (VaultFileDetails(file: vaultFile, importedFile: importedFile))
     }
     
     func getFilesTotalSize(filePaths: [URL]) -> Int {

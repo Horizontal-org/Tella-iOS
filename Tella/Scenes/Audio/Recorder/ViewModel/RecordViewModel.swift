@@ -94,7 +94,7 @@ class RecordViewModel: ObservableObject {
         
         let importedFiles = ImportedFile(urlFile: urlFile, fileSource: FileSource.files)
 
-        mainAppModel.vaultFilesManager?.addVaultFile(importedFiles : [importedFiles], parentId: rootFile?.id)
+        mainAppModel.vaultFilesManager?.addVaultFile(importedFiles : [importedFiles])
             .sink { importVaultFileResult in
                 
                 switch importVaultFileResult {
@@ -117,7 +117,6 @@ class RecordViewModel: ObservableObject {
                                          fileSource: .files)
 
         self.mainAppModel.addVaultFile(importedFiles: [importedFile],
-                                       parentId: self.rootFile?.id,
                                        shouldReloadVaultFiles : self.shouldReloadVaultFiles,
                                        autoUpload: autoUpload)
     }

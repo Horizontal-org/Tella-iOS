@@ -18,13 +18,9 @@ class EncryptionOperation:Operation, WebRepository {
         self.mainAppModel = mainAppModel
     }
 
-    public func addVaultFile(fileDetail: VaultFileDetails, 
-                             parentId: String?,
-                             mainAppModel: MainAppModel) -> AnyPublisher<BackgroundActivityStatus,Never>? {
-        return self.mainAppModel.vaultFilesManager?.addVaultFile(fileDetail: fileDetail, 
-                                                                 parentId: parentId)
+    public func addVaultFile(fileDetail: VaultFileDetails, mainAppModel: MainAppModel) -> AnyPublisher<BackgroundActivityStatus,Never>? {
+        return self.mainAppModel.vaultFilesManager?.addVaultFile(fileDetail: fileDetail)
     }
-    
 }
 
 
