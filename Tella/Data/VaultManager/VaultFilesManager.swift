@@ -102,27 +102,12 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             }
 
             if isSaved {
-                
                 let result = self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: parentId)
-
-                switch result {
-                case .success:
-
-                    guard let vaultFile = getVaultFile(id: fileDetail.file.id) else {
-                        subject.send(.failed)
-                        return
-                    }
-                    
-                    shouldReloadFiles.send(true)
-                    
-                    // Delete original file
-                    handleDeletionFiles(importedFiles:[fileDetail.importedFile], deleteOriginal: deleteOriginal)
-                    
-                    subject.send(.completed(vaultFile))
-                    
-                default:
-                    subject.send(.failed)
-                }
+                
+                handleResult(result: result,
+                             fileDetails: fileDetail,
+                             deleteOriginal: deleteOriginal,
+                             subject: subject)
             } else {
                 subject.send(BackgroundActivityStatus.failed)
             }
@@ -131,7 +116,31 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         return subject.eraseToAnyPublisher()
     }
     
-    func getFileDetailsStream(_ importedFiles: [ImportedFile]) -> AsyncStream<VaultFileDetails> {
+    private func handleResult(result:Result<Int,Error>, 
+                              fileDetails:VaultFileDetails,
+                              deleteOriginal:Bool,
+                              subject : CurrentValueSubject<BackgroundActivityStatus, Never> ) {
+        switch result {
+        case .success:
+
+            guard let vaultFile = getVaultFile(id: fileDetails.file.id) else {
+                subject.send(.failed)
+                return
+            }
+            
+            shouldReloadFiles.send(true)
+            
+            // Delete original file
+            handleDeletionFiles(importedFiles:[fileDetails.importedFile], deleteOriginal: deleteOriginal)
+            
+            subject.send(.completed(vaultFile))
+            
+        default:
+            subject.send(.failed)
+        }
+    }
+    
+    private func getFileDetailsStream(_ importedFiles: [ImportedFile]) -> AsyncStream<VaultFileDetails> {
         
         // Init AsyncStream with element type = `VaultFileDetails`
         let stream = AsyncStream(VaultFileDetails.self) { continuation in
