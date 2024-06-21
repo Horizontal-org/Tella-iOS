@@ -85,39 +85,44 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         return subject.eraseToAnyPublisher()
     }
     
+//    - test that
+    
     func addVaultFile(fileDetail:VaultFileDetails,filePath: URL, parentId: String?, deleteOriginal:Bool) -> AnyPublisher<BackgroundActivityStatus,Never> {
         
         let subject = CurrentValueSubject<BackgroundActivityStatus, Never>(.inProgress)
+       
         Task {
-            guard let filePath = await getModifiedURL(importedFile: fileDetail.importedFile) else { subject.send(.failed)
-                return}
             
-            if let  isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetail.file.id) {
+            guard
+                let filePath = await getModifiedURL(importedFile: fileDetail.importedFile),
+                let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetail.file.id)
+            else {
+                subject.send(BackgroundActivityStatus.failed)
+                return
+            }
+
+            if isSaved {
                 
-                if isSaved {
-                    
-                    let result = self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: parentId)
-                    
-                    switch result {
-                    case .success:
-                        guard let vaultFile = getVaultFile(id: fileDetail.file.id) else {
-                            subject.send(.failed)
-                            return
-                        }
-                        
-                        shouldReloadFiles.send(true)
-                        
-                        // Delete original file
-                        handleDeletionFiles(importedFiles:[fileDetail.importedFile], deleteOriginal: deleteOriginal)
-                        
-                        subject.send(.completed(vaultFile))
-                        
-                    default:
+                let result = self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: parentId)
+
+                switch result {
+                case .success:
+
+                    guard let vaultFile = getVaultFile(id: fileDetail.file.id) else {
                         subject.send(.failed)
-                        
+                        return
                     }
+                    
+                    shouldReloadFiles.send(true)
+                    
+                    // Delete original file
+                    handleDeletionFiles(importedFiles:[fileDetail.importedFile], deleteOriginal: deleteOriginal)
+                    
+                    subject.send(.completed(vaultFile))
+                    
+                default:
+                    subject.send(.failed)
                 }
-                
             } else {
                 subject.send(BackgroundActivityStatus.failed)
             }
