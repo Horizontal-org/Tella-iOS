@@ -22,56 +22,25 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
     
     func addVaultFile( importedFiles:  [ImportedFile]) -> AnyPublisher<ImportVaultFileResult,Never> {
         
-        let filesActor = FilesActor()
         let importProgress :  ImportProgress = ImportProgress()
-        
         let subject = CurrentValueSubject<ImportVaultFileResult, Never>(.importProgress(importProgress:  importProgress))
         
         Task {
             
             var importedFiles = importedFiles
-            
-            for index in importedFiles.indices {
-                await updateURL(importedFile: &importedFiles[index])
-            }
-            
+
+            await updateImportedFilesURLs(&importedFiles)
             let filePaths = importedFiles.compactMap({$0.urlFile})
-            
             let filestotalSize = self.getFilesTotalSize(filePaths: filePaths)
+            
             importProgress.start(totalFiles: filePaths.count, totalSize: Double(filestotalSize))
             
             let fileDetailsStream = self.getFileDetailsStream(importedFiles)
             
-            for await fileDetail in fileDetailsStream {
-                
-                if self.shouldCancelImportAndEncryption.value {
-                    importProgress.stop()
-                    self.shouldCancelImportAndEncryption.value = false
-                    await subject.send(.fileAdded(filesActor.files))
-                    return
-                }
-                
-                guard let filePath = await getModifiedURL(importedFile: fileDetail.importedFile),
-                      let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetail.file.id) else { return }
-                
-                if isSaved {
-                    self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: fileDetail.importedFile.parentId)
-                }
-                
-                await filesActor.add(vaultFile: fileDetail.file)
-                
-                if await filesActor.files.count == filePaths.count {
-                    importProgress.finish()
-                    await subject.send(.fileAdded(filesActor.files))
-                    handleDeletionFiles(importedFiles:importedFiles)
-                    shouldReloadFiles.send(true)
-                    
-                } else {
-                    importProgress.currentFile += 1
-                }
-                
-                subject.send(.importProgress(importProgress:  importProgress))
-            }
+            await processFileDetailsStream(fileDetailsStream, 
+                                           importProgress: importProgress,
+                                           subject: subject,
+                                           importedFiles: importedFiles)
         }
         
         importProgress.progress.sink { progress in
@@ -81,6 +50,51 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         return subject.eraseToAnyPublisher()
     }
     
+    private func updateImportedFilesURLs(_ importedFiles: inout [ImportedFile]) async {
+        for index in importedFiles.indices {
+            await updateURL(importedFile: &importedFiles[index])
+        }
+    }
+    
+    private func processFileDetailsStream(_ fileDetailsStream: AsyncStream<VaultFileDetails>, 
+                                          importProgress: ImportProgress,
+                                          subject: CurrentValueSubject<ImportVaultFileResult, Never>,
+                                          importedFiles: [ImportedFile]) async {
+        
+        let filesActor = FilesActor()
+
+        for await fileDetail in fileDetailsStream {
+            
+            if self.shouldCancelImportAndEncryption.value {
+                importProgress.stop()
+                self.shouldCancelImportAndEncryption.value = false
+                await subject.send(.fileAdded(filesActor.files))
+                return
+            }
+            
+            guard let filePath = await getModifiedURL(importedFile: fileDetail.importedFile),
+                  let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetail.file.id) else { return }
+            
+            if isSaved {
+                self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: fileDetail.importedFile.parentId)
+            }
+            
+            await filesActor.add(vaultFile: fileDetail.file)
+            
+            if await filesActor.files.count == importedFiles.count {
+                importProgress.finish()
+                await subject.send(.fileAdded(filesActor.files))
+                handleDeletionFiles(importedFiles:importedFiles)
+                shouldReloadFiles.send(true)
+                
+            } else {
+                importProgress.currentFile += 1
+            }
+            
+            subject.send(.importProgress(importProgress:  importProgress))
+        }
+    }
+
     func addVaultFile(fileDetail:VaultFileDetails) -> AnyPublisher<BackgroundActivityStatus,Never> {
         
         let subject = CurrentValueSubject<BackgroundActivityStatus, Never>(.inProgress)
