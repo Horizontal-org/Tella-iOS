@@ -66,19 +66,6 @@ class RecordViewModel: ObservableObject {
         // Init the source view
         self.sourceView = sourceView
         self.showingRecoredrView = showingRecoredrView
-        
-        // Update the view while updating the permission
-        audioBackend.$audioPermission.sink { permission in
-            switch permission {
-            case .notDetermined:
-                break
-            case .authorized:
-                self.onStartRecording()
-            case .denied, .restricted:
-                self.shouldShowSettingsAlert = true
-            }
-        }.store(in: &cancellable)
-        
     }
     
     func addVaultFile(urlFile: URL) {
@@ -134,7 +121,7 @@ class RecordViewModel: ObservableObject {
     
     // Record audio
     func checkCameraAccess() {
-        audioBackend.checkMicrophonePermission()
+        checkMicrophonePermission()
     }
     
     func onStartRecording() {
@@ -211,4 +198,22 @@ class RecordViewModel: ObservableObject {
     var initialFileName: String {
         return  LocalizableRecorder.suffixRecording.localized + " " + Date().getFormattedDateString(format: DateFormat.fileName.rawValue)
     }
+
+    func checkMicrophonePermission() {
+        switch AVCaptureDevice.authorizationStatus(for: .audio) {
+        case .denied, .restricted:
+            self.shouldShowSettingsAlert = true
+        case .authorized:
+            self.onStartRecording()
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .audio) { success in
+                if success {
+                    self.mainAppModel.changeTab(to: .mic)
+                }
+            }
+        @unknown default:
+            break
+        }
+    }
+
 }
