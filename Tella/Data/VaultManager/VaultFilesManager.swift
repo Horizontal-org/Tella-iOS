@@ -126,7 +126,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             
             subject.send(.completed(vaultFile))
             
-        default:
+        case .failure:
             subject.send(.failed)
         }
     }
