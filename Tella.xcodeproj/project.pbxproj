@@ -94,7 +94,6 @@
 		122DA89729CB2709003801CD /* SettingsBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122DA89629CB2709003801CD /* SettingsBottomView.swift */; };
 		122DBE012A5C1E0500D6561A /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122DBE002A5C1E0500D6561A /* Toast.swift */; };
 		122E0AEE2A33B788009B1E33 /* FileDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122E0AED2A33B788009B1E33 /* FileDetails.swift */; };
-		122E4D55291ADEB300562EB1 /* AddFilesToDraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122E4D54291ADEB300562EB1 /* AddFilesToDraftView.swift */; };
 		122E6A5329A3812A00BDACAD /* ReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122E6A5229A3812A00BDACAD /* ReportViewModel.swift */; };
 		122E6A5529A396C400BDACAD /* ServerFileSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122E6A5429A396C400BDACAD /* ServerFileSize.swift */; };
 		123048D2295F84BD0015CD96 /* ProgressFileItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123048D1295F84BD0015CD96 /* ProgressFileItemViewModel.swift */; };
@@ -378,6 +377,8 @@
 		15E3D5052C1B531700B7FECC /* ConnectionEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D5042C1B531700B7FECC /* ConnectionEmptyView.swift */; };
 		15E3D50A2C1B71E200B7FECC /* GDriveDraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */; };
 		15E3D50E2C1B87AC00B7FECC /* GDriveDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D50D2C1B87AC00B7FECC /* GDriveDraftViewModel.swift */; };
+		15E656AB2C2A147E00BDEC91 /* AddFilesToDraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E656AA2C2A147E00BDEC91 /* AddFilesToDraftView.swift */; };
+		15E656AD2C2A14F500BDEC91 /* DraftViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E656AC2C2A14F500BDEC91 /* DraftViewModelProtocol.swift */; };
 		15EE30FE2B5073E20033BBBB /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE30FD2B5073E20033BBBB /* Pages.swift */; };
 		15F64C9D2B6D7904008A57AA /* DownloadedResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */; };
 		15F64CA02B6D794B008A57AA /* SectionTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F64C9F2B6D794B008A57AA /* SectionTitle.swift */; };
@@ -647,7 +648,6 @@
 		122DA89629CB2709003801CD /* SettingsBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBottomView.swift; sourceTree = "<group>"; };
 		122DBE002A5C1E0500D6561A /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		122E0AED2A33B788009B1E33 /* FileDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDetails.swift; sourceTree = "<group>"; };
-		122E4D54291ADEB300562EB1 /* AddFilesToDraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFilesToDraftView.swift; sourceTree = "<group>"; };
 		122E6A5229A3812A00BDACAD /* ReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewModel.swift; sourceTree = "<group>"; };
 		122E6A5429A396C400BDACAD /* ServerFileSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerFileSize.swift; sourceTree = "<group>"; };
 		123048D1295F84BD0015CD96 /* ProgressFileItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressFileItemViewModel.swift; sourceTree = "<group>"; };
@@ -930,6 +930,8 @@
 		15E3D5042C1B531700B7FECC /* ConnectionEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionEmptyView.swift; sourceTree = "<group>"; };
 		15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveDraftView.swift; sourceTree = "<group>"; };
 		15E3D50D2C1B87AC00B7FECC /* GDriveDraftViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveDraftViewModel.swift; sourceTree = "<group>"; };
+		15E656AA2C2A147E00BDEC91 /* AddFilesToDraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFilesToDraftView.swift; sourceTree = "<group>"; };
+		15E656AC2C2A14F500BDEC91 /* DraftViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftViewModelProtocol.swift; sourceTree = "<group>"; };
 		15EE30FD2B5073E20033BBBB /* Pages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pages.swift; sourceTree = "<group>"; };
 		15F64C9C2B6D7904008A57AA /* DownloadedResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResources.swift; sourceTree = "<group>"; };
 		15F64C9F2B6D794B008A57AA /* SectionTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitle.swift; sourceTree = "<group>"; };
@@ -1363,7 +1365,6 @@
 			children = (
 				1236644E28FFECEF00FA839B /* DraftReportView.swift */,
 				1220A72D292EB11B000BC24C /* ReportFileGridView.swift */,
-				122E4D54291ADEB300562EB1 /* AddFilesToDraftView.swift */,
 			);
 			path = Draft;
 			sourceTree = "<group>";
@@ -2149,6 +2150,7 @@
 		12D7F5F52743F28700EBA3A2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				15E656A92C2A142300BDEC91 /* Reports */,
 				CCF47F3F2ABE11F3000ABBBC /* Connections */,
 				12C07F032B0748BE0030AD6E /* TopSheetView */,
 				122E4D53291AD99A00562EB1 /* TellaButton */,
@@ -2351,6 +2353,23 @@
 			isa = PBXGroup;
 			children = (
 				15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */,
+			);
+			path = Draft;
+			sourceTree = "<group>";
+		};
+		15E656A92C2A142300BDEC91 /* Reports */ = {
+			isa = PBXGroup;
+			children = (
+				15E656AE2C2A14FA00BDEC91 /* Draft */,
+			);
+			path = Reports;
+			sourceTree = "<group>";
+		};
+		15E656AE2C2A14FA00BDEC91 /* Draft */ = {
+			isa = PBXGroup;
+			children = (
+				15E656AA2C2A147E00BDEC91 /* AddFilesToDraftView.swift */,
+				15E656AC2C2A14F500BDEC91 /* DraftViewModelProtocol.swift */,
 			);
 			path = Draft;
 			sourceTree = "<group>";
@@ -3201,6 +3220,7 @@
 				CC13138A2A5DB68E0057271C /* BottomSheetTitleView.swift in Sources */,
 				E1E7C5842AAB70A500DDB07E /* UwaziDictionaryRow.swift in Sources */,
 				1240E6B02907E14400692232 /* ReportCardView.swift in Sources */,
+				15E656AB2C2A147E00BDEC91 /* AddFilesToDraftView.swift in Sources */,
 				12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */,
 				128B15CB27DA30C800E1C1E0 /* OnboardingEndView.swift in Sources */,
 				125D2328271F8B6600250FBB /* LockConfirmPinView.swift in Sources */,
@@ -3415,6 +3435,7 @@
 				125BC1DE2B21F08200A117D0 /* VaultFileDetailsToMerge.swift in Sources */,
 				12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */,
 				125A895F2A965C33009347C3 /* VaultFileType.swift in Sources */,
+				15E656AD2C2A14F500BDEC91 /* DraftViewModelProtocol.swift in Sources */,
 				123AE5A129CFAD7F00814CC7 /* OutboxReportVM.swift in Sources */,
 				12FDEDD5272AFE99005C17AC /* LocalizableHome.swift in Sources */,
 				D572EAC7263A383900CE191A /* RecentFileCell.swift in Sources */,
@@ -3651,7 +3672,6 @@
 				E1E7C5712AAB2BAB00DDB07E /* UwaziLanguageRow.swift in Sources */,
 				1237A71C278F5B2E00D7BC0F /* DateExtension.swift in Sources */,
 				15587A012C010F1E0071389E /* GDriveServer.swift in Sources */,
-				122E4D55291ADEB300562EB1 /* AddFilesToDraftView.swift in Sources */,
 				125299DD2AD02E6F00191CAB /* ImportVaultFileResult.swift in Sources */,
 				122DA89129CB1F45003801CD /* FileAPI.swift in Sources */,
 				127C155C27DA69FF009EC15B /* TransitionViewData.swift in Sources */,

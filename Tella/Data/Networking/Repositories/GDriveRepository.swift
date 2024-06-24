@@ -17,6 +17,7 @@ protocol GDriveRepositoryProtocol {
     func handleUrl(url: URL)
     func getSharedDrives() -> AnyPublisher<[SharedDrive], Error>
     func createDriveFolder(folderName: String, parentId: String?, description: String?) -> AnyPublisher<String, Error>
+    func uploadFile(fileURL: URL, mimeType: String, folderId: String) -> AnyPublisher<String, Error>
     func signOut() -> Void
 }
 
@@ -179,6 +180,48 @@ class GDriveRepository: GDriveRepositoryProtocol  {
 
             promise(.success(createdFile.identifier ?? ""))
         }
+    }
+    
+    func uploadFile(
+        fileURL: URL,
+        mimeType: String,
+        folderId: String
+    ) -> AnyPublisher<String, Error> {
+        Deferred {
+            Future { [weak self] promise in
+                guard let user = self?.googleUser else {
+                    return promise(.failure(APIError.noToken))
+                }
+                
+                let driveService = GTLRDriveService()
+                driveService.authorizer = user.fetcherAuthorizer
+                
+                let file = GTLRDrive_File()
+                file.name = fileURL.lastPathComponent
+                file.mimeType = mimeType
+                file.parents = [folderId]
+                
+                let uploadParameters = GTLRUploadParameters(fileURL: fileURL, mimeType: mimeType)
+                uploadParameters.shouldUploadWithSingleRequest = false
+                
+                let query = GTLRDriveQuery_FilesCreate.query(withObject: file, uploadParameters: uploadParameters)
+                
+                driveService.executeQuery(query) { (ticket, file, error) in
+                    if let error = error {
+                        print("Error uploading file: \(error.localizedDescription)")
+                        promise(.failure(error))
+                        return
+                    }
+                    
+                    guard let uploadedFile = file as? GTLRDrive_File else {
+                        promise(.failure(APIError.unexpectedResponse))
+                        return
+                    }
+                    
+                    promise(.success(uploadedFile.identifier ?? ""))
+                }
+            }
+        }.eraseToAnyPublisher()
     }
     
     func signOut() {

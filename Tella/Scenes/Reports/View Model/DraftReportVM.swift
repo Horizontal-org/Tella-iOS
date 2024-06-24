@@ -7,7 +7,7 @@ import Foundation
 import Combine
 import SwiftUI
 
-class DraftReportVM: ObservableObject {
+class DraftReportVM: ObservableObject, DraftViewModelProtocol {
     
     var mainAppModel : MainAppModel
     

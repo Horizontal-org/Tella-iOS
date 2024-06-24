@@ -10,6 +10,7 @@ import SwiftUI
 
 struct GDriveDraftView: View {
     @StateObject var gDriveDraftVM: GDriveDraftViewModel
+    @EnvironmentObject var mainAppModel : MainAppModel
     let gDriveDIContainer: GDriveDIContainer
     
     init(mainAppModel: MainAppModel, gDriveDIContainer: GDriveDIContainer) {
@@ -19,6 +20,7 @@ struct GDriveDraftView: View {
             repository: gDriveDIContainer.gDriveRepository)
         )
     }
+    
     var body: some View {
         ContainerView {
             VStack(alignment: .leading) {
@@ -26,8 +28,12 @@ struct GDriveDraftView: View {
                 contentView
                 Spacer()
                 bottomButtonsView
+                photoVideoPickerView
             }
-        }.navigationBarHidden(true)
+        }
+        .navigationBarHidden(true)
+        .overlay(recordView)
+        .overlay(cameraView)
     }
     
     var headerView: some View {
@@ -56,7 +62,34 @@ struct GDriveDraftView: View {
 
             Spacer()
               .frame(height: 24)
+            
+            AddFilesToDraftView<GDriveDraftViewModel>()
+                .environmentObject(gDriveDraftVM)
         }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+    }
+    
+    var cameraView : some View {
+        gDriveDraftVM.showingCamera ?
+            CameraView(sourceView: SourceView.addReportFile,
+                       showingCameraView: $gDriveDraftVM.showingCamera,
+                       resultFile: $gDriveDraftVM.resultFile,
+                       mainAppModel: mainAppModel) : nil
+    }
+        
+    var recordView : some View {
+        gDriveDraftVM.showingRecordView ?
+        RecordView(appModel: mainAppModel,
+                   sourceView: .addReportFile,
+                   showingRecoredrView: $gDriveDraftVM.showingRecordView,
+                   resultFile: $gDriveDraftVM.resultFile) : nil
+    }
+        
+    var photoVideoPickerView : some View {
+        PhotoVideoPickerView(showingImagePicker: $gDriveDraftVM.showingImagePicker,
+                             showingImportDocumentPicker: $gDriveDraftVM.showingImportDocumentPicker,
+                             appModel: mainAppModel,
+                             resultFile: $gDriveDraftVM.resultFile,
+                             shouldReloadVaultFiles: .constant(false))
     }
     
     var bottomButtonsView: some View {
