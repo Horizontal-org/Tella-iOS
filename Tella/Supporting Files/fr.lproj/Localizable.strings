@@ -78,9 +78,6 @@
 "Vault_RenameFile_SheetTitle" = "Renommer le fichier";
 "Vault_RenameFile_Cancel_SheetAction" = "ANNULER";
 "Vault_RenameFile_Save_SheetAction" = "SAVE";
-"Vault_DeleteFile_Warning_SheetDescription" = "Certains des fichiers sélectionnés sont actuellement utilisés dans vos connexions. La suppression peut avoir un impact sur les formulaires et les rapports qui n\'ont pas encore été envoyés.";
-"Vault_DeleteFile_Warning_SheetTitle"= "Warning";
-"Vault_DeleteFile_DeleteAnyway_SheetAction" = "Supprimer quand même";
 "Vault_CreateNewFolder_SheetTitle" = "Create new folder";
 "Vault_CreateNewFolder_Cancel_SheetAction" = "ANNULER";
 "Vault_CreateNewFolder_Create_SheetAction" = "CREATE";
@@ -253,7 +250,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "LockUnlock_UnlockDeleteAfterFail_Warning_RemainingAttempts" = "You have %i attempts remaining until everything in your Tella is deleted.";
 "LockUnlock_UnlockDeleteAfterFail_Error_ContentDeleted" = "You have exceeded the maximum number of incorrect login attempts. All your Tella data has been deleted.";
 "Settings_Sett_Connections" = "Connexions";
-"Settings_Sett_Feedback" = "Feedback";
+"Settings_Sett_Feedback" = "Retour d'information";
 "Settings_SettSec_DeleteAfterFail" = "Suppression après échec du déverrouillage";
 "Settings_SettSec_DeleteAfterFail_Off" = "Éteindre";
 "Settings_SettSec_ShowUnlockAttempts" = "Show unlock attempts remaining";
@@ -281,20 +278,20 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_OutboxSaved_Toast" = "Le rapport a été enregistré dans votre boîte d'envoi. Vous pouvez le soumettre lorsque vous êtes prêt.";
 "Reports_AllReportDeleted_Toast" = "Your submitted reports have been cleared.";
 "Settings_SettLang_Tamil_Expl" = "Tamil";
-"Settings_SettFeedback_AppBar" = "Feedback";
+"Settings_SettFeedback_AppBar" = "Retour d'information";
 "Settings_SettFeedback_Expl" = "Tell us if you are experiencing a bug, have a request for a new feature, or have any other feedback.\
 \
 This feedback is anonymous, so make sure to include contact information if you want a response from us.";
-"Settings_SettFeedback_EnableFeedback_Title" = "Enable feedback sharing";
-"Settings_SettFeedback_EnableFeedback_Expl" = "WARNING: using this feature may reveal to someone observing the network that you use Tella. Only use if you feel comfortable with this risk.";
+"Settings_SettFeedback_EnableFeedback_Title" = "Activer le partage du retour d'information";
+"Settings_SettFeedback_EnableFeedback_Expl" = "AVERTISSEMENT : l'utilisation de cette fonctionnalité peut révéler à quelqu'un qui observe le réseau que vous utilisez Tella. Ne l'utilisez que si vous ne craignez pas ce risque.";
 "Settings_SettFeedback_EnableFeedback_LearnMore" = "Learn more.";
-"Settings_SettFeedback_Select_Feedback" = "Feedback";
+"Settings_SettFeedback_Select_Feedback" = "Retour d'information";
 "Settings_SettFeedback_Action_Submit" = "Envoyer";
 "Settings_SettFeedback_Offline_Toast" = "You are not connected to the internet. Your feedback will be sent automatically when you are connected.";
-"Settings_SettFeedback_SuccessSent_Toast" = "Thanks for your feedback!";
-"Settings_SettFeedback_BackgroundSuccessSent_Toast" = "Your feedback has been sent";
-"Settings_SettFeedback_ExitFeedback_SheetTitle" = "Save draft?";
-"Settings_SettFeedback_ExitFeedback_SheetExpl" = "You can come back anytime to submit your feedback.";
+"Settings_SettFeedback_SuccessSent_Toast" = "Merci pour votre retour!";
+"Settings_SettFeedback_BackgroundSuccessSent_Toast" = "Votre commentaire a été envoyé";
+"Settings_SettFeedback_ExitFeedback_SheetTitle" = "Enregistrer le brouillon?";
+"Settings_SettFeedback_ExitFeedback_SheetExpl" = "Vous pouvez revenir à tout moment pour soumettre vos commentaires.";
 "Settings_SettFeedback_ExitFeedback_Exit_SheetAction" = "Exit without saving";
 "Settings_SettFeedback_ExitFeedback_Save_SheetAction" = "Enregistrer le brouillon";
 "Setting_SettServer_Selection_Title" = "À quel type de serveur souhaitez-vous vous connecter ?";
@@ -398,3 +395,61 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Vault_EditImage_Exit_SheetAction" = "QUITTER SANS ENREGISTRER";
 "Vault_MoreActions_Edit_SheetSelect" = "Éditer";
 "Vault_EditImage_ImageSaved_Toast" = "Vos modifications ont été enregistrées.";
+"Vault_DeleteFile_Warning_SheetDescription" = "Some of the selected files are currently used in your connections. Deleting may impact forms and reports that haven’t been sent yet";
+"Vault_DeleteFile_Warning_SheetTitle" = "Avertissement";
+"Vault_DeleteFile_DeleteAnyway_SheetAction" = "Supprimer quand même";
+"Uwazi_PageViewItem_Draft" = "Drafts";
+"Uwazi_PageViewItem_Outbox" = "Boîte d'envoi";
+"Uwazi_PageViewItem_Submitted" = "Envoyés";
+"Uwazi_Delete_SheetTitle" = "Delete “%@”?";
+"Uwazi_Template_DeleteFromDevice_SheetAction" = " Delete from this device";
+"Uwazi_Template_DeleteTemplate_SheetAction" = " Delete Template";
+"Uwazi_Deleted_Toast" = "“%@” has been deleted.";
+"Uwazi_Draft_DraftList_Expl" = "These are entities you have not submitted. Tap on an entity to continue working on it.";
+"Uwazi_Draft_EmptyDraftList_Expl" = "Your Drafts is currently empty. Entities that you have not submitted will appear here.";
+"Uwazi_Draft_EntitySaved_Toast" = "L'entité est enregistrée comme brouillon.";
+"Uwazi_Draft_Delete_SheetExpl" = "Êtes-vous sûr de vouloir supprimer ce brouillon?";
+"Uwazi_Draft_Delete_NO_SheetAction" = "NO";
+"Uwazi_Draft_Delete_YES_SheetAction" = "YES";
+"Uwazi_Draft_Edit_SheetSelect" = "Modifier le brouillon";
+"Uwazi_Draft_Delete_SheetSelect" = "Delete draft";
+"Uwazi_Outbox_Delete_SheetExpl" = "Are you sure you want to delete this entity?";
+"Uwazi_Outbox_OutboxList_Expl" = "These are entities currently being submitted.";
+"Uwazi_Outbox_EmptyOutboxList_Expl" = "Your Outbox is currently empty. Entities that are ready to send will appear here.";
+"Uwazi_View_SheetSelect" = "Afficher l'entité";
+"Uwazi_Delete_SheetSelect" = "Supprimer l'entité";
+"Uwazi_Submitted_SubmittedList_Expl" = "Voici les entités que vous avez soumises.";
+"Uwazi_Submitted_EmptySubmittedList_Expl" = "Vous n'avez aucune entité soumise.";
+"Uwazi_Submitted_AppBar" = "Submitted entity";
+"Uwazi_Submitted_UploadedOn" = "Uploaded on %@";
+"Uwazi_Submitted_Files" = "%i files, %@";
+"Uwazi_Submitted_File" = "%i file, %@";
+"Uwazi_Submitted_Delete_SheetTitle" = "Delete entity?";
+"Uwazi_Submitted_Delete_SheetExpl" = "Are you sure you want to delete this form from your device? Note that because it was already submitted, the data will remain on your orgenization’s server.";
+"Uwazi_Submitted_Delete_Cancel_SheetAction" = "ANNULER";
+"Uwazi_Submitted_Delete_Delete_SheetAction" = "DELETE";
+"Uwazi_Entity_Relationship_Expl" = "Select the entities you want to connect to this property.";
+"Uwazi_Entity_Relationship_Select_title" = "Select entities";
+"Uwazi_Entity_Relationship_AddMore_title" = "Add more entities";
+"Uwazi_Entity_Relationship_SingleConnection" = "entity connected";
+"Uwazi_Entity_Relationship_MultipleConnections" = "entities connected";
+"Uwazi_Relationship_List_Expl" = "Search for or select the entities you want to connect to this property.";
+"Uwazi_Relationship_SearchBar_Title" = "Search";
+"Vault_DeniedPhotoLibraryPermission_Expl" = "The Tella app does not have permission to access the photo library.\
+\
+If you want to add a picture or a video from the photo library, proceed in the following way:\
+1. Navigate to your phone's settings and find the Tella app.\
+2. Enable permissions for Photos.\
+3. Open the Tella app.\
+";
+"Vault_DeniedPhotosPermission_Action_Settings" = "Paramètres";
+"Vault_DeniedPhotosPermission_Action_Cancel" = "ANNULER";
+"Vault_LimitedPhotoLibraryPermission_Expl" = "The Tella app have limited permission to access the photo library.\
+\
+If you want to add a picture or a video from the photo library, proceed in the following way:\
+1. Navigate to your phone's settings and find the Tella app.\
+2. Enable full access permission for Photos.\
+3. Open the Tella app.\
+";
+"Vault_LimitedPhotoLibraryPermission_Action_Settings" = "Paramètres";
+"Vault_LimitedPhotoLibraryPermission_Action_Cancel" = "ANNULER";

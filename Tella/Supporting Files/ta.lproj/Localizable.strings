@@ -78,9 +78,6 @@
 "Vault_RenameFile_SheetTitle" = "Rename file";
 "Vault_RenameFile_Cancel_SheetAction" = "CANCEL";
 "Vault_RenameFile_Save_SheetAction" = "SAVE";
-"Vault_DeleteFile_Warning_SheetDescription" = "Some of the selected files are currently used in your connections. Deleting may impact forms and reports that haven’t been sent yet";
-"Vault_DeleteFile_Warning_SheetTitle"= "Warning";
-"Vault_DeleteFile_DeleteAnyway_SheetAction" = "Delete anyway";
 "Vault_CreateNewFolder_SheetTitle" = "Create new folder";
 "Vault_CreateNewFolder_Cancel_SheetAction" = "CANCEL";
 "Vault_CreateNewFolder_Create_SheetAction" = "CREATE";
@@ -398,3 +395,61 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Vault_EditImage_Exit_SheetAction" = "EXIT WITHOUT SAVING";
 "Vault_MoreActions_Edit_SheetSelect" = "Edit";
 "Vault_EditImage_ImageSaved_Toast" = "Your changes have been saved.";
+"Vault_DeleteFile_Warning_SheetDescription" = "Some of the selected files are currently used in your connections. Deleting may impact forms and reports that haven’t been sent yet";
+"Vault_DeleteFile_Warning_SheetTitle" = "Warning";
+"Vault_DeleteFile_DeleteAnyway_SheetAction" = "Delete anyway";
+"Uwazi_PageViewItem_Draft" = "Drafts";
+"Uwazi_PageViewItem_Outbox" = "Outbox";
+"Uwazi_PageViewItem_Submitted" = "சமர்ப்பிக்கப்பட்டது";
+"Uwazi_Delete_SheetTitle" = "Delete “%@”?";
+"Uwazi_Template_DeleteFromDevice_SheetAction" = " Delete from this device";
+"Uwazi_Template_DeleteTemplate_SheetAction" = " Delete Template";
+"Uwazi_Deleted_Toast" = "“%@” has been deleted.";
+"Uwazi_Draft_DraftList_Expl" = "These are entities you have not submitted. Tap on an entity to continue working on it.";
+"Uwazi_Draft_EmptyDraftList_Expl" = "Your Drafts is currently empty. Entities that you have not submitted will appear here.";
+"Uwazi_Draft_EntitySaved_Toast" = "Entity is saved as draft.";
+"Uwazi_Draft_Delete_SheetExpl" = "Are you sure you want to delete this draft?";
+"Uwazi_Draft_Delete_NO_SheetAction" = "NO";
+"Uwazi_Draft_Delete_YES_SheetAction" = "YES";
+"Uwazi_Draft_Edit_SheetSelect" = "Edit draft";
+"Uwazi_Draft_Delete_SheetSelect" = "Delete draft";
+"Uwazi_Outbox_Delete_SheetExpl" = "Are you sure you want to delete this entity?";
+"Uwazi_Outbox_OutboxList_Expl" = "These are entities currently being submitted.";
+"Uwazi_Outbox_EmptyOutboxList_Expl" = "Your Outbox is currently empty. Entities that are ready to send will appear here.";
+"Uwazi_View_SheetSelect" = "View entity";
+"Uwazi_Delete_SheetSelect" = "Delete entity";
+"Uwazi_Submitted_SubmittedList_Expl" = "These are entities that you have submitted successfully.";
+"Uwazi_Submitted_EmptySubmittedList_Expl" = "You have no submitted entities.";
+"Uwazi_Submitted_AppBar" = "Submitted entity";
+"Uwazi_Submitted_UploadedOn" = "Uploaded on %@";
+"Uwazi_Submitted_Files" = "%i files, %@";
+"Uwazi_Submitted_File" = "%i file, %@";
+"Uwazi_Submitted_Delete_SheetTitle" = "Delete entity?";
+"Uwazi_Submitted_Delete_SheetExpl" = "Are you sure you want to delete this form from your device? Note that because it was already submitted, the data will remain on your orgenization’s server.";
+"Uwazi_Submitted_Delete_Cancel_SheetAction" = "CANCEL";
+"Uwazi_Submitted_Delete_Delete_SheetAction" = "DELETE";
+"Uwazi_Entity_Relationship_Expl" = "Select the entities you want to connect to this property.";
+"Uwazi_Entity_Relationship_Select_title" = "Select entities";
+"Uwazi_Entity_Relationship_AddMore_title" = "Add more entities";
+"Uwazi_Entity_Relationship_SingleConnection" = "entity connected";
+"Uwazi_Entity_Relationship_MultipleConnections" = "entities connected";
+"Uwazi_Relationship_List_Expl" = "Search for or select the entities you want to connect to this property.";
+"Uwazi_Relationship_SearchBar_Title" = "Search";
+"Vault_DeniedPhotoLibraryPermission_Expl" = "The Tella app does not have permission to access the photo library.\
+\
+If you want to add a picture or a video from the photo library, proceed in the following way:\
+1. Navigate to your phone's settings and find the Tella app.\
+2. Enable permissions for Photos.\
+3. Open the Tella app.\
+";
+"Vault_DeniedPhotosPermission_Action_Settings" = "அமைப்புகள்";
+"Vault_DeniedPhotosPermission_Action_Cancel" = "CANCEL";
+"Vault_LimitedPhotoLibraryPermission_Expl" = "The Tella app have limited permission to access the photo library.\
+\
+If you want to add a picture or a video from the photo library, proceed in the following way:\
+1. Navigate to your phone's settings and find the Tella app.\
+2. Enable full access permission for Photos.\
+3. Open the Tella app.\
+";
+"Vault_LimitedPhotoLibraryPermission_Action_Settings" = "அமைப்புகள்";
+"Vault_LimitedPhotoLibraryPermission_Action_Cancel" = "CANCEL";
