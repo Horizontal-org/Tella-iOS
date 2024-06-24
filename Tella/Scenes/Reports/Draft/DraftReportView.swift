@@ -157,7 +157,8 @@ struct DraftReportView: View {
                     Spacer()
                         .frame(height: 24)
                     
-                    AddFilesToDraftView()
+                    AddFilesToDraftView<DraftReportVM>()
+                        .environmentObject(reportViewModel)
                     
                     Spacer()
                     
