@@ -208,7 +208,9 @@ class RecordViewModel: ObservableObject {
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .audio) { success in
                 if success {
-                    self.mainAppModel.changeTab(to: .mic)
+                    DispatchQueue.main.async {
+                        self.mainAppModel.changeTab(to: .mic)
+                    }
                 }
             }
         @unknown default:
