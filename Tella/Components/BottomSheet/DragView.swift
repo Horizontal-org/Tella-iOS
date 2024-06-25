@@ -3,6 +3,7 @@
 //
 
 import SwiftUI
+import Combine
 
 enum DragState {
     case inactive
@@ -31,17 +32,17 @@ struct DragView<Content: View> : View {
     
     var modalHeight:CGFloat
     var shouldHideOnTap : Bool = true
-    var showWithAnimation : Bool = false
+    var showWithAnimation : Bool = true
     var backgroundColor: Color = Styles.Colors.backgroundTab
     
     @Binding var isShown:Bool
-    
-    
-    @GestureState private var dragState = DragState.inactive
-    @State private var value: CGFloat = 0
     @EnvironmentObject var sheetManager: SheetManager
-    
-    
+
+    @GestureState private var dragState = DragState.inactive
+    @State private var keyboardHeight: CGFloat = 0
+    @State private var keyboardAnimationDuration: Double = 0.28 // default value
+    @State private var keyboardCancellable: AnyCancellable?
+
     private func onDragEnded(drag: DragGesture.Value) {
         let dragThreshold = modalHeight * (2/3)
         if drag.predictedEndTranslation.height > dragThreshold || drag.translation.height > dragThreshold{
@@ -84,47 +85,60 @@ struct DragView<Content: View> : View {
                                         UIApplication.shared.endEditing()
                                     }
                                 })
-
+                    
                     //Foreground
                     VStack{
                         Spacer()
-                        ZStack{
+                        ZStack {
                             self.content()
                                 .frame(width: UIScreen.main.bounds.size.width, height:modalHeight)
                                 .background(backgroundColor.opacity(1.0))
                                 .cornerRadius(25, corners: [.topLeft, .topRight])
                                 .edgesIgnoringSafeArea(.all)
                         }
-                        .offset(y: isShown ? ((self.dragState.isDragging && dragState.translation.height >= 1) ? dragState.translation.height - self.value : -self.value) : modalHeight)
-                        .if (showWithAnimation) {
-                            $0.animation(.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0))
-                        }
+                        .offset(y: isShown ? ((self.dragState.isDragging && dragState.translation.height >= 1) ? dragState.translation.height - self.keyboardHeight : -self.keyboardHeight) : modalHeight)
+
+                        .animation(.easeOut(duration: keyboardAnimationDuration))
+
                         .if (shouldHideOnTap) {
                             $0.gesture(drag)
                         }
                     }
                 }}.edgesIgnoringSafeArea(.all)
-                .if (showWithAnimation) {
-                    $0.animation(.spring())
-                }
-              
-                .onAppear{
-                    NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) {(noti) in
-                        if isShown {
-                            let keyboardFrame = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
-                            self.value = keyboardFrame?.height ?? 0
+        }
+        .onAppear {
+            subscribeToKeyboardEvents()
+        }
+        .onDisappear {
+            self.unsubscribeFromKeyboardEvents()
+        }
+    }
+    
+    private  func subscribeToKeyboardEvents() {
+        
+        let keyboardWillShowPublisher = NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
+        let keyboardWillHidePublisher = NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)
+        
+        keyboardCancellable = Publishers.Merge(keyboardWillShowPublisher, keyboardWillHidePublisher)
+            .sink { notification in
+                if notification.name == UIResponder.keyboardWillShowNotification {
+                    if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                        if keyboardFrame.height > 0 {
+                            self.keyboardHeight = keyboardFrame.height
                         }
                     }
-                    NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) {(noti) in
-                        self.value = 0
-                    }
+                } else {
+                    self.keyboardHeight = 0
                 }
-            
-        }
+            }
+    }
+    
+    private func unsubscribeFromKeyboardEvents() {
+        keyboardCancellable?.cancel()
     }
 }
 
-func fraction_progress(lowerLimit: Double = 0, upperLimit:Double, current:Double, inverted:Bool = false) -> Double{
+func fraction_progress(lowerLimit: Double = 0, upperLimit:Double, current:Double, inverted:Bool = false) -> Double {
     var val:Double = 0
     if current >= upperLimit {
         val = 1
