@@ -16,7 +16,7 @@ struct DraftView<VM: DraftViewModelProtocol>: View  {
     
     @EnvironmentObject var mainAppModel: MainAppModel
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var reportsViewModel : ReportsViewModel
+    @EnvironmentObject var reportsViewModel : BaseReportsViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
