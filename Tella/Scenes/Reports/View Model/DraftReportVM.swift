@@ -38,6 +38,10 @@ class DraftReportVM: ObservableObject, DraftViewModelProtocol {
     @Published var successSavingReport : Bool = false
     @Published var failureSavingReport : Bool = false
     
+    var successSavingReportPublisher: Published<Bool>.Publisher { $successSavingReport }
+    var failureSavingReportPublisher: Published<Bool>.Publisher { $failureSavingReport }
+
+    
     var serverArray : [TellaServer] = []
     
     var cancellable : Cancellable? = nil
@@ -164,6 +168,9 @@ class DraftReportVM: ObservableObject, DraftViewModelProtocol {
         self.saveReport()
     }
     
+    func submitReport() {
+        saveReportForSubmission()
+    }
     func saveReport() {
         
         let report = Report(id: reportId,
