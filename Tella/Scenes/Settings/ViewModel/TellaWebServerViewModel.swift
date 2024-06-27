@@ -6,33 +6,24 @@
 import Foundation
 import Combine
 
-class ServerViewModel: ObservableObject {
+class TellaWebServerViewModel: ServerViewModel {
     
     var mainAppModel : MainAppModel
     
     // Server propreties
     @Published var name : String?
     @Published var projectURL : String = "https://"
-    @Published var username : String = ""
-    @Published var password : String = ""
     @Published var activatedMetadata : Bool = false
     @Published var backgroundUpload : Bool = false
     @Published var autoUpload : Bool = false
     @Published var autoDelete : Bool = false
 
-    
-    // Add URL
-    @Published var validURL : Bool = false
-    @Published var shouldShowURLError : Bool = false
-    @Published var urlErrorMessage : String = ""
-    
     // Login
     @Published var validUsername : Bool = false
     @Published var validPassword : Bool = false
     @Published var validCredentials : Bool = false
     @Published var shouldShowLoginError : Bool = false
     @Published var loginErrorMessage : String = ""
-    @Published var isLoading : Bool = false
     @Published var showNextSuccessLoginView : Bool = false
     
     private var cancellable: Cancellable? = nil
@@ -47,6 +38,7 @@ class ServerViewModel: ObservableObject {
     init(mainAppModel : MainAppModel, currentServer: TellaServer?) {
         self.mainAppModel = mainAppModel
         self.currentServer = currentServer
+        super.init()
         cancellable = $validUsername.combineLatest($validPassword).sink(receiveValue: { validUsername, validPassword  in
             self.validCredentials = validUsername && validPassword
         })

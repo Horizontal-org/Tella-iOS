@@ -7,20 +7,22 @@
 //
 
 import SwiftUI
-
+import Combine
 struct ServerSelectionView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
-    @StateObject var serverViewModel : ServerViewModel
+    @StateObject var serverViewModel : TellaWebServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
     @State var selectedServerType: ServerConnectionType? = nil
     @ObservedObject var gDriveVM: GDriveAuthViewModel
     @ObservedObject var gDriveServerVM: GDriveServerViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     let gDriveDIContainer: GDriveDIContainer
+    var subscribers: Set<AnyCancellable> = []
+
     
     init(appModel:MainAppModel, server: TellaServer? = nil, gDriveDIContainer: GDriveDIContainer) {
         self.gDriveDIContainer = gDriveDIContainer
-        _serverViewModel = StateObject(wrappedValue: ServerViewModel(mainAppModel: appModel, currentServer: server))
+        _serverViewModel = StateObject(wrappedValue: TellaWebServerViewModel(mainAppModel: appModel, currentServer: server))
         _gDriveVM = ObservedObject(wrappedValue: GDriveAuthViewModel(repository: gDriveDIContainer.gDriveRepository))
         _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveDIContainer.gDriveRepository, mainAppModel: appModel))
     }
@@ -78,18 +80,25 @@ struct ServerSelectionView: View {
                 navigateToUwaziFlow()
             case .gDrive:
                 navigateToGDriveFlow()
+            case .nextcloud:
+                navigateToNextCloud()
+//                NextCloudRepository.shared.configureNextcloudKit()
             default:
                 break
             }
         })
     }
 
+    fileprivate func navigateToNextCloud() {
+        navigateTo(destination: NextcloudAddServerURLView())
+    }
+    
     fileprivate func navigateToTellaWebFlow() {
-        navigateTo(destination: AddServerURLView(appModel: mainAppModel))
+        navigateTo(destination: TellaWebAddServerURLView(appModel: mainAppModel))
     }
 
     fileprivate func navigateToUwaziFlow() {
-        navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel)
+        navigateTo(destination: UwaziAddServerURLView(uwaziServerViewModel: UwaziServerViewModel(mainAppModel: mainAppModel))
             .environmentObject(serverViewModel)
             .environmentObject(serversViewModel))
     }

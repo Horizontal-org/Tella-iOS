@@ -41,14 +41,14 @@ struct SettingsAddServerCardView: View {
     }
     
     var addServerURLView: some View {
-        AddServerURLView(appModel: mainAppModel)
+        TellaWebAddServerURLView(appModel: mainAppModel)
     }
 }
 
 struct SettingsAddServerCardView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsAddServerCardView()
-            .environmentObject(ServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
+            .environmentObject(TellaWebServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
             .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
     }
 }

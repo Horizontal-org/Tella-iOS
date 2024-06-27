@@ -102,6 +102,6 @@ struct UwaziLoginView_Previews: PreviewProvider {
     static var previews: some View {
         UwaziLoginView()
             .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
-            .environmentObject(ServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
+            .environmentObject(TellaWebServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
     }
 }

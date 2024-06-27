@@ -8,7 +8,7 @@ import SwiftUI
 struct AddServerAccessChoiceView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var serversViewModel : ServerViewModel
+    @EnvironmentObject var serversViewModel : TellaWebServerViewModel
     
     var body: some View {
         ContainerView {

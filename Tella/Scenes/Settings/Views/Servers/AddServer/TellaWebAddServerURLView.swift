@@ -5,20 +5,17 @@
 
 import SwiftUI
 
-struct AddServerURLView: View {
+struct TellaWebAddServerURLView: View {
     
-    //    @EnvironmentObject var serversViewModel : ServersViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
-    //    var action : (() -> Void)?
     var nextButtonAction: NextButtonAction = .action
     
     
     @EnvironmentObject var serversViewModel : ServersViewModel
-    @StateObject var serverViewModel : ServerViewModel
+    @StateObject var serverViewModel : TellaWebServerViewModel
     
     init(appModel:MainAppModel, server: TellaServer? = nil) {
-        _serverViewModel = StateObject(wrappedValue: ServerViewModel(mainAppModel: appModel, currentServer: server))
+        _serverViewModel = StateObject(wrappedValue: TellaWebServerViewModel(mainAppModel: appModel, currentServer: server))
     }
     
     var body: some View {
@@ -85,6 +82,6 @@ struct AddServerURLView: View {
 
 struct AddServerURLView_Previews: PreviewProvider {
     static var previews: some View {
-        AddServerURLView(appModel: MainAppModel.stub())
+        TellaWebAddServerURLView(appModel: MainAppModel.stub())
     }
 }

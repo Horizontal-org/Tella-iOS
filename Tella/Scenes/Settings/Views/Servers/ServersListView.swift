@@ -100,7 +100,7 @@ struct ServersListView: View {
     }
 
     fileprivate func navigateToUwaziAddServerView(_ server: UwaziServer) {
-        navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel, server: server)
+        navigateTo(destination: UwaziAddServerURLView(uwaziServerViewModel: UwaziServerViewModel(mainAppModel: mainAppModel, currentServer: server))
             .environmentObject(serversViewModel))
     }
 }

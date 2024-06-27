@@ -89,14 +89,15 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settServerTellaWeb = "Setting_SettServer_TellaWeb"
     case settServerUwazi = "Setting_SettServer_Uwazi"
     case settServerGDrive = "Setting_SettServer_GDrive"
+    case settServerNextCloud = "Setting_SettServer_NextCloud"
     case settServerNoInternetConnection = "Setting_SettServer_No_Internet"
     case settServerServerURLIncorrect = "Setting_SettServer_Server_URL_Incorrect"
     case settServerUnavailableConnectionsTitle = "Setting_SettServer_UnavailableConnections_Title"
     case settServerUnavailableConnectionsDesc = "Setting_SettServer_UnavailableConnections_Description"
     case settServerNoTokenPresent = "Setting_SettServer_No_Token"
+    case serverURL = "Setting_Server_URL"
 
     // Uwazi
-    case UwaziServerURL = "Setting_Server_Uwazi_Server_URL"
     case UwaziAccessServerTitle = "Setting_Server_Uwazi_Access_Title"
     case UwaziLogin = "Setting_Server_Uwazi_Login"
     case UwaziPublicInstance = "Setting_Server_Uwazi_Access_Public"

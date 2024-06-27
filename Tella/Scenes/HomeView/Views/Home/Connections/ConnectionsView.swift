@@ -56,13 +56,17 @@ struct ConnectionsView: View {
                     ConnectionsItemView(title: "Drive",
                                         image: "home.drive",
                                         destination: GDriveView(mainAppModel: appModel))
-                }
-                
+                case .nextcloud:
+                    ConnectionsItemView(title: LocalizableSettings.settServerNextCloud.localized,
+                                        image: "home.report",
+                                        destination: GDriveView(mainAppModel: appModel)) //Destination should be changed
             }
             
             Spacer()
         }.padding(.trailing, 17)
-        
+            
+        }
+
     }
     
     private func parseUwaziServer(server: Server) -> UwaziServer {
