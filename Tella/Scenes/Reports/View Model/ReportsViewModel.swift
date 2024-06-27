@@ -7,15 +7,12 @@ import Foundation
 import Combine
 import SwiftUI
 
-class ReportsViewModel: ObservableObject {
-    
-    var mainAppModel : MainAppModel
+class ReportsViewModel: BaseReportsViewModel {
     
     @Published var draftReports : [Report] = []
     @Published var outboxedReports : [Report] = []
     @Published var submittedReports : [Report] = []
     @Published var selectedReport : Report?
-    @Published var selectedCell = Pages.draft
     
     var pageViewItems : [PageViewItem] {
         [PageViewItem(title: LocalizableReport.draftTitle.localized, page: .draft, number: draftReports.count),
@@ -35,9 +32,9 @@ class ReportsViewModel: ObservableObject {
     private var subscribers = Set<AnyCancellable>()
     private var delayTime = 0.1
     
-    init(mainAppModel : MainAppModel) {
+    override init(mainAppModel : MainAppModel) {
         
-        self.mainAppModel = mainAppModel
+        super.init(mainAppModel: mainAppModel)
         
         self.getReports()
     }

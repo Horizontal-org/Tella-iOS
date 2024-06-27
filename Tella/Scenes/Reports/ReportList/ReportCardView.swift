@@ -86,20 +86,20 @@ struct ReportCardView : View {
     private var editDraftReportView: some View {
         DraftReportView(mainAppModel: mainAppModel,
                         reportId: reportsViewModel.selectedReport?.id)
-        .environmentObject(reportsViewModel)
+        .environmentObject(reportsViewModel as BaseReportsViewModel)
     }
     
     private var submittedDetailsView: some View {
         SubmittedDetailsView(appModel: mainAppModel,
                              reportId: reportsViewModel.selectedReport?.id)
-        .environmentObject(reportsViewModel)
+        .environmentObject(reportsViewModel as BaseReportsViewModel)
     }
     
     private var outboxDetailsView: some View {
         OutboxDetailsView(appModel: mainAppModel,
                           reportsViewModel: reportsViewModel,
                           reportId: reportsViewModel.selectedReport?.id)
-        .environmentObject(reportsViewModel)
+        .environmentObject(reportsViewModel  as BaseReportsViewModel)
     }
     
     private var deleteMessage : String {

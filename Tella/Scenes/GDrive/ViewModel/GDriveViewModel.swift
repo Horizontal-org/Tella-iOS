@@ -8,8 +8,7 @@
 
 import Foundation
 
-class GDriveViewModel: ObservableObject {
-    var mainAppModel: MainAppModel
+class GDriveViewModel: BaseReportsViewModel {
     var pageViewItems: [PageViewItem] {
         [
             PageViewItem(title: LocalizableReport.draftTitle.localized,
@@ -22,9 +21,8 @@ class GDriveViewModel: ObservableObject {
                         page: .submitted,
                         number: 0)]
     }
-    @Published var selectedCell = Pages.draft
     
-    init(mainAppModel: MainAppModel) {
-        self.mainAppModel = mainAppModel
+    override init(mainAppModel: MainAppModel) {
+        super.init(mainAppModel: mainAppModel)
     }
 }
