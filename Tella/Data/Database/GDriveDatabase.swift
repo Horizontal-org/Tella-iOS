@@ -9,13 +9,13 @@
 import Foundation
 
 extension TellaDataBase {
+    
     func createGDriveServerTable() {
         let columns = [
-            cddl(D.cServerId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
             cddl(D.cName, D.text),
             cddl(D.cRootFolder, D.text)
         ]
-        
         statementBuilder.createTable(tableName: D.tGDriveServer, columns: columns)
     }
     
@@ -47,7 +47,7 @@ extension TellaDataBase {
     func deleteGDriveServer(serverId: Int) {
         do {
             try statementBuilder.delete(tableName: D.tGDriveServer,
-                                        primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
+                                        primarykeyValue: [KeyValue(key: D.cId, value: serverId)])
         } catch let error {
             debugLog(error)
         }

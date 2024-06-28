@@ -51,7 +51,7 @@ struct ConnectionsView: View {
                 case .uwazi:
                     ConnectionsItemView(title: LocalizableHome.uwaziServerTitle.localized,
                                         image: "home.uwazi",
-                                        destination: UwaziView().environmentObject(UwaziViewModel(mainAppModel: appModel, server: parseUwaziServer(server: server.servers[0]))))
+                                        destination: UwaziView().environmentObject(UwaziViewModel(mainAppModel: appModel, server: server.servers.first)))
                 case .gDrive:
                     ConnectionsItemView(title: "Drive",
                                         image: "home.drive",
@@ -63,16 +63,6 @@ struct ConnectionsView: View {
             Spacer()
         }.padding(.trailing, 17)
         
-    }
-    
-    private func parseUwaziServer(server: Server) -> UwaziServer {
-        return UwaziServer(
-            id: server.id,
-            name: server.name,
-            username: server.username,
-            password: server.password,
-            accessToken: server.accessToken
-        )
     }
 }
 
