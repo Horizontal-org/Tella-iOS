@@ -63,12 +63,31 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
     init(mainAppModel: MainAppModel, repository: GDriveRepositoryProtocol) {
         self.mainAppModel = mainAppModel
         self.gDriveRepository = repository
+        self.validateReport()
         self.getServer()
         
         self.bindVaultFileTaken()
     }
     
+    private func validateReport() {
+        Publishers.CombineLatest($title, $description)
+            .map { !$0.0.isEmpty && !$0.1.isEmpty }
+            .assign(to: \.reportIsValid, on: self)
+            .store(in: &subscribers)
+        
+        $title
+            .map { !$0.isEmpty }
+            .assign(to: \.reportIsDraft, on: self)
+            .store(in: &subscribers)
+    }
+    
     func submitReport() {
+        self.status = .submissionScheduled
+        performSubmission()
+    }
+    
+    
+    func performSubmission() {
         gDriveRepository.createDriveFolder(
             folderName: self.title,
             parentId: server?.rootFolder,
@@ -82,6 +101,7 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
                 receiveCompletion: { completion in
                     switch completion {
                     case .finished:
+                        self.saveFinalizedReport()
                         break
                     case .failure(let error):
                         debugLog(error)
@@ -95,10 +115,12 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
     
     func saveDraftReport() {
         self.status = .draft
+        self.successSavingReport = true
     }
     
     func saveFinalizedReport() {
         self.status = .finalized
+        self.successSavingReport = true
     }
     
     private func getServer() {

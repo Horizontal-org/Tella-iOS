@@ -53,8 +53,13 @@ struct GDriveView: View {
                                   nextButtonAction: .action,
                                   buttonType: .yellow,
                                   isValid: .constant(true)) {
-            navigateTo(destination: GDriveDraftView(mainAppModel: mainAppModel, gDriveDIContainer: gDriveDIContainer))
+            navigateTo(destination: newGDriveDraftView)
         } .padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0))
+    }
+    
+    private var newGDriveDraftView: some View {
+        GDriveDraftView(mainAppModel: mainAppModel, gDriveDIContainer: gDriveDIContainer)
+            .environmentObject(gDriveViewModel as BaseReportsViewModel)
     }
 }
 

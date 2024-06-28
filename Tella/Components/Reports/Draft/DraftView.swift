@@ -115,7 +115,7 @@ struct DraftView<VM: DraftViewModelProtocol>: View  {
             title: LocalizableReport.reportsSubmit.localized,
             nextButtonAction: .action,
             buttonType: .yellow,
-            isValid: .constant(true)
+            isValid: $viewModel.reportIsValid
         ) {
             viewModel.submitReport()
         }.padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
