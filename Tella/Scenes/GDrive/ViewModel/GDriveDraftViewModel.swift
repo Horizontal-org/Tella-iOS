@@ -16,12 +16,21 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
     
     var server: GDriveServer?
     
+    @Published var reportId : Int?
     @Published var title: String = ""
     @Published var description: String = ""
     
     @Published var isValidTitle : Bool = false
     @Published var isValidDescription : Bool = false
     @Published var shouldShowError : Bool = false
+    @Published var reportIsValid : Bool = false
+    @Published var reportIsDraft : Bool = false
+    
+    @Published var status: ReportStatus?
+    @Published var successSavingReport: Bool = false
+    @Published var failureSavingReport: Bool = false
+    var successSavingReportPublisher: Published<Bool>.Publisher { $successSavingReport }
+    var failureSavingReportPublisher: Published<Bool>.Publisher { $failureSavingReport }
     
     // files
     @Published var files :  Set <VaultFileDB> = []
@@ -82,6 +91,14 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
                     dump(result)
                 }
             ).store(in: &cancellables)
+    }
+    
+    func saveDraftReport() {
+        self.status = .draft
+    }
+    
+    func saveFinalizedReport() {
+        self.status = .finalized
     }
     
     private func getServer() {

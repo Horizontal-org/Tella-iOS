@@ -7,12 +7,12 @@ import SwiftUI
 struct OutboxDetailsView: View {
     
     @StateObject var outboxReportVM : OutboxReportVM
-    @EnvironmentObject var reportsViewModel : ReportsViewModel
+    @EnvironmentObject var reportsViewModel : BaseReportsViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
     
-    init(appModel: MainAppModel,reportsViewModel: ReportsViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
+    init(appModel: MainAppModel,reportsViewModel: BaseReportsViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
         _outboxReportVM = StateObject(wrappedValue: OutboxReportVM(mainAppModel: appModel, reportsViewModel: reportsViewModel, reportId:reportId, shouldStartUpload: shouldStartUpload))
     }
     
