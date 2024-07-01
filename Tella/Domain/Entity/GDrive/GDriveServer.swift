@@ -32,6 +32,7 @@ class GDriveServer: Server {
         self.rootFolder = try container.decode(String?.self, forKey: .rootFolder)
         try super.init(from: decoder)
         self.serverType = .gDrive
+        self.allowMultiple = false
     }
 
     override func encode(to encoder: Encoder) throws {
