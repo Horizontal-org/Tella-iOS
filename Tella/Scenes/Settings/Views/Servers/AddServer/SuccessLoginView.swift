@@ -6,14 +6,14 @@
 import SwiftUI
 
 struct SuccessLoginView: View {
-
     @EnvironmentObject var mainAppModel : MainAppModel
     @EnvironmentObject var serversViewModel : ServersViewModel
     @EnvironmentObject var serverViewModel : ServerViewModel
-    
     @EnvironmentObject private var appViewState: AppViewState
     @State var showNextView : Bool = false
     
+    var navigateToAction: () -> Void
+    var type: ServerConnectionType = .tella
     var body: some View {
         
         ContainerView {
@@ -27,21 +27,23 @@ struct SuccessLoginView: View {
                 Spacer()
                     .frame(height: 48)
                 
-                TellaButtonView<AnyView> (title: "GO TO REPORTS",
+                TellaButtonView<AnyView> (title: type.successConnectionButtonContent,
                                           nextButtonAction: .action,
                                           buttonType: .yellow,
                                           isValid: .constant(true)) {
-                    navigateTo(destination: ReportsView(mainAppModel: mainAppModel))
+                    navigateToAction()
                 }
                 
                 Spacer()
                     .frame(height: 12)
                 
-                TellaButtonView (title: "Advanced settings",
-                                 nextButtonAction: .destination,
-                                 destination: AdvancedServerSettingsView() 
-                    .environmentObject(serverViewModel),
-                                 isValid: .constant(true))
+                if type == .tella {
+                    TellaButtonView (title: "Advanced settings",
+                                     nextButtonAction: .destination,
+                                     destination: AdvancedServerSettingsView()
+                        .environmentObject(serverViewModel),
+                                     isValid: .constant(true))
+                }
                 Spacer()
                 
             } .padding(EdgeInsets(top: 0, leading: 26, bottom: 0, trailing: 26))
@@ -79,7 +81,7 @@ struct SuccessLoginView: View {
 
 struct SuccessLoginView_Previews: PreviewProvider {
     static var previews: some View {
-        SuccessLoginView()
+        SuccessLoginView(navigateToAction: {})
             .environmentObject(MainAppModel.stub())
             .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
     }

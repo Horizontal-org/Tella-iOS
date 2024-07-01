@@ -86,16 +86,9 @@ struct ServerLoginView: View {
     }
     
     private var successLoginView: some View {
-        
-        SuccessLoginView()
-            .environmentObject(serverViewModel)
+        SuccessLoginView(navigateToAction: {
+            navigateTo(destination: ReportsView(mainAppModel: mainAppModel))
+        }).environmentObject(serverViewModel)
     }
     
 }
-//struct ServerLoginView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ServerLoginView()
-//            .environmentObject(ServersViewModel(mainAppModel: MainAppModel()))
-//            .environmentObject(ServerViewModel(mainAppModel: MainAppModel(), currentServer: nil))
-//    }
-//}

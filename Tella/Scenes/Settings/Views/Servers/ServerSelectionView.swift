@@ -13,6 +13,7 @@ struct ServerSelectionView: View {
     @StateObject var serverViewModel : ServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
     @State var selectedServerType: ServerConnectionType = .unknown
+    @ObservedObject var gDriveVM = GDriveAuthViewModel()
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     init(appModel:MainAppModel, server: TellaServer? = nil) {
@@ -33,21 +34,21 @@ struct ServerSelectionView: View {
             }
         }
     }
-    fileprivate func buttonViews() -> Group<TupleView<(some View, some View)>> {
-        return Group {
-            TellaButtonView<AnyView>(title: LocalizableSettings.settServerTellaWeb.localized,
-                                     nextButtonAction: .action,
-                                     isOverlay: selectedServerType == .tella,
-                                     isValid: .constant(true),action: {
-                selectedServerType = .tella
-            })
-            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
-            TellaButtonView<AnyView>(title: LocalizableSettings.settServerUwazi.localized,
-                                     nextButtonAction: .action,
-                                     isOverlay: selectedServerType == .uwazi,
-                                     isValid: .constant(true), action: {
-                selectedServerType = .uwazi
-            }).padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+    
+    fileprivate func buttonViews() -> some View {
+        Group {
+            ForEach(serverConnections, id: \.type) { connection in
+                TellaButtonView<AnyView>(
+                    title: connection.title,
+                    nextButtonAction: .action,
+                    isOverlay: selectedServerType == connection.type,
+                    isValid: .constant(true),
+                    action: {
+                        selectedServerType = connection.type
+                    }
+                )
+                .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+            }
         }
     }
 
@@ -62,6 +63,8 @@ struct ServerSelectionView: View {
                 navigateToTellaWebFlow()
             case .uwazi:
                 navigateToUwaziFlow()
+            case .gDrive:
+                navigateToGDriveFlow()
             default:
                 break
             }
@@ -76,6 +79,12 @@ struct ServerSelectionView: View {
         navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel)
             .environmentObject(serverViewModel)
             .environmentObject(serversViewModel))
+    }
+    
+    fileprivate func navigateToGDriveFlow() {
+        gDriveVM.handleSignIn { 
+            navigateTo(destination: SelectDriveConnection( dGriveServerViewModel: GDriveServerViewModel()), title: "Select Google drive")
+        }
     }
 
 

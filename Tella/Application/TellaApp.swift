@@ -15,6 +15,7 @@ struct TellaApp: App {
     @Environment(\.scenePhase) var scenePhase
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     let delayTimeInSecond = 1.0
+    let gDriveAuthViewModel = GDriveAuthViewModel()
     
     var body: some Scene {
         WindowGroup {
@@ -26,6 +27,8 @@ struct TellaApp: App {
                     if value {
                         self.saveData(lockApptype: .finishBackgroundTasks)
                     }
+                }.onOpenURL { url in
+                    gDriveAuthViewModel.handleUrl(url: url)
                 }
             
         }.onChange(of: scenePhase) { phase in
@@ -34,7 +37,6 @@ struct TellaApp: App {
                 UIApplication.getTopViewController()?.dismiss(animated: false)
                 self.saveData(lockApptype: .enterInBackground)
             case .active:
-                UIApplication.getTopViewController()?.dismiss(animated: false)
                 self.resetApp()
             case .inactive:
                 appViewState.homeViewModel.shouldShowSecurityScreen = true
@@ -72,7 +74,8 @@ struct TellaApp: App {
         let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
 
         if shouldResetApp && appEnterInBackground && !hasFileOnBackground {
-            
+            UIApplication.getTopViewController()?.dismiss(animated: false)
+
             DispatchQueue.main.async {
                 appViewState.shouldHidePresentedView = true
                 appViewState.resetApp()
