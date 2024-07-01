@@ -80,10 +80,9 @@ struct ServersListView: View {
         case .tella:
             shouldShowEditServer = true
         case .uwazi:
-            navigateToUwaziAddServerView(
-                UwaziServer(
-                    id: server.id, name: server.name, serverURL: server.url, accessToken: server.accessToken)
-            )
+            guard let server = server as? UwaziServer else {return}
+            navigateToUwaziAddServerView( server)
+                
         default:
             break
         }

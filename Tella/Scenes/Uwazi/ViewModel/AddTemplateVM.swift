@@ -29,10 +29,10 @@ class AddTemplateViewModel: ObservableObject {
         return self.mainAppModel.tellaData
     }
     
-    init(mainAppModel : MainAppModel, serverId: Int) {
+    init(mainAppModel : MainAppModel, serverId: Int?) {
         
         self.mainAppModel = mainAppModel
-        self.server = self.getServerById(id: serverId)
+        self.server = self.getServerById(id: serverId!)
         self.serverName = server?.name ?? ""
         self.entityFetcher = UwaziEntityFetcher(
             server: self.server, subscribers: subscribers

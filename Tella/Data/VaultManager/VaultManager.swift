@@ -80,7 +80,7 @@ class VaultManager : VaultManagerInterface, ObservableObject{
 
     func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL? {
 
-        let tmpFileURL = createTempFileURL(pathExtension: vaultFile.fileExtension)
+        let tmpFileURL = createTempFileURL(fileName: vaultFile.name ,pathExtension: vaultFile.fileExtension)
         
         guard (fileManager.createEmptyFile(atPath: tmpFileURL)) else {
             debugLog("File not created.")

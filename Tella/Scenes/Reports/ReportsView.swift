@@ -83,7 +83,7 @@ struct ReportsView: View {
     }
     
     private var newDraftReportView: some View {
-        DraftReportView(mainAppModel: mainAppModel).environmentObject(reportsViewModel)
+        DraftReportView(mainAppModel: mainAppModel).environmentObject(reportsViewModel as BaseReportsViewModel)
     }
 
     private func showDeleteReportConfirmationView() {

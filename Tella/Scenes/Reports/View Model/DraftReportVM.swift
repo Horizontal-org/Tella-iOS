@@ -7,7 +7,7 @@ import Foundation
 import Combine
 import SwiftUI
 
-class DraftReportVM: ObservableObject {
+class DraftReportVM: ObservableObject, DraftViewModelProtocol {
     
     var mainAppModel : MainAppModel
     
@@ -37,6 +37,10 @@ class DraftReportVM: ObservableObject {
     
     @Published var successSavingReport : Bool = false
     @Published var failureSavingReport : Bool = false
+    
+    var successSavingReportPublisher: Published<Bool>.Publisher { $successSavingReport }
+    var failureSavingReportPublisher: Published<Bool>.Publisher { $failureSavingReport }
+
     
     var serverArray : [TellaServer] = []
     
@@ -164,6 +168,9 @@ class DraftReportVM: ObservableObject {
         self.saveReport()
     }
     
+    func submitReport() {
+        saveReportForSubmission()
+    }
     func saveReport() {
         
         let report = Report(id: reportId,

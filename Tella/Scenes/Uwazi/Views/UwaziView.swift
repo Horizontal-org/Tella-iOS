@@ -55,7 +55,7 @@ struct UwaziView: View {
                 
                 AddFileYellowButton(action: {
                     navigateTo(destination: AddTemplatesView()
-                        .environmentObject(AddTemplateViewModel(mainAppModel: uwaziViewModel.mainAppModel, serverId: uwaziViewModel.server.id!)))
+                        .environmentObject(AddTemplateViewModel(mainAppModel: uwaziViewModel.mainAppModel, serverId: uwaziViewModel.server?.id)))
                 }).frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
                 
             }.background(Styles.Colors.backgroundMain)

@@ -1,15 +1,18 @@
+//
+//  AddFilesToDraftView.swift
 //  Tella
 //
-//  Copyright © 2022 INTERNEWS. All rights reserved.
+//  Created by gus valbuena on 6/24/24.
+//  Copyright © 2024 HORIZONTAL. All rights reserved.
 //
 
 import SwiftUI
 
-struct AddFilesToDraftView: View {
+struct AddFilesToDraftView<VM: DraftViewModelProtocol>: View {
     
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var draftReportVM: DraftReportVM
+    @EnvironmentObject var draftReportVM: VM
     
     private let gridLayout: [GridItem] = [GridItem(spacing: 12),
                                           GridItem(spacing: 12),
@@ -100,13 +103,5 @@ struct AddFilesToDraftView: View {
         default:
             break
         }
-    }
-}
-
-struct AddFilesToDraftView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddFileView()
-            .environmentObject(MainAppModel.stub())
-            .environmentObject(FileListViewModel.stub())
     }
 }

@@ -41,6 +41,7 @@ struct NavigationHeaderView: View {
     var rightButtonAction: (() -> Void)?
     var title: String = ""
     var type: NavigationType
+    var isRightButtonEnabled: Bool = true
 
     var body: some View {
         HStack(spacing: 0) {
@@ -79,7 +80,9 @@ struct NavigationHeaderView: View {
             Image(type.imageName)
                 .resizable()
                 .frame(width: 24, height: 24)
+                .opacity(isRightButtonEnabled ? 1 : 0.4)
         }
+        .disabled(!isRightButtonEnabled)
     }
 }
 
