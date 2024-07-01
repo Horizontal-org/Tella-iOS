@@ -1802,6 +1802,7 @@
 		127B053F289C0A58008C047D /* Servers */ = {
 			isa = PBXGroup;
 			children = (
+				12B84B832C32E646006363F0 /* Nextcloud */,
 				15994A0A2BFBC6B10017F153 /* GDrive */,
 				12ADF98A28BD130C00FA96EB /* ServersListView.swift */,
 				120451F928C7525200D572A7 /* EditSettingsServerView.swift */,
@@ -2118,6 +2119,15 @@
 				154B029B2C10FAD0007A5D2B /* DriveConnectionType.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		12B84B832C32E646006363F0 /* Nextcloud */ = {
+			isa = PBXGroup;
+			children = (
+				209AC67C2C2D65EB00492356 /* NextcloudAddServerURLView.swift */,
+				209AC67E2C2D660600492356 /* NextcloudServerViewModel.swift */,
+			);
+			path = Nextcloud;
 			sourceTree = "<group>";
 		};
 		12BCB2E62816972200889E5A /* Localizable */ = {
@@ -2453,8 +2463,6 @@
 		209AC67B2C2D5F0C00492356 /* Nextcloud */ = {
 			isa = PBXGroup;
 			children = (
-				209AC67C2C2D65EB00492356 /* NextcloudAddServerURLView.swift */,
-				209AC67E2C2D660600492356 /* NextcloudServerViewModel.swift */,
 			);
 			path = Nextcloud;
 			sourceTree = "<group>";
