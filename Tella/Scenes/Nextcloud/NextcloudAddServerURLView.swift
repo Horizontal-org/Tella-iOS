@@ -8,7 +8,16 @@
 import SwiftUI
 
 struct NextcloudAddServerURLView: View {
+    var nextcloudVM: NextcloudServerViewModel
+    
     var body: some View {
-     AddServerURLView(viewModel: NextcloudServerViewModel())
+        AddServerURLView(viewModel: nextcloudVM,
+                         successCheckServerAction: {
+            navigateToLoginView()
+        })
+    }
+    
+    func navigateToLoginView() {
+        
     }
 }

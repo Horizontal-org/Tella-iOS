@@ -14,8 +14,16 @@ class NextcloudServerViewModel: ServerViewModel {
     }
     
     override func checkURL() {
-//        self.isLoading = true
-        nextcloudRepository.checkServer(serverUrl: serverURL)
+        checkServerState = .loading
+        Task { @MainActor in
+            do {
+               try await nextcloudRepository.checkServer(serverUrl: serverURL)
+                checkServerState = .loaded(true)
+            }
+            catch let error{
+                checkServerState = .error(error.localizedDescription)
+            }
+        }
     }
     
 //    func addServer() {

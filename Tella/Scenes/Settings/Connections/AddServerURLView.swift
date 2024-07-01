@@ -11,6 +11,8 @@ struct AddServerURLView: View {
     @EnvironmentObject var serversViewModel: ServersViewModel
     @StateObject var viewModel: ServerViewModel
     
+    var successCheckServerAction: (() -> Void)? = nil
+
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
@@ -41,11 +43,32 @@ struct AddServerURLView: View {
                     self.presentationMode.wrappedValue.dismiss()
                 })
             } .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-            if viewModel.isLoading {
+            handleState
+            if viewModel.isLoading { // should be removed after using the checkServerState in the uwaziviewmodel
                 CircularActivityIndicatory()
             }
         }
         .containerStyle()
         .navigationBarHidden(true)
+        .onReceive(viewModel.$checkServerState) { value in
+            if value == .loaded(true) {
+                successCheckServerAction?()
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var handleState : some View {
+        switch viewModel.checkServerState {
+        case .loading:
+            CircularActivityIndicatory()
+        case .error(let message):
+            VStack { // This VStack is used to display the Toast View Properly
+                Spacer()
+                ToastView(message: message)
+            }
+        default: 
+            EmptyView()
+        }
     }
 }

@@ -19,4 +19,7 @@ class ServerViewModel: ObservableObject {
     @Published var validURL : Bool = false
     @Published var shouldShowURLError : Bool = false
     @Published var urlErrorMessage : String = ""
+    // ServerCheck
+    @Published var checkServerState: ViewModelState<Bool> = .loaded(false)
+
 }

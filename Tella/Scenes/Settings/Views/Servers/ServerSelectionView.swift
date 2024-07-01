@@ -82,7 +82,6 @@ struct ServerSelectionView: View {
                 navigateToGDriveFlow()
             case .nextcloud:
                 navigateToNextCloud()
-//                NextCloudRepository.shared.configureNextcloudKit()
             default:
                 break
             }
@@ -90,7 +89,7 @@ struct ServerSelectionView: View {
     }
 
     fileprivate func navigateToNextCloud() {
-        navigateTo(destination: NextcloudAddServerURLView())
+        navigateTo(destination: NextcloudAddServerURLView(nextcloudVM: NextcloudServerViewModel()))
     }
     
     fileprivate func navigateToTellaWebFlow() {
