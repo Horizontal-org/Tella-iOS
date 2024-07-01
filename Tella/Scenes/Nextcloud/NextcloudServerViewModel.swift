@@ -17,4 +17,26 @@ class NextcloudServerViewModel: ServerViewModel {
 //        self.isLoading = true
         nextcloudRepository.checkServer(serverUrl: serverURL)
     }
+    
+//    func addServer() {
+//        let server = NextcloudServer(serverURL: serverURL, username: username, password: password)
+//        
+//        let serverID = mainAppModel.tellaData?.addNextcloudServer(server: server)
+//        
+//        guard let serverID else {
+//            return
+//        }
+//        server.id = serverID
+//        self.currentServer = server
+//    }
+//    
+//    
+//    func updateServer() {
+//        guard let currentServer = self.currentServer as? NextcloudServer  else { return  }
+//        currentServer.userId = userId
+//        currentServer.rootFolder = rootFolder
+//        mainAppModel.tellaData?.updateNextcloudServer(server: currentServer)
+//    }
+    
+    
 }

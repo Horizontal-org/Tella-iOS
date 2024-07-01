@@ -16,6 +16,8 @@ class TellaData : ObservableObject {
     var tellaServers = CurrentValueSubject<[TellaServer], Error>([])
     var uwaziServers = CurrentValueSubject<[UwaziServer], Error>([])
     var gDriveServers = CurrentValueSubject<[GDriveServer], Error>([])
+    var nextcloudServers = CurrentValueSubject<[NextcloudServer], Error>([])
+
     
     // Reports
     var draftReports = CurrentValueSubject<[Report], Error>([])
@@ -53,6 +55,13 @@ class TellaData : ObservableObject {
         return id
     }
     
+    func addNextcloudServer(server : NextcloudServer) -> Int?{
+        let addServerResult = database.addNextcloudServer(server: server)
+        getServers()
+        
+        return addServerResult
+    }
+
     @discardableResult
     func updateServer(server : TellaServer) -> Result<Bool, Error> {
         let updateServerResult = database.updateServer(server: server)
@@ -66,6 +75,12 @@ class TellaData : ObservableObject {
         return id
     }
     
+    func updateNextcloudServer(server: NextcloudServer) -> Int? {
+        let id = database.updateNextcloudServer(server: server)
+        getServers()
+        return id
+    }
+
     @discardableResult
     func deleteTellaServer(serverId : Int) -> Result<Bool, Error> {
         let deleteServerResult = database.deleteServer(serverId: serverId)
@@ -86,6 +101,8 @@ class TellaData : ObservableObject {
             deleteUwaziServer(serverId: serverId)
         case .gDrive:
             deleteGDriveServer(serverId: serverId)
+        case .nextcloud:
+            deleteNextcloudServer(serverId: serverId)
         default:
             break
         }
@@ -116,13 +133,21 @@ class TellaData : ObservableObject {
         getServers()
     }
     
+    func deleteNextcloudServer(serverId: Int) -> Bool {
+        // signOut
+        let resultDelete = database.deleteNextcloudServer(serverId: serverId)
+        getServers()
+        return resultDelete
+    }
+
     func getServers(){
         DispatchQueue.main.async {
             self.tellaServers.value = self.database.getTellaServers()
             self.uwaziServers.value = self.database.getUwaziServers()
             self.gDriveServers.value = self.database.getDriveServers()
-            
-            self.servers.value = self.tellaServers.value + self.uwaziServers.value + self.gDriveServers.value
+            self.nextcloudServers.value = self.database.getNextcloudServer()
+
+            self.servers.value = self.tellaServers.value + self.uwaziServers.value + self.gDriveServers.value + self.nextcloudServers.value
         }
     }
     
