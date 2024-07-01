@@ -51,8 +51,9 @@ struct ServersListView: View {
     }
     
     private func showServerActionBottomSheet(server:Server) {
+        let filteredActionItems = server.serverType == .gDrive ? serverActionItems.filter { $0.type as? ServerActionType != .edit } : serverActionItems
         sheetManager.showBottomSheet(modalHeight: 176) {
-            ActionListBottomSheet(items: serverActionItems,
+            ActionListBottomSheet(items: filteredActionItems,
                                   headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
                                   action:  {item in
                 

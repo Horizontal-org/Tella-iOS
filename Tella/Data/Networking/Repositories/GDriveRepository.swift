@@ -12,19 +12,25 @@ import GoogleAPIClientForREST
 import Combine
 
 protocol GDriveRepositoryProtocol {
-    func handleSignIn() async throws -> Void
-    func restorePreviousSignIn() async throws -> Void
+    func handleSignIn() async throws
+    func restorePreviousSignIn() async throws
     func handleUrl(url: URL)
     func getSharedDrives() -> AnyPublisher<[SharedDrive], Error>
+    func createDriveFolder(folderName: String) -> AnyPublisher<String, Error>
+    func signOut() -> Void
 }
 
 class GDriveRepository: GDriveRepositoryProtocol  {
-    static let shared = GDriveRepository()
-    
     private var googleUser: GIDGoogleUser?
     
     private var rootViewController: UIViewController? {
         return UIApplication.shared.windows.first?.rootViewController
+    }
+    
+    private func ensureSignedIn() async throws {
+        if self.googleUser == nil {
+            try await restorePreviousSignIn()
+        }
     }
     
     func handleSignIn() async throws {
@@ -37,6 +43,8 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                     if let error = error {
                         continuation.resume(throwing: error)
                     } else {
+                        signInResult?.user.addScopes([GoogleAuthConstants.gDriveScopes], presenting: rootViewController)
+                        self.googleUser = signInResult?.user
                         continuation.resume(returning: ())
                     }
                 }
@@ -56,7 +64,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                         continuation.resume(throwing: error)
                         return
                     }
-                    user?.addScopes([GoogleAuthScopes.gDriveScopes], presenting: rootViewController)
+                    user?.addScopes([GoogleAuthConstants.gDriveScopes], presenting: rootViewController)
                     
                     self.googleUser = user
                     continuation.resume(returning: ())
@@ -72,7 +80,9 @@ class GDriveRepository: GDriveRepositoryProtocol  {
     func getSharedDrives() -> AnyPublisher<[SharedDrive], Error> {
         Deferred {
             Future { [weak self] promise in
-                guard let user = self?.googleUser else { return }
+                guard let user = self?.googleUser else {
+                    return promise(.failure(APIError.noToken))
+                }
                 let driveService = GTLRDriveService()
                 driveService.authorizer = user.fetcherAuthorizer
 
@@ -101,5 +111,53 @@ class GDriveRepository: GDriveRepositoryProtocol  {
             }
         }
         .eraseToAnyPublisher()
+    }
+    
+    func createDriveFolder(
+        folderName: String
+    ) -> AnyPublisher<String, Error> {
+        Deferred {
+            Future { [weak self] promise in
+                guard let user = self?.googleUser else {
+                    return promise(.failure(APIError.noToken))
+                }
+                
+                let driveService = GTLRDriveService()
+                driveService.authorizer = user.fetcherAuthorizer
+                
+                let folder = GTLRDrive_File()
+                folder.name = folderName
+                folder.mimeType = GoogleAuthConstants.gDriveFolderMimeType
+                
+                let query = GTLRDriveQuery_FilesCreate.query(withObject: folder, uploadParameters: nil)
+                
+                driveService.executeQuery(query) { (ticket, file, error) in
+                    if let error = error {
+                        print("Error creating folder: \(error.localizedDescription)")
+                        promise(.failure(error))
+                        return
+                    }
+                    
+                    guard let createdFile = file as? GTLRDrive_File else {
+                        return
+                    }
+                    
+                    promise(.success(createdFile.identifier ?? ""))
+                }
+            }
+        }.eraseToAnyPublisher()
+    }
+    
+    func signOut() {
+        GIDSignIn.sharedInstance.signOut()
+    }
+}
+
+
+struct GDriveDIContainer {
+    let gDriveRepository: GDriveRepositoryProtocol
+    
+    init(gDriveRepository: GDriveRepositoryProtocol = GDriveRepository()) {
+        self.gDriveRepository = gDriveRepository
     }
 }

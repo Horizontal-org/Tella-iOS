@@ -13,7 +13,7 @@ struct DownloadedResources: View {
     @EnvironmentObject var viewModel: ResourcesViewModel
     
     var body: some View {
-        VStack {
+        VStack(spacing: 8) {
             SectionTitle(text: LocalizableResources.resourcesDownloadedTitle.localized)
             if viewModel.downloadedResources.isEmpty && viewModel.availableResources.isEmpty {
                 emptyView            }

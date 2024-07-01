@@ -12,32 +12,45 @@ struct ServerSelectionView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
     @StateObject var serverViewModel : ServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
-    @State var selectedServerType: ServerConnectionType = .unknown
-    @ObservedObject var gDriveVM = GDriveAuthViewModel()
+    @State var selectedServerType: ServerConnectionType? = nil
+    @ObservedObject var gDriveVM: GDriveAuthViewModel
+    @ObservedObject var gDriveServerVM: GDriveServerViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    let gDriveDIContainer: GDriveDIContainer
     
-    init(appModel:MainAppModel, server: TellaServer? = nil) {
+    init(appModel:MainAppModel, server: TellaServer? = nil, gDriveDIContainer: GDriveDIContainer) {
+        self.gDriveDIContainer = gDriveDIContainer
         _serverViewModel = StateObject(wrappedValue: ServerViewModel(mainAppModel: appModel, currentServer: server))
+        _gDriveVM = ObservedObject(wrappedValue: GDriveAuthViewModel(repository: gDriveDIContainer.gDriveRepository))
+        _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveDIContainer.gDriveRepository, mainAppModel: appModel))
     }
+
     var body: some View {
         ContainerView {
-
             VStack(spacing: 20) {
                 Spacer()
                 HeaderView()
                 buttonViews()
+                if(!serversViewModel.unavailableServers.isEmpty) {
+                    unavailableConnectionsView()
+                }
                 Spacer()
                 bottomView()
             }
             .toolbar {
                 LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
             }
+        }.onReceive(gDriveVM.$signInState){ signInState in
+            if case .error(let message) = signInState {
+                Toast.displayToast(message: message)
+            }
         }
+        
     }
     
     fileprivate func buttonViews() -> some View {
-        Group {
-            ForEach(serverConnections, id: \.type) { connection in
+        return Group {
+            ForEach(serversViewModel.filterServerConnections(), id: \.type) { connection in
                 TellaButtonView<AnyView>(
                     title: connection.title,
                     nextButtonAction: .action,
@@ -82,11 +95,27 @@ struct ServerSelectionView: View {
     }
     
     fileprivate func navigateToGDriveFlow() {
-        gDriveVM.handleSignIn { 
-            navigateTo(destination: SelectDriveConnection( dGriveServerViewModel: GDriveServerViewModel()), title: "Select Google drive")
+        gDriveVM.handleSignIn {
+            navigateTo(
+                destination: SelectDriveConnection(gDriveServerViewModel: gDriveServerVM),
+                title: LocalizableSettings.settServerGDrive.localized
+            )
         }
     }
 
+    fileprivate func unavailableConnectionsView() -> some View {
+        VStack(spacing: 20) {
+            SectionTitle(text: LocalizableSettings.settServerUnavailableConnectionsTitle.localized)
+            SectionMessage(text: LocalizableSettings.settServerUnavailableConnectionsDesc.localized)
+            ForEach(serversViewModel.unavailableServers, id: \.id) { server in
+                TellaButtonView<AnyView>(
+                    title: server.serverType?.serverTitle ?? "",
+                    nextButtonAction: .action,
+                    isValid: .constant(false)
+                )
+            }
+        }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+    }
 
     struct HeaderView: View {
         var body: some View {
@@ -100,14 +129,14 @@ struct ServerSelectionView: View {
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
-            }
+            }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
         }
     }
 }
 
 struct ServerSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ServerSelectionView(appModel: MainAppModel.stub())
+        ServerSelectionView(appModel: MainAppModel.stub(), gDriveDIContainer: GDriveDIContainer())
             .environmentObject(MainAppModel.stub())
             .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
     }

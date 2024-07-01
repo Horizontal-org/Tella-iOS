@@ -34,6 +34,7 @@ struct D {
     static let tUwaziEntityInstanceVaultFile = "t_uwazi_entity_instance_vault_file"
     static let tFeedback = "t_feedback"
     static let tResource = "t_resource"
+    static let tGDriveServer = "t_drive_server"
 
     /* DATABASE COLUMNS */
     // MARK: - DATABASE COLUMNS
@@ -90,6 +91,9 @@ struct D {
     static let cFilename = "c_filename"
     static let cExternalId = "c_external_id"
     static let cSize = "c_size"
+    
+    //gDrive
+    static let cRootFolder = "c_root_folder"
 
 }
 

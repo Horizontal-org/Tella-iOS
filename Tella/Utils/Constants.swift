@@ -11,6 +11,7 @@ struct TellaUrls {
     static let gDriveURL = "https://tella-app.org/gdrive"
 }
 
-struct GoogleAuthScopes {
+struct GoogleAuthConstants {
     static let gDriveScopes = "https://www.googleapis.com/auth/drive"
+    static let gDriveFolderMimeType = "application/vnd.google-apps.folder"
 }

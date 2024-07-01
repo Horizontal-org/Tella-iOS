@@ -13,6 +13,7 @@ class Server: Codable, Equatable, Hashable {
     var password: String?
     var accessToken: String?
     var serverType: ServerConnectionType?
+    var allowMultiple: Bool?
 
     enum CodingKeys: String, CodingKey {
         case id = "c_server_id"
@@ -30,7 +31,8 @@ class Server: Codable, Equatable, Hashable {
          username: String? = nil,
          password: String? = nil,
          accessToken: String? = nil,
-         serverType: ServerConnectionType? = nil
+         serverType: ServerConnectionType? = nil,
+         allowMultipleConnections: Bool? = true
         ) {
         self.id = id
         self.name = name

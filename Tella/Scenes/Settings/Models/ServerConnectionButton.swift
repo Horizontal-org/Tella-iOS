@@ -16,5 +16,5 @@ struct ServerConnectionButton {
 let serverConnections: [ServerConnectionButton] = [
     ServerConnectionButton(title: LocalizableSettings.settServerTellaWeb.localized, type: .tella),
     ServerConnectionButton(title: LocalizableSettings.settServerUwazi.localized, type: .uwazi),
-    ServerConnectionButton(title: "GOOGLE DRIVE", type: .gDrive)
+    ServerConnectionButton(title: LocalizableSettings.settServerGDrive.localized, type: .gDrive)
 ]

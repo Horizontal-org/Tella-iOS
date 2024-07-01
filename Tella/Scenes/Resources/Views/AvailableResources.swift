@@ -11,7 +11,7 @@ import SwiftUI
 struct AvailableResources: View {
     @EnvironmentObject var viewModel : ResourcesViewModel
     var body: some View {
-        VStack {
+        VStack(spacing: 8) {
             SectionTitle(text: LocalizableResources.resourcesAvailableTitle.localized)
             availableResourceContent
         }

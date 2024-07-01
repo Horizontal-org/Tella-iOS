@@ -51,7 +51,7 @@ struct CreateEntityView: View {
             backButtonAction: { showSaveEntityConfirmationView() },
             rightButtonAction: {entityViewModel.saveEntityDraft() },
             title: entityViewModel.templateName,
-            type: .save
+            type: .draft
         )
     }
 
