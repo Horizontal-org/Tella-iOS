@@ -16,13 +16,12 @@ class Server: Codable, Equatable, Hashable {
     var allowMultiple: Bool?
 
     enum CodingKeys: String, CodingKey {
-        case id = "c_server_id"
+        case id = "c_id"
         case name = "c_name"
         case url = "c_url"
         case username = "c_username"
         case password = "c_password"
         case accessToken = "c_access_token"
-        case serverType
     }
     
     init(id: Int? = nil,

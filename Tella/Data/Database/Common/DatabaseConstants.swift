@@ -35,6 +35,7 @@ struct D {
     static let tFeedback = "t_feedback"
     static let tResource = "t_resource"
     static let tGDriveServer = "t_drive_server"
+    static let tNextcloudServer = "t_nextcloud_server"
 
     /* DATABASE COLUMNS */
     // MARK: - DATABASE COLUMNS
@@ -94,6 +95,11 @@ struct D {
     
     //gDrive
     static let cRootFolder = "c_root_folder"
+    
+    //nextcloud
+    static let cUserId = "c_user_id"
+
+    
 
 }
 
