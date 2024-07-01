@@ -115,7 +115,20 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
     
     func saveDraftReport() {
         self.status = .draft
-        self.successSavingReport = true
+        
+        let gDriveReport = GDriveReport(
+            id: reportId,
+            title: title,
+            description: description,
+            status: status,
+            server: server,
+            vaultFiles: self.files.compactMap { ReportFile( fileId: $0.id,
+                                                            status: .notSubmitted,
+                                                            bytesSent: 0,
+                                                            createdDate: Date())}
+        )
+        
+        addReport(report: gDriveReport)
     }
     
     func saveFinalizedReport() {
@@ -123,6 +136,18 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
         self.successSavingReport = true
     }
     
+    func addReport(report: GDriveReport) {
+        let idResult = mainAppModel.tellaData?.addGDriveReport(report: report)
+        
+        switch idResult {
+        case .success(let id ):
+            dump(id)
+            self.reportId = id
+            self.successSavingReport = true
+        default:
+            self.failureSavingReport = true
+        }
+    }
     private func getServer() {
         self.server = mainAppModel.tellaData?.gDriveServers.value.first
     }

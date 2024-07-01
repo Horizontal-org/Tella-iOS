@@ -41,6 +41,8 @@ class TellaDataBase : DataBase {
                 addRelationshipColumnToUwaziTemplate()
             case 5:
                 createGDriveServerTable()
+                createGDriveReportTable()
+                createGDriveReportFilesTable()
             default :
                 break
             }
