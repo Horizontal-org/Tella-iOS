@@ -8,7 +8,7 @@
 
 import Foundation
 
-class UwaziServer : Server {
+class UwaziServer : WebServer {
     var locale: String?
     var cookie: String?
     
@@ -19,17 +19,23 @@ class UwaziServer : Server {
          password: String? = nil,
          accessToken: String? = nil,
          locale: String? = nil,
-         serverType: ServerConnectionType? = .uwazi
-        ) {
+         serverType: ServerConnectionType? = .uwazi) {
+        
+        super.init(id: id,
+                   name: name,
+                   serverURL: serverURL, 
+                   username: username,
+                   password: password,
+                   accessToken: accessToken,
+                   serverType: serverType)
         self.locale = locale
-        super.init(id: id, name: name, serverURL: serverURL, username: username, password: password, accessToken: accessToken, serverType: serverType)
         self.cookie = createCookie()
     }
     
     required init(from decoder: Decoder) throws {
         try super.init(from: decoder)
     }
-
+    
     private func createCookie() -> String {
         let accessTokenValue = accessToken ?? ""
         let localeValue = locale ?? ""

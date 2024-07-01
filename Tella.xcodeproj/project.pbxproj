@@ -206,6 +206,8 @@
 		126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ECFE927C57FA600ED5161 /* CameraState.swift */; };
 		126FE4D727A427E200AE4188 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FE4D627A427E200AE4188 /* Constants.swift */; };
 		126FEE0A2AC4993900B99298 /* ReportPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FEE092AC4993900B99298 /* ReportPages.swift */; };
+		127092DA2C2EE4E3002030AA /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092D92C2EE4E3002030AA /* Server.swift */; };
+		127092DC2C2EE7AD002030AA /* WebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092DB2C2EE7AD002030AA /* WebServer.swift */; };
 		1272F25D27C91ACD0054F2E2 /* ImportFileProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1272F25C27C91ACD0054F2E2 /* ImportFileProgress.swift */; };
 		1272F25F27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1272F25E27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift */; };
 		1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1272F26027C91CD90054F2E2 /* ImportFilesProgressModels.swift */; };
@@ -321,7 +323,7 @@
 		12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07ECB2B06603A0030AD6E /* EncryptionService.swift */; };
 		12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07F042B0748D50030AD6E /* TopSheetView.swift */; };
 		12C2BDE82847676100488060 /* LockTimeoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C2BDE72847676100488060 /* LockTimeoutView.swift */; };
-		12CCDC5428D8E05300C3BE4E /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CCDC5328D8E05300C3BE4E /* Project.swift */; };
+		12CCDC5428D8E05300C3BE4E /* TellaServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CCDC5328D8E05300C3BE4E /* TellaServer.swift */; };
 		12D37A942721752B00E43BDB /* TellaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A932721752B00E43BDB /* TellaApp.swift */; };
 		12D37A962721A49D00E43BDB /* NavigationContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A952721A49D00E43BDB /* NavigationContainerView.swift */; };
 		12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */; };
@@ -766,6 +768,8 @@
 		126ECFE927C57FA600ED5161 /* CameraState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraState.swift; sourceTree = "<group>"; };
 		126FE4D627A427E200AE4188 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		126FEE092AC4993900B99298 /* ReportPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportPages.swift; sourceTree = "<group>"; };
+		127092D92C2EE4E3002030AA /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
+		127092DB2C2EE7AD002030AA /* WebServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServer.swift; sourceTree = "<group>"; };
 		1270EA9E2A4B4B07000851BA /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1270EAA02A4B4B07000851BA /* be */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = be; path = be.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1270EAA22A4B4B07000851BA /* my */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = my; path = my.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -884,7 +888,7 @@
 		12C07ECB2B06603A0030AD6E /* EncryptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionService.swift; sourceTree = "<group>"; };
 		12C07F042B0748D50030AD6E /* TopSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSheetView.swift; sourceTree = "<group>"; };
 		12C2BDE72847676100488060 /* LockTimeoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutView.swift; sourceTree = "<group>"; };
-		12CCDC5328D8E05300C3BE4E /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		12CCDC5328D8E05300C3BE4E /* TellaServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaServer.swift; sourceTree = "<group>"; };
 		12D37A932721752B00E43BDB /* TellaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaApp.swift; sourceTree = "<group>"; };
 		12D37A952721A49D00E43BDB /* NavigationContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContainerView.swift; sourceTree = "<group>"; };
 		12D37A972721EDB600E43BDB /* PinKeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinKeyboardModel.swift; sourceTree = "<group>"; };
@@ -1464,6 +1468,7 @@
 		1231A45B294C76990057DA85 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				127092D82C2EE4D0002030AA /* CommonServer */,
 				15994A0F2BFBF0C70017F153 /* GDrive */,
 				1519BED42B9A5A2B006FD290 /* Resource */,
 				E18BD4312AA0C2EB00EE62E2 /* Uwazi */,
@@ -1492,7 +1497,7 @@
 				1231A45D294C779D0057DA85 /* ReportStatus.swift */,
 				1203CDDB298C5B9100D09073 /* ReportActionType.swift */,
 				12351C1928D2209400F3CB7C /* Report.swift */,
-				12CCDC5328D8E05300C3BE4E /* Project.swift */,
+				12CCDC5328D8E05300C3BE4E /* TellaServer.swift */,
 				12A43B4E29941574003EF33E /* ReportFile.swift */,
 				122389B829367ABA0058593B /* ServerType.swift */,
 				12623DCB299EA31400E033ED /* ReportVaultFile.swift */,
@@ -1695,6 +1700,15 @@
 				126FEE092AC4993900B99298 /* ReportPages.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		127092D82C2EE4D0002030AA /* CommonServer */ = {
+			isa = PBXGroup;
+			children = (
+				127092D92C2EE4E3002030AA /* Server.swift */,
+				127092DB2C2EE7AD002030AA /* WebServer.swift */,
+			);
+			path = CommonServer;
 			sourceTree = "<group>";
 		};
 		1272F25A27C919E40054F2E2 /* ImportFilesProgressView */ = {
@@ -3390,6 +3404,7 @@
 				12730E67279F11C300DC0135 /* LanguageListView.swift in Sources */,
 				0ECC7817267A533E00A2ACF2 /* PageViewCell.swift in Sources */,
 				128B929727D7920300E92ACF /* SelectingFilesHeaderView.swift in Sources */,
+				127092DA2C2EE4E3002030AA /* Server.swift in Sources */,
 				1236EE8028E1B40200973EEA /* DataBaseHelper.swift in Sources */,
 				125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */,
 				1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */,
@@ -3404,6 +3419,7 @@
 				126684412B18B67500561650 /* BackgroundActivityModel.swift in Sources */,
 				CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */,
 				1293547B294A454900735ED0 /* AppDelegate.swift in Sources */,
+				127092DC2C2EE7AD002030AA /* WebServer.swift in Sources */,
 				12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */,
 				CCC1B4332AC75B410075B819 /* UwaziEntityMandatoryTextView.swift in Sources */,
 				12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */,
@@ -3522,7 +3538,7 @@
 				128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */,
 				127D4A812C1B2ED700E82EA8 /* VaultFilesManagerExtension.swift in Sources */,
 				E1EAA0552AA74FEC00492078 /* UwaziLanguageContext.swift in Sources */,
-				12CCDC5428D8E05300C3BE4E /* Project.swift in Sources */,
+				12CCDC5428D8E05300C3BE4E /* TellaServer.swift in Sources */,
 				126818C12A38B0C2004606BD /* FileInformation.swift in Sources */,
 				156986252B88FCB600534720 /* ResourcePDFView.swift in Sources */,
 				152D38512C2C61DF00323CE7 /* DraftView.swift in Sources */,
