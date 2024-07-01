@@ -24,7 +24,7 @@ class UwaziViewModel: ObservableObject {
     
     @Published var selectedCell = Pages.template
     @Published var isLoading: Bool = false
-    @Published var serverName : String
+    @Published var serverName : String = ""
     
     @Published var shouldShowToast : Bool = false
     @Published var toastMessage : String = ""
@@ -43,18 +43,20 @@ class UwaziViewModel: ObservableObject {
                       page: .submitted,
                       number: submittedEntitiesViewModel.count)]}
     
-    var server: UwaziServer
+    var server: UwaziServer?
     var tellaData: TellaData? {
         return self.mainAppModel.tellaData
     }
     private var subscribers = Set<AnyCancellable>()
     
-    init(mainAppModel : MainAppModel, server: UwaziServer) {
+    init(mainAppModel : MainAppModel, server: Server?) {
         
         self.mainAppModel = mainAppModel
+        
+        guard let server = server as? UwaziServer else {return}
         self.server = server
         self.serverName = server.name ?? ""
-        
+
         self.getDownloadedTemplates()
         
         self.getUwaziInstances()

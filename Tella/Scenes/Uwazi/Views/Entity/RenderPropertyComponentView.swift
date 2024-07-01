@@ -30,7 +30,7 @@ struct RenderPropertyComponentView: View {
                 switch prompt.type {
                 case .dataTypeText, .dataTypeNumeric, .dataTypeMarkdown:
                     UwaziTextWidget(prompt: prompt as! UwaziTextEntryPrompt)
-                case .dataTypeSelect, .dataTypeMultiSelect:
+                case .dataTypeSelect:
                     UwaziSelectWidget(prompt: prompt as! UwaziSelectEntryPrompt)
                 case .dataTypeMultiFiles:
                     SupportingFileWidget(prompt: prompt as! UwaziFilesEntryPrompt)
@@ -59,7 +59,7 @@ struct RenderPropertyComponentView: View {
         guard let propertyType = UwaziEntityPropertyType(rawValue: type) else { return false }
         
         switch propertyType {
-        case .dataTypeText, .dataTypeNumeric, .dataTypeSelect, .dataTypeMultiSelect, .dataTypeMultiFiles, .dataTypeMultiPDFFiles, .dataTypeDivider, .dataTypeDate, .dataTypeMarkdown, .dataRelationship:
+        case .dataTypeText, .dataTypeNumeric, .dataTypeSelect, .dataTypeMultiFiles, .dataTypeMultiPDFFiles, .dataTypeDivider, .dataTypeDate, .dataTypeMarkdown, .dataRelationship:
             return true
         default:
             return false

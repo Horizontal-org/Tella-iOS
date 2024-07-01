@@ -90,7 +90,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                                               selectValues:[] ,
                                               name: $0.name)
                 
-            case .dataTypeSelect, .dataTypeMultiSelect:
+            case .dataTypeSelect:
               
                 let selectValues = $0.values?.compactMap({SelectValues(id: $0.id ?? "", label: $0.translatedLabel ?? "")})
 
@@ -139,12 +139,21 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
     }
     
     func updateRelationships(relationships: [UwaziRelationshipList]?) {
-        guard let entryPrompts = entryPrompts.filter({$0.type == .dataRelationship}) as? [UwaziRelationshipEntryPrompt] else {return}
-        entryPrompts.forEach({ prompt in
-            let values = relationships?.first (where: {$0.id == prompt.content } )?.values ?? []
+        guard let entryPrompts = entryPrompts.filter({$0.type == .dataRelationship}) as? [UwaziRelationshipEntryPrompt] else {
+            return
+        }
+        
+        entryPrompts.forEach { prompt in
+            let values: [EntityRelationshipItem]
+            
+            if(prompt.content == "") {
+                values = relationships?.flatMap({$0.values}) ?? []
+            } else {
+                values = relationships?.first (where: {$0.id == prompt.content } )?.values ?? []
+            }
             
             prompt.selectValues = values.compactMap({SelectValues(id: $0.id, label: $0.label)})
-        })
+        }
     }
     
     func saveAnswersToEntityInstance(status:EntityStatus) {

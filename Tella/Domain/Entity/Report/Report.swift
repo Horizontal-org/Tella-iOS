@@ -5,7 +5,7 @@
 
 import Foundation
 
-class Report : Hashable {
+class BaseReport : Hashable {
     
     var id : Int?
     var title : String?
@@ -13,9 +13,7 @@ class Report : Hashable {
     var createdDate : Date?
     var updatedDate : Date?
     var status : ReportStatus?
-    var server : TellaServer?
     var reportFiles : [ReportFile]?
-    var apiID : String?
     var currentUpload: Bool?
 
     init(id: Int? = nil,
@@ -24,9 +22,7 @@ class Report : Hashable {
          createdDate: Date? = nil,
          updatedDate: Date? = nil,
          status: ReportStatus? = nil,
-         server: TellaServer? = nil,
          vaultFiles: [ReportFile]? = nil,
-         apiID: String? = nil,
          currentUpload: Bool? = nil ) {
         self.id = id
         self.title = title
@@ -34,14 +30,12 @@ class Report : Hashable {
         self.createdDate = createdDate
         self.updatedDate = updatedDate
         self.status = status
-        self.server = server
         self.reportFiles = vaultFiles
-        self.apiID = apiID
         self.currentUpload = currentUpload
 
     }
     
-    static func == (lhs: Report, rhs: Report) -> Bool {
+    static func == (lhs: BaseReport, rhs: BaseReport) -> Bool {
         lhs.id == rhs.id
     }
     
@@ -50,7 +44,7 @@ class Report : Hashable {
     }
 }
 
-extension Report {
+extension BaseReport {
     var getReportDate: String {
         guard let status = self.status  else {
             return ""
@@ -71,6 +65,58 @@ extension Report {
             return ""
             
         }
+    }
+}
+
+
+// Report
+
+class Report: BaseReport {
+    var server: TellaServer?
+    var apiID: String?
+
+    init(id: Int? = nil,
+         title: String? = nil,
+         description: String? = nil,
+         createdDate: Date? = nil,
+         updatedDate: Date? = nil,
+         status: ReportStatus? = nil,
+         server: TellaServer? = nil,
+         vaultFiles: [ReportFile]? = nil,
+         apiID: String? = nil,
+         currentUpload: Bool? = nil) {
+        self.server = server
+        self.apiID = apiID
+        super.init(id: id, title: title, description: description, createdDate: createdDate, updatedDate: updatedDate, status: status, vaultFiles: vaultFiles, currentUpload: currentUpload)
+    }
+}
+
+// GDriveReport
+class GDriveReport: BaseReport {
+    var server: GDriveServer?
+
+    enum CodingKeys: String, CodingKey {
+        case id = "c_id"
+        case title = "c_title"
+        case description = "c_description"
+        case createdDate = "c_created_date"
+        case updatedDate = "c_updated_date"
+        case status = "c_status"
+        case server = "c_server_id"
+    }
+
+    // Keep the existing initializer
+    init(id: Int? = nil,
+         title: String? = nil,
+         description: String? = nil,
+         createdDate: Date? = nil,
+         updatedDate: Date? = nil,
+         status: ReportStatus? = nil,
+         server: GDriveServer? = nil,
+         vaultFiles: [ReportFile]? = nil,
+         currentUpload: Bool? = nil) {
+        self.server = server
+        super.init(id: id, title: title, description: description, createdDate: createdDate, updatedDate: updatedDate, status: status, vaultFiles: vaultFiles, currentUpload: currentUpload)
     }
 }
 

@@ -25,10 +25,22 @@ struct TextfieldView : View {
     var placeholder : String = ""
     var shouldShowTitle : Bool = false
     var onCommit : (() -> Void)? =  ({})
-    var keyboardType: UIKeyboardType = .default
-    
+
     @State private var shouldShowPassword : Bool = false
     
+    private var keyboardType: UIKeyboardType {
+        switch fieldType {
+        case .url:
+            return .URL
+        case .text:
+            return .alphabet
+        case .code:
+            return .numberPad
+        default:
+            return . default
+        }
+    }
+
     var body: some View {
         
         VStack(spacing: 10) {
@@ -66,11 +78,7 @@ struct TextfieldView : View {
             
             // Error message
             errorMessageView
-            
         }
-        
-        
-        
     }
     
     var textfieldView : some View {
@@ -80,14 +88,13 @@ struct TextfieldView : View {
                   onCommit: {
             self.onCommit?()
         })
-        .keyboardType(keyboardType)
         .onChange(of: fieldContent, perform: { value in
             validateField(value: value)
             self.pfieldContent = value
         })
-        .textFieldStyle(TextfieldStyle(shouldShowError: shouldShowError))
-        .frame( height: 22)
         
+        .textFieldStyle(TextfieldStyle(shouldShowError: shouldShowError, keyboardType: keyboardType))
+        .frame( height: 22)
     }
     
     var passwordTextfieldView : some View {
@@ -104,12 +111,13 @@ struct TextfieldView : View {
                     })
                 }}
             .keyboardType(keyboardType)
-            .textFieldStyle(TextfieldStyle(shouldShowError: shouldShowError))
             .onChange(of: fieldContent, perform: { value in
                 validateField(value: value)
+                self.pfieldContent = value
             })
+            .textFieldStyle(TextfieldStyle(shouldShowError: shouldShowError, keyboardType: keyboardType))
             .frame( height: 22)
-            
+
             Spacer()
                 .frame(width: 10)
             
@@ -160,12 +168,15 @@ struct TextfieldView : View {
         }
         self.shouldShowError = false
     }
+    
 }
 
 struct TextfieldStyle: TextFieldStyle {
     
     var shouldShowError : Bool = false
     
+    var keyboardType : UIKeyboardType = .default
+
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
             .font(.custom(Styles.Fonts.regularFontName, size: 14))
@@ -174,6 +185,8 @@ struct TextfieldStyle: TextFieldStyle {
             .multilineTextAlignment(.leading)
             .disableAutocorrection(true)
             .autocapitalization(.none)
+            .textContentType(.oneTimeCode)
+            .keyboardType(keyboardType)
     }
 }
 

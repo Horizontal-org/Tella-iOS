@@ -27,11 +27,14 @@ class TellaDataBase : DataBase {
             case 1:
                 createFeedbackTable()
                 renameUpdatedDateColumn()
+                fallthrough
             case 2:
                 createTemplateTableForUwazi()
                 createUwaziServerTable()
+                fallthrough
             case 3:
                 createResourceTable()
+                fallthrough
             case 4:
                 createUwaziEntityInstancesTable()
                 createUwaziEntityInstanceVaultFileTable()
@@ -39,6 +42,8 @@ class TellaDataBase : DataBase {
             case 5:
                 createGDriveServerTable()
                 createNextcloudServerTable()
+                createGDriveReportTable()
+                createGDriveReportFilesTable()
             default :
                 break
             }

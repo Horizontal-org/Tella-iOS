@@ -15,11 +15,7 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
     private var timer = Timer()
     
     var currentTime = CurrentValueSubject<TimeInterval, Never>(0.0)
-    @Published var audioPermission : AudioAuthorizationStatus = .notDetermined
     var fileURL = CurrentValueSubject<URL?, Never>(nil)
-
-//    var mainAppModel: MainAppModel
-//    var rootFile: VaultFile
 
     private let settings = [
         AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
@@ -194,23 +190,4 @@ class RecordingAudioManager: AudioRecorderManager, ObservableObject {
         currentTime.send(currentTime.value + 1)
     }
     
-    func checkMicrophonePermission() {
-        switch AVCaptureDevice.authorizationStatus(for: .audio) {
-        case .denied:
-            audioPermission = .denied
-        case .restricted:
-            audioPermission = .restricted
-            
-        case .authorized:
-            audioPermission = .authorized
-        case .notDetermined:
-            AVCaptureDevice.requestAccess(for: .audio) { success in
-                if success {
-                    self.audioPermission = .authorized
-                }
-            }
-        @unknown default:
-            break
-        }
-    }
 }

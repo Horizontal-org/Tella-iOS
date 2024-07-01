@@ -45,7 +45,7 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
     private var subscribers = Set<AnyCancellable>()
     
     var addFileToDraftItems : [ListActionSheetItem] { return [
-            
+        
         ListActionSheetItem(imageName: "report.camera-filled",
                             content: LocalizableReport.cameraFilled.localized,
                             type: ManageFileType.camera),
@@ -93,29 +93,42 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
             parentId: server?.rootFolder,
             description: self.description
         )
-            .receive(on: DispatchQueue.main)
-            .flatMap { folderId in
-                self.uploadFiles(to: folderId)
-            }
-            .sink(
-                receiveCompletion: { completion in
-                    switch completion {
-                    case .finished:
-                        self.saveFinalizedReport()
-                        break
-                    case .failure(let error):
-                        debugLog(error)
-                    }
-                },
-                receiveValue: { result in
-                    dump(result)
+        .receive(on: DispatchQueue.main)
+        .flatMap { folderId in
+            self.uploadFiles(to: folderId)
+        }
+        .sink(
+            receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    self.saveFinalizedReport()
+                    break
+                case .failure(let error):
+                    debugLog(error)
                 }
-            ).store(in: &cancellables)
+            },
+            receiveValue: { result in
+                dump(result)
+            }
+        ).store(in: &cancellables)
     }
     
     func saveDraftReport() {
         self.status = .draft
-        self.successSavingReport = true
+        
+        let gDriveReport = GDriveReport(
+            id: reportId,
+            title: title,
+            description: description,
+            status: status,
+            server: server,
+            vaultFiles: self.files.compactMap { ReportFile( fileId: $0.id,
+                                                            status: .notSubmitted,
+                                                            bytesSent: 0,
+                                                            createdDate: Date())}
+        )
+        
+        addReport(report: gDriveReport)
     }
     
     func saveFinalizedReport() {
@@ -123,6 +136,18 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
         self.successSavingReport = true
     }
     
+    func addReport(report: GDriveReport) {
+        let idResult = mainAppModel.tellaData?.addGDriveReport(report: report)
+        
+        switch idResult {
+        case .success(let id ):
+            dump(id)
+            self.reportId = id
+            self.successSavingReport = true
+        default:
+            self.failureSavingReport = true
+        }
+    }
     private func getServer() {
         self.server = mainAppModel.tellaData?.gDriveServers.value.first
     }

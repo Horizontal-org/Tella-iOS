@@ -51,7 +51,7 @@ struct SecuritySettingsView: View {
         }
         .onReceive(lockViewModel.shouldDismiss) { shouldDismiss in
             if shouldDismiss {
-                self.popTo(UIHostingController<Optional<ModifiedContent<SecuritySettingsView, _EnvironmentKeyWritingModifier<Optional<SettingsViewModel>>>>>.self)
+                self.popTo(ViewClassType.securitySettingsView)
             }
         }
 

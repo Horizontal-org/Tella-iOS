@@ -9,6 +9,7 @@
 import Foundation
 
 class GDriveViewModel: BaseReportsViewModel {
+    var draftReports: [GDriveReport] = []
     var pageViewItems: [PageViewItem] {
         [
             PageViewItem(title: LocalizableReport.draftTitle.localized,
@@ -24,5 +25,7 @@ class GDriveViewModel: BaseReportsViewModel {
     
     override init(mainAppModel: MainAppModel) {
         super.init(mainAppModel: mainAppModel)
+    
+        self.mainAppModel.tellaData?.getDraftGDriveReport()
     }
 }

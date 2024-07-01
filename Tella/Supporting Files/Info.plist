@@ -52,7 +52,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Tella requires access to your microphone to record audio inside the app.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Tella requires access to your photo library to delete photos.</string>
+	<string>Tella requires access to your photo library to add or delete photos.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>OpenSans-Italic.ttf</string>
@@ -103,5 +103,7 @@
 	</array>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>Tella requires access to tracking usage description</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Tella requires access to the location to capture photos with location information.</string>
 </dict>
 </plist>
