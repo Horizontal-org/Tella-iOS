@@ -4,7 +4,7 @@
 
 import Foundation
 
-enum  ReportStatus : Int {
+enum  ReportStatus : Int, Codable {
     case unknown = 0
     case draft = 1
     case finalized = 2

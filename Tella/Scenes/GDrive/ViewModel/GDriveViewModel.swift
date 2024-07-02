@@ -26,6 +26,6 @@ class GDriveViewModel: BaseReportsViewModel {
     override init(mainAppModel: MainAppModel) {
         super.init(mainAppModel: mainAppModel)
         
-        self.mainAppModel.tellaData?.getDraftGDriveReport()
+        self.draftReports = self.mainAppModel.tellaData?.getDraftGDriveReport() ?? []
     }
 }

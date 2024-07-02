@@ -64,6 +64,8 @@ class TellaDataBase : DataBase {
         createUwaziEntityInstanceVaultFileTable()
         addRelationshipColumnToUwaziTemplate()
         createGDriveServerTable()
+        createGDriveReportTable()
+        createGDriveReportFilesTable()
     }
     
     func createReportTable() {

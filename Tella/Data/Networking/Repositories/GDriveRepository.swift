@@ -205,6 +205,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 uploadParameters.shouldUploadWithSingleRequest = false
                 
                 let query = GTLRDriveQuery_FilesCreate.query(withObject: file, uploadParameters: uploadParameters)
+                query.supportsAllDrives = true
                 
                 driveService.executeQuery(query) { (ticket, file, error) in
                     if let error = error {

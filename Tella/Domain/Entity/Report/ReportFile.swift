@@ -4,7 +4,7 @@
 
 import Foundation
 
-class ReportFile : Hashable {
+class ReportFile : Hashable, Codable {
 
     var id : Int?
     var fileId : String?
