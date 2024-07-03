@@ -60,13 +60,15 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
                             type: ManageFileType.fromDevice)
     ]}
     
-    init(mainAppModel: MainAppModel, repository: GDriveRepositoryProtocol) {
+    init(mainAppModel: MainAppModel, repository: GDriveRepositoryProtocol, reportID: Int?) {
         self.mainAppModel = mainAppModel
         self.gDriveRepository = repository
         self.validateReport()
         self.getServer()
         
+        self.reportId = reportID
         self.bindVaultFileTaken()
+        self.fillReportVM()
     }
     
     private func validateReport() {
@@ -113,6 +115,19 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
             ).store(in: &cancellables)
     }
     
+    func fillReportVM() {
+        if let reportId = self.reportId, let report = self.mainAppModel.tellaData?.getDriveReport(id: reportId) {
+            self.title = report.title ?? ""
+            self.description = report.description ?? ""
+            
+            if let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{ $0.fileId } ?? []) {
+                self.files = Set(vaultFileResult)
+            }
+            
+            self.objectWillChange.send()
+        }
+    }
+    
     func saveDraftReport() {
         self.status = .draft
         
@@ -128,7 +143,7 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
                                                             createdDate: Date())}
         )
         
-        addReport(report: gDriveReport)
+        reportId == nil ? addReport(report: gDriveReport) : updateReport(report: gDriveReport)
     }
     
     func saveFinalizedReport() {
@@ -147,6 +162,10 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
         default:
             self.failureSavingReport = true
         }
+    }
+    
+    func updateReport(report: GDriveReport) {
+        //update report logic
     }
     private func getServer() {
         self.server = mainAppModel.tellaData?.gDriveServers.value.first

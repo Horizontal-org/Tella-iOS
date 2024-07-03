@@ -14,11 +14,12 @@ struct GDriveDraftView: View {
     @EnvironmentObject var reportsViewModel : BaseReportsViewModel
     let gDriveDIContainer: GDriveDIContainer
     
-    init(mainAppModel: MainAppModel, gDriveDIContainer: GDriveDIContainer) {
+    init(mainAppModel: MainAppModel, gDriveDIContainer: GDriveDIContainer, reportId: Int? = nil) {
         self.gDriveDIContainer = gDriveDIContainer
         _gDriveDraftVM = StateObject(wrappedValue: GDriveDraftViewModel(
             mainAppModel: mainAppModel,
-            repository: gDriveDIContainer.gDriveRepository)
+            repository: gDriveDIContainer.gDriveRepository,
+            reportID: reportId)
         )
     }
     

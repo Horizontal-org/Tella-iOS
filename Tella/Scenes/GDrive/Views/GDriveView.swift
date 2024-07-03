@@ -20,6 +20,7 @@ struct GDriveView: View {
     var body: some View {
         contentView
             .navigationBarTitle(LocalizableSettings.settServerGDrive.localized.capitalized, displayMode: .large)
+            .environmentObject(gDriveViewModel)
     }
     
     var contentView: some View {
@@ -32,11 +33,11 @@ struct GDriveView: View {
                     Spacer()
                     switch self.gDriveViewModel.selectedCell {
                     case .draft:
-                        GDriveListView(message: "You have no draft reports.")
+                        GDriveListView(reportArray: $gDriveViewModel.draftReports, message: "You have no draft reports.")
                     case .outbox:
-                        GDriveListView(message: "You have no outbox reports.")
+                        GDriveListView(reportArray: $gDriveViewModel.outboxedReports, message: "You have no outbox reports.")
                     case .submitted:
-                        GDriveListView(message: "You have no submitted reports.")
+                        GDriveListView(reportArray: $gDriveViewModel.submittedReports, message: "You have no submitted reports.")
                     default:
                         EmptyView()
                     }
