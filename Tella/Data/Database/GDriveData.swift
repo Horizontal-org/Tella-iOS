@@ -18,4 +18,8 @@ extension TellaData {
     func getDraftGDriveReport() -> [GDriveReport] {
         self.database.getDraftGDriveReports()
     }
+    
+    func getDriveReport(id: Int) -> GDriveReport? {
+        self.database.getGDriveReport(id: id)
+    }
 }

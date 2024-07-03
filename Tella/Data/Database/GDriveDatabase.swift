@@ -125,15 +125,47 @@ extension TellaDataBase {
             )
                         
             let decodedReports = try gDriveReportsDict.compactMap ({ dict in
-                var gDriveReport = try dict.decode(GDriveReport.self)
-                
-                return gDriveReport
+                return try dict.decode(GDriveReport.self)
             })
             
             return decodedReports
             
         } catch let error {
             debugLog(error)
+            return []
+        }
+    }
+    
+    func getGDriveReport(id: Int) -> GDriveReport? {
+        do{
+            let reportsCondition = [KeyValue(key: D.cId, value: id)]
+            let gDriveReportsDict = try statementBuilder.getSelectQuery(tableName: D.tGDriveReport,
+                                                                        equalCondition: reportsCondition
+            )
+            
+            let decodedReports = try gDriveReportsDict.first?.decode(GDriveReport.self)
+            let reportFiles = getDriveVaultFiles(reportId: decodedReports?.id)
+            decodedReports?.reportFiles = reportFiles
+            return decodedReports
+        } catch let error {
+            debugLog(error)
+            return nil
+        }
+    }
+    
+    func getDriveVaultFiles(reportId: Int?) -> [ReportFile] {
+        do {
+            let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: reportId)]
+            let responseDict = try statementBuilder.selectQuery(tableName: D.tGDriveInstanceVaultFile, andCondition: reportFilesCondition)
+            
+            let decodedFiles = try responseDict.compactMap ({ dict in
+                return try dict.decode(ReportFile.self)
+            })
+
+            return decodedFiles
+        } catch let error {
+            debugLog(error)
+            
             return []
         }
     }

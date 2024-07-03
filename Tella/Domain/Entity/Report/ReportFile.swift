@@ -13,6 +13,15 @@ class ReportFile : Hashable, Codable {
     var createdDate : Date?
     var updatedDate : Date?
 
+    enum CodingKeys: String, CodingKey {
+        case id = "c_id"
+        case fileId = "c_vault_file_instance_id"
+        case status = "c_status"
+        case bytesSent = "c_bytes_Sent"
+        case createdDate = "c_created_date"
+        case updatedDate = "c_updated_date"
+    }
+    
     init(id: Int? = nil,
          fileId: String? = nil,
          status: FileStatus? = nil,
