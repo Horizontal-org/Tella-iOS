@@ -8,7 +8,7 @@
 
 import Foundation
 
-class NextcloudServer: Server {
+class NextcloudServer: WebServer {
     
     var userId: String?
     var rootFolder: String?
@@ -27,7 +27,7 @@ class NextcloudServer: Server {
         self.userId = userId
         self.rootFolder = rootFolder
 
-        super.init(name: "Nextcloud", serverType: .nextcloud, allowMultipleConnections: false)
+        super.init(name: "Nextcloud", serverURL: serverURL, username: username, password: password, serverType: .nextcloud)
     }
 
     required init(from decoder: Decoder) throws {

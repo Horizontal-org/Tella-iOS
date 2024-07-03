@@ -64,7 +64,7 @@ extension TellaDataBase {
             cddl(D.cCreatedDate, D.float),
             cddl(D.cUpdatedDate, D.float),
             cddl(D.cStatus, D.integer),
-            cddl(D.cServerId, D.integer, tableName: D.tGDriveServer, referenceKey: D.cServerId)// update ref key after merge with server subclass PR
+            cddl(D.cServerId, D.integer, tableName: D.tGDriveServer, referenceKey: D.cId)
         ]
         
         statementBuilder.createTable(tableName: D.tGDriveReport, columns: columns)
@@ -87,8 +87,6 @@ extension TellaDataBase {
     
     func addGDriveReport(report: GDriveReport) -> Result<Int, Error> {
         do {
-            let currentUpload = ((report.currentUpload == false) || (report.currentUpload == nil)) ? 0 : 1
-            
             let reportValuesToAdd = [KeyValue(key: D.cTitle, value: report.title),
                                                  KeyValue(key: D.cDescription, value: report.description),
                                                  KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
@@ -117,21 +115,26 @@ extension TellaDataBase {
         }
     }
     
-    func getDraftGDriveReports() {
+    func getDraftGDriveReports() -> [GDriveReport] {
         do {
-            let joinCondition = [JoinCondition(tableName: D.tGDriveServer,
-                                                           firstItem: JoinItem(tableName: D.tGDriveReport, columnName: D.cServerId),
-                                                           secondItem: JoinItem(tableName: D.tGDriveServer, columnName: D.cServerId))]
             
             let reportsCondition = [KeyValue(key: D.cStatus, value: ReportStatus.draft.rawValue)]
             
             let gDriveReportsDict = try statementBuilder.getSelectQuery(tableName: D.tGDriveReport,
-                                                                        equalCondition: reportsCondition,
-                                                                        joinCondition: joinCondition
+                                                                        equalCondition: reportsCondition
             )
+                        
+            let decodedReports = try gDriveReportsDict.compactMap ({ dict in
+                var gDriveReport = try dict.decode(GDriveReport.self)
+                
+                return gDriveReport
+            })
+            
+            return decodedReports
             
         } catch let error {
             debugLog(error)
+            return []
         }
     }
 }

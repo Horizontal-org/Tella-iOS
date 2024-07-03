@@ -27,5 +27,6 @@ class GDriveViewModel: BaseReportsViewModel {
         super.init(mainAppModel: mainAppModel)
     
         self.mainAppModel.tellaData?.getDraftGDriveReport()
+        self.draftReports = self.mainAppModel.tellaData?.getDraftGDriveReport() ?? []
     }
 }
