@@ -5,7 +5,7 @@
 
 import SwiftUI
 
-struct ServerLoginView: View {
+struct TellaWebServerLoginView: View {
     
     @EnvironmentObject var serverViewModel : TellaWebServerViewModel
     @EnvironmentObject var serversViewModel : ServersViewModel

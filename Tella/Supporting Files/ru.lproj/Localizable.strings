@@ -309,7 +309,7 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Setting_Server_Uwazi_Access_Public" = "ACCESS AS PUBLIC INSTANCE";
 "Setting_Server_Uwazi_Login_Access" = "Вход в систему для доступа к серверу";
 "Setting_Server_Uwazi_Username" = "Логин";
-"Setting_Server_Uwazi_Password" = "Password";
+"Setting_Server_Password" = "Password";
 "Setting_Server_Uwazi_Two_Step_Title" = "Двухэтапная проверка";
 "Setting_Server_Uwazi_Two_Step_Message" = "Для данного экземпляра Uwazi требуется двухэтапная верификация. Введите здесь 6-значный код из приложения-аутентификатора.";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "Authentication code";

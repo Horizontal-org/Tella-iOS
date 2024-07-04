@@ -74,7 +74,7 @@ struct TellaWebAddServerURLView: View {
     }
     
     private var serverLoginView: some View {
-        ServerLoginView()
+        TellaWebServerLoginView()
             .environmentObject(serverViewModel)
     }
     

@@ -307,7 +307,7 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Setting_Server_Uwazi_Access_Public" = "ACCESS AS PUBLIC INSTANCE";
 "Setting_Server_Uwazi_Login_Access" = "ورود برای دسترسی به سرور";
 "Setting_Server_Uwazi_Username" = "نام کاربری";
-"Setting_Server_Uwazi_Password" = "گذرواژه";
+"Setting_Server_Password" = "گذرواژه";
 "Setting_Server_Uwazi_Two_Step_Title" = "تایید دو-مرحله‌ای";
 "Setting_Server_Uwazi_Two_Step_Message" = "نمونه Uwazi به تایید دو-مرحله‌ای نیاز دارد. کد 6-رقمی دریافتی از برنامه تایید هویت را اینجا وارد کنید.";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "Authentication code";

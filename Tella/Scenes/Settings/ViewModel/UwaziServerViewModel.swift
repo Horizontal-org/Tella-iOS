@@ -17,13 +17,7 @@ class UwaziServerViewModel: ServerViewModel {
     @Published var isPublicInstance: Bool?
 
     // Login
-    @Published var validUsername : Bool = false
-    @Published var validPassword : Bool = false
     @Published var validCode: Bool = false
-    @Published var validCredentials : Bool = false
-    @Published var shouldShowLoginError : Bool = false
-    @Published var loginErrorMessage : String = ""
-    @Published var showNextSuccessLoginView : Bool = false
     @Published var showNextLanguageSelectionView: Bool = false
     @Published var showNext2FAView: Bool = false
 
@@ -37,7 +31,6 @@ class UwaziServerViewModel: ServerViewModel {
     // Language
     @Published var languages: [UwaziLanguageRow] = []
     @Published var selectedLanguage: UwaziLanguageRow?
-    private var cancellableLogin: Cancellable? = nil
     private var cancellableAuthenticationCode: Cancellable? = nil
     var subscribers = Set<AnyCancellable>()
 
@@ -50,10 +43,6 @@ class UwaziServerViewModel: ServerViewModel {
         self.mainAppModel = mainAppModel
         self.currentServer = currentServer
         super.init()
-        
-        cancellableLogin = $validUsername.combineLatest($validPassword).sink(receiveValue: { validUsername, validPassword  in
-            self.validCredentials = validUsername && validPassword
-        })
         cancellableAuthenticationCode = $validCode.sink(receiveValue: { validCode in
             self.validAuthenticationCode = validCode
         })
@@ -191,7 +180,7 @@ class UwaziServerViewModel: ServerViewModel {
     }
     
     // MARK: - Login API Call Methods
-    func login() {
+    override func login() {
         guard let baseURL = serverURL.getBaseURL() else { return }
 
         isLoading = true

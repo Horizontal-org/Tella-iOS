@@ -10,7 +10,7 @@ import NextcloudKit
 import Combine
 
 protocol NextCloudRepositoryProtocol {
-//    func login() //async throws
+    func login(serverUrl: String, username: String, password: String) async throws
     func checkServer(serverUrl: String) async throws
 }
 
@@ -43,6 +43,20 @@ class NextCloudRepository: NextCloudRepositoryProtocol {
             }
         }
     }
+    
+    func login(serverUrl: String, username: String, password: String) async throws {
+        NextcloudKit.shared.setup(account: username, user: username, userId: username , password: password, urlBase: serverUrl  )
+        try await withCheckedThrowingContinuation { continuation in
+            NextcloudKit.shared.getUserProfile { account, userProfile, data, result in
+                if result == .success {
+                    continuation.resume()
+                } else {
+                    continuation.resume(throwing: RuntimeError(result.errorDescription))
+                }
+            }
+        }
+    }
+
     
     func createFolder() {
         var fullURL = self.configServerUrl + self.kRemotePhpFiles + "username"  + "/foldername"

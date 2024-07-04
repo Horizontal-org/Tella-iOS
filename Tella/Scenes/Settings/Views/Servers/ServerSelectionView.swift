@@ -15,9 +15,10 @@ struct ServerSelectionView: View {
     @State var selectedServerType: ServerConnectionType? = nil
     @ObservedObject var gDriveVM: GDriveAuthViewModel
     @ObservedObject var gDriveServerVM: GDriveServerViewModel
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     let gDriveDIContainer: GDriveDIContainer
-    var subscribers: Set<AnyCancellable> = []
 
     
     init(appModel:MainAppModel, server: TellaServer? = nil, gDriveDIContainer: GDriveDIContainer) {
@@ -89,7 +90,7 @@ struct ServerSelectionView: View {
     }
 
     fileprivate func navigateToNextCloud() {
-        navigateTo(destination: NextcloudAddServerURLView(nextcloudVM: NextcloudServerViewModel()))
+        navigateTo(destination: NextcloudAddServerURLView(nextcloudVM: NextcloudServerViewModel(mainAppModel: mainAppModel)))
     }
     
     fileprivate func navigateToTellaWebFlow() {

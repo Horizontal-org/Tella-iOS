@@ -304,7 +304,7 @@
 		12B2BECE2B17D84F00DC223F /* BackgroundActivitiesItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B2BECD2B17D84F00DC223F /* BackgroundActivitiesItemView.swift */; };
 		12B370332B18D53A00DDA9E9 /* BackgroundActivitiesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B370322B18D53A00DDA9E9 /* BackgroundActivitiesViewModel.swift */; };
 		12B370392B19109600DDA9E9 /* LocalizableBackgroundActivities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B370382B19109600DDA9E9 /* LocalizableBackgroundActivities.swift */; };
-		12B3AD8A28C0DD0200AC9AF9 /* ServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B3AD8928C0DD0200AC9AF9 /* ServerLoginView.swift */; };
+		12B3AD8A28C0DD0200AC9AF9 /* TellaWebServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B3AD8928C0DD0200AC9AF9 /* TellaWebServerLoginView.swift */; };
 		12B3AD8C28C1090700AC9AF9 /* SuccessLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B3AD8B28C1090700AC9AF9 /* SuccessLoginView.swift */; };
 		12B5257B2848FC2800B3D1C0 /* LockTimeoutOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */; };
 		12B5257E2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257D2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift */; };
@@ -395,6 +395,7 @@
 		15FABA382B7405B800B2EFEE /* ResourceDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FABA372B7405B800B2EFEE /* ResourceDTO.swift */; };
 		1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
+		2048DADF2C340FF6000B3D9F /* NextcloudServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048DADE2C340FF6000B3D9F /* NextcloudServerLoginView.swift */; };
 		204E7C3C2C241376004CC49F /* NextCloudRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204E7C3B2C241376004CC49F /* NextCloudRepository.swift */; };
 		207115A82C21DE050065E70E /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 207115A72C21DE050065E70E /* NextcloudKit */; };
 		208A06532BF6057A004BA033 /* EditImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06522BF6057A004BA033 /* EditImageViewModel.swift */; };
@@ -416,6 +417,7 @@
 		209AC6952C332F6000492356 /* PHPhotoLibraryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6912C332F5F00492356 /* PHPhotoLibraryExtension.swift */; };
 		209AC6962C332F6000492356 /* CLLocationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6922C332F6000492356 /* CLLocationExtension.swift */; };
 		20AE31922BF4BB0700FF4256 /* CustomCropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AE31912BF4BB0700FF4256 /* CustomCropViewController.swift */; };
+		20BA0BDF2C33428A00823A27 /* ServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA0BDE2C33428A00823A27 /* ServerLoginView.swift */; };
 		379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */; };
 		89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */; };
 		CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0797BD2A8D46CB00AAE63F /* UnlockView.swift */; };
@@ -877,7 +879,7 @@
 		12B2BECD2B17D84F00DC223F /* BackgroundActivitiesItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivitiesItemView.swift; sourceTree = "<group>"; };
 		12B370322B18D53A00DDA9E9 /* BackgroundActivitiesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundActivitiesViewModel.swift; sourceTree = "<group>"; };
 		12B370382B19109600DDA9E9 /* LocalizableBackgroundActivities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableBackgroundActivities.swift; sourceTree = "<group>"; };
-		12B3AD8928C0DD0200AC9AF9 /* ServerLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerLoginView.swift; sourceTree = "<group>"; };
+		12B3AD8928C0DD0200AC9AF9 /* TellaWebServerLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaWebServerLoginView.swift; sourceTree = "<group>"; };
 		12B3AD8B28C1090700AC9AF9 /* SuccessLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessLoginView.swift; sourceTree = "<group>"; };
 		12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutOption.swift; sourceTree = "<group>"; };
 		12B5257D2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockTimeoutOptionsStatus.swift; sourceTree = "<group>"; };
@@ -969,6 +971,7 @@
 		15FABA372B7405B800B2EFEE /* ResourceDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDTO.swift; sourceTree = "<group>"; };
 		1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheet.swift; sourceTree = "<group>"; };
 		1EAE6BF424146C2100114244 /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
+		2048DADE2C340FF6000B3D9F /* NextcloudServerLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudServerLoginView.swift; sourceTree = "<group>"; };
 		204E7C3B2C241376004CC49F /* NextCloudRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextCloudRepository.swift; sourceTree = "<group>"; };
 		208A06522BF6057A004BA033 /* EditImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageViewModel.swift; sourceTree = "<group>"; };
 		208A06542BF607BF004BA033 /* ImageCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropper.swift; sourceTree = "<group>"; };
@@ -989,6 +992,7 @@
 		209AC6912C332F5F00492356 /* PHPhotoLibraryExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PHPhotoLibraryExtension.swift; sourceTree = "<group>"; };
 		209AC6922C332F6000492356 /* CLLocationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLLocationExtension.swift; sourceTree = "<group>"; };
 		20AE31912BF4BB0700FF4256 /* CustomCropViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCropViewController.swift; sourceTree = "<group>"; };
+		20BA0BDE2C33428A00823A27 /* ServerLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerLoginView.swift; sourceTree = "<group>"; };
 		21FEB79B83E10A1CBE4AA323 /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		41C55359B3FCA6834440D9D8 /* Pods-Tella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.debug.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.debug.xcconfig"; sourceTree = "<group>"; };
 		6DD4C039240F547300491438 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -1396,7 +1400,7 @@
 				1291A83128BE0086001A6055 /* SettingsAddServerCardView.swift */,
 				12FFEFA428BE96E00081DDB2 /* TellaWebAddServerURLView.swift */,
 				129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */,
-				12B3AD8928C0DD0200AC9AF9 /* ServerLoginView.swift */,
+				12B3AD8928C0DD0200AC9AF9 /* TellaWebServerLoginView.swift */,
 				12B3AD8B28C1090700AC9AF9 /* SuccessLoginView.swift */,
 				122C54BD28C6351E003B2DBC /* AdvancedServerSettingsView.swift */,
 				122C54BF28C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift */,
@@ -2156,6 +2160,7 @@
 			children = (
 				209AC67C2C2D65EB00492356 /* NextcloudAddServerURLView.swift */,
 				209AC67E2C2D660600492356 /* NextcloudServerViewModel.swift */,
+				2048DADE2C340FF6000B3D9F /* NextcloudServerLoginView.swift */,
 			);
 			path = Nextcloud;
 			sourceTree = "<group>";
@@ -2495,6 +2500,7 @@
 			children = (
 				209AC6772C2D5C9800492356 /* AddServerURLView.swift */,
 				209AC6792C2D5E3500492356 /* ServerViewModel.swift */,
+				20BA0BDE2C33428A00823A27 /* ServerLoginView.swift */,
 			);
 			path = Connections;
 			sourceTree = "<group>";
@@ -3407,6 +3413,7 @@
 				1293F66C2AD80DB100F6CFBD /* CardFrameView.swift in Sources */,
 				12E9DD9B27DF7DA50002FD00 /* CreateNewFolderView.swift in Sources */,
 				12ADF98D28BD16A400FA96EB /* SettingsCardView.swift in Sources */,
+				20BA0BDF2C33428A00823A27 /* ServerLoginView.swift in Sources */,
 				E177363C2A83AE4800FE01C0 /* UwaziTemplateDTO.swift in Sources */,
 				125D231C271F119D00250FBB /* Validator.swift in Sources */,
 				D51639802631130E003A11B5 /* HomeView.swift in Sources */,
@@ -3414,6 +3421,7 @@
 				1293F6702AD8295400F6CFBD /* BorderedTextEditorView.swift in Sources */,
 				129B845928BFED9700F1B344 /* TellaButtonView.swift in Sources */,
 				123048D7295F95BB0015CD96 /* SubmittedDetailsItemView.swift in Sources */,
+				2048DADF2C340FF6000B3D9F /* NextcloudServerLoginView.swift in Sources */,
 				127092D42C2D8BA5002030AA /* NextcloudDatabase.swift in Sources */,
 				209AC6872C332DCD00492356 /* WebServer.swift in Sources */,
 				E1CF5A272AB3488E00365036 /* JSONDecoderExtension.swift in Sources */,
@@ -3650,7 +3658,7 @@
 				E1D48B852A1BB8EA00D36270 /* UwaziCheckURLDTO.swift in Sources */,
 				125DD9C92796CB090053619D /* ImportFilesProgressView.swift in Sources */,
 				1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */,
-				12B3AD8A28C0DD0200AC9AF9 /* ServerLoginView.swift in Sources */,
+				12B3AD8A28C0DD0200AC9AF9 /* TellaWebServerLoginView.swift in Sources */,
 				1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */,
 				CC4864E92AF94AF300293F62 /* SummaryEntityView.swift in Sources */,
 				1252F7052BDAB1C30076DF4B /* EntityInstanceToSend.swift in Sources */,

@@ -17,16 +17,7 @@ class TellaWebServerViewModel: ServerViewModel {
     @Published var backgroundUpload : Bool = false
     @Published var autoUpload : Bool = false
     @Published var autoDelete : Bool = false
-
-    // Login
-    @Published var validUsername : Bool = false
-    @Published var validPassword : Bool = false
-    @Published var validCredentials : Bool = false
-    @Published var shouldShowLoginError : Bool = false
-    @Published var loginErrorMessage : String = ""
-    @Published var showNextSuccessLoginView : Bool = false
     
-    private var cancellable: Cancellable? = nil
     var subscribers = Set<AnyCancellable>()
 
     var currentServer : TellaServer?
@@ -39,9 +30,6 @@ class TellaWebServerViewModel: ServerViewModel {
         self.mainAppModel = mainAppModel
         self.currentServer = currentServer
         super.init()
-        cancellable = $validUsername.combineLatest($validPassword).sink(receiveValue: { validUsername, validPassword  in
-            self.validCredentials = validUsername && validPassword
-        })
         fillReportVM()
     }
     
@@ -79,7 +67,7 @@ class TellaWebServerViewModel: ServerViewModel {
             mainAppModel.tellaData?.updateServer(server: currentServer)
      }
 
-    func login() {
+    override func login() {
         
         guard let baseURL = projectURL.getBaseURL() else { return }
 

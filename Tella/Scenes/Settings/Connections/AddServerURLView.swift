@@ -58,7 +58,7 @@ struct AddServerURLView: View {
     }
     
     @ViewBuilder
-    var handleState : some View {
+    private var handleState : some View {
         switch viewModel.checkServerState {
         case .loading:
             CircularActivityIndicatory()

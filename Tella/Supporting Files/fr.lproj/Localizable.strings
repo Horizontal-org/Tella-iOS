@@ -307,7 +307,7 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Setting_Server_Uwazi_Access_Public" = "ACCÈS PUBLIQUE";
 "Setting_Server_Uwazi_Login_Access" = "Identifiez-vous pour accéder au serveur";
 "Setting_Server_Uwazi_Username" = "Nom d’utilisateur";
-"Setting_Server_Uwazi_Password" = "Mot de passe";
+"Setting_Server_Password" = "Mot de passe";
 "Setting_Server_Uwazi_Two_Step_Title" = "Vérification en deux étapes";
 "Setting_Server_Uwazi_Two_Step_Message" = "Cette instance Uwazi nécessite une vérification en deux étapes. Entrez ici le code à 6 chiffres de votre application d'authentification.";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "Authentication code";

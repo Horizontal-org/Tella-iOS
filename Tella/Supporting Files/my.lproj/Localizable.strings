@@ -307,7 +307,7 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Setting_Server_Uwazi_Access_Public" = "ACCESS AS PUBLIC INSTANCE";
 "Setting_Server_Uwazi_Login_Access" = "ဆာဗာကို ဝင်ရောက်အသုံးပြုနိုင်ရန် အကောင့်ဝင်ပါ";
 "Setting_Server_Uwazi_Username" = "အသုံးပြုသူအမည်";
-"Setting_Server_Uwazi_Password" = "လျှို့၀ှက်စကား၀ှက်";
+"Setting_Server_Password" = "လျှို့၀ှက်စကား၀ှက်";
 "Setting_Server_Uwazi_Two_Step_Title" = "နှစ်ဆင့်ခံ အတည်ပြုစနစ်";
 "Setting_Server_Uwazi_Two_Step_Message" = "ဤ Uwazi ဖြစ်ရပ်တွင် နှစ်ဆင့်ခံ အတည်ပြုစနစ် လိုအပ်ပါသည်။ သင်၏ အတည်ပြုအက်ပ်မှ ဂဏန်း 6 လုံးပါ ကုဒ်ကို ဤနေရာတွင် ထည့်ပါ။";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "Authentication code";

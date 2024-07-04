@@ -96,14 +96,14 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settServerUnavailableConnectionsDesc = "Setting_SettServer_UnavailableConnections_Description"
     case settServerNoTokenPresent = "Setting_SettServer_No_Token"
     case serverURL = "Setting_Server_URL"
+    case serverUsername = "Setting_Server_Uwazi_Username"
+    case serverPassword = "Setting_Server_Password"
 
     // Uwazi
     case UwaziAccessServerTitle = "Setting_Server_Uwazi_Access_Title"
     case UwaziLogin = "Setting_Server_Uwazi_Login"
     case UwaziPublicInstance = "Setting_Server_Uwazi_Access_Public"
     case UwaziLoginAccess = "Setting_Server_Uwazi_Login_Access"
-    case UwaziUsername = "Setting_Server_Uwazi_Username"
-    case UwaziPassword = "Setting_Server_Uwazi_Password"
     case UwaziTwoStepTitle = "Setting_Server_Uwazi_Two_Step_Title"
     case UwaziTwoStepMessage = "Setting_Server_Uwazi_Two_Step_Message"
     case UwaziAuthenticationPlaceholder = "Setting_Server_Uwazi_Authentication_Placeholder"

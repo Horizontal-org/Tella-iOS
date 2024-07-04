@@ -18,6 +18,6 @@ struct NextcloudAddServerURLView: View {
     }
     
     func navigateToLoginView() {
-        
+        navigateTo(destination: NextcloudServerLoginView(nextcloudVM: nextcloudVM))
     }
 }

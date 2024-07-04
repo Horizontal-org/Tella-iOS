@@ -307,7 +307,7 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Setting_Server_Uwazi_Access_Public" = "ACCESS AS PUBLIC INSTANCE";
 "Setting_Server_Uwazi_Login_Access" = "Log in to access the server";
 "Setting_Server_Uwazi_Username" = "பயனர்பெயர்";
-"Setting_Server_Uwazi_Password" = "Password";
+"Setting_Server_Password" = "Password";
 "Setting_Server_Uwazi_Two_Step_Title" = "Two-step verification";
 "Setting_Server_Uwazi_Two_Step_Message" = "This Uwazi instance requires two-step verification. Enter here the 6-digit code from your authenticator app.";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "Authentication code";
