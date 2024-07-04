@@ -110,7 +110,7 @@ class BaseUploadOperation : Operation {
     
     func updateReport(apiID: String? = nil, reportStatus: ReportStatus?) {
         
-        self.report?.status = reportStatus
+        self.report?.status = reportStatus ?? .unknown
         if apiID != nil {
             self.report?.apiID = apiID
         }

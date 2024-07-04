@@ -22,8 +22,8 @@ class ReportsViewModel: BaseReportsViewModel {
     var sheetItems : [ListActionSheetItem] { return [
         
         ListActionSheetItem(imageName: "view-icon",
-                            content: self.selectedReport?.status?.sheetItemTitle ?? "",
-                            type: self.selectedReport?.status?.reportActionType ?? .viewSubmitted),
+                            content: self.selectedReport?.status.sheetItemTitle ?? "",
+                            type: self.selectedReport?.status.reportActionType ?? .viewSubmitted),
         ListActionSheetItem(imageName: "delete-icon-white",
                             content: LocalizableReport.viewModelDelete.localized,
                             type: ReportActionType.delete)

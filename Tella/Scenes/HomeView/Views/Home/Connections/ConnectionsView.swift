@@ -55,14 +55,32 @@ struct ConnectionsView: View {
                 case .gDrive:
                     ConnectionsItemView(title: "Drive",
                                         image: "home.drive",
-                                        destination: GDriveView(mainAppModel: appModel))
+                                        destination: gDriveMainView)
+                case .nextcloud:
+                    
+                    ConnectionsItemView(title: LocalizableNextcloud.nextcloudAppBar.localized,
+                                        image: "home.nextcloud",
+                                        destination:nextcloudMainView)
                 }
                 
-            }
+                Spacer()
+            }.padding(.trailing, 17)
             
-            Spacer()
-        }.padding(.trailing, 17)
-        
+        }
+    }
+    
+    var gDriveMainView : some View {
+        ReportMainView(reportMainViewModel: NextcloudMainViewModel(mainAppModel: appModel,
+                                                                   connectionType: .gDrive,
+                                                                   title: "Drive"),
+                       diContainer: GDriveDIContainer())
+    }
+    
+    var nextcloudMainView : some View {
+        ReportMainView(reportMainViewModel: NextcloudMainViewModel(mainAppModel: appModel,
+                                                                   connectionType: .nextcloud,
+                                                                   title: LocalizableNextcloud.nextcloudAppBar.localized),
+                       diContainer: GDriveDIContainer())
     }
 }
 

@@ -135,7 +135,7 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
             id: reportId,
             title: title,
             description: description,
-            status: status,
+            status: status ?? .unknown,
             server: server,
             vaultFiles: self.files.compactMap { ReportFile( fileId: $0.id,
                                                             status: .notSubmitted,

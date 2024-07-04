@@ -24,9 +24,11 @@ struct GDriveDraftView: View {
     }
     
     var body: some View {
-        DraftView<GDriveDraftViewModel>(viewModel: gDriveDraftVM)
-            .environmentObject(mainAppModel)
-            .environmentObject(reportsViewModel)
+        Text("")
+
+//        DraftView<GDriveDraftViewModel>(viewModel: gDriveDraftVM, reportsViewModel: <#ReportMainViewModel#>)
+//            .environmentObject(mainAppModel)
+//            .environmentObject(reportsViewModel)
     }
 }
 

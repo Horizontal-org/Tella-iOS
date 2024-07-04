@@ -16,7 +16,8 @@ struct DraftView<VM: DraftViewModelProtocol>: View  {
     
     @EnvironmentObject var mainAppModel: MainAppModel
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var reportsViewModel : BaseReportsViewModel
+      
+    var reportsViewModel : ReportMainViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
@@ -122,11 +123,13 @@ struct DraftView<VM: DraftViewModelProtocol>: View  {
     }
     
     var outboxDetailsView: some View {
-        OutboxDetailsView(appModel: mainAppModel,
-                          reportsViewModel: reportsViewModel,
-                          reportId: viewModel.reportId,
-                          shouldStartUpload: true)
-        .environmentObject(reportsViewModel)
+        Text("")
+        
+//        OutboxDetailsView(appModel: mainAppModel,
+//                          reportsViewModel: reportsViewModel,
+//                          reportId: viewModel.reportId,
+//                          shouldStartUpload: true)
+//        .environmentObject(reportsViewModel)
     }
     
     var photoVideoPickerView: some View {

@@ -208,6 +208,9 @@
 		126FEE0A2AC4993900B99298 /* ReportPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FEE092AC4993900B99298 /* ReportPages.swift */; };
 		127092DA2C2EE4E3002030AA /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092D92C2EE4E3002030AA /* Server.swift */; };
 		127092DC2C2EE7AD002030AA /* WebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092DB2C2EE7AD002030AA /* WebServer.swift */; };
+		127092D42C2D8BA5002030AA /* NextcloudDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092D32C2D8BA5002030AA /* NextcloudDatabase.swift */; };
+		127092D72C2DD1A1002030AA /* NextcloudServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092D62C2DD1A1002030AA /* NextcloudServer.swift */; };
+		127138382C35EA34004D520B /* CommonCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127138372C35EA34004D520B /* CommonCardViewModel.swift */; };
 		1272F25D27C91ACD0054F2E2 /* ImportFileProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1272F25C27C91ACD0054F2E2 /* ImportFileProgress.swift */; };
 		1272F25F27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1272F25E27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift */; };
 		1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1272F26027C91CD90054F2E2 /* ImportFilesProgressModels.swift */; };
@@ -318,6 +321,12 @@
 		12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */; };
 		12B6481D28367C1D00CBE541 /* SheetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B6481C28367C1D00CBE541 /* SheetManager.swift */; };
 		12B6AF7D283E4C7200D697F6 /* LocalizableVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B6AF7C283E4C7200D697F6 /* LocalizableVault.swift */; };
+		12B84B852C32EF12006363F0 /* LocalizableNextcloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B84B842C32EF12006363F0 /* LocalizableNextcloud.swift */; };
+		12B84B902C333DD0006363F0 /* ReportMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B84B8E2C333DD0006363F0 /* ReportMainViewModel.swift */; };
+		12B84B912C333DD0006363F0 /* ReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B84B8F2C333DD0006363F0 /* ReportMainView.swift */; };
+		12B84B942C333FE3006363F0 /* ReportCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B84B932C333FE3006363F0 /* ReportCardViewModel.swift */; };
+		12B84B962C340025006363F0 /* NextcloudMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B84B952C340025006363F0 /* NextcloudMainViewModel.swift */; };
+		12B84B982C3413AC006363F0 /* CommonReportListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B84B972C3413AC006363F0 /* CommonReportListView.swift */; };
 		12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */; };
 		12BAFA7728B3B8D300930451 /* UIImageOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BAFA7628B3B8D300930451 /* UIImageOrientation.swift */; };
 		12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07ECB2B06603A0030AD6E /* EncryptionService.swift */; };
@@ -776,6 +785,7 @@
 		1270EAA22A4B4B07000851BA /* my */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = my; path = my.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1270EAA72A4DAA79000851BA /* fa-IR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fa-IR"; path = "fa-IR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1270EAA82A4DB008000851BA /* ta */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ta; path = ta.lproj/Localizable.strings; sourceTree = "<group>"; };
+		127138372C35EA34004D520B /* CommonCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonCardViewModel.swift; sourceTree = "<group>"; };
 		1272F25C27C91ACD0054F2E2 /* ImportFileProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFileProgress.swift; sourceTree = "<group>"; };
 		1272F25E27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesFromCameraProgress.swift; sourceTree = "<group>"; };
 		1272F26027C91CD90054F2E2 /* ImportFilesProgressModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesProgressModels.swift; sourceTree = "<group>"; };
@@ -883,6 +893,12 @@
 		12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAndHelpItem.swift; sourceTree = "<group>"; };
 		12B6481C28367C1D00CBE541 /* SheetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetManager.swift; sourceTree = "<group>"; };
 		12B6AF7C283E4C7200D697F6 /* LocalizableVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableVault.swift; sourceTree = "<group>"; };
+		12B84B842C32EF12006363F0 /* LocalizableNextcloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableNextcloud.swift; sourceTree = "<group>"; };
+		12B84B8E2C333DD0006363F0 /* ReportMainViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportMainViewModel.swift; sourceTree = "<group>"; };
+		12B84B8F2C333DD0006363F0 /* ReportMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportMainView.swift; sourceTree = "<group>"; };
+		12B84B932C333FE3006363F0 /* ReportCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCardViewModel.swift; sourceTree = "<group>"; };
+		12B84B952C340025006363F0 /* NextcloudMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudMainViewModel.swift; sourceTree = "<group>"; };
+		12B84B972C3413AC006363F0 /* CommonReportListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonReportListView.swift; sourceTree = "<group>"; };
 		12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreFileActionButton.swift; sourceTree = "<group>"; };
 		12BAFA7628B3B8D300930451 /* UIImageOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageOrientation.swift; sourceTree = "<group>"; };
 		12C07EC92B0660240030AD6E /* EncryptionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionOperation.swift; sourceTree = "<group>"; };
@@ -1603,6 +1619,34 @@
 			path = Upload;
 			sourceTree = "<group>";
 		};
+		125C789B2C36B36900440014 /* CommonConnectionReport */ = {
+			isa = PBXGroup;
+			children = (
+				125C789D2C36B50800440014 /* ViewModels */,
+				125C789C2C36B50100440014 /* Views */,
+			);
+			path = CommonConnectionReport;
+			sourceTree = "<group>";
+		};
+		125C789C2C36B50100440014 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				12B84B8F2C333DD0006363F0 /* ReportMainView.swift */,
+				12B84B972C3413AC006363F0 /* CommonReportListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		125C789D2C36B50800440014 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				12B84B8E2C333DD0006363F0 /* ReportMainViewModel.swift */,
+				127138372C35EA34004D520B /* CommonCardViewModel.swift */,
+				12B84B932C333FE3006363F0 /* ReportCardViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		125D231D271F127D00250FBB /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -2132,6 +2176,39 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		12B84B832C32E646006363F0 /* Nextcloud */ = {
+			isa = PBXGroup;
+			children = (
+				209AC67C2C2D65EB00492356 /* NextcloudAddServerURLView.swift */,
+				209AC67E2C2D660600492356 /* NextcloudServerViewModel.swift */,
+			);
+			path = Nextcloud;
+			sourceTree = "<group>";
+		};
+		12B84B8C2C333DD0006363F0 /* Nextcloud */ = {
+			isa = PBXGroup;
+			children = (
+				12B84B922C333F86006363F0 /* ViewModels */,
+				12B84B8D2C333DD0006363F0 /* Views */,
+			);
+			path = Nextcloud;
+			sourceTree = "<group>";
+		};
+		12B84B8D2C333DD0006363F0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		12B84B922C333F86006363F0 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				12B84B952C340025006363F0 /* NextcloudMainViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		12BCB2E62816972200889E5A /* Localizable */ = {
 			isa = PBXGroup;
 			children = (
@@ -2146,6 +2223,7 @@
 				CCE875B22A96699000C576B9 /* LocalizableUwazi.swift */,
 				12B370382B19109600DDA9E9 /* LocalizableBackgroundActivities.swift */,
 				1501401C2B71243A00991D69 /* LocalizableResources.swift */,
+				12B84B842C32EF12006363F0 /* LocalizableNextcloud.swift */,
 			);
 			path = Localizable;
 			sourceTree = "<group>";
@@ -2608,6 +2686,8 @@
 		D53B76DA2601C9E50001CD34 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				125C789B2C36B36900440014 /* CommonConnectionReport */,
+				12B84B8C2C333DD0006363F0 /* Nextcloud */,
 				15B81F332C1A2779007C0E88 /* GDrive */,
 				15791C182B6AC32B00D67C74 /* Resources */,
 				CC43D9DF2A72F7FB0030192E /* Uwazi */,
@@ -3338,6 +3418,7 @@
 				E108B75729FE79340045CCBE /* UwaziServerViewModel.swift in Sources */,
 				1293F66A2AD7F29B00F6CFBD /* FeedbackViewModel.swift in Sources */,
 				1289B98B27C53C2400315FCE /* CameraTypeItemView.swift in Sources */,
+				12B84B912C333DD0006363F0 /* ReportMainView.swift in Sources */,
 				155541B22C0672C20031D3A5 /* GDriveRepository.swift in Sources */,
 				126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */,
 				1535A5F12BAA06490009EA42 /* DownloadedResource.swift in Sources */,
@@ -3399,6 +3480,7 @@
 				128B929927D796E800E92ACF /* FolderListView.swift in Sources */,
 				1501401D2B71243A00991D69 /* LocalizableResources.swift in Sources */,
 				126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */,
+				12B84B852C32EF12006363F0 /* LocalizableNextcloud.swift in Sources */,
 				15917D752B90FCC3005655AC /* ResourceCardType.swift in Sources */,
 				E1EAA0572AA7501800492078 /* UwaziCheckURL.swift in Sources */,
 				0E64C6A6265E7625005A7934 /* ActionListBottomSheet.swift in Sources */,
@@ -3429,6 +3511,7 @@
 				12EC94D128ABB6FA0070E72B /* SecuritySettingsView.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				126684412B18B67500561650 /* BackgroundActivityModel.swift in Sources */,
+				12B84B962C340025006363F0 /* NextcloudMainViewModel.swift in Sources */,
 				CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */,
 				1293547B294A454900735ED0 /* AppDelegate.swift in Sources */,
 				127092DC2C2EE7AD002030AA /* WebServer.swift in Sources */,
@@ -3535,11 +3618,14 @@
 				122DBE012A5C1E0500D6561A /* Toast.swift in Sources */,
 				1236EE8228E1E1D700973EEA /* DatabaseExtension.swift in Sources */,
 				15B81F3A2C1A281C007C0E88 /* GDriveViewModel.swift in Sources */,
+				12B84B942C333FE3006363F0 /* ReportCardViewModel.swift in Sources */,
+				12B84B902C333DD0006363F0 /* ReportMainViewModel.swift in Sources */,
 				121F87AA2964383D00E6BA0D /* SubmittedReportVM.swift in Sources */,
 				0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */,
 				121C5D7529422C0800A64123 /* ProjectDetailsResult.swift in Sources */,
 				15EE30FE2B5073E20033BBBB /* Pages.swift in Sources */,
 				CCC1B4272AC75A380075B819 /* CreateEntityView.swift in Sources */,
+				127138382C35EA34004D520B /* CommonCardViewModel.swift in Sources */,
 				CCF47F442ABE18D7000ABBBC /* TemplateActionType.swift in Sources */,
 				1251C3902BB45616002E9898 /* UwaziListView.swift in Sources */,
 				CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */,
@@ -3559,6 +3645,7 @@
 				1289B45A28B64221005DA687 /* UIDeviceOrientationExtension.swift in Sources */,
 				121C5D7729422D6800A64123 /* DataModel.swift in Sources */,
 				12EF3D692B136D6F007A2910 /* UpdateQuery.swift in Sources */,
+				12B84B982C3413AC006363F0 /* CommonReportListView.swift in Sources */,
 				125A9E0028CE52C700C0C3C8 /* TellaDataBase.swift in Sources */,
 				126684432B18B6A400561650 /* BackgroundActivityType.swift in Sources */,
 				12A2DB03273576D50094B856 /* AddFileView.swift in Sources */,

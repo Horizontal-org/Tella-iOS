@@ -35,33 +35,3 @@ var downloadTemplateActionItems : [ListActionSheetItem] { return [
                         type: UwaziActionType.delete)
     ]
 }
-
-var uwaziDraftActionItems : [ListActionSheetItem] { return [
-    ListActionSheetItem(imageName: "edit-icon",
-                        content: LocalizableUwazi.editDraft.localized,
-                        type: UwaziActionType.createEntity),
-    ListActionSheetItem(imageName: "delete-icon-white",
-                        content: LocalizableUwazi.deleteDraft.localized,
-                        type: UwaziActionType.delete)
-    ]
-}
-
-var uwaziOutboxActionItems : [ListActionSheetItem] { return [
-    ListActionSheetItem(imageName: "edit-icon",
-                        content: LocalizableUwazi.viewSheetSelect.localized,
-                        type: UwaziActionType.viewOutboxEntity),
-    ListActionSheetItem(imageName: "delete-icon-white",
-                        content: LocalizableUwazi.deleteSheetSelect.localized,
-                        type: UwaziActionType.delete)
-    ]
-}
-
-var uwaziSubmittedActionItems : [ListActionSheetItem] { return [
-    ListActionSheetItem(imageName: "edit-icon",
-                        content: LocalizableUwazi.viewSheetSelect.localized,
-                        type: UwaziActionType.viewSubmittedEntity),
-    ListActionSheetItem(imageName: "delete-icon-white",
-                        content: LocalizableUwazi.deleteSheetSelect.localized,
-                        type: UwaziActionType.delete)
-    ]
-}

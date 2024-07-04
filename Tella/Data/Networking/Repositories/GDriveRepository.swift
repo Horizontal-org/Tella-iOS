@@ -231,10 +231,15 @@ class GDriveRepository: GDriveRepositoryProtocol  {
 }
 
 
-struct GDriveDIContainer {
+class GDriveDIContainer : DIContainer {
+    
     let gDriveRepository: GDriveRepositoryProtocol
     
     init(gDriveRepository: GDriveRepositoryProtocol = GDriveRepository()) {
         self.gDriveRepository = gDriveRepository
     }
+}
+
+class DIContainer {
+    
 }

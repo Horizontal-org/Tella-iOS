@@ -11,7 +11,7 @@ protocol BaseReportProtocol: Hashable {
     var description: String? { get }
     var createdDate: Date? { get }
     var updatedDate: Date? { get }
-    var status: ReportStatus? { get }
+    var status: ReportStatus { get }
     var reportFiles: [ReportFile]? { get }
     
     var getReportDate: String { get }
@@ -24,7 +24,7 @@ class BaseReport : Hashable, Codable, BaseReportProtocol {
     var description : String?
     var createdDate : Date?
     var updatedDate : Date?
-    var status : ReportStatus?
+    var status : ReportStatus = .unknown
     var reportFiles : [ReportFile]?
     var currentUpload: Bool?
 
@@ -44,7 +44,7 @@ class BaseReport : Hashable, Codable, BaseReportProtocol {
          description: String? = nil,
          createdDate: Date? = nil,
          updatedDate: Date? = nil,
-         status: ReportStatus? = nil,
+         status: ReportStatus,
          vaultFiles: [ReportFile]? = nil,
          currentUpload: Bool? = nil ) {
         self.id = id
@@ -77,10 +77,8 @@ class BaseReport : Hashable, Codable, BaseReportProtocol {
 
 extension BaseReport {
     var getReportDate: String {
-        guard let status = self.status  else {
-            return ""
-        }
-//        to do
+        let status = self.status
+
         switch status {
         case .draft:
             return self.createdDate?.getDraftReportTime() ?? ""
@@ -89,7 +87,7 @@ extension BaseReport {
             
         case .submissionInProgress:
             return ""
-
+            
         case .submitted:
             return self.createdDate?.getSubmittedReportTime() ?? ""
         default:
@@ -118,7 +116,13 @@ class Report: BaseReport {
          currentUpload: Bool? = nil) {
         self.server = server
         self.apiID = apiID
-        super.init(id: id, title: title, description: description, createdDate: createdDate, updatedDate: updatedDate, status: status, vaultFiles: vaultFiles, currentUpload: currentUpload)
+        super.init(id: id, title: title, 
+                   description: description,
+                   createdDate: createdDate,
+                   updatedDate: updatedDate,
+                   status: status ?? .unknown,
+                   vaultFiles: vaultFiles,
+                   currentUpload: currentUpload)
     }
     
     required init(from decoder: any Decoder) throws {
@@ -139,7 +143,7 @@ class GDriveReport: BaseReport {
          description: String? = nil,
          createdDate: Date? = nil,
          updatedDate: Date? = nil,
-         status: ReportStatus? = nil,
+         status: ReportStatus,
          server: GDriveServer? = nil,
          vaultFiles: [ReportFile]? = nil,
          currentUpload: Bool? = nil) {

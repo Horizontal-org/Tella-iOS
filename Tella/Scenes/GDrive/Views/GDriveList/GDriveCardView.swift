@@ -22,7 +22,7 @@ struct GDriveCardView : View {
             reportsViewModel.selectedReport = report
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
-                self.handleActions(type: report.status?.reportActionType)
+                self.handleActions(type: report.status.reportActionType)
             }
             
         } label: {
@@ -112,7 +112,7 @@ struct GDriveCardView : View {
         case .draft:
             return LocalizableReport.deleteDraftReportMessage.localized
         case .submitted:
-            return LocalizableReport.DeleteSubmittedReportMessage.localized
+            return LocalizableReport.deleteSubmittedReportMessage.localized
         default:
             return LocalizableReport.deleteOutboxReportMessage.localized
         }
