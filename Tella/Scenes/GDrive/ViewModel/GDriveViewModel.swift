@@ -19,13 +19,13 @@ class GDriveViewModel: BaseReportsViewModel {
         [
             PageViewItem(title: LocalizableReport.draftTitle.localized,
                          page: .draft,
-                        number: 0),
+                         number: draftReports.count),
             PageViewItem(title: LocalizableReport.outboxTitle.localized,
-                        page: .outbox,
-                        number: 0),
+                         page: .outbox,
+                         number: outboxedReports.count),
             PageViewItem(title: LocalizableReport.submittedTitle.localized,
-                        page: .submitted,
-                        number: 0)]
+                         page: .submitted,
+                         number: submittedReports.count)]
     }
     
     private var subscribers = Set<AnyCancellable>()
@@ -49,6 +49,8 @@ class GDriveViewModel: BaseReportsViewModel {
     
     private func getReports() {
         getDraftReports()
+        getOutboxedReports()
+        getSubmittedReports()
     }
     
     func getDraftReports() {
@@ -59,6 +61,30 @@ class GDriveViewModel: BaseReportsViewModel {
                 self.draftReports = []
                 DispatchQueue.main.asyncAfter(deadline: .now() + self.delayTime, execute: {
                     self.draftReports = draftReports
+                })
+            }.store(in: &subscribers)
+    }
+    
+    func getOutboxedReports() {
+        self.mainAppModel.tellaData?.gDriveOutboxedReports
+            .receive(on: DispatchQueue.main)
+            .sink { result in
+            } receiveValue: { outboxedReports in
+                self.outboxedReports = []
+                DispatchQueue.main.asyncAfter(deadline: .now() + self.delayTime, execute: {
+                    self.outboxedReports = outboxedReports
+                })
+            }.store(in: &subscribers)
+    }
+    
+    func getSubmittedReports() {
+        self.mainAppModel.tellaData?.gDriveSubmittedReports
+            .receive(on: DispatchQueue.main)
+            .sink { result in
+            } receiveValue: { submittedReports in
+                self.outboxedReports = []
+                DispatchQueue.main.asyncAfter(deadline: .now() + self.delayTime, execute: {
+                    self.submittedReports = submittedReports
                 })
             }.store(in: &subscribers)
     }

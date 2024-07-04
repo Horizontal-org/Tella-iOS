@@ -24,6 +24,8 @@ class TellaData : ObservableObject {
     
     // GDriveReports
     var gDriveDraftReports = CurrentValueSubject<[GDriveReport], Error>([])
+    var gDriveOutboxedReports = CurrentValueSubject<[GDriveReport], Error>([])
+    var gDriveSubmittedReports = CurrentValueSubject<[GDriveReport], Error>([])
     
     var shouldReloadUwaziInstances = CurrentValueSubject<Bool, Never>(false)
     var shouldReloadUwaziTemplates = CurrentValueSubject<Bool, Never>(false)

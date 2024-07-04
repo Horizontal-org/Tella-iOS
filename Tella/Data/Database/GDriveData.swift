@@ -19,7 +19,15 @@ extension TellaData {
     
     func getGDriveReports() {
         DispatchQueue.main.async {
-            self.gDriveDraftReports.value = self.getDraftGDriveReport()
+            self.gDriveDraftReports.value = self.database.getDriveReports(reportStatus: [ReportStatus.draft])
+            self.gDriveOutboxedReports.value = self.database.getDriveReports(reportStatus: [.finalized,
+                                                                                            .submissionError,
+                                                                                            .submissionPending,
+                                                                                            .submissionPaused,
+                                                                                            .submissionInProgress,
+                                                                                            .submissionAutoPaused,
+                                                                                            .submissionScheduled])
+            self.gDriveSubmittedReports.value = self.database.getDriveReports(reportStatus: [ReportStatus.submitted])
         }
     }
     
