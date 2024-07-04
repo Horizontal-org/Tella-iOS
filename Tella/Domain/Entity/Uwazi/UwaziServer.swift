@@ -11,7 +11,8 @@ import Foundation
 class UwaziServer : WebServer {
     var locale: String?
     var cookie: String?
-    
+    var accessToken: String?
+
     init(id: Int? = nil,
          name: String? = nil,
          serverURL: String? = nil,
@@ -26,9 +27,9 @@ class UwaziServer : WebServer {
                    serverURL: serverURL, 
                    username: username,
                    password: password,
-                   accessToken: accessToken,
                    serverType: serverType)
         self.locale = locale
+        self.accessToken = accessToken
         self.cookie = createCookie()
     }
     
