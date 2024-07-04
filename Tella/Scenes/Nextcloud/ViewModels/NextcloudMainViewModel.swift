@@ -13,9 +13,9 @@ class NextcloudMainViewModel: ReportMainViewModel {
     
     override func getReports() {
         
-        let draftReports =  tellaData?.database.getDraftGDriveReports() ?? []
-        let outboxedReports = tellaData?.database.getDraftGDriveReports() ?? []
-        let submittedReports = tellaData?.database.getDraftGDriveReports() ?? []
+        let draftReports =  tellaData?.database.getDriveReports(reportStatus: [.draft]) ?? []
+        let outboxedReports = tellaData?.database.getDriveReports(reportStatus: [.draft]) ?? []
+        let submittedReports = tellaData?.database.getDriveReports(reportStatus: [.draft]) ?? []
         
         draftReportsViewModel = draftReports.compactMap { report in
             ReportCardViewModel(report: report,

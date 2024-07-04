@@ -177,7 +177,7 @@ extension TellaDataBase {
             
             let valuesToUpdate = [ KeyValue(key: D.cTitle, value: report.title),
                                    KeyValue(key: D.cDescription, value: report.description),
-                                   KeyValue(key: D.cStatus, value: report.status?.rawValue),
+                                   KeyValue(key: D.cStatus, value: report.status.rawValue),
                                    KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()),
             ]
             let reportCondition = [KeyValue(key: D.cId, value: report.id)]

@@ -62,11 +62,9 @@ struct ConnectionsView: View {
                                         image: "home.nextcloud",
                                         destination:nextcloudMainView)
                 }
-                
-                Spacer()
-            }.padding(.trailing, 17)
-            
-        }
+            }
+            Spacer()
+        }.padding(.trailing, 17)
     }
     
     var gDriveMainView : some View {
