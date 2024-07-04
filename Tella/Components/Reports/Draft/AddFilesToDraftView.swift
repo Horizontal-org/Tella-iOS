@@ -41,8 +41,9 @@ struct AddFilesToDraftView<VM: DraftViewModelProtocol>: View {
     var itemsGridView: some View {
         LazyVGrid(columns: gridLayout, alignment: .center, spacing: 12) {
             ForEach(draftReportVM.files.sorted{$0.created < $1.created}, id: \.id) { file in
-                ReportFileGridView(file: file)
+                ReportFileGridView<VM>(file: file)
                     .frame(height: (UIScreen.screenWidth - 64) / 3 )
+                    .environmentObject(draftReportVM)
             }
         }
     }

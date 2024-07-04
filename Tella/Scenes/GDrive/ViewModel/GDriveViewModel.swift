@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import Combine
 class GDriveViewModel: BaseReportsViewModel {
     
     @Published var draftReports: [GDriveReport] = []
@@ -28,6 +28,9 @@ class GDriveViewModel: BaseReportsViewModel {
                         number: 0)]
     }
     
+    private var subscribers = Set<AnyCancellable>()
+    private var delayTime = 0.1
+    
     var sheetItems : [ListActionSheetItem] { return [
         
         ListActionSheetItem(imageName: "view-icon",
@@ -41,10 +44,26 @@ class GDriveViewModel: BaseReportsViewModel {
     override init(mainAppModel: MainAppModel) {
         super.init(mainAppModel: mainAppModel)
         
-        self.draftReports = self.mainAppModel.tellaData?.getDraftGDriveReport() ?? []
+        self.getReports()
+    }
+    
+    private func getReports() {
+        getDraftReports()
+    }
+    
+    func getDraftReports() {
+        self.mainAppModel.tellaData?.gDriveDraftReports
+            .receive(on: DispatchQueue.main)
+            .sink { result in
+            } receiveValue: { draftReports in
+                self.draftReports = []
+                DispatchQueue.main.asyncAfter(deadline: .now() + self.delayTime, execute: {
+                    self.draftReports = draftReports
+                })
+            }.store(in: &subscribers)
     }
     
     func deleteReport() {
-        
+        let _ = self.mainAppModel.tellaData?.deleteDriveReport(reportId: selectedReport?.id)
     }
 }

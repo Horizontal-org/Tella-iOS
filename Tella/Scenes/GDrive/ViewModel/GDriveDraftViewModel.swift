@@ -165,7 +165,14 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
     }
     
     func updateReport(report: GDriveReport) {
-        //update report logic
+        let updatedReportResult = self.mainAppModel.tellaData?.updateDriveReport(report: report)
+        
+        switch updatedReportResult {
+        case .success:
+            self.successSavingReport = true
+        default:
+            self.failureSavingReport = true
+        }
     }
     private func getServer() {
         self.server = mainAppModel.tellaData?.gDriveServers.value.first
@@ -183,6 +190,11 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
             .collect()
             .map { _ in () }
             .eraseToAnyPublisher()
+    }
+    
+    func deleteFile(fileId: String?) {
+        guard let index = files.firstIndex(where: { $0.id == fileId})  else  {return }
+        files.remove(at: index)
     }
     
     private func bindVaultFileTaken() {
