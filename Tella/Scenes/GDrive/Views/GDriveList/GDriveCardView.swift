@@ -62,7 +62,7 @@ struct GDriveCardView : View {
         sheetManager.showBottomSheet(modalHeight: 200) {
             DeleteReportConfirmationView(title: report.title,
                                          message: deleteMessage) {
-                reportsViewModel.deleteReport()
+                reportsViewModel.deleteReport(report: report)
                 sheetManager.hide()
             }
         }
@@ -91,13 +91,13 @@ struct GDriveCardView : View {
         GDriveDraftView(mainAppModel: mainAppModel,
                         gDriveDIContainer: gDriveDIContainer,
                         reportId: report.id)
-        .environmentObject(reportsViewModel as BaseReportsViewModel)
+        .environmentObject(reportsViewModel)
     }
     
     private var submittedDetailsView: some View {
         SubmittedDetailsView(appModel: mainAppModel,
                              reportId: reportsViewModel.selectedReport?.id)
-        .environmentObject(reportsViewModel as BaseReportsViewModel)
+        .environmentObject(reportsViewModel)
     }
     
     private var outboxDetailsView: some View {

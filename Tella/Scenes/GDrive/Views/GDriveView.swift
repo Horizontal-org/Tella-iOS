@@ -60,7 +60,7 @@ struct GDriveView: View {
     
     private var newGDriveDraftView: some View {
         GDriveDraftView(mainAppModel: mainAppModel, gDriveDIContainer: gDriveDIContainer)
-            .environmentObject(gDriveViewModel as BaseReportsViewModel)
+            .environmentObject(gDriveViewModel)
     }
 }
 

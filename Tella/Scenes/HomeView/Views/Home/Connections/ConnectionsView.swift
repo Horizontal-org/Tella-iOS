@@ -72,9 +72,7 @@ struct ConnectionsView: View {
     }
     
     var gDriveMainView : some View {
-        ReportMainView(reportMainViewModel: NextcloudReportViewModel(mainAppModel: appModel,
-                                                                   connectionType: .gDrive,
-                                                                   title: "Drive"),
+        ReportMainView(reportMainViewModel: GDriveViewModel(mainAppModel: appModel),
                        diContainer: GDriveDIContainer())
     }
     
