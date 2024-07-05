@@ -30,7 +30,7 @@ class UwaziCardViewModel: CommonCardViewModel {
         let deleteMessage = LocalizableUwazi.uwaziDeleteTemplateExpl.localized
         let deleteReportStrings = ConfirmDeleteConnectionStrings(deleteTitle: deleteTitle,
                                                       deleteMessage: deleteMessage)
-        super.init(id: Int(UUID().uuidString) ?? 0,
+        super.init(id: Int(UUID().uuidString),
                    title: title,
                    iconImageName: nil,
                    serverName: template.serverName ?? "",
@@ -53,7 +53,7 @@ class UwaziCardViewModel: CommonCardViewModel {
         let listActionSheetItem = instance.status.listActionSheetItem
         let deleteReportStrings = instance.status.deleteReportStrings(title: title)
         
-        super.init(id: Int(UUID().uuidString) ?? 0,
+        super.init(id: Int(UUID().uuidString) ,
                    title: title,
                    iconImageName: iconImageName,
                    serverName: serverName,

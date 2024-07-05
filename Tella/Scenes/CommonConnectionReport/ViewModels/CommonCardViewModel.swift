@@ -10,7 +10,7 @@ import Foundation
 
 class CommonCardViewModel: Hashable {
     
-    var id : Int
+    var id : Int?
     var title: String
     var iconImageName: String?
     var serverName: String?
@@ -19,7 +19,8 @@ class CommonCardViewModel: Hashable {
     var deleteReportStrings : ConfirmDeleteConnectionStrings
     var deleteAction: (() -> Void)
     
-    init(id: Int, title: String,
+    init(id: Int?, 
+         title: String,
          iconImageName: String?,
          serverName: String?,
          listActionSheetItem: [ListActionSheetItem],
