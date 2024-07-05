@@ -12,13 +12,13 @@ import Combine
 protocol NextCloudRepositoryProtocol {
     func login(serverUrl: String, username: String, password: String) async throws
     func checkServer(serverUrl: String) async throws
+    func createFolder(folderName: String) async throws
 }
-
-
 
 class NextCloudRepository: NextCloudRepositoryProtocol {
     
     private let kRemotePhpFiles = "remote.php/dav/files/"
+    // Those attributes must be removed from here
     let configServerUrl = "https://cloud.wearehorizontal.org/"
     let configUsername = ""
     let configPassword = ""
@@ -29,6 +29,8 @@ class NextCloudRepository: NextCloudRepositoryProtocol {
     }
     
     func setUp() {
+        // Using 'configUsername', 'configServerUrl' and 'configServerUrl' from DB
+        // We should check if server exist in database and retrieve data from DB
         NextcloudKit.shared.setup(account: self.configUsername, user: self.configUsername, userId: self.configUsername , password: self.configPassword, urlBase: self.configServerUrl  )
     }
     
@@ -58,11 +60,12 @@ class NextCloudRepository: NextCloudRepositoryProtocol {
     }
 
     
-    func createFolder() {
-        var fullURL = self.configServerUrl + self.kRemotePhpFiles + "username"  + "/foldername"
+    func createFolder(folderName: String) {
+        var fullURL = self.configServerUrl + self.kRemotePhpFiles + "username"  + "/" + folderName // This fullURL should be updated
         print(fullURL)
         NextcloudKit.shared.createFolder(serverUrlFileName: fullURL) { account, ocId, date, error in
             print(account, "account")
+            // Save account in DB after creating the folder in Nextcloud
         }
     }
     

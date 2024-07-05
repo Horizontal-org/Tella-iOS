@@ -42,6 +42,6 @@ class ServerViewModel: ObservableObject {
         cancellable = $validUsername.combineLatest($validPassword).sink(receiveValue: { validUsername, validPassword  in
             self.validCredentials = validUsername && validPassword
         })
-
     }
+    
 }

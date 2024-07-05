@@ -8,19 +8,21 @@
 
 import SwiftUI
 
+
 struct CreateDriveFolderView: View {
     
-    @EnvironmentObject var gDriveServerViewModel: GDriveServerViewModel
+    @StateObject var gDriveServerViewModel: GDriveServerViewModel
     
     var body: some View {
         ServerCreateFolderView(createFolderViewModel: gDriveServerViewModel.serverCreateFolderVM, navigateToSuccessLogin: navigateToSuccessLogin)
     }
     
     private func navigateToSuccessLogin() {
-        navigateTo(destination: SuccessLoginView(navigateToAction: {self.popToRoot()}, type: .gDrive))
+        navigateTo(destination: SuccessLoginView(navigateToAction: {self.popToRoot()}, type: .nextcloud))
     }
+    
 }
 
 #Preview {
-    CreateDriveFolderView()
+    CreateDriveFolderView(gDriveServerViewModel: GDriveServerViewModel(repository: GDriveRepository(), mainAppModel: MainAppModel.stub()))
 }

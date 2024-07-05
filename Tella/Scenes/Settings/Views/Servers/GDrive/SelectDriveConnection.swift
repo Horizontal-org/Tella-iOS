@@ -35,7 +35,8 @@ struct SelectDriveConnection: View {
     var headerView: some View {
         ServerConnectionHeaderView(
             title: LocalizableSettings.GDriveSelectTypeTitle.localized,
-            subtitle: LocalizableSettings.GDriveSelectTypeDesc.localized
+            subtitle: LocalizableSettings.GDriveSelectTypeDesc.localized, 
+            imageIconName: "gdrive.icon"
         )
     }
     
@@ -84,7 +85,7 @@ struct SelectDriveConnection: View {
                 )
             case .personal:
                 navigateTo(
-                    destination: CreateDriveFolder()
+                    destination: CreateDriveFolderView(gDriveServerViewModel: gDriveServerViewModel)
                         .environmentObject(gDriveServerViewModel))
             default:
                 break

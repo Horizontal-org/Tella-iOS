@@ -9,15 +9,24 @@ class NextcloudServerViewModel: ServerViewModel {
     
     private var nextcloudRepository: NextCloudRepository
     private var mainAppModel: MainAppModel
-    
     var currentServer: NextcloudServer?
     
+    var serverCreateFolderVM: ServerCreateFolderViewModel
+
     init(nextcloudRepository: NextCloudRepository = NextCloudRepository(),
          mainAppModel: MainAppModel,
          currentServer: NextcloudServer? = nil) {
+
         self.nextcloudRepository = nextcloudRepository
         self.mainAppModel = mainAppModel
         self.currentServer = currentServer
+        // We should replace this with nextcloud attributes ('textFieldPlaceholderText', 'headerViewTitleText' and 'imageIconName' )
+        self.serverCreateFolderVM = ServerCreateFolderViewModel(textFieldPlaceholderText: LocalizableSettings.GDriveCreatePersonalFolderPlaceholder.localized,
+                                                                headerViewTitleText: LocalizableSettings.GDriveCreatePersonalFolderTitle.localized,
+                                                                headerViewSubtitleText: LocalizableSettings.GDriveCreatePersonalFolderDesc.localized, imageIconName: "gdrive.icon")
+        super.init()
+        self.serverCreateFolderVM.createFolderAction = createNextCloudFolder
+
     }
     
     override func checkURL() {
@@ -64,4 +73,8 @@ class NextcloudServerViewModel: ServerViewModel {
 //        mainAppModel.tellaData?.updateNextcloudServer(server: currentServer)
     }
     
+    func createNextCloudFolder() {
+        // We should call createFolder method from NextCloudRepository
+        print("success creation")
+    }
 }

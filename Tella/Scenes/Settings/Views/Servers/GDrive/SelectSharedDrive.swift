@@ -59,9 +59,8 @@ struct SelectSharedDrive: View {
     }
     
     func backButtonAction() -> Void {
-        gDriveServerViewModel.addServer(rootFolder: gDriveServerViewModel.selectedDrive?.id ?? "") {
-            navigateTo(destination: SuccessLoginView(navigateToAction: {self.popToRoot()}, type: .gDrive))
-        }
+        gDriveServerViewModel.addServer(rootFolder: gDriveServerViewModel.selectedDrive?.id ?? "")
+        navigateTo(destination: SuccessLoginView(navigateToAction: {self.popToRoot()}, type: .gDrive))
     }
 }
 

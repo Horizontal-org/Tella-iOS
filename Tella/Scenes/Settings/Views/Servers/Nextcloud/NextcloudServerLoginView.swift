@@ -13,9 +13,8 @@ struct NextcloudServerLoginView: View {
     var nextcloudVM: NextcloudServerViewModel
     
     var body: some View {
-        
         ServerLoginView(viewModel: nextcloudVM) {
-//            navigateTo(destination: SuccessLoginView)
+            navigateTo(destination: CreateNextcloudFolderView(nextcloudVM: nextcloudVM))
         }
     }
 }
