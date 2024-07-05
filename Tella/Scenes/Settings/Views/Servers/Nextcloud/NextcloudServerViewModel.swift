@@ -20,7 +20,7 @@ class NextcloudServerViewModel: ServerViewModel {
         self.nextcloudRepository = nextcloudRepository
         self.mainAppModel = mainAppModel
         self.currentServer = currentServer
-        // We should replace this with nextcloud attributes ('textFieldPlaceholderText', 'headerViewTitleText' and 'imageIconName' )
+        //TODO: We should replace this with nextcloud attributes ('textFieldPlaceholderText', 'headerViewTitleText' and 'imageIconName' )
         self.serverCreateFolderVM = ServerCreateFolderViewModel(textFieldPlaceholderText: LocalizableSettings.GDriveCreatePersonalFolderPlaceholder.localized,
                                                                 headerViewTitleText: LocalizableSettings.GDriveCreatePersonalFolderTitle.localized,
                                                                 headerViewSubtitleText: LocalizableSettings.GDriveCreatePersonalFolderDesc.localized, imageIconName: "gdrive.icon")
@@ -74,7 +74,17 @@ class NextcloudServerViewModel: ServerViewModel {
     }
     
     func createNextCloudFolder() {
-        // We should call createFolder method from NextCloudRepository
-        print("success creation")
+        serverCreateFolderVM.createFolderState = .loading
+        
+        Task { @MainActor in
+            do {
+                try await nextcloudRepository.createFolder(serverUrl: serverURL, folderName: serverCreateFolderVM.folderName)
+                //TODO: Saving server to database
+                serverCreateFolderVM.createFolderState = .loaded(true)
+            }
+            catch let error{
+                serverCreateFolderVM.createFolderState = .error(error.localizedDescription)
+            }
+        }
     }
 }

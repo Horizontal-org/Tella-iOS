@@ -47,7 +47,7 @@ class GDriveServerViewModel: ObservableObject {
     
     func createDriveFolder() {
         self.serverCreateFolderVM.createFolderState = .loading
-        gDriveRepository.createDriveFolder(folderName: serverCreateFolderVM.fieldContent, parentId: nil, description: nil)
+        gDriveRepository.createDriveFolder(folderName: serverCreateFolderVM.folderName, parentId: nil, description: nil)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 switch completion {

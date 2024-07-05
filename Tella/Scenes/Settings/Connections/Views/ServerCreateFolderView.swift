@@ -41,13 +41,13 @@ struct ServerCreateFolderView: View {
     }
     
     var textField: some View {
-        TextfieldView(fieldContent: $createFolderViewModel.fieldContent,
+        TextfieldView(fieldContent: $createFolderViewModel.folderName,
                       isValid: $isValid,
                       shouldShowError: .constant(false),
                       fieldType: .text,
                       placeholder: createFolderViewModel.textFieldPlaceholderText)
         .padding(.vertical, 12)
-        .onChange(of: createFolderViewModel.fieldContent) { newValue in
+        .onChange(of: createFolderViewModel.folderName) { newValue in
             isValid = !newValue.isEmpty
         }
     }
@@ -68,6 +68,5 @@ struct ServerCreateFolderView: View {
                                 nextAction: {
             self.createFolderViewModel.createFolderAction?()
         })
-        
     }
 }

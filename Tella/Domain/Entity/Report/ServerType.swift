@@ -18,6 +18,8 @@ extension ServerConnectionType {
             return LocalizableSettings.GDriveSuccessMessage.localized
         case.tella:
             return LocalizableSettings.settServerReportsSuccessMessage.localized
+        case .nextcloud:
+            return "Go to Nextcloud" //TODO: Must be changed to localizable
         default:
             return ""
         }

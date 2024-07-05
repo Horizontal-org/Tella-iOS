@@ -17,7 +17,7 @@ class ServerCreateFolderViewModel: ObservableObject {
     @Published var createFolderState: ViewModelState<Bool> = .loaded(false)
     @Published var createFolderAction: (() -> ())?
     
-    @Published var fieldContent : String = ""
+    @Published var folderName : String = ""
     
     
     init(textFieldPlaceholderText: String, headerViewTitleText: String, headerViewSubtitleText: String, imageIconName: String) {
