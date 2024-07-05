@@ -26,7 +26,7 @@ struct ReportCardView : View {
                 
                 HStack {
                     
-                    ConnectionCardDetail(title: report.title ?? "", subtitle: report.getReportDate)
+                    ConnectionCardDetails(title: report.title ?? "", subtitle: report.getReportDate)
                     
                     Spacer()
                     
@@ -49,7 +49,7 @@ struct ReportCardView : View {
             ActionListBottomSheet(items: reportsViewModel.sheetItems  ,
                                   headerTitle: reportsViewModel.selectedReport?.title ?? "",
                                   action: { item in
-                self.handleActions(type : item.type as? ReportActionType)
+                self.handleActions(type : item.type as? ConnectionActionType)
             })
         }
     }
@@ -64,7 +64,7 @@ struct ReportCardView : View {
         }
     }
     
-    private func handleActions(type: ReportActionType?) {
+    private func handleActions(type: ConnectionActionType?) {
         
         guard let type else { return }
         

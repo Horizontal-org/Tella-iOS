@@ -1,5 +1,5 @@
 //
-//  GDriveMainViewModel.swift
+//  NextcloudReportViewModel.swift
 //  Tella
 //
 //  Created by Dhekra Rouatbi on 2/7/2024.
@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-class NextcloudMainViewModel: ReportMainViewModel {
+class NextcloudReportViewModel: ReportMainViewModel {
     
     override func getReports() {
         

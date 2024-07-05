@@ -12,13 +12,6 @@ enum TemplateActionType: ActionType {
     case delete
 }
 
-enum UwaziActionType: ActionType {
-    case delete
-    case createEntity
-    case viewOutboxEntity
-    case viewSubmittedEntity
-}
-
 var templateActionItems : [ListActionSheetItem] { return [
     ListActionSheetItem(imageName: "delete-icon-white",
                         content: LocalizableUwazi.uwaziDeleteFromDevice.localized,
@@ -29,9 +22,9 @@ var templateActionItems : [ListActionSheetItem] { return [
 var downloadTemplateActionItems : [ListActionSheetItem] { return [
     ListActionSheetItem(imageName: "edit-icon",
                         content: LocalizableUwazi.uwaziCreateEntitySheetExpl.localized,
-                        type: UwaziActionType.createEntity),
+                        type: ConnectionActionType.editDraft),
     ListActionSheetItem(imageName: "delete-icon-white",
                         content: LocalizableUwazi.uwaziDeleteTemplate.localized,
-                        type: UwaziActionType.delete)
+                        type: ConnectionActionType.delete)
     ]
 }

@@ -68,14 +68,14 @@ struct ConnectionsView: View {
     }
     
     var gDriveMainView : some View {
-        ReportMainView(reportMainViewModel: NextcloudMainViewModel(mainAppModel: appModel,
+        ReportMainView(reportMainViewModel: NextcloudReportViewModel(mainAppModel: appModel,
                                                                    connectionType: .gDrive,
                                                                    title: "Drive"),
                        diContainer: GDriveDIContainer())
     }
     
     var nextcloudMainView : some View {
-        ReportMainView(reportMainViewModel: NextcloudMainViewModel(mainAppModel: appModel,
+        ReportMainView(reportMainViewModel: NextcloudReportViewModel(mainAppModel: appModel,
                                                                    connectionType: .nextcloud,
                                                                    title: LocalizableNextcloud.nextcloudAppBar.localized),
                        diContainer: GDriveDIContainer())

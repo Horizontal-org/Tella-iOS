@@ -106,7 +106,7 @@ struct ReportMainView: View {
             ActionListBottomSheet(items: cardViewModel.listActionSheetItem,
                                   headerTitle: cardViewModel.title,
                                   action:  {item in
-                guard let type = item.type as? ReportActionType else {return}
+                guard let type = item.type as? ConnectionActionType else {return}
                 let id = cardViewModel.id
 
                 switch type {

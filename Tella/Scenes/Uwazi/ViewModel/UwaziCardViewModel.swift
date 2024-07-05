@@ -28,14 +28,14 @@ class UwaziCardViewModel: CommonCardViewModel {
         let title = template.entityRow?.translatedName ?? ""
         let deleteTitle = String.init(format: LocalizableUwazi.deleteSheetTitle.localized, "\(title)")
         let deleteMessage = LocalizableUwazi.uwaziDeleteTemplateExpl.localized
-        let deleteReportStrings = DeleteReportStrings(deleteTitle: deleteTitle,
+        let deleteReportStrings = ConfirmDeleteConnectionStrings(deleteTitle: deleteTitle,
                                                       deleteMessage: deleteMessage)
         super.init(id: Int(UUID().uuidString) ?? 0,
                    title: title,
                    iconImageName: nil,
                    serverName: template.serverName ?? "",
                    listActionSheetItem: downloadTemplateActionItems,
-                   connectionType: .uwazi, 
+                   connectionType: .uwazi,
                    deleteReportStrings: deleteReportStrings,
                    deleteAction: deleteTemplate)
         

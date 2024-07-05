@@ -16,7 +16,7 @@ class CommonCardViewModel: Hashable {
     var serverName: String?
     var listActionSheetItem: [ListActionSheetItem]
     var connectionType: ServerConnectionType
-    var deleteReportStrings : DeleteReportStrings
+    var deleteReportStrings : ConfirmDeleteConnectionStrings
     var deleteAction: (() -> Void)
     
     init(id: Int, title: String,
@@ -24,7 +24,7 @@ class CommonCardViewModel: Hashable {
          serverName: String?,
          listActionSheetItem: [ListActionSheetItem],
          connectionType: ServerConnectionType,
-         deleteReportStrings: DeleteReportStrings,
+         deleteReportStrings: ConfirmDeleteConnectionStrings,
          deleteAction: @escaping (() -> Void)) {
         
         self.id = id

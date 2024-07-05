@@ -30,7 +30,7 @@ struct GDriveCardView : View {
                 
                 HStack {
                     
-                    ConnectionCardDetail(title: report.title ?? "", subtitle: report.getReportDate)
+                    ConnectionCardDetails(title: report.title ?? "", subtitle: report.getReportDate)
                     
                     Spacer()
                     
@@ -53,7 +53,7 @@ struct GDriveCardView : View {
             ActionListBottomSheet(items: reportsViewModel.sheetItems  ,
                                   headerTitle: reportsViewModel.selectedReport?.title ?? "",
                                   action: { item in
-                self.handleActions(type : item.type as? ReportActionType)
+                self.handleActions(type : item.type as? ConnectionActionType)
             })
         }
     }
@@ -68,7 +68,7 @@ struct GDriveCardView : View {
         }
     }
     
-    private func handleActions(type: ReportActionType?) {
+    private func handleActions(type: ConnectionActionType?) {
         
         guard let type else { return }
         

@@ -38,7 +38,7 @@ class GDriveViewModel: BaseReportsViewModel {
                             type: self.selectedReport?.status.reportActionType ?? .viewSubmitted),
         ListActionSheetItem(imageName: "delete-icon-white",
                             content: LocalizableReport.viewModelDelete.localized,
-                            type: ReportActionType.delete)
+                            type: ConnectionActionType.delete)
     ]}
     
     override init(mainAppModel: MainAppModel) {
