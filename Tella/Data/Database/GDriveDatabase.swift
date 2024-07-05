@@ -115,13 +115,13 @@ extension TellaDataBase {
         }
     }
     
-    func getDraftGDriveReports() -> [GDriveReport] {
+    func getDriveReports(reportStatus: [ReportStatus]) -> [GDriveReport] {
         do {
             
-            let reportsCondition = [KeyValue(key: D.cStatus, value: ReportStatus.draft.rawValue)]
+            let statusArray = reportStatus.compactMap{ $0.rawValue }
             
             let gDriveReportsDict = try statementBuilder.getSelectQuery(tableName: D.tGDriveReport,
-                                                                        equalCondition: reportsCondition
+                                                                        inCondition: [KeyValues(key:D.cStatus, value: statusArray )]
             )
                         
             let decodedReports = try gDriveReportsDict.compactMap ({ dict in
@@ -167,6 +167,62 @@ extension TellaDataBase {
             debugLog(error)
             
             return []
+        }
+    }
+    
+    func updateDriveReport(report: GDriveReport) -> Result<Bool, Error> {
+        do {
+            
+            let valuesToUpdate = [ KeyValue(key: D.cTitle, value: report.title),
+                                   KeyValue(key: D.cDescription, value: report.description),
+                                   KeyValue(key: D.cStatus, value: report.status?.rawValue),
+                                   KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()),
+            ]
+            let reportCondition = [KeyValue(key: D.cId, value: report.id)]
+
+            try statementBuilder.update(
+                tableName: D.tGDriveReport,
+                valuesToUpdate: valuesToUpdate,
+                equalCondition: reportCondition
+            )
+            
+            if let files = report.reportFiles {
+                let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: report.id)]
+                
+                try statementBuilder.delete(tableName: D.tGDriveInstanceVaultFile, primarykeyValue: reportFilesCondition)
+                
+                try files.forEach( { reportFile in
+                    let reportFilesValuesToAdd = [
+                        reportFile.id == nil ? nil : KeyValue(key: D.cId, value: reportFile.id),
+                        KeyValue(key: D.cReportInstanceId, value: report.id),
+                        KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
+                        KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
+                        KeyValue(key: D.cBytesSent, value: reportFile.bytesSent),
+                        KeyValue(key: D.cCreatedDate, value: reportFile.createdDate),
+                        KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()),
+                    ]
+                    
+                    try statementBuilder.insertInto(tableName: D.tGDriveInstanceVaultFile, keyValue: reportFilesValuesToAdd)
+                })
+            }
+            return .success(true)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
+    
+    func deleteDriveReport(reportId: Int?) -> Result<Bool, Error> {
+        do {
+            let reportCondition = [KeyValue(key: D.cId, value: reportId)]
+            
+            try statementBuilder.delete(tableName: D.tGDriveReport, primarykeyValue: reportCondition)
+            
+            return .success(true)
+        } catch let error {
+            debugLog(error)
+            
+            return .failure(error)
         }
     }
 }

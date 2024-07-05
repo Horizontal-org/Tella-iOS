@@ -41,4 +41,5 @@ protocol DraftViewModelProtocol: ObservableObject {
     func submitReport()
     func saveDraftReport()
     func saveFinalizedReport()
+    func deleteFile(fileId: String?)
 }
