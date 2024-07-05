@@ -7,12 +7,12 @@ import SwiftUI
 struct OutboxDetailsView: View {
     
     @StateObject var outboxReportVM : OutboxReportVM
-    @EnvironmentObject var reportsViewModel : BaseReportsViewModel
+    @EnvironmentObject var reportsViewModel : ReportMainViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
     
-    init(appModel: MainAppModel,reportsViewModel: BaseReportsViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
+    init(appModel: MainAppModel,reportsViewModel: ReportMainViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
         _outboxReportVM = StateObject(wrappedValue: OutboxReportVM(mainAppModel: appModel, reportsViewModel: reportsViewModel, reportId:reportId, shouldStartUpload: shouldStartUpload))
     }
     
@@ -56,6 +56,7 @@ struct OutboxDetailsView: View {
         
         HStack(spacing: 0) {
             Button {
+                dump("DISMISSS")
                 dismissView()
             } label: {
                 Image("back")
@@ -185,7 +186,7 @@ struct OutboxDetailsView: View {
     }
     
     private func dismissView() {
-        self.popTo(UIHostingController<ReportsView>.self)
+        self.presentationMode.wrappedValue.dismiss()
     }
     
     private func showDeleteReportConfirmationView() {

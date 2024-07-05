@@ -101,10 +101,11 @@ struct GDriveCardView : View {
     }
     
     private var outboxDetailsView: some View {
-        OutboxDetailsView(appModel: mainAppModel,
-                          reportsViewModel: reportsViewModel,
-                          reportId: reportsViewModel.selectedReport?.id)
-        .environmentObject(reportsViewModel  as BaseReportsViewModel)
+//        OutboxDetailsView(appModel: mainAppModel,
+//                          reportsViewModel: reportsViewModel,
+//                          reportId: reportsViewModel.selectedReport?.id)
+//        .environmentObject(reportsViewModel  as BaseReportsViewModel)
+        Text("")
     }
     
     private var deleteMessage : String {

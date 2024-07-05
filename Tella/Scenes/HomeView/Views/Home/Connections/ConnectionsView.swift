@@ -41,7 +41,7 @@ struct ConnectionsView: View {
                 case .tella:
                     ConnectionsItemView(title: LocalizableReport.reportsTitle.localized,
                                         image: "home.report",
-                                        destination: ReportsView(mainAppModel: appModel))
+                                        destination: reportsMainView)
                     ConnectionsItemView(title: LocalizableResources.resourcesServerTitle.localized,
                                         image: "home.resources",
                                         destination: ResourcesView(mainAppModel: appModel),
@@ -65,6 +65,10 @@ struct ConnectionsView: View {
             }
             Spacer()
         }.padding(.trailing, 17)
+    }
+    
+    var reportsMainView: some View {
+        ReportMainView(reportMainViewModel: ReportsViewModel(mainAppModel: appModel), diContainer: GDriveDIContainer())
     }
     
     var gDriveMainView : some View {

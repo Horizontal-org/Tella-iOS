@@ -123,13 +123,11 @@ struct DraftView<VM: DraftViewModelProtocol>: View  {
     }
     
     var outboxDetailsView: some View {
-        Text("")
-        
-//        OutboxDetailsView(appModel: mainAppModel,
-//                          reportsViewModel: reportsViewModel,
-//                          reportId: viewModel.reportId,
-//                          shouldStartUpload: true)
-//        .environmentObject(reportsViewModel)
+        OutboxDetailsView(appModel: mainAppModel,
+                          reportsViewModel: reportsViewModel,
+                          reportId: viewModel.reportId,
+                          shouldStartUpload: true)
+        .environmentObject(reportsViewModel)
     }
     
     var photoVideoPickerView: some View {

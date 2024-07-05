@@ -58,7 +58,7 @@ struct ReportCardView : View {
         sheetManager.showBottomSheet(modalHeight: 200) {
             DeleteReportConfirmationView(title: report.title,
                                          message: deleteMessage) {
-                reportsViewModel.deleteReport()
+                reportsViewModel.deleteReport(report: report)
                 sheetManager.hide()
             }
         }
@@ -86,20 +86,20 @@ struct ReportCardView : View {
     private var editDraftReportView: some View {
         DraftReportView(mainAppModel: mainAppModel,
                         reportId: reportsViewModel.selectedReport?.id)
-        .environmentObject(reportsViewModel as BaseReportsViewModel)
+        .environmentObject(reportsViewModel)
     }
     
     private var submittedDetailsView: some View {
         SubmittedDetailsView(appModel: mainAppModel,
                              reportId: reportsViewModel.selectedReport?.id)
-        .environmentObject(reportsViewModel as BaseReportsViewModel)
+        .environmentObject(reportsViewModel)
     }
     
     private var outboxDetailsView: some View {
         OutboxDetailsView(appModel: mainAppModel,
                           reportsViewModel: reportsViewModel,
                           reportId: reportsViewModel.selectedReport?.id)
-        .environmentObject(reportsViewModel  as BaseReportsViewModel)
+        .environmentObject(reportsViewModel)
     }
     
     private var deleteMessage : String {

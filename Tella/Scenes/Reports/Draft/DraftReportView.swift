@@ -14,7 +14,7 @@ struct DraftReportView: View {
     
     @EnvironmentObject var mainAppModel : MainAppModel
     @EnvironmentObject var sheetManager : SheetManager
-    @EnvironmentObject var reportsViewModel : BaseReportsViewModel
+    @EnvironmentObject var reportsViewModel : ReportMainViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     init(mainAppModel: MainAppModel, reportId:Int? = nil) {
@@ -22,9 +22,8 @@ struct DraftReportView: View {
     }
     
     var body: some View {
-        Text("")
-//        DraftView(viewModel: reportViewModel, reportsViewModel: <#ReportMainViewModel#>)
-//            .environmentObject(reportsViewModel)
+        DraftView(viewModel: reportViewModel, reportsViewModel: reportsViewModel)
+            .environmentObject(reportsViewModel)
     }
 }
 

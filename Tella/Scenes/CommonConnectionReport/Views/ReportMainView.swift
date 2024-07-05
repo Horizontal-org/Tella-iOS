@@ -34,7 +34,7 @@ struct ReportMainView: View {
         ContainerView {
             VStack(alignment: .center) {
                 
-                PageView(selectedOption: $reportMainViewModel.selectedCell, pageViewItems: reportMainViewModel.pageViewItems)
+                PageView(selectedOption: self.$reportMainViewModel.selectedCell, pageViewItems: reportMainViewModel.pageViewItems)
                     .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
                 
                 VStack (spacing: 0) {
@@ -114,10 +114,10 @@ struct ReportMainView: View {
                     showDraftView(id: id)
                     
                 case .editOutbox:
-                    showOutboxView()
+                    showOutboxView(id: id)
                     
                 case .viewSubmitted:
-                    showSubmittedEntityView()
+                    showSubmittedView(id: id)
                     sheetManager.hide()
                     
                 case .delete:
@@ -129,13 +129,17 @@ struct ReportMainView: View {
     }
     
     private func showDetailsView(cardViewModel:CommonCardViewModel) {
-        
         guard let cardViewModel = cardViewModel as? ReportCardViewModel else { return }
+        dump(cardViewModel.status)
         switch cardViewModel.status {
         case .unknown, .draft:
             showDraftView(id: cardViewModel.id)
             sheetManager.hide()
+        case .finalized:
+            showOutboxView(id: cardViewModel.id)
+            sheetManager.hide()
         case .submitted:
+            showSubmittedView(id: cardViewModel.id)
             sheetManager.hide()
         default:
             sheetManager.hide()
@@ -146,6 +150,9 @@ struct ReportMainView: View {
 
         switch reportMainViewModel.connectionType {
         case .tella:
+            var destination: any View
+            destination = DraftReportView(mainAppModel: mainAppModel, reportId: id).environmentObject(reportMainViewModel)
+            self.navigateTo(destination: destination)
             break
         case .gDrive:
             var destination : any View
@@ -169,11 +176,28 @@ struct ReportMainView: View {
         sheetManager.hide()
     }
     
-    private func showOutboxView() {
+    private func showOutboxView(id: Int? = nil) {
+        switch reportMainViewModel.connectionType {
+        case .tella:
+            let destination = OutboxDetailsView(appModel: mainAppModel, reportsViewModel: reportMainViewModel, reportId: id)
+                .environmentObject(reportMainViewModel)
+            self.navigateTo(destination: destination)
+            break
+        default:
+            break
+        }
         sheetManager.hide()
     }
     
-    private func showSubmittedEntityView() {
+    private func showSubmittedView(id: Int? = nil) {
+        switch reportMainViewModel.connectionType {
+        case .tella:
+            let destination = SubmittedDetailsView(appModel: mainAppModel, reportId: id).environmentObject(reportMainViewModel)
+            self.navigateTo(destination: destination)
+        default:
+            break
+        }
+        
         sheetManager.hide()
     }
     

@@ -47,10 +47,6 @@ struct CommonReportListView: View {
             }
         }
     }
-    
-    
-    
-    
 }
 
 struct CommonItemView: View {
