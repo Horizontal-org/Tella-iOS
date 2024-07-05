@@ -103,7 +103,7 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
             receiveCompletion: { completion in
                 switch completion {
                 case .finished:
-                    self.saveFinalizedReport()
+                    self.saveSubmittedReport()
                     break
                 case .failure(let error):
                     debugLog(error)
@@ -130,7 +130,20 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
     
     func saveDraftReport() {
         self.status = .draft
-        
+        self.saveReport()
+    }
+    
+    func saveFinalizedReport() {
+        self.status = .finalized
+        self.saveReport()
+    }
+    
+    func saveSubmittedReport() {
+        self.status = .submitted
+        self.saveReport()
+    }
+    
+    func saveReport() {
         let gDriveReport = GDriveReport(
             id: reportId,
             title: title,
@@ -144,11 +157,6 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
         )
         
         reportId == nil ? addReport(report: gDriveReport) : updateReport(report: gDriveReport)
-    }
-    
-    func saveFinalizedReport() {
-        self.status = .finalized
-        self.successSavingReport = true
     }
     
     func addReport(report: GDriveReport) {
@@ -165,8 +173,16 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
     }
     
     func updateReport(report: GDriveReport) {
-        //update report logic
+        let updatedReportResult = self.mainAppModel.tellaData?.updateDriveReport(report: report)
+        
+        switch updatedReportResult {
+        case .success:
+            self.successSavingReport = true
+        default:
+            self.failureSavingReport = true
+        }
     }
+    
     private func getServer() {
         self.server = mainAppModel.tellaData?.gDriveServers.value.first
     }
@@ -183,6 +199,11 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
             .collect()
             .map { _ in () }
             .eraseToAnyPublisher()
+    }
+    
+    func deleteFile(fileId: String?) {
+        guard let index = files.firstIndex(where: { $0.id == fileId})  else  {return }
+        files.remove(at: index)
     }
     
     private func bindVaultFileTaken() {

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import Combine
 class GDriveViewModel: BaseReportsViewModel {
     
     @Published var draftReports: [GDriveReport] = []
@@ -19,14 +19,17 @@ class GDriveViewModel: BaseReportsViewModel {
         [
             PageViewItem(title: LocalizableReport.draftTitle.localized,
                          page: .draft,
-                        number: 0),
+                         number: draftReports.count),
             PageViewItem(title: LocalizableReport.outboxTitle.localized,
-                        page: .outbox,
-                        number: 0),
+                         page: .outbox,
+                         number: outboxedReports.count),
             PageViewItem(title: LocalizableReport.submittedTitle.localized,
-                        page: .submitted,
-                        number: 0)]
+                         page: .submitted,
+                         number: submittedReports.count)]
     }
+    
+    private var subscribers = Set<AnyCancellable>()
+    private var delayTime = 0.1
     
     var sheetItems : [ListActionSheetItem] { return [
         
@@ -40,12 +43,53 @@ class GDriveViewModel: BaseReportsViewModel {
     
     override init(mainAppModel: MainAppModel) {
         super.init(mainAppModel: mainAppModel)
+        
+        self.getReports()
+    }
     
-        self.mainAppModel.tellaData?.getDraftGDriveReport()
-        self.draftReports = self.mainAppModel.tellaData?.getDraftGDriveReport() ?? []
+    private func getReports() {
+        getDraftReports()
+        getOutboxedReports()
+        getSubmittedReports()
+    }
+    
+    func getDraftReports() {
+        self.mainAppModel.tellaData?.gDriveDraftReports
+            .receive(on: DispatchQueue.main)
+            .sink { result in
+            } receiveValue: { draftReports in
+                self.draftReports = []
+                DispatchQueue.main.asyncAfter(deadline: .now() + self.delayTime, execute: {
+                    self.draftReports = draftReports
+                })
+            }.store(in: &subscribers)
+    }
+    
+    func getOutboxedReports() {
+        self.mainAppModel.tellaData?.gDriveOutboxedReports
+            .receive(on: DispatchQueue.main)
+            .sink { result in
+            } receiveValue: { outboxedReports in
+                self.outboxedReports = []
+                DispatchQueue.main.asyncAfter(deadline: .now() + self.delayTime, execute: {
+                    self.outboxedReports = outboxedReports
+                })
+            }.store(in: &subscribers)
+    }
+    
+    func getSubmittedReports() {
+        self.mainAppModel.tellaData?.gDriveSubmittedReports
+            .receive(on: DispatchQueue.main)
+            .sink { result in
+            } receiveValue: { submittedReports in
+                self.outboxedReports = []
+                DispatchQueue.main.asyncAfter(deadline: .now() + self.delayTime, execute: {
+                    self.submittedReports = submittedReports
+                })
+            }.store(in: &subscribers)
     }
     
     func deleteReport() {
-        
+        let _ = self.mainAppModel.tellaData?.deleteDriveReport(reportId: selectedReport?.id)
     }
 }
