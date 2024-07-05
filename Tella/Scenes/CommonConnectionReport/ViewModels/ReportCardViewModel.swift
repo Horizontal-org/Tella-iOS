@@ -25,7 +25,7 @@ class ReportCardViewModel: CommonCardViewModel {
         let listActionSheetItem = report.status.listActionSheetItem
         let deleteReportStrings = report.status.deleteReportStrings
         
-        super.init(id: report.id ?? 0,
+        super.init(id: report.id,
                    title: title,
                    iconImageName: iconImageName,
                    serverName: serverName,
