@@ -12,27 +12,27 @@ extension TellaData {
     func addGDriveReport(report : GDriveReport) -> Result<Int, Error> {
         let id =  database.addGDriveReport(report: report)
         
-        getGDriveReports()
+        shouldReloadGDriveReports.send(true)
         
         return id
     }
     
-    func getGDriveReports() {
-        DispatchQueue.main.async {
-            self.gDriveDraftReports.value = self.database.getDriveReports(reportStatus: [ReportStatus.draft])
-            self.gDriveOutboxedReports.value = self.database.getDriveReports(reportStatus: [.finalized,
-                                                                                            .submissionError,
-                                                                                            .submissionPending,
-                                                                                            .submissionPaused,
-                                                                                            .submissionInProgress,
-                                                                                            .submissionAutoPaused,
-                                                                                            .submissionScheduled])
-            self.gDriveSubmittedReports.value = self.database.getDriveReports(reportStatus: [ReportStatus.submitted])
-        }
-    }
-    
     func getDraftGDriveReport() -> [GDriveReport] {
         return self.database.getDriveReports(reportStatus: [ReportStatus.draft])
+    }
+    
+    func getOutboxedGDriveReport() -> [GDriveReport] {
+        return self.database.getDriveReports(reportStatus: [.finalized,
+                                                            .submissionError,
+                                                            .submissionPending,
+                                                            .submissionPaused,
+                                                            .submissionInProgress,
+                                                            .submissionAutoPaused,
+                                                            .submissionScheduled])
+    }
+    
+    func getSubmittedGDriveReport() -> [GDriveReport] {
+        return self.database.getDriveReports(reportStatus: [ReportStatus.submitted])
     }
     
     func getDriveReport(id: Int) -> GDriveReport? {
@@ -40,12 +40,12 @@ extension TellaData {
     }
     
     func updateDriveReport(report: GDriveReport) -> Result<Bool, Error> {
-        getGDriveReports()
+        shouldReloadGDriveReports.send(true)
         return self.database.updateDriveReport(report: report)
     }
     
     func deleteDriveReport(reportId: Int?) -> Result<Bool, Error> {
-        getGDriveReports()
+        shouldReloadGDriveReports.send(true)
         return self.database.deleteDriveReport(reportId: reportId)
     }
 }

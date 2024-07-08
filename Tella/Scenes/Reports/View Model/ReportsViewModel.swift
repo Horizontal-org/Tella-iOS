@@ -27,6 +27,7 @@ class ReportsViewModel: ReportMainViewModel {
         super.init(mainAppModel: mainAppModel, connectionType: .tella, title: LocalizableReport.reportsTitle.localized)
         
         self.getReports()
+        self.listenToUpdates()
     }
     
     override func getReports() {
@@ -36,48 +37,38 @@ class ReportsViewModel: ReportMainViewModel {
     }
     
     func getDraftReports() {
-        self.mainAppModel.tellaData?.draftReports
-            .receive(on: DispatchQueue.main)
-            .sink { result in
-            } receiveValue: { draftReports in
-                self.draftReportsViewModel = draftReports.compactMap { report in
-                    ReportCardViewModel(report: report,
-                                        serverName: report.server?.name,
-                                        deleteReport: { self.deleteReport(report: report) },
-                                        connectionType: .tella
-                    )
-                }
-            }.store(in: &subscribers)
+        let draftReports = tellaData?.getDraftReports() ?? []
+        
+        self.draftReportsViewModel = draftReports.compactMap { report in
+            ReportCardViewModel(report: report,
+                                serverName: report.server?.name,
+                                deleteReport: { self.deleteReport(report: report) },
+                                connectionType: .tella
+            )
+        }
     }
     
     func getOutboxedReports() {
-        self.mainAppModel.tellaData?.outboxedReports
-            .receive(on: DispatchQueue.main)
-            .sink { result in
-            } receiveValue: { outboxedReports in
-                self.outboxedReportsViewModel = outboxedReports.compactMap { report in
-                    ReportCardViewModel(report: report,
-                                        serverName: report.server?.name,
-                                        deleteReport: { self.deleteReport(report: report) }, connectionType: .tella
-                    )
-                }
-                
-            }.store(in: &subscribers)
+        let outboxedReports = tellaData?.getOutboxedReports() ?? []
+        
+        self.outboxedReportsViewModel = outboxedReports.compactMap { report in
+            ReportCardViewModel(report: report,
+                                serverName: report.server?.name,
+                                deleteReport: { self.deleteReport(report: report) }, connectionType: .tella
+            )
+        }
     }
     
     func getSubmittedReports() {
-        self.mainAppModel.tellaData?.submittedReports
-            .receive(on: DispatchQueue.main)
-            .sink { result in
-            } receiveValue: { submittedReports in
-                self.submittedReportsViewModel = submittedReports.compactMap { report in
-                    ReportCardViewModel(report: report,
-                                        serverName: report.server?.name,
-                                        deleteReport: { self.deleteReport(report: report) },
-                                        connectionType: .tella
-                    )
-                }
-            }.store(in: &subscribers)
+        let submittedReports = tellaData?.getSubmittedReports() ?? []
+        
+        self.submittedReportsViewModel = submittedReports.compactMap { report in
+            ReportCardViewModel(report: report,
+                                serverName: report.server?.name,
+                                deleteReport: { self.deleteReport(report: report) },
+                                connectionType: .tella
+            )
+        }
     }
     
     func deleteReport(report: Report) {
@@ -86,6 +77,15 @@ class ReportsViewModel: ReportMainViewModel {
     
     func deleteSubmittedReport() {
         mainAppModel.tellaData?.deleteSubmittedReport()
+    }
+    
+    override func listenToUpdates() {
+        self.mainAppModel.tellaData?.shouldReloadTellaReports
+            .receive(on: DispatchQueue.main)
+            .sink { result in
+            } receiveValue: { draftReports in
+                self.getReports()
+            }.store(in: &subscribers)
     }
     
 }

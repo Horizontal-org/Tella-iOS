@@ -17,16 +17,7 @@ class TellaData : ObservableObject {
     var uwaziServers = CurrentValueSubject<[UwaziServer], Error>([])
     var gDriveServers = CurrentValueSubject<[GDriveServer], Error>([])
     
-    // Reports
-    var draftReports = CurrentValueSubject<[Report], Error>([])
-    var submittedReports = CurrentValueSubject<[Report], Error>([])
-    var outboxedReports = CurrentValueSubject<[Report], Error>([])
-    
-    // GDriveReports
-    var gDriveDraftReports = CurrentValueSubject<[GDriveReport], Error>([])
-    var gDriveOutboxedReports = CurrentValueSubject<[GDriveReport], Error>([])
-    var gDriveSubmittedReports = CurrentValueSubject<[GDriveReport], Error>([])
-    
+    var shouldReloadTellaReports = CurrentValueSubject<Bool, Never>(false)
     var shouldReloadUwaziInstances = CurrentValueSubject<Bool, Never>(false)
     var shouldReloadUwaziTemplates = CurrentValueSubject<Bool, Never>(false)
 
@@ -37,8 +28,6 @@ class TellaData : ObservableObject {
         self.vaultManager = vaultManager
         
         getServers()
-        getReports()
-        getGDriveReports()
     }
     
     func addServer(server : TellaServer) -> Result<Int, Error> {
@@ -78,7 +67,7 @@ class TellaData : ObservableObject {
     func deleteTellaServer(serverId : Int) -> Result<Bool, Error> {
         let deleteServerResult = database.deleteServer(serverId: serverId)
         getServers()
-        getReports()
+        shouldReloadTellaReports.send(true)
         return deleteServerResult
     }
     
@@ -109,7 +98,7 @@ class TellaData : ObservableObject {
         vaultManager?.deleteVaultFile(filesIds: resourcesId)
         let deleteAllServersResult = database.deleteAllServers()
         getServers()
-        getReports()
+        shouldReloadTellaReports.send(true)
         return deleteAllServersResult
     }
     
@@ -159,20 +148,21 @@ class TellaData : ObservableObject {
         return database.getAutoUploadServer()
     }
     
-    func getReports() {
-        DispatchQueue.main.async {
-            
-            self.draftReports.value = self.database.getReports(reportStatus: [ReportStatus.draft])
-            self.outboxedReports.value = self.database.getReports(reportStatus: [.finalized,
-                                                                                 .submissionError,
-                                                                                 .submissionPending,
-                                                                                 .submissionPaused,
-                                                                                 .submissionInProgress,
-                                                                                 .submissionAutoPaused,
-                                                                                 .submissionScheduled])
-            
-            self.submittedReports.value = self.database.getReports(reportStatus: [ReportStatus.submitted])
-        }
+    func getDraftReports() -> [Report] {
+        return database.getReports(reportStatus: [.draft])
+    }
+    func getOutboxedReports() -> [Report] {
+        return database.getReports(reportStatus: [.finalized,
+                                                       .submissionError,
+                                                       .submissionPending,
+                                                       .submissionPaused,
+                                                       .submissionInProgress,
+                                                       .submissionAutoPaused,
+                                                       .submissionScheduled])
+    }
+    
+    func getSubmittedReports() -> [Report] {
+        return database.getReports(reportStatus: [ReportStatus.submitted])
     }
     
     func getReport(reportId: Int) -> Report? {
@@ -232,7 +222,7 @@ class TellaData : ObservableObject {
     
     func addReport(report : Report) -> Result<Int, Error> {
         let id =  database.addReport(report: report)
-        getReports()
+        shouldReloadTellaReports.send(true)
         return id
     }
     
@@ -251,14 +241,14 @@ class TellaData : ObservableObject {
     @discardableResult
     func updateReport(report : Report) -> Result<Report?, Error>  {
         let report = database.updateReport(report: report)
-        getReports()
+        shouldReloadTellaReports.send(true)
         return report
     }
     
     @discardableResult
     func updateReportStatus(idReport : Int, status: ReportStatus) -> Result<Bool, Error>  {
         let id = database.updateReportStatus(idReport: idReport, status: status, date: Date())
-        getReports()
+        shouldReloadTellaReports.send(true)
         return id
         
     }
@@ -294,14 +284,14 @@ class TellaData : ObservableObject {
     
     func deleteReport(reportId : Int?) -> Result<Bool, Error> {
         let deleteReportResult = database.deleteReport(reportId: reportId)
-        getReports()
+        shouldReloadTellaReports.send(true)
         return deleteReportResult
     }
     
     @discardableResult
     func deleteSubmittedReport() -> Result<Bool, Error> {
         let deleteSubmittedReportResult = database.deleteSubmittedReport()
-        getReports()
+        shouldReloadTellaReports.send(true)
         return deleteSubmittedReportResult
         
     }
