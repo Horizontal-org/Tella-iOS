@@ -8,8 +8,8 @@
 
 import SwiftUI
 
-struct DraftView<VM: DraftViewModelProtocol>: View  {
-    @StateObject var viewModel: VM
+struct DraftView<T: ServerProtocol>: View  {
+    @StateObject var viewModel: DraftMainViewModel<T>
     
     @State private var menuFrame : CGRect = CGRectZero
     @State private var shouldShowMenu : Bool = false
@@ -86,7 +86,7 @@ struct DraftView<VM: DraftViewModelProtocol>: View  {
                     Spacer()
                         .frame(height: 24)
                     
-                    AddFilesToDraftView<VM>()
+                    AddFilesToDraftView<T>()
                         .environmentObject(viewModel)
                     
                     Spacer()

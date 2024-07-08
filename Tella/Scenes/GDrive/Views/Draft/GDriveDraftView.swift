@@ -19,7 +19,7 @@ struct GDriveDraftView: View {
         _gDriveDraftVM = StateObject(wrappedValue: GDriveDraftViewModel(
             mainAppModel: mainAppModel,
             repository: gDriveDIContainer.gDriveRepository,
-            reportID: reportId)
+            reportId: reportId)
         )
     }
     
