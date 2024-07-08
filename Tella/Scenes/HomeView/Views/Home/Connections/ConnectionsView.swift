@@ -41,7 +41,7 @@ struct ConnectionsView: View {
                 case .tella:
                     ConnectionsItemView(title: LocalizableReport.reportsTitle.localized,
                                         image: "home.report",
-                                        destination: ReportsView(mainAppModel: appModel))
+                                        destination: reportsMainView)
                     ConnectionsItemView(title: LocalizableResources.resourcesServerTitle.localized,
                                         image: "home.resources",
                                         destination: ResourcesView(mainAppModel: appModel),
@@ -55,18 +55,32 @@ struct ConnectionsView: View {
                 case .gDrive:
                     ConnectionsItemView(title: "Drive",
                                         image: "home.drive",
-                                        destination: GDriveView(mainAppModel: appModel))
+                                        destination: gDriveMainView)
                 case .nextcloud:
-                    ConnectionsItemView(title: LocalizableSettings.settServerNextCloud.localized,
-                                        image: "home.report",
-                                        destination: GDriveView(mainAppModel: appModel)) //Destination should be changed
+                    
+                    ConnectionsItemView(title: LocalizableNextcloud.nextcloudAppBar.localized,
+                                        image: "home.nextcloud",
+                                        destination:nextcloudMainView)
+                }
             }
-            
             Spacer()
         }.padding(.trailing, 17)
-            
-        }
-
+    }
+    
+    var reportsMainView: some View {
+        ReportMainView(reportMainViewModel: ReportsViewModel(mainAppModel: appModel), diContainer: GDriveDIContainer())
+    }
+    
+    var gDriveMainView : some View {
+        ReportMainView(reportMainViewModel: GDriveViewModel(mainAppModel: appModel),
+                       diContainer: GDriveDIContainer())
+    }
+    
+    var nextcloudMainView : some View {
+        ReportMainView(reportMainViewModel: NextcloudReportViewModel(mainAppModel: appModel,
+                                                                   connectionType: .nextcloud,
+                                                                   title: LocalizableNextcloud.nextcloudAppBar.localized),
+                       diContainer: GDriveDIContainer())
     }
 }
 

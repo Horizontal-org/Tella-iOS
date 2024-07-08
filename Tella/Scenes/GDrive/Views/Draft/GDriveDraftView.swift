@@ -11,7 +11,7 @@ import SwiftUI
 struct GDriveDraftView: View {
     @StateObject var gDriveDraftVM: GDriveDraftViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
-    @EnvironmentObject var reportsViewModel : BaseReportsViewModel
+    @EnvironmentObject var reportsViewModel : ReportMainViewModel
     let gDriveDIContainer: GDriveDIContainer
     
     init(mainAppModel: MainAppModel, gDriveDIContainer: GDriveDIContainer, reportId: Int? = nil) {
@@ -24,9 +24,7 @@ struct GDriveDraftView: View {
     }
     
     var body: some View {
-        DraftView<GDriveDraftViewModel>(viewModel: gDriveDraftVM)
-            .environmentObject(mainAppModel)
-            .environmentObject(reportsViewModel)
+        DraftView(viewModel: gDriveDraftVM, reportsViewModel: reportsViewModel)
     }
 }
 

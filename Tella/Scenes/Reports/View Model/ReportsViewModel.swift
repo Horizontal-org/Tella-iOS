@@ -7,39 +7,29 @@ import Foundation
 import Combine
 import SwiftUI
 
-class ReportsViewModel: BaseReportsViewModel {
-    
-    @Published var draftReports : [Report] = []
-    @Published var outboxedReports : [Report] = []
-    @Published var submittedReports : [Report] = []
+class ReportsViewModel: ReportMainViewModel {
     @Published var selectedReport : Report?
-    
-    var pageViewItems : [PageViewItem] {
-        [PageViewItem(title: LocalizableReport.draftTitle.localized, page: .draft, number: draftReports.count),
-         PageViewItem(title: LocalizableReport.outboxTitle.localized, page: .outbox, number: outboxedReports.count),
-         PageViewItem(title: LocalizableReport.submittedTitle.localized, page: .submitted, number: submittedReports.count)] }
     
     var sheetItems : [ListActionSheetItem] { return [
         
         ListActionSheetItem(imageName: "view-icon",
-                            content: self.selectedReport?.status?.sheetItemTitle ?? "",
-                            type: self.selectedReport?.status?.reportActionType ?? .viewSubmitted),
+                            content: self.selectedReport?.status.sheetItemTitle ?? "",
+                            type: self.selectedReport?.status.reportActionType ?? .viewSubmitted),
         ListActionSheetItem(imageName: "delete-icon-white",
                             content: LocalizableReport.viewModelDelete.localized,
-                            type: ReportActionType.delete)
+                            type: ConnectionActionType.delete)
     ]}
     
-    private var subscribers = Set<AnyCancellable>()
     private var delayTime = 0.1
     
-    override init(mainAppModel : MainAppModel) {
+    init(mainAppModel : MainAppModel) {
         
-        super.init(mainAppModel: mainAppModel)
+        super.init(mainAppModel: mainAppModel, connectionType: .tella, title: LocalizableReport.reportsTitle.localized)
         
         self.getReports()
     }
     
-    private func getReports() {
+    override func getReports() {
         getDraftReports()
         getOutboxedReports()
         getSubmittedReports()
@@ -50,10 +40,13 @@ class ReportsViewModel: BaseReportsViewModel {
             .receive(on: DispatchQueue.main)
             .sink { result in
             } receiveValue: { draftReports in
-                self.draftReports = []
-                DispatchQueue.main.asyncAfter(deadline: .now() + self.delayTime, execute: {
-                    self.draftReports = draftReports
-                })
+                self.draftReportsViewModel = draftReports.compactMap { report in
+                    ReportCardViewModel(report: report,
+                                        serverName: report.server?.name,
+                                        deleteReport: { self.deleteReport(report: report) },
+                                        connectionType: .tella
+                    )
+                }
             }.store(in: &subscribers)
     }
     
@@ -62,10 +55,12 @@ class ReportsViewModel: BaseReportsViewModel {
             .receive(on: DispatchQueue.main)
             .sink { result in
             } receiveValue: { outboxedReports in
-                self.outboxedReports = []
-                DispatchQueue.main.asyncAfter(deadline: .now() + self.delayTime, execute: {
-                    self.outboxedReports = outboxedReports
-                })
+                self.outboxedReportsViewModel = outboxedReports.compactMap { report in
+                    ReportCardViewModel(report: report,
+                                        serverName: report.server?.name,
+                                        deleteReport: { self.deleteReport(report: report) }, connectionType: .tella
+                    )
+                }
                 
             }.store(in: &subscribers)
     }
@@ -75,15 +70,18 @@ class ReportsViewModel: BaseReportsViewModel {
             .receive(on: DispatchQueue.main)
             .sink { result in
             } receiveValue: { submittedReports in
-                self.submittedReports = []
-                DispatchQueue.main.asyncAfter(deadline: .now() + self.delayTime, execute: {
-                    self.submittedReports = submittedReports
-                })
+                self.submittedReportsViewModel = submittedReports.compactMap { report in
+                    ReportCardViewModel(report: report,
+                                        serverName: report.server?.name,
+                                        deleteReport: { self.deleteReport(report: report) },
+                                        connectionType: .tella
+                    )
+                }
             }.store(in: &subscribers)
     }
     
-    func deleteReport() {
-        mainAppModel.deleteReport(reportId: selectedReport?.id)
+    func deleteReport(report: Report) {
+        mainAppModel.deleteReport(reportId: report.id)
     }
     
     func deleteSubmittedReport() {

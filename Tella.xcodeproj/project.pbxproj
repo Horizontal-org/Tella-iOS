@@ -29,7 +29,7 @@
 		0ECC781B267A542300A2ACF2 /* UwaziPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC781A267A542300A2ACF2 /* UwaziPages.swift */; };
 		1202D9562BEE39A800EAFAB3 /* TrailingImageButtonToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1202D9552BEE39A800EAFAB3 /* TrailingImageButtonToolBar.swift */; };
 		1202D9582BF4CFF200EAFAB3 /* SelectValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1202D9572BF4CFF200EAFAB3 /* SelectValues.swift */; };
-		1203CDDC298C5B9100D09073 /* ReportActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203CDDB298C5B9100D09073 /* ReportActionType.swift */; };
+		1203CDDC298C5B9100D09073 /* ConnectionActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203CDDB298C5B9100D09073 /* ConnectionActionType.swift */; };
 		1203CDDE298D7C1300D09073 /* FileToUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203CDDD298D7C1300D09073 /* FileToUpload.swift */; };
 		1203CDE02991429200D09073 /* FileStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1203CDDF2991429200D09073 /* FileStatus.swift */; };
 		1203CDE129914FA300D09073 /* Value.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233007D28E3184D00B8F7BA /* Value.swift */; };
@@ -161,6 +161,9 @@
 		125AAD34295348EC002194D6 /* UploadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD33295348EC002194D6 /* UploadService.swift */; };
 		125AAD362953607D002194D6 /* UploadReportModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125AAD352953607D002194D6 /* UploadReportModels.swift */; };
 		125BC1DE2B21F08200A117D0 /* VaultFileDetailsToMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125BC1DD2B21F08200A117D0 /* VaultFileDetailsToMerge.swift */; };
+		125C789F2C38042700440014 /* ConfirmDeleteConnectionStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125C789E2C38042700440014 /* ConfirmDeleteConnectionStrings.swift */; };
+		125C78A22C38056300440014 /* EntityStatusExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125C78A12C38056300440014 /* EntityStatusExtension.swift */; };
+		125C78A42C3805C600440014 /* ReportStatusExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125C78A32C3805C600440014 /* ReportStatusExtension.swift */; };
 		125D231C271F119D00250FBB /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231B271F119D00250FBB /* Validator.swift */; };
 		125D231F271F12A000250FBB /* NSRegularExpressionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */; };
 		125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125D2320271F823100250FBB /* UIApplicationExtension.swift */; };
@@ -200,6 +203,9 @@
 		126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ECFE927C57FA600ED5161 /* CameraState.swift */; };
 		126FE4D727A427E200AE4188 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FE4D627A427E200AE4188 /* Constants.swift */; };
 		126FEE0A2AC4993900B99298 /* ReportPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FEE092AC4993900B99298 /* ReportPages.swift */; };
+		127092DA2C2EE4E3002030AA /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092D92C2EE4E3002030AA /* Server.swift */; };
+		127092DC2C2EE7AD002030AA /* WebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092DB2C2EE7AD002030AA /* WebServer.swift */; };
+		127138382C35EA34004D520B /* CommonCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127138372C35EA34004D520B /* CommonCardViewModel.swift */; };
 		127092D42C2D8BA5002030AA /* NextcloudDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092D32C2D8BA5002030AA /* NextcloudDatabase.swift */; };
 		127092D72C2DD1A1002030AA /* NextcloudServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092D62C2DD1A1002030AA /* NextcloudServer.swift */; };
 		1272F25D27C91ACD0054F2E2 /* ImportFileProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1272F25C27C91ACD0054F2E2 /* ImportFileProgress.swift */; };
@@ -311,6 +317,12 @@
 		12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */; };
 		12B6481D28367C1D00CBE541 /* SheetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B6481C28367C1D00CBE541 /* SheetManager.swift */; };
 		12B6AF7D283E4C7200D697F6 /* LocalizableVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B6AF7C283E4C7200D697F6 /* LocalizableVault.swift */; };
+		12B84B852C32EF12006363F0 /* LocalizableNextcloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B84B842C32EF12006363F0 /* LocalizableNextcloud.swift */; };
+		12B84B902C333DD0006363F0 /* ReportMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B84B8E2C333DD0006363F0 /* ReportMainViewModel.swift */; };
+		12B84B912C333DD0006363F0 /* ReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B84B8F2C333DD0006363F0 /* ReportMainView.swift */; };
+		12B84B942C333FE3006363F0 /* ReportCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B84B932C333FE3006363F0 /* ReportCardViewModel.swift */; };
+		12B84B962C340025006363F0 /* NextcloudReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B84B952C340025006363F0 /* NextcloudReportViewModel.swift */; };
+		12B84B982C3413AC006363F0 /* CommonReportListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B84B972C3413AC006363F0 /* CommonReportListView.swift */; };
 		12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */; };
 		12BAFA7728B3B8D300930451 /* UIImageOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BAFA7628B3B8D300930451 /* UIImageOrientation.swift */; };
 		12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C07ECB2B06603A0030AD6E /* EncryptionService.swift */; };
@@ -362,10 +374,10 @@
 		15791C232B6C2E9100D67C74 /* ResourcesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */; };
 		157E4F532BA385B500147345 /* PDFKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157E4F522BA385B500147345 /* PDFKitView.swift */; };
 		15917D752B90FCC3005655AC /* ResourceCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15917D742B90FCC3005655AC /* ResourceCardType.swift */; };
-		159229D92C34A37C003FAC9A /* GDriveCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159229D82C34A37C003FAC9A /* GDriveCardView.swift */; };
 		15994A0C2BFBC6F40017F153 /* SelectDriveConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A0B2BFBC6F40017F153 /* SelectDriveConnection.swift */; };
 		15994A0E2BFBE15F0017F153 /* SelectSharedDrive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A0D2BFBE15F0017F153 /* SelectSharedDrive.swift */; };
 		15994A112BFBF0E50017F153 /* SharedDrive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A102BFBF0E50017F153 /* SharedDrive.swift */; };
+		15A505B32C2F623C0028C7CB /* GDriveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A505B22C2F623C0028C7CB /* GDriveData.swift */; };
 		15B81F382C1A2806007C0E88 /* GDriveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B81F372C1A2806007C0E88 /* GDriveView.swift */; };
 		15B81F3A2C1A281C007C0E88 /* GDriveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B81F392C1A281C007C0E88 /* GDriveViewModel.swift */; };
 		15BD9CA92BC740B300C3932B /* UwaziRelationshipWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CA82BC740B300C3932B /* UwaziRelationshipWidget.swift */; };
@@ -376,7 +388,6 @@
 		15C51C442BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C51C432BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift */; };
 		15C51C462BFE769500DD9AD0 /* GDriveServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C51C452BFE769500DD9AD0 /* GDriveServerViewModel.swift */; };
 		15CD89102BF297BE00F724F5 /* SelectedEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CD890F2BF297BE00F724F5 /* SelectedEntityView.swift */; };
-		15E3D5032C1B522500B7FECC /* GDriveListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D5022C1B522500B7FECC /* GDriveListView.swift */; };
 		15E3D5052C1B531700B7FECC /* ConnectionEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D5042C1B531700B7FECC /* ConnectionEmptyView.swift */; };
 		15E3D50A2C1B71E200B7FECC /* GDriveDraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */; };
 		15E3D50E2C1B87AC00B7FECC /* GDriveDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D50D2C1B87AC00B7FECC /* GDriveDraftViewModel.swift */; };
@@ -456,7 +467,7 @@
 		CCC1B4392AC75B8D0075B819 /* UwaziEntityParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B4382AC75B8D0075B819 /* UwaziEntityParser.swift */; };
 		CCC1B43B2AC75BED0075B819 /* UwaziEntityParserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B43A2AC75BED0075B819 /* UwaziEntityParserProtocol.swift */; };
 		CCC1B43D2AC75C5D0075B819 /* UwaziConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC1B43C2AC75C5D0075B819 /* UwaziConstants.swift */; };
-		CCD586CD2A7AD94B00014F87 /* ConnectionCardDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586CC2A7AD94B00014F87 /* ConnectionCardDetail.swift */; };
+		CCD586CD2A7AD94B00014F87 /* ConnectionCardDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586CC2A7AD94B00014F87 /* ConnectionCardDetails.swift */; };
 		CCD586CF2A7AD9E400014F87 /* MoreButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586CE2A7AD9E400014F87 /* MoreButtonView.swift */; };
 		CCD586D12A7C096C00014F87 /* AddTemplatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586D02A7C096B00014F87 /* AddTemplatesView.swift */; };
 		CCD586D42A7C294800014F87 /* TemplateItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD586D32A7C294800014F87 /* TemplateItemView.swift */; };
@@ -610,7 +621,7 @@
 		0F3DC3E42523951C0024B4A0 /* BundleInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleInfo.swift; sourceTree = "<group>"; };
 		1202D9552BEE39A800EAFAB3 /* TrailingImageButtonToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailingImageButtonToolBar.swift; sourceTree = "<group>"; };
 		1202D9572BF4CFF200EAFAB3 /* SelectValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectValues.swift; sourceTree = "<group>"; };
-		1203CDDB298C5B9100D09073 /* ReportActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportActionType.swift; sourceTree = "<group>"; };
+		1203CDDB298C5B9100D09073 /* ConnectionActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionActionType.swift; sourceTree = "<group>"; };
 		1203CDDD298D7C1300D09073 /* FileToUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileToUpload.swift; sourceTree = "<group>"; };
 		1203CDDF2991429200D09073 /* FileStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStatus.swift; sourceTree = "<group>"; };
 		1203CDE82992C19D00D09073 /* JSONStringEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONStringEncoder.swift; sourceTree = "<group>"; };
@@ -740,6 +751,9 @@
 		125AAD33295348EC002194D6 /* UploadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadService.swift; sourceTree = "<group>"; };
 		125AAD352953607D002194D6 /* UploadReportModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadReportModels.swift; sourceTree = "<group>"; };
 		125BC1DD2B21F08200A117D0 /* VaultFileDetailsToMerge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileDetailsToMerge.swift; sourceTree = "<group>"; };
+		125C789E2C38042700440014 /* ConfirmDeleteConnectionStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmDeleteConnectionStrings.swift; sourceTree = "<group>"; };
+		125C78A12C38056300440014 /* EntityStatusExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityStatusExtension.swift; sourceTree = "<group>"; };
+		125C78A32C3805C600440014 /* ReportStatusExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportStatusExtension.swift; sourceTree = "<group>"; };
 		125D231B271F119D00250FBB /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		125D231E271F12A000250FBB /* NSRegularExpressionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRegularExpressionExtension.swift; sourceTree = "<group>"; };
 		125D2320271F823100250FBB /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
@@ -783,6 +797,7 @@
 		1270EAA22A4B4B07000851BA /* my */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = my; path = my.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1270EAA72A4DAA79000851BA /* fa-IR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fa-IR"; path = "fa-IR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1270EAA82A4DB008000851BA /* ta */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ta; path = ta.lproj/Localizable.strings; sourceTree = "<group>"; };
+		127138372C35EA34004D520B /* CommonCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonCardViewModel.swift; sourceTree = "<group>"; };
 		1272F25C27C91ACD0054F2E2 /* ImportFileProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFileProgress.swift; sourceTree = "<group>"; };
 		1272F25E27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesFromCameraProgress.swift; sourceTree = "<group>"; };
 		1272F26027C91CD90054F2E2 /* ImportFilesProgressModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFilesProgressModels.swift; sourceTree = "<group>"; };
@@ -889,6 +904,12 @@
 		12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAndHelpItem.swift; sourceTree = "<group>"; };
 		12B6481C28367C1D00CBE541 /* SheetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetManager.swift; sourceTree = "<group>"; };
 		12B6AF7C283E4C7200D697F6 /* LocalizableVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableVault.swift; sourceTree = "<group>"; };
+		12B84B842C32EF12006363F0 /* LocalizableNextcloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableNextcloud.swift; sourceTree = "<group>"; };
+		12B84B8E2C333DD0006363F0 /* ReportMainViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportMainViewModel.swift; sourceTree = "<group>"; };
+		12B84B8F2C333DD0006363F0 /* ReportMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportMainView.swift; sourceTree = "<group>"; };
+		12B84B932C333FE3006363F0 /* ReportCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCardViewModel.swift; sourceTree = "<group>"; };
+		12B84B952C340025006363F0 /* NextcloudReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudReportViewModel.swift; sourceTree = "<group>"; };
+		12B84B972C3413AC006363F0 /* CommonReportListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonReportListView.swift; sourceTree = "<group>"; };
 		12BA188528343BE5002A11D7 /* MoreFileActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreFileActionButton.swift; sourceTree = "<group>"; };
 		12BAFA7628B3B8D300930451 /* UIImageOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageOrientation.swift; sourceTree = "<group>"; };
 		12C07EC92B0660240030AD6E /* EncryptionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionOperation.swift; sourceTree = "<group>"; };
@@ -941,10 +962,10 @@
 		1589A6202B7672390048C775 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1589A6212B7672430048C775 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		15917D742B90FCC3005655AC /* ResourceCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCardType.swift; sourceTree = "<group>"; };
-		159229D82C34A37C003FAC9A /* GDriveCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveCardView.swift; sourceTree = "<group>"; };
 		15994A0B2BFBC6F40017F153 /* SelectDriveConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDriveConnection.swift; sourceTree = "<group>"; };
 		15994A0D2BFBE15F0017F153 /* SelectSharedDrive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSharedDrive.swift; sourceTree = "<group>"; };
 		15994A102BFBF0E50017F153 /* SharedDrive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDrive.swift; sourceTree = "<group>"; };
+		15A505B22C2F623C0028C7CB /* GDriveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveData.swift; sourceTree = "<group>"; };
 		15B81F372C1A2806007C0E88 /* GDriveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveView.swift; sourceTree = "<group>"; };
 		15B81F392C1A281C007C0E88 /* GDriveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveViewModel.swift; sourceTree = "<group>"; };
 		15BD9CA82BC740B300C3932B /* UwaziRelationshipWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziRelationshipWidget.swift; sourceTree = "<group>"; };
@@ -955,7 +976,6 @@
 		15C51C432BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveAuthViewModel.swift; sourceTree = "<group>"; };
 		15C51C452BFE769500DD9AD0 /* GDriveServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveServerViewModel.swift; sourceTree = "<group>"; };
 		15CD890F2BF297BE00F724F5 /* SelectedEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedEntityView.swift; sourceTree = "<group>"; };
-		15E3D5022C1B522500B7FECC /* GDriveListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveListView.swift; sourceTree = "<group>"; };
 		15E3D5042C1B531700B7FECC /* ConnectionEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionEmptyView.swift; sourceTree = "<group>"; };
 		15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveDraftView.swift; sourceTree = "<group>"; };
 		15E3D50D2C1B87AC00B7FECC /* GDriveDraftViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveDraftViewModel.swift; sourceTree = "<group>"; };
@@ -1039,7 +1059,7 @@
 		CCC1B4382AC75B8D0075B819 /* UwaziEntityParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityParser.swift; sourceTree = "<group>"; };
 		CCC1B43A2AC75BED0075B819 /* UwaziEntityParserProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityParserProtocol.swift; sourceTree = "<group>"; };
 		CCC1B43C2AC75C5D0075B819 /* UwaziConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziConstants.swift; sourceTree = "<group>"; };
-		CCD586CC2A7AD94B00014F87 /* ConnectionCardDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionCardDetail.swift; sourceTree = "<group>"; };
+		CCD586CC2A7AD94B00014F87 /* ConnectionCardDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionCardDetails.swift; sourceTree = "<group>"; };
 		CCD586CE2A7AD9E400014F87 /* MoreButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreButtonView.swift; sourceTree = "<group>"; };
 		CCD586D02A7C096B00014F87 /* AddTemplatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTemplatesView.swift; sourceTree = "<group>"; };
 		CCD586D32A7C294800014F87 /* TemplateItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateItemView.swift; sourceTree = "<group>"; };
@@ -1527,7 +1547,7 @@
 				1256A33829490A7A00FE2B5C /* FileInfos.swift */,
 				1203CDDF2991429200D09073 /* FileStatus.swift */,
 				1231A45D294C779D0057DA85 /* ReportStatus.swift */,
-				1203CDDB298C5B9100D09073 /* ReportActionType.swift */,
+				1203CDDB298C5B9100D09073 /* ConnectionActionType.swift */,
 				12351C1928D2209400F3CB7C /* Report.swift */,
 				12A43B4E29941574003EF33E /* ReportFile.swift */,
 				122389B829367ABA0058593B /* ServerType.swift */,
@@ -1630,6 +1650,45 @@
 				1234179129CD19E6004CFAEA /* BaseUploadOperation.swift */,
 			);
 			path = Upload;
+			sourceTree = "<group>";
+		};
+		125C789B2C36B36900440014 /* CommonConnectionReport */ = {
+			isa = PBXGroup;
+			children = (
+				125C78A02C3804AC00440014 /* Models */,
+				125C789D2C36B50800440014 /* ViewModels */,
+				125C789C2C36B50100440014 /* Views */,
+			);
+			path = CommonConnectionReport;
+			sourceTree = "<group>";
+		};
+		125C789C2C36B50100440014 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				12B84B8F2C333DD0006363F0 /* ReportMainView.swift */,
+				12B84B972C3413AC006363F0 /* CommonReportListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		125C789D2C36B50800440014 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				12B84B8E2C333DD0006363F0 /* ReportMainViewModel.swift */,
+				127138372C35EA34004D520B /* CommonCardViewModel.swift */,
+				12B84B932C333FE3006363F0 /* ReportCardViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		125C78A02C3804AC00440014 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				125C789E2C38042700440014 /* ConfirmDeleteConnectionStrings.swift */,
+				125C78A12C38056300440014 /* EntityStatusExtension.swift */,
+				125C78A32C3805C600440014 /* ReportStatusExtension.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		125D231D271F127D00250FBB /* Extensions */ = {
@@ -2161,6 +2220,30 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		12B84B8C2C333DD0006363F0 /* Nextcloud */ = {
+			isa = PBXGroup;
+			children = (
+				12B84B922C333F86006363F0 /* ViewModels */,
+				12B84B8D2C333DD0006363F0 /* Views */,
+			);
+			path = Nextcloud;
+			sourceTree = "<group>";
+		};
+		12B84B8D2C333DD0006363F0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		12B84B922C333F86006363F0 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				12B84B952C340025006363F0 /* NextcloudReportViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		12B84B832C32E646006363F0 /* Nextcloud */ = {
 			isa = PBXGroup;
 			children = (
@@ -2186,6 +2269,7 @@
 				CCE875B22A96699000C576B9 /* LocalizableUwazi.swift */,
 				12B370382B19109600DDA9E9 /* LocalizableBackgroundActivities.swift */,
 				1501401C2B71243A00991D69 /* LocalizableResources.swift */,
+				12B84B842C32EF12006363F0 /* LocalizableNextcloud.swift */,
 			);
 			path = Localizable;
 			sourceTree = "<group>";
@@ -2386,15 +2470,6 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		159229D72C34A2BF003FAC9A /* GDriveList */ = {
-			isa = PBXGroup;
-			children = (
-				15E3D5022C1B522500B7FECC /* GDriveListView.swift */,
-				159229D82C34A37C003FAC9A /* GDriveCardView.swift */,
-			);
-			path = GDriveList;
-			sourceTree = "<group>";
-		};
 		15994A0A2BFBC6B10017F153 /* GDrive */ = {
 			isa = PBXGroup;
 			children = (
@@ -2435,9 +2510,7 @@
 		15E3D5012C1B51D700B7FECC /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				159229D72C34A2BF003FAC9A /* GDriveList */,
 				15E3D5062C1B712300B7FECC /* Draft */,
-				15B81F372C1A2806007C0E88 /* GDriveView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2623,7 +2696,7 @@
 		CCD586C92A7AD85400014F87 /* Card */ = {
 			isa = PBXGroup;
 			children = (
-				CCD586CC2A7AD94B00014F87 /* ConnectionCardDetail.swift */,
+				CCD586CC2A7AD94B00014F87 /* ConnectionCardDetails.swift */,
 				CCD586CE2A7AD9E400014F87 /* MoreButtonView.swift */,
 			);
 			path = Card;
@@ -2679,6 +2752,8 @@
 		D53B76DA2601C9E50001CD34 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				125C789B2C36B36900440014 /* CommonConnectionReport */,
+				12B84B8C2C333DD0006363F0 /* Nextcloud */,
 				15B81F332C1A2779007C0E88 /* GDrive */,
 				15791C182B6AC32B00D67C74 /* Resources */,
 				CC43D9DF2A72F7FB0030192E /* Uwazi */,
@@ -3387,6 +3462,8 @@
 				15994A0E2BFBE15F0017F153 /* SelectSharedDrive.swift in Sources */,
 				D5B823EB262774E00008E04B /* MainView.swift in Sources */,
 				151308172BF3DBD9000C51D7 /* UwaziRelationshipList.swift in Sources */,
+				153F96492BFD306F00FE5464 /* CreateDriveFolder.swift in Sources */,
+				125C78A22C38056300440014 /* EntityStatusExtension.swift in Sources */,
 				153F96492BFD306F00FE5464 /* CreateDriveFolderView.swift in Sources */,
 				1220A72E292EB11B000BC24C /* ReportFileGridView.swift in Sources */,
 				125FA6D6278DE49A004B9D06 /* URLExtension.swift in Sources */,
@@ -3396,12 +3473,11 @@
 				D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */,
 				CC1313822A5CB0DB0057271C /* DeleteAfterFailOption.swift in Sources */,
 				15F924482C17929300C436C5 /* ViewModelState.swift in Sources */,
-				15E3D5032C1B522500B7FECC /* GDriveListView.swift in Sources */,
 				1203CDEB2992C1CB00D09073 /* HTTPCodes.swift in Sources */,
 				15BD9CAB2BC740D700C3932B /* EntitySelectorView.swift in Sources */,
 				122389B7293635790058593B /* SetExtension.swift in Sources */,
 				155369232B7E9CC100129F2F /* ResourceDatabase.swift in Sources */,
-				CCD586CD2A7AD94B00014F87 /* ConnectionCardDetail.swift in Sources */,
+				CCD586CD2A7AD94B00014F87 /* ConnectionCardDetails.swift in Sources */,
 				12607D5E27904F5300E2B8CC /* PlayerView.swift in Sources */,
 				125AAD34295348EC002194D6 /* UploadService.swift in Sources */,
 				1237A71E278F5F8B00D7BC0F /* LanguageManager.swift in Sources */,
@@ -3414,6 +3490,7 @@
 				E108B75729FE79340045CCBE /* UwaziServerViewModel.swift in Sources */,
 				1293F66A2AD7F29B00F6CFBD /* FeedbackViewModel.swift in Sources */,
 				1289B98B27C53C2400315FCE /* CameraTypeItemView.swift in Sources */,
+				12B84B912C333DD0006363F0 /* ReportMainView.swift in Sources */,
 				155541B22C0672C20031D3A5 /* GDriveRepository.swift in Sources */,
 				126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */,
 				1535A5F12BAA06490009EA42 /* DownloadedResource.swift in Sources */,
@@ -3480,6 +3557,7 @@
 				128B929927D796E800E92ACF /* FolderListView.swift in Sources */,
 				1501401D2B71243A00991D69 /* LocalizableResources.swift in Sources */,
 				126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */,
+				12B84B852C32EF12006363F0 /* LocalizableNextcloud.swift in Sources */,
 				15917D752B90FCC3005655AC /* ResourceCardType.swift in Sources */,
 				E1EAA0572AA7501800492078 /* UwaziCheckURL.swift in Sources */,
 				0E64C6A6265E7625005A7934 /* ActionListBottomSheet.swift in Sources */,
@@ -3501,7 +3579,6 @@
 				1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */,
 				126818C32A38B69E004606BD /* FileTypeHelper.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
-				159229D92C34A37C003FAC9A /* GDriveCardView.swift in Sources */,
 				127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */,
 				125D233C2B17344D001EFB8B /* BackgroundActivitiesView.swift in Sources */,
 				1293F6752AD8853500F6CFBD /* FeedbackRepository.swift in Sources */,
@@ -3509,6 +3586,7 @@
 				12EC94D128ABB6FA0070E72B /* SecuritySettingsView.swift in Sources */,
 				0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */,
 				126684412B18B67500561650 /* BackgroundActivityModel.swift in Sources */,
+				12B84B962C340025006363F0 /* NextcloudReportViewModel.swift in Sources */,
 				CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */,
 				1293547B294A454900735ED0 /* AppDelegate.swift in Sources */,
 				12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */,
@@ -3605,7 +3683,6 @@
 				1519BED82B9A5A52006FD290 /* Resource.swift in Sources */,
 				128BEB202B1E4B3D00420923 /* FeedbackOperation.swift in Sources */,
 				128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */,
-				15B81F382C1A2806007C0E88 /* GDriveView.swift in Sources */,
 				1289B98727C5397200315FCE /* ScreenExtension.swift in Sources */,
 				1227FC8F2922BDBC002FD6FB /* CameraModel.swift in Sources */,
 				E1EEE29629E6796E009FE227 /* ServerSelectionView.swift in Sources */,
@@ -3616,11 +3693,14 @@
 				122DBE012A5C1E0500D6561A /* Toast.swift in Sources */,
 				1236EE8228E1E1D700973EEA /* DatabaseExtension.swift in Sources */,
 				15B81F3A2C1A281C007C0E88 /* GDriveViewModel.swift in Sources */,
+				12B84B942C333FE3006363F0 /* ReportCardViewModel.swift in Sources */,
+				12B84B902C333DD0006363F0 /* ReportMainViewModel.swift in Sources */,
 				121F87AA2964383D00E6BA0D /* SubmittedReportVM.swift in Sources */,
 				0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */,
 				121C5D7529422C0800A64123 /* ProjectDetailsResult.swift in Sources */,
 				15EE30FE2B5073E20033BBBB /* Pages.swift in Sources */,
 				CCC1B4272AC75A380075B819 /* CreateEntityView.swift in Sources */,
+				127138382C35EA34004D520B /* CommonCardViewModel.swift in Sources */,
 				CCF47F442ABE18D7000ABBBC /* TemplateActionType.swift in Sources */,
 				1251C3902BB45616002E9898 /* UwaziListView.swift in Sources */,
 				CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */,
@@ -3639,6 +3719,7 @@
 				1289B45A28B64221005DA687 /* UIDeviceOrientationExtension.swift in Sources */,
 				121C5D7729422D6800A64123 /* DataModel.swift in Sources */,
 				12EF3D692B136D6F007A2910 /* UpdateQuery.swift in Sources */,
+				12B84B982C3413AC006363F0 /* CommonReportListView.swift in Sources */,
 				125A9E0028CE52C700C0C3C8 /* TellaDataBase.swift in Sources */,
 				126684432B18B6A400561650 /* BackgroundActivityType.swift in Sources */,
 				12A2DB03273576D50094B856 /* AddFileView.swift in Sources */,
@@ -3653,6 +3734,7 @@
 				120A14472B285E1400870157 /* MainViewModel.swift in Sources */,
 				1293F6662AD7E52800F6CFBD /* FeedbackView.swift in Sources */,
 				1291A83428BE0D51001A6055 /* SettingsServerItemView.swift in Sources */,
+				125C78A42C3805C600440014 /* ReportStatusExtension.swift in Sources */,
 				12607D5A2790457600E2B8CC /* VideoViewer.swift in Sources */,
 				153AACFB2BE41C010075D5B2 /* UwaziEntityRelationshipItem.swift in Sources */,
 				154B029C2C10FAD0007A5D2B /* DriveConnectionType.swift in Sources */,
@@ -3714,7 +3796,7 @@
 				CC13138C2A5DB79B0057271C /* BottomButtonsView.swift in Sources */,
 				150913422B841C3F001E782A /* ResourceActionType.swift in Sources */,
 				129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */,
-				1203CDDC298C5B9100D09073 /* ReportActionType.swift in Sources */,
+				1203CDDC298C5B9100D09073 /* ConnectionActionType.swift in Sources */,
 				E16D20CF2ABEAAB1001708CC /* TemplateItemViewModel.swift in Sources */,
 				15F64CA42B6D7CA1008A57AA /* AvailableResources.swift in Sources */,
 				12476E1F2A5B7D2F00069048 /* TrailingButtonToolbar.swift in Sources */,
@@ -3778,6 +3860,7 @@
 				D50727BF2625561400BBC370 /* KeychainManager.swift in Sources */,
 				1203CDE129914FA300D09073 /* Value.swift in Sources */,
 				12D7D11F28E36123008121C8 /* ServerRepository.swift in Sources */,
+				125C789F2C38042700440014 /* ConfirmDeleteConnectionStrings.swift in Sources */,
 				D7CFC37F254260D300CCB352 /* RecordView.swift in Sources */,
 				128C23732BEE1A8300539A65 /* SubmittedEntityViewModel.swift in Sources */,
 				D7F55FC825348FA50028739E /* RecordState.swift in Sources */,

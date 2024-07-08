@@ -8,7 +8,7 @@ import Combine
 class OutboxReportVM: ObservableObject {
     
     var mainAppModel : MainAppModel
-    var reportsViewModel : BaseReportsViewModel
+    var reportsViewModel : ReportMainViewModel
     
     @Published var reportViewModel : ReportViewModel = ReportViewModel()
     @Published var progressFileItems : [ProgressFileItemViewModel] = []
@@ -53,11 +53,11 @@ class OutboxReportVM: ObservableObject {
     }
     
     
-    init(mainAppModel: MainAppModel, reportsViewModel : BaseReportsViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
+    init(mainAppModel: MainAppModel, reportsViewModel : ReportMainViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
         
         self.mainAppModel = mainAppModel
         self.reportsViewModel = reportsViewModel
-        
+
         initVaultFile(reportId: reportId)
         
         initializeProgressionInfos()

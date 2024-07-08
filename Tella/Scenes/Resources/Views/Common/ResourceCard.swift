@@ -18,7 +18,7 @@ struct ResourceCardView: View {
                 HStack {
                     Image("resources.pdf")
                         .padding()
-                    ConnectionCardDetail(title: resourceCard.title, subtitle: resourceCard.serverName)
+                    ConnectionCardDetails(title: resourceCard.title, subtitle: resourceCard.serverName)
                     Spacer()
                     ZStack {
                         if(!isLoading) {

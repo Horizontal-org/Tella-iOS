@@ -24,7 +24,7 @@ struct ReportListView: View {
                     }
                 }
             } else {
-                ConnectionEmptyView(message: message, type: .tella)
+                ConnectionEmptyView(message: message, iconName: "")
             }
         }
     }

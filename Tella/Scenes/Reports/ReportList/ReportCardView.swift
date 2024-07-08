@@ -18,7 +18,7 @@ struct ReportCardView : View {
             reportsViewModel.selectedReport = report
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
-                self.handleActions(type: report.status?.reportActionType)
+                self.handleActions(type: report.status.reportActionType)
             }
             
         } label: {
@@ -26,7 +26,7 @@ struct ReportCardView : View {
                 
                 HStack {
                     
-                    ConnectionCardDetail(title: report.title ?? "", subtitle: report.getReportDate)
+                    ConnectionCardDetails(title: report.title ?? "", subtitle: report.getReportDate)
                     
                     Spacer()
                     
@@ -49,7 +49,7 @@ struct ReportCardView : View {
             ActionListBottomSheet(items: reportsViewModel.sheetItems  ,
                                   headerTitle: reportsViewModel.selectedReport?.title ?? "",
                                   action: { item in
-                self.handleActions(type : item.type as? ReportActionType)
+                self.handleActions(type : item.type as? ConnectionActionType)
             })
         }
     }
@@ -58,13 +58,13 @@ struct ReportCardView : View {
         sheetManager.showBottomSheet(modalHeight: 200) {
             DeleteReportConfirmationView(title: report.title,
                                          message: deleteMessage) {
-                reportsViewModel.deleteReport()
+                reportsViewModel.deleteReport(report: report)
                 sheetManager.hide()
             }
         }
     }
     
-    private func handleActions(type: ReportActionType?) {
+    private func handleActions(type: ConnectionActionType?) {
         
         guard let type else { return }
         
@@ -86,20 +86,20 @@ struct ReportCardView : View {
     private var editDraftReportView: some View {
         DraftReportView(mainAppModel: mainAppModel,
                         reportId: reportsViewModel.selectedReport?.id)
-        .environmentObject(reportsViewModel as BaseReportsViewModel)
+        .environmentObject(reportsViewModel)
     }
     
     private var submittedDetailsView: some View {
         SubmittedDetailsView(appModel: mainAppModel,
                              reportId: reportsViewModel.selectedReport?.id)
-        .environmentObject(reportsViewModel as BaseReportsViewModel)
+        .environmentObject(reportsViewModel)
     }
     
     private var outboxDetailsView: some View {
         OutboxDetailsView(appModel: mainAppModel,
                           reportsViewModel: reportsViewModel,
                           reportId: reportsViewModel.selectedReport?.id)
-        .environmentObject(reportsViewModel  as BaseReportsViewModel)
+        .environmentObject(reportsViewModel)
     }
     
     private var deleteMessage : String {
@@ -107,7 +107,7 @@ struct ReportCardView : View {
         case .draft:
             return LocalizableReport.deleteDraftReportMessage.localized
         case .submitted:
-            return LocalizableReport.DeleteSubmittedReportMessage.localized
+            return LocalizableReport.deleteSubmittedReportMessage.localized
         default:
             return LocalizableReport.deleteOutboxReportMessage.localized
         }

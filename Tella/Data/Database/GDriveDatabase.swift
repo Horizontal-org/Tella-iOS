@@ -91,7 +91,7 @@ extension TellaDataBase {
                                                  KeyValue(key: D.cDescription, value: report.description),
                                                  KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
                                                  KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()),
-                                                 KeyValue(key: D.cStatus, value: report.status?.rawValue),
+                                                 KeyValue(key: D.cStatus, value: report.status.rawValue),
                                                  KeyValue(key: D.cServerId, value: report.server?.id)]
             
             let reportId = try statementBuilder.insertInto(tableName: D.tGDriveReport, keyValue: reportValuesToAdd)
@@ -175,7 +175,7 @@ extension TellaDataBase {
             
             let valuesToUpdate = [ KeyValue(key: D.cTitle, value: report.title),
                                    KeyValue(key: D.cDescription, value: report.description),
-                                   KeyValue(key: D.cStatus, value: report.status?.rawValue),
+                                   KeyValue(key: D.cStatus, value: report.status.rawValue),
                                    KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()),
             ]
             let reportCondition = [KeyValue(key: D.cId, value: report.id)]
