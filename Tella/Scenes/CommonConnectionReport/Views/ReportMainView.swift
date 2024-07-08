@@ -45,6 +45,7 @@ struct ReportMainView: View {
                     case .draft:
                         CommonReportListView(message: LocalizableReport.draftListExpl.localized,
                                              emptyMessage: LocalizableReport.reportsDraftEmpty.localized,
+                                             emptyIcon: reportMainViewModel.connectionType.emptyIcon,
                                              cardsViewModel: $reportMainViewModel.draftReportsViewModel,
                                              showDetails: showDetailsView(cardViewModel: ),
                                              showBottomSheet: showBottomSheet(cardViewModel:))
@@ -52,6 +53,7 @@ struct ReportMainView: View {
                     case .outbox:
                         CommonReportListView(message: LocalizableReport.outboxListExpl.localized,
                                              emptyMessage: LocalizableReport.reportsOutboxEmpty.localized,
+                                             emptyIcon: reportMainViewModel.connectionType.emptyIcon,
                                              cardsViewModel: $reportMainViewModel.outboxedReportsViewModel,
                                              showDetails: showDetailsView(cardViewModel: ),
                                              showBottomSheet: showBottomSheet(cardViewModel:))
@@ -59,6 +61,7 @@ struct ReportMainView: View {
                     case .submitted:
                         CommonReportListView(message: LocalizableReport.submittedListExpl.localized,
                                              emptyMessage: LocalizableReport.reportsSubmitedEmpty.localized,
+                                             emptyIcon: reportMainViewModel.connectionType.emptyIcon,
                                              cardsViewModel: $reportMainViewModel.submittedReportsViewModel,
                                              showDetails: showDetailsView(cardViewModel: ),
                                              showBottomSheet: showBottomSheet(cardViewModel:))
@@ -108,7 +111,7 @@ struct ReportMainView: View {
                                   action:  {item in
                 guard let type = item.type as? ConnectionActionType else {return}
                 let id = cardViewModel.id
-
+                
                 switch type {
                 case .editDraft:
                     showDraftView(id: id)
@@ -147,29 +150,25 @@ struct ReportMainView: View {
     }
     
     private func showDraftView(id:Int? = nil) {
-
+        
         switch reportMainViewModel.connectionType {
         case .tella:
             var destination: any View
             destination = DraftReportView(mainAppModel: mainAppModel, reportId: id).environmentObject(reportMainViewModel)
             self.navigateTo(destination: destination)
-            break
+            
         case .gDrive:
             var destination : any View
-            let draftViewModel = GDriveDraftViewModel(mainAppModel: mainAppModel,
-                                                      repository: (diContainer as! GDriveDIContainer).gDriveRepository,
-                                                      reportID: id)
-            destination = DraftView(viewModel:draftViewModel, reportsViewModel: reportMainViewModel)
+            destination = GDriveDraftView(mainAppModel: mainAppModel,
+                                          gDriveDIContainer: (diContainer as! GDriveDIContainer),
+                                          reportId: id)
             self.navigateTo(destination: destination)
-
         case .nextcloud:
             var destination : any View
-            let draftViewModel = GDriveDraftViewModel(mainAppModel: mainAppModel,
-                                                      repository: (diContainer as! GDriveDIContainer).gDriveRepository,
-                                                      reportID: id)
-            destination = DraftView(viewModel:draftViewModel, reportsViewModel: reportMainViewModel)
+            destination = GDriveDraftView(mainAppModel: mainAppModel, 
+                                          gDriveDIContainer: (diContainer as! GDriveDIContainer),
+                                          reportId: id)
             self.navigateTo(destination: destination)
-            
         default:
             break
         }

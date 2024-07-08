@@ -380,12 +380,10 @@
 		15791C232B6C2E9100D67C74 /* ResourcesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */; };
 		157E4F532BA385B500147345 /* PDFKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157E4F522BA385B500147345 /* PDFKitView.swift */; };
 		15917D752B90FCC3005655AC /* ResourceCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15917D742B90FCC3005655AC /* ResourceCardType.swift */; };
-		159229D92C34A37C003FAC9A /* GDriveCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159229D82C34A37C003FAC9A /* GDriveCardView.swift */; };
 		15994A0C2BFBC6F40017F153 /* SelectDriveConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A0B2BFBC6F40017F153 /* SelectDriveConnection.swift */; };
 		15994A0E2BFBE15F0017F153 /* SelectSharedDrive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A0D2BFBE15F0017F153 /* SelectSharedDrive.swift */; };
 		15994A112BFBF0E50017F153 /* SharedDrive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A102BFBF0E50017F153 /* SharedDrive.swift */; };
 		15A505B32C2F623C0028C7CB /* GDriveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A505B22C2F623C0028C7CB /* GDriveData.swift */; };
-		15B81F382C1A2806007C0E88 /* GDriveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B81F372C1A2806007C0E88 /* GDriveView.swift */; };
 		15B81F3A2C1A281C007C0E88 /* GDriveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B81F392C1A281C007C0E88 /* GDriveViewModel.swift */; };
 		15BD9CA92BC740B300C3932B /* UwaziRelationshipWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CA82BC740B300C3932B /* UwaziRelationshipWidget.swift */; };
 		15BD9CAB2BC740D700C3932B /* EntitySelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CAA2BC740D700C3932B /* EntitySelectorView.swift */; };
@@ -395,7 +393,6 @@
 		15C51C442BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C51C432BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift */; };
 		15C51C462BFE769500DD9AD0 /* GDriveServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C51C452BFE769500DD9AD0 /* GDriveServerViewModel.swift */; };
 		15CD89102BF297BE00F724F5 /* SelectedEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CD890F2BF297BE00F724F5 /* SelectedEntityView.swift */; };
-		15E3D5032C1B522500B7FECC /* GDriveListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D5022C1B522500B7FECC /* GDriveListView.swift */; };
 		15E3D5052C1B531700B7FECC /* ConnectionEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D5042C1B531700B7FECC /* ConnectionEmptyView.swift */; };
 		15E3D50A2C1B71E200B7FECC /* GDriveDraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */; };
 		15E3D50E2C1B87AC00B7FECC /* GDriveDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D50D2C1B87AC00B7FECC /* GDriveDraftViewModel.swift */; };
@@ -956,12 +953,10 @@
 		1589A6202B7672390048C775 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1589A6212B7672430048C775 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		15917D742B90FCC3005655AC /* ResourceCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCardType.swift; sourceTree = "<group>"; };
-		159229D82C34A37C003FAC9A /* GDriveCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveCardView.swift; sourceTree = "<group>"; };
 		15994A0B2BFBC6F40017F153 /* SelectDriveConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDriveConnection.swift; sourceTree = "<group>"; };
 		15994A0D2BFBE15F0017F153 /* SelectSharedDrive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSharedDrive.swift; sourceTree = "<group>"; };
 		15994A102BFBF0E50017F153 /* SharedDrive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDrive.swift; sourceTree = "<group>"; };
 		15A505B22C2F623C0028C7CB /* GDriveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveData.swift; sourceTree = "<group>"; };
-		15B81F372C1A2806007C0E88 /* GDriveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveView.swift; sourceTree = "<group>"; };
 		15B81F392C1A281C007C0E88 /* GDriveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveViewModel.swift; sourceTree = "<group>"; };
 		15BD9CA82BC740B300C3932B /* UwaziRelationshipWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziRelationshipWidget.swift; sourceTree = "<group>"; };
 		15BD9CAA2BC740D700C3932B /* EntitySelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitySelectorView.swift; sourceTree = "<group>"; };
@@ -971,7 +966,6 @@
 		15C51C432BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveAuthViewModel.swift; sourceTree = "<group>"; };
 		15C51C452BFE769500DD9AD0 /* GDriveServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveServerViewModel.swift; sourceTree = "<group>"; };
 		15CD890F2BF297BE00F724F5 /* SelectedEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedEntityView.swift; sourceTree = "<group>"; };
-		15E3D5022C1B522500B7FECC /* GDriveListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveListView.swift; sourceTree = "<group>"; };
 		15E3D5042C1B531700B7FECC /* ConnectionEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionEmptyView.swift; sourceTree = "<group>"; };
 		15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveDraftView.swift; sourceTree = "<group>"; };
 		15E3D50D2C1B87AC00B7FECC /* GDriveDraftViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveDraftViewModel.swift; sourceTree = "<group>"; };
@@ -2429,15 +2423,6 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		159229D72C34A2BF003FAC9A /* GDriveList */ = {
-			isa = PBXGroup;
-			children = (
-				15E3D5022C1B522500B7FECC /* GDriveListView.swift */,
-				159229D82C34A37C003FAC9A /* GDriveCardView.swift */,
-			);
-			path = GDriveList;
-			sourceTree = "<group>";
-		};
 		15994A0A2BFBC6B10017F153 /* GDrive */ = {
 			isa = PBXGroup;
 			children = (
@@ -2478,9 +2463,7 @@
 		15E3D5012C1B51D700B7FECC /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				159229D72C34A2BF003FAC9A /* GDriveList */,
 				15E3D5062C1B712300B7FECC /* Draft */,
-				15B81F372C1A2806007C0E88 /* GDriveView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3407,7 +3390,6 @@
 				D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */,
 				CC1313822A5CB0DB0057271C /* DeleteAfterFailOption.swift in Sources */,
 				15F924482C17929300C436C5 /* ViewModelState.swift in Sources */,
-				15E3D5032C1B522500B7FECC /* GDriveListView.swift in Sources */,
 				1203CDEB2992C1CB00D09073 /* HTTPCodes.swift in Sources */,
 				15BD9CAB2BC740D700C3932B /* EntitySelectorView.swift in Sources */,
 				122389B7293635790058593B /* SetExtension.swift in Sources */,
@@ -3510,7 +3492,6 @@
 				1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */,
 				126818C32A38B69E004606BD /* FileTypeHelper.swift in Sources */,
 				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
-				159229D92C34A37C003FAC9A /* GDriveCardView.swift in Sources */,
 				127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */,
 				125D233C2B17344D001EFB8B /* BackgroundActivitiesView.swift in Sources */,
 				1293F6752AD8853500F6CFBD /* FeedbackRepository.swift in Sources */,
@@ -3614,7 +3595,6 @@
 				1519BED82B9A5A52006FD290 /* Resource.swift in Sources */,
 				128BEB202B1E4B3D00420923 /* FeedbackOperation.swift in Sources */,
 				128EDB92280980DB00747B98 /* SequenceExtension.swift in Sources */,
-				15B81F382C1A2806007C0E88 /* GDriveView.swift in Sources */,
 				1289B98727C5397200315FCE /* ScreenExtension.swift in Sources */,
 				1227FC8F2922BDBC002FD6FB /* CameraModel.swift in Sources */,
 				E1EEE29629E6796E009FE227 /* ServerSelectionView.swift in Sources */,

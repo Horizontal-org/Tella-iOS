@@ -9,11 +9,13 @@
 import SwiftUI
 
 struct ConnectionEmptyView: View {
+    
     var message: String
-    var type: ServerConnectionType
+    var iconName: String
+
     var body: some View {
         VStack(alignment: .center, spacing: 22) {
-            Image(type.emptyIcon)
+            Image(iconName)
             Text(message)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.white)
@@ -23,5 +25,5 @@ struct ConnectionEmptyView: View {
 }
 
 #Preview {
-    ConnectionEmptyView(message: "You have no draft reports", type: .tella)
+    ConnectionEmptyView(message: "You have no draft reports", iconName: "uwazi.empty")
 }

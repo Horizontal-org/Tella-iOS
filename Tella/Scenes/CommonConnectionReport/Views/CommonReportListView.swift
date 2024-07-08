@@ -14,20 +14,18 @@ struct CommonReportListView: View {
     
     var message: String
     var emptyMessage: String
-    
+    var emptyIcon: String
+
     @Binding var cardsViewModel: [CommonCardViewModel]
-//    @EnvironmentObject var sheetManager: SheetManager
     var showDetails: ((CommonCardViewModel) -> Void)
     var showBottomSheet: ((CommonCardViewModel) -> Void)
-
+    
     var body: some View {
         
         VStack(alignment: .center, spacing: 0) {
             
             if cardsViewModel.isEmpty {
-                
-                ConnectionEmptyView(message: emptyMessage, type: .uwazi)
-                
+                ConnectionEmptyView(message: emptyMessage, iconName: emptyIcon)
             } else {
                 
                 Text(message)
@@ -37,11 +35,9 @@ struct CommonReportListView: View {
                 
                 ScrollView {
                     ForEach($cardsViewModel, id: \.id) { itemViewModel in
-                        
                         CommonItemView(cardViewModel: itemViewModel ,
-//                                        showDetails: {showDetailsView(cardViewModel: itemViewModel.wrappedValue)},
                                        showDetails: {showDetails(itemViewModel.wrappedValue)},
-                                        showBottomSheet: {showBottomSheet(itemViewModel.wrappedValue)})
+                                       showBottomSheet: {showBottomSheet(itemViewModel.wrappedValue)})
                     }
                 }
             }
@@ -74,7 +70,7 @@ struct CommonItemView: View {
                     }
                     
                     ConnectionCardDetails(title: cardViewModel.title,
-                                         subtitle: cardViewModel.serverName)
+                                          subtitle: cardViewModel.serverName)
                     
                     Spacer()
                     
