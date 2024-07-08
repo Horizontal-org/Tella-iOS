@@ -25,6 +25,7 @@ struct DraftView<T: ServerProtocol>: View  {
         ContainerView {
             contentView
                 .environmentObject(viewModel)
+            serverListMenuView
             photoVideoPickerView
         }
         .navigationBarHidden(true)
@@ -67,6 +68,39 @@ struct DraftView<T: ServerProtocol>: View  {
         GeometryReader { geometry in
             ScrollView {
                 VStack(alignment: .leading) {
+                    if viewModel.hasMoreServer  {
+                        Text(LocalizableReport.reportsSendTo.localized)
+                            .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                            .foregroundColor(Color.white)
+                        
+                        Button {
+                            DispatchQueue.main.async {
+                                self.menuFrame = geometry.frame(in: CoordinateSpace.global)
+                                shouldShowMenu = true
+                            }
+                            
+                        } label: {
+                            HStack {
+                                Text(viewModel.serverName)
+                                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                                    .foregroundColor(Color.white.opacity(0.87))
+                                    .padding()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                Image("reports.arrow-down")
+                                    .padding()
+                                
+                            }
+                        }.background(Color.white.opacity(0.08))
+                            .cornerRadius(12)
+                        
+                        Spacer()
+                            .frame(height: 55)
+                        
+                    } else {
+                        Spacer()
+                            .frame(height: 5)
+                    }
                     TextfieldView(fieldContent: $viewModel.title,
                                   isValid: $viewModel.isValidTitle,
                                   shouldShowError: $viewModel.shouldShowError,
@@ -92,6 +126,43 @@ struct DraftView<T: ServerProtocol>: View  {
                     Spacer()
                 }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
             }
+        }
+    }
+    
+    @ViewBuilder
+    var serverListMenuView: some View {
+        
+        if shouldShowMenu {
+            VStack {
+                Spacer()
+                    .frame(height: menuFrame.origin.y +  10)
+                ScrollView {
+                    
+                    VStack(spacing: 0) {
+                        
+                        ForEach(viewModel.serverArray, id: \.self) { server in
+                            
+                            Button {
+                                shouldShowMenu = false
+                                viewModel.server = server
+                                
+                            } label: {
+                                Text(server.name ?? "")
+                                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .foregroundColor(.white)
+                                    .padding(.all, 14)
+                            }.background(server.id == viewModel.server?.id ? Color.white.opacity(0.16) : Color.white.opacity(0.08))
+                        }
+                    }.frame(minHeight: 40, maxHeight: 250)
+                        .background(Styles.Colors.backgroundMain)
+                        .cornerRadius(12)
+                }
+                Spacer()
+            }
+            .padding()
+            
+            .background(Color.clear)
         }
     }
     
