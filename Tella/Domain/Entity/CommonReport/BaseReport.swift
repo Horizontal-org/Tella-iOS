@@ -29,7 +29,8 @@ class BaseReport : Hashable, Codable, BaseReportProtocol {
     var updatedDate : Date?
     var status : ReportStatus = .unknown
     var reportFiles : [ReportFile]?
-    
+    var serverId: Int?
+
     enum CodingKeys: String, CodingKey {
         case id = "c_id"
         case title = "c_title"
@@ -37,6 +38,7 @@ class BaseReport : Hashable, Codable, BaseReportProtocol {
         case createdDate = "c_created_date"
         case updatedDate = "c_updated_date"
         case status = "c_status"
+        case serverId = "c_server_id"
     }
     
     init(id: Int? = nil,
