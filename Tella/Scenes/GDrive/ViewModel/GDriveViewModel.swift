@@ -9,13 +9,8 @@
 import Foundation
 import Combine
 class GDriveViewModel: ReportMainViewModel {
-    
-    @Published var draftReports: [GDriveReport] = []
-    @Published var outboxedReports: [GDriveReport] = []
-    @Published var submittedReports: [GDriveReport] = []
-    
     @Published var selectedReport: GDriveReport?
-
+    @Published var server: GDriveServer?
 
     private var delayTime = 0.1
     
@@ -33,6 +28,12 @@ class GDriveViewModel: ReportMainViewModel {
         super.init(mainAppModel: mainAppModel, connectionType: .gDrive, title: "Google Drive")
         
         self.getReports()
+        self.getServer()
+        self.listenToUpdates()
+    }
+    
+    private func getServer() {
+        self.server = mainAppModel.tellaData?.gDriveServers.value.first
     }
     
     override func getReports() {
@@ -42,48 +43,45 @@ class GDriveViewModel: ReportMainViewModel {
     }
     
     func getDraftReports() {
-        self.mainAppModel.tellaData?.gDriveDraftReports
-            .receive(on: DispatchQueue.main)
-            .sink { result in
-            } receiveValue: { draftReports in
-                self.draftReportsViewModel = draftReports.compactMap { report in
-                    ReportCardViewModel(report: report,
-                                        serverName: report.server?.name,
-                                        deleteReport: { self.deleteReport(report: report) }
-                    )
-                }
-            }.store(in: &subscribers)
+        let draftReports = tellaData?.getDraftGDriveReport() ?? []
+        self.draftReportsViewModel = draftReports.compactMap { report in
+            return ReportCardViewModel(report: report,
+                                       serverName: server?.name,
+                                       deleteReport: { self.deleteReport(report: report) }
+            )
+        }
     }
     
     func getOutboxedReports() {
-        self.mainAppModel.tellaData?.gDriveOutboxedReports
-            .receive(on: DispatchQueue.main)
-            .sink { result in
-            } receiveValue: { outboxedReports in
-                self.outboxedReportsViewModel = outboxedReports.compactMap { report in
-                    ReportCardViewModel(report: report,
-                                        serverName: report.server?.name,
-                                        deleteReport: { self.deleteReport(report: report) }
-                    )
-                }
-            }.store(in: &subscribers)
+        let outboxedReports = tellaData?.getOutboxedGDriveReport() ?? []
+        self.outboxedReportsViewModel = outboxedReports.compactMap { report in
+            ReportCardViewModel(report: report,
+                                serverName: server?.name,
+                                deleteReport: { self.deleteReport(report: report) }
+            )
+        }
     }
     
     func getSubmittedReports() {
-        self.mainAppModel.tellaData?.gDriveSubmittedReports
-            .receive(on: DispatchQueue.main)
-            .sink { result in
-            } receiveValue: { submittedReports in
-                self.submittedReportsViewModel = submittedReports.compactMap { report in
-                    ReportCardViewModel(report: report,
-                                        serverName: report.server?.name,
-                                        deleteReport: { self.deleteReport(report: report) }
-                    )
-                }
-            }.store(in: &subscribers)
+        let submittedReports = tellaData?.getSubmittedGDriveReport() ?? []
+        self.submittedReportsViewModel = submittedReports.compactMap { report in
+            ReportCardViewModel(report: report,
+                                serverName: server?.name,
+                                deleteReport: { self.deleteReport(report: report) }
+            )
+        }
     }
     
     func deleteReport(report: GDriveReport) {
         let _ = self.mainAppModel.tellaData?.deleteDriveReport(reportId: report.id)
+    }
+    
+    override func listenToUpdates() {
+        self.mainAppModel.tellaData?.shouldReloadGDriveReports
+            .receive(on: DispatchQueue.main)
+            .sink { result in
+            } receiveValue: { draftReports in
+                self.getReports()
+            }.store(in: &subscribers)
     }
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class GDriveServer: Server {
+class GDriveServer: Server, ServerProtocol {
     var rootFolder: String?
 
     enum CodingKeys: String, CodingKey {

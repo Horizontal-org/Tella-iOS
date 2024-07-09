@@ -9,69 +9,20 @@
 import Foundation
 import Combine
 
-class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
-    var mainAppModel: MainAppModel
+class GDriveDraftViewModel: DraftMainViewModel<GDriveServer> {
     private let gDriveRepository: GDriveRepositoryProtocol
-    private var cancellables = Set<AnyCancellable>()
     
-    var server: GDriveServer?
-    
-    @Published var reportId : Int?
-    @Published var title: String = ""
-    @Published var description: String = ""
-    
-    @Published var isValidTitle : Bool = false
-    @Published var isValidDescription : Bool = false
-    @Published var shouldShowError : Bool = false
-    @Published var reportIsValid : Bool = false
-    @Published var reportIsDraft : Bool = false
-    
-    @Published var status: ReportStatus?
-    @Published var successSavingReport: Bool = false
-    @Published var failureSavingReport: Bool = false
-    var successSavingReportPublisher: Published<Bool>.Publisher { $successSavingReport }
-    var failureSavingReportPublisher: Published<Bool>.Publisher { $failureSavingReport }
-    
-    // files
-    @Published var files :  Set <VaultFileDB> = []
-    @Published var resultFile : [VaultFileDB]?
-    
-    @Published var showingImagePicker : Bool = false
-    @Published var showingImportDocumentPicker : Bool = false
-    @Published var showingFileList : Bool = false
-    @Published var showingRecordView : Bool = false
-    @Published var showingCamera : Bool = false
-    
-    private var subscribers = Set<AnyCancellable>()
-    
-    var addFileToDraftItems : [ListActionSheetItem] { return [
-        
-        ListActionSheetItem(imageName: "report.camera-filled",
-                            content: LocalizableReport.cameraFilled.localized,
-                            type: ManageFileType.camera),
-        ListActionSheetItem(imageName: "report.mic-filled",
-                            content: LocalizableReport.micFilled.localized,
-                            type: ManageFileType.recorder),
-        ListActionSheetItem(imageName: "report.gallery",
-                            content: LocalizableReport.galleryFilled.localized,
-                            type: ManageFileType.tellaFile),
-        ListActionSheetItem(imageName: "report.phone",
-                            content: LocalizableReport.phoneFilled.localized,
-                            type: ManageFileType.fromDevice)
-    ]}
-    
-    init(mainAppModel: MainAppModel, repository: GDriveRepositoryProtocol, reportID: Int?) {
-        self.mainAppModel = mainAppModel
+    init(mainAppModel: MainAppModel, repository: GDriveRepositoryProtocol, reportId reportID: Int?) {
         self.gDriveRepository = repository
-        self.validateReport()
-        self.getServer()
+        super.init(mainAppModel: mainAppModel, reportId: reportID)
         
+        self.getServer()
+            
         self.reportId = reportID
-        self.bindVaultFileTaken()
         self.fillReportVM()
     }
     
-    private func validateReport() {
+    override func validateReport() {
         Publishers.CombineLatest($title, $description)
             .map { !$0.0.isEmpty && !$0.1.isEmpty }
             .assign(to: \.reportIsValid, on: self)
@@ -83,7 +34,7 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
             .store(in: &subscribers)
     }
     
-    func submitReport() {
+    override func submitReport() {
         self.status = .submissionScheduled
         performSubmission()
     }
@@ -112,10 +63,23 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
             receiveValue: { result in
                 dump(result)
             }
-        ).store(in: &cancellables)
+            .sink(
+                receiveCompletion: { completion in
+                    switch completion {
+                    case .finished:
+                        self.saveSubmittedReport()
+                        break
+                    case .failure(let error):
+                        debugLog(error)
+                    }
+                },
+                receiveValue: { result in
+                    dump(result)
+                }
+            ).store(in: &subscribers)
     }
     
-    func fillReportVM() {
+    override func fillReportVM() {
         if let reportId = self.reportId, let report = self.mainAppModel.tellaData?.getDriveReport(id: reportId) {
             self.title = report.title ?? ""
             self.description = report.description ?? ""
@@ -128,12 +92,12 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
         }
     }
     
-    func saveDraftReport() {
+    override func saveDraftReport() {
         self.status = .draft
         self.saveReport()
     }
     
-    func saveFinalizedReport() {
+    override func saveFinalizedReport() {
         self.status = .finalized
         self.saveReport()
     }
@@ -143,7 +107,7 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
         self.saveReport()
     }
     
-    func saveReport() {
+    override func saveReport() {
         let gDriveReport = GDriveReport(
             id: reportId,
             title: title,
@@ -201,12 +165,12 @@ class GDriveDraftViewModel: ObservableObject, DraftViewModelProtocol {
             .eraseToAnyPublisher()
     }
     
-    func deleteFile(fileId: String?) {
+    override func deleteFile(fileId: String?) {
         guard let index = files.firstIndex(where: { $0.id == fileId})  else  {return }
         files.remove(at: index)
     }
     
-    private func bindVaultFileTaken() {
+    override func bindVaultFileTaken() {
         $resultFile.sink(receiveValue: { value in
             guard let value else { return }
             self.files.insert(value)

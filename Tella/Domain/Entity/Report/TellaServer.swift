@@ -5,7 +5,8 @@
 
 import Foundation
 
-class TellaServer : WebServer {
+class TellaServer : WebServer, ServerProtocol {
+    
     var activatedMetadata : Bool?
     var backgroundUpload : Bool?
     var projectId : String?

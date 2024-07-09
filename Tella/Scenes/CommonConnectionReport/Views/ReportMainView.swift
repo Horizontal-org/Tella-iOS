@@ -11,7 +11,7 @@ import SwiftUI
 
 struct ReportMainView: View {
     
-    @State var reportMainViewModel: ReportMainViewModel
+    @ObservedObject var reportMainViewModel: ReportMainViewModel
     @EnvironmentObject var sheetManager: SheetManager
     @EnvironmentObject var mainAppModel: MainAppModel
     
@@ -161,7 +161,7 @@ struct ReportMainView: View {
             var destination : any View
             destination = GDriveDraftView(mainAppModel: mainAppModel,
                                           gDriveDIContainer: (diContainer as! GDriveDIContainer),
-                                          reportId: id)
+                                          reportId: id).environmentObject(reportMainViewModel)
             self.navigateTo(destination: destination)
         case .nextcloud:
             var destination : any View
