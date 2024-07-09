@@ -20,6 +20,5 @@ struct DownloadedResource: Codable, Identifiable {
         case externalId = "c_external_id"
         case title = "c_title"
         case fileName = "c_filename"
-        case server
     }
 }
