@@ -46,22 +46,9 @@ class GDriveDraftViewModel: DraftMainViewModel<GDriveServer> {
             parentId: server?.rootFolder,
             description: self.description
         )
-        .receive(on: DispatchQueue.main)
-        .flatMap { folderId in
-            self.uploadFiles(to: folderId)
-        }
-        .sink(
-            receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    self.saveSubmittedReport()
-                    break
-                case .failure(let error):
-                    debugLog(error)
-                }
-            },
-            receiveValue: { result in
-                dump(result)
+            .receive(on: DispatchQueue.main)
+            .flatMap { folderId in
+                self.uploadFiles(to: folderId)
             }
             .sink(
                 receiveCompletion: { completion in
@@ -146,7 +133,6 @@ class GDriveDraftViewModel: DraftMainViewModel<GDriveServer> {
             self.failureSavingReport = true
         }
     }
-    
     private func getServer() {
         self.server = mainAppModel.tellaData?.gDriveServers.value.first
     }

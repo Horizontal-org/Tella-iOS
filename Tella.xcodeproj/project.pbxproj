@@ -201,15 +201,16 @@
 		126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */; };
 		126E1AF12C3D7603000AE4CE /* BaseReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AF02C3D7603000AE4CE /* BaseReport.swift */; };
 		126E1AF32C3D7632000AE4CE /* GDriveReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AF22C3D7632000AE4CE /* GDriveReport.swift */; };
+		126E1AFD2C3D8426000AE4CE /* WebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AFB2C3D8426000AE4CE /* WebServer.swift */; };
+		126E1AFE2C3D8426000AE4CE /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AFC2C3D8426000AE4CE /* Server.swift */; };
+		126E1AFF2C3D8462000AE4CE /* CreateNextcloudFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4DA882C380F7400123843 /* CreateNextcloudFolderView.swift */; };
 		126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */; };
 		126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ECFE927C57FA600ED5161 /* CameraState.swift */; };
 		126FE4D727A427E200AE4188 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FE4D627A427E200AE4188 /* Constants.swift */; };
 		126FEE0A2AC4993900B99298 /* ReportPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FEE092AC4993900B99298 /* ReportPages.swift */; };
-		127092DA2C2EE4E3002030AA /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092D92C2EE4E3002030AA /* Server.swift */; };
-		127092DC2C2EE7AD002030AA /* WebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092DB2C2EE7AD002030AA /* WebServer.swift */; };
-		127138382C35EA34004D520B /* CommonCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127138372C35EA34004D520B /* CommonCardViewModel.swift */; };
 		127092D42C2D8BA5002030AA /* NextcloudDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092D32C2D8BA5002030AA /* NextcloudDatabase.swift */; };
 		127092D72C2DD1A1002030AA /* NextcloudServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127092D62C2DD1A1002030AA /* NextcloudServer.swift */; };
+		127138382C35EA34004D520B /* CommonCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127138372C35EA34004D520B /* CommonCardViewModel.swift */; };
 		1272F25D27C91ACD0054F2E2 /* ImportFileProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1272F25C27C91ACD0054F2E2 /* ImportFileProgress.swift */; };
 		1272F25F27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1272F25E27C91BD70054F2E2 /* ImportFilesFromCameraProgress.swift */; };
 		1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1272F26027C91CD90054F2E2 /* ImportFilesProgressModels.swift */; };
@@ -379,8 +380,6 @@
 		15994A0C2BFBC6F40017F153 /* SelectDriveConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A0B2BFBC6F40017F153 /* SelectDriveConnection.swift */; };
 		15994A0E2BFBE15F0017F153 /* SelectSharedDrive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A0D2BFBE15F0017F153 /* SelectSharedDrive.swift */; };
 		15994A112BFBF0E50017F153 /* SharedDrive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A102BFBF0E50017F153 /* SharedDrive.swift */; };
-		15A505B32C2F623C0028C7CB /* GDriveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A505B22C2F623C0028C7CB /* GDriveData.swift */; };
-		15B81F382C1A2806007C0E88 /* GDriveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B81F372C1A2806007C0E88 /* GDriveView.swift */; };
 		15B81F3A2C1A281C007C0E88 /* GDriveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B81F392C1A281C007C0E88 /* GDriveViewModel.swift */; };
 		15BD9CA92BC740B300C3932B /* UwaziRelationshipWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CA82BC740B300C3932B /* UwaziRelationshipWidget.swift */; };
 		15BD9CAB2BC740D700C3932B /* EntitySelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CAA2BC740D700C3932B /* EntitySelectorView.swift */; };
@@ -420,8 +419,6 @@
 		209AC67F2C2D660600492356 /* NextcloudServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC67E2C2D660600492356 /* NextcloudServerViewModel.swift */; };
 		209AC6812C332D6E00492356 /* GDriveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6802C332D6E00492356 /* GDriveData.swift */; };
 		209AC6832C332DA700492356 /* VaultFilesManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6822C332DA700492356 /* VaultFilesManagerExtension.swift */; };
-		209AC6872C332DCD00492356 /* WebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6852C332DCD00492356 /* WebServer.swift */; };
-		209AC6882C332DCD00492356 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6862C332DCD00492356 /* Server.swift */; };
 		209AC68A2C332E3100492356 /* TellaServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6892C332E3000492356 /* TellaServer.swift */; };
 		209AC68D2C332F0000492356 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC68B2C332F0000492356 /* LocationManager.swift */; };
 		209AC68E2C332F0000492356 /* ViewClassType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC68C2C332F0000492356 /* ViewClassType.swift */; };
@@ -433,7 +430,6 @@
 		20BA0BDF2C33428A00823A27 /* ServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA0BDE2C33428A00823A27 /* ServerLoginView.swift */; };
 		20E4DA832C36E8CF00123843 /* ServerCreateFolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4DA822C36E8CF00123843 /* ServerCreateFolderViewModel.swift */; };
 		20E4DA872C380E3C00123843 /* ServerCreateFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4DA862C380E3C00123843 /* ServerCreateFolderView.swift */; };
-		20E4DA892C380F7400123843 /* CreateNextcloudFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4DA882C380F7400123843 /* CreateNextcloudFolderView.swift */; };
 		379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */; };
 		89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */; };
 		CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0797BD2A8D46CB00AAE63F /* UnlockView.swift */; };
@@ -789,6 +785,8 @@
 		126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCamera.swift; sourceTree = "<group>"; };
 		126E1AF02C3D7603000AE4CE /* BaseReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseReport.swift; sourceTree = "<group>"; };
 		126E1AF22C3D7632000AE4CE /* GDriveReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveReport.swift; sourceTree = "<group>"; };
+		126E1AFB2C3D8426000AE4CE /* WebServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebServer.swift; sourceTree = "<group>"; };
+		126E1AFC2C3D8426000AE4CE /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtension.swift; sourceTree = "<group>"; };
 		126ECFE927C57FA600ED5161 /* CameraState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraState.swift; sourceTree = "<group>"; };
 		126FE4D627A427E200AE4188 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -968,8 +966,6 @@
 		15994A0B2BFBC6F40017F153 /* SelectDriveConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDriveConnection.swift; sourceTree = "<group>"; };
 		15994A0D2BFBE15F0017F153 /* SelectSharedDrive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSharedDrive.swift; sourceTree = "<group>"; };
 		15994A102BFBF0E50017F153 /* SharedDrive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDrive.swift; sourceTree = "<group>"; };
-		15A505B22C2F623C0028C7CB /* GDriveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveData.swift; sourceTree = "<group>"; };
-		15B81F372C1A2806007C0E88 /* GDriveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveView.swift; sourceTree = "<group>"; };
 		15B81F392C1A281C007C0E88 /* GDriveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveViewModel.swift; sourceTree = "<group>"; };
 		15BD9CA82BC740B300C3932B /* UwaziRelationshipWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziRelationshipWidget.swift; sourceTree = "<group>"; };
 		15BD9CAA2BC740D700C3932B /* EntitySelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitySelectorView.swift; sourceTree = "<group>"; };
@@ -1008,8 +1004,6 @@
 		209AC67E2C2D660600492356 /* NextcloudServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudServerViewModel.swift; sourceTree = "<group>"; };
 		209AC6802C332D6E00492356 /* GDriveData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GDriveData.swift; sourceTree = "<group>"; };
 		209AC6822C332DA700492356 /* VaultFilesManagerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VaultFilesManagerExtension.swift; sourceTree = "<group>"; };
-		209AC6852C332DCD00492356 /* WebServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebServer.swift; sourceTree = "<group>"; };
-		209AC6862C332DCD00492356 /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		209AC6892C332E3000492356 /* TellaServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TellaServer.swift; sourceTree = "<group>"; };
 		209AC68B2C332F0000492356 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		209AC68C2C332F0000492356 /* ViewClassType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewClassType.swift; sourceTree = "<group>"; };
@@ -1521,7 +1515,7 @@
 			isa = PBXGroup;
 			children = (
 				126E1AF42C3D77F1000AE4CE /* CommonReport */,
-				127092D82C2EE4D0002030AA /* CommonServer */,
+				126E1AFA2C3D8426000AE4CE /* CommonServer */,
 				15994A0F2BFBF0C70017F153 /* GDrive */,
 				1519BED42B9A5A2B006FD290 /* Resource */,
 				E18BD4312AA0C2EB00EE62E2 /* Uwazi */,
@@ -1792,6 +1786,15 @@
 				126E1AF02C3D7603000AE4CE /* BaseReport.swift */,
 			);
 			path = CommonReport;
+			sourceTree = "<group>";
+		};
+		126E1AFA2C3D8426000AE4CE /* CommonServer */ = {
+			isa = PBXGroup;
+			children = (
+				126E1AFB2C3D8426000AE4CE /* WebServer.swift */,
+				126E1AFC2C3D8426000AE4CE /* Server.swift */,
+			);
+			path = CommonServer;
 			sourceTree = "<group>";
 		};
 		126FEE082AC4992800B99298 /* Models */ = {
@@ -2230,6 +2233,17 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		12B84B832C32E646006363F0 /* Nextcloud */ = {
+			isa = PBXGroup;
+			children = (
+				209AC67C2C2D65EB00492356 /* NextcloudAddServerURLView.swift */,
+				209AC67E2C2D660600492356 /* NextcloudServerViewModel.swift */,
+				2048DADE2C340FF6000B3D9F /* NextcloudServerLoginView.swift */,
+				20E4DA882C380F7400123843 /* CreateNextcloudFolderView.swift */,
+			);
+			path = Nextcloud;
+			sourceTree = "<group>";
+		};
 		12B84B8C2C333DD0006363F0 /* Nextcloud */ = {
 			isa = PBXGroup;
 			children = (
@@ -2252,17 +2266,6 @@
 				12B84B952C340025006363F0 /* NextcloudReportViewModel.swift */,
 			);
 			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		12B84B832C32E646006363F0 /* Nextcloud */ = {
-			isa = PBXGroup;
-			children = (
-				209AC67C2C2D65EB00492356 /* NextcloudAddServerURLView.swift */,
-				209AC67E2C2D660600492356 /* NextcloudServerViewModel.swift */,
-				2048DADE2C340FF6000B3D9F /* NextcloudServerLoginView.swift */,
-				20E4DA882C380F7400123843 /* CreateNextcloudFolderView.swift */,
-			);
-			path = Nextcloud;
 			sourceTree = "<group>";
 		};
 		12BCB2E62816972200889E5A /* Localizable */ = {
@@ -2593,15 +2596,6 @@
 				20E4DA802C36E89A00123843 /* Views */,
 			);
 			path = Connections;
-			sourceTree = "<group>";
-		};
-		209AC6842C332DCD00492356 /* CommonServer */ = {
-			isa = PBXGroup;
-			children = (
-				209AC6852C332DCD00492356 /* WebServer.swift */,
-				209AC6862C332DCD00492356 /* Server.swift */,
-			);
-			path = CommonServer;
 			sourceTree = "<group>";
 		};
 		20E4DA802C36E89A00123843 /* Views */ = {
@@ -3434,6 +3428,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				126E1AFE2C3D8426000AE4CE /* Server.swift in Sources */,
 				CC13138A2A5DB68E0057271C /* BottomSheetTitleView.swift in Sources */,
 				E1E7C5842AAB70A500DDB07E /* UwaziDictionaryRow.swift in Sources */,
 				1240E6B02907E14400692232 /* ReportCardView.swift in Sources */,
@@ -3473,7 +3468,7 @@
 				15994A0E2BFBE15F0017F153 /* SelectSharedDrive.swift in Sources */,
 				D5B823EB262774E00008E04B /* MainView.swift in Sources */,
 				151308172BF3DBD9000C51D7 /* UwaziRelationshipList.swift in Sources */,
-				153F96492BFD306F00FE5464 /* CreateDriveFolder.swift in Sources */,
+				153F96492BFD306F00FE5464 /* CreateDriveFolderView.swift in Sources */,
 				125C78A22C38056300440014 /* EntityStatusExtension.swift in Sources */,
 				153F96492BFD306F00FE5464 /* CreateDriveFolderView.swift in Sources */,
 				1220A72E292EB11B000BC24C /* ReportFileGridView.swift in Sources */,
@@ -3500,6 +3495,7 @@
 				CCDC398A2AF2BCE400674735 /* MultipartRequest.swift in Sources */,
 				E108B75729FE79340045CCBE /* UwaziServerViewModel.swift in Sources */,
 				1293F66A2AD7F29B00F6CFBD /* FeedbackViewModel.swift in Sources */,
+				126E1AFF2C3D8462000AE4CE /* CreateNextcloudFolderView.swift in Sources */,
 				1289B98B27C53C2400315FCE /* CameraTypeItemView.swift in Sources */,
 				12B84B912C333DD0006363F0 /* ReportMainView.swift in Sources */,
 				155541B22C0672C20031D3A5 /* GDriveRepository.swift in Sources */,
@@ -3536,7 +3532,6 @@
 				123048D7295F95BB0015CD96 /* SubmittedDetailsItemView.swift in Sources */,
 				2048DADF2C340FF6000B3D9F /* NextcloudServerLoginView.swift in Sources */,
 				127092D42C2D8BA5002030AA /* NextcloudDatabase.swift in Sources */,
-				209AC6872C332DCD00492356 /* WebServer.swift in Sources */,
 				E1CF5A272AB3488E00365036 /* JSONDecoderExtension.swift in Sources */,
 				1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */,
 				1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */,
@@ -3564,7 +3559,6 @@
 				1202D9562BEE39A800EAFAB3 /* TrailingImageButtonToolBar.swift in Sources */,
 				CCBEE0482A8E9B780067884E /* TextView.swift in Sources */,
 				12732F87273C219700BCE0FB /* LeadingTitleToolbar.swift in Sources */,
-				209AC6882C332DCD00492356 /* Server.swift in Sources */,
 				128B929927D796E800E92ACF /* FolderListView.swift in Sources */,
 				1501401D2B71243A00991D69 /* LocalizableResources.swift in Sources */,
 				126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */,
@@ -3906,6 +3900,7 @@
 				E1EEE2A429F7D192009FE227 /* UwaziTwoStepVerification.swift in Sources */,
 				CCE8CCDD2AF41E410088B61D /* UwaziFileUtility.swift in Sources */,
 				122E6A5529A396C400BDACAD /* ServerFileSize.swift in Sources */,
+				126E1AFD2C3D8426000AE4CE /* WebServer.swift in Sources */,
 				125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */,
 				15FABA362B73F96800B2EFEE /* ResourceRepository.swift in Sources */,
 				15994A112BFBF0E50017F153 /* SharedDrive.swift in Sources */,
