@@ -362,6 +362,7 @@
 		150913422B841C3F001E782A /* ResourceActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150913412B841C3F001E782A /* ResourceActionType.swift */; };
 		151308172BF3DBD9000C51D7 /* UwaziRelationshipList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151308162BF3DBD9000C51D7 /* UwaziRelationshipList.swift */; };
 		1517A9AA2C3F011D00CB8EBF /* OutboxMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1517A9A92C3F011D00CB8EBF /* OutboxMainViewModel.swift */; };
+		1517A9AF2C3F0D7A00CB8EBF /* GDriveOutboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1517A9AE2C3F0D7A00CB8EBF /* GDriveOutboxViewModel.swift */; };
 		1519BED82B9A5A52006FD290 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1519BED72B9A5A52006FD290 /* Resource.swift */; };
 		152D38512C2C61DF00323CE7 /* DraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152D38502C2C61DF00323CE7 /* DraftView.swift */; };
 		1535A5F12BAA06490009EA42 /* DownloadedResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1535A5F02BAA06490009EA42 /* DownloadedResource.swift */; };
@@ -933,6 +934,7 @@
 		150913412B841C3F001E782A /* ResourceActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActionType.swift; sourceTree = "<group>"; };
 		151308162BF3DBD9000C51D7 /* UwaziRelationshipList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziRelationshipList.swift; sourceTree = "<group>"; };
 		1517A9A92C3F011D00CB8EBF /* OutboxMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxMainViewModel.swift; sourceTree = "<group>"; };
+		1517A9AE2C3F0D7A00CB8EBF /* GDriveOutboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveOutboxViewModel.swift; sourceTree = "<group>"; };
 		1519BED72B9A5A52006FD290 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		152D38502C2C61DF00323CE7 /* DraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftView.swift; sourceTree = "<group>"; };
 		1535A5F02BAA06490009EA42 /* DownloadedResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResource.swift; sourceTree = "<group>"; };
@@ -2463,6 +2465,7 @@
 			children = (
 				15B81F392C1A281C007C0E88 /* GDriveViewModel.swift */,
 				15E3D50D2C1B87AC00B7FECC /* GDriveDraftViewModel.swift */,
+				1517A9AE2C3F0D7A00CB8EBF /* GDriveOutboxViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -3689,6 +3692,7 @@
 				1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */,
 				12B3AD8A28C0DD0200AC9AF9 /* ServerLoginView.swift in Sources */,
 				1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */,
+				1517A9AF2C3F0D7A00CB8EBF /* GDriveOutboxViewModel.swift in Sources */,
 				CC4864E92AF94AF300293F62 /* SummaryEntityView.swift in Sources */,
 				1252F7052BDAB1C30076DF4B /* EntityInstanceToSend.swift in Sources */,
 				15E3D50A2C1B71E200B7FECC /* GDriveDraftView.swift in Sources */,

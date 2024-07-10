@@ -5,8 +5,13 @@
 import SwiftUI
 import Combine
 
-class OutboxReportVM: OutboxMainViewModel {
+class OutboxReportVM: OutboxMainViewModel<TellaServer> {    
+    var reportRepository = ReportRepository()
     
+    var reportIsNotAutoDelete: Bool {
+        return !(reportViewModel.server?.autoDelete ?? true)
+    }
+
     override init(mainAppModel: MainAppModel, reportsViewModel : ReportMainViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
 
         super.init(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: reportId)
@@ -22,7 +27,7 @@ class OutboxReportVM: OutboxMainViewModel {
         }
     }
     
-    override func treat(uploadResponse: CurrentValueSubject<UploadResponse?,APIError>?) {
+    private func treat(uploadResponse: CurrentValueSubject<UploadResponse?,APIError>?) {
         uploadResponse?
             .sink { result in
                 
@@ -101,34 +106,6 @@ class OutboxReportVM: OutboxMainViewModel {
                                                    server: report.server,
                                                    status: report.status,
                                                    apiID: report.apiID)
-        }
-    }
-    
-    override func initializeProgressionInfos() {
-        
-        let totalSize = self.reportViewModel.files.reduce(0) { $0 + ($1.size) }
-        let bytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent)}
-        
-        if totalSize > 0 {
-            
-            // All Files
-            let percentUploaded = Float(bytesSent) / Float(totalSize)
-            
-            let formattedPercentUploaded = percentUploaded >= 1.0 ? 1.0 : Float(percentUploaded)
-            
-            let formattedTotalUploaded = bytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
-            let formattedTotalSize = totalSize.getFormattedFileSize()
-            DispatchQueue.main.async {
-                
-                self.percentUploadedInfo = "\(Int(formattedPercentUploaded * 100))% uploaded"
-                self.percentUploaded = Float(percentUploaded)
-                self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
-                
-                self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: ($0.bytesSent.getFormattedFileSize()) + "/" + ($0.size.getFormattedFileSize()))}
-                
-                self.objectWillChange.send()
-                
-            }
         }
     }
     

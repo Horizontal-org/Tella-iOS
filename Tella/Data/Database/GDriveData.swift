@@ -48,4 +48,11 @@ extension TellaData {
         shouldReloadGDriveReports.send(true)
         return self.database.deleteDriveReport(reportId: reportId)
     }
+    
+    @discardableResult
+    func updateDriveReportStatus(idReport: Int, status: ReportStatus) -> Result<Bool, Error> {
+        shouldReloadGDriveReports.send(true)
+        
+        return self.database.updateDriveReportStatus(idReport: idReport, status: status)
+    }
 }

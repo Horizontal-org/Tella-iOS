@@ -198,6 +198,9 @@ struct DraftView<T: ServerProtocol>: View  {
             case .tella:
                 let outboxVM = OutboxReportVM(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId, shouldStartUpload: true)
                 OutboxDetailsView(outboxReportVM: outboxVM).environmentObject(reportsViewModel)
+            case .gDrive:
+                let outboxVM = GDriveOutboxViewModel(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId, repository: GDriveRepository(), shouldStartUpload: true)
+                OutboxDetailsView(outboxReportVM: outboxVM).environmentObject(reportsViewModel)
             default:
                 Text("")
             }
