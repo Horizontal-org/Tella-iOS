@@ -178,7 +178,8 @@ struct ReportMainView: View {
     private func showOutboxView(id: Int? = nil) {
         switch reportMainViewModel.connectionType {
         case .tella:
-            let destination = OutboxDetailsView(appModel: mainAppModel, reportsViewModel: reportMainViewModel, reportId: id)
+            var outboxViewModel = OutboxReportVM(mainAppModel: mainAppModel, reportsViewModel: reportMainViewModel, reportId: id)
+            let destination = OutboxDetailsView(outboxReportVM: outboxViewModel)
                 .environmentObject(reportMainViewModel)
             self.navigateTo(destination: destination)
             break

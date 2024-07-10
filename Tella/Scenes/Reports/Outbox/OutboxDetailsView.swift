@@ -6,15 +6,11 @@ import SwiftUI
 
 struct OutboxDetailsView: View {
     
-    @StateObject var outboxReportVM : OutboxReportVM
+    @StateObject var outboxReportVM : OutboxMainViewModel
     @EnvironmentObject var reportsViewModel : ReportMainViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
-    
-    init(appModel: MainAppModel,reportsViewModel: ReportMainViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
-        _outboxReportVM = StateObject(wrappedValue: OutboxReportVM(mainAppModel: appModel, reportsViewModel: reportsViewModel, reportId:reportId, shouldStartUpload: shouldStartUpload))
-    }
     
     var body: some View {
         
@@ -56,7 +52,6 @@ struct OutboxDetailsView: View {
         
         HStack(spacing: 0) {
             Button {
-                dump("DISMISSS")
                 dismissView()
             } label: {
                 Image("back")

@@ -5,58 +5,11 @@
 import SwiftUI
 import Combine
 
-class OutboxReportVM: ObservableObject {
+class OutboxReportVM: OutboxMainViewModel {
     
-    var mainAppModel : MainAppModel
-    var reportsViewModel : ReportMainViewModel
-    
-    @Published var reportViewModel : ReportViewModel = ReportViewModel()
-    @Published var progressFileItems : [ProgressFileItemViewModel] = []
-    @Published var percentUploaded : Float = 0.0
-    @Published var percentUploadedInfo : String = LocalizableReport.waitingConnection.localized
-    @Published var uploadedFiles : String = ""
-    
-    @Published var isLoading : Bool = false
-    var isSubmissionInProgress: Bool {
-        return reportViewModel.status == .submissionInProgress
-        
-    }
-    @Published var shouldShowSubmittedReportView : Bool = false
-    @Published var shouldShowMainView : Bool = false
-    
-    private var subscribers = Set<AnyCancellable>()
-    private var filesToUpload : [FileToUpload] = []
-    private var reportRepository = ReportRepository()
-    
-    var uploadButtonTitle: String {
-        
-        switch reportViewModel.status {
-        case .finalized:
-            return "Submit"
-        case .submissionInProgress:
-            return "Pause"
-        default:
-            return "Resume"
-        }
-    }
-    
-    var reportHasFile: Bool {
-        return !reportViewModel.files.isEmpty
-    }
-    
-    var reportHasDescription: Bool {
-        return !reportViewModel.description.isEmpty
-    }
-    
-    var reportIsNotAutoDelete: Bool {
-        return !(reportViewModel.server?.autoDelete ?? true)
-    }
-    
-    
-    init(mainAppModel: MainAppModel, reportsViewModel : ReportMainViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
-        
-        self.mainAppModel = mainAppModel
-        self.reportsViewModel = reportsViewModel
+    override init(mainAppModel: MainAppModel, reportsViewModel : ReportMainViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
+
+        super.init(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: reportId)
 
         initVaultFile(reportId: reportId)
         
@@ -69,7 +22,7 @@ class OutboxReportVM: ObservableObject {
         }
     }
     
-    func treat(uploadResponse: CurrentValueSubject<UploadResponse?,APIError>?) {
+    override func treat(uploadResponse: CurrentValueSubject<UploadResponse?,APIError>?) {
         uploadResponse?
             .sink { result in
                 
@@ -125,7 +78,7 @@ class OutboxReportVM: ObservableObject {
             .store(in: &subscribers)
     }
     
-    func initVaultFile(reportId: Int?) {
+    override func initVaultFile(reportId: Int?) {
         
         if let reportId, let report = self.mainAppModel.tellaData?.getReport(reportId: reportId) {
 
@@ -151,7 +104,7 @@ class OutboxReportVM: ObservableObject {
         }
     }
     
-    func initializeProgressionInfos() {
+    override func initializeProgressionInfos() {
         
         let totalSize = self.reportViewModel.files.reduce(0) { $0 + ($1.size) }
         let bytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent)}
@@ -179,7 +132,7 @@ class OutboxReportVM: ObservableObject {
         }
     }
     
-    func pauseSubmission() {
+    override func pauseSubmission() {
         if isSubmissionInProgress {
             self.updateReportStatus(reportStatus: .submissionPaused)
             self.reportRepository.pause(reportId: self.reportViewModel.id)
@@ -187,7 +140,7 @@ class OutboxReportVM: ObservableObject {
         
     }
     
-    func submitReport() {
+    override func submitReport() {
         
         let report = Report(id: reportViewModel.id,
                             title: reportViewModel.title,
@@ -208,19 +161,19 @@ class OutboxReportVM: ObservableObject {
         }
     }
     
-    func showSubmittedReport() {
+    override func showSubmittedReport() {
         DispatchQueue.main.async {
             self.shouldShowSubmittedReportView = true
         }
     }
     
-    func showMainView() {
+    override func showMainView() {
         DispatchQueue.main.async {
             self.shouldShowMainView = true
         }
     }
     
-    private func updateProgressInfos(uploadProgressInfo : UploadProgressInfo) {
+    override func updateProgressInfos(uploadProgressInfo : UploadProgressInfo) {
         
         _ = self.reportViewModel.files.compactMap { _ in
             let currentFile = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId})
@@ -268,7 +221,7 @@ class OutboxReportVM: ObservableObject {
     
     // MARK: Update Local database
     
-    func updateReportStatus(reportStatus:ReportStatus) {
+    override func updateReportStatus(reportStatus:ReportStatus) {
         
         self.reportViewModel.status = reportStatus
         
@@ -277,7 +230,7 @@ class OutboxReportVM: ObservableObject {
         mainAppModel.tellaData?.updateReportStatus(idReport: id, status: reportStatus)
     }
     
-    func deleteReport() {
+    override func deleteReport() {
         mainAppModel.deleteReport(reportId: reportViewModel.id)
         mainAppModel.deleteReport(reportId: reportViewModel.id)
     }
