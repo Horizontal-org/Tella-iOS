@@ -24,7 +24,6 @@ extension TellaDataBase {
     
     func addNextcloudServer(server: NextcloudServer) -> Int? {
         do {
-            
             let nextcloudServerDictionnary = server.dictionary
             let valuesToAdd = nextcloudServerDictionnary.compactMap({KeyValue(key: $0.key, value: $0.value)})
             
@@ -109,24 +108,17 @@ extension TellaDataBase {
     
     func addNextcloudReport(report: NextcloudReport) -> Int? {
         do {
-            let reportValuesToAdd = [KeyValue(key: D.cTitle, value: report.title),
-                                     KeyValue(key: D.cDescription, value: report.description),
-                                     KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
-                                     KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()),
-                                     KeyValue(key: D.cStatus, value: report.status.rawValue),
-                                     KeyValue(key: D.cServerId, value: report.server?.id)]
             
-            let reportId = try statementBuilder.insertInto(tableName: D.tNextcloudReport, keyValue: reportValuesToAdd)
+            let reportDictionary = report.dictionary
+            let valuesToAdd = reportDictionary.compactMap({KeyValue(key: $0.key, value: $0.value)})
+            
+            let reportId = try statementBuilder.insertInto(tableName: D.tNextcloudReport, keyValue: valuesToAdd)
             
             try report.reportFiles?.forEach( { reportFile in
-                let reportFileValuesToAdd = [KeyValue(key: D.cReportInstanceId, value: reportId),
-                                             KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
-                                             KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
-                                             KeyValue(key: D.cBytesSent, value: 0),
-                                             KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
-                                             KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
-                
-                try statementBuilder.insertInto(tableName: D.tNextcloudInstanceVaultFile, keyValue: reportFileValuesToAdd)
+                reportFile.reportInstanceId = reportId
+                let reportFilesDictionnary = reportFile.dictionary
+                let fileValuesToAdd = reportFilesDictionnary.compactMap({KeyValue(key: $0.key, value: $0.value)})
+                try statementBuilder.insertInto(tableName: D.tNextcloudInstanceVaultFile, keyValue: fileValuesToAdd)
             })
             
             return reportId
@@ -195,11 +187,9 @@ extension TellaDataBase {
     func updateNextcloudReport(report: NextcloudReport) -> Bool {
         do {
             
-            let valuesToUpdate = [ KeyValue(key: D.cTitle, value: report.title),
-                                   KeyValue(key: D.cDescription, value: report.description),
-                                   KeyValue(key: D.cStatus, value: report.status.rawValue),
-                                   KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()),
-            ]
+            let reportDictionary = report.dictionary
+            let valuesToUpdate = reportDictionary.compactMap({KeyValue(key: $0.key, value: $0.value)})
+            
             let reportCondition = [KeyValue(key: D.cId, value: report.id)]
             
             try statementBuilder.update(
@@ -214,15 +204,9 @@ extension TellaDataBase {
                 try statementBuilder.delete(tableName: D.tNextcloudInstanceVaultFile, primarykeyValue: reportFilesCondition)
                 
                 try files.forEach( { reportFile in
-                    let reportFilesValuesToAdd = [
-                        reportFile.id == nil ? nil : KeyValue(key: D.cId, value: reportFile.id),
-                        KeyValue(key: D.cReportInstanceId, value: report.id),
-                        KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
-                        KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
-                        KeyValue(key: D.cBytesSent, value: reportFile.bytesSent),
-                        KeyValue(key: D.cCreatedDate, value: reportFile.createdDate),
-                        KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()),
-                    ]
+                    
+                    let reportFilesDictionnary = reportFile.dictionary
+                    let reportFilesValuesToAdd = reportFilesDictionnary.compactMap({KeyValue(key: $0.key, value: $0.value)})
                     
                     try statementBuilder.insertInto(tableName: D.tNextcloudInstanceVaultFile, keyValue: reportFilesValuesToAdd)
                 })

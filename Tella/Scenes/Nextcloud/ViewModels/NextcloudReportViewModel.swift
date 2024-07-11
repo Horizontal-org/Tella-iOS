@@ -13,9 +13,9 @@ class NextcloudReportViewModel: ReportMainViewModel {
     
     override func getReports() {
         
-        let draftReports =  tellaData?.database.getDriveReports(reportStatus: [.draft]) ?? []
-        let outboxedReports = tellaData?.database.getDriveReports(reportStatus: [.draft]) ?? []
-        let submittedReports = tellaData?.database.getDriveReports(reportStatus: [.draft]) ?? []
+        let draftReports =  tellaData?.getDraftNextcloudReport() ?? []
+        let outboxedReports = tellaData?.getOutboxedNextcloudReport() ?? []
+        let submittedReports = tellaData?.getSubmittedNextcloudReport() ?? []
         
         draftReportsViewModel = draftReports.compactMap { report in
             ReportCardViewModel(report: report,
@@ -45,15 +45,14 @@ class NextcloudReportViewModel: ReportMainViewModel {
             }.store(in: &subscribers)
     }
     
-    func deleteReport(report:GDriveReport) {
-        guard let reportId = report.id else { return }
-        //        let resultDeletion = self.tellaData?.deleteGDriveReport(reportId: reportId)
+    func deleteReport(report:NextcloudReport) {
         var message = ""
-        //        if case .success = resultDeletion {
-        //            message = String.init(format: LocalizableUwazi.uwaziDeletedToast.localized, entity.title ?? "")
-        //        } else {
-        //            message = LocalizableCommon.commonError.localized
-        //        }
+        
+        guard let reportId = report.id else {
+            message = LocalizableCommon.commonError.localized
+            return }
+        let resultDeletion = self.tellaData?.deleteNextcloudReport(reportId: reportId)
+        message = String.init(format: LocalizableUwazi.uwaziDeletedToast.localized, report.title ?? "")
         
         self.shouldShowToast = true
         self.toastMessage = message

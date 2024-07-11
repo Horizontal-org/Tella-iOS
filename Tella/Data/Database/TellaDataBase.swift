@@ -39,11 +39,15 @@ class TellaDataBase : DataBase {
                 createUwaziEntityInstancesTable()
                 createUwaziEntityInstanceVaultFileTable()
                 addRelationshipColumnToUwaziTemplate()
+                fallthrough
             case 5:
                 createGDriveServerTable()
                 createNextcloudServerTable()
                 createGDriveReportTable()
                 createGDriveReportFilesTable()
+                createNextcloudServerTable()
+                createNextcloudReportTable()
+                createNextcloudReportFilesTable()
             default :
                 break
             }

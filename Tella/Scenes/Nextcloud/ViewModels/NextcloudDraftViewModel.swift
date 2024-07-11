@@ -13,13 +13,12 @@ class NextcloudDraftViewModel: DraftMainViewModel<NextcloudServer> {
     
     private let nextcloudRepository: NextcloudRepositoryProtocol
     
-    init(mainAppModel: MainAppModel, repository: NextcloudRepositoryProtocol, reportId reportID: Int?) {
+    init(mainAppModel: MainAppModel, 
+         repository: NextcloudRepositoryProtocol,
+         reportId reportID: Int?) {
         self.nextcloudRepository = repository
         super.init(mainAppModel: mainAppModel, reportId: reportID)
-        
         self.getServer()
-        
-        self.reportId = reportID
         self.fillReportVM()
     }
     
@@ -36,53 +35,52 @@ class NextcloudDraftViewModel: DraftMainViewModel<NextcloudServer> {
     }
     
     override func fillReportVM() {
-        if let reportId = self.reportId,
-           let report = self.mainAppModel.tellaData?.getNextcloudReport(id: reportId) {
-            
-            self.title = report.title ?? ""
-            self.description = report.description ?? ""
-            
-            if let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{ $0.fileId } ?? []) {
-                self.files = Set(vaultFileResult)
-            }
-            
-            self.objectWillChange.send()
+        
+        guard let reportId = self.reportId,
+        let report = self.mainAppModel.tellaData?.getNextcloudReport(id: reportId)
+        else { return }
+        
+        self.title = report.title ?? ""
+        self.description = report.description ?? ""
+        
+        if let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{ $0.fileId } ?? []) {
+            self.files = Set(vaultFileResult)
         }
+        
+        self.objectWillChange.send()
     }
-    
-    override func saveDraftReport() {
-        self.status = .draft
-        self.saveReport()
-    }
-    
-    override func saveFinalizedReport() {
-        self.status = .finalized
-        self.saveReport()
-    }
-    
-    func saveSubmittedReport() {
-        self.status = .submitted
-        self.saveReport()
-    }
-    
+
     override func saveReport() {
         
-        let report = NextcloudReport(
-            id: reportId,
-            title: title,
-            description: description,
-            status: status ?? .unknown,
-            server: server,
-            vaultFiles: self.files.compactMap { ReportFile( fileId: $0.id,
+        let reportFiles = self.files.compactMap {ReportFile(fileId: $0.id,
                                                             status: .notSubmitted,
                                                             bytesSent: 0,
-                                                            createdDate: Date())}
-        )
+                                                            createdDate: Date(),
+                                                            reportInstanceId: reportId)}
+        
+        let report = NextcloudReport(id: reportId,
+                                     title: title,
+                                     description: description,
+                                     status: status ?? .unknown,
+                                     server: server,
+                                     vaultFiles: reportFiles)
         
         reportId == nil ? addReport(report: report) : updateReport(report: report)
     }
     
-    func addReport(report: NextcloudReport) {
+    override func deleteFile(fileId: String?) {
+        guard let index = files.firstIndex(where: { $0.id == fileId})  else  {return }
+        files.remove(at: index)
+    }
+    
+    override func bindVaultFileTaken() {
+        $resultFile.sink(receiveValue: { value in
+            guard let value else { return }
+            self.files.insert(value)
+        }).store(in: &subscribers)
+    }
+
+    private func addReport(report: NextcloudReport) {
         let reportId = mainAppModel.tellaData?.addNextcloudReport(report: report)
         
         guard let reportId  else {
@@ -93,7 +91,7 @@ class NextcloudDraftViewModel: DraftMainViewModel<NextcloudServer> {
         self.successSavingReport = true
     }
     
-    func updateReport(report: NextcloudReport) {
+    private func updateReport(report: NextcloudReport) {
         
         let updatedReportResult = mainAppModel.tellaData?.updateNextcloudReport(report: report)
         
@@ -109,15 +107,4 @@ class NextcloudDraftViewModel: DraftMainViewModel<NextcloudServer> {
         self.server = mainAppModel.tellaData?.nextcloudServers.value.first
     }
     
-    override func deleteFile(fileId: String?) {
-        guard let index = files.firstIndex(where: { $0.id == fileId})  else  {return }
-        files.remove(at: index)
-    }
-    
-    override func bindVaultFileTaken() {
-        $resultFile.sink(receiveValue: { value in
-            guard let value else { return }
-            self.files.insert(value)
-        }).store(in: &subscribers)
-    }
 }
