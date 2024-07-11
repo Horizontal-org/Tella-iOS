@@ -17,8 +17,6 @@ class GDriveDraftViewModel: DraftMainViewModel<GDriveServer> {
         super.init(mainAppModel: mainAppModel, reportId: reportID)
         
         self.getServer()
-            
-        self.reportId = reportID
         self.fillReportVM()
     }
     
@@ -46,25 +44,7 @@ class GDriveDraftViewModel: DraftMainViewModel<GDriveServer> {
             self.objectWillChange.send()
         }
     }
-    
-    override func saveDraftReport() {
-        self.status = .draft
-        self.saveReport()
-    }
-    
-    override func saveFinalizedReport() {
-        self.status = .finalized
-        self.saveReport()
-    }
-    override func submitReport() {
-        saveReportForSubmission()
-    }
-    
-    override func saveReportForSubmission() {
-        self.status = .submissionScheduled
-        self.saveReport()
-    }
-    
+
     override func saveReport() {
         let gDriveReport = GDriveReport(
             id: reportId,
