@@ -21,7 +21,6 @@ struct DraftView<T: ServerProtocol>: View  {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
-        // TO DO: INCLUDE SERVER SELECTION VIEW!!!!!!
         ContainerView {
             contentView
                 .environmentObject(viewModel)
@@ -194,11 +193,18 @@ struct DraftView<T: ServerProtocol>: View  {
     }
     
     var outboxDetailsView: some View {
-        OutboxDetailsView(appModel: mainAppModel,
-                          reportsViewModel: reportsViewModel,
-                          reportId: viewModel.reportId,
-                          shouldStartUpload: true)
-        .environmentObject(reportsViewModel)
+        Group {
+            switch reportsViewModel.connectionType {
+            case .tella:
+                let outboxVM = OutboxReportVM(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId, shouldStartUpload: true)
+                OutboxDetailsView(outboxReportVM: outboxVM).environmentObject(reportsViewModel)
+            case .gDrive:
+                let outboxVM = GDriveOutboxViewModel(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId, repository: GDriveRepository(), shouldStartUpload: true)
+                OutboxDetailsView(outboxReportVM: outboxVM).environmentObject(reportsViewModel)
+            default:
+                Text("")
+            }
+        }
     }
     
     var photoVideoPickerView: some View {

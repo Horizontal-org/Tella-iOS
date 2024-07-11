@@ -34,38 +34,6 @@ class GDriveDraftViewModel: DraftMainViewModel<GDriveServer> {
             .store(in: &subscribers)
     }
     
-    override func submitReport() {
-        self.status = .submissionScheduled
-        performSubmission()
-    }
-    
-    
-    func performSubmission() {
-        gDriveRepository.createDriveFolder(
-            folderName: self.title,
-            parentId: server?.rootFolder,
-            description: self.description
-        )
-            .receive(on: DispatchQueue.main)
-            .flatMap { folderId in
-                self.uploadFiles(to: folderId)
-            }
-            .sink(
-                receiveCompletion: { completion in
-                    switch completion {
-                    case .finished:
-                        self.saveSubmittedReport()
-                        break
-                    case .failure(let error):
-                        debugLog(error)
-                    }
-                },
-                receiveValue: { result in
-                    dump(result)
-                }
-            ).store(in: &subscribers)
-    }
-    
     override func fillReportVM() {
         if let reportId = self.reportId, let report = self.mainAppModel.tellaData?.getDriveReport(id: reportId) {
             self.title = report.title ?? ""
@@ -88,9 +56,12 @@ class GDriveDraftViewModel: DraftMainViewModel<GDriveServer> {
         self.status = .finalized
         self.saveReport()
     }
+    override func submitReport() {
+        saveReportForSubmission()
+    }
     
-    func saveSubmittedReport() {
-        self.status = .submitted
+    override func saveReportForSubmission() {
+        self.status = .submissionScheduled
         self.saveReport()
     }
     
@@ -135,20 +106,6 @@ class GDriveDraftViewModel: DraftMainViewModel<GDriveServer> {
     }
     private func getServer() {
         self.server = mainAppModel.tellaData?.gDriveServers.value.first
-    }
-    
-    private func uploadFiles(to folderId: String) -> AnyPublisher<Void, Error> {
-        let uploadPublishers = files.map { file -> AnyPublisher<String, Error> in
-            guard let fileUrl = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file) else {
-                return Fail(error: APIError.unexpectedResponse).eraseToAnyPublisher()
-            }
-            return gDriveRepository.uploadFile(fileURL: fileUrl, mimeType: file.mimeType ?? "", folderId: folderId)
-        }
-        
-        return Publishers.MergeMany(uploadPublishers)
-            .collect()
-            .map { _ in () }
-            .eraseToAnyPublisher()
     }
     
     override func deleteFile(fileId: String?) {

@@ -121,6 +121,7 @@
 		123AE5A129CFAD7F00814CC7 /* OutboxReportVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123AE5A029CFAD7F00814CC7 /* OutboxReportVM.swift */; };
 		123AE5A329CFB7F000814CC7 /* UploadReportOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123AE5A229CFB7F000814CC7 /* UploadReportOperation.swift */; };
 		123CE54F272028D1005BF386 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 123CE54E272028D1005BF386 /* Roboto-Light.ttf */; };
+		123CE84429126B52003C251F /* ServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CE84329126B52003C251F /* ServerViewModel.swift */; };
 		123CE84429126B52003C251F /* TellaWebServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123CE84329126B52003C251F /* TellaWebServerViewModel.swift */; };
 		1240E6B02907E14400692232 /* ReportCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1240E6AF2907E14400692232 /* ReportCardView.swift */; };
 		1240E6B22908123900692232 /* ReportListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1240E6B12908123900692232 /* ReportListView.swift */; };
@@ -362,6 +363,8 @@
 		1503C87E2C07A080000F2209 /* ServerConnectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1503C87D2C07A080000F2209 /* ServerConnectionHeaderView.swift */; };
 		150913422B841C3F001E782A /* ResourceActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150913412B841C3F001E782A /* ResourceActionType.swift */; };
 		151308172BF3DBD9000C51D7 /* UwaziRelationshipList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151308162BF3DBD9000C51D7 /* UwaziRelationshipList.swift */; };
+		1517A9AA2C3F011D00CB8EBF /* OutboxMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1517A9A92C3F011D00CB8EBF /* OutboxMainViewModel.swift */; };
+		1517A9AF2C3F0D7A00CB8EBF /* GDriveOutboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1517A9AE2C3F0D7A00CB8EBF /* GDriveOutboxViewModel.swift */; };
 		1519BED82B9A5A52006FD290 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1519BED72B9A5A52006FD290 /* Resource.swift */; };
 		152D38512C2C61DF00323CE7 /* DraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152D38502C2C61DF00323CE7 /* DraftView.swift */; };
 		1535A5F12BAA06490009EA42 /* DownloadedResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1535A5F02BAA06490009EA42 /* DownloadedResource.swift */; };
@@ -712,6 +715,7 @@
 		123AE5A029CFAD7F00814CC7 /* OutboxReportVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxReportVM.swift; sourceTree = "<group>"; };
 		123AE5A229CFB7F000814CC7 /* UploadReportOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadReportOperation.swift; sourceTree = "<group>"; };
 		123CE54E272028D1005BF386 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
+		123CE84329126B52003C251F /* ServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerViewModel.swift; sourceTree = "<group>"; };
 		123CE84329126B52003C251F /* TellaWebServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaWebServerViewModel.swift; sourceTree = "<group>"; };
 		1240E6AF2907E14400692232 /* ReportCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCardView.swift; sourceTree = "<group>"; };
 		1240E6B12908123900692232 /* ReportListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportListView.swift; sourceTree = "<group>"; };
@@ -950,6 +954,8 @@
 		1503C87D2C07A080000F2209 /* ServerConnectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConnectionHeaderView.swift; sourceTree = "<group>"; };
 		150913412B841C3F001E782A /* ResourceActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActionType.swift; sourceTree = "<group>"; };
 		151308162BF3DBD9000C51D7 /* UwaziRelationshipList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziRelationshipList.swift; sourceTree = "<group>"; };
+		1517A9A92C3F011D00CB8EBF /* OutboxMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxMainViewModel.swift; sourceTree = "<group>"; };
+		1517A9AE2C3F0D7A00CB8EBF /* GDriveOutboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveOutboxViewModel.swift; sourceTree = "<group>"; };
 		1519BED72B9A5A52006FD290 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		152D38502C2C61DF00323CE7 /* DraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftView.swift; sourceTree = "<group>"; };
 		1535A5F02BAA06490009EA42 /* DownloadedResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResource.swift; sourceTree = "<group>"; };
@@ -1206,7 +1212,6 @@
 			children = (
 				0D4BC3C1267577F900DCDC30 /* ReportsView.swift */,
 				126FEE082AC4992800B99298 /* Models */,
-				12794E70294CB4E000B13BBF /* ReportList */,
 				121C945C28FF3D6900570EB4 /* Draft */,
 				12199C322940936B0041BD38 /* Outbox */,
 				123048D3295F954E0015CD96 /* Submitted */,
@@ -1917,15 +1922,6 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		12794E70294CB4E000B13BBF /* ReportList */ = {
-			isa = PBXGroup;
-			children = (
-				1240E6B12908123900692232 /* ReportListView.swift */,
-				1240E6AF2907E14400692232 /* ReportCardView.swift */,
-			);
-			path = ReportList;
-			sourceTree = "<group>";
-		};
 		127964B327CFA8AF003DD7DF /* Add files */ = {
 			isa = PBXGroup;
 			children = (
@@ -2465,6 +2461,14 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		1517A9A82C3F010D00CB8EBF /* Outbox */ = {
+			isa = PBXGroup;
+			children = (
+				1517A9A92C3F011D00CB8EBF /* OutboxMainViewModel.swift */,
+			);
+			path = Outbox;
+			sourceTree = "<group>";
+		};
 		1519BED42B9A5A2B006FD290 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -2537,6 +2541,7 @@
 			children = (
 				15B81F392C1A281C007C0E88 /* GDriveViewModel.swift */,
 				15E3D50D2C1B87AC00B7FECC /* GDriveDraftViewModel.swift */,
+				1517A9AE2C3F0D7A00CB8EBF /* GDriveOutboxViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -2560,6 +2565,7 @@
 		15E656A92C2A142300BDEC91 /* Reports */ = {
 			isa = PBXGroup;
 			children = (
+				1517A9A82C3F010D00CB8EBF /* Outbox */,
 				15E656AE2C2A14FA00BDEC91 /* Draft */,
 				15F1AA532C2E07F50002A7D8 /* BaseReportsViewModel.swift */,
 			);
@@ -3451,7 +3457,6 @@
 				126E1AFE2C3D8426000AE4CE /* Server.swift in Sources */,
 				CC13138A2A5DB68E0057271C /* BottomSheetTitleView.swift in Sources */,
 				E1E7C5842AAB70A500DDB07E /* UwaziDictionaryRow.swift in Sources */,
-				1240E6B02907E14400692232 /* ReportCardView.swift in Sources */,
 				15E656AB2C2A147E00BDEC91 /* AddFilesToDraftView.swift in Sources */,
 				12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */,
 				128B15CB27DA30C800E1C1E0 /* OnboardingEndView.swift in Sources */,
@@ -3487,6 +3492,7 @@
 				12E6772F27A9719F00DC1E1C /* UIImageExtension.swift in Sources */,
 				15994A0E2BFBE15F0017F153 /* SelectSharedDrive.swift in Sources */,
 				D5B823EB262774E00008E04B /* MainView.swift in Sources */,
+				1517A9AA2C3F011D00CB8EBF /* OutboxMainViewModel.swift in Sources */,
 				151308172BF3DBD9000C51D7 /* UwaziRelationshipList.swift in Sources */,
 				153F96492BFD306F00FE5464 /* CreateDriveFolderView.swift in Sources */,
 				125C78A22C38056300440014 /* EntityStatusExtension.swift in Sources */,
@@ -3798,6 +3804,7 @@
 				1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */,
 				12B3AD8A28C0DD0200AC9AF9 /* TellaWebServerLoginView.swift in Sources */,
 				1285BF402A3C5D63005D5D23 /* OpenXmlFormats.swift in Sources */,
+				1517A9AF2C3F0D7A00CB8EBF /* GDriveOutboxViewModel.swift in Sources */,
 				CC4864E92AF94AF300293F62 /* SummaryEntityView.swift in Sources */,
 				1252F7052BDAB1C30076DF4B /* EntityInstanceToSend.swift in Sources */,
 				15E3D50A2C1B71E200B7FECC /* GDriveDraftView.swift in Sources */,
@@ -3911,7 +3918,6 @@
 				126684452B18B78200561650 /* BackgroundActivityStatus.swift in Sources */,
 				12EC94CF28AA566C0070E72B /* GeneralView.swift in Sources */,
 				CCD586CF2A7AD9E400014F87 /* MoreButtonView.swift in Sources */,
-				1240E6B22908123900692232 /* ReportListView.swift in Sources */,
 				1218E86528E48AEC00FE2E68 /* LoginResult.swift in Sources */,
 				1204F64327D928C9006E40EE /* FileTypeExtension.swift in Sources */,
 				0DA213C72680286F00526995 /* FileListItem.swift in Sources */,

@@ -179,10 +179,15 @@ struct ReportMainView: View {
     private func showOutboxView(id: Int? = nil) {
         switch reportMainViewModel.connectionType {
         case .tella:
-            let destination = OutboxDetailsView(appModel: mainAppModel, reportsViewModel: reportMainViewModel, reportId: id)
+            let outboxViewModel = OutboxReportVM(mainAppModel: mainAppModel, reportsViewModel: reportMainViewModel, reportId: id)
+            let destination = OutboxDetailsView(outboxReportVM: outboxViewModel)
                 .environmentObject(reportMainViewModel)
             self.navigateTo(destination: destination)
             break
+        case .gDrive:
+            let outboxViewModel = GDriveOutboxViewModel(mainAppModel: mainAppModel, reportsViewModel: reportMainViewModel, reportId: id, repository: GDriveRepository())
+            let destination = OutboxDetailsView(outboxReportVM: outboxViewModel)
+            self.navigateTo(destination: destination)
         default:
             break
         }

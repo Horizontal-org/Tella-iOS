@@ -225,4 +225,21 @@ extension TellaDataBase {
             return .failure(error)
         }
     }
+    
+    func updateDriveReportStatus(idReport: Int, status: ReportStatus) -> Result<Bool, Error> {
+        do {
+            let valuesToUpdate = [KeyValue(key: D.cStatus, value: status.rawValue),
+                                  KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())
+            ]
+            
+            let reportCondition = [KeyValue(key: D.cId, value: idReport)]
+            
+            try statementBuilder.update(tableName: D.tGDriveReport, valuesToUpdate: valuesToUpdate, equalCondition: reportCondition)
+            
+            return .success(true)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
 }
