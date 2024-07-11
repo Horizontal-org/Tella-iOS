@@ -37,7 +37,7 @@ class NextcloudReportViewModel: ReportMainViewModel {
     }
     
     override func listenToUpdates() {
-        self.mainAppModel.tellaData?.shouldReloadGDriveReports
+        self.mainAppModel.tellaData?.shouldReloadNextcloudReports
             .receive(on: DispatchQueue.main)
             .sink { result in
             } receiveValue: { draftReports in
@@ -48,12 +48,14 @@ class NextcloudReportViewModel: ReportMainViewModel {
     func deleteReport(report:NextcloudReport) {
         var message = ""
         
-        guard let reportId = report.id else {
+        guard let reportId = report.id,
+              let resultDeletion = self.tellaData?.deleteNextcloudReport(reportId: reportId),
+              resultDeletion
+        else {
             message = LocalizableCommon.commonError.localized
-            return }
-        let resultDeletion = self.tellaData?.deleteNextcloudReport(reportId: reportId)
+            return
+        }
         message = String.init(format: LocalizableUwazi.uwaziDeletedToast.localized, report.title ?? "")
-        
         self.shouldShowToast = true
         self.toastMessage = message
     }
