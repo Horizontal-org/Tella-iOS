@@ -7,15 +7,11 @@ import SwiftUI
 
 struct SubmittedDetailsView: View {
     
-    @StateObject var submittedReportVM : SubmittedReportVM
+    @StateObject var submittedReportVM : SubmittedMainViewModel
     @EnvironmentObject var reportsViewModel : ReportMainViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
-    
-    init(appModel: MainAppModel, reportId : Int?) {
-        _submittedReportVM = StateObject(wrappedValue: SubmittedReportVM(mainAppModel: appModel, reportId: reportId))
-    }
     
     var body: some View {
         

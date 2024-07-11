@@ -91,9 +91,17 @@ class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
     
     func submitReport() {}
     
-    func showSubmittedReport() {}
-    
-    func showMainView() {}
+    func showSubmittedReport() {
+        DispatchQueue.main.async {
+            self.shouldShowSubmittedReportView = true
+        }
+    }
+        
+    func showMainView() {
+        DispatchQueue.main.async {
+            self.shouldShowMainView = true
+        }
+    }
     
     func updateProgressInfos(uploadProgressInfo : UploadProgressInfo) {}
     

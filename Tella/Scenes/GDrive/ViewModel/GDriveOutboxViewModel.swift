@@ -76,6 +76,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
                 switch completion {
                 case .finished:
                     self.updateReportStatus(reportStatus: .submitted)
+                    self.showSubmittedReport()
                     break
                 case .failure(let error):
                     debugLog(error)

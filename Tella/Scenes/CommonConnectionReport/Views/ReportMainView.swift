@@ -197,7 +197,12 @@ struct ReportMainView: View {
     private func showSubmittedView(id: Int? = nil) {
         switch reportMainViewModel.connectionType {
         case .tella:
-            let destination = SubmittedDetailsView(appModel: mainAppModel, reportId: id).environmentObject(reportMainViewModel)
+            let vm = SubmittedReportVM(mainAppModel: mainAppModel, reportId: id)
+            let destination = SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportMainViewModel)
+            self.navigateTo(destination: destination)
+        case .gDrive:
+            let vm = GDriveSubmittedViewModel(mainAppModel: mainAppModel, reportId: id)
+            let destination = SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportMainViewModel)
             self.navigateTo(destination: destination)
         default:
             break

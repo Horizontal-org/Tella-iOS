@@ -365,6 +365,8 @@
 		151308172BF3DBD9000C51D7 /* UwaziRelationshipList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151308162BF3DBD9000C51D7 /* UwaziRelationshipList.swift */; };
 		1517A9AA2C3F011D00CB8EBF /* OutboxMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1517A9A92C3F011D00CB8EBF /* OutboxMainViewModel.swift */; };
 		1517A9AF2C3F0D7A00CB8EBF /* GDriveOutboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1517A9AE2C3F0D7A00CB8EBF /* GDriveOutboxViewModel.swift */; };
+		1517A9B22C404F4000CB8EBF /* SubmittedMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1517A9B12C404F4000CB8EBF /* SubmittedMainViewModel.swift */; };
+		1517A9B42C4050D500CB8EBF /* GDriveSubmittedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1517A9B32C4050D500CB8EBF /* GDriveSubmittedViewModel.swift */; };
 		1519BED82B9A5A52006FD290 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1519BED72B9A5A52006FD290 /* Resource.swift */; };
 		152D38512C2C61DF00323CE7 /* DraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152D38502C2C61DF00323CE7 /* DraftView.swift */; };
 		1535A5F12BAA06490009EA42 /* DownloadedResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1535A5F02BAA06490009EA42 /* DownloadedResource.swift */; };
@@ -956,6 +958,8 @@
 		151308162BF3DBD9000C51D7 /* UwaziRelationshipList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziRelationshipList.swift; sourceTree = "<group>"; };
 		1517A9A92C3F011D00CB8EBF /* OutboxMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxMainViewModel.swift; sourceTree = "<group>"; };
 		1517A9AE2C3F0D7A00CB8EBF /* GDriveOutboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveOutboxViewModel.swift; sourceTree = "<group>"; };
+		1517A9B12C404F4000CB8EBF /* SubmittedMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittedMainViewModel.swift; sourceTree = "<group>"; };
+		1517A9B32C4050D500CB8EBF /* GDriveSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveSubmittedViewModel.swift; sourceTree = "<group>"; };
 		1519BED72B9A5A52006FD290 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		152D38502C2C61DF00323CE7 /* DraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftView.swift; sourceTree = "<group>"; };
 		1535A5F02BAA06490009EA42 /* DownloadedResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResource.swift; sourceTree = "<group>"; };
@@ -2469,6 +2473,14 @@
 			path = Outbox;
 			sourceTree = "<group>";
 		};
+		1517A9B02C404F1100CB8EBF /* Submitted */ = {
+			isa = PBXGroup;
+			children = (
+				1517A9B12C404F4000CB8EBF /* SubmittedMainViewModel.swift */,
+			);
+			path = Submitted;
+			sourceTree = "<group>";
+		};
 		1519BED42B9A5A2B006FD290 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -2542,6 +2554,7 @@
 				15B81F392C1A281C007C0E88 /* GDriveViewModel.swift */,
 				15E3D50D2C1B87AC00B7FECC /* GDriveDraftViewModel.swift */,
 				1517A9AE2C3F0D7A00CB8EBF /* GDriveOutboxViewModel.swift */,
+				1517A9B32C4050D500CB8EBF /* GDriveSubmittedViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -2565,6 +2578,7 @@
 		15E656A92C2A142300BDEC91 /* Reports */ = {
 			isa = PBXGroup;
 			children = (
+				1517A9B02C404F1100CB8EBF /* Submitted */,
 				1517A9A82C3F010D00CB8EBF /* Outbox */,
 				15E656AE2C2A14FA00BDEC91 /* Draft */,
 				15F1AA532C2E07F50002A7D8 /* BaseReportsViewModel.swift */,
@@ -3668,6 +3682,7 @@
 				1249B3832AD43AA7009A7023 /* VaultFilesManagerInterface.swift in Sources */,
 				15F64CA62B6D80F7008A57AA /* ResourceCardViewModel.swift in Sources */,
 				0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */,
+				1517A9B22C404F4000CB8EBF /* SubmittedMainViewModel.swift in Sources */,
 				CCEAE5922AE6F6EE0069204A /* EntityCreationResponse.swift in Sources */,
 				1289B98927C53A9C00315FCE /* CameraType.swift in Sources */,
 				126E1B042C3D9A9B000AE4CE /* NextcloudData.swift in Sources */,
@@ -3679,6 +3694,7 @@
 				126E1B092C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift in Sources */,
 				12607D562790416400E2B8CC /* PlayerViewModel.swift in Sources */,
 				128B929B27D798E200E92ACF /* ManageFileView.swift in Sources */,
+				1517A9B42C4050D500CB8EBF /* GDriveSubmittedViewModel.swift in Sources */,
 				E1E7C57D2AAB553500DDB07E /* UwaziProperty.swift in Sources */,
 				12F2C65C2B86567F008457EB /* FileDetailsViewModel.swift in Sources */,
 				1237A71A278F18C000D7BC0F /* WebView.swift in Sources */,
