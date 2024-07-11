@@ -9,13 +9,15 @@ import Foundation
 import NextcloudKit
 import Combine
 
-protocol NextCloudRepositoryProtocol {
+protocol NextcloudRepositoryProtocol {
     func login(serverUrl: String, username: String, password: String) async throws
     func checkServer(serverUrl: String) async throws
     func createFolder(serverUrl: String, folderName: String) async throws
+    func createDriveFolder(folderName: String, parentId: String?, description: String?)  
+    func uploadFile(fileURL: URL, mimeType: String, folderId: String)
 }
 
-class NextCloudRepository: NextCloudRepositoryProtocol {
+class NextcloudRepository: NextcloudRepositoryProtocol {
     
     private let kRemotePhpFiles = "remote.php/dav/files/"
     private var userId = ""
@@ -76,6 +78,14 @@ class NextCloudRepository: NextCloudRepositoryProtocol {
                 }
             }
         }
+    }
+    
+    
+    func createDriveFolder(folderName: String, parentId: String?, description: String?)   {
+     }
+    
+    func uploadFile(fileURL: URL, mimeType: String, folderId: String)  {
+         
     }
     
 }

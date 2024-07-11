@@ -80,7 +80,7 @@ struct ConnectionsView: View {
         ReportMainView(reportMainViewModel: NextcloudReportViewModel(mainAppModel: appModel,
                                                                    connectionType: .nextcloud,
                                                                    title: LocalizableNextcloud.nextcloudAppBar.localized),
-                       diContainer: GDriveDIContainer())
+                       diContainer: NextcloudDIContainer())
     }
 }
 

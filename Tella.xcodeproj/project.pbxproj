@@ -204,6 +204,10 @@
 		126E1AFD2C3D8426000AE4CE /* WebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AFB2C3D8426000AE4CE /* WebServer.swift */; };
 		126E1AFE2C3D8426000AE4CE /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AFC2C3D8426000AE4CE /* Server.swift */; };
 		126E1AFF2C3D8462000AE4CE /* CreateNextcloudFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4DA882C380F7400123843 /* CreateNextcloudFolderView.swift */; };
+		126E1B012C3D913D000AE4CE /* NextcloudReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1B002C3D913D000AE4CE /* NextcloudReport.swift */; };
+		126E1B042C3D9A9B000AE4CE /* NextcloudData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1B032C3D9A9B000AE4CE /* NextcloudData.swift */; };
+		126E1B072C3EB28D000AE4CE /* NextcloudDraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1B062C3EB28D000AE4CE /* NextcloudDraftView.swift */; };
+		126E1B092C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1B082C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift */; };
 		126E813B272CAFA300688B64 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */; };
 		126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ECFE927C57FA600ED5161 /* CameraState.swift */; };
 		126FE4D727A427E200AE4188 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FE4D627A427E200AE4188 /* Constants.swift */; };
@@ -408,7 +412,7 @@
 		1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
 		2048DADF2C340FF6000B3D9F /* NextcloudServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048DADE2C340FF6000B3D9F /* NextcloudServerLoginView.swift */; };
-		204E7C3C2C241376004CC49F /* NextCloudRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204E7C3B2C241376004CC49F /* NextCloudRepository.swift */; };
+		204E7C3C2C241376004CC49F /* NextcloudRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204E7C3B2C241376004CC49F /* NextcloudRepository.swift */; };
 		207115A82C21DE050065E70E /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 207115A72C21DE050065E70E /* NextcloudKit */; };
 		208A06532BF6057A004BA033 /* EditImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06522BF6057A004BA033 /* EditImageViewModel.swift */; };
 		208A06552BF607BF004BA033 /* ImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06542BF607BF004BA033 /* ImageCropper.swift */; };
@@ -787,6 +791,10 @@
 		126E1AF22C3D7632000AE4CE /* GDriveReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveReport.swift; sourceTree = "<group>"; };
 		126E1AFB2C3D8426000AE4CE /* WebServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebServer.swift; sourceTree = "<group>"; };
 		126E1AFC2C3D8426000AE4CE /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
+		126E1B002C3D913D000AE4CE /* NextcloudReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudReport.swift; sourceTree = "<group>"; };
+		126E1B032C3D9A9B000AE4CE /* NextcloudData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudData.swift; sourceTree = "<group>"; };
+		126E1B062C3EB28D000AE4CE /* NextcloudDraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudDraftView.swift; sourceTree = "<group>"; };
+		126E1B082C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudDraftViewModel.swift; sourceTree = "<group>"; };
 		126E813A272CAFA300688B64 /* UINavigationControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtension.swift; sourceTree = "<group>"; };
 		126ECFE927C57FA600ED5161 /* CameraState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraState.swift; sourceTree = "<group>"; };
 		126FE4D627A427E200AE4188 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -994,7 +1002,7 @@
 		1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheet.swift; sourceTree = "<group>"; };
 		1EAE6BF424146C2100114244 /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
 		2048DADE2C340FF6000B3D9F /* NextcloudServerLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudServerLoginView.swift; sourceTree = "<group>"; };
-		204E7C3B2C241376004CC49F /* NextCloudRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextCloudRepository.swift; sourceTree = "<group>"; };
+		204E7C3B2C241376004CC49F /* NextcloudRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudRepository.swift; sourceTree = "<group>"; };
 		208A06522BF6057A004BA033 /* EditImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageViewModel.swift; sourceTree = "<group>"; };
 		208A06542BF607BF004BA033 /* ImageCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropper.swift; sourceTree = "<group>"; };
 		20985A5C2BE158020092CCC2 /* EditImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageView.swift; sourceTree = "<group>"; };
@@ -1296,7 +1304,7 @@
 				E1CF5A2A2AB3533100365036 /* ServerDatabase.swift */,
 				155369222B7E9CC100129F2F /* ResourceDatabase.swift */,
 				155879FE2C0106FA0071389E /* GDriveDatabase.swift */,
-				127092D32C2D8BA5002030AA /* NextcloudDatabase.swift */,
+				126E1B022C3D9A85000AE4CE /* Nextcloud */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -1797,6 +1805,23 @@
 			path = CommonServer;
 			sourceTree = "<group>";
 		};
+		126E1B022C3D9A85000AE4CE /* Nextcloud */ = {
+			isa = PBXGroup;
+			children = (
+				127092D32C2D8BA5002030AA /* NextcloudDatabase.swift */,
+				126E1B032C3D9A9B000AE4CE /* NextcloudData.swift */,
+			);
+			path = Nextcloud;
+			sourceTree = "<group>";
+		};
+		126E1B052C3EB26F000AE4CE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				126E1B062C3EB28D000AE4CE /* NextcloudDraftView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		126FEE082AC4992800B99298 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -1809,6 +1834,7 @@
 			isa = PBXGroup;
 			children = (
 				127092D62C2DD1A1002030AA /* NextcloudServer.swift */,
+				126E1B002C3D913D000AE4CE /* NextcloudReport.swift */,
 			);
 			path = Nextcloud;
 			sourceTree = "<group>";
@@ -2247,23 +2273,17 @@
 		12B84B8C2C333DD0006363F0 /* Nextcloud */ = {
 			isa = PBXGroup;
 			children = (
+				126E1B052C3EB26F000AE4CE /* Views */,
 				12B84B922C333F86006363F0 /* ViewModels */,
-				12B84B8D2C333DD0006363F0 /* Views */,
 			);
 			path = Nextcloud;
-			sourceTree = "<group>";
-		};
-		12B84B8D2C333DD0006363F0 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		12B84B922C333F86006363F0 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 				12B84B952C340025006363F0 /* NextcloudReportViewModel.swift */,
+				126E1B082C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -2323,7 +2343,7 @@
 				1293F6742AD8853500F6CFBD /* FeedbackRepository.swift */,
 				15FABA352B73F96800B2EFEE /* ResourceRepository.swift */,
 				155541B12C0672C20031D3A5 /* GDriveRepository.swift */,
-				204E7C3B2C241376004CC49F /* NextCloudRepository.swift */,
+				204E7C3B2C241376004CC49F /* NextcloudRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -3644,11 +3664,13 @@
 				0DA213CB268028A200526995 /* FileSortOptions.swift in Sources */,
 				CCEAE5922AE6F6EE0069204A /* EntityCreationResponse.swift in Sources */,
 				1289B98927C53A9C00315FCE /* CameraType.swift in Sources */,
+				126E1B042C3D9A9B000AE4CE /* NextcloudData.swift in Sources */,
 				0E78B3A72656B03600F9BDBC /* DragView.swift in Sources */,
 				126E1AF32C3D7632000AE4CE /* GDriveReport.swift in Sources */,
 				1231A45E294C779D0057DA85 /* ReportStatus.swift in Sources */,
 				15F64CA82B6D852D008A57AA /* ResourceCard.swift in Sources */,
 				E16D20D12ABEB5C7001708CC /* UwaziCardViewModel.swift in Sources */,
+				126E1B092C3EB3DE000AE4CE /* NextcloudDraftViewModel.swift in Sources */,
 				12607D562790416400E2B8CC /* PlayerViewModel.swift in Sources */,
 				128B929B27D798E200E92ACF /* ManageFileView.swift in Sources */,
 				E1E7C57D2AAB553500DDB07E /* UwaziProperty.swift in Sources */,
@@ -3712,6 +3734,7 @@
 				1216123C28DE13AC00E6D7B6 /* DatabaseUtilities.swift in Sources */,
 				CCC1B4392AC75B8D0075B819 /* UwaziEntityParser.swift in Sources */,
 				128BEB222B1E4B7600420923 /* OfflineFeedbackToast.swift in Sources */,
+				126E1B072C3EB28D000AE4CE /* NextcloudDraftView.swift in Sources */,
 				12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */,
 				209AC6932C332F6000492356 /* PHAssetExtension.swift in Sources */,
 				128C7BC42745AB0100A680B3 /* FileListViewModel.swift in Sources */,
@@ -3750,6 +3773,7 @@
 				12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */,
 				129B845328BFB7AC00F1B344 /* AddServerAccessChoiceView.swift in Sources */,
 				1293F6772AD88A0400F6CFBD /* FeedbackDTO.swift in Sources */,
+				126E1B012C3D913D000AE4CE /* NextcloudReport.swift in Sources */,
 				12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */,
 				128B929D27D7A08700E92ACF /* FileItemsView.swift in Sources */,
 				1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */,
@@ -3785,7 +3809,7 @@
 				1252F7072BDAB2000076DF4B /* EntityAttachment.swift in Sources */,
 				209AC67D2C2D65EB00492356 /* NextcloudAddServerURLView.swift in Sources */,
 				E17736402A83FFA200FE01C0 /* UwaziDictionaryDTO.swift in Sources */,
-				204E7C3C2C241376004CC49F /* NextCloudRepository.swift in Sources */,
+				204E7C3C2C241376004CC49F /* NextcloudRepository.swift in Sources */,
 				E11968B12A1F409D00BA7B56 /* UwaziLanguageDTO.swift in Sources */,
 				12607D5327903E9E00E2B8CC /* CustomVideoControlsView.swift in Sources */,
 				1216F8742901823100F5AEA5 /* UnderlinedTextEditorView.swift in Sources */,

@@ -22,5 +22,5 @@ struct CreateNextcloudFolderView: View {
 }
 
 #Preview {
-    CreateNextcloudFolderView(nextcloudVM: NextcloudServerViewModel(nextcloudRepository: NextCloudRepository(), mainAppModel: MainAppModel.stub()))
+    CreateNextcloudFolderView(nextcloudVM: NextcloudServerViewModel(nextcloudRepository: NextcloudRepository(), mainAppModel: MainAppModel.stub()))
 }

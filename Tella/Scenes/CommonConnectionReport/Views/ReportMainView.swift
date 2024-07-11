@@ -165,9 +165,10 @@ struct ReportMainView: View {
             self.navigateTo(destination: destination)
         case .nextcloud:
             var destination : any View
-            destination = GDriveDraftView(mainAppModel: mainAppModel, 
-                                          gDriveDIContainer: (diContainer as! GDriveDIContainer),
-                                          reportId: id)
+            destination = NextcloudDraftView(mainAppModel: mainAppModel,
+                                             nextcloudDIContainer: (diContainer as! NextcloudDIContainer), 
+                                             reportsViewModel: reportMainViewModel,
+                                             reportId: id)
             self.navigateTo(destination: destination)
         default:
             break

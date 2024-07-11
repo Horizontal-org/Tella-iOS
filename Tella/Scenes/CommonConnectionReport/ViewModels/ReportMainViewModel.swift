@@ -62,4 +62,10 @@ class ReportMainViewModel: ObservableObject {
     }
 }
 
-
+extension ReportMainViewModel {
+    static func stub() -> ReportMainViewModel {
+        return ReportMainViewModel(mainAppModel: MainAppModel.stub(),
+                                   connectionType: ServerConnectionType.nextcloud,
+                                   title: "Nextcloud")
+    }
+}

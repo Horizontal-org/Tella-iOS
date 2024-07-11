@@ -7,13 +7,13 @@
 
 class NextcloudServerViewModel: ServerViewModel {
     
-    private var nextcloudRepository: NextCloudRepository
+    private var nextcloudRepository: NextcloudRepository
     private var mainAppModel: MainAppModel
     var currentServer: NextcloudServer?
     
     var serverCreateFolderVM: ServerCreateFolderViewModel
 
-    init(nextcloudRepository: NextCloudRepository = NextCloudRepository(),
+    init(nextcloudRepository: NextcloudRepository = NextcloudRepository(),
          mainAppModel: MainAppModel,
          currentServer: NextcloudServer? = nil) {
 
@@ -47,6 +47,7 @@ class NextcloudServerViewModel: ServerViewModel {
         Task { @MainActor in
             do {
                 try await nextcloudRepository.login(serverUrl: serverURL, username: username, password: password)
+                addServer()
                 loginState = .loaded(true)
             }
             catch let error{

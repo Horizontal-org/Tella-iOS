@@ -24,6 +24,7 @@ class TellaData : ObservableObject {
     var shouldReloadUwaziTemplates = CurrentValueSubject<Bool, Never>(false)
 
     var shouldReloadGDriveReports = CurrentValueSubject<Bool, Never>(false)
+    var shouldReloadNextcloudReports = CurrentValueSubject<Bool, Never>(false)
 
     init(database : TellaDataBase, vaultManager: VaultManagerInterface? = nil) throws {
         self.database = database

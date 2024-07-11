@@ -35,9 +35,11 @@ struct D {
     static let tFeedback = "t_feedback"
     static let tResource = "t_resource"
     static let tGDriveServer = "t_drive_server"
-    static let tNextcloudServer = "t_nextcloud_server"
     static let tGDriveReport = "t_drive_report_table"
     static let tGDriveInstanceVaultFile = "t_drive_instance_vault_file"
+    static let tNextcloudServer = "t_nextcloud_server"
+    static let tNextcloudReport = "t_nextcloud_report"
+    static let tNextcloudInstanceVaultFile = "t_nextcloud_instance_vault_file"
 
     /* DATABASE COLUMNS */
     // MARK: - DATABASE COLUMNS

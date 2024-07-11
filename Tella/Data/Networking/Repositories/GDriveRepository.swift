@@ -240,6 +240,15 @@ class GDriveDIContainer : DIContainer {
     }
 }
 
+class NextcloudDIContainer : DIContainer {
+    
+    let nextcloudRepository: NextcloudRepositoryProtocol
+    
+    init(nextcloudRepository: NextcloudRepositoryProtocol = NextcloudRepository()) {
+        self.nextcloudRepository = nextcloudRepository
+    }
+}
+
 class DIContainer {
     
 }

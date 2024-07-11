@@ -46,7 +46,7 @@ extension ServerConnectionType {
         case.tella:
             return "reports.report"
         case .nextcloud:
-            return "home.nextcloud"
+            return "nextcloud.empty"
         }
     }
 }
