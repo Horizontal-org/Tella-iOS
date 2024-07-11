@@ -175,9 +175,18 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
     }
     
     private var submittedDetailsView: some View {
-        SubmittedDetailsView(appModel: mainAppModel,
-                             reportId: outboxReportVM.reportViewModel.id)
-        .environmentObject(reportsViewModel)
+        Group {
+            switch reportsViewModel.connectionType {
+            case .tella:
+                let vm = SubmittedReportVM(mainAppModel: mainAppModel, shouldStartUpload: true, reportId: outboxReportVM.reportViewModel.id)
+                SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportsViewModel)
+            case .gDrive:
+                let vm = GDriveSubmittedViewModel(mainAppModel: mainAppModel, shouldStartUpload: true, reportId: outboxReportVM.reportViewModel.id)
+                SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportsViewModel)
+            default:
+                Text("")
+            }
+        }
     }
     
     private func dismissView() {

@@ -138,18 +138,6 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
         }
     }
     
-    override func showSubmittedReport() {
-        DispatchQueue.main.async {
-            self.shouldShowSubmittedReportView = true
-        }
-    }
-    
-    override func showMainView() {
-        DispatchQueue.main.async {
-            self.shouldShowMainView = true
-        }
-    }
-    
     override func updateProgressInfos(uploadProgressInfo : UploadProgressInfo) {
         
         _ = self.reportViewModel.files.compactMap { _ in
