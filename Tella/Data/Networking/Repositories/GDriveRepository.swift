@@ -211,28 +211,10 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 let query = GTLRDriveQuery_FilesCreate.query(withObject: file, uploadParameters: uploadParameters)
                 query.supportsAllDrives = true
                 
-                let totalSize = UInt64((try? Data(contentsOf: fileURL).count) ?? 0)
-                var totalBytesSent: UInt64 = 0
+                let totalSize = UInt64((try? fileURL.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0)
                 let uploadProgressInfo = UploadProgressInfo(fileId: fileId, status: .notSubmitted, total: Int(totalSize))
                 
-                let timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
-                    if totalBytesSent < totalSize {
-                        totalBytesSent += UInt64(1024 * 1024) // Simulate progress in bytes (1 MB chunks)
-                        totalBytesSent = min(totalBytesSent, totalSize)
-                        let progress = Double(totalBytesSent) / Double(totalSize)
-                        uploadProgressInfo.bytesSent = Int(totalBytesSent)
-                        uploadProgressInfo.current = Int(totalBytesSent)
-                        uploadProgressInfo.status = .partialSubmitted
-                        uploadProgressInfo.reportStatus = .submissionInProgress
-                        progressSubject.send(uploadProgressInfo)
-                    } else {
-                        timer.invalidate()
-                    }
-                }
-                
-                driveService.executeQuery(query) { (ticket, file, error) in
-                    timer.invalidate()
-                    
+                let ticket = driveService.executeQuery(query) { (ticket, file, error) in
                     if let error = error {
                         print("Error uploading file: \(error.localizedDescription)")
                         uploadProgressInfo.error = APIError.unexpectedResponse
@@ -251,13 +233,20 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                         return
                     }
                     
-                    totalBytesSent = totalSize
-                    uploadProgressInfo.bytesSent = Int(totalBytesSent)
-                    uploadProgressInfo.current = Int(totalBytesSent)
+                    uploadProgressInfo.bytesSent = Int(totalSize)
+                    uploadProgressInfo.current = Int(totalSize)
                     uploadProgressInfo.status = .uploaded
                     progressSubject.send(uploadProgressInfo)
                     progressSubject.send(completion: .finished)
                     promise(.success(uploadProgressInfo))
+                }
+                
+                ticket.objectFetcher?.sendProgressBlock = { bytesSent, totalBytesSent, totalBytesExpectedToSend in
+                    uploadProgressInfo.bytesSent = Int(totalBytesSent)
+                    uploadProgressInfo.current = Int(totalBytesSent)
+                    uploadProgressInfo.status = .partialSubmitted
+                    uploadProgressInfo.reportStatus = .submissionInProgress
+                    progressSubject.send(uploadProgressInfo)
                 }
             }
         }
