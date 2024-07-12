@@ -30,12 +30,6 @@ class DraftReportVM: DraftMainViewModel<TellaServer> {
         serverArray = mainAppModel.tellaData?.tellaServers.value ?? []
     }
     
-    override func initcurrentReportVM(reportId:Int?) {
-        if serverArray.count == 1 {
-            server = serverArray.first
-        }
-        self.reportId = reportId
-    }
     
     override func bindVaultFileTaken() {
         $resultFile.sink(receiveValue: { value in
@@ -72,25 +66,7 @@ class DraftReportVM: DraftMainViewModel<TellaServer> {
             self.objectWillChange.send()
         }
     }
-    
-    override func saveDraftReport()  {
-        self.status = .draft
-        self.saveReport()
-    }
-    
-    override func saveFinalizedReport()  {
-        self.status = .finalized
-        self.saveReport()
-    }
-    
-    override func saveReportForSubmission()  {
-        self.status = .submissionScheduled
-        self.saveReport()
-    }
-    
-    override func submitReport() {
-        saveReportForSubmission()
-    }
+
     override func saveReport() {
         
         let report = Report(id: reportId,

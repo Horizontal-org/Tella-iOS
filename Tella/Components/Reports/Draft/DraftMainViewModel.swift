@@ -42,7 +42,7 @@ class DraftMainViewModel<T: ServerProtocol>: ObservableObject {
     var failureSavingReportPublisher: Published<Bool>.Publisher { $failureSavingReport }
     
     var serverArray : [T] = []
-        
+    
     var cancellable : Cancellable? = nil
     var subscribers = Set<AnyCancellable>()
     var delayTime = 2.0
@@ -51,15 +51,15 @@ class DraftMainViewModel<T: ServerProtocol>: ObservableObject {
         guard let serverName = server?.name else { return LocalizableReport.selectProject.localized }
         return serverName
     }
-        
+    
     var hasMoreServer: Bool {
         return serverArray.count > 1
     }
-        
+    
     var isNewDraft: Bool {
         return reportId == nil
     }
-        
+    
     var addFileToDraftItems : [ListActionSheetItem] { return [
         
         ListActionSheetItem(imageName: "report.camera-filled",
@@ -92,28 +92,45 @@ class DraftMainViewModel<T: ServerProtocol>: ObservableObject {
     }
     
     func validateReport() {}
-        
-    func getServers() {}
-        
-    func initcurrentReportVM(reportId:Int?) { }
-        
-    func bindVaultFileTaken() {}
-        
-    func publishUpdates() {}
-        
-    func fillReportVM() {}
-        
-    func saveDraftReport()  {}
-        
-    func saveFinalizedReport()  {}
-        
-    func saveReportForSubmission()  {}
-        
-    func submitReport() {}
     
+    func getServers() {}
+
+    func bindVaultFileTaken() {}
+    
+    func publishUpdates() {}
+    
+    func fillReportVM() {}
+
     func saveReport() {}
-        
+    
     func deleteFile(fileId: String?) {}
-        
+    
     func deleteReport() {}
+    
+    func initcurrentReportVM(reportId:Int?) {
+       if serverArray.count == 1 {
+           server = serverArray.first
+       }
+       self.reportId = reportId
+   }
+
+    func saveDraftReport() {
+        self.status = .draft
+        self.saveReport()
+    }
+    
+    func saveFinalizedReport() {
+        self.status = .finalized
+        self.saveReport()
+    }
+    
+    func saveSubmittedReport() {
+        self.status = .submitted
+        self.saveReport()
+    }
+    func submitReport() {
+        self.status = .submissionScheduled
+        self.saveReport()
+    }
+    
 }
