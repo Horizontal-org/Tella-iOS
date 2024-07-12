@@ -17,7 +17,7 @@ protocol GDriveRepositoryProtocol {
     func handleUrl(url: URL)
     func getSharedDrives() -> AnyPublisher<[SharedDrive], Error>
     func createDriveFolder(folderName: String, parentId: String?, description: String?) -> AnyPublisher<String, Error>
-    func uploadFile(fileURL: URL, mimeType: String, folderId: String) -> AnyPublisher<String, Error>
+    func uploadFile(fileURL: URL, fileId: String, mimeType: String, folderId: String) -> AnyPublisher<UploadProgressInfo, Error>
     func signOut() -> Void
 }
 
@@ -184,13 +184,17 @@ class GDriveRepository: GDriveRepositoryProtocol  {
     
     func uploadFile(
         fileURL: URL,
+        fileId: String,
         mimeType: String,
         folderId: String
-    ) -> AnyPublisher<String, Error> {
-        Deferred {
-            Future { [weak self] promise in
-                guard let user = self?.googleUser else {
-                    return promise(.failure(APIError.noToken))
+    ) -> AnyPublisher<UploadProgressInfo, Error> {
+        let progressSubject = PassthroughSubject<UploadProgressInfo, Error>()
+        
+        return Deferred {
+            Future<UploadProgressInfo, Error> { [weak self] promise in
+                guard let self = self, let user = self.googleUser else {
+                    promise(.failure(APIError.noToken))
+                    return
                 }
                 
                 let driveService = GTLRDriveService()
@@ -207,22 +211,57 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 let query = GTLRDriveQuery_FilesCreate.query(withObject: file, uploadParameters: uploadParameters)
                 query.supportsAllDrives = true
                 
+                let totalSize = UInt64((try? Data(contentsOf: fileURL).count) ?? 0)
+                var totalBytesSent: UInt64 = 0
+                let uploadProgressInfo = UploadProgressInfo(fileId: fileId, status: .notSubmitted, total: Int(totalSize))
+                
+                let timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+                    if totalBytesSent < totalSize {
+                        totalBytesSent += UInt64(1024 * 1024) // Simulate progress in bytes (1 MB chunks)
+                        totalBytesSent = min(totalBytesSent, totalSize)
+                        let progress = Double(totalBytesSent) / Double(totalSize)
+                        uploadProgressInfo.bytesSent = Int(totalBytesSent)
+                        uploadProgressInfo.current = Int(totalBytesSent)
+                        uploadProgressInfo.status = .partialSubmitted
+                        uploadProgressInfo.reportStatus = .submissionInProgress
+                        progressSubject.send(uploadProgressInfo)
+                    } else {
+                        timer.invalidate()
+                    }
+                }
+                
                 driveService.executeQuery(query) { (ticket, file, error) in
+                    timer.invalidate()
+                    
                     if let error = error {
                         print("Error uploading file: \(error.localizedDescription)")
+                        uploadProgressInfo.error = APIError.unexpectedResponse
+                        uploadProgressInfo.status = .submissionError
+                        progressSubject.send(completion: .failure(error))
                         promise(.failure(error))
                         return
                     }
                     
                     guard let uploadedFile = file as? GTLRDrive_File else {
-                        promise(.failure(APIError.unexpectedResponse))
+                        let apiError = APIError.unexpectedResponse
+                        uploadProgressInfo.error = apiError
+                        uploadProgressInfo.status = .submissionError
+                        progressSubject.send(completion: .failure(apiError))
+                        promise(.failure(apiError))
                         return
                     }
                     
-                    promise(.success(uploadedFile.identifier ?? ""))
+                    totalBytesSent = totalSize
+                    uploadProgressInfo.bytesSent = Int(totalBytesSent)
+                    uploadProgressInfo.current = Int(totalBytesSent)
+                    uploadProgressInfo.status = .uploaded
+                    progressSubject.send(uploadProgressInfo)
+                    progressSubject.send(completion: .finished)
+                    promise(.success(uploadProgressInfo))
                 }
             }
-        }.eraseToAnyPublisher()
+        }
+        .eraseToAnyPublisher()
     }
     
     func signOut() {
@@ -242,4 +281,10 @@ class GDriveDIContainer : DIContainer {
 
 class DIContainer {
     
+}
+
+
+struct UploadProgressWithFolderId {
+    let folderId: String
+    let progressInfo: UploadProgressInfo
 }
