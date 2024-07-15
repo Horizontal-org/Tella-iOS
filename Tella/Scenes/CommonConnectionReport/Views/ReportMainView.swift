@@ -187,6 +187,7 @@ struct ReportMainView: View {
         case .gDrive:
             let outboxViewModel = GDriveOutboxViewModel(mainAppModel: mainAppModel, reportsViewModel: reportMainViewModel, reportId: id, repository: GDriveRepository())
             let destination = OutboxDetailsView(outboxReportVM: outboxViewModel)
+                .environmentObject(reportMainViewModel)
             self.navigateTo(destination: destination)
         default:
             break

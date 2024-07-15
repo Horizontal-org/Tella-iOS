@@ -27,8 +27,6 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         
         if shouldStartUpload {
             self.submitReport()
-        } else {
-            // treat
         }
     }
     
@@ -68,7 +66,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
             description: reportViewModel.description
         )
         .receive(on: DispatchQueue.main)
-        .flatMap { folderId in
+        .flatMap { folderId -> AnyPublisher<UploadProgressWithFolderId, Error> in
             self.uploadFiles(to: folderId)
         }
         .sink(
@@ -82,24 +80,61 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
                     debugLog(error)
                 }
             },
-            receiveValue: { result in
-                dump(result)
+            receiveValue: { uploadProgressWithFolderId in
+                self.updateProgressInfos(uploadProgressInfo: uploadProgressWithFolderId.progressInfo)
             }
         ).store(in: &subscribers)
     }
     
-    private func uploadFiles(to folderId: String) -> AnyPublisher<Void, Error> {
-        let uploadPublishers = reportViewModel.files.map { file -> AnyPublisher<String, Error> in
+    private func uploadFiles(to folderId: String) -> AnyPublisher<UploadProgressWithFolderId, Error> {
+        let uploadPublishers = reportViewModel.files.map { file -> AnyPublisher<UploadProgressWithFolderId, Error> in
             guard let fileUrl = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file) else {
                 return Fail(error: APIError.unexpectedResponse).eraseToAnyPublisher()
             }
-            return gDriveRepository.uploadFile(fileURL: fileUrl, mimeType: file.mimeType ?? "", folderId: folderId)
+            
+            return gDriveRepository.uploadFile(fileURL: fileUrl, fileId: file.id ?? "", mimeType: file.mimeType ?? "", folderId: folderId)
+                .map { progressInfo in
+                    UploadProgressWithFolderId(folderId: folderId, progressInfo: progressInfo)
+                }
+                .eraseToAnyPublisher()
         }
         
         return Publishers.MergeMany(uploadPublishers)
-            .collect()
-            .map { _ in () }
             .eraseToAnyPublisher()
+    }
+    
+    override func updateProgressInfos(uploadProgressInfo: UploadProgressInfo) {
+        if let currentFile = self.reportViewModel.files.first(where: { $0.id == uploadProgressInfo.fileId }) {
+            currentFile.current = uploadProgressInfo.current ?? 0
+            currentFile.bytesSent = uploadProgressInfo.bytesSent ?? 0
+            currentFile.status = uploadProgressInfo.status
+        }
+        
+        // All Files
+        let totalBytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent) }
+        let totalSize = self.reportViewModel.files.reduce(0) { $0 + ($1.size) }
+        
+        if totalSize > 0 {
+            let percentUploaded = Float(totalBytesSent) / Float(totalSize)
+            let formattedPercentUploaded = percentUploaded >= 1.0 ? 1.0 : percentUploaded
+            let formattedTotalUploaded = totalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
+            let formattedTotalSize = totalSize.getFormattedFileSize()
+            
+            DispatchQueue.main.async {
+                
+                self.percentUploadedInfo = "\(Int(formattedPercentUploaded * 100))% uploaded"
+                self.percentUploaded = formattedPercentUploaded
+                self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
+                
+                if let currentItem = self.progressFileItems.first(where: { $0.file.id == uploadProgressInfo.fileId }) {
+                    let size = currentItem.file.size.getFormattedFileSize()
+                    let currentFileTotalBytesSent = uploadProgressInfo.bytesSent?.getFormattedFileSize().getFileSizeWithoutUnit() ?? "0"
+                    
+                    currentItem.progression = "\(currentFileTotalBytesSent)/\(size)"
+                }
+                self.objectWillChange.send()
+            }
+        }
     }
     
     override func updateReportStatus(reportStatus: ReportStatus) {
