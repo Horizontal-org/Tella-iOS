@@ -13,12 +13,13 @@ class ReportViewModel<T: ServerProtocol> {
     @Published var server : T?
     @Published var status : ReportStatus?
     @Published var apiID : String?
+    @Published var folderId: String?
     
     init() {
         
     }
     
-    init(id: Int?, title: String, description: String, files: [ReportVaultFile], reportFiles : [ReportFile], server: T?, status: ReportStatus?, apiID: String?) {
+    init(id: Int?, title: String, description: String, files: [ReportVaultFile], reportFiles : [ReportFile], server: T?, status: ReportStatus?, apiID: String?, folderId: String? = nil) {
         self.id = id
         self.title = title
         self.description = description
@@ -27,6 +28,7 @@ class ReportViewModel<T: ServerProtocol> {
         self.server = server
         self.status = status
         self.apiID = apiID
+        self.folderId = folderId
     }
 }
 

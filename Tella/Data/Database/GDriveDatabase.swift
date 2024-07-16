@@ -66,6 +66,7 @@ extension TellaDataBase {
             cddl(D.cCreatedDate, D.float),
             cddl(D.cUpdatedDate, D.float),
             cddl(D.cStatus, D.integer),
+            cddl(D.cFolderId, D.text),
             cddl(D.cServerId, D.integer, tableName: D.tGDriveServer, referenceKey: D.cId)
         ]
         
@@ -90,11 +91,12 @@ extension TellaDataBase {
     func addGDriveReport(report: GDriveReport) -> Result<Int, Error> {
         do {
             let reportValuesToAdd = [KeyValue(key: D.cTitle, value: report.title),
-                                                 KeyValue(key: D.cDescription, value: report.description),
-                                                 KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
-                                                 KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()),
-                                                 KeyValue(key: D.cStatus, value: report.status.rawValue),
-                                                 KeyValue(key: D.cServerId, value: report.server?.id)]
+                                     KeyValue(key: D.cDescription, value: report.description),
+                                     KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
+                                     KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()),
+                                     KeyValue(key: D.cStatus, value: report.status.rawValue),
+                                     KeyValue(key: D.cFolderId, value: report.folderId),
+                                     KeyValue(key: D.cServerId, value: report.server?.id)]
             
             let reportId = try statementBuilder.insertInto(tableName: D.tGDriveReport, keyValue: reportValuesToAdd)
             
@@ -125,7 +127,7 @@ extension TellaDataBase {
             let gDriveReportsDict = try statementBuilder.getSelectQuery(tableName: D.tGDriveReport,
                                                                         inCondition: [KeyValues(key:D.cStatus, value: statusArray )]
             )
-                        
+            
             let decodedReports = try gDriveReportsDict.compactMap ({ dict in
                 return try dict.decode(GDriveReport.self)
             })
@@ -231,6 +233,23 @@ extension TellaDataBase {
     func updateDriveReportStatus(idReport: Int, status: ReportStatus) -> Result<Bool, Error> {
         do {
             let valuesToUpdate = [KeyValue(key: D.cStatus, value: status.rawValue),
+                                  KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())
+            ]
+            
+            let reportCondition = [KeyValue(key: D.cId, value: idReport)]
+            
+            try statementBuilder.update(tableName: D.tGDriveReport, valuesToUpdate: valuesToUpdate, equalCondition: reportCondition)
+            
+            return .success(true)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
+    
+    func updateDriveReportFolderId(idReport: Int, folderId: String) -> Result<Bool, Error> {
+        do {
+            let valuesToUpdate = [KeyValue(key: D.cFolderId, value: folderId),
                                   KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())
             ]
             

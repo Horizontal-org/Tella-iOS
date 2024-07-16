@@ -45,18 +45,26 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
             })
             
             self.reportViewModel = ReportViewModel(id: report.id,
-                                                               title: report.title ?? "",
-                                                               description: report.description ?? "",
-                                                               files: files,
-                                                               reportFiles: report.reportFiles ?? [],
-                                                               server: report.server,
-                                                               status: report.status,
-                                                               apiID: nil)
+                                                   title: report.title ?? "",
+                                                   description: report.description ?? "",
+                                                   files: files,
+                                                   reportFiles: report.reportFiles ?? [],
+                                                   server: report.server,
+                                                   status: report.status,
+                                                   apiID: nil,
+                                                   folderId: report.folderId)
         }
     }
     
     override func submitReport() {
-        performSubmission()
+        if isSubmissionInProgress == false {
+            self.updateReportStatus(reportStatus: .submissionInProgress)
+        }
+        guard let folderId = reportViewModel.folderId else {
+            return performSubmission()
+        }
+        
+        let _ = self.uploadFiles(to: folderId)
     }
     
     func performSubmission() {
@@ -67,7 +75,9 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         )
         .receive(on: DispatchQueue.main)
         .flatMap { folderId -> AnyPublisher<UploadProgressWithFolderId, Error> in
-            self.uploadFiles(to: folderId)
+            self.reportViewModel.folderId = folderId
+            self.updateReportFolderId(folderId: folderId)
+            return self.uploadFiles(to: folderId)
         }
         .sink(
             receiveCompletion: { completion in
@@ -137,11 +147,22 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         }
     }
     
+    override func pauseSubmission() {
+        if isSubmissionInProgress {
+            updateReportStatus(reportStatus: .submissionPaused)
+        }
+    }
     override func updateReportStatus(reportStatus: ReportStatus) {
         self.reportViewModel.status = reportStatus
         
         guard let id = reportViewModel.id else { return }
 
         mainAppModel.tellaData?.updateDriveReportStatus(idReport: id, status: reportStatus)
+    }
+    
+    private func updateReportFolderId(folderId: String) {
+        guard let id = reportViewModel.id else { return }
+        
+        mainAppModel.tellaData?.updateDriveFolderId(idReport: id, folderId: folderId)
     }
 }

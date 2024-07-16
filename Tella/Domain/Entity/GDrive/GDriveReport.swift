@@ -11,7 +11,10 @@ import Foundation
 class GDriveReport: BaseReport {
     
     var server: GDriveServer?
-    
+    var folderId: String?
+    enum CodingKeys: String, CodingKey {
+        case folderId = "c_folder_id"
+    }
     init(id: Int? = nil,
          title: String? = nil,
          description: String? = nil,
@@ -19,9 +22,11 @@ class GDriveReport: BaseReport {
          updatedDate: Date? = nil,
          status: ReportStatus,
          server: GDriveServer? = nil,
+         folderId: String? = nil,
          vaultFiles: [ReportFile]? = nil) {
         
         self.server = server
+        self.folderId = folderId
         
         super.init(id: id,
                    title: title,
@@ -34,6 +39,7 @@ class GDriveReport: BaseReport {
     
     required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.folderId = try container.decodeIfPresent(String.self, forKey: .folderId)
         try super.init(from: decoder)
     }
 }
