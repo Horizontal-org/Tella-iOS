@@ -11,6 +11,7 @@ import Combine
 
 class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     private let gDriveRepository: GDriveRepositoryProtocol
+    private var currentUploadCancellables: Set<AnyCancellable> = []
     
     init(mainAppModel: MainAppModel,
          reportsViewModel : ReportMainViewModel,
@@ -60,11 +61,17 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         if isSubmissionInProgress == false {
             self.updateReportStatus(reportStatus: .submissionInProgress)
         }
+        gDriveRepository.resumeAllUploads()
         guard let folderId = reportViewModel.folderId else {
             return performSubmission()
         }
         
-        let _ = self.uploadFiles(to: folderId)
+        uploadFiles(to: folderId)
+            .sink(
+                receiveCompletion: { _ in },
+                receiveValue: { _ in }
+            )
+            .store(in: &currentUploadCancellables)
     }
     
     func performSubmission() {
@@ -97,7 +104,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     }
     
     private func uploadFiles(to folderId: String) -> AnyPublisher<UploadProgressWithFolderId, Error> {
-        let uploadPublishers = reportViewModel.files.map { file -> AnyPublisher<UploadProgressWithFolderId, Error> in
+        let uploadPublishers = reportViewModel.files.filter { $0.status != .uploaded }.map { file -> AnyPublisher<UploadProgressWithFolderId, Error> in
             guard let fileUrl = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file) else {
                 return Fail(error: APIError.unexpectedResponse).eraseToAnyPublisher()
             }
@@ -110,6 +117,18 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         }
         
         return Publishers.MergeMany(uploadPublishers)
+            .receive(on: DispatchQueue.main)
+            .handleEvents(receiveOutput: { [weak self] uploadProgressWithFolderId in
+                self?.updateProgressInfos(uploadProgressInfo: uploadProgressWithFolderId.progressInfo)
+            }, receiveCompletion: { [weak self] completion in
+                switch completion {
+                case .finished:
+                    self?.updateReportStatus(reportStatus: .submitted)
+                    self?.showSubmittedReport()
+                case .failure(let error):
+                    debugLog(error)
+                }
+            })
             .eraseToAnyPublisher()
     }
     
@@ -150,6 +169,8 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     override func pauseSubmission() {
         if isSubmissionInProgress {
             updateReportStatus(reportStatus: .submissionPaused)
+            gDriveRepository.pauseAllUploads()
+            currentUploadCancellables.removeAll()
         }
     }
     override func updateReportStatus(reportStatus: ReportStatus) {
