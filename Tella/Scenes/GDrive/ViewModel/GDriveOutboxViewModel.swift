@@ -13,6 +13,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     private let gDriveRepository: GDriveRepositoryProtocol
     private var currentUploadCancellable: AnyCancellable?
     private var uploadQueue: [ReportVaultFile] = []
+    var server: GDriveServer?
     
     init(mainAppModel: MainAppModel,
          reportsViewModel : ReportMainViewModel,
@@ -23,13 +24,20 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         self.gDriveRepository = repository
         super.init(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: reportId)
         
+        getServer()
         initVaultFile(reportId: reportId)
-        
         initializeProgressionInfos()
         
         if shouldStartUpload {
             self.submitReport()
+        } else {
+            updateReportStatus(reportStatus: .submissionPaused)
         }
+    }
+    
+    private func getServer() {
+        self.server = mainAppModel.tellaData?.gDriveServers.value.first
+        dump(server?.rootFolder)
     }
     
     
@@ -51,7 +59,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
                                                    description: report.description ?? "",
                                                    files: files,
                                                    reportFiles: report.reportFiles ?? [],
-                                                   server: report.server,
+                                                   server: server,
                                                    status: report.status,
                                                    apiID: nil,
                                                    folderId: report.folderId)
@@ -109,6 +117,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     }
     
     func createDriveFolder() {
+        dump(reportViewModel.server?.rootFolder)
         gDriveRepository.createDriveFolder(
             folderName: reportViewModel.title,
             parentId: reportViewModel.server?.rootFolder,
