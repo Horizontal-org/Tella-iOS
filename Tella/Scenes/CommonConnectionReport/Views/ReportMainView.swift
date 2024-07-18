@@ -137,7 +137,13 @@ struct ReportMainView: View {
         case .unknown, .draft:
             showDraftView(id: cardViewModel.id)
             sheetManager.hide()
-        case .finalized:
+        case .finalized,
+              .submissionError,
+              .submissionPending,
+              .submissionPaused,
+              .submissionInProgress,
+              .submissionAutoPaused,
+              .submissionScheduled:
             showOutboxView(id: cardViewModel.id)
             sheetManager.hide()
         case .submitted:
