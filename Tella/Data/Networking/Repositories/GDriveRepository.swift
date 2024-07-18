@@ -268,22 +268,6 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                         promise(.success(uploadProgressInfo))
                     }
                     
-                    ticket.objectFetcher?.sendProgressBlock = { [weak self] bytesSent, totalBytesSent, totalBytesExpectedToSend in
-                        guard let self = self else { return }
-                        
-                        self.uploadLock.lock()
-                        defer { self.uploadLock.unlock() }
-                        
-                        if !self.isUploading {
-                            return
-                        }
-                        
-                        uploadProgressInfo.bytesSent = Int(totalBytesSent)
-                        uploadProgressInfo.current = Int(totalBytesSent)
-                        uploadProgressInfo.status = .partialSubmitted
-                        uploadProgressInfo.reportStatus = .submissionInProgress
-                        promise(.success(uploadProgressInfo))
-                    }
                     
                     self.uploadTasks[fileId] = ticket
                 }
