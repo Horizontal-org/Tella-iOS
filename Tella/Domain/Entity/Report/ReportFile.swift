@@ -72,6 +72,7 @@ class ReportFile : Hashable, Codable {
         let status = try container.decode(Int.self, forKey: .status)
         self.status = FileStatus(rawValue: status) ?? FileStatus.unknown
         
+        self.bytesSent = try container.decode(Int.self, forKey: .bytesSent)
         let createdDate = try container.decode(Double.self, forKey: .createdDate)
         self.createdDate = createdDate.getDate()
         

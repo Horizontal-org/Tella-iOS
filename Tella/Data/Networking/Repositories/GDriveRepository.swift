@@ -195,84 +195,118 @@ class GDriveRepository: GDriveRepositoryProtocol  {
             folderId: String
     ) -> AnyPublisher<UploadProgressInfo, Error> {
         return Deferred {
-            Future<UploadProgressInfo, Error> { [weak self] promise in
-                guard let self = self else {
-                    promise(.failure(APIError.unexpectedResponse))
-                    return
-                }
-                
-                self.uploadQueue.async {
-                    self.uploadLock.lock()
-                    defer { self.uploadLock.unlock() }
-                    
-                    guard self.isUploading else {
-                        promise(.failure(APIError.unexpectedResponse))
-                        return
+            Future { promise in
+                Task {
+                    do {
+                        try await self.ensureSignedIn()
+                        self.performUploadFile(
+                            fileURL: fileURL,
+                            fileId: fileId,
+                            mimeType: mimeType,
+                            folderId: folderId,
+                            promise: promise
+                        )
+                    } catch {
+                        promise(.failure(error))
                     }
-                    
-                    guard let user = self.googleUser else {
-                        promise(.failure(APIError.noToken))
-                        return
-                    }
-                    
-                    let driveService = GTLRDriveService()
-                    driveService.authorizer = user.fetcherAuthorizer
-                    
-                    let file = GTLRDrive_File()
-                    file.name = fileURL.lastPathComponent
-                    file.mimeType = mimeType
-                    file.parents = [folderId]
-                    
-                    let uploadParameters = GTLRUploadParameters(fileURL: fileURL, mimeType: mimeType)
-                    uploadParameters.shouldUploadWithSingleRequest = false
-                    
-                    let query = GTLRDriveQuery_FilesCreate.query(withObject: file, uploadParameters: uploadParameters)
-                    query.supportsAllDrives = true
-                    
-                    let totalSize = UInt64((try? fileURL.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0)
-                    var uploadProgressInfo = UploadProgressInfo(fileId: fileId, status: .notSubmitted, total: Int(totalSize))
-                    
-                    let ticket = driveService.executeQuery(query) { [weak self] (ticket, file, error) in
-                        guard let self = self else { return }
-                        
-                        self.uploadLock.lock()
-                        defer {
-                            self.uploadLock.unlock()
-                            self.uploadTasks.removeValue(forKey: fileId)
-                        }
-                        
-                        if !self.isUploading {
-                            uploadProgressInfo.status = .notSubmitted
-                            promise(.success(uploadProgressInfo))
-                            return
-                        }
-                        
-                        if let error = error {
-                            uploadProgressInfo.error = APIError.unexpectedResponse
-                            uploadProgressInfo.status = .submissionError
-                            promise(.failure(error))
-                            return
-                        }
-                        
-                        guard let uploadedFile = file as? GTLRDrive_File else {
-                            let error = APIError.unexpectedResponse
-                            uploadProgressInfo.error = error
-                            uploadProgressInfo.status = .submissionError
-                            promise(.failure(error))
-                            return
-                        }
-                        
-                        uploadProgressInfo.bytesSent = Int(totalSize)
-                        uploadProgressInfo.current = Int(totalSize)
-                        uploadProgressInfo.status = .uploaded
-                        promise(.success(uploadProgressInfo))
-                    }
-                    
-                    
-                    self.uploadTasks[fileId] = ticket
                 }
             }
         }.eraseToAnyPublisher()
+    }
+    
+    private func performUploadFile(
+            fileURL: URL,
+            fileId: String,
+            mimeType: String,
+            folderId: String,
+            promise: @escaping (Result<UploadProgressInfo, Error>) -> Void
+    ) {
+        self.uploadQueue.async {
+            self.uploadLock.lock()
+            defer { self.uploadLock.unlock() }
+            
+            guard self.isUploading else {
+                promise(.failure(APIError.unexpectedResponse))
+                return
+            }
+            
+            guard let user = self.googleUser else {
+                promise(.failure(APIError.noToken))
+                return
+            }
+            
+            let driveService = GTLRDriveService()
+            driveService.authorizer = user.fetcherAuthorizer
+            
+            let file = GTLRDrive_File()
+            file.name = fileURL.lastPathComponent
+            file.mimeType = mimeType
+            file.parents = [folderId]
+            
+            let uploadParameters = GTLRUploadParameters(fileURL: fileURL, mimeType: mimeType)
+            uploadParameters.shouldUploadWithSingleRequest = false
+            
+            let query = GTLRDriveQuery_FilesCreate.query(withObject: file, uploadParameters: uploadParameters)
+            query.supportsAllDrives = true
+            
+            let totalSize = UInt64((try? fileURL.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0)
+            var uploadProgressInfo = UploadProgressInfo(fileId: fileId, status: .notSubmitted, total: Int(totalSize))
+            
+            let ticket = driveService.executeQuery(query) { [weak self] (ticket, file, error) in
+                guard let self = self else { return }
+                
+                self.uploadLock.lock()
+                defer {
+                    self.uploadLock.unlock()
+                    self.uploadTasks.removeValue(forKey: fileId)
+                }
+                
+                if !self.isUploading {
+                    uploadProgressInfo.status = .notSubmitted
+                    promise(.success(uploadProgressInfo))
+                    return
+                }
+                
+                if let error = error {
+                    uploadProgressInfo.error = APIError.unexpectedResponse
+                    uploadProgressInfo.status = .submissionError
+                    promise(.failure(error))
+                    return
+                }
+                
+                guard let uploadedFile = file as? GTLRDrive_File else {
+                    let error = APIError.unexpectedResponse
+                    uploadProgressInfo.error = error
+                    uploadProgressInfo.status = .submissionError
+                    promise(.failure(error))
+                    return
+                }
+                
+                uploadProgressInfo.bytesSent = Int(totalSize)
+                uploadProgressInfo.current = Int(totalSize)
+                uploadProgressInfo.status = .uploaded
+                promise(.success(uploadProgressInfo))
+            }
+            
+            ticket.objectFetcher?.sendProgressBlock = { [weak self] bytesSent, totalBytesSent, totalBytesExpectedToSend in
+                guard let self = self else { return }
+                
+                self.uploadLock.lock()
+                defer { self.uploadLock.unlock() }
+                
+                if !self.isUploading {
+                    return
+                }
+                
+                uploadProgressInfo.bytesSent = Int(totalBytesSent)
+                uploadProgressInfo.current = Int(totalBytesSent)
+                uploadProgressInfo.status = .partialSubmitted
+                uploadProgressInfo.reportStatus = .submissionInProgress
+                promise(.success(uploadProgressInfo))
+            }
+            
+            self.uploadTasks[fileId] = ticket
+        }
     }
     
     func pauseAllUploads() {

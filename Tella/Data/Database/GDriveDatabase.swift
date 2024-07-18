@@ -202,7 +202,7 @@ extension TellaDataBase {
                         KeyValue(key: D.cVaultFileInstanceId, value: reportFile.fileId),
                         KeyValue(key: D.cStatus, value: reportFile.status?.rawValue),
                         KeyValue(key: D.cBytesSent, value: reportFile.bytesSent),
-                        KeyValue(key: D.cCreatedDate, value: reportFile.createdDate),
+                        KeyValue(key: D.cCreatedDate, value: reportFile.createdDate?.getDateDouble()),
                         KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()),
                     ]
                     
