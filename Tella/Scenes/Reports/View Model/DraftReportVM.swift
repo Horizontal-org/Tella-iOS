@@ -80,8 +80,6 @@ class DraftReportVM: DraftMainViewModel<TellaServer> {
                                                                           createdDate: Date())},
                             apiID: apiID)
         
-        dump(report)
-        
         !isNewDraft ? updateReport(report: report) : addReport(report: report)
     }
     

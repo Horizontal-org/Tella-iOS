@@ -66,7 +66,6 @@ class GDriveDraftViewModel: DraftMainViewModel<GDriveServer> {
         
         switch idResult {
         case .success(let id ):
-            dump(id)
             self.reportId = id
             self.successSavingReport = true
         default:
