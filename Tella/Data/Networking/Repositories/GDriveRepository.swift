@@ -16,8 +16,8 @@ protocol GDriveRepositoryProtocol {
     func restorePreviousSignIn() async throws
     func handleUrl(url: URL)
     func getSharedDrives() -> AnyPublisher<[SharedDrive], Error>
-    func createDriveFolder(folderName: String, parentId: String?, description: String?) -> AnyPublisher<String, Error>
-    func uploadFile(fileURL: URL, fileId: String, mimeType: String, folderId: String) -> AnyPublisher<UploadProgressInfo, Error>
+    func createDriveFolder(folderName: String, parentId: String?, description: String?) -> AnyPublisher<String, APIError>
+    func uploadFile(fileURL: URL, fileId: String, mimeType: String, folderId: String) -> AnyPublisher<UploadProgressInfo, APIError>
     func pauseAllUploads()
     func resumeAllUploads()
     func signOut() -> Void
@@ -26,10 +26,26 @@ protocol GDriveRepositoryProtocol {
 class GDriveRepository: GDriveRepositoryProtocol  {
     private var googleUser: GIDGoogleUser?
     private var uploadTasks: [String: GTLRServiceTicket] = [:]
-    private let uploadQueue = DispatchQueue(label: "com.tella.gdriveupload", attributes: .concurrent)
     private let uploadLock = NSLock()
     private(set) var isUploading = false
+    private let networkMonitor: NetworkMonitor
+    var subscribers : Set<AnyCancellable> = []
+    private let networkStatusSubject = PassthroughSubject<Bool, Never>()
     
+    init(networkMonitor: NetworkMonitor = .shared) {
+        self.networkMonitor = networkMonitor
+        
+        setupNetworkMonitor()
+    }
+    
+    private func setupNetworkMonitor() {
+        networkMonitor.connectionDidChange.sink(receiveValue: { isConnected in
+            self.networkStatusSubject.send(isConnected)
+            if(!isConnected) {
+                self.pauseAllUploads()
+            }
+        }).store(in: &subscribers)
+    }
     private var rootViewController: UIViewController? {
         return UIApplication.shared.windows.first?.rootViewController
     }
@@ -124,9 +140,13 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         folderName: String,
         parentId: String? = nil,
         description: String?
-    ) -> AnyPublisher<String, Error> {
+    ) -> AnyPublisher<String, APIError> {
         Deferred {
             Future { promise in
+                guard self.networkMonitor.isConnected else {
+                    promise(.failure(.noInternetConnection))
+                    return
+                }
                 Task {
                     do {
                         try await self.ensureSignedIn()
@@ -136,7 +156,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                             description: description,
                             promise: promise)
                     } catch {
-                        promise(.failure(error))
+                        promise(.failure(self.mapToAPIError(error)))
                     }
                 }
             }
@@ -147,7 +167,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         folderName: String,
         parentId: String?,
         description: String?,
-        promise: @escaping (Result<String, Error>) -> Void
+        promise: @escaping (Result<String, APIError>) -> Void
     ) {
         guard let user = googleUser else {
             promise(.failure(APIError.noToken))
@@ -175,7 +195,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         driveService.executeQuery(query) { (ticket, file, error) in
             if let error = error {
                 print("Error creating folder: \(error.localizedDescription)")
-                promise(.failure(error))
+                promise(.failure(self.mapToAPIError(error)))
                 return
             }
 
@@ -193,9 +213,13 @@ class GDriveRepository: GDriveRepositoryProtocol  {
             fileId: String,
             mimeType: String,
             folderId: String
-    ) -> AnyPublisher<UploadProgressInfo, Error> {
+    ) -> AnyPublisher<UploadProgressInfo, APIError> {
         return Deferred {
             Future { promise in
+                guard self.networkMonitor.isConnected else {
+                    promise(.failure(.noInternetConnection))
+                    return
+                }
                 Task {
                     do {
                         try await self.ensureSignedIn()
@@ -206,8 +230,16 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                             folderId: folderId,
                             promise: promise
                         )
+                                            
+                        self.networkStatusSubject
+                            .filter { !$0 }
+                            .first()
+                            .sink { _ in
+                                promise(.failure(.noInternetConnection))
+                            }
+                            .store(in: &self.subscribers)
                     } catch {
-                        promise(.failure(error))
+                        promise(.failure(self.mapToAPIError(error)))
                     }
                 }
             }
@@ -219,12 +251,17 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         fileId: String,
         mimeType: String,
         folderId: String,
-        promise: @escaping (Result<UploadProgressInfo, Error>) -> Void
+        promise: @escaping (Result<UploadProgressInfo, APIError>) -> Void
     ) {
         Task {
             do {
                 self.uploadLock.lock()
                 defer { self.uploadLock.unlock() }
+                
+                guard self.networkMonitor.isConnected else {
+                    promise(.failure(.noInternetConnection))
+                    return
+                }
                 
                 guard self.isUploading else {
                     promise(.failure(APIError.unexpectedResponse))
@@ -241,7 +278,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 
                 let fileName = fileURL.lastPathComponent
                 let totalSize = UInt64((try? fileURL.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0)
-                var uploadProgressInfo = UploadProgressInfo(fileId: fileId, status: .notSubmitted, total: Int(totalSize))
+                let uploadProgressInfo = UploadProgressInfo(fileId: fileId, status: .notSubmitted, total: Int(totalSize))
                 
                 let fileExists = try await checkFileExists(fileName: fileName, folderId: folderId, driveService: driveService)
                 
@@ -256,7 +293,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                     self.uploadNewFile(fileURL: fileURL, fileId: fileId, mimeType: mimeType, folderId: folderId, driveService: driveService, uploadProgressInfo: uploadProgressInfo, promise: promise)
                 }
             } catch {
-                promise(.failure(error))
+                promise(.failure(self.mapToAPIError(error)))
             }
         }
     }
@@ -268,7 +305,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         folderId: String,
         driveService: GTLRDriveService,
         uploadProgressInfo: UploadProgressInfo,
-        promise: @escaping (Result<UploadProgressInfo, Error>) -> Void
+        promise: @escaping (Result<UploadProgressInfo, APIError>) -> Void
     ) {
         let file = GTLRDrive_File()
         file.name = fileURL.lastPathComponent
@@ -296,18 +333,13 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 return
             }
             
-            if let error = error {
-                uploadProgressInfo.error = APIError.unexpectedResponse
-                uploadProgressInfo.status = .submissionError
-                promise(.failure(error))
+            if error != nil {
+                handleSubmissionError(uploadProgressInfo: uploadProgressInfo, promise: promise)
                 return
             }
             
-            guard let uploadedFile = file as? GTLRDrive_File else {
-                let error = APIError.unexpectedResponse
-                uploadProgressInfo.error = error
-                uploadProgressInfo.status = .submissionError
-                promise(.failure(error))
+            guard file is GTLRDrive_File else {
+                handleSubmissionError(uploadProgressInfo: uploadProgressInfo, promise: promise)
                 return
             }
             
@@ -359,6 +391,40 @@ class GDriveRepository: GDriveRepositoryProtocol  {
     
     func signOut() {
         GIDSignIn.sharedInstance.signOut()
+    }
+    
+    private func handleSubmissionError(uploadProgressInfo: UploadProgressInfo, promise: @escaping (Result<UploadProgressInfo, APIError>) -> Void) {
+        uploadProgressInfo.status = .submissionError
+        if !networkMonitor.isConnected {
+            uploadProgressInfo.error = APIError.noInternetConnection
+            promise(.failure(.noInternetConnection))
+            return
+        }
+        uploadProgressInfo.error = APIError.unexpectedResponse
+        promise(.failure(.unexpectedResponse))
+    }
+    
+    private func mapToAPIError(_ error: Error) -> APIError {
+        if let apiError = error as? APIError {
+            return apiError
+        }
+        
+        // Map other error types to APIError
+        if let nsError = error as NSError? {
+            switch nsError.code {
+            case NSURLErrorNotConnectedToInternet,
+                 NSURLErrorNetworkConnectionLost,
+                 NSURLErrorCannotConnectToHost,
+                 NSURLErrorCannotFindHost:
+                return .noInternetConnection
+            case NSURLErrorTimedOut:
+                return networkMonitor.isConnected ? .unexpectedResponse : .noInternetConnection
+            default:
+                return .unexpectedResponse
+            }
+        }
+        
+        return .unexpectedResponse
     }
 }
 
