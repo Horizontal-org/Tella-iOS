@@ -123,18 +123,30 @@ extension TellaDataBase {
                 equalCondition: reportCondition
             )
             
-            if let files = report.reportFiles {
-                let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: report.id)]
-                
-                try statementBuilder.delete(tableName: D.tGDriveInstanceVaultFile, primarykeyValue: reportFilesCondition)
-                
-                try files.forEach( { reportFiles in
-                    let reportFilesDict = reportFiles.dictionary
-                    let reportFilesValuesToAdd = reportFilesDict.compactMap({ KeyValue( key: $0.key, value: $0.value) })
-                    
-                    try statementBuilder.insertInto(tableName: D.tGDriveInstanceVaultFile, keyValue: reportFilesValuesToAdd)
-                })
+            if let files = report.reportFiles, let reportId = report.id {
+                let _ = try updateDriveReportFiles(files: files, reportId: reportId)
             }
+            return .success(true)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
+    
+    func updateDriveReportFiles(files: [ReportFile], reportId: Int) -> Result<Bool, Error> {
+        dump("update")
+        do {
+            let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: reportId)]
+            
+            try statementBuilder.delete(tableName: D.tGDriveInstanceVaultFile, primarykeyValue: reportFilesCondition)
+            
+            try files.forEach( { reportFiles in
+                let reportFilesDict = reportFiles.dictionary
+                let reportFilesValuesToAdd = reportFilesDict.compactMap({ KeyValue( key: $0.key, value: $0.value) })
+                
+                try statementBuilder.insertInto(tableName: D.tGDriveInstanceVaultFile, keyValue: reportFilesValuesToAdd)
+            })
+            
             return .success(true)
         } catch let error {
             debugLog(error)

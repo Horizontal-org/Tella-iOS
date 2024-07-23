@@ -50,16 +50,23 @@ extension TellaData {
     }
     
     @discardableResult
-    func updateDriveReportStatus(idReport: Int, status: ReportStatus) -> Result<Bool, Error> {
+    func updateDriveReportStatus(reportId: Int, status: ReportStatus) -> Result<Bool, Error> {
         shouldReloadGDriveReports.send(true)
         
-        return self.database.updateDriveReportStatus(idReport: idReport, status: status)
+        return self.database.updateDriveReportStatus(idReport: reportId, status: status)
     }
     
     @discardableResult
-    func updateDriveFolderId(idReport: Int, folderId: String) -> Result<Bool, Error> {
+    func updateDriveFolderId(reportId: Int, folderId: String) -> Result<Bool, Error> {
         shouldReloadGDriveReports.send(true)
         
-        return self.database.updateDriveReportFolderId(idReport: idReport, folderId: folderId)
+        return self.database.updateDriveReportFolderId(idReport: reportId, folderId: folderId)
+    }
+    
+    @discardableResult
+    func updateDriveFiles(reportId: Int, files: [ReportFile]) -> Result<Bool, Error> {
+        shouldReloadGDriveReports.send(true)
+        
+        return self.database.updateDriveReportFiles(files: files, reportId: reportId)
     }
 }
