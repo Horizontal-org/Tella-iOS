@@ -13,6 +13,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     private let gDriveRepository: GDriveRepositoryProtocol
     private var currentUploadCancellable: AnyCancellable?
     private var uploadQueue: [ReportVaultFile] = []
+    var server: GDriveServer?
     
     init(mainAppModel: MainAppModel,
          reportsViewModel : ReportMainViewModel,
@@ -23,13 +24,20 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         self.gDriveRepository = repository
         super.init(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: reportId)
         
+        getServer()
         initVaultFile(reportId: reportId)
-        
         initializeProgressionInfos()
         
         if shouldStartUpload {
             self.submitReport()
+        } else {
+            updateReportStatus(reportStatus: .submissionPaused)
         }
+    }
+    
+    private func getServer() {
+        self.server = mainAppModel.tellaData?.gDriveServers.value.first
+        dump(server?.rootFolder)
     }
     
     
@@ -51,7 +59,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
                                                    description: report.description ?? "",
                                                    files: files,
                                                    reportFiles: report.reportFiles ?? [],
-                                                   server: report.server,
+                                                   server: server,
                                                    status: report.status,
                                                    apiID: nil,
                                                    folderId: report.folderId)
@@ -109,6 +117,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     }
     
     func createDriveFolder() {
+        dump(reportViewModel.server?.rootFolder)
         gDriveRepository.createDriveFolder(
             folderName: reportViewModel.title,
             parentId: reportViewModel.server?.rootFolder,
@@ -117,13 +126,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         .receive(on: DispatchQueue.main)
         .sink(
             receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    debugLog(error)
-                    self.updateReportStatus(reportStatus: .submissionError)
-                }
+                self.handleCompletionForCreateFolder(completion)
             },
             receiveValue: { [weak self] folderId in
                 guard let self = self else { return }
@@ -159,20 +162,40 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
             .sink(
                 receiveCompletion: { [weak self] completion in
                     guard let self = self else { return }
-                    switch completion {
-                    case .finished:
-                        // File upload completed successfully
-                        self.uploadQueue.removeFirst()
-                        self.uploadNextFile(folderId: folderId)
-                    case .failure(let error):
-                        debugLog(error)
-                        self.updateReportStatus(reportStatus: .submissionError)
-                    }
+                    handleCompletionForUploadFile(completion, folderId: folderId)
                 },
                 receiveValue: { [weak self] progressInfo in
                     self?.updateProgressInfos(uploadProgressInfo: progressInfo)
                 }
             )
+    }
+    
+    private func handleCompletionForUploadFile(_ completion: Subscribers.Completion<APIError>, folderId: String) {
+        switch completion {
+        case .finished:
+            // File upload completed successfully
+            self.uploadQueue.removeFirst()
+            self.uploadNextFile(folderId: folderId)
+        case .failure( let error):
+            switch error {
+            default:
+                Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+                updateReportStatus(reportStatus: .submissionError)
+            }
+        }
+    }
+    
+    private func handleCompletionForCreateFolder(_ completion: Subscribers.Completion<APIError>) {
+        switch completion {
+        case .finished:
+            break
+        case .failure( let error):
+            switch error {
+            default:
+                Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+                updateReportStatus(reportStatus: .submissionError)
+            }
+        }
     }
     
     override func pauseSubmission() {
