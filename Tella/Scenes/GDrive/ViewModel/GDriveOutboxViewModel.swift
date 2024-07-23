@@ -37,7 +37,6 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     
     private func getServer() {
         self.server = mainAppModel.tellaData?.gDriveServers.value.first
-        dump(server?.rootFolder)
     }
     
     
@@ -117,7 +116,6 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     }
     
     func createDriveFolder() {
-        dump(reportViewModel.server?.rootFolder)
         gDriveRepository.createDriveFolder(
             folderName: reportViewModel.title,
             parentId: reportViewModel.server?.rootFolder,
@@ -232,7 +230,8 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
                     fileId: file.id,
                     status: file.status,
                     bytesSent: file.bytesSent,
-                    createdDate: file.createdDate
+                    createdDate: file.createdDate,
+                    reportInstanceId: reportViewModel.id
                 )
             }
             
@@ -241,6 +240,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
                 title: reportViewModel.title,
                 description: reportViewModel.description,
                 status: reportViewModel.status ?? .submissionInProgress,
+                folderId: reportViewModel.folderId,
                 vaultFiles: reportFiles
             )
             

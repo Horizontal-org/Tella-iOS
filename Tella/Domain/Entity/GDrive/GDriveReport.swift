@@ -37,6 +37,12 @@ class GDriveReport: BaseReport {
                    vaultFiles: vaultFiles)
     }
     
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(folderId, forKey: .folderId)
+    }
+    
     required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.folderId = try container.decodeIfPresent(String.self, forKey: .folderId)

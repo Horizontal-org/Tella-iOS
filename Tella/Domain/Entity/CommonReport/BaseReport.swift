@@ -59,6 +59,17 @@ class BaseReport : Hashable, Codable, BaseReportProtocol {
         
     }
     
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(title, forKey: .title)
+        try container.encode(description, forKey: .description)
+        try container.encode(createdDate?.getDateDouble() ?? Date().getDateDouble(), forKey: .createdDate)
+        try container.encode(updatedDate?.getDateDouble() ?? Date().getDateDouble(), forKey: .updatedDate)
+        try container.encode(status.rawValue, forKey: .status)
+        try container.encode(serverId, forKey: .serverId)
+    }
+    
     static func == (lhs: BaseReport, rhs: BaseReport) -> Bool {
         lhs.id == rhs.id
     }

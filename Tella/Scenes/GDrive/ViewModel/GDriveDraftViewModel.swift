@@ -52,10 +52,12 @@ class GDriveDraftViewModel: DraftMainViewModel<GDriveServer> {
             description: description,
             status: status ?? .unknown,
             server: server,
+            folderId: nil,
             vaultFiles: self.files.compactMap { ReportFile( fileId: $0.id,
                                                             status: .notSubmitted,
                                                             bytesSent: 0,
-                                                            createdDate: Date())}
+                                                            createdDate: Date(),
+                                                            reportInstanceId: reportId)}
         )
         
         reportId == nil ? addReport(report: gDriveReport) : updateReport(report: gDriveReport)
