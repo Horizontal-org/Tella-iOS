@@ -30,7 +30,7 @@ class SubmittedMainViewModel: ObservableObject {
         return !description.isEmpty
     }
     
-    init(mainAppModel: MainAppModel, shouldStartUpload: Bool = false, reportId: Int?) {
+    init(mainAppModel: MainAppModel, reportId: Int?) {
         self.mainAppModel = mainAppModel
         fillReportVM(reportId: reportId)
     }
