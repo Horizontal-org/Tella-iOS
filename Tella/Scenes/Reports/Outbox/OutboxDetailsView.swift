@@ -178,10 +178,10 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
         Group {
             switch reportsViewModel.connectionType {
             case .tella:
-                let vm = SubmittedReportVM(mainAppModel: mainAppModel, shouldStartUpload: true, reportId: outboxReportVM.reportViewModel.id)
+                let vm = SubmittedReportVM(mainAppModel: mainAppModel, reportId: outboxReportVM.reportViewModel.id)
                 SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportsViewModel)
             case .gDrive:
-                let vm = GDriveSubmittedViewModel(mainAppModel: mainAppModel, shouldStartUpload: true, reportId: outboxReportVM.reportViewModel.id)
+                let vm = GDriveSubmittedViewModel(mainAppModel: mainAppModel, reportId: outboxReportVM.reportViewModel.id)
                 SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportsViewModel)
             default:
                 Text("")

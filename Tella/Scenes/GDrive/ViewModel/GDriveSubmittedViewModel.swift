@@ -9,8 +9,8 @@
 import Foundation
 
 class GDriveSubmittedViewModel: SubmittedMainViewModel {
-    override init(mainAppModel: MainAppModel, shouldStartUpload: Bool = false, reportId: Int?) {
-        super.init(mainAppModel: mainAppModel, shouldStartUpload: shouldStartUpload, reportId: reportId)
+    override init(mainAppModel: MainAppModel, reportId: Int?) {
+        super.init(mainAppModel: mainAppModel, reportId: reportId)
         fillReportVM(reportId: reportId)
     }
     
