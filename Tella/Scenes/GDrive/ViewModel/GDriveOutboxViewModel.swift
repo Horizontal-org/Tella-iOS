@@ -37,7 +37,6 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     
     private func getServer() {
         self.server = mainAppModel.tellaData?.gDriveServers.value.first
-        dump(server?.rootFolder)
     }
     
     
@@ -81,7 +80,6 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     }
     
     func createDriveFolder() {
-        dump(reportViewModel.server?.rootFolder)
         gDriveRepository.createDriveFolder(
             folderName: reportViewModel.title,
             parentId: reportViewModel.server?.rootFolder,
@@ -176,16 +174,17 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         
         guard let id = reportViewModel.id else { return }
         
-        mainAppModel.tellaData?.updateDriveReportStatus(idReport: id, status: reportStatus)
+        mainAppModel.tellaData?.updateDriveReportStatus(reportId: id, status: reportStatus)
     }
     
     private func updateReportFolderId(folderId: String) {
         guard let id = reportViewModel.id else { return }
         
-        mainAppModel.tellaData?.updateDriveFolderId(idReport: id, folderId: folderId)
+        mainAppModel.tellaData?.updateDriveFolderId(reportId: id, folderId: folderId)
     }
     
     override func updateFileProgress(progressInfo:UploadProgressInfo) {
+        guard let reportId = reportViewModel.id else { return }
         
         let reportFiles = reportViewModel.files.map { file in
             return ReportFile(
@@ -193,18 +192,11 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
                 fileId: file.id,
                 status: file.status,
                 bytesSent: file.bytesSent,
-                createdDate: file.createdDate
+                createdDate: file.createdDate,
+                reportInstanceId: reportViewModel.id
             )
         }
         
-        let updatedReport = GDriveReport(
-            id: reportViewModel.id,
-            title: reportViewModel.title,
-            description: reportViewModel.description,
-            status: reportViewModel.status ?? .submissionInProgress,
-            vaultFiles: reportFiles
-        )
-        
-        let _ = mainAppModel.tellaData?.updateDriveReport(report: updatedReport)
+        let _ = mainAppModel.tellaData?.updateDriveFiles(reportId: reportId, files: reportFiles)
     }
 }
