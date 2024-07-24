@@ -35,8 +35,9 @@ extension TellaData {
         return self.database.getDriveReports(reportStatus: [ReportStatus.submitted])
     }
     
-    func getDriveReport(id: Int) -> GDriveReport? {
-        self.database.getGDriveReport(id: id)
+    func getDriveReport(id: Int?) -> GDriveReport? {
+        guard let id else { return nil }
+        return self.database.getGDriveReport(id: id)
     }
     
     func updateDriveReport(report: GDriveReport) -> Result<Bool, Error> {

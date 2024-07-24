@@ -165,7 +165,8 @@ class TellaData : ObservableObject {
         return database.getReports(reportStatus: [ReportStatus.submitted])
     }
     
-    func getReport(reportId: Int) -> Report? {
+    func getReport(reportId: Int?) -> Report? {
+        guard let reportId else { return nil }
         return database.getReport(reportId: reportId)
     }
     
