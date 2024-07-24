@@ -196,10 +196,10 @@ struct DraftView<T: ServerProtocol>: View  {
         Group {
             switch reportsViewModel.connectionType {
             case .tella:
-                let outboxVM = OutboxReportVM(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId, shouldStartUpload: true)
+                let outboxVM = OutboxReportVM(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId)
                 OutboxDetailsView(outboxReportVM: outboxVM).environmentObject(reportsViewModel)
             case .gDrive:
-                let outboxVM = GDriveOutboxViewModel(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId, repository: GDriveRepository(), shouldStartUpload: true)
+                let outboxVM = GDriveOutboxViewModel(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId, repository: GDriveRepository())
                 OutboxDetailsView(outboxReportVM: outboxVM).environmentObject(reportsViewModel)
             default:
                 Text("")
