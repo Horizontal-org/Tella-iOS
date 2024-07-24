@@ -52,9 +52,14 @@ class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
     }
     
     
-    init(mainAppModel: MainAppModel, reportsViewModel : ReportMainViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
+    init(mainAppModel: MainAppModel, reportsViewModel : ReportMainViewModel, reportId : Int?) {
         self.mainAppModel = mainAppModel
         self.reportsViewModel = reportsViewModel
+        
+        initVaultFile(reportId: reportId)
+        
+        initializeProgressionInfos()
+
     }
     
     func initVaultFile(reportId: Int?) {}
