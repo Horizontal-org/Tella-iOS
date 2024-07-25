@@ -49,6 +49,7 @@ extension TellaDataBase {
         do {
             try statementBuilder.delete(tableName: D.tGDriveServer,
                                         primarykeyValue: [KeyValue(key: D.cId, value: serverId)])
+            try statementBuilder.deleteAll(tableNames: [D.tGDriveReport, D.tGDriveInstanceVaultFile])
         } catch let error {
             debugLog(error)
         }
