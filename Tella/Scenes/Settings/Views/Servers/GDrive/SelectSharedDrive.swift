@@ -11,6 +11,7 @@ import GoogleAPIClientForREST
 
 struct SelectSharedDrive: View {
     @EnvironmentObject var gDriveServerViewModel: GDriveServerViewModel
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var body: some View {
         ContainerView {
             VStack(alignment: .leading){
@@ -59,7 +60,11 @@ struct SelectSharedDrive: View {
     }
     
     func backButtonAction() -> Void {
-        gDriveServerViewModel.addServer(rootFolder: gDriveServerViewModel.selectedDrive?.id ?? "") {
+        guard let selectedDrive = gDriveServerViewModel.selectedDrive else {
+            presentationMode.wrappedValue.dismiss()
+            return
+        }
+        gDriveServerViewModel.addServer(rootFolder: selectedDrive.id) {
             navigateTo(destination: SuccessLoginView(navigateToAction: {self.popToRoot()}, type: .gDrive))
         }
     }

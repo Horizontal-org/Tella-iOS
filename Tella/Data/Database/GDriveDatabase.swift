@@ -134,7 +134,6 @@ extension TellaDataBase {
     }
     
     func updateDriveReportFiles(files: [ReportFile], reportId: Int) -> Result<Bool, Error> {
-        dump("update")
         do {
             let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: reportId)]
             

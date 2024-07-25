@@ -22,8 +22,6 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         
         self.gDriveRepository = repository
         super.init(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: reportId)
-        
-        getServer()
 
         if reportViewModel.status == .submissionScheduled {
             self.submitReport()
@@ -34,8 +32,9 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         self.server = mainAppModel.tellaData?.gDriveServers.value.first
     }
     
-    
     override func initVaultFile(reportId: Int?) {
+        getServer()
+        
         if let reportId, let report = self.mainAppModel.tellaData?.getDriveReport(id: reportId) {
             let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
             
