@@ -70,7 +70,7 @@ struct CommonItemView: View {
                     }
                     
                     ConnectionCardDetails(title: cardViewModel.title,
-                                          subtitle: cardViewModel.serverName)
+                                          subtitle: cardViewModel.subtitle)
                     
                     Spacer()
                     

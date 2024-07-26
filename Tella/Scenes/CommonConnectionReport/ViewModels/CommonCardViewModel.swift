@@ -14,6 +14,7 @@ class CommonCardViewModel: Hashable {
     var title: String
     var iconImageName: String?
     var serverName: String?
+    var updatedAt: String?
     var listActionSheetItem: [ListActionSheetItem]
     var connectionType: ServerConnectionType
     var deleteReportStrings : ConfirmDeleteConnectionStrings
@@ -23,6 +24,7 @@ class CommonCardViewModel: Hashable {
          title: String,
          iconImageName: String?,
          serverName: String?,
+         updatedAt: String? = nil,
          listActionSheetItem: [ListActionSheetItem],
          connectionType: ServerConnectionType,
          deleteReportStrings: ConfirmDeleteConnectionStrings,
@@ -32,6 +34,7 @@ class CommonCardViewModel: Hashable {
         self.title = title
         self.iconImageName = iconImageName
         self.serverName = serverName
+        self.updatedAt = updatedAt
         self.listActionSheetItem = listActionSheetItem
         self.connectionType = connectionType
         self.deleteReportStrings = deleteReportStrings
@@ -46,4 +49,15 @@ class CommonCardViewModel: Hashable {
         hasher.combine(id)
     }
     
+}
+
+extension CommonCardViewModel {
+    var subtitle: String {
+        switch connectionType {
+        case .uwazi:
+            return self.serverName ?? ""
+        default:
+            return self.updatedAt ?? ""
+        }
+    }
 }

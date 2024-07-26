@@ -100,14 +100,12 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     
     private func uploadNextFile(folderId: String) {
         guard let fileToUpload = uploadQueue.first else {
-            // All files have been uploaded
             self.updateReportStatus(reportStatus: .submitted)
             self.showSubmittedReport()
             return
         }
         
         guard let fileUrl = self.mainAppModel.vaultManager.loadVaultFileToURL(file: fileToUpload) else {
-            // Handle error: unable to load file
             uploadQueue.removeFirst()
             uploadNextFile(folderId: folderId)
             return
@@ -129,7 +127,6 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     private func handleCompletionForUploadFile(_ completion: Subscribers.Completion<APIError>, folderId: String) {
         switch completion {
         case .finished:
-            // File upload completed successfully
             self.uploadQueue.removeFirst()
             self.uploadNextFile(folderId: folderId)
         case .failure( let error):

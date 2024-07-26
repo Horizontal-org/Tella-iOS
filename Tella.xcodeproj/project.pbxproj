@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0807BE8AD7991EBCC67BBF58 /* libPods-Tella-TellaUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BA47B1A745C8D086B482FE /* libPods-Tella-TellaUITests.a */; };
-		0D4BC3C5267577F900DCDC30 /* ReportsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3C1267577F900DCDC30 /* ReportsView.swift */; };
 		0D4BC3CE267668D600DCDC30 /* AddFileYellowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4BC3CD267668D600DCDC30 /* AddFileYellowButton.swift */; };
 		0D4D7518266470A700D7A635 /* SettingToggleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D7517266470A700D7A635 /* SettingToggleItem.swift */; };
 		0DA213C72680286F00526995 /* FileListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA213C62680286F00526995 /* FileListItem.swift */; };
@@ -580,7 +579,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0D4BC3C1267577F900DCDC30 /* ReportsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportsView.swift; sourceTree = "<group>"; };
 		0D4BC3CB26765B8C00DCDC30 /* ModelStubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelStubs.swift; sourceTree = "<group>"; };
 		0D4BC3CD267668D600DCDC30 /* AddFileYellowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileYellowButton.swift; sourceTree = "<group>"; };
 		0D4D7517266470A700D7A635 /* SettingToggleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingToggleItem.swift; sourceTree = "<group>"; };
@@ -1174,7 +1172,6 @@
 		0D4BC3BE2675737F00DCDC30 /* Reports */ = {
 			isa = PBXGroup;
 			children = (
-				0D4BC3C1267577F900DCDC30 /* ReportsView.swift */,
 				126FEE082AC4992800B99298 /* Models */,
 				121C945C28FF3D6900570EB4 /* Draft */,
 				12199C322940936B0041BD38 /* Outbox */,
@@ -3602,7 +3599,6 @@
 				1202D9582BF4CFF200EAFAB3 /* SelectValues.swift in Sources */,
 				1268554027D2994500385E18 /* VaultFileStatus.swift in Sources */,
 				155541B02C066F990031D3A5 /* ServerConnectionButton.swift in Sources */,
-				0D4BC3C5267577F900DCDC30 /* ReportsView.swift in Sources */,
 				12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */,
 				128D6E1A28045C090082AB18 /* ManageFileType.swift in Sources */,
 				CC5DF8782B02B06A0068F622 /* UwaziServer.swift in Sources */,
