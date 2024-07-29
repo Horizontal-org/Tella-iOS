@@ -190,7 +190,7 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
     }
     
     private func dismissView() {
-        self.presentationMode.wrappedValue.dismiss()
+        self.popTo(UIHostingController<ReportMainView>.self)
     }
     
     private func showDeleteReportConfirmationView() {
