@@ -8,9 +8,9 @@
 
 import SwiftUI
 
-struct ConnectionCardDetail: View {
+struct ConnectionCardDetails: View {
     var title : String
-    var subtitle: String
+    var subtitle: String?
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             
@@ -18,16 +18,17 @@ struct ConnectionCardDetail: View {
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                 .foregroundColor(.white)
                 .lineLimit(1)
-            
-            Text(subtitle)
-                .font(.custom(Styles.Fonts.regularFontName, size: 12))
-                .foregroundColor(.white)
+            if let subtitle {
+                Text(subtitle)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 12))
+                    .foregroundColor(.white)
+            }
         }
     }
 }
 
 struct ReportCardDetail_Previews: PreviewProvider {
     static var previews: some View {
-        ConnectionCardDetail(title: "", subtitle: "")
+        ConnectionCardDetails(title: "", subtitle: "")
     }
 }

@@ -8,6 +8,8 @@ enum ServerConnectionType: Int, Codable {
     case tella
     case uwazi
     case gDrive
+    case nextcloud
+
 }
 
 extension ServerConnectionType {
@@ -39,6 +41,8 @@ extension ServerConnectionType {
             return "uwazi.empty"
         case.tella:
             return "reports.report"
+        case .nextcloud:
+            return "home.nextcloud"
         }
     }
 }

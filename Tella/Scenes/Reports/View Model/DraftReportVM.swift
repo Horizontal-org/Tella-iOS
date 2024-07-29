@@ -7,92 +7,12 @@ import Foundation
 import Combine
 import SwiftUI
 
-class DraftReportVM: ObservableObject, DraftViewModelProtocol {
-    
-    var mainAppModel : MainAppModel
-    
-    // Report
-    @Published var reportId : Int?
-    @Published var title : String = ""
-    @Published var description : String = ""
-    @Published var files :  Set <VaultFileDB> = []
-    @Published var server :  TellaServer?
-    @Published var status : ReportStatus?
-    @Published var apiID : String?
-    
-    // Fields validation
-    @Published var isValidTitle : Bool = false
-    @Published var isValidDescription : Bool = false
-    @Published var shouldShowError : Bool = false
-    @Published var reportIsValid : Bool = false
-    @Published var reportIsDraft : Bool = false
-    
-    @Published var resultFile : [VaultFileDB]?
-    
-    @Published var showingImagePicker : Bool = false
-    @Published var showingImportDocumentPicker : Bool = false
-    @Published var showingFileList : Bool = false
-    @Published var showingRecordView : Bool = false
-    @Published var showingCamera : Bool = false
-    
-    @Published var successSavingReport : Bool = false
-    @Published var failureSavingReport : Bool = false
-    
-    var successSavingReportPublisher: Published<Bool>.Publisher { $successSavingReport }
-    var failureSavingReportPublisher: Published<Bool>.Publisher { $failureSavingReport }
-
-    
-    var serverArray : [TellaServer] = []
-    
-    var cancellable : Cancellable? = nil
-    private var subscribers = Set<AnyCancellable>()
-    var delayTime = 2.0
-    
-    var serverName : String {
-        guard let serverName = server?.name else { return LocalizableReport.selectProject.localized }
-        return serverName
+class DraftReportVM: DraftMainViewModel<TellaServer> {
+    override init(mainAppModel : MainAppModel, reportId:Int? = nil) {
+        super.init(mainAppModel: mainAppModel, reportId: reportId)
     }
     
-    var hasMoreServer: Bool {
-        return serverArray.count > 1
-    }
-    
-    var isNewDraft: Bool {
-        return reportId == nil
-    }
-    
-    var addFileToDraftItems : [ListActionSheetItem] { return [
-        
-        ListActionSheetItem(imageName: "report.camera-filled",
-                            content: LocalizableReport.cameraFilled.localized,
-                            type: ManageFileType.camera),
-        ListActionSheetItem(imageName: "report.mic-filled",
-                            content: LocalizableReport.micFilled.localized,
-                            type: ManageFileType.recorder),
-        ListActionSheetItem(imageName: "report.gallery",
-                            content: LocalizableReport.galleryFilled.localized,
-                            type: ManageFileType.tellaFile),
-        ListActionSheetItem(imageName: "report.phone",
-                            content: LocalizableReport.phoneFilled.localized,
-                            type: ManageFileType.fromDevice)
-    ]}
-    
-    init(mainAppModel : MainAppModel, reportId:Int? = nil) {
-        
-        self.mainAppModel = mainAppModel
-        
-        self.validateReport()
-        
-        self.getServers()
-        
-        self.initcurrentReportVM(reportId: reportId)
-        
-        self.bindVaultFileTaken()
-        
-        fillReportVM()
-    }
-    
-    private func validateReport() {
+    override func validateReport() {
         $server.combineLatest( $isValidTitle, $isValidDescription, $files)
             .sink(receiveValue: { server, isValidTitle, isValidDescription, files in
                 self.reportIsValid = ((server != nil) && isValidTitle && isValidDescription) || ((server != nil) && isValidTitle && !files.isEmpty)
@@ -106,18 +26,12 @@ class DraftReportVM: ObservableObject, DraftViewModelProtocol {
             }).store(in: &subscribers)
     }
     
-    private func getServers() {
+    override func getServers() {
         serverArray = mainAppModel.tellaData?.tellaServers.value ?? []
     }
     
-    private func initcurrentReportVM(reportId:Int?) {
-        if serverArray.count == 1 {
-            server = serverArray.first
-        }
-        self.reportId = reportId
-    }
     
-    private func bindVaultFileTaken() {
+    override func bindVaultFileTaken() {
         $resultFile.sink(receiveValue: { value in
             guard let value else { return }
             self.files.insert(value)
@@ -125,13 +39,13 @@ class DraftReportVM: ObservableObject, DraftViewModelProtocol {
         }).store(in: &subscribers)
     }
     
-    private func publishUpdates() {
+    override func publishUpdates() {
         DispatchQueue.main.async {
             self.objectWillChange.send()
         }
     }
     
-    func fillReportVM() {
+    override func fillReportVM() {
         if let reportId = self.reportId ,let report = self.mainAppModel.tellaData?.getReport(reportId: reportId) {
             
             self.title = report.title ?? ""
@@ -152,26 +66,8 @@ class DraftReportVM: ObservableObject, DraftViewModelProtocol {
             self.objectWillChange.send()
         }
     }
-    
-    func saveDraftReport()  {
-        self.status = .draft
-        self.saveReport()
-    }
-    
-    func saveFinalizedReport()  {
-        self.status = .finalized
-        self.saveReport()
-    }
-    
-    func saveReportForSubmission()  {
-        self.status = .submissionScheduled
-        self.saveReport()
-    }
-    
-    func submitReport() {
-        saveReportForSubmission()
-    }
-    func saveReport() {
+
+    override func saveReport() {
         
         let report = Report(id: reportId,
                             title: title,
@@ -187,7 +83,7 @@ class DraftReportVM: ObservableObject, DraftViewModelProtocol {
         !isNewDraft ? updateReport(report: report) : addReport(report: report)
     }
     
-    func updateReport(report:Report) {
+    private func updateReport(report:Report) {
         let updateReportResult = mainAppModel.tellaData?.updateReport(report: report)
         switch updateReportResult {
         case .success:
@@ -197,7 +93,7 @@ class DraftReportVM: ObservableObject, DraftViewModelProtocol {
         }
     }
     
-    func addReport(report:Report) {
+    private func addReport(report:Report) {
         let idResult =  mainAppModel.tellaData?.addReport(report: report)
         switch idResult {
         case .success(let id ):
@@ -208,12 +104,12 @@ class DraftReportVM: ObservableObject, DraftViewModelProtocol {
         }
     }
     
-    func deleteFile(fileId: String?) {
+    override func deleteFile(fileId: String?) {
         guard let index = files.firstIndex(where: { $0.id == fileId})  else  {return }
         files.remove(at: index)
     }
     
-    func deleteReport() {
+    override func deleteReport() {
         mainAppModel.deleteReport(reportId: reportId)
         mainAppModel.deleteReport(reportId: reportId)
     }

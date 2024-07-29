@@ -4,7 +4,7 @@
 
 import Foundation
 
-enum ReportActionType: ActionType {
+enum ConnectionActionType: ActionType {
     case editDraft
     case editOutbox
     case viewSubmitted

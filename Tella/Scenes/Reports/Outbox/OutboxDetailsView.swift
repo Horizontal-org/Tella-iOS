@@ -4,17 +4,13 @@
 
 import SwiftUI
 
-struct OutboxDetailsView: View {
+struct OutboxDetailsView<T: ServerProtocol>: View {
     
-    @StateObject var outboxReportVM : OutboxReportVM
-    @EnvironmentObject var reportsViewModel : BaseReportsViewModel
+    @StateObject var outboxReportVM : OutboxMainViewModel<T>
+    @EnvironmentObject var reportsViewModel : ReportMainViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
-    
-    init(appModel: MainAppModel,reportsViewModel: BaseReportsViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
-        _outboxReportVM = StateObject(wrappedValue: OutboxReportVM(mainAppModel: appModel, reportsViewModel: reportsViewModel, reportId:reportId, shouldStartUpload: shouldStartUpload))
-    }
     
     var body: some View {
         
@@ -179,13 +175,22 @@ struct OutboxDetailsView: View {
     }
     
     private var submittedDetailsView: some View {
-        SubmittedDetailsView(appModel: mainAppModel,
-                             reportId: outboxReportVM.reportViewModel.id)
-        .environmentObject(reportsViewModel)
+        Group {
+            switch reportsViewModel.connectionType {
+            case .tella:
+                let vm = SubmittedReportVM(mainAppModel: mainAppModel, reportId: outboxReportVM.reportViewModel.id)
+                SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportsViewModel)
+            case .gDrive:
+                let vm = GDriveSubmittedViewModel(mainAppModel: mainAppModel, reportId: outboxReportVM.reportViewModel.id)
+                SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportsViewModel)
+            default:
+                Text("")
+            }
+        }
     }
     
     private func dismissView() {
-        self.popTo(UIHostingController<ReportsView>.self)
+        self.presentationMode.wrappedValue.dismiss()
     }
     
     private func showDeleteReportConfirmationView() {

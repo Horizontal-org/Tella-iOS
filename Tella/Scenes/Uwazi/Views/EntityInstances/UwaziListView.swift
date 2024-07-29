@@ -22,7 +22,7 @@ struct UwaziListView: View {
             
             if cardsViewModel.isEmpty {
                 
-                ConnectionEmptyView(message: emptyMessage, type: .uwazi)
+                ConnectionEmptyView(message: emptyMessage, iconName: ServerConnectionType.uwazi.emptyIcon)
                 
             } else {
                 
@@ -66,7 +66,7 @@ struct EntityInstanceItemView: View {
                             .frame(width: 12)
                     }
                     
-                    ConnectionCardDetail(title: cardViewModel.title,
+                    ConnectionCardDetails(title: cardViewModel.title,
                                          subtitle: cardViewModel.serverName)
                     
                     Spacer()
@@ -84,18 +84,18 @@ struct EntityInstanceItemView: View {
             ActionListBottomSheet(items: cardViewModel.listActionSheetItem,
                                   headerTitle: cardViewModel.title,
                                   action:  {item in
-                guard let type = item.type as? UwaziActionType else {return}
+                guard let type = item.type as? ConnectionActionType else {return}
                 
                 switch type {
                 case .delete:
                     showDeleteTemplateConfirmationView()
-                case .createEntity:
+                case .editDraft:
                     showCreateEntityView()
                     sheetManager.hide()
-                case .viewOutboxEntity:
+                case .editOutbox:
                     showSummaryEntityView()
                     sheetManager.hide()
-                case .viewSubmittedEntity:
+                case .viewSubmitted:
                     showSubmittedEntityView()
                     sheetManager.hide()
                 }
@@ -136,8 +136,8 @@ struct EntityInstanceItemView: View {
     private func showDeleteTemplateConfirmationView() {
         
         sheetManager.showBottomSheet(modalHeight: 200) {
-            return ConfirmBottomSheet(titleText: cardViewModel.deleteTitle,
-                                      msgText: cardViewModel.deleteMessage,
+            return ConfirmBottomSheet(titleText: cardViewModel.deleteReportStrings.deleteTitle,
+                                      msgText: cardViewModel.deleteReportStrings.deleteMessage,
                                       cancelText: LocalizableUwazi.noSheetAction.localized,
                                       actionText: LocalizableUwazi.yesSheetAction.localized) {
                 cardViewModel.deleteAction()

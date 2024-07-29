@@ -16,37 +16,6 @@ enum  ReportStatus : Int, Codable {
     case submissionInProgress = 8  // Submission launched
     case submissionAutoPaused = 9  // Submission paused for auto report
     case submissionScheduled = 10  // Submission scheduled
-
 }
 
-extension ReportStatus {
-    
-    var sheetItemTitle : String {
-        switch self {
-        
-        case .submitted:
-            return LocalizableReport.viewModelView.localized
 
-        case .draft:
-            return LocalizableReport.viewModelEdit.localized
-
-        default:
-            return LocalizableReport.viewModelOpen.localized
-        }
-    }
-
-    var reportActionType : ReportActionType {
-        switch self {
-        
-        case .submitted:
-            return .viewSubmitted
-       
-        case .draft:
-            return .editDraft
-
-        default:
-            return .editOutbox
-
-        }
-    }
-}

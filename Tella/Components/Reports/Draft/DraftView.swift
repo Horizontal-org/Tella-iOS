@@ -8,22 +8,23 @@
 
 import SwiftUI
 
-struct DraftView<VM: DraftViewModelProtocol>: View  {
-    @StateObject var viewModel: VM
+struct DraftView<T: ServerProtocol>: View  {
+    @StateObject var viewModel: DraftMainViewModel<T>
     
     @State private var menuFrame : CGRect = CGRectZero
     @State private var shouldShowMenu : Bool = false
     
     @EnvironmentObject var mainAppModel: MainAppModel
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var reportsViewModel : BaseReportsViewModel
+      
+    var reportsViewModel : ReportMainViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
-        // TO DO: INCLUDE SERVER SELECTION VIEW!!!!!!
         ContainerView {
             contentView
                 .environmentObject(viewModel)
+            serverListMenuView
             photoVideoPickerView
         }
         .navigationBarHidden(true)
@@ -66,6 +67,39 @@ struct DraftView<VM: DraftViewModelProtocol>: View  {
         GeometryReader { geometry in
             ScrollView {
                 VStack(alignment: .leading) {
+                    if viewModel.hasMoreServer  {
+                        Text(LocalizableReport.reportsSendTo.localized)
+                            .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                            .foregroundColor(Color.white)
+                        
+                        Button {
+                            DispatchQueue.main.async {
+                                self.menuFrame = geometry.frame(in: CoordinateSpace.global)
+                                shouldShowMenu = true
+                            }
+                            
+                        } label: {
+                            HStack {
+                                Text(viewModel.serverName)
+                                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                                    .foregroundColor(Color.white.opacity(0.87))
+                                    .padding()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                Image("reports.arrow-down")
+                                    .padding()
+                                
+                            }
+                        }.background(Color.white.opacity(0.08))
+                            .cornerRadius(12)
+                        
+                        Spacer()
+                            .frame(height: 55)
+                        
+                    } else {
+                        Spacer()
+                            .frame(height: 5)
+                    }
                     TextfieldView(fieldContent: $viewModel.title,
                                   isValid: $viewModel.isValidTitle,
                                   shouldShowError: $viewModel.shouldShowError,
@@ -85,12 +119,49 @@ struct DraftView<VM: DraftViewModelProtocol>: View  {
                     Spacer()
                         .frame(height: 24)
                     
-                    AddFilesToDraftView<VM>()
+                    AddFilesToDraftView<T>()
                         .environmentObject(viewModel)
                     
                     Spacer()
                 }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
             }
+        }
+    }
+    
+    @ViewBuilder
+    var serverListMenuView: some View {
+        
+        if shouldShowMenu {
+            VStack {
+                Spacer()
+                    .frame(height: menuFrame.origin.y +  10)
+                ScrollView {
+                    
+                    VStack(spacing: 0) {
+                        
+                        ForEach(viewModel.serverArray, id: \.self) { server in
+                            
+                            Button {
+                                shouldShowMenu = false
+                                viewModel.server = server
+                                
+                            } label: {
+                                Text(server.name ?? "")
+                                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .foregroundColor(.white)
+                                    .padding(.all, 14)
+                            }.background(server.id == viewModel.server?.id ? Color.white.opacity(0.16) : Color.white.opacity(0.08))
+                        }
+                    }.frame(minHeight: 40, maxHeight: 250)
+                        .background(Styles.Colors.backgroundMain)
+                        .cornerRadius(12)
+                }
+                Spacer()
+            }
+            .padding()
+            
+            .background(Color.clear)
         }
     }
     
@@ -122,11 +193,18 @@ struct DraftView<VM: DraftViewModelProtocol>: View  {
     }
     
     var outboxDetailsView: some View {
-        OutboxDetailsView(appModel: mainAppModel,
-                          reportsViewModel: reportsViewModel,
-                          reportId: viewModel.reportId,
-                          shouldStartUpload: true)
-        .environmentObject(reportsViewModel)
+        Group {
+            switch reportsViewModel.connectionType {
+            case .tella:
+                let outboxVM = OutboxReportVM(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId)
+                OutboxDetailsView(outboxReportVM: outboxVM).environmentObject(reportsViewModel)
+            case .gDrive:
+                let outboxVM = GDriveOutboxViewModel(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId, repository: GDriveRepository())
+                OutboxDetailsView(outboxReportVM: outboxVM).environmentObject(reportsViewModel)
+            default:
+                Text("")
+            }
+        }
     }
     
     var photoVideoPickerView: some View {

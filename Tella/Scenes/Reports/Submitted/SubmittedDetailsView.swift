@@ -7,15 +7,11 @@ import SwiftUI
 
 struct SubmittedDetailsView: View {
     
-    @StateObject var submittedReportVM : SubmittedReportVM
-    @EnvironmentObject var reportsViewModel : BaseReportsViewModel
+    @StateObject var submittedReportVM : SubmittedMainViewModel
+    @EnvironmentObject var reportsViewModel : ReportMainViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
-    
-    init(appModel: MainAppModel, reportId : Int?) {
-        _submittedReportVM = StateObject(wrappedValue: SubmittedReportVM(mainAppModel: appModel, reportId: reportId))
-    }
     
     var body: some View {
         
@@ -133,14 +129,14 @@ struct SubmittedDetailsView: View {
     }
     
     private func dismissViews() {
-        self.popTo(UIHostingController<ReportsView>.self)
         self.reportsViewModel.selectedCell = .submitted
+        self.popTo(UIHostingController<ReportMainView>.self)
     }
     
     private func showDeleteReportConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: 200) {
             DeleteReportConfirmationView(title: submittedReportVM.title,
-                                         message: LocalizableReport.DeleteSubmittedReportMessage.localized) {
+                                         message: LocalizableReport.deleteSubmittedReportMessage.localized) {
                 dismissViews()
                 submittedReportVM.deleteReport()
                 sheetManager.hide()
