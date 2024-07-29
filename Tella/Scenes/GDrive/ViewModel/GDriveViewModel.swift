@@ -25,7 +25,7 @@ class GDriveViewModel: ReportMainViewModel {
     ]}
     
     init(mainAppModel: MainAppModel) {
-        super.init(mainAppModel: mainAppModel, connectionType: .gDrive, title: "Google Drive")
+        super.init(mainAppModel: mainAppModel, connectionType: .gDrive, title: LocalizableGDrive.gDriveAppBar.localized)
         
         self.getReports()
         self.getServer()

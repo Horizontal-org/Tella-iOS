@@ -53,7 +53,7 @@ struct ConnectionsView: View {
                                         image: "home.uwazi",
                                         destination: UwaziView().environmentObject(UwaziViewModel(mainAppModel: appModel, server: server.servers.first)))
                 case .gDrive:
-                    ConnectionsItemView(title: "Drive",
+                    ConnectionsItemView(title: LocalizableGDrive.gDriveAppBar.localized,
                                         image: "home.drive",
                                         destination: gDriveMainView)
                 case .nextcloud:

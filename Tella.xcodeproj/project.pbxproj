@@ -399,6 +399,7 @@
 		15E3D5052C1B531700B7FECC /* ConnectionEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D5042C1B531700B7FECC /* ConnectionEmptyView.swift */; };
 		15E3D50A2C1B71E200B7FECC /* GDriveDraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */; };
 		15E3D50E2C1B87AC00B7FECC /* GDriveDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D50D2C1B87AC00B7FECC /* GDriveDraftViewModel.swift */; };
+		15E54AB92C5824DA00290DE8 /* LocalizableGDrive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E54AB82C5824DA00290DE8 /* LocalizableGDrive.swift */; };
 		15E656AB2C2A147E00BDEC91 /* AddFilesToDraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E656AA2C2A147E00BDEC91 /* AddFilesToDraftView.swift */; };
 		15E656AD2C2A14F500BDEC91 /* DraftMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E656AC2C2A14F500BDEC91 /* DraftMainViewModel.swift */; };
 		15EE30FE2B5073E20033BBBB /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE30FD2B5073E20033BBBB /* Pages.swift */; };
@@ -974,6 +975,7 @@
 		15E3D5042C1B531700B7FECC /* ConnectionEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionEmptyView.swift; sourceTree = "<group>"; };
 		15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveDraftView.swift; sourceTree = "<group>"; };
 		15E3D50D2C1B87AC00B7FECC /* GDriveDraftViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveDraftViewModel.swift; sourceTree = "<group>"; };
+		15E54AB82C5824DA00290DE8 /* LocalizableGDrive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableGDrive.swift; sourceTree = "<group>"; };
 		15E656AA2C2A147E00BDEC91 /* AddFilesToDraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFilesToDraftView.swift; sourceTree = "<group>"; };
 		15E656AC2C2A14F500BDEC91 /* DraftMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftMainViewModel.swift; sourceTree = "<group>"; };
 		15EE30FD2B5073E20033BBBB /* Pages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pages.swift; sourceTree = "<group>"; };
@@ -2230,6 +2232,7 @@
 				12B370382B19109600DDA9E9 /* LocalizableBackgroundActivities.swift */,
 				1501401C2B71243A00991D69 /* LocalizableResources.swift */,
 				12B84B842C32EF12006363F0 /* LocalizableNextcloud.swift */,
+				15E54AB82C5824DA00290DE8 /* LocalizableGDrive.swift */,
 			);
 			path = Localizable;
 			sourceTree = "<group>";
@@ -3666,6 +3669,7 @@
 				1242135529B774A40002402D /* DeleteReportConfirmationView.swift in Sources */,
 				12B5257E2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift in Sources */,
 				12E8129A27A1570A007DDDC0 /* LocalizableSettings.swift in Sources */,
+				15E54AB92C5824DA00290DE8 /* LocalizableGDrive.swift in Sources */,
 				129B845328BFB7AC00F1B344 /* AddServerAccessChoiceView.swift in Sources */,
 				1293F6772AD88A0400F6CFBD /* FeedbackDTO.swift in Sources */,
 				12C07F052B0748D50030AD6E /* TopSheetView.swift in Sources */,
