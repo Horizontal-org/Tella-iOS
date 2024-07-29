@@ -1174,9 +1174,6 @@
 			children = (
 				126FEE082AC4992800B99298 /* Models */,
 				121C945C28FF3D6900570EB4 /* Draft */,
-				12199C322940936B0041BD38 /* Outbox */,
-				123048D3295F954E0015CD96 /* Submitted */,
-				1242135429B774A40002402D /* DeleteReportConfirmationView.swift */,
 				1232EE9A2918F8470094EE3A /* View Model */,
 			);
 			path = Reports;
@@ -1385,7 +1382,8 @@
 				12199C33294094430041BD38 /* OutboxDetailsView.swift */,
 				12199C392941260D0041BD38 /* OutboxDetailsItemView.swift */,
 			);
-			path = Outbox;
+			name = Outbox;
+			path = ../../Reports/Outbox;
 			sourceTree = "<group>";
 		};
 		121C945B28FF026200570EB4 /* AddServer */ = {
@@ -1407,7 +1405,6 @@
 			isa = PBXGroup;
 			children = (
 				1236644E28FFECEF00FA839B /* DraftReportView.swift */,
-				1220A72D292EB11B000BC24C /* ReportFileGridView.swift */,
 			);
 			path = Draft;
 			sourceTree = "<group>";
@@ -1458,7 +1455,8 @@
 				123048D4295F95A40015CD96 /* SubmittedDetailsView.swift */,
 				123048D6295F95BB0015CD96 /* SubmittedDetailsItemView.swift */,
 			);
-			path = Submitted;
+			name = Submitted;
+			path = ../../Reports/Submitted;
 			sourceTree = "<group>";
 		};
 		1231A459294C76040057DA85 /* Domain */ = {
@@ -1535,8 +1533,6 @@
 				1221E05B2906CA6A00BC05F5 /* DraftReportVM.swift */,
 				123AE5A029CFAD7F00814CC7 /* OutboxReportVM.swift */,
 				121F87A92964383D00E6BA0D /* SubmittedReportVM.swift */,
-				123048D1295F84BD0015CD96 /* ProgressFileItemViewModel.swift */,
-				122E6A5229A3812A00BDACAD /* ReportViewModel.swift */,
 			);
 			path = "View Model";
 			sourceTree = "<group>";
@@ -1632,6 +1628,10 @@
 		125C789C2C36B50100440014 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1242135429B774A40002402D /* DeleteReportConfirmationView.swift */,
+				123048D3295F954E0015CD96 /* Submitted */,
+				12199C322940936B0041BD38 /* Outbox */,
+				15CA1B882C582168002333A8 /* Draft */,
 				12B84B8F2C333DD0006363F0 /* ReportMainView.swift */,
 				12B84B972C3413AC006363F0 /* CommonReportListView.swift */,
 			);
@@ -1641,6 +1641,11 @@
 		125C789D2C36B50800440014 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				122E6A5229A3812A00BDACAD /* ReportViewModel.swift */,
+				123048D1295F84BD0015CD96 /* ProgressFileItemViewModel.swift */,
+				1517A9B12C404F4000CB8EBF /* SubmittedMainViewModel.swift */,
+				15E656AC2C2A14F500BDEC91 /* DraftMainViewModel.swift */,
+				1517A9A92C3F011D00CB8EBF /* OutboxMainViewModel.swift */,
 				12B84B8E2C333DD0006363F0 /* ReportMainViewModel.swift */,
 				127138372C35EA34004D520B /* CommonCardViewModel.swift */,
 				12B84B932C333FE3006363F0 /* ReportCardViewModel.swift */,
@@ -2386,22 +2391,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		1517A9A82C3F010D00CB8EBF /* Outbox */ = {
-			isa = PBXGroup;
-			children = (
-				1517A9A92C3F011D00CB8EBF /* OutboxMainViewModel.swift */,
-			);
-			path = Outbox;
-			sourceTree = "<group>";
-		};
-		1517A9B02C404F1100CB8EBF /* Submitted */ = {
-			isa = PBXGroup;
-			children = (
-				1517A9B12C404F4000CB8EBF /* SubmittedMainViewModel.swift */,
-			);
-			path = Submitted;
-			sourceTree = "<group>";
-		};
 		1519BED42B9A5A2B006FD290 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -2480,6 +2469,16 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		15CA1B882C582168002333A8 /* Draft */ = {
+			isa = PBXGroup;
+			children = (
+				15E656AA2C2A147E00BDEC91 /* AddFilesToDraftView.swift */,
+				1220A72D292EB11B000BC24C /* ReportFileGridView.swift */,
+				152D38502C2C61DF00323CE7 /* DraftView.swift */,
+			);
+			path = Draft;
+			sourceTree = "<group>";
+		};
 		15E3D5012C1B51D700B7FECC /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -2499,22 +2498,9 @@
 		15E656A92C2A142300BDEC91 /* Reports */ = {
 			isa = PBXGroup;
 			children = (
-				1517A9B02C404F1100CB8EBF /* Submitted */,
-				1517A9A82C3F010D00CB8EBF /* Outbox */,
-				15E656AE2C2A14FA00BDEC91 /* Draft */,
 				15F1AA532C2E07F50002A7D8 /* BaseReportsViewModel.swift */,
 			);
 			path = Reports;
-			sourceTree = "<group>";
-		};
-		15E656AE2C2A14FA00BDEC91 /* Draft */ = {
-			isa = PBXGroup;
-			children = (
-				152D38502C2C61DF00323CE7 /* DraftView.swift */,
-				15E656AA2C2A147E00BDEC91 /* AddFilesToDraftView.swift */,
-				15E656AC2C2A14F500BDEC91 /* DraftMainViewModel.swift */,
-			);
-			path = Draft;
 			sourceTree = "<group>";
 		};
 		15F64C9B2B6D78D8008A57AA /* Views */ = {
