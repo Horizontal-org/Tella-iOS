@@ -80,7 +80,7 @@ struct AddTemplatesView: View {
             } else {
                 Group {
                     Spacer()
-                    UwaziEmptyView(message: LocalizableUwazi.uwaziAddTemplateEmptydExpl.localized)
+                    ConnectionEmptyView(message: LocalizableUwazi.uwaziAddTemplateEmptydExpl.localized, iconName: ServerConnectionType.uwazi.emptyIcon)
                     Spacer()
                 }
             }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class GDriveServer: Server {
+class GDriveServer: Server, ServerProtocol {
     var rootFolder: String?
 
     enum CodingKeys: String, CodingKey {
@@ -17,23 +17,14 @@ class GDriveServer: Server {
 
     init(id: Int? = nil,
          name: String? = "Google Drive",
-         serverURL: String? = nil,
-         username: String? = nil,
-         password: String? = nil,
-         accessToken: String? = nil,
          rootFolder: String,
-         serverType: ServerConnectionType? = .gDrive,
-         allowMultiple: Bool? = false
-    ) {
+         serverType: ServerConnectionType? = .gDrive) {
+        
         self.rootFolder = rootFolder
         super.init(id: id,
                    name: name,
-                   serverURL: serverURL,
-                   username: username,
-                   password: password,
-                   accessToken: accessToken,
-                   serverType: serverType
-        )
+                   serverType: serverType,
+                   allowMultipleConnections: false)
     }
 
     required init(from decoder: Decoder) throws {

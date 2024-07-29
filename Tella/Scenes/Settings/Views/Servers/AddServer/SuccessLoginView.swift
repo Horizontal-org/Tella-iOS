@@ -75,7 +75,7 @@ struct SuccessLoginView: View {
     }
     
     private var reportsView: some View {
-        ReportsView(mainAppModel: mainAppModel)
+        ReportMainView(reportMainViewModel: ReportsViewModel(mainAppModel: mainAppModel), diContainer: GDriveDIContainer())
     }
 }
 

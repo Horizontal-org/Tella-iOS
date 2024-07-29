@@ -41,6 +41,8 @@ class TellaDataBase : DataBase {
                 addRelationshipColumnToUwaziTemplate()
             case 5:
                 createGDriveServerTable()
+                createGDriveReportTable()
+                createGDriveReportFilesTable()
             default :
                 break
             }
@@ -62,6 +64,8 @@ class TellaDataBase : DataBase {
         createUwaziEntityInstanceVaultFileTable()
         addRelationshipColumnToUwaziTemplate()
         createGDriveServerTable()
+        createGDriveReportTable()
+        createGDriveReportFilesTable()
     }
     
     func createReportTable() {
@@ -289,7 +293,7 @@ class TellaDataBase : DataBase {
                                      KeyValue(key: D.cDescription, value: report.description),
                                      KeyValue(key: D.cCreatedDate, value: Date().getDateDouble()),
                                      KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()),
-                                     KeyValue(key: D.cStatus, value: report.status?.rawValue),
+                                     KeyValue(key: D.cStatus, value: report.status.rawValue),
                                      KeyValue(key: D.cServerId, value: report.server?.id),
                                      KeyValue(key: D.cCurrentUpload, value:currentUpload )]
             
@@ -331,10 +335,9 @@ class TellaDataBase : DataBase {
             
             keyValueArray.append(KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble()))
             
-            if let status = report.status {
-                keyValueArray.append(KeyValue(key: D.cStatus, value: status.rawValue))
-            }
-            
+            let status = report.status
+            keyValueArray.append(KeyValue(key: D.cStatus, value: status.rawValue))
+ 
             if let serverId = report.server?.id {
                 keyValueArray.append(KeyValue(key: D.cServerId, value: serverId))
             }

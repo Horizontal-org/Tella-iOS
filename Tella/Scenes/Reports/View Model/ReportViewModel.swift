@@ -4,21 +4,22 @@
 
 import Foundation
 
-class ReportViewModel {
+class ReportViewModel<T: ServerProtocol> {
     @Published var id : Int?
     @Published var title : String = ""
     @Published var description : String = ""
     @Published var files : [ReportVaultFile] = []
     @Published var reportFiles : [ReportFile] = []
-    @Published var server : TellaServer?
+    @Published var server : T?
     @Published var status : ReportStatus?
     @Published var apiID : String?
+    @Published var folderId: String?
     
     init() {
         
     }
     
-    init(id: Int?, title: String, description: String, files: [ReportVaultFile], reportFiles : [ReportFile], server: TellaServer?, status: ReportStatus?, apiID: String?) {
+    init(id: Int?, title: String, description: String, files: [ReportVaultFile], reportFiles : [ReportFile], server: T?, status: ReportStatus?, apiID: String?, folderId: String? = nil) {
         self.id = id
         self.title = title
         self.description = description
@@ -27,6 +28,7 @@ class ReportViewModel {
         self.server = server
         self.status = status
         self.apiID = apiID
+        self.folderId = folderId
     }
 }
 

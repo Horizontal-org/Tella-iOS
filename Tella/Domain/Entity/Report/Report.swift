@@ -5,19 +5,17 @@
 
 import Foundation
 
-class Report : Hashable {
+class Report: BaseReport {
     
-    var id : Int?
-    var title : String?
-    var description : String?
-    var createdDate : Date?
-    var updatedDate : Date?
-    var status : ReportStatus?
-    var server : TellaServer?
-    var reportFiles : [ReportFile]?
-    var apiID : String?
+    var server: TellaServer?
+    var apiID: String?
     var currentUpload: Bool?
-
+    
+    enum CodingKeys: String, CodingKey {
+        case apiID = "c_api_report_id"
+        case currentUpload = "c_current_upload"
+    }
+    
     init(id: Int? = nil,
          title: String? = nil,
          description: String? = nil,
@@ -27,50 +25,24 @@ class Report : Hashable {
          server: TellaServer? = nil,
          vaultFiles: [ReportFile]? = nil,
          apiID: String? = nil,
-         currentUpload: Bool? = nil ) {
-        self.id = id
-        self.title = title
-        self.description = description
-        self.createdDate = createdDate
-        self.updatedDate = updatedDate
-        self.status = status
+         currentUpload: Bool? = nil) {
+        
         self.server = server
-        self.reportFiles = vaultFiles
         self.apiID = apiID
         self.currentUpload = currentUpload
-
+        
+        super.init(id: id, title: title,
+                   description: description,
+                   createdDate: createdDate,
+                   updatedDate: updatedDate,
+                   status: status ?? .unknown,
+                   vaultFiles: vaultFiles)
     }
     
-    static func == (lhs: Report, rhs: Report) -> Bool {
-        lhs.id == rhs.id
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id.hashValue)
-    }
-}
-
-extension Report {
-    var getReportDate: String {
-        guard let status = self.status  else {
-            return ""
-        }
-//        to do
-        switch status {
-        case .draft:
-            return self.createdDate?.getDraftReportTime() ?? ""
-        case .submissionPaused:
-            return "Paused"
-            
-        case .submissionInProgress:
-            return ""
-
-        case .submitted:
-            return self.createdDate?.getSubmittedReportTime() ?? ""
-        default:
-            return ""
-            
-        }
+    required init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.apiID = try container.decode(String?.self, forKey: .apiID)
+        self.currentUpload = try container.decode(Bool?.self, forKey: .currentUpload)
+        try super.init(from: decoder)
     }
 }
-

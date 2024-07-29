@@ -87,8 +87,11 @@ struct ServerLoginView: View {
     
     private var successLoginView: some View {
         SuccessLoginView(navigateToAction: {
-            navigateTo(destination: ReportsView(mainAppModel: mainAppModel))
+            navigateTo(destination: reportsMainView)
         }).environmentObject(serverViewModel)
     }
     
+    var reportsMainView: some View {
+        ReportMainView(reportMainViewModel: ReportsViewModel(mainAppModel: mainAppModel), diContainer: GDriveDIContainer())
+    }
 }
