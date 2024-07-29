@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import UIKit
 
 class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     private let gDriveRepository: GDriveRepositoryProtocol
@@ -25,6 +26,21 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
 
         if reportViewModel.status == .submissionScheduled {
             self.submitReport()
+        } else {
+            self.pauseSubmission()
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAppWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc private func handleAppWillResignActive() {
+        if isSubmissionInProgress {
+            pauseSubmission()
+            updateReportStatus(reportStatus: .submissionPaused)
         }
     }
     
