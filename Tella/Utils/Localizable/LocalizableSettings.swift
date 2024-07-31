@@ -94,6 +94,12 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settServerUnavailableConnectionsTitle = "Setting_SettServer_UnavailableConnections_Title"
     case settServerUnavailableConnectionsDesc = "Setting_SettServer_UnavailableConnections_Description"
     case settServerNoTokenPresent = "Setting_SettServer_No_Token"
+    case settServerDeleteConnectionTitle = "Settings_SettServre_DeleteConnection_Title"
+    case settServerDeleteTellaConnectionTitle = "Settings_SettServer_DeleteTellaConnection_Title"
+    case settServerDeleteConnectionMessage = "Settings_SettServer_DeleteConnection_Message"
+    case settServerDeleteUwaziConnectionMessage = "Settings_SettServer_DeleteUwaziConnection_Message"
+    case settServerDeleteSheetAction = "Settings_SettServer_Delete_SheetAction"
+    case settServerCancelSheetAction = "Settings_SettServer_Cancel_SheetAction"
 
     // Uwazi
     case UwaziServerURL = "Setting_Server_Uwazi_Server_URL"

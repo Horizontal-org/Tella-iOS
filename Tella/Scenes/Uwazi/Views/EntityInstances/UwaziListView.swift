@@ -66,7 +66,7 @@ struct EntityInstanceItemView: View {
                             .frame(width: 12)
                     }
                     
-                    ConnectionCardDetails(title: cardViewModel.title,
+                    ConnectionCardDetailsView(title: cardViewModel.title,
                                          subtitle: cardViewModel.serverName)
                     
                     Spacer()
