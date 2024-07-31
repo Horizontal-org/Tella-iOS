@@ -12,7 +12,7 @@ import Combine
 class GDriveAuthViewModel: ObservableObject {
     private let gDriveRepository: GDriveRepositoryProtocol
     private var cancellables = Set<AnyCancellable>()
-    @Published var signInState: ViewModelState<String> = .loaded("")
+    @Published var signInState: ViewModelState<String?> = .loaded(nil)
     init(repository: GDriveRepositoryProtocol) {
         self.gDriveRepository = repository
     }
@@ -23,11 +23,13 @@ class GDriveAuthViewModel: ObservableObject {
             do {
                 try await gDriveRepository.handleSignIn()
                 DispatchQueue.main.async {
-                    self.signInState = .loaded("")
+                    self.signInState = .loaded(nil)
                     completion()
                 }
             } catch let error {
-                self.signInState = .error(error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.signInState = .error(error.localizedDescription)
+                }
             }
         }
     }
