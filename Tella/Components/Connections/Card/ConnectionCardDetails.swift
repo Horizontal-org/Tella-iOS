@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct ConnectionCardDetails: View {
+struct ConnectionCardDetailsView: View {
     var title : String
     var subtitle: String?
     var body: some View {
@@ -29,6 +29,6 @@ struct ConnectionCardDetails: View {
 
 struct ReportCardDetail_Previews: PreviewProvider {
     static var previews: some View {
-        ConnectionCardDetails(title: "", subtitle: "")
+        ConnectionCardDetailsView(title: "", subtitle: "")
     }
 }

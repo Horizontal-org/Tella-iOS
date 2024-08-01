@@ -18,11 +18,11 @@ enum DeleteServerTexts {
     var titleText: String {
         switch self {
         case .tella(let name):
-            return "Delete \(name) server?"
+            return String(format: LocalizableSettings.settServerDeleteTellaConnectionTitle.localized, name)
         case .uwazi(let name):
-            return "Delete \"\(name)\" connection?"
+            return String(format: LocalizableSettings.settServerDeleteConnectionTitle.localized, name)
         case .gDrive(let name):
-            return "Delete \"\(name)\" connection?"
+            return String(format: LocalizableSettings.settServerDeleteConnectionTitle.localized, name)
         case .unknown:
             return ""
         }
@@ -30,23 +30,21 @@ enum DeleteServerTexts {
     
     var messageText: String {
         switch self {
-        case .tella:
-            return "if you delete this server, all draft and submitted forms will be deleted from your device."
         case .uwazi:
-            return "If you delete this server, all draft and submitted entities will be deleted from your device. Delete anyway?"
-        case .gDrive:
-            return "If you delete this server, all draft and submitted reports will be deleted from your device."
+            return LocalizableSettings.settServerDeleteUwaziConnectionMessage.localized
         case .unknown:
             return ""
+        default:
+            return LocalizableSettings.settServerDeleteConnectionMessage.localized
         }
     }
 
     var cancelText: String {
-        return "CANCEL"
+        return LocalizableSettings.settServerCancelSheetAction.localized
     }
     
     var actionText: String {
-        return "Delete"
+        return LocalizableSettings.settServerDeleteSheetAction.localized
     }
 }
 

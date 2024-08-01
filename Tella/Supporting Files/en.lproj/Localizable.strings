@@ -247,7 +247,12 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_SettServer_UnavailableConnections_Title" = "Unavailable connections";
 "Setting_SettServer_UnavailableConnections_Description" = "For the following categories, only one connection can be enabled at a time. To add a new connection, please delete the current one by going to Connections Settings.";
 "Setting_SettServer_No_Token" = "No token present, please connect again";
-
+"Settings_SettServer_DeleteTellaConnection_Title" = "Delete %@ server?";
+"Settings_SettServre_DeleteConnection_Title" = "Delete \"%@\" connection?";
+"Settings_SettServer_DeleteConnection_Message" = "if you delete this server, all draft and submitted forms will be deleted from your device.";
+"Settings_SettServer_DeleteUwaziConnection_Message" = "If you delete this server, all draft and submitted entities will be deleted from your device. Delete anyway?";
+"Settings_SettServer_Cancel_SheetAction" = "CANCEL";
+"Settings_SettServer_Delete_SheetAction" = "DELETE";
 "Home_RecentFiles_Subhead" = "Recent files";
 
 
@@ -538,3 +543,4 @@ This feedback is anonymous, so make sure to include contact information if you w
 
 
 "Nextcloud_AppBar" = "Nextcloud";
+"GDrive_AppBar" = "Google Drive";

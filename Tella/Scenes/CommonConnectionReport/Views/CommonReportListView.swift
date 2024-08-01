@@ -69,8 +69,8 @@ struct CommonItemView: View {
                             .frame(width: 12)
                     }
                     
-                    ConnectionCardDetails(title: cardViewModel.title,
-                                          subtitle: cardViewModel.serverName)
+                    ConnectionCardDetailsView(title: cardViewModel.title,
+                                          subtitle: cardViewModel.subtitle)
                     
                     Spacer()
                     

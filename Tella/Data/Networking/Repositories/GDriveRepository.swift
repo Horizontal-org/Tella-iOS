@@ -357,6 +357,8 @@ class GDriveRepository: GDriveRepositoryProtocol  {
             let query = GTLRDriveQuery_FilesList.query()
             query.q = "name = '\(fileName)' and '\(folderId)' in parents and trashed = false"
             query.fields = "files(id, name)"
+            query.includeItemsFromAllDrives = true
+            query.supportsAllDrives = true
             
             driveService.executeQuery(query) { (_, response, error) in
                 if let error = error {

@@ -29,6 +29,7 @@ class ReportCardViewModel: CommonCardViewModel {
                    title: title,
                    iconImageName: iconImageName,
                    serverName: serverName,
+                   updatedAt: report.updatedDate?.getDraftReportTime(),
                    listActionSheetItem: listActionSheetItem,
                    connectionType: connectionType,
                    deleteReportStrings: deleteReportStrings,

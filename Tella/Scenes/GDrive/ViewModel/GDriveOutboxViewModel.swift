@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import UIKit
 
 class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     private let gDriveRepository: GDriveRepositoryProtocol
@@ -22,11 +23,24 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         
         self.gDriveRepository = repository
         super.init(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: reportId)
-        
-        getServer()
 
         if reportViewModel.status == .submissionScheduled {
             self.submitReport()
+        } else {
+            self.pauseSubmission()
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAppWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc private func handleAppWillResignActive() {
+        if isSubmissionInProgress {
+            pauseSubmission()
+            updateReportStatus(reportStatus: .submissionPaused)
         }
     }
     
@@ -34,8 +48,9 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         self.server = mainAppModel.tellaData?.gDriveServers.value.first
     }
     
-    
     override func initVaultFile(reportId: Int?) {
+        getServer()
+        
         if let reportId, let report = self.mainAppModel.tellaData?.getDriveReport(id: reportId) {
             let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
             
@@ -101,14 +116,12 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     
     private func uploadNextFile(folderId: String) {
         guard let fileToUpload = uploadQueue.first else {
-            // All files have been uploaded
             self.updateReportStatus(reportStatus: .submitted)
             self.showSubmittedReport()
             return
         }
         
         guard let fileUrl = self.mainAppModel.vaultManager.loadVaultFileToURL(file: fileToUpload) else {
-            // Handle error: unable to load file
             uploadQueue.removeFirst()
             uploadNextFile(folderId: folderId)
             return
@@ -130,7 +143,6 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     private func handleCompletionForUploadFile(_ completion: Subscribers.Completion<APIError>, folderId: String) {
         switch completion {
         case .finished:
-            // File upload completed successfully
             self.uploadQueue.removeFirst()
             self.uploadNextFile(folderId: folderId)
         case .failure( let error):

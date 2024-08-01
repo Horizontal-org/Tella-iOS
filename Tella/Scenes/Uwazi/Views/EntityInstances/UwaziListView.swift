@@ -22,7 +22,7 @@ struct UwaziListView: View {
             
             if cardsViewModel.isEmpty {
                 
-                ConnectionEmptyView(message: emptyMessage, iconName: "")
+                ConnectionEmptyView(message: emptyMessage, iconName: ServerConnectionType.uwazi.emptyIcon)
                 
             } else {
                 
@@ -66,7 +66,7 @@ struct EntityInstanceItemView: View {
                             .frame(width: 12)
                     }
                     
-                    ConnectionCardDetails(title: cardViewModel.title,
+                    ConnectionCardDetailsView(title: cardViewModel.title,
                                          subtitle: cardViewModel.serverName)
                     
                     Spacer()
