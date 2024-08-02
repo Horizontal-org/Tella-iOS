@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum Pages: Hashable {
+public enum Page: Hashable {
     
     case draft
     case outbox

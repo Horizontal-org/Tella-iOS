@@ -9,13 +9,13 @@
 import Foundation
 
 protocol ReportsViewModelProtocol: ObservableObject {
-    var selectedCell: Pages { get set }
+    var selectedCell: Page { get set }
 }
 
 class BaseReportsViewModel: ObservableObject, ReportsViewModelProtocol {
     var mainAppModel: MainAppModel
     
-    @Published var selectedCell: Pages = .draft
+    @Published var selectedCell: Page = .draft
     
     init(mainAppModel: MainAppModel) {
         self.mainAppModel = mainAppModel

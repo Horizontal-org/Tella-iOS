@@ -129,7 +129,7 @@ struct SubmittedDetailsView: View {
     }
     
     private func dismissViews() {
-        self.reportsViewModel.selectedCell = .submitted
+        self.reportsViewModel.selectedPage = .submitted
         self.popTo(UIHostingController<ReportMainView>.self)
     }
     

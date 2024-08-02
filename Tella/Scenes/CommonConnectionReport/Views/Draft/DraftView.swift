@@ -262,13 +262,13 @@ struct DraftView<T: ServerProtocol>: View  {
     }
     
     private func handleSuccessSavingDraft() {
-        reportsViewModel.selectedCell = .draft
+        reportsViewModel.selectedPage = .draft
         dismissViews()
         Toast.displayToast(message: LocalizableReport.draftSavedToast.localized)
     }
         
     private func handleSuccessSavingOutbox() {
-        reportsViewModel.selectedCell = .outbox
+        reportsViewModel.selectedPage = .outbox
         dismissViews()
         Toast.displayToast(message: LocalizableReport.outboxSavedToast.localized)
     }

@@ -32,13 +32,13 @@ struct ReportMainView: View {
         ContainerView {
             VStack(alignment: .center) {
                 
-                PageView(selectedOption: self.$reportMainViewModel.selectedCell, pageViewItems: reportMainViewModel.pageViewItems)
+                PageView(selectedOption: self.$reportMainViewModel.selectedPage, pageViewItems: reportMainViewModel.pageViewItems)
                     .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
                 
                 VStack (spacing: 0) {
                     Spacer()
                     
-                    switch self.reportMainViewModel.selectedCell {
+                    switch self.reportMainViewModel.selectedPage {
                         
                     case .draft:
                         CommonReportListView(message: LocalizableReport.draftListExpl.localized,
