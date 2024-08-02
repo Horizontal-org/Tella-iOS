@@ -47,7 +47,8 @@ class GDriveViewModel: ReportMainViewModel {
         self.draftReportsViewModel = draftReports.compactMap { report in
             return ReportCardViewModel(report: report,
                                        serverName: server?.name,
-                                       deleteReport: { self.deleteReport(report: report) }
+                                       deleteReport: { self.deleteReport(report: report) },
+                                       connectionType: .gDrive
             )
         }
     }
@@ -57,7 +58,8 @@ class GDriveViewModel: ReportMainViewModel {
         self.outboxedReportsViewModel = outboxedReports.compactMap { report in
             ReportCardViewModel(report: report,
                                 serverName: server?.name,
-                                deleteReport: { self.deleteReport(report: report) }
+                                deleteReport: { self.deleteReport(report: report) },
+                                connectionType: .gDrive
             )
         }
     }
@@ -67,7 +69,8 @@ class GDriveViewModel: ReportMainViewModel {
         self.submittedReportsViewModel = submittedReports.compactMap { report in
             ReportCardViewModel(report: report,
                                 serverName: server?.name,
-                                deleteReport: { self.deleteReport(report: report) }
+                                deleteReport: { self.deleteReport(report: report) },
+                                connectionType: .gDrive
             )
         }
     }
