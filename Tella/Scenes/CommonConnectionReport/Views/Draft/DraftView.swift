@@ -14,7 +14,6 @@ struct DraftView<T: ServerProtocol>: View  {
     @State private var menuFrame : CGRect = CGRectZero
     @State private var shouldShowMenu : Bool = false
     
-    @EnvironmentObject var mainAppModel: MainAppModel
     @EnvironmentObject var sheetManager: SheetManager
       
     var reportsViewModel : ReportMainViewModel
@@ -196,10 +195,10 @@ struct DraftView<T: ServerProtocol>: View  {
         Group {
             switch reportsViewModel.connectionType {
             case .tella:
-                let outboxVM = OutboxReportVM(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId)
+                let outboxVM = OutboxReportVM(mainAppModel: viewModel.mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId)
                 OutboxDetailsView(outboxReportVM: outboxVM).environmentObject(reportsViewModel)
             case .gDrive:
-                let outboxVM = GDriveOutboxViewModel(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId, repository: GDriveRepository())
+                let outboxVM = GDriveOutboxViewModel(mainAppModel: viewModel.mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId, repository: GDriveRepository())
                 OutboxDetailsView(outboxReportVM: outboxVM).environmentObject(reportsViewModel)
             default:
                 Text("")
@@ -210,14 +209,14 @@ struct DraftView<T: ServerProtocol>: View  {
     var photoVideoPickerView: some View {
         PhotoVideoPickerView(showingImagePicker: $viewModel.showingImagePicker,
                              showingImportDocumentPicker: $viewModel.showingImportDocumentPicker,
-                             appModel: mainAppModel,
+                             appModel: viewModel.mainAppModel,
                              resultFile: $viewModel.resultFile,
                              shouldReloadVaultFiles: .constant(false))
     }
         
     var recordView: some View {
         viewModel.showingRecordView ?
-        RecordView(appModel: mainAppModel,
+        RecordView(appModel: viewModel.mainAppModel,
                    sourceView: .addReportFile,
                    showingRecoredrView: $viewModel.showingRecordView,
                    resultFile: $viewModel.resultFile) : nil
@@ -228,7 +227,7 @@ struct DraftView<T: ServerProtocol>: View  {
         CameraView(sourceView: SourceView.addReportFile,
                    showingCameraView: $viewModel.showingCamera,
                    resultFile: $viewModel.resultFile,
-                   mainAppModel: mainAppModel) : nil
+                   mainAppModel: viewModel.mainAppModel) : nil
     }
     
     private func showSaveReportConfirmationView() {
@@ -263,13 +262,13 @@ struct DraftView<T: ServerProtocol>: View  {
     }
     
     private func handleSuccessSavingDraft() {
-        reportsViewModel.selectedCell = .draft
+        reportsViewModel.selectedPage = .draft
         dismissViews()
         Toast.displayToast(message: LocalizableReport.draftSavedToast.localized)
     }
         
     private func handleSuccessSavingOutbox() {
-        reportsViewModel.selectedCell = .outbox
+        reportsViewModel.selectedPage = .outbox
         dismissViews()
         Toast.displayToast(message: LocalizableReport.outboxSavedToast.localized)
     }

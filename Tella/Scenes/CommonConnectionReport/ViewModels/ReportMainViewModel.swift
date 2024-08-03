@@ -15,7 +15,7 @@ class ReportMainViewModel: ObservableObject {
     @Published var outboxedReportsViewModel : [CommonCardViewModel] = []
     @Published var submittedReportsViewModel : [CommonCardViewModel] = []
     
-    @Published var selectedCell: Pages = .draft
+    @Published var selectedPage: Page = .draft
     
     @Published var isLoading: Bool = false
     @Published var shouldShowToast : Bool = false

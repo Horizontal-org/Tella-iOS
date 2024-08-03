@@ -22,7 +22,7 @@ class UwaziViewModel: ObservableObject {
     @Published var outboxedEntitiesViewModel : [UwaziCardViewModel] = []
     @Published var submittedEntitiesViewModel : [UwaziCardViewModel] = []
     
-    @Published var selectedCell = Pages.template
+    @Published var selectedCell = Page.template
     @Published var isLoading: Bool = false
     @Published var serverName : String = ""
     

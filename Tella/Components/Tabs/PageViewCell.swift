@@ -9,9 +9,9 @@ struct  PageViewCell: View {
     let title: String
     let number: Int
     
-    let page: Pages
+    let page: Page
     
-    @Binding var selectedOption: Pages
+    @Binding var selectedOption: Page
     
     public var body: some View {
         

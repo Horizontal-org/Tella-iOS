@@ -13,8 +13,6 @@ struct ReportMainView: View {
     
     @ObservedObject var reportMainViewModel: ReportMainViewModel
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var mainAppModel: MainAppModel
-    
     
     let diContainer : DIContainer
     
@@ -34,13 +32,13 @@ struct ReportMainView: View {
         ContainerView {
             VStack(alignment: .center) {
                 
-                PageView(selectedOption: self.$reportMainViewModel.selectedCell, pageViewItems: reportMainViewModel.pageViewItems)
+                PageView(selectedOption: self.$reportMainViewModel.selectedPage, pageViewItems: reportMainViewModel.pageViewItems)
                     .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
                 
                 VStack (spacing: 0) {
                     Spacer()
                     
-                    switch self.reportMainViewModel.selectedCell {
+                    switch self.reportMainViewModel.selectedPage {
                         
                     case .draft:
                         CommonReportListView(message: LocalizableReport.draftListExpl.localized,
@@ -159,12 +157,12 @@ struct ReportMainView: View {
         switch reportMainViewModel.connectionType {
         case .tella:
             var destination: any View
-            destination = DraftReportView(mainAppModel: mainAppModel, reportId: id).environmentObject(reportMainViewModel)
+            destination = DraftReportView(mainAppModel: reportMainViewModel.mainAppModel, reportId: id).environmentObject(reportMainViewModel)
             self.navigateTo(destination: destination)
             
         case .gDrive:
             var destination : any View
-            destination = GDriveDraftView(mainAppModel: mainAppModel,
+            destination = GDriveDraftView(mainAppModel: reportMainViewModel.mainAppModel,
                                           gDriveDIContainer: (diContainer as! GDriveDIContainer),
                                           reportId: id).environmentObject(reportMainViewModel)
             self.navigateTo(destination: destination)
@@ -184,13 +182,13 @@ struct ReportMainView: View {
     private func showOutboxView(id: Int? = nil) {
         switch reportMainViewModel.connectionType {
         case .tella:
-            let outboxViewModel = OutboxReportVM(mainAppModel: mainAppModel, reportsViewModel: reportMainViewModel, reportId: id)
+            let outboxViewModel = OutboxReportVM(mainAppModel: reportMainViewModel.mainAppModel, reportsViewModel: reportMainViewModel, reportId: id)
             let destination = OutboxDetailsView(outboxReportVM: outboxViewModel)
                 .environmentObject(reportMainViewModel)
             self.navigateTo(destination: destination)
             break
         case .gDrive:
-            let outboxViewModel = GDriveOutboxViewModel(mainAppModel: mainAppModel, reportsViewModel: reportMainViewModel, reportId: id, repository: GDriveRepository())
+            let outboxViewModel = GDriveOutboxViewModel(mainAppModel: reportMainViewModel.mainAppModel, reportsViewModel: reportMainViewModel, reportId: id, repository: GDriveRepository())
             let destination = OutboxDetailsView(outboxReportVM: outboxViewModel)
                 .environmentObject(reportMainViewModel)
             self.navigateTo(destination: destination)
@@ -203,11 +201,11 @@ struct ReportMainView: View {
     private func showSubmittedView(id: Int? = nil) {
         switch reportMainViewModel.connectionType {
         case .tella:
-            let vm = SubmittedReportVM(mainAppModel: mainAppModel, reportId: id)
+            let vm = SubmittedReportVM(mainAppModel: reportMainViewModel.mainAppModel, reportId: id)
             let destination = SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportMainViewModel)
             self.navigateTo(destination: destination)
         case .gDrive:
-            let vm = GDriveSubmittedViewModel(mainAppModel: mainAppModel, reportId: id)
+            let vm = GDriveSubmittedViewModel(mainAppModel: reportMainViewModel.mainAppModel, reportId: id)
             let destination = SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportMainViewModel)
             self.navigateTo(destination: destination)
         default:

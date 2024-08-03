@@ -23,7 +23,6 @@ struct DraftReportView: View {
     
     var body: some View {
         DraftView(viewModel: reportViewModel, reportsViewModel: reportsViewModel)
-            .environmentObject(reportsViewModel)
     }
 }
 
