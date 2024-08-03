@@ -13,7 +13,8 @@ struct ReportMainView: View {
     
     @ObservedObject var reportMainViewModel: ReportMainViewModel
     @EnvironmentObject var sheetManager: SheetManager
-    
+    @EnvironmentObject var mainAppModel: MainAppModel
+
     let diContainer : DIContainer
     
     init(reportMainViewModel: ReportMainViewModel, diContainer : DIContainer) {

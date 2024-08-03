@@ -15,7 +15,8 @@ struct DraftView<T: ServerProtocol>: View  {
     @State private var shouldShowMenu : Bool = false
     
     @EnvironmentObject var sheetManager: SheetManager
-    
+    @EnvironmentObject var mainAppModel: MainAppModel
+
     var reportsViewModel : ReportMainViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     

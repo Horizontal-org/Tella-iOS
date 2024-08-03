@@ -36,7 +36,7 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
         .onReceive(outboxReportVM.$shouldShowSubmittedReportView, perform: { value in
             if value {
                 reportsViewModel.getReports()
-                reportsViewModel.selectedCell = .submitted
+                reportsViewModel.selectedPage = .submitted
                 navigateTo(destination: submittedDetailsView)
             }
         })

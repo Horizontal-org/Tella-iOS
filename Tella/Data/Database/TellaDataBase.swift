@@ -42,7 +42,6 @@ class TellaDataBase : DataBase {
                 fallthrough
             case 5:
                 createGDriveServerTable()
-                createNextcloudServerTable()
                 createGDriveReportTable()
                 createGDriveReportFilesTable()
                 createNextcloudServerTable()
@@ -69,9 +68,9 @@ class TellaDataBase : DataBase {
         createUwaziEntityInstanceVaultFileTable()
         addRelationshipColumnToUwaziTemplate()
         createGDriveServerTable()
-        createNextcloudServerTable()
         createGDriveReportTable()
         createGDriveReportFilesTable()
+        createNextcloudServerTable()
         createNextcloudReportTable()
         createNextcloudReportFilesTable()
 
