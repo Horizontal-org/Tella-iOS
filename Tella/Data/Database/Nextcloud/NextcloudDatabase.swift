@@ -66,6 +66,8 @@ extension TellaDataBase {
         do {
             try statementBuilder.delete(tableName: D.tNextcloudServer,
                                         primarykeyValue: [KeyValue(key: D.cId, value: serverId)])
+            try statementBuilder.deleteAll(tableNames: [D.tNextcloudReport, D.tNextcloudInstanceVaultFile])
+
             return true
         } catch let error {
             debugLog(error)
@@ -85,9 +87,9 @@ extension TellaDataBase {
             cddl(D.cCreatedDate, D.float),
             cddl(D.cUpdatedDate, D.float),
             cddl(D.cStatus, D.integer),
+            cddl(D.cRemoteReportStatus, D.integer),
             cddl(D.cServerId, D.integer, tableName: D.tNextcloudServer, referenceKey: D.cId)
         ]
-        
         statementBuilder.createTable(tableName: D.tNextcloudReport, columns: columns)
     }
     
@@ -100,8 +102,8 @@ extension TellaDataBase {
             cddl(D.cBytesSent, D.integer),
             cddl(D.cCreatedDate, D.float),
             cddl(D.cUpdatedDate, D.float),
+            cddl(D.cChunkFiles, D.text),
             cddl(D.cReportInstanceId, D.integer, tableName: D.tNextcloudReport, referenceKey: D.cId)
-            
         ]
         statementBuilder.createTable(tableName: D.tNextcloudInstanceVaultFile, columns: columns)
     }
@@ -157,10 +159,14 @@ extension TellaDataBase {
                                                                     equalCondition: reportsCondition
             )
             
-            let decodedReports = try nextcloudDict.first?.decode(NextcloudReport.self)
-            let reportFiles = getNextcloudVaultFiles(reportId: decodedReports?.id)
-            decodedReports?.reportFiles = reportFiles
-            return decodedReports
+            let decodedReport = try nextcloudDict.first?.decode(NextcloudReport.self)
+            let reportFiles = getNextcloudVaultFiles(reportId: decodedReport?.id)
+            decodedReport?.reportFiles = reportFiles
+            
+            let server = getNextcloudServer().first
+            decodedReport?.server = server
+            
+            return decodedReport
         } catch let error {
             debugLog(error)
             return nil
@@ -230,4 +236,45 @@ extension TellaDataBase {
             return false
         }
     }
+    
+    func updateNextcloudReportFile(reportFile: ReportFile) -> Bool {
+        do {
+            
+            let reportDictionary = reportFile.dictionary
+            let valuesToUpdate = reportDictionary.compactMap({KeyValue(key: $0.key, value: $0.value)})
+            
+            let reportCondition = [KeyValue(key: D.cId, value: reportFile.id)]
+            
+            try statementBuilder.update(tableName: D.tNextcloudInstanceVaultFile,
+                                         valuesToUpdate: valuesToUpdate,
+                                         equalCondition: reportCondition)
+            
+            return true
+        } catch let error {
+            debugLog(error)
+            return false
+        }
+    }
+    
+    func updateNextcloudReportWithoutFiles(report: NextcloudReport) -> Bool {
+        do {
+            
+            let reportDictionary = report.dictionary
+            let valuesToUpdate = reportDictionary.compactMap({KeyValue(key: $0.key, value: $0.value)})
+            
+            let reportCondition = [KeyValue(key: D.cId, value: report.id)]
+            
+            try statementBuilder.update(tableName: D.tNextcloudReport,
+                                         valuesToUpdate: valuesToUpdate,
+                                         equalCondition: reportCondition
+            )
+            return true
+        } catch let error {
+            debugLog(error)
+            return false
+        }
+    }
+
+    
+    
 }

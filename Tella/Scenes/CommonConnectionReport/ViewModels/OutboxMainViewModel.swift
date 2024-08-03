@@ -108,19 +108,18 @@ class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
         }
     }
     
+    func updateCurrentFile(uploadProgressInfo : UploadProgressInfo) {
+        
+    }
+
     func updateProgressInfos(uploadProgressInfo : UploadProgressInfo) {
+
+        updateCurrentFile(uploadProgressInfo: uploadProgressInfo)
+
+        guard  let file = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId}) else { return}
         
-        guard  let _ = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId}) else { return}
-        
-        _ = self.reportViewModel.files.compactMap { _ in
-            let currentFile = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId})
-            currentFile?.bytesSent = uploadProgressInfo.bytesSent ?? 0
-            currentFile?.status = uploadProgressInfo.status
-            return currentFile
-        }
-        
-        self.updateFileProgress(progressInfo: uploadProgressInfo)
-        
+        self.updateFile(file: file)
+
         // All Files
         let totalBytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent)}
         let totalSize = self.reportViewModel.files.reduce(0) { $0 + ($1.size)}
@@ -157,12 +156,19 @@ class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
         
     }
     
+    func publishUpdates() {
+        DispatchQueue.main.async {
+            self.objectWillChange.send()
+        }
+    }
+
     // MARK: Update Local database
     
-    func updateFileProgress(progressInfo:UploadProgressInfo) {
-        
-    }
+    func updateFile(file: ReportVaultFile) { }
+    
     func updateReportStatus(reportStatus:ReportStatus) {}
     
+    func updateReport() {}
+
     func deleteReport() {}
 }

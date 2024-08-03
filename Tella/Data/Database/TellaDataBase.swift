@@ -72,6 +72,9 @@ class TellaDataBase : DataBase {
         createNextcloudServerTable()
         createGDriveReportTable()
         createGDriveReportFilesTable()
+        createNextcloudReportTable()
+        createNextcloudReportFilesTable()
+
     }
     
     func createReportTable() {

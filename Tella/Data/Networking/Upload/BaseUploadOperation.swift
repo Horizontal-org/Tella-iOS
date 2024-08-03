@@ -81,8 +81,7 @@ class BaseUploadOperation : Operation {
                 let instanceId = file?.instanceId
                 
                 let totalByteSent = self.updateReportFile(fileStatus: progressInfo.status, id: instanceId, 
-                                                          bytesSent: progressInfo.bytesSent,
-                                                          current: progressInfo.current)
+                                                          bytesSent: progressInfo.bytesSent)
                 
                 if let _ = progressInfo.error {
                     self.updateReport(reportStatus: .submissionError)

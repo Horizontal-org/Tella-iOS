@@ -205,5 +205,14 @@ extension URL {
             return self.path
         }
     }
+    
+    var directoryPath: String {
+        return self.deletingLastPathComponent().relativePath
+    }
+    
+    var directoryURL: URL {
+        return self.deletingLastPathComponent()
+    }
+
 }
 

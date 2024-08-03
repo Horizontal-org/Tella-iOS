@@ -103,9 +103,8 @@ struct D {
     
     //nextcloud
     static let cUserId = "c_user_id"
-
-    
-
+    static let cRemoteReportStatus = "c_remote_report_status"
+    static let cChunkFiles = "c_chunk_files"
 }
 
 

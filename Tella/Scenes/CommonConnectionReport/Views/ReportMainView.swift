@@ -169,7 +169,7 @@ struct ReportMainView: View {
         case .nextcloud:
             var destination : any View
             destination = NextcloudDraftView(mainAppModel: mainAppModel,
-                                             nextcloudDIContainer: (diContainer as! NextcloudDIContainer), 
+                                             nextcloudDIContainer: (diContainer as! NextcloudDIContainer),
                                              reportsViewModel: reportMainViewModel,
                                              reportId: id)
             self.navigateTo(destination: destination)
@@ -182,16 +182,32 @@ struct ReportMainView: View {
     private func showOutboxView(id: Int? = nil) {
         switch reportMainViewModel.connectionType {
         case .tella:
-            let outboxViewModel = OutboxReportVM(mainAppModel: reportMainViewModel.mainAppModel, reportsViewModel: reportMainViewModel, reportId: id)
-            let destination = OutboxDetailsView(outboxReportVM: outboxViewModel)
-                .environmentObject(reportMainViewModel)
+            let outboxViewModel = OutboxReportVM(mainAppModel: mainAppModel,
+                                                 reportsViewModel: reportMainViewModel,
+                                                 reportId: id)
+            let destination = OutboxDetailsView(outboxReportVM: outboxViewModel,
+                                                reportsViewModel: reportMainViewModel)
             self.navigateTo(destination: destination)
             break
         case .gDrive:
-            let outboxViewModel = GDriveOutboxViewModel(mainAppModel: reportMainViewModel.mainAppModel, reportsViewModel: reportMainViewModel, reportId: id, repository: GDriveRepository())
-            let destination = OutboxDetailsView(outboxReportVM: outboxViewModel)
-                .environmentObject(reportMainViewModel)
+            let outboxViewModel = GDriveOutboxViewModel(mainAppModel: mainAppModel, 
+                                                        reportsViewModel: reportMainViewModel,
+                                                        reportId: id,
+                                                        repository: GDriveRepository())
+            let destination = OutboxDetailsView(outboxReportVM: outboxViewModel,
+                                                reportsViewModel: reportMainViewModel)
             self.navigateTo(destination: destination)
+       
+        case .nextcloud:
+            let outboxViewModel = NextcloudOutboxViewModel(mainAppModel: mainAppModel,
+                                                           reportsViewModel: reportMainViewModel,
+                                                           reportId: id,
+                                                           repository:(diContainer as! NextcloudDIContainer).nextcloudRepository)
+            let destination = OutboxDetailsView(outboxReportVM: outboxViewModel, 
+                                                reportsViewModel: reportMainViewModel)
+            
+            self.navigateTo(destination: destination)
+            
         default:
             break
         }
@@ -201,12 +217,16 @@ struct ReportMainView: View {
     private func showSubmittedView(id: Int? = nil) {
         switch reportMainViewModel.connectionType {
         case .tella:
-            let vm = SubmittedReportVM(mainAppModel: reportMainViewModel.mainAppModel, reportId: id)
-            let destination = SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportMainViewModel)
+            let vm = SubmittedReportVM(mainAppModel: mainAppModel, reportId: id)
+            let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportMainViewModel)
             self.navigateTo(destination: destination)
         case .gDrive:
-            let vm = GDriveSubmittedViewModel(mainAppModel: reportMainViewModel.mainAppModel, reportId: id)
-            let destination = SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportMainViewModel)
+            let vm = GDriveSubmittedViewModel(mainAppModel: mainAppModel, reportId: id)
+            let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportMainViewModel)
+            self.navigateTo(destination: destination)
+        case .nextcloud:
+            let vm = NextcloudSubmittedViewModel(mainAppModel: mainAppModel, reportId: id)
+            let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportMainViewModel)
             self.navigateTo(destination: destination)
         default:
             break

@@ -32,8 +32,9 @@ extension TellaData {
         return self.database.getNextcloudReports(reportStatus: [ReportStatus.submitted])
     }
     
-    func getNextcloudReport(id: Int) -> NextcloudReport? {
-        self.database.getNextcloudReport(id: id)
+    func getNextcloudReport(id: Int?) -> NextcloudReport? {
+        guard let id else { return nil }
+        return self.database.getNextcloudReport(id: id)
     }
     
     func updateNextcloudReport(report: NextcloudReport) -> Bool {
@@ -44,5 +45,15 @@ extension TellaData {
     func deleteNextcloudReport(reportId: Int?) -> Bool {
         shouldReloadNextcloudReports.send(true)
         return self.database.deleteNextcloudReport(reportId: reportId)
+    }
+    
+    @discardableResult
+    func updateNextcloudReportFile(reportFile: ReportFile) -> Bool {
+        database.updateNextcloudReportFile(reportFile: reportFile)
+    }
+
+    @discardableResult
+    func updateNextcloudReportWithoutFiles(report: NextcloudReport) -> Bool {
+        database.updateNextcloudReportWithoutFiles(report: report)
     }
 }

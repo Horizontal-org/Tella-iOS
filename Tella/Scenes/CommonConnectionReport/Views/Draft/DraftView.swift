@@ -15,7 +15,7 @@ struct DraftView<T: ServerProtocol>: View  {
     @State private var shouldShowMenu : Bool = false
     
     @EnvironmentObject var sheetManager: SheetManager
-      
+    
     var reportsViewModel : ReportMainViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
@@ -52,7 +52,7 @@ struct DraftView<T: ServerProtocol>: View  {
             isRightButtonEnabled: viewModel.reportIsDraft
         )
     }
-
+    
     
     var contentView: some View {
         VStack(alignment: .leading) {
@@ -195,11 +195,22 @@ struct DraftView<T: ServerProtocol>: View  {
         Group {
             switch reportsViewModel.connectionType {
             case .tella:
-                let outboxVM = OutboxReportVM(mainAppModel: viewModel.mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId)
-                OutboxDetailsView(outboxReportVM: outboxVM).environmentObject(reportsViewModel)
+                let outboxVM = OutboxReportVM(mainAppModel: mainAppModel,
+                                              reportsViewModel: reportsViewModel,
+                                              reportId: viewModel.reportId)
+                OutboxDetailsView(outboxReportVM: outboxVM, reportsViewModel: reportsViewModel)
             case .gDrive:
-                let outboxVM = GDriveOutboxViewModel(mainAppModel: viewModel.mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId, repository: GDriveRepository())
-                OutboxDetailsView(outboxReportVM: outboxVM).environmentObject(reportsViewModel)
+                let outboxVM = GDriveOutboxViewModel(mainAppModel: mainAppModel,
+                                                     reportsViewModel: reportsViewModel,
+                                                     reportId: viewModel.reportId,
+                                                     repository: GDriveRepository())
+                OutboxDetailsView(outboxReportVM: outboxVM, reportsViewModel: reportsViewModel)
+            case .nextcloud:
+                let outboxVM = NextcloudOutboxViewModel(mainAppModel: mainAppModel,
+                                                        reportsViewModel: reportsViewModel,
+                                                        reportId: viewModel.reportId,
+                                                        repository: NextcloudRepository())
+                OutboxDetailsView(outboxReportVM: outboxVM, reportsViewModel: reportsViewModel)
             default:
                 Text("")
             }
@@ -213,7 +224,7 @@ struct DraftView<T: ServerProtocol>: View  {
                              resultFile: $viewModel.resultFile,
                              shouldReloadVaultFiles: .constant(false))
     }
-        
+    
     var recordView: some View {
         viewModel.showingRecordView ?
         RecordView(appModel: viewModel.mainAppModel,
@@ -221,7 +232,7 @@ struct DraftView<T: ServerProtocol>: View  {
                    showingRecoredrView: $viewModel.showingRecordView,
                    resultFile: $viewModel.resultFile) : nil
     }
-        
+    
     var cameraView: some View {
         viewModel.showingCamera ?
         CameraView(sourceView: SourceView.addReportFile,
@@ -233,9 +244,9 @@ struct DraftView<T: ServerProtocol>: View  {
     private func showSaveReportConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: 200) {
             ConfirmBottomSheet(titleText: LocalizableReport.exitTitle.localized,
-                                msgText: LocalizableReport.exitMessage.localized,
-                                cancelText: LocalizableReport.exitCancel.localized.uppercased(),
-                                actionText:LocalizableReport.exitSave.localized.uppercased(), didConfirmAction: {
+                               msgText: LocalizableReport.exitMessage.localized,
+                               cancelText: LocalizableReport.exitCancel.localized.uppercased(),
+                               actionText:LocalizableReport.exitSave.localized.uppercased(), didConfirmAction: {
                 viewModel.saveDraftReport()
             }, didCancelAction: {
                 dismissViews()
@@ -266,13 +277,13 @@ struct DraftView<T: ServerProtocol>: View  {
         dismissViews()
         Toast.displayToast(message: LocalizableReport.draftSavedToast.localized)
     }
-        
+    
     private func handleSuccessSavingOutbox() {
         reportsViewModel.selectedPage = .outbox
         dismissViews()
         Toast.displayToast(message: LocalizableReport.outboxSavedToast.localized)
     }
-        
+    
     private func handleSuccessSavingReportForSubmission() {
         DispatchQueue.main.async {
             navigateTo(destination: outboxDetailsView)

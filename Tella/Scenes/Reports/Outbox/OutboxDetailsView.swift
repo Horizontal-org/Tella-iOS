@@ -7,7 +7,7 @@ import SwiftUI
 struct OutboxDetailsView<T: ServerProtocol>: View {
     
     @StateObject var outboxReportVM : OutboxMainViewModel<T>
-    @EnvironmentObject var reportsViewModel : ReportMainViewModel
+    @StateObject var reportsViewModel : ReportMainViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
@@ -35,6 +35,8 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
         
         .onReceive(outboxReportVM.$shouldShowSubmittedReportView, perform: { value in
             if value {
+                reportsViewModel.getReports()
+                reportsViewModel.selectedCell = .submitted
                 navigateTo(destination: submittedDetailsView)
             }
         })
@@ -179,13 +181,24 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
             switch reportsViewModel.connectionType {
             case .tella:
                 let vm = SubmittedReportVM(mainAppModel: mainAppModel, reportId: outboxReportVM.reportViewModel.id)
-                SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportsViewModel)
+                SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsViewModel)
             case .gDrive:
                 let vm = GDriveSubmittedViewModel(mainAppModel: mainAppModel, reportId: outboxReportVM.reportViewModel.id)
-                SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportsViewModel)
+                SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsViewModel)
+            case .nextcloud:
+                let vm = NextcloudSubmittedViewModel(mainAppModel: mainAppModel, reportId: outboxReportVM.reportViewModel.id)
+                SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsViewModel)
             default:
                 Text("")
             }
+        }
+    }
+    
+    private func handleBackAction() {
+        if outboxReportVM.isSubmissionInProgress  {
+            self.showCancelUploadConfirmationView()
+        } else {
+            self.dismissView()
         }
     }
     
@@ -193,11 +206,25 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
         self.popTo(UIHostingController<ReportMainView>.self)
     }
     
+    private func showCancelUploadConfirmationView() {
+        sheetManager.showBottomSheet(modalHeight: 200) {
+            ConfirmBottomSheet(titleText: LocalizableSettings.exitFeedbackTitle.localized,
+                               msgText: LocalizableSettings.exitFeedbackSheetExpl.localized,
+                               cancelText: LocalizableSettings.exitFeedbackSheetAction.localized.uppercased(),
+                               actionText:LocalizableSettings.exitFeedbackSaveSheetAction.localized.uppercased(), didConfirmAction: {
+                self.outboxReportVM.pauseSubmission()
+                self.dismissView()
+            }, didCancelAction: {
+                sheetManager.hide()
+            })
+        }
+    }
+    
     private func showDeleteReportConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: 200) {
             DeleteReportConfirmationView(title: outboxReportVM.reportViewModel.title,
                                          message: LocalizableReport.deleteOutboxReportMessage.localized) {
-               Toast.displayToast(message: String(format: LocalizableReport.reportDeletedToast.localized, outboxReportVM.reportViewModel.title))
+                Toast.displayToast(message: String(format: LocalizableReport.reportDeletedToast.localized, outboxReportVM.reportViewModel.title))
                 outboxReportVM.pauseSubmission()
                 dismissView()
                 outboxReportVM.deleteReport()
