@@ -16,10 +16,10 @@ class NextcloudSubmittedViewModel: SubmittedMainViewModel {
     }
     
     override var report: BaseReport? {
-        return self.mainAppModel.tellaData?.getNextcloudReport(id: self.id)
+        return mainAppModel.tellaData?.getNextcloudReport(id: id)
     }
     
     override func deleteReport() {
-        let _ = mainAppModel.tellaData?.deleteDriveReport(reportId: id)
+        let _ = mainAppModel.tellaData?.deleteNextcloudReport(reportId: id)
     }
 }
