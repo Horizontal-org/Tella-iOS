@@ -16,6 +16,10 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     private var uploadQueue: [ReportVaultFile] = []
     var server: GDriveServer?
     
+    override var shouldShowCancelUploadConfirmation : Bool {
+        return true
+    }
+
     init(mainAppModel: MainAppModel,
          reportsViewModel : ReportMainViewModel,
          reportId : Int?,

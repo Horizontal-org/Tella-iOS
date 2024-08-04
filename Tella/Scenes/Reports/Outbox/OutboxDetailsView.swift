@@ -54,7 +54,7 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
         
         HStack(spacing: 0) {
             Button {
-                dismissView()
+                handleBackAction()
             } label: {
                 Image("back")
                     .flipsForRightToLeftLayoutDirection(true)
@@ -195,7 +195,7 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
     }
     
     private func handleBackAction() {
-        if outboxReportVM.isSubmissionInProgress  {
+        if outboxReportVM.isSubmissionInProgress && outboxReportVM.shouldShowCancelUploadConfirmation {
             self.showCancelUploadConfirmationView()
         } else {
             self.dismissView()
@@ -207,11 +207,11 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
     }
     
     private func showCancelUploadConfirmationView() {
-        sheetManager.showBottomSheet(modalHeight: 200) {
-            ConfirmBottomSheet(titleText: LocalizableSettings.exitFeedbackTitle.localized,
-                               msgText: LocalizableSettings.exitFeedbackSheetExpl.localized,
-                               cancelText: LocalizableSettings.exitFeedbackSheetAction.localized.uppercased(),
-                               actionText:LocalizableSettings.exitFeedbackSaveSheetAction.localized.uppercased(), didConfirmAction: {
+        sheetManager.showBottomSheet(modalHeight: 150) {
+            ConfirmBottomSheet(titleText: LocalizableReport.exitReportSheetTitle.localized,
+                               msgText: LocalizableReport.exitReportSheetExpl.localized,
+                               cancelText: LocalizableReport.exitReportCancelSheetAction.localized.uppercased(),
+                               actionText:LocalizableReport.exitReportExitSheetAction.localized.uppercased(), didConfirmAction: {
                 self.outboxReportVM.pauseSubmission()
                 self.dismissView()
             }, didCancelAction: {

@@ -15,7 +15,11 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
     
     private let nextcloudRepository: NextcloudRepositoryProtocol
     private var currentReport : NextcloudReport?
-    
+
+    override var shouldShowCancelUploadConfirmation : Bool {
+        return true
+    }
+
     init(mainAppModel: MainAppModel,
          reportsViewModel : ReportMainViewModel,
          reportId : Int?,

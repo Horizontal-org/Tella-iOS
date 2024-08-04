@@ -335,6 +335,12 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Draft_SelectFiles_TellaFiles_SheetSelect" = "Select from Tella files";
 "Reports_Draft_SelectFiles_ImportFromDevice_SheetSelect" = "Select from your device";
 "Reports_Outbox_PercentangeUploaded_Expl" = "Waiting for connection";
+
+"Reports_Outbox_ExitReport_SheetTitle" = "Exit report?";
+"Reports_Outbox_ExitReport_SheetExpl" = "The upload will be paused.";
+"Reports_Outbox_ExitReport_Exit_SheetAction" = "Exit and pause";
+"Reports_Outbox_ExitReport_Cancel_SheetAction" = "CANCEL";
+
 "Vault_DeleteFiles_SheetTitle" = "Delete files?";
 "Vault_DeleteFiles_SheetExpl" = "%i files will be permanently deleted from Tella.";
 "Reports_DeleteDraftReport_SheetExpl" = "Are you sure you want to delete this draft?";

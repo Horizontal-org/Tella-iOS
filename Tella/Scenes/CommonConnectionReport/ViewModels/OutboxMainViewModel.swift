@@ -51,7 +51,10 @@ class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
         return !reportViewModel.description.isEmpty
     }
     
-    
+    var shouldShowCancelUploadConfirmation : Bool {
+        return false
+    }
+
     init(mainAppModel: MainAppModel, reportsViewModel : ReportMainViewModel, reportId : Int?) {
         self.mainAppModel = mainAppModel
         self.reportsViewModel = reportsViewModel

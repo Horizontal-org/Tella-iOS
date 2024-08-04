@@ -75,4 +75,10 @@ enum LocalizableReport: String, LocalizableDelegate {
     case outboxListExpl = "Reports_Outbox_OutboxList_Expl"
     case submittedListExpl = "Reports_Submitted_SubmittedList_Expl"
     
+    case exitReportSheetTitle = "Reports_Outbox_ExitReport_SheetTitle"
+    case exitReportSheetExpl = "Reports_Outbox_ExitReport_SheetExpl"
+    case exitReportExitSheetAction = "Reports_Outbox_ExitReport_Exit_SheetAction"
+    case exitReportCancelSheetAction = "Reports_Outbox_ExitReport_Cancel_SheetAction"
+
+
 }
