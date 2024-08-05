@@ -11,12 +11,12 @@ import SwiftUI
 
 struct ReportMainView: View {
     
-    @ObservedObject var reportMainViewModel: ReportMainViewModel
+    @ObservedObject var reportMainViewModel: ReportsMainViewModel
     @EnvironmentObject var sheetManager: SheetManager
     
     let diContainer : DIContainer
     
-    init(reportMainViewModel: ReportMainViewModel, diContainer : DIContainer) {
+    init(reportMainViewModel: ReportsMainViewModel, diContainer : DIContainer) {
         self.reportMainViewModel = reportMainViewModel
         self.diContainer = diContainer
     }

@@ -14,7 +14,7 @@ struct DraftReportView: View {
     
     @EnvironmentObject var mainAppModel : MainAppModel
     @EnvironmentObject var sheetManager : SheetManager
-    @EnvironmentObject var reportsViewModel : ReportMainViewModel
+    @EnvironmentObject var reportsViewModel : ReportsMainViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     init(mainAppModel: MainAppModel, reportId:Int? = nil) {

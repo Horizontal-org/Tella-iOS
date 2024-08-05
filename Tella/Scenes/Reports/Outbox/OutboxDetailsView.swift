@@ -7,7 +7,7 @@ import SwiftUI
 struct OutboxDetailsView<T: ServerProtocol>: View {
     
     @StateObject var outboxReportVM : OutboxMainViewModel<T>
-    @EnvironmentObject var reportsViewModel : ReportMainViewModel
+    @EnvironmentObject var reportsViewModel : ReportsMainViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager

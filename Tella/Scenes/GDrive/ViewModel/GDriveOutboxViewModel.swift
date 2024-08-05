@@ -17,7 +17,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     var server: GDriveServer?
     
     init(mainAppModel: MainAppModel,
-         reportsViewModel : ReportMainViewModel,
+         reportsViewModel : ReportsMainViewModel,
          reportId : Int?,
          repository: GDriveRepository) {
         

@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-class ReportMainViewModel: ObservableObject {
+class ReportsMainViewModel: ObservableObject {
     
     @Published var draftReportsViewModel : [CommonCardViewModel] = []
     @Published var outboxedReportsViewModel : [CommonCardViewModel] = []

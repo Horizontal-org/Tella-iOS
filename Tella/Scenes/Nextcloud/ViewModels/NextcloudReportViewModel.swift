@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-class NextcloudReportViewModel: ReportMainViewModel {
+class NextcloudReportViewModel: ReportsMainViewModel {
     
     override func getReports() {
         

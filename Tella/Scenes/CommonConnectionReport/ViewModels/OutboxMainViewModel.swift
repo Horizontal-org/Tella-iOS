@@ -12,7 +12,7 @@ import Combine
 class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
     
     var mainAppModel : MainAppModel
-    var reportsViewModel : ReportMainViewModel
+    var reportsViewModel : ReportsMainViewModel
     
     @Published var reportViewModel : ReportViewModel = ReportViewModel<T>()
     @Published var progressFileItems : [ProgressFileItemViewModel] = []
@@ -52,7 +52,7 @@ class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
     }
     
     
-    init(mainAppModel: MainAppModel, reportsViewModel : ReportMainViewModel, reportId : Int?) {
+    init(mainAppModel: MainAppModel, reportsViewModel : ReportsMainViewModel, reportId : Int?) {
         self.mainAppModel = mainAppModel
         self.reportsViewModel = reportsViewModel
         
