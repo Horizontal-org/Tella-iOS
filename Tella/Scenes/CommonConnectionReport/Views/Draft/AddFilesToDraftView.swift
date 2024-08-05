@@ -12,7 +12,7 @@ struct AddFilesToDraftView<T: ServerProtocol>: View {
     
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var draftReportVM: DraftMainViewModel<T>
+    @StateObject var draftReportVM: DraftMainViewModel<T>
     
     private let gridLayout: [GridItem] = [GridItem(spacing: 12),
                                           GridItem(spacing: 12),
