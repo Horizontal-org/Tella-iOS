@@ -30,7 +30,6 @@ struct DraftReportView_Previews: PreviewProvider {
     static var previews: some View {
         
         DraftReportView(mainAppModel: MainAppModel.stub())
-            .environmentObject(BaseReportsViewModel(mainAppModel: MainAppModel.stub()))
     }
 }
 
