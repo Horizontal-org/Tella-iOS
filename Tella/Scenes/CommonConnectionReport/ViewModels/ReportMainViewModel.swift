@@ -62,9 +62,9 @@ class ReportsMainViewModel: ObservableObject {
     }
 }
 
-extension ReportMainViewModel {
-    static func stub() -> ReportMainViewModel {
-        return ReportMainViewModel(mainAppModel: MainAppModel.stub(),
+extension ReportsMainViewModel {
+    static func stub() -> ReportsMainViewModel {
+        return ReportsMainViewModel(mainAppModel: MainAppModel.stub(),
                                    connectionType: ServerConnectionType.nextcloud,
                                    title: "Nextcloud")
     }

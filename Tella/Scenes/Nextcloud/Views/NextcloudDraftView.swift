@@ -12,14 +12,14 @@ import SwiftUI
 struct NextcloudDraftView: View {
     
     @StateObject var nextcloudDraftViewModel: NextcloudDraftViewModel
-    @StateObject var reportsViewModel : ReportMainViewModel
+    @StateObject var reportsViewModel : ReportsMainViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
     
     let nextcloudDIContainer: NextcloudDIContainer
     
     init(mainAppModel: MainAppModel,
          nextcloudDIContainer: NextcloudDIContainer,
-         reportsViewModel: ReportMainViewModel,
+         reportsViewModel: ReportsMainViewModel,
          reportId: Int? = nil) {
         
         self.nextcloudDIContainer = nextcloudDIContainer
@@ -37,5 +37,5 @@ struct NextcloudDraftView: View {
 #Preview {
     NextcloudDraftView(mainAppModel: MainAppModel.stub(),
                        nextcloudDIContainer: NextcloudDIContainer(),
-                       reportsViewModel: ReportMainViewModel.stub())
+                       reportsViewModel: ReportsMainViewModel.stub())
 }

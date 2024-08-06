@@ -55,7 +55,7 @@ class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
         return false
     }
 
-    init(mainAppModel: MainAppModel, reportsViewModel : ReportMainViewModel, reportId : Int?) {
+    init(mainAppModel: MainAppModel, reportsViewModel : ReportsMainViewModel, reportId : Int?) {
         self.mainAppModel = mainAppModel
         self.reportsViewModel = reportsViewModel
         

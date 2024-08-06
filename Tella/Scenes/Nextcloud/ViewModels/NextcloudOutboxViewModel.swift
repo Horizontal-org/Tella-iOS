@@ -21,7 +21,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
     }
 
     init(mainAppModel: MainAppModel,
-         reportsViewModel : ReportMainViewModel,
+         reportsViewModel : ReportsMainViewModel,
          reportId : Int?,
          repository: NextcloudRepositoryProtocol) {
         
