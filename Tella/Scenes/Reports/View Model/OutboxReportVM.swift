@@ -12,7 +12,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
         return !(reportViewModel.server?.autoDelete ?? true)
     }
 
-    override init(mainAppModel: MainAppModel, reportsViewModel : ReportMainViewModel, reportId : Int?) {
+    override init(mainAppModel: MainAppModel, reportsViewModel : ReportsMainViewModel, reportId : Int?) {
 
         super.init(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: reportId)
 

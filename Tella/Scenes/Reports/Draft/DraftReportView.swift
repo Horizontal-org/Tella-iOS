@@ -14,7 +14,7 @@ struct DraftReportView: View {
     
     @EnvironmentObject var mainAppModel : MainAppModel
     @EnvironmentObject var sheetManager : SheetManager
-    @EnvironmentObject var reportsViewModel : ReportMainViewModel
+    @EnvironmentObject var reportsViewModel : ReportsMainViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     init(mainAppModel: MainAppModel, reportId:Int? = nil) {
@@ -30,7 +30,6 @@ struct DraftReportView_Previews: PreviewProvider {
     static var previews: some View {
         
         DraftReportView(mainAppModel: MainAppModel.stub())
-            .environmentObject(BaseReportsViewModel(mainAppModel: MainAppModel.stub()))
     }
 }
 

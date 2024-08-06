@@ -7,7 +7,7 @@ import Foundation
 import Combine
 import SwiftUI
 
-class ReportsViewModel: ReportMainViewModel {
+class ReportsViewModel: ReportsMainViewModel {
     @Published var selectedReport : Report?
     
     var sheetItems : [ListActionSheetItem] { return [

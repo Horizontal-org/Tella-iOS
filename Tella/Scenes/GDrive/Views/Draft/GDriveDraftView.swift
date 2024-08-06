@@ -11,7 +11,7 @@ import SwiftUI
 struct GDriveDraftView: View {
     @StateObject var gDriveDraftVM: GDriveDraftViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
-    @EnvironmentObject var reportsViewModel : ReportMainViewModel
+    @EnvironmentObject var reportsViewModel : ReportsMainViewModel
     let gDriveDIContainer: GDriveDIContainer
     
     init(mainAppModel: MainAppModel, gDriveDIContainer: GDriveDIContainer, reportId: Int? = nil) {

@@ -8,6 +8,7 @@ import SwiftUI
 struct SubmittedDetailsView: View {
     
     @StateObject var submittedReportVM : SubmittedMainViewModel
+    @EnvironmentObject var reportsViewModel : ReportsMainViewModel
     @StateObject var reportsViewModel : ReportMainViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>

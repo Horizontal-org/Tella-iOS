@@ -16,7 +16,6 @@ protocol BaseReportProtocol: Hashable {
     var updatedDate: Date? { get }
     var status: ReportStatus { get }
     var reportFiles: [ReportFile]? { get }
-    
     var getReportDate: String { get }
 }
 

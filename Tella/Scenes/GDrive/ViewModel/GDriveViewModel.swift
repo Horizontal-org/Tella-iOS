@@ -8,7 +8,7 @@
 
 import Foundation
 import Combine
-class GDriveViewModel: ReportMainViewModel {
+class GDriveViewModel: ReportsMainViewModel {
     @Published var selectedReport: GDriveReport?
     @Published var server: GDriveServer?
 
