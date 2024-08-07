@@ -176,9 +176,9 @@ class BaseUploadOperation : Operation {
     }
     
     func deleteCurrentAutoReport() {
-        let deleteReportResult = mainAppModel.tellaData?.deleteReport(reportId: self.report?.id)
+        let deleteReportResult = mainAppModel.tellaData?.deleteReport(reportId: self.report?.id) ?? false
         
-        if case .success = deleteReportResult {
+        if deleteReportResult {
             guard let reportVaultFiles = self.reportVaultFiles else {return}
             let reportVaultFilesIds = reportVaultFiles.compactMap{ $0.id}
             mainAppModel.vaultFilesManager?.deleteVaultFile(fileIds: reportVaultFilesIds)

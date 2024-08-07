@@ -309,7 +309,7 @@ class TellaData : ObservableObject {
         }
     }
     
-    func deleteReport(reportId : Int?) -> Result<Bool, Error> {
+    func deleteReport(reportId : Int?) -> Bool {
         let deleteReportResult = database.deleteReport(reportId: reportId)
         shouldReloadTellaReports.send(true)
         return deleteReportResult

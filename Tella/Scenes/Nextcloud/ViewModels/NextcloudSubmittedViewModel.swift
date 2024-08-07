@@ -20,6 +20,8 @@ class NextcloudSubmittedViewModel: SubmittedMainViewModel {
     }
     
     override func deleteReport() {
-        let _ = mainAppModel.tellaData?.deleteNextcloudReport(reportId: id)
+        let deleteResult = mainAppModel.tellaData?.deleteNextcloudReport(reportId: id)
+        handleDeleteReport(deleteResult: deleteResult ?? false)
     }
+
 }

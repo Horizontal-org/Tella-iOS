@@ -25,6 +25,10 @@ class SubmittedMainViewModel: ObservableObject {
     @Published var uploadedDate : String = ""
     @Published var uploadedFiles : String = ""
     
+    @Published var shouldShowToast : Bool = false
+    @Published var toastMessage : String = ""
+    @Published var shouldShowMainView : Bool = false
+
     var reportHasFile: Bool {
         return !files.isEmpty
     }
@@ -67,4 +71,14 @@ class SubmittedMainViewModel: ObservableObject {
     }
 
     func deleteReport() {}
+
+    func handleDeleteReport(deleteResult:Bool) {
+        if deleteResult {
+            toastMessage = String(format: LocalizableReport.reportDeletedToast.localized, title)
+        } else {
+            toastMessage = LocalizableCommon.commonError.localized
+        }
+        shouldShowMainView = deleteResult
+        shouldShowToast = true
+    }
 }

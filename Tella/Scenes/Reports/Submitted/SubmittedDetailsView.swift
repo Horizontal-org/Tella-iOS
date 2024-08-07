@@ -37,8 +37,23 @@ struct SubmittedDetailsView: View {
                     }.padding(EdgeInsets(top: 20, leading: 16, bottom: 70, trailing: 16))
                 }
             }
-        }.navigationBarHidden(true)
-
+        }
+        .onReceive(submittedReportVM.$shouldShowMainView, perform: { value in
+            if value {
+                dismissViews()
+            }
+        })
+        .onReceive(submittedReportVM.$shouldShowToast) { shouldShowToast in
+            if shouldShowToast {
+                Toast.displayToast(message: submittedReportVM.toastMessage)
+            }
+        }
+        .onReceive(submittedReportVM.$shouldShowMainView, perform: { value in
+            if value {
+                dismissViews()
+            }
+        })
+        .navigationBarHidden(true)
     }
     
     var outboxReportHeaderView: some View {
@@ -137,7 +152,6 @@ struct SubmittedDetailsView: View {
         sheetManager.showBottomSheet(modalHeight: 200) {
             DeleteReportConfirmationView(title: submittedReportVM.title,
                                          message: LocalizableReport.deleteSubmittedReportMessage.localized) {
-                dismissViews()
                 submittedReportVM.deleteReport()
                 sheetManager.hide()
             }

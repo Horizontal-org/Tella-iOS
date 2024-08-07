@@ -158,7 +158,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
     }
     
     override func deleteReport() {
-        mainAppModel.deleteReport(reportId: reportViewModel.id)
-        mainAppModel.deleteReport(reportId: reportViewModel.id)
+        let deleteResult = mainAppModel.deleteReport(reportId: reportViewModel.id)
+        handleDeleteReport(deleteResult: deleteResult)
     }
 }

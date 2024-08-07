@@ -47,6 +47,12 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
             }
         })
         
+        .onReceive(outboxReportVM.$shouldShowToast) { shouldShowToast in
+            if shouldShowToast {
+                Toast.displayToast(message: outboxReportVM.toastMessage)
+            }
+        }
+
         .navigationBarHidden(true)
     }
     
@@ -224,9 +230,6 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
         sheetManager.showBottomSheet(modalHeight: 200) {
             DeleteReportConfirmationView(title: outboxReportVM.reportViewModel.title,
                                          message: LocalizableReport.deleteOutboxReportMessage.localized) {
-                Toast.displayToast(message: String(format: LocalizableReport.reportDeletedToast.localized, outboxReportVM.reportViewModel.title))
-                outboxReportVM.pauseSubmission()
-                dismissView()
                 outboxReportVM.deleteReport()
                 sheetManager.hide()
             }

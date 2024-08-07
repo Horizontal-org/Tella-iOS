@@ -523,12 +523,12 @@ class TellaDataBase : DataBase {
         }
     }
     
-    func deleteReport(reportId : Int?) -> Result<Bool,Error> {
+    func deleteReport(reportId : Int?) -> Bool {
         
         do {
             
-            guard let reportId, let report = self.getReport(reportId: reportId)else {
-                return .failure(RuntimeError("No report is selected"))
+            guard let reportId, let report = self.getReport(reportId: reportId) else {
+                return false
             }
             
             try deleteReportFiles(reportIds: [reportId])
@@ -537,12 +537,11 @@ class TellaDataBase : DataBase {
             
             try statementBuilder.delete(tableName: D.tReport,
                                         primarykeyValue: reportCondition)
-            
-            return .success(true)
+            return true
             
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return false
         }
     }
     

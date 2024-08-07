@@ -28,6 +28,9 @@ class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
     @Published var shouldShowSubmittedReportView : Bool = false
     @Published var shouldShowMainView : Bool = false
     
+    @Published var shouldShowToast : Bool = false
+    @Published var toastMessage : String = ""
+
     var subscribers = Set<AnyCancellable>()
     var filesToUpload : [FileToUpload] = []
     
@@ -163,6 +166,18 @@ class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
         DispatchQueue.main.async {
             self.objectWillChange.send()
         }
+    }
+    
+    func handleDeleteReport(deleteResult:Bool) {
+        if deleteResult {
+            toastMessage = String(format: LocalizableReport.reportDeletedToast.localized, reportViewModel.title)
+            pauseSubmission()
+        } else {
+            toastMessage = LocalizableCommon.commonError.localized
+        }
+
+        shouldShowMainView = deleteResult
+        shouldShowToast = true
     }
 
     // MARK: Update Local database

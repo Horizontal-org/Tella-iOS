@@ -274,6 +274,11 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         publishUpdates()
     }
     
+    override func deleteReport() {
+        let deleteResult = mainAppModel.tellaData?.deleteNextcloudReport(reportId: reportViewModel.id)
+        handleDeleteReport(deleteResult: deleteResult ?? false)
+    }
+    
     func deleteChunksFiles() {
         // Delete the chunks files
         let urlFiles = self.reportViewModel.files.compactMap({$0.url?.directoryURL})
@@ -288,5 +293,6 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         guard let descriptionFileUrl = reportViewModel.descriptionFileUrl else { return }
         self.mainAppModel.vaultManager.deleteFiles(files: [descriptionFileUrl])
     }
+    
     
 }
