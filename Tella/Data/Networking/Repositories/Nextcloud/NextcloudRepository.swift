@@ -29,17 +29,18 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     
     private let kRemotePhpFiles = "remote.php/dav/files/"
     private let kchunkSize = (1024 * 1024)
-    
-    private var userId = ""
+    private let ktimeout = TimeInterval(60)
+
     private var subscribers = Set<AnyCancellable>()
     private var uploadTasks: [String?:URLSessionTask] = [:]
     private var shouldPause : Bool = false
     
     // Those attributes must be removed from here
+    private var userId = ""
     let configServerUrl = ""
     let configUsername = ""
     let configPassword = ""
- 
+
     init() {
         // Setup should be checked if the server is already in Database or not
         setUp()
@@ -96,6 +97,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     
     func uploadReport(report:NextcloudReportToSend) -> AnyPublisher<NextcloudUploadResponse,RuntimeError> {
         
+        // setUp() must be removed from here
         self.setUp()
         
         shouldPause = false
@@ -111,7 +113,10 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                     
                     guard !shouldPause else { return }
                     
-                    let folderName = await createFileName(fileNameBase: report.folderName, serverUrl: report.serverUrl)
+                    guard let folderName = await createFileName(fileNameBase: report.folderName, serverUrl: report.serverUrl) else {
+                        subject.send(completion:.failure(RuntimeError(LocalizableCommon.commonError.localized)))
+                        return
+                    }
                     
                     subject.send(.nameUpdated(newName: folderName))
                     
@@ -267,7 +272,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         }
     }
     
-    func fileExists(serverUrlFileName: String) async -> Bool  {
+    func fileExists(serverUrlFileName: String) async -> Bool?  {
         
         let requestBody =
         """
@@ -277,18 +282,28 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         </d:propfind>
         """
 
+        let option = NKRequestOptions(timeout: ktimeout, queue: NextcloudKit.shared.nkCommonInstance.backgroundQueue)
         return await withUnsafeContinuation({ continuation in
             NextcloudKit.shared.readFileOrFolder(serverUrlFileName: serverUrlFileName,
                                                  depth: "0",
                                                  requestBody: requestBody.data(using: .utf8),
-                                                 options: NKRequestOptions(timeout: 10, queue: NextcloudKit.shared.nkCommonInstance.backgroundQueue)) { account, files, _, error in
-                let result = error == .success ? true : false
-                continuation.resume(returning: result)
+                                                 options: option) {
+                account, files, _, error in
+
+                if error == .success, let _ = files.first {
+                    continuation.resume(returning: true)
+                } else if error.errorCode == HTTPErrorCodes.notFound.rawValue {
+                    continuation.resume(returning: false)
+                } else {
+                    continuation.resume(returning: nil)
+                }
             }
         })
     }
     
-    func createFileName(fileNameBase: String, serverUrl: String) async -> String {
+
+    
+    func createFileName(fileNameBase: String, serverUrl: String) async -> String? {
         
         var exitLoop = false
         var resultFileName = fileNameBase
@@ -330,6 +345,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
             let fullURL = serverUrl + "/" + self.kRemotePhpFiles + userId  + "/" + resultFileName // This fullURL should be updated
             
             let fileExists = await fileExists(serverUrlFileName: fullURL)
+            guard let fileExists else { return nil}
             if fileExists {
                 newFileName()
             } else {

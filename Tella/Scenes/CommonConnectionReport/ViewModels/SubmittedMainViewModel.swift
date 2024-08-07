@@ -75,10 +75,17 @@ class SubmittedMainViewModel: ObservableObject {
     func handleDeleteReport(deleteResult:Bool) {
         if deleteResult {
             toastMessage = String(format: LocalizableReport.reportDeletedToast.localized, title)
+            showMainView()
         } else {
             toastMessage = LocalizableCommon.commonError.localized
         }
-        shouldShowMainView = deleteResult
         shouldShowToast = true
     }
+    
+    private func showMainView() {
+        DispatchQueue.main.async {
+            self.shouldShowMainView = true
+        }
+    }
+
 }

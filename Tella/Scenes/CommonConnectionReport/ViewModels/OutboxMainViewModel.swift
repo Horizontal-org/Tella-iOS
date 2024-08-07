@@ -172,11 +172,11 @@ class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
         if deleteResult {
             toastMessage = String(format: LocalizableReport.reportDeletedToast.localized, reportViewModel.title)
             pauseSubmission()
+            showMainView()
         } else {
             toastMessage = LocalizableCommon.commonError.localized
         }
 
-        shouldShowMainView = deleteResult
         shouldShowToast = true
     }
 
