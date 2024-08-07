@@ -79,6 +79,6 @@ enum LocalizableReport: String, LocalizableDelegate {
     case exitReportSheetExpl = "Reports_Outbox_ExitReport_SheetExpl"
     case exitReportExitSheetAction = "Reports_Outbox_ExitReport_Exit_SheetAction"
     case exitReportCancelSheetAction = "Reports_Outbox_ExitReport_Cancel_SheetAction"
-
-
+  
+    case pausedCardExpl = "Reports_Paused_CardExpl"
 }

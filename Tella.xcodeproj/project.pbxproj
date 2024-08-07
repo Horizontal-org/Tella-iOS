@@ -2388,7 +2388,6 @@
 		12D7F5F52743F28700EBA3A2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				15E656A92C2A142300BDEC91 /* Reports */,
 				CCF47F3F2ABE11F3000ABBBC /* Connections */,
 				12C07F032B0748BE0030AD6E /* TopSheetView */,
 				122E4D53291AD99A00562EB1 /* TellaButton */,
@@ -2604,13 +2603,6 @@
 				15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */,
 			);
 			path = Draft;
-			sourceTree = "<group>";
-		};
-		15E656A92C2A142300BDEC91 /* Reports */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Reports;
 			sourceTree = "<group>";
 		};
 		15F64C9B2B6D78D8008A57AA /* Views */ = {

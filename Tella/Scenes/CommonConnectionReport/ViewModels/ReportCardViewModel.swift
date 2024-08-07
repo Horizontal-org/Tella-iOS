@@ -16,10 +16,10 @@ class ReportCardViewModel: CommonCardViewModel {
     init(report : BaseReport,
          serverName : String?,
          deleteReport: @escaping (() -> Void),
-         connectionType: ServerConnectionType = .uwazi
-    ) {
+         connectionType: ServerConnectionType = .uwazi) {
         
         let title = report.title ?? ""
+        let subtitle = report.getReportDate
         let serverName = serverName
         let iconImageName : String? = report.status.iconImageName
         let listActionSheetItem = report.status.listActionSheetItem
@@ -27,6 +27,7 @@ class ReportCardViewModel: CommonCardViewModel {
         
         super.init(id: report.id,
                    title: title,
+                   subtitle: subtitle,
                    iconImageName: iconImageName,
                    serverName: serverName,
                    updatedAt: report.updatedDate?.getDraftReportTime(),

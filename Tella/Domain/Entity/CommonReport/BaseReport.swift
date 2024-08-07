@@ -29,7 +29,7 @@ class BaseReport : Hashable, Codable, BaseReportProtocol {
     var status : ReportStatus = .unknown
     var reportFiles : [ReportFile]?
     var serverId: Int?
-
+    
     enum CodingKeys: String, CodingKey {
         case id = "c_id"
         case title = "c_title"
@@ -86,7 +86,7 @@ extension BaseReport {
         case .draft:
             return self.createdDate?.getDraftReportTime() ?? ""
         case .submissionPaused:
-            return "Paused"
+            return LocalizableReport.pausedCardExpl.localized
             
         case .submissionInProgress:
             return ""
