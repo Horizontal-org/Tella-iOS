@@ -228,6 +228,9 @@ extension TellaDataBase {
         do {
             let reportCondition = [KeyValue(key: D.cId, value: reportId)]
             try statementBuilder.delete(tableName: D.tNextcloudReport, primarykeyValue: reportCondition)
+            
+            let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: reportId)]
+            try statementBuilder.delete(tableName: D.tNextcloudInstanceVaultFile, primarykeyValue: reportFilesCondition)
             return true
         } catch let error {
             debugLog(error)
