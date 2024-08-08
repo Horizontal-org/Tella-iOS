@@ -44,9 +44,6 @@ struct AddServerURLView: View {
                 })
             } .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
             handleState
-            if viewModel.isLoading { // should be removed after using the checkServerState in the uwaziviewmodel
-                CircularActivityIndicatory()
-            }
         }
         .containerStyle()
         .navigationBarHidden(true)

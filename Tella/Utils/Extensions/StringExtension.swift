@@ -74,9 +74,10 @@ extension String {
         
         return "\(fileType)-\(Date().getDate())"
     }
-
-
     
+    func slash() -> String {
+        return self.hasSuffix("/") ? self : self + "/"
+    }
 }
 
 extension String {

@@ -36,8 +36,8 @@ class NextcloudServerViewModel: ServerViewModel {
                 try await nextcloudRepository.checkServer(serverUrl: serverURL)
                 checkServerState = .loaded(true)
             }
-            catch let error{
-                checkServerState = .error(error.localizedDescription)
+            catch let ncError as NextCloudError{
+                checkServerState = .error(ncError.message)
             }
         }
     }
@@ -47,11 +47,10 @@ class NextcloudServerViewModel: ServerViewModel {
         Task { @MainActor in
             do {
                 try await nextcloudRepository.login(serverUrl: serverURL, username: username, password: password)
-                addServer()
                 loginState = .loaded(true)
             }
-            catch let error{
-                loginState = .error(error.localizedDescription)
+            catch let ncError as NextCloudError{
+                loginState = .error(ncError.message)
             }
         }
     }
@@ -80,11 +79,11 @@ class NextcloudServerViewModel: ServerViewModel {
         Task { @MainActor in
             do {
                 try await nextcloudRepository.createFolder(serverUrl: serverURL, folderName: serverCreateFolderVM.folderName)
-                //TODO: Saving server to database
+                addServer()
                 serverCreateFolderVM.createFolderState = .loaded(true)
             }
-            catch let error{
-                serverCreateFolderVM.createFolderState = .error(error.localizedDescription)
+            catch let ncError as NextCloudError{
+                serverCreateFolderVM.createFolderState = .error(ncError.message)
             }
         }
     }

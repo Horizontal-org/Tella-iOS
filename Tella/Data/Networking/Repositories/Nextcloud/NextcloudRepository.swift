@@ -58,7 +58,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 if result == .success {
                     continuation.resume()
                 } else {
-                    continuation.resume(throwing: RuntimeError(result.errorDescription))
+                    continuation.resume(throwing: NextCloudError(result.errorCode))
                 }
             }
         }
@@ -68,12 +68,12 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         // NextcloudKit.shared.setup(delegate: self)
         NextcloudKit.shared.setup(account: username, user: username, userId: username , password: password, urlBase: serverUrl  )
         try await withCheckedThrowingContinuation { continuation in
-            NextcloudKit.shared.getUserProfile { account, userProfile, data, result in
+            NextcloudKit.shared.getUserProfile(account: "") { account, userProfile, data, result in
                 if result == .success {
                     self.userId = userProfile?.userId ?? ""
                     continuation.resume()
                 } else {
-                    continuation.resume(throwing: RuntimeError(result.errorDescription))
+                    continuation.resume(throwing: NextCloudError(result.errorCode))
                 }
             }
         }
@@ -81,15 +81,15 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     
     
     func createFolder(serverUrl: String, folderName: String) async throws {
-        let fullURL = serverUrl + "/" + self.kRemotePhpFiles + userId  + "/" + folderName // This fullURL should be updated
-        
+        let fullURL = serverUrl.slash() + self.kRemotePhpFiles + userId.slash() + folderName // This fullURL should be updated
+        print("full url is", fullURL)
         try await withCheckedThrowingContinuation { continuation in
             
-            NextcloudKit.shared.createFolder(serverUrlFileName: fullURL) { account, ocId, date, result in
+            NextcloudKit.shared.createFolder(serverUrlFileName: fullURL, account: "") { account, ocId, date, result in
                 if result == .success {
                     continuation.resume()
                 } else {
-                    continuation.resume(throwing: RuntimeError(result.errorDescription))
+                    continuation.resume(throwing: NextCloudError(result.errorCode))
                 }
             }
         }
@@ -175,7 +175,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
             NextcloudKit.shared.upload(serverUrlFileName: fullURL,
                                        fileNameLocalPath: descriptionFileUrl.getPath(),
                                        dateCreationFile: Date(),
-                                       dateModificationFile: Date(), completionHandler: { account, ocId, etag, date, size, allHeaderFields, afError, nkError in
+                                       dateModificationFile: Date(), account: "", completionHandler: { account, ocId, etag, date, size, allHeaderFields, afError, nkError in
                 
                 if nkError == .success {
                     continuation.resume()
@@ -216,7 +216,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                                             serverUrl: remoteFolderName,
                                             chunkFolder: metadata.chunkFolder,
                                             filesChunk: metadata.chunkFiles,
-                                            chunkSize: kchunkSize,
+                                            chunkSize: kchunkSize, account: "",
                                             options: options) { _ in
                 
             } counterChunk: { _ in
@@ -286,7 +286,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         return await withUnsafeContinuation({ continuation in
             NextcloudKit.shared.readFileOrFolder(serverUrlFileName: serverUrlFileName,
                                                  depth: "0",
-                                                 requestBody: requestBody.data(using: .utf8),
+                                                 requestBody: requestBody.data(using: .utf8), account: "",
                                                  options: option) {
                 account, files, _, error in
 

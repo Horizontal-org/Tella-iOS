@@ -33,10 +33,6 @@ struct ServerLoginView: View {
             }
             
             handleState
-            
-            if viewModel.isLoading {
-                CircularActivityIndicatory()
-            }
         }
         .onReceive(viewModel.$loginState) { value in
             if value == .loaded(true) {
@@ -80,7 +76,7 @@ struct ServerLoginView: View {
     
     @ViewBuilder
     private var handleState : some View {
-        switch viewModel.checkServerState {
+        switch viewModel.loginState {
         case .loading:
             CircularActivityIndicatory()
         case .error(let message):
