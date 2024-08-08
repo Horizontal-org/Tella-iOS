@@ -545,7 +545,7 @@ class TellaDataBase : DataBase {
         }
     }
     
-    func deleteSubmittedReport() -> Result<Bool,Error> {
+    func deleteSubmittedReport() -> Bool {
         do {
             let submittedReports = self.getReports(reportStatus: [.submitted])
             let reportIds = submittedReports.compactMap{$0.id}
@@ -556,11 +556,11 @@ class TellaDataBase : DataBase {
             
             try statementBuilder.delete(tableName: D.tReport,
                                         primarykeyValue: reportCondition)
-            return .success(true)
+            return true
             
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return false
         }
     }
     

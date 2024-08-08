@@ -60,6 +60,14 @@ class ReportsMainViewModel: ObservableObject {
     
     func listenToUpdates() {
     }
+
+    func deleteSubmittedReport() {
+    }
+    
+    func handleDeleteReport(deleteResult:Bool) {
+        self.toastMessage = deleteResult ? LocalizableReport.allReportDeletedToast.localized : LocalizableCommon.commonError.localized
+        self.shouldShowToast = true
+    }
 }
 
 extension ReportsMainViewModel {

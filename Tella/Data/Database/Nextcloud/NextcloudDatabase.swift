@@ -67,7 +67,7 @@ extension TellaDataBase {
             try statementBuilder.delete(tableName: D.tNextcloudServer,
                                         primarykeyValue: [KeyValue(key: D.cId, value: serverId)])
             try statementBuilder.deleteAll(tableNames: [D.tNextcloudReport, D.tNextcloudInstanceVaultFile])
-
+            
             return true
         } catch let error {
             debugLog(error)
@@ -205,9 +205,8 @@ extension TellaDataBase {
             )
             
             if let files = report.reportFiles {
-                let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: report.id)]
                 
-                try statementBuilder.delete(tableName: D.tNextcloudInstanceVaultFile, primarykeyValue: reportFilesCondition)
+                try deleteNextcloudReportFiles(reportIds: [report.id])
                 
                 try files.forEach( { reportFile in
                     
@@ -229,8 +228,8 @@ extension TellaDataBase {
             let reportCondition = [KeyValue(key: D.cId, value: reportId)]
             try statementBuilder.delete(tableName: D.tNextcloudReport, primarykeyValue: reportCondition)
             
-            let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: reportId)]
-            try statementBuilder.delete(tableName: D.tNextcloudInstanceVaultFile, primarykeyValue: reportFilesCondition)
+            try deleteNextcloudReportFiles(reportIds: [reportId])
+            
             return true
         } catch let error {
             debugLog(error)
@@ -247,8 +246,8 @@ extension TellaDataBase {
             let reportCondition = [KeyValue(key: D.cId, value: reportFile.id)]
             
             try statementBuilder.update(tableName: D.tNextcloudInstanceVaultFile,
-                                         valuesToUpdate: valuesToUpdate,
-                                         equalCondition: reportCondition)
+                                        valuesToUpdate: valuesToUpdate,
+                                        equalCondition: reportCondition)
             
             return true
         } catch let error {
@@ -266,16 +265,36 @@ extension TellaDataBase {
             let reportCondition = [KeyValue(key: D.cId, value: report.id)]
             
             try statementBuilder.update(tableName: D.tNextcloudReport,
-                                         valuesToUpdate: valuesToUpdate,
-                                         equalCondition: reportCondition
-            )
+                                        valuesToUpdate: valuesToUpdate,
+                                        equalCondition: reportCondition)
             return true
         } catch let error {
             debugLog(error)
             return false
         }
     }
-
     
+    func deleteNextcloudSubmittedReport() -> Bool {
+        do {
+            let submittedReports = self.getNextcloudReports(reportStatus: [.submitted])
+            let reportIds = submittedReports.compactMap{$0.id}
+            try deleteNextcloudReportFiles(reportIds: reportIds)
+            
+            let reportCondition = [KeyValue(key: D.cStatus, value: ReportStatus.submitted.rawValue)]
+            try statementBuilder.delete(tableName: D.tNextcloudReport,
+                                        primarykeyValue: reportCondition)
+            return true
+            
+        } catch let error {
+            debugLog(error)
+            return false
+        }
+    }
     
+    private func deleteNextcloudReportFiles(reportIds:[Int?]) throws {
+        let reportIds = reportIds.compactMap{$0}
+        let reportFilesCondition = [KeyValues(key: D.cReportInstanceId, value: reportIds)]
+        try statementBuilder.delete(tableName: D.tNextcloudInstanceVaultFile,
+                                    inCondition: reportFilesCondition)
+    }
 }

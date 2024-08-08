@@ -55,7 +55,6 @@ class BaseReport : Hashable, Codable, BaseReportProtocol {
         self.updatedDate = updatedDate
         self.status = status
         self.reportFiles = vaultFiles
-        
     }
     
     func encode(to encoder: Encoder) throws {
@@ -81,21 +80,13 @@ class BaseReport : Hashable, Codable, BaseReportProtocol {
 extension BaseReport {
     var getReportDate: String {
         let status = self.status
-        
         switch status {
-        case .draft:
-            return self.createdDate?.getDraftReportTime() ?? ""
         case .submissionPaused:
             return LocalizableReport.pausedCardExpl.localized
-            
-        case .submissionInProgress:
-            return ""
-            
         case .submitted:
             return self.createdDate?.getSubmittedReportTime() ?? ""
         default:
-            return ""
-            
+            return self.createdDate?.getModifiedReportTime() ?? ""
         }
     }
 }

@@ -56,4 +56,13 @@ extension TellaData {
     func updateNextcloudReportWithoutFiles(report: NextcloudReport) -> Bool {
         database.updateNextcloudReportWithoutFiles(report: report)
     }
+    
+    
+    @discardableResult
+    func deleteNextcloudSubmittedReport() -> Bool {
+        let deleteSubmittedReportResult = database.deleteNextcloudSubmittedReport()
+        shouldReloadNextcloudReports.send(true)
+        return deleteSubmittedReportResult
+    }
+
 }

@@ -316,7 +316,7 @@ class TellaData : ObservableObject {
     }
     
     @discardableResult
-    func deleteSubmittedReport() -> Result<Bool, Error> {
+    func deleteSubmittedReport() -> Bool {
         let deleteSubmittedReportResult = database.deleteSubmittedReport()
         shouldReloadTellaReports.send(true)
         return deleteSubmittedReportResult

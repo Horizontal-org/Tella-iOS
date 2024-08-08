@@ -75,8 +75,9 @@ class ReportsViewModel: ReportsMainViewModel {
         mainAppModel.deleteReport(reportId: report.id)
     }
     
-    func deleteSubmittedReport() {
-        mainAppModel.tellaData?.deleteSubmittedReport()
+    override func deleteSubmittedReport() {
+        let deleteResult = mainAppModel.tellaData?.deleteSubmittedReport() ?? false
+        self.handleDeleteReport(deleteResult: deleteResult)
     }
     
     override func listenToUpdates() {

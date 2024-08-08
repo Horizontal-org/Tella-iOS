@@ -59,4 +59,9 @@ class NextcloudReportViewModel: ReportsMainViewModel {
         self.shouldShowToast = true
         self.toastMessage = message
     }
+    
+    override func deleteSubmittedReport() {
+        let deleteResult = mainAppModel.tellaData?.deleteNextcloudSubmittedReport() ?? false
+        self.handleDeleteReport(deleteResult: deleteResult)
+    }
 }

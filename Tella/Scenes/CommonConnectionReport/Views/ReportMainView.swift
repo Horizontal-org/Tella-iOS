@@ -11,21 +11,21 @@ import SwiftUI
 
 struct ReportMainView: View {
     
-    @ObservedObject var reportMainViewModel: ReportsMainViewModel
+    @ObservedObject var reportsMainViewModel: ReportsMainViewModel
     @EnvironmentObject var sheetManager: SheetManager
     @EnvironmentObject var mainAppModel: MainAppModel
 
     let diContainer : DIContainer
     
     init(reportMainViewModel: ReportsMainViewModel, diContainer : DIContainer) {
-        self.reportMainViewModel = reportMainViewModel
+        self.reportsMainViewModel = reportMainViewModel
         self.diContainer = diContainer
     }
     
     var body: some View {
         contentView
-            .navigationBarTitle(self.reportMainViewModel.title, displayMode: .large)
-            .environmentObject(reportMainViewModel)
+            .navigationBarTitle(self.reportsMainViewModel.title, displayMode: .large)
+            .environmentObject(reportsMainViewModel)
     }
     
     private var contentView :some View {
@@ -33,35 +33,35 @@ struct ReportMainView: View {
         ContainerView {
             VStack(alignment: .center) {
                 
-                PageView(selectedOption: self.$reportMainViewModel.selectedPage, pageViewItems: reportMainViewModel.pageViewItems)
+                PageView(selectedOption: self.$reportsMainViewModel.selectedPage, pageViewItems: reportsMainViewModel.pageViewItems)
                     .frame(maxWidth: .infinity, maxHeight: 40, alignment: .leading)
                 
                 VStack (spacing: 0) {
                     Spacer()
                     
-                    switch self.reportMainViewModel.selectedPage {
+                    switch self.reportsMainViewModel.selectedPage {
                         
                     case .draft:
                         CommonReportListView(message: LocalizableReport.draftListExpl.localized,
                                              emptyMessage: LocalizableReport.reportsDraftEmpty.localized,
-                                             emptyIcon: reportMainViewModel.connectionType.emptyIcon,
-                                             cardsViewModel: $reportMainViewModel.draftReportsViewModel,
+                                             emptyIcon: reportsMainViewModel.connectionType.emptyIcon,
+                                             cardsViewModel: $reportsMainViewModel.draftReportsViewModel,
                                              showDetails: showDetailsView(cardViewModel: ),
                                              showBottomSheet: showBottomSheet(cardViewModel:))
                         
                     case .outbox:
                         CommonReportListView(message: LocalizableReport.outboxListExpl.localized,
                                              emptyMessage: LocalizableReport.reportsOutboxEmpty.localized,
-                                             emptyIcon: reportMainViewModel.connectionType.emptyIcon,
-                                             cardsViewModel: $reportMainViewModel.outboxedReportsViewModel,
+                                             emptyIcon: reportsMainViewModel.connectionType.emptyIcon,
+                                             cardsViewModel: $reportsMainViewModel.outboxedReportsViewModel,
                                              showDetails: showDetailsView(cardViewModel: ),
                                              showBottomSheet: showBottomSheet(cardViewModel:))
                         
                     case .submitted:
                         CommonReportListView(message: LocalizableReport.submittedListExpl.localized,
                                              emptyMessage: LocalizableReport.reportsSubmitedEmpty.localized,
-                                             emptyIcon: reportMainViewModel.connectionType.emptyIcon,
-                                             cardsViewModel: $reportMainViewModel.submittedReportsViewModel,
+                                             emptyIcon: reportsMainViewModel.connectionType.emptyIcon,
+                                             cardsViewModel: $reportsMainViewModel.submittedReportsViewModel,
                                              showDetails: showDetailsView(cardViewModel: ),
                                              showBottomSheet: showBottomSheet(cardViewModel:))
                     default:
@@ -83,12 +83,18 @@ struct ReportMainView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: backButton)
-        .onReceive(reportMainViewModel.$shouldShowToast) { shouldShowToast in
+        .onReceive(reportsMainViewModel.$shouldShowToast) { shouldShowToast in
             if shouldShowToast {
-                Toast.displayToast(message: reportMainViewModel.toastMessage)
+                Toast.displayToast(message: reportsMainViewModel.toastMessage)
             }
         }
-        
+        .if(self.reportsMainViewModel.selectedPage == .submitted && self.reportsMainViewModel.submittedReportsViewModel.count > 0, transform: { view in
+            view.toolbar {
+                TrailingButtonToolbar(title: LocalizableReport.clearAppBar.localized) {
+                    showDeleteAllSubmittedReportConfirmationView()
+                }
+            }
+        })
     }
     
     var backButton : some View {
@@ -155,23 +161,23 @@ struct ReportMainView: View {
     
     private func showDraftView(id:Int? = nil) {
         
-        switch reportMainViewModel.connectionType {
+        switch reportsMainViewModel.connectionType {
         case .tella:
             var destination: any View
-            destination = DraftReportView(mainAppModel: reportMainViewModel.mainAppModel, reportId: id).environmentObject(reportMainViewModel)
+            destination = DraftReportView(mainAppModel: reportsMainViewModel.mainAppModel, reportId: id).environmentObject(reportsMainViewModel)
             self.navigateTo(destination: destination)
             
         case .gDrive:
             var destination : any View
-            destination = GDriveDraftView(mainAppModel: reportMainViewModel.mainAppModel,
+            destination = GDriveDraftView(mainAppModel: reportsMainViewModel.mainAppModel,
                                           gDriveDIContainer: (diContainer as! GDriveDIContainer),
-                                          reportId: id).environmentObject(reportMainViewModel)
+                                          reportId: id).environmentObject(reportsMainViewModel)
             self.navigateTo(destination: destination)
         case .nextcloud:
             var destination : any View
             destination = NextcloudDraftView(mainAppModel: mainAppModel,
                                              nextcloudDIContainer: (diContainer as! NextcloudDIContainer),
-                                             reportsViewModel: reportMainViewModel,
+                                             reportsViewModel: reportsMainViewModel,
                                              reportId: id)
             self.navigateTo(destination: destination)
         default:
@@ -181,31 +187,31 @@ struct ReportMainView: View {
     }
     
     private func showOutboxView(id: Int? = nil) {
-        switch reportMainViewModel.connectionType {
+        switch reportsMainViewModel.connectionType {
         case .tella:
             let outboxViewModel = OutboxReportVM(mainAppModel: mainAppModel,
-                                                 reportsViewModel: reportMainViewModel,
+                                                 reportsViewModel: reportsMainViewModel,
                                                  reportId: id)
             let destination = OutboxDetailsView(outboxReportVM: outboxViewModel,
-                                                reportsViewModel: reportMainViewModel)
+                                                reportsViewModel: reportsMainViewModel)
             self.navigateTo(destination: destination)
             break
         case .gDrive:
             let outboxViewModel = GDriveOutboxViewModel(mainAppModel: mainAppModel, 
-                                                        reportsViewModel: reportMainViewModel,
+                                                        reportsViewModel: reportsMainViewModel,
                                                         reportId: id,
                                                         repository: GDriveRepository())
             let destination = OutboxDetailsView(outboxReportVM: outboxViewModel,
-                                                reportsViewModel: reportMainViewModel)
+                                                reportsViewModel: reportsMainViewModel)
             self.navigateTo(destination: destination)
        
         case .nextcloud:
             let outboxViewModel = NextcloudOutboxViewModel(mainAppModel: mainAppModel,
-                                                           reportsViewModel: reportMainViewModel,
+                                                           reportsViewModel: reportsMainViewModel,
                                                            reportId: id,
                                                            repository:(diContainer as! NextcloudDIContainer).nextcloudRepository)
             let destination = OutboxDetailsView(outboxReportVM: outboxViewModel, 
-                                                reportsViewModel: reportMainViewModel)
+                                                reportsViewModel: reportsMainViewModel)
             
             self.navigateTo(destination: destination)
             
@@ -216,18 +222,18 @@ struct ReportMainView: View {
     }
     
     private func showSubmittedView(id: Int? = nil) {
-        switch reportMainViewModel.connectionType {
+        switch reportsMainViewModel.connectionType {
         case .tella:
             let vm = SubmittedReportVM(mainAppModel: mainAppModel, reportId: id)
-            let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportMainViewModel)
+            let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsMainViewModel)
             self.navigateTo(destination: destination)
         case .gDrive:
             let vm = GDriveSubmittedViewModel(mainAppModel: mainAppModel, reportId: id)
-            let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportMainViewModel)
+            let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsMainViewModel)
             self.navigateTo(destination: destination)
         case .nextcloud:
             let vm = NextcloudSubmittedViewModel(mainAppModel: mainAppModel, reportId: id)
-            let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportMainViewModel)
+            let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsMainViewModel)
             self.navigateTo(destination: destination)
         default:
             break
@@ -245,6 +251,18 @@ struct ReportMainView: View {
                                       actionText: LocalizableReport.deleteConfirm.localized) {
                 cardViewModel.deleteAction()
             }
+        }
+    }
+    
+    private func showDeleteAllSubmittedReportConfirmationView() {
+        sheetManager.showBottomSheet(modalHeight: 200) {
+            ConfirmBottomSheet(titleText: LocalizableReport.clearSheetTitle.localized,
+                               msgText: LocalizableReport.clearSheetExpl.localized,
+                               cancelText: LocalizableReport.clearCancel.localized,
+                               actionText: LocalizableReport.clearSubmitted.localized, didConfirmAction: {
+                sheetManager.hide()
+                reportsMainViewModel.deleteSubmittedReport()
+            })
         }
     }
 }
