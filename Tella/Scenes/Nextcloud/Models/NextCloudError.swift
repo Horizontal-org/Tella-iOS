@@ -24,8 +24,10 @@ struct NextCloudError: Error {
             return "Unauthorised"
         case -1003:
             return "A server with the specified hostname could not be found."
+        case -1009:
+            return "No Internet connection. Try again when you are connected to the Internet."
         default:
-            return "Folder already exist"
+            return "Unexpected Error occured"
         }
        
     }

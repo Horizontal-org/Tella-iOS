@@ -82,7 +82,6 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     
     func createFolder(serverUrl: String, folderName: String) async throws {
         let fullURL = serverUrl.slash() + self.kRemotePhpFiles + userId.slash() + folderName // This fullURL should be updated
-        print("full url is", fullURL)
         try await withCheckedThrowingContinuation { continuation in
             
             NextcloudKit.shared.createFolder(serverUrlFileName: fullURL, account: "") { account, ocId, date, result in
