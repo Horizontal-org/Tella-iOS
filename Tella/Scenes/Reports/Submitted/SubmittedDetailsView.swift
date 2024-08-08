@@ -12,7 +12,8 @@ struct SubmittedDetailsView: View {
     @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
-    
+    private let delayTimeInSecond = 0.1
+
     var body: some View {
         
         ContainerView {
@@ -145,7 +146,10 @@ struct SubmittedDetailsView: View {
     
     private func dismissViews() {
         self.reportsViewModel.selectedPage = .submitted
-        self.popTo(UIHostingController<ReportMainView>.self)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond, execute: {
+            self.popTo(ViewClassType.reportMainView)
+        })
     }
     
     private func showDeleteReportConfirmationView() {

@@ -11,7 +11,8 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
     @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
-    
+    private let delayTimeInSecond = 0.1
+
     var body: some View {
         
         ContainerView {
@@ -209,7 +210,9 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
     }
     
     private func dismissView() {
-        self.popTo(UIHostingController<ReportMainView>.self)
+        DispatchQueue.main.asyncAfter(deadline:.now() + delayTimeInSecond, execute: {
+            self.popTo(ViewClassType.reportMainView)
+        })
     }
     
     private func showCancelUploadConfirmationView() {

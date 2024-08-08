@@ -130,7 +130,6 @@
 		12494A482BC0570E00766DFF /* UwaziSubmissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */; };
 		1249B3812AD43A8D009A7023 /* VaultManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */; };
 		1249B3832AD43AA7009A7023 /* VaultFilesManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1249B3822AD43AA7009A7023 /* VaultFilesManagerInterface.swift */; };
-		124B2CA12C495BA900A9BDED /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 124B2CA02C495BA900A9BDED /* NextcloudKit */; };
 		124F8E0829119E9400FBB7AC /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F8E0729119E9400FBB7AC /* StringExtension.swift */; };
 		1251C3902BB45616002E9898 /* UwaziListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1251C38F2BB45616002E9898 /* UwaziListView.swift */; };
 		125299DD2AD02E6F00191CAB /* ImportVaultFileResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125299DC2AD02E6F00191CAB /* ImportVaultFileResult.swift */; };
@@ -197,6 +196,7 @@
 		1268553E27D2572100385E18 /* FileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC6FC53269BCDDE001B0D34 /* FileInfoView.swift */; };
 		1268554027D2994500385E18 /* VaultFileStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1268553F27D2994500385E18 /* VaultFileStatus.swift */; };
 		1268554127D2ACB200385E18 /* RecentFilesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC4263A383100CE191A /* RecentFilesListView.swift */; };
+		12685E112C652AD7006B64C0 /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 12685E102C652AD7006B64C0 /* NextcloudKit */; };
 		126AD14A27C6D5EB00081CC9 /* LocalizableCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126AD14927C6D5EB00081CC9 /* LocalizableCamera.swift */; };
 		126E1AF12C3D7603000AE4CE /* BaseReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AF02C3D7603000AE4CE /* BaseReport.swift */; };
 		126E1AF32C3D7632000AE4CE /* GDriveReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E1AF22C3D7632000AE4CE /* GDriveReport.swift */; };
@@ -1196,7 +1196,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				124B2CA12C495BA900A9BDED /* NextcloudKit in Frameworks */,
+				12685E112C652AD7006B64C0 /* NextcloudKit in Frameworks */,
 				D50FA6872613ABCA00D6D63B /* VaultManager.framework in Frameworks */,
 				89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */,
 			);
@@ -3198,7 +3198,7 @@
 			);
 			name = Tella;
 			packageProductDependencies = (
-				124B2CA02C495BA900A9BDED /* NextcloudKit */,
+				12685E102C652AD7006B64C0 /* NextcloudKit */,
 			);
 			productName = Tella;
 			productReference = F66E65A923E3207D000F93E5 /* Tella.app */;
@@ -3291,7 +3291,7 @@
 			);
 			mainGroup = F66E65A023E3207D000F93E5;
 			packageReferences = (
-				12B8E51D2C467CC000B4CFDA /* XCRemoteSwiftPackageReference "NextcloudKit" */,
+				12685E0F2C652AC9006B64C0 /* XCRemoteSwiftPackageReference "NextcloudKit" */,
 			);
 			productRefGroup = F66E65AA23E3207D000F93E5 /* Products */;
 			projectDirPath = "";
@@ -4458,20 +4458,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		12B8E51D2C467CC000B4CFDA /* XCRemoteSwiftPackageReference "NextcloudKit" */ = {
+		12685E0F2C652AC9006B64C0 /* XCRemoteSwiftPackageReference "NextcloudKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Nextcloud/NextcloudKit.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
+				minimumVersion = 4.0.4;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		124B2CA02C495BA900A9BDED /* NextcloudKit */ = {
+		12685E102C652AD7006B64C0 /* NextcloudKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 12B8E51D2C467CC000B4CFDA /* XCRemoteSwiftPackageReference "NextcloudKit" */;
+			package = 12685E0F2C652AC9006B64C0 /* XCRemoteSwiftPackageReference "NextcloudKit" */;
 			productName = NextcloudKit;
 		};
 /* End XCSwiftPackageProductDependency section */
