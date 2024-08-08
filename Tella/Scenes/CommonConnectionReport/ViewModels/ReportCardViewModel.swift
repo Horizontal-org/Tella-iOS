@@ -21,16 +21,15 @@ class ReportCardViewModel: CommonCardViewModel {
         let title = report.title ?? ""
         let subtitle = report.getReportDate
         let serverName = serverName
-        let iconImageName : String? = report.status.iconImageName
         let listActionSheetItem = report.status.listActionSheetItem
         let deleteReportStrings = report.status.deleteReportStrings
         
         super.init(id: report.id,
                    title: title,
                    subtitle: subtitle,
-                   iconImageName: iconImageName,
+                   iconImageName: nil,
                    serverName: serverName,
-                   updatedAt: report.updatedDate?.getDraftReportTime(),
+                   updatedAt: report.updatedDate?.getModifiedReportTime(),
                    listActionSheetItem: listActionSheetItem,
                    connectionType: connectionType,
                    deleteReportStrings: deleteReportStrings,
