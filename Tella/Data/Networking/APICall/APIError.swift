@@ -41,6 +41,12 @@ extension APIError: LocalizedError {
             return "Account locked due to too many unsuccessful attempts."
         case .notFound:
             return LocalizableSettings.settServerServerURLIncorrect.localized
+        case .nextcloudFolderExists:
+            return "Folder already exist"
+        case .ncUnauthorized, .ncUnauthorizedError:
+            return "A server with the specified hostname could not be found."
+        case .ncNoInternetError:
+            return "No Internet connection. Try again when you are connected to the Internet."
         default:
             return "Unexpected response from the server"
         }

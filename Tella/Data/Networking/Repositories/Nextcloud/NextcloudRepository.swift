@@ -58,7 +58,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 if result == .success {
                     continuation.resume()
                 } else {
-                    continuation.resume(throwing: NextCloudError(result.errorCode))
+                    continuation.resume(throwing: APIError.httpCode(result.errorCode) )
                 }
             }
         }
@@ -73,7 +73,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                     self.userId = userProfile?.userId ?? ""
                     continuation.resume()
                 } else {
-                    continuation.resume(throwing: NextCloudError(result.errorCode))
+                    continuation.resume(throwing: APIError.httpCode(result.errorCode))
                 }
             }
         }
@@ -88,7 +88,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 if result == .success {
                     continuation.resume()
                 } else {
-                    continuation.resume(throwing: NextCloudError(result.errorCode))
+                    continuation.resume(throwing: APIError.httpCode(result.errorCode))
                 }
             }
         }

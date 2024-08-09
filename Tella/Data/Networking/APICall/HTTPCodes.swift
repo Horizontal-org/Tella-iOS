@@ -16,10 +16,14 @@ enum HTTPErrorCodes: Int {
     case unauthorized = 401
     case forbidden = 403
     case notFound = 404
-    case methodNotAllowed = 405
     case requestTimeout = 408
     case need2FA = 409
     case internalServerError = 500
+    case ncUnauthorizedError = 997
+    case ncUnauthorized = 429
+    case ncNoServerError = -1003
+    case ncNoInternetError = -1009
+    case nextcloudFolderExists = 405
     case unknown
 }
 

@@ -36,8 +36,8 @@ class NextcloudServerViewModel: ServerViewModel {
                 try await nextcloudRepository.checkServer(serverUrl: serverURL)
                 checkServerState = .loaded(true)
             }
-            catch let ncError as NextCloudError{
-                checkServerState = .error(ncError.message)
+            catch let error {
+                checkServerState = .error(error.localizedDescription)
             }
         }
     }
@@ -49,8 +49,8 @@ class NextcloudServerViewModel: ServerViewModel {
                 try await nextcloudRepository.login(serverUrl: serverURL, username: username, password: password)
                 loginState = .loaded(true)
             }
-            catch let ncError as NextCloudError{
-                loginState = .error(ncError.message)
+            catch let error {
+                loginState = .error(error.localizedDescription)
             }
         }
     }
@@ -82,8 +82,8 @@ class NextcloudServerViewModel: ServerViewModel {
                 addServer()
                 serverCreateFolderVM.createFolderState = .loaded(true)
             }
-            catch let ncError as NextCloudError{
-                serverCreateFolderVM.createFolderState = .error(ncError.message)
+            catch let error{
+                serverCreateFolderVM.createFolderState = .error(error.localizedDescription)
             }
         }
     }
