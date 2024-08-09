@@ -23,14 +23,18 @@ struct ServerCreateFolderView: View {
                 Spacer()
                 bottomView
             }
+            .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
+
             VStack {
                 Spacer()
                 if case .error(let message) = createFolderViewModel.createFolderState {
                     ToastView(message: message)
                 }
             }
+            if  createFolderViewModel.createFolderState == .loading {
+                CircularActivityIndicatory()
+            }
         }
-        .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
         .navigationBarHidden(true)
         .containerStyle()
         .onReceive(createFolderViewModel.$createFolderState) { value in
@@ -68,5 +72,10 @@ struct ServerCreateFolderView: View {
                                 nextAction: {
             self.createFolderViewModel.createFolderAction?()
         })
+    }
+}
+struct ServerCreateFolderView_Previews: PreviewProvider {
+    static var previews: some View {
+        ServerCreateFolderView(createFolderViewModel: ServerCreateFolderViewModel(textFieldPlaceholderText: "Folder Name", headerViewTitleText: "Create Folder", headerViewSubtitleText: "Connection", imageIconName: "server"))
     }
 }

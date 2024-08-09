@@ -21,7 +21,7 @@ struct NextCloudError: Error {
         case 405:
             return "Folder already exist"
         case 997, 429:
-            return "Unauthorised"
+            return "The username or password is incorrect"
         case -1003:
             return "A server with the specified hostname could not be found."
         case -1009:
