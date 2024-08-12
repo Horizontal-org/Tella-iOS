@@ -15,11 +15,11 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
     
     private let nextcloudRepository: NextcloudRepositoryProtocol
     private var currentReport : NextcloudReport?
-
+    
     override var shouldShowCancelUploadConfirmation : Bool {
         return true
     }
-
+    
     init(mainAppModel: MainAppModel,
          reportsViewModel : ReportsMainViewModel,
          reportId : Int?,
@@ -85,7 +85,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         
         if reportViewModel.remoteReportStatus != .descriptionSent {
             guard let descriptionFileUrl = self.mainAppModel.vaultManager.getDescriptionFileUrl(content: self.reportViewModel.description,
-                                                                                                fileName: NextcloudConstants.descriptionFolderName) else { return  }
+                                                                                                fileName: NextcloudConstants.descriptionFolderName) else { return }
             
             reportViewModel.descriptionFileUrl = descriptionFileUrl
         }
@@ -104,10 +104,8 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
                                       serverURL: serverURL,
                                       chunkFolder: chunkFolder,
                                       chunkFiles: chunkFiles)
-            
         }
-        
-        
+
         let reportToSend = NextcloudReportToSend(folderName: remoteFolderName,
                                                  serverUrl: serverURL,
                                                  descriptionFileUrl: reportViewModel.descriptionFileUrl,
@@ -116,18 +114,16 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         
         nextcloudRepository.uploadReport(report: reportToSend)
             .sink { completion in
-                
                 switch completion {
                 case .finished:
                     self.checkAllFilesAreUploaded()
-                    
-                case .failure:
-                    self.updateReport(reportStatus: .submissionError)
+                case .failure(let error):
+                    self.displayError(error: error)
                 }
-                
             } receiveValue: { response in
                 self.processUploadReportResponse(response:response)
             }.store(in: &subscribers)
+        
     }
     
     private func processUploadReportResponse(response:NextcloudUploadResponse) {
@@ -175,6 +171,14 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
             showSubmittedReport()
             deleteChunksFiles()
         }
+    }
+    
+    private func displayError(error:APIError) {
+        DispatchQueue.main.async {
+            self.toastMessage = error.errorDescription ?? ""
+            self.shouldShowToast = true
+        }
+        updateReport(reportStatus: .submissionError)
     }
     
     func addChunks(uploadProgressInfo : NextcloudUploadProgressInfo) {

@@ -13,7 +13,7 @@ protocol NextcloudRepositoryProtocol {
     func login(serverUrl: String, username: String, password: String) async throws
     func checkServer(serverUrl: String) async throws
     func createFolder(serverUrl: String, folderName: String) async throws
-    func uploadReport(report:NextcloudReportToSend) -> AnyPublisher<NextcloudUploadResponse,RuntimeError>
+    func uploadReport(report:NextcloudReportToSend) -> AnyPublisher<NextcloudUploadResponse,APIError>
     func pauseAllUploads()
 }
 
@@ -28,24 +28,38 @@ enum NextcloudUploadResponse {
 class NextcloudRepository: NextcloudRepositoryProtocol {
     
     private let kRemotePhpFiles = "remote.php/dav/files/"
-    private let kchunkSize = (1024 * 1024)
+    private let kchunkSize = 1024 * 1024
     private let ktimeout = TimeInterval(60)
 
     private var subscribers = Set<AnyCancellable>()
     private var uploadTasks: [String?:URLSessionTask] = [:]
     private var shouldPause : Bool = false
-    
+    private let networkStatusSubject = PassthroughSubject<Bool, Never>()
+    private let networkMonitor: NetworkMonitor
+
     // Those attributes must be removed from here
     private var userId = ""
     let configServerUrl = ""
     let configUsername = ""
     let configPassword = ""
 
-    init() {
+    init(networkMonitor: NetworkMonitor = .shared) {
+        self.networkMonitor = networkMonitor
+        setupNetworkMonitor()
+        
         // Setup should be checked if the server is already in Database or not
         setUp()
     }
     
+    private func setupNetworkMonitor() {
+        networkMonitor.connectionDidChange.sink(receiveValue: { isConnected in
+            self.networkStatusSubject.send(isConnected)
+            if (!isConnected) {
+                self.pauseAllUploads()
+            }
+        }).store(in: &subscribers)
+    }
+
     func setUp() {
         // Using 'configUsername', 'configServerUrl' and 'configServerUrl' from DB
         // We should check if server exist in database and retrieve data from DB
@@ -78,8 +92,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
             }
         }
     }
-    
-    
+
     func createFolder(serverUrl: String, folderName: String) async throws {
         let fullURL = serverUrl.slash() + self.kRemotePhpFiles + userId.slash() + folderName // This fullURL should be updated
         try await withCheckedThrowingContinuation { continuation in
@@ -94,26 +107,30 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         }
     }
     
-    func uploadReport(report:NextcloudReportToSend) -> AnyPublisher<NextcloudUploadResponse,RuntimeError> {
+    func uploadReport(report:NextcloudReportToSend) -> AnyPublisher<NextcloudUploadResponse,APIError> {
         
+        
+//        guard let NetworkMonitor.shared.isConnected else {
+//            return
+//        }
         // setUp() must be removed from here
         self.setUp()
         
         shouldPause = false
         
-        let subject = CurrentValueSubject<NextcloudUploadResponse, RuntimeError>(.initial)
+        let subject = CurrentValueSubject<NextcloudUploadResponse, APIError>(.initial)
         
         Task {
             do {
                 
                 switch report.remoteReportStatus {
                     
-                case .initial,.unknown :
+                case .initial, .unknown :
                     
                     guard !shouldPause else { return }
                     
-                    guard let folderName = await createFileName(fileNameBase: report.folderName, serverUrl: report.serverUrl) else {
-                        subject.send(completion:.failure(RuntimeError(LocalizableCommon.commonError.localized)))
+                    guard let folderName = try await createFileName(fileNameBase: report.folderName, serverUrl: report.serverUrl) else {
+                        subject.send(completion:.failure(APIError.unexpectedResponse))
                         return
                     }
                     
@@ -145,8 +162,12 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 
                 guard !shouldPause else { return }
                 
+                guard self.networkMonitor.isConnected else {
+                    subject.send(completion:.failure(.noInternetConnection))
+                    return
+                }
+
                 report.files.forEach { file in
-                    
                     uploadFileInChunks(metadata: file)
                         .sink(receiveCompletion: { _ in
                             
@@ -154,7 +175,16 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                             subject.send(.progress(progressInfo: result))
                         }).store(in: &subscribers)
                 }
-            } catch let error as RuntimeError {
+
+                self.networkStatusSubject
+                    .filter { !$0 }
+                    .first()
+                    .sink { _ in
+                        subject.send(completion:.failure(.noInternetConnection))
+                    }
+                    .store(in: &self.subscribers)
+
+            } catch let error as APIError {
                 debugLog(error)
                 subject.send(completion:.failure(error))
             }
@@ -179,17 +209,17 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 if nkError == .success {
                     continuation.resume()
                 } else {
-                    continuation.resume(throwing: RuntimeError(nkError.errorDescription))
+                    continuation.resume(throwing: APIError.httpCode(nkError.errorCode))
                 }
             })
         }
     }
     
-    func uploadFileInChunks(metadata:NextcloudMetadata) -> CurrentValueSubject<NextcloudUploadProgressInfo,RuntimeError> {
+    func uploadFileInChunks(metadata:NextcloudMetadata) -> CurrentValueSubject<NextcloudUploadProgressInfo,APIError> {
         
         let progressInfo = NextcloudUploadProgressInfo(fileId: metadata.fileId, status: FileStatus.partialSubmitted)
         
-        let subject = CurrentValueSubject<NextcloudUploadProgressInfo, RuntimeError>(progressInfo)
+        let subject = CurrentValueSubject<NextcloudUploadProgressInfo, APIError>(progressInfo)
         
         Task {
             
@@ -242,6 +272,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 progressInfo.status = error == .success ? .submitted : .submissionError
                 progressInfo.finishUploading = true
                 progressInfo.step = .finished
+                progressInfo.error = APIError.httpCode(error.errorCode)
                 subject.send(progressInfo)
                 self.uploadTasks.removeValue(forKey: metadata.fileId)
             }
@@ -263,15 +294,14 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 if !filesChunk.isEmpty {
                     continuation.resume()
                 } else {
-                    // The file for sending could not be created
-                    let error = NKError(errorCode: NKError.chunkFilesNull, errorDescription: "_chunk_files_null_")
-                    continuation.resume(throwing: RuntimeError(error.errorDescription))
+                    debugLog("The file for sending could not be created")
+                    continuation.resume(throwing: APIError.unexpectedResponse)
                 }
             }
         }
     }
     
-    func fileExists(serverUrlFileName: String) async -> Bool?  {
+    func fileExists(serverUrlFileName: String) async throws -> Bool?  {
         
         let requestBody =
         """
@@ -282,7 +312,8 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         """
 
         let option = NKRequestOptions(timeout: ktimeout, queue: NextcloudKit.shared.nkCommonInstance.backgroundQueue)
-        return await withUnsafeContinuation({ continuation in
+        
+        return try await withCheckedThrowingContinuation({ continuation in
             NextcloudKit.shared.readFileOrFolder(serverUrlFileName: serverUrlFileName,
                                                  depth: "0",
                                                  requestBody: requestBody.data(using: .utf8), account: "",
@@ -294,7 +325,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 } else if error.errorCode == HTTPErrorCodes.notFound.rawValue {
                     continuation.resume(returning: false)
                 } else {
-                    continuation.resume(returning: nil)
+                    continuation.resume(throwing: APIError.httpCode(error.errorCode))
                 }
             }
         })
@@ -302,7 +333,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     
 
     
-    func createFileName(fileNameBase: String, serverUrl: String) async -> String? {
+    func createFileName(fileNameBase: String, serverUrl: String) async throws -> String? {
         
         var exitLoop = false
         var resultFileName = fileNameBase
@@ -343,7 +374,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
             
             let fullURL = serverUrl + "/" + self.kRemotePhpFiles + userId  + "/" + resultFileName // This fullURL should be updated
             
-            let fileExists = await fileExists(serverUrlFileName: fullURL)
+            let fileExists = try await fileExists(serverUrlFileName: fullURL)
             guard let fileExists else { return nil}
             if fileExists {
                 newFileName()
