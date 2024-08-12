@@ -119,8 +119,7 @@ struct DraftView<T: ServerProtocol>: View  {
                     Spacer()
                         .frame(height: 24)
                     
-                    AddFilesToDraftView<T>()
-                        .environmentObject(viewModel)
+                    AddFilesToDraftView<T>(draftReportVM: viewModel)
                     
                     Spacer()
                 }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
