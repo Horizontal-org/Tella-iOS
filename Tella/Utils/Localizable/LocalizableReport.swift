@@ -63,8 +63,9 @@ enum LocalizableReport: String, LocalizableDelegate {
     case galleryFilled = "Reports_Draft_SelectFiles_TellaFiles_SheetSelect"
     case phoneFilled = "Reports_Draft_SelectFiles_ImportFromDevice_SheetSelect"
     case waitingConnection = "Reports_Outbox_PercentangeUploaded_Expl"
-    
-    
+    case pauseOutbox = "Reports_Outbox_Pause"
+    case resumeOutbox = "Reports_Outbox_Resume"
+    case submitOutbox = "Reports_Outbox_Submit"
     case draftSavedToast = "Reports_DraftSaved_Toast"
     case reportDeletedToast = "Reports_ReportDeleted_Toast"
     case reportSubmittedToast = "Reports_ReportSubmitted_Toast"

@@ -35,11 +35,11 @@ class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
         
         switch reportViewModel.status {
         case .finalized:
-            return "Submit"
+            return LocalizableReport.submitOutbox.localized
         case .submissionInProgress:
-            return "Pause"
+            return LocalizableReport.pauseOutbox.localized
         default:
-            return "Resume"
+            return LocalizableReport.resumeOutbox.localized
         }
     }
     

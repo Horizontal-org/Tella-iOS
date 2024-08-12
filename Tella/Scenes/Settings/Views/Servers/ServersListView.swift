@@ -54,7 +54,7 @@ struct ServersListView: View {
         let filteredActionItems = server.serverType == .gDrive ? serverActionItems.filter { $0.type as? ServerActionType != .edit } : serverActionItems
         sheetManager.showBottomSheet(modalHeight: 176) {
             ActionListBottomSheet(items: filteredActionItems,
-                                  headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
+                                  headerTitle: server.name ?? "",
                                   action:  {item in
                 
                 serversViewModel.currentServer = server

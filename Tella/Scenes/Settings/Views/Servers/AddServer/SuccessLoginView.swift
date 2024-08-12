@@ -73,10 +73,6 @@ struct SuccessLoginView: View {
                 .multilineTextAlignment(.center)
         }
     }
-    
-    private var reportsView: some View {
-        ReportMainView(reportMainViewModel: ReportsViewModel(mainAppModel: mainAppModel), diContainer: GDriveDIContainer())
-    }
 }
 
 struct SuccessLoginView_Previews: PreviewProvider {
