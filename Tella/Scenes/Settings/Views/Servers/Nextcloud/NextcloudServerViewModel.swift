@@ -13,6 +13,7 @@ class NextcloudServerViewModel: ServerViewModel {
     
     var serverCreateFolderVM: ServerCreateFolderViewModel
 
+    private var userId = ""
     init(nextcloudRepository: NextcloudRepository = NextcloudRepository(),
          mainAppModel: MainAppModel,
          currentServer: NextcloudServer? = nil) {
@@ -57,7 +58,8 @@ class NextcloudServerViewModel: ServerViewModel {
         loginState = .loading
         Task { @MainActor in
             do {
-                try await nextcloudRepository.login(serverUrl: serverURL, username: username, password: password)
+                let userId = try await nextcloudRepository.login(serverUrl: serverURL, username: username, password: password)
+                self.userId = userId
                 loginState = .loaded(true)
             }
             catch let ncError as APIError {
@@ -76,7 +78,7 @@ class NextcloudServerViewModel: ServerViewModel {
     }
     
     func addServer() {
-        let server = NextcloudServer(serverURL: serverURL, username: username, password: password)
+        let server = NextcloudServer(serverURL: serverURL, username: username, password: password, userId: userId, rootFolder: serverCreateFolderVM.folderName)
         let serverID = mainAppModel.tellaData?.addNextcloudServer(server: server)
         
         guard let serverID else {
@@ -98,7 +100,7 @@ class NextcloudServerViewModel: ServerViewModel {
         
         Task { @MainActor in
             do {
-                try await nextcloudRepository.createFolder(serverUrl: serverURL, folderName: serverCreateFolderVM.folderName)
+                try await nextcloudRepository.createFolder(serverUrl: serverURL, folderName: serverCreateFolderVM.folderName, userId: userId)
                 addServer()
                 serverCreateFolderVM.createFolderState = .loaded(true)
             }

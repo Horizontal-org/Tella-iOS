@@ -10,9 +10,9 @@ import NextcloudKit
 import Combine
 
 protocol NextcloudRepositoryProtocol {
-    func login(serverUrl: String, username: String, password: String) async throws
+    func login(serverUrl: String, username: String, password: String) async throws -> String
     func checkServer(serverUrl: String) async throws
-    func createFolder(serverUrl: String, folderName: String) async throws
+    func createFolder(serverUrl: String, folderName: String, userId: String) async throws
     func uploadReport(report:NextcloudReportToSend) -> AnyPublisher<NextcloudUploadResponse,APIError>
     func pauseAllUploads()
 }
@@ -78,14 +78,14 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         }
     }
     
-    func login(serverUrl: String, username: String, password: String) async throws {
+    func login(serverUrl: String, username: String, password: String) async throws -> String {
         // NextcloudKit.shared.setup(delegate: self)
         NextcloudKit.shared.setup(account: username, user: username, userId: username , password: password, urlBase: serverUrl  )
-        try await withCheckedThrowingContinuation { continuation in
+        return try await withCheckedThrowingContinuation { continuation in
             NextcloudKit.shared.getUserProfile(account: "") { account, userProfile, data, result in
                 if result == .success {
                     self.userId = userProfile?.userId ?? ""
-                    continuation.resume()
+                    continuation.resume(returning: userProfile?.userId ?? "")
                 } else {
                     continuation.resume(throwing: APIError.httpCode(result.errorCode))
                 }
@@ -93,7 +93,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         }
     }
 
-    func createFolder(serverUrl: String, folderName: String) async throws {
+    func createFolder(serverUrl: String, folderName: String, userId: String) async throws {
         let fullURL = serverUrl.slash() + self.kRemotePhpFiles + userId.slash() + folderName // This fullURL should be updated
         try await withCheckedThrowingContinuation { continuation in
             
@@ -138,7 +138,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                     
                     guard !shouldPause else { return }
                     
-                    try await createFolder(serverUrl: report.serverUrl, folderName: folderName)
+                    try await createFolder(serverUrl: report.serverUrl, folderName: folderName, userId: userId)
                     subject.send(.createReport)
                     
                     guard !shouldPause else { return }
@@ -197,7 +197,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         
         guard let descriptionFileUrl = report.descriptionFileUrl else { return }
         
-        let fullURL = report.serverUrl + "/" + self.kRemotePhpFiles + userId  + "/" + report.folderName + "/" + descriptionFileUrl.lastPathComponent
+        let fullURL = report.serverUrl.slash() + self.kRemotePhpFiles + userId.slash() + report.folderName.slash() + descriptionFileUrl.lastPathComponent
         
         try await withCheckedThrowingContinuation { continuation in
             
@@ -372,7 +372,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         
         while !exitLoop {
             
-            let fullURL = serverUrl + "/" + self.kRemotePhpFiles + userId  + "/" + resultFileName // This fullURL should be updated
+            let fullURL = serverUrl.slash() + self.kRemotePhpFiles + userId.slash() + resultFileName // This fullURL should be updated
             
             let fileExists = try await fileExists(serverUrlFileName: fullURL)
             guard let fileExists else { return nil}
