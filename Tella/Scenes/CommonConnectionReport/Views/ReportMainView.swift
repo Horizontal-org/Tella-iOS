@@ -210,8 +210,8 @@ struct ReportMainView: View {
                                                            reportsViewModel: reportsMainViewModel,
                                                            reportId: id,
                                                            repository:(diContainer as! NextcloudDIContainer).nextcloudRepository)
-            let destination = OutboxDetailsView(outboxReportVM: outboxViewModel, 
-                                                reportsViewModel: reportsMainViewModel)
+            let destination = NextcloutOutboxView(outboxReportVM: outboxViewModel, 
+                                                  reportsViewModel: reportsMainViewModel)
             
             self.navigateTo(destination: destination)
             

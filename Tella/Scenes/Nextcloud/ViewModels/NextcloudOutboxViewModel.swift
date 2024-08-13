@@ -118,7 +118,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
                 case .finished:
                     self.checkAllFilesAreUploaded()
                 case .failure(let error):
-                    self.displayError(error: error)
+                    self.handleError(error: error)
                 }
             } receiveValue: { response in
                 self.processUploadReportResponse(response:response)
@@ -173,11 +173,20 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         }
     }
     
-    private func displayError(error:APIError) {
+    private func handleError(error:APIError) {
         DispatchQueue.main.async {
-            self.toastMessage = error.errorDescription ?? ""
-            self.shouldShowToast = true
+            switch error {
+            case .httpCode(HTTPErrorCodes.unauthorized.rawValue),
+                    .httpCode(HTTPErrorCodes.ncUnauthorizedError.rawValue),
+                    .httpCode(HTTPErrorCodes.ncUnauthorized.rawValue):
+                self.shouldShowLoginView = true
+                
+            default:
+                self.toastMessage = error.errorDescription ?? ""
+                self.shouldShowToast = true
+            }
         }
+        
         updateReport(reportStatus: .submissionError)
     }
     

@@ -16,8 +16,9 @@ class NextcloudServerViewModel: ServerViewModel {
     private var userId = ""
     init(nextcloudRepository: NextcloudRepository = NextcloudRepository(),
          mainAppModel: MainAppModel,
-         currentServer: NextcloudServer? = nil) {
-
+         currentServer: NextcloudServer? = nil,
+         username:String? = nil) {
+        
         self.nextcloudRepository = nextcloudRepository
         self.mainAppModel = mainAppModel
         self.currentServer = currentServer
@@ -27,7 +28,14 @@ class NextcloudServerViewModel: ServerViewModel {
                                                                 headerViewSubtitleText: LocalizableSettings.GDriveCreatePersonalFolderDesc.localized, imageIconName: "nextcloud.icon")
         super.init()
         self.serverCreateFolderVM.createFolderAction = createNextCloudFolder
-
+        
+        // initialize server parameters
+        if let serverURL = currentServer?.url {
+            self.serverURL = serverURL
+        }
+        if let username {
+            self.username = username
+        }
     }
     
     override func checkURL() {
@@ -50,7 +58,6 @@ class NextcloudServerViewModel: ServerViewModel {
                     checkServerState = .error("")
                 }
             }
-
         }
     }
     
@@ -89,10 +96,9 @@ class NextcloudServerViewModel: ServerViewModel {
     }
     
     func updateServer() {
-//        guard let currentServer = self.currentServer as? NextcloudServer  else { return  }
-//        currentServer.userId = userId
-//        currentServer.rootFolder = rootFolder
-//        mainAppModel.tellaData?.updateNextcloudServer(server: currentServer)
+        guard let currentServer = self.currentServer  else { return  }
+        currentServer.password = password
+        mainAppModel.tellaData?.updateNextcloudServer(server: currentServer)
     }
     
     func createNextCloudFolder() {

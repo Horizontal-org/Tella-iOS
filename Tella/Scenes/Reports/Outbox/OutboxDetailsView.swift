@@ -59,7 +59,7 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
 
         .navigationBarHidden(true)
     }
-    
+
     var outboxReportHeaderView: some View {
         
         HStack(spacing: 0) {
@@ -257,10 +257,3 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
         }
     }
 }
-
-//struct ReportDetailsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        OutboxDetailsView()
-//    }
-//}
-

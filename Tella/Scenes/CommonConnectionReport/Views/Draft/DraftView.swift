@@ -210,7 +210,7 @@ struct DraftView<T: ServerProtocol>: View  {
                                                         reportsViewModel: reportsViewModel,
                                                         reportId: viewModel.reportId,
                                                         repository: NextcloudRepository())
-                OutboxDetailsView(outboxReportVM: outboxVM, reportsViewModel: reportsViewModel)
+                NextcloutOutboxView(outboxReportVM: outboxVM, reportsViewModel: reportsViewModel)
             default:
                 Text("")
             }

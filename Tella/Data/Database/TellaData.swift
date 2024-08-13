@@ -73,6 +73,7 @@ class TellaData : ObservableObject {
         return id
     }
     
+    @discardableResult
     func updateNextcloudServer(server: NextcloudServer) -> Int? {
         let id = database.updateNextcloudServer(server: server)
         getServers()

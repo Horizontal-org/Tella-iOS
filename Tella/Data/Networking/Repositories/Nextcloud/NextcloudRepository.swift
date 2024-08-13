@@ -108,12 +108,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     }
     
     func uploadReport(report:NextcloudReportToSend) -> AnyPublisher<NextcloudUploadResponse,APIError> {
-        
-        
-//        guard let NetworkMonitor.shared.isConnected else {
-//            return
-//        }
-        // setUp() must be removed from here
+
         self.setUp()
         
         shouldPause = false
@@ -193,7 +188,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         return subject.eraseToAnyPublisher()
     }
     
-    func uploadDescriptionFile(report:NextcloudReportToSend) async throws {
+    private func uploadDescriptionFile(report:NextcloudReportToSend) async throws {
         
         guard let descriptionFileUrl = report.descriptionFileUrl else { return }
         
@@ -215,7 +210,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         }
     }
     
-    func uploadFileInChunks(metadata:NextcloudMetadata) -> CurrentValueSubject<NextcloudUploadProgressInfo,APIError> {
+    private func uploadFileInChunks(metadata:NextcloudMetadata) -> CurrentValueSubject<NextcloudUploadProgressInfo,APIError> {
         
         let progressInfo = NextcloudUploadProgressInfo(fileId: metadata.fileId, status: FileStatus.partialSubmitted)
         
@@ -301,7 +296,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         }
     }
     
-    func fileExists(serverUrlFileName: String) async throws -> Bool?  {
+    private func fileExists(serverUrlFileName: String) async throws -> Bool?  {
         
         let requestBody =
         """
@@ -330,10 +325,8 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
             }
         })
     }
-    
 
-    
-    func createFileName(fileNameBase: String, serverUrl: String) async throws -> String? {
+    private func createFileName(fileNameBase: String, serverUrl: String) async throws -> String? {
         
         var exitLoop = false
         var resultFileName = fileNameBase

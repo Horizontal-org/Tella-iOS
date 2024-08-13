@@ -551,4 +551,10 @@ This feedback is anonymous, so make sure to include contact information if you w
 
 
 "Nextcloud_AppBar" = "Nextcloud";
+
+"Nextcloud_ConnectionExpired_SheetTitle" = "Your connection to Nextcloud expired";
+"Nextcloud_ConnectionExpired_SheetExpl" = "You are currently not connected to Nextcloud. Please login again to continue submitting reports. You can still edit drafts offline without logging in.";
+"Nextcloud_ConnectionExpired_Continue_SheetAction" = "Continue without login";
+"Nextcloud_ConnectionExpired_Login_SheetAction" = "Login";
+
 "GDrive_AppBar" = "Google Drive";

@@ -5,6 +5,7 @@
 import SwiftUI
 
 struct ConfirmBottomSheet : View {
+    var imageName : String? = nil
     var titleText = ""
     var msgText = ""
     var cancelText = ""
@@ -25,6 +26,15 @@ struct ConfirmBottomSheet : View {
     
     var contentView: some View {
         VStack(alignment: .leading, spacing: 9) {
+           
+            if let imageName = imageName {
+                HStack() {
+                    Spacer()
+                    Image(imageName)
+                    Spacer()
+                }.frame(height: 90)
+            }
+            
             Text(self.titleText)
                 .foregroundColor(.white)
                 .font(Font.custom(Styles.Fonts.semiBoldFontName, size: 17))
