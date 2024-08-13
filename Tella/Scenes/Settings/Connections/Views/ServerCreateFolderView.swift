@@ -27,7 +27,7 @@ struct ServerCreateFolderView: View {
 
             VStack {
                 Spacer()
-                if case .error(let message) = createFolderViewModel.createFolderState {
+                if case .error(let message) = createFolderViewModel.createFolderState, !message.isEmpty {
                     ToastView(message: message)
                 }
             }
@@ -47,7 +47,8 @@ struct ServerCreateFolderView: View {
     var textField: some View {
         TextfieldView(fieldContent: $createFolderViewModel.folderName,
                       isValid: $isValid,
-                      shouldShowError: .constant(false),
+                      shouldShowError: $createFolderViewModel.shouldShowError,
+                      errorMessage: createFolderViewModel.errorMessage,
                       fieldType: .text,
                       placeholder: createFolderViewModel.textFieldPlaceholderText)
         .padding(.vertical, 12)
@@ -76,6 +77,6 @@ struct ServerCreateFolderView: View {
 }
 struct ServerCreateFolderView_Previews: PreviewProvider {
     static var previews: some View {
-        ServerCreateFolderView(createFolderViewModel: ServerCreateFolderViewModel(textFieldPlaceholderText: "Folder Name", headerViewTitleText: "Create Folder", headerViewSubtitleText: "Connection", imageIconName: "server"))
+        ServerCreateFolderView(createFolderViewModel: ServerCreateFolderViewModel(textFieldPlaceholderText: "Folder Name", headerViewTitleText: "Create Folder", headerViewSubtitleText: "Connection", imageIconName: "nextcloud.icon"))
     }
 }

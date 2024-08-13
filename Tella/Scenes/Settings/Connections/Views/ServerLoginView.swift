@@ -80,9 +80,11 @@ struct ServerLoginView: View {
         case .loading:
             CircularActivityIndicatory()
         case .error(let message):
-            VStack { // This VStack is used to display the Toast View Properly
-                Spacer()
-                ToastView(message: message)
+            if !message.isEmpty {
+                VStack { // This VStack is used to display the Toast View Properly
+                    Spacer()
+                    ToastView(message: message)
+                }
             }
         default:
             EmptyView()

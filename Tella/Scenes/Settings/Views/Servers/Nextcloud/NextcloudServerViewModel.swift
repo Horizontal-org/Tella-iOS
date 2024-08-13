@@ -4,7 +4,7 @@
 //
 //  Copyright © 2024 HORIZONTAL. All rights reserved.
 //
-
+import Combine
 class NextcloudServerViewModel: ServerViewModel {
     
     private var nextcloudRepository: NextcloudRepository
@@ -23,7 +23,7 @@ class NextcloudServerViewModel: ServerViewModel {
         //TODO: We should replace this with nextcloud attributes ('textFieldPlaceholderText', 'headerViewTitleText' and 'imageIconName' )
         self.serverCreateFolderVM = ServerCreateFolderViewModel(textFieldPlaceholderText: LocalizableSettings.GDriveCreatePersonalFolderPlaceholder.localized,
                                                                 headerViewTitleText: LocalizableSettings.GDriveCreatePersonalFolderTitle.localized,
-                                                                headerViewSubtitleText: LocalizableSettings.GDriveCreatePersonalFolderDesc.localized, imageIconName: "gdrive.icon")
+                                                                headerViewSubtitleText: LocalizableSettings.GDriveCreatePersonalFolderDesc.localized, imageIconName: "nextcloud.icon")
         super.init()
         self.serverCreateFolderVM.createFolderAction = createNextCloudFolder
 
@@ -36,9 +36,20 @@ class NextcloudServerViewModel: ServerViewModel {
                 try await nextcloudRepository.checkServer(serverUrl: serverURL)
                 checkServerState = .loaded(true)
             }
-            catch let error {
-                checkServerState = .error(error.localizedDescription)
+            
+            catch let ncError as APIError {
+                switch ncError {
+                case .noInternetConnection:
+                    checkServerState = .error(ncError.errorDescription ?? "")
+                    urlErrorMessage = ""
+                    shouldShowURLError = false
+                default:
+                    urlErrorMessage = ncError.errorDescription ?? ""
+                    shouldShowURLError = true
+                    checkServerState = .error("")
+                }
             }
+
         }
     }
     
@@ -49,8 +60,17 @@ class NextcloudServerViewModel: ServerViewModel {
                 try await nextcloudRepository.login(serverUrl: serverURL, username: username, password: password)
                 loginState = .loaded(true)
             }
-            catch let error {
-                loginState = .error(error.localizedDescription)
+            catch let ncError as APIError {
+                switch ncError {
+                case .noInternetConnection:
+                    loginErrorMessage = ""
+                    shouldShowLoginError = false
+                    loginState = .error(ncError.errorDescription ?? "")
+                default:
+                    shouldShowLoginError = true
+                    loginErrorMessage = ncError.errorDescription ?? ""
+                    loginState = .error("")
+                }
             }
         }
     }
@@ -82,8 +102,17 @@ class NextcloudServerViewModel: ServerViewModel {
                 addServer()
                 serverCreateFolderVM.createFolderState = .loaded(true)
             }
-            catch let error{
-                serverCreateFolderVM.createFolderState = .error(error.localizedDescription)
+            catch let ncError as APIError {
+                switch ncError {
+                case .noInternetConnection:
+                    serverCreateFolderVM.createFolderState = .error(ncError.errorDescription ?? "")
+                    serverCreateFolderVM.errorMessage = ""
+                    serverCreateFolderVM.shouldShowError = false
+                default:
+                    serverCreateFolderVM.shouldShowError = true
+                    serverCreateFolderVM.errorMessage = ncError.errorDescription ?? ""
+                    serverCreateFolderVM.createFolderState = .error("")
+                }
             }
         }
     }

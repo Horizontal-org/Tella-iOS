@@ -18,7 +18,8 @@ class ServerCreateFolderViewModel: ObservableObject {
     @Published var createFolderAction: (() -> ())?
     
     @Published var folderName : String = ""
-    
+    @Published var shouldShowError : Bool = false
+    @Published var errorMessage: String = ""
     
     init(textFieldPlaceholderText: String, headerViewTitleText: String, headerViewSubtitleText: String, imageIconName: String) {
         self.textFieldPlaceholderText = textFieldPlaceholderText

@@ -44,7 +44,7 @@ extension APIError: LocalizedError {
         case .nextcloudFolderExists:
             return "Folder already exist"
         case .ncUnauthorized, .ncUnauthorizedError:
-            return "A server with the specified hostname could not be found."
+            return "The username or password is incorrect"
         case .ncNoInternetError:
             return "No Internet connection. Try again when you are connected to the Internet."
         default:
