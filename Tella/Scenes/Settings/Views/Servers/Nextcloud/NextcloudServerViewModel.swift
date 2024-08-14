@@ -12,7 +12,7 @@ class NextcloudServerViewModel: ServerViewModel {
     var currentServer: NextcloudServer?
     
     var serverCreateFolderVM: ServerCreateFolderViewModel
-
+    
     private var userId = ""
     init(nextcloudRepository: NextcloudRepository = NextcloudRepository(),
          mainAppModel: MainAppModel,
@@ -106,7 +106,13 @@ class NextcloudServerViewModel: ServerViewModel {
         
         Task { @MainActor in
             do {
-                try await nextcloudRepository.createFolder(serverUrl: serverURL, folderName: serverCreateFolderVM.folderName, userId: userId)
+                let server = try NextcloudServerParameters(userId: userId,
+                                                           url: serverURL,
+                                                           username: username,
+                                                           password: password)
+                
+                try await nextcloudRepository.createFolder(folderName: serverCreateFolderVM.folderName,
+                                                           server: server)
                 addServer()
                 serverCreateFolderVM.createFolderState = .loaded(true)
             }
@@ -121,7 +127,12 @@ class NextcloudServerViewModel: ServerViewModel {
                     serverCreateFolderVM.errorMessage = ncError.errorDescription ?? ""
                     serverCreateFolderVM.createFolderState = .error("")
                 }
+            } catch let ncError as RuntimeError {
+                serverCreateFolderVM.createFolderState = .error(ncError.message)
+                serverCreateFolderVM.errorMessage = ""
+                serverCreateFolderVM.shouldShowError = false
             }
+            
         }
     }
 }

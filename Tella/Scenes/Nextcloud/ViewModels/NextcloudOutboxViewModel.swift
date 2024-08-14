@@ -68,62 +68,71 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
     }
     
     func performSubmission() {
-        guard
-            let currentReport,
-            let serverURL = currentReport.server?.url
-        else { return }
         
-        self.updateReport(reportStatus: .submissionInProgress)
-        
-        let files = reportViewModel.files.filter({ $0.status != .submitted})
-        
-        _ = files.compactMap { file in
-            file.url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true)
-        }
-        
-        let remoteFolderName = self.reportViewModel.title.removeForbiddenCharacters()
-        
-        if reportViewModel.remoteReportStatus != .descriptionSent {
-            guard let descriptionFileUrl = self.mainAppModel.vaultManager.getDescriptionFileUrl(content: self.reportViewModel.description,
-                                                                                                fileName: NextcloudConstants.descriptionFolderName) else { return }
+        do {
             
-            reportViewModel.descriptionFileUrl = descriptionFileUrl
-        }
-        
-        let filesToSend = files.compactMap { file in
-            let directory = file.url?.directoryPath ?? ""
-            let fileName = file.url?.lastPathComponent ?? ""
-            let remoteFolderName =  remoteFolderName
-            let chunkFiles : [(fileName: String, size: Int64)] = file.chunkFiles ?? []
-            let chunkFolder = file.name
+            let server = try NextcloudServerParameters(server: currentReport?.server)
             
-            return  NextcloudMetadata(fileId: file.id,
-                                      directory: directory,
-                                      fileName: fileName,
-                                      remoteFolderName: remoteFolderName,
-                                      serverURL: serverURL,
-                                      chunkFolder: chunkFolder,
-                                      chunkFiles: chunkFiles)
+            guard let currentReport else { return }
+            
+            self.updateReport(reportStatus: .submissionInProgress)
+            
+            let files = reportViewModel.files.filter({ $0.status != .submitted})
+            
+            _ = files.compactMap { file in
+                file.url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true)
+            }
+            
+            let remoteFolderName = self.reportViewModel.title.removeForbiddenCharacters()
+            
+            if reportViewModel.remoteReportStatus != .descriptionSent {
+                guard let descriptionFileUrl = self.mainAppModel.vaultManager.getDescriptionFileUrl(content: self.reportViewModel.description,
+                                                                                                    fileName: NextcloudConstants.descriptionFolderName) else { return }
+                
+                reportViewModel.descriptionFileUrl = descriptionFileUrl
+            }
+            
+            let filesToSend = files.compactMap { file in
+                let directory = file.url?.directoryPath ?? ""
+                let fileName = file.url?.lastPathComponent ?? ""
+                let remoteFolderName =  remoteFolderName
+                let chunkFiles : [(fileName: String, size: Int64)] = file.chunkFiles ?? []
+                let chunkFolder = file.name
+                
+                return  NextcloudMetadata(fileId: file.id,
+                                          directory: directory,
+                                          fileName: fileName,
+                                          remoteFolderName: remoteFolderName,
+                                          serverURL: server.url,
+                                          chunkFolder: chunkFolder,
+                                          chunkFiles: chunkFiles)
+            }
+            
+            let reportToSend = NextcloudReportToSend(folderName: remoteFolderName,
+                                                     descriptionFileUrl: reportViewModel.descriptionFileUrl,
+                                                     remoteReportStatus: currentReport.remoteReportStatus ?? .unknown,
+                                                     files: filesToSend,
+                                                     server: server)
+            
+            nextcloudRepository.uploadReport(report: reportToSend)
+                .sink { completion in
+                    switch completion {
+                    case .finished:
+                        self.checkAllFilesAreUploaded()
+                    case .failure(let error):
+                        self.handleError(error: error)
+                    }
+                } receiveValue: { response in
+                    self.processUploadReportResponse(response:response)
+                }.store(in: &subscribers)
+            
+            
+        } catch let error {
+            if let error = error as? RuntimeError {
+                self.toastMessage = error.message
+                self.shouldShowToast = true
+            }
         }
-
-        let reportToSend = NextcloudReportToSend(folderName: remoteFolderName,
-                                                 serverUrl: serverURL,
-                                                 descriptionFileUrl: reportViewModel.descriptionFileUrl,
-                                                 remoteReportStatus: currentReport.remoteReportStatus ?? .unknown,
-                                                 files: filesToSend)
-        
-        nextcloudRepository.uploadReport(report: reportToSend)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    self.checkAllFilesAreUploaded()
-                case .failure(let error):
-                    self.handleError(error: error)
-                }
-            } receiveValue: { response in
-                self.processUploadReportResponse(response:response)
-            }.store(in: &subscribers)
-        
     }
     
     private func processUploadReportResponse(response:NextcloudUploadResponse) {
@@ -306,6 +315,4 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         guard let descriptionFileUrl = reportViewModel.descriptionFileUrl else { return }
         self.mainAppModel.vaultManager.deleteFiles(files: [descriptionFileUrl])
     }
-    
-    
 }

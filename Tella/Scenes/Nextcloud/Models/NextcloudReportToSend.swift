@@ -10,10 +10,10 @@ import Foundation
 
 struct NextcloudReportToSend {
     var folderName : String
-    var serverUrl : String
     var descriptionFileUrl : URL?
     var remoteReportStatus : RemoteReportStatus
     var files : [NextcloudMetadata]
+    var server : NextcloudServerParameters
 }
 
 

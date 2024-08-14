@@ -12,6 +12,7 @@ enum APIError: Swift.Error {
     case noInternetConnection
     case badServer
     case noToken
+    case errorOccured
 }
 
 extension APIError: LocalizedError {
@@ -30,6 +31,8 @@ extension APIError: LocalizedError {
             return LocalizableSettings.settServerServerURLIncorrect.localized
         case .noToken:
             return LocalizableSettings.settServerNoTokenPresent.localized
+        case .errorOccured :
+            return LocalizableCommon.commonError.localized
         }
     }
     private func customErrorMessage(errorCode : Int) -> String {
