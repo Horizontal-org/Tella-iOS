@@ -31,8 +31,8 @@ struct CreateDriveFolder: View {
     
     var headerView: some View {
         ServerConnectionHeaderView(
-            title: LocalizableSettings.GDriveCreatePersonalFolderTitle.localized,
-            subtitle: LocalizableSettings.GDriveCreatePersonalFolderDesc.localized
+            title: LocalizableSettings.gDriveCreatePersonalFolderTitle.localized,
+            subtitle: LocalizableSettings.gDriveCreatePersonalFolderDesc.localized
         )
     }
     
@@ -41,7 +41,7 @@ struct CreateDriveFolder: View {
                       isValid: $isValid,
                       shouldShowError: .constant(false),
                       fieldType: .text,
-                      placeholder: LocalizableSettings.GDriveCreatePersonalFolderPlaceholder.localized)
+                      placeholder: LocalizableSettings.gDriveCreatePersonalFolderPlaceholder.localized)
             .padding(.vertical, 12)
             .onChange(of: fieldContent) { newValue in
                 isValid = !newValue.isEmpty

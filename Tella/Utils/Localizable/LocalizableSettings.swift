@@ -121,17 +121,17 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case UwaziSuccessMessage = "Setting_Server_Uwazi_Success_Message"
     
     //GDrive
-    case GDriveSelectTypeToolbar = "Setting_Server_GDrive_Select_Type_Toolbar"
-    case GDriveSelectTypeTitle = "Setting_Server_GDrive_Select_Type_Title"
-    case GDriveSelectTypeDesc = "Setting_Server_GDrive_Select_Type_Desc"
-    case GDriveSelectTypeShared = "Setting_Server_GDrive_Select_Type_Shared"
-    case GDriveSelectTypePersonal = "Setting_Server_GDrive_Select_Type_Personal"
-    case GDriveSelectTypeMoreInfo = "Setting_Server_GDrive_Select_Type_More_Info"
-    case GDriveSelectSharedDriveToolbar = "Setting_Server_GDrive_Select_Shared_Toolbar"
-    case GDriveCreatePersonalFolderTitle = "Setting_Server_GDrive_Create_Personal_Title"
-    case GDriveCreatePersonalFolderDesc = "Setting_Server_GDrive_Create_Personal_Desc"
-    case GDriveCreatePersonalFolderPlaceholder = "Setting_Server_GDrive_Create_Personal_Placeholder"
-    case GDriveSuccessMessage = "Setting_Server_GDrive_Success_Message"
+    case gDriveSelectTypeToolbar = "Setting_Server_GDrive_Select_Type_Toolbar"
+    case gDriveSelectTypeTitle = "Setting_Server_GDrive_Select_Type_Title"
+    case gDriveSelectTypeDesc = "Setting_Server_GDrive_Select_Type_Desc"
+    case gDriveSelectTypeShared = "Setting_Server_GDrive_Select_Type_Shared"
+    case gDriveSelectTypePersonal = "Setting_Server_GDrive_Select_Type_Personal"
+    case gDriveSelectTypeMoreInfo = "Setting_Server_GDrive_Select_Type_More_Info"
+    case gDriveSelectSharedDriveToolbar = "Setting_Server_GDrive_Select_Shared_Toolbar"
+    case gDriveCreatePersonalFolderTitle = "Setting_Server_GDrive_Create_Personal_Title"
+    case gDriveCreatePersonalFolderDesc = "Setting_Server_GDrive_Create_Personal_Desc"
+    case gDriveCreatePersonalFolderPlaceholder = "Setting_Server_GDrive_Create_Personal_Placeholder"
+    case gDriveSuccessMessage = "Setting_Server_GDrive_Success_Message"
     // About & Help
     
     case settAboutAppBar = "Settings_SettAbout_AppBar"
