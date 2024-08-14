@@ -264,7 +264,6 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 }
                 
                 guard self.isUploading else {
-                    promise(.failure(APIError.unexpectedResponse))
                     return
                 }
                 
