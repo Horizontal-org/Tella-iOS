@@ -141,7 +141,7 @@
 		1254E25E2C6B71E3004C6280 /* NextcloudLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1254E25D2C6B71E3004C6280 /* NextcloudLoginView.swift */; };
 		1254E2602C6B8114004C6280 /* NextcloutOutboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1254E25F2C6B8114004C6280 /* NextcloutOutboxView.swift */; };
 		1254E2662C6CABA5004C6280 /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1254E2652C6CABA5004C6280 /* NextcloudKit */; };
-		1254E2682C6CF794004C6280 /* NextcloudServerParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1254E2672C6CF794004C6280 /* NextcloudServerParameters.swift */; };
+		1254E2682C6CF794004C6280 /* NextcloudServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1254E2672C6CF794004C6280 /* NextcloudServerModel.swift */; };
 		125595382AFCFAA400F71DFE /* SelectQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125595372AFCFAA400F71DFE /* SelectQuery.swift */; };
 		12567FEF2716B38F00A2D356 /* LockChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12567FEE2716B38F00A2D356 /* LockChoiceView.swift */; };
 		12567FF22716E33500A2D356 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12567FF02716E33500A2D356 /* OpenSans-Bold.ttf */; };
@@ -743,7 +743,7 @@
 		1253B87A2C50481400D675E5 /* NextcloudSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudSubmittedViewModel.swift; sourceTree = "<group>"; };
 		1254E25D2C6B71E3004C6280 /* NextcloudLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudLoginView.swift; sourceTree = "<group>"; };
 		1254E25F2C6B8114004C6280 /* NextcloutOutboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloutOutboxView.swift; sourceTree = "<group>"; };
-		1254E2672C6CF794004C6280 /* NextcloudServerParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudServerParameters.swift; sourceTree = "<group>"; };
+		1254E2672C6CF794004C6280 /* NextcloudServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudServerModel.swift; sourceTree = "<group>"; };
 		125595372AFCFAA400F71DFE /* SelectQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectQuery.swift; sourceTree = "<group>"; };
 		12567FEE2716B38F00A2D356 /* LockChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockChoiceView.swift; sourceTree = "<group>"; };
 		12567FF02716E33500A2D356 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
@@ -1910,7 +1910,7 @@
 			children = (
 				204E7C3B2C241376004CC49F /* NextcloudRepository.swift */,
 				1275A8482C5E6EFF0071A97D /* NextcloudConstants.swift */,
-				1254E2672C6CF794004C6280 /* NextcloudServerParameters.swift */,
+				1254E2672C6CF794004C6280 /* NextcloudServerModel.swift */,
 			);
 			path = Nextcloud;
 			sourceTree = "<group>";
@@ -3878,7 +3878,7 @@
 				15F64CA42B6D7CA1008A57AA /* AvailableResources.swift in Sources */,
 				12476E1F2A5B7D2F00069048 /* TrailingButtonToolbar.swift in Sources */,
 				12FAC12D2B226DEF00DD9615 /* EncryptionOperation.swift in Sources */,
-				1254E2682C6CF794004C6280 /* NextcloudServerParameters.swift in Sources */,
+				1254E2682C6CF794004C6280 /* NextcloudServerModel.swift in Sources */,
 				12494A482BC0570E00766DFF /* UwaziSubmissionViewModel.swift in Sources */,
 				12199C3A2941260D0041BD38 /* OutboxDetailsItemView.swift in Sources */,
 				128D6E1E2804DA2A0082AB18 /* ListActionSheetItem.swift in Sources */,

@@ -13,7 +13,7 @@ struct NextcloudReportToSend {
     var descriptionFileUrl : URL?
     var remoteReportStatus : RemoteReportStatus
     var files : [NextcloudMetadata]
-    var server : NextcloudServerParameters
+    var server : NextcloudServerModel
 }
 
 

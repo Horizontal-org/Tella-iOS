@@ -8,15 +8,14 @@
 
 import Foundation
 
-struct NextcloudServerParameters {
+struct NextcloudServerModel {
     
     var userId: String
     var rootFolder: String?
     var url: String
     var username: String
     var password: String
-    
-    
+
     init(server:NextcloudServer?) throws {
         guard
             let username = server?.username,
@@ -31,26 +30,6 @@ struct NextcloudServerParameters {
         
         self.userId = userId
         self.rootFolder = rootFolder
-        self.url = url
-        self.username = username
-        self.password = password
-    }
-    
-    
-    init(userId: String?,
-         url: String?,
-         username: String?,
-         password: String?) throws {
-        guard
-            let username = username,
-            let userId = userId,
-            let password = password,
-            let url = url
-        else {
-            throw RuntimeError(LocalizableCommon.commonError.localized)
-            
-        }
-        self.userId = userId
         self.url = url
         self.username = username
         self.password = password

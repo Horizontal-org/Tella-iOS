@@ -106,13 +106,12 @@ class NextcloudServerViewModel: ServerViewModel {
         
         Task { @MainActor in
             do {
-                let server = try NextcloudServerParameters(userId: userId,
-                                                           url: serverURL,
-                                                           username: username,
-                                                           password: password)
+                let server = NextcloudServer(serverURL: serverURL, username: username, password: password, userId: userId)
+
+                let serverParameters = try NextcloudServerModel(server:server)
                 
                 try await nextcloudRepository.createFolder(folderName: serverCreateFolderVM.folderName,
-                                                           server: server)
+                                                           server: serverParameters)
                 addServer()
                 serverCreateFolderVM.createFolderState = .loaded(true)
             }

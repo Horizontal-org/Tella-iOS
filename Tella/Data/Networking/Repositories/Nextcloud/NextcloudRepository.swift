@@ -12,7 +12,7 @@ import Combine
 protocol NextcloudRepositoryProtocol {
     func login(serverUrl: String, username: String, password: String) async throws -> String
     func checkServer(serverUrl: String) async throws
-    func createFolder(folderName: String, server:NextcloudServerParameters?) async throws
+    func createFolder(folderName: String, server:NextcloudServerModel?) async throws
     func uploadReport(report:NextcloudReportToSend) -> AnyPublisher<NextcloudUploadResponse,APIError>
     func pauseAllUploads()
 }
@@ -36,7 +36,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     private var shouldPause : Bool = false
     private let networkStatusSubject = PassthroughSubject<Bool, Never>()
     private let networkMonitor: NetworkMonitor
-    private var server: NextcloudServerParameters?
+    private var server: NextcloudServerModel?
     
     private var rootFolderURL : String? {
         guard let server else { return nil }
@@ -57,7 +57,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         }).store(in: &subscribers)
     }
     
-    private func setUp(server:NextcloudServerParameters) {
+    private func setUp(server:NextcloudServerModel) {
         self.server = server
         NextcloudKit.shared.setup(account: server.username,
                                   user: server.username,
@@ -92,7 +92,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         }
     }
     
-    func createFolder(folderName: String, server:NextcloudServerParameters? = nil) async throws {
+    func createFolder(folderName: String, server:NextcloudServerModel? = nil) async throws {
         
         if let server {
             self.setUp(server:server)

@@ -71,7 +71,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         
         do {
             
-            let server = try NextcloudServerParameters(server: currentReport?.server)
+            let server = try NextcloudServerModel(server: currentReport?.server)
             
             guard let currentReport else { return }
             
