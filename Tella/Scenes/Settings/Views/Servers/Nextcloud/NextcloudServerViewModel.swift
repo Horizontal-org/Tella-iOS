@@ -107,7 +107,7 @@ class NextcloudServerViewModel: ServerViewModel {
         Task { @MainActor in
             do {
                 let server = NextcloudServer(serverURL: serverURL, username: username, password: password, userId: userId)
-
+                
                 let serverParameters = try NextcloudServerModel(server:server)
                 
                 try await nextcloudRepository.createFolder(folderName: serverCreateFolderVM.folderName,
@@ -118,20 +118,21 @@ class NextcloudServerViewModel: ServerViewModel {
             catch let ncError as APIError {
                 switch ncError {
                 case .noInternetConnection:
-                    serverCreateFolderVM.createFolderState = .error(ncError.errorDescription ?? "")
-                    serverCreateFolderVM.errorMessage = ""
-                    serverCreateFolderVM.shouldShowError = false
+                    handleCreateFolderError(errorStateMessage: ncError.errorDescription ?? "")
                 default:
-                    serverCreateFolderVM.shouldShowError = true
-                    serverCreateFolderVM.errorMessage = ncError.errorDescription ?? ""
-                    serverCreateFolderVM.createFolderState = .error("")
+                    handleCreateFolderError(errorMessage: ncError.errorDescription ?? "",
+                                            errorStateMessage: "",
+                                            shouldShowError: true)
                 }
             } catch let ncError as RuntimeError {
-                serverCreateFolderVM.createFolderState = .error(ncError.message)
-                serverCreateFolderVM.errorMessage = ""
-                serverCreateFolderVM.shouldShowError = false
+                handleCreateFolderError(errorStateMessage: ncError.message)
             }
-            
         }
+    }
+    
+    private func handleCreateFolderError(errorMessage: String = "", errorStateMessage: String, shouldShowError:Bool = false ) {
+        serverCreateFolderVM.createFolderState = .error(errorStateMessage)
+        serverCreateFolderVM.errorMessage = errorMessage
+        serverCreateFolderVM.shouldShowError = shouldShowError
     }
 }
