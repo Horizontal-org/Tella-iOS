@@ -50,7 +50,7 @@ struct ServerCreateFolderView: View {
                       shouldShowError: $createFolderViewModel.shouldShowError,
                       errorMessage: createFolderViewModel.errorMessage,
                       fieldType: .text,
-                      placeholder: createFolderViewModel.textFieldPlaceholderText)
+                      placeholder: LocalizableSettings.settCreateFolderPlaceholder.localized)
         .padding(.vertical, 12)
         .onChange(of: createFolderViewModel.folderName) { newValue in
             isValid = !newValue.isEmpty
@@ -59,7 +59,7 @@ struct ServerCreateFolderView: View {
     
     var headerView: some View {
         ServerConnectionHeaderView(
-            title: createFolderViewModel.headerViewTitleText,
+            title: LocalizableSettings.settCreateFolderTitle.localized,
             subtitle: createFolderViewModel.headerViewSubtitleText,
             imageIconName: createFolderViewModel.imageIconName
         )
@@ -77,6 +77,6 @@ struct ServerCreateFolderView: View {
 }
 struct ServerCreateFolderView_Previews: PreviewProvider {
     static var previews: some View {
-        ServerCreateFolderView(createFolderViewModel: ServerCreateFolderViewModel(textFieldPlaceholderText: "Folder Name", headerViewTitleText: "Create Folder", headerViewSubtitleText: "Connection", imageIconName: "nextcloud.icon"))
+        ServerCreateFolderView(createFolderViewModel: ServerCreateFolderViewModel(headerViewSubtitleText: "Connection", imageIconName: "nextcloud.icon"))
     }
 }

@@ -129,10 +129,13 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case GDriveSelectTypePersonal = "Setting_Server_GDrive_Select_Type_Personal"
     case GDriveSelectTypeMoreInfo = "Setting_Server_GDrive_Select_Type_More_Info"
     case GDriveSelectSharedDriveToolbar = "Setting_Server_GDrive_Select_Shared_Toolbar"
-    case GDriveCreatePersonalFolderTitle = "Setting_Server_GDrive_Create_Personal_Title"
+    case settCreateFolderTitle = "Setting_Server_Create_Folder_Title"
     case GDriveCreatePersonalFolderDesc = "Setting_Server_GDrive_Create_Personal_Desc"
-    case GDriveCreatePersonalFolderPlaceholder = "Setting_Server_GDrive_Create_Personal_Placeholder"
+    case settCreateFolderPlaceholder = "Setting_Server_Foldername_Placeholder"
     case GDriveSuccessMessage = "Setting_Server_GDrive_Success_Message"
+    case nextcloudCreatePersonalFolderDesc = "Setting_Server_Nextcloud_Create_Personal_Desc"    
+    case nextcloudSuccessMessage = "Setting_Server_Nextcloud_Success_Message"
+
     // About & Help
     
     case settAboutAppBar = "Settings_SettAbout_AppBar"

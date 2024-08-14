@@ -8,8 +8,6 @@
 import Combine
 class ServerCreateFolderViewModel: ObservableObject {
     
-    var textFieldPlaceholderText: String = ""
-    var headerViewTitleText: String = ""
     var headerViewSubtitleText: String = ""
     var imageIconName: String = ""
     
@@ -21,9 +19,7 @@ class ServerCreateFolderViewModel: ObservableObject {
     @Published var shouldShowError : Bool = false
     @Published var errorMessage: String = ""
     
-    init(textFieldPlaceholderText: String, headerViewTitleText: String, headerViewSubtitleText: String, imageIconName: String) {
-        self.textFieldPlaceholderText = textFieldPlaceholderText
-        self.headerViewTitleText = headerViewTitleText
+    init(headerViewSubtitleText: String, imageIconName: String) {
         self.headerViewSubtitleText = headerViewSubtitleText
         self.imageIconName = imageIconName
     }

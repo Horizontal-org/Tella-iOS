@@ -17,7 +17,7 @@ struct CreateNextcloudFolderView: View {
     }
     
     private func navigateToSuccessLogin() {
-        navigateTo(destination: SuccessLoginView(navigateToAction: {self.popToRoot()}, type: .gDrive))
+        navigateTo(destination: SuccessLoginView(navigateToAction: {self.popToRoot()}, type: .nextcloud))
     }
 }
 

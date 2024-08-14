@@ -22,10 +22,7 @@ class NextcloudServerViewModel: ServerViewModel {
         self.nextcloudRepository = nextcloudRepository
         self.mainAppModel = mainAppModel
         self.currentServer = currentServer
-        //TODO: We should replace this with nextcloud attributes ('textFieldPlaceholderText', 'headerViewTitleText' and 'imageIconName' )
-        self.serverCreateFolderVM = ServerCreateFolderViewModel(textFieldPlaceholderText: LocalizableSettings.GDriveCreatePersonalFolderPlaceholder.localized,
-                                                                headerViewTitleText: LocalizableSettings.GDriveCreatePersonalFolderTitle.localized,
-                                                                headerViewSubtitleText: LocalizableSettings.GDriveCreatePersonalFolderDesc.localized, imageIconName: "nextcloud.icon")
+        self.serverCreateFolderVM = ServerCreateFolderViewModel(headerViewSubtitleText: LocalizableSettings.nextcloudCreatePersonalFolderDesc.localized, imageIconName: "nextcloud.icon")
         super.init()
         self.serverCreateFolderVM.createFolderAction = createNextCloudFolder
         

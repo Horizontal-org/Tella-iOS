@@ -20,7 +20,7 @@ extension ServerConnectionType {
         case.tella:
             return LocalizableSettings.settServerReportsSuccessMessage.localized
         case .nextcloud:
-            return "Go to Nextcloud" //TODO: Must be changed to localizable
+            return LocalizableSettings.nextcloudSuccessMessage.localized
         default:
             return ""
         }
