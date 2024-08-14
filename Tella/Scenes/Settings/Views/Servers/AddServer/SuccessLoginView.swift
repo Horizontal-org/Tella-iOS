@@ -73,10 +73,6 @@ struct SuccessLoginView: View {
                 .multilineTextAlignment(.center)
         }
     }
-    
-    private var reportsView: some View {
-        ReportsView(mainAppModel: mainAppModel)
-    }
 }
 
 struct SuccessLoginView_Previews: PreviewProvider {

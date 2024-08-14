@@ -11,36 +11,61 @@ import SwiftUI
 struct CreateDriveFolder: View {
     @State var fieldContent : String = ""
     @State var isValid : Bool = false
+    @EnvironmentObject var gDriveServerViewModel: GDriveServerViewModel
     var body: some View {
         ContainerView {
             VStack(spacing: 20) {
                 Spacer()
-                ServerConnectionHeaderView(
-                    title: "Create new folder",
-                    subtitle: "Your reports will be uploaded to a new folder on your Google Drive. Choose a name for this folder here."
-                )
-                TextfieldView(fieldContent: $fieldContent,
-                              isValid: $isValid,
-                              shouldShowError: .constant(false),
-                              fieldType: .text,
-                              placeholder: "Folder name")
-                    .padding(.vertical, 12)
+                headerView
+                textField
                 Spacer()
                 bottomView
             }.padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
             .navigationBarHidden(true)
+        }.onReceive(gDriveServerViewModel.$createFolderState) {createFolderState in
+            if case .error(let message) = createFolderState {
+                Toast.displayToast(message: message)
+            }
         }
+    }
+    
+    var headerView: some View {
+        ServerConnectionHeaderView(
+            title: LocalizableSettings.gDriveCreatePersonalFolderTitle.localized,
+            subtitle: LocalizableSettings.gDriveCreatePersonalFolderDesc.localized
+        )
+    }
+    
+    var textField: some View {
+        TextfieldView(fieldContent: $fieldContent,
+                      isValid: $isValid,
+                      shouldShowError: .constant(false),
+                      fieldType: .text,
+                      placeholder: LocalizableSettings.gDriveCreatePersonalFolderPlaceholder.localized)
+            .padding(.vertical, 12)
+            .onChange(of: fieldContent) { newValue in
+                isValid = !newValue.isEmpty
+            }
     }
     
     var bottomView: some View {
         BottomLockView<AnyView>(isValid: $isValid,
                                 nextButtonAction: .action,
-                                shouldHideNext: false,
+                                shouldHideNext: gDriveServerViewModel.createFolderState == .loading,
                                 shouldHideBack: false,
                                 nextAction: {
-            navigateTo(destination: SuccessLoginView(navigateToAction: {}, type: .gDrive))
+            gDriveServerViewModel.createDriveFolder(folderName: fieldContent) {
+                navigateTo(destination: SuccessLoginView(
+                    navigateToAction: {navigateTo(destination: reportsView)},
+                    type: .gDrive)
+                )
+            }
         })
 
+    }
+    
+    private var reportsView: some View {
+        ReportMainView(reportMainViewModel: GDriveViewModel(mainAppModel: gDriveServerViewModel.mainAppModel), diContainer: GDriveDIContainer())
     }
 }
 

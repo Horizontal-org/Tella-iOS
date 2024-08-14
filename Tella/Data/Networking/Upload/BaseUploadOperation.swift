@@ -80,13 +80,18 @@ class BaseUploadOperation : Operation {
                 let file = self.reportVaultFiles?.first(where: {$0.id == progressInfo.fileId})
                 let instanceId = file?.instanceId
                 
-                let totalByteSent = self.updateReportFile(fileStatus: progressInfo.status, id: instanceId, bytesSent: progressInfo.bytesSent,current: progressInfo.current)
+                let totalByteSent = self.updateReportFile(fileStatus: progressInfo.status, id: instanceId, 
+                                                          bytesSent: progressInfo.bytesSent,
+                                                          current: progressInfo.current)
                 
                 if let _ = progressInfo.error {
                     self.updateReport(reportStatus: .submissionError)
                 }
                 
-                self.response.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: progressInfo.fileId, status: progressInfo.status, total: totalByteSent, reportStatus: self.report?.status)))
+                self.response.send(UploadResponse.progress(progressInfo: UploadProgressInfo(bytesSent:totalByteSent,
+                                                                                            fileId: progressInfo.fileId,
+                                                                                            status: progressInfo.status,
+                                                                                            reportStatus: self.report?.status)))
                 
                 if progressInfo.status == .submitted {
                     self.checkAllFilesAreUploaded()
@@ -110,7 +115,7 @@ class BaseUploadOperation : Operation {
     
     func updateReport(apiID: String? = nil, reportStatus: ReportStatus?) {
         
-        self.report?.status = reportStatus
+        self.report?.status = reportStatus ?? .unknown
         if apiID != nil {
             self.report?.apiID = apiID
         }

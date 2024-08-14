@@ -15,7 +15,6 @@ struct SectionTitle: View {
             .foregroundColor(.white)
             .font(.custom(Styles.Fonts.boldFontName, size: 14))
             .fontWeight(.semibold)
-            .padding(.bottom, 8)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

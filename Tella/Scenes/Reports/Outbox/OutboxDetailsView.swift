@@ -4,17 +4,15 @@
 
 import SwiftUI
 
-struct OutboxDetailsView: View {
+struct OutboxDetailsView<T: ServerProtocol>: View {
     
-    @StateObject var outboxReportVM : OutboxReportVM
-    @EnvironmentObject var reportsViewModel : ReportsViewModel
+    @StateObject var outboxReportVM : OutboxMainViewModel<T>
+    @EnvironmentObject var reportsViewModel : ReportsMainViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
-    
-    init(appModel: MainAppModel,reportsViewModel: ReportsViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
-        _outboxReportVM = StateObject(wrappedValue: OutboxReportVM(mainAppModel: appModel, reportsViewModel: reportsViewModel, reportId:reportId, shouldStartUpload: shouldStartUpload))
-    }
+    @State private var isButtonDisabled = false
+    private let debounceInterval: TimeInterval = 1
     
     var body: some View {
         
@@ -102,9 +100,24 @@ struct OutboxDetailsView: View {
                                       buttonType: .yellow,
                                       destination: nil,
                                       isValid: .constant(true)) {
-                outboxReportVM.isSubmissionInProgress ? outboxReportVM.pauseSubmission() : outboxReportVM.submitReport()
+                debounceAction {
+                    outboxReportVM.isSubmissionInProgress ? outboxReportVM.pauseSubmission() : outboxReportVM.submitReport()
+                }
                 
-            }.padding(EdgeInsets(top: 30, leading: 24, bottom: 16, trailing: 24))
+            }
+            .padding(EdgeInsets(top: 30, leading: 24, bottom: 16, trailing: 24))
+            .disabled(isButtonDisabled)
+        }
+    }
+    
+    private func debounceAction(action: @escaping () -> Void) {
+        guard !isButtonDisabled else { return }
+        
+        isButtonDisabled = true
+        action()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + debounceInterval) {
+            isButtonDisabled = false
         }
     }
     
@@ -179,13 +192,22 @@ struct OutboxDetailsView: View {
     }
     
     private var submittedDetailsView: some View {
-        SubmittedDetailsView(appModel: mainAppModel,
-                             reportId: outboxReportVM.reportViewModel.id)
-        .environmentObject(reportsViewModel)
+        Group {
+            switch reportsViewModel.connectionType {
+            case .tella:
+                let vm = SubmittedReportVM(mainAppModel: mainAppModel, reportId: outboxReportVM.reportViewModel.id)
+                SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportsViewModel)
+            case .gDrive:
+                let vm = GDriveSubmittedViewModel(mainAppModel: mainAppModel, reportId: outboxReportVM.reportViewModel.id)
+                SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportsViewModel)
+            default:
+                Text("")
+            }
+        }
     }
     
     private func dismissView() {
-        self.popTo(UIHostingController<ReportsView>.self)
+        self.popTo(UIHostingController<ReportMainView>.self)
     }
     
     private func showDeleteReportConfirmationView() {

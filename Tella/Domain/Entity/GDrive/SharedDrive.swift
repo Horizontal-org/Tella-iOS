@@ -8,7 +8,7 @@
 
 import Foundation
 
-class SharedDrive: DomainModel {
+class SharedDrive: DomainModel, Equatable {
     var id: String
     var name: String
     var kind: String
@@ -17,5 +17,9 @@ class SharedDrive: DomainModel {
         self.id = id
         self.name = name
         self.kind = kind
+    }
+    
+    static func == (lhs: SharedDrive, rhs: SharedDrive) -> Bool {
+        return lhs.id == rhs.id && lhs.name == rhs.name && lhs.kind == rhs.kind
     }
 }

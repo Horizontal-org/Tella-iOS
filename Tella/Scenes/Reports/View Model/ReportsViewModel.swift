@@ -7,90 +7,85 @@ import Foundation
 import Combine
 import SwiftUI
 
-class ReportsViewModel: ObservableObject {
-    
-    var mainAppModel : MainAppModel
-    
-    @Published var draftReports : [Report] = []
-    @Published var outboxedReports : [Report] = []
-    @Published var submittedReports : [Report] = []
+class ReportsViewModel: ReportsMainViewModel {
     @Published var selectedReport : Report?
-    @Published var selectedCell = Pages.draft
-    
-    var pageViewItems : [PageViewItem] {
-        [PageViewItem(title: LocalizableReport.draftTitle.localized, page: .draft, number: draftReports.count),
-         PageViewItem(title: LocalizableReport.outboxTitle.localized, page: .outbox, number: outboxedReports.count),
-         PageViewItem(title: LocalizableReport.submittedTitle.localized, page: .submitted, number: submittedReports.count)] }
     
     var sheetItems : [ListActionSheetItem] { return [
         
         ListActionSheetItem(imageName: "view-icon",
-                            content: self.selectedReport?.status?.sheetItemTitle ?? "",
-                            type: self.selectedReport?.status?.reportActionType ?? .viewSubmitted),
+                            content: self.selectedReport?.status.sheetItemTitle ?? "",
+                            type: self.selectedReport?.status.reportActionType ?? .viewSubmitted),
         ListActionSheetItem(imageName: "delete-icon-white",
                             content: LocalizableReport.viewModelDelete.localized,
-                            type: ReportActionType.delete)
+                            type: ConnectionActionType.delete)
     ]}
     
-    private var subscribers = Set<AnyCancellable>()
     private var delayTime = 0.1
     
     init(mainAppModel : MainAppModel) {
         
-        self.mainAppModel = mainAppModel
+        super.init(mainAppModel: mainAppModel, connectionType: .tella, title: LocalizableReport.reportsTitle.localized)
         
         self.getReports()
+        self.listenToUpdates()
     }
     
-    private func getReports() {
+    override func getReports() {
         getDraftReports()
         getOutboxedReports()
         getSubmittedReports()
     }
     
     func getDraftReports() {
-        self.mainAppModel.tellaData?.draftReports
-            .receive(on: DispatchQueue.main)
-            .sink { result in
-            } receiveValue: { draftReports in
-                self.draftReports = []
-                DispatchQueue.main.asyncAfter(deadline: .now() + self.delayTime, execute: {
-                    self.draftReports = draftReports
-                })
-            }.store(in: &subscribers)
+        let draftReports = tellaData?.getDraftReports() ?? []
+        
+        self.draftReportsViewModel = draftReports.compactMap { report in
+            ReportCardViewModel(report: report,
+                                serverName: report.server?.name,
+                                deleteReport: { self.deleteReport(report: report) },
+                                connectionType: .tella
+            )
+        }
     }
     
     func getOutboxedReports() {
-        self.mainAppModel.tellaData?.outboxedReports
-            .receive(on: DispatchQueue.main)
-            .sink { result in
-            } receiveValue: { outboxedReports in
-                self.outboxedReports = []
-                DispatchQueue.main.asyncAfter(deadline: .now() + self.delayTime, execute: {
-                    self.outboxedReports = outboxedReports
-                })
-                
-            }.store(in: &subscribers)
+        let outboxedReports = tellaData?.getOutboxedReports() ?? []
+        
+        self.outboxedReportsViewModel = outboxedReports.compactMap { report in
+            ReportCardViewModel(report: report,
+                                serverName: report.server?.name,
+                                deleteReport: { self.deleteReport(report: report) }, connectionType: .tella
+            )
+        }
     }
     
     func getSubmittedReports() {
-        self.mainAppModel.tellaData?.submittedReports
-            .receive(on: DispatchQueue.main)
-            .sink { result in
-            } receiveValue: { submittedReports in
-                self.submittedReports = []
-                DispatchQueue.main.asyncAfter(deadline: .now() + self.delayTime, execute: {
-                    self.submittedReports = submittedReports
-                })
-            }.store(in: &subscribers)
+        let submittedReports = tellaData?.getSubmittedReports() ?? []
+        
+        self.submittedReportsViewModel = submittedReports.compactMap { report in
+            ReportCardViewModel(report: report,
+                                serverName: report.server?.name,
+                                deleteReport: { self.deleteReport(report: report) },
+                                connectionType: .tella
+            )
+        }
     }
     
-    func deleteReport() {
-        mainAppModel.deleteReport(reportId: selectedReport?.id)
+    func deleteReport(report: Report) {
+        mainAppModel.deleteReport(reportId: report.id)
     }
     
     func deleteSubmittedReport() {
         mainAppModel.tellaData?.deleteSubmittedReport()
+    }
+    
+    override func listenToUpdates() {
+        self.mainAppModel.tellaData?.shouldReloadTellaReports
+            .receive(on: DispatchQueue.main)
+            .sink { result in
+            } receiveValue: { draftReports in
+                self.getReports()
+            }.store(in: &subscribers)
     }
     
 }
