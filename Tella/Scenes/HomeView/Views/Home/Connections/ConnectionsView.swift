@@ -107,6 +107,9 @@ struct ConnectionsItemView<Destination:View>: View {
                         Text(title)
                             .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
                             .foregroundColor(.white)
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: 80)
+                            .lineLimit(2)
                     }
                 )
         }
