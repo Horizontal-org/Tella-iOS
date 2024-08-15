@@ -99,14 +99,13 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
                                       nextButtonAction: .action,
                                       buttonType: .yellow,
                                       destination: nil,
-                                      isValid: .constant(true)) {
+                                      isValid: .constant(!isButtonDisabled)) {
                 debounceAction {
                     outboxReportVM.isSubmissionInProgress ? outboxReportVM.pauseSubmission() : outboxReportVM.submitReport()
                 }
                 
             }
             .padding(EdgeInsets(top: 30, leading: 24, bottom: 16, trailing: 24))
-            .disabled(isButtonDisabled)
         }
     }
     
