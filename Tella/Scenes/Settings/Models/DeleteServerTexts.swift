@@ -19,9 +19,7 @@ enum DeleteServerTexts {
         switch self {
         case .tella(let name):
             return String(format: LocalizableSettings.settServerDeleteTellaConnectionTitle.localized, name)
-        case .uwazi(let name):
-            return String(format: LocalizableSettings.settServerDeleteConnectionTitle.localized, name)
-        case .gDrive(let name):
+        case .uwazi(let name), .gDrive(let name):
             return String(format: LocalizableSettings.settServerDeleteConnectionTitle.localized, name)
         case .unknown:
             return ""
@@ -50,13 +48,14 @@ enum DeleteServerTexts {
 
 extension DeleteServerTexts {
     init(server: Server) {
+        let serverName = server.name ?? ""
         switch server.serverType {
         case .tella:
-            self = .tella(server.name ?? "")
+            self = .tella(serverName)
         case .uwazi:
-            self = .uwazi(server.name ?? "")
+            self = .uwazi(serverName)
         case .gDrive:
-            self = .gDrive(server.name ?? "")
+            self = .gDrive(serverName)
         default:
             self = .unknown
         }
