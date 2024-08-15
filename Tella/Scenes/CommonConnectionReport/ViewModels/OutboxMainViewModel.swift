@@ -27,6 +27,7 @@ class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
     }
     @Published var shouldShowSubmittedReportView : Bool = false
     @Published var shouldShowMainView : Bool = false
+    @Published var isFileLoading : Bool = false
     
     var subscribers = Set<AnyCancellable>()
     var filesToUpload : [FileToUpload] = []

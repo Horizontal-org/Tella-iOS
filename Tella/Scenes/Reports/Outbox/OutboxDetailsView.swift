@@ -99,7 +99,7 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
                                       nextButtonAction: .action,
                                       buttonType: .yellow,
                                       destination: nil,
-                                      isValid: .constant(!isButtonDisabled)) {
+                                      isValid: .constant(!isButtonDisabled && !outboxReportVM.isFileLoading)) {
                 debounceAction {
                     outboxReportVM.isSubmissionInProgress ? outboxReportVM.pauseSubmission() : outboxReportVM.submitReport()
                 }

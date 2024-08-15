@@ -78,6 +78,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     //submit report
     
     override func submitReport() {
+        self.isFileLoading = true
         if isSubmissionInProgress == false {
             self.updateReportStatus(reportStatus: .submissionInProgress)
         }
@@ -126,7 +127,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
             uploadNextFile(folderId: folderId)
             return
         }
-        
+        self.isFileLoading = false
         currentUploadCancellable = gDriveRepository.uploadFile(fileURL: fileUrl, fileId: fileToUpload.id ?? "", mimeType: fileToUpload.mimeType ?? "", folderId: folderId)
             .receive(on: DispatchQueue.main)
             .sink(
