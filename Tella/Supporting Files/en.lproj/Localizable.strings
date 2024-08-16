@@ -374,6 +374,10 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Submitted_ClearAll_Cancel_SheetAction" = "CANCEL";
 "Reports_Submitted_ClearAll_ClearSubmitted_SheetAction" = "CLEAR SUBMITTED";
 "Reports_Submitted_Clear_AppBar" = "Clear";
+"Reports_Submitted_UploadedDate_Expl" = "Uploaded on %@";
+"Reports_Submitted_File_Title" = "file";
+"Reports_Submitted_Files_Title" = "files";
+"Reports_Outbox_Uploaded_Title" = "uploaded";
 "Reports_DraftSaved_Toast" = "The report was saved as a draft";
 "Reports_ReportDeleted_Toast" = "“%@” has been deleted.";
 "Reports_ReportSubmitted_Toast" = "Upload complete: “%@”";

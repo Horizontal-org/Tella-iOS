@@ -76,4 +76,8 @@ enum LocalizableReport: String, LocalizableDelegate {
     case outboxListExpl = "Reports_Outbox_OutboxList_Expl"
     case submittedListExpl = "Reports_Submitted_SubmittedList_Expl"
     
+    case uploadedDate = "Reports_Submitted_UploadedDate_Expl"
+    case reportFile = "Reports_Submitted_File_Title"
+    case reportFiles = "Reports_Submitted_Files_Title"
+    case reportUploaded = "Reports_Outbox_Uploaded_Title"
 }

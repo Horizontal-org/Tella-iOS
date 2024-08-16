@@ -81,9 +81,12 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
             let formattedTotalSize = totalSize.getFormattedFileSize()
             DispatchQueue.main.async {
                 
-                self.percentUploadedInfo = "\(Int(formattedPercentUploaded * 100))% uploaded"
+                self.percentUploadedInfo = "\(Int(formattedPercentUploaded * 100))% \(LocalizableReport.reportUploaded.localized)"
                 self.percentUploaded = Float(percentUploaded)
-                self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
+                let filesCount = "\(self.reportViewModel.files.count) \(self.reportViewModel.files.count == 1 ? LocalizableReport.reportFile.localized : LocalizableReport.reportFiles.localized)"
+                let fileUploaded = "\(formattedTotalUploaded)/\(formattedTotalSize) \(LocalizableReport.reportUploaded.localized)"
+                
+                self.uploadedFiles = "\(filesCount), \(fileUploaded)"
                 
                 self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: ($0.bytesSent.getFormattedFileSize()) + "/" + ($0.size.getFormattedFileSize()))}
                 
