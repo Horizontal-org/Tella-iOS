@@ -6,7 +6,7 @@
 
 import SwiftUI
 
-struct ReportFileGridView<T: ServerProtocol>: View {
+struct ReportFileGridView<T: Server>: View {
     
     var file: VaultFileDB
     

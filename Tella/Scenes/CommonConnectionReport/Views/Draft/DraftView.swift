@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct DraftView<T: ServerProtocol>: View  {
+struct DraftView<T: Server>: View  {
     @StateObject var viewModel: DraftMainViewModel<T>
     
     @State private var menuFrame : CGRect = CGRectZero

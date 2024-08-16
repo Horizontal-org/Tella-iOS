@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct AddFilesToDraftView<T: ServerProtocol>: View {
+struct AddFilesToDraftView<T: Server>: View {
     
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var sheetManager: SheetManager

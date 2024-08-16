@@ -8,7 +8,7 @@
 
 import Foundation
 
-class GDriveServer: Server, ServerProtocol {
+class GDriveServer: Server {
     var rootFolder: String?
 
     enum CodingKeys: String, CodingKey {
@@ -16,7 +16,7 @@ class GDriveServer: Server, ServerProtocol {
     }
 
     init(id: Int? = nil,
-         name: String? = "Google Drive",
+         name: String? = LocalizableGDrive.gDriveAppBar.localized,
          rootFolder: String,
          serverType: ServerConnectionType? = .gDrive) {
         

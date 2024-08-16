@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
+class OutboxMainViewModel<T: Server>: ObservableObject {
     
     var mainAppModel : MainAppModel
     var reportsViewModel : ReportsMainViewModel

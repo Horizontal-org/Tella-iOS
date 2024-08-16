@@ -4,7 +4,7 @@
 
 import Foundation
 
-class ReportViewModel<T: ServerProtocol> {
+class ReportViewModel<T: Server> {
     @Published var id : Int?
     @Published var title : String = ""
     @Published var description : String = ""

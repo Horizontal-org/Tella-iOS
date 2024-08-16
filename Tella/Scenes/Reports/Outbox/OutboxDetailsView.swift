@@ -4,7 +4,7 @@
 
 import SwiftUI
 
-struct OutboxDetailsView<T: ServerProtocol>: View {
+struct OutboxDetailsView<T: Server>: View {
     
     @StateObject var outboxReportVM : OutboxMainViewModel<T>
     @EnvironmentObject var reportsViewModel : ReportsMainViewModel

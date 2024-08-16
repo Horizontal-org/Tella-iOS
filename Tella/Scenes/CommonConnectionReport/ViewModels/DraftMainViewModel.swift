@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-class DraftMainViewModel<T: ServerProtocol>: ObservableObject {
+class DraftMainViewModel<T: Server>: ObservableObject {
     var mainAppModel : MainAppModel
     // Report
     @Published var reportId : Int?
