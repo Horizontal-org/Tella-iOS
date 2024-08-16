@@ -103,18 +103,17 @@ struct ServersListView: View {
     }
     private func serverActionItems(server: Server) -> [ListActionSheetItem]{
         var serverActionItems : [ListActionSheetItem] = [
-            ListActionSheetItem(imageName: "edit-icon",
-                                content: LocalizableUwazi.uwaziServerEdit.localized,
-                                type: ServerActionType.edit)
+            ListActionSheetItem(imageName: "delete-icon-white",
+                                content: LocalizableUwazi.uwaziServerDelete.localized,
+                                type: ServerActionType.delete)
+            
         ]
-
         switch server.serverType {
-        case .gDrive, .nextcloud:
-            return serverActionItems
-        default:
-            serverActionItems.append(ListActionSheetItem(imageName: "delete-icon-white",
-                                                         content: LocalizableUwazi.uwaziServerDelete.localized,
-                                                         type: ServerActionType.delete))
+        case .uwazi, .tella:
+            serverActionItems.append(ListActionSheetItem(imageName: "edit-icon",
+                                                         content: LocalizableUwazi.uwaziServerEdit.localized,
+                                                         type: ServerActionType.edit))
+        default: break
         }
         return serverActionItems
     }
