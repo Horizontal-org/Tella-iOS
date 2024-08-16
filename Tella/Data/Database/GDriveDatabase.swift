@@ -136,9 +136,7 @@ extension TellaDataBase {
     
     func updateDriveReportFiles(files: [ReportFile], reportId: Int) -> Result<Bool, Error> {
         do {
-            let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: reportId)]
-            
-            try statementBuilder.delete(tableName: D.tGDriveInstanceVaultFile, primarykeyValue: reportFilesCondition)
+            try deleteDriveReportFiles(reportId: reportId)
             
             try files.forEach( { reportFiles in
                 let reportFilesDict = reportFiles.dictionary
@@ -214,12 +212,20 @@ extension TellaDataBase {
             
             try statementBuilder.delete(tableName: D.tGDriveReport, primarykeyValue: reportCondition)
             
+            // delete files
+            try deleteDriveReportFiles(reportId: reportId)
+            
             return .success(true)
         } catch let error {
             debugLog(error)
             
             return .failure(error)
         }
+    }
+    
+    func deleteDriveReportFiles(reportId: Int?) throws {
+        let fileCondition = [KeyValue(key: D.cReportInstanceId, value: reportId)]
+        try statementBuilder.delete(tableName: D.tGDriveInstanceVaultFile, primarykeyValue: fileCondition)
     }
     
     func updateDriveReportStatus(idReport: Int, status: ReportStatus) -> Result<Bool, Error> {
