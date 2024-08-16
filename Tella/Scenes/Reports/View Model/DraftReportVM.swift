@@ -7,7 +7,7 @@ import Foundation
 import Combine
 import SwiftUI
 
-class DraftReportVM: DraftMainViewModel<TellaServer> {
+class DraftReportVM: DraftMainViewModel {
     override init(mainAppModel : MainAppModel, reportId:Int? = nil) {
         super.init(mainAppModel: mainAppModel, reportId: reportId)
     }
@@ -73,7 +73,7 @@ class DraftReportVM: DraftMainViewModel<TellaServer> {
                             title: title,
                             description: description,
                             status: status,
-                            server: server,
+                            server: server as! TellaServer,
                             vaultFiles: self.files.compactMap{ ReportFile(fileId: $0.id,
                                                                           status: .notSubmitted,
                                                                           bytesSent: 0,

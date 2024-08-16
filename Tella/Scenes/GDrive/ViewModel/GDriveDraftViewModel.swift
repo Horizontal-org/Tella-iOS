@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-class GDriveDraftViewModel: DraftMainViewModel<GDriveServer> {
+class GDriveDraftViewModel: DraftMainViewModel{
     private let gDriveRepository: GDriveRepositoryProtocol
     
     init(mainAppModel: MainAppModel, repository: GDriveRepositoryProtocol, reportId reportID: Int?) {
@@ -51,7 +51,7 @@ class GDriveDraftViewModel: DraftMainViewModel<GDriveServer> {
             title: title,
             description: description,
             status: status ?? .unknown,
-            server: server,
+            server: server as! GDriveServer,
             folderId: nil,
             vaultFiles: self.files.compactMap { ReportFile( fileId: $0.id,
                                                             status: .notSubmitted,

@@ -8,8 +8,8 @@
 
 import SwiftUI
 
-struct DraftView<T: Server>: View  {
-    @StateObject var viewModel: DraftMainViewModel<T>
+struct DraftView: View  {
+    @StateObject var viewModel: DraftMainViewModel
     
     @State private var menuFrame : CGRect = CGRectZero
     @State private var shouldShowMenu : Bool = false
@@ -118,7 +118,7 @@ struct DraftView<T: Server>: View  {
                     Spacer()
                         .frame(height: 24)
                     
-                    AddFilesToDraftView<T>(draftReportVM: viewModel)
+                    AddFilesToDraftView(draftReportVM: viewModel)
                     
                     Spacer()
                 }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
