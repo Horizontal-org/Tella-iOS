@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-class NextcloudDraftViewModel: DraftMainViewModel<NextcloudServer> {
+class NextcloudDraftViewModel: DraftMainViewModel {
     
     private let nextcloudRepository: NextcloudRepositoryProtocol
     
@@ -62,7 +62,7 @@ class NextcloudDraftViewModel: DraftMainViewModel<NextcloudServer> {
                                      title: title,
                                      description: description,
                                      status: status ?? .unknown,
-                                     server: server,
+                                     server: server as? NextcloudServer,
                                      vaultFiles: reportFiles)
         
         reportId == nil ? addReport(report: report) : updateReport(report: report)

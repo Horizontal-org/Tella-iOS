@@ -8,7 +8,7 @@
 
 import Foundation
 
-class NextcloudServer: WebServer, ServerProtocol {
+class NextcloudServer: WebServer {
 
     var userId: String?
     var rootFolder: String?

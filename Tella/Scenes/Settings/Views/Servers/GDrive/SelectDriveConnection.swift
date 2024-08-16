@@ -34,8 +34,8 @@ struct SelectDriveConnection: View {
     
     var headerView: some View {
         ServerConnectionHeaderView(
-            title: LocalizableSettings.GDriveSelectTypeTitle.localized,
-            subtitle: LocalizableSettings.GDriveSelectTypeDesc.localized, 
+            title: LocalizableSettings.gDriveSelectTypeTitle.localized,
+            subtitle: LocalizableSettings.gDriveSelectTypeDesc.localized, 
             imageIconName: "gdrive.icon"
         )
     }

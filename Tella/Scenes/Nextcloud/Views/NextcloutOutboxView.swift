@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct NextcloutOutboxView<T: ServerProtocol>: View {
+struct NextcloutOutboxView<T: NextcloudServer>: View {
     
     @StateObject var outboxReportVM : OutboxMainViewModel<T>
     @StateObject var reportsViewModel : ReportsMainViewModel
