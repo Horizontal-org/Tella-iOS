@@ -128,7 +128,13 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
             return
         }
         self.isFileLoading = false
-        currentUploadCancellable = gDriveRepository.uploadFile(fileURL: fileUrl, fileId: fileToUpload.id ?? "", mimeType: fileToUpload.mimeType ?? "", folderId: folderId)
+        
+        let fileUploadDetails = FileUploadDetails(fileURL: fileUrl, 
+                                                  fileId: fileToUpload.id ?? "",
+                                                  mimeType: fileToUpload.mimeType ?? "",
+                                                  folderId: folderId)
+        
+        currentUploadCancellable = gDriveRepository.uploadFile(fileUploadDetails: fileUploadDetails)
             .receive(on: DispatchQueue.main)
             .sink(
                 receiveCompletion: { [weak self] completion in
