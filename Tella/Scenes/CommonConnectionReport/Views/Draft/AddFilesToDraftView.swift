@@ -8,11 +8,11 @@
 
 import SwiftUI
 
-struct AddFilesToDraftView<T: ServerProtocol>: View {
+struct AddFilesToDraftView: View {
     
     @EnvironmentObject var appModel: MainAppModel
     @EnvironmentObject var sheetManager: SheetManager
-    @StateObject var draftReportVM: DraftMainViewModel<T>
+    @StateObject var draftReportVM: DraftMainViewModel
     
     private let gridLayout: [GridItem] = [GridItem(spacing: 12),
                                           GridItem(spacing: 12),
@@ -41,7 +41,7 @@ struct AddFilesToDraftView<T: ServerProtocol>: View {
     var itemsGridView: some View {
         LazyVGrid(columns: gridLayout, alignment: .center, spacing: 12) {
             ForEach(draftReportVM.files.sorted{$0.created < $1.created}, id: \.id) { file in
-                ReportFileGridView<T>(file: file)
+                ReportFileGridView(file: file)
                     .frame(height: (UIScreen.screenWidth - 64) / 3 )
                     .environmentObject(draftReportVM)
             }

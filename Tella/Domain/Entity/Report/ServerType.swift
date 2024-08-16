@@ -16,7 +16,7 @@ extension ServerConnectionType {
     var successConnectionButtonContent: String {
         switch self {
         case .gDrive:
-            return LocalizableSettings.GDriveSuccessMessage.localized
+            return LocalizableSettings.gDriveSuccessMessage.localized
         case.tella:
             return LocalizableSettings.settServerReportsSuccessMessage.localized
         case .nextcloud:

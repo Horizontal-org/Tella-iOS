@@ -61,11 +61,12 @@ class SubmittedMainViewModel: ObservableObject {
         let totalSize = self.files.reduce(0) { $0 + $1.size }
         
         if let date = report.createdDate {
-            self.uploadedDate = "Uploaded on \(date.getFormattedDateString(format: DateFormat.submittedReport.rawValue))"
+            let formattedDate = date.getFormattedDateString(format: DateFormat.submittedReport.rawValue)
+            self.uploadedDate = String(format: LocalizableReport.uploadedDate.localized, formattedDate)
         }
         
         let fileNumber = self.files.count
-        let fileString = fileNumber == 1 ? "file" : "files"
+        let fileString = fileNumber == 1 ? LocalizableReport.reportFile.localized : LocalizableReport.reportFiles.localized
         self.uploadedFiles = "\(fileNumber) \(fileString), \(totalSize.getFormattedFileSize())"
         
     }

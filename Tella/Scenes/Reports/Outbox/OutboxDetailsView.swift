@@ -4,7 +4,7 @@
 
 import SwiftUI
 
-struct OutboxDetailsView<T: ServerProtocol>: View {
+struct OutboxDetailsView<T: Server>: View {
     
     @StateObject var outboxReportVM : OutboxMainViewModel<T>
     @StateObject var reportsViewModel : ReportsMainViewModel
@@ -109,14 +109,13 @@ struct OutboxDetailsView<T: ServerProtocol>: View {
                                       nextButtonAction: .action,
                                       buttonType: .yellow,
                                       destination: nil,
-                                      isValid: .constant(true)) {
+                                      isValid: .constant(!isButtonDisabled && !outboxReportVM.isFileLoading)) {
                 debounceAction {
                     outboxReportVM.isSubmissionInProgress ? outboxReportVM.pauseSubmission() : outboxReportVM.submitReport()
                 }
                 
             }
             .padding(EdgeInsets(top: 30, leading: 24, bottom: 16, trailing: 24))
-            .disabled(isButtonDisabled)
         }
     }
     

@@ -244,13 +244,13 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_SettServer_GDrive" = "GOOGLE DRIVE"; 
 "Setting_SettServer_No_Internet" = "No Internet connection. Try again when you are connected to the Internet.";
 "Setting_SettServer_Server_URL_Incorrect" = "Error: The server URL is incorrect";
-"Setting_SettServer_UnavailableConnections_Title" = "Unavailable connections";
-"Setting_SettServer_UnavailableConnections_Description" = "For the following categories, only one connection can be enabled at a time. To add a new connection, please delete the current one by going to Connections Settings.";
+"Setting_SettServer_UnavailableConnections_Subhead" = "Unavailable connections";
+"Setting_SettServer_UnavailableConnections_Expl" = "For the following categories, only one connection can be enabled at a time. To add a new connection, please delete the current one by going to Connections Settings.";
 "Setting_SettServer_No_Token" = "No token present, please connect again";
-"Settings_SettServer_DeleteTellaConnection_Title" = "Delete %@ server?";
-"Settings_SettServre_DeleteConnection_Title" = "Delete \"%@\" connection?";
-"Settings_SettServer_DeleteConnection_Message" = "if you delete this server, all draft and submitted forms will be deleted from your device.";
-"Settings_SettServer_DeleteUwaziConnection_Message" = "If you delete this server, all draft and submitted entities will be deleted from your device. Delete anyway?";
+"Settings_SettServer_DeleteTellaConnection_SheetTitle" = "Delete %@ server?";
+"Settings_SettServre_DeleteConnection_SheetTitle" = "Delete \"%@\" connection?";
+"Settings_SettServer_DeleteConnection_SheetExpl" = "if you delete this server, all draft and submitted forms will be deleted from your device.";
+"Settings_SettServer_DeleteUwaziConnection_SheetExpl" = "If you delete this server, all draft and submitted entities will be deleted from your device. Delete anyway?";
 "Settings_SettServer_Cancel_SheetAction" = "CANCEL";
 "Settings_SettServer_Delete_SheetAction" = "DELETE";
 "Home_RecentFiles_Subhead" = "Recent files";
@@ -274,16 +274,16 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_Server_Uwazi_Connect_Server" = "Connected to server";
 "Setting_Server_Uwazi_Success_Message" = "You have successfully connected to the server and will be able to share your data.";
 
-"Setting_Server_GDrive_Select_Type_Toolbar" = "Select Google drive";
-"Setting_Server_GDrive_Select_Type_Title" = "Select a Drive to connect to";
-"Setting_Server_GDrive_Select_Type_Desc" = "You can either connect to an organizational Shared Drive or create a new folder in your personal Drive.";
-"Setting_Server_GDrive_Select_Type_Shared" = "USE SHARED DRIVE";
-"Setting_Server_GDrive_Select_Type_Personal" = "USE PERSONAL DRIVE";
-"Setting_Server_GDrive_Select_Type_More_Info" = "Learn more about the types of drives";
-"Setting_Server_GDrive_Select_Shared_Toolbar" = "Select shared drive";
-"Setting_Server_Create_Folder_Title" = "Create new folder";
-"Setting_Server_GDrive_Create_Personal_Desc" = "Your reports will be uploaded to a new folder on your Google Drive. Choose a name for this folder here.";
+"Setting_Server_GDrive_SelectType_AppBar" = "Select Google drive";
+"Setting_Server_GDrive_SelectType_Subhead" = "Select a Drive to connect to";
+"Setting_Server_GDrive_SelectType_Expl" = "You can either connect to an organizational Shared Drive or create a new folder in your personal Drive.";
+"Setting_Server_GDrive_SelectType_Shared" = "USE SHARED DRIVE";
+"Setting_Server_GDrive_SelectType_Personal" = "USE PERSONAL DRIVE";
+"Setting_Server_GDrive_SelectType_MoreInfo" = "Learn more about the types of drives";
+"Setting_Server_GDrive_SelectShared_Appbar" = "Select shared drive";
+"Setting_Server_GDrive_CreatePersonal_Desc" = "Your reports will be uploaded to a new folder on your Google Drive. Choose a name for this folder here.";
 "Setting_Server_Foldername_Placeholder" = "Folder name";
+"Setting_Server_Create_Folder_Title" = "Create new folder";
 "Setting_Server_GDrive_Success_Message" = "GO TO GOOGLE DRIVE";
 "Setting_Server_Nextcloud_Create_Personal_Desc" = "Your reports will be uploaded to a new folder on your Nextcloud. Choose a name for this folder here.";
 "Setting_Server_Nextcloud_Success_Message" = "GO TO NEXTCLOUD";
@@ -337,14 +337,9 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Draft_SelectFiles_TellaFiles_SheetSelect" = "Select from Tella files";
 "Reports_Draft_SelectFiles_ImportFromDevice_SheetSelect" = "Select from your device";
 "Reports_Outbox_PercentangeUploaded_Expl" = "Waiting for connection";
-
-"Reports_Outbox_ExitReport_SheetTitle" = "Exit report?";
-"Reports_Outbox_ExitReport_SheetExpl" = "The upload will be paused.";
-"Reports_Outbox_ExitReport_Exit_SheetAction" = "Exit and pause";
-"Reports_Outbox_ExitReport_Cancel_SheetAction" = "CANCEL";
-
-"Reports_Paused_CardExpl" = "Paused";
-
+"Reports_Outbox_Pause" = "PAUSE";
+"Reports_Outbox_Resume" = "RESUME";
+"Reports_Outbox_Submit" = "Submit";
 "Vault_DeleteFiles_SheetTitle" = "Delete files?";
 "Vault_DeleteFiles_SheetExpl" = "%i files will be permanently deleted from Tella.";
 "Reports_DeleteDraftReport_SheetExpl" = "Are you sure you want to delete this draft?";
@@ -382,6 +377,10 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Submitted_ClearAll_Cancel_SheetAction" = "CANCEL";
 "Reports_Submitted_ClearAll_ClearSubmitted_SheetAction" = "CLEAR SUBMITTED";
 "Reports_Submitted_Clear_AppBar" = "Clear";
+"Reports_Submitted_UploadedDate_Expl" = "Uploaded on %@";
+"Reports_Submitted_File_Title" = "file";
+"Reports_Submitted_Files_Title" = "files";
+"Reports_Outbox_Uploaded_Title" = "uploaded";
 "Reports_DraftSaved_Toast" = "The report was saved as a draft";
 "Reports_ReportDeleted_Toast" = "“%@” has been deleted.";
 "Reports_ReportSubmitted_Toast" = "Upload complete: “%@”";

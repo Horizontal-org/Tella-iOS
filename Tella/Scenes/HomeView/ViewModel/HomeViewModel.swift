@@ -37,12 +37,8 @@ class HomeViewModel: ObservableObject {
                 var serverConnections: [ServerConnectionType: [Server]] = [:]
                 
                 for server in serverArray {
-                    guard let serverType = server.serverType else { return }
-                    if serverConnections[serverType] != nil {
-                        serverConnections[serverType] = [server]
-                    } else {
-                        serverConnections[serverType] = [server]
-                    }
+                    guard let serverType = server.serverType else { continue }
+                    serverConnections[serverType, default: []].append(server)
                 }
                 
                 for (serverType, servers) in serverConnections {

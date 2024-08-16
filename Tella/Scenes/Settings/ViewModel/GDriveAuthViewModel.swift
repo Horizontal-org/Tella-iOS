@@ -19,20 +19,17 @@ class GDriveAuthViewModel: ObservableObject {
 
     func handleSignIn(completion: @escaping () -> Void) {
         self.signInState = .loading
-        Task {
+        Task { @MainActor in
             do {
                 try await gDriveRepository.handleSignIn()
-                DispatchQueue.main.async {
-                    self.signInState = .loaded(nil)
-                    completion()
-                }
+                self.signInState = .loaded(nil)
+                completion()
             } catch let error {
-                DispatchQueue.main.async {
-                    self.signInState = .error(error.localizedDescription)
-                }
+                self.signInState = .error(error.localizedDescription)
             }
         }
     }
+
 
     func handleUrl(url: URL) {
         gDriveRepository.handleUrl(url: url)

@@ -6,11 +6,11 @@
 
 import SwiftUI
 
-struct ReportFileGridView<T: ServerProtocol>: View {
+struct ReportFileGridView: View {
     
     var file: VaultFileDB
     
-    @EnvironmentObject var draftReportVM: DraftMainViewModel<T>
+    @EnvironmentObject var draftReportVM: DraftMainViewModel
     
     var body: some View {
         fileGridView

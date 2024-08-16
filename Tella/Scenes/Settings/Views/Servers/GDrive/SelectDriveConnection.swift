@@ -29,7 +29,7 @@ struct SelectDriveConnection: View {
     }
     
     var selectDriveToolbar: some View {
-        NavigationHeaderView(title: LocalizableSettings.GDriveSelectTypeToolbar.localized ,type: .none)
+        NavigationHeaderView(title: LocalizableSettings.gDriveSelectTypeToolbar.localized ,type: .none)
     }
     
     var headerView: some View {
@@ -43,14 +43,14 @@ struct SelectDriveConnection: View {
     var connectionsButtons: some View {
         VStack(spacing: 14) {
             TellaButtonView<AnyView>(
-                title: LocalizableSettings.GDriveSelectTypeShared.localized,
+                title: LocalizableSettings.gDriveSelectTypeShared.localized,
                 nextButtonAction: .action,
                 isOverlay: selectedDriveConnectionType == .shared,
                 isValid: .constant(true),
                 action: { selectedDriveConnectionType = .shared }
             )
             TellaButtonView<AnyView>(
-                title: LocalizableSettings.GDriveSelectTypePersonal.localized,
+                title: LocalizableSettings.gDriveSelectTypePersonal.localized,
                 nextButtonAction: .action,
                 isOverlay: selectedDriveConnectionType == .personal,
                 isValid: .constant(true),
@@ -63,7 +63,7 @@ struct SelectDriveConnection: View {
     
     var moreInfoText: some View {
         Link(destination: URL(string: TellaUrls.gDriveURL)!) {
-            Text(LocalizableSettings.GDriveSelectTypeMoreInfo.localized)
+            Text(LocalizableSettings.gDriveSelectTypeMoreInfo.localized)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(Styles.Colors.yellow)
                 .multilineTextAlignment(.center)

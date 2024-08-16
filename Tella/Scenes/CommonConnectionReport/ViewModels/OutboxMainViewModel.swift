@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
+class OutboxMainViewModel<T: Server>: ObservableObject {
     
     var mainAppModel : MainAppModel
     var reportsViewModel : ReportsMainViewModel
@@ -27,6 +27,7 @@ class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
     }
     @Published var shouldShowSubmittedReportView : Bool = false
     @Published var shouldShowMainView : Bool = false
+    @Published var isFileLoading : Bool = false
     
     @Published var shouldShowToast : Bool = false
     @Published var toastMessage : String = ""
@@ -40,11 +41,11 @@ class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
         
         switch reportViewModel.status {
         case .finalized:
-            return "Submit"
+            return LocalizableReport.submitOutbox.localized
         case .submissionInProgress:
-            return "Pause"
+            return LocalizableReport.pauseOutbox.localized
         default:
-            return "Resume"
+            return LocalizableReport.resumeOutbox.localized
         }
     }
     
@@ -88,9 +89,12 @@ class OutboxMainViewModel<T: ServerProtocol>: ObservableObject {
             let formattedTotalSize = totalSize.getFormattedFileSize()
             DispatchQueue.main.async {
                 
-                self.percentUploadedInfo = "\(Int(formattedPercentUploaded * 100))% uploaded"
+                self.percentUploadedInfo = "\(Int(formattedPercentUploaded * 100))% \(LocalizableReport.reportUploaded.localized)"
                 self.percentUploaded = Float(percentUploaded)
-                self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
+                let filesCount = "\(self.reportViewModel.files.count) \(self.reportViewModel.files.count == 1 ? LocalizableReport.reportFile.localized : LocalizableReport.reportFiles.localized)"
+                let fileUploaded = "\(formattedTotalUploaded)/\(formattedTotalSize) \(LocalizableReport.reportUploaded.localized)"
+                
+                self.uploadedFiles = "\(filesCount), \(fileUploaded)"
                 
                 self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: ($0.bytesSent.getFormattedFileSize()) + "/" + ($0.size.getFormattedFileSize()))}
                 

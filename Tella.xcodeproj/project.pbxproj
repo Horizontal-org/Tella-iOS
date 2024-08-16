@@ -1685,6 +1685,7 @@
 		125C789C2C36B50100440014 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CCF47F3F2ABE11F3000ABBBC /* Connections */,
 				1242135429B774A40002402D /* DeleteReportConfirmationView.swift */,
 				123048D3295F954E0015CD96 /* Submitted */,
 				12199C322940936B0041BD38 /* Outbox */,
@@ -2394,6 +2395,7 @@
 		12D7F5F52743F28700EBA3A2 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				15E656A92C2A142300BDEC91 /* Reports */,
 				CCF47F3F2ABE11F3000ABBBC /* Connections */,
 				12C07F032B0748BE0030AD6E /* TopSheetView */,
 				122E4D53291AD99A00562EB1 /* TellaButton */,

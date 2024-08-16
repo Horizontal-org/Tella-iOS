@@ -63,8 +63,9 @@ enum LocalizableReport: String, LocalizableDelegate {
     case galleryFilled = "Reports_Draft_SelectFiles_TellaFiles_SheetSelect"
     case phoneFilled = "Reports_Draft_SelectFiles_ImportFromDevice_SheetSelect"
     case waitingConnection = "Reports_Outbox_PercentangeUploaded_Expl"
-    
-    
+    case pauseOutbox = "Reports_Outbox_Pause"
+    case resumeOutbox = "Reports_Outbox_Resume"
+    case submitOutbox = "Reports_Outbox_Submit"
     case draftSavedToast = "Reports_DraftSaved_Toast"
     case reportDeletedToast = "Reports_ReportDeleted_Toast"
     case reportSubmittedToast = "Reports_ReportSubmitted_Toast"
@@ -81,4 +82,8 @@ enum LocalizableReport: String, LocalizableDelegate {
     case exitReportCancelSheetAction = "Reports_Outbox_ExitReport_Cancel_SheetAction"
   
     case pausedCardExpl = "Reports_Paused_CardExpl"
+    case uploadedDate = "Reports_Submitted_UploadedDate_Expl"
+    case reportFile = "Reports_Submitted_File_Title"
+    case reportFiles = "Reports_Submitted_Files_Title"
+    case reportUploaded = "Reports_Outbox_Uploaded_Title"
 }

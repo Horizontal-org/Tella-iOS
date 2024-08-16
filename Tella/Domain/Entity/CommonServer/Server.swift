@@ -8,23 +8,6 @@
 
 import Foundation
 
-protocol ServerProtocol: Codable, Equatable, Hashable {
-    var id: Int? { get set }
-    var name: String? { get set }
-    var serverType: ServerConnectionType? { get set }
-    var allowMultiple: Bool? { get set }
-}
-
-extension ServerProtocol {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id.hashValue)
-    }
-}
-
 class Server: Codable, Equatable, Hashable {
     
     var id: Int?

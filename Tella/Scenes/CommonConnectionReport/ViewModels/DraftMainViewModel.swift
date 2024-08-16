@@ -9,14 +9,14 @@
 import Foundation
 import Combine
 
-class DraftMainViewModel<T: ServerProtocol>: ObservableObject {
+class DraftMainViewModel: ObservableObject {
     var mainAppModel : MainAppModel
     // Report
     @Published var reportId : Int?
     @Published var title : String = ""
     @Published var description : String = ""
     @Published var files :  Set <VaultFileDB> = []
-    @Published var server :  T?
+    @Published var server :  Server?
     @Published var status : ReportStatus?
     @Published var apiID : String?
     
@@ -41,7 +41,7 @@ class DraftMainViewModel<T: ServerProtocol>: ObservableObject {
     var successSavingReportPublisher: Published<Bool>.Publisher { $successSavingReport }
     var failureSavingReportPublisher: Published<Bool>.Publisher { $failureSavingReport }
     
-    var serverArray : [T] = []
+    var serverArray : [Server] = []
     
     var cancellable : Cancellable? = nil
     var subscribers = Set<AnyCancellable>()

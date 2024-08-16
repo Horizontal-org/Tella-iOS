@@ -47,7 +47,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         }).store(in: &subscribers)
     }
     private var rootViewController: UIViewController? {
-        return UIApplication.shared.windows.first?.rootViewController
+        return UIApplication.getTopViewController()
     }
     
     private func ensureSignedIn() async throws {
@@ -113,7 +113,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
 
                 driveService.executeQuery(query) { ticket, response, error in
                     if let error = error {
-                        print("Error fetching drives: \(error.localizedDescription)")
+                        debugLog("Error fetching drives: \(error.localizedDescription)")
                         promise(.failure(error))
                     }
 
@@ -194,7 +194,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         
         driveService.executeQuery(query) { (ticket, file, error) in
             if let error = error {
-                print("Error creating folder: \(error.localizedDescription)")
+                debugLog("Error creating folder: \(error.localizedDescription)")
                 promise(.failure(self.mapToAPIError(error)))
                 return
             }
@@ -264,7 +264,6 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 }
                 
                 guard self.isUploading else {
-                    promise(.failure(APIError.unexpectedResponse))
                     return
                 }
                 
