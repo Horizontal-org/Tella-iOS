@@ -11,13 +11,19 @@ import GoogleSignIn
 import GoogleAPIClientForREST
 import Combine
 
+struct FileUploadDetails {
+    let fileURL: URL
+    let fileId: String
+    let mimeType: String
+    let folderId: String
+}
 protocol GDriveRepositoryProtocol {
     func handleSignIn() async throws
     func restorePreviousSignIn() async throws
     func handleUrl(url: URL)
     func getSharedDrives() -> AnyPublisher<[SharedDrive], Error>
     func createDriveFolder(folderName: String, parentId: String?, description: String?) -> AnyPublisher<String, APIError>
-    func uploadFile(fileURL: URL, fileId: String, mimeType: String, folderId: String) -> AnyPublisher<UploadProgressInfo, APIError>
+    func uploadFile(fileUploadDetails: FileUploadDetails) -> AnyPublisher<UploadProgressInfo, APIError>
     func pauseAllUploads()
     func resumeAllUploads()
     func signOut() -> Void
@@ -209,10 +215,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
     }
     
     func uploadFile(
-            fileURL: URL,
-            fileId: String,
-            mimeType: String,
-            folderId: String
+        fileUploadDetails: FileUploadDetails
     ) -> AnyPublisher<UploadProgressInfo, APIError> {
         return Deferred {
             Future { promise in
@@ -224,10 +227,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                     do {
                         try await self.ensureSignedIn()
                         self.performUploadFile(
-                            fileURL: fileURL,
-                            fileId: fileId,
-                            mimeType: mimeType,
-                            folderId: folderId,
+                            fileUploadDetails: fileUploadDetails,
                             promise: promise
                         )
                                             
@@ -247,10 +247,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
     }
     
     private func performUploadFile(
-        fileURL: URL,
-        fileId: String,
-        mimeType: String,
-        folderId: String,
+        fileUploadDetails: FileUploadDetails,
         promise: @escaping (Result<UploadProgressInfo, APIError>) -> Void
     ) {
         Task {
@@ -275,6 +272,11 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 let driveService = GTLRDriveService()
                 driveService.authorizer = user.fetcherAuthorizer
                 
+                let fileURL = fileUploadDetails.fileURL
+                let mimeType = fileUploadDetails.mimeType
+                let fileId = fileUploadDetails.fileId
+                let folderId = fileUploadDetails.folderId
+                
                 let fileName = fileURL.lastPathComponent
                 let totalSize = UInt64((try? fileURL.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0)
                 let uploadProgressInfo = UploadProgressInfo(fileId: fileId, status: .notSubmitted, total: Int(totalSize))
@@ -288,7 +290,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                     promise(.success(uploadProgressInfo))
                 } else {
                     // File doesn't exist, proceed with upload
-                    self.uploadNewFile(fileURL: fileURL, fileId: fileId, mimeType: mimeType, folderId: folderId, driveService: driveService, uploadProgressInfo: uploadProgressInfo, promise: promise)
+                    self.uploadNewFile(fileUploadDetails: fileUploadDetails, driveService: driveService, uploadProgressInfo: uploadProgressInfo, promise: promise)
                 }
             } catch {
                 promise(.failure(self.mapToAPIError(error)))
@@ -297,14 +299,16 @@ class GDriveRepository: GDriveRepositoryProtocol  {
     }
 
     private func uploadNewFile(
-        fileURL: URL,
-        fileId: String,
-        mimeType: String,
-        folderId: String,
+        fileUploadDetails: FileUploadDetails,
         driveService: GTLRDriveService,
         uploadProgressInfo: UploadProgressInfo,
         promise: @escaping (Result<UploadProgressInfo, APIError>) -> Void
     ) {
+        let fileURL = fileUploadDetails.fileURL
+        let mimeType = fileUploadDetails.mimeType
+        let fileId = fileUploadDetails.fileId
+        let folderId = fileUploadDetails.folderId
+        
         let file = GTLRDrive_File()
         file.name = fileURL.lastPathComponent
         file.mimeType = mimeType
