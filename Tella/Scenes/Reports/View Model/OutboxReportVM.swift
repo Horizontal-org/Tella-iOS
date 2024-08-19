@@ -83,16 +83,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
         
         if let reportId, let report = self.mainAppModel.tellaData?.getReport(reportId: reportId) {
 
-            let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
-
-            var files : [ReportVaultFile] = []
-            
-            report.reportFiles?.forEach({ reportFile in
-                if let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}) {
-                    let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
-                    files.append(reportVaultFile)
-                }
-            })
+            let files = processVaultFiles(reportFiles: report.reportFiles)
             
             self.reportViewModel = ReportViewModel(id: report.id,
                                                    title: report.title ?? "",
