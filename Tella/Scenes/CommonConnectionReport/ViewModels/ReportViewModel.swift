@@ -18,17 +18,28 @@ class ReportViewModel<T: Server> {
     init() {
         
     }
-    
-    init(id: Int?, title: String, description: String, files: [ReportVaultFile], reportFiles : [ReportFile], server: T?, status: ReportStatus?, apiID: String?, folderId: String? = nil) {
-        self.id = id
-        self.title = title
-        self.description = description
+    init(report: Report, files: [ReportVaultFile]) where T == TellaServer {
+        self.id = report.id
+        self.title = report.title ?? ""
+        self.description = report.description ?? ""
         self.files = files
-        self.reportFiles = reportFiles
-        self.server = server
-        self.status = status
-        self.apiID = apiID
-        self.folderId = folderId
+        self.reportFiles = report.reportFiles ?? []
+        self.server = report.server
+        self.status = report.status
+        self.apiID = report.apiID
+        self.folderId = nil
+    }
+    
+    init(report: GDriveReport, files: [ReportVaultFile]) where T == GDriveServer {
+        self.id = report.id
+        self.title = report.title ?? ""
+        self.description = report.description ?? ""
+        self.files = files
+        self.reportFiles = report.reportFiles ?? []
+        self.server = report.server
+        self.status = report.status
+        self.apiID = nil
+        self.folderId = report.folderId
     }
 }
 

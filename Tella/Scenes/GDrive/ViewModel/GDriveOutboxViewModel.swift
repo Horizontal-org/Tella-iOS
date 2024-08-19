@@ -47,15 +47,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         if let reportId, let report = self.mainAppModel.tellaData?.getDriveReport(id: reportId) {
             let files = processVaultFiles(reportFiles: report.reportFiles)
             
-            self.reportViewModel = ReportViewModel(id: report.id,
-                                                   title: report.title ?? "",
-                                                   description: report.description ?? "",
-                                                   files: files,
-                                                   reportFiles: report.reportFiles ?? [],
-                                                   server: report.server,
-                                                   status: report.status,
-                                                   apiID: nil,
-                                                   folderId: report.folderId)
+            self.reportViewModel = ReportViewModel(report: report, files: files)
         }
     }
     

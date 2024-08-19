@@ -85,14 +85,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
 
             let files = processVaultFiles(reportFiles: report.reportFiles)
             
-            self.reportViewModel = ReportViewModel(id: report.id,
-                                                   title: report.title ?? "",
-                                                   description: report.description ?? "",
-                                                   files: files,
-                                                   reportFiles: report.reportFiles ?? [],
-                                                   server: report.server,
-                                                   status: report.status,
-                                                   apiID: report.apiID)
+            self.reportViewModel = ReportViewModel(report: report, files: files)
         }
     }
     
