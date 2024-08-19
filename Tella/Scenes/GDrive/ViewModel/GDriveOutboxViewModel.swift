@@ -202,11 +202,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         
         let reportFiles = reportViewModel.files.map { file in
             return ReportFile(
-                id: file.instanceId,
-                fileId: file.id,
-                status: file.status,
-                bytesSent: file.bytesSent,
-                createdDate: file.createdDate,
+                file: file,
                 reportInstanceId: reportViewModel.id
             )
         }
