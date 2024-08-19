@@ -14,7 +14,6 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     private let gDriveRepository: GDriveRepositoryProtocol
     private var currentUploadCancellable: AnyCancellable?
     private var uploadQueue: [ReportVaultFile] = []
-    var server: GDriveServer?
     
     init(mainAppModel: MainAppModel,
          reportsViewModel : ReportsMainViewModel,
@@ -44,13 +43,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         }
     }
     
-    private func getServer() {
-        self.server = mainAppModel.tellaData?.gDriveServers.value.first
-    }
-    
     override func initVaultFile(reportId: Int?) {
-        getServer()
-        
         if let reportId, let report = self.mainAppModel.tellaData?.getDriveReport(id: reportId) {
             let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
             
@@ -68,7 +61,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
                                                    description: report.description ?? "",
                                                    files: files,
                                                    reportFiles: report.reportFiles ?? [],
-                                                   server: server,
+                                                   server: report.server,
                                                    status: report.status,
                                                    apiID: nil,
                                                    folderId: report.folderId)

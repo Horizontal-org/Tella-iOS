@@ -179,9 +179,18 @@ extension TellaDataBase {
             let gDriveReportsDict = try statementBuilder.getSelectQuery(tableName: D.tGDriveReport,
                                                                         equalCondition: reportsCondition
             )
-            let decodedReports = try gDriveReportsDict.first?.decode(GDriveReport.self)
-            let reportFiles = getDriveVaultFiles(reportId: decodedReports?.id)
-            decodedReports?.reportFiles = reportFiles
+            
+            guard let dict = gDriveReportsDict.first else {
+                return nil
+            }
+            
+            let decodedReports = try dict.decode(GDriveReport.self)
+            let reportFiles = getDriveVaultFiles(reportId: decodedReports.id)
+            decodedReports.reportFiles = reportFiles
+            
+            let server = getDriveServers().first
+            decodedReports.server = server
+            
             return decodedReports
         } catch let error {
             debugLog(error)
