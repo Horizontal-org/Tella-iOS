@@ -98,28 +98,34 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
             return
         }
         
-        guard let fileUrl = self.mainAppModel.vaultManager.loadVaultFileToURL(file: fileToUpload) else {
-            uploadQueue.removeFirst()
-            uploadNextFile(folderId: folderId)
-            return
-        }
-        
-        let fileUploadDetails = FileUploadDetails(fileURL: fileUrl, 
-                                                  fileId: fileToUpload.id ?? "",
-                                                  mimeType: fileToUpload.mimeType ?? "",
-                                                  folderId: folderId)
-        
-        currentUploadCancellable = gDriveRepository.uploadFile(fileUploadDetails: fileUploadDetails)
-            .receive(on: DispatchQueue.main)
-            .sink(
-                receiveCompletion: { [weak self] completion in
-                    guard let self = self else { return }
-                    handleCompletionForUploadFile(completion, folderId: folderId)
-                },
-                receiveValue: { [weak self] progressInfo in
-                    self?.updateProgressInfos(uploadProgressInfo: progressInfo)
+        Task {
+            guard let fileUrl = await self.loadVaultFileToURLAsync(file: fileToUpload) else {
+                await MainActor.run {
+                    uploadQueue.removeFirst()
+                    uploadNextFile(folderId: folderId)
                 }
-            )
+                return
+            }
+            
+            let fileUploadDetails = FileUploadDetails(fileURL: fileUrl,
+                                                      fileId: fileToUpload.id ?? "",
+                                                      mimeType: fileToUpload.mimeType ?? "",
+                                                      folderId: folderId)
+            
+            await MainActor.run {
+                currentUploadCancellable = gDriveRepository.uploadFile(fileUploadDetails: fileUploadDetails)
+                    .receive(on: DispatchQueue.main)
+                    .sink(
+                        receiveCompletion: { [weak self] completion in
+                            guard let self = self else { return }
+                            self.handleCompletionForUploadFile(completion, folderId: folderId)
+                        },
+                        receiveValue: { [weak self] progressInfo in
+                            self?.updateProgressInfos(uploadProgressInfo: progressInfo)
+                        }
+                    )
+            }
+        }
     }
     
     private func handleCompletionForUploadFile(_ completion: Subscribers.Completion<APIError>, folderId: String) {
@@ -182,5 +188,14 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         }
         
         let _ = mainAppModel.tellaData?.updateDriveFiles(reportId: reportId, files: reportFiles)
+    }
+    
+    func loadVaultFileToURLAsync(file: ReportVaultFile) async -> URL? {
+        await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .userInitiated).async {
+                let result = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file)
+                continuation.resume(returning: result)
+            }
+        }
     }
 }
