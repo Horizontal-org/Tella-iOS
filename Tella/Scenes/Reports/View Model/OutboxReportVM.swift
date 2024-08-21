@@ -99,16 +99,6 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
     }
     
     override func submitReport() {
-        
-        let report = Report(id: reportViewModel.id,
-                            title: reportViewModel.title,
-                            description: reportViewModel.description,
-                            status: reportViewModel.status,
-                            server: reportViewModel.server,
-                            vaultFiles: self.reportViewModel.reportFiles,
-                            
-                            apiID: self.reportViewModel.apiID)
-        
         if isSubmissionInProgress == false {
             self.updateReportStatus(reportStatus: .submissionInProgress)
             
