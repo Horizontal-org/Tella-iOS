@@ -11,8 +11,6 @@ struct OutboxDetailsView<T: Server>: View {
     @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
-    @State private var isButtonDisabled = false
-    private let debounceInterval: TimeInterval = 1
     
     var body: some View {
         
@@ -99,24 +97,11 @@ struct OutboxDetailsView<T: Server>: View {
                                       nextButtonAction: .action,
                                       buttonType: .yellow,
                                       destination: nil,
-                                      isValid: .constant(!isButtonDisabled && !outboxReportVM.isFileLoading)) {
-                debounceAction {
-                    outboxReportVM.isSubmissionInProgress ? outboxReportVM.pauseSubmission() : outboxReportVM.submitReport()
-                }
+                                      isValid: .constant(true)) {
+                outboxReportVM.isSubmissionInProgress ? outboxReportVM.pauseSubmission() : outboxReportVM.submitReport()
                 
             }
             .padding(EdgeInsets(top: 30, leading: 24, bottom: 16, trailing: 24))
-        }
-    }
-    
-    private func debounceAction(action: @escaping () -> Void) {
-        guard !isButtonDisabled else { return }
-        
-        isButtonDisabled = true
-        action()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + debounceInterval) {
-            isButtonDisabled = false
         }
     }
     

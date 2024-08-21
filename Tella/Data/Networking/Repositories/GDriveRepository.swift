@@ -32,8 +32,8 @@ protocol GDriveRepositoryProtocol {
 class GDriveRepository: GDriveRepositoryProtocol  {
     private var googleUser: GIDGoogleUser?
     private var uploadTasks: [String: GTLRServiceTicket] = [:]
-    private let uploadLock = NSLock()
     private(set) var isUploading = false
+    private var isCancelled = false
     private let networkMonitor: NetworkMonitor
     var subscribers : Set<AnyCancellable> = []
     private let networkStatusSubject = PassthroughSubject<Bool, Never>()
@@ -223,7 +223,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                     promise(.failure(.noInternetConnection))
                     return
                 }
-                Task {
+                Task { @MainActor in
                     do {
                         try await self.ensureSignedIn()
                         self.performUploadFile(
@@ -252,8 +252,9 @@ class GDriveRepository: GDriveRepositoryProtocol  {
     ) {
         Task {
             do {
-                self.uploadLock.lock()
-                defer { self.uploadLock.unlock() }
+                if isCancelled {
+                    return
+                }
                 
                 guard self.networkMonitor.isConnected else {
                     promise(.failure(.noInternetConnection))
@@ -291,7 +292,9 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                     promise(.success(uploadProgressInfo))
                 } else {
                     // File doesn't exist, proceed with upload
-                    self.uploadNewFile(fileUploadDetails: fileUploadDetails, driveService: driveService, uploadProgressInfo: uploadProgressInfo, promise: promise)
+                    let result = try await self.uploadNewFile(fileUploadDetails: fileUploadDetails, driveService: driveService, uploadProgressInfo: uploadProgressInfo)
+                    
+                    promise(.success(result))
                 }
             } catch {
                 promise(.failure(self.mapToAPIError(error)))
@@ -299,12 +302,12 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         }
     }
 
+    @MainActor
     private func uploadNewFile(
         fileUploadDetails: FileUploadDetails,
         driveService: GTLRDriveService,
-        uploadProgressInfo: UploadProgressInfo,
-        promise: @escaping (Result<UploadProgressInfo, APIError>) -> Void
-    ) {
+        uploadProgressInfo: UploadProgressInfo
+    ) async throws -> UploadProgressInfo {
         let fileURL = fileUploadDetails.fileURL
         let mimeType = fileUploadDetails.mimeType
         let fileId = fileUploadDetails.fileId
@@ -321,38 +324,49 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         let query = GTLRDriveQuery_FilesCreate.query(withObject: file, uploadParameters: uploadParameters)
         query.supportsAllDrives = true
         
-        let ticket = driveService.executeQuery(query) { [weak self] (ticket, file, error) in
-            guard let self = self else { return }
-            
-            self.uploadLock.lock()
-            defer {
-                self.uploadLock.unlock()
-                self.uploadTasks.removeValue(forKey: fileId)
+        return try await withCheckedThrowingContinuation { continuation in
+            let ticket = driveService.executeQuery(query) { [weak self] (ticket, file, error) in
+                guard let self = self else {
+                    continuation.resume(throwing: APIError.unexpectedResponse)
+                    return
+                }
+                
+                Task { @MainActor in
+                    defer {
+                        self.uploadTasks.removeValue(forKey: fileId)
+                    }
+                    
+                    do {
+                        if self.isCancelled {
+                            return
+                        }
+                        
+                        if !self.isUploading {
+                            uploadProgressInfo.status = .notSubmitted
+                            continuation.resume(returning: uploadProgressInfo)
+                            return
+                        }
+                        
+                        if let error = error {
+                            throw self.mapToAPIError(error)
+                        }
+                        
+                        guard file is GTLRDrive_File else {
+                            throw APIError.unexpectedResponse
+                        }
+                        
+                        uploadProgressInfo.bytesSent = Int(uploadProgressInfo.total!)
+                        uploadProgressInfo.current = Int(uploadProgressInfo.total!)
+                        uploadProgressInfo.status = .uploaded
+                        continuation.resume(returning: uploadProgressInfo)
+                    } catch {
+                        continuation.resume(throwing: error)
+                    }
+                }
             }
             
-            if !self.isUploading {
-                uploadProgressInfo.status = .notSubmitted
-                promise(.success(uploadProgressInfo))
-                return
-            }
-            
-            if error != nil {
-                handleSubmissionError(uploadProgressInfo: uploadProgressInfo, promise: promise)
-                return
-            }
-            
-            guard file is GTLRDrive_File else {
-                handleSubmissionError(uploadProgressInfo: uploadProgressInfo, promise: promise)
-                return
-            }
-            
-            uploadProgressInfo.bytesSent = Int(uploadProgressInfo.total!)
-            uploadProgressInfo.current = Int(uploadProgressInfo.total!)
-            uploadProgressInfo.status = .uploaded
-            promise(.success(uploadProgressInfo))
+            self.uploadTasks[fileId] = ticket
         }
-        
-        self.uploadTasks[fileId] = ticket
     }
     
     private func checkFileExists(fileName: String, folderId: String, driveService: GTLRDriveService) async throws -> Bool {
@@ -379,19 +393,15 @@ class GDriveRepository: GDriveRepositoryProtocol  {
     }
     
     func pauseAllUploads() {
-        uploadLock.lock()
-        defer { uploadLock.unlock() }
-        
         isUploading = false
+        isCancelled = true
         uploadTasks.forEach { $0.value.cancel() }
         uploadTasks.removeAll()
     }
 
     func resumeAllUploads() {
-        uploadLock.lock()
-        defer { uploadLock.unlock() }
-        
         isUploading = true
+        isCancelled = false
     }
     
     func signOut() {
