@@ -32,7 +32,6 @@ protocol GDriveRepositoryProtocol {
 class GDriveRepository: GDriveRepositoryProtocol  {
     private var googleUser: GIDGoogleUser?
     private var uploadTasks: [String: GTLRServiceTicket] = [:]
-    private(set) var isUploading = false
     private var isCancelled = false
     private let networkMonitor: NetworkMonitor
     var subscribers : Set<AnyCancellable> = []
@@ -261,10 +260,6 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                     return
                 }
                 
-                guard self.isUploading else {
-                    return
-                }
-                
                 guard let user = self.googleUser else {
                     promise(.failure(APIError.noToken))
                     return
@@ -338,14 +333,15 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                     
                     do {
                         if self.isCancelled {
+                            uploadProgressInfo.status = .notSubmitted
                             return
                         }
                         
-                        if !self.isUploading {
-                            uploadProgressInfo.status = .notSubmitted
-                            continuation.resume(returning: uploadProgressInfo)
-                            return
-                        }
+//                        if !self.isUploading {
+//                            uploadProgressInfo.status = .notSubmitted
+//                            continuation.resume(returning: uploadProgressInfo)
+//                            return
+//                        }
                         
                         if let error = error {
                             throw self.mapToAPIError(error)
@@ -393,14 +389,12 @@ class GDriveRepository: GDriveRepositoryProtocol  {
     }
     
     func pauseAllUploads() {
-        isUploading = false
         isCancelled = true
         uploadTasks.forEach { $0.value.cancel() }
         uploadTasks.removeAll()
     }
 
     func resumeAllUploads() {
-        isUploading = true
         isCancelled = false
     }
     
