@@ -54,9 +54,10 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     //submit report
     
     override func submitReport() {
-        if isSubmissionInProgress == false {
-            self.updateReportStatus(reportStatus: .submissionInProgress)
-        }
+        if isSubmissionInProgress { return }
+        
+        self.updateReportStatus(reportStatus: .submissionInProgress)
+        
         gDriveRepository.resumeAllUploads()
         guard let folderId = reportViewModel.folderId else {
             return createDriveFolder()
