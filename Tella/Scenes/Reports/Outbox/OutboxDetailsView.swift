@@ -7,8 +7,7 @@ import SwiftUI
 struct OutboxDetailsView<T: Server>: View {
     
     @StateObject var outboxReportVM : OutboxMainViewModel<T>
-    @EnvironmentObject var reportsViewModel : ReportsMainViewModel
-    @EnvironmentObject var mainAppModel : MainAppModel
+    @StateObject var reportsViewModel : ReportsMainViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
     
@@ -179,11 +178,11 @@ struct OutboxDetailsView<T: Server>: View {
         Group {
             switch reportsViewModel.connectionType {
             case .tella:
-                let vm = SubmittedReportVM(mainAppModel: mainAppModel, reportId: outboxReportVM.reportViewModel.id)
-                SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportsViewModel)
+                let vm = SubmittedReportVM(mainAppModel: outboxReportVM.mainAppModel, reportId: outboxReportVM.reportViewModel.id)
+                SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsViewModel)
             case .gDrive:
-                let vm = GDriveSubmittedViewModel(mainAppModel: mainAppModel, reportId: outboxReportVM.reportViewModel.id)
-                SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportsViewModel)
+                let vm = GDriveSubmittedViewModel(mainAppModel: outboxReportVM.mainAppModel, reportId: outboxReportVM.reportViewModel.id)
+                SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsViewModel)
             default:
                 Text("")
             }

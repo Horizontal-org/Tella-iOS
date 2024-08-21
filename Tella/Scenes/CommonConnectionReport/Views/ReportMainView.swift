@@ -182,14 +182,12 @@ struct ReportMainView: View {
         switch reportMainViewModel.connectionType {
         case .tella:
             let outboxViewModel = OutboxReportVM(mainAppModel: reportMainViewModel.mainAppModel, reportsViewModel: reportMainViewModel, reportId: id)
-            let destination = OutboxDetailsView(outboxReportVM: outboxViewModel)
-                .environmentObject(reportMainViewModel)
+            let destination = OutboxDetailsView(outboxReportVM: outboxViewModel, reportsViewModel: reportMainViewModel)
             self.navigateTo(destination: destination)
             break
         case .gDrive:
             let outboxViewModel = GDriveOutboxViewModel(mainAppModel: reportMainViewModel.mainAppModel, reportsViewModel: reportMainViewModel, reportId: id, repository: GDriveRepository())
-            let destination = OutboxDetailsView(outboxReportVM: outboxViewModel)
-                .environmentObject(reportMainViewModel)
+            let destination = OutboxDetailsView(outboxReportVM: outboxViewModel, reportsViewModel: reportMainViewModel)
             self.navigateTo(destination: destination)
         default:
             break
@@ -201,11 +199,11 @@ struct ReportMainView: View {
         switch reportMainViewModel.connectionType {
         case .tella:
             let vm = SubmittedReportVM(mainAppModel: reportMainViewModel.mainAppModel, reportId: id)
-            let destination = SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportMainViewModel)
+            let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportMainViewModel)
             self.navigateTo(destination: destination)
         case .gDrive:
             let vm = GDriveSubmittedViewModel(mainAppModel: reportMainViewModel.mainAppModel, reportId: id)
-            let destination = SubmittedDetailsView(submittedReportVM: vm).environmentObject(reportMainViewModel)
+            let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportMainViewModel)
             self.navigateTo(destination: destination)
         default:
             break

@@ -25,6 +25,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
     
     private func treat(uploadResponse: CurrentValueSubject<UploadResponse?,APIError>?) {
         uploadResponse?
+            .receive(on: DispatchQueue.main)
             .sink { result in
                 
             } receiveValue: { response in

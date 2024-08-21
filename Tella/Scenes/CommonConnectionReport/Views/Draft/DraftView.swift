@@ -22,7 +22,6 @@ struct DraftView: View  {
     var body: some View {
         ContainerView {
             contentView
-                .environmentObject(viewModel)
             serverListMenuView
             photoVideoPickerView
         }
@@ -195,10 +194,10 @@ struct DraftView: View  {
             switch reportsViewModel.connectionType {
             case .tella:
                 let outboxVM = OutboxReportVM(mainAppModel: viewModel.mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId)
-                OutboxDetailsView(outboxReportVM: outboxVM).environmentObject(reportsViewModel)
+                OutboxDetailsView(outboxReportVM: outboxVM, reportsViewModel: reportsViewModel)
             case .gDrive:
                 let outboxVM = GDriveOutboxViewModel(mainAppModel: viewModel.mainAppModel, reportsViewModel: reportsViewModel, reportId: viewModel.reportId, repository: GDriveRepository())
-                OutboxDetailsView(outboxReportVM: outboxVM).environmentObject(reportsViewModel)
+                OutboxDetailsView(outboxReportVM: outboxVM, reportsViewModel: reportsViewModel)
             default:
                 Text("")
             }
