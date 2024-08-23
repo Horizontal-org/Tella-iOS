@@ -64,7 +64,7 @@ struct SelectSharedDrive: View {
             presentationMode.wrappedValue.dismiss()
             return
         }
-        gDriveServerViewModel.addServer(rootFolder: selectedDrive.id) {
+        gDriveServerViewModel.addServer(rootFolder: selectedDrive.id, rootFolderName: selectedDrive.name) {
             navigateTo(destination: SuccessLoginView(
                 navigateToAction: {navigateTo(destination: reportsView)},
                 type: .gDrive)

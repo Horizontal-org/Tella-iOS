@@ -54,15 +54,15 @@ class GDriveServerViewModel: ObservableObject {
                 }
             }, receiveValue: { folderId in
                 self.createFolderState = .loaded(folderId)
-                self.addServer(rootFolder: folderId) {
+                self.addServer(rootFolder: folderId, rootFolderName: folderName) {
                     completion()
                 }
             })
             .store(in: &cancellables)
     }
     
-    func addServer(rootFolder: String, completion: @escaping() -> Void ) {
-        let server = GDriveServer(rootFolder: rootFolder)
+    func addServer(rootFolder: String, rootFolderName: String, completion: @escaping() -> Void ) {
+        let server = GDriveServer(rootFolder: rootFolder, rootFolderName: rootFolderName)
 
         _ = mainAppModel.tellaData?.addGDriveServer(server: server)
         

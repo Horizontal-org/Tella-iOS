@@ -554,4 +554,4 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Error_InvalidURL_Expl" = "Invalid URL";
 "Error_Unexpected_Response_Expl" = "Unexpected response from the server";
 "Error_Unauthorized_Expl" = "Invalid username or password";
-"Error_Forbidden_Expl" = "Account locked due to too many unsuccessful attempts."
+"Error_Forbidden_Expl" = "Account locked due to too many unsuccessful attempts.";
