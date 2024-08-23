@@ -131,7 +131,9 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     private func handleCompletionForUploadFile(_ completion: Subscribers.Completion<APIError>, folderId: String) {
         switch completion {
         case .finished:
-            self.uploadQueue.removeFirst()
+            if !self.uploadQueue.isEmpty {
+                self.uploadQueue.removeFirst()
+            }
             self.uploadNextFile(folderId: folderId)
         case .failure( let error):
             switch error {
