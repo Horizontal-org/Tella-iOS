@@ -15,8 +15,7 @@ extension TellaDataBase {
         let columns = [
             cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
             cddl(D.cName, D.text),
-            cddl(D.cRootFolder, D.text),
-            cddl(D.cRootFolderName, D.text)
+            cddl(D.cRootFolder, D.text)
         ]
         statementBuilder.createTable(tableName: D.tGDriveServer, columns: columns)
     }

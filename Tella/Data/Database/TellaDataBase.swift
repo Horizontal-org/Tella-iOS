@@ -70,6 +70,7 @@ class TellaDataBase : DataBase {
         createGDriveServerTable()
         createGDriveReportTable()
         createGDriveReportFilesTable()
+        addRootFolderNameColumn()
     }
     
     func createReportTable() {
