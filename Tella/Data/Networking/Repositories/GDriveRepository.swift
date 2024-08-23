@@ -161,7 +161,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                             description: description,
                             promise: promise)
                     } catch {
-                        promise(.failure(self.mapToAPIError(error)))
+                        promise(.failure(.driveApiError(error)))
                     }
                 }
             }
@@ -200,7 +200,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         driveService.executeQuery(query) { (ticket, file, error) in
             if let error = error {
                 debugLog("Error creating folder: \(error.localizedDescription)")
-                promise(.failure(self.mapToAPIError(error)))
+                promise(.failure(.driveApiError(error)))
                 return
             }
 
@@ -238,7 +238,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                             }
                             .store(in: &self.subscribers)
                     } catch {
-                        promise(.failure(self.mapToAPIError(error)))
+                        promise(.failure(.driveApiError(error)))
                     }
                 }
             }
@@ -261,7 +261,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 }
                 
                 guard let user = self.googleUser else {
-                    promise(.failure(APIError.noToken))
+                    promise(.failure(.noToken))
                     return
                 }
                 
@@ -292,7 +292,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                     promise(.success(result))
                 }
             } catch {
-                promise(.failure(self.mapToAPIError(error)))
+                promise(.failure(.driveApiError(error)))
             }
         }
     }
@@ -337,14 +337,8 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                             return
                         }
                         
-//                        if !self.isUploading {
-//                            uploadProgressInfo.status = .notSubmitted
-//                            continuation.resume(returning: uploadProgressInfo)
-//                            return
-//                        }
-                        
                         if let error = error {
-                            throw self.mapToAPIError(error)
+                            throw APIError.driveApiError(error)
                         }
                         
                         guard file is GTLRDrive_File else {
@@ -411,29 +405,6 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         }
         uploadProgressInfo.error = APIError.unexpectedResponse
         promise(.failure(.unexpectedResponse))
-    }
-    
-    private func mapToAPIError(_ error: Error) -> APIError {
-        if let apiError = error as? APIError {
-            return apiError
-        }
-        
-        // Map other error types to APIError
-        if let nsError = error as NSError? {
-            switch nsError.code {
-            case NSURLErrorNotConnectedToInternet,
-                 NSURLErrorNetworkConnectionLost,
-                 NSURLErrorCannotConnectToHost,
-                 NSURLErrorCannotFindHost:
-                return .noInternetConnection
-            case NSURLErrorTimedOut:
-                return networkMonitor.isConnected ? .unexpectedResponse : .noInternetConnection
-            default:
-                return .unexpectedResponse
-            }
-        }
-        
-        return .unexpectedResponse
     }
 }
 
