@@ -20,11 +20,11 @@ extension APIError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidURL:
-            return "Invalid URL"
+            return LocalizableError.invalidUrl.localized
         case let .httpCode(code):
             return customErrorMessage(errorCode: code)
         case .unexpectedResponse:
-            return "Unexpected response from the server"
+            return LocalizableError.unexpectedResponse.localized
         case .noInternetConnection:
             return LocalizableSettings.settServerNoInternetConnection.localized
         case .badServer:
@@ -39,13 +39,13 @@ extension APIError: LocalizedError {
         let httpErrorCode = HTTPErrorCodes(rawValue: errorCode)
         switch httpErrorCode{
         case .unauthorized:
-            return "Invalid username or password"
+            return LocalizableError.unauthorized.localized
         case .forbidden:
-            return "Account locked due to too many unsuccessful attempts."
+            return LocalizableError.forbidden.localized
         case .notFound:
             return LocalizableSettings.settServerServerURLIncorrect.localized
         default:
-            return "Unexpected response from the server"
+            return LocalizableError.unexpectedResponse.localized
         }
     }
     
@@ -66,6 +66,6 @@ extension APIError: LocalizedError {
             }
         }
         
-        return "Unexpected response from the server"
+        return LocalizableError.unexpectedResponse.localized
     }
 }
