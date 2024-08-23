@@ -28,6 +28,7 @@ class NextcloudServer: WebServer {
         self.rootFolder = rootFolder
         
         super.init(name: "Nextcloud", serverURL: serverURL, username: username, password: password, serverType: .nextcloud)
+        self.allowMultiple = false
     }
     
     required init(from decoder: Decoder) throws {
