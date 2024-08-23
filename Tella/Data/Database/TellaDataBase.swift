@@ -44,6 +44,9 @@ class TellaDataBase : DataBase {
                 createGDriveServerTable()
                 createGDriveReportTable()
                 createGDriveReportFilesTable()
+                fallthrough
+            case 6:
+                addRootFolderNameColumn()
             default :
                 break
             }

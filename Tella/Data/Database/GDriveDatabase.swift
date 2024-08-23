@@ -272,3 +272,13 @@ extension TellaDataBase {
         }
     }
 }
+
+extension TellaDataBase {
+    func addRootFolderNameColumn() {
+        do {
+            try statementBuilder.addColumnOn(tableName: D.tGDriveServer, columnName: D.cRootFolderName, type: D.text)
+        } catch let error {
+            debugLog(error)
+        }
+    }
+}

@@ -34,7 +34,7 @@ class GDriveServer: Server {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.rootFolder = try container.decode(String?.self, forKey: .rootFolder)
-        self.rootFolderName = try container.decode(String?.self, forKey: .rootFolderName)
+        self.rootFolderName = try container.decodeIfPresent(String.self, forKey: .rootFolderName)
         try super.init(from: decoder)
         self.serverType = .gDrive
         self.allowMultiple = false
@@ -43,7 +43,7 @@ class GDriveServer: Server {
     override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(rootFolder, forKey: .rootFolder)
-        try container.encode(rootFolderName, forKey: .rootFolderName)
+        try container.encodeIfPresent(rootFolderName, forKey: .rootFolderName)
         try super.encode(to: encoder)
     }
 }
