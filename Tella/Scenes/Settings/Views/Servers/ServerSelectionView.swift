@@ -107,7 +107,7 @@ struct ServerSelectionView: View {
         VStack(spacing: 20) {
             SectionTitle(text: LocalizableSettings.settServerUnavailableConnectionsTitle.localized)
             SectionMessage(text: LocalizableSettings.settServerUnavailableConnectionsDesc.localized)
-            ForEach(serversViewModel.unavailableServers, id: \.id) { server in
+            ForEach(serversViewModel.unavailableServers, id: \.serverType) { server in
                 TellaButtonView<AnyView>(
                     title: server.serverType?.serverTitle ?? "",
                     nextButtonAction: .action,
