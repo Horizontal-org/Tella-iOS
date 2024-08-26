@@ -86,7 +86,9 @@ class GDriveDraftViewModel: DraftMainViewModel{
         }
     }
     private func getServer() {
-        self.server = mainAppModel.tellaData?.gDriveServers.value.first
+        self.server = mainAppModel.tellaData?.servers.first(where: { server in
+            server is GDriveServer
+        })
     }
     
     override func deleteFile(fileId: String?) {

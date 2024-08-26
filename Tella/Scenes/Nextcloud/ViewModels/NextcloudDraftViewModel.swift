@@ -104,7 +104,9 @@ class NextcloudDraftViewModel: DraftMainViewModel {
     }
     
     private func getServer() {
-        self.server = mainAppModel.tellaData?.nextcloudServers.value.first
+//        self.server = mainAppModel.tellaData?.nextcloudServers.value.first
+        self.server = mainAppModel.tellaData?.servers.first { $0 is NextcloudServer } as? NextcloudServer
+
     }
     
 }

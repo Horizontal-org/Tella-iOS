@@ -33,7 +33,9 @@ class GDriveViewModel: ReportsMainViewModel {
     }
     
     private func getServer() {
-        self.server = mainAppModel.tellaData?.gDriveServers.value.first
+//        self.server = mainAppModel.tellaData?.gDriveServers.value.first
+        self.server = mainAppModel.tellaData?.servers.first { $0 is GDriveServer } as? GDriveServer
+
     }
     
     override func getReports() {

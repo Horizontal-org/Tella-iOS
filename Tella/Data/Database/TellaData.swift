@@ -12,12 +12,12 @@ class TellaData : ObservableObject {
     var vaultManager : VaultManagerInterface?
 
     // Servers
-    var servers = CurrentValueSubject<[Server], Error>([])
-    var tellaServers = CurrentValueSubject<[TellaServer], Error>([])
-    var uwaziServers = CurrentValueSubject<[UwaziServer], Error>([])
-    var gDriveServers = CurrentValueSubject<[GDriveServer], Error>([])
-    var nextcloudServers = CurrentValueSubject<[NextcloudServer], Error>([])
-
+    var servers : [Server] = []
+//    var tellaServers = CurrentValueSubject<[TellaServer], Error>([])
+//    var uwaziServers = CurrentValueSubject<[UwaziServer], Error>([])
+//    var gDriveServers = CurrentValueSubject<[GDriveServer], Error>([])
+//    var nextcloudServers = CurrentValueSubject<[NextcloudServer], Error>([])
+    @Published var shouldReloadServers = false
     
     var shouldReloadTellaReports = CurrentValueSubject<Bool, Never>(false)
     var shouldReloadUwaziInstances = CurrentValueSubject<Bool, Never>(false)
@@ -141,18 +141,20 @@ class TellaData : ObservableObject {
 
     func getServers(){
         DispatchQueue.main.async {
-            self.tellaServers.value = self.database.getTellaServers()
-            self.uwaziServers.value = self.database.getUwaziServers()
-            self.gDriveServers.value = self.database.getDriveServers()
-            self.nextcloudServers.value = self.database.getNextcloudServer()
-
-            self.servers.value = self.tellaServers.value + self.uwaziServers.value + self.gDriveServers.value + self.nextcloudServers.value
+            let tellaServers = self.database.getTellaServers()
+            let uwaziServers = self.database.getUwaziServers()
+            let gDriveServers = self.database.getDriveServers()
+            let nextcloudServers = self.database.getNextcloudServer()
+            
+            self.servers = tellaServers + uwaziServers + gDriveServers + nextcloudServers
+            self.shouldReloadServers = true
         }
     }
     
     func getTellaServer(serverId: Int?) -> TellaServer? {
         do {
             guard let serverId else { return nil }
+            self.shouldReloadServers = true
             return try database.getTellaServerById(id: serverId)
         } catch {
             debugLog(error)
@@ -163,6 +165,7 @@ class TellaData : ObservableObject {
     func getUwaziServer(serverId: Int?) -> UwaziServer? {
         do {
             guard let serverId else { return nil }
+            self.shouldReloadServers = true
             return try database.getUwaziServer(serverId: serverId)
             
         }catch {
