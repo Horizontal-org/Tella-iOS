@@ -44,9 +44,6 @@ class TellaDataBase : DataBase {
                 createGDriveServerTable()
                 createGDriveReportTable()
                 createGDriveReportFilesTable()
-                fallthrough
-            case 6:
-                addRootFolderNameColumn()
             default :
                 break
             }
@@ -70,7 +67,6 @@ class TellaDataBase : DataBase {
         createGDriveServerTable()
         createGDriveReportTable()
         createGDriveReportFilesTable()
-        addRootFolderNameColumn()
     }
     
     func createReportTable() {

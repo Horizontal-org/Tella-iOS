@@ -15,7 +15,8 @@ extension TellaDataBase {
         let columns = [
             cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
             cddl(D.cName, D.text),
-            cddl(D.cRootFolder, D.text)
+            cddl(D.cRootFolder, D.text),
+            cddl(D.cRootFolderName, D.text)
         ]
         statementBuilder.createTable(tableName: D.tGDriveServer, columns: columns)
     }
@@ -268,16 +269,6 @@ extension TellaDataBase {
         } catch let error {
             debugLog(error)
             return .failure(error)
-        }
-    }
-}
-
-extension TellaDataBase {
-    func addRootFolderNameColumn() {
-        do {
-            try statementBuilder.addColumnOn(tableName: D.tGDriveServer, columnName: D.cRootFolderName, type: D.text)
-        } catch let error {
-            debugLog(error)
         }
     }
 }
