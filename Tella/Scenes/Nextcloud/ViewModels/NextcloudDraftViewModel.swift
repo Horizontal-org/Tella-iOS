@@ -13,7 +13,7 @@ class NextcloudDraftViewModel: DraftMainViewModel {
     
     private let nextcloudRepository: NextcloudRepositoryProtocol
     
-    init(mainAppModel: MainAppModel, 
+    init(mainAppModel: MainAppModel,
          repository: NextcloudRepositoryProtocol,
          reportId reportID: Int?) {
         self.nextcloudRepository = repository
@@ -37,7 +37,7 @@ class NextcloudDraftViewModel: DraftMainViewModel {
     override func fillReportVM() {
         
         guard let reportId = self.reportId,
-        let report = self.mainAppModel.tellaData?.getNextcloudReport(id: reportId)
+              let report = self.mainAppModel.tellaData?.getNextcloudReport(id: reportId)
         else { return }
         
         self.title = report.title ?? ""
@@ -49,7 +49,7 @@ class NextcloudDraftViewModel: DraftMainViewModel {
         
         self.objectWillChange.send()
     }
-
+    
     override func saveReport() {
         
         let reportFiles = self.files.compactMap {ReportFile(fileId: $0.id,
@@ -79,7 +79,7 @@ class NextcloudDraftViewModel: DraftMainViewModel {
             self.files.insert(value)
         }).store(in: &subscribers)
     }
-
+    
     private func addReport(report: NextcloudReport) {
         let reportId = mainAppModel.tellaData?.addNextcloudReport(report: report)
         
@@ -104,7 +104,7 @@ class NextcloudDraftViewModel: DraftMainViewModel {
     }
     
     private func getServer() {
-        self.server = mainAppModel.tellaData?.nextcloudServers.value.first
+        self.server = mainAppModel.tellaData?.getNextcloudServer().first
     }
     
 }

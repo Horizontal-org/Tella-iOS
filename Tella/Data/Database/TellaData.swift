@@ -10,80 +10,72 @@ class TellaData : ObservableObject {
     
     var database : TellaDataBase
     var vaultManager : VaultManagerInterface?
-
-    // Servers
-    var servers = CurrentValueSubject<[Server], Error>([])
-    var tellaServers = CurrentValueSubject<[TellaServer], Error>([])
-    var uwaziServers = CurrentValueSubject<[UwaziServer], Error>([])
-    var gDriveServers = CurrentValueSubject<[GDriveServer], Error>([])
-    var nextcloudServers = CurrentValueSubject<[NextcloudServer], Error>([])
-
+    
+    var shouldReloadServers = CurrentValueSubject<Bool, Never>(false)
     
     var shouldReloadTellaReports = CurrentValueSubject<Bool, Never>(false)
-    var shouldReloadUwaziInstances = CurrentValueSubject<Bool, Never>(false)
-    var shouldReloadUwaziTemplates = CurrentValueSubject<Bool, Never>(false)
-
     var shouldReloadGDriveReports = CurrentValueSubject<Bool, Never>(false)
     var shouldReloadNextcloudReports = CurrentValueSubject<Bool, Never>(false)
-
+    
+    var shouldReloadUwaziInstances = CurrentValueSubject<Bool, Never>(false)
+    var shouldReloadUwaziTemplates = CurrentValueSubject<Bool, Never>(false)
+    
     init(database : TellaDataBase, vaultManager: VaultManagerInterface? = nil) throws {
         self.database = database
         self.vaultManager = vaultManager
-        
-        getServers()
     }
     
     func addServer(server : TellaServer) -> Result<Int, Error> {
         let addServerResult = database.addServer(server: server)
-        getServers()
+        reloadServers()
         
         return addServerResult
     }
     
     func addUwaziServer(server: UwaziServer) -> Int? {
         let id = database.addUwaziServer(server: server)
-        getServers()
+        reloadServers()
         return id
     }
     
     func addGDriveServer(server: GDriveServer) -> Result<Int, Error>{
         let id = database.addGDriveServer(gDriveServer: server)
-        getServers()
+        reloadServers()
         
         return id
     }
     
     func addNextcloudServer(server : NextcloudServer) -> Int?{
         let addServerResult = database.addNextcloudServer(server: server)
-        getServers()
+        reloadServers()
         
         return addServerResult
     }
-
+    
     @discardableResult
     func updateServer(server : TellaServer) -> Result<Bool, Error> {
         let updateServerResult = database.updateServer(server: server)
-        getServers()
+        reloadServers()
         return updateServerResult
     }
     
     func updateUwaziServer(server: UwaziServer) -> Int? {
         let id = database.updateUwaziServer(server: server)
-        getServers()
+        reloadServers()
         return id
     }
     
     @discardableResult
     func updateNextcloudServer(server: NextcloudServer) -> Int? {
         let id = database.updateNextcloudServer(server: server)
-        getServers()
+        reloadServers()
         return id
     }
-
+    
     @discardableResult
     func deleteTellaServer(serverId : Int) -> Result<Bool, Error> {
         let deleteServerResult = database.deleteServer(serverId: serverId)
-        getServers()
+        reloadServers()
         shouldReloadTellaReports.send(true)
         return deleteServerResult
     }
@@ -116,43 +108,51 @@ class TellaData : ObservableObject {
         
         vaultManager?.deleteVaultFile(filesIds: resourcesId)
         let deleteAllServersResult = database.deleteAllServers()
-        getServers()
+        reloadServers()
         shouldReloadTellaReports.send(true)
         return deleteAllServersResult
     }
     
     func deleteUwaziServer(serverId: Int) {
         database.deleteUwaziServer(serverId: serverId)
-        getServers()
+        reloadServers()
     }
     
     func deleteGDriveServer(serverId: Int) {
         GDriveRepository().signOut()
         database.deleteGDriveServer(serverId: serverId)
-        getServers()
+        reloadServers()
     }
     
     func deleteNextcloudServer(serverId: Int) -> Bool {
         // signOut
         let resultDelete = database.deleteNextcloudServer(serverId: serverId)
-        getServers()
+        reloadServers()
         return resultDelete
     }
-
-    func getServers(){
-        DispatchQueue.main.async {
-            self.tellaServers.value = self.database.getTellaServers()
-            self.uwaziServers.value = self.database.getUwaziServers()
-            self.gDriveServers.value = self.database.getDriveServers()
-            self.nextcloudServers.value = self.database.getNextcloudServer()
-
-            self.servers.value = self.tellaServers.value + self.uwaziServers.value + self.gDriveServers.value + self.nextcloudServers.value
-        }
+    
+    func reloadServers() {
+        self.shouldReloadServers.send(true)
     }
     
+    func getServers() -> [Server] {
+        
+        let tellaServers = self.getTellaServers()
+        let uwaziServers = self.getUwaziServers()
+        let gDriveServers = self.getDriveServers()
+        let nextcloudServers = self.getNextcloudServer()
+        
+        return tellaServers + uwaziServers + gDriveServers + nextcloudServers
+    }
+    
+    func getTellaServers() -> [TellaServer] {
+        self.database.getTellaServers()
+    }
+
     func getTellaServer(serverId: Int?) -> TellaServer? {
         do {
             guard let serverId else { return nil }
+            reloadServers()
             return try database.getTellaServerById(id: serverId)
         } catch {
             debugLog(error)
@@ -163,8 +163,8 @@ class TellaData : ObservableObject {
     func getUwaziServer(serverId: Int?) -> UwaziServer? {
         do {
             guard let serverId else { return nil }
+            reloadServers()
             return try database.getUwaziServer(serverId: serverId)
-            
         }catch {
             debugLog(error)
             return nil
@@ -180,12 +180,12 @@ class TellaData : ObservableObject {
     }
     func getOutboxedReports() -> [Report] {
         return database.getReports(reportStatus: [.finalized,
-                                                       .submissionError,
-                                                       .submissionPending,
-                                                       .submissionPaused,
-                                                       .submissionInProgress,
-                                                       .submissionAutoPaused,
-                                                       .submissionScheduled])
+                                                  .submissionError,
+                                                  .submissionPending,
+                                                  .submissionPaused,
+                                                  .submissionInProgress,
+                                                  .submissionAutoPaused,
+                                                  .submissionScheduled])
     }
     
     func getSubmittedReports() -> [Report] {
@@ -350,7 +350,7 @@ class TellaData : ObservableObject {
 extension TellaData {
     
     func addUwaziTemplate(template: CollectedTemplate) -> Result<CollectedTemplate, Error> {
-       
+        
         let result = database.addUwaziTemplate(template: template)
         
         switch result {
@@ -361,7 +361,7 @@ extension TellaData {
             return .failure(error)
         }
     }
-
+    
     func updateUwaziTemplate(template: CollectedTemplate) -> Int? {
         let id = database.updateUwaziTemplate(template: template)
         
@@ -370,7 +370,7 @@ extension TellaData {
     func deleteAllUwaziTemplate(templateId: String) {
         
         self.shouldReloadUwaziTemplates.send(true)
-
+        
         
         return database.deleteUwaziTemplate(templateId: templateId)
     }
@@ -398,11 +398,16 @@ extension TellaData {
 }
 
 extension TellaData {
+    
+    func getUwaziServers() -> [UwaziServer] {
+        self.database.getUwaziServers()
+    }
+
     @discardableResult
     func addUwaziEntityInstance(entityInstance:UwaziEntityInstance) -> Result<Int,Error>  {
-
+        
         if let instanceId = entityInstance.id {
-           let result = database.updateUwaziEntityInstance(entityInstance: entityInstance)
+            let result = database.updateUwaziEntityInstance(entityInstance: entityInstance)
             
             if case .success = result {
                 self.shouldReloadUwaziInstances.send(true)
@@ -437,7 +442,7 @@ extension TellaData {
         let result = database.deleteEntityInstance(entityId: entityId)
         self.shouldReloadUwaziInstances.send(true)
         return result
-
+        
     }
     
     func getUwaziEntityInstance(entityId:Int?) -> UwaziEntityInstance? {

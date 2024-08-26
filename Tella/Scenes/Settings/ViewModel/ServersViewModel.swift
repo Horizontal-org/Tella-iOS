@@ -20,11 +20,20 @@ class ServersViewModel: ObservableObject {
         
         self.mainAppModel = mainAppModel
         
-        mainAppModel.tellaData?.servers.sink { completion in
-        } receiveValue: { serverArray in
-            self.serverArray = serverArray
-            self.unavailableServers = serverArray.filter { $0.allowMultiple == false }
+        self.getServers()
+        
+        mainAppModel.tellaData?.shouldReloadServers.sink { completion in
+        } receiveValue: { shouldReload in
+            if shouldReload {
+                self.getServers()
+            }
         }.store(in: &subscribers)
+    }
+    
+    func getServers() {
+        let serverArray = mainAppModel.tellaData?.getServers() ?? []
+        self.serverArray = serverArray
+        self.unavailableServers = serverArray.filter { $0.allowMultiple == false }
     }
     
     func deleteServer() {

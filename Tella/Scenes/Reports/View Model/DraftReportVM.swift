@@ -27,9 +27,8 @@ class DraftReportVM: DraftMainViewModel {
     }
     
     override func getServers() {
-        serverArray = mainAppModel.tellaData?.tellaServers.value ?? []
+        serverArray = mainAppModel.tellaData?.getTellaServers() ?? []
     }
-    
     
     override func bindVaultFileTaken() {
         $resultFile.sink(receiveValue: { value in

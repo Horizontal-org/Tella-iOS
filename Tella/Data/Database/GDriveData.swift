@@ -9,6 +9,11 @@
 import Foundation
 
 extension TellaData {
+    
+    func getDriveServers() -> [GDriveServer] {
+        self.database.getDriveServers()
+    }
+
     func addGDriveReport(report : GDriveReport) -> Result<Int, Error> {
         let id =  database.addGDriveReport(report: report)
         

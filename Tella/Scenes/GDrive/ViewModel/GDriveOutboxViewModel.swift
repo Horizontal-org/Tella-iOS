@@ -49,7 +49,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     }
     
     private func getServer() {
-        self.server = mainAppModel.tellaData?.gDriveServers.value.first
+        self.server = mainAppModel.tellaData?.getDriveServers().first
     }
     
     override func initVaultFile(reportId: Int?) {
