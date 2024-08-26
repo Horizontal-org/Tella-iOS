@@ -24,7 +24,7 @@ class ResourcesViewModel: ObservableObject {
         mainAppModel: MainAppModel
     ) {
         self.appModel = mainAppModel
-        self.servers = mainAppModel.tellaData?.servers.filter{ $0 is TellaServer} as? [TellaServer] ?? []
+        self.servers = mainAppModel.tellaData?.getTellaServers() ?? []
         self.getAvailableForDownloadResources()
         self.getDownloadedResources()
     }

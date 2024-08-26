@@ -27,9 +27,7 @@ class DraftReportVM: DraftMainViewModel {
     }
     
     override func getServers() {
-        serverArray = mainAppModel.tellaData?.servers.filter({ server in
-            server is TellaServer
-        })    ?? []
+        serverArray = mainAppModel.tellaData?.getTellaServers() ?? []
     }
     
     override func bindVaultFileTaken() {

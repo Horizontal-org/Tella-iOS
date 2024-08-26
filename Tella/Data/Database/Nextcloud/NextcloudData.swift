@@ -8,6 +8,10 @@
 
 extension TellaData {
     
+    func getNextcloudServer() -> [NextcloudServer] {
+        self.database.getNextcloudServer()
+    }
+
     func addNextcloudReport(report : NextcloudReport) -> Int? {
         let id =  database.addNextcloudReport(report: report)
         shouldReloadNextcloudReports.send(true)
