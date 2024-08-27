@@ -68,7 +68,7 @@ struct ServerSelectionView: View {
     fileprivate func bottomView() -> BottomLockView<AnyView> {
         return BottomLockView<AnyView>(isValid: .constant(true),
                                        nextButtonAction: .action,
-                                       shouldHideNext: false,
+                                       shouldHideNext: serversViewModel.shouldHideNextButton,
                                        shouldHideBack: true,
                                        nextAction: {
             switch selectedServerType {
@@ -95,12 +95,14 @@ struct ServerSelectionView: View {
     }
     
     fileprivate func navigateToGDriveFlow() {
+        serversViewModel.shouldHideNextButton = true
         gDriveVM.handleSignIn {
             navigateTo(
                 destination: SelectDriveConnection(gDriveServerViewModel: gDriveServerVM),
                 title: LocalizableSettings.settServerGDrive.localized
             )
         }
+        serversViewModel.shouldHideNextButton = false
     }
 
     fileprivate func unavailableConnectionsView() -> some View {

@@ -13,6 +13,7 @@ class ServersViewModel: ObservableObject {
     @Published var currentServer : Server?
     @Published var serverArray : [Server] = []
     @Published var unavailableServers: [Server] = []
+    @Published var shouldHideNextButton: Bool = false
     
     private var subscribers = Set<AnyCancellable>()
     
