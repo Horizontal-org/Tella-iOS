@@ -21,7 +21,7 @@ struct RuntimeError: Error {
 
 extension RuntimeError: LocalizedError {
     
-    public var errorDescription: String? {
+    public var errorMessage: String? {
         return message
     }
 }

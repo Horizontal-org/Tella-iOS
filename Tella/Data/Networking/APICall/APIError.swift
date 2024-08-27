@@ -17,7 +17,7 @@ enum APIError: Swift.Error {
 
 extension APIError: LocalizedError {
 
-    var errorDescription: String? {
+    var errorMessage: String {
         switch self {
         case .invalidURL:
             return LocalizableError.invalidUrl.localized
