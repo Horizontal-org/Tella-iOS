@@ -96,7 +96,7 @@ class AddTemplateViewModel: ObservableObject {
             showToast = false
         case .failure(let error):
             self.showToast = true
-            self.toastMessage = error.errorMessage ?? ""
+            self.toastMessage = error.errorMessage
         }
         self.isLoading = false
     }

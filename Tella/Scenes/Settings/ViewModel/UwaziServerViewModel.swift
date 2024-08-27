@@ -230,7 +230,7 @@ class UwaziServerViewModel: ObservableObject {
             switch error {
             case .invalidURL, .unexpectedResponse, .badServer:
                 self.shouldShowLoginError = true
-                self.loginErrorMessage = error.errorMessage ?? ""
+                self.loginErrorMessage = error.errorMessage
             case .httpCode(let code):
                 // if the status code is 401 then username or password is not matching
                 // if the status code is 409 then 2FA is needed
@@ -293,7 +293,7 @@ class UwaziServerViewModel: ObservableObject {
         case .failure(let error):
             switch error {
             case .invalidURL, .unexpectedResponse, .badServer:
-                self.codeErrorMessage = error.errorMessage ?? ""
+                self.codeErrorMessage = error.errorMessage
             case .httpCode(let code):
                 // if the status code is 401 then the 2FA code is incorrect
                 let httpError = HTTPErrorCodes(rawValue: code) ?? .unknown
@@ -301,7 +301,7 @@ class UwaziServerViewModel: ObservableObject {
                 case .unauthorized:
                     self.codeErrorMessage = "Two-factor authentication failed."
                 default:
-                    self.codeErrorMessage = error.errorMessage ?? ""
+                    self.codeErrorMessage = error.errorMessage
                 }
             case .noInternetConnection:
                 Toast.displayToast(message: error.errorMessage)
