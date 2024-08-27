@@ -79,7 +79,7 @@ struct SelectDriveConnection: View {
             switch selectedDriveConnectionType {
             case .shared:
                 navigateTo(
-                    destination: SelectSharedDrive()
+                    destination: SelectSharedDriveView()
                         .environmentObject(gDriveServerViewModel)
                 )
             case .personal:

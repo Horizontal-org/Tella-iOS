@@ -1,0 +1,12 @@
+//
+//  TellaConfig.xcconfig
+//  Tella
+//
+//  Created by gus valbuena on 8/27/24.
+//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+GOOGLE_CLIENT_ID = 299748721134-lbj77khp0n8nrekeuk3fq82bi7ll1o60.apps.googleusercontent.com
+GOOGLE_REVERSE_CLIENT_ID = com.googleusercontent.apps.299748721134-lbj77khp0n8nrekeuk3fq82bi7ll1o60
