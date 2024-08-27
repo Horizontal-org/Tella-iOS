@@ -21,7 +21,7 @@ protocol GDriveRepositoryProtocol {
     func handleSignIn() async throws
     func restorePreviousSignIn() async throws
     func handleUrl(url: URL)
-    func getSharedDrives() -> AnyPublisher<[SharedDrive], Error>
+    func getSharedDrives() -> AnyPublisher<[SharedDrive], APIError>
     func createDriveFolder(folderName: String, parentId: String?, description: String?) -> AnyPublisher<String, APIError>
     func uploadFile(fileUploadDetails: FileUploadDetails) -> AnyPublisher<UploadProgressInfo, APIError>
     func pauseAllUploads()
@@ -105,7 +105,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         GIDSignIn.sharedInstance.handle(url)
     }
     
-    func getSharedDrives() -> AnyPublisher<[SharedDrive], Error> {
+    func getSharedDrives() -> AnyPublisher<[SharedDrive], APIError> {
         Deferred {
             Future { [weak self] promise in
                 guard let user = self?.googleUser else {
@@ -119,7 +119,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 driveService.executeQuery(query) { ticket, response, error in
                     if let error = error {
                         debugLog("Error fetching drives: \(error.localizedDescription)")
-                        promise(.failure(error))
+                        promise(.failure(.driveApiError(error)))
                     }
 
                     guard let driveList = response as? GTLRDrive_DriveList,

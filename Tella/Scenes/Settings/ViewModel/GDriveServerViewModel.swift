@@ -31,7 +31,7 @@ class GDriveServerViewModel: ObservableObject {
                 case .finished:
                     break
                 case.failure(let error):
-                    self.sharedDriveState = .error(error.localizedDescription)
+                    self.sharedDriveState = .error(error.errorMessage)
                 }
             },
             receiveValue: { [weak self] drives in
@@ -50,7 +50,7 @@ class GDriveServerViewModel: ObservableObject {
                 case .finished:
                     break
                 case .failure(let error):
-                    self.createFolderState = .error(error.localizedDescription)
+                    self.createFolderState = .error(error.errorMessage)
                 }
             }, receiveValue: { folderId in
                 self.createFolderState = .loaded(folderId)
