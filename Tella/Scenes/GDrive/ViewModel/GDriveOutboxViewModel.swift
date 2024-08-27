@@ -138,7 +138,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         case .failure( let error):
             switch error {
             default:
-                Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+                Toast.displayToast(message: error.errorMessage)
                 updateReportStatus(reportStatus: .submissionError)
             }
         }
@@ -151,7 +151,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         case .failure( let error):
             switch error {
             default:
-                Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+                Toast.displayToast(message: error.errorMessage)
                 updateReportStatus(reportStatus: .submissionError)
             }
         }
