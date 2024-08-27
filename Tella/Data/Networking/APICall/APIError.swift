@@ -12,6 +12,7 @@ enum APIError: Swift.Error {
     case noInternetConnection
     case badServer
     case noToken
+    case driveApiError(Error)
     case errorOccured
 }
 
@@ -20,17 +21,19 @@ extension APIError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidURL:
-            return "Invalid URL"
+            return LocalizableError.invalidUrl.localized
         case let .httpCode(code):
             return customErrorMessage(errorCode: code)
         case .unexpectedResponse:
-            return "Unexpected response from the server"
+            return LocalizableError.unexpectedResponse.localized
         case .noInternetConnection:
             return LocalizableSettings.settServerNoInternetConnection.localized
         case .badServer:
             return LocalizableSettings.settServerServerURLIncorrect.localized
         case .noToken:
             return LocalizableSettings.settServerNoTokenPresent.localized
+        case .driveApiError(let error):
+            return customDriveErrorMessage(error: error)
         case .errorOccured :
             return LocalizableCommon.commonError.localized
         }
@@ -39,9 +42,9 @@ extension APIError: LocalizedError {
         let httpErrorCode = HTTPErrorCodes(rawValue: errorCode)
         switch httpErrorCode{
         case .unauthorized:
-            return "Invalid username or password"
+            return LocalizableError.unauthorized.localized
         case .forbidden:
-            return "Account locked due to too many unsuccessful attempts."
+            return LocalizableError.forbidden.localized
         case .notFound:
             return LocalizableSettings.settServerServerURLIncorrect.localized
         case .nextcloudFolderExists:
@@ -51,7 +54,27 @@ extension APIError: LocalizedError {
         case .ncNoInternetError:
             return "No Internet connection. Try again when you are connected to the Internet."
         default:
-            return "Unexpected response from the server"
+            return LocalizableError.unexpectedResponse.localized
         }
+    }
+    
+    private func customDriveErrorMessage(error: Error) -> String {
+        if let nsError = error as NSError? {
+            switch nsError.domain {
+            case GoogleAuthConstants.GTLRErrorObjectDomain:
+                let errorCode = nsError.code
+                let errorMessage = nsError.localizedDescription
+                            
+                return customErrorMessage(errorCode: errorCode)
+            case GoogleAuthConstants.HTTPStatus:
+                return customErrorMessage(errorCode: nsError.code)
+            default:
+                if let errorString = nsError.userInfo["error"] as? String {
+                    return errorString
+                }
+            }
+        }
+        
+        return LocalizableError.unexpectedResponse.localized
     }
 }

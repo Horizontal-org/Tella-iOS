@@ -45,7 +45,9 @@ class GDriveServerViewModel: ObservableObject {
     
     func createDriveFolder() {
         self.serverCreateFolderVM.createFolderState = .loading
-        gDriveRepository.createDriveFolder(folderName: serverCreateFolderVM.folderName, parentId: nil, description: nil)
+        let folderName = serverCreateFolderVM.folderName
+        
+        gDriveRepository.createDriveFolder(folderName: folderName, parentId: nil, description: nil)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 switch completion {
@@ -55,14 +57,14 @@ class GDriveServerViewModel: ObservableObject {
                     self.serverCreateFolderVM.createFolderState = .error(error.localizedDescription)
                 }
             }, receiveValue: { folderId in
-                self.addServer(rootFolder: folderId) //TODO: We should handle the failure case
+                self.addServer(rootFolder: folderId, rootFolderName: folderName) //TODO: We should handle the failure case
                 self.serverCreateFolderVM.createFolderState = .loaded(true)
             })
             .store(in: &cancellables)
     }
     
-    func addServer(rootFolder: String) { //TODO:  Must check failure
-        let server = GDriveServer(rootFolder: rootFolder)
+    func addServer(rootFolder: String, rootFolderName: String) { //TODO:  Must check failure
+        let server = GDriveServer(rootFolder: rootFolder, rootFolderName: rootFolderName)
         _ = mainAppModel.tellaData?.addGDriveServer(server: server)
     }
     

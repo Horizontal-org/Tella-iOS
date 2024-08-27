@@ -30,6 +30,8 @@ extension ServerConnectionType {
         switch self {
         case .gDrive:
             LocalizableSettings.settServerGDrive.localized
+        case .uwazi:
+            LocalizableSettings.settServerUwazi.localized
         case .nextcloud:
             LocalizableSettings.settServerNextCloud.localized
         default:

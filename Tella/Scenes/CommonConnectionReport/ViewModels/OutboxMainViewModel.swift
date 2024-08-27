@@ -27,7 +27,6 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     }
     @Published var shouldShowSubmittedReportView : Bool = false
     @Published var shouldShowMainView : Bool = false
-    @Published var isFileLoading : Bool = false
     
     @Published var shouldShowToast : Bool = false
     @Published var toastMessage : String = ""
@@ -73,6 +72,20 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     
     func initVaultFile(reportId: Int?) {}
     
+    func processVaultFiles(reportFiles: [ReportFile]?) -> [ReportVaultFile] {
+        let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: reportFiles?.compactMap { $0.fileId } ?? [])
+        
+        var files: [ReportVaultFile] = []
+                
+        reportFiles?.forEach { reportFile in
+            if let vaultFile = vaultFileResult?.first(where: { reportFile.fileId == $0.id }) {
+                let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
+                files.append(reportVaultFile)
+            }
+        }
+                
+        return files
+    }
     func initializeProgressionInfos() {
         
         let totalSize = self.reportViewModel.files.reduce(0) { $0 + ($1.size) }
@@ -87,20 +100,17 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
             
             let formattedTotalUploaded = bytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
             let formattedTotalSize = totalSize.getFormattedFileSize()
-            DispatchQueue.main.async {
-                
-                self.percentUploadedInfo = "\(Int(formattedPercentUploaded * 100))% \(LocalizableReport.reportUploaded.localized)"
-                self.percentUploaded = Float(percentUploaded)
-                let filesCount = "\(self.reportViewModel.files.count) \(self.reportViewModel.files.count == 1 ? LocalizableReport.reportFile.localized : LocalizableReport.reportFiles.localized)"
-                let fileUploaded = "\(formattedTotalUploaded)/\(formattedTotalSize) \(LocalizableReport.reportUploaded.localized)"
-                
-                self.uploadedFiles = "\(filesCount), \(fileUploaded)"
-                
-                self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: ($0.bytesSent.getFormattedFileSize()) + "/" + ($0.size.getFormattedFileSize()))}
-                
-                self.objectWillChange.send()
-                
-            }
+            
+            self.percentUploadedInfo = "\(Int(formattedPercentUploaded * 100))% \(LocalizableReport.reportUploaded.localized)"
+            self.percentUploaded = Float(percentUploaded)
+            let filesCount = "\(self.reportViewModel.files.count) \(self.reportViewModel.files.count == 1 ? LocalizableReport.reportFile.localized : LocalizableReport.reportFiles.localized)"
+            let fileUploaded = "\(formattedTotalUploaded)/\(formattedTotalSize) \(LocalizableReport.reportUploaded.localized)"
+            
+            self.uploadedFiles = "\(filesCount), \(fileUploaded)"
+            
+            self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: ($0.bytesSent.getFormattedFileSize()) + "/" + ($0.size.getFormattedFileSize()))}
+            
+            self.objectWillChange.send()
         }
     }
     
@@ -148,22 +158,20 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
             let formattedTotalUploaded = totalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
             let formattedTotalSize = totalSize.getFormattedFileSize()
             
-            DispatchQueue.main.async {
-                // Progress Files
-                self.percentUploadedInfo = "\(Int(formattedPercentUploaded * 100))% uploaded"
-                self.percentUploaded = Float(formattedPercentUploaded)
-                self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
+            // Progress Files
+            self.percentUploadedInfo = "\(Int(formattedPercentUploaded * 100))% uploaded"
+            self.percentUploaded = Float(formattedPercentUploaded)
+            self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
+            
+            //Progress File Item
+            if let currentItem = self.progressFileItems.first(where: {$0.file.id == uploadProgressInfo.fileId}) {
                 
-                //Progress File Item
-                if let currentItem = self.progressFileItems.first(where: {$0.file.id == uploadProgressInfo.fileId}) {
-                    
-                    let size = currentItem.file.size.getFormattedFileSize()
-                    let currentFileTotalBytesSent = currentFileTotalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
-                    
-                    currentItem.progression = "\(currentFileTotalBytesSent)/\(size )"
-                }
-                self.objectWillChange.send()
+                let size = currentItem.file.size.getFormattedFileSize()
+                let currentFileTotalBytesSent = currentFileTotalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
+                
+                currentItem.progression = "\(currentFileTotalBytesSent)/\(size )"
             }
+            self.objectWillChange.send()
         }
         
     }

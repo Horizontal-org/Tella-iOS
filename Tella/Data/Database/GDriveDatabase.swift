@@ -13,7 +13,8 @@ extension TellaDataBase {
         let columns = [
             cddl(D.cServerId, D.integer, primaryKey: true, autoIncrement: true),
             cddl(D.cName, D.text),
-            cddl(D.cRootFolder, D.text)
+            cddl(D.cRootFolder, D.text),
+            cddl(D.cRootFolderName, D.text)
         ]
         
         statementBuilder.createTable(tableName: D.tGDriveServer, columns: columns)
@@ -22,7 +23,8 @@ extension TellaDataBase {
     func addGDriveServer(gDriveServer: GDriveServer) -> Result<Int, Error> {
         do {
             let valuesToAdd = [KeyValue(key: D.cName, value: gDriveServer.name),
-                               KeyValue(key: D.cRootFolder, value: gDriveServer.rootFolder)
+                               KeyValue(key: D.cRootFolder, value: gDriveServer.rootFolder),
+                               KeyValue(key: D.cRootFolderName, value: gDriveServer.rootFolderName)
             ]
             
             let serverId = try statementBuilder.insertInto(tableName: D.tGDriveServer, keyValue: valuesToAdd)
@@ -36,7 +38,7 @@ extension TellaDataBase {
         do {
             let serversDict = try statementBuilder.selectQuery(tableName: D.tGDriveServer, andCondition: [])
             
-            let driveServer = try serversDict.decode(GDriveServer.self)            
+            let driveServer = try serversDict.decode(GDriveServer.self)
             return driveServer
         } catch {
             debugLog("Error while fetching servers from \(D.tGDriveServer): \(error)")
@@ -177,9 +179,18 @@ extension TellaDataBase {
             let gDriveReportsDict = try statementBuilder.getSelectQuery(tableName: D.tGDriveReport,
                                                                         equalCondition: reportsCondition
             )
-            let decodedReports = try gDriveReportsDict.first?.decode(GDriveReport.self)
-            let reportFiles = getDriveVaultFiles(reportId: decodedReports?.id)
-            decodedReports?.reportFiles = reportFiles
+            
+            guard let dict = gDriveReportsDict.first else {
+                return nil
+            }
+            
+            let decodedReports = try dict.decode(GDriveReport.self)
+            let reportFiles = getDriveVaultFiles(reportId: decodedReports.id)
+            decodedReports.reportFiles = reportFiles
+            
+            let server = getDriveServers().first
+            decodedReports.server = server
+            
             return decodedReports
         } catch let error {
             debugLog(error)

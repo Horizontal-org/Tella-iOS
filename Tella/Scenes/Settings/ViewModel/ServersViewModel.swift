@@ -47,13 +47,9 @@ class ServersViewModel: ObservableObject {
     }
     
     func filterServerConnections() -> [ServerConnectionButton] {
-        if(self.unavailableServers.isEmpty) {
-            return serverConnections
-        }
+        let unavailableTypes = Set(unavailableServers.compactMap { $0.serverType })
         
         return serverConnections.filter { connection in
-            unavailableServers.contains{ connection.type != $0.serverType }
+            !unavailableTypes.contains(connection.type)
         }
-        
-    }
-}
+    }}

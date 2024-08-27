@@ -15,7 +15,6 @@ enum CardType {
 }
 
 class UwaziCardViewModel: CommonCardViewModel {
-    
     var templateId : Int?
     var entityInstanceID : Int?
     var serverId: Int?
@@ -30,7 +29,8 @@ class UwaziCardViewModel: CommonCardViewModel {
         let deleteMessage = LocalizableUwazi.uwaziDeleteTemplateExpl.localized
         let deleteReportStrings = ConfirmDeleteConnectionStrings(deleteTitle: deleteTitle,
                                                                  deleteMessage: deleteMessage)
-        super.init(id: Int(UUID().uuidString),
+
+        super.init(id: template.id,
                    title: title, 
                    subtitle: template.serverName ?? "",
                    iconImageName: nil,
@@ -54,7 +54,7 @@ class UwaziCardViewModel: CommonCardViewModel {
         let listActionSheetItem = instance.status.listActionSheetItem
         let deleteReportStrings = instance.status.deleteReportStrings(title: title)
         
-        super.init(id: Int(UUID().uuidString),
+        super.init(id: instance.id,
                    title: title,
                    subtitle: serverName,
                    iconImageName: iconImageName,

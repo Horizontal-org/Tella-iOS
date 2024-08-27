@@ -8,18 +8,7 @@
 
 import Foundation
 
-protocol BaseReportProtocol: Hashable {
-    var id: Int? { get }
-    var title: String? { get }
-    var description: String? { get }
-    var createdDate: Date? { get }
-    var updatedDate: Date? { get }
-    var status: ReportStatus { get }
-    var reportFiles: [ReportFile]? { get }
-    var getReportDate: String { get }
-}
-
-class BaseReport : Hashable, Codable, BaseReportProtocol {
+class BaseReport : Hashable, Codable {
     
     var id : Int?
     var title : String?

@@ -14,7 +14,6 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     private let gDriveRepository: GDriveRepositoryProtocol
     private var currentUploadCancellable: AnyCancellable?
     private var uploadQueue: [ReportVaultFile] = []
-    var server: GDriveServer?
     
     override var shouldShowCancelUploadConfirmation : Bool {
         return true
@@ -47,45 +46,22 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
             updateReportStatus(reportStatus: .submissionPaused)
         }
     }
-    
-    private func getServer() {
-        self.server = mainAppModel.tellaData?.getDriveServers().first
-    }
-    
+
     override func initVaultFile(reportId: Int?) {
-        getServer()
-        
         if let reportId, let report = self.mainAppModel.tellaData?.getDriveReport(id: reportId) {
-            let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
+            let files = processVaultFiles(reportFiles: report.reportFiles)
             
-            var files: [ReportVaultFile] = []
-            
-            report.reportFiles?.forEach({ reportFile in
-                if let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}) {
-                    let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
-                    files.append(reportVaultFile)
-                }
-            })
-            
-            self.reportViewModel = ReportViewModel(id: report.id,
-                                                   title: report.title ?? "",
-                                                   description: report.description ?? "",
-                                                   files: files,
-                                                   reportFiles: report.reportFiles ?? [],
-                                                   server: server,
-                                                   status: report.status,
-                                                   apiID: nil,
-                                                   folderId: report.folderId)
+            self.reportViewModel = ReportViewModel(report: report, files: files)
         }
     }
     
     //submit report
     
     override func submitReport() {
-        self.isFileLoading = true
-        if isSubmissionInProgress == false {
-            self.updateReportStatus(reportStatus: .submissionInProgress)
-        }
+        if isSubmissionInProgress { return }
+        
+        self.updateReportStatus(reportStatus: .submissionInProgress)
+        
         gDriveRepository.resumeAllUploads()
         guard let folderId = reportViewModel.folderId else {
             return createDriveFolder()
@@ -126,35 +102,42 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
             return
         }
         
-        guard let fileUrl = self.mainAppModel.vaultManager.loadVaultFileToURL(file: fileToUpload) else {
-            uploadQueue.removeFirst()
-            uploadNextFile(folderId: folderId)
-            return
-        }
-        self.isFileLoading = false
-        
-        let fileUploadDetails = FileUploadDetails(fileURL: fileUrl, 
-                                                  fileId: fileToUpload.id ?? "",
-                                                  mimeType: fileToUpload.mimeType ?? "",
-                                                  folderId: folderId)
-        
-        currentUploadCancellable = gDriveRepository.uploadFile(fileUploadDetails: fileUploadDetails)
-            .receive(on: DispatchQueue.main)
-            .sink(
-                receiveCompletion: { [weak self] completion in
-                    guard let self = self else { return }
-                    handleCompletionForUploadFile(completion, folderId: folderId)
-                },
-                receiveValue: { [weak self] progressInfo in
-                    self?.updateProgressInfos(uploadProgressInfo: progressInfo)
+        Task {
+            guard let fileUrl = await self.loadVaultFileToURLAsync(file: fileToUpload) else {
+                await MainActor.run {
+                    uploadQueue.removeFirst()
+                    uploadNextFile(folderId: folderId)
                 }
-            )
+                return
+            }
+            
+            let fileUploadDetails = FileUploadDetails(fileURL: fileUrl,
+                                                      fileId: fileToUpload.id ?? "",
+                                                      mimeType: fileToUpload.mimeType ?? "",
+                                                      folderId: folderId)
+            
+            await MainActor.run {
+                currentUploadCancellable = gDriveRepository.uploadFile(fileUploadDetails: fileUploadDetails)
+                    .receive(on: DispatchQueue.main)
+                    .sink(
+                        receiveCompletion: { [weak self] completion in
+                            guard let self = self else { return }
+                            self.handleCompletionForUploadFile(completion, folderId: folderId)
+                        },
+                        receiveValue: { [weak self] progressInfo in
+                            self?.updateProgressInfos(uploadProgressInfo: progressInfo)
+                        }
+                    )
+            }
+        }
     }
     
     private func handleCompletionForUploadFile(_ completion: Subscribers.Completion<APIError>, folderId: String) {
         switch completion {
         case .finished:
-            self.uploadQueue.removeFirst()
+            if !self.uploadQueue.isEmpty {
+                self.uploadQueue.removeFirst()
+            }
             self.uploadNextFile(folderId: folderId)
         case .failure( let error):
             switch error {
@@ -182,7 +165,6 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         if isSubmissionInProgress {
             updateReportStatus(reportStatus: .submissionPaused)
             gDriveRepository.pauseAllUploads()
-            currentUploadCancellable?.cancel()
             currentUploadCancellable = nil
         }
     }
@@ -217,15 +199,20 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         
         let reportFiles = reportViewModel.files.map { file in
             return ReportFile(
-                id: file.instanceId,
-                fileId: file.id,
-                status: file.status,
-                bytesSent: file.bytesSent,
-                createdDate: file.createdDate,
+                file: file,
                 reportInstanceId: reportViewModel.id
             )
         }
         
         let _ = mainAppModel.tellaData?.updateDriveFiles(reportId: reportId, files: reportFiles)
+    }
+    
+    func loadVaultFileToURLAsync(file: ReportVaultFile) async -> URL? {
+        await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .userInitiated).async {
+                let result = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file)
+                continuation.resume(returning: result)
+            }
+        }
     }
 }

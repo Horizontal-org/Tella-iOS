@@ -23,7 +23,6 @@ struct DraftView: View  {
     var body: some View {
         ContainerView {
             contentView
-                .environmentObject(viewModel)
             serverListMenuView
             photoVideoPickerView
         }

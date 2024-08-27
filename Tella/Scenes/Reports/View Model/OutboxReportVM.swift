@@ -25,6 +25,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
     
     private func treat(uploadResponse: CurrentValueSubject<UploadResponse?,APIError>?) {
         uploadResponse?
+            .receive(on: DispatchQueue.main)
             .sink { result in
                 
             } receiveValue: { response in
@@ -83,25 +84,9 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
         
         if let reportId, let report = self.mainAppModel.tellaData?.getReport(reportId: reportId) {
 
-            let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
-
-            var files : [ReportVaultFile] = []
+            let files = processVaultFiles(reportFiles: report.reportFiles)
             
-            report.reportFiles?.forEach({ reportFile in
-                if let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}) {
-                    let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
-                    files.append(reportVaultFile)
-                }
-            })
-            
-            self.reportViewModel = ReportViewModel(id: report.id,
-                                                   title: report.title ?? "",
-                                                   description: report.description ?? "",
-                                                   files: files,
-                                                   reportFiles: report.reportFiles ?? [],
-                                                   server: report.server,
-                                                   status: report.status,
-                                                   apiID: report.apiID)
+            self.reportViewModel = ReportViewModel(report: report, files: files)
         }
     }
     
@@ -114,16 +99,6 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
     }
     
     override func submitReport() {
-        
-        let report = Report(id: reportViewModel.id,
-                            title: reportViewModel.title,
-                            description: reportViewModel.description,
-                            status: reportViewModel.status,
-                            server: reportViewModel.server,
-                            vaultFiles: self.reportViewModel.reportFiles,
-                            
-                            apiID: self.reportViewModel.apiID)
-        
         if isSubmissionInProgress == false {
             self.updateReportStatus(reportStatus: .submissionInProgress)
             

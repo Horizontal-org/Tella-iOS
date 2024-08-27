@@ -9,7 +9,6 @@ struct SubmittedDetailsView: View {
     
     @StateObject var submittedReportVM : SubmittedMainViewModel
     @StateObject var reportsViewModel : ReportsMainViewModel
-    @EnvironmentObject var mainAppModel : MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
     private let delayTimeInSecond = 0.1

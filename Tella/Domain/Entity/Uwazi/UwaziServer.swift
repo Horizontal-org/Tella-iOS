@@ -31,6 +31,7 @@ class UwaziServer : WebServer {
         self.locale = locale
         self.accessToken = accessToken
         self.cookie = createCookie()
+        self.allowMultiple = false
     }
     
     required init(from decoder: Decoder) throws {

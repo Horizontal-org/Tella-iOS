@@ -33,14 +33,14 @@
             <string>googleDrive</string>
             <key>CFBundleURLSchemes</key>
             <array>
-                <string>com.googleusercontent.apps.299748721134-oqrpkd21ko4rfgqtp976cs8gndc868gv</string>
+                <string>$(GOOGLE_REVERSE_CLIENT_ID)</string>
             </array>
         </dict>
     </array>
     <key>CFBundleVersion</key>
     <string>$(CURRENT_PROJECT_VERSION)</string>
     <key>GIDClientID</key>
-    <string>299748721134-oqrpkd21ko4rfgqtp976cs8gndc868gv.apps.googleusercontent.com</string>
+    <string>$(GOOGLE_CLIENT_ID)</string>
     <key>ITSAppUsesNonExemptEncryption</key>
     <false/>
     <key>LSApplicationCategoryType</key>

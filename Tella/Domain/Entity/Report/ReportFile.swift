@@ -40,6 +40,16 @@ class ReportFile : Hashable, Codable {
         self.reportInstanceId = reportInstanceId
     }
     
+    init(file: ReportVaultFile, reportInstanceId: Int?) {
+        self.id = file.instanceId
+        self.fileId = file.id
+        self.status = file.status
+        self.bytesSent = file.bytesSent
+        self.createdDate = file.createdDate
+        self.updatedDate = file.updatedDate
+        self.reportInstanceId = reportInstanceId
+    }
+    
     static func == (lhs: ReportFile, rhs: ReportFile) -> Bool {
         lhs.id == rhs.id
     }
