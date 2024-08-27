@@ -16,7 +16,7 @@ enum APIError: Swift.Error {
 }
 
 extension APIError: LocalizedError {
-
+    
     var errorDescription: String? {
         switch self {
         case .invalidURL:
@@ -51,21 +51,28 @@ extension APIError: LocalizedError {
     
     private func customDriveErrorMessage(error: Error) -> String {
         if let nsError = error as NSError? {
+            let errorMessage = nsError.localizedDescription
+            
             switch nsError.domain {
-            case GoogleAuthConstants.GTLRErrorObjectDomain:
-                let errorCode = nsError.code
-                let errorMessage = nsError.localizedDescription
-                            
-                return customErrorMessage(errorCode: errorCode)
-            case GoogleAuthConstants.HTTPStatus:
-                return customErrorMessage(errorCode: nsError.code)
+            case GoogleAuthConstants.GTLRErrorObjectDomain, GoogleAuthConstants.HTTPStatus:
+                return parseDriveErrorMessage(errorCode: nsError.code, fallbackMessage: errorMessage)
             default:
-                if let errorString = nsError.userInfo["error"] as? String {
-                    return errorString
-                }
+                return errorMessage
             }
         }
         
         return LocalizableError.unexpectedResponse.localized
+    }
+    
+    private func parseDriveErrorMessage(errorCode: Int, fallbackMessage: String) -> String {
+        let httpErrorCode = HTTPErrorCodes(rawValue: errorCode)
+        switch httpErrorCode {
+        case .unauthorized:
+            return LocalizableError.gDriveUnauthorized.localized
+        case .forbidden:
+            return LocalizableError.gDriveForbidden.localized
+        default:
+            return fallbackMessage
+        }
     }
 }
