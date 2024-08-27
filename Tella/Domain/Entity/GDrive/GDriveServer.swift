@@ -13,7 +13,7 @@ class GDriveServer: Server {
     var rootFolderName: String?
 
     enum CodingKeys: String, CodingKey {
-        case rootFolder = "c_root_folder"
+        case rootFolder = "c_root_folder_id"
         case rootFolderName = "c_root_folder_name"
     }
 
