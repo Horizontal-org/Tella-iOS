@@ -99,3 +99,5 @@ iOSInjectionProject/
 !*.xcodeproj/project.pbxproj
 !*.xcodeproj/xcshareddata
 .idea
+
+Tella/Supporting Files/TellaConfig.xcconfig
