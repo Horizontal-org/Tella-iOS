@@ -19,7 +19,6 @@ struct FileUploadDetails {
 }
 protocol GDriveRepositoryProtocol {
     func handleSignIn() async throws
-    func restorePreviousSignIn() async throws
     func handleUrl(url: URL)
     func getSharedDrives() -> AnyPublisher<[SharedDrive], APIError>
     func createDriveFolder(folderName: String, parentId: String?, description: String?) -> AnyPublisher<String, APIError>
@@ -69,7 +68,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 }
                 GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { signInResult, error in
                     if let error = error {
-                        continuation.resume(throwing: error)
+                        continuation.resume(throwing: APIError.driveApiError(error))
                     } else {
                         signInResult?.user.addScopes([GoogleAuthConstants.gDriveScopes], presenting: rootViewController)
                         self.googleUser = signInResult?.user
@@ -80,7 +79,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         }
     }
     
-    func restorePreviousSignIn() async throws {
+    private func restorePreviousSignIn() async throws {
         try await withCheckedThrowingContinuation{ (continuation: CheckedContinuation<Void, Error>) in
             DispatchQueue.main.async {
                 guard let rootViewController = self.rootViewController else {
@@ -269,7 +268,6 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 driveService.authorizer = user.fetcherAuthorizer
                 
                 let fileURL = fileUploadDetails.fileURL
-                let mimeType = fileUploadDetails.mimeType
                 let fileId = fileUploadDetails.fileId
                 let folderId = fileUploadDetails.folderId
                 
