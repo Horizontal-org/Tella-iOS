@@ -9,18 +9,55 @@
 import Foundation
 
 // TODO: Maybe use another class name
-struct DeleteServerTexts {
-    var titleText: String = ""
-    var messageText: String = ""
-    let cancelText = "CANCEL"
-    let actionText = "DELETE"
+enum DeleteServerTexts {
+    case tella(String)
+    case uwazi(String)
+    case gDrive(String)
+    case unknown
+
+    var titleText: String {
+        switch self {
+        case .tella(let name):
+            return String(format: LocalizableSettings.settServerDeleteTellaConnectionTitle.localized, name)
+        case .uwazi(let name), .gDrive(let name):
+            return String(format: LocalizableSettings.settServerDeleteConnectionTitle.localized, name)
+        case .unknown:
+            return ""
+        }
+    }
+    
+    var messageText: String {
+        switch self {
+        case .uwazi:
+            return LocalizableSettings.settServerDeleteUwaziConnectionMessage.localized
+        case .unknown:
+            return ""
+        default:
+            return LocalizableSettings.settServerDeleteConnectionMessage.localized
+        }
+    }
+
+    var cancelText: String {
+        return LocalizableSettings.settServerCancelSheetAction.localized
+    }
+    
+    var actionText: String {
+        return LocalizableSettings.settServerDeleteSheetAction.localized
+    }
+}
+
+extension DeleteServerTexts {
     init(server: Server) {
-        if server.serverType == .tella {
-            titleText = "Delete \(server.name ?? "") server?"
-            messageText = "f you delete this server, all draft and submitted forms will be deleted from your device."
-        } else if server.serverType == .uwazi {
-            titleText = "Delete \"\(server.name ?? "")\" connection?"
-            messageText = "If you delete this server, all draft and submitted entities will be deleted from your device. Delete anyway?"
-        } else {}
+        let serverName = server.name ?? ""
+        switch server.serverType {
+        case .tella:
+            self = .tella(serverName)
+        case .uwazi:
+            self = .uwazi(serverName)
+        case .gDrive:
+            self = .gDrive(serverName)
+        default:
+            self = .unknown
+        }
     }
 }

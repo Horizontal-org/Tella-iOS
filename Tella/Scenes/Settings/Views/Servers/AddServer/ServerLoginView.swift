@@ -86,16 +86,12 @@ struct ServerLoginView: View {
     }
     
     private var successLoginView: some View {
-        
-        SuccessLoginView()
-            .environmentObject(serverViewModel)
+        SuccessLoginView(navigateToAction: {
+            navigateTo(destination: reportsMainView)
+        }).environmentObject(serverViewModel)
     }
     
+    var reportsMainView: some View {
+        ReportMainView(reportMainViewModel: ReportsViewModel(mainAppModel: mainAppModel), diContainer: GDriveDIContainer())
+    }
 }
-//struct ServerLoginView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ServerLoginView()
-//            .environmentObject(ServersViewModel(mainAppModel: MainAppModel()))
-//            .environmentObject(ServerViewModel(mainAppModel: MainAppModel(), currentServer: nil))
-//    }
-//}

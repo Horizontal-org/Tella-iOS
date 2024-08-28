@@ -34,7 +34,6 @@ struct TellaApp: App {
                 UIApplication.getTopViewController()?.dismiss(animated: false)
                 self.saveData(lockApptype: .enterInBackground)
             case .active:
-                UIApplication.getTopViewController()?.dismiss(animated: false)
                 self.resetApp()
             case .inactive:
                 appViewState.homeViewModel.shouldShowSecurityScreen = true
@@ -72,7 +71,8 @@ struct TellaApp: App {
         let shouldResetApp = appViewState.homeViewModel.shouldResetApp()
 
         if shouldResetApp && appEnterInBackground && !hasFileOnBackground {
-            
+            UIApplication.getTopViewController()?.dismiss(animated: false)
+
             DispatchQueue.main.async {
                 appViewState.shouldHidePresentedView = true
                 appViewState.resetApp()

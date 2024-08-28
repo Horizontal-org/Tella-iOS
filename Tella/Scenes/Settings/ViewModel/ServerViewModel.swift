@@ -101,7 +101,7 @@ class ServerViewModel: ObservableObject {
                     switch completion {
                     case .failure(let error):
                         self.shouldShowLoginError = true
-                        self.loginErrorMessage = error.errorDescription ?? ""
+                        self.loginErrorMessage = error.errorMessage
                         self.isLoading = false
 
                     case .finished:
@@ -130,7 +130,7 @@ class ServerViewModel: ObservableObject {
                     switch completion {
                     case .failure(let error):
                         self.shouldShowLoginError = true
-                        self.loginErrorMessage = error.errorDescription ?? ""
+                        self.loginErrorMessage = error.errorMessage
                     case .finished:
                         self.shouldShowLoginError = false
                         self.loginErrorMessage = ""

@@ -5,72 +5,27 @@
 import SwiftUI
 import Combine
 
-class OutboxReportVM: ObservableObject {
-    
-    var mainAppModel : MainAppModel
-    var reportsViewModel : ReportsViewModel
-    
-    @Published var reportViewModel : ReportViewModel = ReportViewModel()
-    @Published var progressFileItems : [ProgressFileItemViewModel] = []
-    @Published var percentUploaded : Float = 0.0
-    @Published var percentUploadedInfo : String = LocalizableReport.waitingConnection.localized
-    @Published var uploadedFiles : String = ""
-    
-    @Published var isLoading : Bool = false
-    var isSubmissionInProgress: Bool {
-        return reportViewModel.status == .submissionInProgress
-        
-    }
-    @Published var shouldShowSubmittedReportView : Bool = false
-    @Published var shouldShowMainView : Bool = false
-    
-    private var subscribers = Set<AnyCancellable>()
-    private var filesToUpload : [FileToUpload] = []
-    private var reportRepository = ReportRepository()
-    
-    var uploadButtonTitle: String {
-        
-        switch reportViewModel.status {
-        case .finalized:
-            return "Submit"
-        case .submissionInProgress:
-            return "Pause"
-        default:
-            return "Resume"
-        }
-    }
-    
-    var reportHasFile: Bool {
-        return !reportViewModel.files.isEmpty
-    }
-    
-    var reportHasDescription: Bool {
-        return !reportViewModel.description.isEmpty
-    }
+class OutboxReportVM: OutboxMainViewModel<TellaServer> {    
+    var reportRepository = ReportRepository()
     
     var reportIsNotAutoDelete: Bool {
         return !(reportViewModel.server?.autoDelete ?? true)
     }
-    
-    
-    init(mainAppModel: MainAppModel, reportsViewModel : ReportsViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
-        
-        self.mainAppModel = mainAppModel
-        self.reportsViewModel = reportsViewModel
-        
-        initVaultFile(reportId: reportId)
-        
-        initializeProgressionInfos()
-        
-        if shouldStartUpload {
+
+    override init(mainAppModel: MainAppModel, reportsViewModel : ReportsMainViewModel, reportId : Int?) {
+
+        super.init(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: reportId)
+
+        if reportViewModel.status == .submissionScheduled {
             self.submitReport()
         } else {
             treat(uploadResponse:reportRepository.checkUploadReportOperation(reportId: self.reportViewModel.id))
         }
     }
     
-    func treat(uploadResponse: CurrentValueSubject<UploadResponse?,APIError>?) {
+    private func treat(uploadResponse: CurrentValueSubject<UploadResponse?,APIError>?) {
         uploadResponse?
+            .receive(on: DispatchQueue.main)
             .sink { result in
                 
             } receiveValue: { response in
@@ -125,61 +80,17 @@ class OutboxReportVM: ObservableObject {
             .store(in: &subscribers)
     }
     
-    func initVaultFile(reportId: Int?) {
+    override func initVaultFile(reportId: Int?) {
         
         if let reportId, let report = self.mainAppModel.tellaData?.getReport(reportId: reportId) {
 
-            let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
-
-            var files : [ReportVaultFile] = []
+            let files = processVaultFiles(reportFiles: report.reportFiles)
             
-            report.reportFiles?.forEach({ reportFile in
-                if let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}) {
-                    let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
-                    files.append(reportVaultFile)
-                }
-            })
-            
-            self.reportViewModel = ReportViewModel(id: report.id,
-                                                   title: report.title ?? "",
-                                                   description: report.description ?? "",
-                                                   files: files,
-                                                   reportFiles: report.reportFiles ?? [],
-                                                   server: report.server,
-                                                   status: report.status,
-                                                   apiID: report.apiID)
+            self.reportViewModel = ReportViewModel(report: report, files: files)
         }
     }
     
-    func initializeProgressionInfos() {
-        
-        let totalSize = self.reportViewModel.files.reduce(0) { $0 + ($1.size) }
-        let bytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent)}
-        
-        if totalSize > 0 {
-            
-            // All Files
-            let percentUploaded = Float(bytesSent) / Float(totalSize)
-            
-            let formattedPercentUploaded = percentUploaded >= 1.0 ? 1.0 : Float(percentUploaded)
-            
-            let formattedTotalUploaded = bytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
-            let formattedTotalSize = totalSize.getFormattedFileSize()
-            DispatchQueue.main.async {
-                
-                self.percentUploadedInfo = "\(Int(formattedPercentUploaded * 100))% uploaded"
-                self.percentUploaded = Float(percentUploaded)
-                self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
-                
-                self.progressFileItems = self.reportViewModel.files.compactMap{ProgressFileItemViewModel(file: $0, progression: ($0.bytesSent.getFormattedFileSize()) + "/" + ($0.size.getFormattedFileSize()))}
-                
-                self.objectWillChange.send()
-                
-            }
-        }
-    }
-    
-    func pauseSubmission() {
+    override func pauseSubmission() {
         if isSubmissionInProgress {
             self.updateReportStatus(reportStatus: .submissionPaused)
             self.reportRepository.pause(reportId: self.reportViewModel.id)
@@ -187,17 +98,7 @@ class OutboxReportVM: ObservableObject {
         
     }
     
-    func submitReport() {
-        
-        let report = Report(id: reportViewModel.id,
-                            title: reportViewModel.title,
-                            description: reportViewModel.description,
-                            status: reportViewModel.status,
-                            server: reportViewModel.server,
-                            vaultFiles: self.reportViewModel.reportFiles,
-                            
-                            apiID: self.reportViewModel.apiID)
-        
+    override func submitReport() {
         if isSubmissionInProgress == false {
             self.updateReportStatus(reportStatus: .submissionInProgress)
             
@@ -207,68 +108,10 @@ class OutboxReportVM: ObservableObject {
             treat(uploadResponse: self.reportRepository.sendReport(report: report, mainAppModel: mainAppModel))
         }
     }
-    
-    func showSubmittedReport() {
-        DispatchQueue.main.async {
-            self.shouldShowSubmittedReportView = true
-        }
-    }
-    
-    func showMainView() {
-        DispatchQueue.main.async {
-            self.shouldShowMainView = true
-        }
-    }
-    
-    private func updateProgressInfos(uploadProgressInfo : UploadProgressInfo) {
-        
-        _ = self.reportViewModel.files.compactMap { _ in
-            let currentFile = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId})
-            currentFile?.current = uploadProgressInfo.current ?? 0
-            return currentFile
-        }
-        
-        guard  let _ = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId}) else { return}
-        
-        // All Files
-        let totalBytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent)}
-        let totalSize = self.reportViewModel.files.reduce(0) { $0 + ($1.size)}
-        
-        // current file
-        
-        if let currentFileTotalBytesSent = uploadProgressInfo.total {
-            
-            if totalSize > 0 {
-                
-                // All Files
-                let percentUploaded = Float(totalBytesSent) / Float(totalSize)
-                let formattedPercentUploaded = percentUploaded >= 1.0 ? 1.0 : Float(percentUploaded)
-                let formattedTotalUploaded = totalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
-                let formattedTotalSize = totalSize.getFormattedFileSize()
-                
-                DispatchQueue.main.async {
-                    // Progress Files
-                    self.percentUploadedInfo = "\(Int(formattedPercentUploaded * 100))% uploaded"
-                    self.percentUploaded = Float(formattedPercentUploaded)
-                    self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
-                    
-                    //Progress File Item
-                    if let currentItem = self.progressFileItems.first(where: {$0.file.id == uploadProgressInfo.fileId}) {
-                        
-                        let size = currentItem.file.size.getFormattedFileSize()
-                        let currentFileTotalBytesSent = currentFileTotalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
-                        
-                        currentItem.progression = "\(currentFileTotalBytesSent)/\(size )"
-                    }
-                    self.objectWillChange.send()
-                }
-            }
-        }
-    }
-    
+
     // MARK: Update Local database
     
-    func updateReportStatus(reportStatus:ReportStatus) {
+    override func updateReportStatus(reportStatus:ReportStatus) {
         
         self.reportViewModel.status = reportStatus
         
@@ -277,7 +120,7 @@ class OutboxReportVM: ObservableObject {
         mainAppModel.tellaData?.updateReportStatus(idReport: id, status: reportStatus)
     }
     
-    func deleteReport() {
+    override func deleteReport() {
         mainAppModel.deleteReport(reportId: reportViewModel.id)
         mainAppModel.deleteReport(reportId: reportViewModel.id)
     }

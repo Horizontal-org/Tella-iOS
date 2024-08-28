@@ -33,12 +33,17 @@ class HomeViewModel: ObservableObject {
         } receiveValue: { serverArray in
             self.serverDataItemArray.removeAll()
             if !serverArray.isEmpty {
-                                // here i group all the tella servers in one array and the third party services in diferents arrays
-                let uwaziConnections = serverArray.filter { $0.serverType == .uwazi }
-                let tellaUploadServers = serverArray.filter { $0.serverType == .tella }
-                if !uwaziConnections.isEmpty { self.serverDataItemArray.append(ServerDataItem(servers: uwaziConnections, serverType: .uwazi)) }
-                if !tellaUploadServers.isEmpty { self.serverDataItemArray.append(ServerDataItem(servers: tellaUploadServers, serverType: .tella)) }
-
+                
+                var serverConnections: [ServerConnectionType: [Server]] = [:]
+                
+                for server in serverArray {
+                    guard let serverType = server.serverType else { continue }
+                    serverConnections[serverType, default: []].append(server)
+                }
+                
+                for (serverType, servers) in serverConnections {
+                    self.serverDataItemArray.append(ServerDataItem(servers: servers, serverType: serverType ))
+                }
             }
         }.store(in: &subscribers)
     }

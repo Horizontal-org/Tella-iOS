@@ -88,8 +88,18 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settServerSelectionMessage = "Setting_SettServer_Selection_Message"
     case settServerTellaWeb = "Setting_SettServer_TellaWeb"
     case settServerUwazi = "Setting_SettServer_Uwazi"
+    case settServerGDrive = "Setting_SettServer_GDrive"
     case settServerNoInternetConnection = "Setting_SettServer_No_Internet"
     case settServerServerURLIncorrect = "Setting_SettServer_Server_URL_Incorrect"
+    case settServerUnavailableConnectionsTitle = "Setting_SettServer_UnavailableConnections_Subhead"
+    case settServerUnavailableConnectionsDesc = "Setting_SettServer_UnavailableConnections_Expl"
+    case settServerNoTokenPresent = "Setting_SettServer_No_Token"
+    case settServerDeleteConnectionTitle = "Settings_SettServre_DeleteConnection_SheetTitle"
+    case settServerDeleteTellaConnectionTitle = "Settings_SettServer_DeleteTellaConnection_SheetTitle"
+    case settServerDeleteConnectionMessage = "Settings_SettServer_DeleteConnection_SheetExpl"
+    case settServerDeleteUwaziConnectionMessage = "Settings_SettServer_DeleteUwaziConnection_SheetExpl"
+    case settServerDeleteSheetAction = "Settings_SettServer_Delete_SheetAction"
+    case settServerCancelSheetAction = "Settings_SettServer_Cancel_SheetAction"
 
     // Uwazi
     case UwaziServerURL = "Setting_Server_Uwazi_Server_URL"
@@ -110,6 +120,18 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case UwaziSuccess = "Setting_Server_Uwazi_Connect_Server"
     case UwaziSuccessMessage = "Setting_Server_Uwazi_Success_Message"
     
+    //GDrive
+    case gDriveSelectTypeToolbar = "Setting_Server_GDrive_SelectType_AppBar"
+    case gDriveSelectTypeTitle = "Setting_Server_GDrive_SelectType_Subhead"
+    case gDriveSelectTypeDesc = "Setting_Server_GDrive_SelectType_Expl"
+    case gDriveSelectTypeShared = "Setting_Server_GDrive_SelectType_Shared"
+    case gDriveSelectTypePersonal = "Setting_Server_GDrive_SelectType_Personal"
+    case gDriveSelectTypeMoreInfo = "Setting_Server_GDrive_SelectType_MoreInfo"
+    case gDriveSelectSharedDriveToolbar = "Setting_Server_GDrive_SelectShared_Appbar"
+    case gDriveCreatePersonalFolderTitle = "Setting_Server_GDrive_CreatePersonal_Title"
+    case gDriveCreatePersonalFolderDesc = "Setting_Server_GDrive_CreatePersonal_Desc"
+    case gDriveCreatePersonalFolderPlaceholder = "Setting_Server_GDrive_CreatePersonal_Placeholder"
+    case gDriveSuccessMessage = "Setting_Server_GDrive_Success_Message"
     // About & Help
     
     case settAboutAppBar = "Settings_SettAbout_AppBar"
@@ -133,7 +155,9 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case exitFeedbackSheetExpl = "Settings_SettFeedback_ExitFeedback_SheetExpl"
     case exitFeedbackSheetAction = "Settings_SettFeedback_ExitFeedback_Exit_SheetAction"
     case exitFeedbackSaveSheetAction = "Settings_SettFeedback_ExitFeedback_Save_SheetAction"
-
+    
+    // Reports
+    case settServerReportsSuccessMessage = "Setting_Server_Reports_Success_Message"
  }
 
 

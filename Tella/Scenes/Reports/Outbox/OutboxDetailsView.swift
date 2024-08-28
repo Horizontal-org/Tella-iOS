@@ -4,17 +4,12 @@
 
 import SwiftUI
 
-struct OutboxDetailsView: View {
+struct OutboxDetailsView<T: Server>: View {
     
-    @StateObject var outboxReportVM : OutboxReportVM
-    @EnvironmentObject var reportsViewModel : ReportsViewModel
-    @EnvironmentObject var mainAppModel : MainAppModel
+    @StateObject var outboxReportVM : OutboxMainViewModel<T>
+    @StateObject var reportsViewModel : ReportsMainViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
-    
-    init(appModel: MainAppModel,reportsViewModel: ReportsViewModel, reportId : Int?, shouldStartUpload: Bool = false) {
-        _outboxReportVM = StateObject(wrappedValue: OutboxReportVM(mainAppModel: appModel, reportsViewModel: reportsViewModel, reportId:reportId, shouldStartUpload: shouldStartUpload))
-    }
     
     var body: some View {
         
@@ -104,7 +99,8 @@ struct OutboxDetailsView: View {
                                       isValid: .constant(true)) {
                 outboxReportVM.isSubmissionInProgress ? outboxReportVM.pauseSubmission() : outboxReportVM.submitReport()
                 
-            }.padding(EdgeInsets(top: 30, leading: 24, bottom: 16, trailing: 24))
+            }
+            .padding(EdgeInsets(top: 30, leading: 24, bottom: 16, trailing: 24))
         }
     }
     
@@ -179,13 +175,22 @@ struct OutboxDetailsView: View {
     }
     
     private var submittedDetailsView: some View {
-        SubmittedDetailsView(appModel: mainAppModel,
-                             reportId: outboxReportVM.reportViewModel.id)
-        .environmentObject(reportsViewModel)
+        Group {
+            switch reportsViewModel.connectionType {
+            case .tella:
+                let vm = SubmittedReportVM(mainAppModel: outboxReportVM.mainAppModel, reportId: outboxReportVM.reportViewModel.id)
+                SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsViewModel)
+            case .gDrive:
+                let vm = GDriveSubmittedViewModel(mainAppModel: outboxReportVM.mainAppModel, reportId: outboxReportVM.reportViewModel.id)
+                SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsViewModel)
+            default:
+                Text("")
+            }
+        }
     }
     
     private func dismissView() {
-        self.popTo(UIHostingController<ReportsView>.self)
+        self.popTo(UIHostingController<ReportMainView>.self)
     }
     
     private func showDeleteReportConfirmationView() {
