@@ -46,11 +46,11 @@ class NextcloudServerViewModel: ServerViewModel {
             catch let ncError as APIError {
                 switch ncError {
                 case .noInternetConnection:
-                    checkServerState = .error(ncError.errorDescription ?? "")
+                    checkServerState = .error(ncError.errorMessage)
                     urlErrorMessage = ""
                     shouldShowURLError = false
                 default:
-                    urlErrorMessage = ncError.errorDescription ?? ""
+                    urlErrorMessage = ncError.errorMessage
                     shouldShowURLError = true
                     checkServerState = .error("")
                 }
@@ -71,10 +71,10 @@ class NextcloudServerViewModel: ServerViewModel {
                 case .noInternetConnection:
                     loginErrorMessage = ""
                     shouldShowLoginError = false
-                    loginState = .error(ncError.errorDescription ?? "")
+                    loginState = .error(ncError.errorMessage)
                 default:
                     shouldShowLoginError = true
-                    loginErrorMessage = ncError.errorDescription ?? ""
+                    loginErrorMessage = ncError.errorMessage
                     loginState = .error("")
                 }
             }
@@ -115,9 +115,9 @@ class NextcloudServerViewModel: ServerViewModel {
             catch let ncError as APIError {
                 switch ncError {
                 case .noInternetConnection:
-                    handleCreateFolderError(errorStateMessage: ncError.errorDescription ?? "")
+                    handleCreateFolderError(errorStateMessage: ncError.errorMessage)
                 default:
-                    handleCreateFolderError(errorMessage: ncError.errorDescription ?? "",
+                    handleCreateFolderError(errorMessage: ncError.errorMessage,
                                             errorStateMessage: "",
                                             shouldShowError: true)
                 }
