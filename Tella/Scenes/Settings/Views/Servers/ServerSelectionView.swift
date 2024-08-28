@@ -80,7 +80,14 @@ struct ServerSelectionView: View {
             default:
                 break
             }
+            
+            resetView()
         })
+    }
+    
+    fileprivate func resetView() {
+        serversViewModel.selectedServerType = nil
+        serversViewModel.shouldEnableNextButton = false
     }
 
     fileprivate func navigateToTellaWebFlow() {
@@ -94,13 +101,11 @@ struct ServerSelectionView: View {
     }
     
     fileprivate func navigateToGDriveFlow() {
-        serversViewModel.shouldEnableNextButton = false
         gDriveVM.handleSignIn {
             navigateTo(
                 destination: SelectDriveConnection(gDriveServerViewModel: gDriveServerVM),
                 title: LocalizableSettings.settServerGDrive.localized
             )
-            serversViewModel.shouldEnableNextButton = true
         }
     }
 
