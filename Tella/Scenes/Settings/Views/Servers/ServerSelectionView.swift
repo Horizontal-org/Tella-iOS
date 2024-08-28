@@ -12,7 +12,6 @@ struct ServerSelectionView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
     @StateObject var serverViewModel : ServerViewModel
     @EnvironmentObject var mainAppModel : MainAppModel
-    @State var selectedServerType: ServerConnectionType? = nil
     @ObservedObject var gDriveVM: GDriveAuthViewModel
     @ObservedObject var gDriveServerVM: GDriveServerViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -54,11 +53,12 @@ struct ServerSelectionView: View {
                 TellaButtonView<AnyView>(
                     title: connection.title,
                     nextButtonAction: .action,
-                    isOverlay: selectedServerType == connection.type,
+                    isOverlay: serversViewModel.selectedServerType == connection.type,
                     isValid: .constant(true),
                     action: {
-                        selectedServerType = connection.type
-                    }
+                        serversViewModel.selectedServerType = connection.type
+                        serversViewModel.shouldEnableNextButton = true
+                     }
                 )
                 .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
             }
@@ -66,12 +66,11 @@ struct ServerSelectionView: View {
     }
 
     fileprivate func bottomView() -> BottomLockView<AnyView> {
-        return BottomLockView<AnyView>(isValid: .constant(true),
+        return BottomLockView<AnyView>(isValid: $serversViewModel.shouldEnableNextButton,
                                        nextButtonAction: .action,
-                                       shouldHideNext: serversViewModel.shouldHideNextButton,
                                        shouldHideBack: true,
                                        nextAction: {
-            switch selectedServerType {
+            switch serversViewModel.selectedServerType {
             case .tella:
                 navigateToTellaWebFlow()
             case .uwazi:
@@ -95,14 +94,14 @@ struct ServerSelectionView: View {
     }
     
     fileprivate func navigateToGDriveFlow() {
-        serversViewModel.shouldHideNextButton = true
+        serversViewModel.shouldEnableNextButton = false
         gDriveVM.handleSignIn {
             navigateTo(
                 destination: SelectDriveConnection(gDriveServerViewModel: gDriveServerVM),
                 title: LocalizableSettings.settServerGDrive.localized
             )
+            serversViewModel.shouldEnableNextButton = true
         }
-        serversViewModel.shouldHideNextButton = false
     }
 
     fileprivate func unavailableConnectionsView() -> some View {
