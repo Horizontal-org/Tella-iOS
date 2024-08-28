@@ -564,3 +564,6 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Error_Unexpected_Response_Expl" = "Unexpected response from the server";
 "Error_Unauthorized_Expl" = "Invalid username or password";
 "Error_Forbidden_Expl" = "Account locked due to too many unsuccessful attempts.";
+
+"Error_GDrive_Unauthorized_Expl" = "Request is missing required authentication credential. Please re authenticate";
+"Error_GDrive_Forbidden_Expl" = "You don't have permission to access this file or folder in Google Drive.";

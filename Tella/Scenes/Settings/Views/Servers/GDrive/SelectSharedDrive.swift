@@ -9,7 +9,7 @@
 import SwiftUI
 import GoogleAPIClientForREST
 
-struct SelectSharedDrive: View {
+struct SelectSharedDriveView: View {
     @EnvironmentObject var gDriveServerViewModel: GDriveServerViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var body: some View {
@@ -59,7 +59,7 @@ struct SelectSharedDrive: View {
                              type: .save)
     }
     
-    func backButtonAction() -> Void {
+    func backButtonAction() {
         guard let selectedDrive = gDriveServerViewModel.selectedDrive else {
             presentationMode.wrappedValue.dismiss()
             return
@@ -102,5 +102,5 @@ struct DriveCardView: View {
 
 
 #Preview {
-    SelectSharedDrive()
+    SelectSharedDriveView()
 }

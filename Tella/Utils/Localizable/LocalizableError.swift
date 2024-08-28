@@ -13,4 +13,7 @@ enum LocalizableError : String, LocalizableDelegate {
     case unexpectedResponse = "Error_Unexpected_Response_Expl"
     case unauthorized = "Error_Unauthorized_Expl"
     case forbidden = "Error_Forbidden_Expl"
+    
+    case gDriveUnauthorized = "Error_GDrive_Unauthorized_Expl"
+    case gDriveForbidden = "Error_GDrive_Forbidden_Expl"
 }

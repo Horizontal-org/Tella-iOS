@@ -98,7 +98,7 @@ struct D {
     static let cSize = "c_size"
     
     //gDrive
-    static let cRootFolder = "c_root_folder"
+    static let cRootFolder = "c_root_folder_id"
     static let cFolderId = "c_folder_id"
     static let cRootFolderName = "c_root_folder_name"
 

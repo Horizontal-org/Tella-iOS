@@ -24,8 +24,8 @@ class GDriveAuthViewModel: ObservableObject {
                 try await gDriveRepository.handleSignIn()
                 self.signInState = .loaded(nil)
                 completion()
-            } catch let error {
-                self.signInState = .error(error.localizedDescription)
+            } catch let error as APIError {
+                self.signInState = .error(error.errorMessage)
             }
         }
     }

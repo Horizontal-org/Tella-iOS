@@ -75,7 +75,7 @@ class ResourcesViewModel: ObservableObject {
         case .failure( let error):
             switch error {
             case .noInternetConnection:
-                Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+                Toast.displayToast(message: error.errorMessage)
             default:
                 Toast.displayToast(message: LocalizableResources.resourcesAvailableErrorMsg.localized)
             }
@@ -113,7 +113,7 @@ class ResourcesViewModel: ObservableObject {
         switch error {
         case .noInternetConnection:
             debugLog("Error downloading file: \(error)")
-            Toast.displayToast(message: error.errorDescription ?? error.localizedDescription)
+            Toast.displayToast(message: error.errorMessage)
         default:
             debugLog("Error downloading file: \(error)")
             Toast.displayToast(message: error.localizedDescription)
