@@ -138,6 +138,7 @@
 		1252F7052BDAB1C30076DF4B /* EntityInstanceToSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1252F7042BDAB1C30076DF4B /* EntityInstanceToSend.swift */; };
 		1252F7072BDAB2000076DF4B /* EntityAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1252F7062BDAB2000076DF4B /* EntityAttachment.swift */; };
 		1253B87B2C50481400D675E5 /* NextcloudSubmittedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253B87A2C50481400D675E5 /* NextcloudSubmittedViewModel.swift */; };
+		12543C9E2C807E94003811F8 /* TellaConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 12543C9D2C807E94003811F8 /* TellaConfig.xcconfig */; };
 		1254E25E2C6B71E3004C6280 /* NextcloudLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1254E25D2C6B71E3004C6280 /* NextcloudLoginView.swift */; };
 		1254E2602C6B8114004C6280 /* NextcloutOutboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1254E25F2C6B8114004C6280 /* NextcloutOutboxView.swift */; };
 		1254E2662C6CABA5004C6280 /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1254E2652C6CABA5004C6280 /* NextcloudKit */; };
@@ -741,6 +742,7 @@
 		1252F7042BDAB1C30076DF4B /* EntityInstanceToSend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityInstanceToSend.swift; sourceTree = "<group>"; };
 		1252F7062BDAB2000076DF4B /* EntityAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityAttachment.swift; sourceTree = "<group>"; };
 		1253B87A2C50481400D675E5 /* NextcloudSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudSubmittedViewModel.swift; sourceTree = "<group>"; };
+		12543C9D2C807E94003811F8 /* TellaConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = TellaConfig.xcconfig; sourceTree = "<group>"; };
 		1254E25D2C6B71E3004C6280 /* NextcloudLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudLoginView.swift; sourceTree = "<group>"; };
 		1254E25F2C6B8114004C6280 /* NextcloutOutboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloutOutboxView.swift; sourceTree = "<group>"; };
 		1254E2672C6CF794004C6280 /* NextcloudServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudServerModel.swift; sourceTree = "<group>"; };
@@ -1953,11 +1955,11 @@
 		12781F4927EA2A8200FE9609 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				12543C9D2C807E94003811F8 /* TellaConfig.xcconfig */,
 				D53B77022601D5170001CD34 /* Tella.entitlements */,
 				F66E65BA23E32080000F93E5 /* Info.plist */,
 				F66E65B723E32080000F93E5 /* LaunchScreen.storyboard */,
 				12A697B52840C50400BE5E9C /* Localizable.strings */,
-				15944AD02C7F55F800FD03CA /* TellaConfig.xcconfig */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -3335,6 +3337,7 @@
 				12199C362940966E0041BD38 /* OpenSans-Italic.ttf in Resources */,
 				0E78B3AE2656B04B00F9BDBC /* open-sans.regular.ttf in Resources */,
 				12A697B32840C50400BE5E9C /* Localizable.strings in Resources */,
+				12543C9E2C807E94003811F8 /* TellaConfig.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3639,7 +3642,6 @@
 				12730E67279F11C300DC0135 /* LanguageListView.swift in Sources */,
 				0ECC7817267A533E00A2ACF2 /* PageViewCell.swift in Sources */,
 				128B929727D7920300E92ACF /* SelectingFilesHeaderView.swift in Sources */,
-				127092DA2C2EE4E3002030AA /* Server.swift in Sources */,
 				1236EE8028E1B40200973EEA /* DataBaseHelper.swift in Sources */,
 				125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */,
 				1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */,
@@ -3655,7 +3657,6 @@
 				12B84B962C340025006363F0 /* NextcloudReportViewModel.swift in Sources */,
 				CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */,
 				1293547B294A454900735ED0 /* AppDelegate.swift in Sources */,
-				127092DC2C2EE7AD002030AA /* WebServer.swift in Sources */,
 				12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */,
 				CCC1B4332AC75B410075B819 /* UwaziEntityMandatoryTextView.swift in Sources */,
 				12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */,
@@ -4159,7 +4160,6 @@
 		};
 		F66E65D123E32080000F93E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 15944AD02C7F55F800FD03CA /* TellaConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -4222,7 +4222,6 @@
 		};
 		F66E65D223E32080000F93E5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 15944AD02C7F55F800FD03CA /* TellaConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
