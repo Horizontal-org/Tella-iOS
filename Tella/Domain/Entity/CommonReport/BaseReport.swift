@@ -20,7 +20,7 @@ class BaseReport : Hashable, Codable {
     var serverId: Int?
     
     enum CodingKeys: String, CodingKey {
-        case id = "c_id"
+        case id = "c_report_id"
         case title = "c_title"
         case description = "c_description"
         case createdDate = "c_created_date"

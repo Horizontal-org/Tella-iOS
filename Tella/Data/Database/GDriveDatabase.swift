@@ -49,7 +49,7 @@ extension TellaDataBase {
     func deleteGDriveServer(serverId: Int) {
         do {
             try statementBuilder.delete(tableName: D.tGDriveServer,
-                                        primarykeyValue: [KeyValue(key: D.cId, value: serverId)])
+                                        primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
             try statementBuilder.deleteAll(tableNames: [D.tGDriveReport, D.tGDriveInstanceVaultFile])
         } catch let error {
             debugLog(error)
@@ -61,7 +61,7 @@ extension TellaDataBase {
 extension TellaDataBase {
     func createGDriveReportTable() {
         let columns = [
-            cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cReportId, D.integer, primaryKey: true, autoIncrement: true),
             cddl(D.cTitle, D.text),
             cddl(D.cDescription, D.text),
             cddl(D.cCreatedDate, D.float),
@@ -82,7 +82,7 @@ extension TellaDataBase {
             cddl(D.cBytesSent, D.integer),
             cddl(D.cCreatedDate, D.float),
             cddl(D.cUpdatedDate, D.float),
-            cddl(D.cReportInstanceId, D.integer, tableName: D.tGDriveReport, referenceKey: D.cId)
+            cddl(D.cReportInstanceId, D.integer, tableName: D.tGDriveReport, referenceKey: D.cReportId)
             
         ]
         statementBuilder.createTable(tableName: D.tGDriveInstanceVaultFile, columns: columns)
@@ -116,7 +116,7 @@ extension TellaDataBase {
             
             let reportDict = report.dictionary
             let valuesToUpdate = reportDict.compactMap({ KeyValue(key: $0.key, value: $0.value) })
-            let reportCondition = [KeyValue(key: D.cId, value: report.id)]
+            let reportCondition = [KeyValue(key: D.cReportId, value: report.id)]
             
             try statementBuilder.update(
                 tableName: D.tGDriveReport,
@@ -175,7 +175,7 @@ extension TellaDataBase {
     
     func getGDriveReport(id: Int) -> GDriveReport? {
         do{
-            let reportsCondition = [KeyValue(key: D.cId, value: id)]
+            let reportsCondition = [KeyValue(key: D.cReportId, value: id)]
             let gDriveReportsDict = try statementBuilder.getSelectQuery(tableName: D.tGDriveReport,
                                                                         equalCondition: reportsCondition
             )
@@ -217,7 +217,7 @@ extension TellaDataBase {
     
     func deleteDriveReport(reportId: Int?) -> Result<Bool, Error> {
         do {
-            let reportCondition = [KeyValue(key: D.cId, value: reportId)]
+            let reportCondition = [KeyValue(key: D.cReportId, value: reportId)]
             
             try statementBuilder.delete(tableName: D.tGDriveReport, primarykeyValue: reportCondition)
             
@@ -243,7 +243,7 @@ extension TellaDataBase {
                                   KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())
             ]
             
-            let reportCondition = [KeyValue(key: D.cId, value: idReport)]
+            let reportCondition = [KeyValue(key: D.cReportId, value: idReport)]
             
             try statementBuilder.update(tableName: D.tGDriveReport, valuesToUpdate: valuesToUpdate, equalCondition: reportCondition)
             
@@ -259,7 +259,7 @@ extension TellaDataBase {
             let valuesToUpdate = [KeyValue(key: D.cFolderId, value: folderId),
                                   KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())
             ]
-            let reportCondition = [KeyValue(key: D.cId, value: idReport)]
+            let reportCondition = [KeyValue(key: D.cReportId, value: idReport)]
             
             try statementBuilder.update(tableName: D.tGDriveReport, valuesToUpdate: valuesToUpdate, equalCondition: reportCondition)
             
