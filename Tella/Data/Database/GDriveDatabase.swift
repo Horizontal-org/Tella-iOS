@@ -13,7 +13,7 @@ extension TellaDataBase {
     
     func createGDriveServerTable() {
         let columns = [
-            cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cServerId, D.integer, primaryKey: true, autoIncrement: true),
             cddl(D.cName, D.text),
             cddl(D.cRootFolder, D.text),
             cddl(D.cRootFolderName, D.text)

@@ -16,7 +16,7 @@ class Server: Codable, Equatable, Hashable {
     var allowMultiple: Bool?
     
     enum CodingKeys: String, CodingKey {
-        case id = "c_id"
+        case id = "c_server_id"
         case name = "c_name"
     }
     
