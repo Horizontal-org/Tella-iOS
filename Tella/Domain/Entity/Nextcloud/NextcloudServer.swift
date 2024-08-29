@@ -15,7 +15,7 @@ class NextcloudServer: WebServer {
     
     enum CodingKeys: String, CodingKey {
         case userId = "c_user_id"
-        case rootFolder = "c_root_folder"
+        case rootFolder = "c_root_folder_name"
     }
     
     init(serverURL: String?,

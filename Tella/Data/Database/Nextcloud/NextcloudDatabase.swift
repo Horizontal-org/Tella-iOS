@@ -11,13 +11,13 @@ import Foundation
 extension TellaDataBase {
     
     func createNextcloudServerTable() {
-        let columns = [ cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
+        let columns = [ cddl(D.cServerId, D.integer, primaryKey: true, autoIncrement: true),
                         cddl(D.cName, D.text),
                         cddl(D.cURL, D.text),
                         cddl(D.cUsername, D.text),
                         cddl(D.cPassword, D.text),
                         cddl(D.cUserId, D.text),
-                        cddl(D.cRootFolder, D.text)]
+                        cddl(D.cRootFolderName, D.text)]
         
         statementBuilder.createTable(tableName: D.tNextcloudServer, columns: columns)
     }
@@ -41,7 +41,7 @@ extension TellaDataBase {
             let nextcloudServerDictionnary = server.dictionary
             let valuesToUpdate = nextcloudServerDictionnary.compactMap({KeyValue(key: $0.key, value: $0.value)})
             
-            let serverCondition = [KeyValue(key: D.cId, value: server.id)]
+            let serverCondition = [KeyValue(key: D.cServerId, value: server.id)]
             return try statementBuilder.update(tableName: D.tNextcloudServer,
                                                valuesToUpdate: valuesToUpdate,
                                                equalCondition: serverCondition)
@@ -65,7 +65,7 @@ extension TellaDataBase {
     func deleteNextcloudServer(serverId: Int) -> Bool {
         do {
             try statementBuilder.delete(tableName: D.tNextcloudServer,
-                                        primarykeyValue: [KeyValue(key: D.cId, value: serverId)])
+                                        primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
             try statementBuilder.deleteAll(tableNames: [D.tNextcloudReport, D.tNextcloudInstanceVaultFile])
             
             return true
@@ -81,7 +81,7 @@ extension TellaDataBase {
     
     func createNextcloudReportTable() {
         let columns = [
-            cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cReportId, D.integer, primaryKey: true, autoIncrement: true),
             cddl(D.cTitle, D.text),
             cddl(D.cDescription, D.text),
             cddl(D.cCreatedDate, D.float),
@@ -154,7 +154,7 @@ extension TellaDataBase {
     
     func getNextcloudReport(id: Int) -> NextcloudReport? {
         do{
-            let reportsCondition = [KeyValue(key: D.cId, value: id)]
+            let reportsCondition = [KeyValue(key: D.cReportId, value: id)]
             let nextcloudDict = try statementBuilder.getSelectQuery(tableName: D.tNextcloudReport,
                                                                     equalCondition: reportsCondition
             )
@@ -196,7 +196,7 @@ extension TellaDataBase {
             let reportDictionary = report.dictionary
             let valuesToUpdate = reportDictionary.compactMap({KeyValue(key: $0.key, value: $0.value)})
             
-            let reportCondition = [KeyValue(key: D.cId, value: report.id)]
+            let reportCondition = [KeyValue(key: D.cReportId, value: report.id)]
             
             try statementBuilder.update(
                 tableName: D.tNextcloudReport,
@@ -225,7 +225,7 @@ extension TellaDataBase {
     
     func deleteNextcloudReport(reportId: Int?) -> Bool {
         do {
-            let reportCondition = [KeyValue(key: D.cId, value: reportId)]
+            let reportCondition = [KeyValue(key: D.cReportId, value: reportId)]
             try statementBuilder.delete(tableName: D.tNextcloudReport, primarykeyValue: reportCondition)
             
             try deleteNextcloudReportFiles(reportIds: [reportId])
@@ -262,7 +262,7 @@ extension TellaDataBase {
             let reportDictionary = report.dictionary
             let valuesToUpdate = reportDictionary.compactMap({KeyValue(key: $0.key, value: $0.value)})
             
-            let reportCondition = [KeyValue(key: D.cId, value: report.id)]
+            let reportCondition = [KeyValue(key: D.cReportId, value: report.id)]
             
             try statementBuilder.update(tableName: D.tNextcloudReport,
                                         valuesToUpdate: valuesToUpdate,
