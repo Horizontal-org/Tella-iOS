@@ -63,7 +63,7 @@ extension TellaDataBase {
 extension TellaDataBase {
     func createGDriveReportTable() {
         let columns = [
-            cddl(D.cId cReportId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cReportId, D.integer, primaryKey: true, autoIncrement: true),
             cddl(D.cTitle, D.text),
             cddl(D.cDescription, D.text),
             cddl(D.cCreatedDate, D.float),
