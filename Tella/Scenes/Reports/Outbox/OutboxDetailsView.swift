@@ -187,13 +187,21 @@ struct OutboxDetailsView<T: Server>: View {
         Group {
             switch reportsViewModel.connectionType {
             case .tella:
-                let vm = SubmittedReportVM(mainAppModel: outboxReportVM.mainAppModel, reportId: outboxReportVM.reportViewModel.id)
+                let vm = SubmittedReportVM(mainAppModel: outboxReportVM.mainAppModel,
+                                           reportId: outboxReportVM.reportViewModel.id)
                 SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsViewModel)
             case .gDrive:
-                let vm = GDriveSubmittedViewModel(mainAppModel: outboxReportVM.mainAppModel, reportId: outboxReportVM.reportViewModel.id)
+                let vm = GDriveSubmittedViewModel(mainAppModel: outboxReportVM.mainAppModel,
+                                                  reportId: outboxReportVM.reportViewModel.id)
+                SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsViewModel)
+                
+            case .nextcloud:
+                let vm = NextcloudSubmittedViewModel(mainAppModel: outboxReportVM.mainAppModel,
+                                                     reportId: outboxReportVM.reportViewModel.id)
                 SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsViewModel)
             default:
                 Text("")
+
             }
         }
     }
