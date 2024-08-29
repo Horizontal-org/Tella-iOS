@@ -1957,6 +1957,7 @@
 				F66E65BA23E32080000F93E5 /* Info.plist */,
 				F66E65B723E32080000F93E5 /* LaunchScreen.storyboard */,
 				12A697B52840C50400BE5E9C /* Localizable.strings */,
+				15944AD02C7F55F800FD03CA /* TellaConfig.xcconfig */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -3638,6 +3639,7 @@
 				12730E67279F11C300DC0135 /* LanguageListView.swift in Sources */,
 				0ECC7817267A533E00A2ACF2 /* PageViewCell.swift in Sources */,
 				128B929727D7920300E92ACF /* SelectingFilesHeaderView.swift in Sources */,
+				127092DA2C2EE4E3002030AA /* Server.swift in Sources */,
 				1236EE8028E1B40200973EEA /* DataBaseHelper.swift in Sources */,
 				125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */,
 				1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */,
@@ -3653,6 +3655,7 @@
 				12B84B962C340025006363F0 /* NextcloudReportViewModel.swift in Sources */,
 				CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */,
 				1293547B294A454900735ED0 /* AppDelegate.swift in Sources */,
+				127092DC2C2EE7AD002030AA /* WebServer.swift in Sources */,
 				12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */,
 				CCC1B4332AC75B410075B819 /* UwaziEntityMandatoryTextView.swift in Sources */,
 				12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */,
@@ -4156,6 +4159,7 @@
 		};
 		F66E65D123E32080000F93E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 15944AD02C7F55F800FD03CA /* TellaConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -4218,6 +4222,7 @@
 		};
 		F66E65D223E32080000F93E5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 15944AD02C7F55F800FD03CA /* TellaConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
