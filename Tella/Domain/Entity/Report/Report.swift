@@ -36,7 +36,8 @@ class Report: BaseReport {
                    createdDate: createdDate,
                    updatedDate: updatedDate,
                    status: status ?? .unknown,
-                   vaultFiles: vaultFiles)
+                   vaultFiles: vaultFiles,
+                   serverId: self.server?.id)
     }
     
     required init(from decoder: any Decoder) throws {

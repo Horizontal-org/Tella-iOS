@@ -62,7 +62,7 @@ class NextcloudDraftViewModel: DraftMainViewModel {
                                      title: title,
                                      description: description,
                                      status: status ?? .unknown,
-                                     server: server as? NextcloudServer,
+                                     server: self.server as? NextcloudServer,
                                      vaultFiles: reportFiles)
         
         reportId == nil ? addReport(report: report) : updateReport(report: report)

@@ -35,7 +35,8 @@ class BaseReport : Hashable, Codable {
          createdDate: Date? = nil,
          updatedDate: Date? = nil,
          status: ReportStatus,
-         vaultFiles: [ReportFile]? = nil) {
+         vaultFiles: [ReportFile]? = nil,
+         serverId: Int?) {
         
         self.id = id
         self.title = title
@@ -44,6 +45,7 @@ class BaseReport : Hashable, Codable {
         self.updatedDate = updatedDate
         self.status = status
         self.reportFiles = vaultFiles
+        self.serverId = serverId
     }
     
     func encode(to encoder: Encoder) throws {
@@ -57,6 +59,26 @@ class BaseReport : Hashable, Codable {
         try container.encode(serverId, forKey: .serverId)
     }
     
+    required init(from decoder: Decoder) throws {
+        
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.id = try container.decodeIfPresent(Int.self, forKey: .id)
+        self.title = try container.decodeIfPresent(String.self, forKey: .title)
+        self.description = try container.decodeIfPresent(String.self, forKey: .description)
+        
+        let createdDate = try container.decodeIfPresent(Double.self, forKey: .createdDate)
+        self.createdDate = createdDate?.getDate()
+        
+        let updatedDate = try container.decodeIfPresent(Double.self, forKey: .updatedDate)
+        self.updatedDate = updatedDate?.getDate()
+        
+        let status = try container.decodeIfPresent(Int.self, forKey: .status)
+        self.status = ReportStatus(rawValue: status ?? ReportStatus.unknown.rawValue) ?? ReportStatus.unknown
+        
+        self.serverId = try container.decodeIfPresent(Int.self, forKey: .serverId)
+    }
+
     static func == (lhs: BaseReport, rhs: BaseReport) -> Bool {
         lhs.id == rhs.id
     }
@@ -66,16 +88,3 @@ class BaseReport : Hashable, Codable {
     }
 }
 
-extension BaseReport {
-    var getReportDate: String {
-        let status = self.status
-        switch status {
-        case .submissionPaused:
-            return LocalizableReport.pausedCardExpl.localized
-        case .submitted:
-            return self.createdDate?.getSubmittedReportTime() ?? ""
-        default:
-            return self.createdDate?.getModifiedReportTime() ?? ""
-        }
-    }
-}

@@ -73,7 +73,6 @@ extension ReportStatus {
             ConfirmDeleteConnectionStrings(deleteTitle: LocalizableReport.deleteDraftTitle.localized,
                                            deleteMessage: LocalizableReport.deleteDraftReportMessage.localized)
         case .submitted:
-            
             ConfirmDeleteConnectionStrings(deleteTitle: LocalizableReport.deleteTitle.localized,
                                            deleteMessage: LocalizableReport.deleteSubmittedReportMessage.localized)
         default:
