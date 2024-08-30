@@ -156,6 +156,8 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
                 self.updateCurrentFile(uploadProgressInfo: progressInfo)
                 self.checkAllFilesAreUploaded()
             }
+        case .folderRecreated:
+            Toast.displayToast(message: LocalizableNextcloud.recreateFolderMsg.localized)
         case .initial:
             break
         }
@@ -178,9 +180,9 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
     private func handleError(error:APIError) {
         DispatchQueue.main.async {
             switch error {
-            case .httpCode(HTTPErrorCodes.unauthorized.rawValue),
-                    .httpCode(HTTPErrorCodes.ncUnauthorizedError.rawValue),
-                    .httpCode(HTTPErrorCodes.ncUnauthorized.rawValue):
+            case .nextcloudError(NcHTTPErrorCodes.unauthorized.rawValue),
+                    .nextcloudError(NcHTTPErrorCodes.ncUnauthorizedError.rawValue),
+                    .nextcloudError(NcHTTPErrorCodes.ncUnauthorized.rawValue):
                 self.shouldShowLoginView = true
                 
             default:

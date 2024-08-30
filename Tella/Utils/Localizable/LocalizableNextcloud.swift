@@ -15,4 +15,5 @@ enum LocalizableNextcloud : String, LocalizableDelegate {
     case connectionExpiredExpl = "Nextcloud_ConnectionExpired_SheetExpl"
     case connectionExpiredContinue = "Nextcloud_ConnectionExpired_Continue_SheetAction"
     case connectionExpiredLogin = "Nextcloud_ConnectionExpired_Login_SheetAction"
+    case recreateFolderMsg = "Nextcloud_RecreateFolder_Toast"
 }

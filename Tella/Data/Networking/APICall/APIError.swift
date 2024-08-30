@@ -14,6 +14,7 @@ enum APIError: Swift.Error {
     case noToken
     case driveApiError(Error)
     case errorOccured
+    case nextcloudError(HTTPCode)
 }
 
 extension APIError: LocalizedError {
@@ -34,10 +35,27 @@ extension APIError: LocalizedError {
             return LocalizableSettings.settServerNoTokenPresent.localized
         case .driveApiError(let error):
             return customDriveErrorMessage(error: error)
+        case let .nextcloudError(code):
+            return customNcErrorMessage(errorCode: code)
         case .errorOccured :
             return LocalizableCommon.commonError.localized
         }
     }
+    
+    private func customNcErrorMessage(errorCode : Int) -> String {
+        let httpErrorCode = NcHTTPErrorCodes(rawValue: errorCode)
+        switch httpErrorCode{
+        case .ncUnauthorized, .ncUnauthorizedError:
+            return "The username or password is incorrect"
+        case .ncNoInternetError:
+            return "No Internet connection. Try again when you are connected to the Internet."
+        case .nextcloudFolderExists:
+            return "Folder already exist"
+        default:
+            return LocalizableError.unexpectedResponse.localized
+        }
+    }
+    
     private func customErrorMessage(errorCode : Int) -> String {
         let httpErrorCode = HTTPErrorCodes(rawValue: errorCode)
         switch httpErrorCode{
@@ -47,12 +65,6 @@ extension APIError: LocalizedError {
             return LocalizableError.forbidden.localized
         case .notFound:
             return LocalizableSettings.settServerServerURLIncorrect.localized
-        case .nextcloudFolderExists:
-            return "Folder already exist"
-        case .ncUnauthorized, .ncUnauthorizedError:
-            return "The username or password is incorrect"
-        case .ncNoInternetError:
-            return "No Internet connection. Try again when you are connected to the Internet."
         default:
             return LocalizableError.unexpectedResponse.localized
         }

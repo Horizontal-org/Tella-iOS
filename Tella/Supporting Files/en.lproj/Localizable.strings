@@ -567,3 +567,4 @@ This feedback is anonymous, so make sure to include contact information if you w
 
 "Error_GDrive_Unauthorized_Expl" = "Request is missing required authentication credential. Please re authenticate";
 "Error_GDrive_Forbidden_Expl" = "You don't have permission to access this file or folder in Google Drive.";
+"Nextcloud_RecreateFolder_Toast" = "The Nextcloud folder you created was deleted. Tella recreated the folder with the same name, so your uploads can continue.";

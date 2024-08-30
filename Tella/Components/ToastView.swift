@@ -10,7 +10,7 @@ struct ToastView: View {
 
     var body: some View {
         ZStack {
-            if isShowing {
+            if isShowing && !message.isEmpty {
                 Text(message)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(.black)

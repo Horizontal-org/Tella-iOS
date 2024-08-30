@@ -9,11 +9,11 @@
 import Foundation
 
 struct NextcloudReportToSend {
-    var folderName : String
-    var descriptionFileUrl : URL?
-    var remoteReportStatus : RemoteReportStatus
-    var files : [NextcloudMetadata]
-    var server : NextcloudServerModel
+    var folderName: String
+    var descriptionFileUrl: URL?
+    var remoteReportStatus: RemoteReportStatus
+    var files: [NextcloudMetadata]
+    var server: NextcloudServerModel
 }
 
 

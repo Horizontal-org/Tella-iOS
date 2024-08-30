@@ -23,6 +23,7 @@ enum NextcloudUploadResponse {
     case createReport
     case descriptionSent
     case nameUpdated(newName:String)
+    case folderRecreated
 }
 
 class NextcloudRepository: NextcloudRepositoryProtocol {
@@ -72,7 +73,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 if result == .success {
                     continuation.resume()
                 } else {
-                    continuation.resume(throwing: APIError.httpCode(result.errorCode) )
+                    continuation.resume(throwing: APIError.nextcloudError(result.errorCode) )
                 }
             }
         }
@@ -86,7 +87,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 if result == .success {
                     continuation.resume(returning: userProfile?.userId ?? "")
                 } else {
-                    continuation.resume(throwing: APIError.httpCode(result.errorCode))
+                    continuation.resume(throwing: APIError.nextcloudError(result.errorCode))
                 }
             }
         }
@@ -110,7 +111,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 if result == .success {
                     continuation.resume()
                 } else {
-                    continuation.resume(throwing: APIError.httpCode(result.errorCode))
+                    continuation.resume(throwing: APIError.nextcloudError(result.errorCode))
                 }
             }
         }
@@ -190,7 +191,18 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 
             } catch let error as APIError {
                 debugLog(error)
-                subject.send(completion:.failure(error))
+                switch error {
+                case .nextcloudError(let code) where code == NcHTTPErrorCodes.nonExistentFolder.rawValue:
+                    try await createFolder(folderName: "") // This will create a folder with the rootname
+                    self.uploadReport(report: report)
+                        .sink {completion in
+                                subject.send(.folderRecreated)
+                                subject.send(completion: .finished)
+                        } receiveValue: { response in
+                        }.store(in: &subscribers)
+                default:
+                    subject.send(completion:.failure(error))
+                }
             }
         }
         
@@ -215,7 +227,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 if nkError == .success {
                     continuation.resume()
                 } else {
-                    continuation.resume(throwing: APIError.httpCode(nkError.errorCode))
+                    continuation.resume(throwing: APIError.nextcloudError(nkError.errorCode))
                 }
             })
         }
@@ -278,7 +290,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 progressInfo.status = error == .success ? .submitted : .submissionError
                 progressInfo.finishUploading = true
                 progressInfo.step = .finished
-                progressInfo.error = APIError.httpCode(error.errorCode)
+                progressInfo.error = APIError.nextcloudError(error.errorCode)
                 subject.send(progressInfo)
                 self.uploadTasks.removeValue(forKey: metadata.fileId)
             }
@@ -331,7 +343,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 } else if error.errorCode == HTTPErrorCodes.notFound.rawValue {
                     continuation.resume(returning: false)
                 } else {
-                    continuation.resume(throwing: APIError.httpCode(error.errorCode))
+                    continuation.resume(throwing: APIError.nextcloudError(error.errorCode))
                 }
             }
         })

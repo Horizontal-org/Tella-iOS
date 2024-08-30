@@ -19,11 +19,15 @@ enum HTTPErrorCodes: Int {
     case requestTimeout = 408
     case need2FA = 409
     case internalServerError = 500
-    case ncUnauthorizedError = 997
-    case ncUnauthorized = 429
-    case ncNoServerError = -1003
-    case ncNoInternetError = -1009
-    case nextcloudFolderExists = 405
     case unknown
 }
 
+enum NcHTTPErrorCodes: Int {
+    case ncUnauthorizedError = 997
+    case ncUnauthorized = 429
+    case ncNoInternetError = -1009
+    case nextcloudFolderExists = 405
+    case ncNoServerError = -1003
+    case unauthorized = 401
+    case nonExistentFolder = 409
+}
