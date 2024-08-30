@@ -300,17 +300,12 @@ Ces commentaires sont anonymes, alors assurez-vous d'inclure vos coordonnées si
 "Setting_SettServer_NextCloud" = "NEXTCLOUD";
 "Setting_SettServer_Uwazi" = "UWAZI";
 "Setting_SettServer_No_Internet" = "Pas de connexion Internet. Réessayez lorsque vous êtes connecté à Internet.";
-<<<<<<< HEAD
-"Setting_SettServer_Server_URL_Incorrect" = "Error: The server URL is incorrect";
-"Setting_Server_URL" = "Entrez l'URL du serveur";
-"Setting_Server_Uwazi_Access_Title" = "Log in if you have a username and password, or access the server as a public instance.";
-"Setting_Server_Uwazi_Login" = "LOG IN";
-=======
+
 "Setting_SettServer_Server_URL_Incorrect" = "Erreur : L'Url du serveur est incorrecte";
 "Setting_Server_Uwazi_Server_URL" = "Entrez l'URL du serveur";
 "Setting_Server_Uwazi_Access_Title" = "Connectez-vous si vous disposez d'un nom d'utilisateur et d'un mot de passe, ou accédez au serveur en tant qu'instance publique.";
 "Setting_Server_Uwazi_Login" = "SE CONNECTER";
->>>>>>> develop
+
 "Setting_Server_Uwazi_Access_Public" = "ACCÈS PUBLIQUE";
 "Setting_Server_Uwazi_Login_Access" = "Identifiez-vous pour accéder au serveur";
 "Setting_Server_Uwazi_Username" = "Nom d’utilisateur";
