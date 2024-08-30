@@ -196,7 +196,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
             } catch let error as APIError {
                 debugLog(error)
                 switch error {
-                case .nextcloudError(let code) where code == NcHTTPErrorCodes.nonExistentFolder.rawValue:r
+                case .nextcloudError(let code) where code == NcHTTPErrorCodes.nonExistentFolder.rawValue:
                     try await createFolder(folderName: "") // This will create a folder with the rootname
                     subject.send(.folderRecreated)
                     self.upload(report: report, subject: subject) // re-upload the report
