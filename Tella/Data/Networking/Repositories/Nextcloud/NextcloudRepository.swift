@@ -118,13 +118,17 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     }
     
     func uploadReport(report:NextcloudReportToSend) -> AnyPublisher<NextcloudUploadResponse,APIError> {
+        let subject = CurrentValueSubject<NextcloudUploadResponse, APIError>(.initial)
+        upload(report: report, subject: subject)
+        return subject.eraseToAnyPublisher()
+    }
+
+    private func upload(report:NextcloudReportToSend,subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) {
         
         self.setUp(server:report.server)
         
         shouldPause = false
-        
-        let subject = CurrentValueSubject<NextcloudUploadResponse, APIError>(.initial)
-        
+
         Task {
             do {
                 
@@ -192,21 +196,15 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
             } catch let error as APIError {
                 debugLog(error)
                 switch error {
-                case .nextcloudError(let code) where code == NcHTTPErrorCodes.nonExistentFolder.rawValue:
+                case .nextcloudError(let code) where code == NcHTTPErrorCodes.nonExistentFolder.rawValue:r
                     try await createFolder(folderName: "") // This will create a folder with the rootname
-                    self.uploadReport(report: report)
-                        .sink {completion in
-                                subject.send(.folderRecreated)
-                                subject.send(completion: .finished)
-                        } receiveValue: { response in
-                        }.store(in: &subscribers)
+                    subject.send(.folderRecreated)
+                    self.upload(report: report, subject: subject) // re-upload the report
                 default:
                     subject.send(completion:.failure(error))
                 }
             }
         }
-        
-        return subject.eraseToAnyPublisher()
     }
     
     private func uploadDescriptionFile(report:NextcloudReportToSend) async throws {
