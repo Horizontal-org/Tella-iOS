@@ -139,22 +139,14 @@ struct ReportMainView: View {
     private func showDetailsView(cardViewModel:CommonCardViewModel) {
         guard let cardViewModel = cardViewModel as? ReportCardViewModel else { return }
         switch cardViewModel.status {
-        case .unknown, .draft:
+        case .draft:
             showDraftView(id: cardViewModel.id)
-            sheetManager.hide()
-        case .finalized,
-              .submissionError,
-              .submissionPending,
-              .submissionPaused,
-              .submissionInProgress,
-              .submissionAutoPaused,
-              .submissionScheduled:
-            showOutboxView(id: cardViewModel.id)
             sheetManager.hide()
         case .submitted:
             showSubmittedView(id: cardViewModel.id)
             sheetManager.hide()
         default:
+            showOutboxView(id: cardViewModel.id)
             sheetManager.hide()
         }
     }
