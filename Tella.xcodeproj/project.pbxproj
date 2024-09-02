@@ -933,6 +933,7 @@
 		1501401C2B71243A00991D69 /* LocalizableResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableResources.swift; sourceTree = "<group>"; };
 		1503C87D2C07A080000F2209 /* ServerConnectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConnectionHeaderView.swift; sourceTree = "<group>"; };
 		150913412B841C3F001E782A /* ResourceActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActionType.swift; sourceTree = "<group>"; };
+		15095DCA2C862DC100592907 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		151308162BF3DBD9000C51D7 /* UwaziRelationshipList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziRelationshipList.swift; sourceTree = "<group>"; };
 		1517A9A92C3F011D00CB8EBF /* OutboxMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxMainViewModel.swift; sourceTree = "<group>"; };
 		1517A9AE2C3F0D7A00CB8EBF /* GDriveOutboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveOutboxViewModel.swift; sourceTree = "<group>"; };
@@ -3165,6 +3166,7 @@
 				ku,
 				ru,
 				"pt-BR",
+				vi,
 			);
 			mainGroup = F66E65A023E3207D000F93E5;
 			productRefGroup = F66E65AA23E3207D000F93E5 /* Products */;
@@ -3920,6 +3922,7 @@
 				1276330D2A9E407700535D0D /* ku */,
 				1589A6202B7672390048C775 /* ru */,
 				1589A6212B7672430048C775 /* pt-BR */,
+				15095DCA2C862DC100592907 /* vi */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
