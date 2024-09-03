@@ -246,6 +246,7 @@ Si vous souhaitez prendre une photo ou une vidéo, procédez de la manière suiv
 "Settings_SettLang_Persian_Expl" = "Perse";
 "Settings_SettLang_Kurdish_Expl" = "Kurde";
 "Settings_SettLang_Burmese_Expl" = "Birman";
+"Settings_SettLang_Vietnamese_Expl" = "Vietnamese";
 "Common_Error" = "Une erreur est survenue";
 "LockUnlock_UnlockDeleteAfterFail_Warning_RemainingAttempts" = "Vous avez %i tentatives restantes avant que tout soit définitivement supprimé de Tella.";
 "LockUnlock_UnlockDeleteAfterFail_Error_ContentDeleted" = "Vous avez dépassé le nombre maximum de tentatives de connexion infructueuses. Toutes vos données Tella ont été supprimées.";
