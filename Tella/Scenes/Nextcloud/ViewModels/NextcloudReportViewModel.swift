@@ -13,7 +13,7 @@ class NextcloudReportViewModel: ReportsMainViewModel {
     
     private var nextcloudRepository: NextcloudRepositoryProtocol
     
-     init(mainAppModel: MainAppModel, nextcloudRepository: NextcloudRepositoryProtocol/* = NextcloudRepository()*/) {
+     init(mainAppModel: MainAppModel, nextcloudRepository: NextcloudRepositoryProtocol) {
          self.nextcloudRepository = nextcloudRepository
          super.init(mainAppModel: mainAppModel, connectionType: .nextcloud, title: LocalizableNextcloud.nextcloudAppBar.localized)
     }
