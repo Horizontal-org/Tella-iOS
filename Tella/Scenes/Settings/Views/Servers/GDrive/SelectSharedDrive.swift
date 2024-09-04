@@ -75,8 +75,7 @@ struct SelectSharedDriveView: View {
     }
     
     private var reportsView: some View {
-        ReportMainView(reportMainViewModel: GDriveViewModel(mainAppModel: gDriveServerViewModel.mainAppModel)
-                       /*, diContainer: GDriveDIContainer()*/)
+        ReportMainView(reportMainViewModel: GDriveViewModel(mainAppModel: gDriveServerViewModel.mainAppModel))
     }
 }
 
