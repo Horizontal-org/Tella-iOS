@@ -10,21 +10,18 @@ import SwiftUI
 import Combine
 struct ServerSelectionView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
-    @StateObject var serverViewModel : TellaWebServerViewModel
-    @EnvironmentObject var mainAppModel : MainAppModel
     @ObservedObject var gDriveVM: GDriveAuthViewModel
     @ObservedObject var gDriveServerVM: GDriveServerViewModel
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    let gDriveDIContainer: GDriveDIContainer
+    let gDriveRepository: GDriveRepositoryProtocol
 
     
-    init(appModel:MainAppModel, server: TellaServer? = nil, gDriveDIContainer: GDriveDIContainer) {
-        self.gDriveDIContainer = gDriveDIContainer
-        _serverViewModel = StateObject(wrappedValue: TellaWebServerViewModel(mainAppModel: appModel, currentServer: server))
-        _gDriveVM = ObservedObject(wrappedValue: GDriveAuthViewModel(repository: gDriveDIContainer.gDriveRepository))
-        _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveDIContainer.gDriveRepository, mainAppModel: appModel))
+    init(appModel:MainAppModel, server: TellaServer? = nil, gDriveRepository: GDriveRepositoryProtocol) {
+        self.gDriveRepository = gDriveRepository
+        _gDriveVM = ObservedObject(wrappedValue: GDriveAuthViewModel(repository: gDriveRepository))
+        _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveRepository, mainAppModel: appModel))
     }
 
     var body: some View {
@@ -96,23 +93,22 @@ struct ServerSelectionView: View {
     }
 
     fileprivate func navigateToNextCloud() {
-        navigateTo(destination: NextcloudAddServerURLView(nextcloudVM: NextcloudServerViewModel(mainAppModel: mainAppModel)))
+        navigateTo(destination: NextcloudAddServerURLView(nextcloudVM: NextcloudServerViewModel(mainAppModel: serversViewModel.mainAppModel)))
     }
     
     fileprivate func navigateToTellaWebFlow() {
-        navigateTo(destination: TellaWebAddServerURLView(appModel: mainAppModel))
+        navigateTo(destination: TellaWebAddServerURLView(appModel: serversViewModel.mainAppModel))
     }
 
     fileprivate func navigateToUwaziFlow() {
-        navigateTo(destination: UwaziAddServerURLView(uwaziServerViewModel: UwaziServerViewModel(mainAppModel: mainAppModel))
-            .environmentObject(serverViewModel)
+        navigateTo(destination: UwaziAddServerURLView(uwaziServerViewModel: UwaziServerViewModel(mainAppModel: serversViewModel.mainAppModel))
             .environmentObject(serversViewModel))
     }
     
     fileprivate func navigateToGDriveFlow() {
         gDriveVM.handleSignIn {
             navigateTo(
-                destination: SelectDriveConnection(gDriveServerViewModel: gDriveServerVM),
+                destination: SelectDriveConnectionView(gDriveServerViewModel: gDriveServerVM),
                 title: LocalizableSettings.settServerGDrive.localized
             )
         }
@@ -151,7 +147,7 @@ struct ServerSelectionView: View {
 
 struct ServerSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ServerSelectionView(appModel: MainAppModel.stub(), gDriveDIContainer: GDriveDIContainer())
+        ServerSelectionView(appModel: MainAppModel.stub(), gDriveRepository: GDriveRepository())
             .environmentObject(MainAppModel.stub())
             .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
     }

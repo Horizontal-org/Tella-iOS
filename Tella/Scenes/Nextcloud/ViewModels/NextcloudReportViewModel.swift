@@ -11,6 +11,13 @@ import Combine
 
 class NextcloudReportViewModel: ReportsMainViewModel {
     
+    private var nextcloudRepository: NextcloudRepositoryProtocol
+    
+     init(mainAppModel: MainAppModel, nextcloudRepository: NextcloudRepositoryProtocol/* = NextcloudRepository()*/) {
+         self.nextcloudRepository = nextcloudRepository
+         super.init(mainAppModel: mainAppModel, connectionType: .nextcloud, title: LocalizableNextcloud.nextcloudAppBar.localized)
+    }
+    
     override func getReports() {
         
         let draftReports =  tellaData?.getDraftNextcloudReport() ?? []

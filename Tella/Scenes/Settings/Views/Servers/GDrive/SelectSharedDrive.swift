@@ -10,8 +10,9 @@ import SwiftUI
 import GoogleAPIClientForREST
 
 struct SelectSharedDriveView: View {
-    @EnvironmentObject var gDriveServerViewModel: GDriveServerViewModel
+    @StateObject var gDriveServerViewModel: GDriveServerViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     var body: some View {
         ContainerView {
             VStack(alignment: .leading){
@@ -47,7 +48,8 @@ struct SelectSharedDriveView: View {
     func sharedDriveList(drives: [SharedDrive]) -> some View {
         ForEach(drives, id: \.id) {drive in
             DriveCardView(sharedDrive: drive,
-                          isSelected: drive.id == gDriveServerViewModel.selectedDrive?.id
+                          isSelected: drive.id == gDriveServerViewModel.selectedDrive?.id,
+                          gDriveServerViewModel: gDriveServerViewModel
             )
         }
     }
@@ -73,14 +75,15 @@ struct SelectSharedDriveView: View {
     }
     
     private var reportsView: some View {
-        ReportMainView(reportMainViewModel: GDriveViewModel(mainAppModel: gDriveServerViewModel.mainAppModel), diContainer: GDriveDIContainer())
+        ReportMainView(reportMainViewModel: GDriveViewModel(mainAppModel: gDriveServerViewModel.mainAppModel)
+                       /*, diContainer: GDriveDIContainer()*/)
     }
 }
 
 struct DriveCardView: View {
     var sharedDrive: SharedDrive
     var isSelected: Bool
-    @EnvironmentObject var gDriveServerViewModel: GDriveServerViewModel
+    @StateObject var gDriveServerViewModel: GDriveServerViewModel
     var body: some View {
         Button(action: {
             gDriveServerViewModel.handleSelectedDrive(drive: sharedDrive)
@@ -102,5 +105,5 @@ struct DriveCardView: View {
 
 
 #Preview {
-    SelectSharedDriveView()
+    SelectSharedDriveView(gDriveServerViewModel: GDriveServerViewModel(repository: GDriveRepository(), mainAppModel: MainAppModel.stub()))
 }

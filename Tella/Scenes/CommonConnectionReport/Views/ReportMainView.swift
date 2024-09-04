@@ -13,13 +13,9 @@ struct ReportMainView: View {
     
     @ObservedObject var reportsMainViewModel: ReportsMainViewModel
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var mainAppModel: MainAppModel
-
-    let diContainer : DIContainer
     
-    init(reportMainViewModel: ReportsMainViewModel, diContainer : DIContainer) {
+    init(reportMainViewModel: ReportsMainViewModel) {
         self.reportsMainViewModel = reportMainViewModel
-        self.diContainer = diContainer
     }
     
     var body: some View {
@@ -161,16 +157,14 @@ struct ReportMainView: View {
             
         case .gDrive:
             var destination : any View
-            destination = GDriveDraftView(mainAppModel: reportsMainViewModel.mainAppModel,
-                                          gDriveDIContainer: (diContainer as! GDriveDIContainer),
-                                          reportId: id).environmentObject(reportsMainViewModel)
+            destination = GDriveDraftView(gDriveDraftVM: GDriveDraftViewModel(mainAppModel: reportsMainViewModel.mainAppModel,
+                                                                              repository: GDriveRepository(), reportId: id), reportsViewModel: reportsMainViewModel)
             self.navigateTo(destination: destination)
         case .nextcloud:
             var destination : any View
-            destination = NextcloudDraftView(mainAppModel: mainAppModel,
-                                             nextcloudDIContainer: (diContainer as! NextcloudDIContainer),
-                                             reportsViewModel: reportsMainViewModel,
-                                             reportId: id)
+            destination = NextcloudDraftView(nextcloudDraftViewModel: NextcloudDraftViewModel(mainAppModel: reportsMainViewModel.mainAppModel,repository: NextcloudRepository(), reportId: id),
+                                             reportsViewModel: reportsMainViewModel)
+
             self.navigateTo(destination: destination)
         default:
             break
@@ -181,7 +175,7 @@ struct ReportMainView: View {
     private func showOutboxView(id: Int? = nil) {
         switch reportsMainViewModel.connectionType {
         case .tella:
-            let outboxViewModel = OutboxReportVM(mainAppModel: mainAppModel,
+            let outboxViewModel = OutboxReportVM(mainAppModel: reportsMainViewModel.mainAppModel,
                                                  reportsViewModel: reportsMainViewModel,
                                                  reportId: id)
             let destination = OutboxDetailsView(outboxReportVM: outboxViewModel,
@@ -189,7 +183,7 @@ struct ReportMainView: View {
             self.navigateTo(destination: destination)
             break
         case .gDrive:
-            let outboxViewModel = GDriveOutboxViewModel(mainAppModel: mainAppModel, 
+            let outboxViewModel = GDriveOutboxViewModel(mainAppModel: reportsMainViewModel.mainAppModel,
                                                         reportsViewModel: reportsMainViewModel,
                                                         reportId: id,
                                                         repository: GDriveRepository())
@@ -198,11 +192,11 @@ struct ReportMainView: View {
             self.navigateTo(destination: destination)
        
         case .nextcloud:
-            let outboxViewModel = NextcloudOutboxViewModel(mainAppModel: mainAppModel,
+            let outboxViewModel = NextcloudOutboxViewModel(mainAppModel: reportsMainViewModel.mainAppModel,
                                                            reportsViewModel: reportsMainViewModel,
                                                            reportId: id,
-                                                           repository:(diContainer as! NextcloudDIContainer).nextcloudRepository)
-            let destination = NextcloutOutboxView(outboxReportVM: outboxViewModel, 
+                                                           repository:NextcloudRepository())
+            let destination = NextcloutOutboxView(outboxReportVM: outboxViewModel,
                                                   reportsViewModel: reportsMainViewModel)
             
             self.navigateTo(destination: destination)
@@ -216,15 +210,15 @@ struct ReportMainView: View {
     private func showSubmittedView(id: Int? = nil) {
         switch reportsMainViewModel.connectionType {
         case .tella:
-            let vm = SubmittedReportVM(mainAppModel: mainAppModel, reportId: id)
+            let vm = SubmittedReportVM(mainAppModel: reportsMainViewModel.mainAppModel, reportId: id)
             let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsMainViewModel)
             self.navigateTo(destination: destination)
         case .gDrive:
-            let vm = GDriveSubmittedViewModel(mainAppModel: mainAppModel, reportId: id)
+            let vm = GDriveSubmittedViewModel(mainAppModel: reportsMainViewModel.mainAppModel, reportId: id)
             let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsMainViewModel)
             self.navigateTo(destination: destination)
         case .nextcloud:
-            let vm = NextcloudSubmittedViewModel(mainAppModel: mainAppModel, reportId: id)
+            let vm = NextcloudSubmittedViewModel(mainAppModel: reportsMainViewModel.mainAppModel, reportId: id)
             let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsMainViewModel)
             self.navigateTo(destination: destination)
         default:
