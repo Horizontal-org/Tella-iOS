@@ -404,30 +404,6 @@ class GDriveRepository: GDriveRepositoryProtocol  {
     }
 }
 
-
-class GDriveDIContainer : DIContainer {
-    
-    let gDriveRepository: GDriveRepositoryProtocol
-    
-    init(gDriveRepository: GDriveRepositoryProtocol = GDriveRepository()) {
-        self.gDriveRepository = gDriveRepository
-    }
-}
-
-class NextcloudDIContainer : DIContainer {
-    
-    let nextcloudRepository: NextcloudRepositoryProtocol
-    
-    init(nextcloudRepository: NextcloudRepositoryProtocol = NextcloudRepository()) {
-        self.nextcloudRepository = nextcloudRepository
-    }
-}
-
-class DIContainer {
-    
-}
-
-
 struct UploadProgressWithFolderId {
     let folderId: String
     let progressInfo: UploadProgressInfo

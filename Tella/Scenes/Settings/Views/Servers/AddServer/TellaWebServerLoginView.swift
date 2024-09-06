@@ -92,6 +92,6 @@ struct TellaWebServerLoginView: View {
     }
     
     var reportsMainView: some View {
-        ReportMainView(reportMainViewModel: ReportsViewModel(mainAppModel: mainAppModel), diContainer: GDriveDIContainer())
+        ReportMainView(reportMainViewModel: ReportsViewModel(mainAppModel: mainAppModel))
     }
 }
