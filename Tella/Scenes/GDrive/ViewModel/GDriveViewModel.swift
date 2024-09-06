@@ -13,7 +13,7 @@ class GDriveViewModel: ReportsMainViewModel {
     @Published var server: GDriveServer?
 
     private var delayTime = 0.1
-    private var gDriveRepository: GDriveRepositoryProtocol
+    var gDriveRepository: GDriveRepositoryProtocol
     var sheetItems : [ListActionSheetItem] { return [
         
         ListActionSheetItem(imageName: "view-icon",

@@ -14,14 +14,13 @@ struct ReportMainView: View {
     @ObservedObject var reportsMainViewModel: ReportsMainViewModel
     @EnvironmentObject var sheetManager: SheetManager
     
-    init(reportMainViewModel: ReportsMainViewModel) {
-        self.reportsMainViewModel = reportMainViewModel
-    }
-    
+    var showDraftViewAction: ((Int?) -> Void)?
+    var showSubmittedViewAction: ((Int?) -> Void)?
+    var showOutboxViewAction: ((Int?) -> Void)?
+        
     var body: some View {
         contentView
             .navigationBarTitle(self.reportsMainViewModel.title, displayMode: .large)
-            .environmentObject(reportsMainViewModel)
     }
     
     private var contentView :some View {
@@ -71,7 +70,7 @@ struct ReportMainView: View {
                                           nextButtonAction: .action,
                                           buttonType: .yellow,
                                           isValid: .constant(true)) {
-                    showDraftView()
+                    showDraftViewAction?(nil)
                 } .padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0))
                 
             }.background(Styles.Colors.backgroundMain)
@@ -115,18 +114,17 @@ struct ReportMainView: View {
                 
                 switch type {
                 case .editDraft:
-                    showDraftView(id: id)
-                    
+                    showDraftViewAction?(id)
+                    sheetManager.hide()
                 case .editOutbox:
-                    showOutboxView(id: id)
-                    
+                    showOutboxViewAction?(id)
+                    sheetManager.hide()
                 case .viewSubmitted:
-                    showSubmittedView(id: id)
+                    showSubmittedViewAction?(id)
                     sheetManager.hide()
                     
                 case .delete:
                     showDeleteReportConfirmationView(cardViewModel: cardViewModel)
-                    
                 }
             })
         }
@@ -136,95 +134,12 @@ struct ReportMainView: View {
         guard let cardViewModel = cardViewModel as? ReportCardViewModel else { return }
         switch cardViewModel.status {
         case .draft:
-            showDraftView(id: cardViewModel.id)
-            sheetManager.hide()
+            showDraftViewAction?(cardViewModel.id)
         case .submitted:
-            showSubmittedView(id: cardViewModel.id)
-            sheetManager.hide()
+            showSubmittedViewAction?(cardViewModel.id)
         default:
-            showOutboxView(id: cardViewModel.id)
-            sheetManager.hide()
+            showOutboxViewAction?(cardViewModel.id)
         }
-    }
-    
-    private func showDraftView(id:Int? = nil) {
-        
-        switch reportsMainViewModel.connectionType {
-        case .tella:
-            var destination: any View
-            destination = DraftReportView(mainAppModel: reportsMainViewModel.mainAppModel, reportId: id).environmentObject(reportsMainViewModel)
-            self.navigateTo(destination: destination)
-            
-        case .gDrive:
-            var destination : any View
-            destination = GDriveDraftView(gDriveDraftVM: GDriveDraftViewModel(mainAppModel: reportsMainViewModel.mainAppModel,
-                                                                              repository: GDriveRepository(), reportId: id), reportsViewModel: reportsMainViewModel)
-            self.navigateTo(destination: destination)
-        case .nextcloud:
-            var destination : any View
-            destination = NextcloudDraftView(nextcloudDraftViewModel: NextcloudDraftViewModel(mainAppModel: reportsMainViewModel.mainAppModel,repository: NextcloudRepository(), reportId: id),
-                                             reportsViewModel: reportsMainViewModel)
-
-            self.navigateTo(destination: destination)
-        default:
-            break
-        }
-        sheetManager.hide()
-    }
-    
-    private func showOutboxView(id: Int? = nil) {
-        switch reportsMainViewModel.connectionType {
-        case .tella:
-            let outboxViewModel = OutboxReportVM(mainAppModel: reportsMainViewModel.mainAppModel,
-                                                 reportsViewModel: reportsMainViewModel,
-                                                 reportId: id)
-            let destination = OutboxDetailsView(outboxReportVM: outboxViewModel,
-                                                reportsViewModel: reportsMainViewModel)
-            self.navigateTo(destination: destination)
-            break
-        case .gDrive:
-            let outboxViewModel = GDriveOutboxViewModel(mainAppModel: reportsMainViewModel.mainAppModel,
-                                                        reportsViewModel: reportsMainViewModel,
-                                                        reportId: id,
-                                                        repository: GDriveRepository())
-            let destination = OutboxDetailsView(outboxReportVM: outboxViewModel,
-                                                reportsViewModel: reportsMainViewModel)
-            self.navigateTo(destination: destination)
-       
-        case .nextcloud:
-            let outboxViewModel = NextcloudOutboxViewModel(mainAppModel: reportsMainViewModel.mainAppModel,
-                                                           reportsViewModel: reportsMainViewModel,
-                                                           reportId: id,
-                                                           repository:NextcloudRepository())
-            let destination = NextcloutOutboxView(outboxReportVM: outboxViewModel,
-                                                  reportsViewModel: reportsMainViewModel)
-            
-            self.navigateTo(destination: destination)
-            
-        default:
-            break
-        }
-        sheetManager.hide()
-    }
-    
-    private func showSubmittedView(id: Int? = nil) {
-        switch reportsMainViewModel.connectionType {
-        case .tella:
-            let vm = SubmittedReportVM(mainAppModel: reportsMainViewModel.mainAppModel, reportId: id)
-            let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsMainViewModel)
-            self.navigateTo(destination: destination)
-        case .gDrive:
-            let vm = GDriveSubmittedViewModel(mainAppModel: reportsMainViewModel.mainAppModel, reportId: id)
-            let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsMainViewModel)
-            self.navigateTo(destination: destination)
-        case .nextcloud:
-            let vm = NextcloudSubmittedViewModel(mainAppModel: reportsMainViewModel.mainAppModel, reportId: id)
-            let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsMainViewModel)
-            self.navigateTo(destination: destination)
-        default:
-            break
-        }
-        
         sheetManager.hide()
     }
     

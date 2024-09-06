@@ -203,7 +203,7 @@ struct DraftView: View  {
                                                      reportsViewModel: reportsViewModel,
                                                      reportId: viewModel.reportId,
                                                      repository: GDriveRepository())
-                OutboxDetailsView(outboxReportVM: outboxVM, reportsViewModel: reportsViewModel)
+                GdriveOutboxDetailsView(outboxReportVM: outboxVM, reportsViewModel: reportsViewModel)
             case .nextcloud:
                 let outboxVM = NextcloudOutboxViewModel(mainAppModel: mainAppModel,
                                                         reportsViewModel: reportsViewModel,

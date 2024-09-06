@@ -11,7 +11,7 @@ import Combine
 
 class NextcloudReportViewModel: ReportsMainViewModel {
     
-    private var nextcloudRepository: NextcloudRepositoryProtocol
+     var nextcloudRepository: NextcloudRepositoryProtocol
     
      init(mainAppModel: MainAppModel, nextcloudRepository: NextcloudRepositoryProtocol) {
          self.nextcloudRepository = nextcloudRepository

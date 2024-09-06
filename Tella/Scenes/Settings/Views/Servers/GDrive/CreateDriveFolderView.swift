@@ -22,7 +22,7 @@ struct CreateDriveFolderView: View {
                                                  type: .gDrive))
     }
     private var reportsView: some View {
-        ReportMainView(reportMainViewModel: GDriveViewModel(mainAppModel: gDriveServerViewModel.mainAppModel))
+        GdriveReportMainView(reportsMainViewModel: GDriveViewModel(mainAppModel: gDriveServerViewModel.mainAppModel))
     }
 
 }

@@ -5,7 +5,7 @@
 
 import SwiftUI
 
-struct DraftReportView: View {
+struct TellaServerDraftView: View {
     
     @StateObject var reportViewModel : DraftReportVM
     
@@ -14,11 +14,11 @@ struct DraftReportView: View {
     
     @EnvironmentObject var mainAppModel : MainAppModel
     @EnvironmentObject var sheetManager : SheetManager
-    @EnvironmentObject var reportsViewModel : ReportsMainViewModel
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    var reportsViewModel: ReportsMainViewModel
     
-    init(mainAppModel: MainAppModel, reportId:Int? = nil) {
+    init(mainAppModel: MainAppModel, reportId:Int? = nil, reportsViewModel: ReportsMainViewModel) {
         _reportViewModel = StateObject(wrappedValue: DraftReportVM(mainAppModel: mainAppModel,reportId:reportId))
+        self.reportsViewModel = reportsViewModel
     }
     
     var body: some View {
@@ -26,10 +26,11 @@ struct DraftReportView: View {
     }
 }
 
-struct DraftReportView_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        DraftReportView(mainAppModel: MainAppModel.stub())
-    }
-}
+//struct DraftReportView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        
+//        TellaServerDraftView(mainAppModel: MainAppModel.stub())
+//    }
+//}
+
 

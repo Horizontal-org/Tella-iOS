@@ -11,6 +11,8 @@ struct SubmittedDetailsView: View {
     @StateObject var reportsViewModel : ReportsMainViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
+    
+    var rootView: AnyClass = ViewClassType.reportMainView
     private let delayTimeInSecond = 0.1
 
     var body: some View {
@@ -147,7 +149,7 @@ struct SubmittedDetailsView: View {
         self.reportsViewModel.selectedPage = .submitted
         
         DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond, execute: {
-            self.popTo(ViewClassType.reportMainView)
+            self.popTo(rootView)
         })
     }
     

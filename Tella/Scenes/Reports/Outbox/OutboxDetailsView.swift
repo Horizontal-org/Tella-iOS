@@ -11,6 +11,7 @@ struct OutboxDetailsView<T: Server>: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
     private let delayTimeInSecond = 0.1
+    var rootView: AnyClass = ViewClassType.reportMainView
 
     var body: some View {
         
@@ -193,12 +194,11 @@ struct OutboxDetailsView<T: Server>: View {
             case .gDrive:
                 let vm = GDriveSubmittedViewModel(mainAppModel: outboxReportVM.mainAppModel,
                                                   reportId: outboxReportVM.reportViewModel.id)
-                SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsViewModel)
-                
+                GDriveSubmittedDetailsView(submittedMainViewModel: vm, reportsMainViewModel: reportsViewModel)
             case .nextcloud:
                 let vm = NextcloudSubmittedViewModel(mainAppModel: outboxReportVM.mainAppModel,
                                                      reportId: outboxReportVM.reportViewModel.id)
-                SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsViewModel)
+                NextcloudSubmittedDetailsView(submittedMainViewModel: vm, reportsMainViewModel: reportsViewModel)
             default:
                 Text("")
 
@@ -216,7 +216,7 @@ struct OutboxDetailsView<T: Server>: View {
     
     private func dismissView() {
         DispatchQueue.main.asyncAfter(deadline:.now() + delayTimeInSecond, execute: {
-            self.popTo(ViewClassType.reportMainView)
+            self.popTo(rootView)
         })
     }
     
