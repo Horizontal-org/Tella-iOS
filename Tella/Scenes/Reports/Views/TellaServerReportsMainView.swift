@@ -18,14 +18,13 @@ struct TellaServerReportsMainView: View {
             self.navigateTo(destination: destination)
         } showSubmittedViewAction: { id in
             let vm = SubmittedReportVM(mainAppModel: reportsMainViewModel.mainAppModel, reportId: id)
-            let destination = SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsMainViewModel)
+            let destination = TellaServerSubmittedDetailsView(submittedMainViewModel: vm, reportsMainViewModel: reportsMainViewModel)
             self.navigateTo(destination: destination)
         } showOutboxViewAction: { id in
             let outboxViewModel = OutboxReportVM(mainAppModel: reportsMainViewModel.mainAppModel,
                                                  reportsViewModel: reportsMainViewModel,
                                                  reportId: id)
-            let destination = OutboxDetailsView(outboxReportVM: outboxViewModel,
-                                                reportsViewModel: reportsMainViewModel)
+            let destination = TellaServerOutboxDetailsView(outboxReportVM: outboxViewModel, reportsViewModel: reportsMainViewModel)
             self.navigateTo(destination: destination)
         }
     }

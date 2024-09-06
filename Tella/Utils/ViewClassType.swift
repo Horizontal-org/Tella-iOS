@@ -16,5 +16,6 @@ struct ViewClassType {
     static let reportMainView : AnyClass = UIHostingController<ReportMainView>.self
     static let nextcloudReportMainView : AnyClass = UIHostingController<NextcloudReportMainView>.self
     static let gdriveReportMainView : AnyClass = UIHostingController<GdriveReportMainView>.self
+    static let tellaServerReportMainView : AnyClass = UIHostingController<TellaServerReportsMainView>.self
 }
 

@@ -190,7 +190,7 @@ struct OutboxDetailsView<T: Server>: View {
             case .tella:
                 let vm = SubmittedReportVM(mainAppModel: outboxReportVM.mainAppModel,
                                            reportId: outboxReportVM.reportViewModel.id)
-                SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsViewModel)
+                TellaServerSubmittedDetailsView(submittedMainViewModel: vm, reportsMainViewModel: reportsViewModel)
             case .gDrive:
                 let vm = GDriveSubmittedViewModel(mainAppModel: outboxReportVM.mainAppModel,
                                                   reportId: outboxReportVM.reportViewModel.id)

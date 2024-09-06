@@ -197,7 +197,7 @@ struct DraftView: View  {
                 let outboxVM = OutboxReportVM(mainAppModel: mainAppModel,
                                               reportsViewModel: reportsViewModel,
                                               reportId: viewModel.reportId)
-                OutboxDetailsView(outboxReportVM: outboxVM, reportsViewModel: reportsViewModel)
+              TellaServerOutboxDetailsView(outboxReportVM: outboxVM, reportsViewModel: reportsViewModel)
             case .gDrive:
                 let outboxVM = GDriveOutboxViewModel(mainAppModel: mainAppModel,
                                                      reportsViewModel: reportsViewModel,

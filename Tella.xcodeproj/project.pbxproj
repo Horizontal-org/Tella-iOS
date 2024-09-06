@@ -432,6 +432,8 @@
 		20219B332C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B322C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift */; };
 		20219B352C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B342C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift */; };
 		20473A5F2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20473A5E2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift */; };
+		20473A612C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20473A602C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift */; };
+		20473A632C8BA7FE0015A9B5 /* TellaServerOutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20473A622C8BA7FE0015A9B5 /* TellaServerOutboxDetailsView.swift */; };
 		2048DADF2C340FF6000B3D9F /* NextcloudServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048DADE2C340FF6000B3D9F /* NextcloudServerLoginView.swift */; };
 		204E7C3C2C241376004CC49F /* NextcloudRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204E7C3B2C241376004CC49F /* NextcloudRepository.swift */; };
 		208A06532BF6057A004BA033 /* EditImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06522BF6057A004BA033 /* EditImageViewModel.swift */; };
@@ -1041,6 +1043,8 @@
 		20219B322C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveSubmittedDetailsView.swift; sourceTree = "<group>"; };
 		20219B342C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveOutboxDetailsView.swift; sourceTree = "<group>"; };
 		20473A5E2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaServerReportsMainView.swift; sourceTree = "<group>"; };
+		20473A602C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaServerSubmittedDetailsView.swift; sourceTree = "<group>"; };
+		20473A622C8BA7FE0015A9B5 /* TellaServerOutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaServerOutboxDetailsView.swift; sourceTree = "<group>"; };
 		2048DADE2C340FF6000B3D9F /* NextcloudServerLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudServerLoginView.swift; sourceTree = "<group>"; };
 		204E7C3B2C241376004CC49F /* NextcloudRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudRepository.swift; sourceTree = "<group>"; };
 		208A06522BF6057A004BA033 /* EditImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageViewModel.swift; sourceTree = "<group>"; };
@@ -1479,6 +1483,8 @@
 			children = (
 				1236644E28FFECEF00FA839B /* TellaServerDraftView.swift */,
 				20473A5E2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift */,
+				20473A602C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift */,
+				20473A622C8BA7FE0015A9B5 /* TellaServerOutboxDetailsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3561,6 +3567,7 @@
 				D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */,
 				CC1313822A5CB0DB0057271C /* DeleteAfterFailOption.swift in Sources */,
 				15F924482C17929300C436C5 /* ViewModelState.swift in Sources */,
+				20473A632C8BA7FE0015A9B5 /* TellaServerOutboxDetailsView.swift in Sources */,
 				1203CDEB2992C1CB00D09073 /* HTTPCodes.swift in Sources */,
 				15BD9CAB2BC740D700C3932B /* EntitySelectorView.swift in Sources */,
 				122389B7293635790058593B /* SetExtension.swift in Sources */,
@@ -4007,6 +4014,7 @@
 				125EFACD274A447100D93DF6 /* FileSortMenu.swift in Sources */,
 				15FABA362B73F96800B2EFEE /* ResourceRepository.swift in Sources */,
 				15994A112BFBF0E50017F153 /* SharedDrive.swift in Sources */,
+				20473A612C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift in Sources */,
 				12607D58279042CE00E2B8CC /* VideoPlayer.swift in Sources */,
 				121AD8222943A2F00056AC2A /* ReportRepository.swift in Sources */,
 				E1E7C5792AAB515100DDB07E /* UwaziTemplateRow.swift in Sources */,
