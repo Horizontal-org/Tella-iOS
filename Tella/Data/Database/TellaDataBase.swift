@@ -47,6 +47,7 @@ class TellaDataBase : DataBase {
                 createNextcloudServerTable()
                 createNextcloudReportTable()
                 createNextcloudReportFilesTable()
+                fallthrough
             default :
                 break
             }
