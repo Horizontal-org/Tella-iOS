@@ -38,19 +38,21 @@ extension APIError: LocalizedError {
         case let .nextcloudError(code):
             return customNcErrorMessage(errorCode: code)
         case .errorOccured :
-            return LocalizableCommon.commonError.localized
+            return LocalizableError.commonError.localized
         }
     }
     
     private func customNcErrorMessage(errorCode : Int) -> String {
         let httpErrorCode = NcHTTPErrorCodes(rawValue: errorCode)
         switch httpErrorCode{
-        case .ncUnauthorized, .ncUnauthorizedError:
-            return "The username or password is incorrect"
+        case .ncUnauthorizedError:
+            return LocalizableError.ncInvalidCredentials.localized
         case .ncNoInternetError:
-            return "No Internet connection. Try again when you are connected to the Internet."
+            return LocalizableError.noInternet.localized
         case .nextcloudFolderExists:
-            return "Folder already exist"
+            return LocalizableError.ncFolderExist.localized
+        case .ncTooManyRequests:
+            return LocalizableError.ncTooManyRequests.localized
         default:
             return LocalizableError.unexpectedResponse.localized
         }

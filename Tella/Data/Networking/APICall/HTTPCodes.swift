@@ -24,7 +24,7 @@ enum HTTPErrorCodes: Int {
 
 enum NcHTTPErrorCodes: Int {
     case ncUnauthorizedError = 997
-    case ncUnauthorized = 429
+    case ncTooManyRequests = 429
     case ncNoInternetError = -1009
     case nextcloudFolderExists = 405
     case ncNoServerError = -1003
