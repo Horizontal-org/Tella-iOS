@@ -17,14 +17,14 @@ struct ServerSelectionView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    let gDriveDIContainer: GDriveDIContainer
-    let dropboxRepository: DropboxRepository
-    init(appModel:MainAppModel, server: TellaServer? = nil, gDriveDIContainer: GDriveDIContainer, dropboxRepository: DropboxRepository) {
-        self.gDriveDIContainer = gDriveDIContainer
+    let gDriveRepository: GDriveRepositoryProtocol
+    let dropboxRepository: DropboxRepositoryProtocol
+    
+    init(appModel:MainAppModel, server: TellaServer? = nil, gDriveRepository: GDriveRepositoryProtocol, dropboxRepository: DropboxRepositoryProtocol) {
+        self.gDriveRepository = gDriveRepository
         self.dropboxRepository = dropboxRepository
-        _serverViewModel = StateObject(wrappedValue: TellaWebServerViewModel(mainAppModel: appModel, currentServer: server))
-        _gDriveVM = ObservedObject(wrappedValue: GDriveAuthViewModel(repository: gDriveDIContainer.gDriveRepository))
-        _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveDIContainer.gDriveRepository, mainAppModel: appModel))
+        _gDriveVM = ObservedObject(wrappedValue: GDriveAuthViewModel(repository: gDriveRepository))
+        _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveRepository, mainAppModel: appModel))
         _dropboxVM = ObservedObject(wrappedValue: DropboxAuthViewModel(dropboxRepository: dropboxRepository))
     }
 
@@ -163,7 +163,7 @@ struct ServerSelectionView: View {
 
 struct ServerSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ServerSelectionView(appModel: MainAppModel.stub(), gDriveDIContainer: GDriveDIContainer(), dropboxRepository: DropboxRepository())
+        ServerSelectionView(appModel: MainAppModel.stub(), gDriveRepository: GDriveRepository(), dropboxRepository: DropboxRepository())
             .environmentObject(MainAppModel.stub())
             .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
     }

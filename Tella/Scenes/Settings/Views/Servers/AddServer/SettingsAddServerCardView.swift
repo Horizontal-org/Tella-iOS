@@ -27,8 +27,9 @@ struct SettingsAddServerCardView: View {
                 Spacer()
                 
                 Button {
-                    //navigateTo(destination: AddServerURLView(appModel: mainAppModel))
-                    navigateTo(destination: ServerSelectionView(appModel: mainAppModel, gDriveDIContainer: gDriveDIContainer, dropboxRepository: dropboxRepository).environmentObject(serversViewModel))
+                    navigateTo(destination: ServerSelectionView(appModel: serversViewModel.mainAppModel,
+                                                                gDriveRepository: gDriveRepository,
+                                                                dropboxRepository: dropboxRepository).environmentObject(serversViewModel))
                 } label: {
                     Image("settings.add")
                         .padding(.all, 14)
