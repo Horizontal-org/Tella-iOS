@@ -25,7 +25,7 @@ class GDriveViewModel: ReportsMainViewModel {
     ]}
 
 
-    init(mainAppModel: MainAppModel, gDriveRepository: GDriveRepositoryProtocol = GDriveRepository()) {
+    init(mainAppModel: MainAppModel, gDriveRepository: GDriveRepositoryProtocol) {
         self.gDriveRepository = gDriveRepository
         super.init(mainAppModel: mainAppModel, connectionType: .gDrive, title: LocalizableGDrive.gDriveAppBar.localized)
         
