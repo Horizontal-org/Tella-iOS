@@ -9,6 +9,7 @@ enum ServerConnectionType: Codable {
     case uwazi
     case gDrive
     case nextcloud
+    case dropbox
 
 }
 
@@ -49,6 +50,8 @@ extension ServerConnectionType {
             return "reports.report"
         case .nextcloud:
             return "nextcloud.icon"
+        case .dropbox:
+            return "reports.report"
         }
     }
 }
