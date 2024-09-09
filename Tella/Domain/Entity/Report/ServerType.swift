@@ -22,6 +22,8 @@ extension ServerConnectionType {
             return LocalizableSettings.settServerReportsSuccessMessage.localized
         case .nextcloud:
             return LocalizableSettings.nextcloudSuccessMessage.localized
+        case.dropbox:
+            return "GO TO DROPBOX"
         default:
             return ""
         }
