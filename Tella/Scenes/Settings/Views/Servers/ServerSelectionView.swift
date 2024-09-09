@@ -123,7 +123,9 @@ struct ServerSelectionView: View {
     }
     
     fileprivate func navigateToDropbox() {
-        dropboxVM.handleSignIn()
+        dropboxVM.handleSignIn() {
+            navigateTo(destination: SuccessLoginView(navigateToAction: {}, type: .dropbox))
+        }
     }
 
     fileprivate func unavailableConnectionsView() -> some View {

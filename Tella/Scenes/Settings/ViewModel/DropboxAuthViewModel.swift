@@ -19,12 +19,13 @@ class DropboxAuthViewModel: ObservableObject {
         self.dropboxRepository = dropboxRepository
     }
     
-    func handleSignIn() {
+    func handleSignIn(completion: @escaping () -> Void) {
         self.signInState = .loading
         Task { @MainActor in
             do {
                 try await dropboxRepository.handleSignIn()
                 self.signInState = .loaded(nil)
+                completion()
             } catch let error as APIError {
                 self.signInState = .error(error.errorMessage)
             }
