@@ -8,20 +8,24 @@
 
 import SwiftUI
 import Combine
+
 struct ServerSelectionView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
     @ObservedObject var gDriveVM: GDriveAuthViewModel
     @ObservedObject var gDriveServerVM: GDriveServerViewModel
+    @ObservedObject var dropboxVM: DropboxAuthViewModel
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    let gDriveRepository: GDriveRepositoryProtocol
-
-    
-    init(appModel:MainAppModel, server: TellaServer? = nil, gDriveRepository: GDriveRepositoryProtocol) {
-        self.gDriveRepository = gDriveRepository
-        _gDriveVM = ObservedObject(wrappedValue: GDriveAuthViewModel(repository: gDriveRepository))
-        _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveRepository, mainAppModel: appModel))
+    let gDriveDIContainer: GDriveDIContainer
+    let dropboxRepository: DropboxRepository
+    init(appModel:MainAppModel, server: TellaServer? = nil, gDriveDIContainer: GDriveDIContainer, dropboxRepository: DropboxRepository) {
+        self.gDriveDIContainer = gDriveDIContainer
+        self.dropboxRepository = dropboxRepository
+        _serverViewModel = StateObject(wrappedValue: TellaWebServerViewModel(mainAppModel: appModel, currentServer: server))
+        _gDriveVM = ObservedObject(wrappedValue: GDriveAuthViewModel(repository: gDriveDIContainer.gDriveRepository))
+        _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveDIContainer.gDriveRepository, mainAppModel: appModel))
+        _dropboxVM = ObservedObject(wrappedValue: DropboxAuthViewModel(dropboxRepository: dropboxRepository))
     }
 
     var body: some View {
@@ -43,6 +47,8 @@ struct ServerSelectionView: View {
             if case .error(let message) = signInState {
                 Toast.displayToast(message: message)
             }
+        }.onOpenURL { url in
+            dropboxVM.handleURLRedirect(url: url)
         }
         
     }
@@ -79,6 +85,8 @@ struct ServerSelectionView: View {
                 navigateToGDriveFlow()
             case .nextcloud:
                 navigateToNextCloud()
+            case .dropbox:
+                navigateToDropbox()
             default:
                 break
             }
@@ -112,6 +120,10 @@ struct ServerSelectionView: View {
                 title: LocalizableSettings.settServerGDrive.localized
             )
         }
+    }
+    
+    fileprivate func navigateToDropbox() {
+        dropboxVM.handleSignIn()
     }
 
     fileprivate func unavailableConnectionsView() -> some View {
@@ -149,7 +161,7 @@ struct ServerSelectionView: View {
 
 struct ServerSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ServerSelectionView(appModel: MainAppModel.stub(), gDriveRepository: GDriveRepository())
+        ServerSelectionView(appModel: MainAppModel.stub(), gDriveDIContainer: GDriveDIContainer(), dropboxRepository: DropboxRepository())
             .environmentObject(MainAppModel.stub())
             .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
     }

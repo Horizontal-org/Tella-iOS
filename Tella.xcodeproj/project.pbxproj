@@ -392,6 +392,8 @@
 		15587A012C010F1E0071389E /* GDriveServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15587A002C010F1E0071389E /* GDriveServer.swift */; };
 		15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15622F492B72B1FF00289816 /* DeleteConfirmation.swift */; };
 		156986252B88FCB600534720 /* ResourcePDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156986242B88FCB600534720 /* ResourcePDFView.swift */; };
+		1574AC832C878FF0007BEBF5 /* DropboxRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574AC822C878FF0007BEBF5 /* DropboxRepository.swift */; };
+		1574AC882C879DFF007BEBF5 /* DropboxAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574AC872C879DFF007BEBF5 /* DropboxAuthViewModel.swift */; };
 		15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C192B6AC34100D67C74 /* ResourcesView.swift */; };
 		15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C1B2B6AC63200D67C74 /* ReloadButton.swift */; };
 		15791C232B6C2E9100D67C74 /* ResourcesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */; };
@@ -1002,6 +1004,8 @@
 		15587A002C010F1E0071389E /* GDriveServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveServer.swift; sourceTree = "<group>"; };
 		15622F492B72B1FF00289816 /* DeleteConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmation.swift; sourceTree = "<group>"; };
 		156986242B88FCB600534720 /* ResourcePDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcePDFView.swift; sourceTree = "<group>"; };
+		1574AC822C878FF0007BEBF5 /* DropboxRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxRepository.swift; sourceTree = "<group>"; };
+		1574AC872C879DFF007BEBF5 /* DropboxAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxAuthViewModel.swift; sourceTree = "<group>"; };
 		15791C192B6AC34100D67C74 /* ResourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesView.swift; sourceTree = "<group>"; };
 		15791C1B2B6AC63200D67C74 /* ReloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReloadButton.swift; sourceTree = "<group>"; };
 		15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesViewModel.swift; sourceTree = "<group>"; };
@@ -2435,6 +2439,7 @@
 				15FABA352B73F96800B2EFEE /* ResourceRepository.swift */,
 				155541B12C0672C20031D3A5 /* GDriveRepository.swift */,
 				1275A8472C5E6EDF0071A97D /* Nextcloud */,
+				1574AC822C878FF0007BEBF5 /* DropboxRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -2498,6 +2503,7 @@
 		12E8129F27A19E67007DDDC0 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				1574AC872C879DFF007BEBF5 /* DropboxAuthViewModel.swift */,
 				129B845028BF6C7800F1B344 /* ServersViewModel.swift */,
 				123CE84329126B52003C251F /* TellaWebServerViewModel.swift */,
 				12730E68279F420400DC0135 /* SettingsViewModel.swift */,
@@ -2561,6 +2567,13 @@
 				1519BED72B9A5A52006FD290 /* Resource.swift */,
 			);
 			path = Resource;
+			sourceTree = "<group>";
+		};
+		1574AC842C879DA6007BEBF5 /* Dropbox */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Dropbox;
 			sourceTree = "<group>";
 		};
 		15791C182B6AC32B00D67C74 /* Resources */ = {
@@ -2853,6 +2866,7 @@
 		D53B76DA2601C9E50001CD34 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				1574AC842C879DA6007BEBF5 /* Dropbox */,
 				125C789B2C36B36900440014 /* CommonConnectionReport */,
 				12B84B8C2C333DD0006363F0 /* Nextcloud */,
 				15B81F332C1A2779007C0E88 /* GDrive */,
@@ -3704,8 +3718,10 @@
 				12B5257B2848FC2800B3D1C0 /* LockTimeoutOption.swift in Sources */,
 				127A5B2228538E0800FAAEB0 /* Language.swift in Sources */,
 				1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */,
+				1574AC882C879DFF007BEBF5 /* DropboxAuthViewModel.swift in Sources */,
 				15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */,
 				123048D5295F95A40015CD96 /* SubmittedDetailsView.swift in Sources */,
+				1574AC832C878FF0007BEBF5 /* DropboxRepository.swift in Sources */,
 				1293F6682AD7EF3900F6CFBD /* CloseHeaderView.swift in Sources */,
 				1278B66127EB364500C9AC4D /* Utils.swift in Sources */,
 				15A173442C78F64100E84F55 /* LocalizableError.swift in Sources */,
