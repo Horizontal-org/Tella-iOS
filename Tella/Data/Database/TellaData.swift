@@ -52,7 +52,7 @@ class TellaData : ObservableObject {
         return addServerResult
     }
     
-    func addDropboxServer(server: Server) -> Result<Int, Error> {
+    func addDropboxServer(server: DropboxServer) -> Result<Int, Error> {
         let id = database.addDropboxServer(dropboxServer: server)
         reloadServers()
         
@@ -101,6 +101,8 @@ class TellaData : ObservableObject {
             deleteGDriveServer(serverId: serverId)
         case .nextcloud:
             deleteNextcloudServer(serverId: serverId)
+        case .dropbox:
+            deleteDropboxServer(serverId: serverId)
         default:
             break
         }
@@ -138,6 +140,12 @@ class TellaData : ObservableObject {
         return resultDelete
     }
     
+    func deleteDropboxServer(serverId: Int) {
+        DropboxRepository().signOut()
+        database.deleteDroboxServer(serverId: serverId)
+        reloadServers()
+    }
+    
     func reloadServers() {
         self.shouldReloadServers.send(true)
     }
@@ -148,8 +156,9 @@ class TellaData : ObservableObject {
         let uwaziServers = self.getUwaziServers()
         let gDriveServers = self.getDriveServers()
         let nextcloudServers = self.getNextcloudServer()
+        let dropboxServers = self.getDropboxServers()
         
-        return tellaServers + uwaziServers + gDriveServers + nextcloudServers
+        return tellaServers + uwaziServers + gDriveServers + nextcloudServers + dropboxServers
     }
     
     func getTellaServers() -> [TellaServer] {

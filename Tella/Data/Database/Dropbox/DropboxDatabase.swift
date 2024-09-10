@@ -18,7 +18,7 @@ extension TellaDataBase {
         statementBuilder.createTable(tableName: D.tDropboxServer, columns: columns)
     }
     
-    func addDropboxServer(dropboxServer: Server) -> Result<Int, Error>{
+    func addDropboxServer(dropboxServer: DropboxServer) -> Result<Int, Error>{
         do {
             let valuesToAdd = [KeyValue(key: D.cName, value: dropboxServer.name)]
             
@@ -29,11 +29,12 @@ extension TellaDataBase {
         }
     }
     
-    func getDropboxServers() -> [Server] {
+    func getDropboxServers() -> [DropboxServer] {
         do {
             let serversDict = try statementBuilder.selectQuery(tableName: D.tDropboxServer, andCondition: [])
             
-            let dropboxServer = try serversDict.decode(Server.self)
+            let dropboxServer = try serversDict.decode(DropboxServer.self)
+
             return dropboxServer
         } catch let error {
             debugLog("Error while fetching servers from \(D.tGDriveServer): \(error)")

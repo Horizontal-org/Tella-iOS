@@ -18,6 +18,8 @@ class DropboxServerViewModel: ObservableObject {
     }
     
     func addServer() {
-        // add server connection
+        let server = DropboxServer()
+        
+        _ = mainAppModel.tellaData?.addDropboxServer(server: server)
     }
 }

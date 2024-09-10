@@ -49,6 +49,9 @@ class TellaDataBase : DataBase {
                 createNextcloudServerTable()
                 createNextcloudReportTable()
                 createNextcloudReportFilesTable()
+                fallthrough
+            case 6:
+                createDropboxServerTable()
             default :
                 break
             }
@@ -75,6 +78,7 @@ class TellaDataBase : DataBase {
         createNextcloudServerTable()
         createNextcloudReportTable()
         createNextcloudReportFilesTable()
+        createDropboxServerTable()
 
     }
     

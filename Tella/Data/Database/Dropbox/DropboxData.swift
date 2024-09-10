@@ -9,7 +9,7 @@
 import Foundation
 
 extension TellaData {
-    func getDropboxServers() -> [GDriveServer] {
-        self.database.getDriveServers()
+    func getDropboxServers() -> [Server] {
+        self.database.getDropboxServers()
     }
 }

@@ -25,7 +25,7 @@ struct ServerSelectionView: View {
         self.dropboxRepository = dropboxRepository
         _gDriveVM = ObservedObject(wrappedValue: GDriveAuthViewModel(repository: gDriveRepository))
         _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveRepository, mainAppModel: appModel))
-        _dropboxVM = ObservedObject(wrappedValue: DropboxAuthViewModel(dropboxRepository: dropboxRepository))
+        _dropboxVM = ObservedObject(wrappedValue: DropboxAuthViewModel(dropboxRepository: dropboxRepository, dropboxServerViewModel: DropboxServerViewModel(repository: dropboxRepository, mainAppModel: appModel)))
     }
 
     var body: some View {
@@ -124,7 +124,9 @@ struct ServerSelectionView: View {
     
     fileprivate func navigateToDropbox() {
         dropboxVM.handleSignIn() {
-            navigateTo(destination: SuccessLoginView(navigateToAction: {}, type: .dropbox))
+            navigateTo(destination: SuccessLoginView(navigateToAction: {
+                self.popToRoot()
+            }, type: .dropbox))
         }
     }
 
