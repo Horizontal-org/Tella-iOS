@@ -63,7 +63,7 @@ struct ConnectionsView: View {
                                         destination:nextcloudMainView)
                 case .dropbox:
                     ConnectionsItemView(title: "Dropbox",
-                                        image: "home.nextcloud",
+                                        image: "home.dropbox",
                                         destination: EmptyView())
                 }
             }

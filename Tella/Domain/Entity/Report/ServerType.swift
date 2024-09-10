@@ -37,6 +37,8 @@ extension ServerConnectionType {
             LocalizableSettings.settServerUwazi.localized
         case .nextcloud:
             LocalizableSettings.settServerNextCloud.localized
+        case .dropbox:
+            "DROPBOX"
         default:
             ""
         }
