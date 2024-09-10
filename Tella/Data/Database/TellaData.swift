@@ -52,6 +52,13 @@ class TellaData : ObservableObject {
         return addServerResult
     }
     
+    func addDropboxServer(server: Server) -> Result<Int, Error> {
+        let id = database.addDropboxServer(dropboxServer: server)
+        reloadServers()
+        
+        return id
+    }
+    
     @discardableResult
     func updateServer(server : TellaServer) -> Result<Bool, Error> {
         let updateServerResult = database.updateServer(server: server)
