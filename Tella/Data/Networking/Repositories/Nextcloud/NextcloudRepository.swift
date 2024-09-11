@@ -318,21 +318,13 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     }
     
     private func fileExists(serverUrlFileName: String) async throws -> Bool?  {
-        
-        let requestBody =
-        """
-        <?xml version=\"1.0\" encoding=\"UTF-8\"?>
-        <d:propfind xmlns:d=\"DAV:\" xmlns:oc=\"http://owncloud.org/ns\" xmlns:nc=\"http://nextcloud.org/ns\">
-            <d:prop></d:prop>
-        </d:propfind>
-        """
-        
+                
         let option = NKRequestOptions(timeout: ktimeout, queue: NextcloudKit.shared.nkCommonInstance.backgroundQueue)
         
         return try await withCheckedThrowingContinuation({ continuation in
             NextcloudKit.shared.readFileOrFolder(serverUrlFileName: serverUrlFileName,
                                                  depth: "0",
-                                                 requestBody: requestBody.data(using: .utf8), account: "",
+                                                 requestBody: NextcloudConstants.filesRequestBody.data(using: .utf8), account: "",
                                                  options: option) {
                 account, files, _, error in
                 

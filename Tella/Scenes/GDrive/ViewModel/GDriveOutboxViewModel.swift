@@ -11,7 +11,7 @@ import Combine
 import UIKit
 
 class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
-    private let gDriveRepository: GDriveRepositoryProtocol
+    let gDriveRepository: GDriveRepositoryProtocol
     private var currentUploadCancellable: AnyCancellable?
     private var uploadQueue: [ReportVaultFile] = []
     
@@ -22,7 +22,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     init(mainAppModel: MainAppModel,
          reportsViewModel : ReportsMainViewModel,
          reportId : Int?,
-         repository: GDriveRepository) {
+         repository: GDriveRepositoryProtocol) {
         
         self.gDriveRepository = repository
         super.init(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: reportId)

@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 class DraftMainViewModel: ObservableObject {
-    var mainAppModel : MainAppModel
+    var mainAppModel: MainAppModel
     // Report
     @Published var reportId : Int?
     @Published var title : String = ""

@@ -17,7 +17,7 @@ struct NextcloutOutboxView<T: NextcloudServer>: View {
     
     var body: some View {
         OutboxDetailsView(outboxReportVM: outboxReportVM,
-                          reportsViewModel: reportsViewModel)
+                          reportsViewModel: reportsViewModel, rootView: ViewClassType.nextcloudReportMainView)
         
         .onReceive(outboxReportVM.$shouldShowLoginView, perform: { shouldShowLogin in
             if shouldShowLogin {

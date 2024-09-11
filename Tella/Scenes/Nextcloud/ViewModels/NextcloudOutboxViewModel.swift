@@ -182,7 +182,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
             switch error {
             case .nextcloudError(NcHTTPErrorCodes.unauthorized.rawValue),
                     .nextcloudError(NcHTTPErrorCodes.ncUnauthorizedError.rawValue),
-                    .nextcloudError(NcHTTPErrorCodes.ncUnauthorized.rawValue):
+                    .nextcloudError(NcHTTPErrorCodes.ncTooManyRequests.rawValue):
                 self.shouldShowLoginView = true
                 
             default:
