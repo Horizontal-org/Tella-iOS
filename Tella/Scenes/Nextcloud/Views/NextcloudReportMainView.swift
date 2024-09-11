@@ -20,7 +20,7 @@ struct NextcloudReportMainView: View {
             
         } showSubmittedViewAction: { id in
             let vm = NextcloudSubmittedViewModel(reportsMainViewModel: reportsMainViewModel, reportId: id)
-            let destination = NextcloudSubmittedDetailsView(submittedMainViewModel: vm, reportsMainViewModel: reportsMainViewModel)
+            let destination = NextcloudSubmittedDetailsView(submittedMainViewModel: vm)
             self.navigateTo(destination: destination)
             
         } showOutboxViewAction: { id in

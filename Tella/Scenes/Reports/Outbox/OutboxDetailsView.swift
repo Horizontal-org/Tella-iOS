@@ -188,15 +188,15 @@ struct OutboxDetailsView<T: Server>: View {
             case .tella:
                 let vm = SubmittedReportVM(reportsMainViewModel: outboxReportVM.reportsViewModel,
                                            reportId: outboxReportVM.reportViewModel.id)
-                TellaServerSubmittedDetailsView(submittedMainViewModel: vm, reportsMainViewModel: outboxReportVM.reportsViewModel)
+                TellaServerSubmittedDetailsView(submittedMainViewModel: vm)
             case .gDrive:
                 let vm = GDriveSubmittedViewModel(reportsMainViewModel: outboxReportVM.reportsViewModel,
                                                   reportId: outboxReportVM.reportViewModel.id)
-                GDriveSubmittedDetailsView(submittedMainViewModel: vm, reportsMainViewModel: outboxReportVM.reportsViewModel)
+                GDriveSubmittedDetailsView(submittedMainViewModel: vm)
             case .nextcloud:
                 let vm = NextcloudSubmittedViewModel(reportsMainViewModel: outboxReportVM.reportsViewModel,
                                                      reportId: outboxReportVM.reportViewModel.id)
-                NextcloudSubmittedDetailsView(submittedMainViewModel: vm, reportsMainViewModel: outboxReportVM.reportsViewModel)
+                NextcloudSubmittedDetailsView(submittedMainViewModel: vm)
             default:
                 Text("")
 

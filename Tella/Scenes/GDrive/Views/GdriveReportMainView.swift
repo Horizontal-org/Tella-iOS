@@ -18,7 +18,7 @@ struct GdriveReportMainView: View {
             self.navigateTo(destination: destination)
         } showSubmittedViewAction: { id in
             let vm = GDriveSubmittedViewModel(reportsMainViewModel: reportsMainViewModel, reportId: id)
-            let destination = GDriveSubmittedDetailsView(submittedMainViewModel: vm, reportsMainViewModel: reportsMainViewModel)
+            let destination = GDriveSubmittedDetailsView(submittedMainViewModel: vm)
             self.navigateTo(destination: destination)
         } showOutboxViewAction: { id in
             let outboxViewModel = GDriveOutboxViewModel(reportsViewModel: reportsMainViewModel,

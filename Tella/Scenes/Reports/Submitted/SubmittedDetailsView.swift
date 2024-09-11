@@ -8,7 +8,6 @@ import SwiftUI
 struct SubmittedDetailsView: View {
     
     @StateObject var submittedReportVM : SubmittedMainViewModel
-    @StateObject var reportsViewModel : ReportsMainViewModel
     @EnvironmentObject private var sheetManager: SheetManager
     
     var rootView: AnyClass = ViewClassType.reportMainView
@@ -145,7 +144,7 @@ struct SubmittedDetailsView: View {
     }
     
     private func dismissViews() {
-        self.reportsViewModel.selectedPage = .submitted
+        self.submittedReportVM.reportsMainViewModel.selectedPage = .submitted
         
         DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond, execute: {
             self.popTo(rootView)
