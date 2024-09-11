@@ -8,17 +8,14 @@
 
 import SwiftUI
 
-struct NextcloutOutboxView<T: NextcloudServer>: View {
+struct NextcloutOutboxDetailsView<T: NextcloudServer>: View {
     
-    @StateObject var outboxReportVM : OutboxMainViewModel<T>
-    @StateObject var reportsViewModel : ReportsMainViewModel
+    @StateObject var outboxReportVM : NextcloudOutboxViewModel
     @EnvironmentObject private var sheetManager: SheetManager
     @EnvironmentObject var mainAppModel: MainAppModel
     
     var body: some View {
-        OutboxDetailsView(outboxReportVM: outboxReportVM,
-                          reportsViewModel: reportsViewModel, rootView: ViewClassType.nextcloudReportMainView)
-        
+        OutboxDetailsView(outboxReportVM: outboxReportVM, rootView: ViewClassType.nextcloudReportMainView)
         .onReceive(outboxReportVM.$shouldShowLoginView, perform: { shouldShowLogin in
             if shouldShowLogin {
                 showLoginConfirmationView()

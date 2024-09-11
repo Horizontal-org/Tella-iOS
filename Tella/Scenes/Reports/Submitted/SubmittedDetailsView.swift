@@ -9,7 +9,6 @@ struct SubmittedDetailsView: View {
     
     @StateObject var submittedReportVM : SubmittedMainViewModel
     @StateObject var reportsViewModel : ReportsMainViewModel
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
     
     var rootView: AnyClass = ViewClassType.reportMainView

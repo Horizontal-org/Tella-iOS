@@ -15,9 +15,6 @@ struct DraftView: View  {
     @State private var shouldShowMenu : Bool = false
     
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var mainAppModel: MainAppModel
-
-    var reportsViewModel : ReportsMainViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
@@ -192,24 +189,16 @@ struct DraftView: View  {
     
     var outboxDetailsView: some View {
         Group {
-            switch reportsViewModel.connectionType {
+            switch viewModel.reportsMainViewModel.connectionType {
             case .tella:
-                let outboxVM = OutboxReportVM(mainAppModel: mainAppModel,
-                                              reportsViewModel: reportsViewModel,
-                                              reportId: viewModel.reportId)
-              TellaServerOutboxDetailsView(outboxReportVM: outboxVM, reportsViewModel: reportsViewModel)
+                let outboxVM = OutboxReportVM(reportsViewModel: viewModel.reportsMainViewModel, reportId: viewModel.reportId)
+                TellaServerOutboxDetailsView(outboxReportVM: outboxVM)
             case .gDrive:
-                let outboxVM = GDriveOutboxViewModel(mainAppModel: mainAppModel,
-                                                     reportsViewModel: reportsViewModel,
-                                                     reportId: viewModel.reportId,
-                                                     repository: GDriveRepository())
-                GdriveOutboxDetailsView(outboxReportVM: outboxVM, reportsViewModel: reportsViewModel)
+                let outboxVM = GDriveOutboxViewModel(reportsViewModel: viewModel.reportsMainViewModel, reportId: viewModel.reportId, repository: GDriveRepository())
+                GdriveOutboxDetailsView(outboxReportVM: outboxVM)
             case .nextcloud:
-                let outboxVM = NextcloudOutboxViewModel(mainAppModel: mainAppModel,
-                                                        reportsViewModel: reportsViewModel,
-                                                        reportId: viewModel.reportId,
-                                                        repository: NextcloudRepository())
-                NextcloutOutboxView(outboxReportVM: outboxVM, reportsViewModel: reportsViewModel)
+                let outboxVM = NextcloudOutboxViewModel(reportsViewModel: viewModel.reportsMainViewModel, reportId: viewModel.reportId, repository: NextcloudRepository())
+                NextcloutOutboxDetailsView(outboxReportVM: outboxVM)
             default:
                 Text("")
             }
@@ -272,13 +261,13 @@ struct DraftView: View  {
     }
     
     private func handleSuccessSavingDraft() {
-        reportsViewModel.selectedPage = .draft
+        viewModel.reportsMainViewModel.selectedPage = .draft
         dismissViews()
         Toast.displayToast(message: LocalizableReport.draftSavedToast.localized)
     }
     
     private func handleSuccessSavingOutbox() {
-        reportsViewModel.selectedPage = .outbox
+        viewModel.reportsMainViewModel.selectedPage = .outbox
         dismissViews()
         Toast.displayToast(message: LocalizableReport.outboxSavedToast.localized)
     }

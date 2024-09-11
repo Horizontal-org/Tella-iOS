@@ -139,7 +139,7 @@
 		1252F7072BDAB2000076DF4B /* EntityAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1252F7062BDAB2000076DF4B /* EntityAttachment.swift */; };
 		1253B87B2C50481400D675E5 /* NextcloudSubmittedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253B87A2C50481400D675E5 /* NextcloudSubmittedViewModel.swift */; };
 		1254E25E2C6B71E3004C6280 /* NextcloudLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1254E25D2C6B71E3004C6280 /* NextcloudLoginView.swift */; };
-		1254E2602C6B8114004C6280 /* NextcloutOutboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1254E25F2C6B8114004C6280 /* NextcloutOutboxView.swift */; };
+		1254E2602C6B8114004C6280 /* NextcloutOutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1254E25F2C6B8114004C6280 /* NextcloutOutboxDetailsView.swift */; };
 		1254E2682C6CF794004C6280 /* NextcloudServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1254E2672C6CF794004C6280 /* NextcloudServerModel.swift */; };
 		1254E2712C6FDCFB004C6280 /* ConnectionCardDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1254E26C2C6FDCFB004C6280 /* ConnectionCardDetails.swift */; };
 		1254E2722C6FDCFB004C6280 /* MoreButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1254E26D2C6FDCFB004C6280 /* MoreButtonView.swift */; };
@@ -751,7 +751,7 @@
 		1252F7062BDAB2000076DF4B /* EntityAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityAttachment.swift; sourceTree = "<group>"; };
 		1253B87A2C50481400D675E5 /* NextcloudSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudSubmittedViewModel.swift; sourceTree = "<group>"; };
 		1254E25D2C6B71E3004C6280 /* NextcloudLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudLoginView.swift; sourceTree = "<group>"; };
-		1254E25F2C6B8114004C6280 /* NextcloutOutboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloutOutboxView.swift; sourceTree = "<group>"; };
+		1254E25F2C6B8114004C6280 /* NextcloutOutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloutOutboxDetailsView.swift; sourceTree = "<group>"; };
 		1254E2672C6CF794004C6280 /* NextcloudServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudServerModel.swift; sourceTree = "<group>"; };
 		1254E26C2C6FDCFB004C6280 /* ConnectionCardDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionCardDetails.swift; sourceTree = "<group>"; };
 		1254E26D2C6FDCFB004C6280 /* MoreButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreButtonView.swift; sourceTree = "<group>"; };
@@ -1887,7 +1887,7 @@
 			isa = PBXGroup;
 			children = (
 				126E1B062C3EB28D000AE4CE /* NextcloudDraftView.swift */,
-				1254E25F2C6B8114004C6280 /* NextcloutOutboxView.swift */,
+				1254E25F2C6B8114004C6280 /* NextcloutOutboxDetailsView.swift */,
 				1254E25D2C6B71E3004C6280 /* NextcloudLoginView.swift */,
 				20AF68132C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift */,
 				20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */,
@@ -3722,7 +3722,7 @@
 				CCC1B4312AC75B120075B819 /* UwaziEntityButtonView.swift in Sources */,
 				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
 				1291A83228BE0086001A6055 /* SettingsAddServerCardView.swift in Sources */,
-				1254E2602C6B8114004C6280 /* NextcloutOutboxView.swift in Sources */,
+				1254E2602C6B8114004C6280 /* NextcloutOutboxDetailsView.swift in Sources */,
 				1280B9902C4082A6004B19F1 /* NextcloudOutboxViewModel.swift in Sources */,
 				209AC67F2C2D660600492356 /* NextcloudServerViewModel.swift in Sources */,
 				209AC68D2C332F0000492356 /* LocationManager.swift in Sources */,

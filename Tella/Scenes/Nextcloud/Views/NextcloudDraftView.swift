@@ -12,10 +12,9 @@ import SwiftUI
 struct NextcloudDraftView: View {
     
     @StateObject var nextcloudDraftViewModel: NextcloudDraftViewModel
-    @StateObject var reportsViewModel : ReportsMainViewModel
 
     var body: some View {
-        DraftView(viewModel: nextcloudDraftViewModel, reportsViewModel: reportsViewModel)
+        DraftView(viewModel: nextcloudDraftViewModel)
     }
 }
 

@@ -10,9 +10,8 @@ import SwiftUI
 
 struct GDriveDraftView: View {
     @StateObject var gDriveDraftVM: GDriveDraftViewModel
-    @StateObject var reportsViewModel : ReportsMainViewModel
     var body: some View {
-        DraftView(viewModel: gDriveDraftVM, reportsViewModel: reportsViewModel)
+        DraftView(viewModel: gDriveDraftVM)
     }
 }
 //

@@ -8,8 +8,8 @@ import Combine
 import SwiftUI
 
 class DraftReportVM: DraftMainViewModel {
-    override init(mainAppModel : MainAppModel, reportId:Int? = nil) {
-        super.init(mainAppModel: mainAppModel, reportId: reportId)
+    override init(reportId:Int? = nil, reportsMainViewModel: ReportsMainViewModel) {
+        super.init(reportId: reportId, reportsMainViewModel: reportsMainViewModel)
     }
     
     override func validateReport() {

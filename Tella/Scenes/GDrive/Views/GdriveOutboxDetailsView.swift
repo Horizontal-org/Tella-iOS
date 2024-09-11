@@ -10,11 +10,9 @@ import SwiftUI
 struct GdriveOutboxDetailsView<T: GDriveServer>: View {
     
     @StateObject var outboxReportVM : OutboxMainViewModel<T>
-    @StateObject var reportsViewModel : ReportsMainViewModel
     
     var body: some View {
-        OutboxDetailsView(outboxReportVM: outboxReportVM,
-                          reportsViewModel: reportsViewModel, rootView: ViewClassType.gdriveReportMainView)
+        OutboxDetailsView(outboxReportVM: outboxReportVM, rootView: ViewClassType.gdriveReportMainView)
         
     }
 }

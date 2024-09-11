@@ -13,11 +13,11 @@ class NextcloudDraftViewModel: DraftMainViewModel {
     
     private let nextcloudRepository: NextcloudRepositoryProtocol
     
-    init(mainAppModel: MainAppModel,
-         repository: NextcloudRepositoryProtocol,
-         reportId reportID: Int?) {
+    init(repository: NextcloudRepositoryProtocol,
+         reportId reportID: Int?,
+         reportsMainViewModel: ReportsMainViewModel) {
         self.nextcloudRepository = repository
-        super.init(mainAppModel: mainAppModel, reportId: reportID)
+        super.init(reportId: reportID, reportsMainViewModel: reportsMainViewModel)
         self.getServer()
         self.fillReportVM()
     }

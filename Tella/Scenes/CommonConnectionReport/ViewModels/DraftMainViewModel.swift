@@ -11,6 +11,8 @@ import Combine
 
 class DraftMainViewModel: ObservableObject {
     var mainAppModel: MainAppModel
+    var reportsMainViewModel: ReportsMainViewModel
+
     // Report
     @Published var reportId : Int?
     @Published var title : String = ""
@@ -76,9 +78,10 @@ class DraftMainViewModel: ObservableObject {
                             type: ManageFileType.fromDevice)
     ]}
     
-    init(mainAppModel : MainAppModel, reportId:Int? = nil) {
+    init(reportId:Int? = nil, reportsMainViewModel: ReportsMainViewModel) {
         
-        self.mainAppModel = mainAppModel
+        self.mainAppModel = reportsMainViewModel.mainAppModel
+        self.reportsMainViewModel = reportsMainViewModel
         
         self.validateReport()
         

@@ -9,12 +9,10 @@
 import SwiftUI
 struct TellaServerOutboxDetailsView<T: TellaServer>: View {
     
-    @StateObject var outboxReportVM : OutboxMainViewModel<T>
-    @StateObject var reportsViewModel : ReportsMainViewModel
+    @StateObject var outboxReportVM: OutboxReportVM
     
     var body: some View {
-        OutboxDetailsView(outboxReportVM: outboxReportVM,
-                          reportsViewModel: reportsViewModel, rootView: ViewClassType.tellaServerReportMainView)
+        OutboxDetailsView(outboxReportVM: outboxReportVM, rootView: ViewClassType.tellaServerReportMainView)
         
     }
 }

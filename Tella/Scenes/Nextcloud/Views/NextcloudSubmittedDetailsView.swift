@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NextcloudSubmittedDetailsView: View {
     
-    @StateObject var submittedMainViewModel: SubmittedMainViewModel
+    @StateObject var submittedMainViewModel: NextcloudSubmittedViewModel
     @StateObject var reportsMainViewModel: ReportsMainViewModel
     var body: some View {
         SubmittedDetailsView(submittedReportVM: submittedMainViewModel, reportsViewModel: reportsMainViewModel, rootView: ViewClassType.nextcloudReportMainView)

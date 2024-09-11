@@ -12,17 +12,16 @@ struct TellaServerDraftView: View {
     @State private var menuFrame : CGRect = CGRectZero
     @State private var shouldShowMenu : Bool = false
     
-    @EnvironmentObject var mainAppModel : MainAppModel
     @EnvironmentObject var sheetManager : SheetManager
     var reportsViewModel: ReportsMainViewModel
     
-    init(mainAppModel: MainAppModel, reportId:Int? = nil, reportsViewModel: ReportsMainViewModel) {
-        _reportViewModel = StateObject(wrappedValue: DraftReportVM(mainAppModel: mainAppModel,reportId:reportId))
+    init(reportId:Int? = nil, reportsViewModel: ReportsMainViewModel) {
+        _reportViewModel = StateObject(wrappedValue: DraftReportVM(reportId:reportId, reportsMainViewModel: reportsViewModel))
         self.reportsViewModel = reportsViewModel
     }
     
     var body: some View {
-        DraftView(viewModel: reportViewModel, reportsViewModel: reportsViewModel)
+        DraftView(viewModel: reportViewModel)
     }
 }
 

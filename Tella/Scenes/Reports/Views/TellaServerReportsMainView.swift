@@ -14,17 +14,16 @@ struct TellaServerReportsMainView: View {
     var body: some View {
         ReportMainView(reportsMainViewModel: reportsMainViewModel) { id in
             var destination: any View
-            destination = TellaServerDraftView(mainAppModel: reportsMainViewModel.mainAppModel, reportId: id,reportsViewModel: reportsMainViewModel)
+            destination = TellaServerDraftView(reportId: id,reportsViewModel: reportsMainViewModel)
             self.navigateTo(destination: destination)
         } showSubmittedViewAction: { id in
-            let vm = SubmittedReportVM(mainAppModel: reportsMainViewModel.mainAppModel, reportId: id)
+            let vm = SubmittedReportVM(reportsMainViewModel: reportsMainViewModel, reportId: id)
             let destination = TellaServerSubmittedDetailsView(submittedMainViewModel: vm, reportsMainViewModel: reportsMainViewModel)
             self.navigateTo(destination: destination)
         } showOutboxViewAction: { id in
-            let outboxViewModel = OutboxReportVM(mainAppModel: reportsMainViewModel.mainAppModel,
-                                                 reportsViewModel: reportsMainViewModel,
+            let outboxViewModel = OutboxReportVM(reportsViewModel: reportsMainViewModel,
                                                  reportId: id)
-            let destination = TellaServerOutboxDetailsView(outboxReportVM: outboxViewModel, reportsViewModel: reportsMainViewModel)
+            let destination = TellaServerOutboxDetailsView(outboxReportVM: outboxViewModel)
             self.navigateTo(destination: destination)
         }
     }

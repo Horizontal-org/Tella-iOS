@@ -14,23 +14,20 @@ struct NextcloudReportMainView: View {
     var body: some View {
         ReportMainView(reportsMainViewModel: reportsMainViewModel) { id in
             var destination : any View
-            destination = NextcloudDraftView(nextcloudDraftViewModel: NextcloudDraftViewModel(mainAppModel: reportsMainViewModel.mainAppModel,repository: reportsMainViewModel.nextcloudRepository, reportId: id),
-                                             reportsViewModel: reportsMainViewModel)
+            destination = NextcloudDraftView(nextcloudDraftViewModel: NextcloudDraftViewModel(repository: reportsMainViewModel.nextcloudRepository, reportId: id, reportsMainViewModel: reportsMainViewModel))
             
             self.navigateTo(destination: destination)
             
         } showSubmittedViewAction: { id in
-            let vm = NextcloudSubmittedViewModel(mainAppModel: reportsMainViewModel.mainAppModel, reportId: id)
+            let vm = NextcloudSubmittedViewModel(reportsMainViewModel: reportsMainViewModel, reportId: id)
             let destination = NextcloudSubmittedDetailsView(submittedMainViewModel: vm, reportsMainViewModel: reportsMainViewModel)
             self.navigateTo(destination: destination)
             
         } showOutboxViewAction: { id in
-            let outboxViewModel = NextcloudOutboxViewModel(mainAppModel: reportsMainViewModel.mainAppModel,
-                                                           reportsViewModel: reportsMainViewModel,
+            let outboxViewModel = NextcloudOutboxViewModel(reportsViewModel: reportsMainViewModel,
                                                            reportId: id,
                                                            repository:reportsMainViewModel.nextcloudRepository)
-            let destination = NextcloutOutboxView(outboxReportVM: outboxViewModel,
-                                                  reportsViewModel: reportsMainViewModel)
+            let destination = NextcloutOutboxDetailsView(outboxReportVM: outboxViewModel)
             
             self.navigateTo(destination: destination)
             

@@ -12,7 +12,7 @@ import Combine
 class OutboxMainViewModel<T: Server>: ObservableObject {
     
     var mainAppModel : MainAppModel
-    var reportsViewModel : ReportsMainViewModel
+    @Published var reportsViewModel: ReportsMainViewModel
     
     @Published var reportViewModel : ReportViewModel = ReportViewModel<T>()
     @Published var progressFileItems : [ProgressFileItemViewModel] = []
@@ -60,8 +60,8 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
         return false
     }
     
-    init(mainAppModel: MainAppModel, reportsViewModel : ReportsMainViewModel, reportId : Int?) {
-        self.mainAppModel = mainAppModel
+    init(reportsViewModel: ReportsMainViewModel, reportId : Int?) {
+        self.mainAppModel = reportsViewModel.mainAppModel
         self.reportsViewModel = reportsViewModel
         
         initVaultFile(reportId: reportId)

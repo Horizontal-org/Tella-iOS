@@ -20,14 +20,13 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         return true
     }
     
-    init(mainAppModel: MainAppModel,
-         reportsViewModel : ReportsMainViewModel,
+    init(reportsViewModel: ReportsMainViewModel,
          reportId : Int?,
          repository: NextcloudRepositoryProtocol) {
         
-        self.nextcloudRepository = repository
+        self.nextcloudRepository = repository //NextcloudReportViewModel
         
-        super.init(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: reportId)
+        super.init(reportsViewModel: reportsViewModel, reportId: reportId)
         
         if reportViewModel.status == .submissionScheduled {
             self.submitReport()
