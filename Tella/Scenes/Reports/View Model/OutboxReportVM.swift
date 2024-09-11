@@ -126,7 +126,8 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
     override func updateReportStatus(reportStatus:ReportStatus) {
         
         self.reportViewModel.status = reportStatus
-        
+        self.objectWillChange.send()
+
         guard let id = reportViewModel.id else { return  }
 
         mainAppModel.tellaData?.updateReportStatus(idReport: id, status: reportStatus)

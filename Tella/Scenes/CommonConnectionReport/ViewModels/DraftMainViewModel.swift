@@ -11,7 +11,7 @@ import Combine
 
 class DraftMainViewModel: ObservableObject {
     var mainAppModel: MainAppModel
-    var reportsMainViewModel: ReportsMainViewModel
+    @Published var reportsMainViewModel: ReportsMainViewModel
 
     // Report
     @Published var reportId : Int?
