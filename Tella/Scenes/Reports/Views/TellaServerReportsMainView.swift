@@ -13,18 +13,30 @@ struct TellaServerReportsMainView: View {
     
     var body: some View {
         ReportMainView(reportsMainViewModel: reportsMainViewModel) { id in
-            var destination: any View
-            destination = TellaServerDraftView(reportId: id,reportsViewModel: reportsMainViewModel)
-            self.navigateTo(destination: destination)
+            showDraftView(id)
         } showSubmittedViewAction: { id in
-            let vm = SubmittedReportVM(reportsMainViewModel: reportsMainViewModel, reportId: id)
-            let destination = TellaServerSubmittedDetailsView(submittedMainViewModel: vm)
-            self.navigateTo(destination: destination)
+            showSubmittedView(id)
         } showOutboxViewAction: { id in
-            let outboxViewModel = OutboxReportVM(reportsViewModel: reportsMainViewModel,
-                                                 reportId: id)
-            let destination = TellaServerOutboxDetailsView(outboxReportVM: outboxViewModel)
-            self.navigateTo(destination: destination)
+            showOutboxView(id)
         }
+    }
+    
+    private func showDraftView(_ id: Int?) {
+        var destination: any View
+        destination = TellaServerDraftView(reportId: id,reportsViewModel: reportsMainViewModel)
+        self.navigateTo(destination: destination)
+    }
+    
+    private func showSubmittedView(_ id: Int?) {
+        let vm = SubmittedReportVM(reportsMainViewModel: reportsMainViewModel, reportId: id)
+        let destination = TellaServerSubmittedDetailsView(submittedMainViewModel: vm)
+        self.navigateTo(destination: destination)
+    }
+    
+    private func showOutboxView(_ id: Int?) {
+        let outboxViewModel = OutboxReportVM(reportsViewModel: reportsMainViewModel,
+                                             reportId: id)
+        let destination = TellaServerOutboxDetailsView(outboxReportVM: outboxViewModel)
+        self.navigateTo(destination: destination)
     }
 }

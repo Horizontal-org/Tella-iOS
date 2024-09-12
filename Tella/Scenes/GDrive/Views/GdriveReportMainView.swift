@@ -13,20 +13,31 @@ struct GdriveReportMainView: View {
     
     var body: some View {
         ReportMainView(reportsMainViewModel: reportsMainViewModel) { id in
-            var destination : any View
-            destination = GDriveDraftView(gDriveDraftVM: GDriveDraftViewModel(repository: reportsMainViewModel.gDriveRepository, reportId: id, reportsMainViewModel: reportsMainViewModel))
-            self.navigateTo(destination: destination)
+            showDraftView(id)
         } showSubmittedViewAction: { id in
-            let vm = GDriveSubmittedViewModel(reportsMainViewModel: reportsMainViewModel, reportId: id)
-            let destination = GDriveSubmittedDetailsView(submittedMainViewModel: vm)
-            self.navigateTo(destination: destination)
+            showSubmittedView(id)
         } showOutboxViewAction: { id in
-            let outboxViewModel = GDriveOutboxViewModel(reportsViewModel: reportsMainViewModel,
-                                                        reportId: id,
-                                                        repository: reportsMainViewModel.gDriveRepository)
-            let destination = GdriveOutboxDetailsView(outboxReportVM: outboxViewModel)
-            self.navigateTo(destination: destination)
+            showOutboxView(id)
         }
-        
+    }
+    
+    private func showDraftView(_ id: Int?) {
+        var destination : any View
+        destination = GDriveDraftView(gDriveDraftVM: GDriveDraftViewModel(repository: reportsMainViewModel.gDriveRepository, reportId: id, reportsMainViewModel: reportsMainViewModel))
+        self.navigateTo(destination: destination)
+    }
+    
+    private func showSubmittedView(_ id: Int?) {
+        let vm = GDriveSubmittedViewModel(reportsMainViewModel: reportsMainViewModel, reportId: id)
+        let destination = GDriveSubmittedDetailsView(submittedMainViewModel: vm)
+        self.navigateTo(destination: destination)
+    }
+    
+    private func showOutboxView(_ id: Int?) {
+        let outboxViewModel = GDriveOutboxViewModel(reportsViewModel: reportsMainViewModel,
+                                                    reportId: id,
+                                                    repository: reportsMainViewModel.gDriveRepository)
+        let destination = GdriveOutboxDetailsView(outboxReportVM: outboxViewModel)
+        self.navigateTo(destination: destination)
     }
 }
