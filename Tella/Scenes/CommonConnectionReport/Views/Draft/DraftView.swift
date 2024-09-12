@@ -16,7 +16,8 @@ struct DraftView: View  {
     
     @EnvironmentObject var sheetManager: SheetManager
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
+    var showOutboxDetailsViewAction: (() -> Void)
+
     var body: some View {
         ContainerView {
             contentView
@@ -187,24 +188,6 @@ struct DraftView: View  {
         }.padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
     }
     
-    var outboxDetailsView: some View {
-        Group {
-            switch viewModel.reportsMainViewModel.connectionType {
-            case .tella:
-                let outboxVM = OutboxReportVM(reportsViewModel: viewModel.reportsMainViewModel, reportId: viewModel.reportId)
-                TellaServerOutboxDetailsView(outboxReportVM: outboxVM)
-            case .gDrive:
-                let outboxVM = GDriveOutboxViewModel(reportsViewModel: viewModel.reportsMainViewModel, reportId: viewModel.reportId, repository: GDriveRepository())
-                GdriveOutboxDetailsView(outboxReportVM: outboxVM)
-            case .nextcloud:
-                let outboxVM = NextcloudOutboxViewModel(reportsViewModel: viewModel.reportsMainViewModel, reportId: viewModel.reportId, repository: NextcloudRepository())
-                NextcloutOutboxDetailsView(outboxReportVM: outboxVM)
-            default:
-                Text("")
-            }
-        }
-    }
-    
     var photoVideoPickerView: some View {
         PhotoVideoPickerView(showingImagePicker: $viewModel.showingImagePicker,
                              showingImportDocumentPicker: $viewModel.showingImportDocumentPicker,
@@ -249,7 +232,7 @@ struct DraftView: View  {
         case .finalized:
             handleSuccessSavingOutbox()
         case .submissionScheduled:
-            handleSuccessSavingReportForSubmission()
+            showOutboxDetailsViewAction()
         default:
             break
         }
@@ -272,11 +255,6 @@ struct DraftView: View  {
         Toast.displayToast(message: LocalizableReport.outboxSavedToast.localized)
     }
     
-    private func handleSuccessSavingReportForSubmission() {
-        DispatchQueue.main.async {
-            navigateTo(destination: outboxDetailsView)
-        }
-    }
     
     private func dismissViews() {
         sheetManager.hide()

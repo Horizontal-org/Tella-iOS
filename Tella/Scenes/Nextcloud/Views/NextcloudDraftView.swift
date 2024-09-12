@@ -12,9 +12,17 @@ import SwiftUI
 struct NextcloudDraftView: View {
     
     @StateObject var nextcloudDraftViewModel: NextcloudDraftViewModel
-
+    
     var body: some View {
-        DraftView(viewModel: nextcloudDraftViewModel)
+        DraftView(viewModel: nextcloudDraftViewModel, showOutboxDetailsViewAction: {
+            showOutboxDetailsView()
+        })
+    }
+    
+    private func showOutboxDetailsView() {
+        let outboxVM = NextcloudOutboxViewModel(reportsViewModel: nextcloudDraftViewModel.reportsMainViewModel, reportId: nextcloudDraftViewModel.reportId, repository: nextcloudDraftViewModel.nextcloudRepository)
+        navigateTo(destination:  NextcloutOutboxDetailsView(outboxReportVM: outboxVM))
+        
     }
 }
 

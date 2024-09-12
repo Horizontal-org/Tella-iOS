@@ -7,27 +7,31 @@ import SwiftUI
 
 struct TellaServerDraftView: View {
     
-    @StateObject var reportViewModel : DraftReportVM
+    @StateObject var draftReportViewModel: DraftReportVM
     
-    @State private var menuFrame : CGRect = CGRectZero
-    @State private var shouldShowMenu : Bool = false
-    
-    @EnvironmentObject var sheetManager : SheetManager
     var reportsViewModel: ReportsMainViewModel
     
     init(reportId:Int? = nil, reportsViewModel: ReportsMainViewModel) {
-        _reportViewModel = StateObject(wrappedValue: DraftReportVM(reportId:reportId, reportsMainViewModel: reportsViewModel))
+        _draftReportViewModel = StateObject(wrappedValue: DraftReportVM(reportId:reportId, reportsMainViewModel: reportsViewModel))
         self.reportsViewModel = reportsViewModel
     }
     
     var body: some View {
-        DraftView(viewModel: reportViewModel)
+        DraftView(viewModel: draftReportViewModel, showOutboxDetailsViewAction: {
+            showOutboxDetailsView()
+        })
     }
+    
+    private func showOutboxDetailsView() {
+        let outboxVM = OutboxReportVM(reportsViewModel: draftReportViewModel.reportsMainViewModel, reportId: draftReportViewModel.reportId)
+        navigateTo(destination: TellaServerOutboxDetailsView(outboxReportVM: outboxVM))
+    }
+    
 }
 
 //struct DraftReportView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        
+//
 //        TellaServerDraftView(mainAppModel: MainAppModel.stub())
 //    }
 //}

@@ -11,7 +11,7 @@ import Combine
 
 class NextcloudDraftViewModel: DraftMainViewModel {
     
-    private let nextcloudRepository: NextcloudRepositoryProtocol
+    let nextcloudRepository: NextcloudRepositoryProtocol
     
     init(repository: NextcloudRepositoryProtocol,
          reportId reportID: Int?,
