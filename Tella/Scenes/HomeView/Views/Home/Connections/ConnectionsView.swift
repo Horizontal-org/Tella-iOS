@@ -64,7 +64,7 @@ struct ConnectionsView: View {
                 case .dropbox:
                     ConnectionsItemView(title: LocalizableDropbox.dropboxAppBar.localized,
                                         image: "home.dropbox",
-                                        destination: EmptyView())
+                                        destination: dropboxMainView)
                 }
             }
             Spacer()
@@ -81,6 +81,10 @@ struct ConnectionsView: View {
     
     var nextcloudMainView : NextcloudReportMainView {
         NextcloudReportMainView(reportsMainViewModel: NextcloudReportViewModel(mainAppModel: appModel, nextcloudRepository: NextcloudRepository()))
+    }
+    
+    var dropboxMainView: some View {
+        DropboxReportMainView(reportsMainViewModel: DropboxViewModel(mainAppModel: appModel, dropboxRepository: DropboxRepository()))
     }
 }
 

@@ -14,6 +14,7 @@ protocol DropboxRepositoryProtocol {
     func handleSignIn() async throws
     func ensureSignedIn() async throws
     func signOut()
+    func uploadReport(title: String, description: String, files: [(URL, String)]) async throws
 }
 
 class DropboxRepository: DropboxRepositoryProtocol {
@@ -62,6 +63,56 @@ class DropboxRepository: DropboxRepositoryProtocol {
             }
         }
     }
+    
+    func uploadReport(title: String, description: String, files: [(URL, String)]) async throws {
+            try await ensureSignedIn()
+            guard let client = self.client else {
+                throw NSError(domain: "DropboxRepository", code: 0, userInfo: [NSLocalizedDescriptionKey: "Dropbox client is not initialized"])
+            }
+            
+            let basePath = "/\(title)"
+            
+            // Create the report folder
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+                client.files.createFolderV2(path: basePath).response { response, error in
+                    if let error = error {
+                        dump(error)
+                        continuation.resume(throwing: error)
+                    } else {
+                        print("Folder created successfully at path: \(basePath)")
+                        continuation.resume()
+                    }
+                }
+            }
+            
+            // Upload description as a text file
+            let descriptionData = description.data(using: .utf8) ?? Data()
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+                client.files.upload(path: "\(basePath)/description.txt", input: descriptionData).response { response, error in
+                    if let error = error {
+                        continuation.resume(throwing: error)
+                    } else {
+                        print("Description file uploaded successfully to path: \(basePath)/description.txt")
+                        continuation.resume()
+                    }
+                }
+            }
+            
+            // Upload each file
+//            for (fileURL, fileName) in files {
+//                let fileData = try Data(contentsOf: fileURL)
+//                try await withCheckedThrowingContinuation { continuation in
+//                    client.files.upload(path: "\(basePath)/\(fileName)", input: fileData).response { response, error in
+//                        if let error = error {
+//                            continuation.resume(throwing: error)
+//                        } else {
+//                            print("File uploaded successfully to path: \(basePath)/\(fileName)")
+//                            continuation.resume()
+//                        }
+//                    }
+//                }
+//            }
+        }
 
     
     func ensureSignedIn() async throws {

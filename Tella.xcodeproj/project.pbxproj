@@ -385,6 +385,10 @@
 		153AACFB2BE41C010075D5B2 /* UwaziEntityRelationshipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AACFA2BE41C010075D5B2 /* UwaziEntityRelationshipItem.swift */; };
 		153F96492BFD306F00FE5464 /* CreateDriveFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153F96482BFD306F00FE5464 /* CreateDriveFolderView.swift */; };
 		154B029C2C10FAD0007A5D2B /* DriveConnectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154B029B2C10FAD0007A5D2B /* DriveConnectionType.swift */; };
+		1551C3252C936F2D00DFA6EF /* DropboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1551C3242C936F2D00DFA6EF /* DropboxViewModel.swift */; };
+		1551C3282C9370D300DFA6EF /* DropboxReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1551C3272C9370D300DFA6EF /* DropboxReportMainView.swift */; };
+		1551C32A2C93738400DFA6EF /* DropboxDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1551C3292C93738400DFA6EF /* DropboxDraftViewModel.swift */; };
+		1551C32C2C93740500DFA6EF /* DropboxDraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1551C32B2C93740500DFA6EF /* DropboxDraftView.swift */; };
 		155369232B7E9CC100129F2F /* ResourceDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155369222B7E9CC100129F2F /* ResourceDatabase.swift */; };
 		155541B02C066F990031D3A5 /* ServerConnectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155541AF2C066F990031D3A5 /* ServerConnectionButton.swift */; };
 		155541B22C0672C20031D3A5 /* GDriveRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155541B12C0672C20031D3A5 /* GDriveRepository.swift */; };
@@ -1001,6 +1005,10 @@
 		153B2E552C8A32AA0025F76B /* TellaConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = TellaConfig.xcconfig; sourceTree = "<group>"; };
 		153F96482BFD306F00FE5464 /* CreateDriveFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDriveFolderView.swift; sourceTree = "<group>"; };
 		154B029B2C10FAD0007A5D2B /* DriveConnectionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveConnectionType.swift; sourceTree = "<group>"; };
+		1551C3242C936F2D00DFA6EF /* DropboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxViewModel.swift; sourceTree = "<group>"; };
+		1551C3272C9370D300DFA6EF /* DropboxReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxReportMainView.swift; sourceTree = "<group>"; };
+		1551C3292C93738400DFA6EF /* DropboxDraftViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxDraftViewModel.swift; sourceTree = "<group>"; };
+		1551C32B2C93740500DFA6EF /* DropboxDraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxDraftView.swift; sourceTree = "<group>"; };
 		155369222B7E9CC100129F2F /* ResourceDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDatabase.swift; sourceTree = "<group>"; };
 		155541AF2C066F990031D3A5 /* ServerConnectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConnectionButton.swift; sourceTree = "<group>"; };
 		155541B12C0672C20031D3A5 /* GDriveRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveRepository.swift; sourceTree = "<group>"; };
@@ -2580,9 +2588,29 @@
 			path = Resource;
 			sourceTree = "<group>";
 		};
+		1551C3232C936F1700DFA6EF /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				1551C3242C936F2D00DFA6EF /* DropboxViewModel.swift */,
+				1551C3292C93738400DFA6EF /* DropboxDraftViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		1551C3262C936FCC00DFA6EF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1551C3272C9370D300DFA6EF /* DropboxReportMainView.swift */,
+				1551C32B2C93740500DFA6EF /* DropboxDraftView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		1574AC842C879DA6007BEBF5 /* Dropbox */ = {
 			isa = PBXGroup;
 			children = (
+				1551C3262C936FCC00DFA6EF /* Views */,
+				1551C3232C936F1700DFA6EF /* ViewModel */,
 			);
 			path = Dropbox;
 			sourceTree = "<group>";
@@ -3572,6 +3600,7 @@
 				E1E7C5842AAB70A500DDB07E /* UwaziDictionaryRow.swift in Sources */,
 				15E656AB2C2A147E00BDEC91 /* AddFilesToDraftView.swift in Sources */,
 				12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */,
+				1551C32A2C93738400DFA6EF /* DropboxDraftViewModel.swift in Sources */,
 				128B15CB27DA30C800E1C1E0 /* OnboardingEndView.swift in Sources */,
 				125D2328271F8B6600250FBB /* LockConfirmPinView.swift in Sources */,
 				125D231F271F12A000250FBB /* NSRegularExpressionExtension.swift in Sources */,
@@ -3866,7 +3895,9 @@
 				1251C3902BB45616002E9898 /* UwaziListView.swift in Sources */,
 				CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */,
 				1216123C28DE13AC00E6D7B6 /* DatabaseUtilities.swift in Sources */,
+				1551C3252C936F2D00DFA6EF /* DropboxViewModel.swift in Sources */,
 				CCC1B4392AC75B8D0075B819 /* UwaziEntityParser.swift in Sources */,
+				1551C3282C9370D300DFA6EF /* DropboxReportMainView.swift in Sources */,
 				1587D6EB2C98C8C1003E0B3D /* ConfigurationManager.swift in Sources */,
 				128BEB222B1E4B7600420923 /* OfflineFeedbackToast.swift in Sources */,
 				126E1B072C3EB28D000AE4CE /* NextcloudDraftView.swift in Sources */,
@@ -4111,6 +4142,7 @@
 				122C54BC28C614C2003B2DBC /* TellaButtonStyleProtocol.swift in Sources */,
 				E1F4A8E22AAF3F62001C8E61 /* UwaziServerLanguageProtocol.swift in Sources */,
 				12964D8B2BA9C6F8003E1E0A /* EntityStatus.swift in Sources */,
+				1551C32C2C93740500DFA6EF /* DropboxDraftView.swift in Sources */,
 				0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */,
 				123125422930241500D3BCD5 /* PhotoVideoViewModel.swift in Sources */,
 				0D4D7518266470A700D7A635 /* SettingToggleItem.swift in Sources */,
