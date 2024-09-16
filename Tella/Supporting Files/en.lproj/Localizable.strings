@@ -240,9 +240,18 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_SettServer_Selection_Message" = "If you are not sure, please ask your organization.";
 "Setting_SettServer_TellaWeb" = "TELLA WEB";
 "Setting_SettServer_Uwazi" = "UWAZI";
+"Setting_SettServer_GDrive" = "GOOGLE DRIVE"; 
 "Setting_SettServer_No_Internet" = "No Internet connection. Try again when you are connected to the Internet.";
 "Setting_SettServer_Server_URL_Incorrect" = "Error: The server URL is incorrect";
-
+"Setting_SettServer_UnavailableConnections_Subhead" = "Unavailable connections";
+"Setting_SettServer_UnavailableConnections_Expl" = "For the following categories, only one connection can be enabled at a time. To add a new connection, please delete the current one by going to Connections Settings.";
+"Setting_SettServer_No_Token" = "No token present, please connect again";
+"Settings_SettServer_DeleteTellaConnection_SheetTitle" = "Delete %@ server?";
+"Settings_SettServre_DeleteConnection_SheetTitle" = "Delete \"%@\" connection?";
+"Settings_SettServer_DeleteConnection_SheetExpl" = "if you delete this server, all draft and submitted forms will be deleted from your device.";
+"Settings_SettServer_DeleteUwaziConnection_SheetExpl" = "If you delete this server, all draft and submitted entities will be deleted from your device. Delete anyway?";
+"Settings_SettServer_Cancel_SheetAction" = "CANCEL";
+"Settings_SettServer_Delete_SheetAction" = "DELETE";
 "Home_RecentFiles_Subhead" = "Recent files";
 
 
@@ -264,6 +273,20 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_Server_Uwazi_Connect_Server" = "Connected to server";
 "Setting_Server_Uwazi_Success_Message" = "You have successfully connected to the server and will be able to share your data.";
 
+"Setting_Server_GDrive_SelectType_AppBar" = "Select Google drive";
+"Setting_Server_GDrive_SelectType_Subhead" = "Select a Drive to connect to";
+"Setting_Server_GDrive_SelectType_Expl" = "You can either connect to an organizational Shared Drive or create a new folder in your personal Drive.";
+"Setting_Server_GDrive_SelectType_Shared" = "USE SHARED DRIVE";
+"Setting_Server_GDrive_SelectType_Personal" = "USE PERSONAL DRIVE";
+"Setting_Server_GDrive_SelectType_MoreInfo" = "Learn more about the types of drives";
+"Setting_Server_GDrive_SelectShared_Appbar" = "Select shared drive";
+"Setting_Server_GDrive_CreatePersonal_Title" = "Create new folder";
+"Setting_Server_GDrive_CreatePersonal_Desc" = "Your reports will be uploaded to a new folder on your Google Drive. Choose a name for this folder here.";
+"Setting_Server_GDrive_CreatePersonal_Placeholder" = "Folder name";
+"Setting_Server_GDrive_Success_Message" = "GO TO GOOGLE DRIVE";
+
+"Setting_Server_Reports_Success_Message" = "GO TO REPORTS";
+
 "Settings_SettAbout_AppBar" = "About & Help";
 "Settings_SettAbout_Head" = "Tella";
 "Settings_SettAbout_Subhead" = "Version";
@@ -271,6 +294,12 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettAbout_PrivacyPolicy" = "Privacy policy";
 "Reports_AppBar" = "Reports";
 "Reports_Report_AppBar" = "Report";
+
+
+"Reports_Draft_DraftList_Expl" = "These are reports you are working on.";
+"Reports_Outbox_OutboxList_Expl" = "These reports are ready to be submitted";
+"Reports_Submitted_SubmittedList_Expl" = "";
+
 "Reports_Draft_EmptyAllFiles_Expl" = "Your Drafts is currently empty. Reports that you have not submitted will appear here.";
 "Reports_Outbox_EmptyAllFiles_Expl" = "Your Outbox is currently empty. Reports that are ready to be sent will appear here.";
 "Reports_Submitted_EmptyAllFiles_Expl" = "You have no submitted reports.";
@@ -289,7 +318,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Draft_ExitReport_Save_SheetAction" = "save and exit";
 "Reports_Draft_AddFiles" = "Attach files here";
 "Reports_DeleteReport_SheetTitle" = "Delete report";
-"Reports_DeleteReport_SheetExpl" = "Are you sure you want to delete this draft?";
+"Reports_DeleteReport_Draft_SheetTitle" = "Delete report";
 "Reports_DeleteReport_Cancel_SheetAction" = "CANCEL";
 "Reports_DeleteReport_Delete_SheetAction" = "DELETE";
 "Reports_PageViewItem_Draft" = "Drafts";
@@ -297,7 +326,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_PageViewItem_Submitted" = "Submitted";
 "Reports_ManageReport_Delete_SheetAction" = "Delete";
 "Reports_ManageReport_View_SheetAction" = "View";
-"Reports_ManageReport_Edit_SheetAction" = "Edit";
+"Reports_ManageReport_Edit_SheetAction" = "Edit report";
 "Reports_ManageReport_Open_SheetAction" = "Open";
 "Reports_Draft_Select_SelectProject" = "Select your project";
 "Reports_Draft_SelectFiles_TakePhotoVideo_SheetSelect" = "Take photo or video with camera";
@@ -305,6 +334,9 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Draft_SelectFiles_TellaFiles_SheetSelect" = "Select from Tella files";
 "Reports_Draft_SelectFiles_ImportFromDevice_SheetSelect" = "Select from your device";
 "Reports_Outbox_PercentangeUploaded_Expl" = "Waiting for connection";
+"Reports_Outbox_Pause" = "PAUSE";
+"Reports_Outbox_Resume" = "RESUME";
+"Reports_Outbox_Submit" = "Submit";
 "Vault_DeleteFiles_SheetTitle" = "Delete files?";
 "Vault_DeleteFiles_SheetExpl" = "%i files will be permanently deleted from Tella.";
 "Reports_DeleteDraftReport_SheetExpl" = "Are you sure you want to delete this draft?";
@@ -316,6 +348,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettLang_Persian_Expl" = "Persian";
 "Settings_SettLang_Kurdish_Expl" = "Kurdish";
 "Settings_SettLang_Burmese_Expl" = "Burmese";
+"Settings_SettLang_Vietnamese_Expl" = "Vietnamese";
 "Common_Error" = "An error has occurred";
 "LockUnlock_UnlockDeleteAfterFail_Warning_RemainingAttempts" = "You have %i attempts remaining until everything in your Tella is deleted.";
 "LockUnlock_UnlockDeleteAfterFail_Error_ContentDeleted" = "You have exceeded the maximum number of incorrect login attempts. All your Tella data has been deleted.";
@@ -342,6 +375,10 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Submitted_ClearAll_Cancel_SheetAction" = "CANCEL";
 "Reports_Submitted_ClearAll_ClearSubmitted_SheetAction" = "CLEAR SUBMITTED";
 "Reports_Submitted_Clear_AppBar" = "Clear";
+"Reports_Submitted_UploadedDate_Expl" = "Uploaded on %@";
+"Reports_Submitted_File_Title" = "file";
+"Reports_Submitted_Files_Title" = "files";
+"Reports_Outbox_Uploaded_Title" = "uploaded";
 "Reports_DraftSaved_Toast" = "The report was saved as a draft";
 "Reports_ReportDeleted_Toast" = "“%@” has been deleted.";
 "Reports_ReportSubmitted_Toast" = "Upload complete: “%@”";
@@ -509,3 +546,16 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Resource_Exit_SheetExpl" = "Your download progress will be lost. You can always come back later to download the resource again.";
 "Resource_Exit_Confirm_SheetSelect" = "EXIT";
 "Resource_Exit_Cancel_SheetSelect" = "KEEP DOWNLOADING";
+
+
+
+"Nextcloud_AppBar" = "Nextcloud";
+"GDrive_AppBar" = "Google Drive";
+
+"Error_InvalidURL_Expl" = "Invalid URL";
+"Error_Unexpected_Response_Expl" = "Unexpected response from the server";
+"Error_Unauthorized_Expl" = "Invalid username or password";
+"Error_Forbidden_Expl" = "Account locked due to too many unsuccessful attempts.";
+
+"Error_GDrive_Unauthorized_Expl" = "Request is missing required authentication credential. Please re authenticate";
+"Error_GDrive_Forbidden_Expl" = "You don't have permission to access this file or folder in Google Drive.";

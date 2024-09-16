@@ -11,35 +11,68 @@ enum APIError: Swift.Error {
     case unexpectedResponse
     case noInternetConnection
     case badServer
+    case noToken
+    case driveApiError(Error)
 }
 
 extension APIError: LocalizedError {
 
-    var errorDescription: String? {
+    var errorMessage: String {
         switch self {
         case .invalidURL:
-            return "Invalid URL"
+            return LocalizableError.invalidUrl.localized
         case let .httpCode(code):
             return customErrorMessage(errorCode: code)
         case .unexpectedResponse:
-            return "Unexpected response from the server"
+            return LocalizableError.unexpectedResponse.localized
         case .noInternetConnection:
             return LocalizableSettings.settServerNoInternetConnection.localized
         case .badServer:
             return LocalizableSettings.settServerServerURLIncorrect.localized
+        case .noToken:
+            return LocalizableSettings.settServerNoTokenPresent.localized
+        case .driveApiError(let error):
+            return customDriveErrorMessage(error: error)
         }
     }
     private func customErrorMessage(errorCode : Int) -> String {
         let httpErrorCode = HTTPErrorCodes(rawValue: errorCode)
         switch httpErrorCode{
         case .unauthorized:
-            return "Invalid username or password"
+            return LocalizableError.unauthorized.localized
         case .forbidden:
-            return "Account locked due to too many unsuccessful attempts."
+            return LocalizableError.forbidden.localized
         case .notFound:
             return LocalizableSettings.settServerServerURLIncorrect.localized
         default:
-            return "Unexpected response from the server"
+            return LocalizableError.unexpectedResponse.localized
+        }
+    }
+    
+    private func customDriveErrorMessage(error: Error) -> String {
+        if let nsError = error as NSError? {
+            let errorMessage = nsError.localizedDescription
+            
+            switch nsError.domain {
+            case GoogleAuthConstants.GTLRErrorObjectDomain, GoogleAuthConstants.HTTPStatus:
+                return parseDriveErrorMessage(errorCode: nsError.code, fallbackMessage: errorMessage)
+            default:
+                return errorMessage
+            }
+        }
+        
+        return LocalizableError.unexpectedResponse.localized
+    }
+    
+    private func parseDriveErrorMessage(errorCode: Int, fallbackMessage: String) -> String {
+        let httpErrorCode = HTTPErrorCodes(rawValue: errorCode)
+        switch httpErrorCode {
+        case .unauthorized:
+            return LocalizableError.gDriveUnauthorized.localized
+        case .forbidden:
+            return LocalizableError.gDriveForbidden.localized
+        default:
+            return fallbackMessage
         }
     }
 }

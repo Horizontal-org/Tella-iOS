@@ -51,9 +51,10 @@ struct ServersListView: View {
     }
     
     private func showServerActionBottomSheet(server:Server) {
+        let filteredActionItems = server.serverType == .gDrive ? serverActionItems.filter { $0.type as? ServerActionType != .edit } : serverActionItems
         sheetManager.showBottomSheet(modalHeight: 176) {
-            ActionListBottomSheet(items: serverActionItems,
-                                  headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
+            ActionListBottomSheet(items: filteredActionItems,
+                                  headerTitle: server.name ?? "",
                                   action:  {item in
                 
                 serversViewModel.currentServer = server
@@ -79,10 +80,9 @@ struct ServersListView: View {
         case .tella:
             shouldShowEditServer = true
         case .uwazi:
-            navigateToUwaziAddServerView(
-                UwaziServer(
-                    id: server.id, name: server.name, serverURL: server.url, accessToken: server.accessToken)
-            )
+            guard let server = server as? UwaziServer else {return}
+            navigateToUwaziAddServerView( server)
+                
         default:
             break
         }

@@ -5,16 +5,46 @@
 import Foundation
 
 enum ServerConnectionType: Int, Codable {
-    case tella = 0
-    case uwazi = 1
-    case odkCollect = 3
-    case unknown
+    case tella
+    case uwazi
+    case gDrive
+    case nextcloud
+
 }
 
-func mapServerTypeFromInt(_ serverTypeInt: Int?) -> ServerConnectionType {
-    if let serverType = serverTypeInt {
-        return ServerConnectionType(rawValue: serverType) ?? .unknown
-    } else {
-        return .unknown
+extension ServerConnectionType {
+    var successConnectionButtonContent: String {
+        switch self {
+        case .gDrive:
+            return LocalizableSettings.gDriveSuccessMessage.localized
+        case.tella:
+            return LocalizableSettings.settServerReportsSuccessMessage.localized
+        default:
+            return ""
+        }
+    }
+    
+    var serverTitle: String {
+        switch self {
+        case .gDrive:
+            LocalizableSettings.settServerGDrive.localized
+        case .uwazi:
+            LocalizableSettings.settServerUwazi.localized
+        default:
+            ""
+        }
+    }
+    
+    var emptyIcon: String {
+        switch self {
+        case .gDrive:
+            return "drive.empty"
+        case .uwazi:
+            return "uwazi.empty"
+        case.tella:
+            return "reports.report"
+        case .nextcloud:
+            return "home.nextcloud"
+        }
     }
 }
