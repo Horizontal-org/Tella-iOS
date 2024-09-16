@@ -29,7 +29,6 @@ class DropboxAuthViewModel: ObservableObject {
         Task { @MainActor in
             do {
                 try await dropboxRepository.handleSignIn()
-                completion()
             } catch let error as APIError {
                 self.signInState = .error(error.errorMessage)
             }
@@ -50,7 +49,7 @@ class DropboxAuthViewModel: ObservableObject {
                 case .error(_, let description):
                     self.signInState = .error(description ?? "")
                 default:
-                    self.signInState = .error("unexpected server error") // change this with a proper message
+                    self.signInState = .error(APIError.unexpectedResponse.errorMessage)
                 }
                 self.authCompletion = nil
             }
