@@ -37,7 +37,7 @@ extension TellaDataBase {
 
             return dropboxServer
         } catch let error {
-            debugLog("Error while fetching servers from \(D.tGDriveServer): \(error)")
+            debugLog("Error while fetching servers from \(D.tDropboxServer): \(error)")
             return []
         }
     }
