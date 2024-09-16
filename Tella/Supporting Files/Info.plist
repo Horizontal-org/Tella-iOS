@@ -39,7 +39,7 @@
         <dict>
             <key>CFBundleURLSchemes</key>
             <array>
-            <string>db-m77tnx9yczvxb91</string>
+            <string>db-$(DROPBOX_APP_KEY)</string>
             </array>
         </dict>
     </array>
@@ -47,6 +47,8 @@
     <string>$(CURRENT_PROJECT_VERSION)</string>
     <key>GIDClientID</key>
     <string>$(GOOGLE_CLIENT_ID)</string>
+    <key>DropboxAppKey</key>
+    <string>$(DROPBOX_APP_KEY)</string>
     <key>ITSAppUsesNonExemptEncryption</key>
     <false/>
     <key>LSApplicationCategoryType</key>
