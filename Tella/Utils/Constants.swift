@@ -17,3 +17,7 @@ struct GoogleAuthConstants {
     static let GTLRErrorObjectDomain = "com.google.GTLRErrorObjectDomain"
     static let HTTPStatus = "com.google.HTTPStatus"
 }
+
+struct DropboxAuthConstants {
+    static let dropboxAppKey = "DropboxAppKey"
+}
