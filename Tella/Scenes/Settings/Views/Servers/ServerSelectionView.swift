@@ -35,7 +35,7 @@ struct ServerSelectionView: View {
                 }
                 Spacer()
                 bottomView()
-            }
+            }.scrollOnOverflow()
             .toolbar {
                 LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
             }

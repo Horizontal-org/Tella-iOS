@@ -10,11 +10,11 @@ import Foundation
 import Combine
 
 class GDriveDraftViewModel: DraftMainViewModel{
-    private let gDriveRepository: GDriveRepositoryProtocol
+    let gDriveRepository: GDriveRepositoryProtocol
     
-    init(mainAppModel: MainAppModel, repository: GDriveRepositoryProtocol, reportId reportID: Int?) {
+    init(repository: GDriveRepositoryProtocol, reportId reportID: Int?, reportsMainViewModel: ReportsMainViewModel) {
         self.gDriveRepository = repository
-        super.init(mainAppModel: mainAppModel, reportId: reportID)
+        super.init(reportId: reportID, reportsMainViewModel: reportsMainViewModel)
         
         self.getServer()
         self.fillReportVM()

@@ -11,7 +11,7 @@ import Foundation
 class SubmittedMainViewModel: ObservableObject {
     
     var mainAppModel : MainAppModel
-    
+    @Published var reportsMainViewModel: ReportsMainViewModel
     var report: BaseReport? {
         return nil
     }
@@ -37,8 +37,9 @@ class SubmittedMainViewModel: ObservableObject {
         return !description.isEmpty
     }
     
-    init(mainAppModel: MainAppModel, reportId: Int?) {
-        self.mainAppModel = mainAppModel
+    init(reportsMainViewModel: ReportsMainViewModel, reportId: Int?) {
+        self.mainAppModel = reportsMainViewModel.mainAppModel
+        self.reportsMainViewModel = reportsMainViewModel
         fillReportVM(reportId: reportId)
     }
 

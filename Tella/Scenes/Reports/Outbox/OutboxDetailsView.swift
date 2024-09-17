@@ -7,8 +7,6 @@ import SwiftUI
 struct OutboxDetailsView<T: Server>: View {
     
     @StateObject var outboxReportVM : OutboxMainViewModel<T>
-    @StateObject var reportsViewModel : ReportsMainViewModel
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
     private let delayTimeInSecond = 0.1
     var rootView: AnyClass = ViewClassType.reportMainView
@@ -36,8 +34,8 @@ struct OutboxDetailsView<T: Server>: View {
         
         .onReceive(outboxReportVM.$shouldShowSubmittedReportView, perform: { value in
             if value {
-                reportsViewModel.getReports()
-                reportsViewModel.selectedPage = .submitted
+                outboxReportVM.reportsViewModel.getReports()
+                outboxReportVM.reportsViewModel.selectedPage = .submitted
                 navigateTo(destination: submittedDetailsView)
             }
         })
@@ -186,19 +184,19 @@ struct OutboxDetailsView<T: Server>: View {
     
     private var submittedDetailsView: some View {
         Group {
-            switch reportsViewModel.connectionType {
+            switch outboxReportVM.reportsViewModel.connectionType {
             case .tella:
-                let vm = SubmittedReportVM(mainAppModel: outboxReportVM.mainAppModel,
+                let vm = SubmittedReportVM(reportsMainViewModel: outboxReportVM.reportsViewModel,
                                            reportId: outboxReportVM.reportViewModel.id)
-                TellaServerSubmittedDetailsView(submittedMainViewModel: vm, reportsMainViewModel: reportsViewModel)
+                TellaServerSubmittedDetailsView(submittedMainViewModel: vm)
             case .gDrive:
-                let vm = GDriveSubmittedViewModel(mainAppModel: outboxReportVM.mainAppModel,
+                let vm = GDriveSubmittedViewModel(reportsMainViewModel: outboxReportVM.reportsViewModel,
                                                   reportId: outboxReportVM.reportViewModel.id)
-                GDriveSubmittedDetailsView(submittedMainViewModel: vm, reportsMainViewModel: reportsViewModel)
+                GDriveSubmittedDetailsView(submittedMainViewModel: vm)
             case .nextcloud:
-                let vm = NextcloudSubmittedViewModel(mainAppModel: outboxReportVM.mainAppModel,
+                let vm = NextcloudSubmittedViewModel(reportsMainViewModel: outboxReportVM.reportsViewModel,
                                                      reportId: outboxReportVM.reportViewModel.id)
-                NextcloudSubmittedDetailsView(submittedMainViewModel: vm, reportsMainViewModel: reportsViewModel)
+                NextcloudSubmittedDetailsView(submittedMainViewModel: vm)
             default:
                 Text("")
 

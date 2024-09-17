@@ -15,11 +15,9 @@ struct DraftView: View  {
     @State private var shouldShowMenu : Bool = false
     
     @EnvironmentObject var sheetManager: SheetManager
-    @EnvironmentObject var mainAppModel: MainAppModel
-
-    var reportsViewModel : ReportsMainViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
+    var showOutboxDetailsViewAction: (() -> Void)
+
     var body: some View {
         ContainerView {
             contentView
@@ -190,32 +188,6 @@ struct DraftView: View  {
         }.padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
     }
     
-    var outboxDetailsView: some View {
-        Group {
-            switch reportsViewModel.connectionType {
-            case .tella:
-                let outboxVM = OutboxReportVM(mainAppModel: mainAppModel,
-                                              reportsViewModel: reportsViewModel,
-                                              reportId: viewModel.reportId)
-              TellaServerOutboxDetailsView(outboxReportVM: outboxVM, reportsViewModel: reportsViewModel)
-            case .gDrive:
-                let outboxVM = GDriveOutboxViewModel(mainAppModel: mainAppModel,
-                                                     reportsViewModel: reportsViewModel,
-                                                     reportId: viewModel.reportId,
-                                                     repository: GDriveRepository())
-                GdriveOutboxDetailsView(outboxReportVM: outboxVM, reportsViewModel: reportsViewModel)
-            case .nextcloud:
-                let outboxVM = NextcloudOutboxViewModel(mainAppModel: mainAppModel,
-                                                        reportsViewModel: reportsViewModel,
-                                                        reportId: viewModel.reportId,
-                                                        repository: NextcloudRepository())
-                NextcloutOutboxView(outboxReportVM: outboxVM, reportsViewModel: reportsViewModel)
-            default:
-                Text("")
-            }
-        }
-    }
-    
     var photoVideoPickerView: some View {
         PhotoVideoPickerView(showingImagePicker: $viewModel.showingImagePicker,
                              showingImportDocumentPicker: $viewModel.showingImportDocumentPicker,
@@ -260,7 +232,7 @@ struct DraftView: View  {
         case .finalized:
             handleSuccessSavingOutbox()
         case .submissionScheduled:
-            handleSuccessSavingReportForSubmission()
+            showOutboxDetailsViewAction()
         default:
             break
         }
@@ -272,22 +244,17 @@ struct DraftView: View  {
     }
     
     private func handleSuccessSavingDraft() {
-        reportsViewModel.selectedPage = .draft
+        viewModel.reportsMainViewModel.selectedPage = .draft
         dismissViews()
         Toast.displayToast(message: LocalizableReport.draftSavedToast.localized)
     }
     
     private func handleSuccessSavingOutbox() {
-        reportsViewModel.selectedPage = .outbox
+        viewModel.reportsMainViewModel.selectedPage = .outbox
         dismissViews()
         Toast.displayToast(message: LocalizableReport.outboxSavedToast.localized)
     }
     
-    private func handleSuccessSavingReportForSubmission() {
-        DispatchQueue.main.async {
-            navigateTo(destination: outboxDetailsView)
-        }
-    }
     
     private func dismissViews() {
         sheetManager.hide()

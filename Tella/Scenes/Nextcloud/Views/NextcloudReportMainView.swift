@@ -13,28 +13,31 @@ struct NextcloudReportMainView: View {
     
     var body: some View {
         ReportMainView(reportsMainViewModel: reportsMainViewModel) { id in
-            var destination : any View
-            destination = NextcloudDraftView(nextcloudDraftViewModel: NextcloudDraftViewModel(mainAppModel: reportsMainViewModel.mainAppModel,repository: reportsMainViewModel.nextcloudRepository, reportId: id),
-                                             reportsViewModel: reportsMainViewModel)
-            
-            self.navigateTo(destination: destination)
-            
+            showDraftView(id)
         } showSubmittedViewAction: { id in
-            let vm = NextcloudSubmittedViewModel(mainAppModel: reportsMainViewModel.mainAppModel, reportId: id)
-            let destination = NextcloudSubmittedDetailsView(submittedMainViewModel: vm, reportsMainViewModel: reportsMainViewModel)
-            self.navigateTo(destination: destination)
-            
+            showSubmittedView(id)
         } showOutboxViewAction: { id in
-            let outboxViewModel = NextcloudOutboxViewModel(mainAppModel: reportsMainViewModel.mainAppModel,
-                                                           reportsViewModel: reportsMainViewModel,
-                                                           reportId: id,
-                                                           repository:reportsMainViewModel.nextcloudRepository)
-            let destination = NextcloutOutboxView(outboxReportVM: outboxViewModel,
-                                                  reportsViewModel: reportsMainViewModel)
-            
-            self.navigateTo(destination: destination)
-            
+            showOutboxView(id)
         }
-        
+    }
+    
+    private func showDraftView(_ id: Int?) {
+        var destination : any View
+        destination = NextcloudDraftView(nextcloudDraftViewModel: NextcloudDraftViewModel(repository: reportsMainViewModel.nextcloudRepository, reportId: id, reportsMainViewModel: reportsMainViewModel))
+        self.navigateTo(destination: destination)
+    }
+    
+    private func showSubmittedView(_ id: Int?) {
+        let vm = NextcloudSubmittedViewModel(reportsMainViewModel: reportsMainViewModel, reportId: id)
+        let destination = NextcloudSubmittedDetailsView(submittedMainViewModel: vm)
+        self.navigateTo(destination: destination)
+    }
+    
+    private func showOutboxView(_ id: Int?) {
+        let outboxViewModel = NextcloudOutboxViewModel(reportsViewModel: reportsMainViewModel,
+                                                       reportId: id,
+                                                       repository:reportsMainViewModel.nextcloudRepository)
+        let destination = NextcloutOutboxDetailsView(outboxReportVM: outboxViewModel)
+        self.navigateTo(destination: destination)
     }
 }

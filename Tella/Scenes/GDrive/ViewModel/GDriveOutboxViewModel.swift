@@ -19,13 +19,12 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         return true
     }
 
-    init(mainAppModel: MainAppModel,
-         reportsViewModel : ReportsMainViewModel,
+    init(reportsViewModel: ReportsMainViewModel,
          reportId : Int?,
          repository: GDriveRepositoryProtocol) {
         
         self.gDriveRepository = repository
-        super.init(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: reportId)
+        super.init(reportsViewModel: reportsViewModel, reportId: reportId)
 
         if reportViewModel.status == .submissionScheduled {
             self.submitReport()
@@ -171,7 +170,8 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     
     override func updateReportStatus(reportStatus: ReportStatus) {
         self.reportViewModel.status = reportStatus
-        
+        self.objectWillChange.send()
+
         guard let id = reportViewModel.id else { return }
         
         mainAppModel.tellaData?.updateDriveReportStatus(reportId: id, status: reportStatus)

@@ -10,9 +10,9 @@ import SwiftUI
 
 struct GDriveSubmittedDetailsView: View {
     
-    @StateObject var submittedMainViewModel: SubmittedMainViewModel
-    @StateObject var reportsMainViewModel: ReportsMainViewModel
+    @StateObject var submittedMainViewModel: GDriveSubmittedViewModel
+
     var body: some View {
-        SubmittedDetailsView(submittedReportVM: submittedMainViewModel, reportsViewModel: reportsMainViewModel, rootView: ViewClassType.gdriveReportMainView)
+        SubmittedDetailsView(submittedReportVM: submittedMainViewModel, rootView: ViewClassType.gdriveReportMainView)
     }
 }

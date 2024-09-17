@@ -9,9 +9,9 @@
 import SwiftUI
 struct TellaServerSubmittedDetailsView: View {
     
-    @StateObject var submittedMainViewModel: SubmittedMainViewModel
-    @StateObject var reportsMainViewModel: ReportsMainViewModel
+    @StateObject var submittedMainViewModel: SubmittedReportVM
+
     var body: some View {
-        SubmittedDetailsView(submittedReportVM: submittedMainViewModel, reportsViewModel: reportsMainViewModel, rootView: ViewClassType.tellaServerReportMainView)
+        SubmittedDetailsView(submittedReportVM: submittedMainViewModel, rootView: ViewClassType.tellaServerReportMainView)
     }
 }

@@ -12,9 +12,9 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
         return !(reportViewModel.server?.autoDelete ?? true)
     }
 
-    override init(mainAppModel: MainAppModel, reportsViewModel : ReportsMainViewModel, reportId : Int?) {
+    override init(reportsViewModel : ReportsMainViewModel, reportId : Int?) {
 
-        super.init(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: reportId)
+        super.init(reportsViewModel: reportsViewModel, reportId: reportId)
 
         if reportViewModel.status == .submissionScheduled {
             self.submitReport()
@@ -82,7 +82,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
     
     override func initVaultFile(reportId: Int?) {
         
-        if let reportId, let report = self.mainAppModel.tellaData?.getReport(reportId: reportId) {
+        if let reportId, let report = self.reportsViewModel.mainAppModel.tellaData?.getReport(reportId: reportId) {
 
             let files = processVaultFiles(reportFiles: report.reportFiles)
             
@@ -126,7 +126,8 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
     override func updateReportStatus(reportStatus:ReportStatus) {
         
         self.reportViewModel.status = reportStatus
-        
+        self.objectWillChange.send()
+
         guard let id = reportViewModel.id else { return  }
 
         mainAppModel.tellaData?.updateReportStatus(idReport: id, status: reportStatus)
