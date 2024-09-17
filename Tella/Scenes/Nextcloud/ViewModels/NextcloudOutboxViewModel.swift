@@ -185,7 +185,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
                 self.shouldShowLoginView = true
                 
             default:
-                self.toastMessage = error.errorDescription ?? ""
+                self.toastMessage = error.errorMessage
                 self.shouldShowToast = true
             }
         }
