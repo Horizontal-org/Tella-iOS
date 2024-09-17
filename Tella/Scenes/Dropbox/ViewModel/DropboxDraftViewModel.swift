@@ -12,9 +12,9 @@ import Combine
 class DropboxDraftViewModel: DraftMainViewModel {
     private let dropboxRepository: DropboxRepositoryProtocol
     
-    init(mainAppModel: MainAppModel, DropboxRepository: DropboxRepositoryProtocol, reportId: Int?) {
+    init(DropboxRepository: DropboxRepositoryProtocol, reportId: Int?, reportsMainViewModel: ReportsMainViewModel) {
         self.dropboxRepository = DropboxRepository
-        super.init(mainAppModel: mainAppModel, reportId: reportId)
+        super.init(reportId: reportId, reportsMainViewModel: reportsMainViewModel)
     }
     
     override func validateReport() {

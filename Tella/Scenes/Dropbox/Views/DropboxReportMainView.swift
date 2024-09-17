@@ -18,8 +18,11 @@ struct DropboxReportMainView: View {
     }
     
     private func navigateToDraftView(_ id: Int?) {
-        let draftVM = DropboxDraftViewModel(mainAppModel: reportsMainViewModel.mainAppModel, DropboxRepository: reportsMainViewModel.dropboxRepository, reportId: 0)
+        let draftVM = DropboxDraftViewModel(DropboxRepository: reportsMainViewModel.dropboxRepository,
+                                            reportId: 0,
+                                            reportsMainViewModel: reportsMainViewModel)
         
-        navigateTo(destination: DropboxDraftView(dropboxDraftVM: draftVM, reportsViewModel: reportsMainViewModel))
+        let destination = DropboxDraftView(dropboxDraftVM: draftVM, reportsViewModel: reportsMainViewModel)
+        navigateTo(destination: destination)
     }
 }
