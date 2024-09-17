@@ -39,7 +39,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
     func handleSignIn() async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             DispatchQueue.main.async {
-                let scopeRequest = ScopeRequest(scopeType: .user, scopes: ["files.content.read", "files.content.write"], includeGrantedScopes: false)
+                let scopeRequest = ScopeRequest(scopeType: .user, scopes: [DropboxAuthConstants.filesContentRead, DropboxAuthConstants.filesContentWrite], includeGrantedScopes: false)
                 
                 DropboxClientsManager.authorizeFromControllerV2(
                     UIApplication.shared,

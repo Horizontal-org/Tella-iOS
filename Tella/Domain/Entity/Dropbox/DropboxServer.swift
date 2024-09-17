@@ -9,7 +9,7 @@
 import Foundation
 
 class DropboxServer: Server {
-    init(id: Int? = nil, name: String? = "Dropbox", serverType: ServerConnectionType? = .dropbox) {
+    init(id: Int? = nil, name: String? = LocalizableDropbox.dropboxAppBar.localized, serverType: ServerConnectionType? = .dropbox) {
         super.init(id: id, name: name, serverType: serverType, allowMultipleConnections: false)
     }
     

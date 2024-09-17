@@ -20,4 +20,6 @@ struct GoogleAuthConstants {
 
 struct DropboxAuthConstants {
     static let dropboxAppKey = "DropboxAppKey"
+    static let filesContentRead = "files.content.read"
+    static let filesContentWrite = "files.content.write"
 }
