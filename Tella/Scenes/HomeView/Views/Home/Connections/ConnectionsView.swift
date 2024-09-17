@@ -62,7 +62,7 @@ struct ConnectionsView: View {
                                         image: "home.nextcloud",
                                         destination:nextcloudMainView)
                 case .dropbox:
-                    ConnectionsItemView(title: "Dropbox",
+                    ConnectionsItemView(title: LocalizableDropbox.dropboxAppBar.localized,
                                         image: "home.dropbox",
                                         destination: EmptyView())
                 }

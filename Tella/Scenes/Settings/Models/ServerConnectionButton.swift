@@ -18,5 +18,5 @@ let serverConnections: [ServerConnectionButton] = [
     ServerConnectionButton(title: LocalizableSettings.settServerUwazi.localized, type: .uwazi),
     ServerConnectionButton(title: LocalizableSettings.settServerGDrive.localized, type: .gDrive),
     ServerConnectionButton(title: LocalizableSettings.settServerNextCloud.localized, type: .nextcloud),
-    ServerConnectionButton(title: "DROPBOX", type: .dropbox)
+    ServerConnectionButton(title: LocalizableSettings.settServerDropbox.localized, type: .dropbox)
 ]
