@@ -64,49 +64,11 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         do {
             
             let server = try NextcloudServerModel(server: currentReport?.server)
-            
-            guard let currentReport else { return }
-            
+
             self.updateReport(reportStatus: .submissionInProgress)
             
-            let files = reportViewModel.files.filter({ $0.status != .submitted})
-            
-            _ = files.compactMap { file in
-                file.url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true)
-            }
-            
-            let remoteFolderName = self.reportViewModel.title.removeForbiddenCharacters()
-            
-            if reportViewModel.remoteReportStatus != .descriptionSent {
-                guard let descriptionFileUrl = self.mainAppModel.vaultManager.getDescriptionFileUrl(content: self.reportViewModel.description,
-                                                                                                    fileName: NextcloudConstants.descriptionFolderName) else { return }
-                
-                reportViewModel.descriptionFileUrl = descriptionFileUrl
-            }
-            
-            let filesToSend = files.compactMap { file in
-                let directory = file.url?.directoryPath ?? ""
-                let fileName = file.url?.lastPathComponent ?? ""
-                let remoteFolderName =  remoteFolderName
-                let chunkFiles : [(fileName: String, size: Int64)] = file.chunkFiles ?? []
-                let chunkFolder = file.name
-                
-                return  NextcloudMetadata(fileId: file.id,
-                                          directory: directory,
-                                          fileName: fileName, 
-                                          fileSize: file.size,
-                                          remoteFolderName: remoteFolderName,
-                                          serverURL: server.url,
-                                          chunkFolder: chunkFolder,
-                                          chunkFiles: chunkFiles)
-            }
-            
-            let reportToSend = NextcloudReportToSend(folderName: remoteFolderName,
-                                                     descriptionFileUrl: reportViewModel.descriptionFileUrl,
-                                                     remoteReportStatus: currentReport.remoteReportStatus ?? .unknown,
-                                                     files: filesToSend,
-                                                     server: server)
-            
+            let reportToSend = try prepareReportToSend(server: server)
+
             nextcloudRepository.uploadReport(report: reportToSend)
                 .sink { completion in
                     switch completion {
@@ -126,6 +88,46 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
                 self.shouldShowToast = true
             }
         }
+    }
+    
+    private func prepareReportToSend(server:NextcloudServerModel) throws -> NextcloudReportToSend {
+       
+        let files = reportViewModel.files.filter({ $0.status != .submitted})
+        
+        _ = files.compactMap { file in
+            file.url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true)
+        }
+        
+        let remoteFolderName = self.reportViewModel.title.removeForbiddenCharacters()
+        
+        if reportViewModel.remoteReportStatus != .descriptionSent {
+            guard let descriptionFileUrl = self.mainAppModel.vaultManager.getDescriptionFileUrl(content: self.reportViewModel.description,
+                                                                                                fileName: NextcloudConstants.descriptionFolderName)
+            else { throw RuntimeError(LocalizableCommon.commonError.localized) }
+            reportViewModel.descriptionFileUrl = descriptionFileUrl
+        }
+        
+        let filesToSend = files.compactMap { file in
+            let directory = file.url?.directoryPath ?? ""
+            let fileName = file.url?.lastPathComponent ?? ""
+            let remoteFolderName =  remoteFolderName
+            let chunkFiles : [(fileName: String, size: Int64)] = file.chunkFiles ?? []
+            let chunkFolder = file.name
+            
+            return  NextcloudMetadata(fileId: file.id,
+                                      directory: directory,
+                                      fileName: fileName,
+                                      remoteFolderName: remoteFolderName,
+                                      serverURL: server.url,
+                                      chunkFolder: chunkFolder,
+                                      chunkFiles: chunkFiles)
+        }
+        
+        return NextcloudReportToSend(folderName: remoteFolderName,
+                                     descriptionFileUrl: reportViewModel.descriptionFileUrl,
+                                     remoteReportStatus: currentReport?.remoteReportStatus ?? .unknown,
+                                     files: filesToSend,
+                                     server: server)
     }
     
     private func processUploadReportResponse(response:NextcloudUploadResponse) {

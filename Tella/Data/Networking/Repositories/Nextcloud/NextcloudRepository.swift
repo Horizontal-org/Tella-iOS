@@ -130,36 +130,19 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
 
         Task {
             do {
-                
+                guard self.networkMonitor.isConnected else {
+                    subject.send(completion:.failure(.noInternetConnection))
+                    return
+                }
+
                 switch report.remoteReportStatus {
                     
                 case .initial, .unknown :
-                    
-                    guard !shouldPause else { return }
-                    
-                    guard let folderName = try await createFileName(fileNameBase: report.folderName) else {
-                        subject.send(completion:.failure(APIError.unexpectedResponse))
-                        return
-                    }
-                    
-                    subject.send(.nameUpdated(newName: folderName))
-                    
-                    guard !shouldPause else { return }
-                    
-                    try await createFolder(folderName: folderName)
-                    subject.send(.createReport)
-                    
-                    guard !shouldPause else { return }
-                    
-                    try await uploadDescriptionFile(report: report)
-                    subject.send(.descriptionSent)
-                    
+                    try await handleInitialOrUnknownStatus(report: report, subject: subject)
+               
                 case .created:
-                    guard !shouldPause else { return }
-                    
-                    try await uploadDescriptionFile(report: report)
-                    subject.send(.descriptionSent)
-                    
+                    try await handleCreatedStatus(report: report, subject: subject)
+
                 default:
                     break
                 }
@@ -169,43 +152,82 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 }
                 
                 guard !shouldPause else { return }
+
+                uploadFiles(report: report, subject: subject)
                 
-                guard self.networkMonitor.isConnected else {
-                    subject.send(completion:.failure(.noInternetConnection))
-                    return
-                }
-                
-                report.files.forEach { file in
-                    uploadFileInChunks(metadata: file, rootFolder: report.server.rootFolder ?? "")
-                        .sink(receiveCompletion: { _ in
-                            
-                        }, receiveValue: { result in
-                            subject.send(.progress(progressInfo: result))
-                        }).store(in: &subscribers)
-                }
-                
-                self.networkStatusSubject
-                    .filter { !$0 }
-                    .first()
-                    .sink { _ in
-                        subject.send(completion:.failure(.noInternetConnection))
-                    }
-                    .store(in: &self.subscribers)
+                monitorNetworkConnection(subject: subject)
                 
             } catch let error as APIError {
-                debugLog(error)
-                switch error {
-                case .nextcloudError(let code) where code == NcHTTPErrorCodes.nonExistentFolder.rawValue:
-                    try await createFolder(folderName: "") // This will create a folder with the rootname
-                    subject.send(.folderRecreated)
-                    self.upload(report: report, subject: subject) // re-upload the report
-                default:
-                    subject.send(completion:.failure(error))
-                }
+                await handleError(error, report: report, subject: subject)
             }
         }
     }
     
+    private func handleInitialOrUnknownStatus(report: NextcloudReportToSend, subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) async throws {
+      
+        guard !shouldPause else { return }
+        
+        guard let folderName = try await createFileName(fileNameBase: report.folderName) else {
+            subject.send(completion:.failure(APIError.unexpectedResponse))
+            return
+        }
+        
+        subject.send(.nameUpdated(newName: folderName))
+        
+        guard !shouldPause else { return }
+        
+        try await createFolder(folderName: folderName)
+        subject.send(.createReport)
+        
+        guard !shouldPause else { return }
+        
+        try await uploadDescriptionFile(report: report)
+        subject.send(.descriptionSent)
+
+    }
+    
+    private func handleCreatedStatus(report: NextcloudReportToSend, subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) async throws {
+        
+        guard !shouldPause else { return }
+        
+        try await uploadDescriptionFile(report: report)
+        subject.send(.descriptionSent)
+    }
+
+    private func uploadFiles(report: NextcloudReportToSend, subject: CurrentValueSubject<NextcloudUploadResponse, APIError>)   {
+        report.files.forEach { file in
+            uploadFileInChunks(metadata: file, rootFolder: report.server.rootFolder ?? "")
+                .sink(receiveCompletion: { _ in
+                    
+                }, receiveValue: { result in
+                    subject.send(.progress(progressInfo: result))
+                }).store(in: &subscribers)
+        }
+
+    }
+    
+    private func monitorNetworkConnection(subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) {
+        self.networkStatusSubject
+            .filter { !$0 }
+            .first()
+            .sink { _ in
+                subject.send(completion: .failure(.noInternetConnection))
+            }
+            .store(in: &self.subscribers)
+    }
+
+    private func handleError(_ error: APIError, report: NextcloudReportToSend, subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) async {
+        debugLog(error)
+        switch error {
+        case .nextcloudError(let code) where code == NcHTTPErrorCodes.nonExistentFolder.rawValue:
+            try? await createFolder(folderName: "") // This will create a folder with the rootname
+            subject.send(.folderRecreated)
+            self.upload(report: report, subject: subject) // re-upload the report
+        default:
+            subject.send(completion:.failure(error))
+        }
+    }
+
     private func uploadDescriptionFile(report:NextcloudReportToSend) async throws {
         
         guard let descriptionFileUrl = report.descriptionFileUrl else { return }
@@ -271,7 +293,6 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 progressInfo.chunkFiles = filesChunk
                 progressInfo.step = .start
                 subject.send(progressInfo)
-                
             } requestHandler: { request in
             } taskHandler: { task in
                 subject.send(progressInfo)
@@ -284,7 +305,6 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 progressInfo.chunkFileSent = fileChunk
                 progressInfo.step = .chunkSent
                 subject.send(progressInfo)
-                
             } completion : { account, filesChunk, file, afError, error in
                 progressInfo.status = error == .success ? .submitted : .submissionError
                 progressInfo.finishUploading = true
