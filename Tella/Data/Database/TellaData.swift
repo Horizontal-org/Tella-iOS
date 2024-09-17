@@ -152,7 +152,6 @@ class TellaData : ObservableObject {
     func getTellaServer(serverId: Int?) -> TellaServer? {
         do {
             guard let serverId else { return nil }
-            reloadServers()
             return try database.getTellaServerById(id: serverId)
         } catch {
             debugLog(error)
@@ -163,7 +162,6 @@ class TellaData : ObservableObject {
     func getUwaziServer(serverId: Int?) -> UwaziServer? {
         do {
             guard let serverId else { return nil }
-            reloadServers()
             return try database.getUwaziServer(serverId: serverId)
         }catch {
             debugLog(error)
