@@ -404,6 +404,7 @@
 		157E4F532BA385B500147345 /* PDFKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157E4F522BA385B500147345 /* PDFKitView.swift */; };
 		1587D6EB2C98C8C1003E0B3D /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D6EA2C98C8C1003E0B3D /* ConfigurationManager.swift */; };
 		1587D6ED2C99CD15003E0B3D /* LocalizableDropbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D6EC2C99CD15003E0B3D /* LocalizableDropbox.swift */; };
+		1587D6EF2C9A003F003E0B3D /* DropboxReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D6EE2C9A003F003E0B3D /* DropboxReport.swift */; };
 		15917D752B90FCC3005655AC /* ResourceCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15917D742B90FCC3005655AC /* ResourceCardType.swift */; };
 		15994A0C2BFBC6F40017F153 /* SelectDriveConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A0B2BFBC6F40017F153 /* SelectDriveConnectionView.swift */; };
 		15994A0E2BFBE15F0017F153 /* SelectSharedDrive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A0D2BFBE15F0017F153 /* SelectSharedDrive.swift */; };
@@ -1024,6 +1025,7 @@
 		157E4F522BA385B500147345 /* PDFKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFKitView.swift; sourceTree = "<group>"; };
 		1587D6EA2C98C8C1003E0B3D /* ConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationManager.swift; sourceTree = "<group>"; };
 		1587D6EC2C99CD15003E0B3D /* LocalizableDropbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableDropbox.swift; sourceTree = "<group>"; };
+		1587D6EE2C9A003F003E0B3D /* DropboxReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxReport.swift; sourceTree = "<group>"; };
 		1589A6202B7672390048C775 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1589A6212B7672430048C775 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		15917D742B90FCC3005655AC /* ResourceCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCardType.swift; sourceTree = "<group>"; };
@@ -2749,6 +2751,7 @@
 			isa = PBXGroup;
 			children = (
 				15FF77FE2C90CF7A002E87C3 /* DropboxServer.swift */,
+				1587D6EE2C9A003F003E0B3D /* DropboxReport.swift */,
 			);
 			path = Dropbox;
 			sourceTree = "<group>";
@@ -3922,6 +3925,7 @@
 				D75F9E9C25342539006F6212 /* RecordViewModel.swift in Sources */,
 				E1EEE2A129F6EA2B009FE227 /* UwaziLoginView.swift in Sources */,
 				15BD9CB12BC744BC00C3932B /* NavigationHeaderView.swift in Sources */,
+				1587D6EF2C9A003F003E0B3D /* DropboxReport.swift in Sources */,
 				15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */,
 				15CD89102BF297BE00F724F5 /* SelectedEntityView.swift in Sources */,
 				12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */,

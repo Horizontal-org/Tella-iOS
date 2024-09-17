@@ -12,17 +12,21 @@ struct DropboxReportMainView: View {
     @ObservedObject var reportsMainViewModel: DropboxViewModel
     
     var body: some View {
-        ReportMainView(reportsMainViewModel: reportsMainViewModel,
-                       showDraftViewAction: navigateToDraftView
-        )
+        ReportMainView(reportsMainViewModel: reportsMainViewModel) { id in
+            showDraftView(id)
+        } showSubmittedViewAction: { id in
+            
+        } showOutboxViewAction: { id in
+            
+        }
     }
     
-    private func navigateToDraftView(_ id: Int?) {
+    private func showDraftView(_ id: Int?) {
         let draftVM = DropboxDraftViewModel(DropboxRepository: reportsMainViewModel.dropboxRepository,
-                                            reportId: 0,
+                                            reportId: id,
                                             reportsMainViewModel: reportsMainViewModel)
         
         let destination = DropboxDraftView(dropboxDraftVM: draftVM, reportsViewModel: reportsMainViewModel)
-        navigateTo(destination: destination)
+        self.navigateTo(destination: destination)
     }
 }

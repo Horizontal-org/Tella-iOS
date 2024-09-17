@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Create Server Tables
 extension TellaDataBase {
     func createDropboxServerTable() {
         let columns = [
@@ -50,5 +51,192 @@ extension TellaDataBase {
         } catch let error {
             debugLog(error)
         }
+    }
+}
+
+/// Create report tables
+extension TellaDataBase {
+    func createDropboxReportTable() {
+        let columns = [
+            cddl(D.cReportId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cTitle, D.text),
+            cddl(D.cDescription, D.text),
+            cddl(D.cCreatedDate, D.float),
+            cddl(D.cUpdatedDate, D.float),
+            cddl(D.cStatus, D.integer),
+            cddl(D.cFolderId, D.text),
+            cddl(D.cServerId, D.integer, tableName: D.tDropboxServer, referenceKey: D.cId)
+        ]
+        
+        statementBuilder.createTable(tableName: D.tDropboxReport, columns: columns)
+    }
+    
+    func createDropboxReportsFileTable() {
+        let columns = [
+            cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
+            cddl(D.cVaultFileInstanceId, D.text),
+            cddl(D.cStatus, D.integer),
+            cddl(D.cBytesSent, D.integer),
+            cddl(D.cCreatedDate, D.float),
+            cddl(D.cUpdatedDate, D.float),
+            cddl(D.cReportInstanceId, D.integer, tableName: D.tDropboxReport, referenceKey: D.cReportId)
+        ]
+        
+        statementBuilder.createTable(tableName: D.tDropboxInstanceVaultFile, columns: columns)
+    }
+    
+}
+
+/// Dropbox report methods
+extension TellaDataBase {
+    
+    /// GET
+    func getDropboxReports(reportStatus: [ReportStatus]) -> [DropboxReport] {
+        do {
+            
+            let statusArray = reportStatus.compactMap{ $0.rawValue }
+            
+            let dropboxReportsDict = try statementBuilder.getSelectQuery(tableName: D.tDropboxReport,
+                                                                        inCondition: [KeyValues(key:D.cStatus, value: statusArray )]
+            )
+            
+            let decodedReports = try dropboxReportsDict.compactMap ({ dict in
+                return try dict.decode(DropboxReport.self)
+            })
+            
+            return decodedReports
+            
+        } catch let error {
+            debugLog(error)
+            return []
+        }
+    }
+        
+    func getDropboxReport(id: Int) -> DropboxReport? {
+        do{
+            let reportsCondition = [KeyValue(key: D.cReportId, value: id)]
+            let dropboxReportsDict = try statementBuilder.getSelectQuery(tableName: D.tDropboxReport,
+                                                                        equalCondition: reportsCondition
+            )
+            
+            guard let dict = dropboxReportsDict.first else {
+                return nil
+            }
+            
+            let decodedReports = try dict.decode(DropboxReport.self)
+            let reportFiles = getDropboxVaultFiles(reportId: decodedReports.id)
+            decodedReports.reportFiles = reportFiles
+            
+            let server = getDropboxServers().first
+            decodedReports.server = server
+            
+            return decodedReports
+        } catch let error {
+            debugLog(error)
+            return nil
+        }
+    }
+        
+    func getDropboxVaultFiles(reportId: Int?) -> [ReportFile] {
+        do {
+            let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: reportId)]
+            let responseDict = try statementBuilder.selectQuery(tableName: D.tDropboxInstanceVaultFile, andCondition: reportFilesCondition)
+            
+            let decodedFiles = try responseDict.compactMap ({ dict in
+                return try dict.decode(ReportFile.self)
+            })
+            
+            return decodedFiles
+        } catch let error {
+            debugLog(error)
+            
+            return []
+        }
+    }
+    
+    /// ADD
+    func addDropboxReport(report: DropboxReport) -> Result<Int, Error> {
+        do {
+            let reportDict = report.dictionary
+            let valuesToAdd = reportDict.compactMap({ KeyValue(key: $0.key, value: $0.value) })
+            let reportId = try statementBuilder.insertInto(tableName: D.tDropboxReport, keyValue: valuesToAdd)
+            
+            _ = report.reportFiles?.compactMap({ $0.reportInstanceId = reportId })
+            
+            try report.reportFiles?.forEach({ reportFiles in
+                let reportFilesDictionary = reportFiles.dictionary
+                let reportFilesValuesToAdd = reportFilesDictionary.compactMap({ KeyValue(key: $0.key, value: $0.value) })
+                
+                try statementBuilder.insertInto(tableName: D.tDropboxInstanceVaultFile, keyValue: reportFilesValuesToAdd)
+            })
+            return .success(reportId)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
+    
+    /// UPDATE
+    func updateDropboxReport(report: DropboxReport) -> Result<Bool, Error> {
+        do {
+            
+            let reportDict = report.dictionary
+            let valuesToUpdate = reportDict.compactMap({ KeyValue(key: $0.key, value: $0.value) })
+            let reportCondition = [KeyValue(key: D.cReportId, value: report.id)]
+            
+            try statementBuilder.update(
+                tableName: D.tDropboxReport,
+                valuesToUpdate: valuesToUpdate,
+                equalCondition: reportCondition
+            )
+            
+            if let files = report.reportFiles, let reportId = report.id {
+                let _ = try updateDropboxReportFiles(files: files, reportId: reportId)
+            }
+            return .success(true)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
+    
+    func updateDropboxReportFiles(files: [ReportFile], reportId: Int) -> Result<Bool, Error> {
+        do {
+            try deleteDropboxInstanceFiles(reportId: reportId)
+            
+            try files.forEach( { reportFiles in
+                let reportFilesDict = reportFiles.dictionary
+                let reportFilesValuesToAdd = reportFilesDict.compactMap({ KeyValue( key: $0.key, value: $0.value) })
+                
+                try statementBuilder.insertInto(tableName: D.tDropboxInstanceVaultFile, keyValue: reportFilesValuesToAdd)
+            })
+            
+            return .success(true)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
+    
+    /// DELETE
+    func deleteDropboxReport(reportId: Int?) -> Result<Bool, Error> {
+        do {
+            let reportCondition = [KeyValue(key: D.cReportId, value: reportId)]
+            
+            try statementBuilder.delete(tableName: D.tDropboxReport, primarykeyValue: reportCondition)
+            
+            try deleteDropboxInstanceFiles(reportId: reportId)
+            
+            return .success(true)
+        } catch let error {
+            debugLog(error)
+            
+            return .failure(error)
+        }
+    }
+    
+    func deleteDropboxInstanceFiles(reportId: Int?) throws {
+        let fileCondition = [KeyValue(key: D.cReportInstanceId, value: reportId)]
+        try statementBuilder.delete(tableName: D.tDropboxInstanceVaultFile, primarykeyValue: fileCondition)
     }
 }
