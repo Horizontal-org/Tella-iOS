@@ -250,6 +250,11 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
             updatedFile.finishUploading = uploadProgressInfo.finishUploading
             return updatedFile
         }
+        
+        if uploadProgressInfo.status == .submissionError {
+            reportViewModel.status = .submissionError
+            publishUpdates()
+        }
     }
     
     override func updateFile(file:ReportVaultFile) {
