@@ -44,10 +44,11 @@ class TellaDataBase : DataBase {
                 createGDriveServerTable()
                 createGDriveReportTable()
                 createGDriveReportFilesTable()
+                fallthrough
+            case 6:
                 createNextcloudServerTable()
                 createNextcloudReportTable()
                 createNextcloudReportFilesTable()
-                fallthrough
             default :
                 break
             }
