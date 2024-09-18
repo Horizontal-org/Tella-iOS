@@ -116,7 +116,8 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
             
             return  NextcloudMetadata(fileId: file.id,
                                       directory: directory,
-                                      fileName: fileName,
+                                      fileName: fileName, 
+                                      fileSize: file.size,
                                       remoteFolderName: remoteFolderName,
                                       serverURL: server.url,
                                       chunkFolder: chunkFolder,
