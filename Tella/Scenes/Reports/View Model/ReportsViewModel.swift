@@ -23,10 +23,7 @@ class ReportsViewModel: ReportsMainViewModel {
     private var delayTime = 0.1
     
     init(mainAppModel : MainAppModel) {
-        
         super.init(mainAppModel: mainAppModel, connectionType: .tella, title: LocalizableReport.reportsTitle.localized)
-        
-        self.getReports()
         self.listenToUpdates()
     }
     

@@ -50,8 +50,6 @@ class ReportsMainViewModel: ObservableObject {
         self.mainAppModel = mainAppModel
         self.connectionType = connectionType
         self.title = title
-
-        self.getReports()
         self.listenToUpdates()
     }
     
