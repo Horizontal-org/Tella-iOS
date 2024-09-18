@@ -12,6 +12,7 @@ struct NextcloudMetadata {
     var fileId : String?
     var directory : String
     var fileName : String
+    var fileSize : Int
     var remoteFolderName : String
     var serverURL : String
     var chunkFolder: String
