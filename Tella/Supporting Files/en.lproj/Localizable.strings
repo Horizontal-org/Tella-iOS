@@ -347,6 +347,8 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Outbox_ExitReport_Cancel_SheetAction" = "CANCEL";
 
 "Reports_Paused_CardExpl" = "Paused";
+"Reports_Submitting_CardExpl" = "Submitting";
+"Reports_ReadyForSubmission_CardExpl" = "Ready for submission";
 
 "Vault_DeleteFiles_SheetTitle" = "Delete files?";
 "Vault_DeleteFiles_SheetExpl" = "%i files will be permanently deleted from Tella.";
