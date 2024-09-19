@@ -11,6 +11,7 @@ import Combine
 
 class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     let dropboxRepository: DropboxRepositoryProtocol
+    private var cancellables = Set<AnyCancellable>()
     
     override var shouldShowCancelUploadConfirmation: Bool {
         return true
@@ -46,29 +47,31 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     
     func performSubmission() {
         let files = reportViewModel.files.filter({ $0.status != .submitted })
-        Task {
-            do {
-                let filesToSend = files.compactMap { file -> (URL, String)? in
-                    guard let url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true) else {
-                        return nil
-                    }
-                    
-                    let fileName = url.lastPathComponent
-                    return (url, fileName)
-                }
-                
-                try await dropboxRepository.uploadReport(title: reportViewModel.title, description: reportViewModel.description, files: filesToSend)
-                await MainActor.run {
-                    updateReportStatus(reportStatus: .submitted)
-                }
-            } catch {
-                await MainActor.run {
-                    updateReportStatus(reportStatus: .submissionError)
-                    // You might want to log the error or show it to the user
+        let filesToSend = files.compactMap { file -> (URL, String)? in
+            guard let url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true) else {
+                return nil
+            }
+            
+            let fileName = url.lastPathComponent
+            return (url, fileName)
+        }
+        
+        updateReportStatus(reportStatus: .submissionInProgress)
+        
+        dropboxRepository.uploadReport(title: reportViewModel.title, description: reportViewModel.description, files: filesToSend)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                switch completion {
+                case .finished:
+                    self?.updateReportStatus(reportStatus: .submitted)
+                case .failure(let error):
+                    self?.updateReportStatus(reportStatus: .submissionError)
                     print("Error uploading report: \(error)")
                 }
-            }
-        }
+            }, receiveValue: { _ in
+                // This is intentionally left empty as we handle the success in the completion handler
+            })
+            .store(in: &cancellables)
     }
     
     override func pauseSubmission() {
