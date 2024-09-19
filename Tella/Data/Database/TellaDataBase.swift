@@ -50,7 +50,7 @@ class TellaDataBase : DataBase {
                 createNextcloudReportTable()
                 createNextcloudReportFilesTable()
                 fallthrough
-            case 6:
+            case 7:
                 createDropboxServerTable()
             default :
                 break

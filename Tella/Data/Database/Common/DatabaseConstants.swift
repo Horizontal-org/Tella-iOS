@@ -13,7 +13,7 @@ struct D {
     
     /* DATABASE VERSION */
 
-    static let databaseVersion = 7
+    static let databaseVersion = 8
 
     /* DEFAULT TYPES FOR DATABASE */
     // MARK: - DEFAULT TYPES FOR DATABASE
