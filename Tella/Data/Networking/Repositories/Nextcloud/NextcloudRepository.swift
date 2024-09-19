@@ -29,6 +29,7 @@ enum NextcloudUploadResponse {
 class NextcloudRepository: NextcloudRepositoryProtocol {
     
     private let kRemotePhpFiles = "remote.php/dav/files/"
+    private let kchunkSize = 1024 * 1024
     private let ktimeout = TimeInterval(60)
     
     private var subscribers = Set<AnyCancellable>()
@@ -257,18 +258,17 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         let progressInfo = NextcloudUploadProgressInfo(fileId: metadata.fileId, status: FileStatus.partialSubmitted)
         
         let subject = CurrentValueSubject<NextcloudUploadProgressInfo, APIError>(progressInfo)
-         
+        
         Task {
             
             let options = NKRequestOptions(queue: NextcloudKit.shared.nkCommonInstance.backgroundQueue)
-            let chunkSize = metadata.fileSize.getchunkSize()
-
+            
             let remoteFolderName = "/" + rootFolder.slash() + metadata.remoteFolderName
             
             if !metadata.chunkFiles.isEmpty {
                 do {
                     
-                    try await createChunks(directory: metadata.directory, fileName: metadata.fileName, chunkSize: chunkSize)
+                    try await createChunks(directory: metadata.directory, fileName: metadata.fileName, chunkSize: kchunkSize)
                 } catch {
                     progressInfo.status = .submissionError
                 }
@@ -283,8 +283,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                                             serverUrl: remoteFolderName,
                                             chunkFolder: metadata.chunkFolder,
                                             filesChunk: metadata.chunkFiles,
-                                            chunkSize: chunkSize,
-                                            account: "",
+                                            chunkSize: kchunkSize, account: "",
                                             options: options) { _ in
                 
             } counterChunk: { _ in
