@@ -34,15 +34,4 @@ extension Int {
                 .replacingOccurrences(of: ".0", with: "")
         }
     }
-    
-    func getchunkSize() -> Int {
-        // Adjust chunk size based on file size
-        if self <= 10 * 1024 * 1024 { // Files smaller than or equal to 10 MB
-            return 1 * 1024 * 1024 // 1 MB chunks
-        } else if self <= 500 * 1024 * 1024 { // Files between 10 MB and 500 MB
-            return 5 * 1024 * 1024 // 5 MB chunks
-        } else { // Files larger than 500 MB
-            return 10 * 1024 * 1024 // 10 MB chunks
-        }
-    }
 }

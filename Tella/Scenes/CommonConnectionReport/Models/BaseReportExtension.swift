@@ -12,7 +12,11 @@ extension BaseReport {
     var getReportDate: String {
         let status = self.status
         switch status {
-        case .submissionPaused:
+        case .submissionPending, .finalized:
+            return LocalizableReport.readyForSubmissionCardExpl.localized
+        case .submissionInProgress:
+            return LocalizableReport.submittingCardExpl.localized
+        case .submissionPaused, .submissionAutoPaused:
             return LocalizableReport.pausedCardExpl.localized
         case .submitted:
             return self.updatedDate?.getSubmittedReportTime() ?? ""

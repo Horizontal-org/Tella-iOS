@@ -21,6 +21,9 @@ struct ReportMainView: View {
     var body: some View {
         contentView
             .navigationBarTitle(self.reportsMainViewModel.title, displayMode: .large)
+            .onAppear(perform: {
+                reportsMainViewModel.getReports()
+            })
     }
     
     private var contentView :some View {

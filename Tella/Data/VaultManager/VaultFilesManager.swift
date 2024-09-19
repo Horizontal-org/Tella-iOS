@@ -73,9 +73,11 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             }
             
             guard let filePath = await getModifiedURL(importedFile: fileDetail.importedFile),
+                  let fileSize = FileManager.default.sizeOfFile(atPath: filePath.relativePath),
                   let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetail.file.id) else { return }
             
             if isSaved {
+                fileDetail.file.size = fileSize
                 self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: fileDetail.importedFile.parentId)
             }
             
@@ -103,6 +105,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             
             guard
                 let filePath = await getModifiedURL(importedFile: fileDetail.importedFile),
+                let fileSize = FileManager.default.sizeOfFile(atPath: filePath.relativePath),
                 let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetail.file.id)
             else {
                 subject.send(BackgroundActivityStatus.failed)
@@ -110,6 +113,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             }
             
             if isSaved {
+                fileDetail.file.size = fileSize
                 handleDatabaseAddition(fileDetails: fileDetail,
                                        subject: subject)
             } else {
