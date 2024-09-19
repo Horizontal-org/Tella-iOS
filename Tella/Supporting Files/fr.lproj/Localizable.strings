@@ -246,7 +246,6 @@ Si vous souhaitez prendre une photo ou une vidéo, procédez de la manière suiv
 "Settings_SettLang_Persian_Expl" = "Perse";
 "Settings_SettLang_Kurdish_Expl" = "Kurde";
 "Settings_SettLang_Burmese_Expl" = "Birman";
-"Settings_SettLang_Vietnamese_Expl" = "Vietnamese";
 "Common_Error" = "Une erreur est survenue";
 "LockUnlock_UnlockDeleteAfterFail_Warning_RemainingAttempts" = "Vous avez %i tentatives restantes avant que tout soit définitivement supprimé de Tella.";
 "LockUnlock_UnlockDeleteAfterFail_Error_ContentDeleted" = "Vous avez dépassé le nombre maximum de tentatives de connexion infructueuses. Toutes vos données Tella ont été supprimées.";
@@ -298,19 +297,16 @@ Ces commentaires sont anonymes, alors assurez-vous d'inclure vos coordonnées si
 "Setting_SettServer_Selection_Title" = "À quel type de serveur souhaitez-vous vous connecter ?";
 "Setting_SettServer_Selection_Message" = "Si vous n'êtes pas sûr, veuillez demander à votre organisation.";
 "Setting_SettServer_TellaWeb" = "TELLA WEB";
-"Setting_SettServer_NextCloud" = "NEXTCLOUD";
 "Setting_SettServer_Uwazi" = "UWAZI";
 "Setting_SettServer_No_Internet" = "Pas de connexion Internet. Réessayez lorsque vous êtes connecté à Internet.";
-
 "Setting_SettServer_Server_URL_Incorrect" = "Erreur : L'Url du serveur est incorrecte";
 "Setting_Server_Uwazi_Server_URL" = "Entrez l'URL du serveur";
 "Setting_Server_Uwazi_Access_Title" = "Connectez-vous si vous disposez d'un nom d'utilisateur et d'un mot de passe, ou accédez au serveur en tant qu'instance publique.";
 "Setting_Server_Uwazi_Login" = "SE CONNECTER";
-
 "Setting_Server_Uwazi_Access_Public" = "ACCÈS PUBLIQUE";
 "Setting_Server_Uwazi_Login_Access" = "Identifiez-vous pour accéder au serveur";
 "Setting_Server_Uwazi_Username" = "Nom d’utilisateur";
-"Setting_Server_Password" = "Mot de passe";
+"Setting_Server_Uwazi_Password" = "Mot de passe";
 "Setting_Server_Uwazi_Two_Step_Title" = "Vérification en deux étapes";
 "Setting_Server_Uwazi_Two_Step_Message" = "Cette instance Uwazi nécessite une vérification en deux étapes. Entrez ici le code à 6 chiffres de votre application d'authentification.";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "Code d'authentification";
@@ -498,3 +494,27 @@ Si vous souhaitez ajouter une photo ou une vidéo de la galerie de photos, proc�
 "Error_Forbidden_Expl" = "Account locked due to too many unsuccessful attempts.";
 "Error_GDrive_Unauthorized_Expl" = "Request is missing required authentication credential. Please re authenticate";
 "Error_GDrive_Forbidden_Expl" = "You don't have permission to access this file or folder in Google Drive.";
+"Setting_SettServer_NextCloud" = "NEXTCLOUD";
+"Setting_Server_URL" = "Entrez l'URL du serveur";
+"Setting_Server_Password" = "Mot de passe";
+"Setting_Server_Foldername_Placeholder" = "Folder name";
+"Setting_Server_Create_Folder_Title" = "Créer un nouveau dossier";
+"Setting_Server_Nextcloud_Create_Personal_Desc" = "Your reports will be uploaded to a new folder on your Nextcloud. Choose a name for this folder here.";
+"Setting_Server_Nextcloud_Success_Message" = "GO TO NEXTCLOUD";
+"Reports_Outbox_ExitReport_SheetTitle" = "Quitter le rapport ?";
+"Reports_Outbox_ExitReport_SheetExpl" = "The upload will be paused.";
+"Reports_Outbox_ExitReport_Exit_SheetAction" = "Exit and pause";
+"Reports_Outbox_ExitReport_Cancel_SheetAction" = "ANNULER";
+"Reports_Paused_CardExpl" = "En pause";
+"Reports_Submitting_CardExpl" = "Envoi en cours";
+"Reports_ReadyForSubmission_CardExpl" = "Ready for submission";
+"Settings_SettLang_Vietnamese_Expl" = "Vietnamese";
+"Nextcloud_ConnectionExpired_SheetTitle" = "Your connection to Nextcloud expired";
+"Nextcloud_ConnectionExpired_SheetExpl" = "You are currently not connected to Nextcloud. Please login again to continue submitting reports. You can still edit drafts offline without logging in.";
+"Nextcloud_ConnectionExpired_Continue_SheetAction" = "Continue without login";
+"Nextcloud_ConnectionExpired_Login_SheetAction" = "Identifiants";
+"Nextcloud_RecreateFolder_Toast" = "The Nextcloud folder you created was deleted. Tella recreated the folder with the same name, so your uploads can continue.";
+"Error_NoInternetConnection" = "Pas de connexion Internet. Réessayez lorsque vous êtes connecté à Internet.";
+"Error_Nextcloud_ForderExist" = "Folder already exist";
+"Error_Nextcloud_InvalidCredentials" = "The username or password is incorrect";
+"Error_Nextcloud_ManyFailedRequests" = "Too many failed attempts. Please try again later.";
