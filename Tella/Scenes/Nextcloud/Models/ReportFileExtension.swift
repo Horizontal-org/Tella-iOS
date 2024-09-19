@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension NextcloudReportFile {
+extension ReportFile {
     
     convenience init?(reportFile: ReportVaultFile) {
         self.init(id:reportFile.instanceId,

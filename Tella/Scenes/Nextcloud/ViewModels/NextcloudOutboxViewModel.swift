@@ -259,7 +259,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
     }
     
     override func updateFile(file:ReportVaultFile) {
-        guard let file = NextcloudReportFile(reportFile: file) else {return}
+        guard let file = ReportFile(reportFile: file) else {return}
         let _ = mainAppModel.tellaData?.updateNextcloudReportFile(reportFile: file)
     }
     
