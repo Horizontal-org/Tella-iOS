@@ -23,10 +23,7 @@ class ReportsViewModel: ReportsMainViewModel {
     private var delayTime = 0.1
     
     init(mainAppModel : MainAppModel) {
-        
         super.init(mainAppModel: mainAppModel, connectionType: .tella, title: LocalizableReport.reportsTitle.localized)
-        
-        self.getReports()
         self.listenToUpdates()
     }
     
@@ -75,8 +72,9 @@ class ReportsViewModel: ReportsMainViewModel {
         mainAppModel.deleteReport(reportId: report.id)
     }
     
-    func deleteSubmittedReport() {
-        mainAppModel.tellaData?.deleteSubmittedReport()
+    override func deleteSubmittedReport() {
+        let deleteResult = mainAppModel.tellaData?.deleteSubmittedReport() ?? false
+        self.handleDeleteReport(deleteResult: deleteResult)
     }
     
     override func listenToUpdates() {

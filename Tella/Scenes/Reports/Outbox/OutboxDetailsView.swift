@@ -7,10 +7,10 @@ import SwiftUI
 struct OutboxDetailsView<T: Server>: View {
     
     @StateObject var outboxReportVM : OutboxMainViewModel<T>
-    @StateObject var reportsViewModel : ReportsMainViewModel
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
-    
+    private let delayTimeInSecond = 0.1
+    var rootView: AnyClass = ViewClassType.reportMainView
+
     var body: some View {
         
         ContainerView {
@@ -34,6 +34,8 @@ struct OutboxDetailsView<T: Server>: View {
         
         .onReceive(outboxReportVM.$shouldShowSubmittedReportView, perform: { value in
             if value {
+                outboxReportVM.reportsViewModel.getReports()
+                outboxReportVM.reportsViewModel.selectedPage = .submitted
                 navigateTo(destination: submittedDetailsView)
             }
         })
@@ -44,14 +46,20 @@ struct OutboxDetailsView<T: Server>: View {
             }
         })
         
+        .onReceive(outboxReportVM.$shouldShowToast) { shouldShowToast in
+            if shouldShowToast {
+                Toast.displayToast(message: outboxReportVM.toastMessage)
+            }
+        }
+
         .navigationBarHidden(true)
     }
-    
+
     var outboxReportHeaderView: some View {
         
         HStack(spacing: 0) {
             Button {
-                dismissView()
+                handleBackAction()
             } label: {
                 Image("back")
                     .flipsForRightToLeftLayoutDirection(true)
@@ -176,40 +184,61 @@ struct OutboxDetailsView<T: Server>: View {
     
     private var submittedDetailsView: some View {
         Group {
-            switch reportsViewModel.connectionType {
+            switch outboxReportVM.reportsViewModel.connectionType {
             case .tella:
-                let vm = SubmittedReportVM(mainAppModel: outboxReportVM.mainAppModel, reportId: outboxReportVM.reportViewModel.id)
-                SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsViewModel)
+                let vm = SubmittedReportVM(reportsMainViewModel: outboxReportVM.reportsViewModel,
+                                           reportId: outboxReportVM.reportViewModel.id)
+                TellaServerSubmittedDetailsView(submittedMainViewModel: vm)
             case .gDrive:
-                let vm = GDriveSubmittedViewModel(mainAppModel: outboxReportVM.mainAppModel, reportId: outboxReportVM.reportViewModel.id)
-                SubmittedDetailsView(submittedReportVM: vm, reportsViewModel: reportsViewModel)
+                let vm = GDriveSubmittedViewModel(reportsMainViewModel: outboxReportVM.reportsViewModel,
+                                                  reportId: outboxReportVM.reportViewModel.id)
+                GDriveSubmittedDetailsView(submittedMainViewModel: vm)
+            case .nextcloud:
+                let vm = NextcloudSubmittedViewModel(reportsMainViewModel: outboxReportVM.reportsViewModel,
+                                                     reportId: outboxReportVM.reportViewModel.id)
+                NextcloudSubmittedDetailsView(submittedMainViewModel: vm)
             default:
                 Text("")
+
             }
         }
     }
     
+    private func handleBackAction() {
+        if outboxReportVM.isSubmissionInProgress && outboxReportVM.shouldShowCancelUploadConfirmation {
+            self.showCancelUploadConfirmationView()
+        } else {
+            self.dismissView()
+        }
+    }
+    
     private func dismissView() {
-        self.popTo(UIHostingController<ReportMainView>.self)
+        DispatchQueue.main.asyncAfter(deadline:.now() + delayTimeInSecond, execute: {
+            self.popTo(rootView)
+        })
+    }
+    
+    private func showCancelUploadConfirmationView() {
+        sheetManager.showBottomSheet(modalHeight: 150) {
+            ConfirmBottomSheet(titleText: LocalizableReport.exitReportSheetTitle.localized,
+                               msgText: LocalizableReport.exitReportSheetExpl.localized,
+                               cancelText: LocalizableReport.exitReportCancelSheetAction.localized.uppercased(),
+                               actionText:LocalizableReport.exitReportExitSheetAction.localized.uppercased(), didConfirmAction: {
+                self.outboxReportVM.pauseSubmission()
+                self.dismissView()
+            }, didCancelAction: {
+                sheetManager.hide()
+            })
+        }
     }
     
     private func showDeleteReportConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: 200) {
             DeleteReportConfirmationView(title: outboxReportVM.reportViewModel.title,
                                          message: LocalizableReport.deleteOutboxReportMessage.localized) {
-               Toast.displayToast(message: String(format: LocalizableReport.reportDeletedToast.localized, outboxReportVM.reportViewModel.title))
-                outboxReportVM.pauseSubmission()
-                dismissView()
                 outboxReportVM.deleteReport()
                 sheetManager.hide()
             }
         }
     }
 }
-
-//struct ReportDetailsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        OutboxDetailsView()
-//    }
-//}
-

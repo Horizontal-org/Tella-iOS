@@ -298,16 +298,19 @@ Ces commentaires sont anonymes, alors assurez-vous d'inclure vos coordonnées si
 "Setting_SettServer_Selection_Title" = "À quel type de serveur souhaitez-vous vous connecter ?";
 "Setting_SettServer_Selection_Message" = "Si vous n'êtes pas sûr, veuillez demander à votre organisation.";
 "Setting_SettServer_TellaWeb" = "TELLA WEB";
+"Setting_SettServer_NextCloud" = "NEXTCLOUD";
 "Setting_SettServer_Uwazi" = "UWAZI";
 "Setting_SettServer_No_Internet" = "Pas de connexion Internet. Réessayez lorsque vous êtes connecté à Internet.";
+
 "Setting_SettServer_Server_URL_Incorrect" = "Erreur : L'Url du serveur est incorrecte";
 "Setting_Server_Uwazi_Server_URL" = "Entrez l'URL du serveur";
 "Setting_Server_Uwazi_Access_Title" = "Connectez-vous si vous disposez d'un nom d'utilisateur et d'un mot de passe, ou accédez au serveur en tant qu'instance publique.";
 "Setting_Server_Uwazi_Login" = "SE CONNECTER";
+
 "Setting_Server_Uwazi_Access_Public" = "ACCÈS PUBLIQUE";
 "Setting_Server_Uwazi_Login_Access" = "Identifiez-vous pour accéder au serveur";
 "Setting_Server_Uwazi_Username" = "Nom d’utilisateur";
-"Setting_Server_Uwazi_Password" = "Mot de passe";
+"Setting_Server_Password" = "Mot de passe";
 "Setting_Server_Uwazi_Two_Step_Title" = "Vérification en deux étapes";
 "Setting_Server_Uwazi_Two_Step_Message" = "Cette instance Uwazi nécessite une vérification en deux étapes. Entrez ici le code à 6 chiffres de votre application d'authentification.";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "Code d'authentification";

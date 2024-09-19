@@ -9,10 +9,10 @@ struct EditSettingsServerView: View {
     
     var isPresented : Binding<Bool>
     
-    @StateObject private var serverViewModel : ServerViewModel
+    @StateObject private var serverViewModel : TellaWebServerViewModel
     
     init(appModel:MainAppModel, isPresented : Binding<Bool>, server: TellaServer? = nil) {
-        _serverViewModel = StateObject(wrappedValue: ServerViewModel(mainAppModel: appModel, currentServer: server))
+        _serverViewModel = StateObject(wrappedValue: TellaWebServerViewModel(mainAppModel: appModel, currentServer: server))
         self.isPresented = isPresented
     }
     

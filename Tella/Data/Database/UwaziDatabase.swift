@@ -112,6 +112,7 @@ extension TellaDataBase: UwaziTemplateProtocol {
 }
 // MARK: - Methods related to UwaziServerLanguageProtocol
 extension TellaDataBase: UwaziServerLanguageProtocol {
+    
     func createUwaziServerTable() {
         let columns = [ cddl(D.cId, D.integer, primaryKey: true, autoIncrement: true),
                         cddl(D.cName, D.text),

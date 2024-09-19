@@ -81,8 +81,7 @@ class BaseUploadOperation : Operation {
                 let instanceId = file?.instanceId
                 
                 let totalByteSent = self.updateReportFile(fileStatus: progressInfo.status, id: instanceId, 
-                                                          bytesSent: progressInfo.bytesSent,
-                                                          current: progressInfo.current)
+                                                          bytesSent: progressInfo.bytesSent)
                 
                 if let _ = progressInfo.error {
                     self.updateReport(reportStatus: .submissionError)
@@ -177,9 +176,9 @@ class BaseUploadOperation : Operation {
     }
     
     func deleteCurrentAutoReport() {
-        let deleteReportResult = mainAppModel.tellaData?.deleteReport(reportId: self.report?.id)
+        let deleteReportResult = mainAppModel.tellaData?.deleteReport(reportId: self.report?.id) ?? false
         
-        if case .success = deleteReportResult {
+        if deleteReportResult {
             guard let reportVaultFiles = self.reportVaultFiles else {return}
             let reportVaultFilesIds = reportVaultFiles.compactMap{ $0.id}
             mainAppModel.vaultFilesManager?.deleteVaultFile(fileIds: reportVaultFilesIds)

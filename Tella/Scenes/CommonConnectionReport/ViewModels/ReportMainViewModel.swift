@@ -50,8 +50,6 @@ class ReportsMainViewModel: ObservableObject {
         self.mainAppModel = mainAppModel
         self.connectionType = connectionType
         self.title = title
-
-        self.getReports()
         self.listenToUpdates()
     }
     
@@ -60,6 +58,20 @@ class ReportsMainViewModel: ObservableObject {
     
     func listenToUpdates() {
     }
+
+    func deleteSubmittedReport() {
+    }
+    
+    func handleDeleteReport(deleteResult:Bool) {
+        self.toastMessage = deleteResult ? LocalizableReport.allReportDeletedToast.localized : LocalizableCommon.commonError.localized
+        self.shouldShowToast = true
+    }
 }
 
-
+extension ReportsMainViewModel {
+    static func stub() -> ReportsMainViewModel {
+        return ReportsMainViewModel(mainAppModel: MainAppModel.stub(),
+                                   connectionType: ServerConnectionType.nextcloud,
+                                   title: "Nextcloud")
+    }
+}

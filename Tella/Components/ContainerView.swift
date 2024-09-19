@@ -24,3 +24,20 @@ struct ContainerView<Content:View>: View {
         }
     }
 }
+
+// Trying to implement ViewModifier for ContainerView
+struct ContainerModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        ZStack {
+            Styles.Colors.backgroundMain
+                .edgesIgnoringSafeArea(.all)
+            content
+        }
+    }
+}
+
+extension View {
+    func containerStyle() -> some View {
+        self.modifier(ContainerModifier())
+    }
+}

@@ -13,6 +13,8 @@ enum APIError: Swift.Error {
     case badServer
     case noToken
     case driveApiError(Error)
+    case errorOccured
+    case nextcloudError(HTTPCode)
 }
 
 extension APIError: LocalizedError {
@@ -33,8 +35,29 @@ extension APIError: LocalizedError {
             return LocalizableSettings.settServerNoTokenPresent.localized
         case .driveApiError(let error):
             return customDriveErrorMessage(error: error)
+        case let .nextcloudError(code):
+            return customNcErrorMessage(errorCode: code)
+        case .errorOccured :
+            return LocalizableError.commonError.localized
         }
     }
+    
+    private func customNcErrorMessage(errorCode : Int) -> String {
+        let httpErrorCode = NcHTTPErrorCodes(rawValue: errorCode)
+        switch httpErrorCode{
+        case .ncUnauthorizedError:
+            return LocalizableError.ncInvalidCredentials.localized
+        case .ncNoInternetError:
+            return LocalizableError.noInternet.localized
+        case .nextcloudFolderExists:
+            return LocalizableError.ncFolderExist.localized
+        case .ncTooManyRequests:
+            return LocalizableError.ncTooManyRequests.localized
+        default:
+            return LocalizableError.unexpectedResponse.localized
+        }
+    }
+    
     private func customErrorMessage(errorCode : Int) -> String {
         let httpErrorCode = HTTPErrorCodes(rawValue: errorCode)
         switch httpErrorCode{

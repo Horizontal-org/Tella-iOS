@@ -10,11 +10,11 @@ import Foundation
 import Combine
 
 class GDriveDraftViewModel: DraftMainViewModel{
-    private let gDriveRepository: GDriveRepositoryProtocol
+    let gDriveRepository: GDriveRepositoryProtocol
     
-    init(mainAppModel: MainAppModel, repository: GDriveRepositoryProtocol, reportId reportID: Int?) {
+    init(repository: GDriveRepositoryProtocol, reportId reportID: Int?, reportsMainViewModel: ReportsMainViewModel) {
         self.gDriveRepository = repository
-        super.init(mainAppModel: mainAppModel, reportId: reportID)
+        super.init(reportId: reportID, reportsMainViewModel: reportsMainViewModel)
         
         self.getServer()
         self.fillReportVM()
@@ -86,7 +86,7 @@ class GDriveDraftViewModel: DraftMainViewModel{
         }
     }
     private func getServer() {
-        self.server = mainAppModel.tellaData?.gDriveServers.value.first
+        self.server = mainAppModel.tellaData?.getDriveServers().first
     }
     
     override func deleteFile(fileId: String?) {

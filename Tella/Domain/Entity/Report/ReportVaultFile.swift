@@ -13,7 +13,11 @@ class ReportVaultFile : VaultFileDB {
     var createdDate : Date?
     var updatedDate : Date?
     var current : Int = 0
-    
+    var url : URL?
+    var reportInstanceId : Int?
+    var chunkFiles: [(fileName: String, size: Int64)]?
+    var finishUploading : Bool = false
+
     init(reportFile: ReportFile, vaultFile : VaultFileDB) {
         
         super.init(id:vaultFile.id,
@@ -31,6 +35,8 @@ class ReportVaultFile : VaultFileDB {
         self.bytesSent = reportFile.bytesSent ?? 0
         self.createdDate = reportFile.createdDate
         self.updatedDate = reportFile.updatedDate
+        self.reportInstanceId = reportFile.reportInstanceId
+        self.chunkFiles = reportFile.chunkFiles
     }
     
     required init(from decoder: Decoder) throws {

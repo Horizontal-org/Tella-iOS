@@ -21,13 +21,15 @@ protocol VaultManagerInterface {
     
     func getFilesToMergeToDatabase() -> [VaultFileDetailsToMerge]
     func loadFileData(file vaultFile: VaultFileDB) -> Data?
+    func loadVaultFileToURL(file vaultFile: VaultFileDB, withSubFolder : Bool) -> URL?
     func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL?
     func loadFileToURL(fileName: String, fileExtension: String, identifier: String) -> URL?
     func loadVaultFilesToURL(files vaultFiles: [VaultFileDB]) -> [URL]
     func extract(from inputFileURL: URL, offsetSize:Int)
     func loadVaultFileToURLOld(file vaultFile: VaultFileDB) -> URL?
     func loadFileDataOld(fileName: String?) -> Data?
-
+    func getDescriptionFileUrl(content:String,fileName:String) -> URL?
+    
     func save(_ filePath: URL, vaultFileId: String?) -> Bool?
     
     func saveDataToTempFile(data: Data?, pathExtension: String?) -> URL?
@@ -36,7 +38,7 @@ protocol VaultManagerInterface {
     
     func createTempFileURL(pathExtension: String) -> URL
     func createTempFileURL(fileName: String?) -> URL
-    func createTempFileURL(fileName: String?, pathExtension: String?) -> URL
+    func createTempFileURL(fileName: String?, pathExtension: String?, withSubFolder:Bool) -> URL
     
     func deleteAllVaultFilesFromDevice()
     func deleteVaultFile(filesIds: [String])

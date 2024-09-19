@@ -34,7 +34,8 @@ class GDriveReport: BaseReport {
                    createdDate: createdDate,
                    updatedDate: updatedDate,
                    status: status,
-                   vaultFiles: vaultFiles)
+                   vaultFiles: vaultFiles, 
+                   serverId: self.server?.id)
     }
     
     override func encode(to encoder: Encoder) throws {

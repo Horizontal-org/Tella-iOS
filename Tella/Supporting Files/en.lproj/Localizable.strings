@@ -239,6 +239,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_SettServer_Selection_Title" = "What type of server would you like to connect to?";
 "Setting_SettServer_Selection_Message" = "If you are not sure, please ask your organization.";
 "Setting_SettServer_TellaWeb" = "TELLA WEB";
+"Setting_SettServer_NextCloud" = "NEXTCLOUD";
 "Setting_SettServer_Uwazi" = "UWAZI";
 "Setting_SettServer_GDrive" = "GOOGLE DRIVE"; 
 "Setting_SettServer_No_Internet" = "No Internet connection. Try again when you are connected to the Internet.";
@@ -255,13 +256,13 @@ If you want to take a picture or a video, proceed in the following way:\
 "Home_RecentFiles_Subhead" = "Recent files";
 
 
-"Setting_Server_Uwazi_Server_URL" = "Enter the server URL";
+"Setting_Server_URL" = "Enter the server URL";
 "Setting_Server_Uwazi_Access_Title" = "Log in if you have a username and password, or access the server as a public instance.";
 "Setting_Server_Uwazi_Login" = "LOG IN";
 "Setting_Server_Uwazi_Access_Public" = "ACCESS AS PUBLIC INSTANCE";
 "Setting_Server_Uwazi_Login_Access" = "Log in to access the server";
 "Setting_Server_Uwazi_Username" = "Username";
-"Setting_Server_Uwazi_Password" = "Password";
+"Setting_Server_Password" = "Password";
 "Setting_Server_Uwazi_Two_Step_Title" = "Two-step verification";
 "Setting_Server_Uwazi_Two_Step_Message" = "This Uwazi instance requires two-step verification. Enter here the 6-digit code from your authenticator app.";
 "Setting_Server_Uwazi_Authentication_Placeholder" = "Authentication code";
@@ -280,10 +281,12 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_Server_GDrive_SelectType_Personal" = "USE PERSONAL DRIVE";
 "Setting_Server_GDrive_SelectType_MoreInfo" = "Learn more about the types of drives";
 "Setting_Server_GDrive_SelectShared_Appbar" = "Select shared drive";
-"Setting_Server_GDrive_CreatePersonal_Title" = "Create new folder";
 "Setting_Server_GDrive_CreatePersonal_Desc" = "Your reports will be uploaded to a new folder on your Google Drive. Choose a name for this folder here.";
-"Setting_Server_GDrive_CreatePersonal_Placeholder" = "Folder name";
+"Setting_Server_Foldername_Placeholder" = "Folder name";
+"Setting_Server_Create_Folder_Title" = "Create new folder";
 "Setting_Server_GDrive_Success_Message" = "GO TO GOOGLE DRIVE";
+"Setting_Server_Nextcloud_Create_Personal_Desc" = "Your reports will be uploaded to a new folder on your Nextcloud. Choose a name for this folder here.";
+"Setting_Server_Nextcloud_Success_Message" = "GO TO NEXTCLOUD";
 
 "Setting_Server_Reports_Success_Message" = "GO TO REPORTS";
 
@@ -337,6 +340,16 @@ If you want to take a picture or a video, proceed in the following way:\
 "Reports_Outbox_Pause" = "PAUSE";
 "Reports_Outbox_Resume" = "RESUME";
 "Reports_Outbox_Submit" = "Submit";
+
+"Reports_Outbox_ExitReport_SheetTitle" = "Exit report?";
+"Reports_Outbox_ExitReport_SheetExpl" = "The upload will be paused.";
+"Reports_Outbox_ExitReport_Exit_SheetAction" = "Exit and pause";
+"Reports_Outbox_ExitReport_Cancel_SheetAction" = "CANCEL";
+
+"Reports_Paused_CardExpl" = "Paused";
+"Reports_Submitting_CardExpl" = "Submitting";
+"Reports_ReadyForSubmission_CardExpl" = "Ready for submission";
+
 "Vault_DeleteFiles_SheetTitle" = "Delete files?";
 "Vault_DeleteFiles_SheetExpl" = "%i files will be permanently deleted from Tella.";
 "Reports_DeleteDraftReport_SheetExpl" = "Are you sure you want to delete this draft?";
@@ -550,6 +563,12 @@ This feedback is anonymous, so make sure to include contact information if you w
 
 
 "Nextcloud_AppBar" = "Nextcloud";
+
+"Nextcloud_ConnectionExpired_SheetTitle" = "Your connection to Nextcloud expired";
+"Nextcloud_ConnectionExpired_SheetExpl" = "You are currently not connected to Nextcloud. Please login again to continue submitting reports. You can still edit drafts offline without logging in.";
+"Nextcloud_ConnectionExpired_Continue_SheetAction" = "Continue without login";
+"Nextcloud_ConnectionExpired_Login_SheetAction" = "Login";
+
 "GDrive_AppBar" = "Google Drive";
 
 "Error_InvalidURL_Expl" = "Invalid URL";
@@ -559,3 +578,8 @@ This feedback is anonymous, so make sure to include contact information if you w
 
 "Error_GDrive_Unauthorized_Expl" = "Request is missing required authentication credential. Please re authenticate";
 "Error_GDrive_Forbidden_Expl" = "You don't have permission to access this file or folder in Google Drive.";
+"Nextcloud_RecreateFolder_Toast" = "The Nextcloud folder you created was deleted. Tella recreated the folder with the same name, so your uploads can continue.";
+"Error_NoInternetConnection" = "No Internet connection. Try again when you are connected to the Internet.";
+"Error_Nextcloud_ForderExist" = "Folder already exist";
+"Error_Nextcloud_InvalidCredentials" = "The username or password is incorrect";
+"Error_Nextcloud_ManyFailedRequests" = "Too many failed attempts. Please try again later.";

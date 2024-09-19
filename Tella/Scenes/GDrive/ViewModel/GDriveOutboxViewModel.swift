@@ -11,17 +11,20 @@ import Combine
 import UIKit
 
 class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
-    private let gDriveRepository: GDriveRepositoryProtocol
+    let gDriveRepository: GDriveRepositoryProtocol
     private var currentUploadCancellable: AnyCancellable?
     private var uploadQueue: [ReportVaultFile] = []
     
-    init(mainAppModel: MainAppModel,
-         reportsViewModel : ReportsMainViewModel,
+    override var shouldShowCancelUploadConfirmation : Bool {
+        return true
+    }
+
+    init(reportsViewModel: ReportsMainViewModel,
          reportId : Int?,
-         repository: GDriveRepository) {
+         repository: GDriveRepositoryProtocol) {
         
         self.gDriveRepository = repository
-        super.init(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: reportId)
+        super.init(reportsViewModel: reportsViewModel, reportId: reportId)
 
         if reportViewModel.status == .submissionScheduled {
             self.submitReport()
@@ -42,7 +45,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
             updateReportStatus(reportStatus: .submissionPaused)
         }
     }
-    
+
     override func initVaultFile(reportId: Int?) {
         if let reportId, let report = self.mainAppModel.tellaData?.getDriveReport(id: reportId) {
             let files = processVaultFiles(reportFiles: report.reportFiles)
@@ -167,19 +170,31 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     
     override func updateReportStatus(reportStatus: ReportStatus) {
         self.reportViewModel.status = reportStatus
-        
+        self.objectWillChange.send()
+
         guard let id = reportViewModel.id else { return }
         
         mainAppModel.tellaData?.updateDriveReportStatus(reportId: id, status: reportStatus)
     }
     
+    override func updateCurrentFile(uploadProgressInfo : UploadProgressInfo) {
+        self.reportViewModel.files = self.reportViewModel.files.compactMap { file in
+            guard file.id == uploadProgressInfo.fileId else { return file }
+            
+            let updatedFile = file
+            updatedFile.bytesSent = uploadProgressInfo.bytesSent ?? 0
+            updatedFile.status = uploadProgressInfo.status
+            return updatedFile
+        }
+    }
+
     private func updateReportFolderId(folderId: String) {
         guard let id = reportViewModel.id else { return }
         
         mainAppModel.tellaData?.updateDriveFolderId(reportId: id, folderId: folderId)
     }
     
-    override func updateFileProgress(progressInfo:UploadProgressInfo) {
+    override func updateFile(file: ReportVaultFile) {
         guard let reportId = reportViewModel.id else { return }
         
         let reportFiles = reportViewModel.files.map { file in

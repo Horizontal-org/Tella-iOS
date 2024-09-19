@@ -13,14 +13,17 @@ class GDriveServerViewModel: ObservableObject {
     var mainAppModel : MainAppModel
     private let gDriveRepository: GDriveRepositoryProtocol
     private var cancellables = Set<AnyCancellable>()
+    var serverCreateFolderVM: ServerCreateFolderViewModel
 
     @Published var selectedDrive: SharedDrive? = nil
     @Published var sharedDriveState: ViewModelState<[SharedDrive]> = .loading
-    @Published var createFolderState: ViewModelState<String> = .loaded("")
     
     init(repository: GDriveRepositoryProtocol, mainAppModel: MainAppModel) {
         self.mainAppModel = mainAppModel
-        self.gDriveRepository = repository
+        self.gDriveRepository = repository   
+        self.serverCreateFolderVM = ServerCreateFolderViewModel(headerViewSubtitleText: LocalizableSettings.gDriveCreatePersonalFolderDesc.localized, imageIconName: "gdrive.icon")
+
+        self.serverCreateFolderVM.createFolderAction = createDriveFolder
     }
 
     func getSharedDrives() {
@@ -40,9 +43,10 @@ class GDriveServerViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    
-    func createDriveFolder(folderName: String, completion: @escaping () -> Void) {
-        self.createFolderState = .loading
+    func createDriveFolder() {
+        self.serverCreateFolderVM.createFolderState = .loading
+        let folderName = serverCreateFolderVM.folderName
+        
         gDriveRepository.createDriveFolder(folderName: folderName, parentId: nil, description: nil)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
@@ -50,23 +54,18 @@ class GDriveServerViewModel: ObservableObject {
                 case .finished:
                     break
                 case .failure(let error):
-                    self.createFolderState = .error(error.errorMessage)
+                    self.serverCreateFolderVM.createFolderState = .error(error.errorMessage)
                 }
             }, receiveValue: { folderId in
-                self.createFolderState = .loaded(folderId)
-                self.addServer(rootFolder: folderId, rootFolderName: folderName) {
-                    completion()
-                }
+                self.addServer(rootFolder: folderId, rootFolderName: folderName) //TODO: We should handle the failure case
+                self.serverCreateFolderVM.createFolderState = .loaded(true)
             })
             .store(in: &cancellables)
     }
     
-    func addServer(rootFolder: String, rootFolderName: String, completion: @escaping() -> Void ) {
+    func addServer(rootFolder: String, rootFolderName: String) { //TODO:  Must check failure
         let server = GDriveServer(rootFolder: rootFolder, rootFolderName: rootFolderName)
-
         _ = mainAppModel.tellaData?.addGDriveServer(server: server)
-        
-        completion()
     }
     
     func handleSelectedDrive(drive: SharedDrive) -> Void {

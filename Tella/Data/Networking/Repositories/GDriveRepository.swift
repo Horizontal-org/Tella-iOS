@@ -280,7 +280,6 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 if fileExists {
                     // File already exists, mark as uploaded
                     uploadProgressInfo.bytesSent = Int(totalSize)
-                    uploadProgressInfo.current = Int(totalSize)
                     uploadProgressInfo.status = .uploaded
                     promise(.success(uploadProgressInfo))
                 } else {
@@ -344,7 +343,6 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                         }
                         
                         uploadProgressInfo.bytesSent = Int(uploadProgressInfo.total!)
-                        uploadProgressInfo.current = Int(uploadProgressInfo.total!)
                         uploadProgressInfo.status = .uploaded
                         continuation.resume(returning: uploadProgressInfo)
                     } catch {
@@ -405,21 +403,6 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         promise(.failure(.unexpectedResponse))
     }
 }
-
-
-class GDriveDIContainer : DIContainer {
-    
-    let gDriveRepository: GDriveRepositoryProtocol
-    
-    init(gDriveRepository: GDriveRepositoryProtocol = GDriveRepository()) {
-        self.gDriveRepository = gDriveRepository
-    }
-}
-
-class DIContainer {
-    
-}
-
 
 struct UploadProgressWithFolderId {
     let folderId: String

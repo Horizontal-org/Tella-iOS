@@ -13,7 +13,8 @@ class ReportFile : Hashable, Codable {
     var createdDate : Date?
     var updatedDate : Date?
     var reportInstanceId : Int?
-    
+    var chunkFiles: [(fileName: String, size: Int64)]?
+
     enum CodingKeys: String, CodingKey {
         case id = "c_id"
         case fileId = "c_vault_file_instance_id"
@@ -22,6 +23,7 @@ class ReportFile : Hashable, Codable {
         case createdDate = "c_created_date"
         case updatedDate = "c_updated_date"
         case reportInstanceId = "c_report_instance_id"
+        case chunkFiles = "c_chunk_files"
     }
     
     init(id: Int? = nil,
@@ -30,7 +32,8 @@ class ReportFile : Hashable, Codable {
          bytesSent: Int? = 0,
          createdDate: Date? = nil,
          updatedDate: Date? = Date(),
-         reportInstanceId: Int? = nil) {
+         reportInstanceId: Int? = nil,
+         chunkFiles: [(fileName: String, size: Int64)]? = nil) {
         self.id = id
         self.fileId = fileId
         self.status = status
@@ -38,6 +41,7 @@ class ReportFile : Hashable, Codable {
         self.createdDate = createdDate
         self.updatedDate = updatedDate
         self.reportInstanceId = reportInstanceId
+        self.chunkFiles = chunkFiles
     }
     
     init(file: ReportVaultFile, reportInstanceId: Int?) {
@@ -48,6 +52,7 @@ class ReportFile : Hashable, Codable {
         self.createdDate = file.createdDate
         self.updatedDate = file.updatedDate
         self.reportInstanceId = reportInstanceId
+        self.chunkFiles = file.chunkFiles
     }
     
     static func == (lhs: ReportFile, rhs: ReportFile) -> Bool {
@@ -69,6 +74,10 @@ class ReportFile : Hashable, Codable {
         let updatedDate = Date().getDateDouble()
         try container.encode(updatedDate, forKey: .updatedDate)
         try container.encode(reportInstanceId, forKey: .reportInstanceId)
+        
+        let structArray = chunkFiles?.compactMap { ChunkFile(fileName: $0.fileName, size: $0.size) }
+        try container.encodeIfPresent(structArray.jsonString, forKey: .chunkFiles)
+
     }
     
     required init(from decoder: Decoder) throws {
@@ -90,5 +99,19 @@ class ReportFile : Hashable, Codable {
         self.updatedDate = updatedDate.getDate()
         
         self.reportInstanceId = try container.decode(Int.self, forKey: .reportInstanceId)
+        
+        if let chunkFilesJsonString = try container.decodeIfPresent(String.self, forKey: .chunkFiles) {
+            let decodedStructArray = chunkFilesJsonString.decodeJSON([ChunkFile].self)
+            // Convert array of structs back to array of named tuples
+            let decodedFilesArray = decodedStructArray?.compactMap { (fileName: $0.fileName, size: $0.size) }
+            self.chunkFiles = decodedFilesArray
+        }
+
     }
+}
+
+
+struct ChunkFile: Codable {
+    let fileName: String
+    let size: Int64
 }

@@ -11,9 +11,10 @@ import SwiftUI
 struct ServerConnectionHeaderView: View {
     var title: String
     var subtitle: String
+    var imageIconName: String
     var body: some View {
         VStack(spacing: 8) {
-            Image("gdrive.icon")
+            Image(imageIconName)
                 .padding(.bottom, 16)
             Text(title)
                 .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
@@ -28,5 +29,5 @@ struct ServerConnectionHeaderView: View {
 }
 
 #Preview {
-    ServerConnectionHeaderView(title: "title", subtitle: "subtitle")
+    ServerConnectionHeaderView(title: "title", subtitle: "subtitle", imageIconName: "gdrive.icon")
 }

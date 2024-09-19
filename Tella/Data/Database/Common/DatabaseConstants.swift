@@ -13,7 +13,7 @@ struct D {
     
     /* DATABASE VERSION */
 
-    static let databaseVersion = 6
+    static let databaseVersion = 7
 
     /* DEFAULT TYPES FOR DATABASE */
     // MARK: - DEFAULT TYPES FOR DATABASE
@@ -37,6 +37,9 @@ struct D {
     static let tGDriveServer = "t_drive_server"
     static let tGDriveReport = "t_drive_report_table"
     static let tGDriveInstanceVaultFile = "t_drive_instance_vault_file"
+    static let tNextcloudServer = "t_nextcloud_server"
+    static let tNextcloudReport = "t_nextcloud_report"
+    static let tNextcloudInstanceVaultFile = "t_nextcloud_instance_vault_file"
 
     /* DATABASE COLUMNS */
     // MARK: - DATABASE COLUMNS
@@ -99,6 +102,11 @@ struct D {
     static let cFolderId = "c_folder_id"
     static let cRootFolderName = "c_root_folder_name"
 
+    
+    //nextcloud
+    static let cUserId = "c_user_id"
+    static let cRemoteReportStatus = "c_remote_report_status"
+    static let cChunkFiles = "c_chunk_files"
 }
 
 

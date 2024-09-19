@@ -12,9 +12,11 @@ class ReportViewModel<T: Server> {
     @Published var reportFiles : [ReportFile] = []
     @Published var server : T?
     @Published var status : ReportStatus?
+    @Published var remoteReportStatus : RemoteReportStatus?
     @Published var apiID : String?
     @Published var folderId: String?
-    
+    var descriptionFileUrl: URL?
+
     init() {
         
     }
@@ -40,6 +42,18 @@ class ReportViewModel<T: Server> {
         self.status = report.status
         self.apiID = nil
         self.folderId = report.folderId
+    }
+    
+    init(report: NextcloudReport, files: [ReportVaultFile]) where T == NextcloudServer {
+        self.id = report.id
+        self.title = report.title ?? ""
+        self.description = report.description ?? ""
+        self.files = files
+        self.reportFiles = report.reportFiles ?? []
+        self.server = report.server
+        self.status = report.status
+        self.apiID = nil
+        self.remoteReportStatus = report.remoteReportStatus
     }
 }
 

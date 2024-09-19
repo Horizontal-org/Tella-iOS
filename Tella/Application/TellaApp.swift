@@ -78,11 +78,10 @@ struct TellaApp: App {
                 appViewState.resetApp()
                 appViewState.shouldHidePresentedView = false
             }
+            appViewState.homeViewModel.vaultManager.clearTmpDirectory()
         }
         appViewState.homeViewModel.appEnterInBackground = false
         appViewState.homeViewModel.shouldShowSecurityScreen = false
-        appViewState.homeViewModel.vaultManager.clearTmpDirectory()
-
     }
 }
 

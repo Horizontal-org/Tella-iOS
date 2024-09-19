@@ -204,9 +204,9 @@ extension MainAppModel {
     }
     
     @discardableResult
-    func deleteReport(reportId:Int?) -> Result<Bool, Error>? {
+    func deleteReport(reportId:Int?) -> Bool {
         UploadService.shared.cancelSendingReport(reportId: reportId)
-        return tellaData?.deleteReport(reportId: reportId)
+        return tellaData?.deleteReport(reportId: reportId) ?? false
     }
 }
 

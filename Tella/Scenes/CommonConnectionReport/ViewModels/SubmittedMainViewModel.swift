@@ -11,7 +11,7 @@ import Foundation
 class SubmittedMainViewModel: ObservableObject {
     
     var mainAppModel : MainAppModel
-    
+    @Published var reportsMainViewModel: ReportsMainViewModel
     var report: BaseReport? {
         return nil
     }
@@ -25,6 +25,10 @@ class SubmittedMainViewModel: ObservableObject {
     @Published var uploadedDate : String = ""
     @Published var uploadedFiles : String = ""
     
+    @Published var shouldShowToast : Bool = false
+    @Published var toastMessage : String = ""
+    @Published var shouldShowMainView : Bool = false
+
     var reportHasFile: Bool {
         return !files.isEmpty
     }
@@ -33,8 +37,9 @@ class SubmittedMainViewModel: ObservableObject {
         return !description.isEmpty
     }
     
-    init(mainAppModel: MainAppModel, reportId: Int?) {
-        self.mainAppModel = mainAppModel
+    init(reportsMainViewModel: ReportsMainViewModel, reportId: Int?) {
+        self.mainAppModel = reportsMainViewModel.mainAppModel
+        self.reportsMainViewModel = reportsMainViewModel
         fillReportVM(reportId: reportId)
     }
 
@@ -68,4 +73,21 @@ class SubmittedMainViewModel: ObservableObject {
     }
 
     func deleteReport() {}
+
+    func handleDeleteReport(deleteResult:Bool) {
+        if deleteResult {
+            toastMessage = String(format: LocalizableReport.reportDeletedToast.localized, title)
+            showMainView()
+        } else {
+            toastMessage = LocalizableCommon.commonError.localized
+        }
+        shouldShowToast = true
+    }
+    
+    private func showMainView() {
+        DispatchQueue.main.async {
+            self.shouldShowMainView = true
+        }
+    }
+
 }

@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct SelectDriveConnection: View {
+struct SelectDriveConnectionView: View {
     @State var selectedDriveConnectionType: DriveConnectionType = .none
     @ObservedObject var gDriveServerViewModel: GDriveServerViewModel
     var body: some View {
@@ -35,7 +35,8 @@ struct SelectDriveConnection: View {
     var headerView: some View {
         ServerConnectionHeaderView(
             title: LocalizableSettings.gDriveSelectTypeTitle.localized,
-            subtitle: LocalizableSettings.gDriveSelectTypeDesc.localized
+            subtitle: LocalizableSettings.gDriveSelectTypeDesc.localized, 
+            imageIconName: "gdrive.icon"
         )
     }
     
@@ -79,13 +80,11 @@ struct SelectDriveConnection: View {
             switch selectedDriveConnectionType {
             case .shared:
                 navigateTo(
-                    destination: SelectSharedDriveView()
-                        .environmentObject(gDriveServerViewModel)
+                    destination: SelectSharedDriveView(gDriveServerViewModel: gDriveServerViewModel)
                 )
             case .personal:
                 navigateTo(
-                    destination: CreateDriveFolder()
-                        .environmentObject(gDriveServerViewModel))
+                    destination: CreateDriveFolderView(gDriveServerViewModel: gDriveServerViewModel))
             default:
                 break
             }
@@ -95,5 +94,5 @@ struct SelectDriveConnection: View {
 }
 
 #Preview {
-    SelectDriveConnection(selectedDriveConnectionType: .personal, gDriveServerViewModel: GDriveServerViewModel(repository: GDriveRepository(),mainAppModel: MainAppModel.stub()))
+    SelectDriveConnectionView(selectedDriveConnectionType: .personal, gDriveServerViewModel: GDriveServerViewModel(repository: GDriveRepository(),mainAppModel: MainAppModel.stub()))
 }

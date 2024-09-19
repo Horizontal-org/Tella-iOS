@@ -74,9 +74,10 @@ extension String {
         
         return "\(fileType)-\(Date().getDate())"
     }
-
-
     
+    func slash() -> String {
+        return self.hasSuffix("/") ? self : self + "/"
+    }
 }
 
 extension String {
@@ -181,10 +182,16 @@ extension String {
         return try JSONDecoder().decode (type, from: data)
     }
     
-    func decodeJSON<T: Codable>(_ type: T.Type) throws -> T {
-        guard let data = self.data(using: .utf8) else {
-            throw NSError(domain: "StringDecodeError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Cannot convert string to Data"])
+    func decodeJSON<T: Codable>(_ type: T.Type)  -> T? {
+        do {
+            guard let data = self.data(using: .utf8) else {
+                throw NSError(domain: "StringDecodeError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Cannot convert string to Data"])
+            }
+            return try JSONDecoder().decode(type, from: data)
         }
-        return try JSONDecoder().decode(type, from: data)
+        catch let error as NSError {
+            debugLog(error)
+            return nil
+        }
     }
 }

@@ -5,9 +5,9 @@
 
 import SwiftUI
 
-struct ServerLoginView: View {
+struct TellaWebServerLoginView: View {
     
-    @EnvironmentObject var serverViewModel : ServerViewModel
+    @EnvironmentObject var serverViewModel : TellaWebServerViewModel
     @EnvironmentObject var serversViewModel : ServersViewModel
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -92,6 +92,6 @@ struct ServerLoginView: View {
     }
     
     var reportsMainView: some View {
-        ReportMainView(reportMainViewModel: ReportsViewModel(mainAppModel: mainAppModel), diContainer: GDriveDIContainer())
+        TellaServerReportsMainView(reportsMainViewModel: ReportsViewModel(mainAppModel: mainAppModel))
     }
 }
