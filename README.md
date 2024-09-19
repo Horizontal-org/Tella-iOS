@@ -73,9 +73,13 @@ A get started guide for Tella iOS is available [here](https://tella-app.org/get-
 
 
 ## Tech & frameworks used <a id="tech-used"></a>
-- [Secure Enclave](https://support.apple.com/guide/security/secure-enclave-overview-sec59b0b31ff/web) for security
+- [Secure Enclave](https://support.apple.com/guide/security/secure-enclave-overview-sec59b0b31ff/web) for security.
 - [SwiftUI](https://developer.apple.com/documentation/swiftui) for presenting views and interfaces
-- [PDFKit](https://developer.apple.com/documentation/pdfkit), [AVFoundation](https://developer.apple.com/documentation/avfoundation), and [QuickLook](https://developer.apple.com/documentation/quicklook) for previewing files in app
+- [AVFoundation](https://developer.apple.com/documentation/avfoundation), and [QuickLook](https://developer.apple.com/documentation/quicklook) for previewing files in app.
+- [Mantis](https://github.com/guoyingtao/Mantis) for [edit image feature](https://tella-app.org/features#edit-media). 
+- [GoogleSignIn](https://github.com/google/GoogleSignIn-iOS) and [GoogleAPIClientForREST/Drive](https://github.com/google/google-api-objectivec-client-for-rest) to implement [google drive connection](https://tella-app.org/g-drive)
+- [SQLCipher](https://github.com/sqlcipher/sqlcipher) for encrypted DataBase. 
+- [NextcloudKit](https://github.com/nextcloud/NextcloudKit) a package added to implement [Nextcloud connection](https://tella-app.org/nexcloud).
 
 
 ## Contributing to the code <a id="contributing"></a>
