@@ -251,7 +251,8 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
             return updatedFile
         }
         
-        if uploadProgressInfo.status == .submissionError {
+        let filesAreNotfinishUploading = reportViewModel.files.filter({$0.finishUploading == false})
+        if uploadProgressInfo.status == .submissionError && filesAreNotfinishUploading.isEmpty {
             reportViewModel.status = .submissionError
             publishUpdates()
         }
