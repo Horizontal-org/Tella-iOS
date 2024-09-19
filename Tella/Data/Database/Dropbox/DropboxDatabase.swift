@@ -218,6 +218,23 @@ extension TellaDataBase {
         }
     }
     
+    func updateDropboxReportStatus(idReport: Int, status: ReportStatus) -> Result<Bool, Error> {
+        do {
+            let valuesToUpdate = [KeyValue(key: D.cStatus, value: status.rawValue),
+                                  KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())
+            ]
+            
+            let reportCondition = [KeyValue(key: D.cReportId, value: idReport)]
+            
+            try statementBuilder.update(tableName: D.tDropboxReport, valuesToUpdate: valuesToUpdate, equalCondition: reportCondition)
+                        
+            return .success(true)
+        } catch let error {
+            debugLog(error)
+            return .failure(error)
+        }
+    }
+    
     /// DELETE
     func deleteDropboxReport(reportId: Int?) -> Result<Bool, Error> {
         do {

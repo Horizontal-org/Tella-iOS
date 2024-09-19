@@ -24,6 +24,8 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
 
         if reportViewModel.status == .submissionScheduled {
             self.submitReport()
+        } else {
+            self.pauseSubmission()
         }
     }
     
@@ -33,5 +35,26 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
             
             self.reportViewModel = ReportViewModel(report: report, files: files)
         }
+    }
+    
+    override func submitReport() {
+        if isSubmissionInProgress { return }
+        
+        self.updateReportStatus(reportStatus: .submissionInProgress)
+    }
+    
+    override func pauseSubmission() {
+        if isSubmissionInProgress {
+            updateReportStatus(reportStatus: .submissionPaused)
+        }
+    }
+    
+    override func updateReportStatus(reportStatus: ReportStatus) {
+        self.reportViewModel.status = reportStatus
+        self.objectWillChange.send()
+        
+        guard let id = reportViewModel.id else { return }
+        
+        mainAppModel.tellaData?.updateDropboxReportStatus(reportId: id, status: reportStatus)
     }
 }

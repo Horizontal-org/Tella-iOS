@@ -54,6 +54,13 @@ extension TellaData {
         return self.database.updateDropboxReport(report: report)
     }
     
+    @discardableResult
+    func updateDropboxReportStatus(reportId: Int, status: ReportStatus) -> Result<Bool, Error> {
+        shouldReloadDropboxReports.send(true)
+        
+        return self.database.updateDropboxReportStatus(idReport: reportId, status: status)
+    }
+    
     ///  DELETE
     func deleteDropboxReport(reportId: Int?) -> Result<Bool, Error> {
         shouldReloadDropboxReports.send(true)
