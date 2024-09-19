@@ -17,7 +17,7 @@ struct DropboxReportMainView: View {
         } showSubmittedViewAction: { id in
             
         } showOutboxViewAction: { id in
-            
+            showOutboxView(id)
         }
     }
     
@@ -27,6 +27,15 @@ struct DropboxReportMainView: View {
                                             reportsMainViewModel: reportsMainViewModel)
         
         let destination = DropboxDraftView(dropboxDraftVM: draftVM, reportsViewModel: reportsMainViewModel)
+        self.navigateTo(destination: destination)
+    }
+    
+    private func showOutboxView(_ id: Int?) {
+        let outboxViewModel = DropboxOutboxViewModel(reportsViewModel: reportsMainViewModel,
+                                                     reportId: id,
+                                                     repository: reportsMainViewModel.dropboxRepository)
+        
+        let destination = DropboxOutboxDetailsView(outboxReportVM: outboxViewModel)
         self.navigateTo(destination: destination)
     }
 }
