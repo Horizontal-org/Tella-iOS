@@ -99,19 +99,19 @@ class DropboxRepository: DropboxRepositoryProtocol {
             }
             
             // Upload each file
-//            for (fileURL, fileName) in files {
-//                let fileData = try Data(contentsOf: fileURL)
-//                try await withCheckedThrowingContinuation { continuation in
-//                    client.files.upload(path: "\(basePath)/\(fileName)", input: fileData).response { response, error in
-//                        if let error = error {
-//                            continuation.resume(throwing: error)
-//                        } else {
-//                            print("File uploaded successfully to path: \(basePath)/\(fileName)")
-//                            continuation.resume()
-//                        }
-//                    }
-//                }
-//            }
+            for (fileURL, fileName) in files {
+                let fileData = try Data(contentsOf: fileURL)
+                try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+                    client.files.upload(path: "\(basePath)/\(fileName)", input: fileData).response { response, error in
+                        if let error = error {
+                            continuation.resume(throwing: error)
+                        } else {
+                            print("File uploaded successfully to path: \(basePath)/\(fileName)")
+                            continuation.resume()
+                        }
+                    }
+                }
+            }
         }
 
     

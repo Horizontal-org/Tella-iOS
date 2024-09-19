@@ -41,6 +41,34 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         if isSubmissionInProgress { return }
         
         self.updateReportStatus(reportStatus: .submissionInProgress)
+        performSubmission()
+    }
+    
+    func performSubmission() {
+        let files = reportViewModel.files.filter({ $0.status != .submitted })
+        Task {
+            do {
+                let filesToSend = files.compactMap { file -> (URL, String)? in
+                    guard let url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true) else {
+                        return nil
+                    }
+                    
+                    let fileName = url.lastPathComponent
+                    return (url, fileName)
+                }
+                
+                try await dropboxRepository.uploadReport(title: reportViewModel.title, description: reportViewModel.description, files: filesToSend)
+                await MainActor.run {
+                    updateReportStatus(reportStatus: .submitted)
+                }
+            } catch {
+                await MainActor.run {
+                    updateReportStatus(reportStatus: .submissionError)
+                    // You might want to log the error or show it to the user
+                    print("Error uploading report: \(error)")
+                }
+            }
+        }
     }
     
     override func pauseSubmission() {
