@@ -64,6 +64,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
                 switch completion {
                 case .finished:
                     self?.updateReportStatus(reportStatus: .submitted)
+                    self?.showSubmittedReport()
                 case .failure(let error):
                     self?.updateReportStatus(reportStatus: .submissionError)
                     print("Error uploading report: \(error)")
