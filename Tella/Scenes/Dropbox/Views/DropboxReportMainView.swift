@@ -15,7 +15,7 @@ struct DropboxReportMainView: View {
         ReportMainView(reportsMainViewModel: reportsMainViewModel) { id in
             showDraftView(id)
         } showSubmittedViewAction: { id in
-            
+            showSubmittedView(id)
         } showOutboxViewAction: { id in
             showOutboxView(id)
         }
@@ -26,16 +26,23 @@ struct DropboxReportMainView: View {
                                             reportId: id,
                                             reportsMainViewModel: reportsMainViewModel)
         
-        let destination = DropboxDraftView(dropboxDraftVM: draftVM, reportsViewModel: reportsMainViewModel)
+        let destination = DropboxDraftView(dropboxDraftVM: draftVM)
         self.navigateTo(destination: destination)
     }
     
     private func showOutboxView(_ id: Int?) {
-        let outboxViewModel = DropboxOutboxViewModel(reportsViewModel: reportsMainViewModel,
+        let outboxVM = DropboxOutboxViewModel(reportsViewModel: reportsMainViewModel,
                                                      reportId: id,
                                                      repository: reportsMainViewModel.dropboxRepository)
         
-        let destination = DropboxOutboxDetailsView(outboxReportVM: outboxViewModel)
+        let destination = DropboxOutboxDetailsView(outboxReportVM: outboxVM)
+        self.navigateTo(destination: destination)
+    }
+    
+    private func showSubmittedView(_ id: Int?) {
+        let submittedVM = DropboxSubmittedViewModel(reportsMainViewModel: reportsMainViewModel, reportId: id)
+        
+        let destination = DropboxSubmittedDetailsView(submittedMainViewModel: submittedVM)
         self.navigateTo(destination: destination)
     }
 }

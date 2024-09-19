@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 class DropboxDraftViewModel: DraftMainViewModel {
-    private let dropboxRepository: DropboxRepositoryProtocol
+    let dropboxRepository: DropboxRepositoryProtocol
     
     init(DropboxRepository: DropboxRepositoryProtocol, reportId: Int?, reportsMainViewModel: ReportsMainViewModel) {
         self.dropboxRepository = DropboxRepository
@@ -83,14 +83,6 @@ class DropboxDraftViewModel: DraftMainViewModel {
             self.successSavingReport = true
         default:
             self.failureSavingReport = true
-        }
-    }
-    
-    func sendReport() async {
-        do {
-            try await dropboxRepository.uploadReport(title: title, description: description, files: [])
-        } catch let error {
-            debugLog(error)
         }
     }
     
