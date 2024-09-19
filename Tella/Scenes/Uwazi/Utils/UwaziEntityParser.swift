@@ -199,7 +199,7 @@ class UwaziEntityParser: UwaziEntityParserProtocol {
                 let attachments = entryPrompt.value
                 let attachedVaultFiles = attachments.compactMap({UwaziEntityInstanceFile(vaultFileInstanceId: $0.id , entityInstanceId:self.entityInstance?.id )})
                 uwaziEntityInstanceFile.append(contentsOf: attachedVaultFiles)
-                entityInstance?.attachments = attachments
+                entityInstance?.documents = attachments
             case .dataRelationship:
                 guard let entryPrompt = entryPrompt as? UwaziRelationshipEntryPrompt else { continue }
                 guard !entryPrompt.isEmpty else { continue }
