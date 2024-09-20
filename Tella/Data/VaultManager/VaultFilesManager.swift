@@ -72,13 +72,23 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                 return
             }
             
-            guard let filePath = await getModifiedURL(importedFile: fileDetail.importedFile),
-                  let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetail.file.id) else { return }
+            guard 
+                let filePath = await getModifiedURL(importedFile: fileDetail.importedFile)
+            else {
+                return
+            }
             
+            if let fileSize = FileManager.default.sizeOfFile(atPath: filePath.relativePath) {
+                fileDetail.file.size = fileSize
+            }
+
+            guard
+                let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetail.file.id)
+            else {
+                return
+            }
+
             if isSaved {
-                if let fileSize = FileManager.default.sizeOfFile(atPath: filePath.relativePath) {
-                    fileDetail.file.size = fileSize
-                }
                 self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: fileDetail.importedFile.parentId)
             }
             
@@ -105,17 +115,24 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         Task {
             
             guard
-                let filePath = await getModifiedURL(importedFile: fileDetail.importedFile),
-                let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetail.file.id)
+                let filePath = await getModifiedURL(importedFile: fileDetail.importedFile)
             else {
                 subject.send(BackgroundActivityStatus.failed)
                 return
             }
             
+            if let fileSize = FileManager.default.sizeOfFile(atPath: filePath.relativePath) {
+                fileDetail.file.size = fileSize
+            }
+
+            guard
+                let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetail.file.id)
+            else {
+                subject.send(BackgroundActivityStatus.failed)
+                return
+            }
+
             if isSaved {
-                if let fileSize = FileManager.default.sizeOfFile(atPath: filePath.relativePath) {
-                    fileDetail.file.size = fileSize
-                }
                 handleDatabaseAddition(fileDetails: fileDetail,
                                        subject: subject)
             } else {
