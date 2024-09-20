@@ -36,6 +36,7 @@ struct OutboxDetailsView<T: Server>: View {
             if value {
                 outboxReportVM.reportsViewModel.getReports()
                 outboxReportVM.reportsViewModel.selectedPage = .submitted
+                sheetManager.hide()
                 navigateTo(destination: submittedDetailsView)
             }
         })
