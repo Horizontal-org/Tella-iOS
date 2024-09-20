@@ -286,6 +286,7 @@
 		1291A83628BE3948001A6055 /* SettingsLinkItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291A83528BE3947001A6055 /* SettingsLinkItemView.swift */; };
 		1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291F4F127B52BF9006A34D3 /* QueuePlayer.swift */; };
 		1291F4F627B54300006A34D3 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291F4F527B54300006A34D3 /* AudioPlayer.swift */; };
+		129208F12C9D670500767760 /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 129208F02C9D670500767760 /* NextcloudKit */; };
 		129354772949F04700735ED0 /* EmptyResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129354762949F04700735ED0 /* EmptyResult.swift */; };
 		12935479294A3BFC00735ED0 /* MIMEType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12935478294A3BFC00735ED0 /* MIMEType.swift */; };
 		1293547B294A454900735ED0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293547A294A454900735ED0 /* AppDelegate.swift */; };

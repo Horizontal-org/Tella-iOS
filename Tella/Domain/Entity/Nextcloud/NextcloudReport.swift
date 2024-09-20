@@ -24,7 +24,7 @@ class NextcloudReport: BaseReport {
          updatedDate: Date? = nil,
          status: ReportStatus,
          server: NextcloudServer? = nil,
-         vaultFiles: [ReportFile]? = nil,
+         vaultFiles: [NextcloudReportFile]? = nil,
          remoteReportStatus: RemoteReportStatus = .unknown) {
         
         self.server = server
@@ -36,7 +36,7 @@ class NextcloudReport: BaseReport {
                    createdDate: createdDate,
                    updatedDate: updatedDate,
                    status: status,
-                   vaultFiles: vaultFiles,
+                   nextcloudReportFile: vaultFiles,
                    serverId: self.server?.id)
 
     }

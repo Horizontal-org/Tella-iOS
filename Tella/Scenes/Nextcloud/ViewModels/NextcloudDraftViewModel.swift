@@ -52,7 +52,7 @@ class NextcloudDraftViewModel: DraftMainViewModel {
     
     override func saveReport() {
         
-        let reportFiles = self.files.compactMap {ReportFile(fileId: $0.id,
+        let reportFiles = self.files.compactMap {NextcloudReportFile(fileId: $0.id,
                                                             status: .notSubmitted,
                                                             bytesSent: 0,
                                                             createdDate: Date(),

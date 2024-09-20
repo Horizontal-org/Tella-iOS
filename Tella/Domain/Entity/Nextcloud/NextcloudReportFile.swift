@@ -32,6 +32,8 @@ class NextcloudReportFile : ReportFile {
                    createdDate: createdDate,
                    updatedDate: updatedDate,
                    reportInstanceId: reportInstanceId)
+        
+        self.chunkFiles = chunkFiles
     }
     
     required init(from decoder: Decoder) throws {

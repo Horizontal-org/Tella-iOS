@@ -36,6 +36,7 @@ class BaseReport : Hashable, Codable {
          updatedDate: Date? = nil,
          status: ReportStatus,
          vaultFiles: [ReportFile]? = nil,
+         nextcloudReportFile: [NextcloudReportFile]? = nil,
          serverId: Int?) {
         
         self.id = id
@@ -45,9 +46,10 @@ class BaseReport : Hashable, Codable {
         self.updatedDate = updatedDate
         self.status = status
         self.reportFiles = vaultFiles
+        self.reportFiles = nextcloudReportFile
         self.serverId = serverId
     }
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
