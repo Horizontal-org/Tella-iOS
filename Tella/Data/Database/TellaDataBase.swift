@@ -52,8 +52,6 @@ class TellaDataBase : DataBase {
                 fallthrough
             case 7:
                 createDropboxServerTable()
-                fallthrough
-            case 7:
                 createDropboxReportTable()
                 createDropboxReportsFileTable()
             default :
