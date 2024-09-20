@@ -14,7 +14,9 @@ protocol DropboxRepositoryProtocol {
     func handleSignIn() async throws
     func ensureSignedIn() async throws
     func signOut()
-    func uploadReport(title: String, description: String, files: [(URL, String, String)]) -> AnyPublisher<UploadProgressInfo, Error>
+    
+    func uploadReport(folderPath: String, files: [(URL, String, String)]) -> AnyPublisher<UploadProgressInfo, Error>
+    func createFolder(name: String, description: String) async throws -> String
     
     func pauseUpload()
     func resumeUpload() -> AnyPublisher<UploadProgressInfo, Error>
@@ -72,79 +74,86 @@ class DropboxRepository: DropboxRepositoryProtocol {
         }
     }
     
-    func uploadReport(title: String, description: String, files: [(URL, String, String)]) -> AnyPublisher<UploadProgressInfo, Error> {
-        pausedUploadState = nil
-        isCancelled = false
-        
-        currentUploadTask = Task {
-            do {
-                try await self.ensureSignedIn()
-                guard let client = self.client else {
-                    throw NSError(domain: "DropboxRepository", code: 0, userInfo: [NSLocalizedDescriptionKey: "Dropbox client is not initialized"])
-                }
-                
-                let basePath = "/\(title)"
-                try await self.createFolder(client: client, path: basePath)
-                
-                let descriptionData = description.data(using: .utf8) ?? Data()
-                try await self.uploadFile(client: client, path: "\(basePath)/description.txt", data: descriptionData) { progress in
-                    debugLog("description.txt created")
-                }
-                
-                for (index, (fileURL, fileName, fileId)) in files.enumerated() {
-                    if isCancelled {
-                        pausedUploadState = PausedUploadState(title: title, description: description, files: files, currentFileIndex: index)
-                        throw NSError(domain: "DropboxRepository", code: 1, userInfo: [NSLocalizedDescriptionKey: "Upload paused"])
-                    }
-                    
-                    let fileData = try Data(contentsOf: fileURL)
-                    let fileId = fileId
-                    var bytesSent: Int64 = 0
-                    let totalBytes = Int64(fileData.count)
-                    
-                    try await self.uploadFile(client: client, path: "\(basePath)/\(fileName)", data: fileData) { progress in
-                        bytesSent = Int64(Double(totalBytes) * progress)
-                        let progressInfo = UploadProgressInfo(
-                            bytesSent: Int(bytesSent),
-                            current: index + 1,
-                            fileId: fileId,
-                            status: .partialSubmitted,
-                            reportStatus: .submissionInProgress
-                        )
-                        self.uploadProgressSubject.send(progressInfo)
-                    }
-                    
-                    let completedInfo = UploadProgressInfo(
-                        bytesSent: Int(totalBytes),
-                        current: index + 1,
-                        fileId: fileId,
-                        status: .uploaded,
-                        reportStatus: index == files.count - 1 ? .submitted : .submissionInProgress
-                    )
-                    self.uploadProgressSubject.send(completedInfo)
-                }
-                
-                uploadProgressSubject.send(completion: .finished)
-            } catch {
-                uploadProgressSubject.send(completion: .failure(error))
-            }
+    func createFolder(name: String, description: String) async throws -> String {
+        try await self.ensureSignedIn()
+        guard let client = self.client else {
+            throw NSError(domain: "DropboxRepository", code: 0, userInfo: [NSLocalizedDescriptionKey: "Dropbox client is not initialized"])
         }
         
-        return uploadProgressSubject.eraseToAnyPublisher()
-    }
-
-    
-    private func createFolder(client: DropboxClient, path: String) async throws {
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            client.files.createFolderV2(path: path, autorename: true).response { response, error in
+        let folderPath = "/\(name)"
+        
+        // Create folder
+        let folderId = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<String, Error>) in
+            client.files.createFolderV2(path: folderPath, autorename: true).response { response, error in
                 if let error = error {
                     continuation.resume(throwing: error)
+                } else if let metadata = response?.metadata {
+                    continuation.resume(returning: metadata.id)
                 } else {
-                    continuation.resume()
+                    continuation.resume(throwing: NSError(domain: "DropboxRepository", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to create folder"]))
                 }
             }
         }
+        
+        // Upload description file
+        let descriptionData = description.data(using: .utf8) ?? Data()
+        try await self.uploadFile(client: client, path: "\(folderPath)/description.txt", data: descriptionData) { _ in }
+        
+        return folderId
     }
+    
+    func uploadReport(folderPath: String, files: [(URL, String, String)]) -> AnyPublisher<UploadProgressInfo, Error> {
+            pausedUploadState = nil
+            isCancelled = false
+            
+            currentUploadTask = Task {
+                do {
+                    try await self.ensureSignedIn()
+                    guard let client = self.client else {
+                        throw NSError(domain: "DropboxRepository", code: 0, userInfo: [NSLocalizedDescriptionKey: "Dropbox client is not initialized"])
+                    }
+                    
+                    for (index, (fileURL, fileName, fileId)) in files.enumerated() {
+                        if isCancelled {
+                            pausedUploadState = PausedUploadState(folderPath: folderPath, files: files, currentFileIndex: index)
+                            throw NSError(domain: "DropboxRepository", code: 1, userInfo: [NSLocalizedDescriptionKey: "Upload paused"])
+                        }
+                        
+                        let fileData = try Data(contentsOf: fileURL)
+                        var bytesSent: Int64 = 0
+                        let totalBytes = Int64(fileData.count)
+                        
+                        try await self.uploadFile(client: client, path: "\(folderPath)/\(fileName)", data: fileData) { progress in
+                            bytesSent = Int64(Double(totalBytes) * progress)
+                            let progressInfo = UploadProgressInfo(
+                                bytesSent: Int(bytesSent),
+                                current: index + 1,
+                                fileId: fileId,
+                                status: .partialSubmitted,
+                                reportStatus: .submissionInProgress
+                            )
+                            self.uploadProgressSubject.send(progressInfo)
+                        }
+                        
+                        let completedInfo = UploadProgressInfo(
+                            bytesSent: Int(totalBytes),
+                            current: index + 1,
+                            fileId: fileId,
+                            status: .uploaded,
+                            reportStatus: index == files.count - 1 ? .submitted : .submissionInProgress
+                        )
+                        self.uploadProgressSubject.send(completedInfo)
+                    }
+                    
+                    uploadProgressSubject.send(completion: .finished)
+                } catch {
+                    uploadProgressSubject.send(completion: .failure(error))
+                }
+            }
+            
+            return uploadProgressSubject.eraseToAnyPublisher()
+        }
+
         
     private func uploadFile(client: DropboxClient, path: String, data: Data, progressHandler: @escaping (Double) -> Void) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
@@ -173,7 +182,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
         }
         
         let remainingFiles = Array(pausedState.files[pausedState.currentFileIndex...])
-        return uploadReport(title: pausedState.title, description: pausedState.description, files: remainingFiles)
+        return uploadReport(folderPath: pausedState.folderPath, files: remainingFiles)
     }
 
     
@@ -194,8 +203,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
 }
 
 struct PausedUploadState {
-    let title: String
-    let description: String
+    let folderPath: String
     let files: [(URL, String, String)]
     let currentFileIndex: Int
 }

@@ -42,10 +42,36 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         if isSubmissionInProgress { return }
         
         self.updateReportStatus(reportStatus: .submissionInProgress)
-        performSubmission()
+        
+        if let folderId = reportViewModel.folderId {
+            uploadFiles(to: "/\(reportViewModel.title)")
+        } else {
+            createDropboxFolder()
+        }
     }
     
-    private func performSubmission() {
+    private func createDropboxFolder() {
+        Task {
+            do {
+                let folderId = try await dropboxRepository.createFolder(
+                    name: reportViewModel.title,
+                    description: reportViewModel.description
+                )
+                await MainActor.run {
+                    self.reportViewModel.folderId = folderId
+                    self.updateReportFolderId(folderId: folderId)
+                    self.uploadFiles(to: "/\(self.reportViewModel.title)")
+                }
+            } catch {
+                await MainActor.run {
+                    self.updateReportStatus(reportStatus: .submissionError)
+                    debugLog("Error creating folder: \(error)")
+                }
+            }
+        }
+    }
+        
+    private func uploadFiles(to folderPath: String) {
         let files = reportViewModel.files.filter { $0.status != .submitted }
         let filesToSend = files.compactMap { file -> (URL, String, String)? in
             guard let url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true) else {
@@ -56,14 +82,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
             return (url, fileName, fileId)
         }
         
-        let uploadPublisher: AnyPublisher<UploadProgressInfo, Error>
-        if reportViewModel.status == .submissionPaused {
-            uploadPublisher = dropboxRepository.resumeUpload()
-        } else {
-            uploadPublisher = dropboxRepository.uploadReport(title: reportViewModel.title, description: reportViewModel.description, files: filesToSend)
-        }
-        
-        uploadPublisher
+        dropboxRepository.uploadReport(folderPath: folderPath, files: filesToSend)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
@@ -71,7 +90,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
                     self?.updateReportStatus(reportStatus: .submitted)
                     self?.showSubmittedReport()
                 case .failure(let error):
-                    if (error as NSError).code == 1 { // Upload paused
+                    if (error as NSError).code == 1 {
                         self?.updateReportStatus(reportStatus: .submissionPaused)
                     } else {
                         self?.updateReportStatus(reportStatus: .submissionError)
@@ -111,6 +130,11 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         }
     }
     
+    private func updateReportFolderId(folderId: String) {
+        guard let id = reportViewModel.id else { return }
+        
+        mainAppModel.tellaData?.updateDropboxFolderId(reportId: id, folderId: folderId)
+    }
     override func updateFile(file: ReportVaultFile) {
         guard let reportId = reportViewModel.id else { return }
         
