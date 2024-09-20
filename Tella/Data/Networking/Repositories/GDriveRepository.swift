@@ -273,7 +273,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 
                 let fileName = fileURL.lastPathComponent
                 let totalSize = UInt64((try? fileURL.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0)
-                let uploadProgressInfo = UploadProgressInfo(fileId: fileId, status: .notSubmitted, total: Int(totalSize))
+                let uploadProgressInfo = UploadProgressInfo(bytesSent: Int(totalSize), fileId: fileId, status: .notSubmitted)
                 
                 let fileExists = try await checkFileExists(fileName: fileName, folderId: folderId, driveService: driveService)
                 
@@ -342,7 +342,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                             throw APIError.unexpectedResponse
                         }
                         
-                        uploadProgressInfo.bytesSent = Int(uploadProgressInfo.total!)
+                        uploadProgressInfo.bytesSent = Int(uploadProgressInfo.bytesSent!)
                         uploadProgressInfo.status = .uploaded
                         continuation.resume(returning: uploadProgressInfo)
                     } catch {
