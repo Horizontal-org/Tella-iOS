@@ -36,7 +36,6 @@ class ReportVaultFile : VaultFileDB {
         self.createdDate = reportFile.createdDate
         self.updatedDate = reportFile.updatedDate
         self.reportInstanceId = reportFile.reportInstanceId
-        self.chunkFiles = reportFile.chunkFiles
     }
     
     required init(from decoder: Decoder) throws {
