@@ -12,7 +12,7 @@ class UploadProgressInfo {
     //
     
     var bytesSent : Int?
-    var total : Int?
+    var current : Int?
     var fileId: String?
     var status : FileStatus = .unknown
     var isOnBackground: Bool = false
@@ -29,14 +29,13 @@ class UploadProgressInfo {
          fileId: String? = nil,
          status: FileStatus,
          error: APIError? = nil,
-         total: Int? = nil,
          reportStatus: ReportStatus? = nil) {
         
         self.bytesSent = bytesSent
         self.fileId = fileId
         self.status = status
         self.status = status
-        self.total = total
         self.reportStatus = reportStatus
+        self.current = current
     }
 }

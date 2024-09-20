@@ -54,7 +54,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
                         
                         _ =  self.reportViewModel.files.compactMap { _ in
                             let file = self.reportViewModel.files.first(where: {$0.id == progressInfo.fileId})
-                            file?.bytesSent = (progressInfo.total) ?? 0
+                            file?.bytesSent = (progressInfo.bytesSent) ?? 0
                             file?.status = progressInfo.status
                             return file
                         }

@@ -79,7 +79,9 @@ class RecordViewModel: ObservableObject {
     
     private func addSynchronousVaultFile(urlFile:URL) {
         
-        let importedFiles = ImportedFile(urlFile: urlFile, fileSource: FileSource.files)
+        let importedFiles = ImportedFile(urlFile: urlFile,
+                                         parentId:rootFile?.id,
+                                         fileSource: FileSource.files)
 
         mainAppModel.vaultFilesManager?.addVaultFile(importedFiles : [importedFiles])
             .sink { importVaultFileResult in
@@ -100,8 +102,9 @@ class RecordViewModel: ObservableObject {
         let isPreserveMetadataOn = mainAppModel.settings.preserveMetadata
         
         let importedFile = ImportedFile(urlFile: urlFile,
-                                         shouldPreserveMetadata: isPreserveMetadataOn,
-                                         fileSource: .files)
+                                        parentId:rootFile?.id, 
+                                        shouldPreserveMetadata: isPreserveMetadataOn,
+                                        fileSource: .files)
 
         self.mainAppModel.addVaultFile(importedFiles: [importedFile],
                                        shouldReloadVaultFiles : self.shouldReloadVaultFiles,
