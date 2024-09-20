@@ -173,13 +173,13 @@ extension TellaDataBase {
         }
     }
     
-    func getNextcloudVaultFiles(reportId: Int?) -> [ReportFile] {
+    func getNextcloudVaultFiles(reportId: Int?) -> [NextcloudReportFile] {
         do {
             let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: reportId)]
             let responseDict = try statementBuilder.selectQuery(tableName: D.tNextcloudInstanceVaultFile, andCondition: reportFilesCondition)
             
             let decodedFiles = try responseDict.compactMap ({ dict in
-                return try dict.decode(ReportFile.self)
+                return try dict.decode(NextcloudReportFile.self)
             })
             
             return decodedFiles

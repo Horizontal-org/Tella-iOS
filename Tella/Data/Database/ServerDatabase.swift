@@ -179,7 +179,8 @@ extension TellaDataBase {
     
     func deleteAllServers() -> Result<Bool,Error> {
         do {
-            try statementBuilder.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile, D.tUwaziServer, D.tUwaziTemplate, D.tResource])
+            try statementBuilder.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile, D.tUwaziServer, D.tUwaziTemplate, D.tUwaziEntityInstances, D.tUwaziEntityInstanceVaultFile, D.tResource, D.tGDriveServer, D.tGDriveReport, D.tGDriveInstanceVaultFile, D.tNextcloudServer, D.tNextcloudReport, D.tNextcloudInstanceVaultFile])
+            
             return .success(true)
         } catch let error {
             debugLog(error)

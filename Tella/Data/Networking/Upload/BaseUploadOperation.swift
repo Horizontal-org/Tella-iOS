@@ -80,13 +80,15 @@ class BaseUploadOperation : Operation {
                 let file = self.reportVaultFiles?.first(where: {$0.id == progressInfo.fileId})
                 let instanceId = file?.instanceId
                 
-                let totalByteSent = self.updateReportFile(fileStatus: progressInfo.status, id: instanceId, 
-                                                          bytesSent: progressInfo.bytesSent)
+                let totalByteSent = self.updateReportFile(fileStatus: progressInfo.status,
+                                                          id: instanceId,
+                                                          bytesSent: progressInfo.bytesSent,
+                                                          current: progressInfo.current)
                 
                 if let _ = progressInfo.error {
                     self.updateReport(reportStatus: .submissionError)
                 }
-                
+
                 self.response.send(UploadResponse.progress(progressInfo: UploadProgressInfo(bytesSent:totalByteSent,
                                                                                             fileId: progressInfo.fileId,
                                                                                             status: progressInfo.status,

@@ -44,14 +44,14 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
             var files: [ReportVaultFile] = []
             
             report.reportFiles?.forEach({ reportFile in
-                if let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}) {
-                    let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
-                    files.append(reportVaultFile)
-                }
+                guard let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}),
+                      let nextcloudReportFile = reportFile as? NextcloudReportFile else { return}
+                let reportVaultFile = ReportVaultFile(reportFile: nextcloudReportFile, vaultFile: vaultFile)
+                files.append(reportVaultFile)
             })
             
             self.reportViewModel = ReportViewModel(report: report, files: files)
-        
+            
         }
     }
     
@@ -259,7 +259,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
     }
     
     override func updateFile(file:ReportVaultFile) {
-        guard let file = ReportFile(reportFile: file) else {return}
+        guard let file = NextcloudReportFile(reportFile: file) else {return}
         let _ = mainAppModel.tellaData?.updateNextcloudReportFile(reportFile: file)
     }
     

@@ -234,6 +234,7 @@
 		1275A8422C5A791A0071A97D /* ReportFileExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1275A8412C5A791A0071A97D /* ReportFileExtension.swift */; };
 		1275A8442C5AA4460071A97D /* NextcloudUploadProgressInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1275A8432C5AA4460071A97D /* NextcloudUploadProgressInfo.swift */; };
 		1275A8492C5E6EFF0071A97D /* NextcloudConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1275A8482C5E6EFF0071A97D /* NextcloudConstants.swift */; };
+		1275A84B2C5E96B70071A97D /* NextcloudReportFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1275A84A2C5E96B70071A97D /* NextcloudReportFile.swift */; };
 		12776A9027BA742700CDC5DC /* CameraControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A8F27BA742700CDC5DC /* CameraControlsView.swift */; };
 		12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9427BA761C00CDC5DC /* CustomCameraController.swift */; };
 		12776A9827BAC87A00CDC5DC /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12776A9727BAC87A00CDC5DC /* CameraViewModel.swift */; };
@@ -285,6 +286,7 @@
 		1291A83628BE3948001A6055 /* SettingsLinkItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291A83528BE3947001A6055 /* SettingsLinkItemView.swift */; };
 		1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291F4F127B52BF9006A34D3 /* QueuePlayer.swift */; };
 		1291F4F627B54300006A34D3 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291F4F527B54300006A34D3 /* AudioPlayer.swift */; };
+		129209032C9DB00500767760 /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 129209022C9DB00500767760 /* NextcloudKit */; };
 		129354772949F04700735ED0 /* EmptyResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129354762949F04700735ED0 /* EmptyResult.swift */; };
 		12935479294A3BFC00735ED0 /* MIMEType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12935478294A3BFC00735ED0 /* MIMEType.swift */; };
 		1293547B294A454900735ED0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293547A294A454900735ED0 /* AppDelegate.swift */; };
@@ -330,7 +332,6 @@
 		12B370392B19109600DDA9E9 /* LocalizableBackgroundActivities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B370382B19109600DDA9E9 /* LocalizableBackgroundActivities.swift */; };
 		12B3AD8A28C0DD0200AC9AF9 /* TellaWebServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B3AD8928C0DD0200AC9AF9 /* TellaWebServerLoginView.swift */; };
 		12B3AD8C28C1090700AC9AF9 /* SuccessLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B3AD8B28C1090700AC9AF9 /* SuccessLoginView.swift */; };
-		12B4C4222C9C763C008B34A1 /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 12B4C4212C9C763C008B34A1 /* NextcloudKit */; };
 		12B5257B2848FC2800B3D1C0 /* LockTimeoutOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257A2848FC2800B3D1C0 /* LockTimeoutOption.swift */; };
 		12B5257E2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257D2849037E00B3D1C0 /* LockTimeoutOptionsStatus.swift */; };
 		12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B5257F284903AE00B3D1C0 /* AboutAndHelpItem.swift */; };
@@ -855,6 +856,7 @@
 		1275A8412C5A791A0071A97D /* ReportFileExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportFileExtension.swift; sourceTree = "<group>"; };
 		1275A8432C5AA4460071A97D /* NextcloudUploadProgressInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudUploadProgressInfo.swift; sourceTree = "<group>"; };
 		1275A8482C5E6EFF0071A97D /* NextcloudConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudConstants.swift; sourceTree = "<group>"; };
+		1275A84A2C5E96B70071A97D /* NextcloudReportFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudReportFile.swift; sourceTree = "<group>"; };
 		1276330D2A9E407700535D0D /* ku */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ku; path = ku.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12776A8F27BA742700CDC5DC /* CameraControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlsView.swift; sourceTree = "<group>"; };
 		12776A9427BA761C00CDC5DC /* CustomCameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraController.swift; sourceTree = "<group>"; };
@@ -1236,7 +1238,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				12B4C4222C9C763C008B34A1 /* NextcloudKit in Frameworks */,
+				129209032C9DB00500767760 /* NextcloudKit in Frameworks */,
 				D50FA6872613ABCA00D6D63B /* VaultManager.framework in Frameworks */,
 				89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */,
 			);
@@ -1927,6 +1929,7 @@
 			children = (
 				127092D62C2DD1A1002030AA /* NextcloudServer.swift */,
 				126E1B002C3D913D000AE4CE /* NextcloudReport.swift */,
+				1275A84A2C5E96B70071A97D /* NextcloudReportFile.swift */,
 			);
 			path = Nextcloud;
 			sourceTree = "<group>";
@@ -3290,7 +3293,7 @@
 			);
 			name = Tella;
 			packageProductDependencies = (
-				12B4C4212C9C763C008B34A1 /* NextcloudKit */,
+				129209022C9DB00500767760 /* NextcloudKit */,
 			);
 			productName = Tella;
 			productReference = F66E65A923E3207D000F93E5 /* Tella.app */;
@@ -3384,7 +3387,7 @@
 			);
 			mainGroup = F66E65A023E3207D000F93E5;
 			packageReferences = (
-				12B4C4202C9C7631008B34A1 /* XCRemoteSwiftPackageReference "NextcloudKit" */,
+				129209012C9DAFFA00767760 /* XCRemoteSwiftPackageReference "NextcloudKit" */,
 			);
 			productRefGroup = F66E65AA23E3207D000F93E5 /* Products */;
 			projectDirPath = "";
@@ -3595,6 +3598,7 @@
 				1293F67A2AD88B8400F6CFBD /* FeedbackAPI.swift in Sources */,
 				D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */,
 				0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */,
+				1275A84B2C5E96B70071A97D /* NextcloudReportFile.swift in Sources */,
 				E1E7C5772AAB512400DDB07E /* UwaziTemplate.swift in Sources */,
 				12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */,
 				12E333C328D0A8D300E1DDB7 /* CryptoManager.swift in Sources */,
@@ -4388,7 +4392,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 79;
+				CURRENT_PROJECT_VERSION = 80;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
@@ -4398,7 +4402,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.10.0;
+				MARKETING_VERSION = 1.11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4414,10 +4418,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 79;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = 6ZG9T42688;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Tella/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -4429,6 +4435,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Tella (AppStore)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -4573,7 +4580,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		12B4C4202C9C7631008B34A1 /* XCRemoteSwiftPackageReference "NextcloudKit" */ = {
+		129209012C9DAFFA00767760 /* XCRemoteSwiftPackageReference "NextcloudKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Nextcloud/NextcloudKit.git";
 			requirement = {
@@ -4584,9 +4591,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		12B4C4212C9C763C008B34A1 /* NextcloudKit */ = {
+		129209022C9DB00500767760 /* NextcloudKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 12B4C4202C9C7631008B34A1 /* XCRemoteSwiftPackageReference "NextcloudKit" */;
+			package = 129209012C9DAFFA00767760 /* XCRemoteSwiftPackageReference "NextcloudKit" */;
 			productName = NextcloudKit;
 		};
 /* End XCSwiftPackageProductDependency section */

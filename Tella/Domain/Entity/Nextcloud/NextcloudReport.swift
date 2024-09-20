@@ -12,7 +12,7 @@ class NextcloudReport: BaseReport {
     
     var server: NextcloudServer?
     var remoteReportStatus: RemoteReportStatus? = .unknown
-
+    
     enum CodingKeys: String, CodingKey {
         case remoteReportStatus = "c_remote_report_status"
     }
@@ -24,11 +24,8 @@ class NextcloudReport: BaseReport {
          updatedDate: Date? = nil,
          status: ReportStatus,
          server: NextcloudServer? = nil,
-         vaultFiles: [ReportFile]? = nil,
+         vaultFiles: [NextcloudReportFile]? = nil,
          remoteReportStatus: RemoteReportStatus = .unknown) {
-        
-        self.server = server
-        self.remoteReportStatus = remoteReportStatus
         
         super.init(id: id,
                    title: title,
@@ -36,9 +33,11 @@ class NextcloudReport: BaseReport {
                    createdDate: createdDate,
                    updatedDate: updatedDate,
                    status: status,
-                   vaultFiles: vaultFiles,
                    serverId: self.server?.id)
-
+        
+        self.server = server
+        self.remoteReportStatus = remoteReportStatus
+        self.reportFiles = vaultFiles
     }
     
     override func encode(to encoder: Encoder) throws {
