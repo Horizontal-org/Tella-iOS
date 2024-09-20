@@ -45,20 +45,25 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         performSubmission()
     }
     
-    func performSubmission() {
-        let files = reportViewModel.files.filter({ $0.status != .submitted })
-        let filesToSend = files.compactMap { file -> (URL, String)? in
+    private func performSubmission() {
+        let files = reportViewModel.files.filter { $0.status != .submitted }
+        let filesToSend = files.compactMap { file -> (URL, String, String)? in
             guard let url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true) else {
                 return nil
             }
-            
+            let fileId = file.id ?? ""
             let fileName = url.lastPathComponent
-            return (url, fileName)
+            return (url, fileName, fileId)
         }
         
-        updateReportStatus(reportStatus: .submissionInProgress)
+        let uploadPublisher: AnyPublisher<UploadProgressInfo, Error>
+        if reportViewModel.status == .submissionPaused {
+            uploadPublisher = dropboxRepository.resumeUpload()
+        } else {
+            uploadPublisher = dropboxRepository.uploadReport(title: reportViewModel.title, description: reportViewModel.description, files: filesToSend)
+        }
         
-        dropboxRepository.uploadReport(title: reportViewModel.title, description: reportViewModel.description, files: filesToSend)
+        uploadPublisher
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
@@ -66,17 +71,22 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
                     self?.updateReportStatus(reportStatus: .submitted)
                     self?.showSubmittedReport()
                 case .failure(let error):
-                    self?.updateReportStatus(reportStatus: .submissionError)
-                    print("Error uploading report: \(error)")
+                    if (error as NSError).code == 1 { // Upload paused
+                        self?.updateReportStatus(reportStatus: .submissionPaused)
+                    } else {
+                        self?.updateReportStatus(reportStatus: .submissionError)
+                        debugLog("Error uploading report: \(error)")
+                    }
                 }
-            }, receiveValue: { _ in
-                // This is intentionally left empty as we handle the success in the completion handler
+            }, receiveValue: { [weak self] progressInfo in
+                self?.updateProgressInfos(uploadProgressInfo: progressInfo)
             })
             .store(in: &cancellables)
     }
     
     override func pauseSubmission() {
         if isSubmissionInProgress {
+            dropboxRepository.pauseUpload()
             updateReportStatus(reportStatus: .submissionPaused)
         }
     }
@@ -88,5 +98,29 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         guard let id = reportViewModel.id else { return }
         
         mainAppModel.tellaData?.updateDropboxReportStatus(reportId: id, status: reportStatus)
+    }
+    
+    override func updateCurrentFile(uploadProgressInfo : UploadProgressInfo) {
+        self.reportViewModel.files = self.reportViewModel.files.compactMap { file in
+            guard file.id == uploadProgressInfo.fileId else { return file }
+            
+            let updatedFile = file
+            updatedFile.bytesSent = uploadProgressInfo.bytesSent ?? 0
+            updatedFile.status = uploadProgressInfo.status
+            return updatedFile
+        }
+    }
+    
+    override func updateFile(file: ReportVaultFile) {
+        guard let reportId = reportViewModel.id else { return }
+        
+        let reportFiles = reportViewModel.files.map { file in
+            return ReportFile(
+                file: file,
+                reportInstanceId: reportViewModel.id
+            )
+        }
+        
+        let _ = mainAppModel.tellaData?.updateDropboxFiles(reportId: reportId, files: reportFiles)
     }
 }
