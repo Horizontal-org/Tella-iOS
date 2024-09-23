@@ -11,14 +11,12 @@ import Combine
 
 struct ServerSelectionView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
-    @ObservedObject var gDriveVM: GDriveAuthViewModel
     @ObservedObject var gDriveServerVM: GDriveServerViewModel
     @ObservedObject var dropboxServerVM: DropboxServerViewModel
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     init(appModel:MainAppModel, server: TellaServer? = nil, gDriveRepository: GDriveRepositoryProtocol, dropboxRepository: DropboxRepositoryProtocol) {
-        _gDriveVM = ObservedObject(wrappedValue: GDriveAuthViewModel(repository: gDriveRepository))
         _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveRepository, mainAppModel: appModel))
         _dropboxServerVM = ObservedObject(wrappedValue: DropboxServerViewModel(dropboxRepository: dropboxRepository, mainAppModel: appModel))
     }
@@ -38,7 +36,7 @@ struct ServerSelectionView: View {
             .toolbar {
                 LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
             }
-        }.onReceive(gDriveVM.$signInState){ signInState in
+        }.onReceive(gDriveServerVM.$signInState){ signInState in
             if case .error(let message) = signInState {
                 Toast.displayToast(message: message)
             }
@@ -109,7 +107,7 @@ struct ServerSelectionView: View {
     }
     
     fileprivate func navigateToGDriveFlow() {
-        gDriveVM.handleSignIn {
+        gDriveServerVM.handleSignIn {
             navigateTo(
                 destination: SelectDriveConnectionView(gDriveServerViewModel: gDriveServerVM),
                 title: LocalizableSettings.settServerGDrive.localized
