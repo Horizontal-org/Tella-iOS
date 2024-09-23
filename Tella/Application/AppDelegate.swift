@@ -5,7 +5,6 @@
 
 import Foundation
 import UIKit
-import SwiftyDropbox
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     
@@ -16,11 +15,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         AppDelegate.instance = self
         
-        if let dropboxAppKey = ConfigurationManager.getValue(DropboxAuthConstants.dropboxAppKey) {
-            DropboxClientsManager.setupWithAppKey(dropboxAppKey)
-        } else {
-            debugLog("app key not found")
-        }
+        DropboxRepository().setupDropbox()
         
         return true
     }

@@ -36,6 +36,16 @@ class DropboxRepository: DropboxRepositoryProtocol {
         }.store(in: &subscribers)
     }
     
+    func setupDropbox() {
+        guard let dropboxAppKey = ConfigurationManager.getValue(DropboxAuthConstants.dropboxAppKey) else  {
+            debugLog("Dropbox App Key not found")
+            
+            return
+        }
+        
+        DropboxClientsManager.setupWithAppKey(dropboxAppKey)
+    }
+    
     func handleSignIn() async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             DispatchQueue.main.async {
