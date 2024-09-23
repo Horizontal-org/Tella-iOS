@@ -51,7 +51,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 
                 DropboxClientsManager.authorizeFromControllerV2(
                     UIApplication.shared,
-                    controller: UIApplication.shared.windows.first?.rootViewController,
+                    controller: UIApplication.shared.rootViewController,
                     loadingStatusDelegate: nil,
                     openURL: { (url: URL) -> Void in
                         UIApplication.shared.open(url, options: [:], completionHandler: nil)
