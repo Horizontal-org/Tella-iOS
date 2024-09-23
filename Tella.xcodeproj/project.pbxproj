@@ -412,7 +412,6 @@
 		15BD9CAD2BC7410E00C3932B /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CAC2BC7410E00C3932B /* SearchBarView.swift */; };
 		15BD9CB12BC744BC00C3932B /* NavigationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CB02BC744BC00C3932B /* NavigationHeaderView.swift */; };
 		15BD9CB32BC7472A00C3932B /* UwaziRelationshipDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CB22BC7472A00C3932B /* UwaziRelationshipDTO.swift */; };
-		15C51C442BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C51C432BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift */; };
 		15C51C462BFE769500DD9AD0 /* GDriveServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C51C452BFE769500DD9AD0 /* GDriveServerViewModel.swift */; };
 		15CD89102BF297BE00F724F5 /* SelectedEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CD890F2BF297BE00F724F5 /* SelectedEntityView.swift */; };
 		15E3D50A2C1B71E200B7FECC /* GDriveDraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */; };
@@ -1032,7 +1031,6 @@
 		15BD9CAC2BC7410E00C3932B /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		15BD9CB02BC744BC00C3932B /* NavigationHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationHeaderView.swift; sourceTree = "<group>"; };
 		15BD9CB22BC7472A00C3932B /* UwaziRelationshipDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziRelationshipDTO.swift; sourceTree = "<group>"; };
-		15C51C432BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveAuthViewModel.swift; sourceTree = "<group>"; };
 		15C51C452BFE769500DD9AD0 /* GDriveServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveServerViewModel.swift; sourceTree = "<group>"; };
 		15CD890F2BF297BE00F724F5 /* SelectedEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedEntityView.swift; sourceTree = "<group>"; };
 		15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveDraftView.swift; sourceTree = "<group>"; };
@@ -2526,7 +2524,6 @@
 				12730E68279F420400DC0135 /* SettingsViewModel.swift */,
 				E108B75629FE79340045CCBE /* UwaziServerViewModel.swift */,
 				1293F6692AD7F29B00F6CFBD /* FeedbackViewModel.swift */,
-				15C51C432BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift */,
 				15C51C452BFE769500DD9AD0 /* GDriveServerViewModel.swift */,
 			);
 			path = ViewModel;
@@ -4016,7 +4013,6 @@
 				12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */,
 				12B370392B19109600DDA9E9 /* LocalizableBackgroundActivities.swift in Sources */,
 				122C54BE28C6351E003B2DBC /* AdvancedServerSettingsView.swift in Sources */,
-				15C51C442BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift in Sources */,
 				15E3D50E2C1B87AC00B7FECC /* GDriveDraftViewModel.swift in Sources */,
 				122C54C028C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift in Sources */,
 				12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */,
