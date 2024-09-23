@@ -8,7 +8,7 @@ struct TellaUrls {
     static let contactURL = "mailto:contact@tella-app.org"
     static let privacyURL = "https://tella-app.org/privacy/"
     static let feedbackURL = "https://tella-app.org/features#feedback"
-    static let gDriveURL = "https://tella-app.org/gdrive"
+    static let gDriveURL = "https://tella-app.org/g-drive"
 }
 
 struct GoogleAuthConstants {

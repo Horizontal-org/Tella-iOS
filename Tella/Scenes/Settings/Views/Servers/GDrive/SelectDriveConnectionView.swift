@@ -25,6 +25,8 @@ struct SelectDriveConnectionView: View {
                 .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
             }
             .navigationBarHidden(true)
+        }.onAppear {
+            gDriveServerViewModel.getSharedDrives()
         }
     }
     
@@ -46,7 +48,7 @@ struct SelectDriveConnectionView: View {
                 title: LocalizableSettings.gDriveSelectTypeShared.localized,
                 nextButtonAction: .action,
                 isOverlay: selectedDriveConnectionType == .shared,
-                isValid: .constant(true),
+                isValid: .constant(isValidSharedDriveButton),
                 action: { selectedDriveConnectionType = .shared }
             )
             TellaButtonView<AnyView>(
@@ -90,6 +92,13 @@ struct SelectDriveConnectionView: View {
             }
         })
 
+    }
+    
+    private var isValidSharedDriveButton: Bool {
+        guard case .loaded(let drives) = gDriveServerViewModel.sharedDriveState else {
+            return false
+        }
+        return !drives.isEmpty
     }
 }
 
