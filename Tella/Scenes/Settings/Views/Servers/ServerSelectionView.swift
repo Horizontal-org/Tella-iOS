@@ -13,14 +13,14 @@ struct ServerSelectionView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
     @ObservedObject var gDriveVM: GDriveAuthViewModel
     @ObservedObject var gDriveServerVM: GDriveServerViewModel
-    @ObservedObject var dropboxVM: DropboxAuthViewModel
+    @ObservedObject var dropboxServerVM: DropboxServerViewModel
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     init(appModel:MainAppModel, server: TellaServer? = nil, gDriveRepository: GDriveRepositoryProtocol, dropboxRepository: DropboxRepositoryProtocol) {
         _gDriveVM = ObservedObject(wrappedValue: GDriveAuthViewModel(repository: gDriveRepository))
         _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveRepository, mainAppModel: appModel))
-        _dropboxVM = ObservedObject(wrappedValue: DropboxAuthViewModel(dropboxRepository: dropboxRepository, dropboxServerViewModel: DropboxServerViewModel(repository: dropboxRepository, mainAppModel: appModel)))
+        _dropboxServerVM = ObservedObject(wrappedValue: DropboxServerViewModel(dropboxRepository: dropboxRepository, mainAppModel: appModel))
     }
 
     var body: some View {
@@ -43,7 +43,7 @@ struct ServerSelectionView: View {
                 Toast.displayToast(message: message)
             }
         }.onOpenURL { url in
-            dropboxVM.handleURLRedirect(url: url)
+            dropboxServerVM.handleURLRedirect(url: url)
         }
         
     }
@@ -118,7 +118,7 @@ struct ServerSelectionView: View {
     }
     
     fileprivate func navigateToDropbox() {
-        dropboxVM.handleSignIn() {
+        dropboxServerVM.handleSignIn() {
             navigateTo(destination: SuccessLoginView(navigateToAction: {
                 self.popToRoot()
             }, type: .dropbox))
