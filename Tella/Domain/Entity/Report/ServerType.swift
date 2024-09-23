@@ -25,7 +25,7 @@ extension ServerConnectionType {
         case.dropbox:
             return LocalizableSettings.settServerDropboxSuccessMessage.localized
         default:
-            return LocalizableSettings.settServerDropboxSuccessMessage.localized
+            return ""
         }
     }
     
