@@ -31,8 +31,6 @@ class DropboxRepository: DropboxRepositoryProtocol {
     private func setupNetworkMonitor() {
         networkMonitor.connectionDidChange.sink { isConnected in
             self.networkStatusSubject.send(isConnected)
-            if !isConnected {
-            }
         }.store(in: &subscribers)
     }
     
