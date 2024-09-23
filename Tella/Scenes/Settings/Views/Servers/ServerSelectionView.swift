@@ -17,12 +17,7 @@ struct ServerSelectionView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    let gDriveRepository: GDriveRepositoryProtocol
-    let dropboxRepository: DropboxRepositoryProtocol
-    
     init(appModel:MainAppModel, server: TellaServer? = nil, gDriveRepository: GDriveRepositoryProtocol, dropboxRepository: DropboxRepositoryProtocol) {
-        self.gDriveRepository = gDriveRepository
-        self.dropboxRepository = dropboxRepository
         _gDriveVM = ObservedObject(wrappedValue: GDriveAuthViewModel(repository: gDriveRepository))
         _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveRepository, mainAppModel: appModel))
         _dropboxVM = ObservedObject(wrappedValue: DropboxAuthViewModel(dropboxRepository: dropboxRepository, dropboxServerViewModel: DropboxServerViewModel(repository: dropboxRepository, mainAppModel: appModel)))
