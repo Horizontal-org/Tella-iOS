@@ -21,7 +21,7 @@ struct CreateDriveFolderView: View {
         navigateTo(destination: SuccessLoginView(navigateToAction: {navigateTo(destination: reportsView)},
                                                  type: .gDrive))
     }
-    private var reportsView: some View {
+    private var reportsView: GdriveReportMainView {
         GdriveReportMainView(reportsMainViewModel: GDriveViewModel(mainAppModel: gDriveServerViewModel.mainAppModel, gDriveRepository: GDriveRepository()))
     }
 
