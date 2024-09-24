@@ -25,7 +25,8 @@ extension TellaDataBase {
             let serverId = try statementBuilder.insertInto(tableName: D.tDropboxServer, keyValue: valuesToAdd)
             return .success(serverId)
         } catch let error {
-            return .failure(error)
+            debugLog(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     

@@ -33,7 +33,6 @@ struct ServerSelectionView: View {
                 }
                 Spacer()
                 bottomView()
-                handleDropboxState
             }.scrollOnOverflow()
                 .toolbar {
                     LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
@@ -43,30 +42,13 @@ struct ServerSelectionView: View {
                 Toast.displayToast(message: message)
             }
         }
-        .onReceive(dropboxServerVM.$signInState){ signInState in
-            if signInState == .loaded(true) {
-                navigateTo(destination: SuccessLoginView(navigateToAction: {
-                    self.popToRoot()
-                }, type: .dropbox))
-            }
+        .onReceive(Publishers.CombineLatest(dropboxServerVM.$signInState, dropboxServerVM.$addServerState)) { signInState, addServerState in
+            handleDropboxStateChange(signInState: signInState, addServerState: addServerState)
         }
         .onOpenURL { url in
             dropboxServerVM.handleURLRedirect(url: url)
         }
     }
-    
-    @ViewBuilder
-    private var handleDropboxState : some View {
-        switch dropboxServerVM.signInState {
-        case .loading:
-            CircularActivityIndicatory()
-        case .error(let message):
-            ToastView(message: message)
-        default:
-            EmptyView()
-        }
-    }
-    
     
     fileprivate func buttonViews() -> some View {
         return Group {
@@ -153,6 +135,21 @@ struct ServerSelectionView: View {
                 )
             }
         }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+    }
+    
+    private func handleDropboxStateChange(signInState: ViewModelState<Bool>, addServerState: ViewModelState<Bool>) {
+        switch (signInState, addServerState) {
+        case (.loaded(true), .loaded(true)):
+            navigateTo(destination: SuccessLoginView(navigateToAction: {
+                self.popToRoot()
+            }, type: .dropbox))
+        case (_, .error(let message)):
+            Toast.displayToast(message: message)
+        case (.error(let message), _):
+            Toast.displayToast(message: message)
+        default:
+            break
+        }
     }
     
     struct HeaderView: View {

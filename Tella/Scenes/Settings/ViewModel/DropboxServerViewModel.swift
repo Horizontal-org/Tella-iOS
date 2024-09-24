@@ -15,6 +15,7 @@ class DropboxServerViewModel: ObservableObject {
     private let dropboxRepository: DropboxRepositoryProtocol
     
     @Published var signInState: ViewModelState<Bool> = .loaded(false)
+    @Published var addServerState: ViewModelState<Bool> = .loaded(false)
     
     init(dropboxRepository: DropboxRepositoryProtocol, mainAppModel: MainAppModel) {
         self.dropboxRepository = dropboxRepository
@@ -26,7 +27,6 @@ class DropboxServerViewModel: ObservableObject {
         Task { @MainActor in
             do {
                 try await dropboxRepository.handleSignIn()
-                self.signInState = .loaded(true)
             } catch let error as APIError {
                 self.signInState = .error(error.errorMessage)
             }
@@ -39,18 +39,28 @@ class DropboxServerViewModel: ObservableObject {
             
             switch authResult {
             case .success:
-                    self.signInState = .loaded(false)
-                    self.addServer()
+                self.signInState = .loaded(true)
+                self.addServer()
             case .error(_, let description):
-                    self.signInState = .error(description ?? "")
+                self.signInState = .error(description ?? "")
             default:
-                    self.signInState = .error(APIError.unexpectedResponse.errorMessage)
+                break
             }
         }
     }
     
     private func addServer() {
-            let server = DropboxServer()
-            _ = self.mainAppModel.tellaData?.addDropboxServer(server: server)
+        self.addServerState = .loading
+        let server = DropboxServer()
+        let result = self.mainAppModel.tellaData?.addDropboxServer(server: server)
+        
+        switch result {
+        case .success:
+            self.addServerState = .loaded(true)
+        case .failure(let error):
+            self.addServerState = .error(error.localizedDescription)
+        case .none:
+            break
+        }
     }
 }
