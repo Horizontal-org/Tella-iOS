@@ -10,13 +10,14 @@ import SwiftUI
 import Combine
 
 struct ServerSelectionView: View {
-    @EnvironmentObject var serversViewModel : ServersViewModel
+    @ObservedObject var serversViewModel : ServersViewModel
     @ObservedObject var gDriveServerVM: GDriveServerViewModel
     @ObservedObject var dropboxServerVM: DropboxServerViewModel
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    init(appModel:MainAppModel, server: TellaServer? = nil, gDriveRepository: GDriveRepositoryProtocol, dropboxRepository: DropboxRepositoryProtocol) {
+    init(appModel:MainAppModel, serversViewModel : ServersViewModel, gDriveRepository: GDriveRepositoryProtocol, dropboxRepository: DropboxRepositoryProtocol) {
+        self.serversViewModel = serversViewModel
         _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveRepository, mainAppModel: appModel))
         _dropboxServerVM = ObservedObject(wrappedValue: DropboxServerViewModel(dropboxRepository: dropboxRepository, mainAppModel: appModel))
     }
@@ -175,7 +176,7 @@ struct ServerSelectionView: View {
 
 struct ServerSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ServerSelectionView(appModel: MainAppModel.stub(), gDriveRepository: GDriveRepository(), dropboxRepository: DropboxRepository())
+        ServerSelectionView(appModel: MainAppModel.stub(), serversViewModel: ServersViewModel(mainAppModel: MainAppModel.stub()), gDriveRepository: GDriveRepository(), dropboxRepository: DropboxRepository())
             .environmentObject(MainAppModel.stub())
             .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
     }

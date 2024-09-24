@@ -28,6 +28,7 @@ struct SettingsAddServerCardView: View {
                 
                 Button {
                     navigateTo(destination: ServerSelectionView(appModel: serversViewModel.mainAppModel,
+                                                                serversViewModel: serversViewModel,
                                                                 gDriveRepository: gDriveRepository,
                                                                 dropboxRepository: dropboxRepository).environmentObject(serversViewModel))
                 } label: {
