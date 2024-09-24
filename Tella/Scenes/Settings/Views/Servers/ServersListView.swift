@@ -51,9 +51,11 @@ struct ServersListView: View {
     }
     
     private func showServerActionBottomSheet(server:Server) {
-        sheetManager.showBottomSheet(modalHeight: 176) {
+        let items = serverActionItems(server: server)
+        let modalHeight = items.count == 1 ? 140 : 175
+        sheetManager.showBottomSheet(modalHeight: CGFloat(modalHeight)) {
             ActionListBottomSheet(items: serverActionItems(server: server),
-                                  headerTitle: LocalizableVault.manageFilesSheetTitle.localized,
+                                  headerTitle: server.name ?? "",
                                   action:  {item in
                 
                 serversViewModel.currentServer = server
