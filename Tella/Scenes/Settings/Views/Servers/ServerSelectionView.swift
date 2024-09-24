@@ -20,7 +20,7 @@ struct ServerSelectionView: View {
         _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveRepository, mainAppModel: appModel))
         _dropboxServerVM = ObservedObject(wrappedValue: DropboxServerViewModel(dropboxRepository: dropboxRepository, mainAppModel: appModel))
     }
-
+    
     var body: some View {
         ContainerView {
             VStack(spacing: 20) {
@@ -32,19 +32,40 @@ struct ServerSelectionView: View {
                 }
                 Spacer()
                 bottomView()
+                handleDropboxState
             }.scrollOnOverflow()
-            .toolbar {
-                LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
-            }
+                .toolbar {
+                    LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
+                }
         }.onReceive(gDriveServerVM.$signInState){ signInState in
             if case .error(let message) = signInState {
                 Toast.displayToast(message: message)
             }
-        }.onOpenURL { url in
+        }
+        .onReceive(dropboxServerVM.$signInState){ signInState in
+            if signInState == .loaded(true) {
+                navigateTo(destination: SuccessLoginView(navigateToAction: {
+                    self.popToRoot()
+                }, type: .dropbox))
+            }
+        }
+        .onOpenURL { url in
             dropboxServerVM.handleURLRedirect(url: url)
         }
-        
     }
+    
+    @ViewBuilder
+    private var handleDropboxState : some View {
+        switch dropboxServerVM.signInState {
+        case .loading:
+            CircularActivityIndicatory()
+        case .error(let message):
+            ToastView(message: message)
+        default:
+            EmptyView()
+        }
+    }
+    
     
     fileprivate func buttonViews() -> some View {
         return Group {
@@ -57,13 +78,13 @@ struct ServerSelectionView: View {
                     action: {
                         serversViewModel.selectedServerType = connection.type
                         serversViewModel.shouldEnableNextButton = true
-                     }
+                    }
                 )
                 .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
             }
         }
     }
-
+    
     fileprivate func bottomView() -> BottomLockView<AnyView> {
         return BottomLockView<AnyView>(isValid: $serversViewModel.shouldEnableNextButton,
                                        nextButtonAction: .action,
@@ -92,7 +113,7 @@ struct ServerSelectionView: View {
         serversViewModel.selectedServerType = nil
         serversViewModel.shouldEnableNextButton = false
     }
-
+    
     fileprivate func navigateToNextCloud() {
         navigateTo(destination: NextcloudAddServerURLView(nextcloudVM: NextcloudServerViewModel(mainAppModel: serversViewModel.mainAppModel)))
     }
@@ -100,7 +121,7 @@ struct ServerSelectionView: View {
     fileprivate func navigateToTellaWebFlow() {
         navigateTo(destination: TellaWebAddServerURLView(appModel: serversViewModel.mainAppModel))
     }
-
+    
     fileprivate func navigateToUwaziFlow() {
         navigateTo(destination: UwaziAddServerURLView(uwaziServerViewModel: UwaziServerViewModel(mainAppModel: serversViewModel.mainAppModel))
             .environmentObject(serversViewModel))
@@ -116,11 +137,7 @@ struct ServerSelectionView: View {
     }
     
     fileprivate func navigateToDropbox() {
-        dropboxServerVM.handleSignIn() {
-            navigateTo(destination: SuccessLoginView(navigateToAction: {
-                self.popToRoot()
-            }, type: .dropbox))
-        }
+        dropboxServerVM.handleSignIn() 
     }
 
     fileprivate func unavailableConnectionsView() -> some View {
@@ -136,7 +153,7 @@ struct ServerSelectionView: View {
             }
         }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
     }
-
+    
     struct HeaderView: View {
         var body: some View {
             VStack(spacing: 20) {

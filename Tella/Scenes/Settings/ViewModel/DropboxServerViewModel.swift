@@ -14,27 +14,21 @@ class DropboxServerViewModel: ObservableObject {
     var mainAppModel: MainAppModel
     private let dropboxRepository: DropboxRepositoryProtocol
     
-    @Published var signInState: ViewModelState<String?> = .loaded(nil)
-    private var authCompletion: (() -> Void)?
+    @Published var signInState: ViewModelState<Bool> = .loaded(false)
     
     init(dropboxRepository: DropboxRepositoryProtocol, mainAppModel: MainAppModel) {
         self.dropboxRepository = dropboxRepository
         self.mainAppModel = mainAppModel
     }
     
-    func handleSignIn(completion: @escaping () -> Void) {
-        DispatchQueue.main.async {
-            self.signInState = .loading
-            self.authCompletion = completion
-        }
-        
-        Task {
+    func handleSignIn() {
+        self.signInState = .loading
+        Task { @MainActor in
             do {
                 try await dropboxRepository.handleSignIn()
+                self.signInState = .loaded(true)
             } catch let error as APIError {
-                DispatchQueue.main.async {
-                    self.signInState = .error(error.errorMessage)
-                }
+                self.signInState = .error(error.errorMessage)
             }
         }
     }
@@ -45,30 +39,18 @@ class DropboxServerViewModel: ObservableObject {
             
             switch authResult {
             case .success:
-                DispatchQueue.main.async {
-                    self.signInState = .loaded(nil)
+                    self.signInState = .loaded(false)
                     self.addServer()
-                    self.authCompletion?()
-                    self.authCompletion = nil
-                }
             case .error(_, let description):
-                DispatchQueue.main.async {
                     self.signInState = .error(description ?? "")
-                    self.authCompletion = nil
-                }
             default:
-                DispatchQueue.main.async {
                     self.signInState = .error(APIError.unexpectedResponse.errorMessage)
-                    self.authCompletion = nil
-                }
             }
         }
     }
     
     private func addServer() {
-        DispatchQueue.main.async {
             let server = DropboxServer()
             _ = self.mainAppModel.tellaData?.addDropboxServer(server: server)
-        }
     }
 }
