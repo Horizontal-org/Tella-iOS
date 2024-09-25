@@ -44,7 +44,10 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         self.updateReportStatus(reportStatus: .submissionInProgress)
         cancellables.removeAll()
         
-        if reportViewModel.folderId != nil {
+        if let pausedState = dropboxRepository.pausedUploadState {
+            // Resume the upload
+            uploadFilesResuming()
+        } else if let folderId = reportViewModel.folderId {
             uploadFiles(to: "/\(reportViewModel.title)")
         } else {
             createDropboxFolder()
@@ -83,7 +86,29 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
             return (url, fileName, fileId)
         }
         
-        dropboxRepository.uploadReport(folderPath: folderPath, files: filesToSend)
+        dropboxRepository.uploadReport(folderPath: folderPath, files: filesToSend, pausedState: nil)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                switch completion {
+                case .finished:
+                    self?.updateReportStatus(reportStatus: .submitted)
+                    self?.showSubmittedReport()
+                case .failure(let error):
+                    if (error as NSError).code == 1 {
+                        self?.updateReportStatus(reportStatus: .submissionPaused)
+                    } else {
+                        self?.updateReportStatus(reportStatus: .submissionError)
+                        debugLog("Error uploading report: \(error)")
+                    }
+                }
+            }, receiveValue: { [weak self] progressInfo in
+                self?.updateProgressInfos(uploadProgressInfo: progressInfo)
+            })
+            .store(in: &cancellables)
+    }
+    
+    private func uploadFilesResuming() {
+        dropboxRepository.resumeUpload(folderPath: "/\(reportViewModel.title)")
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
