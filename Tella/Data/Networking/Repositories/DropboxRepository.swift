@@ -19,8 +19,6 @@ protocol DropboxRepositoryProtocol {
     func createFolder(name: String, description: String) async throws -> String
     
     func pauseUpload()
-    func resumeUpload() -> AnyPublisher<UploadProgressInfo, Error>
-
 }
 
 class DropboxRepository: DropboxRepositoryProtocol {
@@ -103,6 +101,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
     }
     
     func uploadReport(folderPath: String, files: [(URL, String, String)]) -> AnyPublisher<UploadProgressInfo, Error> {
+            uploadProgressSubject = PassthroughSubject<UploadProgressInfo, Error>()
             pausedUploadState = nil
             isCancelled = false
             
@@ -175,16 +174,6 @@ class DropboxRepository: DropboxRepositoryProtocol {
         isCancelled = true
         currentUploadTask?.cancel()
     }
-        
-    func resumeUpload() -> AnyPublisher<UploadProgressInfo, Error> {
-        guard let pausedState = pausedUploadState else {
-            return Fail(error: NSError(domain: "DropboxRepository", code: 2, userInfo: [NSLocalizedDescriptionKey: "No paused upload to resume"])).eraseToAnyPublisher()
-        }
-        
-        let remainingFiles = Array(pausedState.files[pausedState.currentFileIndex...])
-        return uploadReport(folderPath: pausedState.folderPath, files: remainingFiles)
-    }
-
     
     func ensureSignedIn() async throws {
         if self.client == nil {

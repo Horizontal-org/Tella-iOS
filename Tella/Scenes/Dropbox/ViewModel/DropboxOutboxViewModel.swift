@@ -42,8 +42,9 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         if isSubmissionInProgress { return }
         
         self.updateReportStatus(reportStatus: .submissionInProgress)
+        cancellables.removeAll()
         
-        if let folderId = reportViewModel.folderId {
+        if reportViewModel.folderId != nil {
             uploadFiles(to: "/\(reportViewModel.title)")
         } else {
             createDropboxFolder()
@@ -107,6 +108,8 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         if isSubmissionInProgress {
             dropboxRepository.pauseUpload()
             updateReportStatus(reportStatus: .submissionPaused)
+            
+            cancellables.removeAll()
         }
     }
     
