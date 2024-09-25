@@ -93,8 +93,20 @@ class DraftMainViewModel: ObservableObject {
         
         fillReportVM()
     }
-    
-    func validateReport() {}
+
+    func validateReport() {
+        Publishers.CombineLatest4($server,$isValidTitle, $isValidDescription, $files)
+            .map { server, isValidTitle, isValidDescription, files in
+                ((server != nil) && isValidTitle && (isValidDescription || !files.isEmpty))
+            }
+            .assign(to: \.reportIsValid, on: self)
+            .store(in: &subscribers)
+        
+        $isValidTitle
+            .map { $0 == true }
+            .assign(to: \.reportIsDraft, on: self)
+            .store(in: &subscribers)
+    }
     
     func getServers() {}
 
