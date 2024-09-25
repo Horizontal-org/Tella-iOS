@@ -76,7 +76,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     }
         
     private func uploadFiles(to folderPath: String) {
-        let files = reportViewModel.files.filter { $0.status != .submitted }
+        let files = reportViewModel.files.filter { $0.status != .uploaded }
         let filesToSend = files.compactMap { file -> (URL, String, String)? in
             guard let url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true) else {
                 return nil
