@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ScrollviewViewContentViewModifier: ViewModifier {
     @State private var contentOverflow: Bool = false
+    var axis:Axis.Set = .vertical
     
     func body(content: Content) -> some View {
         GeometryReader { geometry in
@@ -17,20 +18,24 @@ struct ScrollviewViewContentViewModifier: ViewModifier {
             .background(
                 GeometryReader { contentGeometry in
                     Color.clear.onAppear {
-                        contentOverflow = contentGeometry.size.height > geometry.size.height
+                        if axis == .vertical {
+                            contentOverflow = contentGeometry.size.height > geometry.size.height
+                        } else  {
+                            contentOverflow = contentGeometry.size.width > geometry.size.width
+                        }
                     }
                 }
             )
-            .wrappedInScrollView(when: contentOverflow)
+            .wrappedInScrollView(when: contentOverflow,axis:axis)
         }
     }
 }
 
 extension View {
     @ViewBuilder
-    func wrappedInScrollView(when condition: Bool) -> some View {
+    func wrappedInScrollView(when condition: Bool, axis:Axis.Set) -> some View {
         if condition {
-            ScrollView {
+            ScrollView(axis) {
                 self
             }
         } else {
@@ -40,7 +45,7 @@ extension View {
 }
 
 extension View {
-    func scrollOnOverflow() -> some View {
-        modifier(ScrollviewViewContentViewModifier())
+    func scrollOnOverflow(axis:Axis.Set = .vertical) -> some View {
+        modifier(ScrollviewViewContentViewModifier(axis: axis))
     }
 }
