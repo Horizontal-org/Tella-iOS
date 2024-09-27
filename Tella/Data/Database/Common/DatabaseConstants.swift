@@ -110,6 +110,10 @@ struct D {
     static let cUserId = "c_user_id"
     static let cRemoteReportStatus = "c_remote_report_status"
     static let cChunkFiles = "c_chunk_files"
+    
+    //dropbox
+    static let cOffset = "c_offset"
+    static let cSessionId = "c_session_id"
 }
 
 

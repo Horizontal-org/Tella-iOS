@@ -25,7 +25,7 @@ class DropboxReport: BaseReport {
          status: ReportStatus,
          server: DropboxServer? = nil,
          folderId: String? = nil,
-         vaultFiles: [ReportFile]? = nil) {
+         vaultFiles: [DropboxReportFile]? = nil) {
         
         self.server = server
         self.folderId = folderId

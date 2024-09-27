@@ -22,7 +22,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
                   repository: DropboxRepositoryProtocol) {
         self.dropboxRepository = repository
         super.init(reportsViewModel: reportsViewModel, reportId: reportId)
-
+        
         if reportViewModel.status == .submissionScheduled {
             self.submitReport()
         } else {
@@ -32,22 +32,31 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     
     override func initVaultFile(reportId: Int?) {
         if let reportId, let report = self.mainAppModel.tellaData?.getDropboxReport(id: reportId) {
-            let files = processVaultFiles(reportFiles: report.reportFiles)
+            
+            let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
+            
+            var files: [ReportVaultFile] = []
+            
+            report.reportFiles?.forEach({ reportFile in
+                guard let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}),
+                      let dropboxReportFile = reportFile as? DropboxReportFile else { return}
+                let reportVaultFile = ReportVaultFile(reportFile: dropboxReportFile, vaultFile: vaultFile)
+                files.append(reportVaultFile)
+            })
             
             self.reportViewModel = ReportViewModel(report: report, files: files)
+            
         }
     }
     
+    
     override func submitReport() {
         if isSubmissionInProgress { return }
-        
+
         self.updateReportStatus(reportStatus: .submissionInProgress)
         cancellables.removeAll()
-        
-        if let pausedState = dropboxRepository.pausedUploadState {
-            // Resume the upload
-            uploadFilesResuming()
-        } else if let folderId = reportViewModel.folderId {
+
+        if reportViewModel.folderId != nil {
             uploadFiles(to: "/\(reportViewModel.title)")
         } else {
             createDropboxFolder()
@@ -77,38 +86,18 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         
     private func uploadFiles(to folderPath: String) {
         let files = reportViewModel.files.filter { $0.status != .uploaded }
-        let filesToSend = files.compactMap { file -> (URL, String, String)? in
+        let filesToSend: [DropboxFileInfo] = files.compactMap { file -> DropboxFileInfo? in
             guard let url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true) else {
                 return nil
             }
             let fileId = file.id ?? ""
             let fileName = url.lastPathComponent
-            return (url, fileName, fileId)
+            let offset = file.offset ?? 0
+            let sessionId = file.sessionId
+            return (url: url, fileName: fileName, fileId: fileId, offset: offset, sessionId: sessionId)
         }
-        
-        dropboxRepository.uploadReport(folderPath: folderPath, files: filesToSend, pausedState: nil)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                switch completion {
-                case .finished:
-                    self?.updateReportStatus(reportStatus: .submitted)
-                    self?.showSubmittedReport()
-                case .failure(let error):
-                    if (error as NSError).code == 1 {
-                        self?.updateReportStatus(reportStatus: .submissionPaused)
-                    } else {
-                        self?.updateReportStatus(reportStatus: .submissionError)
-                        debugLog("Error uploading report: \(error)")
-                    }
-                }
-            }, receiveValue: { [weak self] progressInfo in
-                self?.updateProgressInfos(uploadProgressInfo: progressInfo)
-            })
-            .store(in: &cancellables)
-    }
-    
-    private func uploadFilesResuming() {
-        dropboxRepository.resumeUpload(folderPath: "/\(reportViewModel.title)")
+
+        dropboxRepository.uploadReport(folderPath: folderPath, files: filesToSend)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
@@ -147,14 +136,28 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         mainAppModel.tellaData?.updateDropboxReportStatus(reportId: id, status: reportStatus)
     }
     
-    override func updateCurrentFile(uploadProgressInfo : UploadProgressInfo) {
+    override func updateCurrentFile(uploadProgressInfo: UploadProgressInfo) {
+        guard let dropboxProgressInfo = uploadProgressInfo as? DropboxUploadProgressInfo else {
+            return
+        }
+        
+        // Update the file's bytesSent and status
         self.reportViewModel.files = self.reportViewModel.files.compactMap { file in
-            guard file.id == uploadProgressInfo.fileId else { return file }
-            
+            guard file.id == dropboxProgressInfo.fileId else { return file }
             let updatedFile = file
-            updatedFile.bytesSent = uploadProgressInfo.bytesSent ?? 0
-            updatedFile.status = uploadProgressInfo.status
+            updatedFile.bytesSent = dropboxProgressInfo.bytesSent ?? 0
+            updatedFile.status = dropboxProgressInfo.status
             return updatedFile
+        }
+        
+        // Update the file in the database with offset and sessionId
+        if let file = self.reportViewModel.files.first(where: { $0.id == dropboxProgressInfo.fileId }) {
+            let dropboxFile = file
+            
+            dropboxFile.sessionId = dropboxProgressInfo.sessionId
+            dropboxFile.offset = dropboxProgressInfo.offset
+            
+            self.updateFile(file: dropboxFile)
         }
     }
     
@@ -163,16 +166,13 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         
         mainAppModel.tellaData?.updateDropboxFolderId(reportId: id, folderId: folderId)
     }
+    
     override func updateFile(file: ReportVaultFile) {
-        guard let reportId = reportViewModel.id else { return }
+        guard let dropboxFile = DropboxReportFile(reportFile: file) else { return }
         
-        let reportFiles = reportViewModel.files.map { file in
-            return ReportFile(
-                file: file,
-                reportInstanceId: reportViewModel.id
-            )
-        }
+        mainAppModel.tellaData?.updateDropboxReportFile(file: dropboxFile)
         
-        let _ = mainAppModel.tellaData?.updateDropboxFiles(reportId: reportId, files: reportFiles)
     }
 }
+
+typealias DropboxFileInfo = (url: URL, fileName: String, fileId: String, offset: Int64?, sessionId: String?)

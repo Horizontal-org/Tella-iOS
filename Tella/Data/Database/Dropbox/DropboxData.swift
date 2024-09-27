@@ -62,10 +62,10 @@ extension TellaData {
     }
     
     @discardableResult
-    func updateDropboxFiles(reportId: Int, files: [ReportFile]) -> Result<Bool, Error> {
+    func updateDropboxReportFile(file: DropboxReportFile) -> Bool {
         shouldReloadDropboxReports.send(true)
         
-        return self.database.updateDropboxReportFiles(files: files, reportId: reportId)
+        return self.database.updateDropboxReportFile(reportFile: file)
     }
     
     @discardableResult

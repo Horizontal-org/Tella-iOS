@@ -79,6 +79,8 @@ extension TellaDataBase {
             cddl(D.cBytesSent, D.integer),
             cddl(D.cCreatedDate, D.float),
             cddl(D.cUpdatedDate, D.float),
+            cddl(D.cOffset, D.integer),
+            cddl(D.cSessionId, D.text),
             cddl(D.cReportInstanceId, D.integer, tableName: D.tDropboxReport, referenceKey: D.cReportId)
         ]
         
@@ -137,13 +139,13 @@ extension TellaDataBase {
         }
     }
         
-    func getDropboxVaultFiles(reportId: Int?) -> [ReportFile] {
+    func getDropboxVaultFiles(reportId: Int?) -> [DropboxReportFile] {
         do {
             let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: reportId)]
             let responseDict = try statementBuilder.selectQuery(tableName: D.tDropboxInstanceVaultFile, andCondition: reportFilesCondition)
             
             let decodedFiles = try responseDict.compactMap ({ dict in
-                return try dict.decode(ReportFile.self)
+                return try dict.decode(DropboxReportFile.self)
             })
             
             return decodedFiles
@@ -191,7 +193,14 @@ extension TellaDataBase {
             )
             
             if let files = report.reportFiles, let reportId = report.id {
-                let _ = try updateDropboxReportFiles(files: files, reportId: reportId)
+                try deleteDropboxInstanceFiles(reportId: reportId)
+                
+                try files.forEach( { reportFiles in
+                    let reportFilesDict = reportFiles.dictionary
+                    let reportFilesValuesToAdd = reportFilesDict.compactMap({ KeyValue( key: $0.key, value: $0.value) })
+                    
+                    try statementBuilder.insertInto(tableName: D.tDropboxInstanceVaultFile, keyValue: reportFilesValuesToAdd)
+                })
             }
             return .success(true)
         } catch let error {
@@ -200,21 +209,19 @@ extension TellaDataBase {
         }
     }
     
-    func updateDropboxReportFiles(files: [ReportFile], reportId: Int) -> Result<Bool, Error> {
+    func updateDropboxReportFile(reportFile: ReportFile) -> Bool {
         do {
-            try deleteDropboxInstanceFiles(reportId: reportId)
+            let reportDictionary = reportFile.dictionary
+            let valuesToUpdate = reportDictionary.compactMap({KeyValue(key: $0.key, value: $0.value)})
             
-            try files.forEach( { reportFiles in
-                let reportFilesDict = reportFiles.dictionary
-                let reportFilesValuesToAdd = reportFilesDict.compactMap({ KeyValue( key: $0.key, value: $0.value) })
-                
-                try statementBuilder.insertInto(tableName: D.tDropboxInstanceVaultFile, keyValue: reportFilesValuesToAdd)
-            })
+            let reportCondition = [KeyValue(key: D.cId, value: reportFile.id)]
             
-            return .success(true)
+            try statementBuilder.update(tableName: D.tDropboxInstanceVaultFile, valuesToUpdate: valuesToUpdate, equalCondition: reportCondition)
+            
+            return true
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return false
         }
     }
     
