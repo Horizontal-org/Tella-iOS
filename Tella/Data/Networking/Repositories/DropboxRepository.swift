@@ -263,34 +263,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 }
             } catch {
                 // Error handling
-                if let callError = error as? CallError<Files.UploadSessionAppendError> {
-                    debugLog(callError)
-                    switch callError {
-                    case .routeError(let boxedLookupError, _, _, _):
-                        let lookupError = boxedLookupError.unboxed
-                        debugLog(lookupError)
-                        switch lookupError {
-                        case .incorrectOffset(let incorrectOffsetError):
-                            let correctOffset = incorrectOffsetError.correctOffset
-                            debugLog("Received incorrect_offset error. Adjusting offset from \(offset) to \(correctOffset).")
-                            offset = Int64(correctOffset)
-                            fileState.offset = offset
-                            try fileHandle.seek(toOffset: UInt64(offset))
-                        case .notFound:
-                            debugLog("Upload session not found. Starting a new session.")
-                            sessionId = nil
-                            fileState.sessionId = nil
-                        default:
-                            debugLog("Upload session error: \(lookupError)")
-                            throw callError
-                        }
-                    default:
-                        debugLog("Error during upload of file \(fileState.fileName): \(callError)")
-                        throw callError
-                    }
-                } else {
-                    throw error
-                }
+                try handleUploadError(error, fileHandle: fileHandle, offset: &offset, fileState: fileState, sessionId: &sessionId)
             }
 
             // Send progress update
@@ -304,6 +277,43 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 sessionId: fileState.sessionId
             )
             progressHandler(progressInfo)
+        }
+    }
+    
+    private func handleUploadError(
+        _ error: Error,
+        fileHandle: FileHandle,
+        offset: inout Int64,
+        fileState: FileUploadState,
+        sessionId: inout String?
+    ) throws {
+        if let callError = error as? CallError<Files.UploadSessionAppendError> {
+            debugLog(callError)
+            switch callError {
+            case .routeError(let boxedLookupError, _, _, _):
+                let lookupError = boxedLookupError.unboxed
+                debugLog(lookupError)
+                switch lookupError {
+                case .incorrectOffset(let incorrectOffsetError):
+                    let correctOffset = incorrectOffsetError.correctOffset
+                    debugLog("Received incorrect_offset error. Adjusting offset from \(offset) to \(correctOffset).")
+                    offset = Int64(correctOffset)
+                    fileState.offset = offset
+                    try fileHandle.seek(toOffset: UInt64(offset))
+                case .notFound:
+                    debugLog("Upload session not found. Starting a new session.")
+                    sessionId = nil
+                    fileState.sessionId = nil
+                default:
+                    debugLog("Upload session error: \(lookupError)")
+                    throw callError
+                }
+            default:
+                debugLog("Error during upload: \(callError)")
+                throw callError
+            }
+        } else {
+            throw error
         }
     }
     
