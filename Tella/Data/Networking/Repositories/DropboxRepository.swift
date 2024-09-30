@@ -114,7 +114,6 @@ class DropboxRepository: DropboxRepositoryProtocol {
                         return FileUploadState(fileURL: fileURL, fileName: fileName, fileId: fileId, sessionId: sessionId, offset: offset ?? 0, totalBytes: fileSize)
                     }
                 } else {
-                    // No files to upload
                     throw NSError(domain: "DropboxRepository", code: 3, userInfo: [NSLocalizedDescriptionKey: "No files to upload"])
                 }
 
@@ -125,7 +124,6 @@ class DropboxRepository: DropboxRepositoryProtocol {
 
                 for (index, fileState) in fileUploadStates.enumerated() {
                     if isCancelled {
-                        // Save the current state of each file if necessary
                         throw NSError(domain: "DropboxRepository", code: 1, userInfo: [NSLocalizedDescriptionKey: "Upload paused"])
                     }
 
@@ -159,53 +157,13 @@ class DropboxRepository: DropboxRepositoryProtocol {
     }
     
     private func uploadFile(
-            client: DropboxClient,
-            folderPath: String,
-            fileState: FileUploadState,
-            currentFileIndex: Int,
-            progressHandler: @escaping (DropboxUploadProgressInfo) -> Void
+        client: DropboxClient,
+        folderPath: String,
+        fileState: FileUploadState,
+        currentFileIndex: Int,
+        progressHandler: @escaping (DropboxUploadProgressInfo) -> Void
     ) async throws {
-        let fileSize = fileState.totalBytes
-        let fileURL = fileState.fileURL
-        let path = "\(folderPath)/\(fileState.fileName)"
-        let fileName = fileState.fileName
-        
-        if fileSize <= 150 * 1024 * 1024 {
-            guard let inputStream = InputStream(fileAtPath: fileURL.path) else {
-                throw NSError(domain: "DropboxRepository", code: 5, userInfo: [NSLocalizedDescriptionKey: "Unable to create input stream for file: \(fileName)"])
-            }
-            
-            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-                client.files.upload(path: path, input: inputStream)
-                    .progress { progressData in
-                        let progress = progressData.fractionCompleted
-                        let bytesSent = Int64(Double(fileSize) * progress)
-                        fileState.offset = bytesSent
-                        
-                        let progressInfo = DropboxUploadProgressInfo(
-                            bytesSent: Int(bytesSent),
-                            current: currentFileIndex + 1,
-                            fileId: fileState.fileId,
-                            status: .partialSubmitted,
-                            reportStatus: .submissionInProgress,
-                            offset: fileState.offset,
-                            sessionId: fileState.sessionId
-                        )
-                        progressHandler(progressInfo)
-                    }
-                    .response { response, error in
-                        if let error = error {
-                            debugLog("Error uploading small file \(fileName): \(error)")
-                            continuation.resume(throwing: error)
-                        } else {
-                            continuation.resume()
-                        }
-                    }
-            }
-            fileState.offset = fileSize
-        } else {
-            try await uploadFileInChunks(client: client, folderPath: folderPath, fileState: fileState, currentFileIndex: currentFileIndex, progressHandler: progressHandler)
-        }
+        try await uploadFileInChunks(client: client, folderPath: folderPath, fileState: fileState, currentFileIndex: currentFileIndex, progressHandler: progressHandler)
     }
     
     private func uploadFileInChunks(
@@ -215,8 +173,17 @@ class DropboxRepository: DropboxRepositoryProtocol {
         currentFileIndex: Int,
         progressHandler: @escaping (DropboxUploadProgressInfo) -> Void
     ) async throws {
-        let chunkSize: Int64 = 5 * 1024 * 1024
         let fileSize = fileState.totalBytes
+
+        // Determine chunk size based on file size
+        let chunkSize: Int64
+        if fileSize <= 5 * 1024 * 1024 {
+            // For files <= 5 MB, we'll upload the entire file in one chunk
+            chunkSize = fileSize
+        } else {
+            // For larger files, use 5 MB chunks
+            chunkSize = 5 * 1024 * 1024
+        }
 
         var offset = fileState.offset
         var sessionId = fileState.sessionId
@@ -243,29 +210,50 @@ class DropboxRepository: DropboxRepositoryProtocol {
 
             do {
                 if sessionId == nil {
-                    debugLog("Starting upload session for file: \(fileState.fileName)")
-                    let result = try await client.files.uploadSessionStart(input: data).response()
-                    sessionId = result.sessionId
-                    if let sessionId = sessionId {
-                        fileState.sessionId = sessionId
-                        debugLog("Started upload session with ID: \(sessionId)")
+                    // Start upload session
+                    if remainingBytes <= chunkSize {
+                        let result = try await client.files.uploadSessionStart(close: false, input: data).response()
+                        sessionId = result.sessionId
+                        if let sessionId = sessionId {
+                            fileState.sessionId = sessionId
+                        } else {
+                            throw NSError(domain: "DropboxRepository", code: 4, userInfo: [NSLocalizedDescriptionKey: "Failed to start upload session"])
+                        }
+                        offset += Int64(data.count)
+                        fileState.offset = offset
+
+                        // Finish upload session
+                        let cursor = Files.UploadSessionCursor(sessionId: sessionId!, offset: UInt64(offset))
+                        let commitInfo = Files.CommitInfo(path: "\(folderPath)/\(fileState.fileName)", mode: .add, autorename: false, mute: false)
+                        try await client.files.uploadSessionFinish(cursor: cursor, commit: commitInfo, input: Data()).response()
+
+                        fileState.offset = 0
+                        debugLog("Finished upload session for file: \(fileState.fileName)")
                     } else {
-                        throw NSError(domain: "DropboxRepository", code: 4, userInfo: [NSLocalizedDescriptionKey: "Failed to start upload session"])
+                        // Start session for larger files
+                        let result = try await client.files.uploadSessionStart(input: data).response()
+                        sessionId = result.sessionId
+                        if let sessionId = sessionId {
+                            fileState.sessionId = sessionId
+                        } else {
+                            throw NSError(domain: "DropboxRepository", code: 4, userInfo: [NSLocalizedDescriptionKey: "Failed to start upload session"])
+                        }
+                        offset += Int64(data.count)
+                        fileState.offset = offset
                     }
-                    offset += Int64(data.count)
-                    fileState.offset = offset
                 } else {
                     let cursor = Files.UploadSessionCursor(sessionId: sessionId!, offset: UInt64(offset))
                     if remainingBytes <= chunkSize {
+                        // Finish upload session
                         debugLog("Finishing upload session for file: \(fileState.fileName)")
                         let commitInfo = Files.CommitInfo(path: "\(folderPath)/\(fileState.fileName)", mode: .add, autorename: false, mute: false)
                         try await client.files.uploadSessionFinish(cursor: cursor, commit: commitInfo, input: data).response()
 
-                        fileState.sessionId = nil
                         fileState.offset = 0
                         offset += Int64(data.count)
                         debugLog("Finished upload session for file: \(fileState.fileName)")
                     } else {
+                        // Append to upload session
                         debugLog("Appending data to upload session for file: \(fileState.fileName), offset: \(offset)")
                         try await client.files.uploadSessionAppendV2(cursor: cursor, close: false, input: data).response()
 
@@ -274,6 +262,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                     }
                 }
             } catch {
+                // Error handling
                 if let callError = error as? CallError<Files.UploadSessionAppendError> {
                     debugLog(callError)
                     switch callError {
@@ -304,6 +293,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 }
             }
 
+            // Send progress update
             let progressInfo = DropboxUploadProgressInfo(
                 bytesSent: Int(offset),
                 current: currentFileIndex + 1,
@@ -316,6 +306,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
             progressHandler(progressInfo)
         }
     }
+    
     
     private func uploadData(client: DropboxClient, path: String, data: Data) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in

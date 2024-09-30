@@ -143,7 +143,6 @@ extension TellaDataBase {
         do {
             let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: reportId)]
             let responseDict = try statementBuilder.selectQuery(tableName: D.tDropboxInstanceVaultFile, andCondition: reportFilesCondition)
-            
             let decodedFiles = try responseDict.compactMap ({ dict in
                 return try dict.decode(DropboxReportFile.self)
             })
@@ -209,7 +208,7 @@ extension TellaDataBase {
         }
     }
     
-    func updateDropboxReportFile(reportFile: ReportFile) -> Bool {
+    func updateDropboxReportFile(reportFile: DropboxReportFile) -> Bool {
         do {
             let reportDictionary = reportFile.dictionary
             let valuesToUpdate = reportDictionary.compactMap({KeyValue(key: $0.key, value: $0.value)})
