@@ -38,8 +38,7 @@ class PhotoVideoViewModel : ObservableObject {
     private var cancellable: Set<AnyCancellable> = []
     
     @Published var progressFile:ProgressFile = ProgressFile()
-    
-    
+
     init(mainAppModel: MainAppModel,
          folderPathArray: [VaultFileDB],
          resultFile : Binding<[VaultFileDB]?>?,

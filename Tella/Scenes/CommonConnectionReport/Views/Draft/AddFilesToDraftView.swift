@@ -87,22 +87,21 @@ struct AddFilesToDraftView: View {
         switch type {
             
         case .camera:
-            sheetManager.hide()
             draftReportVM.showingCamera = true
             
         case .recorder:
-            sheetManager.hide()
             draftReportVM.showingRecordView = true
             
         case .fromDevice:
             showAddPhotoVideoSheet()
             
         case .tellaFile:
-            sheetManager.hide()
             navigateTo(destination: fileListView)
             
         default:
             break
         }
+        
+        sheetManager.hide()
     }
 }
