@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import SwiftyDropbox
 
 enum APIError: Swift.Error {
     case invalidURL
@@ -13,6 +14,7 @@ enum APIError: Swift.Error {
     case badServer
     case noToken
     case driveApiError(Error)
+    case dropboxApiError(Error)
     case errorOccured
     case nextcloudError(HTTPCode)
 }
@@ -39,6 +41,8 @@ extension APIError: LocalizedError {
             return customNcErrorMessage(errorCode: code)
         case .errorOccured :
             return LocalizableError.commonError.localized
+        case .dropboxApiError(let error):
+            return customDropboxErrorMessage(error: error)
         }
     }
     
@@ -96,6 +100,35 @@ extension APIError: LocalizedError {
             return LocalizableError.gDriveForbidden.localized
         default:
             return fallbackMessage
+        }
+    }
+    
+    private func customDropboxErrorMessage(error: Error) -> String {
+        if let uploadError = error as? CallError<Files.UploadError> {
+            switch uploadError {
+            case .routeError(let boxedError, _, _, _):
+                let uploadError = boxedError.unboxed
+                switch uploadError {
+                case .path(let uploadWriteFailed):
+                    switch uploadWriteFailed.reason {
+                    case .insufficientSpace:
+                        return "Not enough space in your Dropbox account."
+                    default:
+                        return "Upload failed due to a path error."
+                    }
+                default:
+                    return "Upload failed due to an unknown error."
+                }
+            case .authError(let authError, _, _, _):
+                return "Authentication error: \(authError)"
+            case .clientError(let clientError):
+                return "Client error: \(clientError.localizedDescription)"
+            default:
+                return "An unexpected error occurred."
+            }
+        } else {
+            debugLog(error)
+            return error.localizedDescription
         }
     }
 }

@@ -75,9 +75,10 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
                     self.updateReportFolderId(folderId: folderId)
                     self.uploadFiles(to: "/\(self.reportViewModel.title)")
                 }
-            } catch {
+            } catch let error as APIError {
                 await MainActor.run {
                     self.updateReportStatus(reportStatus: .submissionError)
+                    Toast.displayToast(message: error.errorMessage)
                     debugLog("Error creating folder: \(error)")
                 }
             }

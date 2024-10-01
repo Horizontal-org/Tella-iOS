@@ -15,7 +15,7 @@ protocol DropboxRepositoryProtocol {
     func ensureSignedIn() async throws
     func signOut()
     
-    func uploadReport(folderPath: String, files: [(URL, String, String, Int64?, String?)]?) -> AnyPublisher<DropboxUploadProgressInfo, Error>
+    func uploadReport(folderPath: String, files: [(URL, String, String, Int64?, String?)]?) -> AnyPublisher<DropboxUploadProgressInfo, APIError>
     func createFolder(name: String, description: String) async throws -> String
     
     func pauseUpload()
@@ -29,7 +29,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
     private let networkStatusSubject = PassthroughSubject<Bool, Never>()
     
     private var currentUploadTask: Task<Void, Error>?
-    private var uploadProgressSubject = PassthroughSubject<DropboxUploadProgressInfo, Error>()
+    private var uploadProgressSubject = PassthroughSubject<DropboxUploadProgressInfo, APIError>()
     
     init(networkMonitor: NetworkMonitor = .shared) {
         self.networkMonitor = networkMonitor
@@ -74,33 +74,38 @@ class DropboxRepository: DropboxRepositoryProtocol {
     func createFolder(name: String, description: String) async throws -> String {
         try await self.ensureSignedIn()
         guard let client = self.client else {
-            throw NSError(domain: "DropboxRepository", code: 0, userInfo: [NSLocalizedDescriptionKey: "Dropbox client is not initialized"])
+            throw APIError.noToken
         }
         
         let folderPath = "/\(name)"
         
         // Create folder
-        let folderId = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<String, Error>) in
-            client.files.createFolderV2(path: folderPath, autorename: true).response { response, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else if let metadata = response?.metadata {
-                    continuation.resume(returning: metadata.id)
-                } else {
-                    continuation.resume(throwing: NSError(domain: "DropboxRepository", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to create folder"]))
+        do {
+            let folderId = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<String, Error>) in
+                client.files.createFolderV2(path: folderPath, autorename: true).response { response, error in
+                    if let error = error {
+                        continuation.resume(throwing: error)
+                    } else if let metadata = response?.metadata {
+                        continuation.resume(returning: metadata.id)
+                    } else {
+                        continuation.resume(throwing: NSError(domain: "DropboxRepository", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to create folder"]))
+                    }
                 }
             }
+            
+            // Upload description file
+            let descriptionData = description.data(using: .utf8) ?? Data()
+            try await self.uploadData(client: client, path: "\(folderPath)/description.txt", data: descriptionData)
+            
+            return folderId
+        } catch {
+            debugLog(error)
+            throw APIError.dropboxApiError(error)
         }
-        
-        // Upload description file
-        let descriptionData = description.data(using: .utf8) ?? Data()
-        try await self.uploadData(client: client, path: "\(folderPath)/description.txt", data: descriptionData)
-        
-        return folderId
     }
     
-    func uploadReport(folderPath: String, files: [(URL, String, String, Int64?, String?)]? = nil) -> AnyPublisher<DropboxUploadProgressInfo, Error> {
-        uploadProgressSubject = PassthroughSubject<DropboxUploadProgressInfo, Error>()
+    func uploadReport(folderPath: String, files: [(URL, String, String, Int64?, String?)]? = nil) -> AnyPublisher<DropboxUploadProgressInfo, APIError> {
+        uploadProgressSubject = PassthroughSubject<DropboxUploadProgressInfo, APIError>()
         isCancelled = false
 
         let folderPathToUse = folderPath
@@ -114,18 +119,15 @@ class DropboxRepository: DropboxRepositoryProtocol {
                         return FileUploadState(fileURL: fileURL, fileName: fileName, fileId: fileId, sessionId: sessionId, offset: offset ?? 0, totalBytes: fileSize)
                     }
                 } else {
-                    throw NSError(domain: "DropboxRepository", code: 3, userInfo: [NSLocalizedDescriptionKey: "No files to upload"])
+                    throw APIError.errorOccured
                 }
 
                 try await self.ensureSignedIn()
                 guard let client = self.client else {
-                    throw NSError(domain: "DropboxRepository", code: 0, userInfo: [NSLocalizedDescriptionKey: "Dropbox client is not initialized"])
+                    throw APIError.noToken
                 }
 
                 for (index, fileState) in fileUploadStates.enumerated() {
-                    if isCancelled {
-                        throw NSError(domain: "DropboxRepository", code: 1, userInfo: [NSLocalizedDescriptionKey: "Upload paused"])
-                    }
 
                     let totalBytes = fileState.totalBytes
                     let fileId = fileState.fileId
@@ -149,7 +151,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 }
                 uploadProgressSubject.send(completion: .finished)
             } catch {
-                uploadProgressSubject.send(completion: .failure(error))
+                uploadProgressSubject.send(completion: .failure(.dropboxApiError(error)))
             }
         }
 
@@ -201,7 +203,6 @@ class DropboxRepository: DropboxRepositoryProtocol {
             if isCancelled {
                 fileState.offset = offset
                 fileState.sessionId = sessionId
-                throw NSError(domain: "DropboxRepository", code: 1, userInfo: [NSLocalizedDescriptionKey: "Upload paused"])
             }
 
             let remainingBytes = fileSize - offset
@@ -217,7 +218,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                         if let sessionId = sessionId {
                             fileState.sessionId = sessionId
                         } else {
-                            throw NSError(domain: "DropboxRepository", code: 4, userInfo: [NSLocalizedDescriptionKey: "Failed to start upload session"])
+                            throw APIError.errorOccured
                         }
                         offset += Int64(data.count)
                         fileState.offset = offset
@@ -236,7 +237,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                         if let sessionId = sessionId {
                             fileState.sessionId = sessionId
                         } else {
-                            throw NSError(domain: "DropboxRepository", code: 4, userInfo: [NSLocalizedDescriptionKey: "Failed to start upload session"])
+                            throw APIError.errorOccured
                         }
                         offset += Int64(data.count)
                         fileState.offset = offset
@@ -306,14 +307,14 @@ class DropboxRepository: DropboxRepositoryProtocol {
                     fileState.sessionId = nil
                 default:
                     debugLog("Upload session error: \(lookupError)")
-                    throw callError
+                    throw APIError.dropboxApiError(callError)
                 }
             default:
                 debugLog("Error during upload: \(callError)")
-                throw callError
+                throw APIError.dropboxApiError(callError)
             }
         } else {
-            throw error
+            throw APIError.driveApiError(error)
         }
     }
     
