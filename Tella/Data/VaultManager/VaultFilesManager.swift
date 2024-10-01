@@ -76,6 +76,15 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             
             for await fileDetail in fileDetailsStream {
                 
+                if self.shouldCancelImportAndEncryption.value {
+                    importProgress.finish()
+                    subject.send(.importProgress(importProgress:  importProgress))
+                    subject.send(.fileAdded(filesActor.files))
+                    subject.send(completion: .finished)
+                    shouldCancelImportAndEncryption.value = false
+                    return
+                }
+                
                 guard
                     let filePath = await getModifiedURL(importedFile: fileDetail.importedFile)
                 else {
@@ -99,20 +108,20 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                 filesActor.add(vaultFile: fileDetail.file)
                 
                 if  filesActor.files.count == importedFiles.count {
-                    importProgress.stop()
                     importProgress.finish()
                     subject.send(.fileAdded(filesActor.files))
                     subject.send(completion: .finished)
                     
                     handleDeletionFiles(importedFiles:importedFiles)
                     shouldReloadFiles.send(true)
+                    shouldCancelImportAndEncryption.value = false
+                    
                 } else {
                     importProgress.currentFile += 1
                 }
                 
                 subject.send(.importProgress(importProgress:  importProgress))
             }
-            
         }
         
         self.shouldCancelImportAndEncryption.sink(receiveValue: { shouldCancel in
@@ -120,8 +129,6 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                 task.cancel()
                 self.shouldCancelVideoExport.value = true
                 importProgress.pause()
-                self.shouldCancelImportAndEncryption.value = false
-                subject.send(.fileAdded(filesActor.files))
             }
         }).store(in: &cancellable)
         
