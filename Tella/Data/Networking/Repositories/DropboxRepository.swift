@@ -14,6 +14,7 @@ protocol DropboxRepositoryProtocol {
     func handleSignIn() async throws
     func ensureSignedIn() async throws
     func signOut()
+    func handleRedirectURL(_ url: URL, completion: @escaping (DropboxOAuthResult?) -> Void) -> Bool
     
     func uploadReport(folderPath: String, files: [(URL, String, String, Int64?, String?)]?) -> AnyPublisher<DropboxUploadProgressInfo, APIError>
     func createFolder(name: String, description: String) async throws -> String
@@ -52,6 +53,9 @@ class DropboxRepository: DropboxRepositoryProtocol {
         DropboxClientsManager.setupWithAppKey(dropboxAppKey)
     }
     
+    func handleRedirectURL(_ url: URL, completion: @escaping (DropboxOAuthResult?) -> Void) -> Bool {
+        return DropboxClientsManager.handleRedirectURL(url, includeBackgroundClient: false, completion: completion)
+    }
     func handleSignIn() async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             DispatchQueue.main.async {
@@ -99,7 +103,6 @@ class DropboxRepository: DropboxRepositoryProtocol {
             
             return folderId
         } catch {
-            debugLog(error)
             throw APIError.dropboxApiError(error)
         }
     }
@@ -128,6 +131,10 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 }
 
                 for (index, fileState) in fileUploadStates.enumerated() {
+                    
+                    if isCancelled {
+                        return
+                    }
 
                     let totalBytes = fileState.totalBytes
                     let fileId = fileState.fileId
@@ -203,6 +210,8 @@ class DropboxRepository: DropboxRepositoryProtocol {
             if isCancelled {
                 fileState.offset = offset
                 fileState.sessionId = sessionId
+                
+                return
             }
 
             let remainingBytes = fileSize - offset

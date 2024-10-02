@@ -79,6 +79,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
                 await MainActor.run {
                     self.updateReportStatus(reportStatus: .submissionError)
                     Toast.displayToast(message: error.errorMessage)
+//                    self.shouldShowLoginView = true
                     debugLog("Error creating folder: \(error)")
                 }
             }
@@ -173,6 +174,22 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         
         mainAppModel.tellaData?.updateDropboxReportFile(file: dropboxFile)
         
+    }
+    
+    func reAuthenticateConnection() {
+        Task {
+            do {
+                try await dropboxRepository.handleSignIn()
+            } catch {
+                debugLog(error)
+            }
+        }
+    }
+    
+    func handleURLRedirect(url: URL) {
+        _ = dropboxRepository.handleRedirectURL(url) { authResult in
+            self.submitReport()
+        }
     }
 }
 
