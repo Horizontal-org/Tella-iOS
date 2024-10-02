@@ -148,4 +148,8 @@ class DraftMainViewModel: ObservableObject {
         self.saveReport()
     }
     
+    func validateTitleAndDescription() {
+        self.isValidTitle =  self.title.textValidator()
+        self.isValidDescription = self.description.textValidator()
+    }
 }

@@ -41,13 +41,9 @@ class DraftReportVM: DraftMainViewModel {
                 let vaultFileResult  = Set(vaultFileResult)
                 self.files = vaultFileResult
             }
-            self.objectWillChange.send()
         }
-        DispatchQueue.main.async {
-            self.isValidTitle =  self.title.textValidator()
-            self.isValidDescription = self.description.textValidator()
-            self.objectWillChange.send()
-        }
+        
+        validateTitleAndDescription()
     }
 
     override func saveReport() {
@@ -56,7 +52,7 @@ class DraftReportVM: DraftMainViewModel {
                             title: title,
                             description: description,
                             status: status,
-                            server: server as! TellaServer,
+                            server: server as? TellaServer,
                             vaultFiles: self.files.compactMap{ ReportFile(fileId: $0.id,
                                                                           status: .notSubmitted,
                                                                           bytesSent: 0,

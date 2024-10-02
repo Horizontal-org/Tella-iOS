@@ -28,24 +28,18 @@ class GDriveDraftViewModel: DraftMainViewModel {
             if let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{ $0.fileId } ?? []) {
                 self.files = Set(vaultFileResult)
             }
-            
-            self.objectWillChange.send()
         }
         
-        DispatchQueue.main.async {
-            self.isValidTitle =  self.title.textValidator()
-            self.isValidDescription = self.description.textValidator()
-            self.objectWillChange.send()
-        }
+        validateTitleAndDescription()
     }
-
+    
     override func saveReport() {
         let gDriveReport = GDriveReport(
             id: reportId,
             title: title,
             description: description,
             status: status ?? .unknown,
-            server: server as! GDriveServer,
+            server: server as? GDriveServer,
             folderId: nil,
             vaultFiles: self.files.compactMap { ReportFile( fileId: $0.id,
                                                             status: .notSubmitted,

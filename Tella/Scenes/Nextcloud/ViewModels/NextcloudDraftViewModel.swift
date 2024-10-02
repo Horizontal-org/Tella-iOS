@@ -35,14 +35,7 @@ class NextcloudDraftViewModel: DraftMainViewModel {
             self.files = Set(vaultFileResult)
         }
         
-        self.objectWillChange.send()
-        
-        DispatchQueue.main.async {
-            self.isValidTitle =  self.title.textValidator()
-            self.isValidDescription = self.description.textValidator()
-            self.objectWillChange.send()
-        }
-
+        validateTitleAndDescription()
     }
     
     override func saveReport() {
