@@ -17,7 +17,7 @@ protocol DropboxRepositoryProtocol {
     func handleRedirectURL(_ url: URL, completion: @escaping (DropboxOAuthResult?) -> Void) -> Bool
     
     func uploadReport(folderPath: String, files: [(URL, String, String, Int64?, String?)]?) -> AnyPublisher<DropboxUploadProgressInfo, APIError>
-    func createFolder(name: String, description: String) async throws -> String
+    func createFolder(name: String, description: String) -> AnyPublisher<String, APIError>
     
     func pauseUpload()
 }
@@ -75,37 +75,85 @@ class DropboxRepository: DropboxRepositoryProtocol {
         }
     }
     
-    func createFolder(name: String, description: String) async throws -> String {
-        try await self.ensureSignedIn()
+    func createFolder(name: String, description: String) -> AnyPublisher<String, APIError> {
+        Deferred {
+            Future { promise in
+                Task {
+                    do {
+                        try await self.ensureSignedIn()
+                        self.performCreateFolder(name: name, description: description, promise: promise)
+                    } catch let apiError as APIError {
+                        promise(.failure(apiError))
+                    } catch {
+                        if self.isDropboxAuthError(error) {
+                            promise(.failure(.noToken))
+                        } else {
+                            promise(.failure(.dropboxApiError(error)))
+                        }
+                    }
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    private func performCreateFolder(
+        name: String,
+        description: String,
+        promise: @escaping (Result<String, APIError>) -> Void
+    ) {
         guard let client = self.client else {
-            throw APIError.noToken
+            promise(.failure(APIError.noToken))
+            return
         }
         
         let folderPath = "/\(name)"
         
         // Create folder
-        do {
-            let folderId = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<String, Error>) in
-                client.files.createFolderV2(path: folderPath, autorename: true).response { response, error in
-                    if let error = error {
-                        continuation.resume(throwing: error)
-                    } else if let metadata = response?.metadata {
-                        continuation.resume(returning: metadata.id)
-                    } else {
-                        continuation.resume(throwing: NSError(domain: "DropboxRepository", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to create folder"]))
-                    }
+        client.files.createFolderV2(path: folderPath, autorename: true).response { response, error in
+            if let error = error {
+                if self.isDropboxAuthError(error) {
+                    promise(.failure(.noToken))
+                } else {
+                    promise(.failure(.dropboxApiError(error)))
                 }
+            } else if let metadata = response?.metadata {
+                // Upload description file
+                self.uploadDescriptionFile(
+                    client: client,
+                    folderPath: folderPath,
+                    description: description,
+                    folderId: metadata.id,
+                    promise: promise
+                )
+            } else {
+                promise(.failure(.errorOccured))
             }
-            
-            // Upload description file
-            let descriptionData = description.data(using: .utf8) ?? Data()
-            try await self.uploadData(client: client, path: "\(folderPath)/description.txt", data: descriptionData)
-            
-            return folderId
-        } catch {
-            throw APIError.dropboxApiError(error)
         }
     }
+    
+    private func uploadDescriptionFile(
+        client: DropboxClient,
+        folderPath: String,
+        description: String,
+        folderId: String,
+        promise: @escaping (Result<String, APIError>) -> Void
+    ) {
+        let descriptionData = description.data(using: .utf8) ?? Data()
+        client.files.upload(path: "\(folderPath)/description.txt", input: descriptionData)
+            .response { response, error in
+                if let error = error {
+                    if self.isDropboxAuthError(error) {
+                        promise(.failure(.noToken))
+                    } else {
+                        promise(.failure(.dropboxApiError(error)))
+                    }
+                } else {
+                    promise(.success(folderId))
+                }
+            }
+    }
+    
     
     func uploadReport(folderPath: String, files: [(URL, String, String, Int64?, String?)]? = nil) -> AnyPublisher<DropboxUploadProgressInfo, APIError> {
         uploadProgressSubject = PassthroughSubject<DropboxUploadProgressInfo, APIError>()
@@ -157,8 +205,15 @@ class DropboxRepository: DropboxRepositoryProtocol {
                     self.uploadProgressSubject.send(completedInfo)
                 }
                 uploadProgressSubject.send(completion: .finished)
-            } catch {
-                uploadProgressSubject.send(completion: .failure(.dropboxApiError(error)))
+            }  catch let apiError as APIError {
+                uploadProgressSubject.send(completion: .failure(apiError))
+            }
+            catch {
+                if self.isDropboxAuthError(error) {
+                    uploadProgressSubject.send(completion: .failure(.noToken))
+                } else {
+                    uploadProgressSubject.send(completion: .failure(.dropboxApiError(error)))
+                }
             }
         }
 
@@ -297,12 +352,15 @@ class DropboxRepository: DropboxRepositoryProtocol {
         fileState: FileUploadState,
         sessionId: inout String?
     ) throws {
+        debugLog(error)
+        if self.isDropboxAuthError(error) {
+            throw APIError.noToken
+        }
         if let callError = error as? CallError<Files.UploadSessionAppendError> {
             debugLog(callError)
             switch callError {
             case .routeError(let boxedLookupError, _, _, _):
                 let lookupError = boxedLookupError.unboxed
-                debugLog(lookupError)
                 switch lookupError {
                 case .incorrectOffset(let incorrectOffsetError):
                     let correctOffset = incorrectOffsetError.correctOffset
@@ -323,7 +381,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 throw APIError.dropboxApiError(callError)
             }
         } else {
-            throw APIError.driveApiError(error)
+            throw APIError.dropboxApiError(error)
         }
     }
     
@@ -360,6 +418,21 @@ class DropboxRepository: DropboxRepositoryProtocol {
     func signOut() {
         DropboxClientsManager.unlinkClients()
         client = nil
+    }
+    
+    private func isDropboxAuthError(_ error: Error) -> Bool {
+        return isAuthError(error as? CallError<Files.UploadError>) ||
+               isAuthError(error as? CallError<Files.CreateFolderError>) ||
+               isAuthError(error as? CallError<Files.UploadSessionStartError>) ||
+               isAuthError(error as? CallError<Files.UploadSessionFinishError>) ||
+               isAuthError(error as? CallError<Files.UploadSessionAppendError>)
+    }
+
+    private func isAuthError<T>(_ callError: CallError<T>?) -> Bool {
+        if let callError = callError, case .authError = callError {
+            return true
+        }
+        return false
     }
 }
 

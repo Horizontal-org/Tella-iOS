@@ -64,26 +64,31 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     }
     
     private func createDropboxFolder() {
-        Task {
-            do {
-                let folderId = try await dropboxRepository.createFolder(
-                    name: reportViewModel.title,
-                    description: reportViewModel.description
-                )
-                await MainActor.run {
-                    self.reportViewModel.folderId = folderId
-                    self.updateReportFolderId(folderId: folderId)
-                    self.uploadFiles(to: "/\(self.reportViewModel.title)")
+        dropboxRepository.createFolder(name: reportViewModel.title, description: reportViewModel.description)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self]completion in
+                switch completion {
+                case .finished:
+                    debugLog("Folder created successfully")
+                case .failure(let error):
+                    switch error {
+                    case .noToken:
+                        self?.updateReportStatus(reportStatus: .submissionError)
+                        self?.shouldShowLoginView = true
+                    default:
+                        debugLog("Error creating folder: \(error)")
+                        self?.updateReportStatus(reportStatus: .submissionError)
+                        self?.toastMessage = error.errorMessage
+                        self?.shouldShowToast = true
+                    }
+                    
                 }
-            } catch let error as APIError {
-                await MainActor.run {
-                    self.updateReportStatus(reportStatus: .submissionError)
-                    Toast.displayToast(message: error.errorMessage)
-//                    self.shouldShowLoginView = true
-                    debugLog("Error creating folder: \(error)")
-                }
-            }
-        }
+            }, receiveValue: { folderId in
+                self.reportViewModel.folderId = folderId
+                self.updateReportFolderId(folderId: folderId)
+                self.uploadFiles(to: "/\(self.reportViewModel.title)")
+            })
+            .store(in: &cancellables)
     }
         
     private func uploadFiles(to folderPath: String) {
@@ -107,11 +112,15 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
                     self?.updateReportStatus(reportStatus: .submitted)
                     self?.showSubmittedReport()
                 case .failure(let error):
-                    if (error as NSError).code == 1 {
-                        self?.updateReportStatus(reportStatus: .submissionPaused)
-                    } else {
+                    debugLog(error)
+                    switch error {
+                    case .noToken:
                         self?.updateReportStatus(reportStatus: .submissionError)
-                        debugLog("Error uploading report: \(error)")
+                        self?.shouldShowLoginView = true
+                    default:
+                        self?.updateReportStatus(reportStatus: .submissionError)
+                        self?.toastMessage = error.errorMessage
+                        self?.shouldShowToast = true
                     }
                 }
             }, receiveValue: { [weak self] progressInfo in
@@ -191,6 +200,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
             self.submitReport()
         }
     }
+    
 }
 
 typealias DropboxFileInfo = (url: URL, fileName: String, fileId: String, offset: Int64?, sessionId: String?)
