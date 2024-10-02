@@ -97,11 +97,12 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
             guard let url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true) else {
                 return nil
             }
-            let fileId = file.id ?? ""
-            let fileName = url.lastPathComponent
-            let offset = file.offset ?? 0
-            let sessionId = file.sessionId
-            return (url: url, fileName: fileName, fileId: fileId, offset: offset, sessionId: sessionId)
+
+            return DropboxFileInfo(url: url,
+                                   fileName: url.lastPathComponent,
+                                   fileId: file.id ?? "",
+                                   offset: file.offset ?? 0,
+                                   sessionId: file.sessionId)
         }
 
         dropboxRepository.uploadReport(folderPath: folderPath, files: filesToSend)
@@ -203,4 +204,10 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     
 }
 
-typealias DropboxFileInfo = (url: URL, fileName: String, fileId: String, offset: Int64?, sessionId: String?)
+struct DropboxFileInfo {
+    let url: URL
+    let fileName: String
+    let fileId: String
+    let offset: Int64?
+    let sessionId: String?
+}

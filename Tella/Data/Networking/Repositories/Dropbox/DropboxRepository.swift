@@ -16,7 +16,7 @@ protocol DropboxRepositoryProtocol {
     func signOut()
     func handleRedirectURL(_ url: URL, completion: @escaping (DropboxOAuthResult?) -> Void) -> Bool
     
-    func uploadReport(folderPath: String, files: [(URL, String, String, Int64?, String?)]?) -> AnyPublisher<DropboxUploadProgressInfo, APIError>
+    func uploadReport(folderPath: String, files: [DropboxFileInfo]?) -> AnyPublisher<DropboxUploadProgressInfo, APIError>
     func createFolder(name: String, description: String) -> AnyPublisher<String, APIError>
     
     func pauseUpload()
@@ -155,7 +155,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
     }
     
     
-    func uploadReport(folderPath: String, files: [(URL, String, String, Int64?, String?)]? = nil) -> AnyPublisher<DropboxUploadProgressInfo, APIError> {
+    func uploadReport(folderPath: String, files: [DropboxFileInfo]? = nil) -> AnyPublisher<DropboxUploadProgressInfo, APIError> {
         uploadProgressSubject = PassthroughSubject<DropboxUploadProgressInfo, APIError>()
         isCancelled = false
 
@@ -165,9 +165,14 @@ class DropboxRepository: DropboxRepositoryProtocol {
             var fileUploadStates: [FileUploadState]
             do {
                 if let files = files {
-                    fileUploadStates = files.map { (fileURL, fileName, fileId, offset, sessionId) -> FileUploadState in
-                        let fileSize = (try? FileManager.default.attributesOfItem(atPath: fileURL.path)[.size] as? Int64) ?? 0
-                        return FileUploadState(fileURL: fileURL, fileName: fileName, fileId: fileId, sessionId: sessionId, offset: offset ?? 0, totalBytes: fileSize)
+                    fileUploadStates = files.map { fileInfo -> FileUploadState in
+                        let fileSize = (try? FileManager.default.attributesOfItem(atPath: fileInfo.url.path)[.size] as? Int64) ?? 0
+                        return FileUploadState(fileURL: fileInfo.url,
+                                               fileName: fileInfo.fileName,
+                                               fileId: fileInfo.fileId,
+                                               sessionId: fileInfo.sessionId,
+                                               offset: fileInfo.offset ?? 0,
+                                               totalBytes: fileSize)
                     }
                 } else {
                     throw APIError.errorOccured
@@ -437,46 +442,3 @@ class DropboxRepository: DropboxRepositoryProtocol {
 }
 
 
-
-// mmove this to a separate model
-
-class DropboxUploadProgressInfo: UploadProgressInfo {
-    var offset: Int64?
-    var sessionId: String?
-
-    init(bytesSent: Int?,
-         current: Int,
-         fileId: String,
-         status: FileStatus,
-         reportStatus: ReportStatus,
-         offset: Int64?,
-         sessionId: String?) {
-        self.offset = offset
-        self.sessionId = sessionId
-        super.init(bytesSent: bytesSent, current: current, fileId: fileId, status: status, reportStatus: reportStatus)
-    }
-}
-
-class FileUploadState {
-    let fileURL: URL
-    let fileName: String
-    let fileId: String
-    var sessionId: String?
-    var offset: Int64
-    let totalBytes: Int64
-    
-    init(fileURL: URL, fileName: String, fileId: String, sessionId: String?, offset: Int64, totalBytes: Int64) {
-        self.fileURL = fileURL
-        self.fileName = fileName
-        self.fileId = fileId
-        self.sessionId = sessionId
-        self.offset = offset
-        self.totalBytes = totalBytes
-    }
-}
-
-struct PausedUploadState {
-    let folderPath: String
-    let files: [FileUploadState]
-    let currentFileIndex: Int
-}

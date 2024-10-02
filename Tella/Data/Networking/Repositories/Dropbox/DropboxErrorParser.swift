@@ -42,7 +42,7 @@ class DropboxErrorParser {
         if let uploadError = unboxedError as? Files.UploadError {
             return handleUploadError(uploadError)
         } else if let uploadSessionFinishError = unboxedError as? Files.UploadSessionFinishError {
-            return "Error while finishing Dropbox session"
+            return handleUploadSessionFinishError(uploadSessionFinishError)
         } else if unboxedError is Files.UploadSessionStartError {
             return "Error while starting Dropbox session"
         } else if let createFolderError = unboxedError as? Files.CreateFolderError {
@@ -56,6 +56,15 @@ class DropboxErrorParser {
         switch error {
         case .path(let uploadWriteFailed):
             return handleUploadWriteFailed(uploadWriteFailed)
+        default:
+            return LocalizableError.unexpectedResponse.localized
+        }
+    }
+    
+    private static func handleUploadSessionFinishError(_ error: Files.UploadSessionFinishError) -> String {
+        switch error {
+        case .path(let uploadWriteFailed):
+            return handleWriteError(uploadWriteFailed)
         default:
             return LocalizableError.unexpectedResponse.localized
         }
