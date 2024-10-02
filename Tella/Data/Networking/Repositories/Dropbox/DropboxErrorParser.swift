@@ -33,10 +33,6 @@ class DropboxErrorParser {
         switch error {
         case .routeError(let boxedError, _, _, _):
             return parseDropboxRouteError(boxedError.unboxed)
-        case .authError(let authError, _, _, _):
-            return "Authentication error: \(authError)"
-        case .clientError(let clientError):
-            return "Client error: \(clientError.localizedDescription)"
         default:
             return LocalizableError.unexpectedResponse.localized
         }
@@ -46,13 +42,13 @@ class DropboxErrorParser {
         if let uploadError = unboxedError as? Files.UploadError {
             return handleUploadError(uploadError)
         } else if let uploadSessionFinishError = unboxedError as? Files.UploadSessionFinishError {
-            return handleUploadSessionFinishError(uploadSessionFinishError)
-        } else if let uploadSessionStartError = unboxedError as? Files.UploadSessionStartError {
-            return "Error starting session"
+            return "Error while finishing Dropbox session"
+        } else if unboxedError is Files.UploadSessionStartError {
+            return "Error while starting Dropbox session"
         } else if let createFolderError = unboxedError as? Files.CreateFolderError {
             return handleCreateFolderError(createFolderError)
         } else {
-            return "An unexpected Dropbox error occurred."
+            return LocalizableError.unexpectedResponse.localized
         }
     }
 
@@ -60,21 +56,6 @@ class DropboxErrorParser {
         switch error {
         case .path(let uploadWriteFailed):
             return handleUploadWriteFailed(uploadWriteFailed)
-        case .other:
-            return "An unknown upload error occurred."
-        default:
-            return LocalizableError.unexpectedResponse.localized
-        }
-    }
-
-    private static func handleUploadSessionFinishError(_ error: Files.UploadSessionFinishError) -> String {
-        switch error {
-        case .path(let uploadWriteFailed):
-            return handleWriteError(uploadWriteFailed)
-        case .lookupFailed(let lookupError):
-            return "Upload session lookup failed: \(lookupError)"
-        case .other:
-            return "An unknown upload session finish error occurred."
         default:
             return LocalizableError.unexpectedResponse.localized
         }
