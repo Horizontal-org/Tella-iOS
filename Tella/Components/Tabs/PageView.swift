@@ -23,11 +23,11 @@ public struct PageView: View {
      var pageViewItems : [PageViewItem]
     
     public var body: some View {
-        HStack(spacing: 20) {
+        HStack(spacing: 18) {
             ForEach(pageViewItems,id:\.page) { item in
                 PageViewCell(title: item.title, number: item.number, page: item.page, selectedOption: $selectedOption)
             }
-        }
+        }.scrollOnOverflow(axis:Axis.Set.horizontal)
     }
 }
 
