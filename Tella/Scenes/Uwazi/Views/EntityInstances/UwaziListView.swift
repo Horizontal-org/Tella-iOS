@@ -135,7 +135,9 @@ struct EntityInstanceItemView: View {
     
     private func showDeleteTemplateConfirmationView() {
         
-        sheetManager.showBottomSheet(modalHeight: 200) {
+        let modalHeight = cardViewModel.status == .submitted ? 220 : 160
+        
+        sheetManager.showBottomSheet(modalHeight: CGFloat(modalHeight)) {
             return ConfirmBottomSheet(titleText: cardViewModel.deleteReportStrings.deleteTitle,
                                       msgText: cardViewModel.deleteReportStrings.deleteMessage,
                                       cancelText: LocalizableUwazi.noSheetAction.localized,
