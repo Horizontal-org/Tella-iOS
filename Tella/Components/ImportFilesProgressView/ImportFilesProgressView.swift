@@ -26,9 +26,11 @@ struct ImportFilesProgressView: View {
             
         } .onReceive( progress.$isFinishing) { isFinishing in
             if isFinishing {
-                sheetManager.hide()
-                progress.isFinishing = false
-                shouldShowCancelImportView = false
+                DispatchQueue.main.async {
+                    sheetManager.hide()
+                    progress.isFinishing = false
+                    shouldShowCancelImportView = false
+                }
             }
         }
     }
@@ -75,7 +77,9 @@ struct ImportFilesProgressView: View {
                 HStack {
                     Spacer()
                     Button(importFilesProgressProtocol.cancelImportButtonTitle) {
-                        shouldShowCancelImportView = true
+                        DispatchQueue.main.async {
+                            shouldShowCancelImportView = true
+                        }
                     }
                     .foregroundColor(Color.white)
                     .font(Font.custom(Styles.Fonts.semiBoldFontName, size: 14))
@@ -84,15 +88,6 @@ struct ImportFilesProgressView: View {
         }
         .padding(EdgeInsets(top: 25, leading: 25, bottom: 35, trailing: 25))
         
-    }
-    
-    private func showCancelImportView() {
-        sheetManager.showBottomSheet( modalHeight: 152,
-                                      shouldHideOnTap: false,
-                                      content: {
-            CancelImportView(importFilesProgressProtocol: importFilesProgressProtocol,
-                             shouldShowView: $shouldShowCancelImportView)
-        })
     }
 }
 

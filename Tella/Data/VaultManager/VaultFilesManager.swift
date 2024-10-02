@@ -77,17 +77,16 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             for await fileDetail in fileDetailsStream {
                 
                 if self.shouldCancelImportAndEncryption.value {
-                    importProgress.finish()
-                    subject.send(.importProgress(importProgress:  importProgress))
-                    subject.send(.fileAdded(filesActor.files))
-                    subject.send(completion: .finished)
-                    shouldCancelImportAndEncryption.value = false
+                    finishImport()
                     return
                 }
                 
                 guard
                     let filePath = await getModifiedURL(importedFile: fileDetail.importedFile)
                 else {
+                    if self.shouldCancelImportAndEncryption.value {
+                        finishImport()
+                    }
                     continue
                 }
                 
@@ -107,20 +106,12 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                 
                 filesActor.add(vaultFile: fileDetail.file)
                 
-                if  filesActor.files.count == importedFiles.count {
-                    importProgress.finish()
-                    subject.send(.fileAdded(filesActor.files))
-                    subject.send(completion: .finished)
-                    
-                    handleDeletionFiles(importedFiles:importedFiles)
-                    shouldReloadFiles.send(true)
-                    shouldCancelImportAndEncryption.value = false
-                    
+                if filesActor.files.count == importedFiles.count {
+                    finishImport()
                 } else {
                     importProgress.currentFile += 1
+                    subject.send(.importProgress(importProgress:  importProgress))
                 }
-                
-                subject.send(.importProgress(importProgress:  importProgress))
             }
         }
         
@@ -132,6 +123,17 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             }
         }).store(in: &cancellable)
         
+        
+        func finishImport() {
+            importProgress.finish()
+            subject.send(.fileAdded(filesActor.files))
+            subject.send(.importProgress(importProgress:  importProgress))
+            subject.send(completion: .finished)
+            
+            handleDeletionFiles(importedFiles:importedFiles)
+            shouldReloadFiles.send(true)
+            shouldCancelImportAndEncryption.value = false
+        }
     }
     
     func addVaultFile(fileDetail:VaultFileDetails) -> AnyPublisher<BackgroundActivityStatus,Never> {
@@ -169,6 +171,21 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         return subject.eraseToAnyPublisher()
     }
     
+//    private func finishImport(importProgress: ImportProgress,
+//                              subject: CurrentValueSubject<ImportVaultFileResult, Never>,
+//                              filesActor : FilesActor,
+//                              importedFiles: [ImportedFile]) {
+//        
+//        importProgress.finish()
+//        subject.send(.fileAdded(filesActor.files))
+//        subject.send(.importProgress(importProgress:  importProgress))
+//        subject.send(completion: .finished)
+//        
+//        handleDeletionFiles(importedFiles:importedFiles)
+//        shouldReloadFiles.send(true)
+//        shouldCancelImportAndEncryption.value = false
+//    }
+
     private func handleDatabaseAddition(fileDetails:VaultFileDetails,
                                         subject : CurrentValueSubject<BackgroundActivityStatus, Never> ) {
         
