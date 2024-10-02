@@ -114,7 +114,6 @@
 		1236EE8028E1B40200973EEA /* DataBaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1236EE7F28E1B40200973EEA /* DataBaseHelper.swift */; };
 		1236EE8228E1E1D700973EEA /* DatabaseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1236EE8128E1E1D700973EEA /* DatabaseExtension.swift */; };
 		1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C876268C792000EB5E34 /* NSUIImage.swift */; };
-		1237A71A278F18C000D7BC0F /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E87C87C268CCA3500EB5E34 /* WebView.swift */; };
 		1237A71C278F5B2E00D7BC0F /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1237A71B278F5B2E00D7BC0F /* DateExtension.swift */; };
 		1237A71E278F5F8B00D7BC0F /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1237A71D278F5F8B00D7BC0F /* LanguageManager.swift */; };
 		123AE5A129CFAD7F00814CC7 /* OutboxReportVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123AE5A029CFAD7F00814CC7 /* OutboxReportVM.swift */; };
@@ -635,7 +634,6 @@
 		0E78B3AD2656B04B00F9BDBC /* open-sans.regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "open-sans.regular.ttf"; sourceTree = "<group>"; };
 		0E87C874268BDDFB00EB5E34 /* ImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
 		0E87C876268C792000EB5E34 /* NSUIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSUIImage.swift; sourceTree = "<group>"; };
-		0E87C87C268CCA3500EB5E34 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		0E998552266E57FC0019FDF4 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		0ECC7816267A533E00A2ACF2 /* PageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewCell.swift; sourceTree = "<group>"; };
 		0ECC7818267A53A700A2ACF2 /* PageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageView.swift; sourceTree = "<group>"; };
@@ -1273,7 +1271,6 @@
 			children = (
 				D572EACA263A43C100CE191A /* FileDetailView.swift */,
 				0DC6FC53269BCDDE001B0D34 /* FileInfoView.swift */,
-				0E87C87C268CCA3500EB5E34 /* WebView.swift */,
 				0E87C874268BDDFB00EB5E34 /* ImageViewer.swift */,
 				12607D5427903ECC00E2B8CC /* Video */,
 			);
@@ -3763,7 +3760,6 @@
 				1517A9B42C4050D500CB8EBF /* GDriveSubmittedViewModel.swift in Sources */,
 				E1E7C57D2AAB553500DDB07E /* UwaziProperty.swift in Sources */,
 				12F2C65C2B86567F008457EB /* FileDetailsViewModel.swift in Sources */,
-				1237A71A278F18C000D7BC0F /* WebView.swift in Sources */,
 				12C07ECC2B06603A0030AD6E /* EncryptionService.swift in Sources */,
 				1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */,
 				CCC1B4292AC75A8E0075B819 /* RenderPropertyComponentView.swift in Sources */,

@@ -10,7 +10,7 @@ import Foundation
 
 struct NextcloudConstants {
     static let forbiddenCharacters = ["/", "\\", ":", "\"", "|", "?", "*", "<", ">"]
-    static let descriptionFolderName = "Readme.md"
+    static let descriptionFolderName = "description.txt"
     static let filesRequestBody =  """
         <?xml version=\"1.0\" encoding=\"UTF-8\"?>
         <d:propfind xmlns:d=\"DAV:\" xmlns:oc=\"http://owncloud.org/ns\" xmlns:nc=\"http://nextcloud.org/ns\">
