@@ -151,5 +151,6 @@ class DraftMainViewModel: ObservableObject {
     func validateTitleAndDescription() {
         self.isValidTitle =  self.title.textValidator()
         self.isValidDescription = self.description.textValidator()
+        self.objectWillChange.send()
     }
 }
