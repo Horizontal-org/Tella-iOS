@@ -76,16 +76,18 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             
             for await fileDetail in fileDetailsStream {
                 
+                importProgress.currentFile += 1
+                subject.send(.importProgress(importProgress:  importProgress))
+
                 if self.shouldCancelImportAndEncryption.value {
-                    finishImport()
-                    return
+                    break
                 }
                 
                 guard
                     let filePath = await getModifiedURL(importedFile: fileDetail.importedFile)
                 else {
                     if self.shouldCancelImportAndEncryption.value {
-                        finishImport()
+                        break
                     }
                     continue
                 }
@@ -94,25 +96,25 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
                     fileDetail.file.size = fileSize
                 }
                 
+                if self.shouldCancelImportAndEncryption.value {
+                    break
+                }
+                
                 guard
                     let isSaved = self.vaultManager?.save(filePath, vaultFileId: fileDetail.file.id)
                 else {
+                    if self.shouldCancelImportAndEncryption.value {
+                        break
+                    }
                     continue
                 }
                 
                 if isSaved {
                     self.vaultDataBase.addVaultFile(file: fileDetail.file, parentId: fileDetail.importedFile.parentId)
-                }
-                
-                filesActor.add(vaultFile: fileDetail.file)
-                
-                if filesActor.files.count == importedFiles.count {
-                    finishImport()
-                } else {
-                    importProgress.currentFile += 1
-                    subject.send(.importProgress(importProgress:  importProgress))
+                    filesActor.add(vaultFile: fileDetail.file)
                 }
             }
+            finishImport()
         }
         
         self.shouldCancelImportAndEncryption.sink(receiveValue: { shouldCancel in
@@ -125,6 +127,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         
         
         func finishImport() {
+            debugLog("Import finished")
             importProgress.finish()
             subject.send(.fileAdded(filesActor.files))
             subject.send(.importProgress(importProgress:  importProgress))

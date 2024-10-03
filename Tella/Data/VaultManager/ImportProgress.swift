@@ -27,7 +27,7 @@ class ImportProgress: ObservableObject {
     private let bytesImportedPerSecond = 200000000 // Calculated approximately
     private let bytesExportedPerSecond =   7000000 // Calculated approximatively
     
-    func start(currentFile: Int = 1, totalFiles: Int = 1, totalSize: Double = 0.0, totalVideosSizeForExport: Double = 0.0) {
+    func start(currentFile: Int = 0, totalFiles: Int = 1, totalSize: Double = 0.0, totalVideosSizeForExport: Double = 0.0) {
         
         DispatchQueue.main.async {
             self.progress.send(0)
