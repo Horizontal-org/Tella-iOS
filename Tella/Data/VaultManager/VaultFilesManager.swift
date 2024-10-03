@@ -36,7 +36,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
             let filestotalSize = self.getFilesTotalSize(filePaths: filePaths)
             
             // Files path for videos to export and delete metadata
-            let filesPathForExport = importedFiles.filter({!$0.shouldPreserveMetadata && $0.type == .video}).compactMap({$0.urlFile})
+            let filesPathForExport = importedFiles.filter({!$0.shouldPreserveMetadata}).compactMap({$0.urlFile})
             
             // Total size for videos to export and delete metadata
             let totalVideosSizeForExport = self.getFilesTotalSize(filePaths: filesPathForExport)
