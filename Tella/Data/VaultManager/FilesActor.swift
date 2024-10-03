@@ -4,7 +4,7 @@
 
 import Foundation
 
-actor FilesActor {
+class FilesActor {
     var files : [VaultFileDB] = []
     
     func add(vaultFile: VaultFileDB) {

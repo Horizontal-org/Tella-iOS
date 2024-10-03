@@ -9,12 +9,33 @@ struct ImportFilesProgressView: View {
     @EnvironmentObject var mainAppModel : MainAppModel
     @EnvironmentObject var sheetManager: SheetManager
     @ObservedObject var progress : ProgressFile
+    @State var shouldShowCancelImportView : Bool = false
     
     var importFilesProgressProtocol : ImportFilesProgressProtocol
     var modalHeight : CGFloat = 215
     
     var body: some View {
         
+        ZStack {
+            
+            contentView
+            
+            if shouldShowCancelImportView {
+                CancelImportView(importFilesProgressProtocol: importFilesProgressProtocol, shouldShowView: $shouldShowCancelImportView)
+            }
+            
+        } .onReceive( progress.$isFinishing) { isFinishing in
+            if isFinishing {
+                DispatchQueue.main.async {
+                    sheetManager.hide()
+                    progress.isFinishing = false
+                    shouldShowCancelImportView = false
+                }
+            }
+        }
+    }
+    
+    private var contentView :some View {
         HStack(spacing: 14) {
             VStack{
                 Spacer()
@@ -56,7 +77,9 @@ struct ImportFilesProgressView: View {
                 HStack {
                     Spacer()
                     Button(importFilesProgressProtocol.cancelImportButtonTitle) {
-                        showCancelImportView()
+                        DispatchQueue.main.async {
+                            shouldShowCancelImportView = true
+                        }
                     }
                     .foregroundColor(Color.white)
                     .font(Font.custom(Styles.Fonts.semiBoldFontName, size: 14))
@@ -64,19 +87,7 @@ struct ImportFilesProgressView: View {
             }
         }
         .padding(EdgeInsets(top: 25, leading: 25, bottom: 35, trailing: 25))
-        .onReceive( progress.$isFinishing) { isFinishing in
-            if isFinishing {
-                sheetManager.hide()
-            }
-        }
-    }
-    
-    func showCancelImportView() {
-        sheetManager.showBottomSheet( modalHeight: 152,
-                                      shouldHideOnTap: false,
-                                      content: {
-            CancelImportView(importFilesProgressProtocol: importFilesProgressProtocol)
-        })
+        
     }
 }
 

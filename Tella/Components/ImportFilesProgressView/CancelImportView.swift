@@ -11,25 +11,26 @@ struct CancelImportView: View {
     var importFilesProgressProtocol : ImportFilesProgressProtocol
     
     @EnvironmentObject var sheetManager: SheetManager
+    @Binding var shouldShowView : Bool
     
     var body: some View {
-        ZStack{
+        ZStack {
             ConfirmBottomSheet(titleText: importFilesProgressProtocol.cancelTitle,
                                msgText: importFilesProgressProtocol.cancelMessage,
                                cancelText: importFilesProgressProtocol.exitCancelImportButtonTitle,
-                               actionText: importFilesProgressProtocol.cancelImportButtonTitle) {
+                               actionText: importFilesProgressProtocol.cancelImportButtonTitle,
+                               shouldHideSheet: false) {
                 mainAppModel.vaultFilesManager?.cancelImportAndEncryption()
-                sheetManager.hide()
-
+                shouldShowView = false
             } didCancelAction: {
-                sheetManager.hide()
-            }
+                shouldShowView = false
+            }.background(Styles.Colors.backgroundTab)
         }
     }
 }
 //
 struct CancelImportView_Previews: PreviewProvider {
     static var previews: some View {
-        CancelImportView( importFilesProgressProtocol: ImportFilesProgress())
+        CancelImportView( importFilesProgressProtocol: ImportFilesProgress(), shouldShowView: .constant(true))
     }
 }

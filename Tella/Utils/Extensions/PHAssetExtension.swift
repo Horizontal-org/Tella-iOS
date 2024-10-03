@@ -61,6 +61,24 @@ extension PHAsset {
         }
     }
     
+    func getAVAsset() async throws -> AVAsset? {
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            
+            PHImageManager.default().requestAVAsset(forVideo: self, options: nil) { avAsset, audioMix, info in
+               
+                if let avAsset = (avAsset ) {
+                    continuation.resume(returning: avAsset)
+                } else if let error = info?[PHImageErrorKey] as? Error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume(throwing: RuntimeError("Unknown error occurred"))
+                }
+            }
+        }
+    }
+
+    
     /// An extension on `PHAsset` to fetch the first `PHAssetResource`.
     ///
     /// This function retrieves the first `PHAssetResource` associated with the `PHAsset`.
