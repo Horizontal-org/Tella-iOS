@@ -11,7 +11,6 @@ import SwiftUI
 struct SelectDriveConnectionView: View {
     @State var selectedDriveConnectionType: DriveConnectionType = .none
     @ObservedObject var gDriveServerViewModel: GDriveServerViewModel
-    @State private var isSharedDriveButtonValid: Bool = false
     
     var body: some View {
         ContainerView {
@@ -29,8 +28,6 @@ struct SelectDriveConnectionView: View {
             .navigationBarHidden(true)
         }.onAppear {
             gDriveServerViewModel.getSharedDrives()
-        }.onReceive(gDriveServerViewModel.$isSharedDriveButtonValid) { isValid in
-            self.isSharedDriveButtonValid = isValid
         }
     }
     
@@ -52,7 +49,7 @@ struct SelectDriveConnectionView: View {
                 title: LocalizableSettings.gDriveSelectTypeShared.localized,
                 nextButtonAction: .action,
                 isOverlay: selectedDriveConnectionType == .shared,
-                isValid: $isSharedDriveButtonValid,
+                isValid: $gDriveServerViewModel.isSharedDriveButtonValid,
                 action: { selectedDriveConnectionType = .shared }
             )
             TellaButtonView<AnyView>(
