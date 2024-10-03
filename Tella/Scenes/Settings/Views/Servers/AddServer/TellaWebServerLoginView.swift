@@ -91,7 +91,7 @@ struct TellaWebServerLoginView: View {
         }).environmentObject(serverViewModel)
     }
     
-    var reportsMainView: some View {
+    var reportsMainView: TellaServerReportsMainView {
         TellaServerReportsMainView(reportsMainViewModel: ReportsViewModel(mainAppModel: mainAppModel))
     }
 }

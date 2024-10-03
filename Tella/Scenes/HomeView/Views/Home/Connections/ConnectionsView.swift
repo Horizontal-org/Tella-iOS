@@ -67,15 +67,15 @@ struct ConnectionsView: View {
         }.padding(.trailing, 17)
     }
     
-    var reportsMainView: some View { //Check if we can rename it
+    var reportsMainView: TellaServerReportsMainView { //Check if we can rename it
         TellaServerReportsMainView(reportsMainViewModel: ReportsViewModel(mainAppModel: appModel))
     }
     
-    var gDriveMainView : some View {
+    var gDriveMainView : GdriveReportMainView {
         GdriveReportMainView(reportsMainViewModel: GDriveViewModel(mainAppModel: appModel, gDriveRepository: GDriveRepository()))
     }
     
-    var nextcloudMainView : some View {
+    var nextcloudMainView : NextcloudReportMainView {
         NextcloudReportMainView(reportsMainViewModel: NextcloudReportViewModel(mainAppModel: appModel, nextcloudRepository: NextcloudRepository()))
     }
 }
