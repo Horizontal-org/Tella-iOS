@@ -173,21 +173,6 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         
         return subject.eraseToAnyPublisher()
     }
-    
-//    private func finishImport(importProgress: ImportProgress,
-//                              subject: CurrentValueSubject<ImportVaultFileResult, Never>,
-//                              filesActor : FilesActor,
-//                              importedFiles: [ImportedFile]) {
-//        
-//        importProgress.finish()
-//        subject.send(.fileAdded(filesActor.files))
-//        subject.send(.importProgress(importProgress:  importProgress))
-//        subject.send(completion: .finished)
-//        
-//        handleDeletionFiles(importedFiles:importedFiles)
-//        shouldReloadFiles.send(true)
-//        shouldCancelImportAndEncryption.value = false
-//    }
 
     private func handleDatabaseAddition(fileDetails:VaultFileDetails,
                                         subject : CurrentValueSubject<BackgroundActivityStatus, Never> ) {
