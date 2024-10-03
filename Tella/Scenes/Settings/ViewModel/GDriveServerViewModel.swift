@@ -17,6 +17,7 @@ class GDriveServerViewModel: ObservableObject {
 
     @Published var selectedDrive: SharedDrive? = nil
     @Published var sharedDriveState: ViewModelState<[SharedDrive]> = .loading
+    @Published var isSharedDriveButtonValid: Bool = false
     
     init(repository: GDriveRepositoryProtocol, mainAppModel: MainAppModel) {
         self.mainAppModel = mainAppModel
@@ -39,6 +40,7 @@ class GDriveServerViewModel: ObservableObject {
             },
             receiveValue: { [weak self] drives in
                 self?.sharedDriveState = .loaded(drives)
+                self?.isSharedDriveButtonValid = !drives.isEmpty
             })
             .store(in: &cancellables)
     }
