@@ -40,7 +40,16 @@ class DropboxRepository: DropboxRepositoryProtocol {
     private func setupNetworkMonitor() {
         networkMonitor.connectionDidChange.sink { isConnected in
             self.networkStatusSubject.send(isConnected)
+            if !isConnected {
+                self.handleNetworkLoss()
+            }
         }.store(in: &subscribers)
+    }
+    
+    private func handleNetworkLoss() {
+        isCancelled = true
+        currentUploadTask?.cancel()
+        uploadProgressSubject.send(completion: .failure(.noInternetConnection))
     }
     
     func setupDropbox() {
@@ -78,6 +87,10 @@ class DropboxRepository: DropboxRepositoryProtocol {
     func createFolder(name: String, description: String) -> AnyPublisher<String, APIError> {
         Deferred {
             Future { promise in
+                guard self.networkMonitor.isConnected else {
+                    promise(.failure(.noInternetConnection))
+                    return
+                }
                 Task {
                     do {
                         try await self.ensureSignedIn()
@@ -160,10 +173,12 @@ class DropboxRepository: DropboxRepositoryProtocol {
         isCancelled = false
 
         let folderPathToUse = folderPath
-
         currentUploadTask = Task {
             var fileUploadStates: [FileUploadState]
             do {
+                guard self.networkMonitor.isConnected else {
+                    throw APIError.noInternetConnection
+                }
                 if let files = files {
                     fileUploadStates = files.map { fileInfo -> FileUploadState in
                         let fileSize = (try? FileManager.default.attributesOfItem(atPath: fileInfo.url.path)[.size] as? Int64) ?? 0
@@ -211,6 +226,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 }
                 uploadProgressSubject.send(completion: .finished)
             }  catch let apiError as APIError {
+                
                 uploadProgressSubject.send(completion: .failure(apiError))
             }
             catch {
@@ -221,6 +237,14 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 }
             }
         }
+        
+        networkStatusSubject
+            .filter { !$0 }
+            .first()
+            .sink { _ in
+                self.handleNetworkLoss()
+            }
+            .store(in: &subscribers)
 
         return uploadProgressSubject.eraseToAnyPublisher()
     }
@@ -242,6 +266,9 @@ class DropboxRepository: DropboxRepositoryProtocol {
         currentFileIndex: Int,
         progressHandler: @escaping (DropboxUploadProgressInfo) -> Void
     ) async throws {
+        guard self.networkMonitor.isConnected else {
+            throw APIError.noInternetConnection
+        }
         let fileSize = fileState.totalBytes
 
         // Determine chunk size based on file size
@@ -331,8 +358,11 @@ class DropboxRepository: DropboxRepositoryProtocol {
                         fileState.offset = offset
                     }
                 }
+            } catch let apiError as APIError {
+                debugLog("Caught APIError during chunk upload: \(apiError)")
+                throw apiError
             } catch {
-                // Error handling
+                // Error handling for dropbox specific errors
                 try handleUploadError(error, fileHandle: fileHandle, offset: &offset, fileState: fileState, sessionId: &sessionId)
             }
 
@@ -357,7 +387,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
         fileState: FileUploadState,
         sessionId: inout String?
     ) throws {
-        debugLog(error)
+        
         if self.isDropboxAuthError(error) {
             throw APIError.noToken
         }
