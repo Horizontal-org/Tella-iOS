@@ -44,7 +44,7 @@ class DropboxErrorParser {
         } else if let uploadSessionFinishError = unboxedError as? Files.UploadSessionFinishError {
             return handleUploadSessionFinishError(uploadSessionFinishError)
         } else if unboxedError is Files.UploadSessionStartError {
-            return "Error while starting Dropbox session"
+            return LocalizableError.dropboxStartSession.localized
         } else if let createFolderError = unboxedError as? Files.CreateFolderError {
             return handleCreateFolderError(createFolderError)
         } else {
@@ -84,21 +84,21 @@ class DropboxErrorParser {
     private static func handleWriteError(_ error: Files.WriteError) -> String {
         switch error {
         case .conflict:
-            return "A file or folder with the same name already exists."
+            return LocalizableError.dropboxFileConflict.localized
         case .insufficientSpace:
-            return "Not enough space in your Dropbox. Please free up some space and try again."
+            return LocalizableError.dropboxInsufficientSpace.localized
         case .noWritePermission:
-            return "You do not have permission to write to this location."
+            return LocalizableError.dropboxNoWritePermission.localized
         case .disallowedName:
-            return "The file or folder name contains invalid characters."
-        case .malformedPath(let path):
-            return "The specified path is malformed: \(path ?? "Unknown path")."
+            return LocalizableError.dropboxDisallowedName.localized
+        case .malformedPath:
+            return LocalizableError.dropboxMalformedPath.localized
         case .teamFolder:
-            return "Cannot modify team folders."
+            return LocalizableError.dropboxTeamFolder.localized
         case .tooManyWriteOperations:
-            return "Too many write operations. Please try again later."
+            return LocalizableError.dropboxTooManyWriteOperations.localized
         case .other:
-            return "An unknown path error occurred."
+            return LocalizableError.dropboxOther.localized
         default:
             return LocalizableError.unexpectedResponse.localized
         }

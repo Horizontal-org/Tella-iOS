@@ -592,3 +592,13 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Dropbox_ConnectionExpired_SheetExpl" = "You are currently not connected to Dropbox. Please login again to continue submitting reports. You can still edit drafts offline without logging in.";
 "Dropbox_ConnectionExpired_Continue_SheetAction" = "Continue without login";
 "Dropbox_ConnectionExpired_Login_SheetAction" = "Login";
+
+"Error_Dropbox_FileConflict" = "A file or folder with the same name already exists.";
+"Error_Dropbox_InsufficientSpace" = "Not enough space in your Dropbox. Please free up some space and try again.";
+"Error_Dropbox_NoWritePermission" = "You do not have permission to write to this location.";
+"Error_Dropbox_DisallowedName" = "The file or folder name contains invalid characters.";
+"Error_Dropbox_MalformedPath" = "The specified path is malformed";
+"Error_Dropbox_TeamFolder" = "Cannot modify team folders.";
+"Error_Dropbox_TooManyWriteOperations" = "Too many write operations. Please try again later.";
+"Error_Dropbox_Other" = "An unknown path error occurred.";
+"Error_Dropbox_StartSession" = "Error while starting Dropbox session";
