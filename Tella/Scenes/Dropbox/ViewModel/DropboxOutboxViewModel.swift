@@ -83,9 +83,13 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
                     }
                     
                 }
-            }, receiveValue: { folderId in
-                self.reportViewModel.folderId = folderId
-                self.updateReportFolderId(folderId: folderId)
+            }, receiveValue: { response in
+                dump(response.name)
+                
+                self.reportViewModel.folderId = response.id
+                self.reportViewModel.title = response.name
+                
+                self.updateReportFolderId(folderId: response.id, name: response.name)
                 self.uploadFiles(to: "/\(self.reportViewModel.title)")
             })
             .store(in: &cancellables)
@@ -173,10 +177,10 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         }
     }
     
-    private func updateReportFolderId(folderId: String) {
+    private func updateReportFolderId(folderId: String, name: String) {
         guard let id = reportViewModel.id else { return }
         
-        mainAppModel.tellaData?.updateDropboxFolderId(reportId: id, folderId: folderId)
+        mainAppModel.tellaData?.updateDropboxFolderId(reportId: id, folderId: folderId,folderName: name )
     }
     
     override func updateFile(file: ReportVaultFile) {

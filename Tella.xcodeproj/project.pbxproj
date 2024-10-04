@@ -402,6 +402,7 @@
 		15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C1B2B6AC63200D67C74 /* ReloadButton.swift */; };
 		15791C232B6C2E9100D67C74 /* ResourcesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */; };
 		157E4F532BA385B500147345 /* PDFKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157E4F522BA385B500147345 /* PDFKitView.swift */; };
+		157EDEAB2CB055EB00663549 /* DropboxCreateFolderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157EDEAA2CB055EB00663549 /* DropboxCreateFolderResponse.swift */; };
 		1587D6EB2C98C8C1003E0B3D /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D6EA2C98C8C1003E0B3D /* ConfigurationManager.swift */; };
 		1587D6ED2C99CD15003E0B3D /* LocalizableDropbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D6EC2C99CD15003E0B3D /* LocalizableDropbox.swift */; };
 		1587D6EF2C9A003F003E0B3D /* DropboxReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D6EE2C9A003F003E0B3D /* DropboxReport.swift */; };
@@ -1031,6 +1032,7 @@
 		15791C1B2B6AC63200D67C74 /* ReloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReloadButton.swift; sourceTree = "<group>"; };
 		15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesViewModel.swift; sourceTree = "<group>"; };
 		157E4F522BA385B500147345 /* PDFKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFKitView.swift; sourceTree = "<group>"; };
+		157EDEAA2CB055EB00663549 /* DropboxCreateFolderResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxCreateFolderResponse.swift; sourceTree = "<group>"; };
 		1587D6EA2C98C8C1003E0B3D /* ConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationManager.swift; sourceTree = "<group>"; };
 		1587D6EC2C99CD15003E0B3D /* LocalizableDropbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableDropbox.swift; sourceTree = "<group>"; };
 		1587D6EE2C9A003F003E0B3D /* DropboxReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxReport.swift; sourceTree = "<group>"; };
@@ -2713,6 +2715,7 @@
 			children = (
 				15C540AA2CA5EBAB00D45B06 /* DropboxReportFileExtension.swift */,
 				15FE5D092CADD2860004AD35 /* DropboxUploadProgressInfo.swift */,
+				157EDEAA2CB055EB00663549 /* DropboxCreateFolderResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3662,6 +3665,7 @@
 				1293F67A2AD88B8400F6CFBD /* FeedbackAPI.swift in Sources */,
 				D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */,
 				0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */,
+				157EDEAB2CB055EB00663549 /* DropboxCreateFolderResponse.swift in Sources */,
 				1275A84B2C5E96B70071A97D /* NextcloudReportFile.swift in Sources */,
 				E1E7C5772AAB512400DDB07E /* UwaziTemplate.swift in Sources */,
 				12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */,

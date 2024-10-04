@@ -69,10 +69,10 @@ extension TellaData {
     }
     
     @discardableResult
-    func updateDropboxFolderId(reportId: Int, folderId: String) -> Result<Bool, Error> {
-        shouldReloadGDriveReports.send(true)
+    func updateDropboxFolderId(reportId: Int, folderId: String, folderName: String) -> Result<Bool, Error> {
+        shouldReloadDropboxReports.send(true)
         
-        return self.database.updateDropboxReportFolderId(idReport: reportId, folderId: folderId)
+        return self.database.updateDropboxReportFolderId(idReport: reportId, folderId: folderId, folderName: folderName)
     }
     
     ///  DELETE

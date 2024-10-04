@@ -241,9 +241,10 @@ extension TellaDataBase {
         }
     }
     
-    func updateDropboxReportFolderId(idReport: Int, folderId: String) -> Result<Bool, Error> {
+    func updateDropboxReportFolderId(idReport: Int, folderId: String, folderName: String) -> Result<Bool, Error> {
         do {
             let valuesToUpdate = [KeyValue(key: D.cFolderId, value: folderId),
+                                  KeyValue(key: D.cTitle, value: folderName),
                                   KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())
             ]
             let reportCondition = [KeyValue(key: D.cReportId, value: idReport)]

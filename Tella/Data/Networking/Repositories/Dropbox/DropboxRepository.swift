@@ -17,7 +17,7 @@ protocol DropboxRepositoryProtocol {
     func handleRedirectURL(_ url: URL, completion: @escaping (DropboxOAuthResult?) -> Void) -> Bool
     
     func uploadReport(folderPath: String, files: [DropboxFileInfo]?) -> AnyPublisher<DropboxUploadProgressInfo, APIError>
-    func createFolder(name: String, description: String) -> AnyPublisher<String, APIError>
+    func createFolder(name: String, description: String) -> AnyPublisher<DropboxCreateFolderResponse, APIError>
     
     func pauseUpload()
 }
@@ -84,7 +84,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
         }
     }
     
-    func createFolder(name: String, description: String) -> AnyPublisher<String, APIError> {
+    func createFolder(name: String, description: String) -> AnyPublisher<DropboxCreateFolderResponse, APIError> {
         Deferred {
             Future { promise in
                 guard self.networkMonitor.isConnected else {
@@ -113,14 +113,14 @@ class DropboxRepository: DropboxRepositoryProtocol {
     private func performCreateFolder(
         name: String,
         description: String,
-        promise: @escaping (Result<String, APIError>) -> Void
+        promise: @escaping (Result<DropboxCreateFolderResponse, APIError>) -> Void
     ) {
         guard let client = self.client else {
             promise(.failure(APIError.noToken))
             return
         }
         
-        let folderPath = "/\(name)"
+        var folderPath = "/\(name)"
         
         // Create folder
         client.files.createFolderV2(path: folderPath, autorename: true).response { response, error in
@@ -131,12 +131,14 @@ class DropboxRepository: DropboxRepositoryProtocol {
                     promise(.failure(.dropboxApiError(error)))
                 }
             } else if let metadata = response?.metadata {
+                folderPath = "/\(metadata.name)"
                 // Upload description file
                 self.uploadDescriptionFile(
                     client: client,
                     folderPath: folderPath,
                     description: description,
                     folderId: metadata.id,
+                    folderName: metadata.name,
                     promise: promise
                 )
             } else {
@@ -150,7 +152,8 @@ class DropboxRepository: DropboxRepositoryProtocol {
         folderPath: String,
         description: String,
         folderId: String,
-        promise: @escaping (Result<String, APIError>) -> Void
+        folderName: String,
+        promise: @escaping (Result<DropboxCreateFolderResponse, APIError>) -> Void
     ) {
         let descriptionData = description.data(using: .utf8) ?? Data()
         client.files.upload(path: "\(folderPath)/description.txt", input: descriptionData)
@@ -162,7 +165,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                         promise(.failure(.dropboxApiError(error)))
                     }
                 } else {
-                    promise(.success(folderId))
+                    promise(.success(DropboxCreateFolderResponse(id: folderId, name: folderName)))
                 }
             }
     }
@@ -470,5 +473,3 @@ class DropboxRepository: DropboxRepositoryProtocol {
         return false
     }
 }
-
-
