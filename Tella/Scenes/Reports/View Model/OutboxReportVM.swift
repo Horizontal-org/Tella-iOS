@@ -12,9 +12,9 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
         return !(reportViewModel.server?.autoDelete ?? true)
     }
 
-    override init(mainAppModel: MainAppModel, reportsViewModel : ReportsMainViewModel, reportId : Int?) {
+    override init(reportsViewModel : ReportsMainViewModel, reportId : Int?) {
 
-        super.init(mainAppModel: mainAppModel, reportsViewModel: reportsViewModel, reportId: reportId)
+        super.init(reportsViewModel: reportsViewModel, reportId: reportId)
 
         if reportViewModel.status == .submissionScheduled {
             self.submitReport()
@@ -54,7 +54,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
                         
                         _ =  self.reportViewModel.files.compactMap { _ in
                             let file = self.reportViewModel.files.first(where: {$0.id == progressInfo.fileId})
-                            file?.bytesSent = (progressInfo.total) ?? 0
+                            file?.bytesSent = (progressInfo.bytesSent) ?? 0
                             file?.status = progressInfo.status
                             return file
                         }
@@ -82,7 +82,7 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
     
     override func initVaultFile(reportId: Int?) {
         
-        if let reportId, let report = self.mainAppModel.tellaData?.getReport(reportId: reportId) {
+        if let reportId, let report = self.reportsViewModel.mainAppModel.tellaData?.getReport(reportId: reportId) {
 
             let files = processVaultFiles(reportFiles: report.reportFiles)
             
@@ -108,20 +108,33 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
             treat(uploadResponse: self.reportRepository.sendReport(report: report, mainAppModel: mainAppModel))
         }
     }
+    
+    override func updateCurrentFile(uploadProgressInfo : UploadProgressInfo) {
+        self.reportViewModel.files = self.reportViewModel.files.compactMap { file in
+            guard file.id == uploadProgressInfo.fileId else { return file }
+            
+            let updatedFile = file
+            updatedFile.bytesSent = uploadProgressInfo.bytesSent ?? 0
+            updatedFile.status = uploadProgressInfo.status
+            return updatedFile
+        }
+    }
+
 
     // MARK: Update Local database
     
     override func updateReportStatus(reportStatus:ReportStatus) {
         
         self.reportViewModel.status = reportStatus
-        
+        self.objectWillChange.send()
+
         guard let id = reportViewModel.id else { return  }
 
         mainAppModel.tellaData?.updateReportStatus(idReport: id, status: reportStatus)
     }
     
     override func deleteReport() {
-        mainAppModel.deleteReport(reportId: reportViewModel.id)
-        mainAppModel.deleteReport(reportId: reportViewModel.id)
+        let deleteResult = mainAppModel.deleteReport(reportId: reportViewModel.id)
+        handleDeleteReport(deleteResult: deleteResult)
     }
 }

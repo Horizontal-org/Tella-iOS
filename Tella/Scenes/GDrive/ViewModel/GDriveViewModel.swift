@@ -13,7 +13,7 @@ class GDriveViewModel: ReportsMainViewModel {
     @Published var server: GDriveServer?
 
     private var delayTime = 0.1
-    
+    var gDriveRepository: GDriveRepositoryProtocol
     var sheetItems : [ListActionSheetItem] { return [
         
         ListActionSheetItem(imageName: "view-icon",
@@ -23,17 +23,18 @@ class GDriveViewModel: ReportsMainViewModel {
                             content: LocalizableReport.viewModelDelete.localized,
                             type: ConnectionActionType.delete)
     ]}
-    
-    init(mainAppModel: MainAppModel) {
+
+
+    init(mainAppModel: MainAppModel, gDriveRepository: GDriveRepositoryProtocol) {
+        self.gDriveRepository = gDriveRepository
         super.init(mainAppModel: mainAppModel, connectionType: .gDrive, title: LocalizableGDrive.gDriveAppBar.localized)
-        
-        self.getReports()
+
         self.getServer()
         self.listenToUpdates()
     }
     
     private func getServer() {
-        self.server = mainAppModel.tellaData?.gDriveServers.value.first
+        self.server = mainAppModel.tellaData?.getDriveServers().first
     }
     
     override func getReports() {

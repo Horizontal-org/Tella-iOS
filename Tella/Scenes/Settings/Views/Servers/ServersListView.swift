@@ -51,9 +51,10 @@ struct ServersListView: View {
     }
     
     private func showServerActionBottomSheet(server:Server) {
-        let filteredActionItems = server.serverType == .gDrive ? serverActionItems.filter { $0.type as? ServerActionType != .edit } : serverActionItems
-        sheetManager.showBottomSheet(modalHeight: 176) {
-            ActionListBottomSheet(items: filteredActionItems,
+        let items = serverActionItems(server: server)
+        let modalHeight = items.count == 1 ? 140 : 175
+        sheetManager.showBottomSheet(modalHeight: CGFloat(modalHeight)) {
+            ActionListBottomSheet(items: serverActionItems(server: server),
                                   headerTitle: server.name ?? "",
                                   action:  {item in
                 
@@ -69,8 +70,7 @@ struct ServersListView: View {
             handleEditServer(server)
             sheetManager.hide()
         case .delete:
-            let deleteMessages = DeleteServerTexts(server: server)
-            showDeleteServerConfirmationView(message: deleteMessages)
+            showDeleteServerConfirmationView(server: server)
         }
     }
 
@@ -87,20 +87,37 @@ struct ServersListView: View {
             break
         }
     }
-    private func showDeleteServerConfirmationView(message: DeleteServerTexts) {
+    private func showDeleteServerConfirmationView(server: Server) {
         sheetManager.showBottomSheet(modalHeight: 210) {
-            ConfirmBottomSheet(titleText: message.titleText,
-                                      msgText: message.messageText,
-                                      cancelText: message.cancelText,
-                                      actionText: message.actionText, didConfirmAction: {
+            ConfirmBottomSheet(titleText: String(format: LocalizableSettings.settServerDeleteConnectionTitle.localized, server.name ?? ""),
+                                      msgText: LocalizableSettings.settServerDeleteConnectionMessage.localized,
+                                      cancelText: LocalizableSettings.settServerCancelSheetAction.localized,
+                                      actionText: LocalizableSettings.settServerDeleteSheetAction.localized,
+                               didConfirmAction: {
                 serversViewModel.deleteServer()
             })
         }
     }
 
     fileprivate func navigateToUwaziAddServerView(_ server: UwaziServer) {
-        navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel, server: server)
+        navigateTo(destination: UwaziAddServerURLView(uwaziServerViewModel: UwaziServerViewModel(mainAppModel: mainAppModel, currentServer: server))
             .environmentObject(serversViewModel))
+    }
+    private func serverActionItems(server: Server) -> [ListActionSheetItem]{
+        var serverActionItems : [ListActionSheetItem] = [
+            ListActionSheetItem(imageName: "delete-icon-white",
+                                content: LocalizableUwazi.uwaziServerDelete.localized,
+                                type: ServerActionType.delete)
+            
+        ]
+        switch server.serverType {
+        case .uwazi, .tella:
+            serverActionItems.append(ListActionSheetItem(imageName: "edit-icon",
+                                                         content: LocalizableUwazi.uwaziServerEdit.localized,
+                                                         type: ServerActionType.edit))
+        default: break
+        }
+        return serverActionItems
     }
 }
 

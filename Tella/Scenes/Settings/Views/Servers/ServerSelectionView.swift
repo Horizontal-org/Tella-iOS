@@ -7,21 +7,21 @@
 //
 
 import SwiftUI
-
+import Combine
 struct ServerSelectionView: View {
     @EnvironmentObject var serversViewModel : ServersViewModel
-    @StateObject var serverViewModel : ServerViewModel
-    @EnvironmentObject var mainAppModel : MainAppModel
     @ObservedObject var gDriveVM: GDriveAuthViewModel
     @ObservedObject var gDriveServerVM: GDriveServerViewModel
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    let gDriveDIContainer: GDriveDIContainer
     
-    init(appModel:MainAppModel, server: TellaServer? = nil, gDriveDIContainer: GDriveDIContainer) {
-        self.gDriveDIContainer = gDriveDIContainer
-        _serverViewModel = StateObject(wrappedValue: ServerViewModel(mainAppModel: appModel, currentServer: server))
-        _gDriveVM = ObservedObject(wrappedValue: GDriveAuthViewModel(repository: gDriveDIContainer.gDriveRepository))
-        _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveDIContainer.gDriveRepository, mainAppModel: appModel))
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    let gDriveRepository: GDriveRepositoryProtocol
+
+    
+    init(appModel:MainAppModel, server: TellaServer? = nil, gDriveRepository: GDriveRepositoryProtocol) {
+        self.gDriveRepository = gDriveRepository
+        _gDriveVM = ObservedObject(wrappedValue: GDriveAuthViewModel(repository: gDriveRepository))
+        _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveRepository, mainAppModel: appModel))
     }
 
     var body: some View {
@@ -35,7 +35,7 @@ struct ServerSelectionView: View {
                 }
                 Spacer()
                 bottomView()
-            }
+            }.scrollOnOverflow()
             .toolbar {
                 LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
             }
@@ -77,6 +77,8 @@ struct ServerSelectionView: View {
                 navigateToUwaziFlow()
             case .gDrive:
                 navigateToGDriveFlow()
+            case .nextcloud:
+                navigateToNextCloud()
             default:
                 break
             }
@@ -90,20 +92,23 @@ struct ServerSelectionView: View {
         serversViewModel.shouldEnableNextButton = false
     }
 
+    fileprivate func navigateToNextCloud() {
+        navigateTo(destination: NextcloudAddServerURLView(nextcloudVM: NextcloudServerViewModel(mainAppModel: serversViewModel.mainAppModel)))
+    }
+    
     fileprivate func navigateToTellaWebFlow() {
-        navigateTo(destination: AddServerURLView(appModel: mainAppModel))
+        navigateTo(destination: TellaWebAddServerURLView(appModel: serversViewModel.mainAppModel))
     }
 
     fileprivate func navigateToUwaziFlow() {
-        navigateTo(destination: UwaziAddServerURLView(appModel: mainAppModel)
-            .environmentObject(serverViewModel)
+        navigateTo(destination: UwaziAddServerURLView(uwaziServerViewModel: UwaziServerViewModel(mainAppModel: serversViewModel.mainAppModel))
             .environmentObject(serversViewModel))
     }
     
     fileprivate func navigateToGDriveFlow() {
         gDriveVM.handleSignIn {
             navigateTo(
-                destination: SelectDriveConnection(gDriveServerViewModel: gDriveServerVM),
+                destination: SelectDriveConnectionView(gDriveServerViewModel: gDriveServerVM),
                 title: LocalizableSettings.settServerGDrive.localized
             )
         }
@@ -131,10 +136,12 @@ struct ServerSelectionView: View {
                     .font(.custom(Styles.Fonts.regularFontName, size: 18))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
                 Text(LocalizableSettings.settServerSelectionMessage.localized)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
             }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
         }
     }
@@ -142,7 +149,7 @@ struct ServerSelectionView: View {
 
 struct ServerSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ServerSelectionView(appModel: MainAppModel.stub(), gDriveDIContainer: GDriveDIContainer())
+        ServerSelectionView(appModel: MainAppModel.stub(), gDriveRepository: GDriveRepository())
             .environmentObject(MainAppModel.stub())
             .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
     }

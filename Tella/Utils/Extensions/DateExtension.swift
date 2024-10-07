@@ -36,7 +36,7 @@ extension Date{
         }
     }
     
-    func getDraftReportTime() -> String {
+    func getModifiedReportTime() -> String {
         return "Modified" + " " + getTimeAgoSinceNow()
     }
     

@@ -60,7 +60,7 @@ struct PhotoVideoPickerView: View {
                 ImagePickerSheet { phPickerCompletion in
                     self.showingImagePickerSheet = false
                     if phPickerCompletion != nil  {
-                        if viewModel.shouldShowProgressView {
+                        if phPickerCompletion?.assets.count != 0 && viewModel.shouldShowProgressView {
                             showProgressView()
                         }
                         viewModel.handleAddingFile(phPickerCompletion)
@@ -121,7 +121,7 @@ struct PhotoVideoPickerView: View {
                 allowsMultipleSelection: true,
                 onCompletion: { result in
                     if let urls = try? result.get() {
-                        if viewModel.shouldShowProgressView {
+                        if urls.count != 0 && viewModel.shouldShowProgressView{
                             showProgressView()
                         }
                         viewModel.addDocuments(urls: urls)
@@ -131,6 +131,7 @@ struct PhotoVideoPickerView: View {
     }
     
     func showProgressView() {
+        viewModel.progressFile = ProgressFile()
         sheetManager.showBottomSheet(modalHeight: 190,
                                      shouldHideOnTap: false,
                                      content: {

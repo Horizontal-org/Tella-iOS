@@ -12,7 +12,6 @@ extension PHPhotoLibrary {
 
     static func checkPhotoLibraryAuthorization() async -> PHAuthorizationStatus {
         let currentStatus = PHPhotoLibrary.authorizationStatus(for: .readWrite)
-        print(currentStatus)
         if currentStatus == .notDetermined {
             // Request authorization
             let newStatus = await PHPhotoLibrary.requestAuthorization(for: .readWrite)

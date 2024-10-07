@@ -10,7 +10,9 @@ import Foundation
 import Combine
 
 class DraftMainViewModel: ObservableObject {
-    var mainAppModel : MainAppModel
+    var mainAppModel: MainAppModel
+    @Published var reportsMainViewModel: ReportsMainViewModel
+
     // Report
     @Published var reportId : Int?
     @Published var title : String = ""
@@ -76,9 +78,10 @@ class DraftMainViewModel: ObservableObject {
                             type: ManageFileType.fromDevice)
     ]}
     
-    init(mainAppModel : MainAppModel, reportId:Int? = nil) {
+    init(reportId:Int? = nil, reportsMainViewModel: ReportsMainViewModel) {
         
-        self.mainAppModel = mainAppModel
+        self.mainAppModel = reportsMainViewModel.mainAppModel
+        self.reportsMainViewModel = reportsMainViewModel
         
         self.validateReport()
         
@@ -90,8 +93,20 @@ class DraftMainViewModel: ObservableObject {
         
         fillReportVM()
     }
-    
-    func validateReport() {}
+
+    func validateReport() {
+        Publishers.CombineLatest4($server,$isValidTitle, $isValidDescription, $files)
+            .map { server, isValidTitle, isValidDescription, files in
+                ((server != nil) && isValidTitle && (isValidDescription || !files.isEmpty))
+            }
+            .assign(to: \.reportIsValid, on: self)
+            .store(in: &subscribers)
+        
+        $isValidTitle
+            .map { $0 == true }
+            .assign(to: \.reportIsDraft, on: self)
+            .store(in: &subscribers)
+    }
     
     func getServers() {}
 
@@ -133,4 +148,9 @@ class DraftMainViewModel: ObservableObject {
         self.saveReport()
     }
     
+    func validateTitleAndDescription() {
+        self.isValidTitle =  self.title.textValidator()
+        self.isValidDescription = self.description.textValidator()
+        self.objectWillChange.send()
+    }
 }

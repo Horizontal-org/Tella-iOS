@@ -8,9 +8,8 @@ import SwiftUI
 struct SettingsAddServerCardView: View {
     
     @EnvironmentObject var serversViewModel : ServersViewModel
-    @EnvironmentObject var mainAppModel : MainAppModel
     @EnvironmentObject var settingViewModel: SettingsViewModel
-    let gDriveDIContainer = GDriveDIContainer()
+    let gDriveRepository = GDriveRepository()
     var body: some View {
         ZStack {
             HStack{
@@ -27,8 +26,8 @@ struct SettingsAddServerCardView: View {
                 Spacer()
                 
                 Button {
-                    //navigateTo(destination: AddServerURLView(appModel: mainAppModel))
-                    navigateTo(destination: ServerSelectionView(appModel: mainAppModel, gDriveDIContainer: gDriveDIContainer).environmentObject(serversViewModel))
+                    navigateTo(destination: ServerSelectionView(appModel: serversViewModel.mainAppModel,
+                                                                gDriveRepository: gDriveRepository).environmentObject(serversViewModel))
                 } label: {
                     Image("settings.add")
                         .padding(.all, 14)
@@ -41,14 +40,14 @@ struct SettingsAddServerCardView: View {
     }
     
     var addServerURLView: some View {
-        AddServerURLView(appModel: mainAppModel)
+        TellaWebAddServerURLView(appModel: serversViewModel.mainAppModel)
     }
 }
 
 struct SettingsAddServerCardView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsAddServerCardView()
-            .environmentObject(ServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
+            .environmentObject(TellaWebServerViewModel(mainAppModel: MainAppModel.stub(), currentServer: nil))
             .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
     }
 }

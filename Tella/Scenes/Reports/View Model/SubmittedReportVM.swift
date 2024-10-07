@@ -7,8 +7,8 @@ import Combine
 
 class SubmittedReportVM: SubmittedMainViewModel {
     
-    override init(mainAppModel: MainAppModel, reportId: Int?) {
-        super.init(mainAppModel: mainAppModel, reportId: reportId)
+    override init(reportsMainViewModel: ReportsMainViewModel, reportId: Int?) {
+        super.init(reportsMainViewModel: reportsMainViewModel, reportId:reportId)
         fillReportVM(reportId: reportId)
     }
     

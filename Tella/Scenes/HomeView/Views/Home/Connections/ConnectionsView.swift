@@ -67,20 +67,16 @@ struct ConnectionsView: View {
         }.padding(.trailing, 17)
     }
     
-    var reportsMainView: some View {
-        ReportMainView(reportMainViewModel: ReportsViewModel(mainAppModel: appModel), diContainer: GDriveDIContainer())
+    var reportsMainView: TellaServerReportsMainView { //Check if we can rename it
+        TellaServerReportsMainView(reportsMainViewModel: ReportsViewModel(mainAppModel: appModel))
     }
     
-    var gDriveMainView : some View {
-        ReportMainView(reportMainViewModel: GDriveViewModel(mainAppModel: appModel),
-                       diContainer: GDriveDIContainer())
+    var gDriveMainView : GdriveReportMainView {
+        GdriveReportMainView(reportsMainViewModel: GDriveViewModel(mainAppModel: appModel, gDriveRepository: GDriveRepository()))
     }
     
-    var nextcloudMainView : some View {
-        ReportMainView(reportMainViewModel: NextcloudReportViewModel(mainAppModel: appModel,
-                                                                   connectionType: .nextcloud,
-                                                                   title: LocalizableNextcloud.nextcloudAppBar.localized),
-                       diContainer: GDriveDIContainer())
+    var nextcloudMainView : NextcloudReportMainView {
+        NextcloudReportMainView(reportsMainViewModel: NextcloudReportViewModel(mainAppModel: appModel, nextcloudRepository: NextcloudRepository()))
     }
 }
 

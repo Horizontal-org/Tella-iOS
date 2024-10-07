@@ -20,28 +20,34 @@ class ImportProgress: ObservableObject {
             }
         }
     }
-
+    
     private var totalTime : TimeInterval = 0.0
     private var timeRemaining : TimeInterval = 0.0
     private var timer = Timer()
-    private let sizeImportedPerSecond = 140000000
-                                         
+    private let bytesImportedPerSecond = 200000000 // Calculated approximately
+    private let bytesExportedPerSecond =   7000000 // Calculated approximatively
     
-    func start(currentFile : Int = 1, totalFiles : Int = 1, totalSize : Double = 0.0) {
+    func start(currentFile: Int = 0, totalFiles: Int = 1, totalSize: Double = 0.0, totalVideosSizeForExport: Double = 0.0) {
+        
         DispatchQueue.main.async {
             self.progress.send(0)
             
             self.totalFiles = totalFiles
             self.currentFile = currentFile
             
-            self.totalTime =  Double(totalSize) / Double(self.sizeImportedPerSecond)
+            // Time necessary to export videos and delete metadata
+            let timeForVideoExport = Double(totalVideosSizeForExport) / Double(self.bytesExportedPerSecond)
+            
+            // Time necessary to import files: preparing files information and encryption
+            let timeForFileImport = Double(totalSize) / Double(self.bytesImportedPerSecond)
+            
+            self.totalTime = timeForFileImport + timeForVideoExport
             self.timeRemaining = self.totalTime
             
             self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.timerRunning), userInfo: nil, repeats: true)
-             
         }
     }
-    
+
     func stop() {
         DispatchQueue.main.async {
             self.timer.invalidate()
@@ -61,7 +67,6 @@ class ImportProgress: ObservableObject {
         self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.timerRunning), userInfo: nil, repeats: true)
     }
     
-    
     func finish() {
         DispatchQueue.main.async {
             self.timeRemaining = 0.0
@@ -70,7 +75,7 @@ class ImportProgress: ObservableObject {
             self.isFinishing.send(true)
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.progress.send(0)
             self.isFinishing.send(false)
 

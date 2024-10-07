@@ -12,7 +12,7 @@ import Combine
 class OutboxMainViewModel<T: Server>: ObservableObject {
     
     var mainAppModel : MainAppModel
-    var reportsViewModel : ReportsMainViewModel
+    @Published var reportsViewModel: ReportsMainViewModel
     
     @Published var reportViewModel : ReportViewModel = ReportViewModel<T>()
     @Published var progressFileItems : [ProgressFileItemViewModel] = []
@@ -27,6 +27,11 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     }
     @Published var shouldShowSubmittedReportView : Bool = false
     @Published var shouldShowMainView : Bool = false
+    
+    @Published var shouldShowToast : Bool = false
+    @Published var toastMessage : String = ""
+    
+    @Published var shouldShowLoginView : Bool = false
     
     var subscribers = Set<AnyCancellable>()
     var filesToUpload : [FileToUpload] = []
@@ -51,15 +56,18 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
         return !reportViewModel.description.isEmpty
     }
     
+    var shouldShowCancelUploadConfirmation : Bool {
+        return false
+    }
     
-    init(mainAppModel: MainAppModel, reportsViewModel : ReportsMainViewModel, reportId : Int?) {
-        self.mainAppModel = mainAppModel
+    init(reportsViewModel: ReportsMainViewModel, reportId : Int?) {
+        self.mainAppModel = reportsViewModel.mainAppModel
         self.reportsViewModel = reportsViewModel
         
         initVaultFile(reportId: reportId)
         
         initializeProgressionInfos()
-
+        
     }
     
     func initVaultFile(reportId: Int?) {}
@@ -68,14 +76,14 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
         let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: reportFiles?.compactMap { $0.fileId } ?? [])
         
         var files: [ReportVaultFile] = []
-                
+        
         reportFiles?.forEach { reportFile in
             if let vaultFile = vaultFileResult?.first(where: { reportFile.fileId == $0.id }) {
                 let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
                 files.append(reportVaultFile)
             }
         }
-                
+        
         return files
     }
     func initializeProgressionInfos() {
@@ -122,18 +130,17 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
         }
     }
     
+    func updateCurrentFile(uploadProgressInfo : UploadProgressInfo) {
+        
+    }
+    
     func updateProgressInfos(uploadProgressInfo : UploadProgressInfo) {
         
-        guard  let _ = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId}) else { return}
+        updateCurrentFile(uploadProgressInfo: uploadProgressInfo)
         
-        _ = self.reportViewModel.files.compactMap { _ in
-            let currentFile = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId})
-            currentFile?.bytesSent = uploadProgressInfo.bytesSent ?? 0
-            currentFile?.status = uploadProgressInfo.status
-            return currentFile
-        }
+        guard  let file = self.reportViewModel.files.first(where: {$0.id == uploadProgressInfo.fileId}) else { return}
         
-        self.updateFileProgress(progressInfo: uploadProgressInfo)
+        self.updateFile(file: file)
         
         // All Files
         let totalBytesSent = self.reportViewModel.files.reduce(0) { $0 + ($1.bytesSent)}
@@ -151,11 +158,12 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
             let formattedTotalUploaded = totalBytesSent.getFormattedFileSize().getFileSizeWithoutUnit()
             let formattedTotalSize = totalSize.getFormattedFileSize()
             
-            // Progress Files
-            self.percentUploadedInfo = "\(Int(formattedPercentUploaded * 100))% uploaded"
-            self.percentUploaded = Float(formattedPercentUploaded)
-            self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
-            
+            DispatchQueue.main.async {
+                // Progress Files
+                self.percentUploadedInfo = "\(Int(formattedPercentUploaded * 100))% uploaded"
+                self.percentUploaded = Float(formattedPercentUploaded)
+                self.uploadedFiles = " \(self.reportViewModel.files.count) files, \(formattedTotalUploaded)/\(formattedTotalSize) uploaded"
+            }
             //Progress File Item
             if let currentItem = self.progressFileItems.first(where: {$0.file.id == uploadProgressInfo.fileId}) {
                 
@@ -164,17 +172,35 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
                 
                 currentItem.progression = "\(currentFileTotalBytesSent)/\(size )"
             }
+            publishUpdates()
+        }
+    }
+    
+    func publishUpdates() {
+        DispatchQueue.main.async {
             self.objectWillChange.send()
         }
+    }
+    
+    func handleDeleteReport(deleteResult:Bool) {
+        if deleteResult {
+            toastMessage = String(format: LocalizableReport.reportDeletedToast.localized, reportViewModel.title)
+            pauseSubmission()
+            showMainView()
+        } else {
+            toastMessage = LocalizableCommon.commonError.localized
+        }
         
+        shouldShowToast = true
     }
     
     // MARK: Update Local database
     
-    func updateFileProgress(progressInfo:UploadProgressInfo) {
-        
-    }
+    func updateFile(file: ReportVaultFile) { }
+    
     func updateReportStatus(reportStatus:ReportStatus) {}
+    
+    func updateReport() {}
     
     func deleteReport() {}
 }

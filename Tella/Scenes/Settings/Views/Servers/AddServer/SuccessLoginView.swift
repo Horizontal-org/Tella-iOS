@@ -8,7 +8,7 @@ import SwiftUI
 struct SuccessLoginView: View {
     @EnvironmentObject var mainAppModel : MainAppModel
     @EnvironmentObject var serversViewModel : ServersViewModel
-    @EnvironmentObject var serverViewModel : ServerViewModel
+    @EnvironmentObject var serverViewModel : TellaWebServerViewModel
     @EnvironmentObject private var appViewState: AppViewState
     @State var showNextView : Bool = false
     

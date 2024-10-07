@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Photos
 
 extension VaultFilesManager {
     
@@ -62,10 +63,10 @@ extension VaultFilesManager {
         var filePath : URL?
         
         if let _ = importedFile.asset {
-            await filePath = getUrlFromAsset(importedFile: importedFile)
+            await filePath = getUrlFromAsset(importedFile: importedFile) // From photo library
             
         } else {
-            await filePath = getModifiedUrlFromURL(importedFile: importedFile)
+            await filePath = getModifiedUrlFromURL(importedFile: importedFile) // From files
         }
         
         return filePath
@@ -88,7 +89,7 @@ extension VaultFilesManager {
                 return tempFileurl
             case .video:
                 guard let tmpFileURL = vaultManager?.createTempFileURL(pathExtension: urlFile.pathExtension) else {return nil}
-                guard let tmpFileURL = await urlFile.returnVideoURLWithoutMetadata(destinationURL: tmpFileURL) else {return nil}
+                guard let tmpFileURL = await returnVideoURLWithoutMetadata(inputputURL: urlFile, outputURL: tmpFileURL) else {return nil}
                 return tmpFileURL
             default:
                 return urlFile
@@ -128,8 +129,8 @@ extension VaultFilesManager {
                 throw RuntimeError("Error creating temp file URL")
             }
             
-            guard let tmpFileURL = await url.returnVideoURLWithoutMetadata(destinationURL: tmpFileURLOutput) else {
-                return url
+            guard let tmpFileURL = await returnVideoURLWithoutMetadata(inputputURL: url, outputURL: tmpFileURLOutput, phasset: importedFile.asset) else {
+                return nil
             }
             return tmpFileURL
             
@@ -137,4 +138,69 @@ extension VaultFilesManager {
             return url
         }
     }
+    
+    /**
+     Asynchronously exports a video without metadata to a specified output URL.
+
+     This function takes an optional `inputURL` or `PHAsset` to specify the source of the video. It exports the video at the highest quality to the specified `outputURL` while stripping all metadata. It also listens for a cancellation request during the export process, allowing the user to cancel the export.
+
+     - Parameters:
+       - inputputURL: Optional `URL` of the input video file. If not provided, the function will use the provided `PHAsset`.
+       - outputURL: The `URL` where the exported video will be saved.
+       - phasset: Optional `PHAsset` representing the video to export. If provided, this will be used as the input source instead of `inputputURL`.
+
+     - Returns: An optional `URL` of the exported video. Returns `nil` if the export fails or is cancelled.
+
+     - Behavior:
+       - Uses the highest available export quality (`AVAssetExportPresetHighestQuality`).
+       - Removes metadata from the video using `metadataItemFilter = .forSharing()` and setting `exportSession.metadata` to `nil`.
+       - Supports cancellation of the export through a `shouldCancelVideoExport` flag.
+
+     - Notes:
+       - The function listens to the `shouldCancelVideoExport` publisher and cancels the export if set to `true`.
+       - The function is asynchronous, so the export process will not block the main thread.
+     */
+
+    func returnVideoURLWithoutMetadata(inputputURL: URL? = nil, outputURL: URL, phasset:PHAsset? = nil) async -> URL? {
+       
+        guard let asset = await getAVAsset(inputputURL:inputputURL, phasset: phasset) else {return nil}
+        
+        guard let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) else { return nil }
+        exportSession.outputURL = outputURL
+        exportSession.outputFileType =  inputputURL?.getAVFileType()
+        exportSession.metadata = nil
+        exportSession.metadataItemFilter = .forSharing()
+
+        self.shouldCancelVideoExport.sink(receiveValue: { shouldCancel in
+          if shouldCancel {
+              self.shouldCancelVideoExport.value = false
+              exportSession.cancelExport()
+          }
+        }).store(in: &self.cancellable)
+
+        await exportSession.export()
+
+        if exportSession.status == .completed {
+            return outputURL
+        } else {
+            return nil
+        }
+    }
+    
+    func getAVAsset(inputputURL: URL? = nil, phasset:PHAsset? = nil) async  -> AVAsset? {
+        do {
+            if let phasset {
+                return try await phasset.getAVAsset()
+            } else {
+                guard let inputputURL else  {return nil}
+                let _ = inputputURL.startAccessingSecurityScopedResource()
+                defer { inputputURL.stopAccessingSecurityScopedResource() }
+                return AVAsset(url: inputputURL)
+            }
+        } catch {
+            return nil
+        }
+    }
+
+
 }

@@ -43,6 +43,10 @@ class WebServer: Server {
     }
 
     required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.url = try container.decodeIfPresent(String.self, forKey: .url)
+        self.username = try container.decodeIfPresent(String.self, forKey: .username)
+        self.password = try container.decodeIfPresent(String.self, forKey: .password)
         try super.init(from: decoder)
     }
 }

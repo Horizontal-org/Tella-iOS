@@ -44,6 +44,11 @@ class TellaDataBase : DataBase {
                 createGDriveServerTable()
                 createGDriveReportTable()
                 createGDriveReportFilesTable()
+                fallthrough
+            case 6:
+                createNextcloudServerTable()
+                createNextcloudReportTable()
+                createNextcloudReportFilesTable()
             default :
                 break
             }
@@ -67,6 +72,10 @@ class TellaDataBase : DataBase {
         createGDriveServerTable()
         createGDriveReportTable()
         createGDriveReportFilesTable()
+        createNextcloudServerTable()
+        createNextcloudReportTable()
+        createNextcloudReportFilesTable()
+
     }
     
     func createReportTable() {
@@ -516,12 +525,12 @@ class TellaDataBase : DataBase {
         }
     }
     
-    func deleteReport(reportId : Int?) -> Result<Bool,Error> {
+    func deleteReport(reportId : Int?) -> Bool {
         
         do {
             
-            guard let reportId, let report = self.getReport(reportId: reportId)else {
-                return .failure(RuntimeError("No report is selected"))
+            guard let reportId, let report = self.getReport(reportId: reportId) else {
+                return false
             }
             
             try deleteReportFiles(reportIds: [reportId])
@@ -530,16 +539,15 @@ class TellaDataBase : DataBase {
             
             try statementBuilder.delete(tableName: D.tReport,
                                         primarykeyValue: reportCondition)
-            
-            return .success(true)
+            return true
             
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return false
         }
     }
     
-    func deleteSubmittedReport() -> Result<Bool,Error> {
+    func deleteSubmittedReport() -> Bool {
         do {
             let submittedReports = self.getReports(reportStatus: [.submitted])
             let reportIds = submittedReports.compactMap{$0.id}
@@ -550,11 +558,11 @@ class TellaDataBase : DataBase {
             
             try statementBuilder.delete(tableName: D.tReport,
                                         primarykeyValue: reportCondition)
-            return .success(true)
+            return true
             
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return false
         }
     }
     

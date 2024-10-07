@@ -10,24 +10,20 @@ import SwiftUI
 
 struct GDriveDraftView: View {
     @StateObject var gDriveDraftVM: GDriveDraftViewModel
-    @EnvironmentObject var mainAppModel : MainAppModel
-    @EnvironmentObject var reportsViewModel : ReportsMainViewModel
-    let gDriveDIContainer: GDriveDIContainer
-    
-    init(mainAppModel: MainAppModel, gDriveDIContainer: GDriveDIContainer, reportId: Int? = nil) {
-        self.gDriveDIContainer = gDriveDIContainer
-        _gDriveDraftVM = StateObject(wrappedValue: GDriveDraftViewModel(
-            mainAppModel: mainAppModel,
-            repository: gDriveDIContainer.gDriveRepository,
-            reportId: reportId)
-        )
-    }
     
     var body: some View {
-        DraftView(viewModel: gDriveDraftVM, reportsViewModel: reportsViewModel)
+        DraftView(viewModel: gDriveDraftVM, showOutboxDetailsViewAction: { showOutboxDetailsView()
+        })
+    }
+    
+    private func showOutboxDetailsView() {
+        let outboxVM = GDriveOutboxViewModel(reportsViewModel: gDriveDraftVM.reportsMainViewModel, reportId: gDriveDraftVM.reportId, repository: gDriveDraftVM.gDriveRepository)
+        navigateTo(destination: GdriveOutboxDetailsView(outboxReportVM: outboxVM))
     }
 }
 
-#Preview {
-    GDriveDraftView(mainAppModel: MainAppModel.stub(), gDriveDIContainer: GDriveDIContainer())
-}
+//
+//#Preview {
+//    GDriveDraftView(mainAppModel: MainAppModel.stub()) //TOFix
+//}
+

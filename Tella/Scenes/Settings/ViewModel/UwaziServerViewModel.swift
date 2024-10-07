@@ -9,36 +9,15 @@
 import Foundation
 import Combine
 
-class UwaziServerViewModel: ObservableObject {
+
+class UwaziServerViewModel: ServerViewModel {
     var mainAppModel : MainAppModel
 
-    // Server propreties
-    @Published var serverURL : String = "https://"
-
     @Published var name : String?
-    @Published var username : String = ""
-    @Published var password : String = ""
-    @Published var activatedMetadata : Bool = false
-    @Published var backgroundUpload : Bool = false
-    @Published var autoUpload : Bool = false
-    @Published var autoDelete : Bool = false
-
-
-    // Add URL
-    @Published var validURL : Bool = false
-    @Published var shouldShowURLError : Bool = false
-    @Published var urlErrorMessage : String = ""
     @Published var isPublicInstance: Bool?
 
     // Login
-    @Published var validUsername : Bool = false
-    @Published var validPassword : Bool = false
     @Published var validCode: Bool = false
-    @Published var validCredentials : Bool = false
-    @Published var shouldShowLoginError : Bool = false
-    @Published var loginErrorMessage : String = ""
-    @Published var isLoading : Bool = false
-    @Published var showNextSuccessLoginView : Bool = false
     @Published var showNextLanguageSelectionView: Bool = false
     @Published var showNext2FAView: Bool = false
 
@@ -52,7 +31,6 @@ class UwaziServerViewModel: ObservableObject {
     // Language
     @Published var languages: [UwaziLanguageRow] = []
     @Published var selectedLanguage: UwaziLanguageRow?
-    private var cancellableLogin: Cancellable? = nil
     private var cancellableAuthenticationCode: Cancellable? = nil
     var subscribers = Set<AnyCancellable>()
 
@@ -61,14 +39,10 @@ class UwaziServerViewModel: ObservableObject {
     var setting: UwaziCheckURL?
     var cookie: String?
 
-    init(mainAppModel : MainAppModel, currentServer: UwaziServer?) {
-
+    init(mainAppModel : MainAppModel, currentServer: UwaziServer? = nil) {
         self.mainAppModel = mainAppModel
         self.currentServer = currentServer
-
-        cancellableLogin = $validUsername.combineLatest($validPassword).sink(receiveValue: { validUsername, validPassword  in
-            self.validCredentials = validUsername && validPassword
-        })
+        super.init()
         cancellableAuthenticationCode = $validCode.sink(receiveValue: { validCode in
             self.validAuthenticationCode = validCode
         })
@@ -154,7 +128,7 @@ class UwaziServerViewModel: ObservableObject {
     }
 
     // MARK: - Check URL API Call Methods
-    func checkURL() {
+    override func checkURL() {
         self.isLoading = true
         guard let baseURL = serverURL.getBaseURL() else { return }
         let cookie = "connect.sid=\(self.token ?? "")"
@@ -206,7 +180,7 @@ class UwaziServerViewModel: ObservableObject {
     }
     
     // MARK: - Login API Call Methods
-    func login() {
+    override func login() {
         guard let baseURL = serverURL.getBaseURL() else { return }
 
         isLoading = true

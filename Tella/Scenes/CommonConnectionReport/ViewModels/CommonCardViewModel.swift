@@ -12,6 +12,7 @@ class CommonCardViewModel: Hashable {
     
     var id : Int?
     var title: String
+    var subtitle: String
     var iconImageName: String?
     var serverName: String?
     var updatedAt: String?
@@ -22,6 +23,7 @@ class CommonCardViewModel: Hashable {
     
     init(id: Int?, 
          title: String,
+         subtitle: String,
          iconImageName: String?,
          serverName: String?,
          updatedAt: String? = nil,
@@ -32,6 +34,7 @@ class CommonCardViewModel: Hashable {
         
         self.id = id
         self.title = title
+        self.subtitle = subtitle
         self.iconImageName = iconImageName
         self.serverName = serverName
         self.updatedAt = updatedAt
@@ -47,17 +50,5 @@ class CommonCardViewModel: Hashable {
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
-    }
-    
-}
-
-extension CommonCardViewModel {
-    var subtitle: String {
-        switch connectionType {
-        case .uwazi:
-            return self.serverName ?? ""
-        default:
-            return self.updatedAt ?? ""
-        }
     }
 }

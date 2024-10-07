@@ -273,14 +273,13 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 
                 let fileName = fileURL.lastPathComponent
                 let totalSize = UInt64((try? fileURL.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0)
-                let uploadProgressInfo = UploadProgressInfo(fileId: fileId, status: .notSubmitted, total: Int(totalSize))
+                let uploadProgressInfo = UploadProgressInfo(bytesSent: Int(totalSize), fileId: fileId, status: .notSubmitted)
                 
                 let fileExists = try await checkFileExists(fileName: fileName, folderId: folderId, driveService: driveService)
                 
                 if fileExists {
                     // File already exists, mark as uploaded
                     uploadProgressInfo.bytesSent = Int(totalSize)
-                    uploadProgressInfo.current = Int(totalSize)
                     uploadProgressInfo.status = .uploaded
                     promise(.success(uploadProgressInfo))
                 } else {
@@ -343,8 +342,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                             throw APIError.unexpectedResponse
                         }
                         
-                        uploadProgressInfo.bytesSent = Int(uploadProgressInfo.total!)
-                        uploadProgressInfo.current = Int(uploadProgressInfo.total!)
+                        uploadProgressInfo.bytesSent = Int(uploadProgressInfo.bytesSent!)
                         uploadProgressInfo.status = .uploaded
                         continuation.resume(returning: uploadProgressInfo)
                     } catch {
@@ -405,21 +403,6 @@ class GDriveRepository: GDriveRepositoryProtocol  {
         promise(.failure(.unexpectedResponse))
     }
 }
-
-
-class GDriveDIContainer : DIContainer {
-    
-    let gDriveRepository: GDriveRepositoryProtocol
-    
-    init(gDriveRepository: GDriveRepositoryProtocol = GDriveRepository()) {
-        self.gDriveRepository = gDriveRepository
-    }
-}
-
-class DIContainer {
-    
-}
-
 
 struct UploadProgressWithFolderId {
     let folderId: String

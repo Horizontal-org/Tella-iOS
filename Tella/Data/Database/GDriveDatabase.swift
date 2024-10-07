@@ -8,9 +8,7 @@
 
 import Foundation
 
-// GDrive Server
 extension TellaDataBase {
-    
     func createGDriveServerTable() {
         let columns = [
             cddl(D.cServerId, D.integer, primaryKey: true, autoIncrement: true),
@@ -18,6 +16,7 @@ extension TellaDataBase {
             cddl(D.cRootFolder, D.text),
             cddl(D.cRootFolderName, D.text)
         ]
+        
         statementBuilder.createTable(tableName: D.tGDriveServer, columns: columns)
     }
     
@@ -58,7 +57,6 @@ extension TellaDataBase {
     }
     
 }
-
 // GDrive Reports
 extension TellaDataBase {
     func createGDriveReportTable() {

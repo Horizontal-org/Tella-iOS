@@ -7,7 +7,7 @@ import SwiftUI
 
 struct AdvancedServerSettingsView: View {
     
-    @EnvironmentObject var serverVM : ServerViewModel
+    @EnvironmentObject var serverVM : TellaWebServerViewModel
     @EnvironmentObject var serversVM : ServersViewModel
 
     var body: some View {

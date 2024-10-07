@@ -25,27 +25,27 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     var key: String? {
         return cryptoManager.metaPrivateKey?.getString()
     }
-
+    
     func save(_ filePath: URL, vaultFileId: String?) -> Bool? {
         guard let vaultFileId else { return false }
         debugLog("\(filePath)", space: .files)
         
         let outputFileURL = containerURL(for: vaultFileId)
-
+        
         guard fileManager.createEmptyFile(atPath: outputFileURL) else {
             debugLog("File not created.")
             return nil
         }
-
+        
         guard cryptoManager.encryptFile(at: filePath, outputTo: outputFileURL) else {
             debugLog("Encryption failed \(String(describing: vaultFileId))", level: .debug, space: .crypto)
-                return nil
-            }
-
+            return nil
+        }
+        
         deleteTmpFiles(files: [filePath])
         return true
     }
- 
+    
     func loadFileData(file vaultFile: VaultFileDB) -> Data? {
         
         debugLog("\(vaultFile)", space: .files)
@@ -55,7 +55,7 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         }
         
         let data = fileManager.contents(atPath: fileURL)
-       
+        
         deleteFiles(files: [fileURL])
         
         return data
@@ -70,36 +70,58 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         }
         
         let inputFileURL = containerURL(for: identifier)
-
+        
         guard cryptoManager.decryptFile(at: inputFileURL, outputTo: tmpFileURL) else {
             return nil
         }
-
+        
         return tmpFileURL
     }
-
+    
     func loadVaultFileToURL(file vaultFile: VaultFileDB) -> URL? {
-
-        let tmpFileURL = createTempFileURL(fileName: vaultFile.name ,pathExtension: vaultFile.fileExtension)
+        loadVaultFileToURL(file: vaultFile,withSubFolder: false)
+    }
+    
+    func loadVaultFileToURL(file vaultFile: VaultFileDB, withSubFolder: Bool = false) -> URL? {
+        
+        let tmpFileURL = createTempFileURL(fileName: vaultFile.name ,pathExtension: vaultFile.fileExtension, withSubFolder: withSubFolder)
+        
+        if withSubFolder {
+            fileManager.createDirectory(atPath: tmpFileURL.deletingLastPathComponent())
+        }
         
         guard (fileManager.createEmptyFile(atPath: tmpFileURL)) else {
             debugLog("File not created.")
             return nil
         }
-
+        
         guard let fileId = vaultFile.id else {
             return nil
         }
-
+        
         let inputFileURL = containerURL(for: fileId)
-
+        
         guard cryptoManager.decryptFile(at: inputFileURL, outputTo: tmpFileURL) else {
             return nil
         }
-
+        
         return tmpFileURL
     }
-
+    
+    func getDescriptionFileUrl(content:String,fileName:String) -> URL? {
+        
+        let fileURL = URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(fileName)
+        
+        do {
+            try content.write(to: fileURL, atomically: false, encoding: .utf8)
+            debugLog("fileURL")
+            return fileURL
+        } catch {
+            debugLog("Failed to write to file: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
     func loadVaultFilesToURL(files vaultFiles: [VaultFileDB]) -> [URL] {
         
         var tmpUrlArray : [URL] = []
@@ -125,7 +147,7 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         }
         return cryptoManager.decrypt(encryptedData)
     }
-
+    
     func loadVaultFileToURLOld(file vaultFile: VaultFileDB) -> URL? {
         
         guard let data = self.loadFileDataOld(fileName: vaultFile.id) else { return nil }
@@ -139,36 +161,36 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         }
         return tmpFileURL
     }
-
+    
     func extract(from inputFileURL: URL, offsetSize:Int)   {
-
+        
         do {
             
             // Open the file in read-write mode
             let fileHandle = try FileHandle(forUpdating: inputFileURL)
-
+            
             // Move the file pointer to the start offset
             try fileHandle.seek(toOffset: UInt64(offsetSize))
-
+            
             // Read the content after the subrange
             let remainingData = fileHandle.readDataToEndOfFile()
-
+            
             try fileHandle.seek(toOffset: 0)
-
+            
             // Write back the content after the subrange
             fileHandle.write(remainingData)
-
+            
             // Truncate the file to the new size
             fileHandle.truncateFile(atOffset: UInt64(remainingData.count))
-
+            
             // Close the file handle
             fileHandle.closeFile()
-
+            
         } catch let error {
             debugLog(error)
         }
     }
-
+    
     func saveDataToTempFile(data: Data?, pathExtension: String?) -> URL? {
         self.saveDataToTempFile(data: data, fileName: nil, pathExtension: pathExtension)
     }
@@ -176,7 +198,7 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     func saveDataToTempFile(data: Data?, fileName: String?) -> URL? {
         self.saveDataToTempFile(data: data, fileName:fileName , pathExtension: nil )
     }
-
+    
     func saveDataToTempFile(data: Data?, fileName: String?, pathExtension: String?) -> URL? {
         let tmpFileURL = self.createTempFileURL(fileName: fileName, pathExtension: pathExtension)
         guard (fileManager.createFile(atPath: tmpFileURL, contents: data))
@@ -186,7 +208,7 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         }
         return tmpFileURL
     }
-
+    
     func createTempFileURL(pathExtension: String) -> URL {
         self.createTempFileURL(fileName: nil, pathExtension: pathExtension)
     }
@@ -194,12 +216,16 @@ class VaultManager : VaultManagerInterface, ObservableObject{
     func createTempFileURL(fileName: String?) -> URL {
         self.createTempFileURL(fileName: fileName, pathExtension: nil)
     }
-
-    func createTempFileURL(fileName: String? , pathExtension: String?) -> URL {
+    
+    func createTempFileURL(fileName: String? , pathExtension: String?, withSubFolder: Bool = false) -> URL {
         let fileName = fileName ?? "\(Int((Date().timeIntervalSince1970 * 1000.0).rounded()))"
-        return URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(fileName).appendingPathExtension(pathExtension ?? "")
+        let subFolder = withSubFolder ? "\(Int((Date().timeIntervalSince1970 * 1000.0).rounded()))" : ""
+        
+        let pathComponent = withSubFolder ? subFolder + "/" + fileName : fileName
+        
+        return URL(fileURLWithPath:NSTemporaryDirectory()).appendingPathComponent(pathComponent).appendingPathExtension(pathExtension ?? "")
     }
-
+    
     func deleteAllVaultFilesFromDevice() {
         debugLog("", space: .files)
         fileManager.removeItem(at: containerURL)
@@ -248,9 +274,9 @@ class VaultManager : VaultManagerInterface, ObservableObject{
             if NSTemporaryDirectory() == url.deletingLastPathComponent().getPath() {
                 fileManager.removeItem(at: url)
             }
-         }
+        }
     }
-
+    
     
     private func containerURL(for containerName: String) -> URL {
         return containerURL.appendingPathComponent(containerName)
@@ -272,13 +298,13 @@ extension VaultManager {
     func keysInitialized() -> Bool {
         return self.cryptoManager.keysInitialized()
     }
-
+    
     func login(password:String?) -> AnyPublisher<Bool,Never> {
-
+        
         return Deferred {
             Future <Bool,Never> {  [weak self] promise in
                 guard let self = self else { return }
-
+                
                 do {
                     guard let _ = try self.recoverKey(password: password)?.getString() else { return promise(.success(false))  }
                     promise(.success(true))
@@ -286,12 +312,12 @@ extension VaultManager {
                 catch let error {
                     debugLog(error)
                     promise(.success(false))
-
+                    
                 }
             }
         }.eraseToAnyPublisher()
     }
-
+    
     private func recoverKey( password:String? = nil) throws -> SecKey?  {
         return cryptoManager.recoverKey(.PRIVATE, password: password)
     }
@@ -321,7 +347,7 @@ extension VaultManager {
         return cryptoManager.passwordType
     }
     
-     func initialize() throws {
+    func initialize() throws {
         fileManager.createDirectory(atPath: containerURL)
     }
 }
@@ -329,7 +355,7 @@ extension VaultManager {
 //  VaultManager extension contains the methods used for merging root files to vault db
 
 extension VaultManager {
-
+    
     func getFilesToMergeToDatabase() -> [VaultFileDetailsToMerge] {
         guard let root = self.load(name: self.rootFileName) else {return []}
         var vaultFileResult : [VaultFileDetailsToMerge] = []

@@ -8,10 +8,11 @@ import SwiftUI
 struct SubmittedDetailsView: View {
     
     @StateObject var submittedReportVM : SubmittedMainViewModel
-    @StateObject var reportsViewModel : ReportsMainViewModel
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var sheetManager: SheetManager
     
+    var rootView: AnyClass = ViewClassType.reportMainView
+    private let delayTimeInSecond = 0.1
+
     var body: some View {
         
         ContainerView {
@@ -36,8 +37,23 @@ struct SubmittedDetailsView: View {
                     }.padding(EdgeInsets(top: 20, leading: 16, bottom: 70, trailing: 16))
                 }
             }
-        }.navigationBarHidden(true)
-
+        }
+        .onReceive(submittedReportVM.$shouldShowMainView, perform: { value in
+            if value {
+                dismissViews()
+            }
+        })
+        .onReceive(submittedReportVM.$shouldShowToast) { shouldShowToast in
+            if shouldShowToast {
+                Toast.displayToast(message: submittedReportVM.toastMessage)
+            }
+        }
+        .onReceive(submittedReportVM.$shouldShowMainView, perform: { value in
+            if value {
+                dismissViews()
+            }
+        })
+        .navigationBarHidden(true)
     }
     
     var outboxReportHeaderView: some View {
@@ -128,15 +144,17 @@ struct SubmittedDetailsView: View {
     }
     
     private func dismissViews() {
-        self.reportsViewModel.selectedPage = .submitted
-        self.popTo(UIHostingController<ReportMainView>.self)
+        self.submittedReportVM.reportsMainViewModel.selectedPage = .submitted
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond, execute: {
+            self.popTo(rootView)
+        })
     }
     
     private func showDeleteReportConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: 200) {
             DeleteReportConfirmationView(title: submittedReportVM.title,
                                          message: LocalizableReport.deleteSubmittedReportMessage.localized) {
-                dismissViews()
                 submittedReportVM.deleteReport()
                 sheetManager.hide()
             }

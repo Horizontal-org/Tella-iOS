@@ -96,7 +96,7 @@ class UwaziEntityViewModel: ObservableObject {
     func getInstanceById (entityId: Int?) -> UwaziEntityInstance? {
         guard let entityId else { return nil}
         
-        return (self.tellaData?.database.getUwaziEntityInstance(entityId: entityId))
+        return (self.tellaData?.getUwaziEntityInstance(entityId: entityId))
     }
     
     private func bindVaultFileTaken() {

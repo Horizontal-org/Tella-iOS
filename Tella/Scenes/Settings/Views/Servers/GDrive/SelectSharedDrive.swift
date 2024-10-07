@@ -10,8 +10,9 @@ import SwiftUI
 import GoogleAPIClientForREST
 
 struct SelectSharedDriveView: View {
-    @EnvironmentObject var gDriveServerViewModel: GDriveServerViewModel
+    @StateObject var gDriveServerViewModel: GDriveServerViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     var body: some View {
         ContainerView {
             VStack(alignment: .leading){
@@ -47,7 +48,8 @@ struct SelectSharedDriveView: View {
     func sharedDriveList(drives: [SharedDrive]) -> some View {
         ForEach(drives, id: \.id) {drive in
             DriveCardView(sharedDrive: drive,
-                          isSelected: drive.id == gDriveServerViewModel.selectedDrive?.id
+                          isSelected: drive.id == gDriveServerViewModel.selectedDrive?.id,
+                          gDriveServerViewModel: gDriveServerViewModel
             )
         }
     }
@@ -64,23 +66,23 @@ struct SelectSharedDriveView: View {
             presentationMode.wrappedValue.dismiss()
             return
         }
-        gDriveServerViewModel.addServer(rootFolder: selectedDrive.id, rootFolderName: selectedDrive.name) {
-            navigateTo(destination: SuccessLoginView(
-                navigateToAction: {navigateTo(destination: reportsView)},
-                type: .gDrive)
-            )
-        }
+        gDriveServerViewModel.addServer(rootFolder: selectedDrive.id,
+                                        rootFolderName: selectedDrive.name)
+        
+        navigateTo(destination: SuccessLoginView(navigateToAction: {navigateTo(destination: reportsView)},
+                                                 type: .gDrive))
+        
     }
     
-    private var reportsView: some View {
-        ReportMainView(reportMainViewModel: GDriveViewModel(mainAppModel: gDriveServerViewModel.mainAppModel), diContainer: GDriveDIContainer())
+    private var reportsView: GdriveReportMainView {
+        GdriveReportMainView(reportsMainViewModel: GDriveViewModel(mainAppModel: gDriveServerViewModel.mainAppModel, gDriveRepository: GDriveRepository()))
     }
 }
 
 struct DriveCardView: View {
     var sharedDrive: SharedDrive
     var isSelected: Bool
-    @EnvironmentObject var gDriveServerViewModel: GDriveServerViewModel
+    @StateObject var gDriveServerViewModel: GDriveServerViewModel
     var body: some View {
         Button(action: {
             gDriveServerViewModel.handleSelectedDrive(drive: sharedDrive)
@@ -102,5 +104,5 @@ struct DriveCardView: View {
 
 
 #Preview {
-    SelectSharedDriveView()
+    SelectSharedDriveView(gDriveServerViewModel: GDriveServerViewModel(repository: GDriveRepository(), mainAppModel: MainAppModel.stub()))
 }

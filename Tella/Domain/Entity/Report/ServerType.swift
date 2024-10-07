@@ -4,7 +4,7 @@
 
 import Foundation
 
-enum ServerConnectionType: Int, Codable {
+enum ServerConnectionType: Codable {
     case tella
     case uwazi
     case gDrive
@@ -19,6 +19,8 @@ extension ServerConnectionType {
             return LocalizableSettings.gDriveSuccessMessage.localized
         case.tella:
             return LocalizableSettings.settServerReportsSuccessMessage.localized
+        case .nextcloud:
+            return LocalizableSettings.nextcloudSuccessMessage.localized
         default:
             return ""
         }
@@ -30,6 +32,8 @@ extension ServerConnectionType {
             LocalizableSettings.settServerGDrive.localized
         case .uwazi:
             LocalizableSettings.settServerUwazi.localized
+        case .nextcloud:
+            LocalizableSettings.settServerNextCloud.localized
         default:
             ""
         }
@@ -44,7 +48,7 @@ extension ServerConnectionType {
         case.tella:
             return "reports.report"
         case .nextcloud:
-            return "home.nextcloud"
+            return "nextcloud.icon"
         }
     }
 }

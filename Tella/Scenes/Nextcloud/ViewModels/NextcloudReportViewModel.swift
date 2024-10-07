@@ -11,11 +11,18 @@ import Combine
 
 class NextcloudReportViewModel: ReportsMainViewModel {
     
+     var nextcloudRepository: NextcloudRepositoryProtocol
+    
+     init(mainAppModel: MainAppModel, nextcloudRepository: NextcloudRepositoryProtocol) {
+         self.nextcloudRepository = nextcloudRepository
+         super.init(mainAppModel: mainAppModel, connectionType: .nextcloud, title: LocalizableNextcloud.nextcloudAppBar.localized)
+    }
+    
     override func getReports() {
         
-        let draftReports =  tellaData?.database.getDriveReports(reportStatus: [.draft]) ?? []
-        let outboxedReports = tellaData?.database.getDriveReports(reportStatus: [.draft]) ?? []
-        let submittedReports = tellaData?.database.getDriveReports(reportStatus: [.draft]) ?? []
+        let draftReports =  tellaData?.getDraftNextcloudReport() ?? []
+        let outboxedReports = tellaData?.getOutboxedNextcloudReport() ?? []
+        let submittedReports = tellaData?.getSubmittedNextcloudReport() ?? []
         
         draftReportsViewModel = draftReports.compactMap { report in
             ReportCardViewModel(report: report,
@@ -37,7 +44,7 @@ class NextcloudReportViewModel: ReportsMainViewModel {
     }
     
     override func listenToUpdates() {
-        self.mainAppModel.tellaData?.shouldReloadGDriveReports
+        self.mainAppModel.tellaData?.shouldReloadNextcloudReports
             .receive(on: DispatchQueue.main)
             .sink { result in
             } receiveValue: { draftReports in
@@ -45,17 +52,23 @@ class NextcloudReportViewModel: ReportsMainViewModel {
             }.store(in: &subscribers)
     }
     
-    func deleteReport(report:GDriveReport) {
-        guard let reportId = report.id else { return }
-        //        let resultDeletion = self.tellaData?.deleteGDriveReport(reportId: reportId)
+    func deleteReport(report:NextcloudReport) {
         var message = ""
-        //        if case .success = resultDeletion {
-        //            message = String.init(format: LocalizableUwazi.uwaziDeletedToast.localized, entity.title ?? "")
-        //        } else {
-        //            message = LocalizableCommon.commonError.localized
-        //        }
         
+        guard let reportId = report.id,
+              let resultDeletion = self.tellaData?.deleteNextcloudReport(reportId: reportId),
+              resultDeletion
+        else {
+            message = LocalizableCommon.commonError.localized
+            return
+        }
+        message = String.init(format: LocalizableUwazi.uwaziDeletedToast.localized, report.title ?? "")
         self.shouldShowToast = true
         self.toastMessage = message
+    }
+    
+    override func deleteSubmittedReport() {
+        let deleteResult = mainAppModel.tellaData?.deleteNextcloudSubmittedReport() ?? false
+        self.handleDeleteReport(deleteResult: deleteResult)
     }
 }

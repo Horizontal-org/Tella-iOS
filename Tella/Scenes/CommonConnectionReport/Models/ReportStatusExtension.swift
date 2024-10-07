@@ -71,14 +71,13 @@ extension ReportStatus {
         switch self {
         case .draft:
             ConfirmDeleteConnectionStrings(deleteTitle: LocalizableReport.deleteDraftTitle.localized,
-                                deleteMessage: LocalizableReport.deleteDraftReportMessage.localized)
+                                           deleteMessage: LocalizableReport.deleteDraftReportMessage.localized)
         case .submitted:
-            
             ConfirmDeleteConnectionStrings(deleteTitle: LocalizableReport.deleteTitle.localized,
-                                deleteMessage: LocalizableReport.deleteSubmittedReportMessage.localized)
+                                           deleteMessage: LocalizableReport.deleteSubmittedReportMessage.localized)
         default:
             ConfirmDeleteConnectionStrings(deleteTitle: LocalizableReport.deleteTitle.localized,
-                                deleteMessage: LocalizableReport.deleteOutboxReportMessage.localized)
+                                           deleteMessage: LocalizableReport.deleteOutboxReportMessage.localized)
         }
     }
     

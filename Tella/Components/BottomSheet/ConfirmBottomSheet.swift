@@ -5,6 +5,7 @@
 import SwiftUI
 
 struct ConfirmBottomSheet : View {
+    var imageName : String? = nil
     var titleText = ""
     var msgText = ""
     var cancelText = ""
@@ -12,6 +13,7 @@ struct ConfirmBottomSheet : View {
     var actionText = ""
     var destructive : Bool = false
     var withDrag : Bool = true
+    var shouldHideSheet : Bool = true
     
     var didConfirmAction : () -> ()
     var didDiscardAction :(() -> ())? = nil
@@ -25,6 +27,15 @@ struct ConfirmBottomSheet : View {
     
     var contentView: some View {
         VStack(alignment: .leading, spacing: 9) {
+            
+            if let imageName = imageName {
+                HStack() {
+                    Spacer()
+                    Image(imageName)
+                    Spacer()
+                }.frame(height: 90)
+            }
+            
             Text(self.titleText)
                 .foregroundColor(.white)
                 .font(Font.custom(Styles.Fonts.semiBoldFontName, size: 17))
@@ -40,7 +51,9 @@ struct ConfirmBottomSheet : View {
                 Spacer()
                 Button(action: {
                     didCancelAction?()
-                    sheetManager.hide()
+                    if shouldHideSheet {
+                        sheetManager.hide()
+                    }
                     
                 }){
                     Text(self.cancelText)
@@ -51,7 +64,9 @@ struct ConfirmBottomSheet : View {
                     
                     Button(action: {
                         didDiscardAction?()
-                        sheetManager.hide()
+                        if shouldHideSheet {
+                            sheetManager.hide()
+                        }
                         
                     }){
                         Text(discardText)
@@ -63,7 +78,9 @@ struct ConfirmBottomSheet : View {
                 
                 Button(action: {
                     self.didConfirmAction()
-                    sheetManager.hide()
+                    if shouldHideSheet {
+                        sheetManager.hide()
+                    }
                 }){
                     Text(self.actionText.uppercased())
                         .foregroundColor(destructive ? Color.red : Color.white)
