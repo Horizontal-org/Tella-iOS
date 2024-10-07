@@ -105,7 +105,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
             return DropboxFileInfo(url: url,
                                    fileName: url.lastPathComponent,
                                    fileId: file.id ?? "",
-                                   offset: file.offset ?? 0,
+                                   offset: Int64(file.bytesSent),
                                    sessionId: file.sessionId)
         }
 
@@ -171,7 +171,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
             let dropboxFile = file
             
             dropboxFile.sessionId = dropboxProgressInfo.sessionId
-            dropboxFile.offset = dropboxProgressInfo.offset
+            dropboxFile.bytesSent = dropboxProgressInfo.bytesSent ?? 0
             
             self.updateFile(file: dropboxFile)
         }

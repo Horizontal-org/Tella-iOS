@@ -9,11 +9,9 @@
 import Foundation
 
 class DropboxReportFile: ReportFile {
-    var offset: Int64?
     var sessionId: String?
     
     enum CodingKeys: String, CodingKey {
-        case offset = "c_offset"
         case sessionId = "c_session_id"
     }
     
@@ -35,7 +33,6 @@ class DropboxReportFile: ReportFile {
                    updatedDate: updatedDate,
                    reportInstanceId: reportInstanceId)
         
-        self.offset = offset
         self.sessionId = sessionId
 
     }
@@ -45,14 +42,12 @@ class DropboxReportFile: ReportFile {
         
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.offset = try container.decodeIfPresent(Int64.self, forKey: .offset)
         self.sessionId = try container.decodeIfPresent(String.self, forKey: .sessionId)
     }
     
     override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        try container.encodeIfPresent(offset, forKey: .offset)
         try container.encodeIfPresent(sessionId, forKey: .sessionId)
         
         try super.encode(to: encoder)

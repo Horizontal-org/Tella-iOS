@@ -17,7 +17,6 @@ class ReportVaultFile : VaultFileDB {
     var reportInstanceId : Int?
     var chunkFiles: [(fileName: String, size: Int64)]?
     var finishUploading : Bool = false
-    var offset: Int64?
     var sessionId: String?
 
     init(reportFile: ReportFile, vaultFile : VaultFileDB) {
@@ -80,7 +79,6 @@ class ReportVaultFile : VaultFileDB {
         self.createdDate = reportFile.createdDate
         self.updatedDate = reportFile.updatedDate
         self.reportInstanceId = reportFile.reportInstanceId
-        self.offset = reportFile.offset
         self.sessionId = reportFile.sessionId
 
     }

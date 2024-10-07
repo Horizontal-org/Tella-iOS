@@ -18,7 +18,6 @@ extension DropboxReportFile {
                   createdDate: reportFile.createdDate,
                   updatedDate: reportFile.updatedDate,
                   reportInstanceId: reportFile.reportInstanceId,
-                  offset: reportFile.offset,
                   sessionId: reportFile.sessionId)
     }
     
