@@ -29,7 +29,12 @@ struct TrailingImageButtonToolBar: ToolbarContent {
     }
  }
 
-#Preview {
-    TrailingImageButtonToolBar(imageName: "report.delete-outbox") as! any View
+struct TrailingImageButtonToolBar_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack {
+            
+        } .toolbar {
+            TrailingImageButtonToolBar(imageName: "report.delete-outbox")
+        }
+    }
 }
-
