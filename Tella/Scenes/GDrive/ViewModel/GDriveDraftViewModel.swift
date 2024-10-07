@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-class GDriveDraftViewModel: DraftMainViewModel{
+class GDriveDraftViewModel: DraftMainViewModel {
     let gDriveRepository: GDriveRepositoryProtocol
     
     init(repository: GDriveRepositoryProtocol, reportId reportID: Int?, reportsMainViewModel: ReportsMainViewModel) {
@@ -19,19 +19,7 @@ class GDriveDraftViewModel: DraftMainViewModel{
         self.getServer()
         self.fillReportVM()
     }
-    
-    override func validateReport() {
-        Publishers.CombineLatest($title, $description)
-            .map { !$0.0.isEmpty && !$0.1.isEmpty }
-            .assign(to: \.reportIsValid, on: self)
-            .store(in: &subscribers)
-        
-        $title
-            .map { !$0.isEmpty }
-            .assign(to: \.reportIsDraft, on: self)
-            .store(in: &subscribers)
-    }
-    
+
     override func fillReportVM() {
         if let reportId = self.reportId, let report = self.mainAppModel.tellaData?.getDriveReport(id: reportId) {
             self.title = report.title ?? ""
@@ -40,18 +28,18 @@ class GDriveDraftViewModel: DraftMainViewModel{
             if let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{ $0.fileId } ?? []) {
                 self.files = Set(vaultFileResult)
             }
-            
-            self.objectWillChange.send()
         }
+        
+        validateTitleAndDescription()
     }
-
+    
     override func saveReport() {
         let gDriveReport = GDriveReport(
             id: reportId,
             title: title,
             description: description,
             status: status ?? .unknown,
-            server: server as! GDriveServer,
+            server: server as? GDriveServer,
             folderId: nil,
             vaultFiles: self.files.compactMap { ReportFile( fileId: $0.id,
                                                             status: .notSubmitted,

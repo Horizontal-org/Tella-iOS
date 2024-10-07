@@ -21,19 +21,7 @@ class NextcloudDraftViewModel: DraftMainViewModel {
         self.getServer()
         self.fillReportVM()
     }
-    
-    override func validateReport() {
-        Publishers.CombineLatest($title, $description)
-            .map { !$0.0.isEmpty && !$0.1.isEmpty }
-            .assign(to: \.reportIsValid, on: self)
-            .store(in: &subscribers)
-        
-        $title
-            .map { !$0.isEmpty }
-            .assign(to: \.reportIsDraft, on: self)
-            .store(in: &subscribers)
-    }
-    
+
     override func fillReportVM() {
         
         guard let reportId = self.reportId,
@@ -47,7 +35,7 @@ class NextcloudDraftViewModel: DraftMainViewModel {
             self.files = Set(vaultFileResult)
         }
         
-        self.objectWillChange.send()
+        validateTitleAndDescription()
     }
     
     override func saveReport() {

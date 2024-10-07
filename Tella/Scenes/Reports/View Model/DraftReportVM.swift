@@ -11,21 +11,7 @@ class DraftReportVM: DraftMainViewModel {
     override init(reportId:Int? = nil, reportsMainViewModel: ReportsMainViewModel) {
         super.init(reportId: reportId, reportsMainViewModel: reportsMainViewModel)
     }
-    
-    override func validateReport() {
-        $server.combineLatest( $isValidTitle, $isValidDescription, $files)
-            .sink(receiveValue: { server, isValidTitle, isValidDescription, files in
-                self.reportIsValid = ((server != nil) && isValidTitle && isValidDescription) || ((server != nil) && isValidTitle && !files.isEmpty)
-            }).store(in: &subscribers)
-        
-        $isValidTitle.combineLatest($isValidDescription, $files)
-            .sink(receiveValue: { isValidTitle, isValidDescription, files in
-                DispatchQueue.main.async {
-                    self.reportIsDraft = isValidTitle
-                }
-            }).store(in: &subscribers)
-    }
-    
+
     override func getServers() {
         serverArray = mainAppModel.tellaData?.getTellaServers() ?? []
     }
@@ -55,15 +41,9 @@ class DraftReportVM: DraftMainViewModel {
                 let vaultFileResult  = Set(vaultFileResult)
                 self.files = vaultFileResult
             }
-            self.objectWillChange.send()
         }
-        DispatchQueue.main.async {
-            self.isValidTitle =  self.title.textValidator()
-            self.isValidDescription = self.description.textValidator()
-            self.reportIsValid = ((self.server != nil) && self.isValidTitle && self.isValidDescription) || ((self.server != nil) && self.isValidTitle && !self.files.isEmpty)
-            self.reportIsDraft = self.isValidTitle
-            self.objectWillChange.send()
-        }
+        
+        validateTitleAndDescription()
     }
 
     override func saveReport() {
@@ -72,7 +52,7 @@ class DraftReportVM: DraftMainViewModel {
                             title: title,
                             description: description,
                             status: status,
-                            server: server as! TellaServer,
+                            server: server as? TellaServer,
                             vaultFiles: self.files.compactMap{ ReportFile(fileId: $0.id,
                                                                           status: .notSubmitted,
                                                                           bytesSent: 0,
