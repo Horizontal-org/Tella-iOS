@@ -202,16 +202,16 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     
     func handleURLRedirect(url: URL) {
         _ = dropboxRepository.handleRedirectURL(url) { authResult in
-            self.submitReport()
+            switch authResult {
+            case .success:
+                self.submitReport()
+            case .error(_, let description):
+                self.shouldShowToast = true
+                self.toastMessage = description ?? ""
+            default:
+                break
+            }
         }
     }
     
-}
-
-struct DropboxFileInfo {
-    let url: URL
-    let fileName: String
-    let fileId: String
-    let offset: Int64?
-    let sessionId: String?
 }
