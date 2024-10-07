@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyDropbox
 
-class DropboxErrorParser {
+extension APIError {
     static func customDropboxErrorMessage(error: Error) -> String {
         var actualError = error
         if let apiError = error as? APIError, case let .dropboxApiError(underlyingError) = apiError {
