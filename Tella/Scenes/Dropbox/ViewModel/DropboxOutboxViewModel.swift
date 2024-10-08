@@ -157,7 +157,6 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
             return
         }
         
-        // Update the file's bytesSent and status
         self.reportViewModel.files = self.reportViewModel.files.compactMap { file in
             guard file.id == dropboxProgressInfo.fileId else { return file }
             let updatedFile = file
@@ -166,7 +165,6 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
             return updatedFile
         }
         
-        // Update the file in the database with offset and sessionId
         if let file = self.reportViewModel.files.first(where: { $0.id == dropboxProgressInfo.fileId }) {
             let dropboxFile = file
             
