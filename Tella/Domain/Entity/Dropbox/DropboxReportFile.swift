@@ -22,7 +22,6 @@ class DropboxReportFile: ReportFile {
          createdDate: Date? = nil,
          updatedDate: Date? = Date(),
          reportInstanceId: Int? = nil,
-         offset: Int64? = nil,
          sessionId: String? = nil
     ) {
         super.init(id: id,

@@ -222,7 +222,6 @@ class DropboxRepository: DropboxRepositoryProtocol {
                         fileId: fileId,
                         status: .uploaded,
                         reportStatus: index == fileUploadStates.count - 1 ? .submitted : .submissionInProgress,
-                        offset: fileState.offset,
                         sessionId: fileState.sessionId
                     )
                     self.uploadProgressSubject.send(completedInfo)
@@ -376,7 +375,6 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 fileId: fileState.fileId,
                 status: .partialSubmitted,
                 reportStatus: .submissionInProgress,
-                offset: fileState.offset,
                 sessionId: fileState.sessionId
             )
             progressHandler(progressInfo)

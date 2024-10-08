@@ -9,7 +9,6 @@
 import Foundation
 
 class DropboxUploadProgressInfo: UploadProgressInfo {
-    var offset: Int64?
     var sessionId: String?
 
     init(bytesSent: Int?,
@@ -17,9 +16,7 @@ class DropboxUploadProgressInfo: UploadProgressInfo {
          fileId: String,
          status: FileStatus,
          reportStatus: ReportStatus,
-         offset: Int64?,
          sessionId: String?) {
-        self.offset = offset
         self.sessionId = sessionId
         super.init(bytesSent: bytesSent, current: current, fileId: fileId, status: status, reportStatus: reportStatus)
     }

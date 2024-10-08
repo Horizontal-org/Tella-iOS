@@ -112,7 +112,6 @@ struct D {
     static let cChunkFiles = "c_chunk_files"
     
     //dropbox
-    static let cOffset = "c_offset"
     static let cSessionId = "c_session_id"
 }
 
