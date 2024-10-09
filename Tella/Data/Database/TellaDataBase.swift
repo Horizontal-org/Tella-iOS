@@ -52,6 +52,8 @@ class TellaDataBase : DataBase {
                 fallthrough
             case 7:
                 createDropboxServerTable()
+                createDropboxReportTable()
+                createDropboxReportsFileTable()
             default :
                 break
             }
@@ -79,7 +81,8 @@ class TellaDataBase : DataBase {
         createNextcloudReportTable()
         createNextcloudReportFilesTable()
         createDropboxServerTable()
-
+        createDropboxReportTable()
+        createDropboxReportsFileTable()
     }
     
     func createReportTable() {

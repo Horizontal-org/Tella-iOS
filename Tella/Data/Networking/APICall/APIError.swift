@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import SwiftyDropbox
 
 enum APIError: Swift.Error {
     case invalidURL
@@ -13,6 +14,7 @@ enum APIError: Swift.Error {
     case badServer
     case noToken
     case driveApiError(Error)
+    case dropboxApiError(Error)
     case errorOccured
     case nextcloudError(HTTPCode)
 }
@@ -39,6 +41,8 @@ extension APIError: LocalizedError {
             return customNcErrorMessage(errorCode: code)
         case .errorOccured :
             return LocalizableError.commonError.localized
+        case .dropboxApiError(let error):
+            return customDropboxErrorMessage(error: error)
         }
     }
     

@@ -16,6 +16,7 @@ class TellaData : ObservableObject {
     var shouldReloadTellaReports = CurrentValueSubject<Bool, Never>(false)
     var shouldReloadGDriveReports = CurrentValueSubject<Bool, Never>(false)
     var shouldReloadNextcloudReports = CurrentValueSubject<Bool, Never>(false)
+    var shouldReloadDropboxReports = CurrentValueSubject<Bool, Never>(false)
     
     var shouldReloadUwaziInstances = CurrentValueSubject<Bool, Never>(false)
     var shouldReloadUwaziTemplates = CurrentValueSubject<Bool, Never>(false)
