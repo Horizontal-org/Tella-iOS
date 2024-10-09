@@ -17,6 +17,13 @@ final class FileDetailsViewModel: ObservableObject {
     
     @Published var documentIsReady = false
     
+    var shouldAddEditView: Bool {
+        switch currentFile?.tellaFileType {
+        case .audio, .image : return true
+        default: return false
+        }
+    }
+    
     init(appModel: MainAppModel?, currentFile: VaultFileDB?) {
         self.appModel = appModel
         self.currentFile = currentFile

@@ -24,7 +24,7 @@ struct EditAudioView: View {
                 timeLabelsView
                 trimView
                 VStack {
-                    Text(editAudioViewModel.audioPlayerViewModel.currentTime)
+                    Text(editAudioViewModel.currentTime)
                         .font(.custom(Styles.Fonts.regularFontName, size: 50))
                         .foregroundColor(.white)
                     Text(editAudioViewModel.audioPlayerViewModel.duration)
@@ -78,21 +78,29 @@ struct EditAudioView: View {
     }
     
     var trimView: some View {
-        ZStack {
-            Image("audio.soundwaves")
-                .resizable()
-                .frame(width: 340, height: 180)
-                .aspectRatio(contentMode: .fill)
-                .background(Styles.Colors.yellow.opacity(0.16))
-                .padding(20)
+        VStack {
+            ZStack(alignment: .trailing) {
+                ZStack(alignment: .leading) {
+                    
+                    Image("audio.soundwaves")
+                        .resizable()
+                        .frame(height: 180)
+                        .aspectRatio(contentMode: .fill)
+                        .background(Styles.Colors.yellow.opacity(0.16))
+
+                    Image("edit.audio.play.line")
+                        .frame(height: 220)
+                        .offset(x: editAudioViewModel.offset)
+                    
+                    CustomSliderView(value: $editAudioViewModel.startTime, range: 0...editAudioViewModel.timeDuration)
+                        .frame(height: 220)
+                    
+                }
+                CustomSliderView(value: $editAudioViewModel.endTime, range: 0...editAudioViewModel.timeDuration)
+                    .frame(height: 220)
+            }.frame(maxWidth: 340)
             
-            CustomSliderView(value: $editAudioViewModel.startTime, range: 0...editAudioViewModel.timeDuration)
-                .padding([.leading, .trailing ], 5)
-                .frame(height: 220)
-            CustomSliderView(value: $editAudioViewModel.endTime, range: 0...editAudioViewModel.timeDuration)
-                .frame(height: 220)
-                .padding([.leading, .trailing ], 10)
-        }
+        }.padding(30)
     }
     
     var controlButtonsView: some View {
@@ -133,13 +141,13 @@ struct CustomSliderView: View {
     var range: ClosedRange<Double>
     
     private let kHeight = 180.0
-    private let kOffset = 0.0 //15
-    private let kLabelOffset = 20.0 //15
+    private let kOffset = 3.0 //This is added to adjust the difference of the elipse in the trim line image
+    private let kLabelOffset = 30.0 //15
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
                 // Custom thumb with image
-                Image("edit.audio.line").resizable()
+                Image("edit.audio.trim.line").resizable()
                     .frame(width: 10, height: 190)
                     .offset(x: CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width - kOffset) // Center thumb
                     .gesture(DragGesture(minimumDistance: 0).onChanged { dragValue in
@@ -154,7 +162,7 @@ struct CustomSliderView: View {
                             , y: 105) // Center thumb
                 
             }
-        }.padding()
+        }
     }
 }
 

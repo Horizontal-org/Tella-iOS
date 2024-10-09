@@ -15,11 +15,15 @@ class EditAudioViewModel: ObservableObject {
     @Published var endTime: Double = 0.0
     
     @Published var isPlaying = false
+    var cancellable: Set<AnyCancellable> = []
 
-    
+    @Published var offset: CGFloat = 0.0
+
     var audioUrl: URL?
     let kNumberOfLabels = 5 // This is for the sub-times labels
-
+    
+    @Published var currentTime : String  = "00:00:00"
+    @Published private var currenTimeValue: Double = 0.0
     @Published var audioPlayerViewModel: AudioPlayerViewModel
     var playButtonImageName: String {
         isPlaying ? "mic.pause-audio" : "mic.play" 
@@ -35,6 +39,13 @@ class EditAudioViewModel: ObservableObject {
 
     init(audioPlayerViewModel : AudioPlayerViewModel) {
         self.audioPlayerViewModel = audioPlayerViewModel
+        
+        self.audioPlayerViewModel.audioPlayerManager.audioPlayer.currentTime.sink { value in
+            self.currentTime = value.toHHMMSSString()
+            self.currenTimeValue = Double(value)
+            self.updateOffset()
+        }.store(in: &self.cancellable)
+
     }
     
     func onAppear() {
@@ -128,6 +139,24 @@ class EditAudioViewModel: ObservableObject {
         self.startTime = 0.0
         self.endTime = Double(audioPlayerViewModel.timeDuration ?? 0)
     }
+    
+    
+    
+    
+    private func updateOffset() {
+//        guard let player = audioPlayer else { return }
+//
+//        let duration = player.duration
+//        let currentTime = player.currentTime
+
+        // Assuming 300 points is the total offset distance for the view
+        let totalOffsetDistance: CGFloat = 340
+        let progress = currenTimeValue / timeDuration
+
+        // Update the offset based on audio progress
+        offset = CGFloat(progress) * totalOffsetDistance
+    }
+
 }
 
 
