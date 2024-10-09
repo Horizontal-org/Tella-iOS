@@ -85,7 +85,14 @@ class DropboxRepository: DropboxRepositoryProtocol {
     
     func submitReport(folderId: String?, name: String, description: String, files: [DropboxFileInfo]?) -> AnyPublisher<DropboxUploadResponse, APIError> {
         let subject = PassthroughSubject<DropboxUploadResponse, APIError>()
-        
+        networkStatusSubject
+                .filter { !$0 }
+                .first()
+                .sink { [weak self] _ in
+                    self?.handleNetworkLoss()
+                    subject.send(completion: .failure(.noInternetConnection))
+                }
+                .store(in: &subscribers)
         Task {
             do {
                 try await ensureSignedIn()
