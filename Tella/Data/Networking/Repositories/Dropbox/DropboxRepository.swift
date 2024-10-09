@@ -103,7 +103,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 
                 // Upload files
                 try await uploadFiles(
-                    to: "/\(folderResponse.name)",
+                    to: folderResponse.name.preffixedSlash(),
                     files: files,
                     subject: subject
                 )
@@ -132,7 +132,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
             throw APIError.noToken
         }
         
-        let folderPath = "/\(name)"
+        let folderPath = name.preffixedSlash()
         
         let metadata = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Files.FolderMetadata, Error>) in
             client.files.createFolderV2(path: folderPath, autorename: true).response { response, error in
@@ -154,7 +154,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
         let folderName = metadata.name
         
         // Upload the description file if it exists
-        try await uploadDescriptionFile(client: client, folderPath: "/\(folderName)", description: description)
+        try await uploadDescriptionFile(client: client, folderPath: folderName.preffixedSlash(), description: description)
         
         return DropboxCreateFolderResponse(id: folderId, name: folderName)
     }
