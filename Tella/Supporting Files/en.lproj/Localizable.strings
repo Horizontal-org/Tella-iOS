@@ -242,6 +242,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_SettServer_NextCloud" = "NEXTCLOUD";
 "Setting_SettServer_Uwazi" = "UWAZI";
 "Setting_SettServer_GDrive" = "GOOGLE DRIVE"; 
+"Setting_SettServer_Dropbox" = "DROPBOX";
 "Setting_SettServer_No_Internet" = "No Internet connection. Try again when you are connected to the Internet.";
 "Setting_SettServer_Server_URL_Incorrect" = "Error: The server URL is incorrect";
 "Setting_SettServer_UnavailableConnections_Subhead" = "Unavailable connections";
@@ -289,6 +290,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_Server_Nextcloud_Success_Message" = "GO TO NEXTCLOUD";
 
 "Setting_Server_Reports_Success_Message" = "GO TO REPORTS";
+"Settings_Server_Dropbox_Success_Message" = "GO TO DROPBOX";
 
 "Settings_SettAbout_AppBar" = "About & Help";
 "Settings_SettAbout_Head" = "Tella";
@@ -583,3 +585,5 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Error_Nextcloud_ForderExist" = "Folder already exist";
 "Error_Nextcloud_InvalidCredentials" = "The username or password is incorrect";
 "Error_Nextcloud_ManyFailedRequests" = "Too many failed attempts. Please try again later.";
+
+"Dropbox_AppBar" = "Dropbox";

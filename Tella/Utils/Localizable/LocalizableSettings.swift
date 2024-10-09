@@ -162,6 +162,10 @@ enum LocalizableSettings: String, LocalizableDelegate {
     
     // Reports
     case settServerReportsSuccessMessage = "Setting_Server_Reports_Success_Message"
+    
+    //Dropbox
+    case settServerDropboxSuccessMessage = "Settings_Server_Dropbox_Success_Message"
+    case settServerDropbox = "Setting_SettServer_Dropbox"
  }
 
 

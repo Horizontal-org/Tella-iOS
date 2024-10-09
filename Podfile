@@ -11,6 +11,7 @@ target 'Tella' do
   pod 'Mantis', '~> 2.21.0'
   pod 'GoogleSignIn'
   pod 'GoogleAPIClientForREST/Drive'
+  pod 'SwiftyDropbox'
   
   target 'TellaTests' do
     inherit! :search_paths

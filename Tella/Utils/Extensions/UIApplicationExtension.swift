@@ -99,4 +99,8 @@ extension UIApplication {
         UITableView.appearance().backgroundColor = .clear
         UITableViewCell.appearance().backgroundColor = .clear
     }
+    
+    var rootViewController: UIViewController? {
+        return keyWindow?.rootViewController
+    }
 }

@@ -392,10 +392,14 @@
 		15587A012C010F1E0071389E /* GDriveServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15587A002C010F1E0071389E /* GDriveServer.swift */; };
 		15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15622F492B72B1FF00289816 /* DeleteConfirmation.swift */; };
 		156986252B88FCB600534720 /* ResourcePDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156986242B88FCB600534720 /* ResourcePDFView.swift */; };
+		1574AC832C878FF0007BEBF5 /* DropboxRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574AC822C878FF0007BEBF5 /* DropboxRepository.swift */; };
+		1574AC882C879DFF007BEBF5 /* DropboxServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574AC872C879DFF007BEBF5 /* DropboxServerViewModel.swift */; };
 		15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C192B6AC34100D67C74 /* ResourcesView.swift */; };
 		15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C1B2B6AC63200D67C74 /* ReloadButton.swift */; };
 		15791C232B6C2E9100D67C74 /* ResourcesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */; };
 		157E4F532BA385B500147345 /* PDFKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157E4F522BA385B500147345 /* PDFKitView.swift */; };
+		1587D6EB2C98C8C1003E0B3D /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D6EA2C98C8C1003E0B3D /* ConfigurationManager.swift */; };
+		1587D6ED2C99CD15003E0B3D /* LocalizableDropbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D6EC2C99CD15003E0B3D /* LocalizableDropbox.swift */; };
 		15917D752B90FCC3005655AC /* ResourceCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15917D742B90FCC3005655AC /* ResourceCardType.swift */; };
 		15994A0C2BFBC6F40017F153 /* SelectDriveConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A0B2BFBC6F40017F153 /* SelectDriveConnectionView.swift */; };
 		15994A0E2BFBE15F0017F153 /* SelectSharedDrive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A0D2BFBE15F0017F153 /* SelectSharedDrive.swift */; };
@@ -407,7 +411,6 @@
 		15BD9CAD2BC7410E00C3932B /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CAC2BC7410E00C3932B /* SearchBarView.swift */; };
 		15BD9CB12BC744BC00C3932B /* NavigationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CB02BC744BC00C3932B /* NavigationHeaderView.swift */; };
 		15BD9CB32BC7472A00C3932B /* UwaziRelationshipDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CB22BC7472A00C3932B /* UwaziRelationshipDTO.swift */; };
-		15C51C442BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C51C432BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift */; };
 		15C51C462BFE769500DD9AD0 /* GDriveServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C51C452BFE769500DD9AD0 /* GDriveServerViewModel.swift */; };
 		15CD89102BF297BE00F724F5 /* SelectedEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CD890F2BF297BE00F724F5 /* SelectedEntityView.swift */; };
 		15E3D50A2C1B71E200B7FECC /* GDriveDraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */; };
@@ -425,6 +428,9 @@
 		15F924482C17929300C436C5 /* ViewModelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F924472C17929300C436C5 /* ViewModelState.swift */; };
 		15FABA362B73F96800B2EFEE /* ResourceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FABA352B73F96800B2EFEE /* ResourceRepository.swift */; };
 		15FABA382B7405B800B2EFEE /* ResourceDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FABA372B7405B800B2EFEE /* ResourceDTO.swift */; };
+		15FF77F62C8F862A002E87C3 /* DropboxDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FF77F52C8F862A002E87C3 /* DropboxDatabase.swift */; };
+		15FF77F82C8F89A8002E87C3 /* DropboxData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FF77F72C8F89A8002E87C3 /* DropboxData.swift */; };
+		15FF77FF2C90CF7A002E87C3 /* DropboxServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FF77FE2C90CF7A002E87C3 /* DropboxServer.swift */; };
 		1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
 		20219B302C8B33F900AD6D53 /* GdriveReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */; };
@@ -1002,10 +1008,14 @@
 		15587A002C010F1E0071389E /* GDriveServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveServer.swift; sourceTree = "<group>"; };
 		15622F492B72B1FF00289816 /* DeleteConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmation.swift; sourceTree = "<group>"; };
 		156986242B88FCB600534720 /* ResourcePDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcePDFView.swift; sourceTree = "<group>"; };
+		1574AC822C878FF0007BEBF5 /* DropboxRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxRepository.swift; sourceTree = "<group>"; };
+		1574AC872C879DFF007BEBF5 /* DropboxServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxServerViewModel.swift; sourceTree = "<group>"; };
 		15791C192B6AC34100D67C74 /* ResourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesView.swift; sourceTree = "<group>"; };
 		15791C1B2B6AC63200D67C74 /* ReloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReloadButton.swift; sourceTree = "<group>"; };
 		15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesViewModel.swift; sourceTree = "<group>"; };
 		157E4F522BA385B500147345 /* PDFKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFKitView.swift; sourceTree = "<group>"; };
+		1587D6EA2C98C8C1003E0B3D /* ConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationManager.swift; sourceTree = "<group>"; };
+		1587D6EC2C99CD15003E0B3D /* LocalizableDropbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableDropbox.swift; sourceTree = "<group>"; };
 		1589A6202B7672390048C775 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1589A6212B7672430048C775 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		15917D742B90FCC3005655AC /* ResourceCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCardType.swift; sourceTree = "<group>"; };
@@ -1019,7 +1029,6 @@
 		15BD9CAC2BC7410E00C3932B /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		15BD9CB02BC744BC00C3932B /* NavigationHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationHeaderView.swift; sourceTree = "<group>"; };
 		15BD9CB22BC7472A00C3932B /* UwaziRelationshipDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziRelationshipDTO.swift; sourceTree = "<group>"; };
-		15C51C432BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveAuthViewModel.swift; sourceTree = "<group>"; };
 		15C51C452BFE769500DD9AD0 /* GDriveServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveServerViewModel.swift; sourceTree = "<group>"; };
 		15CD890F2BF297BE00F724F5 /* SelectedEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedEntityView.swift; sourceTree = "<group>"; };
 		15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveDraftView.swift; sourceTree = "<group>"; };
@@ -1037,6 +1046,9 @@
 		15F924472C17929300C436C5 /* ViewModelState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelState.swift; sourceTree = "<group>"; };
 		15FABA352B73F96800B2EFEE /* ResourceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceRepository.swift; sourceTree = "<group>"; };
 		15FABA372B7405B800B2EFEE /* ResourceDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDTO.swift; sourceTree = "<group>"; };
+		15FF77F52C8F862A002E87C3 /* DropboxDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxDatabase.swift; sourceTree = "<group>"; };
+		15FF77F72C8F89A8002E87C3 /* DropboxData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxData.swift; sourceTree = "<group>"; };
+		15FF77FE2C90CF7A002E87C3 /* DropboxServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxServer.swift; sourceTree = "<group>"; };
 		1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheet.swift; sourceTree = "<group>"; };
 		1EAE6BF424146C2100114244 /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
 		20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveReportMainView.swift; sourceTree = "<group>"; };
@@ -1331,6 +1343,7 @@
 		1203CDE429915C6600D09073 /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				15FF77F42C8F8618002E87C3 /* Dropbox */,
 				209AC6802C332D6E00492356 /* GDriveData.swift */,
 				12964D902BAB44B9003E1E0A /* Models */,
 				1203CDE62991682800D09073 /* Common */,
@@ -1564,6 +1577,7 @@
 		1231A45B294C76990057DA85 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				15FF77FD2C90CF5A002E87C3 /* Dropbox */,
 				126E1AF42C3D77F1000AE4CE /* CommonReport */,
 				126E1AFA2C3D8426000AE4CE /* CommonServer */,
 				15994A0F2BFBF0C70017F153 /* GDrive */,
@@ -2009,6 +2023,7 @@
 				12935478294A3BFC00735ED0 /* MIMEType.swift */,
 				1289B45528B62A99005DA687 /* DeviceOrientationHelper.swift */,
 				1233076629F15A290019DF7C /* NetworkMonitor.swift */,
+				1587D6EA2C98C8C1003E0B3D /* ConfigurationManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2394,6 +2409,7 @@
 				12B84B842C32EF12006363F0 /* LocalizableNextcloud.swift */,
 				15E54AB82C5824DA00290DE8 /* LocalizableGDrive.swift */,
 				15A173432C78F64100E84F55 /* LocalizableError.swift */,
+				1587D6EC2C99CD15003E0B3D /* LocalizableDropbox.swift */,
 			);
 			path = Localizable;
 			sourceTree = "<group>";
@@ -2435,6 +2451,7 @@
 				15FABA352B73F96800B2EFEE /* ResourceRepository.swift */,
 				155541B12C0672C20031D3A5 /* GDriveRepository.swift */,
 				1275A8472C5E6EDF0071A97D /* Nextcloud */,
+				1574AC822C878FF0007BEBF5 /* DropboxRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -2498,12 +2515,12 @@
 		12E8129F27A19E67007DDDC0 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				1574AC872C879DFF007BEBF5 /* DropboxServerViewModel.swift */,
 				129B845028BF6C7800F1B344 /* ServersViewModel.swift */,
 				123CE84329126B52003C251F /* TellaWebServerViewModel.swift */,
 				12730E68279F420400DC0135 /* SettingsViewModel.swift */,
 				E108B75629FE79340045CCBE /* UwaziServerViewModel.swift */,
 				1293F6692AD7F29B00F6CFBD /* FeedbackViewModel.swift */,
-				15C51C432BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift */,
 				15C51C452BFE769500DD9AD0 /* GDriveServerViewModel.swift */,
 			);
 			path = ViewModel;
@@ -2561,6 +2578,13 @@
 				1519BED72B9A5A52006FD290 /* Resource.swift */,
 			);
 			path = Resource;
+			sourceTree = "<group>";
+		};
+		1574AC842C879DA6007BEBF5 /* Dropbox */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Dropbox;
 			sourceTree = "<group>";
 		};
 		15791C182B6AC32B00D67C74 /* Resources */ = {
@@ -2682,6 +2706,23 @@
 				15F64CA72B6D852D008A57AA /* ResourceCard.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		15FF77F42C8F8618002E87C3 /* Dropbox */ = {
+			isa = PBXGroup;
+			children = (
+				15FF77F52C8F862A002E87C3 /* DropboxDatabase.swift */,
+				15FF77F72C8F89A8002E87C3 /* DropboxData.swift */,
+			);
+			path = Dropbox;
+			sourceTree = "<group>";
+		};
+		15FF77FD2C90CF5A002E87C3 /* Dropbox */ = {
+			isa = PBXGroup;
+			children = (
+				15FF77FE2C90CF7A002E87C3 /* DropboxServer.swift */,
+			);
+			path = Dropbox;
 			sourceTree = "<group>";
 		};
 		20985A5B2BE157D00092CCC2 /* EditImageView */ = {
@@ -2853,6 +2894,7 @@
 		D53B76DA2601C9E50001CD34 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				1574AC842C879DA6007BEBF5 /* Dropbox */,
 				125C789B2C36B36900440014 /* CommonConnectionReport */,
 				12B84B8C2C333DD0006363F0 /* Nextcloud */,
 				15B81F332C1A2779007C0E88 /* GDrive */,
@@ -3579,6 +3621,7 @@
 				CC1313822A5CB0DB0057271C /* DeleteAfterFailOption.swift in Sources */,
 				15F924482C17929300C436C5 /* ViewModelState.swift in Sources */,
 				20473A632C8BA7FE0015A9B5 /* TellaServerOutboxDetailsView.swift in Sources */,
+				1587D6ED2C99CD15003E0B3D /* LocalizableDropbox.swift in Sources */,
 				1203CDEB2992C1CB00D09073 /* HTTPCodes.swift in Sources */,
 				15BD9CAB2BC740D700C3932B /* EntitySelectorView.swift in Sources */,
 				122389B7293635790058593B /* SetExtension.swift in Sources */,
@@ -3704,8 +3747,10 @@
 				12B5257B2848FC2800B3D1C0 /* LockTimeoutOption.swift in Sources */,
 				127A5B2228538E0800FAAEB0 /* Language.swift in Sources */,
 				1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */,
+				1574AC882C879DFF007BEBF5 /* DropboxServerViewModel.swift in Sources */,
 				15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */,
 				123048D5295F95A40015CD96 /* SubmittedDetailsView.swift in Sources */,
+				1574AC832C878FF0007BEBF5 /* DropboxRepository.swift in Sources */,
 				1293F6682AD7EF3900F6CFBD /* CloseHeaderView.swift in Sources */,
 				1278B66127EB364500C9AC4D /* Utils.swift in Sources */,
 				15A173442C78F64100E84F55 /* LocalizableError.swift in Sources */,
@@ -3791,6 +3836,7 @@
 				125A89582A965BA4009347C3 /* VaultFileDB.swift in Sources */,
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,
 				CCC1B42F2AC75AF60075B819 /* UwaziDividerWidget.swift in Sources */,
+				15FF77F82C8F89A8002E87C3 /* DropboxData.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,
 				CC5CEB872AF037B600BF238B /* FileDropdown.swift in Sources */,
 				1519BED82B9A5A52006FD290 /* Resource.swift in Sources */,
@@ -3821,6 +3867,7 @@
 				CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */,
 				1216123C28DE13AC00E6D7B6 /* DatabaseUtilities.swift in Sources */,
 				CCC1B4392AC75B8D0075B819 /* UwaziEntityParser.swift in Sources */,
+				1587D6EB2C98C8C1003E0B3D /* ConfigurationManager.swift in Sources */,
 				128BEB222B1E4B7600420923 /* OfflineFeedbackToast.swift in Sources */,
 				126E1B072C3EB28D000AE4CE /* NextcloudDraftView.swift in Sources */,
 				12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */,
@@ -3904,6 +3951,7 @@
 				E17736402A83FFA200FE01C0 /* UwaziDictionaryDTO.swift in Sources */,
 				204E7C3C2C241376004CC49F /* NextcloudRepository.swift in Sources */,
 				E11968B12A1F409D00BA7B56 /* UwaziLanguageDTO.swift in Sources */,
+				15FF77F62C8F862A002E87C3 /* DropboxDatabase.swift in Sources */,
 				12607D5327903E9E00E2B8CC /* CustomVideoControlsView.swift in Sources */,
 				1275A8422C5A791A0071A97D /* ReportFileExtension.swift in Sources */,
 				1216F8742901823100F5AEA5 /* UnderlinedTextEditorView.swift in Sources */,
@@ -3961,7 +4009,6 @@
 				12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */,
 				12B370392B19109600DDA9E9 /* LocalizableBackgroundActivities.swift in Sources */,
 				122C54BE28C6351E003B2DBC /* AdvancedServerSettingsView.swift in Sources */,
-				15C51C442BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift in Sources */,
 				15E3D50E2C1B87AC00B7FECC /* GDriveDraftViewModel.swift in Sources */,
 				122C54C028C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift in Sources */,
 				12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */,
@@ -4014,6 +4061,7 @@
 				122389B3293630DA0058593B /* SaveSuccessView.swift in Sources */,
 				12A1FACE2C81E15700E28BC2 /* BaseReportExtension.swift in Sources */,
 				209AC68E2C332F0000492356 /* ViewClassType.swift in Sources */,
+				15FF77FF2C90CF7A002E87C3 /* DropboxServer.swift in Sources */,
 				12B6AF7D283E4C7200D697F6 /* LocalizableVault.swift in Sources */,
 				CCAE3A682AC217EC00A38C6D /* UwaziViewModel.swift in Sources */,
 				E1EEE2A429F7D192009FE227 /* UwaziTwoStepVerification.swift in Sources */,

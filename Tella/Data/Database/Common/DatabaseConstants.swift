@@ -13,7 +13,7 @@ struct D {
     
     /* DATABASE VERSION */
 
-    static let databaseVersion = 7
+    static let databaseVersion = 8
 
     /* DEFAULT TYPES FOR DATABASE */
     // MARK: - DEFAULT TYPES FOR DATABASE
@@ -40,6 +40,8 @@ struct D {
     static let tNextcloudServer = "t_nextcloud_server"
     static let tNextcloudReport = "t_nextcloud_report"
     static let tNextcloudInstanceVaultFile = "t_nextcloud_instance_vault_file"
+    static let tDropboxServer = "t_dropbox_server"
+    static let tDropboxReport = "t_dropbox_report"
 
     /* DATABASE COLUMNS */
     // MARK: - DATABASE COLUMNS
