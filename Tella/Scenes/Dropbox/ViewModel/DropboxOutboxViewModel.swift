@@ -51,51 +51,55 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     
     
     override func submitReport() {
+        performSubmission()
+    }
+    
+    private func performSubmission() {
         if isSubmissionInProgress { return }
 
         self.updateReportStatus(reportStatus: .submissionInProgress)
         cancellables.removeAll()
-
-        if reportViewModel.folderId != nil {
-            uploadFiles(to: "/\(reportViewModel.title)")
-        } else {
-            createDropboxFolder()
-        }
+        
+        dropboxRepository.submitReport(folderId: reportViewModel.folderId,
+                                       name: reportViewModel.title,
+                                       description: reportViewModel.description,
+                                       files: parseDropboxFiles())
+        .receive(on: DispatchQueue.main)
+        .sink(receiveCompletion: { completion in
+            switch completion {
+            case .finished:
+                self.checkAllFilesAreUploaded()
+            case .failure(let error):
+                switch error {
+                case .noToken:
+                    self.updateReportStatus(reportStatus: .submissionError)
+                    self.shouldShowLoginView = true
+                default:
+                    self.updateReportStatus(reportStatus: .submissionError)
+                    self.toastMessage = error.errorMessage
+                    self.shouldShowToast = true
+                }
+            }
+            
+        }, receiveValue: { response in
+            switch response {
+            case .initial:
+                debugLog("startin dropbox upload process")
+            case .folderCreated(let folderId, let folderName):
+                self.reportViewModel.folderId = folderId
+                self.reportViewModel.title = folderName
+                self.updateReportFolderId(folderId: folderId, name: folderName)
+            case .progress(let progressInfo):
+                self.updateProgressInfos(uploadProgressInfo: progressInfo)
+            case .finished:
+                self.checkAllFilesAreUploaded()
+                
+            }
+        })
+        .store(in: &cancellables)
     }
     
-    private func createDropboxFolder() {
-        dropboxRepository.createFolder(name: reportViewModel.title, description: reportViewModel.description)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self]completion in
-                switch completion {
-                case .finished:
-                    debugLog("Folder created successfully")
-                case .failure(let error):
-                    switch error {
-                    case .noToken:
-                        self?.updateReportStatus(reportStatus: .submissionError)
-                        self?.shouldShowLoginView = true
-                    default:
-                        debugLog("Error creating folder: \(error)")
-                        self?.updateReportStatus(reportStatus: .submissionError)
-                        self?.toastMessage = error.errorMessage
-                        self?.shouldShowToast = true
-                    }
-                    
-                }
-            }, receiveValue: { response in
-                dump(response.name)
-                
-                self.reportViewModel.folderId = response.id
-                self.reportViewModel.title = response.name
-                
-                self.updateReportFolderId(folderId: response.id, name: response.name)
-                self.uploadFiles(to: "/\(self.reportViewModel.title)")
-            })
-            .store(in: &cancellables)
-    }
-        
-    private func uploadFiles(to folderPath: String) {
+    private func parseDropboxFiles() -> [DropboxFileInfo]{
         let files = reportViewModel.files.filter { $0.status != .uploaded }
         let filesToSend: [DropboxFileInfo] = files.compactMap { file -> DropboxFileInfo? in
             guard let url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true) else {
@@ -108,38 +112,24 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
                                    offset: Int64(file.bytesSent),
                                    sessionId: file.sessionId)
         }
-
-        dropboxRepository.uploadReport(folderPath: folderPath, files: filesToSend)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                switch completion {
-                case .finished:
-                    self?.updateReportStatus(reportStatus: .submitted)
-                    self?.showSubmittedReport()
-                case .failure(let error):
-                    debugLog(error)
-                    switch error {
-                    case .noToken:
-                        self?.updateReportStatus(reportStatus: .submissionError)
-                        self?.shouldShowLoginView = true
-                    default:
-                        self?.updateReportStatus(reportStatus: .submissionError)
-                        self?.toastMessage = error.errorMessage
-                        self?.shouldShowToast = true
-                    }
-                }
-            }, receiveValue: { [weak self] progressInfo in
-                self?.updateProgressInfos(uploadProgressInfo: progressInfo)
-            })
-            .store(in: &cancellables)
+        
+        return filesToSend
     }
-    
+
     override func pauseSubmission() {
         if isSubmissionInProgress {
             dropboxRepository.pauseUpload()
             updateReportStatus(reportStatus: .submissionPaused)
             
             cancellables.removeAll()
+        }
+    }
+    
+    private func checkAllFilesAreUploaded() {
+        let filesAreNotSubmitted = reportViewModel.files.filter({$0.status != .uploaded})
+        if (filesAreNotSubmitted.isEmpty) {
+            updateReportStatus(reportStatus: .submitted)
+            showSubmittedReport()
         }
     }
     

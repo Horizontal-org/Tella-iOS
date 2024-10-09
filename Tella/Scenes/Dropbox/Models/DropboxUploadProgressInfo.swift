@@ -8,6 +8,13 @@
 
 import Foundation
 
+enum DropboxUploadResponse {
+    case initial
+    case progress(progressInfo: DropboxUploadProgressInfo)
+    case folderCreated(folderId: String, folderName: String)
+    case finished
+}
+
 class DropboxUploadProgressInfo: UploadProgressInfo {
     var sessionId: String?
 
