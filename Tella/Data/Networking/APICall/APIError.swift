@@ -42,7 +42,7 @@ extension APIError: LocalizedError {
         case .errorOccured :
             return LocalizableError.commonError.localized
         case .dropboxApiError(let error):
-            return APIError.customDropboxErrorMessage(error: error)
+            return customDropboxErrorMessage(error: error)
         }
     }
     

@@ -10,7 +10,7 @@ import Foundation
 import SwiftyDropbox
 
 extension APIError {
-    static func customDropboxErrorMessage(error: Error) -> String {
+    func customDropboxErrorMessage(error: Error) -> String {
         var actualError = error
         if let apiError = error as? APIError, case let .dropboxApiError(underlyingError) = apiError {
             actualError = underlyingError
@@ -29,7 +29,7 @@ extension APIError {
         }
     }
 
-    private static func handleDropboxCallError<T>(_ error: CallError<T>) -> String {
+    private func handleDropboxCallError<T>(_ error: CallError<T>) -> String {
         switch error {
         case .routeError(let boxedError, _, _, _):
             return parseDropboxRouteError(boxedError.unboxed)
@@ -38,7 +38,7 @@ extension APIError {
         }
     }
 
-    private static func parseDropboxRouteError(_ unboxedError: Any) -> String {
+    private func parseDropboxRouteError(_ unboxedError: Any) -> String {
         if let uploadError = unboxedError as? Files.UploadError {
             return handleUploadError(uploadError)
         } else if let uploadSessionFinishError = unboxedError as? Files.UploadSessionFinishError {
@@ -52,7 +52,7 @@ extension APIError {
         }
     }
 
-    private static func handleUploadError(_ error: Files.UploadError) -> String {
+    private func handleUploadError(_ error: Files.UploadError) -> String {
         switch error {
         case .path(let uploadWriteFailed):
             return handleUploadWriteFailed(uploadWriteFailed)
@@ -61,7 +61,7 @@ extension APIError {
         }
     }
     
-    private static func handleUploadSessionFinishError(_ error: Files.UploadSessionFinishError) -> String {
+    private func handleUploadSessionFinishError(_ error: Files.UploadSessionFinishError) -> String {
         switch error {
         case .path(let uploadWriteFailed):
             return handleWriteError(uploadWriteFailed)
@@ -70,18 +70,18 @@ extension APIError {
         }
     }
 
-    private static func handleCreateFolderError(_ error: Files.CreateFolderError) -> String {
+    private func handleCreateFolderError(_ error: Files.CreateFolderError) -> String {
         switch error {
         case .path(let writeError):
             return handleWriteError(writeError)
         }
     }
 
-    private static func handleUploadWriteFailed(_ error: Files.UploadWriteFailed) -> String {
+    private func handleUploadWriteFailed(_ error: Files.UploadWriteFailed) -> String {
         return handleWriteError(error.reason)
     }
 
-    private static func handleWriteError(_ error: Files.WriteError) -> String {
+    private func handleWriteError(_ error: Files.WriteError) -> String {
         switch error {
         case .conflict:
             return LocalizableError.dropboxFileConflict.localized
