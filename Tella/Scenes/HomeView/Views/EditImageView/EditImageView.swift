@@ -22,7 +22,7 @@ struct EditImageView: View {
             } else {
                 ProgressView()
             }
-            confirmExitBottomSheet
+            EditFileCancelBottomSheet(isShown: $isBottomSheetShown, saveAction: { handleSaveAction() })
         }.onAppear {
             viewModel.loadFile()
         }
@@ -37,24 +37,9 @@ struct EditImageView: View {
         }  
         .ignoresSafeArea()
     }
-
-    var confirmExitBottomSheet: some View {
-        DragView(modalHeight: 171, isShown: $isBottomSheetShown) {
-            ConfirmBottomSheet(titleText: LocalizableVault.editFileConfirmExitTitle.localized,
-                               msgText: LocalizableVault.editFileConfirmExitExpl.localized,
-                               cancelText: LocalizableVault.editFileExitSheetAction.localized,
-                               actionText:LocalizableVault.renameFileSaveSheetAction.localized, didConfirmAction: {
-                handleSaveAction()
-            }, didCancelAction: {
-                self.dismiss()
-            })
-        }
-    }
-    
     private func handleSaveAction() {
         self.viewModel.saveChanges()
         isPresented = false
-        Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized)
     }
 }
 

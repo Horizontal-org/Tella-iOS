@@ -20,23 +20,27 @@ class AudioPlayerViewModel: ObservableObject {
     @Published var currentTime : String  = "00:00:00"
     @Published var duration : String  = "00:00:00"
 
-    private var cancellable: Set<AnyCancellable> = []
-
+    var mainAppModel: MainAppModel
+    var cancellable: Set<AnyCancellable> = []
+    var currentFile: VaultFileDB?
     var audioPlayerManager: AudioPlayerManager = AudioPlayerManager()
     
      var currentData : Data?
   
     @Published var audioIsReady = false
 
-    init(currentData: Data?) {
-         self.currentData = currentData
-
+    @Published var timeDuration: TimeInterval?
+    
+    init(currentData: Data?, currentFile: VaultFileDB?, mainAppModel: MainAppModel) {
+        self.currentData = currentData
+        self.currentFile = currentFile
+        self.mainAppModel = mainAppModel
         audioPlayerManager.audioPlayer.currentTime.sink { value in
-            self.currentTime = value.stringFromTimeInterval()
+            self.currentTime = value.toHHMMSSString()
         }.store(in: &self.cancellable)
         
         audioPlayerManager.audioPlayer.duration.sink { value in
-            self.duration = value.stringFromTimeInterval()
+            self.duration = value.toHHMMSSString()
         }.store(in: &self.cancellable)
         
         audioPlayerManager.audioPlayer.audioPlayerDidFinishPlaying.sink { [self] value in
@@ -50,7 +54,10 @@ class AudioPlayerViewModel: ObservableObject {
 
             
         }.store(in: &self.cancellable)
-        
+        audioPlayerManager.audioPlayer.duration.sink { value in
+            self.timeDuration = value
+        }.store(in: &self.cancellable)
+
         loadAudio()
     }
     

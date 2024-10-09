@@ -48,7 +48,7 @@ class RecordViewModel: ObservableObject {
         
         // Update the time
         audioBackend.currentTime.sink { value in
-            self.time = value.stringFromTimeInterval()
+            self.time = value.toHHMMSSString()
         }.store(in: &cancellable)
         
         
