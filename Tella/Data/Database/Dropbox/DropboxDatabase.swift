@@ -48,6 +48,7 @@ extension TellaDataBase {
         do {
             try statementBuilder.delete(tableName: D.tDropboxServer,
                                         primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
+            try statementBuilder.deleteAll(tableNames: [D.tDropboxReport, D.tDropboxInstanceVaultFile])
         } catch let error {
             debugLog(error)
         }

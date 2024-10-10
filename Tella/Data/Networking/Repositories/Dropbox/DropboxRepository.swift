@@ -16,7 +16,7 @@ protocol DropboxRepositoryProtocol {
     func signOut()
     func handleRedirectURL(_ url: URL, completion: @escaping (DropboxOAuthResult?) -> Void) -> Bool
     
-    func submitReport(folderId: String?, name: String, description: String, files: [DropboxFileInfo]? ) -> AnyPublisher<DropboxUploadResponse, APIError>
+    func submitReport(reportToSend: DropboxReportToSend) -> AnyPublisher<DropboxUploadResponse, APIError>
     
     func pauseUpload()
 }
@@ -83,8 +83,14 @@ class DropboxRepository: DropboxRepositoryProtocol {
         }
     }
     
-    func submitReport(folderId: String?, name: String, description: String, files: [DropboxFileInfo]?) -> AnyPublisher<DropboxUploadResponse, APIError> {
+    func submitReport(reportToSend: DropboxReportToSend) -> AnyPublisher<DropboxUploadResponse, APIError> {
         let subject = PassthroughSubject<DropboxUploadResponse, APIError>()
+        
+        let name = reportToSend.name
+        let description = reportToSend.description
+        let folderId = reportToSend.folderId
+        let files = reportToSend.files
+        
         networkStatusSubject
                 .filter { !$0 }
                 .first()

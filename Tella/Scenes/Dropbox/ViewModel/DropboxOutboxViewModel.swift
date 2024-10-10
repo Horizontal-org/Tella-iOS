@@ -60,10 +60,9 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         self.updateReportStatus(reportStatus: .submissionInProgress)
         cancellables.removeAll()
         
-        dropboxRepository.submitReport(folderId: reportViewModel.folderId,
-                                       name: reportViewModel.title,
-                                       description: reportViewModel.description,
-                                       files: parseDropboxFiles())
+        let reportToSend = DropboxReportToSend(folderId: reportViewModel.folderId, name: reportViewModel.title, description: reportViewModel.description, files: parseDropboxFiles())
+        
+        dropboxRepository.submitReport(reportToSend: reportToSend)
         .receive(on: DispatchQueue.main)
         .sink(receiveCompletion: { completion in
             switch completion {

@@ -379,6 +379,7 @@
 		1517A9B22C404F4000CB8EBF /* SubmittedMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1517A9B12C404F4000CB8EBF /* SubmittedMainViewModel.swift */; };
 		1517A9B42C4050D500CB8EBF /* GDriveSubmittedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1517A9B32C4050D500CB8EBF /* GDriveSubmittedViewModel.swift */; };
 		1519BED82B9A5A52006FD290 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1519BED72B9A5A52006FD290 /* Resource.swift */; };
+		1524303E2CB8258E00989395 /* DropboxReportToSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1524303D2CB8258E00989395 /* DropboxReportToSend.swift */; };
 		152D38512C2C61DF00323CE7 /* DraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152D38502C2C61DF00323CE7 /* DraftView.swift */; };
 		1535A5F12BAA06490009EA42 /* DownloadedResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1535A5F02BAA06490009EA42 /* DownloadedResource.swift */; };
 		153AACF72BE40BEA0075D5B2 /* UwaziEntityFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AACF62BE40BEA0075D5B2 /* UwaziEntityFetcher.swift */; };
@@ -1009,6 +1010,7 @@
 		1517A9B12C404F4000CB8EBF /* SubmittedMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittedMainViewModel.swift; sourceTree = "<group>"; };
 		1517A9B32C4050D500CB8EBF /* GDriveSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveSubmittedViewModel.swift; sourceTree = "<group>"; };
 		1519BED72B9A5A52006FD290 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
+		1524303D2CB8258E00989395 /* DropboxReportToSend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxReportToSend.swift; sourceTree = "<group>"; };
 		152D38502C2C61DF00323CE7 /* DraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftView.swift; sourceTree = "<group>"; };
 		1535A5F02BAA06490009EA42 /* DownloadedResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResource.swift; sourceTree = "<group>"; };
 		153AACF62BE40BEA0075D5B2 /* UwaziEntityFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityFetcher.swift; sourceTree = "<group>"; };
@@ -2719,6 +2721,7 @@
 				15FE5D092CADD2860004AD35 /* DropboxUploadProgressInfo.swift */,
 				157EDEAA2CB055EB00663549 /* DropboxCreateFolderResponse.swift */,
 				153C23962CB49C3200C157D9 /* DropboxFileInfo.swift */,
+				1524303D2CB8258E00989395 /* DropboxReportToSend.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3919,6 +3922,7 @@
 				125A89582A965BA4009347C3 /* VaultFileDB.swift in Sources */,
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,
 				CCC1B42F2AC75AF60075B819 /* UwaziDividerWidget.swift in Sources */,
+				1524303E2CB8258E00989395 /* DropboxReportToSend.swift in Sources */,
 				15FF77F82C8F89A8002E87C3 /* DropboxData.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,
 				CC5CEB872AF037B600BF238B /* FileDropdown.swift in Sources */,
