@@ -23,15 +23,12 @@ class EditAudioViewModel: ObservableObject {
     let kNumberOfLabels = 5 // This is for the sub-times labels
     
     @Published var currentTime : String  = "00:00:00"
-    @Published private var currenTimeValue: Double = 0.0
     @Published var audioPlayerViewModel: AudioPlayerViewModel
     var playButtonImageName: String {
         isPlaying ? "mic.pause-audio" : "mic.play" 
     }
     
-    var timeDuration: Double {
-        return Double(audioPlayerViewModel.timeDuration ?? 0)
-    }
+    @Published var timeDuration: Double = 0.0
     
     var duration: String {
         return audioPlayerViewModel.duration
@@ -42,10 +39,12 @@ class EditAudioViewModel: ObservableObject {
         
         self.audioPlayerViewModel.audioPlayerManager.audioPlayer.currentTime.sink { value in
             self.currentTime = value.toHHMMSSString()
-            self.currenTimeValue = Double(value)
-            self.updateOffset()
+            self.updateOffset(time: Double(value) )
         }.store(in: &self.cancellable)
-
+        self.audioPlayerViewModel.audioPlayerManager.audioPlayer.duration.sink { value in
+            self.timeDuration = value
+            self.endTime = value
+        }.store(in: &self.cancellable)
     }
     
     func onAppear() {
@@ -55,7 +54,6 @@ class EditAudioViewModel: ObservableObject {
         guard let url else { return }
         
         self.audioUrl = url
-        self.endTime = Double(audioPlayerViewModel.timeDuration ?? 0)
     }
     
     func trimAudio() {
@@ -140,23 +138,11 @@ class EditAudioViewModel: ObservableObject {
         self.endTime = Double(audioPlayerViewModel.timeDuration ?? 0)
     }
     
-    
-    
-    
-    private func updateOffset() {
-//        guard let player = audioPlayer else { return }
-//
-//        let duration = player.duration
-//        let currentTime = player.currentTime
-
-        // Assuming 300 points is the total offset distance for the view
+    private func updateOffset(time: Double) {
         let totalOffsetDistance: CGFloat = 340
-        let progress = currenTimeValue / timeDuration
-
-        // Update the offset based on audio progress
+        let progress = time / timeDuration
         offset = CGFloat(progress) * totalOffsetDistance
     }
-
 }
 
 

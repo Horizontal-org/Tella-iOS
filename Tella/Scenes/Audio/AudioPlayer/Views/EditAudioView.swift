@@ -90,14 +90,16 @@ struct EditAudioView: View {
 
                     Image("edit.audio.play.line")
                         .frame(height: 220)
-                        .offset(x: editAudioViewModel.offset)
+                        .offset(x: editAudioViewModel.offset, y: 5)
                     
                     CustomSliderView(value: $editAudioViewModel.startTime, range: 0...editAudioViewModel.timeDuration)
                         .frame(height: 220)
-                    
+                        .offset(y:20)
+
                 }
                 CustomSliderView(value: $editAudioViewModel.endTime, range: 0...editAudioViewModel.timeDuration)
                     .frame(height: 220)
+                    .offset(y:20)
             }.frame(maxWidth: 340)
             
         }.padding(30)
