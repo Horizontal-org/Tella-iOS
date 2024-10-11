@@ -23,7 +23,7 @@ class DropboxViewModel: ReportsMainViewModel {
                             content: LocalizableReport.viewModelDelete.localized,
                             type: ConnectionActionType.delete)
     ]}
-
+    
     
     init(mainAppModel: MainAppModel, dropboxRepository: DropboxRepositoryProtocol) {
         self.dropboxRepository = dropboxRepository
@@ -54,7 +54,7 @@ class DropboxViewModel: ReportsMainViewModel {
             )
         }
     }
-        
+    
     func getOutboxedReports() {
         let outboxedReports = tellaData?.getOutboxedDropboxReports() ?? []
         self.outboxedReportsViewModel = outboxedReports.compactMap { report in
@@ -65,7 +65,7 @@ class DropboxViewModel: ReportsMainViewModel {
             )
         }
     }
-        
+    
     func getSubmittedReports() {
         let submittedReports = tellaData?.getSubmittedDropboxReports() ?? []
         self.submittedReportsViewModel = submittedReports.compactMap { report in
@@ -78,7 +78,13 @@ class DropboxViewModel: ReportsMainViewModel {
     }
     
     func deleteReport(report: DropboxReport) {
-        let _ = self.mainAppModel.tellaData?.deleteDropboxReport(reportId: report.id)
+        let deleteDropboxReportResult = self.mainAppModel.tellaData?.deleteDropboxReport(reportId: report.id)
+        handleDeleteReport(title: report.title, result: deleteDropboxReportResult)
+    }
+    
+    override func deleteSubmittedReports() {
+        let deleteResult = mainAppModel.tellaData?.deleteDropboxSubmittedReports()
+        self.handleDeleteSubmittedReport(deleteResult: deleteResult)
     }
     
     override func listenToUpdates() {

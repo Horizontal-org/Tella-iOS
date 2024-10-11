@@ -11,11 +11,11 @@ import Combine
 
 class NextcloudReportViewModel: ReportsMainViewModel {
     
-     var nextcloudRepository: NextcloudRepositoryProtocol
+    var nextcloudRepository: NextcloudRepositoryProtocol
     
-     init(mainAppModel: MainAppModel, nextcloudRepository: NextcloudRepositoryProtocol) {
-         self.nextcloudRepository = nextcloudRepository
-         super.init(mainAppModel: mainAppModel, connectionType: .nextcloud, title: LocalizableNextcloud.nextcloudAppBar.localized)
+    init(mainAppModel: MainAppModel, nextcloudRepository: NextcloudRepositoryProtocol) {
+        self.nextcloudRepository = nextcloudRepository
+        super.init(mainAppModel: mainAppModel, connectionType: .nextcloud, title: LocalizableNextcloud.nextcloudAppBar.localized)
     }
     
     override func getReports() {
@@ -53,22 +53,12 @@ class NextcloudReportViewModel: ReportsMainViewModel {
     }
     
     func deleteReport(report:NextcloudReport) {
-        var message = ""
-        
-        guard let reportId = report.id,
-              let resultDeletion = self.tellaData?.deleteNextcloudReport(reportId: reportId),
-              resultDeletion
-        else {
-            message = LocalizableCommon.commonError.localized
-            return
-        }
-        message = String.init(format: LocalizableUwazi.uwaziDeletedToast.localized, report.title ?? "")
-        self.shouldShowToast = true
-        self.toastMessage = message
+        let resultDeletion = self.tellaData?.deleteNextcloudReport(reportId: report.id)
+        self.handleDeleteReport(title: report.title ?? "", result: resultDeletion)
     }
     
-    override func deleteSubmittedReport() {
-        let deleteResult = mainAppModel.tellaData?.deleteNextcloudSubmittedReport() ?? false
-        self.handleDeleteReport(deleteResult: deleteResult)
+    override func deleteSubmittedReports() {
+        let deleteResult = mainAppModel.tellaData?.deleteNextcloudSubmittedReports()  
+        self.handleDeleteSubmittedReport(deleteResult: deleteResult)
     }
 }

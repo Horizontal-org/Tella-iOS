@@ -46,6 +46,7 @@
 		1209FD3027AD8AC400D8C17E /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD2F27AD8AC400D8C17E /* AudioPlayerManager.swift */; };
 		1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD3127ADBDDE00D8C17E /* TimeIntervalExtension.swift */; };
 		120A14472B285E1400870157 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A14462B285E1400870157 /* MainViewModel.swift */; };
+		120D86642CB56FC500C007B4 /* ResultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120D86632CB56FC500C007B4 /* ResultExtension.swift */; };
 		1212677F2C0E77A2005F75A4 /* VaultFileItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1212677D2C0E77A2005F75A4 /* VaultFileItemViewModel.swift */; };
 		121267802C0E77A2005F75A4 /* VaultFileItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1212677E2C0E77A2005F75A4 /* VaultFileItemView.swift */; };
 		1216123C28DE13AC00E6D7B6 /* DatabaseUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1216123B28DE13AC00E6D7B6 /* DatabaseUtilities.swift */; };
@@ -680,6 +681,7 @@
 		1209FD2F27AD8AC400D8C17E /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
 		1209FD3127ADBDDE00D8C17E /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
 		120A14462B285E1400870157 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		120D86632CB56FC500C007B4 /* ResultExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultExtension.swift; sourceTree = "<group>"; };
 		1212677D2C0E77A2005F75A4 /* VaultFileItemViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VaultFileItemViewModel.swift; sourceTree = "<group>"; };
 		1212677E2C0E77A2005F75A4 /* VaultFileItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VaultFileItemView.swift; sourceTree = "<group>"; };
 		1216123B28DE13AC00E6D7B6 /* DatabaseUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUtilities.swift; sourceTree = "<group>"; };
@@ -1375,8 +1377,6 @@
 		1203CDE429915C6600D09073 /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				15FF77F42C8F8618002E87C3 /* Dropbox */,
-				209AC6802C332D6E00492356 /* GDriveData.swift */,
 				12964D902BAB44B9003E1E0A /* Models */,
 				1203CDE62991682800D09073 /* Common */,
 				E1F4A8E02AAF3F4E001C8E61 /* Protocols */,
@@ -1386,7 +1386,8 @@
 				E1CF5A242AB3477C00365036 /* UwaziDatabase.swift */,
 				E1CF5A2A2AB3533100365036 /* ServerDatabase.swift */,
 				155369222B7E9CC100129F2F /* ResourceDatabase.swift */,
-				155879FE2C0106FA0071389E /* GDriveDatabase.swift */,
+				127439A12CB7EF800008C3C0 /* GDrive */,
+				15FF77F42C8F8618002E87C3 /* Dropbox */,
 				126E1B022C3D9A85000AE4CE /* Nextcloud */,
 			);
 			path = Database;
@@ -1844,6 +1845,7 @@
 				E1CF5A262AB3488E00365036 /* JSONDecoderExtension.swift */,
 				125F9B9A2AD9B4770073748C /* DictionaryExtension.swift */,
 				12742C8E2BEB9FBC00919FAE /* EncodableExtension.swift */,
+				120D86632CB56FC500C007B4 /* ResultExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1982,6 +1984,15 @@
 				15622F492B72B1FF00289816 /* DeleteConfirmation.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		127439A12CB7EF800008C3C0 /* GDrive */ = {
+			isa = PBXGroup;
+			children = (
+				209AC6802C332D6E00492356 /* GDriveData.swift */,
+				155879FE2C0106FA0071389E /* GDriveDatabase.swift */,
+			);
+			path = GDrive;
 			sourceTree = "<group>";
 		};
 		1275A83C2C5A78B50071A97D /* Models */ = {
@@ -3833,6 +3844,7 @@
 				1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */,
 				1574AC882C879DFF007BEBF5 /* DropboxServerViewModel.swift in Sources */,
 				15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */,
+				120D86642CB56FC500C007B4 /* ResultExtension.swift in Sources */,
 				123048D5295F95A40015CD96 /* SubmittedDetailsView.swift in Sources */,
 				1574AC832C878FF0007BEBF5 /* DropboxRepository.swift in Sources */,
 				1293F6682AD7EF3900F6CFBD /* CloseHeaderView.swift in Sources */,

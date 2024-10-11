@@ -11,7 +11,7 @@ import Combine
 class GDriveViewModel: ReportsMainViewModel {
     @Published var selectedReport: GDriveReport?
     @Published var server: GDriveServer?
-
+    
     private var delayTime = 0.1
     var gDriveRepository: GDriveRepositoryProtocol
     var sheetItems : [ListActionSheetItem] { return [
@@ -23,12 +23,12 @@ class GDriveViewModel: ReportsMainViewModel {
                             content: LocalizableReport.viewModelDelete.localized,
                             type: ConnectionActionType.delete)
     ]}
-
-
+    
+    
     init(mainAppModel: MainAppModel, gDriveRepository: GDriveRepositoryProtocol) {
         self.gDriveRepository = gDriveRepository
         super.init(mainAppModel: mainAppModel, connectionType: .gDrive, title: LocalizableGDrive.gDriveAppBar.localized)
-
+        
         self.getServer()
         self.listenToUpdates()
     }
@@ -77,7 +77,13 @@ class GDriveViewModel: ReportsMainViewModel {
     }
     
     func deleteReport(report: GDriveReport) {
-        let _ = self.mainAppModel.tellaData?.deleteDriveReport(reportId: report.id)
+        let deleteDriveReportResult = self.mainAppModel.tellaData?.deleteDriveReport(reportId: report.id)
+        handleDeleteReport(title: report.title, result: deleteDriveReportResult)
+    }
+    
+    override func deleteSubmittedReports() {
+        let deleteResult = mainAppModel.tellaData?.deleteDriveSubmittedReports()
+        self.handleDeleteSubmittedReport(deleteResult: deleteResult)
     }
     
     override func listenToUpdates() {

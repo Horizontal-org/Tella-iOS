@@ -10,6 +10,7 @@ import Foundation
 
 /// Create Server Tables
 extension TellaDataBase {
+    
     func createDropboxServerTable() {
         let columns = [
             cddl(D.cServerId, D.integer, primaryKey: true, autoIncrement: true),
@@ -19,7 +20,7 @@ extension TellaDataBase {
         statementBuilder.createTable(tableName: D.tDropboxServer, columns: columns)
     }
     
-    func addDropboxServer(dropboxServer: DropboxServer) -> Result<Int, Error>{
+    func addDropboxServer(dropboxServer: DropboxServer) -> Result<Int, Error> {
         do {
             let valuesToAdd = [KeyValue(key: D.cName, value: dropboxServer.name)]
             
@@ -36,7 +37,7 @@ extension TellaDataBase {
             let serversDict = try statementBuilder.selectQuery(tableName: D.tDropboxServer, andCondition: [])
             
             let dropboxServer = try serversDict.decode(DropboxServer.self)
-
+            
             return dropboxServer
         } catch let error {
             debugLog("Error while fetching servers from \(D.tDropboxServer): \(error)")
@@ -57,6 +58,7 @@ extension TellaDataBase {
 
 /// Create report tables
 extension TellaDataBase {
+    
     func createDropboxReportTable() {
         let columns = [
             cddl(D.cReportId, D.integer, primaryKey: true, autoIncrement: true),
@@ -99,8 +101,7 @@ extension TellaDataBase {
             let statusArray = reportStatus.compactMap{ $0.rawValue }
             
             let dropboxReportsDict = try statementBuilder.getSelectQuery(tableName: D.tDropboxReport,
-                                                                        inCondition: [KeyValues(key:D.cStatus, value: statusArray )]
-            )
+                                                                         inCondition: [KeyValues(key:D.cStatus, value: statusArray )])
             
             let decodedReports = try dropboxReportsDict.compactMap ({ dict in
                 return try dict.decode(DropboxReport.self)
@@ -113,12 +114,12 @@ extension TellaDataBase {
             return []
         }
     }
-        
+    
     func getDropboxReport(id: Int) -> DropboxReport? {
         do{
             let reportsCondition = [KeyValue(key: D.cReportId, value: id)]
             let dropboxReportsDict = try statementBuilder.getSelectQuery(tableName: D.tDropboxReport,
-                                                                        equalCondition: reportsCondition
+                                                                         equalCondition: reportsCondition
             )
             
             guard let dict = dropboxReportsDict.first else {
@@ -138,7 +139,7 @@ extension TellaDataBase {
             return nil
         }
     }
-        
+    
     func getDropboxVaultFiles(reportId: Int?) -> [DropboxReportFile] {
         do {
             let reportFilesCondition = [KeyValue(key: D.cReportInstanceId, value: reportId)]
@@ -173,12 +174,12 @@ extension TellaDataBase {
             return .success(reportId)
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
     /// UPDATE
-    func updateDropboxReport(report: DropboxReport) -> Result<Bool, Error> {
+    func updateDropboxReport(report: DropboxReport) -> Result<Void, Error> {
         do {
             
             let reportDict = report.dictionary
@@ -192,7 +193,7 @@ extension TellaDataBase {
             )
             
             if let files = report.reportFiles, let reportId = report.id {
-                try deleteDropboxInstanceFiles(reportId: reportId)
+                try deleteDropboxInstanceFiles(reportIds: [reportId])
                 
                 try files.forEach( { reportFiles in
                     let reportFilesDict = reportFiles.dictionary
@@ -201,14 +202,14 @@ extension TellaDataBase {
                     try statementBuilder.insertInto(tableName: D.tDropboxInstanceVaultFile, keyValue: reportFilesValuesToAdd)
                 })
             }
-            return .success(true)
+            return .success
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
-    func updateDropboxReportFile(reportFile: DropboxReportFile) -> Bool {
+    func updateDropboxReportFile(reportFile: DropboxReportFile) -> Result<Void, Error> {
         do {
             let reportDictionary = reportFile.dictionary
             let valuesToUpdate = reportDictionary.compactMap({KeyValue(key: $0.key, value: $0.value)})
@@ -217,14 +218,14 @@ extension TellaDataBase {
             
             try statementBuilder.update(tableName: D.tDropboxInstanceVaultFile, valuesToUpdate: valuesToUpdate, equalCondition: reportCondition)
             
-            return true
+            return .success
         } catch let error {
             debugLog(error)
-            return false
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
-    func updateDropboxReportStatus(idReport: Int, status: ReportStatus) -> Result<Bool, Error> {
+    func updateDropboxReportStatus(idReport: Int, status: ReportStatus) -> Result<Void, Error> {
         do {
             let valuesToUpdate = [KeyValue(key: D.cStatus, value: status.rawValue),
                                   KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())
@@ -233,15 +234,15 @@ extension TellaDataBase {
             let reportCondition = [KeyValue(key: D.cReportId, value: idReport)]
             
             try statementBuilder.update(tableName: D.tDropboxReport, valuesToUpdate: valuesToUpdate, equalCondition: reportCondition)
-                        
-            return .success(true)
+            
+            return .success
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
-    func updateDropboxReportFolderId(idReport: Int, folderId: String, folderName: String) -> Result<Bool, Error> {
+    func updateDropboxReportFolderId(idReport: Int, folderId: String, folderName: String) -> Result<Void, Error> {
         do {
             let valuesToUpdate = [KeyValue(key: D.cFolderId, value: folderId),
                                   KeyValue(key: D.cTitle, value: folderName),
@@ -251,32 +252,50 @@ extension TellaDataBase {
             
             try statementBuilder.update(tableName: D.tDropboxReport, valuesToUpdate: valuesToUpdate, equalCondition: reportCondition)
             
-            return .success(true)
+            return .success
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
     /// DELETE
-    func deleteDropboxReport(reportId: Int?) -> Result<Bool, Error> {
+    func deleteDropboxReport(reportId: Int?) -> Result<Void, Error> {
         do {
             let reportCondition = [KeyValue(key: D.cReportId, value: reportId)]
             
             try statementBuilder.delete(tableName: D.tDropboxReport, primarykeyValue: reportCondition)
             
-            try deleteDropboxInstanceFiles(reportId: reportId)
+            try deleteDropboxInstanceFiles(reportIds: [reportId])
             
-            return .success(true)
+            return .success
         } catch let error {
             debugLog(error)
-            
-            return .failure(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
-    func deleteDropboxInstanceFiles(reportId: Int?) throws {
-        let fileCondition = [KeyValue(key: D.cReportInstanceId, value: reportId)]
-        try statementBuilder.delete(tableName: D.tDropboxInstanceVaultFile, primarykeyValue: fileCondition)
+    func deleteDropboxSubmittedReports() -> Result<Void,Error> {
+        do {
+            let submittedReports = self.getDropboxReports(reportStatus: [.submitted])
+            let reportIds = submittedReports.compactMap{$0.id}
+            try deleteDropboxInstanceFiles(reportIds: reportIds)
+            
+            let reportCondition = [KeyValue(key: D.cStatus, value: ReportStatus.submitted.rawValue)]
+            try statementBuilder.delete(tableName: D.tDropboxReport,
+                                        primarykeyValue: reportCondition)
+            return .success
+            
+        } catch let error {
+            debugLog(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
+        }
+    }
+    
+    private func deleteDropboxInstanceFiles(reportIds:[Int?]) throws {
+        let reportIds = reportIds.compactMap{$0}
+        let reportFilesCondition = [KeyValues(key: D.cReportInstanceId, value: reportIds)]
+        try statementBuilder.delete(tableName: D.tDropboxInstanceVaultFile,
+                                    inCondition: reportFilesCondition)
     }
 }

@@ -48,8 +48,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
             
         }
     }
-    
-    
+
     override func submitReport() {
         performSubmission()
     }
@@ -174,7 +173,6 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         guard let dropboxFile = DropboxReportFile(reportFile: file) else { return }
         
         mainAppModel.tellaData?.updateDropboxReportFile(file: dropboxFile)
-        
     }
     
     func reAuthenticateConnection() {

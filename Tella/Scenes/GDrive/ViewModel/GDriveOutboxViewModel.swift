@@ -193,20 +193,12 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         
         mainAppModel.tellaData?.updateDriveFolderId(reportId: id, folderId: folderId)
     }
-    
+
     override func updateFile(file: ReportVaultFile) {
-        guard let reportId = reportViewModel.id else { return }
-        
-        let reportFiles = reportViewModel.files.map { file in
-            return ReportFile(
-                file: file,
-                reportInstanceId: reportViewModel.id
-            )
-        }
-        
-        let _ = mainAppModel.tellaData?.updateDriveFiles(reportId: reportId, files: reportFiles)
+        guard let file = ReportFile(reportVaultFile: file) else { return }
+        mainAppModel.tellaData?.updateDriveFile(file: file)
     }
-    
+
     func loadVaultFileToURLAsync(file: ReportVaultFile) async -> URL? {
         await withCheckedContinuation { continuation in
             DispatchQueue.global(qos: .userInitiated).async {

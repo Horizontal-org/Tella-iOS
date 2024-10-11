@@ -22,3 +22,18 @@ extension DropboxReportFile {
     }
     
 }
+
+
+extension ReportFile {
+    
+    convenience init?(reportVaultFile: ReportVaultFile) {
+        self.init(id:reportVaultFile.instanceId,
+                  fileId: reportVaultFile.id,
+                  status: reportVaultFile.status,
+                  bytesSent: reportVaultFile.bytesSent,
+                  createdDate: reportVaultFile.createdDate,
+                  updatedDate: reportVaultFile.updatedDate,
+                  reportInstanceId: reportVaultFile.reportInstanceId)
+    }
+    
+}

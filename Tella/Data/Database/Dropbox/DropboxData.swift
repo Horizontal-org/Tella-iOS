@@ -12,11 +12,7 @@ extension TellaData {
     
     ///ADD
     func addDropboxReport(report: DropboxReport) -> Result<Int, Error> {
-        let id = database.addDropboxReport(report: report)
-        
-        shouldReloadDropboxReports.send(true)
-        
-        return id
+        database.addDropboxReport(report: report)
     }
     
     /// GET
@@ -48,37 +44,37 @@ extension TellaData {
     }
     
     /// UPDATE
-    func updateDropboxReport(report: DropboxReport) -> Result<Bool, Error> {
-        shouldReloadDropboxReports.send(true)
-        
-        return self.database.updateDropboxReport(report: report)
+    func updateDropboxReport(report: DropboxReport) -> Result<Void, Error> {
+        self.database.updateDropboxReport(report: report)
     }
     
     @discardableResult
-    func updateDropboxReportStatus(reportId: Int, status: ReportStatus) -> Result<Bool, Error> {
-        shouldReloadDropboxReports.send(true)
-        
-        return self.database.updateDropboxReportStatus(idReport: reportId, status: status)
+    func updateDropboxReportStatus(reportId: Int, status: ReportStatus) -> Result<Void, Error> {
+        self.database.updateDropboxReportStatus(idReport: reportId, status: status)
     }
     
     @discardableResult
-    func updateDropboxReportFile(file: DropboxReportFile) -> Bool {
-        shouldReloadDropboxReports.send(true)
-        
-        return self.database.updateDropboxReportFile(reportFile: file)
+    func updateDropboxReportFile(file: DropboxReportFile) -> Result<Void, Error> {
+        self.database.updateDropboxReportFile(reportFile: file)
     }
     
     @discardableResult
-    func updateDropboxFolderId(reportId: Int, folderId: String, folderName: String) -> Result<Bool, Error> {
-        shouldReloadDropboxReports.send(true)
-        
-        return self.database.updateDropboxReportFolderId(idReport: reportId, folderId: folderId, folderName: folderName)
+    func updateDropboxFolderId(reportId: Int, folderId: String, folderName: String) -> Result<Void, Error> {
+        self.database.updateDropboxReportFolderId(idReport: reportId, folderId: folderId, folderName: folderName)
     }
     
     ///  DELETE
-    func deleteDropboxReport(reportId: Int?) -> Result<Bool, Error> {
+    func deleteDropboxReport(reportId: Int?) -> Result<Void, Error> {
+        let deleteDropboxReportResult = self.database.deleteDropboxReport(reportId: reportId)
         shouldReloadDropboxReports.send(true)
-        
-        return self.database.deleteDropboxReport(reportId: reportId)
+        return deleteDropboxReportResult
     }
+    
+    @discardableResult
+    func deleteDropboxSubmittedReports() -> Result<Void,Error> {
+        let deleteSubmittedReportResult = database.deleteDropboxSubmittedReports()
+        shouldReloadNextcloudReports.send(true)
+        return deleteSubmittedReportResult
+    }
+
 }

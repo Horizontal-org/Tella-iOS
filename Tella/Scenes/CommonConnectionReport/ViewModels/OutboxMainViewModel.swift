@@ -182,15 +182,16 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
         }
     }
     
-    func handleDeleteReport(deleteResult:Bool) {
-        if deleteResult {
+    func handleDeleteReport(deleteResult:Result<Void,Error>) {
+       
+        switch deleteResult {
+        case .success:
             toastMessage = String(format: LocalizableReport.reportDeletedToast.localized, reportViewModel.title)
             pauseSubmission()
             showMainView()
-        } else {
-            toastMessage = LocalizableCommon.commonError.localized
+        case .failure(let error):
+            toastMessage = error.localizedDescription
         }
-        
         shouldShowToast = true
     }
     
