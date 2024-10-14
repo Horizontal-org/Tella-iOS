@@ -12,14 +12,15 @@ import Combine
 class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     let dropboxRepository: DropboxRepositoryProtocol
     private var cancellables = Set<AnyCancellable>()
+    private var currentReport : DropboxReport?
     
     override var shouldShowCancelUploadConfirmation: Bool {
         return true
     }
     
     init(reportsViewModel: ReportsMainViewModel,
-                  reportId: Int?,
-                  repository: DropboxRepositoryProtocol) {
+         reportId: Int?,
+         repository: DropboxRepositoryProtocol) {
         self.dropboxRepository = repository
         super.init(reportsViewModel: reportsViewModel, reportId: reportId)
         
@@ -32,6 +33,8 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     
     override func initVaultFile(reportId: Int?) {
         if let reportId, let report = self.mainAppModel.tellaData?.getDropboxReport(id: reportId) {
+            
+            currentReport = report
             
             let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
             
@@ -48,72 +51,11 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
             
         }
     }
-
+    
     override func submitReport() {
         performSubmission()
     }
     
-    private func performSubmission() {
-        if isSubmissionInProgress { return }
-
-        self.updateReportStatus(reportStatus: .submissionInProgress)
-        cancellables.removeAll()
-        
-        let reportToSend = DropboxReportToSend(folderId: reportViewModel.folderId, name: reportViewModel.title, description: reportViewModel.description, files: parseDropboxFiles())
-        
-        dropboxRepository.submitReport(reportToSend: reportToSend)
-        .receive(on: DispatchQueue.main)
-        .sink(receiveCompletion: { completion in
-            switch completion {
-            case .finished:
-                self.checkAllFilesAreUploaded()
-            case .failure(let error):
-                switch error {
-                case .noToken:
-                    self.updateReportStatus(reportStatus: .submissionError)
-                    self.shouldShowLoginView = true
-                default:
-                    self.updateReportStatus(reportStatus: .submissionError)
-                    self.toastMessage = error.errorMessage
-                    self.shouldShowToast = true
-                }
-            }
-            
-        }, receiveValue: { response in
-            switch response {
-            case .initial:
-                debugLog("startin dropbox upload process")
-            case .folderCreated(let folderId, let folderName):
-                self.reportViewModel.folderId = folderId
-                self.reportViewModel.title = folderName
-                self.updateReportFolderId(folderId: folderId, name: folderName)
-            case .progress(let progressInfo):
-                self.updateProgressInfos(uploadProgressInfo: progressInfo)
-            case .finished:
-                self.checkAllFilesAreUploaded()
-                
-            }
-        })
-        .store(in: &cancellables)
-    }
-    
-    private func parseDropboxFiles() -> [DropboxFileInfo]{
-        let files = reportViewModel.files.filter { $0.status != .uploaded }
-        let filesToSend: [DropboxFileInfo] = files.compactMap { file -> DropboxFileInfo? in
-            guard let url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true) else {
-                return nil
-            }
-
-            return DropboxFileInfo(url: url,
-                                   fileName: url.lastPathComponent,
-                                   fileId: file.id ?? "",
-                                   offset: Int64(file.bytesSent),
-                                   sessionId: file.sessionId)
-        }
-        
-        return filesToSend
-    }
-
     override func pauseSubmission() {
         if isSubmissionInProgress {
             dropboxRepository.pauseUpload()
@@ -123,21 +65,9 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         }
     }
     
-    private func checkAllFilesAreUploaded() {
-        let filesAreNotSubmitted = reportViewModel.files.filter({$0.status != .uploaded})
-        if (filesAreNotSubmitted.isEmpty) {
-            updateReportStatus(reportStatus: .submitted)
-            showSubmittedReport()
-        }
-    }
-    
-    override func updateReportStatus(reportStatus: ReportStatus) {
-        self.reportViewModel.status = reportStatus
-        self.objectWillChange.send()
-        
-        guard let id = reportViewModel.id else { return }
-        
-        mainAppModel.tellaData?.updateDropboxReportStatus(reportId: id, status: reportStatus)
+    override func updateReport() {
+        guard let currentReport else {return}
+        _ = mainAppModel.tellaData?.updateDropboxReportWithoutFiles(report: currentReport)
     }
     
     override func updateCurrentFile(uploadProgressInfo: UploadProgressInfo) {
@@ -163,16 +93,123 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         }
     }
     
-    private func updateReportFolderId(folderId: String, name: String) {
-        guard let id = reportViewModel.id else { return }
-        
-        mainAppModel.tellaData?.updateDropboxFolderId(reportId: id, folderId: folderId,folderName: name )
-    }
-    
     override func updateFile(file: ReportVaultFile) {
         guard let dropboxFile = DropboxReportFile(reportFile: file) else { return }
         
         mainAppModel.tellaData?.updateDropboxReportFile(file: dropboxFile)
+    }
+    
+    private func performSubmission() {
+        if isSubmissionInProgress { return }
+        
+        self.updateReportStatus(reportStatus: .submissionInProgress)
+        cancellables.removeAll()
+        
+        let reportToSend = DropboxReportToSend(folderId: reportViewModel.folderId,
+                                               name: reportViewModel.title,
+                                               description: reportViewModel.description,
+                                               files: parseDropboxFiles(),
+                                               remoteReportStatus: reportViewModel.remoteReportStatus ?? .unknown)
+        
+        dropboxRepository.submitReport(report: reportToSend)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                
+                self.handleSubmitReportCompletion(completion:completion)
+                
+            }, receiveValue: { response in
+                
+                self.processUploadReportResponse(response:response)
+            })
+            .store(in: &cancellables)
+    }
+    
+    private func handleSubmitReportCompletion(completion:Subscribers.Completion<APIError>) {
+        switch completion {
+        case .finished:
+            self.checkAllFilesAreUploaded()
+        case .failure(let error):
+            switch error {
+            case .noToken:
+                self.updateReportStatus(reportStatus: .submissionError)
+                self.shouldShowLoginView = true
+            default:
+                self.updateReportStatus(reportStatus: .submissionError)
+                self.toastMessage = error.errorMessage
+                self.shouldShowToast = true
+            }
+        }
+    }
+    
+    private func processUploadReportResponse(response:DropboxUploadResponse) {
+        switch response {
+            
+        case .initial:
+            debugLog("Starting dropbox upload process")
+            
+        case .folderCreated(let folderName):
+            self.updateReport(remoteReportStatus: .descriptionSent,newFileName: folderName)
+            
+        case .descriptionSent:
+            self.updateReport(remoteReportStatus: .descriptionSent)
+            
+        case .progress(let progressInfo):
+            self.updateProgressInfos(uploadProgressInfo: progressInfo)
+            self.checkAllFilesAreUploaded()
+        }
+    }
+    
+    private func parseDropboxFiles() -> [DropboxFileInfo]{
+        let files = reportViewModel.files.filter { $0.status != .uploaded }
+        let filesToSend: [DropboxFileInfo] = files.compactMap { file -> DropboxFileInfo? in
+            guard let url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true) else {
+                return nil
+            }
+            
+            return DropboxFileInfo(url: url,
+                                   fileName: url.lastPathComponent,
+                                   fileId: file.id ?? "",
+                                   offset: Int64(file.bytesSent),
+                                   sessionId: file.sessionId,
+                                   totalBytes: Int64(file.size))
+        }
+        
+        return filesToSend
+    }
+    
+    private func updateReportFolderId(name: String) {
+        guard let id = reportViewModel.id else { return }
+        
+        mainAppModel.tellaData?.updateDropboxFolderId(reportId: id, folderName: name )
+    }
+    
+    private func checkAllFilesAreUploaded() {
+        let filesAreNotSubmitted = reportViewModel.files.filter({$0.status != .uploaded})
+        if (filesAreNotSubmitted.isEmpty) {
+            updateReportStatus(reportStatus: .submitted)
+            showSubmittedReport()
+        }
+    }
+    
+    private func updateReport(reportStatus: ReportStatus? = nil, remoteReportStatus: RemoteReportStatus? = nil , newFileName: String? = nil) {
+        
+        if let reportStatus {
+            self.reportViewModel.status = reportStatus
+            self.currentReport?.status = reportStatus
+        }
+        
+        if let remoteReportStatus {
+            self.reportViewModel.remoteReportStatus = remoteReportStatus
+            self.currentReport?.remoteReportStatus = remoteReportStatus
+        }
+        
+        if let newFileName {
+            self.reportViewModel.title = newFileName
+            self.currentReport?.title = newFileName
+        }
+        
+        updateReport()
+        publishUpdates()
     }
     
     func reAuthenticateConnection() {

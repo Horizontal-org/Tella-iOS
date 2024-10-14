@@ -8,10 +8,20 @@
 
 import Foundation
 
-struct DropboxFileInfo {
+class DropboxFileInfo {
     let url: URL
     let fileName: String
     let fileId: String
-    let offset: Int64?
-    let sessionId: String?
+    var offset: Int64
+    var sessionId: String?
+    let totalBytes: Int64
+    
+    init(url: URL, fileName: String, fileId: String, offset: Int64, sessionId: String? = nil, totalBytes: Int64) {
+        self.url = url
+        self.fileName = fileName
+        self.fileId = fileId
+        self.offset = offset
+        self.sessionId = sessionId
+        self.totalBytes = totalBytes
+    }
 }

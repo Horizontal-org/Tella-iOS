@@ -68,6 +68,7 @@ extension TellaDataBase {
             cddl(D.cUpdatedDate, D.float),
             cddl(D.cStatus, D.integer),
             cddl(D.cFolderId, D.text),
+            cddl(D.cRemoteReportStatus, D.integer),
             cddl(D.cServerId, D.integer, tableName: D.tDropboxServer, referenceKey: D.cId)
         ]
         
@@ -224,7 +225,25 @@ extension TellaDataBase {
             return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
-    
+
+    func updateDropboxReportWithoutFiles(report: DropboxReport) -> Result<Void,Error> {
+        do {
+            
+            let reportDict = report.dictionary
+            let valuesToUpdate = reportDict.compactMap({ KeyValue(key: $0.key, value: $0.value) })
+            let reportCondition = [KeyValue(key: D.cReportId, value: report.id)]
+            
+            try statementBuilder.update(tableName: D.tDropboxReport,
+                                         valuesToUpdate: valuesToUpdate,
+                                         equalCondition: reportCondition)
+            
+            return .success
+        } catch let error {
+            debugLog(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
+        }
+    }
+
     func updateDropboxReportStatus(idReport: Int, status: ReportStatus) -> Result<Void, Error> {
         do {
             let valuesToUpdate = [KeyValue(key: D.cStatus, value: status.rawValue),
@@ -242,10 +261,9 @@ extension TellaDataBase {
         }
     }
     
-    func updateDropboxReportFolderId(idReport: Int, folderId: String, folderName: String) -> Result<Void, Error> {
+    func updateDropboxReportFolderId(idReport: Int, folderName: String) -> Result<Void, Error> {
         do {
-            let valuesToUpdate = [KeyValue(key: D.cFolderId, value: folderId),
-                                  KeyValue(key: D.cTitle, value: folderName),
+            let valuesToUpdate = [KeyValue(key: D.cTitle, value: folderName),
                                   KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())
             ]
             let reportCondition = [KeyValue(key: D.cReportId, value: idReport)]

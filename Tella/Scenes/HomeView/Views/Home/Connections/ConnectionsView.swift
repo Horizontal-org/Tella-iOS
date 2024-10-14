@@ -83,7 +83,7 @@ struct ConnectionsView: View {
         NextcloudReportMainView(reportsMainViewModel: NextcloudReportViewModel(mainAppModel: appModel, nextcloudRepository: NextcloudRepository()))
     }
     
-    var dropboxMainView: some View {
+    var dropboxMainView: DropboxReportMainView {
         DropboxReportMainView(reportsMainViewModel: DropboxViewModel(mainAppModel: appModel, dropboxRepository: DropboxRepository()))
     }
 }

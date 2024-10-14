@@ -12,5 +12,6 @@ struct DropboxReportToSend {
     let folderId: String?
     let name: String
     let description: String
-    let files: [DropboxFileInfo]?
+    let files: [DropboxFileInfo]
+    var remoteReportStatus: RemoteReportStatus
 }
