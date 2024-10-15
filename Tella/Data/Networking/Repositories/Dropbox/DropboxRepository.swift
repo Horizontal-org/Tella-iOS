@@ -210,7 +210,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
         }
     }
     
-    private func uploadFiles(report: DropboxReportToSend, subject: PassthroughSubject<DropboxUploadResponse, APIError>)   {
+    private func uploadFiles(report: DropboxReportToSend, subject: PassthroughSubject<DropboxUploadResponse, APIError>) {
         
         report.files.forEach { file in
             uploadFileInChunks(file: file, folderName: report.name)
@@ -375,22 +375,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
             throw APIError.dropboxApiError(error)
         }
     }
-    
-    
-    private func uploadData(client: DropboxClient, path: String, data: Data) async throws {
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            client.files.upload(path: path, input: data)
-                .response { response, error in
-                    if let error = error {
-                        debugLog("Error uploading data to \(path): \(error)")
-                        continuation.resume(throwing: error)
-                    } else {
-                        continuation.resume()
-                    }
-                }
-        }
-    }
-    
+
     func pauseUpload() {
         isCancelled = true
         currentUploadTask?.cancel()
@@ -421,8 +406,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
             }
             .store(in: &self.subscribers)
     }
-    
-    
+
     private func isDropboxAuthError(_ error: Error) -> Bool {
         return isAuthError(error as? CallError<Files.UploadError>) ||
         isAuthError(error as? CallError<Files.CreateFolderError>) ||
