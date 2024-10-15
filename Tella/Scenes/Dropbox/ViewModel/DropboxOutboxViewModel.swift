@@ -59,7 +59,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     override func pauseSubmission() {
         if isSubmissionInProgress {
             dropboxRepository.pauseUpload()
-            updateReportStatus(reportStatus: .submissionPaused)
+            updateReport(reportStatus: .submissionPaused)
             
             cancellables.removeAll()
         }
@@ -102,7 +102,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     private func performSubmission() {
         if isSubmissionInProgress { return }
         
-        self.updateReportStatus(reportStatus: .submissionInProgress)
+        self.updateReport(reportStatus: .submissionInProgress)
         cancellables.removeAll()
         
         let reportToSend = DropboxReportToSend(folderId: reportViewModel.folderId,
@@ -131,10 +131,10 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         case .failure(let error):
             switch error {
             case .noToken:
-                self.updateReportStatus(reportStatus: .submissionError)
+                self.updateReport(reportStatus: .submissionError)
                 self.shouldShowLoginView = true
             default:
-                self.updateReportStatus(reportStatus: .submissionError)
+                self.updateReport(reportStatus: .submissionError)
                 self.toastMessage = error.errorMessage
                 self.shouldShowToast = true
             }
@@ -186,7 +186,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     private func checkAllFilesAreUploaded() {
         let filesAreNotSubmitted = reportViewModel.files.filter({$0.status != .uploaded})
         if (filesAreNotSubmitted.isEmpty) {
-            updateReportStatus(reportStatus: .submitted)
+            updateReport(reportStatus: .submitted)
             showSubmittedReport()
         }
     }

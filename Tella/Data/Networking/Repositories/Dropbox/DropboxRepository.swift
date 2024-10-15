@@ -255,41 +255,35 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 
                 do {
                     
+                    // Append to upload session
                     if sessionId != nil && remainingBytes > chunkSize {
                         let cursor = Files.UploadSessionCursor(sessionId: sessionId!, offset: UInt64(offset))
                         debugLog("Appending data to upload session for file: \(file.fileName), offset: \(offset)")
                         try await client.files.uploadSessionAppendV2(cursor: cursor, close: false, input: data).response()
-                        
                         offset += Int64(data.count)
-                        file.offset = offset
                         
                     } else {
                         
+                        var dataToSend = data
+                        
+                        // Start upload session
                         if sessionId == nil {
-                            
                             let result = try await client.files.uploadSessionStart(close: false, input: data).response()
                             sessionId = result.sessionId
-                            if let sessionId = sessionId {
-                                file.sessionId = sessionId
-                            } else {
-                                progressInfo.error = APIError.errorOccured
-                                subject.send(progressInfo)
-                            }
+                            
                             offset += Int64(data.count)
-                            file.offset = offset
-                            
+                            dataToSend = Data()
                         }
-                        // Start upload session
                         if remainingBytes <= chunkSize {
-                            
                             // Finish upload session
                             let cursor = Files.UploadSessionCursor(sessionId: sessionId!, offset: UInt64(offset))
                             let commitInfo = Files.CommitInfo(path: folderName.preffixedSlash().slash() + file.fileName, mode: .add, autorename: false, mute: false)
-                            try await client.files.uploadSessionFinish(cursor: cursor, commit: commitInfo, input: Data())
-                            file.offset = 0
+                            let _ = try await client.files.uploadSessionFinish(cursor: cursor, commit: commitInfo, input: dataToSend).response()
+                            offset += Int64(data.count)
                             debugLog("Finished upload session for file: \(file.fileName)")
                         }
                     }
+                    progressInfo.sessionId = sessionId
                     
                     progressInfo.status = .partialSubmitted
                     progressInfo.bytesSent = Int(file.offset)
