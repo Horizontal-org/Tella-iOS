@@ -254,9 +254,19 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 let remainingBytes = fileSize - offset
                 
                 do {
-                    if sessionId == nil {
-                        // Start upload session
-                        if remainingBytes <= chunkSize {
+                    
+                    if sessionId != nil && remainingBytes > chunkSize {
+                        let cursor = Files.UploadSessionCursor(sessionId: sessionId!, offset: UInt64(offset))
+                        debugLog("Appending data to upload session for file: \(file.fileName), offset: \(offset)")
+                        try await client.files.uploadSessionAppendV2(cursor: cursor, close: false, input: data).response()
+                        
+                        offset += Int64(data.count)
+                        file.offset = offset
+                        
+                    } else {
+                        
+                        if sessionId == nil {
+                            
                             let result = try await client.files.uploadSessionStart(close: false, input: data).response()
                             sessionId = result.sessionId
                             if let sessionId = sessionId {
@@ -264,50 +274,20 @@ class DropboxRepository: DropboxRepositoryProtocol {
                             } else {
                                 progressInfo.error = APIError.errorOccured
                                 subject.send(progressInfo)
-                                
-                                //                                throw APIError.errorOccured
                             }
                             offset += Int64(data.count)
                             file.offset = offset
+                            
+                        }
+                        // Start upload session
+                        if remainingBytes <= chunkSize {
                             
                             // Finish upload session
                             let cursor = Files.UploadSessionCursor(sessionId: sessionId!, offset: UInt64(offset))
                             let commitInfo = Files.CommitInfo(path: folderName.preffixedSlash().slash() + file.fileName, mode: .add, autorename: false, mute: false)
-                            try await client.files.uploadSessionFinish(cursor: cursor, commit: commitInfo, input: Data()).response()
+                            try await client.files.uploadSessionFinish(cursor: cursor, commit: commitInfo, input: Data())
                             file.offset = 0
                             debugLog("Finished upload session for file: \(file.fileName)")
-                        } else {
-                            // Start session for larger files
-                            let result = try await client.files.uploadSessionStart(input: data).response()
-                            sessionId = result.sessionId
-                            if let sessionId = sessionId {
-                                file.sessionId = sessionId
-                            } else {
-                                progressInfo.error = APIError.errorOccured
-                                subject.send(progressInfo)
-                                
-                            }
-                            offset += Int64(data.count)
-                            file.offset = offset
-                        }
-                    } else {
-                        let cursor = Files.UploadSessionCursor(sessionId: sessionId!, offset: UInt64(offset))
-                        if remainingBytes <= chunkSize {
-                            // Finish upload session
-                            debugLog("Finishing upload session for file: \(file.fileName)")
-                            let commitInfo = Files.CommitInfo(path: folderName.preffixedSlash().slash() + file.fileName, mode: .add, autorename: false, mute: false)
-                            try await client.files.uploadSessionFinish(cursor: cursor, commit: commitInfo, input: data).response()
-                            
-                            file.offset = 0
-                            offset += Int64(data.count)
-                            debugLog("Finished upload session for file: \(file.fileName)")
-                        } else {
-                            // Append to upload session
-                            debugLog("Appending data to upload session for file: \(file.fileName), offset: \(offset)")
-                            try await client.files.uploadSessionAppendV2(cursor: cursor, close: false, input: data).response()
-                            
-                            offset += Int64(data.count)
-                            file.offset = offset
                         }
                     }
                     
@@ -321,10 +301,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                     subject.send(progressInfo)
                 } catch {
                     // Error handling for dropbox specific errors
-                    
                     try handleUploadError(error, fileHandle: fileHandle, offset: &offset, file: file, sessionId: &sessionId)
-                    
-                    
                 }
             }
             
@@ -375,7 +352,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
             throw APIError.dropboxApiError(error)
         }
     }
-
+    
     func pauseUpload() {
         isCancelled = true
         currentUploadTask?.cancel()
@@ -406,7 +383,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
             }
             .store(in: &self.subscribers)
     }
-
+    
     private func isDropboxAuthError(_ error: Error) -> Bool {
         return isAuthError(error as? CallError<Files.UploadError>) ||
         isAuthError(error as? CallError<Files.CreateFolderError>) ||
