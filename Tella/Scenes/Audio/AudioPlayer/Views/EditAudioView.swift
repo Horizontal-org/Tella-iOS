@@ -15,7 +15,11 @@ struct EditAudioView: View {
     @StateObject var editAudioViewModel: EditAudioViewModel
     @Binding var isPresented : Bool
     @State var isBottomSheetShown : Bool = false
+    @State var leftGestureValue: Double = 0.0
+    @State var rightGestureValue: Double = 0.0
     
+    let kTrimViewWidth = 340.0
+
     var body: some View {
         ZStack {
             
@@ -23,14 +27,6 @@ struct EditAudioView: View {
                 headerView
                 timeLabelsView
                 trimView
-                VStack {
-                    Text(editAudioViewModel.currentTime)
-                        .font(.custom(Styles.Fonts.regularFontName, size: 50))
-                        .foregroundColor(.white)
-                    Text(editAudioViewModel.audioPlayerViewModel.duration)
-                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                        .foregroundColor(.gray)
-                }  .padding(.top, 70)
                 controlButtonsView
                 Spacer()
             }
@@ -38,16 +34,52 @@ struct EditAudioView: View {
         }
         .onAppear {
             editAudioViewModel.onAppear()
+            leftGestureValue = kTrimViewWidth
         }
         .navigationBarHidden(true)
         .background(Color.black.ignoresSafeArea())
     }
     
     
+    var trimView: some View {
+        VStack {
+            ZStack(alignment: .trailing) {
+                ZStack(alignment: .leading) {
+                    Image("audio.soundwaves")
+                        .resizable()
+                        .frame(height: 180)
+                        .background(Styles.Colors.yellow.opacity(0.16))
+                    
+                    Image("edit.audio.play.line")
+                        .frame(height: 220)
+                        .offset(x: editAudioViewModel.offset)
+                    
+                    TrimAudioSliderView(value: $editAudioViewModel.startTime, range: 0...editAudioViewModel.timeDuration, gestureValue: $rightGestureValue)
+                        .frame(height: 220)
+                        .offset(y: 20)
+                    
+                    
+                    Rectangle().fill(Color.white.opacity(0.08))
+                        .frame(maxWidth: kTrimViewWidth - leftGestureValue )
+                        .offset(x: leftGestureValue)
+                        .frame(height: 180)
+                    Rectangle().fill(Color.white.opacity(0.08))
+                        .frame(maxWidth: rightGestureValue)
+                        .frame(height: 180)
+                    
+                }.frame(maxWidth: kTrimViewWidth)
+                
+                TrimAudioSliderView(value: $editAudioViewModel.endTime, range: 0...editAudioViewModel.timeDuration, gestureValue: $leftGestureValue)
+                    .frame(height: 220)
+                    .offset(y:20)
+            }.frame(maxWidth: kTrimViewWidth)
+            
+        }.frame(maxWidth: kTrimViewWidth)
+    }
+    
     var headerView: some View {
         HStack {
             Button(action: {
-                
                 isBottomSheetShown = true
             }) {
                 Image("file.edit.close")
@@ -73,37 +105,21 @@ struct EditAudioView: View {
                     Spacer()
                 }
             }
-        }.frame(width: 340)
+        }.frame(width: kTrimViewWidth)
             .padding([.top], 70)
     }
     
-    var trimView: some View {
+    var displayTimeLabels: some View {
         VStack {
-            ZStack(alignment: .trailing) {
-                ZStack(alignment: .leading) {
-                    
-                    Image("audio.soundwaves")
-                        .resizable()
-                        .frame(height: 180)
-                        .aspectRatio(contentMode: .fill)
-                        .background(Styles.Colors.yellow.opacity(0.16))
-
-                    Image("edit.audio.play.line")
-                        .frame(height: 220)
-                        .offset(x: editAudioViewModel.offset, y: 5)
-                    
-                    CustomSliderView(value: $editAudioViewModel.startTime, range: 0...editAudioViewModel.timeDuration)
-                        .frame(height: 220)
-                        .offset(y:20)
-
-                }
-                CustomSliderView(value: $editAudioViewModel.endTime, range: 0...editAudioViewModel.timeDuration)
-                    .frame(height: 220)
-                    .offset(y:20)
-            }.frame(maxWidth: 340)
-            
-        }.padding(30)
+            Text(editAudioViewModel.currentTime)
+                .font(.custom(Styles.Fonts.regularFontName, size: 50))
+                .foregroundColor(.white)
+            Text(editAudioViewModel.audioPlayerViewModel.duration)
+                .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                .foregroundColor(.gray)
+        }  .padding(.top, 70)
     }
+    
     
     var controlButtonsView: some View {
         HStack(spacing: 40) {
@@ -138,13 +154,13 @@ struct EditAudioView: View {
 
 
 
-struct CustomSliderView: View {
+private struct TrimAudioSliderView: View {
     @Binding var value: Double
     var range: ClosedRange<Double>
+    @Binding var gestureValue: Double
     
-    private let kHeight = 180.0
     private let kOffset = 3.0 //This is added to adjust the difference of the elipse in the trim line image
-    private let kLabelOffset = 30.0 //15
+    private let kLabelOffset = 15.0
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
@@ -155,8 +171,11 @@ struct CustomSliderView: View {
                     .gesture(DragGesture(minimumDistance: 0).onChanged { dragValue in
                         // Calculate new value based on drag position
                         let newValue = Double(dragValue.location.x / geometry.size.width) * (range.upperBound - range.lowerBound) + range.lowerBound
+                        self.gestureValue = CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width //- kOffset
                         self.value = min(max(newValue, range.lowerBound), range.upperBound)
-                    })
+                    }.onEnded({ dragValue in
+                        self.gestureValue = CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width //- kOffset
+                    }))
                 Text("\(TimeInterval(self.value).toHHMMString())")
                     .foregroundColor(Styles.Colors.yellow)
                     .font(.custom(Styles.Fonts.regularFontName, size: 12))
@@ -174,4 +193,3 @@ struct EditAudioView_Previews: PreviewProvider {
                       isPresented: .constant(true))
     }
 }
-
