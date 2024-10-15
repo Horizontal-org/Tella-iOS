@@ -57,7 +57,6 @@ class DropboxRepository: DropboxRepositoryProtocol {
     func setupDropbox() {
         guard let dropboxAppKey = ConfigurationManager.getValue(DropboxAuthConstants.dropboxAppKey) else  {
             debugLog("Dropbox App Key not found")
-            
             return
         }
         
@@ -94,10 +93,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
         Task {
             do {
                 
-                guard self.networkMonitor.isConnected else {
-                    subject.send(completion:.failure(.noInternetConnection))
-                    return
-                }
+                try checkInternetConnection()
                 
                 try await ensureSignedIn()
                 
@@ -118,6 +114,8 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 }
                 
                 guard !isCancelled else { return }
+                
+                try checkInternetConnection()
                 
                 uploadFiles(report: report, subject: subject)
                 
@@ -159,15 +157,11 @@ class DropboxRepository: DropboxRepositoryProtocol {
     
     private func createFolder(name: String) async throws -> String {
         
+        try checkInternetConnection()
+        
         guard let client = self.client else {
             throw APIError.noToken
         }
-        
-        guard self.networkMonitor.isConnected else {
-            throw APIError.noInternetConnection
-        }
-        
-        try await ensureSignedIn()
         
         let folderPath = name.preffixedSlash()
         
@@ -180,7 +174,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                         continuation.resume(throwing: APIError.dropboxApiError(error))
                     }
                 } else if let name = response?.metadata.name {
-                    continuation.resume(returning: name) // Test if it's auto-increment ?
+                    continuation.resume(returning: name)
                 } else {
                     continuation.resume(throwing: APIError.errorOccured)
                 }
@@ -190,11 +184,15 @@ class DropboxRepository: DropboxRepositoryProtocol {
     
     private func uploadDescriptionFile(report: DropboxReportToSend) async throws {
         
+        try checkInternetConnection()
+        
         guard let client = self.client else {
             throw APIError.noToken
         }
         
-        let descriptionData = report.description.data(using: .utf8) ?? Data()
+        guard let descriptionData = report.description.data else {
+            return
+        }
         let reportFolderPath = report.name.preffixedSlash()
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             client.files.upload(path: reportFolderPath.slash() + descriptionFolderName, input: descriptionData)
@@ -213,6 +211,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
     }
     
     private func uploadFiles(report: DropboxReportToSend, subject: PassthroughSubject<DropboxUploadResponse, APIError>)   {
+        
         report.files.forEach { file in
             uploadFileInChunks(file: file, folderName: report.name)
                 .sink(receiveCompletion: { completion in
@@ -235,9 +234,8 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 throw APIError.noToken
             }
             
-            guard self.networkMonitor.isConnected else {
-                throw APIError.noInternetConnection
-            }
+            try checkInternetConnection()
+            
             let fileSize = file.totalBytes
             var offset = file.offset
             var sessionId = file.sessionId
@@ -247,18 +245,13 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 try? fileHandle.close()
             }
             
-            if offset > 0 {
-                try fileHandle.seek(toOffset: UInt64(offset))
-            }
-            
             while offset < fileSize {
                 if isCancelled {
                     return
                 }
                 
+                let data = try fileHandle.readChunk(from: offset, chunkSize: chunkSize, fileSize: fileSize)
                 let remainingBytes = fileSize - offset
-                let bytesToRead = min(chunkSize, remainingBytes)
-                let data = try fileHandle.read(upToCount: Int(bytesToRead)) ?? Data()
                 
                 do {
                     if sessionId == nil {
@@ -444,4 +437,11 @@ class DropboxRepository: DropboxRepositoryProtocol {
         }
         return false
     }
+    
+    private func checkInternetConnection() throws {
+        guard self.networkMonitor.isConnected else {
+            throw APIError.noInternetConnection
+        }
+    }
+    
 }
