@@ -8,10 +8,18 @@
 
 import Foundation
 
-struct DropboxReportToSend {
+class DropboxReportToSend {
     let folderId: String?
-    let name: String
+    var name: String
     let description: String
     let files: [DropboxFileInfo]
     var remoteReportStatus: RemoteReportStatus
+    
+    init(folderId: String?, name: String, description: String, files: [DropboxFileInfo], remoteReportStatus: RemoteReportStatus) {
+        self.folderId = folderId
+        self.name = name
+        self.description = description
+        self.files = files
+        self.remoteReportStatus = remoteReportStatus
+    }
 }
