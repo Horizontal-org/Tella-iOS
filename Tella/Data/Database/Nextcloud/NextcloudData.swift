@@ -11,11 +11,9 @@ extension TellaData {
     func getNextcloudServer() -> [NextcloudServer] {
         self.database.getNextcloudServer()
     }
-
+    
     func addNextcloudReport(report : NextcloudReport) -> Int? {
-        let id =  database.addNextcloudReport(report: report)
-        shouldReloadNextcloudReports.send(true)
-        return id
+        database.addNextcloudReport(report: report)
     }
     
     func getDraftNextcloudReport() -> [NextcloudReport] {
@@ -41,32 +39,30 @@ extension TellaData {
         return self.database.getNextcloudReport(id: id)
     }
     
-    func updateNextcloudReport(report: NextcloudReport) -> Bool {
-        shouldReloadNextcloudReports.send(true)
-        return self.database.updateNextcloudReport(report: report)
+    func updateNextcloudReport(report: NextcloudReport) -> Result<Void,Error> {
+        self.database.updateNextcloudReport(report: report)
     }
     
-    func deleteNextcloudReport(reportId: Int?) -> Bool {
+    func deleteNextcloudReport(reportId: Int?) -> Result<Void,Error> {
+        let deleteNextcloudReportResult = self.database.deleteNextcloudReport(reportId: reportId)
         shouldReloadNextcloudReports.send(true)
-        return self.database.deleteNextcloudReport(reportId: reportId)
+        return deleteNextcloudReportResult
     }
     
     @discardableResult
-    func updateNextcloudReportFile(reportFile: ReportFile) -> Bool {
+    func updateNextcloudReportFile(reportFile: ReportFile) -> Result<Void,Error> {
         database.updateNextcloudReportFile(reportFile: reportFile)
     }
-
+    
     @discardableResult
-    func updateNextcloudReportWithoutFiles(report: NextcloudReport) -> Bool {
+    func updateNextcloudReportWithoutFiles(report: NextcloudReport) -> Result<Void,Error> {
         database.updateNextcloudReportWithoutFiles(report: report)
     }
     
-    
     @discardableResult
-    func deleteNextcloudSubmittedReport() -> Bool {
-        let deleteSubmittedReportResult = database.deleteNextcloudSubmittedReport()
+    func deleteNextcloudSubmittedReports() -> Result<Void,Error> {
+        let deleteSubmittedReportResult = database.deleteNextcloudSubmittedReports()
         shouldReloadNextcloudReports.send(true)
         return deleteSubmittedReportResult
     }
-
 }

@@ -8,7 +8,6 @@
 
 import Foundation
 import Combine
-import SwiftyDropbox
 
 class DropboxServerViewModel: ObservableObject {
     var mainAppModel: MainAppModel
@@ -34,7 +33,7 @@ class DropboxServerViewModel: ObservableObject {
     }
     
     func handleURLRedirect(url: URL) {
-        _ = DropboxClientsManager.handleRedirectURL(url, includeBackgroundClient: false) { [weak self] authResult in
+        _ = dropboxRepository.handleRedirectURL(url) { [weak self] authResult in
             guard let self = self else { return }
             
             switch authResult {

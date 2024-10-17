@@ -44,7 +44,7 @@ class ReportsMainViewModel: ObservableObject {
     
     var connectionType : ServerConnectionType
     var title : String
-
+    
     init(mainAppModel : MainAppModel, connectionType : ServerConnectionType, title:String) {
         
         self.mainAppModel = mainAppModel
@@ -58,20 +58,42 @@ class ReportsMainViewModel: ObservableObject {
     
     func listenToUpdates() {
     }
-
-    func deleteSubmittedReport() {
+    
+    func deleteSubmittedReports() {
     }
     
-    func handleDeleteReport(deleteResult:Bool) {
-        self.toastMessage = deleteResult ? LocalizableReport.allReportDeletedToast.localized : LocalizableCommon.commonError.localized
+    func handleDeleteSubmittedReport(deleteResult:Result<Void,Error>?) {
+        
+        switch deleteResult {
+        case .success:
+            toastMessage = LocalizableReport.allReportDeletedToast.localized
+        case.failure(let error):
+            toastMessage = error.localizedDescription
+        default:
+            break
+        }
+        
         self.shouldShowToast = true
+    }
+    
+    func handleDeleteReport(title:String?, result:Result<Void,Error>?) {
+        
+        switch result {
+        case .success:
+            toastMessage = String(format: LocalizableReport.reportDeletedToast.localized, title ?? "")
+        case.failure(let error):
+            toastMessage = error.localizedDescription
+        default:
+            break
+        }
+        shouldShowToast = true
     }
 }
 
 extension ReportsMainViewModel {
     static func stub() -> ReportsMainViewModel {
         return ReportsMainViewModel(mainAppModel: MainAppModel.stub(),
-                                   connectionType: ServerConnectionType.nextcloud,
-                                   title: "Nextcloud")
+                                    connectionType: ServerConnectionType.nextcloud,
+                                    title: "Nextcloud")
     }
 }

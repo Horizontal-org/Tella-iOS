@@ -1,19 +1,19 @@
 //
-//  GDriveViewModel.swift
+//  DropboxViewModel.swift
 //  Tella
 //
-//  Created by gus valbuena on 6/12/24.
+//  Created by gus valbuena on 9/12/24.
 //  Copyright © 2024 HORIZONTAL. All rights reserved.
 //
 
 import Foundation
-import Combine
-class GDriveViewModel: ReportsMainViewModel {
-    @Published var selectedReport: GDriveReport?
-    @Published var server: GDriveServer?
+
+class DropboxViewModel: ReportsMainViewModel {
+    var dropboxRepository: DropboxRepositoryProtocol
     
-    private var delayTime = 0.1
-    var gDriveRepository: GDriveRepositoryProtocol
+    @Published var selectedReport: DropboxReport?
+    @Published var server: DropboxServer?
+    
     var sheetItems : [ListActionSheetItem] { return [
         
         ListActionSheetItem(imageName: "view-icon",
@@ -25,16 +25,17 @@ class GDriveViewModel: ReportsMainViewModel {
     ]}
     
     
-    init(mainAppModel: MainAppModel, gDriveRepository: GDriveRepositoryProtocol) {
-        self.gDriveRepository = gDriveRepository
-        super.init(mainAppModel: mainAppModel, connectionType: .gDrive, title: LocalizableGDrive.gDriveAppBar.localized)
+    init(mainAppModel: MainAppModel, dropboxRepository: DropboxRepositoryProtocol) {
+        self.dropboxRepository = dropboxRepository
+        super.init(mainAppModel: mainAppModel, connectionType: .dropbox, title: LocalizableDropbox.dropboxAppBar.localized)
         
+        self.getReports()
         self.getServer()
         self.listenToUpdates()
     }
     
     private func getServer() {
-        self.server = mainAppModel.tellaData?.getDriveServers().first
+        self.server = mainAppModel.tellaData?.getDropboxServers().first
     }
     
     override func getReports() {
@@ -44,7 +45,7 @@ class GDriveViewModel: ReportsMainViewModel {
     }
     
     func getDraftReports() {
-        let draftReports = tellaData?.getDraftGDriveReport() ?? []
+        let draftReports = tellaData?.getDraftDropboxReports() ?? []
         self.draftReportsViewModel = draftReports.compactMap { report in
             return ReportCardViewModel(report: report,
                                        serverName: server?.name,
@@ -55,7 +56,7 @@ class GDriveViewModel: ReportsMainViewModel {
     }
     
     func getOutboxedReports() {
-        let outboxedReports = tellaData?.getOutboxedGDriveReport() ?? []
+        let outboxedReports = tellaData?.getOutboxedDropboxReports() ?? []
         self.outboxedReportsViewModel = outboxedReports.compactMap { report in
             ReportCardViewModel(report: report,
                                 serverName: server?.name,
@@ -66,7 +67,7 @@ class GDriveViewModel: ReportsMainViewModel {
     }
     
     func getSubmittedReports() {
-        let submittedReports = tellaData?.getSubmittedGDriveReport() ?? []
+        let submittedReports = tellaData?.getSubmittedDropboxReports() ?? []
         self.submittedReportsViewModel = submittedReports.compactMap { report in
             ReportCardViewModel(report: report,
                                 serverName: server?.name,
@@ -76,18 +77,18 @@ class GDriveViewModel: ReportsMainViewModel {
         }
     }
     
-    func deleteReport(report: GDriveReport) {
-        let deleteDriveReportResult = self.mainAppModel.tellaData?.deleteDriveReport(reportId: report.id)
-        handleDeleteReport(title: report.title, result: deleteDriveReportResult)
+    func deleteReport(report: DropboxReport) {
+        let deleteDropboxReportResult = self.mainAppModel.tellaData?.deleteDropboxReport(reportId: report.id)
+        handleDeleteReport(title: report.title, result: deleteDropboxReportResult)
     }
     
     override func deleteSubmittedReports() {
-        let deleteResult = mainAppModel.tellaData?.deleteDriveSubmittedReports()
+        let deleteResult = mainAppModel.tellaData?.deleteDropboxSubmittedReports()
         self.handleDeleteSubmittedReport(deleteResult: deleteResult)
     }
     
     override func listenToUpdates() {
-        self.mainAppModel.tellaData?.shouldReloadGDriveReports
+        self.mainAppModel.tellaData?.shouldReloadDropboxReports
             .receive(on: DispatchQueue.main)
             .sink { result in
             } receiveValue: { draftReports in

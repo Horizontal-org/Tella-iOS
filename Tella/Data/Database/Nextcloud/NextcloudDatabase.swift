@@ -22,16 +22,16 @@ extension TellaDataBase {
         statementBuilder.createTable(tableName: D.tNextcloudServer, columns: columns)
     }
     
-    func addNextcloudServer(server: NextcloudServer) -> Int? {
+    func addNextcloudServer(server: NextcloudServer) -> Result<Int,Error> {
         do {
             let nextcloudServerDictionnary = server.dictionary
             let valuesToAdd = nextcloudServerDictionnary.compactMap({KeyValue(key: $0.key, value: $0.value)})
             
             let serverId = try statementBuilder.insertInto(tableName: D.tNextcloudServer, keyValue: valuesToAdd)
-            return serverId
+            return .success(serverId) 
         } catch let error {
             debugLog(error)
-            return nil
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
@@ -62,16 +62,16 @@ extension TellaDataBase {
         }
     }
     
-    func deleteNextcloudServer(serverId: Int) -> Bool {
+    func deleteNextcloudServer(serverId: Int) -> Result<Void,Error> {
         do {
             try statementBuilder.delete(tableName: D.tNextcloudServer,
                                         primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
             try statementBuilder.deleteAll(tableNames: [D.tNextcloudReport, D.tNextcloudInstanceVaultFile])
             
-            return true
+            return .success
         } catch let error {
             debugLog(error)
-            return false
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
 }
@@ -190,7 +190,7 @@ extension TellaDataBase {
         }
     }
     
-    func updateNextcloudReport(report: NextcloudReport) -> Bool {
+    func updateNextcloudReport(report: NextcloudReport) -> Result<Void,Error> {
         do {
             
             let reportDictionary = report.dictionary
@@ -216,28 +216,28 @@ extension TellaDataBase {
                     try statementBuilder.insertInto(tableName: D.tNextcloudInstanceVaultFile, keyValue: reportFilesValuesToAdd)
                 })
             }
-            return true
+            return .success
         } catch let error {
             debugLog(error)
-            return false
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
-    func deleteNextcloudReport(reportId: Int?) -> Bool {
+    func deleteNextcloudReport(reportId: Int?) -> Result<Void,Error> {
         do {
             let reportCondition = [KeyValue(key: D.cReportId, value: reportId)]
             try statementBuilder.delete(tableName: D.tNextcloudReport, primarykeyValue: reportCondition)
             
             try deleteNextcloudReportFiles(reportIds: [reportId])
             
-            return true
+            return .success
         } catch let error {
             debugLog(error)
-            return false
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
-    func updateNextcloudReportFile(reportFile: ReportFile) -> Bool {
+    func updateNextcloudReportFile(reportFile: ReportFile) -> Result<Void,Error> {
         do {
             
             let reportDictionary = reportFile.dictionary
@@ -249,14 +249,14 @@ extension TellaDataBase {
                                         valuesToUpdate: valuesToUpdate,
                                         equalCondition: reportCondition)
             
-            return true
+            return .success
         } catch let error {
             debugLog(error)
-            return false
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
-    func updateNextcloudReportWithoutFiles(report: NextcloudReport) -> Bool {
+    func updateNextcloudReportWithoutFiles(report: NextcloudReport) -> Result<Void,Error> {
         do {
             
             let reportDictionary = report.dictionary
@@ -267,14 +267,14 @@ extension TellaDataBase {
             try statementBuilder.update(tableName: D.tNextcloudReport,
                                         valuesToUpdate: valuesToUpdate,
                                         equalCondition: reportCondition)
-            return true
+            return .success
         } catch let error {
             debugLog(error)
-            return false
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
-    func deleteNextcloudSubmittedReport() -> Bool {
+    func deleteNextcloudSubmittedReports() -> Result<Void,Error> {
         do {
             let submittedReports = self.getNextcloudReports(reportStatus: [.submitted])
             let reportIds = submittedReports.compactMap{$0.id}
@@ -283,11 +283,11 @@ extension TellaDataBase {
             let reportCondition = [KeyValue(key: D.cStatus, value: ReportStatus.submitted.rawValue)]
             try statementBuilder.delete(tableName: D.tNextcloudReport,
                                         primarykeyValue: reportCondition)
-            return true
+            return .success
             
         } catch let error {
             debugLog(error)
-            return false
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     

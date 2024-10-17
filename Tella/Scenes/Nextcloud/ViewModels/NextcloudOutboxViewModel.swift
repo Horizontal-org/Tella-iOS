@@ -301,8 +301,12 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
     }
     
     override func deleteReport() {
-        let deleteResult = mainAppModel.tellaData?.deleteNextcloudReport(reportId: reportViewModel.id)
-        handleDeleteReport(deleteResult: deleteResult ?? false)
+        guard
+            let deleteResult = mainAppModel.tellaData?.deleteNextcloudReport(reportId: reportViewModel.id)
+        else {
+            return
+        }
+        handleDeleteReport(deleteResult: deleteResult)
     }
     
     func deleteChunksFiles() {
