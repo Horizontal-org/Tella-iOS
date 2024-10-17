@@ -361,6 +361,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 case .notFound:
                     debugLog("Upload session not found. Starting a new session.")
                     file.sessionId = nil
+                    file.offset = 0
                 default:
                     debugLog("Upload session error: \(lookupError)")
                     return APIError.dropboxApiError(callError)

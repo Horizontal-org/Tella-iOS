@@ -66,6 +66,7 @@ class ReportViewModel<T: Server> {
         self.status = report.status
         self.apiID = nil
         self.folderId = report.folderId
+        self.remoteReportStatus = report.remoteReportStatus
     }
 }
 

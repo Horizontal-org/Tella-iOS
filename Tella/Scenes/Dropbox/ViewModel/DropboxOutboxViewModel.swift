@@ -148,7 +148,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
             debugLog("Starting dropbox upload process")
             
         case .folderCreated(let folderName):
-            self.updateReport(remoteReportStatus: .descriptionSent,newFileName: folderName)
+            self.updateReport(remoteReportStatus: .created, newFileName: folderName)
             
         case .descriptionSent:
             self.updateReport(remoteReportStatus: .descriptionSent)
