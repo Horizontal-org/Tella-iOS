@@ -79,7 +79,7 @@ extension TellaData {
     @discardableResult
     func deleteDropboxSubmittedReports() -> Result<Void,Error> {
         let deleteSubmittedReportResult = database.deleteDropboxSubmittedReports()
-        shouldReloadNextcloudReports.send(true)
+        shouldReloadDropboxReports.send(true)
         return deleteSubmittedReportResult
     }
 

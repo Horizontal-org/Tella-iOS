@@ -33,6 +33,7 @@ struct DropboxOutboxDetailsView<T: DropboxServer>: View {
                                actionText:LocalizableDropbox.connectionExpiredLogin.localized.uppercased(), didConfirmAction: {
                 sheetManager.hide()
                 outboxReportVM.reAuthenticateConnection()
+                outboxReportVM.shouldShowLoginView = false
             }, didCancelAction: {
                 sheetManager.hide()
             })

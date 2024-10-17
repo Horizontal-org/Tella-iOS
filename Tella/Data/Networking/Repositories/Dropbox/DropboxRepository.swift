@@ -345,6 +345,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
     }
     private func handleUploadError(_ error: Error, file: DropboxFileInfo) -> APIError? {
         
+        
         if self.isDropboxAuthError(error) {
             return APIError.noToken
         }
