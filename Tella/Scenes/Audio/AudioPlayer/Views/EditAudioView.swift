@@ -144,7 +144,7 @@ struct EditAudioView: View {
     
     var controlButtonsView: some View {
         HStack(spacing: 40) {
-            Button(action: { editAudioViewModel.undo() }) {
+            Button(action: { self.undo() }) {
                 Image("cancel.edit.file")
                     .resizable()
                     .frame(width: 40, height: 40)
@@ -171,6 +171,12 @@ struct EditAudioView: View {
         isPresented = false
     }
     
+    private func undo() {
+        editAudioViewModel.startTime = 0.0
+        editAudioViewModel.endTime = editAudioViewModel.timeDuration
+        leadingGestureValue = 0.0
+        trailingGestureValue = kTrimViewWidth
+    }
 }
 
 

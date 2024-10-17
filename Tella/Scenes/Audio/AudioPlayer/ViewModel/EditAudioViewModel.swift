@@ -133,11 +133,6 @@ class EditAudioViewModel: ObservableObject {
         }
         return times
     }
-
-    func undo() {
-        self.startTime = 0.0
-        self.endTime = Double(audioPlayerViewModel.timeDuration ?? 0)
-    }
     
     private func updateOffset(time: Double) {
         let totalOffsetDistance: CGFloat = 340
