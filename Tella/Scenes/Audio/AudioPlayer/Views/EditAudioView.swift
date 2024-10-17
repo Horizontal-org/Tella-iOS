@@ -99,16 +99,18 @@ struct EditAudioView: View {
                 isBottomSheetShown = true
             }) {
                 Image("file.edit.close")
-                    .foregroundColor(.white)
-                    .padding()
             }
             
-            Text("Edit audio")
+            Text(LocalizableVault.editAudioTitle.localized)
                 .foregroundColor(.white)
-                .padding()
             
             Spacer()
-        }
+            Button(action: {
+                isPresented = true
+            }) {
+                Image("file.edit.done")
+            }
+        }.padding(16)
     }
     
     var timeLabelsView: some View {
@@ -202,7 +204,6 @@ private struct TrimAudioSliderView: View {
                     }.onEnded({ dragValue in
                         
                         self.gestureValue = CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width //- kOffset
-                        let newValue = Double(dragValue.location.x / geometry.size.width) * (range.upperBound - range.lowerBound) + range.lowerBound
                     }))
                 Text("\(TimeInterval(self.value).toHHMMString())")
                     .foregroundColor(Styles.Colors.yellow)
