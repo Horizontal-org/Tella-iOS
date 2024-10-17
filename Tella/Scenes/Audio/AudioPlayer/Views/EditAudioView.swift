@@ -107,9 +107,12 @@ struct EditAudioView: View {
             Spacer()
             if editAudioViewModel.endTime != editAudioViewModel.timeDuration || editAudioViewModel.startTime != 0.0 {
                 Button(action: {
+                    editAudioViewModel.trimAudio()
                     isPresented = true
                 }) {
-                    Image("file.edit.done")
+                    Image("cut.file")
+                        .resizable()
+                        .frame(width: 25, height: 25)
                 }
             }
 
@@ -147,23 +150,17 @@ struct EditAudioView: View {
             Button(action: { self.undo() }) {
                 Image("cancel.edit.file")
                     .resizable()
-                    .frame(width: 40, height: 40)
+                    .frame(width: 50, height: 50)
                     .foregroundColor(.gray)
             }
             
             Button(action: { editAudioViewModel.handlePlayButton() }) {
                 Image(editAudioViewModel.playButtonImageName)
                     .resizable()
-                    .frame(width: 40, height: 40)
+                    .frame(width: 50, height: 50)
                     .foregroundColor(.gray)
             }
             
-            Button(action: { editAudioViewModel.trimAudio()}) {
-                Image("cut.file")
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                    .foregroundColor(.orange)
-            }
         }
         .padding(.top, 64)
     }

@@ -24,7 +24,7 @@ class EditAudioViewModel: ObservableObject {
     @Published var currentTime : String  = "00:00:00"
     @Published var audioPlayerViewModel: AudioPlayerViewModel
     
-    let gapTime = 2.0
+    let gapTime = 3.0 // this is the limit time of the audio duration
     var playButtonImageName: String {
         isPlaying ? "mic.pause-audio" : "mic.play" 
     }
