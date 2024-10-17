@@ -195,8 +195,8 @@ private struct TrimAudioSliderView: View {
             ZStack(alignment: .leading) {
                 // Custom thumb with image
                 Image("edit.audio.trim.line").resizable()
-                    .frame(width: 10, height: 190)
-                    .offset(x: CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width - kOffset) // Center thumb
+                    .frame(width: 10, height: 200)
+                    .offset(x: CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width - kOffset, y: -10) // Center thumb
                     .gesture(DragGesture(minimumDistance: 0).onChanged { dragValue in
                         // Calculate new value based on drag position
                         let newValue = Double(dragValue.location.x / geometry.size.width) * (range.upperBound - range.lowerBound) + range.lowerBound
