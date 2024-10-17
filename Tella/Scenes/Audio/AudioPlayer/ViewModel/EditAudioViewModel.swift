@@ -21,9 +21,10 @@ class EditAudioViewModel: ObservableObject {
 
     var audioUrl: URL?
     let kNumberOfLabels = 5 // This is for the sub-times labels
-    
     @Published var currentTime : String  = "00:00:00"
     @Published var audioPlayerViewModel: AudioPlayerViewModel
+    
+    let gapTime = 2.0
     var playButtonImageName: String {
         isPlaying ? "mic.pause-audio" : "mic.play" 
     }

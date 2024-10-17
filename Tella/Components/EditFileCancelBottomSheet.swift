@@ -19,7 +19,7 @@ struct EditFileCancelBottomSheet: View {
                                cancelText: LocalizableVault.editFileExitSheetAction.localized,
                                actionText:LocalizableVault.renameFileSaveSheetAction.localized, didConfirmAction: {
                 saveAction()
-                Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized)
+                Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized) //after success
             }, didCancelAction: {
                 self.dismiss()
             })
