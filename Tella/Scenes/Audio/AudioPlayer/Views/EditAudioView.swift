@@ -105,11 +105,14 @@ struct EditAudioView: View {
                 .foregroundColor(.white)
             
             Spacer()
-            Button(action: {
-                isPresented = true
-            }) {
-                Image("file.edit.done")
+            if editAudioViewModel.endTime != editAudioViewModel.timeDuration || editAudioViewModel.startTime != 0.0 {
+                Button(action: {
+                    isPresented = true
+                }) {
+                    Image("file.edit.done")
+                }
             }
+
         }.padding(16)
     }
     
