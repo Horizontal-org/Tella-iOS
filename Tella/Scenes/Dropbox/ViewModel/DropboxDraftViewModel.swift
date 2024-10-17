@@ -25,7 +25,7 @@ class DropboxDraftViewModel: DraftMainViewModel {
             .map { !$0.0.isEmpty && !$0.1.isEmpty }
             .assign(to: \.reportIsValid, on: self)
             .store(in: &subscribers)
-                
+        
         $title
             .map { !$0.isEmpty }
             .assign(to: \.reportIsDraft, on: self)
@@ -33,17 +33,21 @@ class DropboxDraftViewModel: DraftMainViewModel {
     }
     
     override func fillReportVM() {
-        if let reportId = self.reportId, let report = self.mainAppModel.tellaData?.getDropboxReport(id: reportId) {
-            self.title = report.title ?? ""
-            self.description = report.description ?? ""
-            
-            if let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{ $0.fileId } ?? []) {
-                self.files = Set(vaultFileResult)
-            }
-            
-            self.objectWillChange.send()
+        
+        guard let reportId = self.reportId,
+              let report = self.mainAppModel.tellaData?.getDropboxReport(id: reportId)
+        else { return }
+        
+        self.title = report.title ?? ""
+        self.description = report.description ?? ""
+        
+        if let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{ $0.fileId } ?? []) {
+            self.files = Set(vaultFileResult)
         }
+        
+        validateTitleAndDescription()
     }
+    
     
     override func saveReport() {
         let dropboxReport = DropboxReport(
@@ -54,10 +58,10 @@ class DropboxDraftViewModel: DraftMainViewModel {
             server: server as? DropboxServer,
             folderId: nil,
             vaultFiles: self.files.compactMap { DropboxReportFile( fileId: $0.id,
-                                                                        status: .notSubmitted,
-                                                                        bytesSent: 0,
-                                                                        createdDate: Date(),
-                                                                        reportInstanceId: reportId)}
+                                                                   status: .notSubmitted,
+                                                                   bytesSent: 0,
+                                                                   createdDate: Date(),
+                                                                   reportInstanceId: reportId)}
         )
         
         reportId == nil ? addReport(report: dropboxReport) : updateReport(report: dropboxReport)
@@ -74,7 +78,7 @@ class DropboxDraftViewModel: DraftMainViewModel {
             self.failureSavingReport = true
         }
     }
-        
+    
     func updateReport(report: DropboxReport) {
         let updatedReportResult = self.mainAppModel.tellaData?.updateDropboxReport(report: report)
         
