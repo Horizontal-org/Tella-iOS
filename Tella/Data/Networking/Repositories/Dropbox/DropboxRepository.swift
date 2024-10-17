@@ -274,7 +274,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                                     remainingBytes: Int64,
                                     sessionId: inout String?,
                                     offset: inout Int64,
-                                    progressInfo:  DropboxUploadProgressInfo,
+                                    progressInfo: DropboxUploadProgressInfo,
                                     subject: CurrentValueSubject<DropboxUploadProgressInfo, APIError>) async {
         
         guard let client = self.client else {
@@ -286,10 +286,8 @@ class DropboxRepository: DropboxRepositoryProtocol {
             
             // Append to upload session
             if sessionId != nil && remainingBytes > chunkSize {
-                let cursor = Files.UploadSessionCursor(sessionId: sessionId!, offset: UInt64(offset))
-                debugLog("Appending data to upload session for file: \(file.fileName), offset: \(offset)")
-                try await client.files.uploadSessionAppendV2(cursor: cursor, input: data).response()
-                offset += Int64(data.count)
+                // Append to existing upload session
+                try await appendToUploadSession(client: client, file: file, sessionId: sessionId!, offset: &offset, data: data)
                 
             } else {
                 
@@ -297,31 +295,25 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 
                 // Start upload session
                 if sessionId == nil {
-                    let result = try await client.files.uploadSessionStart(input: data).response()
-                    sessionId = result.sessionId
-                    offset += Int64(data.count)
+                    // Start a new upload session
+                    try await startUploadSession(client: client, data: data, sessionId: &sessionId, offset: &offset)
                     dataToSend = Data()
                 }
                 if remainingBytes <= chunkSize {
                     // Finish upload session
-                    let cursor = Files.UploadSessionCursor(sessionId: sessionId!, offset: UInt64(offset))
-                    let commitInfo = Files.CommitInfo(path: folderName.preffixedSlash().slash() + file.fileName, mode: .add, autorename: false, mute: false)
-                    let _ = try await client.files.uploadSessionFinish(cursor: cursor, commit: commitInfo, input: dataToSend).response()
-                    offset += Int64(data.count)
-                    debugLog("Finished upload session for file: \(file.fileName)")
+                    try await finishUploadSession(client: client, file: file, folderName: folderName, sessionId: sessionId, offset: &offset, data: dataToSend)
                 }
             }
+            
             progressInfo.sessionId = sessionId
             progressInfo.status = .partialSubmitted
             progressInfo.bytesSent = Int(offset)
             subject.send(progressInfo)
             
         } catch let apiError as APIError {
-            debugLog("Caught APIError during chunk upload: \(apiError)")
-            progressInfo.error = apiError
-            subject.send(progressInfo)
+            handleError(apiError, progressInfo: progressInfo, subject: subject)
         } catch {
-            // Error handling for dropbox specific errors
+            // Handle specific Dropbox errors
             if let error = handleUploadError(error, offset: &offset, sessionId: &sessionId) {
                 progressInfo.error = error
                 subject.send(progressInfo)
@@ -329,6 +321,33 @@ class DropboxRepository: DropboxRepositoryProtocol {
         }
     }
     
+    private func startUploadSession(client: DropboxClient, data: Data, sessionId: inout String?, offset: inout Int64) async throws {
+        let result = try await client.files.uploadSessionStart(input: data).response()
+        sessionId = result.sessionId
+        offset += Int64(data.count)
+    }
+    
+    private func appendToUploadSession(client: DropboxClient, file: DropboxFileInfo, sessionId: String, offset: inout Int64, data: Data) async throws {
+        let cursor = Files.UploadSessionCursor(sessionId: sessionId, offset: UInt64(offset))
+        debugLog("Appending data to upload session for file: \(file.fileName), offset: \(offset)")
+        try await client.files.uploadSessionAppendV2(cursor: cursor, input: data).response()
+        offset += Int64(data.count)
+    }
+    
+    private func finishUploadSession(client: DropboxClient, file: DropboxFileInfo, folderName: String, sessionId: String?, offset: inout Int64, data: Data) async throws {
+        guard let sessionId else { throw  APIError.errorOccured}
+        let cursor = Files.UploadSessionCursor(sessionId: sessionId, offset: UInt64(offset))
+        let commitInfo = Files.CommitInfo(path: folderName.preffixedSlash().slash() + file.fileName, mode: .add, autorename: false, mute: false)
+        let _ = try await client.files.uploadSessionFinish(cursor: cursor, commit: commitInfo, input: data).response()
+        offset += Int64(data.count)
+        debugLog("Finished upload session for file: \(file.fileName)")
+    }
+    
+    private func handleError(_ error: APIError, progressInfo: DropboxUploadProgressInfo, subject: CurrentValueSubject<DropboxUploadProgressInfo, APIError>) {
+        debugLog("Caught APIError during chunk upload: \(error)")
+        progressInfo.error = error
+        subject.send(progressInfo)
+    }
     private func handleUploadError(_ error: Error,
                                    offset: inout Int64,
                                    sessionId: inout String?) -> APIError? {
