@@ -307,6 +307,12 @@ class DropboxRepository: DropboxRepositoryProtocol {
         } catch let apiError as APIError {
             handleError(apiError, progressInfo: progressInfo, subject: subject)
         } catch {
+            if self.isDropboxAuthError(error) {
+                self.pauseUpload()
+                subject.send(completion: .failure(APIError.noToken))
+                return
+            }
+
             // Handle specific Dropbox errors
             if let error = handleUploadError(error, file: file) {
                 progressInfo.error = error
@@ -325,7 +331,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
         guard let sessionId = file.sessionId else { throw  APIError.errorOccured}
         let cursor = Files.UploadSessionCursor(sessionId: sessionId, offset: UInt64(file.offset))
         debugLog("Appending data to upload session for file: \(file.fileName), offset: \(file.offset)")
-        try await client.files.uploadSessionAppendV2(cursor: cursor, input: data).response()
+        let _ =  try await client.files.uploadSessionAppendV2(cursor: cursor, input: data).response()
         file.offset += Int64(data.count)
     }
     
@@ -383,12 +389,10 @@ class DropboxRepository: DropboxRepositoryProtocol {
     }
     
     func ensureSignedIn() async throws {
-        if self.client == nil {
-            if let client = DropboxClientsManager.authorizedClient {
-                self.client = client
-            } else {
-                try await handleSignIn()
-            }
+        if let client = DropboxClientsManager.authorizedClient {
+            self.client = client
+        } else {
+            try await handleSignIn()
         }
     }
     

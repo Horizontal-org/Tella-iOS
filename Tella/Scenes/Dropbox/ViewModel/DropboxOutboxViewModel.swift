@@ -60,8 +60,6 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         if isSubmissionInProgress {
             dropboxRepository.pauseUpload()
             updateReport(reportStatus: .submissionPaused)
-            
-            cancellables.removeAll()
         }
     }
     
