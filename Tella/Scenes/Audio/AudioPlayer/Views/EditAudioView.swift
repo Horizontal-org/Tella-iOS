@@ -105,7 +105,7 @@ struct EditAudioView: View {
                     editAudioViewModel.trimAudio()
                     isPresented = true
                 }) {
-                    Image("cut.file")
+                    Image("edit.audio.cut")
                         .resizable()
                         .frame(width: 25, height: 25)
                 }
