@@ -37,10 +37,12 @@ class EditAudioViewModel: ObservableObject {
     var duration: String {
         return audioPlayerViewModel.duration
     }
-    
-    init(audioPlayerViewModel : AudioPlayerViewModel, shouldReloadVaultFiles : Binding<Bool>?) {
+    private var rootFile: VaultFileDB?
+
+    init(audioPlayerViewModel: AudioPlayerViewModel, shouldReloadVaultFiles : Binding<Bool>?, rootFile: VaultFileDB?) {
         self.audioPlayerViewModel = audioPlayerViewModel
         self.shouldReloadVaultFiles = shouldReloadVaultFiles
+        self.rootFile = rootFile
         self.audioPlayerViewModel.audioPlayerManager.audioPlayer.currentTime.sink { value in
             self.currentTime = value.toHHMMSSString()
             self.updateOffset(time: Double(value) )
@@ -133,7 +135,7 @@ class EditAudioViewModel: ObservableObject {
     
     private func addEditedFile(urlFile:URL) {
         let importedFiles = ImportedFile(urlFile: urlFile,
-                                         parentId: audioPlayerViewModel.currentFile?.id ,
+                                         parentId: rootFile?.id ,
                                          fileSource: FileSource.files)
         self.audioPlayerViewModel.mainAppModel.addVaultFile(importedFiles: [importedFiles],
                                                             shouldReloadVaultFiles: shouldReloadVaultFiles)

@@ -73,7 +73,8 @@ struct MoreFileActionButton: View {
             let audioPlayerViewModel = AudioPlayerViewModel(currentFile: fileListViewModel.currentSelectedVaultFile,
                                                             mainAppModel: appModel)
             EditAudioView(editAudioViewModel: EditAudioViewModel(audioPlayerViewModel: audioPlayerViewModel,
-                                                                 shouldReloadVaultFiles:  $fileListViewModel.shouldReloadVaultFiles),
+                                                                 shouldReloadVaultFiles:  $fileListViewModel.shouldReloadVaultFiles,
+                                                                 rootFile: fileListViewModel.rootFile),
                           isPresented: $isEditViewShown)
 
         default:  EmptyView()

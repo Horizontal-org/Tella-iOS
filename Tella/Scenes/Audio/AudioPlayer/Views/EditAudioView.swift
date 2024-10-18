@@ -238,7 +238,8 @@ private struct TrimAudioSliderView: View {
 struct EditAudioView_Previews: PreviewProvider {
     static var previews: some View {
         EditAudioView(editAudioViewModel: EditAudioViewModel(audioPlayerViewModel: AudioPlayerViewModel(currentFile: nil, mainAppModel: MainAppModel.stub()),
-                                                             shouldReloadVaultFiles: nil),
+                                                             shouldReloadVaultFiles: nil,
+                                                             rootFile: nil),
                       isPresented: .constant(true))
     }
 }
