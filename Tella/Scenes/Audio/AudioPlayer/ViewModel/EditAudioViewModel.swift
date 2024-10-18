@@ -24,7 +24,7 @@ class EditAudioViewModel: ObservableObject {
     @Published var currentTime : String  = "00:00:00"
     @Published var audioPlayerViewModel: AudioPlayerViewModel
     
-    let gapTime = 3.0 // this is the limit time of the audio duration
+    let gapTime = 3.9 // this is the limit time of the audio duration
     var playButtonImageName: String {
         isPlaying ? "mic.pause-audio" : "mic.play" 
     }
@@ -56,7 +56,7 @@ class EditAudioViewModel: ObservableObject {
         
         self.audioUrl = url
     }
-    
+
     func trimAudio() {
         guard let audioUrl = audioUrl else { return }
         
@@ -66,8 +66,8 @@ class EditAudioViewModel: ObservableObject {
         let duration = CMTimeSubtract(endTime, startTime)
         
         let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A)
-        let trimmedAudioUrl = audioUrl.deletingLastPathComponent().appendingPathComponent("trimmedAudio1.m4a")
-        
+        let trimmedAudioUrl = audioUrl.deletingLastPathComponent().appendingPathComponent("\(newFileName).m4a")
+
         exportSession?.outputURL = trimmedAudioUrl
         exportSession?.outputFileType = .m4a
         exportSession?.timeRange = CMTimeRange(start: startTime, duration: duration)
@@ -75,8 +75,7 @@ class EditAudioViewModel: ObservableObject {
         exportSession?.exportAsynchronously {
             switch exportSession?.status {
             case .completed:
-                print("Audio trimmed successfully to: \(trimmedAudioUrl)")
-                self.addSynchronousVaultFile(urlFile: trimmedAudioUrl)
+                self.addEditedFile(urlFile: trimmedAudioUrl)
             case .failed:
                 if let error = exportSession?.error {
                 }
@@ -84,6 +83,32 @@ class EditAudioViewModel: ObservableObject {
                 break
             }
         }
+    }
+    
+    var newFileName: String {
+        
+        guard let name = audioPlayerViewModel.currentFile?.name else {
+            return ""
+        }
+        
+        var baseName: String
+        var copyNumber = 0
+        
+        // Check if the current name already has the "copy" suffix
+        if name.hasSuffix(LocalizableVault.copy.localized) {
+            baseName = name
+        } else {
+            baseName = name + LocalizableVault.copy.localized
+        }
+        
+        // Generate the new filename and check if it exists
+        var newFileName = baseName
+        while audioPlayerViewModel.mainAppModel.vaultFilesManager?.getVaultFile(name: newFileName) == true {
+            copyNumber += 1
+            newFileName = baseName + "-" + "\(copyNumber)"
+        }
+        
+        return newFileName
     }
     
     private func onPlay() {
@@ -99,26 +124,12 @@ class EditAudioViewModel: ObservableObject {
         self.isPlaying ? onPlay() : onPause()
     }
     
-    private func addSynchronousVaultFile(urlFile:URL) {
-        
+    private func addEditedFile(urlFile:URL) {
         let importedFiles = ImportedFile(urlFile: urlFile,
                                          parentId: audioPlayerViewModel.currentFile?.id ,
                                          fileSource: FileSource.files)
+        audioPlayerViewModel.mainAppModel.addVaultFile(importedFiles: [importedFiles], shouldReloadVaultFiles : .constant(true))
         
-        audioPlayerViewModel.mainAppModel.vaultFilesManager?.addVaultFile(importedFiles : [importedFiles])
-            .sink { importVaultFileResult in
-                
-                switch importVaultFileResult {
-                    
-                case .fileAdded(let vaultFiles):
-                    guard let vaultFile = vaultFiles.first else { return  }
-                    //                    self.handleSuccessAddingFiles(vaultFile: vaultFile)
-                    print("file added succesfully")
-                case .importProgress:
-                    break
-                }
-                
-            }.store(in: &audioPlayerViewModel.cancellable)
     }
     
     

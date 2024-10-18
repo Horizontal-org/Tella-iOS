@@ -90,7 +90,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Vault_LimitedPhotoLibraryPermission_Action_Settings" = "Settings";
 "Vault_LimitedPhotoLibraryPermission_Action_Cancel" = "CANCEL";
 
-
+"Vault_Copy_Text" = "-copy";
 
 
 "Vault_ImportDelete_Title" = "Import and delete original file?";

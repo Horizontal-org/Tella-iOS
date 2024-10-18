@@ -12,7 +12,6 @@ enum LocalizableVault: String, LocalizableDelegate {
     case editFileSavedToast = "Vault_EditFile_ImageSaved_Toast"
     // Edit Audio
     case editAudioTitle = "Vault_EditAudio_Title"
-
     // Sort By
     
     case rootDirectoryName = "Vault_RootDirectoryName"
@@ -126,5 +125,7 @@ enum LocalizableVault: String, LocalizableDelegate {
     case limitedPhotoLibraryPermissionExpl = "Vault_LimitedPhotoLibraryPermission_Expl"
     case limitedPhotoLibraryPermissionSettings = "Vault_LimitedPhotoLibraryPermission_Action_Settings"
     case limitedPhotoLibraryPermissionCancel =  "Vault_LimitedPhotoLibraryPermission_Action_Cancel"
+    
+    case copy = "Vault_Copy_Text"
 
 }

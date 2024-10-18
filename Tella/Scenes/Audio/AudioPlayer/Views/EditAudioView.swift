@@ -104,7 +104,7 @@ struct EditAudioView: View {
             if editAudioViewModel.endTime != editAudioViewModel.timeDuration || editAudioViewModel.startTime != 0.0 {
                 Button(action: {
                     editAudioViewModel.trimAudio()
-                    isPresented = true
+                    isPresented = false
                 }) {
                     Image("edit.audio.cut")
                         .resizable()
@@ -112,7 +112,9 @@ struct EditAudioView: View {
                 }
             }
 
-        }.padding(16)
+        }
+        .frame(height: 30)
+        .padding(16)
     }
     
     var timeLabelsView: some View {
@@ -161,6 +163,7 @@ struct EditAudioView: View {
         .padding(.top, 64)
     }
     func handleSaveAction() {
+        editAudioViewModel.trimAudio()
         isPresented = false
     }
     
