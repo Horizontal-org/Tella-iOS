@@ -13,7 +13,7 @@ import SwiftUI
 
 struct EditAudioView: View {
     @EnvironmentObject var sheetManager: SheetManager
-
+    
     @StateObject var editAudioViewModel: EditAudioViewModel
     @Binding var isPresented : Bool
     @State var isBottomSheetShown : Bool = false
@@ -34,13 +34,23 @@ struct EditAudioView: View {
                 controlButtonsView
                 Spacer()
             }
-            handleState
             EditFileCancelBottomSheet(isShown: $isBottomSheetShown, saveAction: { editAudioViewModel.trimAudio() })
+            if case .error(let message) = editAudioViewModel.trimState{
+                ToastView(message: message)
+            }
         }
         .onAppear {
             editAudioViewModel.onAppear()
             trailingGestureValue = kTrimViewWidth
         }
+        .onReceive(editAudioViewModel.$trimState) { value in
+            if value == .loaded(true) {
+                self.isPresented = false
+                self.sheetManager.hide()
+                Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized)
+            }
+        }
+        
         .navigationBarHidden(true)
         .background(Color.black.ignoresSafeArea())
     }
@@ -62,30 +72,27 @@ struct EditAudioView: View {
                     Rectangle().fill(Styles.Colors.yellow.opacity(0.16))
                         .offset(x: leadingGestureValue)
                         .frame(width: abs(leadingGestureValue - trailingGestureValue ), height: 180 )
-
+                    
                     TrimAudioSliderView(value: $editAudioViewModel.startTime,
                                         range: 0...editAudioViewModel.timeDuration,
                                         gestureValue: $leadingGestureValue,
                                         shouldLimitScrolling: $shouldStopLeftScroll)
-                        .frame(height: 220)
-                        .offset(y: 20)
-                        .onReceive(editAudioViewModel.$startTime, perform: { value in
-                            shouldStopLeftScroll = editAudioViewModel.startTime + editAudioViewModel.gapTime >= editAudioViewModel.endTime
-                        })
+                    .frame(height: 220)
+                    .offset(y: 20)
+                    .onReceive(editAudioViewModel.$startTime, perform: { value in
+                        shouldStopLeftScroll = editAudioViewModel.startTime + editAudioViewModel.gapTime >= editAudioViewModel.endTime
+                    })
                 }.frame(maxWidth: kTrimViewWidth)
                 
                 TrimAudioSliderView(value: $editAudioViewModel.endTime,
                                     range: 0...editAudioViewModel.timeDuration,
                                     gestureValue: $trailingGestureValue,
                                     shouldLimitScrolling: $shouldStopRightScroll)
-                    .frame(height: 220)
-                    .offset(y:20)
-                    .onReceive(editAudioViewModel.$endTime, perform: { value in
-                        shouldStopRightScroll = editAudioViewModel.startTime + editAudioViewModel.gapTime >= editAudioViewModel.endTime
-                    })
-
-
-
+                .frame(height: 220)
+                .offset(y:20)
+                .onReceive(editAudioViewModel.$endTime, perform: { value in
+                    shouldStopRightScroll = editAudioViewModel.startTime + editAudioViewModel.gapTime >= editAudioViewModel.endTime
+                })
             }.frame(maxWidth: kTrimViewWidth)
             
         }.frame(maxWidth: kTrimViewWidth)
@@ -110,7 +117,7 @@ struct EditAudioView: View {
                         .frame(width: 25, height: 25)
                 }
             }
-
+            
         }
         .frame(height: 30)
         .padding(16)
@@ -176,22 +183,6 @@ struct EditAudioView: View {
             isPresented = false
         }
     }
-    
-    @ViewBuilder
-    private var handleState : some View {
-        switch editAudioViewModel.trimState {
-        case .loaded(let success):
-            if success {
-                ToastView(message: LocalizableVault.editFileSavedToast.localized).onAppear {
-                    self.isPresented = false
-                    self.sheetManager.hide()
-                }
-            }
-        case .error(let message):
-            ToastView(message: message)
-        default: EmptyView()
-        }
-    }
 }
 
 
@@ -224,7 +215,7 @@ private struct TrimAudioSliderView: View {
                             }
                         }
                         self.value = min(max(newValue, range.lowerBound), range.upperBound)
-
+                        
                     }.onEnded({ dragValue in
                         
                         self.gestureValue = CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width //- kOffset
@@ -240,7 +231,7 @@ private struct TrimAudioSliderView: View {
         .onAppear {
             self.isRightSlider = range.upperBound == value
         }
-
+        
     }
 }
 

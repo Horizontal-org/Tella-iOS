@@ -16,26 +16,26 @@ class EditAudioViewModel: ObservableObject {
     
     @Published var isPlaying = false
     var cancellable: Set<AnyCancellable> = []
-
+    
     @Published var offset: CGFloat = 0.0
-
-    var audioUrl: URL? 
+    
+    var audioUrl: URL?
     let kNumberOfLabels = 5 // This is for the sub-times labels
     @Published var currentTime : String  = "00:00:00"
     @Published var audioPlayerViewModel: AudioPlayerViewModel
     
     let gapTime = 3.9 // this is the limit time of the audio duration
     var playButtonImageName: String {
-        isPlaying ? "mic.pause-audio" : "mic.play" 
+        isPlaying ? "mic.pause-audio" : "mic.play"
     }
     @Published var trimState: ViewModelState<Bool> = .loaded(false)
-
+    
     @Published var timeDuration: Double = 0.0
     
     var duration: String {
         return audioPlayerViewModel.duration
     }
-
+    
     init(audioPlayerViewModel : AudioPlayerViewModel) {
         self.audioPlayerViewModel = audioPlayerViewModel
         
@@ -52,12 +52,12 @@ class EditAudioViewModel: ObservableObject {
     func onAppear() {
         guard let fileExtension = audioPlayerViewModel.currentFile?.fileExtension else { return }
         let url = audioPlayerViewModel.mainAppModel.vaultManager.saveDataToTempFile(data: audioPlayerViewModel.currentData,
-                                                                                                       pathExtension: fileExtension)
+                                                                                    pathExtension: fileExtension)
         guard let url else { return }
         
         self.audioUrl = url
     }
-
+    
     func isDurationHasChanged() -> Bool {
         return self.endTime != self.timeDuration || self.startTime != 0.0
     }
@@ -71,7 +71,7 @@ class EditAudioViewModel: ObservableObject {
         
         let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A)
         let trimmedAudioUrl = audioUrl.deletingLastPathComponent().appendingPathComponent("\(newFileName).m4a")
-
+        
         exportSession?.outputURL = trimmedAudioUrl
         exportSession?.outputFileType = .m4a
         exportSession?.timeRange = CMTimeRange(start: startTime, duration: duration)
@@ -81,7 +81,9 @@ class EditAudioViewModel: ObservableObject {
             case .completed:
                 self.addEditedFile(urlFile: trimmedAudioUrl)
             case .failed:
-                self.trimState = .error(LocalizableError.commonError.localized)
+                DispatchQueue.main.async {
+                    self.trimState = .error(LocalizableError.commonError.localized)
+                }
             default:
                 break
             }
@@ -132,7 +134,9 @@ class EditAudioViewModel: ObservableObject {
                                          parentId: audioPlayerViewModel.currentFile?.id ,
                                          fileSource: FileSource.files)
         audioPlayerViewModel.mainAppModel.addVaultFile(importedFiles: [importedFiles], shouldReloadVaultFiles : .constant(true))
-        trimState = .loaded(true)
+        DispatchQueue.main.async {
+            self.trimState = .loaded(true)
+        }
     }
     
     
