@@ -76,7 +76,9 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         self.reportViewModel.files = self.reportViewModel.files.compactMap { file in
             guard file.id == dropboxProgressInfo.fileId else { return file }
             let updatedFile = file
-            updatedFile.bytesSent = dropboxProgressInfo.bytesSent ?? 0
+            if let bytesSent = dropboxProgressInfo.bytesSent {
+                updatedFile.bytesSent = bytesSent
+            }
             updatedFile.status = dropboxProgressInfo.status
             return updatedFile
         }
@@ -85,7 +87,10 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
             let dropboxFile = file
             
             dropboxFile.sessionId = dropboxProgressInfo.sessionId
-            dropboxFile.bytesSent = dropboxProgressInfo.bytesSent ?? 0
+            
+            if let bytesSent = dropboxProgressInfo.bytesSent {
+                dropboxFile.bytesSent = bytesSent
+            }
             
             self.updateFile(file: dropboxFile)
         }
@@ -170,6 +175,8 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
                                    offset: Int64(file.bytesSent),
                                    sessionId: file.sessionId,
                                    totalBytes: Int64(file.size))
+            
+            print("file.bytesSent 🚀🚀🚀🚀🚀🚀🚀 ",file.bytesSent)
         }
         
         return filesToSend
