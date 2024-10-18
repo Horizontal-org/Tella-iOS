@@ -47,15 +47,19 @@ struct EditAudioView: View {
         VStack {
             ZStack(alignment: .trailing) {
                 ZStack(alignment: .leading) {
-                    Image("audio.soundwaves")
+                    Image("edit.audio.sounwaves")
                         .resizable()
                         .frame(height: 180)
-                        .background(Styles.Colors.yellow.opacity(0.16))
+                        .background(Color.white.opacity(0.08))
                     
                     Image("edit.audio.play.line")
                         .frame(height: 220)
                         .offset(x: editAudioViewModel.offset)
                     
+                    Rectangle().fill(Styles.Colors.yellow.opacity(0.16))
+                        .offset(x: leadingGestureValue)
+                        .frame(width: abs(leadingGestureValue - trailingGestureValue ), height: 180 )
+
                     TrimAudioSliderView(value: $editAudioViewModel.startTime,
                                         range: 0...editAudioViewModel.timeDuration,
                                         gestureValue: $leadingGestureValue,
@@ -65,15 +69,6 @@ struct EditAudioView: View {
                         .onReceive(editAudioViewModel.$startTime, perform: { value in
                             shouldStopLeftScroll = editAudioViewModel.startTime + editAudioViewModel.gapTime >= editAudioViewModel.endTime
                         })
-
-                    Rectangle().fill(Color.white.opacity(0.08))
-                        .frame(maxWidth: kTrimViewWidth - trailingGestureValue )
-                        .offset(x: trailingGestureValue)
-                        .frame(height: 180)
-                    Rectangle().fill(Color.white.opacity(0.08))
-                        .frame(maxWidth: leadingGestureValue)
-                        .frame(height: 180)
-                    
                 }.frame(maxWidth: kTrimViewWidth)
                 
                 TrimAudioSliderView(value: $editAudioViewModel.endTime,
