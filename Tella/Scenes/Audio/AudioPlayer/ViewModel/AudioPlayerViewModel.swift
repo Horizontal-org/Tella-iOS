@@ -31,10 +31,12 @@ class AudioPlayerViewModel: ObservableObject {
 
     @Published var timeDuration: TimeInterval?
     
-    init(currentData: Data?, currentFile: VaultFileDB?, mainAppModel: MainAppModel) {
-        self.currentData = currentData
+    init(currentFile: VaultFileDB?, mainAppModel: MainAppModel) {
         self.currentFile = currentFile
         self.mainAppModel = mainAppModel
+        if let currentFile {
+            self.currentData = self.mainAppModel.vaultManager.loadFileData(file: currentFile)
+        }
         audioPlayerManager.audioPlayer.currentTime.sink { value in
             self.currentTime = value.toHHMMSSString()
         }.store(in: &self.cancellable)

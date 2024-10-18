@@ -9,10 +9,9 @@ struct AudioPlayerView: View {
     @StateObject var viewModel : AudioPlayerViewModel
     @EnvironmentObject private var homeViewModel: MainAppModel
     
-    @State var isEditViewShown = false
 
     init(currentData : Data?, currentFile: VaultFileDB?, mainAppmodel: MainAppModel) {
-        _viewModel = StateObject(wrappedValue: AudioPlayerViewModel(currentData: currentData, currentFile: currentFile, mainAppModel: mainAppmodel))
+        _viewModel = StateObject(wrappedValue: AudioPlayerViewModel(currentFile: currentFile, mainAppModel: mainAppmodel))
     }
     
     var body: some View {
@@ -26,13 +25,6 @@ struct AudioPlayerView: View {
                 
                 getTimeView()
                 
-                
-                Button(action: {
-                    isEditViewShown = true
-                                    }, label: {
-                    Text("Edit Audio")
-                }) // Will be changed
-
                 Spacer()
                 
                 self.getContentView()
@@ -45,12 +37,6 @@ struct AudioPlayerView: View {
         .onDisappear {
             self.viewModel.onStopPlaying()
         }
-        .fullScreenCover(isPresented: $isEditViewShown) {
-        } content: {
-            EditAudioView(editAudioViewModel: EditAudioViewModel(audioPlayerViewModel: viewModel),
-                             isPresented: $isEditViewShown)
-        }
-
     }
     
     private func getContentView() -> AnyView {

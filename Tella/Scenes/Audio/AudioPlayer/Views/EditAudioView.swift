@@ -91,6 +91,7 @@ struct EditAudioView: View {
     var headerView: some View {
         HStack {
             Button(action: {
+                editAudioViewModel.isPlaying = false
                 isBottomSheetShown = true
             }) {
                 Image("file.edit.close")
@@ -223,7 +224,7 @@ private struct TrimAudioSliderView: View {
 
 struct EditAudioView_Previews: PreviewProvider {
     static var previews: some View {
-        EditAudioView(editAudioViewModel: EditAudioViewModel(audioPlayerViewModel: AudioPlayerViewModel(currentData: nil, currentFile: nil, mainAppModel: MainAppModel.stub())),
+        EditAudioView(editAudioViewModel: EditAudioViewModel(audioPlayerViewModel: AudioPlayerViewModel(currentFile: nil, mainAppModel: MainAppModel.stub())),
                       isPresented: .constant(true))
     }
 }

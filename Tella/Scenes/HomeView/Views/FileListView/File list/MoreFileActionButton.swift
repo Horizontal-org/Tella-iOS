@@ -39,9 +39,7 @@ struct MoreFileActionButton: View {
         }
         .fullScreenCover(isPresented: $isEditViewShown) {
         } content: {
-            EditImageView(viewModel: EditImageViewModel(mainAppModel: appModel,
-                                                        fileListViewModel: fileListViewModel),
-                          isPresented: $isEditViewShown)
+            redirectEditFile()
         }
     }
     
@@ -64,7 +62,24 @@ struct MoreFileActionButton: View {
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -6, trailing: -12))
         }.frame(width: 35, height: 35)
     }
-    
+    @ViewBuilder
+    private func redirectEditFile() -> some View {
+        switch fileListViewModel.currentSelectedVaultFile?.tellaFileType {
+        case .image:
+            EditImageView(viewModel: EditImageViewModel( mainAppModel: appModel,
+                                                         fileListViewModel: fileListViewModel),
+                          isPresented: $isEditViewShown)
+        case .audio:
+            let audioPlayerViewModel = AudioPlayerViewModel(currentFile: fileListViewModel.currentSelectedVaultFile,
+                                                            mainAppModel: appModel)
+            EditAudioView(editAudioViewModel: EditAudioViewModel(audioPlayerViewModel: audioPlayerViewModel),
+                          isPresented: $isEditViewShown)
+
+        default:  EmptyView()
+        }
+
+    }
+
     private func showFileActionSheet() {
         if let file = file {
             fileListViewModel.updateSingleSelection(for: file)
