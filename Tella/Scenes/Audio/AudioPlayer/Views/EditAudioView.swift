@@ -60,14 +60,14 @@ struct EditAudioView: View {
         VStack {
             ZStack(alignment: .trailing) {
                 ZStack(alignment: .leading) {
-                    Image("edit.audio.sounwaves")
+                    Image("edit.audio.soundwaves")
                         .resizable()
                         .frame(height: 180)
                         .background(Color.white.opacity(0.08))
                     
                     Image("edit.audio.play.line")
                         .frame(height: 220)
-                        .offset(x: editAudioViewModel.offset)
+                        .offset(x: editAudioViewModel.playingOffset)
                     
                     Rectangle().fill(Styles.Colors.yellow.opacity(0.16))
                         .offset(x: leadingGestureValue)
@@ -93,7 +93,7 @@ struct EditAudioView: View {
                 .onReceive(editAudioViewModel.$endTime, perform: { value in
                     shouldStopRightScroll = editAudioViewModel.startTime + editAudioViewModel.gapTime >= editAudioViewModel.endTime
                 })
-            }.frame(maxWidth: kTrimViewWidth)
+            } //.frame(maxWidth: kTrimViewWidth)
             
         }.frame(maxWidth: kTrimViewWidth)
     }
@@ -237,7 +237,8 @@ private struct TrimAudioSliderView: View {
 
 struct EditAudioView_Previews: PreviewProvider {
     static var previews: some View {
-        EditAudioView(editAudioViewModel: EditAudioViewModel(audioPlayerViewModel: AudioPlayerViewModel(currentFile: nil, mainAppModel: MainAppModel.stub())),
+        EditAudioView(editAudioViewModel: EditAudioViewModel(audioPlayerViewModel: AudioPlayerViewModel(currentFile: nil, mainAppModel: MainAppModel.stub()),
+                                                             shouldReloadVaultFiles: nil),
                       isPresented: .constant(true))
     }
 }

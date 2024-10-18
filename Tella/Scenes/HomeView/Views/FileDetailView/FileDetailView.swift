@@ -49,7 +49,8 @@ struct FileDetailView: View {
                           isPresented: $isEditFilePresented)
         case .audio:
             let audioPlayerViewModel = AudioPlayerViewModel(currentFile: viewModel.currentFile, mainAppModel: appModel)
-            EditAudioView(editAudioViewModel: EditAudioViewModel(audioPlayerViewModel: audioPlayerViewModel),
+            EditAudioView(editAudioViewModel: EditAudioViewModel(audioPlayerViewModel: audioPlayerViewModel,
+                                                                 shouldReloadVaultFiles:  $fileListViewModel.shouldReloadVaultFiles),
                           isPresented: $isEditFilePresented)
 
         default:  EmptyView()
