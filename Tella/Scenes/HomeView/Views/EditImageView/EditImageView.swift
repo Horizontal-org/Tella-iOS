@@ -40,6 +40,7 @@ struct EditImageView: View {
     private func handleSaveAction() {
         self.viewModel.saveChanges()
         isPresented = false
+        Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized)
     }
 }
 

@@ -19,7 +19,7 @@ class EditAudioViewModel: ObservableObject {
 
     @Published var offset: CGFloat = 0.0
 
-    var audioUrl: URL?
+    var audioUrl: URL? 
     let kNumberOfLabels = 5 // This is for the sub-times labels
     @Published var currentTime : String  = "00:00:00"
     @Published var audioPlayerViewModel: AudioPlayerViewModel
@@ -28,7 +28,8 @@ class EditAudioViewModel: ObservableObject {
     var playButtonImageName: String {
         isPlaying ? "mic.pause-audio" : "mic.play" 
     }
-    
+    @Published var trimState: ViewModelState<Bool> = .loaded(false)
+
     @Published var timeDuration: Double = 0.0
     
     var duration: String {
@@ -57,9 +58,12 @@ class EditAudioViewModel: ObservableObject {
         self.audioUrl = url
     }
 
+    func isDurationHasChanged() -> Bool {
+        return self.endTime != self.timeDuration || self.startTime != 0.0
+    }
+    
     func trimAudio() {
         guard let audioUrl = audioUrl else { return }
-        
         let asset = AVAsset(url: audioUrl)
         let startTime = CMTime(seconds: startTime, preferredTimescale: 600)
         let endTime = CMTime(seconds: endTime, preferredTimescale: 600)
@@ -77,8 +81,7 @@ class EditAudioViewModel: ObservableObject {
             case .completed:
                 self.addEditedFile(urlFile: trimmedAudioUrl)
             case .failed:
-                if let error = exportSession?.error {
-                }
+                self.trimState = .error(LocalizableError.commonError.localized)
             default:
                 break
             }
@@ -129,7 +132,7 @@ class EditAudioViewModel: ObservableObject {
                                          parentId: audioPlayerViewModel.currentFile?.id ,
                                          fileSource: FileSource.files)
         audioPlayerViewModel.mainAppModel.addVaultFile(importedFiles: [importedFiles], shouldReloadVaultFiles : .constant(true))
-        
+        trimState = .loaded(true)
     }
     
     

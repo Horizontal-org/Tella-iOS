@@ -12,6 +12,8 @@ import SwiftUI
 
 
 struct EditAudioView: View {
+    @EnvironmentObject var sheetManager: SheetManager
+
     @StateObject var editAudioViewModel: EditAudioViewModel
     @Binding var isPresented : Bool
     @State var isBottomSheetShown : Bool = false
@@ -32,7 +34,8 @@ struct EditAudioView: View {
                 controlButtonsView
                 Spacer()
             }
-            EditFileCancelBottomSheet(isShown: $isBottomSheetShown, saveAction: { handleSaveAction() })
+            handleState
+            EditFileCancelBottomSheet(isShown: $isBottomSheetShown, saveAction: { editAudioViewModel.trimAudio() })
         }
         .onAppear {
             editAudioViewModel.onAppear()
@@ -90,10 +93,7 @@ struct EditAudioView: View {
     
     var headerView: some View {
         HStack {
-            Button(action: {
-                editAudioViewModel.isPlaying = false
-                isBottomSheetShown = true
-            }) {
+            Button(action: { self.closeView()}) {
                 Image("file.edit.close")
             }
             
@@ -101,10 +101,9 @@ struct EditAudioView: View {
                 .foregroundColor(.white)
             
             Spacer()
-            if editAudioViewModel.endTime != editAudioViewModel.timeDuration || editAudioViewModel.startTime != 0.0 {
+            if editAudioViewModel.isDurationHasChanged()  {
                 Button(action: {
                     editAudioViewModel.trimAudio()
-                    isPresented = false
                 }) {
                     Image("edit.audio.cut")
                         .resizable()
@@ -162,16 +161,36 @@ struct EditAudioView: View {
         }
         .padding(.top, 64)
     }
-    func handleSaveAction() {
-        editAudioViewModel.trimAudio()
-        isPresented = false
-    }
     
     private func undo() {
         editAudioViewModel.startTime = 0.0
         editAudioViewModel.endTime = editAudioViewModel.timeDuration
         leadingGestureValue = 0.0
         trailingGestureValue = kTrimViewWidth
+    }
+    private func closeView() {
+        editAudioViewModel.isPlaying = false
+        if editAudioViewModel.isDurationHasChanged() {
+            isBottomSheetShown = true
+        }else  {
+            isPresented = false
+        }
+    }
+    
+    @ViewBuilder
+    private var handleState : some View {
+        switch editAudioViewModel.trimState {
+        case .loaded(let success):
+            if success {
+                ToastView(message: LocalizableVault.editFileSavedToast.localized).onAppear {
+                    self.isPresented = false
+                    self.sheetManager.hide()
+                }
+            }
+        case .error(let message):
+            ToastView(message: message)
+        default: EmptyView()
+        }
     }
 }
 
