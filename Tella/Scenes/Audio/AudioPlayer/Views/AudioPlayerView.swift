@@ -7,12 +7,6 @@ import SwiftUI
 struct AudioPlayerView: View {
     
     @StateObject var viewModel : AudioPlayerViewModel
-    @EnvironmentObject private var homeViewModel: MainAppModel
-    
-
-    init(currentData : Data?, currentFile: VaultFileDB?, mainAppmodel: MainAppModel) {
-        _viewModel = StateObject(wrappedValue: AudioPlayerViewModel(currentFile: currentFile, mainAppModel: mainAppmodel))
-    }
     
     var body: some View {
         
@@ -143,7 +137,7 @@ struct AudioPlayerView: View {
 
 struct AudioPlayerView_Previews: PreviewProvider {
     static var previews: some View {
-        AudioPlayerView(currentData: nil, currentFile: nil, mainAppmodel: MainAppModel.stub())
+        AudioPlayerView(viewModel: AudioPlayerViewModel(currentFile: nil, mainAppModel: MainAppModel.stub()))
     }
 }
 

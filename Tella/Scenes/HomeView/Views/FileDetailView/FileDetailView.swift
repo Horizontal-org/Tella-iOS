@@ -68,7 +68,8 @@ struct FileDetailView: View {
             if viewModel.documentIsReady {
                 switch viewModel.currentFile?.tellaFileType {
                 case .audio:
-                    AudioPlayerView(currentData: viewModel.data, currentFile: viewModel.currentFile, mainAppmodel: appModel)
+                    let viewModel = AudioPlayerViewModel(currentFile: viewModel.currentFile, mainAppModel: appModel)
+                    AudioPlayerView(viewModel: viewModel)
                 case .image:
                     ImageViewer(imageData: viewModel.data)
                 case .folder:
