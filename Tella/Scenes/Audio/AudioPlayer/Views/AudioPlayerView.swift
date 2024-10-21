@@ -7,6 +7,7 @@ import SwiftUI
 struct AudioPlayerView: View {
     
     @StateObject var viewModel : AudioPlayerViewModel
+    @Binding var isViewDisappeared: Bool
     
     var body: some View {
         
@@ -21,60 +22,19 @@ struct AudioPlayerView: View {
                 
                 Spacer()
                 
-                self.getContentView()
+                self.getControlView()
                     .frame(height: 75)
                 
                 Spacer()
                     .frame( height: 108)
             }
-        }
+        }.onChange(of: isViewDisappeared) { if $0 { self.viewModel.onStopPlaying() }}
         .onDisappear {
             self.viewModel.onStopPlaying()
         }
     }
     
-    private func getContentView() -> AnyView {
-        
-        switch self.viewModel.state {
-        case .ready:
-            return AnyView ( self.getReadyView() )
-        case .playing:
-            return AnyView ( getPlayingView() )
-        }
-    }
-    
-    private func getReadyView() -> some View {
-        
-        HStack(spacing: 34) {
-            
-            Button(action: {
-                self.viewModel.onrewindBack()
-            }) {
-                getRewindBackView()
-            }.disabled(self.viewModel.shouldDisableRewindBackButton)
-            
-            Button(action: {
-                self.viewModel.onStartPlaying()
-            }) {
-                
-                ZStack {
-                    Image("mic.play-audio")
-                        .frame(width: 75, height: 75)
-                }
-            }
-            
-            Button(action: {
-                self.viewModel.onFastForward()
-            }) {
-                getFastForwardView()
-            }.disabled(self.viewModel.shouldDisableFastForwardButton)
-            
-        }.padding()
-        
-    }
-    
-    private func getPlayingView() -> some View {
-        
+    private func getControlView() -> some View {
         HStack(spacing: 34) {
             
             Button(action: {
@@ -82,11 +42,13 @@ struct AudioPlayerView: View {
             }) {
                 getRewindBackView()
             }
+            .disabled(self.viewModel.shouldDisableRewindBackButton)
             
             Button(action: {
-                self.viewModel.onPausePlaying()
+                self.viewModel.isPlaying.toggle()
+                self.viewModel.isPlaying ? self.viewModel.onStartPlaying() : self.viewModel.onPausePlaying()
             }) {
-                Image("mic.pause-audio")
+                Image(self.viewModel.isPlaying  ? "mic.pause-audio" : "mic.play-audio")
                     .frame(width: 75, height: 75)
             }
             
@@ -95,8 +57,8 @@ struct AudioPlayerView: View {
             }) {
                 getFastForwardView()
             }
-        }
-        .padding()
+            .disabled(self.viewModel.shouldDisableFastForwardButton)
+        }.padding()
     }
     
     private func getRewindBackView() -> some View {
@@ -137,7 +99,7 @@ struct AudioPlayerView: View {
 
 struct AudioPlayerView_Previews: PreviewProvider {
     static var previews: some View {
-        AudioPlayerView(viewModel: AudioPlayerViewModel(currentFile: nil, mainAppModel: MainAppModel.stub()))
+        AudioPlayerView(viewModel: AudioPlayerViewModel(currentFile: nil, mainAppModel: MainAppModel.stub()), isViewDisappeared: .constant(false))
     }
 }
 

@@ -5,14 +5,10 @@
 import Foundation
 import Combine
 
-enum PlayState {
-    case ready
-    case playing
-}
 
 class AudioPlayerViewModel: ObservableObject {
     
-    @Published var state: PlayState = .ready
+    @Published var isPlaying = false
     
     @Published var shouldDisableFastForwardButton : Bool = false
     @Published var shouldDisableRewindBackButton : Bool = false
@@ -46,15 +42,10 @@ class AudioPlayerViewModel: ObservableObject {
         }.store(in: &self.cancellable)
         
         audioPlayerManager.audioPlayer.audioPlayerDidFinishPlaying.sink { [self] value in
-            self.state = .ready
-            
+            self.isPlaying = false
             self.shouldDisableFastForwardButton = true
             self.shouldDisableRewindBackButton = true
-
-
             self.updateView()
-
-            
         }.store(in: &self.cancellable)
         audioPlayerManager.audioPlayer.duration.sink { value in
             self.timeDuration = value
@@ -75,9 +66,7 @@ class AudioPlayerViewModel: ObservableObject {
 
     
     func onStartPlaying() {
-        
-        self.state = .playing
-        
+        isPlaying = true
         self.audioPlayerManager.playRecord()
         
         shouldDisableFastForwardButton = false
@@ -87,7 +76,7 @@ class AudioPlayerViewModel: ObservableObject {
     }
     
     func onPausePlaying() {
-        self.state = .ready
+        self.isPlaying = false
         
         self.audioPlayerManager.pauseRecord()
         
@@ -99,7 +88,7 @@ class AudioPlayerViewModel: ObservableObject {
     }
     
     func onStopPlaying() {
-
+        isPlaying = false
         self.audioPlayerManager.stopRecord()
     }
 
