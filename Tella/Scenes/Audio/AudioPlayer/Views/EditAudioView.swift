@@ -93,7 +93,7 @@ struct EditAudioView: View {
                 .onReceive(editAudioViewModel.$endTime, perform: { value in
                     shouldStopRightScroll = editAudioViewModel.startTime + editAudioViewModel.gapTime >= editAudioViewModel.endTime
                 })
-            } //.frame(maxWidth: kTrimViewWidth)
+            } 
             
         }.frame(maxWidth: kTrimViewWidth)
     }
