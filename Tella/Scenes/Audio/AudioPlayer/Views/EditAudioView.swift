@@ -180,6 +180,7 @@ struct EditAudioView: View {
         if editAudioViewModel.isDurationHasChanged() {
             isBottomSheetShown = true
         }else  {
+            sheetManager.hide()
             isPresented = false
         }
     }
