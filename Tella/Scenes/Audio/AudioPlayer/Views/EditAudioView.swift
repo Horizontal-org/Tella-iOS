@@ -206,7 +206,7 @@ private struct TrimAudioSliderView: View {
                     .gesture(DragGesture(minimumDistance: 0).onChanged { dragValue in
                         // Calculate new value based on drag position
                         let newValue = Double(dragValue.location.x / geometry.size.width) * (range.upperBound - range.lowerBound) + range.lowerBound
-                        self.gestureValue = CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width //- kOffset
+                        self.gestureValue = CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width
                         if shouldLimitScrolling {
                             if isRightSlider {
                                 guard newValue >= value else { return }
@@ -218,7 +218,7 @@ private struct TrimAudioSliderView: View {
                         
                     }.onEnded({ dragValue in
                         
-                        self.gestureValue = CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width //- kOffset
+                        self.gestureValue = CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width
                     }))
                 Text("\(TimeInterval(self.value).toHHMMString())")
                     .foregroundColor(Styles.Colors.yellow)
