@@ -80,19 +80,13 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
                 updatedFile.bytesSent = bytesSent
             }
             updatedFile.status = dropboxProgressInfo.status
+            updatedFile.sessionId = dropboxProgressInfo.sessionId
+            updatedFile.finishUploading = dropboxProgressInfo.finishUploading
             return updatedFile
         }
         
         if let file = self.reportViewModel.files.first(where: { $0.id == dropboxProgressInfo.fileId }) {
-            let dropboxFile = file
-            
-            dropboxFile.sessionId = dropboxProgressInfo.sessionId
-            
-            if let bytesSent = dropboxProgressInfo.bytesSent {
-                dropboxFile.bytesSent = bytesSent
-            }
-            
-            self.updateFile(file: dropboxFile)
+            self.updateFile(file: file)
         }
     }
     
@@ -175,8 +169,6 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
                                    offset: Int64(file.bytesSent),
                                    sessionId: file.sessionId,
                                    totalBytes: Int64(file.size))
-            
-            print("file.bytesSent 🚀🚀🚀🚀🚀🚀🚀 ",file.bytesSent)
         }
         
         return filesToSend
@@ -193,6 +185,14 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         if (filesAreNotSubmitted.isEmpty) {
             updateReport(reportStatus: .submitted)
             showSubmittedReport()
+        }
+        
+        let filesAreNotfinishUploading = reportViewModel.files.filter({$0.finishUploading == false})
+        let submissionErrorFiles = reportViewModel.files.filter({$0.status == .submissionError})
+        
+        if !(submissionErrorFiles.isEmpty) && filesAreNotfinishUploading.isEmpty {
+            reportViewModel.status = .submissionError
+            publishUpdates()
         }
     }
     

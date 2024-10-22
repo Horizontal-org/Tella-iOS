@@ -16,13 +16,13 @@ extension APIError {
             actualError = underlyingError
         }
 
-        if let uploadError = actualError as? CallError<Files.UploadError> {
+        if let uploadError = actualError as? UploadError {
             return handleDropboxCallError(uploadError)
-        } else if let uploadSessionFinishError = actualError as? CallError<Files.UploadSessionFinishError> {
+        } else if let uploadSessionFinishError = actualError as? UploadSessionFinishError {
             return handleDropboxCallError(uploadSessionFinishError)
-        } else if let uploadSessionStartError = actualError as? CallError<Files.UploadSessionStartError> {
+        } else if let uploadSessionStartError = actualError as? UploadSessionStartError {
             return handleDropboxCallError(uploadSessionStartError)
-        } else if let createFolderError = actualError as? CallError<Files.CreateFolderError> {
+        } else if let createFolderError = actualError as? CreateFolderError {
             return handleDropboxCallError(createFolderError)
         } else {
             return LocalizableError.unexpectedResponse.localized
