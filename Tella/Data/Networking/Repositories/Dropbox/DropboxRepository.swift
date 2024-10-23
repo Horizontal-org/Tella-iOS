@@ -21,16 +21,6 @@ protocol DropboxRepositoryProtocol {
     func pauseUpload()
 }
 
-
-typealias UploadSessionStart = UploadRequest<Files.UploadSessionStartResultSerializer, Files.UploadSessionStartErrorSerializer>
-typealias UploadSessionAppend = UploadRequest<VoidSerializer, Files.UploadSessionAppendErrorSerializer>
-typealias UploadSessionFinish = UploadRequest<Files.FileMetadataSerializer, Files.UploadSessionFinishErrorSerializer>
-typealias UploadError = CallError<Files.UploadError>
-typealias CreateFolderError = CallError<Files.CreateFolderError>
-typealias UploadSessionStartError = CallError<Files.UploadSessionStartError>
-typealias UploadSessionFinishError = CallError<Files.UploadSessionFinishError>
-typealias UploadSessionAppendError = CallError<Files.UploadSessionAppendError>
-
 class DropboxRepository: DropboxRepositoryProtocol {
     
     private var client: DropboxClient?
@@ -76,6 +66,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
     func handleRedirectURL(_ url: URL, completion: @escaping (DropboxOAuthResult?) -> Void) -> Bool {
         return DropboxClientsManager.handleRedirectURL(url, includeBackgroundClient: false, completion: completion)
     }
+    
     func handleSignIn() async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             DispatchQueue.main.async {
@@ -180,11 +171,9 @@ class DropboxRepository: DropboxRepositoryProtocol {
         return   try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<String, Error>) in
             client.files.createFolderV2(path: folderPath, autorename: true).response { response, error in
                 if let error = error {
-                    if self.isDropboxAuthError(error) {
-                        continuation.resume(throwing: APIError.noToken)
-                    } else {
-                        continuation.resume(throwing: APIError.dropboxApiError(error))
-                    }
+                    let dropboxError = error.getError(error: error)
+                    let apiError = APIError.dropboxApiError(dropboxError)
+                    continuation.resume(throwing:apiError)
                 } else if let name = response?.metadata.name {
                     continuation.resume(returning: name)
                 } else {
@@ -210,11 +199,9 @@ class DropboxRepository: DropboxRepositoryProtocol {
             client.files.upload(path: reportFolderPath.slash() + descriptionFolderName, input: descriptionData)
                 .response { response, error in
                     if let error = error {
-                        if self.isDropboxAuthError(error) {
-                            continuation.resume(throwing: APIError.noToken)
-                        } else {
-                            continuation.resume(throwing: APIError.dropboxApiError(error))
-                        }
+                        let dropboxError = error.getError(error: error)
+                        let apiError = APIError.dropboxApiError(dropboxError)
+                        continuation.resume(throwing:apiError)
                     } else {
                         continuation.resume(returning: ())
                     }
@@ -270,17 +257,27 @@ class DropboxRepository: DropboxRepositoryProtocol {
                                                  subject: subject)
                     
                 }  catch {
-
-                    if self.isDropboxAuthError(error) {
-                        tokenExpired = true
-                        progressInfo.finishUploading = true
-                        subject.send(completion: .failure(APIError.noToken))
-                        return
-                    }
                     
-                    // Handle specific Dropbox errors
-                    if let error = handleUploadError(error, file: file) {
-                        progressInfo.error = error
+                    let dropboxError = error.getError(error: error)
+                    let apiError = APIError.dropboxApiError(dropboxError)
+                    
+                    switch dropboxError {
+                        
+                    case .incorrectOffset(let newOffset):
+                        file.offset = Int64(newOffset)
+                        
+                    case .sessionNotFound:
+                        file.sessionId = nil
+                        
+                    case .insufficientSpace, .noToken:
+                        progressInfo.error = apiError
+                        progressInfo.status = .submissionError
+                        progressInfo.finishUploading = true
+                        subject.send(completion: .failure(apiError))
+                        return
+                        
+                    default:
+                        progressInfo.error = apiError
                         progressInfo.status = .submissionError
                         progressInfo.finishUploading = true
                         subject.send(progressInfo)
@@ -382,40 +379,6 @@ class DropboxRepository: DropboxRepositoryProtocol {
         debugLog("Finished upload session for file: \(file.fileName)")
     }
     
-    private func handleUploadError(_ error: Error, file: DropboxFileInfo) -> APIError? {
-        
-        if let callError = error as? UploadSessionAppendError {
-            debugLog(callError)
-          
-            switch callError {
-            case .routeError(let boxedLookupError, _, _, _):
-                let lookupError = boxedLookupError.unboxed
-                switch lookupError {
-                case .incorrectOffset(let incorrectOffsetError):
-                    let correctOffset = incorrectOffsetError.correctOffset
-                    debugLog("Received incorrect_offset error. Adjusting offset from \(file.offset) to \(correctOffset).")
-                    file.offset = Int64(correctOffset)
-                    return nil
-                case .notFound:
-                    debugLog("Upload session not found. Starting a new session.")
-                    file.sessionId = nil
-                    return nil
-                default:
-                    debugLog("Upload session error: \(lookupError)")
-                    return APIError.dropboxApiError(callError)
-                }
-            default:
-                debugLog("Error during upload: \(callError)")
-                return APIError.dropboxApiError(callError)
-            }
-        } else {
-            
-            
-            debugLog("Error is not a CallError<Files.UploadSessionAppendError>")
-            return APIError.dropboxApiError(error)
-        }
-    }
-    
     func pauseUpload() {
         isCancelled = true
         
@@ -453,25 +416,9 @@ class DropboxRepository: DropboxRepositoryProtocol {
             .store(in: &self.subscribers)
     }
     
-    private func isDropboxAuthError(_ error: Error) -> Bool {
-        return isAuthError(error as? UploadError) ||
-        isAuthError(error as? CreateFolderError) ||
-        isAuthError(error as? UploadSessionStartError) ||
-        isAuthError(error as? UploadSessionFinishError) ||
-        isAuthError(error as? UploadSessionAppendError)
-    }
-    
-    private func isAuthError<T>(_ callError: CallError<T>?) -> Bool {
-        if let callError = callError, case .authError = callError {
-            return true
-        }
-        return false
-    }
-    
     private func checkInternetConnection() throws {
         guard self.networkMonitor.isConnected else {
             throw APIError.noInternetConnection
         }
     }
-    
 }

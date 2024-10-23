@@ -126,6 +126,7 @@
 		1242135529B774A40002402D /* DeleteReportConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1242135429B774A40002402D /* DeleteReportConfirmationView.swift */; };
 		1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141627E357E80037D469 /* LoadMoreCell.swift */; };
 		1244141927E35D120037D469 /* VaultFileImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141827E35D120037D469 /* VaultFileImages.swift */; };
+		1246DECF2CC7F1CF00AAC633 /* DropboxError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1246DECE2CC7F1C300AAC633 /* DropboxError.swift */; };
 		12476E1F2A5B7D2F00069048 /* TrailingButtonToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12476E1E2A5B7D2F00069048 /* TrailingButtonToolbar.swift */; };
 		12494A482BC0570E00766DFF /* UwaziSubmissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */; };
 		1249B3812AD43A8D009A7023 /* VaultManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */; };
@@ -444,7 +445,6 @@
 		15F924482C17929300C436C5 /* ViewModelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F924472C17929300C436C5 /* ViewModelState.swift */; };
 		15FABA362B73F96800B2EFEE /* ResourceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FABA352B73F96800B2EFEE /* ResourceRepository.swift */; };
 		15FABA382B7405B800B2EFEE /* ResourceDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FABA372B7405B800B2EFEE /* ResourceDTO.swift */; };
-		15FE5D082CADC84C0004AD35 /* DropboxErrorParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FE5D072CADC84C0004AD35 /* DropboxErrorParser.swift */; };
 		15FE5D0A2CADD2860004AD35 /* DropboxUploadProgressInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FE5D092CADD2860004AD35 /* DropboxUploadProgressInfo.swift */; };
 		15FF77F62C8F862A002E87C3 /* DropboxDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FF77F52C8F862A002E87C3 /* DropboxDatabase.swift */; };
 		15FF77F82C8F89A8002E87C3 /* DropboxData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FF77F72C8F89A8002E87C3 /* DropboxData.swift */; };
@@ -762,6 +762,7 @@
 		1242135429B774A40002402D /* DeleteReportConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteReportConfirmationView.swift; sourceTree = "<group>"; };
 		1244141627E357E80037D469 /* LoadMoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCell.swift; sourceTree = "<group>"; };
 		1244141827E35D120037D469 /* VaultFileImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileImages.swift; sourceTree = "<group>"; };
+		1246DECE2CC7F1C300AAC633 /* DropboxError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxError.swift; sourceTree = "<group>"; };
 		12476E1E2A5B7D2F00069048 /* TrailingButtonToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailingButtonToolbar.swift; sourceTree = "<group>"; };
 		12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSubmissionViewModel.swift; sourceTree = "<group>"; };
 		1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManagerInterface.swift; sourceTree = "<group>"; };
@@ -1080,7 +1081,6 @@
 		15F924472C17929300C436C5 /* ViewModelState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelState.swift; sourceTree = "<group>"; };
 		15FABA352B73F96800B2EFEE /* ResourceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceRepository.swift; sourceTree = "<group>"; };
 		15FABA372B7405B800B2EFEE /* ResourceDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDTO.swift; sourceTree = "<group>"; };
-		15FE5D072CADC84C0004AD35 /* DropboxErrorParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxErrorParser.swift; sourceTree = "<group>"; };
 		15FE5D092CADD2860004AD35 /* DropboxUploadProgressInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxUploadProgressInfo.swift; sourceTree = "<group>"; };
 		15FF77F52C8F862A002E87C3 /* DropboxDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxDatabase.swift; sourceTree = "<group>"; };
 		15FF77F72C8F89A8002E87C3 /* DropboxData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxData.swift; sourceTree = "<group>"; };
@@ -1446,6 +1446,7 @@
 				1233007928E3115500B8F7BA /* Request.swift */,
 				1233007D28E3184D00B8F7BA /* Value.swift */,
 				1206CD4428F59DD100B38539 /* APIError.swift */,
+				1246DECE2CC7F1C300AAC633 /* DropboxError.swift */,
 			);
 			path = APICall;
 			sourceTree = "<group>";
@@ -2795,7 +2796,6 @@
 			isa = PBXGroup;
 			children = (
 				1574AC822C878FF0007BEBF5 /* DropboxRepository.swift */,
-				15FE5D072CADC84C0004AD35 /* DropboxErrorParser.swift */,
 			);
 			path = Dropbox;
 			sourceTree = "<group>";
@@ -3871,7 +3871,6 @@
 				E1EEE2A729F7E1A8009FE227 /* UwaziLanguageSelectionView.swift in Sources */,
 				208A06552BF607BF004BA033 /* ImageCropper.swift in Sources */,
 				1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */,
-				15FE5D082CADC84C0004AD35 /* DropboxErrorParser.swift in Sources */,
 				E14E0CF629FAD68E004FC4CD /* UwaziSuccessView.swift in Sources */,
 				12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */,
 				12199C34294094430041BD38 /* OutboxDetailsView.swift in Sources */,
@@ -4064,6 +4063,7 @@
 				1216F8742901823100F5AEA5 /* UnderlinedTextEditorView.swift in Sources */,
 				12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */,
 				208A06532BF6057A004BA033 /* EditImageViewModel.swift in Sources */,
+				1246DECF2CC7F1CF00AAC633 /* DropboxError.swift in Sources */,
 				CCC1B43D2AC75C5D0075B819 /* UwaziConstants.swift in Sources */,
 				1268553E27D2572100385E18 /* FileInfoView.swift in Sources */,
 				1289B45828B63187005DA687 /* RotationViewModifier.swift in Sources */,

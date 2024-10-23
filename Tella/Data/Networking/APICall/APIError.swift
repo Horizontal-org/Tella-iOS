@@ -14,13 +14,14 @@ enum APIError: Swift.Error {
     case badServer
     case noToken
     case driveApiError(Error)
-    case dropboxApiError(Error)
+    case dropboxApiError(DropboxError)
     case errorOccured
     case nextcloudError(HTTPCode)
 }
 
-extension APIError: LocalizedError {
 
+extension APIError: LocalizedError {
+    
     var errorMessage: String {
         switch self {
         case .invalidURL:
@@ -102,4 +103,31 @@ extension APIError: LocalizedError {
             return fallbackMessage
         }
     }
+    
+    private func customDropboxErrorMessage(error: DropboxError) -> String {
+        switch error {
+        case .conflict:
+            return LocalizableError.dropboxFileConflict.localized
+        case .insufficientSpace:
+            return LocalizableError.dropboxInsufficientSpace.localized
+        case .noWritePermission:
+            return LocalizableError.dropboxNoWritePermission.localized
+        case .disallowedName:
+            return LocalizableError.dropboxDisallowedName.localized
+        case .malformedPath:
+            return LocalizableError.dropboxMalformedPath.localized
+        case .teamFolder:
+            return LocalizableError.dropboxTeamFolder.localized
+        case .tooManyWriteOperations:
+            return LocalizableError.dropboxTooManyWriteOperations.localized
+        case .other:
+            return LocalizableError.dropboxOther.localized
+        case .noInternetConnection:
+            return LocalizableSettings.settServerNoInternetConnection.localized
+        default:
+            return LocalizableError.unexpectedResponse.localized
+        }
+    }
+    
 }
+
