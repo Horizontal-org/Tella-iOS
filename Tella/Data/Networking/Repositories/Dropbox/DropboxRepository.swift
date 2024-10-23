@@ -227,9 +227,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
         let progressInfo = DropboxUploadProgressInfo(fileId: file.fileId, status: FileStatus.partialSubmitted)
         
         let subject = CurrentValueSubject<DropboxUploadProgressInfo, APIError>(progressInfo)
-        
-        var tokenExpired :Bool  = false
-        
+
         Task {
             
             try checkInternetConnection()
@@ -258,31 +256,10 @@ class DropboxRepository: DropboxRepositoryProtocol {
                     
                 }  catch {
                     
-                    let dropboxError = error.getError(error: error)
-                    let apiError = APIError.dropboxApiError(dropboxError)
-                    
-                    switch dropboxError {
-                        
-                    case .incorrectOffset(let newOffset):
-                        file.offset = Int64(newOffset)
-                        
-                    case .sessionNotFound:
-                        file.sessionId = nil
-                        
-                    case .insufficientSpace, .noToken:
-                        progressInfo.error = apiError
-                        progressInfo.status = .submissionError
-                        progressInfo.finishUploading = true
-                        subject.send(completion: .failure(apiError))
-                        return
-                        
-                    default:
-                        progressInfo.error = apiError
-                        progressInfo.status = .submissionError
-                        progressInfo.finishUploading = true
-                        subject.send(progressInfo)
-                        return
-                    }
+                    handleUploadError(error: error,
+                                      file: file,
+                                      progressInfo: progressInfo,
+                                      subject: subject)
                 }
             }
             
@@ -329,6 +306,38 @@ class DropboxRepository: DropboxRepositoryProtocol {
         progressInfo.bytesSent = Int(file.offset)
         subject.send(progressInfo)
         
+    }
+    
+    private func handleUploadError(error:Error,
+                                   file: DropboxFileInfo,
+                                   progressInfo: DropboxUploadProgressInfo,
+                                   subject: CurrentValueSubject<DropboxUploadProgressInfo, APIError>) {
+        let dropboxError = error.getError(error: error)
+        let apiError = APIError.dropboxApiError(dropboxError)
+        
+        switch dropboxError {
+            
+        case .incorrectOffset(let newOffset):
+            file.offset = Int64(newOffset)
+            
+        case .sessionNotFound:
+            file.sessionId = nil
+            
+        case .insufficientSpace, .noToken:
+            progressInfo.error = apiError
+            progressInfo.status = .submissionError
+            progressInfo.finishUploading = true
+            subject.send(completion: .failure(apiError))
+            return
+            
+        default:
+            progressInfo.error = apiError
+            progressInfo.status = .submissionError
+            progressInfo.finishUploading = true
+            subject.send(progressInfo)
+            return
+        }
+
     }
     
     private func startUploadSession(file: DropboxFileInfo,client: DropboxClient, data: Data) async throws {

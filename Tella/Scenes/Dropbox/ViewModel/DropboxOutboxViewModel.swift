@@ -128,13 +128,12 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         case .failure(let error):
             switch error {
             case .noToken:
-                self.updateReport(reportStatus: .submissionError)
                 self.shouldShowLoginView = true
             default:
-                self.updateReport(reportStatus: .submissionError)
                 self.toastMessage = error.errorMessage
                 self.shouldShowToast = true
             }
+            self.updateReport(reportStatus: .submissionError)
         }
     }
     
