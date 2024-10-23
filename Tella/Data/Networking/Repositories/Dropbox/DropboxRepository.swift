@@ -227,7 +227,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
         let progressInfo = DropboxUploadProgressInfo(fileId: file.fileId, status: FileStatus.partialSubmitted)
         
         let subject = CurrentValueSubject<DropboxUploadProgressInfo, APIError>(progressInfo)
-
+        
         Task {
             
             try checkInternetConnection()
@@ -253,19 +253,16 @@ class DropboxRepository: DropboxRepositoryProtocol {
                                                  remainingBytes: remainingBytes,
                                                  progressInfo: progressInfo,
                                                  subject: subject)
-                    
                 }  catch {
-                    
                     handleUploadError(error: error,
                                       file: file,
                                       progressInfo: progressInfo,
                                       subject: subject)
                 }
             }
-            
             progressInfo.status = .uploaded
-            subject.send(progressInfo)
             progressInfo.finishUploading = true
+            subject.send(progressInfo)
         }
         
         return subject
@@ -301,11 +298,12 @@ class DropboxRepository: DropboxRepositoryProtocol {
             }
         }
         
-        progressInfo.sessionId = file.sessionId
-        progressInfo.status = .partialSubmitted
-        progressInfo.bytesSent = Int(file.offset)
-        subject.send(progressInfo)
-        
+        if remainingBytes > chunkSize {
+            progressInfo.sessionId = file.sessionId
+            progressInfo.status = .partialSubmitted
+            progressInfo.bytesSent = Int(file.offset)
+            subject.send(progressInfo)
+        }
     }
     
     private func handleUploadError(error:Error,
@@ -337,7 +335,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
             subject.send(progressInfo)
             return
         }
-
+        
     }
     
     private func startUploadSession(file: DropboxFileInfo,client: DropboxClient, data: Data) async throws {
