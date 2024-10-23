@@ -16,6 +16,7 @@ class TellaData : ObservableObject {
     var shouldReloadTellaReports = CurrentValueSubject<Bool, Never>(false)
     var shouldReloadGDriveReports = CurrentValueSubject<Bool, Never>(false)
     var shouldReloadNextcloudReports = CurrentValueSubject<Bool, Never>(false)
+    var shouldReloadDropboxReports = CurrentValueSubject<Bool, Never>(false)
     
     var shouldReloadUwaziInstances = CurrentValueSubject<Bool, Never>(false)
     var shouldReloadUwaziTemplates = CurrentValueSubject<Bool, Never>(false)
@@ -45,7 +46,7 @@ class TellaData : ObservableObject {
         return id
     }
     
-    func addNextcloudServer(server : NextcloudServer) -> Int?{
+    func addNextcloudServer(server : NextcloudServer) -> Result<Int,Error> {
         let addServerResult = database.addNextcloudServer(server: server)
         reloadServers()
         
@@ -133,7 +134,8 @@ class TellaData : ObservableObject {
         reloadServers()
     }
     
-    func deleteNextcloudServer(serverId: Int) -> Bool {
+    @discardableResult
+    func deleteNextcloudServer(serverId: Int) -> Result<Void,Error> {
         // signOut
         let resultDelete = database.deleteNextcloudServer(serverId: serverId)
         reloadServers()
@@ -164,7 +166,7 @@ class TellaData : ObservableObject {
     func getTellaServers() -> [TellaServer] {
         self.database.getTellaServers()
     }
-
+    
     func getTellaServer(serverId: Int?) -> TellaServer? {
         do {
             guard let serverId else { return nil }
@@ -288,11 +290,8 @@ class TellaData : ObservableObject {
     }
     
     @discardableResult
-    func updateReportStatus(idReport : Int, status: ReportStatus) -> Result<Bool, Error>  {
-        let id = database.updateReportStatus(idReport: idReport, status: status, date: Date())
-        shouldReloadTellaReports.send(true)
-        return id
-        
+    func updateReportStatus(idReport : Int, status: ReportStatus) -> Result<Void, Error>  {
+        database.updateReportStatus(idReport: idReport, status: status, date: Date())
     }
     
     func addReportFile(fileId: String?, reportId : Int)  -> ReportFile? {
@@ -324,15 +323,15 @@ class TellaData : ObservableObject {
         }
     }
     
-    func deleteReport(reportId : Int?) -> Bool {
+    func deleteReport(reportId : Int?) -> Result<Void,Error> {
         let deleteReportResult = database.deleteReport(reportId: reportId)
         shouldReloadTellaReports.send(true)
         return deleteReportResult
     }
     
     @discardableResult
-    func deleteSubmittedReport() -> Bool {
-        let deleteSubmittedReportResult = database.deleteSubmittedReport()
+    func deleteSubmittedReports() -> Result<Void,Error> {
+        let deleteSubmittedReportResult = database.deleteSubmittedReports()
         shouldReloadTellaReports.send(true)
         return deleteSubmittedReportResult
         
@@ -416,7 +415,7 @@ extension TellaData {
     func getUwaziServers() -> [UwaziServer] {
         self.database.getUwaziServers()
     }
-
+    
     @discardableResult
     func addUwaziEntityInstance(entityInstance:UwaziEntityInstance) -> Result<Int,Error>  {
         

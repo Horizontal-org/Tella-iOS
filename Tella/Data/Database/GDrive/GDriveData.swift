@@ -13,13 +13,9 @@ extension TellaData {
     func getDriveServers() -> [GDriveServer] {
         self.database.getDriveServers()
     }
-
+    
     func addGDriveReport(report : GDriveReport) -> Result<Int, Error> {
-        let id =  database.addGDriveReport(report: report)
-        
-        shouldReloadGDriveReports.send(true)
-        
-        return id
+        database.addGDriveReport(report: report)
     }
     
     func getDraftGDriveReport() -> [GDriveReport] {
@@ -45,34 +41,42 @@ extension TellaData {
         return self.database.getGDriveReport(id: id)
     }
     
-    func updateDriveReport(report: GDriveReport) -> Result<Bool, Error> {
-        shouldReloadGDriveReports.send(true)
-        return self.database.updateDriveReport(report: report)
+    func updateDriveReport(report: GDriveReport) -> Result<Void, Error> {
+        self.database.updateDriveReport(report: report)
     }
     
-    func deleteDriveReport(reportId: Int?) -> Result<Bool, Error> {
+    func deleteDriveReport(reportId: Int?) -> Result<Void, Error> {
+        let deleteDriveReportResult = self.database.deleteDriveReport(reportId: reportId)
         shouldReloadGDriveReports.send(true)
-        return self.database.deleteDriveReport(reportId: reportId)
-    }
-    
-    @discardableResult
-    func updateDriveReportStatus(reportId: Int, status: ReportStatus) -> Result<Bool, Error> {
-        shouldReloadGDriveReports.send(true)
-        
-        return self.database.updateDriveReportStatus(idReport: reportId, status: status)
+        return deleteDriveReportResult
     }
     
     @discardableResult
-    func updateDriveFolderId(reportId: Int, folderId: String) -> Result<Bool, Error> {
-        shouldReloadGDriveReports.send(true)
-        
-        return self.database.updateDriveReportFolderId(idReport: reportId, folderId: folderId)
+    func deleteDriveSubmittedReports() -> Result<Void,Error> {
+        let deleteSubmittedReportResult = database.deleteDriveSubmittedReports()
+        shouldReloadNextcloudReports.send(true)
+        return deleteSubmittedReportResult
+    }
+
+    
+    @discardableResult
+    func updateDriveReportStatus(reportId: Int, status: ReportStatus) -> Result<Void, Error> {
+        self.database.updateDriveReportStatus(idReport: reportId, status: status)
     }
     
     @discardableResult
-    func updateDriveFiles(reportId: Int, files: [ReportFile]) -> Result<Bool, Error> {
-        shouldReloadGDriveReports.send(true)
-        
-        return self.database.updateDriveReportFiles(files: files, reportId: reportId)
+    func updateDriveFolderId(reportId: Int, folderId: String) -> Result<Void, Error> {
+        self.database.updateDriveReportFolderId(idReport: reportId, folderId: folderId)
     }
+    
+    @discardableResult
+    func updateDriveFiles(reportId: Int, files: [ReportFile]) -> Result<Void, Error> {
+        self.database.updateDriveReportFiles(files: files, reportId: reportId)
+    }
+    
+    @discardableResult
+    func updateDriveFile(file: ReportFile) -> Result<Void, Error> {
+        self.database.updateDriveFile(reportFile: file)
+    }
+    
 }

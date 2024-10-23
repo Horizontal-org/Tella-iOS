@@ -85,7 +85,7 @@ class NextcloudServerViewModel: ServerViewModel {
         let server = NextcloudServer(serverURL: serverURL, username: username, password: password, userId: userId, rootFolder: serverCreateFolderVM.folderName)
         let serverID = mainAppModel.tellaData?.addNextcloudServer(server: server)
         
-        guard let serverID else {
+        guard case .success(let serverID) = serverID else {
             return
         }
         server.id = serverID
