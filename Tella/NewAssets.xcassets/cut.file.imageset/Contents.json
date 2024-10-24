@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "cut.file.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

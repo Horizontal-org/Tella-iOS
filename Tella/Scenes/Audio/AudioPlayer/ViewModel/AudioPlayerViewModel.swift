@@ -5,14 +5,10 @@
 import Foundation
 import Combine
 
-enum PlayState {
-    case ready
-    case playing
-}
 
 class AudioPlayerViewModel: ObservableObject {
     
-    @Published var state: PlayState = .ready
+    @Published var isPlaying = false
     
     @Published var shouldDisableFastForwardButton : Bool = false
     @Published var shouldDisableRewindBackButton : Bool = false
@@ -20,37 +16,41 @@ class AudioPlayerViewModel: ObservableObject {
     @Published var currentTime : String  = "00:00:00"
     @Published var duration : String  = "00:00:00"
 
-    private var cancellable: Set<AnyCancellable> = []
-
+    var mainAppModel: MainAppModel
+    var cancellable: Set<AnyCancellable> = []
+    var currentFile: VaultFileDB?
     var audioPlayerManager: AudioPlayerManager = AudioPlayerManager()
     
      var currentData : Data?
   
     @Published var audioIsReady = false
 
-    init(currentData: Data?) {
-         self.currentData = currentData
-
+    @Published var timeDuration: TimeInterval?
+    
+    init(currentFile: VaultFileDB?, mainAppModel: MainAppModel) {
+        self.currentFile = currentFile
+        self.mainAppModel = mainAppModel
+        if let currentFile {
+            self.currentData = self.mainAppModel.vaultManager.loadFileData(file: currentFile)
+        }
         audioPlayerManager.audioPlayer.currentTime.sink { value in
-            self.currentTime = value.stringFromTimeInterval()
+            self.currentTime = value.toHHMMSSString()
         }.store(in: &self.cancellable)
         
         audioPlayerManager.audioPlayer.duration.sink { value in
-            self.duration = value.stringFromTimeInterval()
+            self.duration = value.toHHMMSSString()
         }.store(in: &self.cancellable)
         
         audioPlayerManager.audioPlayer.audioPlayerDidFinishPlaying.sink { [self] value in
-            self.state = .ready
-            
+            self.isPlaying = false
             self.shouldDisableFastForwardButton = true
             self.shouldDisableRewindBackButton = true
-
-
             self.updateView()
-
-            
         }.store(in: &self.cancellable)
-        
+        audioPlayerManager.audioPlayer.duration.sink { value in
+            self.timeDuration = value
+        }.store(in: &self.cancellable)
+
         loadAudio()
     }
     
@@ -66,9 +66,7 @@ class AudioPlayerViewModel: ObservableObject {
 
     
     func onStartPlaying() {
-        
-        self.state = .playing
-        
+        isPlaying = true
         self.audioPlayerManager.playRecord()
         
         shouldDisableFastForwardButton = false
@@ -78,7 +76,7 @@ class AudioPlayerViewModel: ObservableObject {
     }
     
     func onPausePlaying() {
-        self.state = .ready
+        self.isPlaying = false
         
         self.audioPlayerManager.pauseRecord()
         
@@ -90,7 +88,7 @@ class AudioPlayerViewModel: ObservableObject {
     }
     
     func onStopPlaying() {
-
+        isPlaying = false
         self.audioPlayerManager.stopRecord()
     }
 

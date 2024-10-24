@@ -11,7 +11,7 @@ struct FileDetailView: View {
     @EnvironmentObject var appModel: MainAppModel
     
     @StateObject var viewModel : FileDetailsViewModel
-    @State private var isEditImagePresent = false
+    @State private var isEditFilePresented = false
     
     init(  appModel: MainAppModel, currentFile: VaultFileDB?) {
         _viewModel = StateObject(wrappedValue: FileDetailsViewModel(appModel: appModel, currentFile: currentFile))
@@ -30,16 +30,33 @@ struct FileDetailView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Styles.Colors.backgroundMain)
-        .fullScreenCover(isPresented: $isEditImagePresent) {
+        .fullScreenCover(isPresented: $isEditFilePresented) {
         } content: {
-            EditImageView(viewModel: EditImageViewModel( mainAppModel: appModel,
-                                                         fileListViewModel: fileListViewModel),
-                          isPresented: $isEditImagePresent)
+            redirectEditFile()
         }
         .environmentObject(fileListViewModel)
         .onAppear(perform: {
             self.fileListViewModel.fileActionSource = .details
         })
+    }
+    
+    @ViewBuilder
+    func redirectEditFile() -> some View {
+        switch viewModel.currentFile?.tellaFileType {
+        case .image:
+            EditImageView(viewModel: EditImageViewModel( mainAppModel: appModel,
+                                                         fileListViewModel: fileListViewModel),
+                          isPresented: $isEditFilePresented)
+        case .audio:
+            let audioPlayerViewModel = AudioPlayerViewModel(currentFile: viewModel.currentFile, mainAppModel: appModel)
+            EditAudioView(editAudioViewModel: EditAudioViewModel(audioPlayerViewModel: audioPlayerViewModel,
+                                                                 shouldReloadVaultFiles:  $fileListViewModel.shouldReloadVaultFiles,
+                                                                 rootFile: fileListViewModel.rootFile),
+                          isPresented: $isEditFilePresented)
+
+        default:  EmptyView()
+        }
+
     }
     
     @ViewBuilder
@@ -51,7 +68,8 @@ struct FileDetailView: View {
             if viewModel.documentIsReady {
                 switch viewModel.currentFile?.tellaFileType {
                 case .audio:
-                    AudioPlayerView(currentData: viewModel.data)
+                    let viewModel = AudioPlayerViewModel(currentFile: viewModel.currentFile, mainAppModel: appModel)
+                    AudioPlayerView(viewModel: viewModel, isViewDisappeared: $isEditFilePresented)
                 case .image:
                     ImageViewer(imageData: viewModel.data)
                 case .folder:
@@ -76,10 +94,10 @@ struct FileDetailView: View {
     
     @ViewBuilder
     func editView() -> some View {
-        if viewModel.currentFile?.tellaFileType == .image {
+        if viewModel.shouldAddEditView {
             Button {
                 //open edit view
-                isEditImagePresent = true
+                isEditFilePresented = true
             } label: {
                 Image("file.edit")
             }

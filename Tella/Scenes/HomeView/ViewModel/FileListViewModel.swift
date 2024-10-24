@@ -49,6 +49,13 @@ class FileListViewModel: ObservableObject {
     var fileListType : FileListType = .fileList
     var resultFile : Binding<[VaultFileDB]?>?
     
+    var shouldAddEditView: Bool {
+        switch currentSelectedVaultFile?.tellaFileType {
+        case .audio, .image : return true
+        default: return false
+        }
+    }
+
     var rootFile : VaultFileDB? {
         didSet {
             getFiles()
@@ -103,7 +110,7 @@ class FileListViewModel: ObservableObject {
         selectedFiles.count == 1
     }
     var shouldActivateEditFile : Bool {
-        selectedFiles.count == 1 && selectedFiles.first?.tellaFileType == .image
+        selectedFiles.count == 1 && shouldAddEditView
     }
     
     var shouldActivateFileInformation : Bool {

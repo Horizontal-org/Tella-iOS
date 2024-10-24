@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "cancel.edit.file.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
