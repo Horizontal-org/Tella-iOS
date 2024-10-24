@@ -603,6 +603,33 @@ class TellaDataBase : DataBase {
                       currentUpload: currentUpload == 0 ? false : true)
     }
     
+    /// Adding this generic method to avoid redundancy in classes, maybe we should think about this in all connections
+    ///
+    func getOutboxReports<T: Codable>(tableName: String) -> [T] {
+        let outboxReportStatus : [ReportStatus] = [.finalized,
+                                  .submissionError,
+                                  .submissionPending,
+                                  .submissionPaused,
+                                  .submissionInProgress,
+                                  .submissionAutoPaused,
+                                  .submissionScheduled]
+        do {
+            let statusArray = outboxReportStatus.compactMap { $0.rawValue }
+            
+            let reportsDict = try statementBuilder.getSelectQuery(
+                tableName: tableName,
+                inCondition: [KeyValues(key:D.cStatus, value: statusArray )]
+            )
+            let decodedReports = try reportsDict.compactMap { dict in
+                return try dict.decode(T.self)
+            }
+            return decodedReports
+        } catch let error {
+            debugLog(error)
+            return []
+        }
+    }
+
 }
 
 extension TellaDataBase {

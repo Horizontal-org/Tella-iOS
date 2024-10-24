@@ -25,13 +25,7 @@ extension TellaData {
     }
     
     func getOutboxedDropboxReports() -> [DropboxReport] {
-        return self.database.getDropboxReports(reportStatus: [.finalized,
-                                                              .submissionError,
-                                                              .submissionPending,
-                                                              .submissionPaused,
-                                                              .submissionInProgress,
-                                                              .submissionAutoPaused,
-                                                              .submissionScheduled])
+        return self.database.getOutboxReports(tableName: D.tDropboxReport)
     }
     
     func getSubmittedDropboxReports() -> [DropboxReport] {

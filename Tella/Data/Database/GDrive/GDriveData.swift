@@ -23,13 +23,7 @@ extension TellaData {
     }
     
     func getOutboxedGDriveReport() -> [GDriveReport] {
-        return self.database.getDriveReports(reportStatus: [.finalized,
-                                                            .submissionError,
-                                                            .submissionPending,
-                                                            .submissionPaused,
-                                                            .submissionInProgress,
-                                                            .submissionAutoPaused,
-                                                            .submissionScheduled])
+        return self.database.getOutboxReports(tableName: D.tGDriveReport)
     }
     
     func getSubmittedGDriveReport() -> [GDriveReport] {

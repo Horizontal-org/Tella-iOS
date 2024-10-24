@@ -21,13 +21,7 @@ extension TellaData {
     }
     
     func getOutboxedNextcloudReport() -> [NextcloudReport] {
-        return self.database.getNextcloudReports(reportStatus: [.finalized,
-                                                                .submissionError,
-                                                                .submissionPending,
-                                                                .submissionPaused,
-                                                                .submissionInProgress,
-                                                                .submissionAutoPaused,
-                                                                .submissionScheduled])
+        return self.database.getOutboxReports(tableName: D.tNextcloudReport)
     }
     
     func getSubmittedNextcloudReport() -> [NextcloudReport] {
