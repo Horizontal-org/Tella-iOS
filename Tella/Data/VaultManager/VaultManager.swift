@@ -82,6 +82,15 @@ class VaultManager : VaultManagerInterface, ObservableObject{
         loadVaultFileToURL(file: vaultFile,withSubFolder: false)
     }
     
+    func loadVaultFileToURLAsync(file: ReportVaultFile,withSubFolder: Bool = false) async -> URL? {
+        await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .userInitiated).async {
+                let result = self.loadVaultFileToURL(file: file, withSubFolder: withSubFolder)
+                continuation.resume(returning: result)
+            }
+        }
+    }
+
     func loadVaultFileToURL(file vaultFile: VaultFileDB, withSubFolder: Bool = false) -> URL? {
         
         let tmpFileURL = createTempFileURL(fileName: vaultFile.name ,pathExtension: vaultFile.fileExtension, withSubFolder: withSubFolder)

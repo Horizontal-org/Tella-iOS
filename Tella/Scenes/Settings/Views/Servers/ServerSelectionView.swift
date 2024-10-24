@@ -8,22 +8,20 @@
 
 import SwiftUI
 import Combine
+
 struct ServerSelectionView: View {
-    @EnvironmentObject var serversViewModel : ServersViewModel
-    @ObservedObject var gDriveVM: GDriveAuthViewModel
+    @ObservedObject var serversViewModel : ServersViewModel
     @ObservedObject var gDriveServerVM: GDriveServerViewModel
+    @ObservedObject var dropboxServerVM: DropboxServerViewModel
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    let gDriveRepository: GDriveRepositoryProtocol
-
-    
-    init(appModel:MainAppModel, server: TellaServer? = nil, gDriveRepository: GDriveRepositoryProtocol) {
-        self.gDriveRepository = gDriveRepository
-        _gDriveVM = ObservedObject(wrappedValue: GDriveAuthViewModel(repository: gDriveRepository))
-        _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveRepository, mainAppModel: appModel))
+    init(appModel:MainAppModel, serversViewModel : ServersViewModel) {
+        self.serversViewModel = serversViewModel
+        _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: serversViewModel.gDriveRepository, mainAppModel: appModel))
+        _dropboxServerVM = ObservedObject(wrappedValue: DropboxServerViewModel(dropboxRepository: serversViewModel.dropboxRepository, mainAppModel: appModel))
     }
-
+    
     var body: some View {
         ContainerView {
             VStack(spacing: 20) {
@@ -36,15 +34,20 @@ struct ServerSelectionView: View {
                 Spacer()
                 bottomView()
             }.scrollOnOverflow()
-            .toolbar {
-                LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
-            }
-        }.onReceive(gDriveVM.$signInState){ signInState in
+                .toolbar {
+                    LeadingTitleToolbar(title: LocalizableSettings.settServersAppBar.localized)
+                }
+        }.onReceive(gDriveServerVM.$signInState){ signInState in
             if case .error(let message) = signInState {
                 Toast.displayToast(message: message)
             }
         }
-        
+        .onReceive(Publishers.CombineLatest(dropboxServerVM.$signInState, dropboxServerVM.$addServerState)) { signInState, addServerState in
+            handleDropboxStateChange(signInState: signInState, addServerState: addServerState)
+        }
+        .onOpenURL { url in
+            dropboxServerVM.handleURLRedirect(url: url)
+        }
     }
     
     fileprivate func buttonViews() -> some View {
@@ -58,13 +61,13 @@ struct ServerSelectionView: View {
                     action: {
                         serversViewModel.selectedServerType = connection.type
                         serversViewModel.shouldEnableNextButton = true
-                     }
+                    }
                 )
                 .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
             }
         }
     }
-
+    
     fileprivate func bottomView() -> BottomLockView<AnyView> {
         return BottomLockView<AnyView>(isValid: $serversViewModel.shouldEnableNextButton,
                                        nextButtonAction: .action,
@@ -79,6 +82,8 @@ struct ServerSelectionView: View {
                 navigateToGDriveFlow()
             case .nextcloud:
                 navigateToNextCloud()
+            case .dropbox:
+                navigateToDropbox()
             default:
                 break
             }
@@ -91,7 +96,7 @@ struct ServerSelectionView: View {
         serversViewModel.selectedServerType = nil
         serversViewModel.shouldEnableNextButton = false
     }
-
+    
     fileprivate func navigateToNextCloud() {
         navigateTo(destination: NextcloudAddServerURLView(nextcloudVM: NextcloudServerViewModel(mainAppModel: serversViewModel.mainAppModel)))
     }
@@ -99,19 +104,23 @@ struct ServerSelectionView: View {
     fileprivate func navigateToTellaWebFlow() {
         navigateTo(destination: TellaWebAddServerURLView(appModel: serversViewModel.mainAppModel))
     }
-
+    
     fileprivate func navigateToUwaziFlow() {
         navigateTo(destination: UwaziAddServerURLView(uwaziServerViewModel: UwaziServerViewModel(mainAppModel: serversViewModel.mainAppModel))
             .environmentObject(serversViewModel))
     }
     
     fileprivate func navigateToGDriveFlow() {
-        gDriveVM.handleSignIn {
+        gDriveServerVM.handleSignIn {
             navigateTo(
                 destination: SelectDriveConnectionView(gDriveServerViewModel: gDriveServerVM),
                 title: LocalizableSettings.settServerGDrive.localized
             )
         }
+    }
+    
+    fileprivate func navigateToDropbox() {
+        dropboxServerVM.handleSignIn() 
     }
 
     fileprivate func unavailableConnectionsView() -> some View {
@@ -127,7 +136,22 @@ struct ServerSelectionView: View {
             }
         }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
     }
-
+    
+    private func handleDropboxStateChange(signInState: ViewModelState<Bool>, addServerState: ViewModelState<Bool>) {
+        switch (signInState, addServerState) {
+        case (.loaded(true), .loaded(true)):
+            navigateTo(destination: SuccessLoginView(navigateToAction: {
+                self.popToRoot()
+            }, type: .dropbox))
+        case (_, .error(let message)):
+            Toast.displayToast(message: message)
+        case (.error(let message), _):
+            Toast.displayToast(message: message)
+        default:
+            break
+        }
+    }
+    
     struct HeaderView: View {
         var body: some View {
             VStack(spacing: 20) {
@@ -149,7 +173,7 @@ struct ServerSelectionView: View {
 
 struct ServerSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ServerSelectionView(appModel: MainAppModel.stub(), gDriveRepository: GDriveRepository())
+        ServerSelectionView(appModel: MainAppModel.stub(), serversViewModel: ServersViewModel(mainAppModel: MainAppModel.stub()))
             .environmentObject(MainAppModel.stub())
             .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
     }

@@ -63,18 +63,18 @@ class ReportsViewModel: ReportsMainViewModel {
             ReportCardViewModel(report: report,
                                 serverName: report.server?.name,
                                 deleteReport: { self.deleteReport(report: report) },
-                                connectionType: .tella
-            )
+                                connectionType: .tella)
         }
     }
     
     func deleteReport(report: Report) {
-        mainAppModel.deleteReport(reportId: report.id)
+        let deleteReportResult = mainAppModel.deleteReport(reportId: report.id)
+        handleDeleteReport(title: report.title, result: deleteReportResult)
     }
     
-    override func deleteSubmittedReport() {
-        let deleteResult = mainAppModel.tellaData?.deleteSubmittedReport() ?? false
-        self.handleDeleteReport(deleteResult: deleteResult)
+    override func deleteSubmittedReports() {
+        let deleteResult = mainAppModel.tellaData?.deleteSubmittedReports()
+        self.handleDeleteSubmittedReport(deleteResult: deleteResult)
     }
     
     override func listenToUpdates() {

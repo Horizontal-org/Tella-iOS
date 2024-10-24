@@ -165,7 +165,7 @@ struct ReportMainView: View {
                                cancelText: LocalizableReport.clearCancel.localized,
                                actionText: LocalizableReport.clearSubmitted.localized, didConfirmAction: {
                 sheetManager.hide()
-                reportsMainViewModel.deleteSubmittedReport()
+                reportsMainViewModel.deleteSubmittedReports()
             })
         }
     }

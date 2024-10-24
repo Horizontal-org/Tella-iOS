@@ -5,6 +5,7 @@
 
 import Foundation
 import UIKit
+import SwiftyDropbox
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     
@@ -14,6 +15,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         AppDelegate.instance = self
+        
+        setupDropbox()
+        
         return true
     }
     
@@ -25,4 +29,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
             backgroundSessionCompletionHandler = completionHandler
             shouldHandleTimeout = true
         }
+
+    private func setupDropbox() {
+        guard let dropboxAppKey = ConfigurationManager.getValue(DropboxAuthConstants.dropboxAppKey) else  {
+            debugLog("Dropbox App Key not found")
+            return
+        }
+        DropboxClientsManager.setupWithAppKey(dropboxAppKey)
+    }
 }

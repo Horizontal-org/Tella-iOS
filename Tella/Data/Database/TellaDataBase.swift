@@ -49,6 +49,11 @@ class TellaDataBase : DataBase {
                 createNextcloudServerTable()
                 createNextcloudReportTable()
                 createNextcloudReportFilesTable()
+                fallthrough
+            case 7:
+                createDropboxServerTable()
+                createDropboxReportTable()
+                createDropboxReportsFileTable()
             default :
                 break
             }
@@ -75,7 +80,9 @@ class TellaDataBase : DataBase {
         createNextcloudServerTable()
         createNextcloudReportTable()
         createNextcloudReportFilesTable()
-
+        createDropboxServerTable()
+        createDropboxReportTable()
+        createDropboxReportsFileTable()
     }
     
     func createReportTable() {
@@ -400,7 +407,7 @@ class TellaDataBase : DataBase {
         }
     }
     
-    func updateReportStatus(idReport : Int, status: ReportStatus, date: Date) -> Result<Bool, Error> {
+    func updateReportStatus(idReport : Int, status: ReportStatus, date: Date) -> Result<Void, Error> {
         do {
             let valuesToUpdate = [KeyValue(key: D.cStatus, value: status.rawValue),
                                   KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())]
@@ -409,15 +416,15 @@ class TellaDataBase : DataBase {
             try statementBuilder.update(tableName: D.tReport,
                                         valuesToUpdate: valuesToUpdate,
                                         equalCondition: reportCondition)
-            return .success(true)
+            return .success
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
     @discardableResult
-    func resetCurrentUploadReport() -> Result<Bool,Error> {
+    func resetCurrentUploadReport() -> Result<Void,Error> {
         do {
             let reportCondition = [KeyValue(key: D.cCurrentUpload, value: 1)]
             let responseDict = try statementBuilder.selectQuery(tableName: D.tReport,
@@ -435,10 +442,10 @@ class TellaDataBase : DataBase {
                                             equalCondition:reportCondition)
             }
             
-            return .success(true)
+            return .success
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
         
     }
@@ -474,7 +481,7 @@ class TellaDataBase : DataBase {
         }
     }
     
-    func updateReportIdFile(oldId:String?,newID:String?) -> Result<Bool,Error> {
+    func updateReportIdFile(oldId:String?,newID:String?) -> Result<Void,Error> {
         do {
             // Get the vault file instance array where cVaultFileInstanceId equal to the old vault file ID
             var vaultFileInstanceIDs : [Int] = []
@@ -498,11 +505,11 @@ class TellaDataBase : DataBase {
                                             valuesToUpdate: valuesToUpdate,
                                             inCondition: inCondition)
             }
-            return .success(true)
+            return .success
             
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
 
@@ -521,16 +528,16 @@ class TellaDataBase : DataBase {
             return .success(reportFileId)
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
-    func deleteReport(reportId : Int?) -> Bool {
+    func deleteReport(reportId : Int?) -> Result<Void,Error> {
         
         do {
             
             guard let reportId, let report = self.getReport(reportId: reportId) else {
-                return false
+                return .failure(RuntimeError(LocalizableCommon.commonError.localized))
             }
             
             try deleteReportFiles(reportIds: [reportId])
@@ -539,15 +546,15 @@ class TellaDataBase : DataBase {
             
             try statementBuilder.delete(tableName: D.tReport,
                                         primarykeyValue: reportCondition)
-            return true
-            
+            return .success
+
         } catch let error {
             debugLog(error)
-            return false
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
-    func deleteSubmittedReport() -> Bool {
+    func deleteSubmittedReports() -> Result<Void,Error> {
         do {
             let submittedReports = self.getReports(reportStatus: [.submitted])
             let reportIds = submittedReports.compactMap{$0.id}
@@ -558,11 +565,11 @@ class TellaDataBase : DataBase {
             
             try statementBuilder.delete(tableName: D.tReport,
                                         primarykeyValue: reportCondition)
-            return true
-            
+            return .success
+
         } catch let error {
             debugLog(error)
-            return false
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
@@ -596,6 +603,33 @@ class TellaDataBase : DataBase {
                       currentUpload: currentUpload == 0 ? false : true)
     }
     
+    /// Adding this generic method to avoid redundancy in classes, maybe we should think about this in all connections
+    ///
+    func getOutboxReports<T: Codable>(tableName: String) -> [T] {
+        let outboxReportStatus : [ReportStatus] = [.finalized,
+                                  .submissionError,
+                                  .submissionPending,
+                                  .submissionPaused,
+                                  .submissionInProgress,
+                                  .submissionAutoPaused,
+                                  .submissionScheduled]
+        do {
+            let statusArray = outboxReportStatus.compactMap { $0.rawValue }
+            
+            let reportsDict = try statementBuilder.getSelectQuery(
+                tableName: tableName,
+                inCondition: [KeyValues(key:D.cStatus, value: statusArray )]
+            )
+            let decodedReports = try reportsDict.compactMap { dict in
+                return try dict.decode(T.self)
+            }
+            return decodedReports
+        } catch let error {
+            debugLog(error)
+            return []
+        }
+    }
+
 }
 
 extension TellaDataBase {

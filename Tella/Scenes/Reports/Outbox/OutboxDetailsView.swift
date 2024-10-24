@@ -198,6 +198,10 @@ struct OutboxDetailsView<T: Server>: View {
                 let vm = NextcloudSubmittedViewModel(reportsMainViewModel: outboxReportVM.reportsViewModel,
                                                      reportId: outboxReportVM.reportViewModel.id)
                 NextcloudSubmittedDetailsView(submittedMainViewModel: vm)
+            case .dropbox:
+                let vm = DropboxSubmittedViewModel(reportsMainViewModel: outboxReportVM.reportsViewModel, reportId: outboxReportVM.reportViewModel.id)
+                
+                DropboxSubmittedDetailsView(submittedMainViewModel: vm)
             default:
                 Text("")
 

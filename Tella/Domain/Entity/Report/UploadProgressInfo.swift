@@ -18,7 +18,8 @@ class UploadProgressInfo {
     var isOnBackground: Bool = false
     var error: APIError?
     var reportStatus: ReportStatus?
-    
+    var finishUploading : Bool = false
+
     init(fileId: String? = nil, status: FileStatus) {
         self.fileId = fileId
         self.status = status
