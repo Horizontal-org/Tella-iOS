@@ -93,7 +93,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 switch report.remoteReportStatus {
                     
                 case .initial :
-                    try await handleInitialOrUnknownStatus(report: report, subject: subject)
+                    try await handleInitialStatus(report: report, subject: subject)
                     
                 case .created:
                     try await handleCreatedStatus(report: report, subject: subject)
@@ -126,7 +126,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
         return subject.eraseToAnyPublisher()
     }
     
-    private func handleInitialOrUnknownStatus(report: DropboxReportToSend,
+    private func handleInitialStatus(report: DropboxReportToSend,
                                               subject: PassthroughSubject<DropboxUploadResponse, APIError>) async throws {
         
         guard !isCancelled else { return }

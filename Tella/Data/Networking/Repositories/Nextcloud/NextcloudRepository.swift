@@ -139,7 +139,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 switch report.remoteReportStatus {
                     
                 case .initial :
-                    try await handleInitialOrUnknownStatus(report: report, subject: subject)
+                    try await handleInitialStatus(report: report, subject: subject)
                     
                 case .created:
                     try await handleCreatedStatus(report: report, subject: subject)
@@ -164,7 +164,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         }
     }
     
-    private func handleInitialOrUnknownStatus(report: NextcloudReportToSend, subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) async throws {
+    private func handleInitialStatus(report: NextcloudReportToSend, subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) async throws {
         
         guard !shouldPause else { return }
         
