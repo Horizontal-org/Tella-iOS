@@ -98,27 +98,30 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     
     private func performSubmission() {
         if isSubmissionInProgress { return }
-        
         self.updateReport(reportStatus: .submissionInProgress)
         cancellables.removeAll()
         
-        let reportToSend = DropboxReportToSend(folderId: reportViewModel.folderId,
-                                               name: reportViewModel.title,
-                                               description: reportViewModel.description,
-                                               files: parseDropboxFiles(),
-                                               remoteReportStatus: reportViewModel.remoteReportStatus ?? .initial)
+        Task {
+            
+            let reportToSend = await DropboxReportToSend(folderId: reportViewModel.folderId,
+                                                         name: reportViewModel.title,
+                                                         description: reportViewModel.description,
+                                                         files: prepareDropboxFilesToSend(),
+                                                         remoteReportStatus: reportViewModel.remoteReportStatus ?? .initial)
+            
+            dropboxRepository.submitReport(report: reportToSend)
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { completion in
+                    
+                    self.handleSubmitReportCompletion(completion:completion)
+                    
+                }, receiveValue: { response in
+                    
+                    self.processUploadReportResponse(response:response)
+                })
+                .store(in: &cancellables)
+        }
         
-        dropboxRepository.submitReport(report: reportToSend)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                
-                self.handleSubmitReportCompletion(completion:completion)
-                
-            }, receiveValue: { response in
-                
-                self.processUploadReportResponse(response:response)
-            })
-            .store(in: &cancellables)
     }
     
     private func handleSubmitReportCompletion(completion:Subscribers.Completion<APIError>) {
@@ -155,22 +158,23 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         }
     }
     
-    private func parseDropboxFiles() -> [DropboxFileInfo]{
-        let files = reportViewModel.files.filter { $0.status != .uploaded }
-        let filesToSend: [DropboxFileInfo] = files.compactMap { file -> DropboxFileInfo? in
-            guard let url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true) else {
-                return nil
-            }
-            
-            return DropboxFileInfo(url: url,
-                                   fileName: url.lastPathComponent,
-                                   fileId: file.id ?? "",
-                                   offset: Int64(file.bytesSent),
-                                   sessionId: file.sessionId,
-                                   totalBytes: Int64(file.size))
-        }
+    private func prepareDropboxFilesToSend() async -> [DropboxFileInfo] {
         
-        return filesToSend
+        let files = reportViewModel.files.filter { $0.status != .uploaded }
+        var dropboxFiles: [DropboxFileInfo] = []
+        
+        for file in files {
+            if let url = await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: true) {
+                let dropboxFile = DropboxFileInfo(url: url,
+                                                  fileName: url.lastPathComponent,
+                                                  fileId: file.id ?? "",
+                                                  offset: Int64(file.bytesSent),
+                                                  sessionId: file.sessionId,
+                                                  totalBytes: Int64(file.size))
+                dropboxFiles.append(dropboxFile)
+            }
+        }
+        return dropboxFiles
     }
     
     private func updateReportFolderId(name: String) {

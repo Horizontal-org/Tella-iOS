@@ -102,7 +102,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         }
         
         Task {
-            guard let fileUrl = await self.loadVaultFileToURLAsync(file: fileToUpload) else {
+            guard let fileUrl = await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: fileToUpload, withSubFolder: false) else {
                 await MainActor.run {
                     uploadQueue.removeFirst()
                     uploadNextFile(folderId: folderId)
@@ -197,14 +197,5 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     override func updateFile(file: ReportVaultFile) {
         guard let file = ReportFile(reportVaultFile: file) else { return }
         mainAppModel.tellaData?.updateDriveFile(file: file)
-    }
-
-    func loadVaultFileToURLAsync(file: ReportVaultFile) async -> URL? {
-        await withCheckedContinuation { continuation in
-            DispatchQueue.global(qos: .userInitiated).async {
-                let result = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file)
-                continuation.resume(returning: result)
-            }
-        }
     }
 }
