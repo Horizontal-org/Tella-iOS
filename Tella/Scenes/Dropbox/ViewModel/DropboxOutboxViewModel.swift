@@ -58,7 +58,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     
     override func pauseSubmission() {
         if isSubmissionInProgress {
-            dropboxRepository.pauseUpload()
+            dropboxRepository.cancelUpload()
             updateReport(reportStatus: .submissionPaused)
         }
     }

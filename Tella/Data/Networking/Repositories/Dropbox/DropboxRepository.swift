@@ -16,7 +16,7 @@ protocol DropboxRepositoryProtocol {
     func signOut()
     func handleRedirectURL(_ url: URL, completion: @escaping (DropboxOAuthResult?) -> Void) -> Bool
     func submitReport(report: DropboxReportToSend) -> AnyPublisher<DropboxUploadResponse, APIError>
-    func pauseUpload()
+    func cancelUpload()
 }
 
 class DropboxRepository: DropboxRepositoryProtocol {
@@ -26,7 +26,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
     private let networkMonitor: NetworkMonitor
     private var subscribers: Set<AnyCancellable> = []
     private let networkStatusSubject = PassthroughSubject<Bool, Never>()
-    private var uploadProgressSubject = PassthroughSubject<DropboxUploadProgressInfo, APIError>()
+    private var UploadResponseSubject = PassthroughSubject<DropboxUploadResponse, APIError>()
     private var uploadTask: Task<Void, Error>?
     private let descriptionFolderName = "description.txt"
     private let chunkSize: Int64 = 1024 * 1024
@@ -68,7 +68,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
         }
     }
 
-    func pauseUpload() {
+    func cancelUpload() {
         isCancelled = true
         uploadTask?.cancel()
     }
@@ -121,7 +121,9 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 
                 uploadFiles(report: report, subject: subject)
                 
-                monitorNetworkConnection(subject: subject)
+                monitorNetworkConnection()
+                
+                UploadResponseSubject = subject
                 
             } catch let apiError as APIError {
                 subject.send(completion: .failure(apiError))
@@ -382,23 +384,22 @@ class DropboxRepository: DropboxRepositoryProtocol {
         networkMonitor.connectionDidChange.sink { isConnected in
             self.networkStatusSubject.send(isConnected)
             if !isConnected {
-                self.handleNetworkLoss()
+                self.UploadResponseSubject.send(completion: .failure(.noInternetConnection))
             }
         }.store(in: &subscribers)
     }
     
     private func handleNetworkLoss() {
-        pauseUpload()
-        uploadProgressSubject.send(completion: .failure(.noInternetConnection))
+        cancelUpload()
+        UploadResponseSubject.send(completion: .failure(.noInternetConnection))
     }
 
-    private func monitorNetworkConnection(subject: PassthroughSubject<DropboxUploadResponse, APIError>) {
+    private func monitorNetworkConnection() {
         self.networkStatusSubject
             .filter { !$0 }
             .first()
             .sink { _ in
                 self.handleNetworkLoss()
-                subject.send(completion: .failure(.noInternetConnection))
             }
             .store(in: &self.subscribers)
     }
