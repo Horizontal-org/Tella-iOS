@@ -122,28 +122,28 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         upload(report: report, subject: subject)
         return subject.eraseToAnyPublisher()
     }
-
+    
     private func upload(report:NextcloudReportToSend,subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) {
         
         self.setUp(server:report.server)
         
         shouldPause = false
-
+        
         Task {
             do {
                 guard self.networkMonitor.isConnected else {
                     subject.send(completion:.failure(.noInternetConnection))
                     return
                 }
-
+                
                 switch report.remoteReportStatus {
                     
-                case .initial, .unknown :
+                case .initial :
                     try await handleInitialOrUnknownStatus(report: report, subject: subject)
-               
+                    
                 case .created:
                     try await handleCreatedStatus(report: report, subject: subject)
-
+                    
                 default:
                     break
                 }
@@ -153,7 +153,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 }
                 
                 guard !shouldPause else { return }
-
+                
                 uploadFiles(report: report, subject: subject)
                 
                 monitorNetworkConnection(subject: subject)
@@ -165,7 +165,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     }
     
     private func handleInitialOrUnknownStatus(report: NextcloudReportToSend, subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) async throws {
-      
+        
         guard !shouldPause else { return }
         
         guard let folderName = try await createFileName(fileNameBase: report.folderName) else {
@@ -184,7 +184,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         
         try await uploadDescriptionFile(report: report)
         subject.send(.descriptionSent)
-
+        
     }
     
     private func handleCreatedStatus(report: NextcloudReportToSend, subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) async throws {
@@ -194,7 +194,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         try await uploadDescriptionFile(report: report)
         subject.send(.descriptionSent)
     }
-
+    
     private func uploadFiles(report: NextcloudReportToSend, subject: CurrentValueSubject<NextcloudUploadResponse, APIError>)   {
         report.files.forEach { file in
             uploadFileInChunks(metadata: file, rootFolder: report.server.rootFolder ?? "")
@@ -204,7 +204,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                     subject.send(.progress(progressInfo: result))
                 }).store(in: &subscribers)
         }
-
+        
     }
     
     private func monitorNetworkConnection(subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) {
@@ -216,7 +216,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
             }
             .store(in: &self.subscribers)
     }
-
+    
     private func handleError(_ error: APIError, report: NextcloudReportToSend, subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) async {
         debugLog(error)
         switch error {
@@ -228,7 +228,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
             subject.send(completion:.failure(error))
         }
     }
-
+    
     private func uploadDescriptionFile(report:NextcloudReportToSend) async throws {
         
         guard let descriptionFileUrl = report.descriptionFileUrl else { return }
@@ -338,7 +338,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     }
     
     private func fileExists(serverUrlFileName: String) async throws -> Bool?  {
-                
+        
         let option = NKRequestOptions(timeout: ktimeout, queue: NextcloudKit.shared.nkCommonInstance.backgroundQueue)
         
         return try await withCheckedThrowingContinuation({ continuation in

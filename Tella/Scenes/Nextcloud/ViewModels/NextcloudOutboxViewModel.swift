@@ -126,7 +126,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         
         return NextcloudReportToSend(folderName: remoteFolderName,
                                      descriptionFileUrl: reportViewModel.descriptionFileUrl,
-                                     remoteReportStatus: currentReport?.remoteReportStatus ?? .unknown,
+                                     remoteReportStatus: currentReport?.remoteReportStatus ?? .initial,
                                      files: filesToSend,
                                      server: server)
     }

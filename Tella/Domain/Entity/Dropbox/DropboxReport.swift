@@ -12,7 +12,7 @@ class DropboxReport: BaseReport {
     
     var server: DropboxServer?
     var folderId: String?
-    var remoteReportStatus: RemoteReportStatus? = .unknown
+    var remoteReportStatus: RemoteReportStatus? = .initial
 
     enum CodingKeys: String, CodingKey {
         case folderId = "c_folder_id"
@@ -28,7 +28,7 @@ class DropboxReport: BaseReport {
          server: DropboxServer? = nil,
          folderId: String? = nil,
          vaultFiles: [DropboxReportFile]? = nil,
-         remoteReportStatus: RemoteReportStatus = .unknown) {
+         remoteReportStatus: RemoteReportStatus = .initial) {
         
         self.server = server
         self.folderId = folderId
@@ -49,14 +49,13 @@ class DropboxReport: BaseReport {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(folderId, forKey: .folderId)
         try container.encodeIfPresent(remoteReportStatus?.rawValue, forKey: .remoteReportStatus)
-
     }
     
     required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.folderId = try container.decodeIfPresent(String.self, forKey: .folderId)
         if let status = try container.decodeIfPresent(Int.self, forKey: .remoteReportStatus) {
-            self.remoteReportStatus = RemoteReportStatus(rawValue: status) ?? RemoteReportStatus.unknown
+            self.remoteReportStatus = RemoteReportStatus(rawValue: status) ?? RemoteReportStatus.initial
         }
         try super.init(from: decoder)
     }

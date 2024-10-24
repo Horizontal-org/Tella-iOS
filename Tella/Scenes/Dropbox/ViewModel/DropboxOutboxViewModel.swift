@@ -106,7 +106,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
                                                name: reportViewModel.title,
                                                description: reportViewModel.description,
                                                files: parseDropboxFiles(),
-                                               remoteReportStatus: reportViewModel.remoteReportStatus ?? .unknown)
+                                               remoteReportStatus: reportViewModel.remoteReportStatus ?? .initial)
         
         dropboxRepository.submitReport(report: reportToSend)
             .receive(on: DispatchQueue.main)
