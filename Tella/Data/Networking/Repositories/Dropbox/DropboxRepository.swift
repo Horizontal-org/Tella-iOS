@@ -36,15 +36,6 @@ class DropboxRepository: DropboxRepositoryProtocol {
         setupNetworkMonitor()
     }
 
-    func setupDropbox() {
-        guard let dropboxAppKey = ConfigurationManager.getValue(DropboxAuthConstants.dropboxAppKey) else  {
-            debugLog("Dropbox App Key not found")
-            return
-        }
-        
-        DropboxClientsManager.setupWithAppKey(dropboxAppKey)
-    }
-    
     func handleRedirectURL(_ url: URL, completion: @escaping (DropboxOAuthResult?) -> Void) -> Bool {
         return DropboxClientsManager.handleRedirectURL(url, includeBackgroundClient: false, completion: completion)
     }
