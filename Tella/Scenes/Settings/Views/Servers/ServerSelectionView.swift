@@ -16,10 +16,10 @@ struct ServerSelectionView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    init(appModel:MainAppModel, serversViewModel : ServersViewModel, gDriveRepository: GDriveRepositoryProtocol, dropboxRepository: DropboxRepositoryProtocol) {
+    init(appModel:MainAppModel, serversViewModel : ServersViewModel) {
         self.serversViewModel = serversViewModel
-        _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: gDriveRepository, mainAppModel: appModel))
-        _dropboxServerVM = ObservedObject(wrappedValue: DropboxServerViewModel(dropboxRepository: dropboxRepository, mainAppModel: appModel))
+        _gDriveServerVM = ObservedObject(wrappedValue:GDriveServerViewModel(repository: serversViewModel.gDriveRepository, mainAppModel: appModel))
+        _dropboxServerVM = ObservedObject(wrappedValue: DropboxServerViewModel(dropboxRepository: serversViewModel.dropboxRepository, mainAppModel: appModel))
     }
     
     var body: some View {
@@ -173,7 +173,7 @@ struct ServerSelectionView: View {
 
 struct ServerSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ServerSelectionView(appModel: MainAppModel.stub(), serversViewModel: ServersViewModel(mainAppModel: MainAppModel.stub()), gDriveRepository: GDriveRepository(), dropboxRepository: DropboxRepository())
+        ServerSelectionView(appModel: MainAppModel.stub(), serversViewModel: ServersViewModel(mainAppModel: MainAppModel.stub()))
             .environmentObject(MainAppModel.stub())
             .environmentObject(ServersViewModel(mainAppModel: MainAppModel.stub()))
     }

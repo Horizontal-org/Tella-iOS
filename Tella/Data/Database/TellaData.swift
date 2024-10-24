@@ -129,7 +129,6 @@ class TellaData : ObservableObject {
     }
     
     func deleteGDriveServer(serverId: Int) {
-        GDriveRepository().signOut()
         database.deleteGDriveServer(serverId: serverId)
         reloadServers()
     }
@@ -143,7 +142,6 @@ class TellaData : ObservableObject {
     }
     
     func deleteDropboxServer(serverId: Int) {
-        DropboxRepository().signOut()
         database.deleteDroboxServer(serverId: serverId)
         reloadServers()
     }
