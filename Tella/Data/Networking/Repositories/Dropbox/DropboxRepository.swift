@@ -26,7 +26,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
     private let networkMonitor: NetworkMonitor
     private var subscribers: Set<AnyCancellable> = []
     private let networkStatusSubject = PassthroughSubject<Bool, Never>()
-    private var UploadResponseSubject = PassthroughSubject<DropboxUploadResponse, APIError>()
+    private var UploadResponseSubject = CurrentValueSubject<DropboxUploadResponse, APIError>(.initial)
     private var uploadTask: Task<Void, Error>?
     private let descriptionFolderName = "description.txt"
     private let chunkSize: Int64 = 1024 * 1024
@@ -79,7 +79,8 @@ class DropboxRepository: DropboxRepositoryProtocol {
     }
 
     func submit(report: DropboxReportToSend) -> AnyPublisher<DropboxUploadResponse, APIError> {
-        let subject = PassthroughSubject<DropboxUploadResponse, APIError>()
+        let subject = CurrentValueSubject<DropboxUploadResponse, APIError>(.initial)
+
         
         shouldPause = false
         
@@ -106,7 +107,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                     subject.send(completion:.finished)
                 }
                 
-                guard !isCancelled else { return }
+                guard !shouldPause else { return }
                 
                 try checkInternetConnection()
                 
