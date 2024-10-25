@@ -46,17 +46,19 @@ extension TellaDataBase {
         }
     }
     
-    func deleteGDriveServer(serverId: Int) {
+    func deleteGDriveServer(serverId: Int) -> Result<Void,Error> {
         do {
             try statementBuilder.delete(tableName: D.tGDriveServer,
                                         primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
             try statementBuilder.deleteAll(tableNames: [D.tGDriveReport, D.tGDriveInstanceVaultFile])
+            return .success
         } catch let error {
             debugLog(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
-    
 }
+
 // GDrive Reports
 extension TellaDataBase {
     func createGDriveReportTable() {
