@@ -47,9 +47,9 @@ extension Error {
                 return .noToken
             }
             
-            let res = handleDropboxCallError(error)
-            if case .path(let writeError) = res {
-                return getWriteError(writeError.reason)
+            let unboxedError = unboxError(error)
+            if case .path(let writeError) = unboxedError {
+                return getDropboxError(writeError.reason)
             }
             
         case let error as UploadSessionFinishError:
@@ -58,9 +58,9 @@ extension Error {
                 return .noToken
             }
             
-            let res = handleDropboxCallError(error)
-            if case .path(let writeError) = res {
-                return getWriteError(writeError)
+            let unboxedError = unboxError(error)
+            if case .path(let writeError) = unboxedError {
+                return getDropboxError(writeError)
             }
             
         case let error as UploadSessionAppendError:
@@ -69,9 +69,9 @@ extension Error {
                 return .noToken
             }
             
-            let res = handleDropboxCallError(error)
+            let unboxedError = unboxError(error)
             
-            switch res {
+            switch unboxedError {
             case .incorrectOffset(let offset):
                 return .incorrectOffset(offset: offset.correctOffset)
             case .notFound:
@@ -90,9 +90,10 @@ extension Error {
                 return .noToken
             }
             
-            let res = handleDropboxCallError(error)
-            if case .path(let writeError) = res {
-                return getWriteError(writeError)
+            let unboxedError = unboxError(error)
+            
+            if case .path(let writeError) = unboxedError {
+                return getDropboxError(writeError)
             }
             
         default:
@@ -101,7 +102,7 @@ extension Error {
         return .unknown
     }
     
-    private func handleDropboxCallError<T>(_ error: CallError<T>) -> T? {
+    private func unboxError<T>(_ error: CallError<T>) -> T? {
         
         guard case .routeError(let boxedError, _, _, _) = error
         else { return nil }
@@ -109,7 +110,8 @@ extension Error {
         return  boxedError.unboxed
     }
     
-    private func getWriteError(_ error: Files.WriteError) -> DropboxError {
+    
+    private func getDropboxError(_ error: Files.WriteError) -> DropboxError {
         switch error {
         case .conflict:
             return .conflict
