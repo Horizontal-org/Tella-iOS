@@ -15,7 +15,7 @@ protocol DropboxRepositoryProtocol {
     func ensureSignedIn() async throws
     func signOut()
     func handleRedirectURL(_ url: URL, completion: @escaping (DropboxOAuthResult?) -> Void) -> Bool
-    func submitReport(report: DropboxReportToSend) -> AnyPublisher<DropboxUploadResponse, APIError>
+    func submit(report: DropboxReportToSend) -> AnyPublisher<DropboxUploadResponse, APIError>
     func pauseUpload()
 }
 
@@ -78,7 +78,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
         client = nil
     }
 
-    func submitReport(report: DropboxReportToSend) -> AnyPublisher<DropboxUploadResponse, APIError> {
+    func submit(report: DropboxReportToSend) -> AnyPublisher<DropboxUploadResponse, APIError> {
         let subject = PassthroughSubject<DropboxUploadResponse, APIError>()
         
         shouldPause = false

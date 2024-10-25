@@ -109,7 +109,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
                                                          files: prepareDropboxFilesToSend(),
                                                          remoteReportStatus: reportViewModel.remoteReportStatus ?? .initial)
             
-            dropboxRepository.submitReport(report: reportToSend)
+            dropboxRepository.submit(report: reportToSend)
                 .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { completion in
                     

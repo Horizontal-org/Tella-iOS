@@ -119,11 +119,11 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     
     func uploadReport(report:NextcloudReportToSend) -> AnyPublisher<NextcloudUploadResponse,APIError> {
         let subject = CurrentValueSubject<NextcloudUploadResponse, APIError>(.initial)
-        upload(report: report, subject: subject)
+        submit(report: report, subject: subject)
         return subject.eraseToAnyPublisher()
     }
     
-    private func upload(report:NextcloudReportToSend,subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) {
+    private func submit(report:NextcloudReportToSend,subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) {
         
         self.setUp(server:report.server)
         
@@ -223,7 +223,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         case .nextcloudError(let code) where code == NcHTTPErrorCodes.nonExistentFolder.rawValue:
             try? await createFolder(folderName: "") // This will create a folder with the rootname
             subject.send(.folderRecreated)
-            self.upload(report: report, subject: subject) // re-upload the report
+            self.submit(report: report, subject: subject) // re-upload the report
         default:
             subject.send(completion:.failure(error))
         }
