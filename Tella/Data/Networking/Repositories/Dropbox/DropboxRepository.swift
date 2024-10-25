@@ -160,7 +160,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
             throw APIError.noToken
         }
         
-        let folderPath = name.preffixedSlash()
+        let folderPath = name.preffixedSlash().trimmed()
         
         return   try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<String, Error>) in
             client.files.createFolderV2(path: folderPath, autorename: true).response { response, error in
@@ -399,5 +399,11 @@ class DropboxRepository: DropboxRepositoryProtocol {
         guard self.networkMonitor.isConnected else {
             throw APIError.noInternetConnection
         }
+    }
+}
+
+extension String {
+    func trimmed() -> String {
+        return self.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
