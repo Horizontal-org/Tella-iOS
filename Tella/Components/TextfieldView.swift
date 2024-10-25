@@ -46,7 +46,7 @@ struct TextfieldView : View {
     }
     
     private var shouldShowErrorTextOnChange: Bool {
-        (shouldShowErrorOnChange == true && !pfieldContent.isEmpty)
+        (shouldShowErrorOnChange && !pfieldContent.isEmpty)
     }
     
     var body: some View {
@@ -148,7 +148,7 @@ struct TextfieldView : View {
     
     @ViewBuilder
     var errorMessageView : some View {
-        if let errorMessage = errorMessage, shouldShowError == true || shouldShowErrorTextOnChange {
+        if let errorMessage = errorMessage, shouldShowError || shouldShowErrorTextOnChange {
             Text(errorMessage)
                 .font(.custom(Styles.Fonts.regularFontName, size: 12))
                 .foregroundColor(Color(UIColor(hexValue: 0xFF2D2D)))
