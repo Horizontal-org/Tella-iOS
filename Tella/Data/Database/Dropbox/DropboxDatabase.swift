@@ -45,13 +45,15 @@ extension TellaDataBase {
         }
     }
     
-    func deleteDropboxServer(serverId: Int) {
+    func deleteDropboxServer(serverId: Int) -> Result<Void,Error> {
         do {
             try statementBuilder.delete(tableName: D.tDropboxServer,
                                         primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
             try statementBuilder.deleteAll(tableNames: [D.tDropboxReport, D.tDropboxInstanceVaultFile])
+            return .success
         } catch let error {
             debugLog(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
 }

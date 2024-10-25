@@ -81,36 +81,39 @@ class TellaData : ObservableObject {
     }
     
     @discardableResult
-    func deleteTellaServer(serverId : Int) -> Result<Bool, Error> {
+    func deleteTellaServer(serverId : Int) -> Result<Void, Error> {
         let deleteServerResult = database.deleteServer(serverId: serverId)
         reloadServers()
         shouldReloadTellaReports.send(true)
         return deleteServerResult
     }
     
-    func deleteServer(server: Server) {
-        guard let serverId = server.id else { return }
-        switch (server.serverType) {
+    @discardableResult
+    func deleteServer(server: Server) -> Result<Void, Error> {
+        guard
+            let serverId = server.id,
+            let serverType = server.serverType
+        else {
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
+        }
+        switch serverType {
         case .tella:
             let resourcesId = getResourceByServerId(serverId: serverId)
-            
             vaultManager?.deleteVaultFile(filesIds: resourcesId)
-            deleteTellaServer(serverId: serverId)
+            return deleteTellaServer(serverId: serverId)
         case .uwazi:
-            deleteUwaziServer(serverId: serverId)
+            return deleteUwaziServer(serverId: serverId)
         case .gDrive:
-            deleteGDriveServer(serverId: serverId)
+            return deleteGDriveServer(serverId: serverId)
         case .nextcloud:
-            deleteNextcloudServer(serverId: serverId)
+            return deleteNextcloudServer(serverId: serverId)
         case .dropbox:
-            deleteDropboxServer(serverId: serverId)
-        default:
-            break
+            return deleteDropboxServer(serverId: serverId)
         }
     }
     
     @discardableResult
-    func deleteAllServers() -> Result<Bool, Error>{
+    func deleteAllServers() -> Result<Bool, Error> {
         let resources = getResources()
         let resourcesId = resources.map { res in
             return res.id
@@ -123,27 +126,32 @@ class TellaData : ObservableObject {
         return deleteAllServersResult
     }
     
-    func deleteUwaziServer(serverId: Int) {
-        database.deleteUwaziServer(serverId: serverId)
+    @discardableResult
+    func deleteUwaziServer(serverId: Int) -> Result<Void,Error> {
+        let deleteResult = database.deleteUwaziServer(serverId: serverId)
         reloadServers()
+        return deleteResult
     }
     
-    func deleteGDriveServer(serverId: Int) {
-        database.deleteGDriveServer(serverId: serverId)
+    @discardableResult
+    func deleteGDriveServer(serverId: Int) -> Result<Void,Error> {
+        let deleteResult =  database.deleteGDriveServer(serverId: serverId)
         reloadServers()
+        return deleteResult
     }
     
     @discardableResult
     func deleteNextcloudServer(serverId: Int) -> Result<Void,Error> {
-        // signOut
-        let resultDelete = database.deleteNextcloudServer(serverId: serverId)
+        let deleteResult = database.deleteNextcloudServer(serverId: serverId)
         reloadServers()
-        return resultDelete
+        return deleteResult
     }
     
-    func deleteDropboxServer(serverId: Int) {
-        database.deleteDropboxServer(serverId: serverId)
+    @discardableResult
+    func deleteDropboxServer(serverId: Int) -> Result<Void,Error> {
+        let deleteResult = database.deleteDropboxServer(serverId: serverId)
         reloadServers()
+        return deleteResult
     }
     
     func reloadServers() {

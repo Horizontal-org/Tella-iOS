@@ -202,7 +202,7 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
         }
     }
     
-    func deleteUwaziServer(serverId : Int) {
+    func deleteUwaziServer(serverId : Int) -> Result<Void,Error> {
         do {
             let serverCondition = [KeyValue(key: D.cId, value: serverId)]
             
@@ -211,10 +211,11 @@ extension TellaDataBase: UwaziServerLanguageProtocol {
             
             try statementBuilder.delete(tableName: D.tUwaziTemplate,
                                         primarykeyValue: serverCondition)
+            return .success
         } catch let error {
             debugLog(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
-        
     }
 }
 
