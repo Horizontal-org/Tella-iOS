@@ -303,7 +303,7 @@ If you want to take a picture or a video, proceed in the following way:\
 
 "Reports_Draft_DraftList_Expl" = "These are reports you are working on.";
 "Reports_Outbox_OutboxList_Expl" = "These reports are ready to be submitted";
-"Reports_Submitted_SubmittedList_Expl" = "";
+"Reports_Submitted_SubmittedList_Expl" = "These are reports that you have successfully submitted.";
 
 "Reports_Draft_EmptyAllFiles_Expl" = "Your Drafts is currently empty. Reports that you have not submitted will appear here.";
 "Reports_Outbox_EmptyAllFiles_Expl" = "Your Outbox is currently empty. Reports that are ready to be sent will appear here.";

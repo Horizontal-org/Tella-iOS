@@ -55,7 +55,7 @@ extension ServerConnectionType {
         case .nextcloud:
             return "nextcloud.icon"
         case .dropbox:
-            return "reports.report"
+            return "dropbox.icon"
         }
     }
 }
