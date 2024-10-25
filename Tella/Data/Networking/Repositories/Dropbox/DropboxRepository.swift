@@ -165,7 +165,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
         return   try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<String, Error>) in
             client.files.createFolderV2(path: folderPath, autorename: true).response { response, error in
                 if let error = error {
-                    let dropboxError = error.getError(error: error)
+                    let dropboxError = error.getError()
                     let apiError = APIError.dropboxApiError(dropboxError)
                     continuation.resume(throwing:apiError)
                 } else if let name = response?.metadata.name {
@@ -193,7 +193,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
             client.files.upload(path: reportFolderPath.slash() + descriptionFolderName, input: descriptionData)
                 .response { response, error in
                     if let error = error {
-                        let dropboxError = error.getError(error: error)
+                        let dropboxError = error.getError()
                         let apiError = APIError.dropboxApiError(dropboxError)
                         continuation.resume(throwing:apiError)
                     } else {
@@ -306,7 +306,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                                    file: DropboxFileInfo,
                                    progressInfo: DropboxUploadProgressInfo,
                                    subject: CurrentValueSubject<DropboxUploadProgressInfo, APIError>) {
-        let dropboxError = error.getError(error: error)
+        let dropboxError = error.getError()
         let apiError = APIError.dropboxApiError(dropboxError)
         
         switch dropboxError {
