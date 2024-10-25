@@ -118,8 +118,6 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 
             } catch let apiError as APIError {
                 subject.send(completion: .failure(apiError))
-            } catch {
-                subject.send(completion: .failure(.unexpectedResponse))
             }
         }
         
@@ -127,7 +125,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
     }
     
     private func handleInitialStatus(report: DropboxReportToSend,
-                                              subject: PassthroughSubject<DropboxUploadResponse, APIError>) async throws {
+                                              subject: CurrentValueSubject<DropboxUploadResponse, APIError>) async throws {
         
         guard !isCancelled else { return }
         
@@ -144,7 +142,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
     }
     
     private func handleCreatedStatus(report: DropboxReportToSend,
-                                     subject: PassthroughSubject<DropboxUploadResponse, APIError>) async throws {
+                                     subject: CurrentValueSubject<DropboxUploadResponse, APIError>) async throws {
         
         guard !isCancelled else { return }
         
@@ -203,7 +201,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
         }
     }
     
-    private func uploadFiles(report: DropboxReportToSend, subject: PassthroughSubject<DropboxUploadResponse, APIError>) {
+    private func uploadFiles(report: DropboxReportToSend, subject: CurrentValueSubject<DropboxUploadResponse, APIError>) {
         
         report.files.forEach { file in
             uploadFileInChunks(file: file, folderName: report.name)
