@@ -142,7 +142,7 @@ class TellaData : ObservableObject {
     }
     
     func deleteDropboxServer(serverId: Int) {
-        database.deleteDroboxServer(serverId: serverId)
+        database.deleteDropboxServer(serverId: serverId)
         reloadServers()
     }
     

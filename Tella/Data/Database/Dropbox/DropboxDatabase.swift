@@ -45,7 +45,7 @@ extension TellaDataBase {
         }
     }
     
-    func deleteDroboxServer(serverId: Int) {
+    func deleteDropboxServer(serverId: Int) {
         do {
             try statementBuilder.delete(tableName: D.tDropboxServer,
                                         primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
