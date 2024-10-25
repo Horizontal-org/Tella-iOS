@@ -98,7 +98,7 @@ struct UnderlinedTextEditorView : View {
     
     @ViewBuilder
     var errorMessageView : some View {
-        if let errorMessage = errorMessage, shouldShowError {
+        if let errorMessage, shouldShowError {
             Text(errorMessage)
                 .font(.custom(Styles.Fonts.regularFontName, size: 12))
                 .foregroundColor(Color(UIColor(hexValue: 0xFF2D2D)))
