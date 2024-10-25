@@ -16,13 +16,13 @@ protocol DropboxRepositoryProtocol {
     func signOut()
     func handleRedirectURL(_ url: URL, completion: @escaping (DropboxOAuthResult?) -> Void) -> Bool
     func submitReport(report: DropboxReportToSend) -> AnyPublisher<DropboxUploadResponse, APIError>
-    func cancelUpload()
+    func pauseUpload()
 }
 
 class DropboxRepository: DropboxRepositoryProtocol {
     
     private var client: DropboxClient?
-    private var isCancelled = false
+    private var shouldPause = false
     private let networkMonitor: NetworkMonitor
     private var subscribers: Set<AnyCancellable> = []
     private let networkStatusSubject = PassthroughSubject<Bool, Never>()
@@ -59,8 +59,8 @@ class DropboxRepository: DropboxRepositoryProtocol {
         }
     }
 
-    func cancelUpload() {
-        isCancelled = true
+    func pauseUpload() {
+        shouldPause = true
         uploadTask?.cancel()
     }
     
@@ -81,7 +81,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
     func submitReport(report: DropboxReportToSend) -> AnyPublisher<DropboxUploadResponse, APIError> {
         let subject = PassthroughSubject<DropboxUploadResponse, APIError>()
         
-        isCancelled = false
+        shouldPause = false
         
         uploadTask = Task {
             do {
@@ -127,12 +127,12 @@ class DropboxRepository: DropboxRepositoryProtocol {
     private func handleInitialStatus(report: DropboxReportToSend,
                                               subject: CurrentValueSubject<DropboxUploadResponse, APIError>) async throws {
         
-        guard !isCancelled else { return }
+        guard !shouldPause else { return }
         
         let folderName = try await createFolder(name: report.name)
         subject.send(.folderCreated(folderName: folderName))
         
-        guard !isCancelled else { return }
+        guard !shouldPause else { return }
         
         report.name = folderName
         
@@ -144,7 +144,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
     private func handleCreatedStatus(report: DropboxReportToSend,
                                      subject: CurrentValueSubject<DropboxUploadResponse, APIError>) async throws {
         
-        guard !isCancelled else { return }
+        guard !shouldPause else { return }
         
         try await uploadDescriptionFile(report: report)
         subject.send(.descriptionSent)
@@ -232,7 +232,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
             while file.offset < fileSize {
                 do {
                     
-                    if isCancelled {
+                    if shouldPause {
                         return
                     }
                     
@@ -379,7 +379,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
     }
     
     private func handleNetworkLoss() {
-        cancelUpload()
+        pauseUpload()
         UploadResponseSubject.send(completion: .failure(.noInternetConnection))
     }
 
