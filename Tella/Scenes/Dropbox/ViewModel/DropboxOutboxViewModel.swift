@@ -53,7 +53,31 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     }
     
     override func submitReport() {
-        performSubmission()
+        
+        if isSubmissionInProgress { return }
+        self.updateReport(reportStatus: .submissionInProgress)
+        cancellables.removeAll()
+        
+        Task {
+            
+            let reportToSend = await DropboxReportToSend(folderId: reportViewModel.folderId,
+                                                         name: reportViewModel.title,
+                                                         description: reportViewModel.description,
+                                                         files: prepareDropboxFilesToSend(),
+                                                         remoteReportStatus: reportViewModel.remoteReportStatus ?? .initial)
+            
+            dropboxRepository.submit(report: reportToSend)
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { completion in
+                    
+                    self.handleSubmitReportCompletion(completion:completion)
+                    
+                }, receiveValue: { response in
+                    
+                    self.processUploadReportResponse(response:response)
+                })
+                .store(in: &cancellables)
+        }
     }
     
     override func pauseSubmission() {
@@ -95,35 +119,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         
         mainAppModel.tellaData?.updateDropboxReportFile(file: dropboxFile)
     }
-    
-    private func performSubmission() {
-        if isSubmissionInProgress { return }
-        self.updateReport(reportStatus: .submissionInProgress)
-        cancellables.removeAll()
-        
-        Task {
-            
-            let reportToSend = await DropboxReportToSend(folderId: reportViewModel.folderId,
-                                                         name: reportViewModel.title,
-                                                         description: reportViewModel.description,
-                                                         files: prepareDropboxFilesToSend(),
-                                                         remoteReportStatus: reportViewModel.remoteReportStatus ?? .initial)
-            
-            dropboxRepository.submit(report: reportToSend)
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { completion in
-                    
-                    self.handleSubmitReportCompletion(completion:completion)
-                    
-                }, receiveValue: { response in
-                    
-                    self.processUploadReportResponse(response:response)
-                })
-                .store(in: &cancellables)
-        }
-        
-    }
-    
+
     private func handleSubmitReportCompletion(completion:Subscribers.Completion<APIError>) {
         switch completion {
         case .finished:

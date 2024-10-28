@@ -56,11 +56,6 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
     }
     
     override func submitReport() {
-        performSubmission()
-    }
-    
-    func performSubmission() {
-        
         do {
             
             let server = try NextcloudServerModel(server: currentReport?.server)
