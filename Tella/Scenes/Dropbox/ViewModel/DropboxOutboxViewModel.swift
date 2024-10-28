@@ -24,32 +24,21 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         self.dropboxRepository = repository
         super.init(reportsViewModel: reportsViewModel, reportId: reportId)
         
-        if reportViewModel.status == .submissionScheduled {
-            self.submitReport()
-        } else {
-            self.pauseSubmission()
-        }
+        self.initSubmission()
     }
     
     override func initVaultFile(reportId: Int?) {
-        if let reportId, let report = self.mainAppModel.tellaData?.getDropboxReport(id: reportId) {
-            
-            currentReport = report
-            
-            let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
-            
-            var files: [ReportVaultFile] = []
-            
-            report.reportFiles?.forEach({ reportFile in
-                guard let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}),
-                      let dropboxReportFile = reportFile as? DropboxReportFile else { return}
-                let reportVaultFile = ReportVaultFile(reportFile: dropboxReportFile, vaultFile: vaultFile)
-                files.append(reportVaultFile)
-            })
-            
-            self.reportViewModel = ReportViewModel(report: report, files: files)
-            
+        
+        guard
+            let reportId,
+            let report = self.mainAppModel.tellaData?.getDropboxReport(id: reportId)
+        else {
+            return
         }
+        
+        currentReport = report
+        let files = processVaultFiles(reportFiles: report.reportFiles)
+        self.reportViewModel = ReportViewModel(report: report, files: files)
     }
     
     override func submitReport() {
@@ -119,7 +108,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         
         mainAppModel.tellaData?.updateDropboxReportFile(file: dropboxFile)
     }
-
+    
     private func handleSubmitReportCompletion(completion:Subscribers.Completion<APIError>) {
         switch completion {
         case .finished:

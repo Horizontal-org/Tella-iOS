@@ -4,7 +4,18 @@
 
 import Foundation
 
-class ReportFile : Hashable, Codable {
+
+protocol ReportFileProtocol   {
+    var id : Int? { get set }
+    var fileId : String? { get set }
+    var status : FileStatus? { get set }
+    var bytesSent : Int? { get set }
+    var createdDate : Date? { get set }
+    var updatedDate : Date? { get set }
+    var reportInstanceId : Int? { get set }
+}
+
+class ReportFile : Hashable, Codable, ReportFileProtocol {
     
     var id : Int?
     var fileId : String?

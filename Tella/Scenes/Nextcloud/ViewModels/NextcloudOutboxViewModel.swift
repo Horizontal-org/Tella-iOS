@@ -24,46 +24,35 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
          reportId : Int?,
          repository: NextcloudRepositoryProtocol) {
         
-        self.nextcloudRepository = repository //NextcloudReportViewModel
+        self.nextcloudRepository = repository
         
         super.init(reportsViewModel: reportsViewModel, reportId: reportId)
         
-        if reportViewModel.status == .submissionScheduled {
-            self.submitReport()
-        } else {
-            self.updateReport(reportStatus: .submissionPaused)
-        }
+        self.initSubmission()
     }
     
     override func initVaultFile(reportId: Int?) {
-        if let reportId, let report = self.mainAppModel.tellaData?.getNextcloudReport(id: reportId) {
-            
-            currentReport = report
-            let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
-            
-            var files: [ReportVaultFile] = []
-            
-            report.reportFiles?.forEach({ reportFile in
-                guard let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}),
-                      let nextcloudReportFile = reportFile as? NextcloudReportFile else { return}
-                let reportVaultFile = ReportVaultFile(reportFile: nextcloudReportFile, vaultFile: vaultFile)
-                files.append(reportVaultFile)
-            })
-            
-            self.reportViewModel = ReportViewModel(report: report, files: files)
-            
+        
+        guard
+            let reportId,
+            let report = self.mainAppModel.tellaData?.getNextcloudReport(id: reportId)
+        else {
+            return
         }
+        currentReport = report
+        let files = processVaultFiles(reportFiles: report.reportFiles)
+        self.reportViewModel = ReportViewModel(report: report, files: files)
     }
     
     override func submitReport() {
         do {
             
             let server = try NextcloudServerModel(server: currentReport?.server)
-
+            
             self.updateReport(reportStatus: .submissionInProgress)
             
             let reportToSend = try prepareReportToSend(server: server)
-
+            
             nextcloudRepository.uploadReport(report: reportToSend)
                 .sink { completion in
                     switch completion {
@@ -86,7 +75,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
     }
     
     private func prepareReportToSend(server:NextcloudServerModel) throws -> NextcloudReportToSend {
-       
+        
         let files = reportViewModel.files.filter({ $0.status != .submitted})
         
         _ = files.compactMap { file in
@@ -111,7 +100,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
             
             return  NextcloudMetadata(fileId: file.id,
                                       directory: directory,
-                                      fileName: fileName, 
+                                      fileName: fileName,
                                       fileSize: file.size,
                                       remoteFolderName: remoteFolderName,
                                       serverURL: server.url,

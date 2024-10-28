@@ -26,12 +26,8 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         self.gDriveRepository = repository
         super.init(reportsViewModel: reportsViewModel, reportId: reportId)
 
-        if reportViewModel.status == .submissionScheduled {
-            self.submitReport()
-        } else {
-            self.pauseSubmission()
-        }
-        
+        self.initSubmission()
+
         NotificationCenter.default.addObserver(self, selector: #selector(handleAppWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
     }
     
@@ -47,11 +43,16 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     }
 
     override func initVaultFile(reportId: Int?) {
-        if let reportId, let report = self.mainAppModel.tellaData?.getDriveReport(id: reportId) {
-            let files = processVaultFiles(reportFiles: report.reportFiles)
-            
-            self.reportViewModel = ReportViewModel(report: report, files: files)
+        
+        guard
+            let reportId,
+            let report = self.mainAppModel.tellaData?.getDriveReport(id: reportId)
+        else {
+            return
         }
+        
+        let files = processVaultFiles(reportFiles: report.reportFiles)
+        self.reportViewModel = ReportViewModel(report: report, files: files)
     }
     
     //submit report

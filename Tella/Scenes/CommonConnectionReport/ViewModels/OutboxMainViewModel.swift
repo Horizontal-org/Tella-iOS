@@ -72,20 +72,32 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     
     func initVaultFile(reportId: Int?) {}
     
-    func processVaultFiles(reportFiles: [ReportFile]?) -> [ReportVaultFile] {
-        let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: reportFiles?.compactMap { $0.fileId } ?? [])
-        
-        var files: [ReportVaultFile] = []
-        
-        reportFiles?.forEach { reportFile in
-            if let vaultFile = vaultFileResult?.first(where: { reportFile.fileId == $0.id }) {
-                let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
-                files.append(reportVaultFile)
-            }
+    func initSubmission() {
+        if reportViewModel.status == .submissionScheduled {
+            self.submitReport()
+        } else {
+            self.pauseSubmission()
         }
-        
+    }
+
+    func processVaultFiles<R:ReportFileProtocol>(reportFiles: [R]?) -> [ReportVaultFile] {
+
+        var files: [ReportVaultFile] = []
+        let fileIds = reportFiles?.compactMap(\.fileId) ?? []
+        let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: fileIds)
+
+        reportFiles?.forEach({ reportFile in
+            guard
+                let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id})
+            else {
+                return
+            }
+            let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
+            files.append(reportVaultFile)
+        })
         return files
     }
+
     func initializeProgressionInfos() {
         
         let totalSize = self.reportViewModel.files.reduce(0) { $0 + ($1.size) }
