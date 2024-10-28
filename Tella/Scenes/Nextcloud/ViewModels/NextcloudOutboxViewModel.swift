@@ -45,41 +45,44 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
     }
     
     override func submitReport() {
-        do {
-            
-            let server = try NextcloudServerModel(server: currentReport?.server)
-            
-            self.updateReport(reportStatus: .submissionInProgress)
-            
-            let reportToSend = try prepareReportToSend(server: server)
-            
-            nextcloudRepository.uploadReport(report: reportToSend)
-                .sink { completion in
-                    switch completion {
-                    case .finished:
-                        self.checkAllFilesAreUploaded()
-                    case .failure(let error):
-                        self.handleError(error: error)
-                    }
-                } receiveValue: { response in
-                    self.processUploadReportResponse(response:response)
-                }.store(in: &subscribers)
-            
-            
-        } catch let error {
-            if let error = error as? RuntimeError {
-                self.toastMessage = error.message
-                self.shouldShowToast = true
+        
+        Task {
+            do {
+                
+                let server = try NextcloudServerModel(server: currentReport?.server)
+                
+                self.updateReport(reportStatus: .submissionInProgress)
+                
+                let reportToSend = try await prepareReportToSend(server: server)
+                
+                nextcloudRepository.uploadReport(report: reportToSend)
+                    .sink { completion in
+                        switch completion {
+                        case .finished:
+                            self.checkAllFilesAreUploaded()
+                        case .failure(let error):
+                            self.handleError(error: error)
+                        }
+                    } receiveValue: { response in
+                        self.processUploadReportResponse(response:response)
+                    }.store(in: &subscribers)
+                
+                
+            } catch let error {
+                if let error = error as? RuntimeError {
+                    self.toastMessage = error.message
+                    self.shouldShowToast = true
+                }
             }
         }
     }
     
-    private func prepareReportToSend(server:NextcloudServerModel) throws -> NextcloudReportToSend {
+    private func prepareReportToSend(server:NextcloudServerModel) async throws -> NextcloudReportToSend {
         
         let files = reportViewModel.files.filter({ $0.status != .submitted})
         
-        _ = files.compactMap { file in
-            file.url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true)
+        for file in files {
+            file.url =  await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: true)
         }
         
         let remoteFolderName = self.reportViewModel.title.removeForbiddenCharacters()
