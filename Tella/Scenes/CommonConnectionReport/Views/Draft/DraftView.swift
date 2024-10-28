@@ -100,7 +100,7 @@ struct DraftView: View  {
                     TextfieldView(fieldContent: $viewModel.title,
                                   isValid: $viewModel.isValidTitle,
                                   shouldShowError: $viewModel.shouldShowError,
-                                  errorMessage: "This field should not contain / and \\ characters",
+                                  validationErrorMessage: LocalizableSettings.settCreateFolderError.localized,
                                   fieldType: .folderName,
                                   placeholder: LocalizableReport.reportsListTitle.localized,
                                   shouldShowTitle: true,

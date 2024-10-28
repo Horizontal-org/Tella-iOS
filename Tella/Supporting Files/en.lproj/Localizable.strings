@@ -285,6 +285,8 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_Server_GDrive_CreatePersonal_Desc" = "Your reports will be uploaded to a new folder on your Google Drive. Choose a name for this folder here.";
 "Setting_Server_Foldername_Placeholder" = "Folder name";
 "Setting_Server_Create_Folder_Title" = "Create new folder";
+"Setting_Server_Create_Folder_Error" = "This field should not include only spaces, /, and \\ characters.";
+
 "Setting_Server_GDrive_Success_Message" = "GO TO GOOGLE DRIVE";
 "Setting_Server_Nextcloud_Create_Personal_Desc" = "Your reports will be uploaded to a new folder on your Nextcloud. Choose a name for this folder here.";
 "Setting_Server_Nextcloud_Success_Message" = "GO TO NEXTCLOUD";

@@ -23,6 +23,7 @@ struct TextfieldView : View {
     @Binding var shouldShowError : Bool
     
     var errorMessage : String?
+    var validationErrorMessage : String?
     var fieldType : FieldType
     var placeholder : String = ""
     var shouldShowTitle : Bool = false
@@ -49,6 +50,15 @@ struct TextfieldView : View {
         (shouldShowErrorOnChange && !pfieldContent.isEmpty)
     }
     
+    private var formattedErrorMessage: String? {
+        if shouldShowError {
+            return errorMessage
+        } else if shouldShowErrorTextOnChange {
+            return validationErrorMessage
+        }
+        return nil
+    }
+
     var body: some View {
         
         VStack(spacing: 10) {
@@ -148,14 +158,14 @@ struct TextfieldView : View {
     
     @ViewBuilder
     var errorMessageView : some View {
-        if let errorMessage, shouldShowError || shouldShowErrorTextOnChange {
-            Text(errorMessage)
+        if let formattedErrorMessage {
+            Text(formattedErrorMessage)
                 .font(.custom(Styles.Fonts.regularFontName, size: 12))
                 .foregroundColor(Color(UIColor(hexValue: 0xFF2D2D)))
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
-    
+        
     private func validateField(value:String) {
         
         switch fieldType {
