@@ -69,7 +69,6 @@ extension TellaDataBase {
             cddl(D.cCreatedDate, D.float),
             cddl(D.cUpdatedDate, D.float),
             cddl(D.cStatus, D.integer),
-            cddl(D.cFolderId, D.text),
             cddl(D.cRemoteReportStatus, D.integer),
             cddl(D.cServerId, D.integer, tableName: D.tDropboxServer, referenceKey: D.cId)
         ]

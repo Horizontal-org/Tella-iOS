@@ -43,7 +43,6 @@ class DropboxDraftViewModel: DraftMainViewModel {
             description: description,
             status: status ?? .unknown,
             server: server as? DropboxServer,
-            folderId: nil,
             vaultFiles: self.files.compactMap { DropboxReportFile( fileId: $0.id,
                                                                    status: .notSubmitted,
                                                                    bytesSent: 0,
