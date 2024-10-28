@@ -114,7 +114,7 @@ struct EditAudioView: View {
                 }) {
                     Image("edit.audio.cut")
                         .resizable()
-                        .frame(width: 25, height: 25)
+                        .frame(width: 24, height: 24)
                 }
             }
             
@@ -150,7 +150,7 @@ struct EditAudioView: View {
     
     
     var controlButtonsView: some View {
-        HStack(spacing: 40) {
+        HStack(spacing: 64) {
             Button(action: { self.undo() }) {
                 Image("cancel.edit.file")
                     .resizable()
