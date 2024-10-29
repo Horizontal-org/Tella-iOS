@@ -73,11 +73,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     func initVaultFile(reportId: Int?) {}
     
     func initSubmission() {
-        if reportViewModel.status == .submissionScheduled {
-            self.submitReport()
-        } else {
-            self.pauseSubmission()
-        }
+        reportViewModel.status == .submissionScheduled ? self.submitReport() : self.pauseSubmission()
     }
 
     func processVaultFiles(reportFiles: [ReportFile]?) -> [ReportVaultFile] {
