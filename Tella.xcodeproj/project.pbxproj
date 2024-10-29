@@ -424,7 +424,6 @@
 		15BD9CB32BC7472A00C3932B /* UwaziRelationshipDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CB22BC7472A00C3932B /* UwaziRelationshipDTO.swift */; };
 		15C51C462BFE769500DD9AD0 /* GDriveServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C51C452BFE769500DD9AD0 /* GDriveServerViewModel.swift */; };
 		15C540A82CA5BBDF00D45B06 /* DropboxReportFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C540A72CA5BBDF00D45B06 /* DropboxReportFile.swift */; };
-		15C540AB2CA5EBAB00D45B06 /* DropboxReportFileExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C540AA2CA5EBAB00D45B06 /* DropboxReportFileExtension.swift */; };
 		15CD89102BF297BE00F724F5 /* SelectedEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CD890F2BF297BE00F724F5 /* SelectedEntityView.swift */; };
 		15DCD93C2C9C78B2001339A7 /* DropboxOutboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DCD93B2C9C78B2001339A7 /* DropboxOutboxViewModel.swift */; };
 		15DCD93E2C9C79A6001339A7 /* DropboxOutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DCD93D2C9C79A6001339A7 /* DropboxOutboxDetailsView.swift */; };
@@ -1060,7 +1059,6 @@
 		15BD9CB22BC7472A00C3932B /* UwaziRelationshipDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziRelationshipDTO.swift; sourceTree = "<group>"; };
 		15C51C452BFE769500DD9AD0 /* GDriveServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveServerViewModel.swift; sourceTree = "<group>"; };
 		15C540A72CA5BBDF00D45B06 /* DropboxReportFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxReportFile.swift; sourceTree = "<group>"; };
-		15C540AA2CA5EBAB00D45B06 /* DropboxReportFileExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxReportFileExtension.swift; sourceTree = "<group>"; };
 		15CD890F2BF297BE00F724F5 /* SelectedEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedEntityView.swift; sourceTree = "<group>"; };
 		15DCD93B2C9C78B2001339A7 /* DropboxOutboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxOutboxViewModel.swift; sourceTree = "<group>"; };
 		15DCD93D2C9C79A6001339A7 /* DropboxOutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxOutboxDetailsView.swift; sourceTree = "<group>"; };
@@ -1810,6 +1808,7 @@
 				125C78A12C38056300440014 /* EntityStatusExtension.swift */,
 				125C78A32C3805C600440014 /* ReportStatusExtension.swift */,
 				12A1FACD2C81E15700E28BC2 /* BaseReportExtension.swift */,
+				1275A8412C5A791A0071A97D /* ReportFileExtension.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2004,7 +2003,6 @@
 			children = (
 				1275A83D2C5A78C80071A97D /* NextcloudReportToSend.swift */,
 				1275A83F2C5A78FB0071A97D /* NextcloudMetadata.swift */,
-				1275A8412C5A791A0071A97D /* ReportFileExtension.swift */,
 				1275A8432C5AA4460071A97D /* NextcloudUploadProgressInfo.swift */,
 			);
 			path = Models;
@@ -2732,7 +2730,6 @@
 		15C540A92CA5EB8B00D45B06 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				15C540AA2CA5EBAB00D45B06 /* DropboxReportFileExtension.swift */,
 				15FE5D092CADD2860004AD35 /* DropboxUploadProgressInfo.swift */,
 				157EDEAA2CB055EB00663549 /* DropboxCreateFolderResponse.swift */,
 				153C23962CB49C3200C157D9 /* DropboxFileInfo.swift */,
@@ -4199,7 +4196,6 @@
 				125299DD2AD02E6F00191CAB /* ImportVaultFileResult.swift in Sources */,
 				1254E2712C6FDCFB004C6280 /* ConnectionCardDetails.swift in Sources */,
 				122DA89129CB1F45003801CD /* FileAPI.swift in Sources */,
-				15C540AB2CA5EBAB00D45B06 /* DropboxReportFileExtension.swift in Sources */,
 				127C155C27DA69FF009EC15B /* TransitionViewData.swift in Sources */,
 				D516397C2631113B003A11B5 /* Styles.swift in Sources */,
 				12F5D28D27A326EB00BF3309 /* AboutAndHelpView.swift in Sources */,
