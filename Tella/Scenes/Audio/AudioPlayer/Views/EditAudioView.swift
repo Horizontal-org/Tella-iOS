@@ -35,20 +35,13 @@ struct EditAudioView: View {
                 Spacer()
             }
             EditFileCancelBottomSheet(isShown: $isBottomSheetShown, saveAction: { editAudioViewModel.trimAudio() })
-            if case .error(let message) = editAudioViewModel.trimState{
-                ToastView(message: message)
-            }
         }
         .onAppear {
             editAudioViewModel.onAppear()
             trailingGestureValue = kTrimViewWidth
         }
         .onReceive(editAudioViewModel.$trimState) { value in
-            if value == .loaded(true) {
-                self.isPresented = false
-                self.sheetManager.hide()
-                Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized)
-            }
+            handleTrimState(value: value)
         }
         
         .navigationBarHidden(true)
@@ -184,6 +177,22 @@ struct EditAudioView: View {
             isPresented = false
         }
     }
+    
+    private func handleTrimState(value:ViewModelState<Bool>) {
+        switch value {
+        case .loaded(let isSaved):
+            if isSaved {
+                self.isPresented = false
+                self.sheetManager.hide()
+                Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized)
+            }
+        case .error(let message):
+            Toast.displayToast(message: message)
+        default:
+            break
+        }
+    }
+
 }
 
 
