@@ -5,7 +5,7 @@
 import Foundation
 
 
-class ReportFile : Hashable, Codable/*, ReportFileProtocol*/ {
+class ReportFile : Hashable, Codable {
     
     var id : Int?
     var fileId : String?
