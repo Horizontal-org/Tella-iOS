@@ -38,7 +38,7 @@ class EditAudioViewModel: ObservableObject {
         return audioPlayerViewModel.duration
     }
     private var rootFile: VaultFileDB?
-
+    
     init(audioPlayerViewModel: AudioPlayerViewModel, shouldReloadVaultFiles : Binding<Bool>?, rootFile: VaultFileDB?) {
         self.audioPlayerViewModel = audioPlayerViewModel
         self.shouldReloadVaultFiles = shouldReloadVaultFiles
@@ -67,29 +67,16 @@ class EditAudioViewModel: ObservableObject {
     }
     
     func trimAudio() {
-        guard let audioUrl = audioUrl else { return }
-        let asset = AVAsset(url: audioUrl)
-        let startTime = CMTime(seconds: startTime, preferredTimescale: 600)
-        let endTime = CMTime(seconds: endTime, preferredTimescale: 600)
-        let duration = CMTimeSubtract(endTime, startTime)
-        
-        let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A)
-        let trimmedAudioUrl = audioUrl.deletingLastPathComponent().appendingPathComponent("\(newFileName).m4a")
-        
-        exportSession?.outputURL = trimmedAudioUrl
-        exportSession?.outputFileType = .m4a
-        exportSession?.timeRange = CMTimeRange(start: startTime, duration: duration)
-        
-        exportSession?.exportAsynchronously {
-            switch exportSession?.status {
-            case .completed:
+        Task {
+            do {
+                guard let trimmedAudioUrl = audioUrl?.deletingLastPathComponent().appendingPathComponent("\(newFileName).m4a") else { return }
+                try await trimAudio(audioUrl: audioUrl,
+                                    trimmedAudioUrl: trimmedAudioUrl,
+                                    startTime: startTime,
+                                    endTime: endTime)
                 self.addEditedFile(urlFile: trimmedAudioUrl)
-            case .failed:
-                DispatchQueue.main.async {
-                    self.trimState = .error(LocalizableError.commonError.localized)
-                }
-            default:
-                break
+            } catch {
+                self.trimState = .error(error.localizedDescription)
             }
         }
     }
@@ -139,7 +126,7 @@ class EditAudioViewModel: ObservableObject {
                                          fileSource: FileSource.files)
         self.audioPlayerViewModel.mainAppModel.addVaultFile(importedFiles: [importedFiles],
                                                             shouldReloadVaultFiles: shouldReloadVaultFiles)
-
+        
         DispatchQueue.main.async {
             self.shouldReloadVaultFiles?.wrappedValue = true
             self.trimState = .loaded(true)
@@ -164,8 +151,33 @@ class EditAudioViewModel: ObservableObject {
         let progress = time / timeDuration
         playingOffset = CGFloat(progress) * totalOffsetDistance
     }
+    
+    
+    nonisolated func trimAudio(audioUrl:URL?,
+                               trimmedAudioUrl:URL?,
+                               startTime: Double,
+                               endTime :Double ) async throws {
+      
+        guard let audioUrl = await audioUrl else {
+            return
+        }
+        
+        let asset = AVAsset(url: audioUrl)
+        let startTime = CMTime(seconds: startTime, preferredTimescale: 600)
+        let endTime = CMTime(seconds: endTime, preferredTimescale: 600)
+        let duration = CMTimeSubtract(endTime, startTime)
+        
+        let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A)
+        
+        exportSession?.outputURL = trimmedAudioUrl
+        exportSession?.outputFileType = .m4a
+        exportSession?.timeRange = CMTimeRange(start: startTime, duration: duration)
+        
+        await exportSession?.export()
+        
+        if exportSession?.status == .completed {
+        } else {
+            throw RuntimeError(LocalizableError.commonError.localized)
+        }
+    }
 }
-
-
-
-
