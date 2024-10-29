@@ -84,6 +84,7 @@ struct ReportMainView: View {
         .onReceive(reportsMainViewModel.$shouldShowToast) { shouldShowToast in
             if shouldShowToast {
                 Toast.displayToast(message: reportsMainViewModel.toastMessage)
+                reportsMainViewModel.shouldShowToast = false
             }
         }
         .if(self.reportsMainViewModel.selectedPage == .submitted && self.reportsMainViewModel.submittedReportsViewModel.count > 0, transform: { view in
