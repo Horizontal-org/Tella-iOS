@@ -69,7 +69,6 @@ class DropboxRepository: DropboxRepositoryProtocol {
             self.client = client
         } else {
             signOut()
-            try await handleSignIn()
         }
     }
     
