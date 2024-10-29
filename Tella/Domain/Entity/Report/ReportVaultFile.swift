@@ -19,7 +19,7 @@ class ReportVaultFile : VaultFileDB {
     var finishUploading : Bool = false
     var sessionId: String?
     
-    init(reportFile: ReportFileProtocol, vaultFile : VaultFileDB) {
+    init(reportFile: ReportFile, vaultFile : VaultFileDB) {
         
         super.init(id:vaultFile.id,
                    type: vaultFile.type,

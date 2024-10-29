@@ -80,7 +80,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
         }
     }
 
-    func processVaultFiles<R:ReportFileProtocol>(reportFiles: [R]?) -> [ReportVaultFile] {
+    func processVaultFiles(reportFiles: [ReportFile]?) -> [ReportVaultFile] {
 
         var files: [ReportVaultFile] = []
         let fileIds = reportFiles?.compactMap(\.fileId) ?? []
