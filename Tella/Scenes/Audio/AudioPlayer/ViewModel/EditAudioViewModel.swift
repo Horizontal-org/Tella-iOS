@@ -55,6 +55,9 @@ class EditAudioViewModel: ObservableObject {
             self.timeDuration = value
             self.endTime = value
         }.store(in: &self.cancellable)
+        self.audioPlayerViewModel.audioPlayerManager.audioPlayer.audioPlayerDidFinishPlaying.sink { [self] value in
+            isPlaying = false
+        }.store(in: &self.cancellable)
     }
     
     
@@ -163,6 +166,10 @@ class EditAudioViewModel: ObservableObject {
         }
     }
     
+    fileprivate func updateView() {
+        self.objectWillChange.send()
+    }
+
     
     nonisolated func trimAudio(audioUrl:URL?,
                                trimmedAudioUrl:URL?,
