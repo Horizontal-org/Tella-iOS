@@ -59,8 +59,22 @@ extension Error {
             }
             
             let unboxedError = unboxError(error)
+           
             if case .path(let writeError) = unboxedError {
                 return getDropboxError(writeError)
+            }
+            
+            if case .lookupFailed(let error) = unboxedError {
+                
+                switch error {
+                case .incorrectOffset(let offset):
+                    return .incorrectOffset(offset: offset.correctOffset)
+                case .notFound:
+                    return .sessionNotFound
+                    
+                default:
+                    return .unknown
+                }
             }
             
         case let error as UploadSessionAppendError:
