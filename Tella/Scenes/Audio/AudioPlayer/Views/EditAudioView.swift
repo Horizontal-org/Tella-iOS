@@ -16,7 +16,7 @@ struct EditAudioView: View {
     
     @StateObject var editAudioViewModel: EditAudioViewModel
     @State var isBottomSheetShown : Bool = false
-    let kTrimViewWidth = 340.0
+    let kTrimViewWidth = UIScreen.screenWidth - 40
     
     @State var trailingGestureValue: Double = 0.0
     @State var leadingGestureValue: Double = 0.0
