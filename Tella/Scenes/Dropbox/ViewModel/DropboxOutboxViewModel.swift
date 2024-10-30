@@ -87,6 +87,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     }
     
     private func processUploadReportResponse(response:DropboxUploadResponse) {
+       
         switch response {
             
         case .initial:
@@ -122,13 +123,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         }
         return dropboxFiles
     }
-    
-    private func updateReportFolderId(name: String) {
-        guard let id = reportViewModel.id else { return }
-        
-        mainAppModel.tellaData?.updateDropboxFolderId(reportId: id, folderName: name )
-    }
-    
+
     override func updateReport(reportStatus: ReportStatus? = nil, remoteReportStatus: RemoteReportStatus? = nil , newFileName: String? = nil) {
         
         if let reportStatus {

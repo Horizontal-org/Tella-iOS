@@ -261,23 +261,7 @@ extension TellaDataBase {
             return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
-    
-    func updateDropboxReportFolderId(idReport: Int, folderName: String) -> Result<Void, Error> {
-        do {
-            let valuesToUpdate = [KeyValue(key: D.cTitle, value: folderName),
-                                  KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())
-            ]
-            let reportCondition = [KeyValue(key: D.cReportId, value: idReport)]
-            
-            try statementBuilder.update(tableName: D.tDropboxReport, valuesToUpdate: valuesToUpdate, equalCondition: reportCondition)
-            
-            return .success
-        } catch let error {
-            debugLog(error)
-            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
-        }
-    }
-    
+
     /// DELETE
     func deleteDropboxReport(reportId: Int?) -> Result<Void, Error> {
         do {
