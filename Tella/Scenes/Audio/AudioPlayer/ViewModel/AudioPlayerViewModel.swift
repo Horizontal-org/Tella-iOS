@@ -42,10 +42,7 @@ class AudioPlayerViewModel: ObservableObject {
         }.store(in: &self.cancellable)
         
         audioPlayerManager.audioPlayer.audioPlayerDidFinishPlaying.sink { [self] value in
-            self.isPlaying = false
-            self.shouldDisableFastForwardButton = true
-            self.shouldDisableRewindBackButton = true
-            self.updateView()
+            self.onPausePlaying()
         }.store(in: &self.cancellable)
         audioPlayerManager.audioPlayer.duration.sink { value in
             self.timeDuration = value
@@ -77,14 +74,10 @@ class AudioPlayerViewModel: ObservableObject {
     
     func onPausePlaying() {
         self.isPlaying = false
-        
-        self.audioPlayerManager.pauseRecord()
-        
         shouldDisableFastForwardButton = true
         shouldDisableRewindBackButton = true
-
-
         self.updateView()
+        self.audioPlayerManager.pauseRecord()
     }
     
     func onStopPlaying() {
