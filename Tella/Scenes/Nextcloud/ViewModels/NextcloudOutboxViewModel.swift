@@ -184,7 +184,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         updateReport(reportStatus: .submissionError)
     }
     
-    func addChunks(uploadProgressInfo : NextcloudUploadProgressInfo) {
+    private func addChunks(uploadProgressInfo : NextcloudUploadProgressInfo) {
         
         self.reportViewModel.files = self.reportViewModel.files.compactMap { file in
             guard file.id == uploadProgressInfo.fileId else { return file }
@@ -198,7 +198,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         self.updateFile(file: currentFile)
     }
     
-    func removeChunks(uploadProgressInfo : NextcloudUploadProgressInfo) {
+    private func removeChunks(uploadProgressInfo : NextcloudUploadProgressInfo) {
         
         guard let chunkSent = uploadProgressInfo.chunkFileSent else { return }
         
@@ -223,28 +223,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         self.updateFile(file: currentFile)
         
     }
-    
-    override func updateCurrentFile(uploadProgressInfo : UploadProgressInfo) {
-        guard let uploadProgressInfo = uploadProgressInfo as? NextcloudUploadProgressInfo else  {
-            return
-        }
-        self.reportViewModel.files = self.reportViewModel.files.compactMap { file in
-            guard file.id == uploadProgressInfo.fileId else { return file }
-            
-            let updatedFile = file
-            updatedFile.bytesSent = uploadProgressInfo.bytesSent ?? 0
-            updatedFile.status = uploadProgressInfo.status
-            updatedFile.finishUploading = uploadProgressInfo.finishUploading
-            return updatedFile
-        }
-        
-        let filesAreNotfinishUploading = reportViewModel.files.filter({$0.finishUploading == false})
-        if uploadProgressInfo.status == .submissionError && filesAreNotfinishUploading.isEmpty {
-            reportViewModel.status = .submissionError
-            publishUpdates()
-        }
-    }
-    
+
     override func updateFile(file:ReportVaultFile) {
         guard let file = NextcloudReportFile(reportFile: file) else {return}
         let _ = mainAppModel.tellaData?.updateNextcloudReportFile(reportFile: file)

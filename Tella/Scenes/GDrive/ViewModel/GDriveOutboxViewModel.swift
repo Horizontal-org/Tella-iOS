@@ -177,17 +177,6 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         
         mainAppModel.tellaData?.updateDriveReportStatus(reportId: id, status: reportStatus)
     }
-    
-    override func updateCurrentFile(uploadProgressInfo : UploadProgressInfo) {
-        self.reportViewModel.files = self.reportViewModel.files.compactMap { file in
-            guard file.id == uploadProgressInfo.fileId else { return file }
-            
-            let updatedFile = file
-            updatedFile.bytesSent = uploadProgressInfo.bytesSent ?? 0
-            updatedFile.status = uploadProgressInfo.status
-            return updatedFile
-        }
-    }
 
     private func updateReportFolderId(folderId: String) {
         guard let id = reportViewModel.id else { return }

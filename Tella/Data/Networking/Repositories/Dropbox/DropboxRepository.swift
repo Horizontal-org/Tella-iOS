@@ -214,11 +214,11 @@ class DropboxRepository: DropboxRepositoryProtocol {
     }
     
     private func uploadFileInChunks(file: DropboxFileInfo,
-                                    folderName: String ) -> CurrentValueSubject<DropboxUploadProgressInfo,APIError>  {
+                                    folderName: String ) -> CurrentValueSubject<UploadProgressInfo,APIError>  {
         
-        let progressInfo = DropboxUploadProgressInfo(fileId: file.fileId, status: FileStatus.partialSubmitted)
+        let progressInfo = UploadProgressInfo(fileId: file.fileId, status: FileStatus.partialSubmitted)
         
-        let subject = CurrentValueSubject<DropboxUploadProgressInfo, APIError>(progressInfo)
+        let subject = CurrentValueSubject<UploadProgressInfo, APIError>(progressInfo)
         
         Task {
             
@@ -264,8 +264,8 @@ class DropboxRepository: DropboxRepositoryProtocol {
                                     folderName: String,
                                     data: Data,
                                     remainingBytes: Int64,
-                                    progressInfo: DropboxUploadProgressInfo,
-                                    subject: CurrentValueSubject<DropboxUploadProgressInfo, APIError>) async throws {
+                                    progressInfo: UploadProgressInfo,
+                                    subject: CurrentValueSubject<UploadProgressInfo, APIError>) async throws {
         
         guard let client = self.client else {
             progressInfo.error = APIError.noToken
@@ -302,8 +302,8 @@ class DropboxRepository: DropboxRepositoryProtocol {
     
     private func handleUploadError(error:Error,
                                    file: DropboxFileInfo,
-                                   progressInfo: DropboxUploadProgressInfo,
-                                   subject: CurrentValueSubject<DropboxUploadProgressInfo, APIError>) {
+                                   progressInfo: UploadProgressInfo,
+                                   subject: CurrentValueSubject<UploadProgressInfo, APIError>) {
         let dropboxError = error.getError()
         let apiError = APIError.dropboxApiError(dropboxError)
         

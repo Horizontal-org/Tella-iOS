@@ -80,32 +80,9 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         guard let currentReport else {return}
         _ = mainAppModel.tellaData?.updateDropboxReportWithoutFiles(report: currentReport)
     }
-    
-    override func updateCurrentFile(uploadProgressInfo: UploadProgressInfo) {
-        guard let dropboxProgressInfo = uploadProgressInfo as? DropboxUploadProgressInfo else {
-            return
-        }
-        
-        self.reportViewModel.files = self.reportViewModel.files.compactMap { file in
-            guard file.id == dropboxProgressInfo.fileId else { return file }
-            let updatedFile = file
-            if let bytesSent = dropboxProgressInfo.bytesSent {
-                updatedFile.bytesSent = bytesSent
-            }
-            updatedFile.status = dropboxProgressInfo.status
-            updatedFile.sessionId = dropboxProgressInfo.sessionId
-            updatedFile.finishUploading = dropboxProgressInfo.finishUploading
-            return updatedFile
-        }
-        
-        if let file = self.reportViewModel.files.first(where: { $0.id == dropboxProgressInfo.fileId }) {
-            self.updateFile(file: file)
-        }
-    }
-    
+
     override func updateFile(file: ReportVaultFile) {
         guard let dropboxFile = DropboxReportFile(reportFile: file) else { return }
-        
         mainAppModel.tellaData?.updateDropboxReportFile(file: dropboxFile)
     }
     

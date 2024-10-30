@@ -139,9 +139,28 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     }
     
     func updateCurrentFile(uploadProgressInfo : UploadProgressInfo) {
+
+        self.reportViewModel.files = self.reportViewModel.files.compactMap { file in
+            guard file.id == uploadProgressInfo.fileId else { return file }
+            
+            let updatedFile = file
+            if let bytesSent = uploadProgressInfo.bytesSent {
+                updatedFile.bytesSent = bytesSent
+            }
+            updatedFile.status = uploadProgressInfo.status
+            updatedFile.sessionId = uploadProgressInfo.sessionId
+            updatedFile.finishUploading = uploadProgressInfo.finishUploading
+            
+            return updatedFile
+        }
         
+        let filesAreNotfinishUploading = reportViewModel.files.filter({$0.finishUploading == false})
+        if uploadProgressInfo.status == .submissionError && filesAreNotfinishUploading.isEmpty {
+            reportViewModel.status = .submissionError
+            publishUpdates()
+        }
     }
-    
+
     func updateProgressInfos(uploadProgressInfo : UploadProgressInfo) {
         
         updateCurrentFile(uploadProgressInfo: uploadProgressInfo)
