@@ -73,7 +73,8 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 if result == .success {
                     continuation.resume()
                 } else {
-                    continuation.resume(throwing: APIError.nextcloudError(result.errorCode) )
+                    let error = APIError.convertNextcloudError(errorCode:result.errorCode)
+                    continuation.resume(throwing: error)
                 }
             }
         }
@@ -87,7 +88,8 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 if result == .success {
                     continuation.resume(returning: userProfile?.userId ?? "")
                 } else {
-                    continuation.resume(throwing: APIError.nextcloudError(result.errorCode))
+                    let error = APIError.convertNextcloudError(errorCode:result.errorCode)
+                    continuation.resume(throwing: error)
                 }
             }
         }
@@ -247,7 +249,8 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 if nkError == .success {
                     continuation.resume()
                 } else {
-                    continuation.resume(throwing: APIError.nextcloudError(nkError.errorCode))
+                    let error = APIError.convertNextcloudError(errorCode:nkError.errorCode)
+                    continuation.resume(throwing: error)
                 }
             })
         }
@@ -308,7 +311,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 progressInfo.status = error == .success ? .submitted : .submissionError
                 progressInfo.finishUploading = true
                 progressInfo.step = .finished
-                progressInfo.error = APIError.nextcloudError(error.errorCode)
+                progressInfo.error = APIError.convertNextcloudError(errorCode:error.errorCode)
                 subject.send(progressInfo)
                 self.uploadTasks.removeValue(forKey: metadata.fileId)
             }
@@ -353,7 +356,8 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 } else if error.errorCode == HTTPErrorCodes.notFound.rawValue {
                     continuation.resume(returning: false)
                 } else {
-                    continuation.resume(throwing: APIError.nextcloudError(error.errorCode))
+                    let error = APIError.convertNextcloudError(errorCode:error.errorCode)
+                    continuation.resume(throwing: error)
                 }
             }
         })

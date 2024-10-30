@@ -80,26 +80,10 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         guard let currentReport else {return}
         _ = mainAppModel.tellaData?.updateDropboxReportWithoutFiles(report: currentReport)
     }
-
+    
     override func updateFile(file: ReportVaultFile) {
         guard let dropboxFile = DropboxReportFile(reportFile: file) else { return }
         mainAppModel.tellaData?.updateDropboxReportFile(file: dropboxFile)
-    }
-    
-    private func handleSubmitReportCompletion(completion:Subscribers.Completion<APIError>) {
-        switch completion {
-        case .finished:
-            self.checkAllFilesAreUploaded()
-        case .failure(let error):
-            switch error {
-            case .noToken:
-                self.shouldShowLoginView = true
-            default:
-                self.toastMessage = error.errorMessage
-                self.shouldShowToast = true
-            }
-            self.updateReport(reportStatus: .submissionError)
-        }
     }
     
     private func processUploadReportResponse(response:DropboxUploadResponse) {
@@ -144,7 +128,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         
         mainAppModel.tellaData?.updateDropboxFolderId(reportId: id, folderName: name )
     }
-
+    
     override func updateReport(reportStatus: ReportStatus? = nil, remoteReportStatus: RemoteReportStatus? = nil , newFileName: String? = nil) {
         
         if let reportStatus {

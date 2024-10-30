@@ -129,5 +129,14 @@ extension APIError: LocalizedError {
         }
     }
     
+    static func convertNextcloudError(errorCode: HTTPCode) -> APIError {
+        if [NcHTTPErrorCodes.unauthorized.rawValue,
+            NcHTTPErrorCodes.ncUnauthorizedError.rawValue,
+            NcHTTPErrorCodes.ncTooManyRequests.rawValue].contains(errorCode) {
+            return .noToken
+        } else {
+            return .nextcloudError(errorCode)
+        }
+    }
 }
 

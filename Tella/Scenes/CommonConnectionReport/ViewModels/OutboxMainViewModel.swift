@@ -161,6 +161,22 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
         }
     }
     
+    func handleSubmitReportCompletion(completion:Subscribers.Completion<APIError>) {
+        switch completion {
+        case .finished:
+            self.checkAllFilesAreUploaded()
+        case .failure(let error):
+            switch error {
+            case .noToken:
+                self.shouldShowLoginView = true
+            default:
+                self.toastMessage = error.errorMessage
+                self.shouldShowToast = true
+            }
+            self.updateReport(reportStatus: .submissionError)
+        }
+    }
+    
     func checkAllFilesAreUploaded() {
         
         let filesAreNotfinishUploading = reportViewModel.files.filter({$0.finishUploading == false})
