@@ -11,7 +11,7 @@ import Foundation
 extension TimeInterval{
     
     /// - Returns: "00:23:46"
-    func toHHMMSSString() -> String {
+    func formattedAsHHMMSS() -> String {
         let time = NSInteger(self)
         let seconds = time % 60
         let minutes = (time / 60) % 60
@@ -22,7 +22,7 @@ extension TimeInterval{
     
     /// - Function to format time into MM:SS
     /// - Returns: "00:23"
-    func toHHMMString() -> String {
+    func formattedAsMMSS() -> String {
         let time = NSInteger(self)
         let minutesPart = Int(time) / 60
         let secondsPart = Int(time) % 60

@@ -230,7 +230,7 @@ private struct TrimAudioSliderView: View {
                         
                         self.gestureValue = CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width
                     }))
-                Text("\(TimeInterval(self.value).toHHMMString())")
+                Text("\(TimeInterval(self.value).formattedAsMMSS())")
                     .foregroundColor(Styles.Colors.yellow)
                     .font(.custom(Styles.Fonts.regularFontName, size: 12))
                     .offset(x: CGFloat((value - range.lowerBound) / (range.upperBound - range.lowerBound)) * geometry.size.width - kLabelOffset

@@ -44,7 +44,7 @@ class EditAudioViewModel: ObservableObject {
         self.shouldReloadVaultFiles = shouldReloadVaultFiles
         self.rootFile = rootFile
         self.audioPlayerViewModel.audioPlayerManager.audioPlayer.currentTime.sink { value in
-            self.currentTime = value.toHHMMSSString()
+            self.currentTime = value.formattedAsHHMMSS()
             self.updateOffset(time: Double(value) )
         }.store(in: &self.cancellable)
         self.audioPlayerViewModel.audioPlayerManager.audioPlayer.duration.sink { value in
@@ -141,7 +141,7 @@ class EditAudioViewModel: ObservableObject {
         
         for i in 0..<kNumberOfLabels {
             let currentTime = TimeInterval(i) * interval
-            times.append(currentTime.toHHMMString())
+            times.append(currentTime.formattedAsMMSS())
         }
         return times
     }

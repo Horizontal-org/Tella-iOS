@@ -34,11 +34,11 @@ class AudioPlayerViewModel: ObservableObject {
             self.currentData = self.mainAppModel.vaultManager.loadFileData(file: currentFile)
         }
         audioPlayerManager.audioPlayer.currentTime.sink { value in
-            self.currentTime = value.toHHMMSSString()
+            self.currentTime = value.formattedAsHHMMSS()
         }.store(in: &self.cancellable)
         
         audioPlayerManager.audioPlayer.duration.sink { value in
-            self.duration = value.toHHMMSSString()
+            self.duration = value.formattedAsHHMMSS()
         }.store(in: &self.cancellable)
         
         audioPlayerManager.audioPlayer.audioPlayerDidFinishPlaying.sink { [self] value in
