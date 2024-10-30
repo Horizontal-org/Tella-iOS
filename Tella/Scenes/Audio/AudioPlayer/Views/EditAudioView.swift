@@ -87,7 +87,7 @@ struct EditAudioView: View {
         TrimAudioSliderView(value: $editAudioViewModel.startTime,
                             range: 0...editAudioViewModel.timeDuration,
                             gestureValue: $leadingGestureValue,
-                            shouldLimitScrolling: $shouldStopLeftScroll)
+                            shouldLimitScrolling: $shouldStopLeftScroll, isRightSlider: false)
         .frame(height: 220)
         .offset(y: 20)
         .onReceive(editAudioViewModel.$startTime, perform: { value in
@@ -99,7 +99,7 @@ struct EditAudioView: View {
         TrimAudioSliderView(value: $editAudioViewModel.endTime,
                             range: 0...editAudioViewModel.timeDuration,
                             gestureValue: $trailingGestureValue,
-                            shouldLimitScrolling: $shouldStopRightScroll)
+                            shouldLimitScrolling: $shouldStopRightScroll, isRightSlider: true)
         .frame(height: 220)
         .offset(y:20)
         .onReceive(editAudioViewModel.$endTime, perform: { value in
