@@ -152,19 +152,9 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
             break
         }
     }
-    
-    // Check if all the files are submitted
-    
-    private func checkAllFilesAreUploaded() {
-        
-        let filesAreNotfinishUploading = reportViewModel.files.filter({$0.finishUploading == false})
-        let filesAreNotSubmitted = reportViewModel.files.filter({$0.status != .submitted})
-        
-        if (filesAreNotfinishUploading.isEmpty) && (filesAreNotSubmitted.isEmpty) {
-            updateReport(reportStatus: .submitted)
-            showSubmittedReport()
-            deleteChunksFiles()
-        }
+
+    override func deleteFilesAfterSubmission() {
+        deleteChunksFiles()
     }
     
     private func handleError(error:APIError) {
@@ -234,7 +224,9 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         _ = mainAppModel.tellaData?.updateNextcloudReportWithoutFiles(report: currentReport)
     }
     
-    func updateReport(reportStatus: ReportStatus? = nil, remoteReportStatus: RemoteReportStatus? = nil , newFileName: String? = nil) {
+    override func updateReport(reportStatus: ReportStatus? = nil,
+                               remoteReportStatus: RemoteReportStatus? = nil ,
+                               newFileName: String? = nil) {
         
         if let reportStatus {
             self.reportViewModel.status = reportStatus

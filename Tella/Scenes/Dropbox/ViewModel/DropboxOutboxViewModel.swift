@@ -144,24 +144,8 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         
         mainAppModel.tellaData?.updateDropboxFolderId(reportId: id, folderName: name )
     }
-    
-    private func checkAllFilesAreUploaded() {
-        let filesAreNotSubmitted = reportViewModel.files.filter({$0.status != .uploaded})
-        if (filesAreNotSubmitted.isEmpty) {
-            updateReport(reportStatus: .submitted)
-            showSubmittedReport()
-        }
-        
-        let filesAreNotfinishUploading = reportViewModel.files.filter({$0.finishUploading == false})
-        let submissionErrorFiles = reportViewModel.files.filter({$0.status == .submissionError})
-        
-        if !(submissionErrorFiles.isEmpty) && filesAreNotfinishUploading.isEmpty {
-            reportViewModel.status = .submissionError
-            publishUpdates()
-        }
-    }
-    
-    private func updateReport(reportStatus: ReportStatus? = nil, remoteReportStatus: RemoteReportStatus? = nil , newFileName: String? = nil) {
+
+    override func updateReport(reportStatus: ReportStatus? = nil, remoteReportStatus: RemoteReportStatus? = nil , newFileName: String? = nil) {
         
         if let reportStatus {
             self.reportViewModel.status = reportStatus
