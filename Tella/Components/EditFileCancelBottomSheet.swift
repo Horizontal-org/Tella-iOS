@@ -17,7 +17,9 @@ struct EditFileCancelBottomSheet: View {
             ConfirmBottomSheet(titleText: LocalizableVault.editFileConfirmExitTitle.localized,
                                msgText: LocalizableVault.editFileConfirmExitExpl.localized,
                                cancelText: LocalizableVault.editFileExitSheetAction.localized,
-                               actionText:LocalizableVault.renameFileSaveSheetAction.localized, didConfirmAction: {
+                               actionText:LocalizableVault.renameFileSaveSheetAction.localized,
+                               shouldHideSheet: false,
+                               didConfirmAction: {
                 saveAction()
             }, didCancelAction: {
                 self.dismiss()

@@ -96,7 +96,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
     }
     
     @objc func timerRunning() {
-        guard let time = audioPlayer?.currentTime else { return }
+        guard let time = audioPlayer?.currentTime, time != self.currentTime.value else { return }
         currentTime.send(time)
     }
 }

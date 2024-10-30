@@ -22,7 +22,6 @@ struct MoreFileActionButton: View {
     
     var file: VaultFileDB? = nil
     var moreButtonType : MoreButtonType
-    @State var isEditViewShown = false
     @State var fileData: Data?
     private var modalHeight : CGFloat {
         return CGFloat((fileListViewModel.fileActionItems.count * 50) + 90)
@@ -36,10 +35,6 @@ struct MoreFileActionButton: View {
                 listMoreButton.eraseToAnyView()
             }
             
-        }
-        .fullScreenCover(isPresented: $isEditViewShown) {
-        } content: {
-            redirectEditFile()
         }
     }
     
@@ -67,15 +62,13 @@ struct MoreFileActionButton: View {
         switch fileListViewModel.currentSelectedVaultFile?.tellaFileType {
         case .image:
             EditImageView(viewModel: EditImageViewModel( mainAppModel: appModel,
-                                                         fileListViewModel: fileListViewModel),
-                          isPresented: $isEditViewShown)
+                                                         fileListViewModel: fileListViewModel))
         case .audio:
             let audioPlayerViewModel = AudioPlayerViewModel(currentFile: fileListViewModel.currentSelectedVaultFile,
                                                             mainAppModel: appModel)
             EditAudioView(editAudioViewModel: EditAudioViewModel(audioPlayerViewModel: audioPlayerViewModel,
                                                                  shouldReloadVaultFiles:  $fileListViewModel.shouldReloadVaultFiles,
-                                                                 rootFile: fileListViewModel.rootFile),
-                          isPresented: $isEditViewShown)
+                                                                 rootFile: fileListViewModel.rootFile))
 
         default:  EmptyView()
         }
@@ -130,9 +123,16 @@ struct MoreFileActionButton: View {
                 showDeleteConfirmationSheet()
             }
         case .edit:
-            isEditViewShown = true
+            hideMenu()
+            editFileAction()
+            
         default:
             break
+        }
+    }
+    private func editFileAction() {
+        self.present(style: .fullScreen) {
+            self.redirectEditFile()
         }
     }
     

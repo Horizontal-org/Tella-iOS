@@ -15,7 +15,6 @@ struct EditAudioView: View {
     @EnvironmentObject var sheetManager: SheetManager
     
     @StateObject var editAudioViewModel: EditAudioViewModel
-    @Binding var isPresented : Bool
     @State var isBottomSheetShown : Bool = false
     let kTrimViewWidth = 340.0
     
@@ -39,6 +38,9 @@ struct EditAudioView: View {
         .onAppear {
             editAudioViewModel.onAppear()
             trailingGestureValue = kTrimViewWidth
+        }
+        .onDisappear {
+            editAudioViewModel.onDisappear()
         }
         .onReceive(editAudioViewModel.$trimState) { value in
             handleTrimState(value: value)
@@ -180,8 +182,7 @@ struct EditAudioView: View {
         if editAudioViewModel.isDurationHasChanged() {
             isBottomSheetShown = true
         }else  {
-            sheetManager.hide()
-            isPresented = false
+            self.dismiss()
         }
     }
     
@@ -189,8 +190,7 @@ struct EditAudioView: View {
         switch value {
         case .loaded(let isSaved):
             if isSaved {
-                self.isPresented = false
-                self.sheetManager.hide()
+                self.dismiss()
                 Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized)
             }
         case .error(let message):
@@ -278,7 +278,6 @@ struct EditAudioView_Previews: PreviewProvider {
     static var previews: some View {
         EditAudioView(editAudioViewModel: EditAudioViewModel(audioPlayerViewModel: AudioPlayerViewModel(currentFile: nil, mainAppModel: MainAppModel.stub()),
                                                              shouldReloadVaultFiles: nil,
-                                                             rootFile: nil),
-                      isPresented: .constant(true))
+                                                             rootFile: nil))
     }
 }
