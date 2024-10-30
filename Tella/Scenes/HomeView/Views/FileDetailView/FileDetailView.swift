@@ -30,10 +30,6 @@ struct FileDetailView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Styles.Colors.backgroundMain)
-        .fullScreenCover(isPresented: $isEditFilePresented) {
-        } content: {
-            redirectEditFile()
-        }
         .environmentObject(fileListViewModel)
         .onAppear(perform: {
             self.fileListViewModel.fileActionSource = .details
@@ -45,14 +41,12 @@ struct FileDetailView: View {
         switch viewModel.currentFile?.tellaFileType {
         case .image:
             EditImageView(viewModel: EditImageViewModel( mainAppModel: appModel,
-                                                         fileListViewModel: fileListViewModel),
-                          isPresented: $isEditFilePresented)
+                                                         fileListViewModel: fileListViewModel))
         case .audio:
             let audioPlayerViewModel = AudioPlayerViewModel(currentFile: viewModel.currentFile, mainAppModel: appModel)
             EditAudioView(editAudioViewModel: EditAudioViewModel(audioPlayerViewModel: audioPlayerViewModel,
                                                                  shouldReloadVaultFiles:  $fileListViewModel.shouldReloadVaultFiles,
-                                                                 rootFile: fileListViewModel.rootFile),
-                          isPresented: $isEditFilePresented)
+                                                                 rootFile: fileListViewModel.rootFile))
 
         default:  EmptyView()
         }
@@ -98,6 +92,9 @@ struct FileDetailView: View {
             Button {
                 //open edit view
                 isEditFilePresented = true
+                self.present(style: .fullScreen) {
+                    self.redirectEditFile()
+                }
             } label: {
                 Image("file.edit")
             }

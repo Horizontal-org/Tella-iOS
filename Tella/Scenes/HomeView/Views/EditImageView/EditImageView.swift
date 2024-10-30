@@ -12,7 +12,6 @@ struct EditImageView: View {
     
     @EnvironmentObject var sheetManager: SheetManager
     @StateObject var viewModel: EditImageViewModel
-    @Binding var isPresented : Bool
     @State var isBottomSheetShown : Bool = false
 
     var body: some View {
@@ -30,7 +29,6 @@ struct EditImageView: View {
     
     var imageCropperView : some View {
         ImageCropper(image: $viewModel.imageToEdit.wrappedValue) {
-            sheetManager.hide()
             handleSaveAction()
         } didCancelAction: {
             isBottomSheetShown = true
@@ -39,7 +37,7 @@ struct EditImageView: View {
     }
     private func handleSaveAction() {
         self.viewModel.saveChanges()
-        isPresented = false
+        self.dismiss()
         Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized)
     }
 }

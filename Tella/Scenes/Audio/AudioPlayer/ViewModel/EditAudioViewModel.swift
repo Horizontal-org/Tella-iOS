@@ -56,7 +56,7 @@ class EditAudioViewModel: ObservableObject {
             self.endTime = value
         }.store(in: &self.cancellable)
     }
-
+    
     
     func onAppear() {
         guard let fileExtension = audioPlayerViewModel.currentFile?.fileExtension else { return }
@@ -65,6 +65,10 @@ class EditAudioViewModel: ObservableObject {
         guard let url else { return }
         
         self.audioUrl = url
+    }
+    
+    func onDisappear() {
+        self.onPause()
     }
     
     func isDurationHasChanged() -> Bool {
@@ -154,7 +158,9 @@ class EditAudioViewModel: ObservableObject {
     private func updateOffset(time: Double) {
         let totalOffsetDistance: CGFloat = 340
         let progress = time / timeDuration
-        playingOffset = CGFloat(progress) * totalOffsetDistance
+        if !progress.isNaN {
+            playingOffset = CGFloat(progress) * totalOffsetDistance
+        }
     }
     
     
