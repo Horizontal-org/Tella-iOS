@@ -394,7 +394,7 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Vault_EditFile_Exit_SheetExpl" = "Các thay đổi của bạn chưa được lưu. Bạn có muốn lưu trước khi thoát không?";
 "Vault_EditFile_Exit_SheetAction" = "Thoát mà không lưu ";
 "Vault_MoreActions_Edit_SheetSelect" = "Chỉnh sửa";
-"Vault_EditFile_ImageSaved_Toast" = "Những thay đổi của bạn đã được lưu lại";
+"Vault_EditFile_FileSaved_Toast" = "Những thay đổi của bạn đã được lưu lại";
 "Vault_DeleteFile_Warning_SheetDescription" = "Some of the selected files are currently used in your connections. Deleting may impact forms and reports that haven’t been sent yet";
 "Vault_DeleteFile_Warning_SheetTitle" = "Cảnh báo";
 "Vault_DeleteFile_DeleteAnyway_SheetAction" = "Vẫn xóa";

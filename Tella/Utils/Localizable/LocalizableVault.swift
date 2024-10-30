@@ -9,7 +9,7 @@ enum LocalizableVault: String, LocalizableDelegate {
     case editFileConfirmExitTitle = "Vault_EditFile_Exit_SheetTitle"
     case editFileConfirmExitExpl = "Vault_EditFile_Exit_SheetExpl"
     case editFileExitSheetAction = "Vault_EditFile_Exit_SheetAction"
-    case editFileSavedToast = "Vault_EditFile_ImageSaved_Toast"
+    case editFileSavedToast = "Vault_EditFile_FileSaved_Toast"
     // Edit Audio
     case editAudioTitle = "Vault_EditAudio_Title"
     // Sort By

@@ -36,7 +36,7 @@
 "Vault_EditFile_Exit_SheetTitle" = "Unsaved changes";
 "Vault_EditFile_Exit_SheetExpl" = "Your changes have not been saved. Would you like to save before exiting?";
 "Vault_EditFile_Exit_SheetAction" = "EXIT WITHOUT SAVING";
-"Vault_EditFile_ImageSaved_Toast" = "Your changes have been saved.";
+"Vault_EditFile_FileSaved_Toast" = "Your changes have been saved.";
 "Home_TabBar" = "ماڵەوە";
 "Home_AppBar" = "تێلا";
 "Home_RecentFiles_Subhead" = "فایلەکانی ئەم دواییە";

@@ -394,7 +394,7 @@ Ces commentaires sont anonymes, alors assurez-vous d'inclure vos coordonnées si
 "Vault_EditFile_Exit_SheetExpl" = "Vos modifications n'ont pas été enregistrées. Souhaitez-vous sauvegarder avant de quitter ?";
 "Vault_EditFile_Exit_SheetAction" = "QUITTER SANS ENREGISTRER";
 "Vault_MoreActions_Edit_SheetSelect" = "Éditer";
-"Vault_EditFile_ImageSaved_Toast" = "Vos modifications ont été enregistrées.";
+"Vault_EditFile_FileSaved_Toast" = "Vos modifications ont été enregistrées.";
 "Vault_DeleteFile_Warning_SheetDescription" = "Certains des fichiers sélectionnés sont actuellement utilisés dans vos connexions. La suppression peut avoir un impact sur les formulaires et les rapports qui n'ont pas encore été envoyés";
 "Vault_DeleteFile_Warning_SheetTitle" = "Avertissement";
 "Vault_DeleteFile_DeleteAnyway_SheetAction" = "Supprimer quand même";
