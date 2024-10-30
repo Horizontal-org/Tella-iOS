@@ -99,7 +99,7 @@ class EditAudioViewModel: ObservableObject {
         
         // Generate the new filename and check if it exists
         var newFileName = baseName
-        while audioPlayerViewModel.mainAppModel.vaultFilesManager?.getVaultFile(name: newFileName) == true {
+        while audioPlayerViewModel.mainAppModel.vaultFilesManager?.vaultFileExists(name: newFileName) == true {
             copyNumber += 1
             newFileName = baseName + "-" + "\(copyNumber)"
         }
