@@ -43,6 +43,10 @@ class EditAudioViewModel: ObservableObject {
         self.audioPlayerViewModel = audioPlayerViewModel
         self.shouldReloadVaultFiles = shouldReloadVaultFiles
         self.rootFile = rootFile
+        listenToAudioPlayerUpdates()
+    }
+    
+    private func listenToAudioPlayerUpdates() {
         self.audioPlayerViewModel.audioPlayerManager.audioPlayer.currentTime.sink { value in
             self.currentTime = value.formattedAsHHMMSS()
             self.updateOffset(time: Double(value) )
@@ -52,6 +56,7 @@ class EditAudioViewModel: ObservableObject {
             self.endTime = value
         }.store(in: &self.cancellable)
     }
+
     
     func onAppear() {
         guard let fileExtension = audioPlayerViewModel.currentFile?.fileExtension else { return }
