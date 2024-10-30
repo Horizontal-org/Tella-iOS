@@ -104,6 +104,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 
                 if report.files.isEmpty {
                     subject.send(completion:.finished)
+                    return
                 }
                 
                 guard !shouldPause else { return }
@@ -257,9 +258,11 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 }
             }
             
-            progressInfo.status = .uploaded
-            progressInfo.finishUploading = true
-            subject.send(progressInfo)
+            if file.offset >= fileSize {
+                progressInfo.status = .uploaded
+                progressInfo.finishUploading = true
+                subject.send(progressInfo)
+            }
         }
         
         return subject
