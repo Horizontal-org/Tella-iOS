@@ -65,30 +65,36 @@ struct EditAudioView: View {
                     Rectangle().fill(Styles.Colors.yellow.opacity(0.16))
                         .offset(x: leadingGestureValue)
                         .frame(width: abs(leadingGestureValue - trailingGestureValue ), height: 180 )
-                    
-                    TrimAudioSliderView(value: $editAudioViewModel.startTime,
-                                        range: 0...editAudioViewModel.timeDuration,
-                                        gestureValue: $leadingGestureValue,
-                                        shouldLimitScrolling: $shouldStopLeftScroll)
-                    .frame(height: 220)
-                    .offset(y: 20)
-                    .onReceive(editAudioViewModel.$startTime, perform: { value in
-                        shouldStopLeftScroll = editAudioViewModel.startTime + editAudioViewModel.gapTime >= editAudioViewModel.endTime
-                    })
+                    leadingSliderView()
                 }.frame(maxWidth: kTrimViewWidth)
-                
-                TrimAudioSliderView(value: $editAudioViewModel.endTime,
-                                    range: 0...editAudioViewModel.timeDuration,
-                                    gestureValue: $trailingGestureValue,
-                                    shouldLimitScrolling: $shouldStopRightScroll)
-                .frame(height: 220)
-                .offset(y:20)
-                .onReceive(editAudioViewModel.$endTime, perform: { value in
-                    shouldStopRightScroll = editAudioViewModel.startTime + editAudioViewModel.gapTime >= editAudioViewModel.endTime
-                })
+                trailingSliderView()
             }
             
         }.frame(maxWidth: kTrimViewWidth)
+    }
+
+    private func leadingSliderView() -> some View {
+        TrimAudioSliderView(value: $editAudioViewModel.startTime,
+                            range: 0...editAudioViewModel.timeDuration,
+                            gestureValue: $leadingGestureValue,
+                            shouldLimitScrolling: $shouldStopLeftScroll)
+        .frame(height: 220)
+        .offset(y: 20)
+        .onReceive(editAudioViewModel.$startTime, perform: { value in
+            shouldStopLeftScroll = editAudioViewModel.startTime + editAudioViewModel.gapTime >= editAudioViewModel.endTime
+        })
+    }
+    
+    private func trailingSliderView() -> some View {
+        TrimAudioSliderView(value: $editAudioViewModel.endTime,
+                            range: 0...editAudioViewModel.timeDuration,
+                            gestureValue: $trailingGestureValue,
+                            shouldLimitScrolling: $shouldStopRightScroll)
+        .frame(height: 220)
+        .offset(y:20)
+        .onReceive(editAudioViewModel.$endTime, perform: { value in
+            shouldStopRightScroll = editAudioViewModel.startTime + editAudioViewModel.gapTime >= editAudioViewModel.endTime
+        })
     }
     
     var headerView: some View {
