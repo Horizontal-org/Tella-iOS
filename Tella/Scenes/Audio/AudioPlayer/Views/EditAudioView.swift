@@ -55,25 +55,32 @@ struct EditAudioView: View {
         VStack {
             ZStack(alignment: .trailing) {
                 ZStack(alignment: .leading) {
-                    // The image is for the soundwaves View
-                    Image("edit.audio.soundwaves")
-                        .resizable()
-                        .frame(height: 180)
-                        .background(Color.white.opacity(0.08))
                     // This image is for the playing view
+                    trimBackgroundView()
                     Image("edit.audio.play.line")
                         .frame(height: 220)
                         .offset(x: editAudioViewModel.playingOffset)
-                    // Adding a background yellow to indicate the trimmed part View
-                    Rectangle().fill(Styles.Colors.yellow.opacity(0.16))
-                        .offset(x: leadingGestureValue)
-                        .frame(width: abs(leadingGestureValue - trailingGestureValue ), height: 180 )
+
                     leadingSliderView()
                 }.frame(maxWidth: kTrimViewWidth)
                 trailingSliderView()
             }
             
         }.frame(maxWidth: kTrimViewWidth)
+    }
+    
+    private func trimBackgroundView() -> some View {
+        Group {
+            // The image is for the soundwaves View
+            Image("edit.audio.soundwaves")
+                .resizable()
+                .frame(height: 180)
+                .background(Color.white.opacity(0.08))
+            // Adding a background yellow to indicate the trimmed part View
+            Rectangle().fill(Styles.Colors.yellow.opacity(0.16))
+                .offset(x: leadingGestureValue)
+                .frame(width: abs(leadingGestureValue - trailingGestureValue ), height: 180 )
+        }
     }
 
     private func leadingSliderView() -> some View {
