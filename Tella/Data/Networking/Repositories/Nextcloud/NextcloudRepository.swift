@@ -33,7 +33,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     private let ktimeout = TimeInterval(60)
     
     private var subscribers = Set<AnyCancellable>()
-    private var uploadTasks: [String?:URLSessionTask] = [:]
+    private var uploadTask: Task<Void, Error>?
     private var shouldPause : Bool = false
     private let networkStatusSubject = PassthroughSubject<Bool, Never>()
     private let networkMonitor: NetworkMonitor
@@ -131,7 +131,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         
         shouldPause = false
         
-        Task {
+        uploadTask = Task {
             do {
                 guard self.networkMonitor.isConnected else {
                     subject.send(completion:.failure(.noInternetConnection))
@@ -298,7 +298,6 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
             } requestHandler: { request in
             } taskHandler: { task in
                 subject.send(progressInfo)
-                self.uploadTasks[metadata.fileId] = task
             } progressHandler: { totalBytesExpected, totalBytes, fractionCompleted in
                 progressInfo.bytesSent = Int(totalBytes)
                 progressInfo.step = .progress
@@ -313,7 +312,6 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 progressInfo.step = .finished
                 progressInfo.error = APIError.convertNextcloudError(errorCode:error.errorCode)
                 subject.send(progressInfo)
-                self.uploadTasks.removeValue(forKey: metadata.fileId)
             }
         }
         return subject
@@ -419,8 +417,6 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     
     func pauseAllUploads() {
         shouldPause = true
-        
-        uploadTasks.forEach { $0.value.cancel() }
-        uploadTasks.removeAll()
+        uploadTask?.cancel()
     }
 }
