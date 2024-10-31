@@ -21,7 +21,6 @@ struct EditImageView: View {
             } else {
                 ProgressView()
             }
-            EditFileCancelBottomSheet(isShown: $isBottomSheetShown, saveAction: { handleSaveAction() })
         }.onAppear {
             viewModel.loadFile()
         }
@@ -31,10 +30,17 @@ struct EditImageView: View {
         ImageCropper(image: $viewModel.imageToEdit.wrappedValue) {
             handleSaveAction()
         } didCancelAction: {
-            isBottomSheetShown = true
-        }  
+            cancelAction()
+        }
         .ignoresSafeArea()
     }
+    
+    private func cancelAction() {
+        isBottomSheetShown = true
+        let content = EditFileCancelBottomSheet( saveAction:  { handleSaveAction() })
+        self.showBottomSheetView(content: content , modalHeight: 171, isShown: $isBottomSheetShown)
+    }
+    
     private func handleSaveAction() {
         self.viewModel.saveChanges()
         self.dismiss()

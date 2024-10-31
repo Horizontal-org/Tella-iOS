@@ -8,12 +8,10 @@
 import SwiftUI
 
 struct EditFileCancelBottomSheet: View {
-    @EnvironmentObject var sheetManager: SheetManager
-    @Binding var isShown : Bool
+    
     var saveAction: ()->()
 
     var body: some View {
-        DragView(modalHeight: 171, isShown: $isShown) {
             ConfirmBottomSheet(titleText: LocalizableVault.editFileConfirmExitTitle.localized,
                                msgText: LocalizableVault.editFileConfirmExitExpl.localized,
                                cancelText: LocalizableVault.editFileExitSheetAction.localized,
@@ -24,7 +22,7 @@ struct EditFileCancelBottomSheet: View {
             }, didCancelAction: {
                 self.dismiss()
             })
-        }
     }
 }
+
 

@@ -12,7 +12,6 @@ import SwiftUI
 
 
 struct EditAudioView: View {
-    @EnvironmentObject var sheetManager: SheetManager
     
     @StateObject var editAudioViewModel: EditAudioViewModel
     @State var isBottomSheetShown : Bool = false
@@ -33,7 +32,6 @@ struct EditAudioView: View {
                 controlButtonsView
                 Spacer()
             }
-            EditFileCancelBottomSheet(isShown: $isBottomSheetShown, saveAction: { editAudioViewModel.trimAudio() })
         }
         .onAppear {
             editAudioViewModel.onAppear()
@@ -187,10 +185,16 @@ struct EditAudioView: View {
     private func closeView() {
         editAudioViewModel.isPlaying = false
         if editAudioViewModel.isDurationHasChanged() {
-            isBottomSheetShown = true
+            cancelAction()
         }else  {
             self.dismiss()
         }
+    }
+    
+    private func cancelAction() {
+        isBottomSheetShown = true
+        let content = EditFileCancelBottomSheet( saveAction:  { editAudioViewModel.trimAudio() })
+        self.showBottomSheetView(content: content, modalHeight: 171, isShown: $isBottomSheetShown)
     }
     
     private func handleTrimState(value:ViewModelState<Bool>) {
