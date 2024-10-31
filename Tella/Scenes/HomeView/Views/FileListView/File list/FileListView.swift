@@ -82,7 +82,7 @@ struct FileListView: View {
     }
     
     var fileDetailView: some View {
-        FileDetailView(appModel: appModel, currentFile: fileListViewModel.selectedFiles.first)
+        FileDetailsView(appModel: appModel, currentFile: fileListViewModel.selectedFiles.first)
             .environmentObject(fileListViewModel)
     }
     

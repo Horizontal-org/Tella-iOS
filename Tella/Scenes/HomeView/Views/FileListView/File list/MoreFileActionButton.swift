@@ -22,7 +22,6 @@ struct MoreFileActionButton: View {
     
     var file: VaultFileDB? = nil
     var moreButtonType : MoreButtonType
-    @State var isEditViewShown = false
     @State var fileData: Data?
     private var modalHeight : CGFloat {
         return CGFloat((fileListViewModel.fileActionItems.count * 50) + 90)
@@ -36,12 +35,6 @@ struct MoreFileActionButton: View {
                 listMoreButton.eraseToAnyView()
             }
             
-        }
-        .fullScreenCover(isPresented: $isEditViewShown) {
-        } content: {
-            EditImageView(viewModel: EditImageViewModel(mainAppModel: appModel,
-                                                        fileListViewModel: fileListViewModel),
-                          isPresented: $isEditViewShown)
         }
     }
     
@@ -64,7 +57,7 @@ struct MoreFileActionButton: View {
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -6, trailing: -12))
         }.frame(width: 35, height: 35)
     }
-    
+
     private func showFileActionSheet() {
         if let file = file {
             fileListViewModel.updateSingleSelection(for: file)
@@ -113,9 +106,36 @@ struct MoreFileActionButton: View {
                 showDeleteConfirmationSheet()
             }
         case .edit:
-            isEditViewShown = true
+            hideMenu()
+            editFileAction()
+            
         default:
             break
+        }
+    }
+    private func editFileAction() {
+        switch fileListViewModel.currentSelectedVaultFile?.tellaFileType {
+        case .image:
+            showEditImageView()
+        case .audio:
+            showEditAudioView()
+        default:  break
+        }
+    }
+    
+    private func showEditImageView() {
+        self.present(style: .fullScreen) {
+            EditImageView(viewModel: EditImageViewModel(fileListViewModel: fileListViewModel))
+        }
+    }
+    private func showEditAudioView() {
+        let viewModel = EditAudioViewModel(fileListViewModel: fileListViewModel)
+        if viewModel.timeDuration >= viewModel.gapTime {
+            self.present(style: .fullScreen) {
+                EditAudioView(editAudioViewModel: EditAudioViewModel(fileListViewModel: fileListViewModel))
+            }
+        }else {
+            Toast.displayToast(message: LocalizableVault.editAudioToastMsg.localized)
         }
     }
     

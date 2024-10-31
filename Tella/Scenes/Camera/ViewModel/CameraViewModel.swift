@@ -189,12 +189,12 @@ class CameraViewModel: ObservableObject {
     func invalidateTimerRunning() {
         self.timer.invalidate()
         currentTime = 0.0
-        self.formattedCurrentTime = currentTime.stringFromTimeInterval()
+        self.formattedCurrentTime = currentTime.formattedAsHHMMSS()
     }
     
     // MARK: - Private functions
     @objc private func timerRunning() {
         currentTime = currentTime + 1
-        self.formattedCurrentTime = currentTime.stringFromTimeInterval()
+        self.formattedCurrentTime = currentTime.formattedAsHHMMSS()
     }
 }
