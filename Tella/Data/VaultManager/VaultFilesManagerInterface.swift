@@ -12,7 +12,6 @@ protocol VaultFilesManagerInterface {
     func addFolderFile(name: String, parentId: String?) -> Result<Int,Error>?
     func getVaultFiles(parentId: String?, filter: FilterType, sort: FileSortOptions?) -> [VaultFileDB]
     func getVaultFile(id: String?) -> VaultFileDB?
-    func vaultFileExists(name: String) -> Bool
     func getVaultFiles(ids: [String]) -> [VaultFileDB]
     func getRecentVaultFiles() -> [VaultFileDB]
     func renameVaultFile(id: String?, name: String?) -> Result<Bool, Error>?

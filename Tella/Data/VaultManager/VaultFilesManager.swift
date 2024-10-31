@@ -324,10 +324,7 @@ class VaultFilesManager :ObservableObject, VaultFilesManagerInterface {
         
     }
     
-    func vaultFileExists(name: String) -> Bool {
-        return self.vaultDataBase.vaultFileExists(name: name)
-    }
-
+    
     func getVaultFile(id: String?) -> VaultFileDB? {
         return self.vaultDataBase.getVaultFile(id: id)
     }

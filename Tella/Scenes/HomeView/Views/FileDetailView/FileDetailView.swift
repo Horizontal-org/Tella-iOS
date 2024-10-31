@@ -5,13 +5,13 @@
 import SwiftUI
 import QuickLook
 
-struct FileDetailsView: View {
+struct FileDetailView: View {
     
     @EnvironmentObject var fileListViewModel: FileListViewModel
     @EnvironmentObject var appModel: MainAppModel
     
     @StateObject var viewModel : FileDetailsViewModel
-    @State private var isEditFilePresented = false
+    @State private var isEditImagePresent = false
     
     init(  appModel: MainAppModel, currentFile: VaultFileDB?) {
         _viewModel = StateObject(wrappedValue: FileDetailsViewModel(appModel: appModel, currentFile: currentFile))
@@ -30,38 +30,16 @@ struct FileDetailsView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Styles.Colors.backgroundMain)
+        .fullScreenCover(isPresented: $isEditImagePresent) {
+        } content: {
+            EditImageView(viewModel: EditImageViewModel( mainAppModel: appModel,
+                                                         fileListViewModel: fileListViewModel),
+                          isPresented: $isEditImagePresent)
+        }
         .environmentObject(fileListViewModel)
-        .ignoresSafeArea(edges: .bottom)
         .onAppear(perform: {
             self.fileListViewModel.fileActionSource = .details
         })
-    }
-    
-    private func editFileAction() {
-        switch fileListViewModel.currentSelectedVaultFile?.tellaFileType {
-        case .image:
-            showEditImageView()
-        case .audio:
-            showEditAudioView()
-        default:  break
-        }
-    }
-    
-    private func showEditImageView() {
-        self.present(style: .fullScreen) {
-            EditImageView(viewModel: EditImageViewModel(fileListViewModel: fileListViewModel))
-        }
-    }
-    
-    private func showEditAudioView() {
-        let viewModel = EditAudioViewModel(fileListViewModel: fileListViewModel)
-        if viewModel.timeDuration >= viewModel.gapTime {
-            self.present(style: .fullScreen) {
-                EditAudioView(editAudioViewModel: EditAudioViewModel(fileListViewModel: fileListViewModel))
-            }
-        }else {
-            Toast.displayToast(message: LocalizableVault.editAudioToastMsg.localized)
-        }
     }
     
     @ViewBuilder
@@ -73,8 +51,7 @@ struct FileDetailsView: View {
             if viewModel.documentIsReady {
                 switch viewModel.currentFile?.tellaFileType {
                 case .audio:
-                    let viewModel = AudioPlayerViewModel(currentData: viewModel.data)
-                    AudioPlayerView(viewModel: viewModel, isViewDisappeared: $isEditFilePresented)
+                    AudioPlayerView(currentData: viewModel.data)
                 case .image:
                     ImageViewer(imageData: viewModel.data)
                 case .folder:
@@ -99,11 +76,10 @@ struct FileDetailsView: View {
     
     @ViewBuilder
     func editView() -> some View {
-        if viewModel.shouldAddEditView {
+        if viewModel.currentFile?.tellaFileType == .image {
             Button {
                 //open edit view
-                isEditFilePresented = true
-                self.editFileAction()
+                isEditImagePresent = true
             } label: {
                 Image("file.edit")
             }

@@ -19,75 +19,79 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
     
     
     var playStatus = false
-    var audioPlayer: AVAudioPlayer?
+    var audioPlayer: AVAudioPlayer!
     private var timer = Timer()
     
-    var currentTime = CurrentValueSubject<TimeInterval, Never>(0.0)
-    var duration = CurrentValueSubject<TimeInterval, Never>(0.0)
-    var audioPlayerDidFinishPlaying = CurrentValueSubject<Bool, Never>(false)
+     var currentTime = CurrentValueSubject<TimeInterval, Never>(0.0)
+     var duration = CurrentValueSubject<TimeInterval, Never>(0.0)
+      var audioPlayerDidFinishPlaying = CurrentValueSubject<Bool, Never>(false)
     
     
     
     func initPlayer(audio: Data) {
-        
+
         do {
+
             audioPlayer = try AVAudioPlayer.init(data: audio)
-            audioPlayer?.delegate = self
-            audioPlayer?.currentTime = 0
-            duration.send(audioPlayer?.duration ?? 0)
+            audioPlayer.delegate = self
+            
+            audioPlayer.currentTime = 0
+            
+            duration.send(audioPlayer.duration)
+            
             initialiseTimerRunning()
         } catch  let error {
             debugLog(error.localizedDescription)
         }
     }
-    
+
     func startPlaying () {
         
-        audioPlayer?.play()
+        audioPlayer.play()
         playStatus = true
     }
-    
+  
     func pausePlayback() {
-        audioPlayer?.pause()
+        audioPlayer.pause()
         playStatus = false
     }
     
     func stopPlayback() {
-        audioPlayer?.stop()
+        audioPlayer.stop()
         playStatus = false
     }
-    
+
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         if flag {
             playStatus = false
             audioPlayerDidFinishPlaying.send(true)
         }
     }
-    
+
     func isPlaying() -> Bool {
         return playStatus
     }
-    
+
     func fastForwardRecord() {
         
-        guard var timeForward = audioPlayer?.currentTime, let duration = audioPlayer?.duration else { return }
+        var timeForward = audioPlayer.currentTime
         
         timeForward += 15.0
-        if (timeForward > duration) {
-            audioPlayer?.currentTime = duration
+        if (timeForward > audioPlayer.duration) {
+            audioPlayer.currentTime = audioPlayer.duration
         } else {
-            audioPlayer?.currentTime = timeForward
+            audioPlayer.currentTime = timeForward
         }
     }
     
     func rewindBackRecord() {
-        guard var timeBack = audioPlayer?.currentTime else { return }
+        var timeBack = audioPlayer.currentTime
         
         timeBack -= 15.0
         if (timeBack > 0) {
-            audioPlayer?.currentTime = timeBack
+            audioPlayer.currentTime = timeBack
         } else {
-            audioPlayer?.currentTime = 0
+            audioPlayer.currentTime = 0
         }
     }
     
@@ -96,7 +100,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
     }
     
     @objc func timerRunning() {
-        guard let time = audioPlayer?.currentTime, time != self.currentTime.value else { return }
-        currentTime.send(time)
+        currentTime.send(audioPlayer.currentTime)
     }
 }
