@@ -113,7 +113,8 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 if result == .success {
                     continuation.resume()
                 } else {
-                    continuation.resume(throwing: APIError.nextcloudError(result.errorCode))
+                    let error = APIError.convertNextcloudError(errorCode:result.errorCode)
+                    continuation.resume(throwing: error)
                 }
             }
         }
@@ -348,7 +349,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                                                  requestBody: NextcloudConstants.filesRequestBody.data(using: .utf8), account: "",
                                                  options: option) {
                 account, files, _, error in
-                
+                print(error.errorCode)
                 if error == .success, let _ = files.first {
                     continuation.resume(returning: true)
                 } else if error.errorCode == HTTPErrorCodes.notFound.rawValue {

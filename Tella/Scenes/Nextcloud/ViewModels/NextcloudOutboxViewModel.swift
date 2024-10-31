@@ -56,6 +56,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
                 let reportToSend = try await prepareReportToSend(server: server)
                 
                 nextcloudRepository.uploadReport(report: reportToSend)
+                    .receive(on: DispatchQueue.main)
                     .sink { completion in
                         
                         self.handleSubmitReportCompletion(completion: completion)

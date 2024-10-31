@@ -167,7 +167,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
             self.checkAllFilesAreUploaded()
         case .failure(let error):
             switch error {
-            case .noToken:
+            case .noToken, .tooManyRequests:
                 self.shouldShowLoginView = true
             default:
                 self.toastMessage = error.errorMessage
