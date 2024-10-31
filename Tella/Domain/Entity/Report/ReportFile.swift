@@ -4,6 +4,7 @@
 
 import Foundation
 
+
 class ReportFile : Hashable, Codable {
     
     var id : Int?

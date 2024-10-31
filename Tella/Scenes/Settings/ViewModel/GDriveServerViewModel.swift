@@ -18,6 +18,7 @@ class GDriveServerViewModel: ObservableObject {
     @Published var selectedDrive: SharedDrive? = nil
     @Published var sharedDriveState: ViewModelState<[SharedDrive]> = .loading
     @Published var isSharedDriveButtonValid: Bool = false
+    @Published var signInState: ViewModelState<Bool> = .loaded(false)
     
     init(repository: GDriveRepositoryProtocol, mainAppModel: MainAppModel) {
         self.mainAppModel = mainAppModel
@@ -72,5 +73,23 @@ class GDriveServerViewModel: ObservableObject {
     
     func handleSelectedDrive(drive: SharedDrive) -> Void {
         self.selectedDrive = drive
+    }
+    
+    // AUTH
+    func handleSignIn(completion: @escaping () -> Void) {
+        self.signInState = .loading
+        Task { @MainActor in
+            do {
+                try await gDriveRepository.handleSignIn()
+                self.signInState = .loaded(true)
+                completion()
+            } catch let error as APIError {
+                self.signInState = .error(error.errorMessage)
+            }
+        }
+    }
+
+    func handleUrl(url: URL) {
+        gDriveRepository.handleUrl(url: url)
     }
 }

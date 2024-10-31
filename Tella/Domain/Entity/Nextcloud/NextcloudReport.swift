@@ -11,7 +11,7 @@ import Foundation
 class NextcloudReport: BaseReport {
     
     var server: NextcloudServer?
-    var remoteReportStatus: RemoteReportStatus? = .unknown
+    var remoteReportStatus: RemoteReportStatus? = .initial
     
     enum CodingKeys: String, CodingKey {
         case remoteReportStatus = "c_remote_report_status"
@@ -25,7 +25,7 @@ class NextcloudReport: BaseReport {
          status: ReportStatus,
          server: NextcloudServer? = nil,
          vaultFiles: [NextcloudReportFile]? = nil,
-         remoteReportStatus: RemoteReportStatus = .unknown) {
+         remoteReportStatus: RemoteReportStatus = .initial) {
         
         super.init(id: id,
                    title: title,
@@ -49,7 +49,7 @@ class NextcloudReport: BaseReport {
     required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         if let status = try container.decodeIfPresent(Int.self, forKey: .remoteReportStatus) {
-            self.remoteReportStatus = RemoteReportStatus(rawValue: status) ?? RemoteReportStatus.unknown
+            self.remoteReportStatus = RemoteReportStatus(rawValue: status) ?? RemoteReportStatus.initial
         }
         try super.init(from: decoder)
     }

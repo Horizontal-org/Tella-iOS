@@ -72,20 +72,28 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     
     func initVaultFile(reportId: Int?) {}
     
+    func initSubmission() {
+        reportViewModel.status == .submissionScheduled ? self.submitReport() : self.pauseSubmission()
+    }
+    
     func processVaultFiles(reportFiles: [ReportFile]?) -> [ReportVaultFile] {
-        let vaultFileResult = mainAppModel.vaultFilesManager?.getVaultFiles(ids: reportFiles?.compactMap { $0.fileId } ?? [])
         
         var files: [ReportVaultFile] = []
+        let fileIds = reportFiles?.compactMap(\.fileId) ?? []
+        let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: fileIds)
         
-        reportFiles?.forEach { reportFile in
-            if let vaultFile = vaultFileResult?.first(where: { reportFile.fileId == $0.id }) {
-                let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
-                files.append(reportVaultFile)
+        reportFiles?.forEach({ reportFile in
+            guard
+                let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id})
+            else {
+                return
             }
-        }
-        
+            let reportVaultFile = ReportVaultFile(reportFile: reportFile, vaultFile: vaultFile)
+            files.append(reportVaultFile)
+        })
         return files
     }
+    
     func initializeProgressionInfos() {
         
         let totalSize = self.reportViewModel.files.reduce(0) { $0 + ($1.size) }
@@ -132,6 +140,60 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     
     func updateCurrentFile(uploadProgressInfo : UploadProgressInfo) {
         
+        self.reportViewModel.files = self.reportViewModel.files.compactMap { file in
+            guard file.id == uploadProgressInfo.fileId else { return file }
+            
+            let updatedFile = file
+            if let bytesSent = uploadProgressInfo.bytesSent {
+                updatedFile.bytesSent = bytesSent
+            }
+            updatedFile.status = uploadProgressInfo.status
+            updatedFile.sessionId = uploadProgressInfo.sessionId
+            updatedFile.finishUploading = uploadProgressInfo.finishUploading
+            
+            return updatedFile
+        }
+        
+        let filesAreNotfinishUploading = reportViewModel.files.filter({$0.finishUploading == false})
+        if uploadProgressInfo.status == .submissionError && filesAreNotfinishUploading.isEmpty {
+            reportViewModel.status = .submissionError
+            publishUpdates()
+        }
+    }
+    
+    func handleSubmitReportCompletion(completion:Subscribers.Completion<APIError>) {
+        switch completion {
+        case .finished:
+            self.checkAllFilesAreUploaded()
+        case .failure(let error):
+            switch error {
+            case .noToken:
+                self.shouldShowLoginView = true
+            default:
+                self.toastMessage = error.errorMessage
+                self.shouldShowToast = true
+            }
+            self.updateReport(reportStatus: .submissionError)
+        }
+    }
+    
+    func checkAllFilesAreUploaded() {
+        
+        let filesAreNotfinishUploading = reportViewModel.files.filter({$0.finishUploading == false})
+        let filesAreNotSubmitted = reportViewModel.files.filter({$0.status != .submitted})
+        if (filesAreNotfinishUploading.isEmpty) && (filesAreNotSubmitted.isEmpty) {
+            
+            updateReport(reportStatus: .submitted)
+            showSubmittedReport()
+            deleteFilesAfterSubmission()
+        }
+        
+        let submissionErrorFiles = reportViewModel.files.filter({$0.status == .submissionError})
+        
+        if !(submissionErrorFiles.isEmpty) && filesAreNotfinishUploading.isEmpty {
+            reportViewModel.status = .submissionError
+            publishUpdates()
+        }
     }
     
     func updateProgressInfos(uploadProgressInfo : UploadProgressInfo) {
@@ -182,16 +244,25 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
         }
     }
     
-    func handleDeleteReport(deleteResult:Bool) {
-        if deleteResult {
+    func handleDeleteReport(deleteResult:Result<Void,Error>) {
+        
+        switch deleteResult {
+        case .success:
             toastMessage = String(format: LocalizableReport.reportDeletedToast.localized, reportViewModel.title)
             pauseSubmission()
             showMainView()
-        } else {
-            toastMessage = LocalizableCommon.commonError.localized
+        case .failure(let error):
+            toastMessage = error.localizedDescription
         }
-        
         shouldShowToast = true
+    }
+    
+    func updateReport(reportStatus: ReportStatus? = nil,
+                      remoteReportStatus: RemoteReportStatus? = nil ,
+                      newFileName: String? = nil) {
+    }
+    
+    func deleteFilesAfterSubmission() {
     }
     
     // MARK: Update Local database

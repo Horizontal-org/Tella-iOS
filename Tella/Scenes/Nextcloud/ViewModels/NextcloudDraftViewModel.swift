@@ -82,13 +82,15 @@ class NextcloudDraftViewModel: DraftMainViewModel {
     private func updateReport(report: NextcloudReport) {
         
         let updatedReportResult = mainAppModel.tellaData?.updateNextcloudReport(report: report)
-        
-        guard let updatedReportResult, updatedReportResult else {
+
+        switch updatedReportResult {
+        case .success:
+            self.successSavingReport = true
+        case.failure:
             self.failureSavingReport = true
-            return
+        default:
+            break
         }
-        self.successSavingReport = true
-        
     }
     
     private func getServer() {

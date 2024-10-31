@@ -38,6 +38,7 @@ struct TellaWebServerLoginView: View {
                                       fieldType: .username,
                                       placeholder : "Username",
                                       shouldShowTitle: true)
+                        .frame(height: 65)
 
                         Spacer()
                             .frame(height: 13)
@@ -49,6 +50,7 @@ struct TellaWebServerLoginView: View {
                                       fieldType: .password,
                                       placeholder : "Password",
                                       shouldShowTitle: true)
+                        .frame(height: 65)
 
                         Spacer()
                             .frame(height: 32)

@@ -55,5 +55,17 @@ class ReportViewModel<T: Server> {
         self.apiID = nil
         self.remoteReportStatus = report.remoteReportStatus
     }
+    
+    init(report: DropboxReport, files: [ReportVaultFile])where T == DropboxServer {
+        self.id = report.id
+        self.title = report.title ?? ""
+        self.description = report.description ?? ""
+        self.files = files
+        self.reportFiles = report.reportFiles ?? []
+        self.server = report.server
+        self.status = report.status
+        self.apiID = nil
+        self.remoteReportStatus = report.remoteReportStatus
+    }
 }
 

@@ -9,6 +9,7 @@ enum ServerConnectionType: Codable {
     case uwazi
     case gDrive
     case nextcloud
+    case dropbox
 
 }
 
@@ -21,6 +22,8 @@ extension ServerConnectionType {
             return LocalizableSettings.settServerReportsSuccessMessage.localized
         case .nextcloud:
             return LocalizableSettings.nextcloudSuccessMessage.localized
+        case.dropbox:
+            return LocalizableSettings.settServerDropboxSuccessMessage.localized
         default:
             return ""
         }
@@ -34,6 +37,8 @@ extension ServerConnectionType {
             LocalizableSettings.settServerUwazi.localized
         case .nextcloud:
             LocalizableSettings.settServerNextCloud.localized
+        case .dropbox:
+            LocalizableSettings.settServerDropbox.localized
         default:
             ""
         }
@@ -49,6 +54,8 @@ extension ServerConnectionType {
             return "reports.report"
         case .nextcloud:
             return "nextcloud.icon"
+        case .dropbox:
+            return "dropbox.icon"
         }
     }
 }

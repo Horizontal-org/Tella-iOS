@@ -136,6 +136,9 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case nextcloudCreatePersonalFolderDesc = "Setting_Server_Nextcloud_Create_Personal_Desc"    
     case settCreateFolderPlaceholder = "Setting_Server_Foldername_Placeholder"
     case settCreateFolderTitle = "Setting_Server_Create_Folder_Title"
+    case settCreateFolderError = "Setting_Server_Create_Folder_Error"
+
+    
     // About & Help
     
     case settAboutAppBar = "Settings_SettAbout_AppBar"
@@ -162,6 +165,10 @@ enum LocalizableSettings: String, LocalizableDelegate {
     
     // Reports
     case settServerReportsSuccessMessage = "Setting_Server_Reports_Success_Message"
+    
+    //Dropbox
+    case settServerDropboxSuccessMessage = "Settings_Server_Dropbox_Success_Message"
+    case settServerDropbox = "Setting_SettServer_Dropbox"
  }
 
 

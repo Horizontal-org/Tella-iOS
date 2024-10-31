@@ -24,78 +24,61 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
          reportId : Int?,
          repository: NextcloudRepositoryProtocol) {
         
-        self.nextcloudRepository = repository //NextcloudReportViewModel
+        self.nextcloudRepository = repository
         
         super.init(reportsViewModel: reportsViewModel, reportId: reportId)
         
-        if reportViewModel.status == .submissionScheduled {
-            self.submitReport()
-        } else {
-            self.updateReport(reportStatus: .submissionPaused)
-        }
+        self.initSubmission()
     }
     
     override func initVaultFile(reportId: Int?) {
-        if let reportId, let report = self.mainAppModel.tellaData?.getNextcloudReport(id: reportId) {
-            
-            currentReport = report
-            let vaultFileResult  = mainAppModel.vaultFilesManager?.getVaultFiles(ids: report.reportFiles?.compactMap{$0.fileId} ?? [])
-            
-            var files: [ReportVaultFile] = []
-            
-            report.reportFiles?.forEach({ reportFile in
-                guard let vaultFile = vaultFileResult?.first(where: {reportFile.fileId == $0.id}),
-                      let nextcloudReportFile = reportFile as? NextcloudReportFile else { return}
-                let reportVaultFile = ReportVaultFile(reportFile: nextcloudReportFile, vaultFile: vaultFile)
-                files.append(reportVaultFile)
-            })
-            
-            self.reportViewModel = ReportViewModel(report: report, files: files)
-            
+        
+        guard
+            let reportId,
+            let report = self.mainAppModel.tellaData?.getNextcloudReport(id: reportId)
+        else {
+            return
         }
+        currentReport = report
+        let files = processVaultFiles(reportFiles: report.reportFiles)
+        self.reportViewModel = ReportViewModel(report: report, files: files)
     }
     
     override func submitReport() {
-        performSubmission()
-    }
-    
-    func performSubmission() {
         
-        do {
-            
-            let server = try NextcloudServerModel(server: currentReport?.server)
-
-            self.updateReport(reportStatus: .submissionInProgress)
-            
-            let reportToSend = try prepareReportToSend(server: server)
-
-            nextcloudRepository.uploadReport(report: reportToSend)
-                .sink { completion in
-                    switch completion {
-                    case .finished:
-                        self.checkAllFilesAreUploaded()
-                    case .failure(let error):
-                        self.handleError(error: error)
-                    }
-                } receiveValue: { response in
-                    self.processUploadReportResponse(response:response)
-                }.store(in: &subscribers)
-            
-            
-        } catch let error {
-            if let error = error as? RuntimeError {
-                self.toastMessage = error.message
-                self.shouldShowToast = true
+        Task {
+            do {
+                
+                let server = try NextcloudServerModel(server: currentReport?.server)
+                
+                self.updateReport(reportStatus: .submissionInProgress)
+                
+                let reportToSend = try await prepareReportToSend(server: server)
+                
+                nextcloudRepository.uploadReport(report: reportToSend)
+                    .sink { completion in
+                        
+                        self.handleSubmitReportCompletion(completion: completion)
+                        
+                    } receiveValue: { response in
+                        self.processUploadReportResponse(response:response)
+                    }.store(in: &subscribers)
+                
+            } catch let error {
+                if let error = error as? RuntimeError {
+                    self.toastMessage = error.message
+                    self.shouldShowToast = true
+                }
             }
         }
     }
     
-    private func prepareReportToSend(server:NextcloudServerModel) throws -> NextcloudReportToSend {
-       
+    private func prepareReportToSend(server:NextcloudServerModel) async throws -> NextcloudReportToSend {
+        
         let files = reportViewModel.files.filter({ $0.status != .submitted})
         
-        _ = files.compactMap { file in
-            file.url = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file, withSubFolder: true)
+        for file in files {
+            file.url =  await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: file, withSubFolder: true)
         }
         
         let remoteFolderName = self.reportViewModel.title.removeForbiddenCharacters()
@@ -116,7 +99,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
             
             return  NextcloudMetadata(fileId: file.id,
                                       directory: directory,
-                                      fileName: fileName, 
+                                      fileName: fileName,
                                       fileSize: file.size,
                                       remoteFolderName: remoteFolderName,
                                       serverURL: server.url,
@@ -126,7 +109,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         
         return NextcloudReportToSend(folderName: remoteFolderName,
                                      descriptionFileUrl: reportViewModel.descriptionFileUrl,
-                                     remoteReportStatus: currentReport?.remoteReportStatus ?? .unknown,
+                                     remoteReportStatus: currentReport?.remoteReportStatus ?? .initial,
                                      files: filesToSend,
                                      server: server)
     }
@@ -166,38 +149,11 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         }
     }
     
-    // Check if all the files are submitted
-    
-    private func checkAllFilesAreUploaded() {
-        
-        let filesAreNotfinishUploading = reportViewModel.files.filter({$0.finishUploading == false})
-        let filesAreNotSubmitted = reportViewModel.files.filter({$0.status != .submitted})
-        
-        if (filesAreNotfinishUploading.isEmpty) && (filesAreNotSubmitted.isEmpty) {
-            updateReport(reportStatus: .submitted)
-            showSubmittedReport()
-            deleteChunksFiles()
-        }
+    override func deleteFilesAfterSubmission() {
+        deleteChunksFiles()
     }
     
-    private func handleError(error:APIError) {
-        DispatchQueue.main.async {
-            switch error {
-            case .nextcloudError(NcHTTPErrorCodes.unauthorized.rawValue),
-                    .nextcloudError(NcHTTPErrorCodes.ncUnauthorizedError.rawValue),
-                    .nextcloudError(NcHTTPErrorCodes.ncTooManyRequests.rawValue):
-                self.shouldShowLoginView = true
-                
-            default:
-                self.toastMessage = error.errorMessage
-                self.shouldShowToast = true
-            }
-        }
-        
-        updateReport(reportStatus: .submissionError)
-    }
-    
-    func addChunks(uploadProgressInfo : NextcloudUploadProgressInfo) {
+    private func addChunks(uploadProgressInfo : NextcloudUploadProgressInfo) {
         
         self.reportViewModel.files = self.reportViewModel.files.compactMap { file in
             guard file.id == uploadProgressInfo.fileId else { return file }
@@ -211,7 +167,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         self.updateFile(file: currentFile)
     }
     
-    func removeChunks(uploadProgressInfo : NextcloudUploadProgressInfo) {
+    private func removeChunks(uploadProgressInfo : NextcloudUploadProgressInfo) {
         
         guard let chunkSent = uploadProgressInfo.chunkFileSent else { return }
         
@@ -237,27 +193,6 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         
     }
     
-    override func updateCurrentFile(uploadProgressInfo : UploadProgressInfo) {
-        guard let uploadProgressInfo = uploadProgressInfo as? NextcloudUploadProgressInfo else  {
-            return
-        }
-        self.reportViewModel.files = self.reportViewModel.files.compactMap { file in
-            guard file.id == uploadProgressInfo.fileId else { return file }
-            
-            let updatedFile = file
-            updatedFile.bytesSent = uploadProgressInfo.bytesSent ?? 0
-            updatedFile.status = uploadProgressInfo.status
-            updatedFile.finishUploading = uploadProgressInfo.finishUploading
-            return updatedFile
-        }
-        
-        let filesAreNotfinishUploading = reportViewModel.files.filter({$0.finishUploading == false})
-        if uploadProgressInfo.status == .submissionError && filesAreNotfinishUploading.isEmpty {
-            reportViewModel.status = .submissionError
-            publishUpdates()
-        }
-    }
-    
     override func updateFile(file:ReportVaultFile) {
         guard let file = NextcloudReportFile(reportFile: file) else {return}
         let _ = mainAppModel.tellaData?.updateNextcloudReportFile(reportFile: file)
@@ -268,7 +203,9 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         _ = mainAppModel.tellaData?.updateNextcloudReportWithoutFiles(report: currentReport)
     }
     
-    func updateReport(reportStatus: ReportStatus? = nil, remoteReportStatus: RemoteReportStatus? = nil , newFileName: String? = nil) {
+    override func updateReport(reportStatus: ReportStatus? = nil,
+                               remoteReportStatus: RemoteReportStatus? = nil ,
+                               newFileName: String? = nil) {
         
         if let reportStatus {
             self.reportViewModel.status = reportStatus
@@ -301,8 +238,12 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
     }
     
     override func deleteReport() {
-        let deleteResult = mainAppModel.tellaData?.deleteNextcloudReport(reportId: reportViewModel.id)
-        handleDeleteReport(deleteResult: deleteResult ?? false)
+        guard
+            let deleteResult = mainAppModel.tellaData?.deleteNextcloudReport(reportId: reportViewModel.id)
+        else {
+            return
+        }
+        handleDeleteReport(deleteResult: deleteResult)
     }
     
     func deleteChunksFiles() {

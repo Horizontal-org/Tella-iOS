@@ -18,8 +18,16 @@ class ServersViewModel: ObservableObject {
 
     private var subscribers = Set<AnyCancellable>()
     
-    init(mainAppModel : MainAppModel) {
+    let gDriveRepository : GDriveRepositoryProtocol
+    let dropboxRepository : DropboxRepositoryProtocol
+
+    init(mainAppModel : MainAppModel,
+         gDriveRepository : GDriveRepositoryProtocol = GDriveRepository(),
+         dropboxRepository : DropboxRepositoryProtocol = DropboxRepository()) {
         
+        self.gDriveRepository = gDriveRepository
+        self.dropboxRepository = dropboxRepository
+
         self.mainAppModel = mainAppModel
         
         self.getServers()
@@ -30,6 +38,7 @@ class ServersViewModel: ObservableObject {
                 self.getServers()
             }
         }.store(in: &subscribers)
+        
     }
     
     func getServers() {
@@ -42,6 +51,16 @@ class ServersViewModel: ObservableObject {
         guard let server = self.currentServer else { return }
         
         mainAppModel.tellaData?.deleteServer(server: server)
+        
+        switch (server.serverType) {
+        case .gDrive:
+            gDriveRepository.signOut()
+        case .nextcloud:
+            dropboxRepository.signOut()
+        default:
+            break
+        }
+
     }
     
     func deleteAllServersConnection() {

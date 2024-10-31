@@ -46,17 +46,19 @@ extension TellaDataBase {
         }
     }
     
-    func deleteGDriveServer(serverId: Int) {
+    func deleteGDriveServer(serverId: Int) -> Result<Void,Error> {
         do {
             try statementBuilder.delete(tableName: D.tGDriveServer,
                                         primarykeyValue: [KeyValue(key: D.cServerId, value: serverId)])
             try statementBuilder.deleteAll(tableNames: [D.tGDriveReport, D.tGDriveInstanceVaultFile])
+            return .success
         } catch let error {
             debugLog(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
-    
 }
+
 // GDrive Reports
 extension TellaDataBase {
     func createGDriveReportTable() {
@@ -111,7 +113,7 @@ extension TellaDataBase {
         }
     }
     
-    func updateDriveReport(report: GDriveReport) -> Result<Bool, Error> {
+    func updateDriveReport(report: GDriveReport) -> Result<Void, Error> {
         do {
             
             let reportDict = report.dictionary
@@ -127,16 +129,16 @@ extension TellaDataBase {
             if let files = report.reportFiles, let reportId = report.id {
                 let _ = try updateDriveReportFiles(files: files, reportId: reportId)
             }
-            return .success(true)
+            return .success
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
-    func updateDriveReportFiles(files: [ReportFile], reportId: Int) -> Result<Bool, Error> {
+    func updateDriveReportFiles(files: [ReportFile], reportId: Int) -> Result<Void, Error> {
         do {
-            try deleteDriveReportFiles(reportId: reportId)
+            try deleteDriveReportFiles(reportIds: [reportId])
             
             try files.forEach( { reportFiles in
                 let reportFilesDict = reportFiles.dictionary
@@ -145,13 +147,32 @@ extension TellaDataBase {
                 try statementBuilder.insertInto(tableName: D.tGDriveInstanceVaultFile, keyValue: reportFilesValuesToAdd)
             })
             
-            return .success(true)
+            return .success
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
-    
+
+    func updateDriveFile(reportFile: ReportFile) -> Result<Void,Error> {
+        do {
+            
+            let reportFileDictionary = reportFile.dictionary
+            let valuesToUpdate = reportFileDictionary.compactMap({KeyValue(key: $0.key, value: $0.value)})
+            
+            let reportFileCondition = [KeyValue(key: D.cId, value: reportFile.id)]
+            
+            try statementBuilder.update(tableName: D.tGDriveInstanceVaultFile,
+                                        valuesToUpdate: valuesToUpdate,
+                                        equalCondition: reportFileCondition)
+            
+            return .success
+        } catch let error {
+            debugLog(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
+        }
+    }
+
     func getDriveReports(reportStatus: [ReportStatus]) -> [GDriveReport] {
         do {
             
@@ -215,29 +236,48 @@ extension TellaDataBase {
         }
     }
     
-    func deleteDriveReport(reportId: Int?) -> Result<Bool, Error> {
+    func deleteDriveReport(reportId: Int?) -> Result<Void, Error> {
         do {
             let reportCondition = [KeyValue(key: D.cReportId, value: reportId)]
             
             try statementBuilder.delete(tableName: D.tGDriveReport, primarykeyValue: reportCondition)
             
             // delete files
-            try deleteDriveReportFiles(reportId: reportId)
+            try deleteDriveReportFiles(reportIds: [reportId])
             
-            return .success(true)
+            return .success
         } catch let error {
             debugLog(error)
-            
-            return .failure(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
-    func deleteDriveReportFiles(reportId: Int?) throws {
-        let fileCondition = [KeyValue(key: D.cReportInstanceId, value: reportId)]
-        try statementBuilder.delete(tableName: D.tGDriveInstanceVaultFile, primarykeyValue: fileCondition)
-    }
     
-    func updateDriveReportStatus(idReport: Int, status: ReportStatus) -> Result<Bool, Error> {
+    func deleteDriveSubmittedReports() -> Result<Void,Error> {
+        do {
+            let submittedReports = self.getDriveReports(reportStatus: [.submitted])
+            let reportIds = submittedReports.compactMap{$0.id}
+            try deleteDriveReportFiles(reportIds: reportIds)
+            
+            let reportCondition = [KeyValue(key: D.cStatus, value: ReportStatus.submitted.rawValue)]
+            try statementBuilder.delete(tableName: D.tGDriveReport,
+                                        primarykeyValue: reportCondition)
+            return .success
+            
+        } catch let error {
+            debugLog(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
+        }
+    }
+
+    private func deleteDriveReportFiles(reportIds:[Int?]) throws {
+        let reportIds = reportIds.compactMap{$0}
+        let reportFilesCondition = [KeyValues(key: D.cReportInstanceId, value: reportIds)]
+        try statementBuilder.delete(tableName: D.tGDriveInstanceVaultFile,
+                                    inCondition: reportFilesCondition)
+    }
+
+    func updateDriveReportStatus(idReport: Int, status: ReportStatus) -> Result<Void, Error> {
         do {
             let valuesToUpdate = [KeyValue(key: D.cStatus, value: status.rawValue),
                                   KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())
@@ -247,14 +287,14 @@ extension TellaDataBase {
             
             try statementBuilder.update(tableName: D.tGDriveReport, valuesToUpdate: valuesToUpdate, equalCondition: reportCondition)
             
-            return .success(true)
+            return .success
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
-    func updateDriveReportFolderId(idReport: Int, folderId: String) -> Result<Bool, Error> {
+    func updateDriveReportFolderId(idReport: Int, folderId: String) -> Result<Void, Error> {
         do {
             let valuesToUpdate = [KeyValue(key: D.cFolderId, value: folderId),
                                   KeyValue(key: D.cUpdatedDate, value: Date().getDateDouble())
@@ -263,10 +303,10 @@ extension TellaDataBase {
             
             try statementBuilder.update(tableName: D.tGDriveReport, valuesToUpdate: valuesToUpdate, equalCondition: reportCondition)
             
-            return .success(true)
+            return .success
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
 }

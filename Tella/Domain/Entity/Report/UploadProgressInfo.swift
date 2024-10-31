@@ -18,7 +18,9 @@ class UploadProgressInfo {
     var isOnBackground: Bool = false
     var error: APIError?
     var reportStatus: ReportStatus?
-    
+    var finishUploading : Bool = false
+    var sessionId: String?
+
     init(fileId: String? = nil, status: FileStatus) {
         self.fileId = fileId
         self.status = status
@@ -29,7 +31,8 @@ class UploadProgressInfo {
          fileId: String? = nil,
          status: FileStatus,
          error: APIError? = nil,
-         reportStatus: ReportStatus? = nil) {
+         reportStatus: ReportStatus? = nil,
+         sessionId: String? = nil) {
         
         self.bytesSent = bytesSent
         self.fileId = fileId
@@ -37,5 +40,7 @@ class UploadProgressInfo {
         self.status = status
         self.reportStatus = reportStatus
         self.current = current
+        self.sessionId = sessionId
+
     }
 }

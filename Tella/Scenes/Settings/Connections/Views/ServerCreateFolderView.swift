@@ -49,12 +49,12 @@ struct ServerCreateFolderView: View {
                       isValid: $isValid,
                       shouldShowError: $createFolderViewModel.shouldShowError,
                       errorMessage: createFolderViewModel.errorMessage,
-                      fieldType: .text,
-                      placeholder: LocalizableSettings.settCreateFolderPlaceholder.localized)
+                      validationErrorMessage: LocalizableSettings.settCreateFolderError.localized,
+                      fieldType: .folderName,
+                      placeholder: LocalizableSettings.settCreateFolderPlaceholder.localized,
+                      shouldValidateOnChange:true)
+
         .padding(.vertical, 12)
-        .onChange(of: createFolderViewModel.folderName) { newValue in
-            isValid = !newValue.isEmpty
-        }
     }
     
     var headerView: some View {

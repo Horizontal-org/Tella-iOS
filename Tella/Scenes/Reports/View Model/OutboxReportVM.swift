@@ -108,18 +108,6 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
             treat(uploadResponse: self.reportRepository.sendReport(report: report, mainAppModel: mainAppModel))
         }
     }
-    
-    override func updateCurrentFile(uploadProgressInfo : UploadProgressInfo) {
-        self.reportViewModel.files = self.reportViewModel.files.compactMap { file in
-            guard file.id == uploadProgressInfo.fileId else { return file }
-            
-            let updatedFile = file
-            updatedFile.bytesSent = uploadProgressInfo.bytesSent ?? 0
-            updatedFile.status = uploadProgressInfo.status
-            return updatedFile
-        }
-    }
-
 
     // MARK: Update Local database
     
@@ -134,7 +122,11 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
     }
     
     override func deleteReport() {
-        let deleteResult = mainAppModel.deleteReport(reportId: reportViewModel.id)
+        guard
+            let deleteResult = mainAppModel.deleteReport(reportId: reportViewModel.id)
+        else {
+            return
+        }
         handleDeleteReport(deleteResult: deleteResult)
     }
 }

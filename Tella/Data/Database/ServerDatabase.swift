@@ -141,7 +141,7 @@ extension TellaDataBase {
         }
     }
     
-    func deleteServer(serverId : Int) -> Result<Bool,Error> {
+    func deleteServer(serverId : Int) -> Result<Void,Error> {
         do {
             var reportIDs : [Int] = []
             let serverCondition = [KeyValue(key: D.cServerId, value: serverId)]
@@ -170,10 +170,10 @@ extension TellaDataBase {
                 try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
                                             inCondition: reportCondition)
             }
-            return .success(true)
+            return .success
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     

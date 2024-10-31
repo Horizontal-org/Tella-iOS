@@ -242,6 +242,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_SettServer_NextCloud" = "NEXTCLOUD";
 "Setting_SettServer_Uwazi" = "UWAZI";
 "Setting_SettServer_GDrive" = "GOOGLE DRIVE"; 
+"Setting_SettServer_Dropbox" = "DROPBOX";
 "Setting_SettServer_No_Internet" = "No Internet connection. Try again when you are connected to the Internet.";
 "Setting_SettServer_Server_URL_Incorrect" = "Error: The server URL is incorrect";
 "Setting_SettServer_UnavailableConnections_Subhead" = "Unavailable connections";
@@ -284,11 +285,14 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_Server_GDrive_CreatePersonal_Desc" = "Your reports will be uploaded to a new folder on your Google Drive. Choose a name for this folder here.";
 "Setting_Server_Foldername_Placeholder" = "Folder name";
 "Setting_Server_Create_Folder_Title" = "Create new folder";
+"Setting_Server_Create_Folder_Error" = "This field should not include only spaces, /, and \\ characters.";
+
 "Setting_Server_GDrive_Success_Message" = "GO TO GOOGLE DRIVE";
 "Setting_Server_Nextcloud_Create_Personal_Desc" = "Your reports will be uploaded to a new folder on your Nextcloud. Choose a name for this folder here.";
 "Setting_Server_Nextcloud_Success_Message" = "GO TO NEXTCLOUD";
 
 "Setting_Server_Reports_Success_Message" = "GO TO REPORTS";
+"Settings_Server_Dropbox_Success_Message" = "GO TO DROPBOX";
 
 "Settings_SettAbout_AppBar" = "About & Help";
 "Settings_SettAbout_Head" = "Tella";
@@ -301,7 +305,7 @@ If you want to take a picture or a video, proceed in the following way:\
 
 "Reports_Draft_DraftList_Expl" = "These are reports you are working on.";
 "Reports_Outbox_OutboxList_Expl" = "These reports are ready to be submitted";
-"Reports_Submitted_SubmittedList_Expl" = "";
+"Reports_Submitted_SubmittedList_Expl" = "These are reports that you have successfully submitted.";
 
 "Reports_Draft_EmptyAllFiles_Expl" = "Your Drafts is currently empty. Reports that you have not submitted will appear here.";
 "Reports_Outbox_EmptyAllFiles_Expl" = "Your Outbox is currently empty. Reports that are ready to be sent will appear here.";
@@ -583,3 +587,20 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Error_Nextcloud_ForderExist" = "Folder already exist";
 "Error_Nextcloud_InvalidCredentials" = "The username or password is incorrect";
 "Error_Nextcloud_ManyFailedRequests" = "Too many failed attempts. Please try again later.";
+
+"Dropbox_AppBar" = "Dropbox";
+
+"Dropbox_ConnectionExpired_SheetTitle" = "Your connection to Dropbox expired";
+"Dropbox_ConnectionExpired_SheetExpl" = "You are currently not connected to Dropbox. Please login again to continue submitting reports. You can still edit drafts offline without logging in.";
+"Dropbox_ConnectionExpired_Continue_SheetAction" = "Continue without login";
+"Dropbox_ConnectionExpired_Login_SheetAction" = "Login";
+
+"Error_Dropbox_FileConflict" = "A file or folder with the same name already exists.";
+"Error_Dropbox_InsufficientSpace" = "Not enough space in your Dropbox. Please free up some space and try again.";
+"Error_Dropbox_NoWritePermission" = "You do not have permission to write to this location.";
+"Error_Dropbox_DisallowedName" = "The file or folder name contains invalid characters.";
+"Error_Dropbox_MalformedPath" = "The specified path is malformed";
+"Error_Dropbox_TeamFolder" = "Cannot modify team folders.";
+"Error_Dropbox_TooManyWriteOperations" = "Too many write operations. Please try again later.";
+"Error_Dropbox_Other" = "An unknown path error occurred.";
+"Error_Dropbox_StartSession" = "Error while starting Dropbox session";
