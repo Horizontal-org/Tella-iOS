@@ -259,7 +259,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
             }
             
             if file.offset >= fileSize {
-                progressInfo.status = .uploaded
+                progressInfo.status = .submitted
                 progressInfo.finishUploading = true
                 subject.send(progressInfo)
             }

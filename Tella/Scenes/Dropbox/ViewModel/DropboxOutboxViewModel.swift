@@ -107,7 +107,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     
     private func prepareDropboxFilesToSend() async -> [DropboxFileInfo] {
         
-        let files = reportViewModel.files.filter { $0.status != .uploaded }
+        let files = reportViewModel.files.filter { $0.status != .submitted }
         var dropboxFiles: [DropboxFileInfo] = []
         
         for file in files {

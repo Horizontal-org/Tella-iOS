@@ -280,7 +280,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                 if fileExists {
                     // File already exists, mark as uploaded
                     uploadProgressInfo.bytesSent = Int(totalSize)
-                    uploadProgressInfo.status = .uploaded
+                    uploadProgressInfo.status = .submitted
                     promise(.success(uploadProgressInfo))
                 } else {
                     // File doesn't exist, proceed with upload
@@ -343,7 +343,7 @@ class GDriveRepository: GDriveRepositoryProtocol  {
                         }
                         
                         uploadProgressInfo.bytesSent = Int(uploadProgressInfo.bytesSent!)
-                        uploadProgressInfo.status = .uploaded
+                        uploadProgressInfo.status = .submitted
                         continuation.resume(returning: uploadProgressInfo)
                     } catch {
                         continuation.resume(throwing: error)

@@ -91,7 +91,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     }
     
     private func uploadFiles(to folderId: String) {
-        uploadQueue = reportViewModel.files.filter { $0.status != .uploaded }
+        uploadQueue = reportViewModel.files.filter { $0.status != .submitted }
         uploadNextFile(folderId: folderId)
     }
     

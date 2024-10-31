@@ -180,7 +180,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     func checkAllFilesAreUploaded() {
         
         let filesAreNotfinishUploading = reportViewModel.files.filter({$0.finishUploading == false})
-        let filesAreNotSubmitted = reportViewModel.files.filter({$0.status != .uploaded})
+        let filesAreNotSubmitted = reportViewModel.files.filter({$0.status != .submitted})
         if (filesAreNotfinishUploading.isEmpty) && (filesAreNotSubmitted.isEmpty) {
             
             updateReport(reportStatus: .submitted)
