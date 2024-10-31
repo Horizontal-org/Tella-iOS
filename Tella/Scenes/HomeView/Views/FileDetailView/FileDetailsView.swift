@@ -31,7 +31,7 @@ struct FileDetailsView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Styles.Colors.backgroundMain)
         .environmentObject(fileListViewModel)
-        .ignoresSafeArea(.all)
+        .ignoresSafeArea(edges: .bottom)
         .onAppear(perform: {
             self.fileListViewModel.fileActionSource = .details
         })
