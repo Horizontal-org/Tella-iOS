@@ -16,7 +16,6 @@ class AudioPlayerViewModel: ObservableObject {
     @Published var currentTime : String  = "00:00:00"
     @Published var duration : String  = "00:00:00"
     
-    var mainAppModel: MainAppModel
     var cancellable: Set<AnyCancellable> = []
     var currentFile: VaultFileDB?
     var audioPlayerManager: AudioPlayerManager = AudioPlayerManager()
@@ -27,12 +26,8 @@ class AudioPlayerViewModel: ObservableObject {
     
     @Published var timeDuration: TimeInterval?
     
-    init(currentFile: VaultFileDB?, mainAppModel: MainAppModel) {
-        self.currentFile = currentFile
-        self.mainAppModel = mainAppModel
-        if let currentFile {
-            self.currentData = self.mainAppModel.vaultManager.loadFileData(file: currentFile)
-        }
+    init(currentData: Data?) {
+        self.currentData = currentData
         listenToAudioPlayerUpdates()
         loadAudio()
     }

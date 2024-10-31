@@ -5,7 +5,7 @@
 import SwiftUI
 import QuickLook
 
-struct FileDetailView: View {
+struct FileDetailsView: View {
     
     @EnvironmentObject var fileListViewModel: FileListViewModel
     @EnvironmentObject var appModel: MainAppModel
@@ -40,13 +40,9 @@ struct FileDetailView: View {
     func redirectEditFile() -> some View {
         switch viewModel.currentFile?.tellaFileType {
         case .image:
-            EditImageView(viewModel: EditImageViewModel( mainAppModel: appModel,
-                                                         fileListViewModel: fileListViewModel))
+            EditImageView(viewModel: EditImageViewModel(fileListViewModel: fileListViewModel))
         case .audio:
-            let audioPlayerViewModel = AudioPlayerViewModel(currentFile: viewModel.currentFile, mainAppModel: appModel)
-            EditAudioView(editAudioViewModel: EditAudioViewModel(audioPlayerViewModel: audioPlayerViewModel,
-                                                                 shouldReloadVaultFiles:  $fileListViewModel.shouldReloadVaultFiles,
-                                                                 rootFile: fileListViewModel.rootFile))
+            EditAudioView(editAudioViewModel: EditAudioViewModel(fileListViewModel: fileListViewModel))
 
         default:  EmptyView()
         }
@@ -62,7 +58,7 @@ struct FileDetailView: View {
             if viewModel.documentIsReady {
                 switch viewModel.currentFile?.tellaFileType {
                 case .audio:
-                    let viewModel = AudioPlayerViewModel(currentFile: viewModel.currentFile, mainAppModel: appModel)
+                    let viewModel = AudioPlayerViewModel(currentData: viewModel.data)
                     AudioPlayerView(viewModel: viewModel, isViewDisappeared: $isEditFilePresented)
                 case .image:
                     ImageViewer(imageData: viewModel.data)

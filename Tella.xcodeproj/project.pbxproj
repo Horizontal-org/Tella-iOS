@@ -522,7 +522,7 @@
 		D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B77002601CA3A0001CD34 /* VaultManager.swift */; };
 		D572EAC7263A383900CE191A /* RecentFileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC6263A383900CE191A /* RecentFileCell.swift */; };
 		D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC8263A384B00CE191A /* FileGroupsView.swift */; };
-		D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EACA263A43C100CE191A /* FileDetailView.swift */; };
+		D572EACB263A43C100CE191A /* FileDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EACA263A43C100CE191A /* FileDetailsView.swift */; };
 		D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57F5E8F26152A4800C1DA47 /* Datable.swift */; };
 		D57F5E9526152A8500C1DA47 /* Datable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57F5E9426152A8500C1DA47 /* Datable.swift */; };
 		D57F5EA4261569C300C1DA47 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D57F5EA3261569C300C1DA47 /* Media.xcassets */; };
@@ -1148,7 +1148,7 @@
 		D572EAC4263A383100CE191A /* RecentFilesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentFilesListView.swift; sourceTree = "<group>"; };
 		D572EAC6263A383900CE191A /* RecentFileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentFileCell.swift; sourceTree = "<group>"; };
 		D572EAC8263A384B00CE191A /* FileGroupsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGroupsView.swift; sourceTree = "<group>"; };
-		D572EACA263A43C100CE191A /* FileDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDetailView.swift; sourceTree = "<group>"; };
+		D572EACA263A43C100CE191A /* FileDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDetailsView.swift; sourceTree = "<group>"; };
 		D57F5E8F26152A4800C1DA47 /* Datable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Datable.swift; sourceTree = "<group>"; };
 		D57F5E9426152A8500C1DA47 /* Datable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Datable.swift; sourceTree = "<group>"; };
 		D57F5EA3261569C300C1DA47 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
@@ -1277,7 +1277,7 @@
 		0DA213CC268028AC00526995 /* FileDetailView */ = {
 			isa = PBXGroup;
 			children = (
-				D572EACA263A43C100CE191A /* FileDetailView.swift */,
+				D572EACA263A43C100CE191A /* FileDetailsView.swift */,
 				0DC6FC53269BCDDE001B0D34 /* FileInfoView.swift */,
 				0E87C874268BDDFB00EB5E34 /* ImageViewer.swift */,
 				12607D5427903ECC00E2B8CC /* Video */,
@@ -3697,7 +3697,7 @@
 				125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */,
 				1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */,
 				126818C32A38B69E004606BD /* FileTypeHelper.swift in Sources */,
-				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
+				D572EACB263A43C100CE191A /* FileDetailsView.swift in Sources */,
 				127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */,
 				125D233C2B17344D001EFB8B /* BackgroundActivitiesView.swift in Sources */,
 				1293F6752AD8853500F6CFBD /* FeedbackRepository.swift in Sources */,

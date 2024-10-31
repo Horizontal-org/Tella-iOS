@@ -151,7 +151,7 @@ struct EditAudioView: View {
             Text(editAudioViewModel.currentTime)
                 .font(.custom(Styles.Fonts.regularFontName, size: 50))
                 .foregroundColor(.white)
-            Text(editAudioViewModel.audioPlayerViewModel.duration)
+            Text(editAudioViewModel.duration)
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.gray)
         }  .padding(.top, 70)
@@ -213,8 +213,6 @@ struct EditAudioView: View {
 
 struct EditAudioView_Previews: PreviewProvider {
     static var previews: some View {
-        EditAudioView(editAudioViewModel: EditAudioViewModel(audioPlayerViewModel: AudioPlayerViewModel(currentFile: nil, mainAppModel: MainAppModel.stub()),
-                                                             shouldReloadVaultFiles: nil,
-                                                             rootFile: nil))
+        EditAudioView(editAudioViewModel: EditAudioViewModel(fileListViewModel: FileListViewModel(appModel: MainAppModel.stub())))
     }
 }

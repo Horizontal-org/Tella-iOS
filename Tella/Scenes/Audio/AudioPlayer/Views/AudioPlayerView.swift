@@ -99,7 +99,7 @@ struct AudioPlayerView: View {
 
 struct AudioPlayerView_Previews: PreviewProvider {
     static var previews: some View {
-        AudioPlayerView(viewModel: AudioPlayerViewModel(currentFile: nil, mainAppModel: MainAppModel.stub()), isViewDisappeared: .constant(false))
+        AudioPlayerView(viewModel: AudioPlayerViewModel(currentData: nil), isViewDisappeared: .constant(false))
     }
 }
 

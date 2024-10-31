@@ -61,15 +61,10 @@ struct MoreFileActionButton: View {
     private func redirectEditFile() -> some View {
         switch fileListViewModel.currentSelectedVaultFile?.tellaFileType {
         case .image:
-            EditImageView(viewModel: EditImageViewModel( mainAppModel: appModel,
-                                                         fileListViewModel: fileListViewModel))
+            EditImageView(viewModel: EditImageViewModel(fileListViewModel: fileListViewModel))
         case .audio:
-            let audioPlayerViewModel = AudioPlayerViewModel(currentFile: fileListViewModel.currentSelectedVaultFile,
-                                                            mainAppModel: appModel)
-            EditAudioView(editAudioViewModel: EditAudioViewModel(audioPlayerViewModel: audioPlayerViewModel,
-                                                                 shouldReloadVaultFiles:  $fileListViewModel.shouldReloadVaultFiles,
-                                                                 rootFile: fileListViewModel.rootFile))
-
+            EditAudioView(editAudioViewModel: EditAudioViewModel(fileListViewModel: fileListViewModel))
+            
         default:  EmptyView()
         }
 
