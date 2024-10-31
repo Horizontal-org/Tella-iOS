@@ -5,49 +5,57 @@
 import Foundation
 import Combine
 
+enum PlayState {
+    case ready
+    case playing
+}
 
 class AudioPlayerViewModel: ObservableObject {
     
-    @Published var isPlaying = false
+    @Published var state: PlayState = .ready
     
     @Published var shouldDisableFastForwardButton : Bool = false
     @Published var shouldDisableRewindBackButton : Bool = false
-    
+
     @Published var currentTime : String  = "00:00:00"
     @Published var duration : String  = "00:00:00"
-    
-    var cancellable: Set<AnyCancellable> = []
-    var currentFile: VaultFileDB?
+
+    private var cancellable: Set<AnyCancellable> = []
+
     var audioPlayerManager: AudioPlayerManager = AudioPlayerManager()
     
-    var currentData : Data?
-    
+     var currentData : Data?
+  
     @Published var audioIsReady = false
-    
-    @Published var timeDuration: TimeInterval?
-    
+
     init(currentData: Data?) {
-        self.currentData = currentData
-        listenToAudioPlayerUpdates()
-        loadAudio()
-    }
-    
-    private func listenToAudioPlayerUpdates() {
+         self.currentData = currentData
+
         audioPlayerManager.audioPlayer.currentTime.sink { value in
-            self.currentTime = value.formattedAsHHMMSS()
+            self.currentTime = value.stringFromTimeInterval()
         }.store(in: &self.cancellable)
         
         audioPlayerManager.audioPlayer.duration.sink { value in
-            self.duration = value.formattedAsHHMMSS()
-            self.timeDuration = value
+            self.duration = value.stringFromTimeInterval()
         }.store(in: &self.cancellable)
         
         audioPlayerManager.audioPlayer.audioPlayerDidFinishPlaying.sink { [self] value in
-            self.onPausePlaying()
+            self.state = .ready
+            
+            self.shouldDisableFastForwardButton = true
+            self.shouldDisableRewindBackButton = true
+
+
+            self.updateView()
+
+            
         }.store(in: &self.cancellable)
-    }
-    func loadAudio() {
         
+        loadAudio()
+    }
+    
+    func loadAudio() {
+
         guard let currentData else { return }
         
         DispatchQueue.main.async {
@@ -55,39 +63,46 @@ class AudioPlayerViewModel: ObservableObject {
             self.audioPlayerManager.initPlayer()
         }
     }
+
     
     func onStartPlaying() {
-        isPlaying = true
+        
+        self.state = .playing
+        
         self.audioPlayerManager.playRecord()
         
         shouldDisableFastForwardButton = false
         shouldDisableRewindBackButton = false
-        
+
         self.updateView()
     }
     
     func onPausePlaying() {
-        self.isPlaying = false
+        self.state = .ready
+        
+        self.audioPlayerManager.pauseRecord()
+        
         shouldDisableFastForwardButton = true
         shouldDisableRewindBackButton = true
+
+
         self.updateView()
-        self.audioPlayerManager.pauseRecord()
     }
     
     func onStopPlaying() {
-        isPlaying = false
+
         self.audioPlayerManager.stopRecord()
     }
-    
+
     func onFastForward() {
         self.audioPlayerManager.fastForwardRecord()
     }
     
     func onrewindBack() {
         self.audioPlayerManager.rewindBackRecord()
-        
+
     }
-    
+
     fileprivate func updateView() {
         self.objectWillChange.send()
     }

@@ -33,10 +33,10 @@
 "LockUnlock_UnlockPin_Subhead" = "Enter your PIN to unlock Tella";
 "LockUnlock_UnlockUpdatePin_Subhead" = "Enter your PIN to change your lock method";
 "LockUnlock_UnlockUpdatePin_Error_IncorrectPIN" = "Incorrect PIN, please try again";
-"Vault_EditFile_Exit_SheetTitle" = "Unsaved changes";
-"Vault_EditFile_Exit_SheetExpl" = "Your changes have not been saved. Would you like to save before exiting?";
-"Vault_EditFile_Exit_SheetAction" = "EXIT WITHOUT SAVING";
-"Vault_EditFile_FileSaved_Toast" = "Your changes have been saved.";
+"Vault_EditImage_Exit_SheetTitle" = "Unsaved changes";
+"Vault_EditImage_Exit_SheetExpl" = "Your changes have not been saved. Would you like to save before exiting?";
+"Vault_EditImage_Exit_SheetAction" = "EXIT WITHOUT SAVING";
+"Vault_EditImage_ImageSaved_Toast" = "Your changes have been saved.";
 "Home_TabBar" = "ماڵەوە";
 "Home_AppBar" = "تێلا";
 "Home_RecentFiles_Subhead" = "فایلەکانی ئەم دواییە";

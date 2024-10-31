@@ -11,7 +11,6 @@ protocol VaultDataBaseProtocol {
     func addVaultFile(file : VaultFileDB, parentId: String?) -> Result<Int,Error>
     func getVaultFiles(parentId: String?, filter: FilterType?, sort: FileSortOptions?) -> [VaultFileDB]
     func getVaultFile(id: String?) -> VaultFileDB?
-    func vaultFileExists(name: String) -> Bool
     func getNonUpdatedEncryptionVaultFiles() -> [VaultFileDB]
     @discardableResult
     func updateEncryptionVaultFile(id: String?) -> Result<Bool, Error>
@@ -157,17 +156,6 @@ class VaultDatabase : DataBase, VaultDataBaseProtocol {
         } catch let error {
             debugLog(error)
             return []
-        }
-    }
-    
-    func vaultFileExists(name: String) -> Bool {
-        do {
-            let vaultFilesDict = try statementBuilder.getSelectQuery(tableName: VaultD.tVaultFile,
-                                                                     equalCondition:[KeyValue(key: VaultD.cName, value: name)])
-            return vaultFilesDict.getVaultFiles().count >= 1
-        }catch let error {
-            debugLog(error)
-            return false
         }
     }
     
