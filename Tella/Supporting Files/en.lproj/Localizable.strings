@@ -38,6 +38,7 @@
 "Vault_EditFile_Exit_SheetAction" = "EXIT WITHOUT SAVING";
 "Vault_EditFile_FileSaved_Toast" = "Your changes have been saved.";
 "Vault_EditAudio_Title" = "Edit Audio";
+"Vault_EditAudio_Toast_Message" = "The audio cannot be trimmed because it is shorter than 3 seconds.";
 "Home_TabBar" = "Home";
 "Home_AppBar" = "Tella";
 "Home_RecentFiles_MoreFiles" = "%i more files";

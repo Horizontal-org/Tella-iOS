@@ -57,18 +57,6 @@ struct MoreFileActionButton: View {
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -6, trailing: -12))
         }.frame(width: 35, height: 35)
     }
-    @ViewBuilder
-    private func redirectEditFile() -> some View {
-        switch fileListViewModel.currentSelectedVaultFile?.tellaFileType {
-        case .image:
-            EditImageView(viewModel: EditImageViewModel(fileListViewModel: fileListViewModel))
-        case .audio:
-            EditAudioView(editAudioViewModel: EditAudioViewModel(fileListViewModel: fileListViewModel))
-            
-        default:  EmptyView()
-        }
-
-    }
 
     private func showFileActionSheet() {
         if let file = file {
@@ -126,8 +114,28 @@ struct MoreFileActionButton: View {
         }
     }
     private func editFileAction() {
+        switch fileListViewModel.currentSelectedVaultFile?.tellaFileType {
+        case .image:
+            showEditImageView()
+        case .audio:
+            showEditAudioView()
+        default:  break
+        }
+    }
+    
+    private func showEditImageView() {
         self.present(style: .fullScreen) {
-            self.redirectEditFile()
+            EditImageView(viewModel: EditImageViewModel(fileListViewModel: fileListViewModel))
+        }
+    }
+    private func showEditAudioView() {
+        let viewModel = EditAudioViewModel(fileListViewModel: fileListViewModel)
+        if viewModel.timeDuration >= viewModel.gapTime {
+            self.present(style: .fullScreen) {
+                EditAudioView(editAudioViewModel: EditAudioViewModel(fileListViewModel: fileListViewModel))
+            }
+        }else {
+            Toast.displayToast(message: LocalizableVault.editAudioToastMsg.localized)
         }
     }
     

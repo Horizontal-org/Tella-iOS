@@ -36,17 +36,31 @@ struct FileDetailsView: View {
         })
     }
     
-    @ViewBuilder
-    func redirectEditFile() -> some View {
-        switch viewModel.currentFile?.tellaFileType {
+    private func editFileAction() {
+        switch fileListViewModel.currentSelectedVaultFile?.tellaFileType {
         case .image:
-            EditImageView(viewModel: EditImageViewModel(fileListViewModel: fileListViewModel))
+            showEditImageView()
         case .audio:
-            EditAudioView(editAudioViewModel: EditAudioViewModel(fileListViewModel: fileListViewModel))
-
-        default:  EmptyView()
+            showEditAudioView()
+        default:  break
         }
-
+    }
+    
+    private func showEditImageView() {
+        self.present(style: .fullScreen) {
+            EditImageView(viewModel: EditImageViewModel(fileListViewModel: fileListViewModel))
+        }
+    }
+    
+    private func showEditAudioView() {
+        let viewModel = EditAudioViewModel(fileListViewModel: fileListViewModel)
+        if viewModel.timeDuration >= viewModel.gapTime {
+            self.present(style: .fullScreen) {
+                EditAudioView(editAudioViewModel: EditAudioViewModel(fileListViewModel: fileListViewModel))
+            }
+        }else {
+            Toast.displayToast(message: LocalizableVault.editAudioToastMsg.localized)
+        }
     }
     
     @ViewBuilder
@@ -88,9 +102,7 @@ struct FileDetailsView: View {
             Button {
                 //open edit view
                 isEditFilePresented = true
-                self.present(style: .fullScreen) {
-                    self.redirectEditFile()
-                }
+                self.editFileAction()
             } label: {
                 Image("file.edit")
             }
