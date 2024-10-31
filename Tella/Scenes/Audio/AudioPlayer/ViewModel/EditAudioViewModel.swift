@@ -93,11 +93,7 @@ class EditAudioViewModel: ObservableObject {
     func trimAudio() {
         Task {
             do {
-                guard let trimmedAudioUrl = audioUrl?.deletingLastPathComponent().appendingPathComponent("\(newFileName).m4a") else { return }
-                try await trimAudio(audioUrl: audioUrl,
-                                    trimmedAudioUrl: trimmedAudioUrl,
-                                    startTime: startTime,
-                                    endTime: endTime)
+                guard let trimmedAudioUrl = try await audioUrl?.trimAudio(newName: "\(newFileName).m4a", startTime: startTime, endTime: endTime) else { return }
                 self.addEditedFile(urlFile: trimmedAudioUrl)
             } catch {
                 self.trimState = .error(error.localizedDescription)
@@ -174,34 +170,6 @@ class EditAudioViewModel: ObservableObject {
         let progress = time / timeDuration
         if !progress.isNaN {
             playingOffset = CGFloat(progress) * totalOffsetDistance
-        }
-    }
-    
-    nonisolated func trimAudio(audioUrl:URL?,
-                               trimmedAudioUrl:URL?,
-                               startTime: Double,
-                               endTime :Double ) async throws {
-      
-        guard let audioUrl else {
-            return
-        }
-        
-        let asset = AVAsset(url: audioUrl)
-        let startTime = CMTime(seconds: startTime, preferredTimescale: 600)
-        let endTime = CMTime(seconds: endTime, preferredTimescale: 600)
-        let duration = CMTimeSubtract(endTime, startTime)
-        
-        let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A)
-        
-        exportSession?.outputURL = trimmedAudioUrl
-        exportSession?.outputFileType = .m4a
-        exportSession?.timeRange = CMTimeRange(start: startTime, duration: duration)
-        
-        await exportSession?.export()
-        
-        if exportSession?.status == .completed {
-        } else {
-            throw RuntimeError(LocalizableError.commonError.localized)
         }
     }
 }
