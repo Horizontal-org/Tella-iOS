@@ -12,46 +12,45 @@ import SwiftUI
 
 class EditAudioViewModel: ObservableObject {
     
-    @Published var startTime: Double = 0.0
-    @Published var endTime: Double = 0.0
-    @Published var isPlaying = false
-    var cancellable: Set<AnyCancellable> = []
-    
-    @Published var playingOffset: CGFloat = 0.0
-    
-    var audioUrl: URL?
-    let kNumberOfLabels = 5 // This is for the sub-times labels
-    @Published var currentTime : String  = "00:00:00"
-    @Published var duration : String  = "00:00:00"
-    private var currentData : Data?
-
-    var audioPlayerManager: AudioPlayerManager = AudioPlayerManager()
-    
+    //MARK: - FileListViewModel
     @ObservedObject private var fileListViewModel: FileListViewModel
 
+    //MARK: - Published
+    @Published var startTime: Double = 0.0
+    @Published var endTime: Double = 0.0
+    @Published var timeDuration: Double = 0.0
+    @Published var currentTime : String  = "00:00:00"
+    @Published var playingOffset: CGFloat = 0.0
+    @Published var isPlaying = false
+    @Published var trimState: ViewModelState<Bool> = .loaded(false)
+        
+    //MARK: - AudioPlayerManager
+    private var audioPlayerManager: AudioPlayerManager = AudioPlayerManager()
+    
+    //MARK: - Private attributes
+    private var audioUrl: URL?
+    private var currentData : Data?
+
+    //MARK: - View attributes
     let gapTime = 3.9 // this is the limit time of the audio duration
+    var timeSlots: [String] = []
     var playButtonImageName: String {
         isPlaying ? "mic.pause-audio" : "mic.play"
     }
-    @Published var trimState: ViewModelState<Bool> = .loaded(false)
-    @Published var timeDuration: Double = 0.0
+    //MARK: - cancellable
+    var cancellable: Set<AnyCancellable> = []
 
-    private var rootFile: VaultFileDB?
-    
     init(fileListViewModel: FileListViewModel) {
         self.fileListViewModel = fileListViewModel
         if let currentFile = fileListViewModel.currentSelectedVaultFile {
             self.currentData = fileListViewModel.appModel.vaultManager.loadFileData(file: currentFile)
         }
-        self.rootFile = fileListViewModel.rootFile
         listenToAudioPlayerUpdates()
         loadAudio()
     }
     
     func loadAudio() {
-        
         guard let currentData else { return }
-        
         DispatchQueue.main.async {
             self.audioPlayerManager.currentAudioData = currentData
             self.audioPlayerManager.initPlayer()
@@ -65,8 +64,8 @@ class EditAudioViewModel: ObservableObject {
         }.store(in: &self.cancellable)
         
         self.audioPlayerManager.audioPlayer.duration.sink { value in
-            self.duration = value.formattedAsHHMMSS()
             self.timeDuration = value
+            self.generateTimeLabels()
             self.endTime = value
         }.store(in: &self.cancellable)
         
@@ -157,16 +156,17 @@ class EditAudioViewModel: ObservableObject {
         }
     }
     
-    
-    func generateTimeLabels() -> [String] {
-        let interval = timeDuration / TimeInterval(kNumberOfLabels - 1)
-        var times: [String] = []
-        
-        for i in 0..<kNumberOfLabels {
-            let currentTime = TimeInterval(i) * interval
-            times.append(currentTime.formattedAsMMSS())
+    private func generateTimeLabels() {
+        if timeDuration != 0.0 {
+            let kNumberOfLabels = 5 // This is for the sub-times labels
+            let interval = timeDuration / TimeInterval(kNumberOfLabels - 1)
+            var times: [String] = []
+            for i in 0..<kNumberOfLabels {
+                let currentTime = TimeInterval(i) * interval
+                times.append(currentTime.formattedAsMMSS())
+            }
+            timeSlots = times
         }
-        return times
     }
     
     private func updateOffset(time: Double) {

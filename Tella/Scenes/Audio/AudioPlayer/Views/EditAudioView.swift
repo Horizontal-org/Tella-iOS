@@ -132,15 +132,15 @@ struct EditAudioView: View {
     
     var timeLabelsView: some View {
         HStack(spacing: 0) {
-            ForEach(editAudioViewModel.generateTimeLabels(), id: \.self) { time in
+            ForEach(editAudioViewModel.timeSlots) { time in
                 Text(time)
                     .font(.system(size: 12, weight: .regular))
                     .foregroundColor(.white.opacity(0.32))
-                if time != editAudioViewModel.generateTimeLabels().last {
+                if time != editAudioViewModel.timeSlots.last {
                     Spacer()
                 }
             }
-        }.frame(width: kTrimViewWidth)
+        }.frame(width: kTrimViewWidth, height: 40)
             .padding([.top], 70)
     }
     
@@ -149,7 +149,7 @@ struct EditAudioView: View {
             Text(editAudioViewModel.currentTime)
                 .font(.custom(Styles.Fonts.regularFontName, size: 50))
                 .foregroundColor(.white)
-            Text(editAudioViewModel.duration)
+            Text(editAudioViewModel.timeDuration.formattedAsHHMMSS())
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.gray)
         }  .padding(.top, 70)
