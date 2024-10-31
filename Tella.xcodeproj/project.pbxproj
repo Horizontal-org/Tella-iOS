@@ -456,8 +456,12 @@
 		20AF68162C89B44E00503D30 /* NextcloudReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */; };
 		20BA0BDF2C33428A00823A27 /* ServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA0BDE2C33428A00823A27 /* ServerLoginView.swift */; };
 		20BF26732C98481000E81535 /* ScrollviewViewContentViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BF26722C98481000E81535 /* ScrollviewViewContentViewModifier.swift */; };
+		20DC9F642CB1CAC000649160 /* EditAudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC9F632CB1CAC000649160 /* EditAudioView.swift */; };
+		20DC9F662CB1CAE100649160 /* EditAudioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC9F652CB1CAE100649160 /* EditAudioViewModel.swift */; };
 		20E4DA832C36E8CF00123843 /* ServerCreateFolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4DA822C36E8CF00123843 /* ServerCreateFolderViewModel.swift */; };
 		20E4DA872C380E3C00123843 /* ServerCreateFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4DA862C380E3C00123843 /* ServerCreateFolderView.swift */; };
+		20F3E6012CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */; };
+		20FA030D2CD282C3001121F1 /* TrimAudioSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FA030C2CD282C3001121F1 /* TrimAudioSliderView.swift */; };
 		379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */; };
 		89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */; };
 		CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0797BD2A8D46CB00AAE63F /* UnlockView.swift */; };
@@ -518,7 +522,7 @@
 		D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B77002601CA3A0001CD34 /* VaultManager.swift */; };
 		D572EAC7263A383900CE191A /* RecentFileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC6263A383900CE191A /* RecentFileCell.swift */; };
 		D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC8263A384B00CE191A /* FileGroupsView.swift */; };
-		D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EACA263A43C100CE191A /* FileDetailView.swift */; };
+		D572EACB263A43C100CE191A /* FileDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EACA263A43C100CE191A /* FileDetailsView.swift */; };
 		D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57F5E8F26152A4800C1DA47 /* Datable.swift */; };
 		D57F5E9526152A8500C1DA47 /* Datable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57F5E9426152A8500C1DA47 /* Datable.swift */; };
 		D57F5EA4261569C300C1DA47 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D57F5EA3261569C300C1DA47 /* Media.xcassets */; };
@@ -1068,9 +1072,13 @@
 		20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudReportMainView.swift; sourceTree = "<group>"; };
 		20BA0BDE2C33428A00823A27 /* ServerLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerLoginView.swift; sourceTree = "<group>"; };
 		20BF26722C98481000E81535 /* ScrollviewViewContentViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollviewViewContentViewModifier.swift; sourceTree = "<group>"; };
+		20DC9F632CB1CAC000649160 /* EditAudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAudioView.swift; sourceTree = "<group>"; };
+		20DC9F652CB1CAE100649160 /* EditAudioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAudioViewModel.swift; sourceTree = "<group>"; };
 		20E4DA822C36E8CF00123843 /* ServerCreateFolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerCreateFolderViewModel.swift; sourceTree = "<group>"; };
 		20E4DA862C380E3C00123843 /* ServerCreateFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerCreateFolderView.swift; sourceTree = "<group>"; };
 		20E4DA882C380F7400123843 /* CreateNextcloudFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNextcloudFolderView.swift; sourceTree = "<group>"; };
+		20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFileCancelBottomSheet.swift; sourceTree = "<group>"; };
+		20FA030C2CD282C3001121F1 /* TrimAudioSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimAudioSliderView.swift; sourceTree = "<group>"; };
 		21FEB79B83E10A1CBE4AA323 /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		41C55359B3FCA6834440D9D8 /* Pods-Tella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.debug.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.debug.xcconfig"; sourceTree = "<group>"; };
 		6DD4C039240F547300491438 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -1140,7 +1148,7 @@
 		D572EAC4263A383100CE191A /* RecentFilesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentFilesListView.swift; sourceTree = "<group>"; };
 		D572EAC6263A383900CE191A /* RecentFileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentFileCell.swift; sourceTree = "<group>"; };
 		D572EAC8263A384B00CE191A /* FileGroupsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGroupsView.swift; sourceTree = "<group>"; };
-		D572EACA263A43C100CE191A /* FileDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDetailView.swift; sourceTree = "<group>"; };
+		D572EACA263A43C100CE191A /* FileDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDetailsView.swift; sourceTree = "<group>"; };
 		D57F5E8F26152A4800C1DA47 /* Datable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Datable.swift; sourceTree = "<group>"; };
 		D57F5E9426152A8500C1DA47 /* Datable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Datable.swift; sourceTree = "<group>"; };
 		D57F5EA3261569C300C1DA47 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
@@ -1269,7 +1277,7 @@
 		0DA213CC268028AC00526995 /* FileDetailView */ = {
 			isa = PBXGroup;
 			children = (
-				D572EACA263A43C100CE191A /* FileDetailView.swift */,
+				D572EACA263A43C100CE191A /* FileDetailsView.swift */,
 				0DC6FC53269BCDDE001B0D34 /* FileInfoView.swift */,
 				0E87C874268BDDFB00EB5E34 /* ImageViewer.swift */,
 				12607D5427903ECC00E2B8CC /* Video */,
@@ -2204,6 +2212,7 @@
 			isa = PBXGroup;
 			children = (
 				1209FD2D27AD89C800D8C17E /* AudioPlayerViewModel.swift */,
+				20DC9F652CB1CAE100649160 /* EditAudioViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -2212,6 +2221,8 @@
 			isa = PBXGroup;
 			children = (
 				1209FD2A27AD851E00D8C17E /* AudioPlayerView.swift */,
+				20DC9F632CB1CAC000649160 /* EditAudioView.swift */,
+				20FA030C2CD282C3001121F1 /* TrimAudioSliderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2477,6 +2488,7 @@
 				15BD9CAC2BC7410E00C3932B /* SearchBarView.swift */,
 				15BD9CB02BC744BC00C3932B /* NavigationHeaderView.swift */,
 				1503C87D2C07A080000F2209 /* ServerConnectionHeaderView.swift */,
+				20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -3527,11 +3539,13 @@
 			files = (
 				126E1AFE2C3D8426000AE4CE /* Server.swift in Sources */,
 				CC13138A2A5DB68E0057271C /* BottomSheetTitleView.swift in Sources */,
+				20DC9F642CB1CAC000649160 /* EditAudioView.swift in Sources */,
 				E1E7C5842AAB70A500DDB07E /* UwaziDictionaryRow.swift in Sources */,
 				15E656AB2C2A147E00BDEC91 /* AddFilesToDraftView.swift in Sources */,
 				12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */,
 				128B15CB27DA30C800E1C1E0 /* OnboardingEndView.swift in Sources */,
 				125D2328271F8B6600250FBB /* LockConfirmPinView.swift in Sources */,
+				20DC9F662CB1CAE100649160 /* EditAudioViewModel.swift in Sources */,
 				125D231F271F12A000250FBB /* NSRegularExpressionExtension.swift in Sources */,
 				E1E7C5872AAB7EA200DDB07E /* UwaziTranslation.swift in Sources */,
 				CC0F1DD42B47320F00720010 /* UwaziDatePicker.swift in Sources */,
@@ -3683,7 +3697,7 @@
 				125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */,
 				1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */,
 				126818C32A38B69E004606BD /* FileTypeHelper.swift in Sources */,
-				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
+				D572EACB263A43C100CE191A /* FileDetailsView.swift in Sources */,
 				127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */,
 				125D233C2B17344D001EFB8B /* BackgroundActivitiesView.swift in Sources */,
 				1293F6752AD8853500F6CFBD /* FeedbackRepository.swift in Sources */,
@@ -3694,6 +3708,7 @@
 				12B84B962C340025006363F0 /* NextcloudReportViewModel.swift in Sources */,
 				CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */,
 				1293547B294A454900735ED0 /* AppDelegate.swift in Sources */,
+				20F3E6012CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift in Sources */,
 				12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */,
 				CCC1B4332AC75B410075B819 /* UwaziEntityMandatoryTextView.swift in Sources */,
 				12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */,
@@ -3914,6 +3929,7 @@
 				1289B45828B63187005DA687 /* RotationViewModifier.swift in Sources */,
 				126818BF2A376A0E004606BD /* OOXMLContentTypeParser.swift in Sources */,
 				125D2326271F896400250FBB /* CustomPinView.swift in Sources */,
+				20FA030D2CD282C3001121F1 /* TrimAudioSliderView.swift in Sources */,
 				E1EEE29A29EECF25009FE227 /* UwaziAddServerURLView.swift in Sources */,
 				CC13138C2A5DB79B0057271C /* BottomButtonsView.swift in Sources */,
 				20473A5F2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift in Sources */,

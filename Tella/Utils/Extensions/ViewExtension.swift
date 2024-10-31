@@ -115,4 +115,9 @@ extension View {
         let viewToShow = TopSheetView(content:content)
         self.present(style: .overCurrentContext, transitionStyle: .crossDissolve, builder: {viewToShow})
     }
+    
+    func showBottomSheetView<Content:View>(content : Content, modalHeight:CGFloat, isShown: Binding<Bool>) {
+        let viewToShow = DragView(modalHeight: modalHeight, isShown: isShown, content: {content})
+        self.present(style: .overCurrentContext, transitionStyle: .crossDissolve, builder: {viewToShow})
+    }
 }

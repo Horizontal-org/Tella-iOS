@@ -33,10 +33,12 @@
 "LockUnlock_UnlockPin_Subhead" = "Enter your PIN to unlock Tella";
 "LockUnlock_UnlockUpdatePin_Subhead" = "Enter your PIN to change your lock method";
 "LockUnlock_UnlockUpdatePin_Error_IncorrectPIN" = "Incorrect PIN, please try again";
-"Vault_EditImage_Exit_SheetTitle" = "Unsaved changes";
-"Vault_EditImage_Exit_SheetExpl" = "Your changes have not been saved. Would you like to save before exiting?";
-"Vault_EditImage_Exit_SheetAction" = "EXIT WITHOUT SAVING";
-"Vault_EditImage_ImageSaved_Toast" = "Your changes have been saved.";
+"Vault_EditFile_Exit_SheetTitle" = "Unsaved changes";
+"Vault_EditFile_Exit_SheetExpl" = "Your changes have not been saved. Would you like to save before exiting?";
+"Vault_EditFile_Exit_SheetAction" = "EXIT WITHOUT SAVING";
+"Vault_EditFile_FileSaved_Toast" = "Your changes have been saved.";
+"Vault_EditAudio_Title" = "Edit Audio";
+"Vault_EditAudio_Toast_Message" = "The audio cannot be trimmed because it is shorter than 3 seconds.";
 "Home_TabBar" = "Home";
 "Home_AppBar" = "Tella";
 "Home_RecentFiles_MoreFiles" = "%i more files";
@@ -89,7 +91,7 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Vault_LimitedPhotoLibraryPermission_Action_Settings" = "Settings";
 "Vault_LimitedPhotoLibraryPermission_Action_Cancel" = "CANCEL";
 
-
+"Vault_Copy_Text" = "-copy";
 
 
 "Vault_ImportDelete_Title" = "Import and delete original file?";

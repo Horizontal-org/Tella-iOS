@@ -228,7 +228,7 @@ class NextcloudOutboxViewModel: OutboxMainViewModel<NextcloudServer> {
         guard let currentFile = self.reportViewModel.files.first(where: { $0.id == uploadProgressInfo.fileId }) else { return }
         
         // If file URL is found, delete the file
-        if let fileURL = currentFile.url?.deletingLastPathComponent().appendingPathComponent(chunkSent.fileName) {
+        if let fileURL = currentFile.url?.createURL(name: chunkSent.fileName) {
             self.mainAppModel.vaultManager.deleteFiles(files: [fileURL])
         }
         

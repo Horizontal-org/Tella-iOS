@@ -390,11 +390,11 @@ This feedback is anonymous, so make sure to include contact information if you w
 "Resource_Exit_SheetExpl" = "Your download progress will be lost. You can always come back later to download the resource again.";
 "Resource_Exit_Confirm_SheetSelect" = "EXIT";
 "Resource_Exit_Cancel_SheetSelect" = "KEEP DOWNLOADING";
-"Vault_EditImage_Exit_SheetTitle" = "Alterações não salvas";
-"Vault_EditImage_Exit_SheetExpl" = "Suas alterações não foram salvas. Gostaria de salvar antes de sair?";
-"Vault_EditImage_Exit_SheetAction" = "SAIR SEM SALVAR";
+"Vault_EditFile_Exit_SheetTitle" = "Alterações não salvas";
+"Vault_EditFile_Exit_SheetExpl" = "Suas alterações não foram salvas. Gostaria de salvar antes de sair?";
+"Vault_EditFile_Exit_SheetAction" = "SAIR SEM SALVAR";
 "Vault_MoreActions_Edit_SheetSelect" = "Editar";
-"Vault_EditImage_ImageSaved_Toast" = "Suas alterações foram salvas.";
+"Vault_EditFile_FileSaved_Toast" = "Suas alterações foram salvas.";
 "Vault_DeleteFile_Warning_SheetDescription" = "Some of the selected files are currently used in your connections. Deleting may impact forms and reports that haven’t been sent yet";
 "Vault_DeleteFile_Warning_SheetTitle" = "Aviso";
 "Vault_DeleteFile_DeleteAnyway_SheetAction" = "Excluir mesmo assim";
