@@ -13,6 +13,7 @@ enum DropboxError {
     case noInternetConnection
     case noToken
     case incorrectOffset(offset: UInt64)
+    case incorrectOffsetFinishUploadSession
     case sessionNotFound
     case conflict
     case insufficientSpace
@@ -67,8 +68,8 @@ extension Error {
             if case .lookupFailed(let error) = unboxedError {
                 
                 switch error {
-                case .incorrectOffset(let offset):
-                    return .incorrectOffset(offset: offset.correctOffset)
+                case .incorrectOffset:
+                    return .incorrectOffsetFinishUploadSession
                 case .notFound:
                     return .sessionNotFound
                     

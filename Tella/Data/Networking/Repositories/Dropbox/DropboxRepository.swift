@@ -323,7 +323,12 @@ class DropboxRepository: DropboxRepositoryProtocol {
             
         case .sessionNotFound:
             file.sessionId = nil
-            
+
+        case .incorrectOffsetFinishUploadSession:
+            progressInfo.status = .submitted
+            progressInfo.finishUploading = true
+            subject.send(progressInfo)
+
         case .insufficientSpace, .noToken:
             progressInfo.error = apiError
             progressInfo.status = .submissionError
@@ -359,10 +364,15 @@ class DropboxRepository: DropboxRepositoryProtocol {
     }
     
     private func finishUploadSession(client: DropboxClient, file: DropboxFileInfo, folderName: String, data: Data) async throws {
+        
+        debugLog("Satrt Finishing upload session for file 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 : \(file.fileName)")
+
         guard let sessionId = file.sessionId else { throw  APIError.errorOccured}
         
         let offset = file.offset == 0 ? Int64(data.count) : file.offset
         
+        debugLog("offset 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 : \(offset)")
+
         let cursor = Files.UploadSessionCursor(sessionId: sessionId,
                                                offset: UInt64(offset))
         
