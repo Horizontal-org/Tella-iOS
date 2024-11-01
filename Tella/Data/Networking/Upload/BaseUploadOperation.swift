@@ -149,8 +149,8 @@ class BaseUploadOperation : Operation {
         let totalBytesSent = (file?.current ?? 0)  + (file?.bytesSent ?? 0)
         
         mainAppModel.tellaData?.updateReportFile(reportFile: ReportFile(id: id,
-                                                                                     status: fileStatus,
-                                                                                     bytesSent: totalBytesSent))
+                                                                        status: fileStatus,
+                                                                        bytesSent: totalBytesSent))
         return totalBytesSent
     }
     
@@ -378,12 +378,15 @@ class BaseUploadOperation : Operation {
             case .putReportFile:
                 
                 if let data = responseFromDelegate.data , let response = responseFromDelegate.response {
+                    
                     let result:UploadDecode<FileDTO,FileAPI> = getAPIResponse(response:response, data: data, error: responseFromDelegate.error)
+                    
+                    guard let fileToUpload = filesToUpload.first(where: {$0.fileId == fileId}) else {return}
                     
                     if let _ = result.error {
                         self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
-                    } else {
-                        
+                   
+                    } else if fileToUpload.fileSize <= fileToUpload.bytesSent {
                         self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.uploaded)))
                         
                         postReportFile(fileId: fileId)
@@ -391,6 +394,9 @@ class BaseUploadOperation : Operation {
                         if let fileUrlPath = filesToUpload.first(where: {$0.fileId == fileId})?.fileUrlPath {
                             mainAppModel.vaultManager.deleteFiles(files: [fileUrlPath])
                         }
+                   
+                    } else {
+                        self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
                     }
                     uploadTasksDict[task] = nil
                     
@@ -399,9 +405,7 @@ class BaseUploadOperation : Operation {
                 }
                 
             case .headReportFile:
-                
-                //                let file = self.reportVaultFiles?.first(where: {$0.id == fileId})
-                
+
                 let result:UploadDecode<EmptyResult,EmptyDomainModel>  = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
 
                 if let _ = result.error {

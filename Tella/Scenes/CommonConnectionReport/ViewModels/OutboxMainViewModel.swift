@@ -188,14 +188,19 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
             deleteFilesAfterSubmission()
         }
         
-        let submissionErrorFiles = reportViewModel.files.filter({$0.status == .submissionError})
+        markReportAsSubmissionErrorIfNeeded(filesAreNotfinishUploading: filesAreNotfinishUploading)
+    }
+    
+    func markReportAsSubmissionErrorIfNeeded(filesAreNotfinishUploading: [ReportVaultFile] = []) {
         
+        let submissionErrorFiles = reportViewModel.files.filter({$0.status == .submissionError})
+
         if !(submissionErrorFiles.isEmpty) && filesAreNotfinishUploading.isEmpty {
             reportViewModel.status = .submissionError
             publishUpdates()
         }
     }
-    
+
     func updateProgressInfos(uploadProgressInfo : UploadProgressInfo) {
         
         updateCurrentFile(uploadProgressInfo: uploadProgressInfo)

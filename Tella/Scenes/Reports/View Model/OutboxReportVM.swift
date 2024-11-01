@@ -64,6 +64,8 @@ class OutboxReportVM: OutboxMainViewModel<TellaServer> {
                         if let reportStatus = progressInfo.reportStatus {
                             self.reportViewModel.status = reportStatus
                         }
+                        
+                        self.markReportAsSubmissionErrorIfNeeded()
                     }
                 case .finish(let isAutoDelete, _):
                     DispatchQueue.main.async {
