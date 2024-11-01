@@ -20,6 +20,11 @@ class DropboxSubmittedViewModel: SubmittedMainViewModel {
     }
 
     override func deleteReport() {
-        let _ = mainAppModel.tellaData?.deleteDropboxReport(reportId: id)
+        guard
+            let deleteResult = mainAppModel.tellaData?.deleteDropboxReport(reportId: id)
+        else {
+            return
+        }
+        handleDeleteReport(deleteResult: deleteResult )
     }
 }
