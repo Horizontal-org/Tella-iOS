@@ -254,7 +254,8 @@ class DropboxRepository: DropboxRepositoryProtocol {
                     handleUploadError(error: error,
                                       file: file,
                                       progressInfo: progressInfo,
-                                      subject: subject)
+                                      subject: subject,
+                                      chunkSize: chunkSize)
                 }
             }
             
@@ -312,7 +313,8 @@ class DropboxRepository: DropboxRepositoryProtocol {
     private func handleUploadError(error:Error,
                                    file: DropboxFileInfo,
                                    progressInfo: UploadProgressInfo,
-                                   subject: CurrentValueSubject<UploadProgressInfo, APIError>) {
+                                   subject: CurrentValueSubject<UploadProgressInfo, APIError>,
+                                   chunkSize: Int64) {
         let dropboxError = error.getError()
         let apiError = APIError.dropboxApiError(dropboxError)
         
@@ -323,8 +325,10 @@ class DropboxRepository: DropboxRepositoryProtocol {
             
         case .sessionNotFound:
             file.sessionId = nil
-
+            
+            //I added that in case the is an interruption while
         case .incorrectOffsetFinishUploadSession:
+            file.offset += chunkSize
             progressInfo.status = .submitted
             progressInfo.finishUploading = true
             subject.send(progressInfo)

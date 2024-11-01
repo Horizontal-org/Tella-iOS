@@ -35,7 +35,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     
     var subscribers = Set<AnyCancellable>()
     var filesToUpload : [FileToUpload] = []
-    
+
     var uploadButtonTitle: String {
         
         switch reportViewModel.status {
@@ -186,6 +186,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
             updateReport(reportStatus: .submitted)
             showSubmittedReport()
             deleteFilesAfterSubmission()
+            subscribers.removeAll()
         }
         
         markReportAsSubmissionErrorIfNeeded(filesAreNotfinishUploading: filesAreNotfinishUploading)
