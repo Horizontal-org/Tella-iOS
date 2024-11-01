@@ -326,13 +326,13 @@ class DropboxRepository: DropboxRepositoryProtocol {
         case .sessionNotFound:
             file.sessionId = nil
             
-            //I added that in case the is an interruption while
+            // This case handles interruptions during the completion of the upload session when no result is received.
         case .incorrectOffsetFinishUploadSession:
             file.offset += chunkSize
             progressInfo.status = .submitted
             progressInfo.finishUploading = true
             subject.send(progressInfo)
-
+            
         case .insufficientSpace, .noToken:
             progressInfo.error = apiError
             progressInfo.status = .submissionError
