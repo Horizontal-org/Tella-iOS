@@ -13,6 +13,7 @@ enum APIError: Swift.Error {
     case noInternetConnection
     case badServer
     case noToken
+    case tooManyRequests
     case driveApiError(Error)
     case dropboxApiError(DropboxError)
     case errorOccured
@@ -44,6 +45,8 @@ extension APIError: LocalizedError {
             return LocalizableError.commonError.localized
         case .dropboxApiError(let error):
             return customDropboxErrorMessage(error: error)
+        case .tooManyRequests:
+            return LocalizableError.ncTooManyRequests.localized
         }
     }
     
@@ -131,11 +134,22 @@ extension APIError: LocalizedError {
     
     static func convertNextcloudError(errorCode: HTTPCode) -> APIError {
         if [NcHTTPErrorCodes.unauthorized.rawValue,
-            NcHTTPErrorCodes.ncUnauthorizedError.rawValue,
-            NcHTTPErrorCodes.ncTooManyRequests.rawValue].contains(errorCode) {
+            NcHTTPErrorCodes.ncUnauthorizedError.rawValue].contains(errorCode) {
             return .noToken
+        } else if NcHTTPErrorCodes.ncTooManyRequests.rawValue == errorCode {
+            return .tooManyRequests
         } else {
             return .nextcloudError(errorCode)
+        }
+    }
+
+    static func convertDropboxError(_ error: DropboxError) -> APIError {
+      
+        switch error {
+        case .noToken:
+            return .noToken
+         default:
+            return .dropboxApiError(error)
         }
     }
 }

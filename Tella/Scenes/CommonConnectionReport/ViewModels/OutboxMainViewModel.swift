@@ -35,7 +35,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
     
     var subscribers = Set<AnyCancellable>()
     var filesToUpload : [FileToUpload] = []
-    
+
     var uploadButtonTitle: String {
         
         switch reportViewModel.status {
@@ -167,7 +167,7 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
             self.checkAllFilesAreUploaded()
         case .failure(let error):
             switch error {
-            case .noToken:
+            case .noToken, .tooManyRequests:
                 self.shouldShowLoginView = true
             default:
                 self.toastMessage = error.errorMessage
@@ -186,16 +186,22 @@ class OutboxMainViewModel<T: Server>: ObservableObject {
             updateReport(reportStatus: .submitted)
             showSubmittedReport()
             deleteFilesAfterSubmission()
+            subscribers.removeAll()
         }
         
-        let submissionErrorFiles = reportViewModel.files.filter({$0.status == .submissionError})
+        markReportAsSubmissionErrorIfNeeded(filesAreNotfinishUploading: filesAreNotfinishUploading)
+    }
+    
+    func markReportAsSubmissionErrorIfNeeded(filesAreNotfinishUploading: [ReportVaultFile] = []) {
         
+        let submissionErrorFiles = reportViewModel.files.filter({$0.status == .submissionError})
+
         if !(submissionErrorFiles.isEmpty) && filesAreNotfinishUploading.isEmpty {
             reportViewModel.status = .submissionError
             publishUpdates()
         }
     }
-    
+
     func updateProgressInfos(uploadProgressInfo : UploadProgressInfo) {
         
         updateCurrentFile(uploadProgressInfo: uploadProgressInfo)

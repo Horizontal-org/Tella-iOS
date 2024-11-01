@@ -13,6 +13,7 @@ enum DropboxError {
     case noInternetConnection
     case noToken
     case incorrectOffset(offset: UInt64)
+    case incorrectOffsetFinishUploadSession
     case sessionNotFound
     case conflict
     case insufficientSpace
@@ -38,9 +39,9 @@ typealias UploadSessionAppendError = CallError<Files.UploadSessionAppendError>
 extension Error {
     
     func getError() -> DropboxError {
-        
+       
         switch self {
-            
+
         case let error as UploadError:
             
             if case .authError = error {
@@ -67,8 +68,8 @@ extension Error {
             if case .lookupFailed(let error) = unboxedError {
                 
                 switch error {
-                case .incorrectOffset(let offset):
-                    return .incorrectOffset(offset: offset.correctOffset)
+                case .incorrectOffset:
+                    return .incorrectOffsetFinishUploadSession
                 case .notFound:
                     return .sessionNotFound
                     
@@ -115,6 +116,7 @@ extension Error {
         }
         return .unknown
     }
+    
     
     private func unboxError<T>(_ error: CallError<T>) -> T? {
         

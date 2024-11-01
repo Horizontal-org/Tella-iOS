@@ -188,4 +188,14 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         guard let file = ReportFile(reportVaultFile: file) else { return }
         mainAppModel.tellaData?.updateDriveFile(file: file)
     }
+    
+    override func deleteReport() {
+        guard
+            let deleteResult = mainAppModel.tellaData?.deleteDriveReport(reportId: reportViewModel.id)
+        else {
+            return
+        }
+        handleDeleteReport(deleteResult: deleteResult)
+    }
+
 }

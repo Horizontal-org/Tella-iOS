@@ -165,7 +165,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
             client.files.createFolderV2(path: folderPath, autorename: true).response { response, error in
                 if let error = error {
                     let dropboxError = error.getError()
-                    let apiError = APIError.dropboxApiError(dropboxError)
+                    let apiError = APIError.convertDropboxError(dropboxError)
                     continuation.resume(throwing:apiError)
                 } else if let name = response?.metadata.name {
                     continuation.resume(returning: name)
@@ -193,7 +193,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 .response { response, error in
                     if let error = error {
                         let dropboxError = error.getError()
-                        let apiError = APIError.dropboxApiError(dropboxError)
+                        let apiError = APIError.convertDropboxError(dropboxError)
                         continuation.resume(throwing:apiError)
                     } else {
                         continuation.resume(returning: ())
@@ -254,7 +254,8 @@ class DropboxRepository: DropboxRepositoryProtocol {
                     handleUploadError(error: error,
                                       file: file,
                                       progressInfo: progressInfo,
-                                      subject: subject)
+                                      subject: subject,
+                                      chunkSize: chunkSize)
                 }
             }
             
@@ -277,7 +278,11 @@ class DropboxRepository: DropboxRepositoryProtocol {
                                     chunkSize:Int64) async throws {
         
         guard let client = self.client else {
-            progressInfo.error = APIError.noToken
+            let error = APIError.noToken
+            progressInfo.error = error
+            progressInfo.status = .submissionError
+            progressInfo.finishUploading = true
+            subject.send(completion: .failure(error))
             return
         }
         
@@ -312,9 +317,10 @@ class DropboxRepository: DropboxRepositoryProtocol {
     private func handleUploadError(error:Error,
                                    file: DropboxFileInfo,
                                    progressInfo: UploadProgressInfo,
-                                   subject: CurrentValueSubject<UploadProgressInfo, APIError>) {
+                                   subject: CurrentValueSubject<UploadProgressInfo, APIError>,
+                                   chunkSize: Int64) {
         let dropboxError = error.getError()
-        let apiError = APIError.dropboxApiError(dropboxError)
+        let apiError = APIError.convertDropboxError(dropboxError)
         
         switch dropboxError {
             
@@ -323,6 +329,13 @@ class DropboxRepository: DropboxRepositoryProtocol {
             
         case .sessionNotFound:
             file.sessionId = nil
+            
+            // This case handles interruptions during the completion of the upload session when no result is received.
+        case .incorrectOffsetFinishUploadSession:
+            file.offset += chunkSize
+            progressInfo.status = .submitted
+            progressInfo.finishUploading = true
+            subject.send(progressInfo)
             
         case .insufficientSpace, .noToken:
             progressInfo.error = apiError
@@ -359,6 +372,9 @@ class DropboxRepository: DropboxRepositoryProtocol {
     }
     
     private func finishUploadSession(client: DropboxClient, file: DropboxFileInfo, folderName: String, data: Data) async throws {
+        
+        debugLog("Start Finishing upload session for file : \(file.fileName)")
+        
         guard let sessionId = file.sessionId else { throw  APIError.errorOccured}
         
         let offset = file.offset == 0 ? Int64(data.count) : file.offset

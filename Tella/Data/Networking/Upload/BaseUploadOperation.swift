@@ -149,8 +149,8 @@ class BaseUploadOperation : Operation {
         let totalBytesSent = (file?.current ?? 0)  + (file?.bytesSent ?? 0)
         
         mainAppModel.tellaData?.updateReportFile(reportFile: ReportFile(id: id,
-                                                                                     status: fileStatus,
-                                                                                     bytesSent: totalBytesSent))
+                                                                        status: fileStatus,
+                                                                        bytesSent: totalBytesSent))
         return totalBytesSent
     }
     
@@ -303,7 +303,9 @@ class BaseUploadOperation : Operation {
                     let _ = fileURL?.startAccessingSecurityScopedResource()
                     defer { fileURL?.stopAccessingSecurityScopedResource() }
                     
-                    guard let task = self.urlSession?.uploadTask(with: request, fromFile: fileURL!) else { return}
+                    guard let fileURL else { return}
+
+                    guard let task = self.urlSession?.uploadTask(with: request, fromFile: fileURL) else { return}
                     task.resume()
                     taskType = .uploadTask
                     
@@ -397,11 +399,9 @@ class BaseUploadOperation : Operation {
                 } else {
                     self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(current:responseFromDelegate.current  ,fileId: fileId, status: FileStatus.partialSubmitted)))
                 }
-                
+
             case .headReportFile:
-                
-                //                let file = self.reportVaultFiles?.first(where: {$0.id == fileId})
-                
+
                 let result:UploadDecode<EmptyResult,EmptyDomainModel>  = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
 
                 if let _ = result.error {

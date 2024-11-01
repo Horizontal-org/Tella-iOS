@@ -17,6 +17,11 @@ class SubmittedReportVM: SubmittedMainViewModel {
     }
     
     override func deleteReport() {
-        mainAppModel.deleteReport(reportId: id)
+        guard
+            let deleteResult = mainAppModel.deleteReport(reportId: id)
+        else {
+            return
+        }
+        handleDeleteReport(deleteResult: deleteResult )
     }
 }

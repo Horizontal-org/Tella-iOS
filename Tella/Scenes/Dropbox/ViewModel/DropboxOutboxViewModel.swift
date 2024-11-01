@@ -11,7 +11,6 @@ import Combine
 
 class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
     let dropboxRepository: DropboxRepositoryProtocol
-    private var cancellables = Set<AnyCancellable>()
     private var currentReport : DropboxReport?
     
     override var shouldShowCancelUploadConfirmation: Bool {
@@ -45,7 +44,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         
         if isSubmissionInProgress { return }
         self.updateReport(reportStatus: .submissionInProgress)
-        cancellables.removeAll()
+        subscribers.removeAll()
         
         Task {
             
@@ -65,7 +64,7 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
                     
                     self.processUploadReportResponse(response:response)
                 })
-                .store(in: &cancellables)
+                .store(in: &subscribers)
         }
     }
     
@@ -143,6 +142,15 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         
         updateReport()
         publishUpdates()
+    }
+    
+    override func deleteReport() {
+        guard
+            let deleteResult = mainAppModel.tellaData?.deleteDropboxReport(reportId: reportViewModel.id)
+        else {
+            return
+        }
+        handleDeleteReport(deleteResult: deleteResult)
     }
     
     func reAuthenticateConnection() {
