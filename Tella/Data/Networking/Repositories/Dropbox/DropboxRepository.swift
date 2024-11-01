@@ -165,7 +165,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
             client.files.createFolderV2(path: folderPath, autorename: true).response { response, error in
                 if let error = error {
                     let dropboxError = error.getError()
-                    let apiError = APIError.dropboxApiError(dropboxError)
+                    let apiError = APIError.convertDropboxError(dropboxError)
                     continuation.resume(throwing:apiError)
                 } else if let name = response?.metadata.name {
                     continuation.resume(returning: name)
@@ -193,7 +193,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                 .response { response, error in
                     if let error = error {
                         let dropboxError = error.getError()
-                        let apiError = APIError.dropboxApiError(dropboxError)
+                        let apiError = APIError.convertDropboxError(dropboxError)
                         continuation.resume(throwing:apiError)
                     } else {
                         continuation.resume(returning: ())
@@ -320,7 +320,7 @@ class DropboxRepository: DropboxRepositoryProtocol {
                                    subject: CurrentValueSubject<UploadProgressInfo, APIError>,
                                    chunkSize: Int64) {
         let dropboxError = error.getError()
-        let apiError = APIError.dropboxApiError(dropboxError)
+        let apiError = APIError.convertDropboxError(dropboxError)
         
         switch dropboxError {
             

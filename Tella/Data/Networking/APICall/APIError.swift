@@ -142,5 +142,15 @@ extension APIError: LocalizedError {
             return .nextcloudError(errorCode)
         }
     }
+
+    static func convertDropboxError(_ error: DropboxError) -> APIError {
+      
+        switch error {
+        case .noToken:
+            return .noToken
+         default:
+            return .dropboxApiError(error)
+        }
+    }
 }
 

@@ -39,9 +39,9 @@ typealias UploadSessionAppendError = CallError<Files.UploadSessionAppendError>
 extension Error {
     
     func getError() -> DropboxError {
-        
+        print(self.self)
         switch self {
-            
+
         case let error as UploadError:
             
             if case .authError = error {
@@ -116,6 +116,7 @@ extension Error {
         }
         return .unknown
     }
+    
     
     private func unboxError<T>(_ error: CallError<T>) -> T? {
         
