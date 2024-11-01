@@ -39,7 +39,7 @@ typealias UploadSessionAppendError = CallError<Files.UploadSessionAppendError>
 extension Error {
     
     func getError() -> DropboxError {
-        print(self.self)
+       
         switch self {
 
         case let error as UploadError:
