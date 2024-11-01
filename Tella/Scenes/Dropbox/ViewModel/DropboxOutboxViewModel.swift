@@ -145,6 +145,15 @@ class DropboxOutboxViewModel: OutboxMainViewModel<DropboxServer> {
         publishUpdates()
     }
     
+    override func deleteReport() {
+        guard
+            let deleteResult = mainAppModel.tellaData?.deleteDropboxReport(reportId: reportViewModel.id)
+        else {
+            return
+        }
+        handleDeleteReport(deleteResult: deleteResult)
+    }
+    
     func reAuthenticateConnection() {
         Task {
             do {
