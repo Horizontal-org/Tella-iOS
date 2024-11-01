@@ -378,15 +378,12 @@ class BaseUploadOperation : Operation {
             case .putReportFile:
                 
                 if let data = responseFromDelegate.data , let response = responseFromDelegate.response {
-                    
                     let result:UploadDecode<FileDTO,FileAPI> = getAPIResponse(response:response, data: data, error: responseFromDelegate.error)
-                    
-                    guard let fileToUpload = filesToUpload.first(where: {$0.fileId == fileId}) else {return}
                     
                     if let _ = result.error {
                         self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
-                   
-                    } else if fileToUpload.fileSize <= fileToUpload.bytesSent {
+                    } else {
+                        
                         self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.uploaded)))
                         
                         postReportFile(fileId: fileId)
@@ -394,16 +391,13 @@ class BaseUploadOperation : Operation {
                         if let fileUrlPath = filesToUpload.first(where: {$0.fileId == fileId})?.fileUrlPath {
                             mainAppModel.vaultManager.deleteFiles(files: [fileUrlPath])
                         }
-                   
-                    } else {
-                        self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(fileId: fileId, status: FileStatus.submissionError)))
                     }
                     uploadTasksDict[task] = nil
                     
                 } else {
                     self.initialResponse.send(UploadResponse.progress(progressInfo: UploadProgressInfo(current:responseFromDelegate.current  ,fileId: fileId, status: FileStatus.partialSubmitted)))
                 }
-                
+
             case .headReportFile:
 
                 let result:UploadDecode<EmptyResult,EmptyDomainModel>  = getAPIResponse(response: responseFromDelegate.response, data: responseFromDelegate.data, error: responseFromDelegate.error)
