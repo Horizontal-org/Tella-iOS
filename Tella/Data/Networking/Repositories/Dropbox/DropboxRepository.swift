@@ -278,7 +278,11 @@ class DropboxRepository: DropboxRepositoryProtocol {
                                     chunkSize:Int64) async throws {
         
         guard let client = self.client else {
-            progressInfo.error = APIError.noToken
+            let error = APIError.noToken
+            progressInfo.error = error
+            progressInfo.status = .submissionError
+            progressInfo.finishUploading = true
+            subject.send(completion: .failure(error))
             return
         }
         
@@ -369,14 +373,12 @@ class DropboxRepository: DropboxRepositoryProtocol {
     
     private func finishUploadSession(client: DropboxClient, file: DropboxFileInfo, folderName: String, data: Data) async throws {
         
-        debugLog("Satrt Finishing upload session for file 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 : \(file.fileName)")
-
+        debugLog("Start Finishing upload session for file : \(file.fileName)")
+        
         guard let sessionId = file.sessionId else { throw  APIError.errorOccured}
         
         let offset = file.offset == 0 ? Int64(data.count) : file.offset
         
-        debugLog("offset 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 : \(offset)")
-
         let cursor = Files.UploadSessionCursor(sessionId: sessionId,
                                                offset: UInt64(offset))
         
