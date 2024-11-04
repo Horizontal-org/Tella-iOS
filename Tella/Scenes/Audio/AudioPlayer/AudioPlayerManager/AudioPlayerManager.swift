@@ -6,7 +6,7 @@ import AVFoundation
 
 protocol AudioManager {
     
-    func initPlayer()
+    func initPlayer(data: Data?)  
     func playRecord()
     func pauseRecord()
     
@@ -19,16 +19,11 @@ class AudioPlayerManager: AudioManager {
     
     var audioPlayer = AudioPlayer()
     
-    var currentAudioData: Data?
-    
-    func initPlayer()    {
-        guard
-            let audioData = self.currentAudioData
-        else { return }
-        
+    func initPlayer(data: Data?)    {
+        guard let audioData = data else { return }
         self.audioPlayer.initPlayer(audio: audioData)
     }
-    
+
     func playRecord() {
         
         self.audioPlayer.startPlaying()

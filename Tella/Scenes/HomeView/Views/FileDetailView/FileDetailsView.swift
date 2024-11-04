@@ -55,12 +55,14 @@ struct FileDetailsView: View {
     
     private func showEditAudioView() {
         let viewModel = EditAudioViewModel(fileListViewModel: fileListViewModel)
-        if viewModel.timeDuration >= viewModel.gapTime {
-            self.present(style: .fullScreen) {
-                EditAudioView(editAudioViewModel: EditAudioViewModel(fileListViewModel: fileListViewModel))
+        DispatchQueue.main.async {
+            if viewModel.timeDuration >= viewModel.gapTime {
+                self.present(style: .fullScreen) {
+                    EditAudioView(editAudioViewModel: EditAudioViewModel(fileListViewModel: fileListViewModel))
+                }
+            }else {
+                Toast.displayToast(message: LocalizableVault.editAudioToastMsg.localized)
             }
-        }else {
-            Toast.displayToast(message: LocalizableVault.editAudioToastMsg.localized)
         }
     }
     

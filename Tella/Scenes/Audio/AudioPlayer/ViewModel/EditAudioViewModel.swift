@@ -45,15 +45,14 @@ class EditAudioViewModel: ObservableObject {
         if let currentFile = fileListViewModel.currentSelectedVaultFile {
             self.currentData = fileListViewModel.appModel.vaultManager.loadFileData(file: currentFile)
         }
-        listenToAudioPlayerUpdates()
         loadAudio()
+        listenToAudioPlayerUpdates()
     }
     
     func loadAudio() {
         guard let currentData else { return }
         DispatchQueue.main.async {
-            self.audioPlayerManager.currentAudioData = currentData
-            self.audioPlayerManager.initPlayer()
+            self.audioPlayerManager.initPlayer(data: currentData)
         }
     }
 
@@ -62,7 +61,7 @@ class EditAudioViewModel: ObservableObject {
             self.currentTime = value.formattedAsHHMMSS()
             self.updateOffset(time: Double(value) )
         }.store(in: &self.cancellable)
-        
+
         self.audioPlayerManager.audioPlayer.duration.sink { value in
             self.timeDuration = value
             self.generateTimeLabels()

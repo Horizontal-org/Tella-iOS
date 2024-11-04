@@ -51,8 +51,7 @@ class AudioPlayerViewModel: ObservableObject {
         guard let currentData else { return }
         
         DispatchQueue.main.async {
-            self.audioPlayerManager.currentAudioData = currentData
-            self.audioPlayerManager.initPlayer()
+            self.audioPlayerManager.initPlayer(data: currentData)
         }
     }
     
