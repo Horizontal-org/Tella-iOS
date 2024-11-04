@@ -129,7 +129,10 @@ struct MoreFileActionButton: View {
         }
     }
     private func showEditAudioView() {
-        let viewModel = EditAudioViewModel(fileListViewModel: fileListViewModel)
+        let viewModel = EditAudioViewModel(file: fileListViewModel.currentSelectedVaultFile,
+                                           rootFile: fileListViewModel.rootFile,
+                                           appModel: fileListViewModel.appModel,
+                                           shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
         DispatchQueue.main.async {
             
             if fileListViewModel.currentSelectedVaultFile?.audioCanBeEdited == true {

@@ -12,9 +12,6 @@ import SwiftUI
 
 class EditAudioViewModel: ObservableObject {
     
-    //MARK: - FileListViewModel
-    @ObservedObject private var fileListViewModel: FileListViewModel
-
     //MARK: - Published
     @Published var startTime: Double = 0.0
     @Published var endTime: Double = 0.0
@@ -37,14 +34,23 @@ class EditAudioViewModel: ObservableObject {
     var playButtonImageName: String {
         isPlaying ? "mic.pause-audio" : "mic.play"
     }
+    var file: VaultFileDB?
+    var rootFile: VaultFileDB?
+    var appModel: MainAppModel
+    
     //MARK: - cancellable
     var cancellable: Set<AnyCancellable> = []
-
-    init(fileListViewModel: FileListViewModel) {
-        self.fileListViewModel = fileListViewModel
-        if let currentFile = fileListViewModel.currentSelectedVaultFile {
-            self.currentData = fileListViewModel.appModel.vaultManager.loadFileData(file: currentFile)
+    var shouldReloadVaultFiles: Binding<Bool> // Should be changed soon
+    
+    init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, shouldReloadVaultFiles: Binding<Bool>) {
+        self.file = file
+        self.rootFile = rootFile
+        self.appModel  = appModel
+        self.shouldReloadVaultFiles  = shouldReloadVaultFiles
+        if let currentFile = file {
+            self.currentData = appModel.vaultManager.loadFileData(file: currentFile)
         }
+        
         loadAudio()
         listenToAudioPlayerUpdates()
     }
@@ -72,8 +78,8 @@ class EditAudioViewModel: ObservableObject {
     }
     
     func onAppear() {
-        guard let fileExtension = fileListViewModel.currentSelectedVaultFile?.fileExtension else { return }
-        let url = fileListViewModel.appModel.vaultManager.saveDataToTempFile(data: currentData, pathExtension: fileExtension)
+        guard let fileExtension = file?.fileExtension else { return }
+        let url = appModel.vaultManager.saveDataToTempFile(data: currentData, pathExtension: fileExtension)
         guard let url else { return }
         
         self.audioUrl = url
@@ -100,7 +106,7 @@ class EditAudioViewModel: ObservableObject {
     
     var newFileName: String {
         
-        guard let name = fileListViewModel.currentSelectedVaultFile?.name else {
+        guard let name = file?.name else {
             return ""
         }
         
@@ -116,7 +122,7 @@ class EditAudioViewModel: ObservableObject {
         
         // Generate the new filename and check if it exists
         var newFileName = baseName
-        while fileListViewModel.appModel.vaultFilesManager?.vaultFileExists(name: newFileName) == true {
+        while appModel.vaultFilesManager?.vaultFileExists(name: newFileName) == true {
             copyNumber += 1
             newFileName = baseName + "-" + "\(copyNumber)"
         }
@@ -139,10 +145,10 @@ class EditAudioViewModel: ObservableObject {
     
     private func addEditedFile(urlFile:URL) {
         let importedFiles = ImportedFile(urlFile: urlFile,
-                                         parentId: fileListViewModel.rootFile?.id ,
+                                         parentId: rootFile?.id ,
                                          fileSource: FileSource.files)
-        fileListViewModel.appModel.addVaultFile(importedFiles: [importedFiles],
-                                                shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
+        appModel.addVaultFile(importedFiles: [importedFiles],
+                              shouldReloadVaultFiles: shouldReloadVaultFiles)
         
         DispatchQueue.main.async {
             self.trimState = .loaded(true)

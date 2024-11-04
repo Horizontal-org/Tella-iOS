@@ -217,6 +217,8 @@ struct EditAudioView: View {
 
 struct EditAudioView_Previews: PreviewProvider {
     static var previews: some View {
-        EditAudioView(editAudioViewModel: EditAudioViewModel(fileListViewModel: FileListViewModel(appModel: MainAppModel.stub())))
+        EditAudioView(editAudioViewModel: EditAudioViewModel(file: nil, rootFile: nil,
+                                                             appModel: MainAppModel.stub(),
+                                                             shouldReloadVaultFiles: .constant(true)) )
     }
 }
