@@ -89,7 +89,7 @@ struct EditAudioView: View {
         .frame(height: 220)
         .offset(y: 20)
         .onReceive(editAudioViewModel.$startTime, perform: { value in
-            shouldStopLeftScroll = editAudioViewModel.startTime + editAudioViewModel.gapTime >= editAudioViewModel.endTime
+            shouldStopLeftScroll = editAudioViewModel.startTime + editAudioViewModel.minimumAudioDuration >= editAudioViewModel.endTime
         })
     }
     
@@ -101,7 +101,7 @@ struct EditAudioView: View {
         .frame(height: 220)
         .offset(y:20)
         .onReceive(editAudioViewModel.$endTime, perform: { value in
-            shouldStopRightScroll = editAudioViewModel.startTime + editAudioViewModel.gapTime >= editAudioViewModel.endTime
+            shouldStopRightScroll = editAudioViewModel.startTime + editAudioViewModel.minimumAudioDuration >= editAudioViewModel.endTime
         })
     }
     
@@ -217,6 +217,8 @@ struct EditAudioView: View {
 
 struct EditAudioView_Previews: PreviewProvider {
     static var previews: some View {
-        EditAudioView(editAudioViewModel: EditAudioViewModel(fileListViewModel: FileListViewModel(appModel: MainAppModel.stub())))
+        EditAudioView(editAudioViewModel: EditAudioViewModel(file: nil, rootFile: nil,
+                                                             appModel: MainAppModel.stub(),
+                                                             shouldReloadVaultFiles: .constant(true)) )
     }
 }

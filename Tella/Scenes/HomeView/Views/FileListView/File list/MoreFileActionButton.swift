@@ -129,13 +129,19 @@ struct MoreFileActionButton: View {
         }
     }
     private func showEditAudioView() {
-        let viewModel = EditAudioViewModel(fileListViewModel: fileListViewModel)
-        if viewModel.timeDuration >= viewModel.gapTime {
-            self.present(style: .fullScreen) {
-                EditAudioView(editAudioViewModel: EditAudioViewModel(fileListViewModel: fileListViewModel))
+        let viewModel = EditAudioViewModel(file: fileListViewModel.currentSelectedVaultFile,
+                                           rootFile: fileListViewModel.rootFile,
+                                           appModel: fileListViewModel.appModel,
+                                           shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
+        DispatchQueue.main.async {
+            
+            if fileListViewModel.currentSelectedVaultFile?.audioCanBeEdited == true {
+                self.present(style: .fullScreen) {
+                    EditAudioView(editAudioViewModel: viewModel)
+                }
+            }else {
+                Toast.displayToast(message: LocalizableVault.editAudioToastMsg.localized)
             }
-        }else {
-            Toast.displayToast(message: LocalizableVault.editAudioToastMsg.localized)
         }
     }
     

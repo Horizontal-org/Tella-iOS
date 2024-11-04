@@ -23,9 +23,6 @@ class AudioPlayerViewModel: ObservableObject {
     var currentData : Data?
     
     @Published var audioIsReady = false
-    
-    @Published var timeDuration: TimeInterval?
-    
     init(currentData: Data?) {
         self.currentData = currentData
         listenToAudioPlayerUpdates()
@@ -37,11 +34,6 @@ class AudioPlayerViewModel: ObservableObject {
             self.currentTime = value.formattedAsHHMMSS()
         }.store(in: &self.cancellable)
         
-        audioPlayerManager.audioPlayer.duration.sink { value in
-            self.duration = value.formattedAsHHMMSS()
-            self.timeDuration = value
-        }.store(in: &self.cancellable)
-        
         audioPlayerManager.audioPlayer.audioPlayerDidFinishPlaying.sink { [self] value in
             self.onPausePlaying()
         }.store(in: &self.cancellable)
@@ -51,8 +43,8 @@ class AudioPlayerViewModel: ObservableObject {
         guard let currentData else { return }
         
         DispatchQueue.main.async {
-            self.audioPlayerManager.currentAudioData = currentData
-            self.audioPlayerManager.initPlayer()
+            self.audioPlayerManager.initPlayer(data: currentData)
+            self.duration = self.audioPlayerManager.audioPlayer.duration.formattedAsHHMMSS()
         }
     }
     
