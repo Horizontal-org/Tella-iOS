@@ -23,7 +23,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
     private var timer = Timer()
     
     var currentTime = CurrentValueSubject<TimeInterval, Never>(0.0)
-    var duration = CurrentValueSubject<TimeInterval, Never>(0.0)
+    var duration = 0.0
     var audioPlayerDidFinishPlaying = CurrentValueSubject<Bool, Never>(false)
     
     
@@ -34,7 +34,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
             audioPlayer = try AVAudioPlayer.init(data: audio)
             audioPlayer?.delegate = self
             audioPlayer?.currentTime = 0
-            duration.send(audioPlayer?.duration ?? 0)
+            duration = audioPlayer?.duration ?? 0
             initialiseTimerRunning()
         } catch  let error {
             debugLog(error.localizedDescription)

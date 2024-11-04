@@ -53,6 +53,10 @@ class EditAudioViewModel: ObservableObject {
         guard let currentData else { return }
         DispatchQueue.main.async {
             self.audioPlayerManager.initPlayer(data: currentData)
+            self.timeDuration = self.audioPlayerManager.audioPlayer.duration
+            self.generateTimeLabels()
+            self.endTime = self.timeDuration
+
         }
     }
 
@@ -62,12 +66,6 @@ class EditAudioViewModel: ObservableObject {
             self.updateOffset(time: Double(value) )
         }.store(in: &self.cancellable)
 
-        self.audioPlayerManager.audioPlayer.duration.sink { value in
-            self.timeDuration = value
-            self.generateTimeLabels()
-            self.endTime = value
-        }.store(in: &self.cancellable)
-        
         self.audioPlayerManager.audioPlayer.audioPlayerDidFinishPlaying.sink { [self] value in
             isPlaying = false
         }.store(in: &self.cancellable)
