@@ -32,7 +32,7 @@ class EditAudioViewModel: ObservableObject {
     private var currentData : Data?
 
     //MARK: - View attributes
-    let gapTime = 3.9 // this is the limit time of the audio duration
+    let minimumAudioDuration = 3.9 // this is the limit time of the audio duration
     var timeSlots: [String] = []
     var playButtonImageName: String {
         isPlaying ? "mic.pause-audio" : "mic.play"

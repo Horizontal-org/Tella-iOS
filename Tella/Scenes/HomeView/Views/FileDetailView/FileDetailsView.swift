@@ -56,9 +56,9 @@ struct FileDetailsView: View {
     private func showEditAudioView() {
         let viewModel = EditAudioViewModel(fileListViewModel: fileListViewModel)
         DispatchQueue.main.async {
-            if viewModel.timeDuration >= viewModel.gapTime {
+            if fileListViewModel.currentSelectedVaultFile?.audioCanBeEdited == true {
                 self.present(style: .fullScreen) {
-                    EditAudioView(editAudioViewModel: EditAudioViewModel(fileListViewModel: fileListViewModel))
+                    EditAudioView(editAudioViewModel: viewModel)
                 }
             }else {
                 Toast.displayToast(message: LocalizableVault.editAudioToastMsg.localized)
