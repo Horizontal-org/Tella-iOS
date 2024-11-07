@@ -86,7 +86,8 @@ enum LocalizableSettings: String, LocalizableDelegate {
     // Servers
     case settServersAppBar = "Settings_SettServers_AppBar"
     case settServerSelectionTitle = "Setting_SettServer_Selection_Title"
-    case settServerSelectionMessage = "Setting_SettServer_Selection_Message"
+    case settServerSelectionPart1Message = "Setting_SettServer_Selection_Part1_Message"
+    case settServerSelectionPart2Message = "Setting_SettServer_Selection_Part2_Message"
     case settServerTellaWeb = "Setting_SettServer_TellaWeb"
     case settServerUwazi = "Setting_SettServer_Uwazi"
     case settServerGDrive = "Setting_SettServer_GDrive"

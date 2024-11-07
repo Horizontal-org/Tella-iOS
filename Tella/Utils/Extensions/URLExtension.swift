@@ -225,6 +225,10 @@ extension URL {
     func createURL(name: String) -> URL {
         return self.deletingLastPathComponent().appendingPathComponent(name)
     }
+    
+    func open() {
+        UIApplication.shared.open(self, options: [:], completionHandler: nil)
+    }
 
 }
 

@@ -11,6 +11,8 @@ struct TellaUrls {
     static let gDriveURL = "https://tella-app.org/g-drive"
     static let faq = "https://tella-app.org/faq"
     static let tutorial = "https://tella-app.org/get-started-ios/"
+    static let connectionLearnMore = "https://tella-app.org/for-organizations"
+    
     
 }
 
