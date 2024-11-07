@@ -183,6 +183,19 @@ struct ServerSelectionView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
+        var learnMoreView: some View {
+            Button {
+                if let url = URL(string: TellaUrls.connectionLearnMore) {
+                    url.open()
+                }
+            } label: {
+                Text(LocalizableSettings.settServerSelectionPart1Message.localized)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                    .foregroundColor(Color.yellow)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
     }
 }
 
