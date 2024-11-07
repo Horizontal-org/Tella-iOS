@@ -146,6 +146,9 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settAboutSubhead = "Settings_SettAbout_Subhead"
     case settAboutContactUs = "Settings_SettAbout_ContactUs"
     case settAboutPrivacyPolicy = "Settings_SettAbout_PrivacyPolicy"
+    case settAboutPrivacyFaq = "Settings_SettAbout_FAQ"
+    case settAboutPrivacyTutorial = "Settings_SettAbout_Tutorial"
+
     
     // Feedback
     case settFeedbackAppBar = "Settings_SettFeedback_AppBar"

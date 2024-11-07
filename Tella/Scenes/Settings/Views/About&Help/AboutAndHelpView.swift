@@ -17,7 +17,9 @@ struct AboutAndHelpView: View {
                 Spacer()
                     .frame(height: 24)
                 
-                SettingsCardView(cardViewArray: [contactusView.eraseToAnyView(),
+                SettingsCardView(cardViewArray: [tutorialView.eraseToAnyView(),
+                                                 faqView.eraseToAnyView(),
+                                                 contactusView.eraseToAnyView(),
                                                  privacyView.eraseToAnyView()])
                 
                 Spacer()
@@ -58,6 +60,17 @@ struct AboutAndHelpView: View {
                              title: LocalizableSettings.settAboutPrivacyPolicy.localized,
                              linkURL: TellaUrls.privacyURL)
     }
+    var faqView : some View {
+        SettingsLinkItemView(imageName: "settings.help",
+                             title: LocalizableSettings.settAboutPrivacyFaq.localized,
+                             linkURL: TellaUrls.faq)
+    }
+    var tutorialView : some View {
+        SettingsLinkItemView(imageName: "settings.info",
+                             title: LocalizableSettings.settAboutPrivacyTutorial.localized,
+                             linkURL: TellaUrls.tutorial)
+    }
+    
 }
 
 struct AboutAndHelpView_Previews: PreviewProvider {
