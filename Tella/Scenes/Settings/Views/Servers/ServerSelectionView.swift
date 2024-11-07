@@ -161,12 +161,27 @@ struct ServerSelectionView: View {
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
-                Text(LocalizableSettings.settServerSelectionMessage.localized)
+
+                learnMoreView
+                Text(LocalizableSettings.settServerSelectionPart2Message.localized)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
-            }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+            }.padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
+        }
+        var learnMoreView: some View {
+            Button {
+                if let url = URL(string: TellaUrls.connectionLearnMore) {
+                    url.open()
+                }
+            } label: {
+                Text(LocalizableSettings.settServerSelectionPart1Message.localized)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                    .foregroundColor(Color.yellow)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
     }
 }
