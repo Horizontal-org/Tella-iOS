@@ -168,7 +168,7 @@ struct ServerSelectionView: View {
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
-            }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+            }.padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
         }
         var learnMoreView: some View {
             Button {
