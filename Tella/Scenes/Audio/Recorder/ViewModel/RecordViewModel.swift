@@ -164,10 +164,7 @@ class RecordViewModel: ObservableObject {
         }
         
         self.audioBackend.stopRecording(fileName: fileName)
-        
-        DispatchQueue.main.async {
-            self.resetRecording()
-        }
+        self.resetRecording()
     }
     
     private func resetRecording() {
