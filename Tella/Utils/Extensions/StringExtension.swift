@@ -202,3 +202,9 @@ extension String {
 extension String: @retroactive Identifiable {
     public var id: String { self }
 }
+
+extension String {
+    func url() -> URL? {
+        return URL(string: self)
+    }
+}
