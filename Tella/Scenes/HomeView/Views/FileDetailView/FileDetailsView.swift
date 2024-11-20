@@ -59,7 +59,7 @@ struct FileDetailsView: View {
                                            appModel: fileListViewModel.appModel,
                                            shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
         DispatchQueue.main.async {
-            if fileListViewModel.currentSelectedVaultFile?.audioCanBeEdited == true {
+            if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {
                 self.present(style: .fullScreen) {
                     EditAudioView(editAudioViewModel: viewModel)
                 }

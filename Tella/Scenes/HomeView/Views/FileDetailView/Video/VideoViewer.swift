@@ -61,9 +61,15 @@ struct VideoViewer: View {
     }
     
     private func showEditVideoView() {
-        self.present(style: .fullScreen) {
-            let viewModel =  EditVideoViewModel(file: playerVM.currentFile, rootFile: playerVM.rootFile, appModel: playerVM.appModel, shouldReloadVaultFiles: .constant(true), playerVM: playerVM)
-            EditVideoView(viewModel: viewModel)
+        let viewModel =  EditVideoViewModel(file: playerVM.currentFile, rootFile: playerVM.rootFile, appModel: playerVM.appModel, shouldReloadVaultFiles: .constant(true), playerVM: playerVM)
+        DispatchQueue.main.async {
+            if playerVM.currentFile?.mediaCanBeEdited == true {
+                self.present(style: .fullScreen) {
+                    EditVideoView(viewModel: viewModel)
+                }
+            }else {
+                Toast.displayToast(message: LocalizableVault.editVideoToastMsg.localized)
+            }
         }
     }
 }

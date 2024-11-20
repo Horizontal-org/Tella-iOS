@@ -299,7 +299,7 @@ extension Array where Element == Dictionary<String,Any>{
     }
 }
 extension VaultFileDB {
-    var audioCanBeEdited: Bool {
+    var mediaCanBeEdited: Bool {
         let minimumAudioDuration = 3.9
         return duration ?? 0.0 >= minimumAudioDuration
     }

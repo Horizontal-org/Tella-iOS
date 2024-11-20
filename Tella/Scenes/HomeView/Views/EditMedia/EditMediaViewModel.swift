@@ -20,7 +20,7 @@ class EditMediaViewModel: ObservableObject {
     @Published var isPlaying = false
     @Published var trimState: ViewModelState<Bool> = .loaded(false)
     @Published var headerTitle = ""
-
+    
     //MARK: - View attributes
     let minimumAudioDuration = 3.9 // this is the limit time of the audio duration
     let kTrimViewWidth = UIScreen.screenWidth - 40
@@ -57,7 +57,7 @@ class EditMediaViewModel: ObservableObject {
     func onDisappear() {
         self.onPause()
     }
-
+    
     func isDurationHasChanged() -> Bool {
         return self.endTime != self.timeDuration || self.startTime != 0.0
     }

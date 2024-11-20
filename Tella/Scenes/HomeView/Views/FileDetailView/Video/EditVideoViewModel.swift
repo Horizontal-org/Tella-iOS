@@ -97,5 +97,5 @@ class EditVideoViewModel: EditMediaViewModel {
                 self.trimState = .error(error.localizedDescription)
             }
         }
-    }    
+    }
 }
