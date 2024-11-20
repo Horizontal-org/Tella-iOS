@@ -26,7 +26,7 @@ class EditVideoViewModel: EditMediaViewModel {
         }
     }
     
-    init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, shouldReloadVaultFiles: Binding<Bool>, playerVM: PlayerViewModel) {
+    override init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, shouldReloadVaultFiles: Binding<Bool>) {
         super.init(file: file, rootFile: rootFile, appModel: appModel, shouldReloadVaultFiles: shouldReloadVaultFiles)
         setupListeners()
         initVideo()
