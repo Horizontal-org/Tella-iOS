@@ -7,19 +7,19 @@ import AVFoundation
 
 struct VideoViewer: View {
     
-    @EnvironmentObject var appModel: MainAppModel
     @StateObject private var playerVM : PlayerViewModel
     
-    init(appModel: MainAppModel, currentFile : VaultFileDB?, playList: [VaultFileDB?]) {
+    init(appModel: MainAppModel, currentFile : VaultFileDB?, playList: [VaultFileDB?], rootFile: VaultFileDB?) {
         _playerVM = StateObject(wrappedValue: PlayerViewModel(appModel: appModel,
                                                               currentFile: currentFile,
-                                                              playList: playList))
+                                                              playList: playList,
+                                                              rootFile: rootFile))
     }
     
     var body: some View {
         ZStack {
             VStack {
-                CustomVideoPlayer(playerVM: playerVM)
+                CustomVideoPlayer(player: playerVM.player)
                     .overlay(CustomVideoControlsView(playerVM: playerVM)
                              ,alignment: .bottom)
                 
@@ -32,6 +32,9 @@ struct VideoViewer: View {
             LeadingTitleToolbar(title: playerVM.currentFile?.name ?? "")
             fileActionTrailingView()
         }
+        .onDisappear {
+            playerVM.player.pause()
+        }
         .ignoresSafeArea()
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: backButton)
@@ -40,13 +43,27 @@ struct VideoViewer: View {
     
     func fileActionTrailingView() -> some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            MoreFileActionButton(file: playerVM.currentFile, moreButtonType: .navigationBar)
+            HStack {
+                Button {
+                    self.showEditVideoView()
+                } label: {
+                    Image("file.edit")
+                }
+                MoreFileActionButton(file: playerVM.currentFile, moreButtonType: .navigationBar)
+            }
         }
     }
     
     var backButton : some View {
         BackButton {
             playerVM.deleteTmpFile()
+        }
+    }
+    
+    private func showEditVideoView() {
+        self.present(style: .fullScreen) {
+            let viewModel =  EditVideoViewModel(file: playerVM.currentFile, rootFile: playerVM.rootFile, appModel: playerVM.appModel, shouldReloadVaultFiles: .constant(true), playerVM: playerVM)
+            EditVideoView(viewModel: viewModel)
         }
     }
 }

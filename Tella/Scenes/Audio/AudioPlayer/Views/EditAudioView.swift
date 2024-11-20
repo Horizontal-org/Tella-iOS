@@ -14,9 +14,6 @@ import SwiftUI
 struct EditAudioView: View {
     
     @StateObject var editAudioViewModel: EditAudioViewModel
-    @State var isBottomSheetShown : Bool = false
-    let kTrimViewWidth = UIScreen.screenWidth - 40
-    
     @State var trailingGestureValue: Double = 0.0
     @State var leadingGestureValue: Double = 0.0
     @State var shouldStopLeftScroll = false
@@ -25,7 +22,7 @@ struct EditAudioView: View {
     var body: some View {
         ZStack {
             VStack {
-                headerView
+                EditMediaHeaderView(viewModel: editAudioViewModel)
                 timeLabelsView
                 trimView
                 displayTimeLabels
@@ -35,7 +32,7 @@ struct EditAudioView: View {
         }
         .onAppear {
             editAudioViewModel.onAppear()
-            trailingGestureValue = kTrimViewWidth
+            trailingGestureValue = editAudioViewModel.kTrimViewWidth
         }
         .onDisappear {
             editAudioViewModel.onDisappear()
@@ -58,13 +55,13 @@ struct EditAudioView: View {
                     Image("edit.audio.play.line")
                         .frame(height: 220)
                         .offset(x: editAudioViewModel.playingOffset)
-
+                    
                     leadingSliderView()
-                }.frame(maxWidth: kTrimViewWidth)
+                }.frame(maxWidth: editAudioViewModel.kTrimViewWidth)
                 trailingSliderView()
             }
             
-        }.frame(maxWidth: kTrimViewWidth)
+        }.frame(maxWidth: editAudioViewModel.kTrimViewWidth)
     }
     
     private func trimBackgroundView() -> some View {
@@ -80,7 +77,7 @@ struct EditAudioView: View {
                 .frame(width: abs(leadingGestureValue - trailingGestureValue ), height: 180 )
         }
     }
-
+    
     private func leadingSliderView() -> some View {
         TrimAudioSliderView(value: $editAudioViewModel.startTime,
                             range: 0...editAudioViewModel.timeDuration,
@@ -105,31 +102,6 @@ struct EditAudioView: View {
         })
     }
     
-    var headerView: some View {
-        HStack {
-            Button(action: { self.closeView()}) {
-                Image("file.edit.close")
-            }
-            
-            Text(LocalizableVault.editAudioTitle.localized)
-                .foregroundColor(.white)
-            
-            Spacer()
-            if editAudioViewModel.isDurationHasChanged()  {
-                Button(action: {
-                    editAudioViewModel.trimAudio()
-                }) {
-                    Image("edit.audio.cut")
-                        .resizable()
-                        .frame(width: 24, height: 24)
-                }
-            }
-            
-        }
-        .frame(height: 30)
-        .padding(16)
-    }
-    
     var timeLabelsView: some View {
         HStack(spacing: 0) {
             ForEach(editAudioViewModel.timeSlots) { time in
@@ -140,7 +112,7 @@ struct EditAudioView: View {
                     Spacer()
                 }
             }
-        }.frame(width: kTrimViewWidth, height: 40)
+        }.frame(width: editAudioViewModel.kTrimViewWidth, height: 40)
             .padding([.top], 70)
     }
     
@@ -180,21 +152,7 @@ struct EditAudioView: View {
         editAudioViewModel.startTime = 0.0
         editAudioViewModel.endTime = editAudioViewModel.timeDuration
         leadingGestureValue = 0.0
-        trailingGestureValue = kTrimViewWidth
-    }
-    private func closeView() {
-        editAudioViewModel.isPlaying = false
-        if editAudioViewModel.isDurationHasChanged() {
-            cancelAction()
-        }else  {
-            self.dismiss()
-        }
-    }
-    
-    private func cancelAction() {
-        isBottomSheetShown = true
-        let content = EditFileCancelBottomSheet( saveAction:  { editAudioViewModel.trimAudio() })
-        self.showBottomSheetView(content: content, modalHeight: 171, isShown: $isBottomSheetShown)
+        trailingGestureValue = editAudioViewModel.kTrimViewWidth
     }
     
     private func handleTrimState(value:ViewModelState<Bool>) {
@@ -210,7 +168,6 @@ struct EditAudioView: View {
             break
         }
     }
-    
 }
 
 

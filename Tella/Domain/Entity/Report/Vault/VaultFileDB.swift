@@ -304,3 +304,25 @@ extension VaultFileDB {
         return duration ?? 0.0 >= minimumAudioDuration
     }
 }
+extension VaultFileDB {
+    func getCopyName(from vaultFilesManager: VaultFilesManager?) -> String {
+
+        var baseName: String
+        var copyNumber = 0
+        
+        // Check if the current name already has the "copy" suffix
+        if name.hasSuffix(LocalizableVault.copy.localized) {
+            baseName = name
+        } else {
+            baseName = name + LocalizableVault.copy.localized
+        }
+        
+        // Generate the new filename and check if it exists
+        var newFileName = baseName
+        while vaultFilesManager?.vaultFileExists(name: newFileName) == true {
+            copyNumber += 1
+            newFileName = baseName + "-" + "\(copyNumber)"
+        }
+        return newFileName
+    }
+}

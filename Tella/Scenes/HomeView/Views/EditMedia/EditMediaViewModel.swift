@@ -1,0 +1,94 @@
+//
+//  EditMediaViewModel.swift
+//  Tella
+//
+//  Created by RIMA on 14.11.24.
+//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//
+
+import Foundation
+import Combine
+import SwiftUI
+
+class EditMediaViewModel: ObservableObject {
+    //MARK: - Published
+    @Published var startTime: Double = 0.0
+    @Published var endTime: Double = 0.0
+    @Published var timeDuration: Double = 0.0
+    @Published var currentTime : String  = "00:00:00"
+    @Published var playingOffset: CGFloat = 0.0
+    @Published var isPlaying = false
+    @Published var trimState: ViewModelState<Bool> = .loaded(false)
+    @Published var headerTitle = ""
+
+    //MARK: - View attributes
+    let minimumAudioDuration = 3.9 // this is the limit time of the audio duration
+    let kTrimViewWidth = UIScreen.screenWidth - 40
+    var timeSlots: [String] = []
+    var playButtonImageName: String {
+        isPlaying ? "mic.pause-audio" : "mic.play"
+    }
+    var fileURL: URL?
+    
+    
+    //MARK: - cancellable
+    var cancellables: Set<AnyCancellable> = []
+    var shouldReloadVaultFiles: Binding<Bool> // Should be changed soon
+    
+    //MARK: - Init attributes
+    var file: VaultFileDB?
+    var rootFile: VaultFileDB?
+    var appModel: MainAppModel
+    
+    init(file: VaultFileDB?, rootFile: VaultFileDB?, appModel: MainAppModel, shouldReloadVaultFiles: Binding<Bool>) {
+        self.file = file
+        self.rootFile = rootFile
+        self.appModel  = appModel
+        self.shouldReloadVaultFiles  = shouldReloadVaultFiles
+    }
+    
+    func onAppear() {
+        guard let file, let fileURL = self.appModel.vaultManager.loadVaultFileToURL(file: file)  else {return}
+        self.fileURL = fileURL
+        self.timeDuration = file.duration ?? 0.0
+        self.endTime = self.timeDuration
+    }
+    
+    func onDisappear() {
+        self.onPause()
+    }
+
+    func isDurationHasChanged() -> Bool {
+        return self.endTime != self.timeDuration || self.startTime != 0.0
+    }
+    
+    func updateOffset(time: Double) {
+        let totalOffsetDistance: CGFloat = 340
+        let progress = time / timeDuration
+        if !progress.isNaN {
+            playingOffset = CGFloat(progress) * totalOffsetDistance
+        }
+    }
+    
+    func onPlay() {}
+    
+    func onPause() {}
+    
+    func trim() {}
+    
+    func handlePlayButton() {
+        isPlaying.toggle()
+        isPlaying ? onPlay() : onPause()
+    }
+    
+    func addEditedFile(urlFile:URL) {
+        let importedFiles = ImportedFile(urlFile: urlFile,
+                                         parentId: rootFile?.id ,
+                                         fileSource: FileSource.files)
+        appModel.addVaultFile(importedFiles: [importedFiles],
+                              shouldReloadVaultFiles: shouldReloadVaultFiles)
+        DispatchQueue.main.async {
+            self.trimState = .loaded(true)
+        }
+    }
+}

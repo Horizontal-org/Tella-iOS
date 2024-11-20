@@ -8,11 +8,11 @@ import AVKit
 
 struct CustomVideoPlayer: UIViewRepresentable {
     
-    @ObservedObject var playerVM: PlayerViewModel
-    
+    var player: AVPlayer
+
     func makeUIView(context: Context) -> VideoPlayerView {
         let view = VideoPlayerView()
-        view.player = playerVM.player
+        view.player = player
         return view
     }
     

@@ -196,21 +196,28 @@ extension URL {
         return self.deletingLastPathComponent()
     }
     
-    
-    nonisolated func trimAudio(newName: String,
+    nonisolated func trimMedia(newName: String,
                                startTime: Double,
-                               endTime: Double) async throws -> URL {
+                               endTime: Double,
+                               type: FileExtension) async throws -> URL {
         
         let asset = AVAsset(url: self)
         let startTime = CMTime(seconds: startTime, preferredTimescale: 600)
         let endTime = CMTime(seconds: endTime, preferredTimescale: 600)
         let duration = CMTimeSubtract(endTime, startTime)
         
-        let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A)
+        let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality)
         
         let outputURL = createURL(name: newName)
         exportSession?.outputURL = outputURL
-        exportSession?.outputFileType = .m4a
+        
+        switch type {
+        case .mov:
+            exportSession?.outputFileType = AVFileType.mov
+        case .mp4:
+            exportSession?.outputFileType  = AVFileType.mp4
+        default: break
+        }
         exportSession?.timeRange = CMTimeRange(start: startTime, duration: duration)
         
         await exportSession?.export()

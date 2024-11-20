@@ -450,9 +450,14 @@
 		15FF77FF2C90CF7A002E87C3 /* DropboxServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FF77FE2C90CF7A002E87C3 /* DropboxServer.swift */; };
 		1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
+		200398FF2CE3F1B800DCFCF0 /* EditVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200398FE2CE3F1B800DCFCF0 /* EditVideoView.swift */; };
+		200399012CE3F1E900DCFCF0 /* EditVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200399002CE3F1E900DCFCF0 /* EditVideoViewModel.swift */; };
+		200399032CE60B2B00DCFCF0 /* ResizableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200399022CE60B2B00DCFCF0 /* ResizableImage.swift */; };
+		200399062CE69E9500DCFCF0 /* EditMediaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200399052CE69E9500DCFCF0 /* EditMediaViewModel.swift */; };
 		20219B302C8B33F900AD6D53 /* GdriveReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */; };
 		20219B332C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B322C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift */; };
 		20219B352C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B342C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift */; };
+		203F4D802CE77B1500D15086 /* CustomThumbnailSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 203F4D7F2CE77B1500D15086 /* CustomThumbnailSlider.swift */; };
 		20473A5F2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20473A5E2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift */; };
 		20473A612C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20473A602C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift */; };
 		20473A632C8BA7FE0015A9B5 /* TellaServerOutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20473A622C8BA7FE0015A9B5 /* TellaServerOutboxDetailsView.swift */; };
@@ -474,6 +479,7 @@
 		209AC6942C332F6000492356 /* AVCaptureMovieFileOutputExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6902C332F5F00492356 /* AVCaptureMovieFileOutputExtension.swift */; };
 		209AC6952C332F6000492356 /* PHPhotoLibraryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6912C332F5F00492356 /* PHPhotoLibraryExtension.swift */; };
 		209AC6962C332F6000492356 /* CLLocationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209AC6922C332F6000492356 /* CLLocationExtension.swift */; };
+		209FFD182CED19B8009B7D51 /* EditMediaHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209FFD172CED19B8009B7D51 /* EditMediaHeaderView.swift */; };
 		20AE31922BF4BB0700FF4256 /* CustomCropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AE31912BF4BB0700FF4256 /* CustomCropViewController.swift */; };
 		20AF68142C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68132C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift */; };
 		20AF68162C89B44E00503D30 /* NextcloudReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */; };
@@ -1089,9 +1095,14 @@
 		15FF77FE2C90CF7A002E87C3 /* DropboxServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxServer.swift; sourceTree = "<group>"; };
 		1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheet.swift; sourceTree = "<group>"; };
 		1EAE6BF424146C2100114244 /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
+		200398FE2CE3F1B800DCFCF0 /* EditVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVideoView.swift; sourceTree = "<group>"; };
+		200399002CE3F1E900DCFCF0 /* EditVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVideoViewModel.swift; sourceTree = "<group>"; };
+		200399022CE60B2B00DCFCF0 /* ResizableImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableImage.swift; sourceTree = "<group>"; };
+		200399052CE69E9500DCFCF0 /* EditMediaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaViewModel.swift; sourceTree = "<group>"; };
 		20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveReportMainView.swift; sourceTree = "<group>"; };
 		20219B322C8B3E1900AD6D53 /* GDriveSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveSubmittedDetailsView.swift; sourceTree = "<group>"; };
 		20219B342C8B3F5500AD6D53 /* GdriveOutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveOutboxDetailsView.swift; sourceTree = "<group>"; };
+		203F4D7F2CE77B1500D15086 /* CustomThumbnailSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomThumbnailSlider.swift; sourceTree = "<group>"; };
 		20473A5E2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaServerReportsMainView.swift; sourceTree = "<group>"; };
 		20473A602C8BA6FE0015A9B5 /* TellaServerSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaServerSubmittedDetailsView.swift; sourceTree = "<group>"; };
 		20473A622C8BA7FE0015A9B5 /* TellaServerOutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaServerOutboxDetailsView.swift; sourceTree = "<group>"; };
@@ -1113,6 +1124,7 @@
 		209AC6902C332F5F00492356 /* AVCaptureMovieFileOutputExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVCaptureMovieFileOutputExtension.swift; sourceTree = "<group>"; };
 		209AC6912C332F5F00492356 /* PHPhotoLibraryExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PHPhotoLibraryExtension.swift; sourceTree = "<group>"; };
 		209AC6922C332F6000492356 /* CLLocationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLLocationExtension.swift; sourceTree = "<group>"; };
+		209FFD172CED19B8009B7D51 /* EditMediaHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaHeaderView.swift; sourceTree = "<group>"; };
 		20AE31912BF4BB0700FF4256 /* CustomCropViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCropViewController.swift; sourceTree = "<group>"; };
 		20AF68132C89B3ED00503D30 /* NextcloudSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudSubmittedDetailsView.swift; sourceTree = "<group>"; };
 		20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudReportMainView.swift; sourceTree = "<group>"; };
@@ -1870,6 +1882,8 @@
 		12607D5427903ECC00E2B8CC /* Video */ = {
 			isa = PBXGroup;
 			children = (
+				200399002CE3F1E900DCFCF0 /* EditVideoViewModel.swift */,
+				200398FE2CE3F1B800DCFCF0 /* EditVideoView.swift */,
 				12607D592790457600E2B8CC /* VideoViewer.swift */,
 				12607D57279042CE00E2B8CC /* VideoPlayer.swift */,
 				12607D5227903E9E00E2B8CC /* CustomVideoControlsView.swift */,
@@ -2108,6 +2122,7 @@
 		1283C258272AABC9009180CA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				200399042CE69E7200DCFCF0 /* EditMedia */,
 				20985A5B2BE157D00092CCC2 /* EditImageView */,
 				12AB30D1272C33D90020FFBF /* Home */,
 				D5DA7F992648D02C00B00FDA /* FileListView */,
@@ -2549,6 +2564,7 @@
 				15BD9CB02BC744BC00C3932B /* NavigationHeaderView.swift */,
 				1503C87D2C07A080000F2209 /* ServerConnectionHeaderView.swift */,
 				20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */,
+				203F4D7F2CE77B1500D15086 /* CustomThumbnailSlider.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2623,6 +2639,7 @@
 				CC1313892A5DB68E0057271C /* BottomSheetTitleView.swift */,
 				CC13138B2A5DB79B0057271C /* BottomButtonsView.swift */,
 				1293F66B2AD80DB100F6CFBD /* CardFrameView.swift */,
+				200399022CE60B2B00DCFCF0 /* ResizableImage.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2824,6 +2841,15 @@
 				15C540A72CA5BBDF00D45B06 /* DropboxReportFile.swift */,
 			);
 			path = Dropbox;
+			sourceTree = "<group>";
+		};
+		200399042CE69E7200DCFCF0 /* EditMedia */ = {
+			isa = PBXGroup;
+			children = (
+				200399052CE69E9500DCFCF0 /* EditMediaViewModel.swift */,
+				209FFD172CED19B8009B7D51 /* EditMediaHeaderView.swift */,
+			);
+			path = EditMedia;
 			sourceTree = "<group>";
 		};
 		20985A5B2BE157D00092CCC2 /* EditImageView */ = {
@@ -3670,6 +3696,7 @@
 			files = (
 				126E1AFE2C3D8426000AE4CE /* Server.swift in Sources */,
 				CC13138A2A5DB68E0057271C /* BottomSheetTitleView.swift in Sources */,
+				203F4D802CE77B1500D15086 /* CustomThumbnailSlider.swift in Sources */,
 				20DC9F642CB1CAC000649160 /* EditAudioView.swift in Sources */,
 				15C540A82CA5BBDF00D45B06 /* DropboxReportFile.swift in Sources */,
 				E1E7C5842AAB70A500DDB07E /* UwaziDictionaryRow.swift in Sources */,
@@ -3742,6 +3769,7 @@
 				E1CF5A2B2AB3533100365036 /* ServerDatabase.swift in Sources */,
 				CCC1B4372AC75B700075B819 /* UwaziEntityTitleView.swift in Sources */,
 				CC9C01B829D223FC00FDF341 /* LocalizableReport.swift in Sources */,
+				200399012CE3F1E900DCFCF0 /* EditVideoViewModel.swift in Sources */,
 				1275A83E2C5A78C80071A97D /* NextcloudReportToSend.swift in Sources */,
 				D5DAFDCF265384C4002F3942 /* MainAppModel.swift in Sources */,
 				20AE31922BF4BB0700FF4256 /* CustomCropViewController.swift in Sources */,
@@ -3830,6 +3858,7 @@
 				12AE8D1E278CD4900007C781 /* IntExtension.swift in Sources */,
 				12730E67279F11C300DC0135 /* LanguageListView.swift in Sources */,
 				0ECC7817267A533E00A2ACF2 /* PageViewCell.swift in Sources */,
+				200399032CE60B2B00DCFCF0 /* ResizableImage.swift in Sources */,
 				128B929727D7920300E92ACF /* SelectingFilesHeaderView.swift in Sources */,
 				1236EE8028E1B40200973EEA /* DataBaseHelper.swift in Sources */,
 				125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */,
@@ -3860,6 +3889,7 @@
 				1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */,
 				1574AC882C879DFF007BEBF5 /* DropboxServerViewModel.swift in Sources */,
 				15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */,
+				200399062CE69E9500DCFCF0 /* EditMediaViewModel.swift in Sources */,
 				120D86642CB56FC500C007B4 /* ResultExtension.swift in Sources */,
 				1574AC832C878FF0007BEBF5 /* DropboxRepository.swift in Sources */,
 				1293F6682AD7EF3900F6CFBD /* CloseHeaderView.swift in Sources */,
@@ -3946,6 +3976,7 @@
 				1249B3812AD43A8D009A7023 /* VaultManagerInterface.swift in Sources */,
 				125A89582A965BA4009347C3 /* VaultFileDB.swift in Sources */,
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,
+				200398FF2CE3F1B800DCFCF0 /* EditVideoView.swift in Sources */,
 				CCC1B42F2AC75AF60075B819 /* UwaziDividerWidget.swift in Sources */,
 				1524303E2CB8258E00989395 /* DropboxReportToSend.swift in Sources */,
 				15FF77F82C8F89A8002E87C3 /* DropboxData.swift in Sources */,
@@ -4186,6 +4217,7 @@
 				12B6AF7D283E4C7200D697F6 /* LocalizableVault.swift in Sources */,
 				CCAE3A682AC217EC00A38C6D /* UwaziViewModel.swift in Sources */,
 				E1EEE2A429F7D192009FE227 /* UwaziTwoStepVerification.swift in Sources */,
+				209FFD182CED19B8009B7D51 /* EditMediaHeaderView.swift in Sources */,
 				CCE8CCDD2AF41E410088B61D /* UwaziFileUtility.swift in Sources */,
 				122E6A5529A396C400BDACAD /* ServerFileSize.swift in Sources */,
 				1275A8492C5E6EFF0071A97D /* NextcloudConstants.swift in Sources */,
