@@ -20,7 +20,6 @@ class EditVideoViewModel: EditMediaViewModel {
     @Published var shouldSeekVideo = false
     @Published var thumbnails: [UIImage] = []
     
-    
     var isSeekInProgress = false {
         didSet {
             self.onPause()
@@ -36,6 +35,7 @@ class EditVideoViewModel: EditMediaViewModel {
     private func initVideo() {
         guard let file else { return }
         guard let fileURL = self.appModel.vaultManager.loadVaultFileToURL(file: file)  else {return}
+        self.thumbnails = fileURL.generateThumbnails()
         let playerItem = AVPlayerItem(url:fileURL)
         self.player.replaceCurrentItem(with: playerItem)
         self.onPlay()
@@ -97,32 +97,5 @@ class EditVideoViewModel: EditMediaViewModel {
                 self.trimState = .error(error.localizedDescription)
             }
         }
-    }
-    
-    func generateThumbnails()  {
-        let count = 10.0
-        guard let videoURL = self.fileURL else {
-            return
-        }
-        
-        let asset = AVAsset(url: videoURL)
-        let imageGenerator = AVAssetImageGenerator(asset: asset)
-        imageGenerator.appliesPreferredTrackTransform = true
-        
-        var images: [UIImage] = []
-        let duration = asset.duration.seconds
-        let interval = duration / count
-        
-        for i in 0..<Int(count) {
-            let time = CMTime(seconds: interval * Double(i), preferredTimescale: 600)
-            do {
-                let cgImage = try  imageGenerator.copyCGImage(at: time, actualTime: nil)
-                images.append(UIImage(cgImage: cgImage))
-            } catch {
-                debugLog("Error while creating thumbnails")
-            }
-        }
-         self.thumbnails =  images
-    }
-    
+    }    
 }

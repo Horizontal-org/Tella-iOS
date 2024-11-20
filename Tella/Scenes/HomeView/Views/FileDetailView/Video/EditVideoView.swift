@@ -35,7 +35,6 @@ struct EditVideoView: View {
         }
         .onAppear {
             viewModel.onAppear()
-            viewModel.generateThumbnails()
             trailingGestureValue = viewModel.kTrimViewWidth
         }
         .onReceive(viewModel.$trimState) { value in
