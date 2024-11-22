@@ -21,6 +21,12 @@ class EditMediaViewModel: ObservableObject {
     @Published var trimState: ViewModelState<Bool> = .loaded(false)
     @Published var headerTitle = ""
     
+    @Published var trailingGestureValue: Double = 0.0
+    @Published var leadingGestureValue: Double = 0.0
+    @Published var shouldStopLeftScroll = false
+    @Published var shouldStopRightScroll = false
+
+
     //MARK: - View attributes
     let minimumAudioDuration = 3.9 // this is the limit time of the audio duration
     let kTrimViewWidth = UIScreen.screenWidth - 40
@@ -91,4 +97,11 @@ class EditMediaViewModel: ObservableObject {
             self.trimState = .loaded(true)
         }
     }
+    
+    func undo() {
+       startTime = 0.0
+       endTime = timeDuration
+       leadingGestureValue = 0.0
+       trailingGestureValue = kTrimViewWidth
+   }
 }

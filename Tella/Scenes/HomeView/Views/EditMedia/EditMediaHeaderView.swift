@@ -10,7 +10,7 @@ import SwiftUI
 
 
 struct EditMediaHeaderView: View {
-    @StateObject var viewModel: EditMediaViewModel
+    @ObservedObject var viewModel: EditMediaViewModel
     @State private var isBottomSheetShown : Bool = false
 
     var body: some View {

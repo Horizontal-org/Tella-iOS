@@ -13,10 +13,6 @@ struct EditVideoView: View {
     
     @ObservedObject var viewModel: EditVideoViewModel
     
-    @State var trailingGestureValue: Double = 0.0
-    @State var leadingGestureValue: Double = 0.0
-    @State var shouldStopLeftScroll = false
-    @State var shouldStopRightScroll = false
     
     @State private var thumbnail: UIImage? = nil
  
@@ -28,14 +24,18 @@ struct EditVideoView: View {
                 CustomVideoPlayer(player: viewModel.player)
                     .frame(maxWidth: .infinity, maxHeight: 450)
                 
-                controlButtonsView
-                trimView
+                EditMediaControlButtonsView(viewModel: viewModel).padding(.top, 16)
+                trimView.padding(.top, 16)
+
                 Spacer()
             }
         }
         .onAppear {
             viewModel.onAppear()
-            trailingGestureValue = viewModel.kTrimViewWidth
+            viewModel.trailingGestureValue = viewModel.kTrimViewWidth
+        }
+        .onDisappear {
+            viewModel.onDisappear()
         }
         .onReceive(viewModel.$trimState) { value in
             handleTrimState(value: value)
@@ -59,25 +59,6 @@ struct EditVideoView: View {
         .frame(maxWidth: viewModel.kTrimViewWidth, maxHeight: 36)
         .padding(.bottom, 20)
     }
-    var controlButtonsView: some View {
-        HStack(spacing: 64) {
-            Button(action: {  }) {
-                ResizableImage("cancel.edit.file")
-                    .frame(width: 50, height: 50)
-                    .foregroundColor(.gray)
-            }
-            
-            Button(action: {
-                viewModel.handlePlayButton()
-                
-            }) {
-                ResizableImage(viewModel.playButtonImageName)
-                    .frame(width: 50, height: 50)
-                    .foregroundColor(.gray)
-            }
-        }.padding(16)
-    }
-    
     
     var trimView: some View {
         VStack {
@@ -91,7 +72,6 @@ struct EditVideoView: View {
                 trailingSliderView()
             }
         }.frame(maxWidth: viewModel.kTrimViewWidth)
-            .padding(.bottom, 41)
     }
     
     private var tapeLineSliderView: some View {
@@ -108,27 +88,27 @@ struct EditVideoView: View {
     private func leadingSliderView() -> some View {
         TrimAudioSliderView(value: $viewModel.startTime,
                             range: 0...viewModel.timeDuration,
-                            gestureValue: $leadingGestureValue,
-                            shouldLimitScrolling: $shouldStopLeftScroll,
+                            gestureValue: $viewModel.leadingGestureValue,
+                            shouldLimitScrolling: $viewModel.shouldStopLeftScroll,
                             sliderHeight: 36,
                             isRightSlider: false,
                             sliderImage: "edit.video.left.icon")
         .frame(height: 36)
         .onReceive(viewModel.$startTime, perform: { value in
-            shouldStopLeftScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
+            viewModel.shouldStopLeftScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
         })
     }
     
     private func trailingSliderView() -> some View {
         TrimAudioSliderView(value: $viewModel.endTime,
                             range: 0...viewModel.timeDuration,
-                            gestureValue: $trailingGestureValue,
-                            shouldLimitScrolling: $shouldStopRightScroll,
+                            gestureValue: $viewModel.trailingGestureValue,
+                            shouldLimitScrolling: $viewModel.shouldStopRightScroll,
                             sliderHeight: 36, isRightSlider: true,
                             sliderImage: "edit.video.right.icon")
         .frame(height: 36)
         .onReceive(viewModel.$endTime, perform: { value in
-            shouldStopRightScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
+            viewModel.shouldStopRightScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
         })
     }
  

@@ -13,31 +13,27 @@ import SwiftUI
 
 struct EditAudioView: View {
     
-    @StateObject var editAudioViewModel: EditAudioViewModel
-    @State var trailingGestureValue: Double = 0.0
-    @State var leadingGestureValue: Double = 0.0
-    @State var shouldStopLeftScroll = false
-    @State var shouldStopRightScroll = false
+    @ObservedObject var viewModel: EditAudioViewModel
     
     var body: some View {
         ZStack {
             VStack {
-                EditMediaHeaderView(viewModel: editAudioViewModel)
+                EditMediaHeaderView(viewModel: viewModel)
                 timeLabelsView
                 trimView
                 displayTimeLabels
-                controlButtonsView
+                EditMediaControlButtonsView(viewModel: viewModel) .padding(.top, 64)
                 Spacer()
             }
         }
         .onAppear {
-            editAudioViewModel.onAppear()
-            trailingGestureValue = editAudioViewModel.kTrimViewWidth
+            viewModel.onAppear()
+            viewModel.trailingGestureValue = viewModel.kTrimViewWidth
         }
         .onDisappear {
-            editAudioViewModel.onDisappear()
+            viewModel.onDisappear()
         }
-        .onReceive(editAudioViewModel.$trimState) { value in
+        .onReceive(viewModel.$trimState) { value in
             handleTrimState(value: value)
         }
         
@@ -54,14 +50,14 @@ struct EditAudioView: View {
                     trimBackgroundView()
                     Image("edit.audio.play.line")
                         .frame(height: 220)
-                        .offset(x: editAudioViewModel.playingOffset)
+                        .offset(x: viewModel.playingOffset)
                     
                     leadingSliderView()
-                }.frame(maxWidth: editAudioViewModel.kTrimViewWidth)
+                }.frame(maxWidth: viewModel.kTrimViewWidth)
                 trailingSliderView()
             }
             
-        }.frame(maxWidth: editAudioViewModel.kTrimViewWidth)
+        }.frame(maxWidth: viewModel.kTrimViewWidth)
     }
     
     private func trimBackgroundView() -> some View {
@@ -73,86 +69,60 @@ struct EditAudioView: View {
                 .background(Color.white.opacity(0.08))
             // Adding a background yellow to indicate the trimmed part View
             Rectangle().fill(Styles.Colors.yellow.opacity(0.16))
-                .offset(x: leadingGestureValue)
-                .frame(width: abs(leadingGestureValue - trailingGestureValue ), height: 180 )
+                .offset(x: viewModel.leadingGestureValue)
+                .frame(width: abs(viewModel.leadingGestureValue - viewModel.trailingGestureValue ), height: 180 )
         }
     }
     
     private func leadingSliderView() -> some View {
-        TrimAudioSliderView(value: $editAudioViewModel.startTime,
-                            range: 0...editAudioViewModel.timeDuration,
-                            gestureValue: $leadingGestureValue,
-                            shouldLimitScrolling: $shouldStopLeftScroll, isRightSlider: false)
+        TrimAudioSliderView(value: $viewModel.startTime,
+                            range: 0...viewModel.timeDuration,
+                            gestureValue: $viewModel.leadingGestureValue,
+                            shouldLimitScrolling: $viewModel.shouldStopLeftScroll,
+                            isRightSlider: false)
         .frame(height: 220)
         .offset(y: 20)
-        .onReceive(editAudioViewModel.$startTime, perform: { value in
-            shouldStopLeftScroll = editAudioViewModel.startTime + editAudioViewModel.minimumAudioDuration >= editAudioViewModel.endTime
+        .onReceive(viewModel.$startTime, perform: { value in
+            viewModel.shouldStopLeftScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
         })
     }
     
     private func trailingSliderView() -> some View {
-        TrimAudioSliderView(value: $editAudioViewModel.endTime,
-                            range: 0...editAudioViewModel.timeDuration,
-                            gestureValue: $trailingGestureValue,
-                            shouldLimitScrolling: $shouldStopRightScroll, isRightSlider: true)
+        TrimAudioSliderView(value: $viewModel.endTime,
+                            range: 0...viewModel.timeDuration,
+                            gestureValue: $viewModel.trailingGestureValue,
+                            shouldLimitScrolling: $viewModel.shouldStopRightScroll,
+                            isRightSlider: true)
         .frame(height: 220)
         .offset(y:20)
-        .onReceive(editAudioViewModel.$endTime, perform: { value in
-            shouldStopRightScroll = editAudioViewModel.startTime + editAudioViewModel.minimumAudioDuration >= editAudioViewModel.endTime
+        .onReceive(viewModel.$endTime, perform: { value in
+            viewModel.shouldStopRightScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
         })
     }
     
     var timeLabelsView: some View {
         HStack(spacing: 0) {
-            ForEach(editAudioViewModel.timeSlots) { time in
+            ForEach(viewModel.timeSlots) { time in
                 Text(time)
                     .font(.system(size: 12, weight: .regular))
                     .foregroundColor(.white.opacity(0.32))
-                if time != editAudioViewModel.timeSlots.last {
+                if time != viewModel.timeSlots.last {
                     Spacer()
                 }
             }
-        }.frame(width: editAudioViewModel.kTrimViewWidth, height: 40)
+        }.frame(width: viewModel.kTrimViewWidth, height: 40)
             .padding([.top], 70)
     }
     
     var displayTimeLabels: some View {
         VStack {
-            Text(editAudioViewModel.currentTime)
+            Text(viewModel.currentTime)
                 .font(.custom(Styles.Fonts.regularFontName, size: 50))
                 .foregroundColor(.white)
-            Text(editAudioViewModel.timeDuration.formattedAsHHMMSS())
+            Text(viewModel.timeDuration.formattedAsHHMMSS())
                 .font(.custom(Styles.Fonts.regularFontName, size: 14))
                 .foregroundColor(.gray)
         }  .padding(.top, 70)
-    }
-    
-    
-    var controlButtonsView: some View {
-        HStack(spacing: 64) {
-            Button(action: { self.undo() }) {
-                Image("cancel.edit.file")
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .foregroundColor(.gray)
-            }
-            
-            Button(action: { editAudioViewModel.handlePlayButton() }) {
-                Image(editAudioViewModel.playButtonImageName)
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .foregroundColor(.gray)
-            }
-            
-        }
-        .padding(.top, 64)
-    }
-    
-    private func undo() {
-        editAudioViewModel.startTime = 0.0
-        editAudioViewModel.endTime = editAudioViewModel.timeDuration
-        leadingGestureValue = 0.0
-        trailingGestureValue = editAudioViewModel.kTrimViewWidth
     }
     
     private func handleTrimState(value:ViewModelState<Bool>) {
@@ -174,7 +144,7 @@ struct EditAudioView: View {
 
 struct EditAudioView_Previews: PreviewProvider {
     static var previews: some View {
-        EditAudioView(editAudioViewModel: EditAudioViewModel(file: nil, rootFile: nil,
+        EditAudioView(viewModel: EditAudioViewModel(file: nil, rootFile: nil,
                                                              appModel: MainAppModel.stub(),
                                                              shouldReloadVaultFiles: .constant(true)) )
     }

@@ -154,7 +154,7 @@ struct MoreFileActionButton: View {
             
             if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {
                 self.present(style: .fullScreen) {
-                    EditAudioView(editAudioViewModel: viewModel)
+                    EditAudioView(viewModel: viewModel)
                 }
             }else {
                 Toast.displayToast(message: LocalizableVault.editAudioToastMsg.localized)

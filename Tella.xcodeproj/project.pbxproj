@@ -463,6 +463,7 @@
 		20473A632C8BA7FE0015A9B5 /* TellaServerOutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20473A622C8BA7FE0015A9B5 /* TellaServerOutboxDetailsView.swift */; };
 		2048DADF2C340FF6000B3D9F /* NextcloudServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2048DADE2C340FF6000B3D9F /* NextcloudServerLoginView.swift */; };
 		204E7C3C2C241376004CC49F /* NextcloudRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204E7C3B2C241376004CC49F /* NextcloudRepository.swift */; };
+		204F7BAF2CEF8A3D00BA2F62 /* EditMediaControlButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204F7BAE2CEF8A3D00BA2F62 /* EditMediaControlButtonsView.swift */; };
 		208A06532BF6057A004BA033 /* EditImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06522BF6057A004BA033 /* EditImageViewModel.swift */; };
 		208A06552BF607BF004BA033 /* ImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A06542BF607BF004BA033 /* ImageCropper.swift */; };
 		20985A5D2BE158020092CCC2 /* EditImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20985A5C2BE158020092CCC2 /* EditImageView.swift */; };
@@ -1108,6 +1109,7 @@
 		20473A622C8BA7FE0015A9B5 /* TellaServerOutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaServerOutboxDetailsView.swift; sourceTree = "<group>"; };
 		2048DADE2C340FF6000B3D9F /* NextcloudServerLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudServerLoginView.swift; sourceTree = "<group>"; };
 		204E7C3B2C241376004CC49F /* NextcloudRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudRepository.swift; sourceTree = "<group>"; };
+		204F7BAE2CEF8A3D00BA2F62 /* EditMediaControlButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMediaControlButtonsView.swift; sourceTree = "<group>"; };
 		208A06522BF6057A004BA033 /* EditImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageViewModel.swift; sourceTree = "<group>"; };
 		208A06542BF607BF004BA033 /* ImageCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropper.swift; sourceTree = "<group>"; };
 		20985A5C2BE158020092CCC2 /* EditImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageView.swift; sourceTree = "<group>"; };
@@ -2848,6 +2850,7 @@
 			children = (
 				200399052CE69E9500DCFCF0 /* EditMediaViewModel.swift */,
 				209FFD172CED19B8009B7D51 /* EditMediaHeaderView.swift */,
+				204F7BAE2CEF8A3D00BA2F62 /* EditMediaControlButtonsView.swift */,
 			);
 			path = EditMedia;
 			sourceTree = "<group>";
@@ -3861,6 +3864,7 @@
 				200399032CE60B2B00DCFCF0 /* ResizableImage.swift in Sources */,
 				128B929727D7920300E92ACF /* SelectingFilesHeaderView.swift in Sources */,
 				1236EE8028E1B40200973EEA /* DataBaseHelper.swift in Sources */,
+				204F7BAF2CEF8A3D00BA2F62 /* EditMediaControlButtonsView.swift in Sources */,
 				125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */,
 				1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */,
 				126818C32A38B69E004606BD /* FileTypeHelper.swift in Sources */,
