@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct TrimAudioSliderView: View {
+struct TrimMediaSliderView: View {
     @Binding var value: Double
     var range: ClosedRange<Double>
     @Binding var gestureValue: Double
@@ -21,7 +21,6 @@ struct TrimAudioSliderView: View {
     var sliderImage = "edit.audio.trim.line"
     
     
-    var onEditingChanged: ((Bool) -> Void)?
     @State private var isEditing = false
     var body: some View {
         GeometryReader { geometry in
@@ -66,18 +65,7 @@ struct TrimAudioSliderView: View {
                 value = min(max(newValue, range.lowerBound), range.upperBound)
             }
             .onEnded { _ in
-                if isEditing {
-                    onEditingChanged?(false)  // Call closure when editing ends
-                    isEditing = false
-                }
-
                 gestureValue = calculateThumbOffset(in: geometry)
-            }
-            .onChanged { _ in
-                if !isEditing {
-                    onEditingChanged?(true)   // Call closure when editing starts
-                    isEditing = true
-                }
             }
 
     }
