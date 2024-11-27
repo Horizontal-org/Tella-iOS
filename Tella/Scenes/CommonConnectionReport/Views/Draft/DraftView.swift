@@ -17,7 +17,7 @@ struct DraftView: View  {
     @EnvironmentObject var sheetManager: SheetManager
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var showOutboxDetailsViewAction: (() -> Void)
-
+    
     var body: some View {
         ContainerView {
             contentView
@@ -100,12 +100,15 @@ struct DraftView: View  {
                     TextfieldView(fieldContent: $viewModel.title,
                                   isValid: $viewModel.isValidTitle,
                                   shouldShowError: $viewModel.shouldShowError,
-                                  fieldType: .text,
+                                  validationErrorMessage: LocalizableSettings.settCreateFolderError.localized,
+                                  fieldType: .folderName,
                                   placeholder: LocalizableReport.reportsListTitle.localized,
-                                  shouldShowTitle: true)
+                                  shouldShowTitle: true,
+                                  shouldValidateOnChange:true)
+                    .frame(height: 98)
                     
                     Spacer()
-                        .frame(height: 34)
+                        .frame(height: 10)
                     
                     UnderlinedTextEditorView(placeholder:  LocalizableReport.reportsListDescription.localized,
                                              fieldContent: $viewModel.description,

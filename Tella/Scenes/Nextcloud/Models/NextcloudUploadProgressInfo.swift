@@ -11,7 +11,6 @@ import Foundation
 class NextcloudUploadProgressInfo : UploadProgressInfo {
     var chunkFiles : [(fileName: String, size: Int64)] = []
     var chunkFileSent : (fileName: String, size: Int64)?
-    var finishUploading : Bool = false
     var step : NextcloudUploadStep = .initial
 }
 

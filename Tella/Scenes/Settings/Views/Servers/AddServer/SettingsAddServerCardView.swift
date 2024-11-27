@@ -9,7 +9,7 @@ struct SettingsAddServerCardView: View {
     
     @EnvironmentObject var serversViewModel : ServersViewModel
     @EnvironmentObject var settingViewModel: SettingsViewModel
-    let gDriveRepository = GDriveRepository()
+
     var body: some View {
         ZStack {
             HStack{
@@ -27,7 +27,7 @@ struct SettingsAddServerCardView: View {
                 
                 Button {
                     navigateTo(destination: ServerSelectionView(appModel: serversViewModel.mainAppModel,
-                                                                gDriveRepository: gDriveRepository).environmentObject(serversViewModel))
+                                                                serversViewModel: serversViewModel).environmentObject(serversViewModel))
                 } label: {
                     Image("settings.add")
                         .padding(.all, 14)

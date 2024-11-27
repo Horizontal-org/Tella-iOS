@@ -16,9 +16,7 @@ struct NextcloudReportToSend {
     var server: NextcloudServerModel
 }
 
-
 enum RemoteReportStatus : Int, Codable {
-    case unknown = 0
     case initial = 1
     case created = 2
     case descriptionSent = 3

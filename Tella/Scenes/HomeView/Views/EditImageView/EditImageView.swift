@@ -12,7 +12,6 @@ struct EditImageView: View {
     
     @EnvironmentObject var sheetManager: SheetManager
     @StateObject var viewModel: EditImageViewModel
-    @Binding var isPresented : Bool
     @State var isBottomSheetShown : Bool = false
 
     var body: some View {
@@ -22,7 +21,6 @@ struct EditImageView: View {
             } else {
                 ProgressView()
             }
-            confirmExitBottomSheet
         }.onAppear {
             viewModel.loadFile()
         }
@@ -30,30 +28,22 @@ struct EditImageView: View {
     
     var imageCropperView : some View {
         ImageCropper(image: $viewModel.imageToEdit.wrappedValue) {
-            sheetManager.hide()
             handleSaveAction()
         } didCancelAction: {
-            isBottomSheetShown = true
-        }  
+            cancelAction()
+        }
         .ignoresSafeArea()
     }
-
-    var confirmExitBottomSheet: some View {
-        DragView(modalHeight: 171, isShown: $isBottomSheetShown) {
-            ConfirmBottomSheet(titleText: LocalizableVault.editFileConfirmExitTitle.localized,
-                               msgText: LocalizableVault.editFileConfirmExitExpl.localized,
-                               cancelText: LocalizableVault.editFileExitSheetAction.localized,
-                               actionText:LocalizableVault.renameFileSaveSheetAction.localized, didConfirmAction: {
-                handleSaveAction()
-            }, didCancelAction: {
-                self.dismiss()
-            })
-        }
+    
+    private func cancelAction() {
+        isBottomSheetShown = true
+        let content = EditFileCancelBottomSheet( saveAction:  { handleSaveAction() })
+        self.showBottomSheetView(content: content , modalHeight: 171, isShown: $isBottomSheetShown)
     }
     
     private func handleSaveAction() {
         self.viewModel.saveChanges()
-        isPresented = false
+        self.dismiss()
         Toast.displayToast(message: LocalizableVault.editFileSavedToast.localized)
     }
 }

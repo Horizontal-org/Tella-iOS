@@ -46,6 +46,7 @@
 		1209FD3027AD8AC400D8C17E /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD2F27AD8AC400D8C17E /* AudioPlayerManager.swift */; };
 		1209FD3227ADBDDE00D8C17E /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1209FD3127ADBDDE00D8C17E /* TimeIntervalExtension.swift */; };
 		120A14472B285E1400870157 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A14462B285E1400870157 /* MainViewModel.swift */; };
+		120D86642CB56FC500C007B4 /* ResultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120D86632CB56FC500C007B4 /* ResultExtension.swift */; };
 		1212677F2C0E77A2005F75A4 /* VaultFileItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1212677D2C0E77A2005F75A4 /* VaultFileItemViewModel.swift */; };
 		121267802C0E77A2005F75A4 /* VaultFileItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1212677E2C0E77A2005F75A4 /* VaultFileItemView.swift */; };
 		1216123C28DE13AC00E6D7B6 /* DatabaseUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1216123B28DE13AC00E6D7B6 /* DatabaseUtilities.swift */; };
@@ -56,9 +57,7 @@
 		1217FCA328F99A7D00DD2D70 /* CircularLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217FCA228F99A7D00DD2D70 /* CircularLoader.swift */; };
 		1218E86528E48AEC00FE2E68 /* LoginResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1218E86428E48AEC00FE2E68 /* LoginResult.swift */; };
 		1218EDFC2AFED7F700F672F7 /* FeedbackConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1218EDFB2AFED7F700F672F7 /* FeedbackConstants.swift */; };
-		12199C34294094430041BD38 /* OutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12199C33294094430041BD38 /* OutboxDetailsView.swift */; };
 		12199C362940966E0041BD38 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12199C352940966E0041BD38 /* OpenSans-Italic.ttf */; };
-		12199C3A2941260D0041BD38 /* OutboxDetailsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12199C392941260D0041BD38 /* OutboxDetailsItemView.swift */; };
 		121AD8222943A2F00056AC2A /* ReportRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121AD8212943A2F00056AC2A /* ReportRepository.swift */; };
 		121AD8262943D52B0056AC2A /* SubmitReportResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121AD8252943D52B0056AC2A /* SubmitReportResult.swift */; };
 		121BAB7F29A7E30600D7E847 /* URLRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121BAB7E29A7E30600D7E847 /* URLRequestExtension.swift */; };
@@ -96,8 +95,6 @@
 		122E6A5329A3812A00BDACAD /* ReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122E6A5229A3812A00BDACAD /* ReportViewModel.swift */; };
 		122E6A5529A396C400BDACAD /* ServerFileSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122E6A5429A396C400BDACAD /* ServerFileSize.swift */; };
 		123048D2295F84BD0015CD96 /* ProgressFileItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123048D1295F84BD0015CD96 /* ProgressFileItemViewModel.swift */; };
-		123048D5295F95A40015CD96 /* SubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123048D4295F95A40015CD96 /* SubmittedDetailsView.swift */; };
-		123048D7295F95BB0015CD96 /* SubmittedDetailsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123048D6295F95BB0015CD96 /* SubmittedDetailsItemView.swift */; };
 		1230BE4727CD6D440055F854 /* AudioAuthorizationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230BE4627CD6D440055F854 /* AudioAuthorizationStatus.swift */; };
 		123125422930241500D3BCD5 /* PhotoVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123125412930241500D3BCD5 /* PhotoVideoViewModel.swift */; };
 		1231A45E294C779D0057DA85 /* ReportStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1231A45D294C779D0057DA85 /* ReportStatus.swift */; };
@@ -125,6 +122,7 @@
 		1242135529B774A40002402D /* DeleteReportConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1242135429B774A40002402D /* DeleteReportConfirmationView.swift */; };
 		1244141727E357E80037D469 /* LoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141627E357E80037D469 /* LoadMoreCell.swift */; };
 		1244141927E35D120037D469 /* VaultFileImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1244141827E35D120037D469 /* VaultFileImages.swift */; };
+		1246DECF2CC7F1CF00AAC633 /* DropboxError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1246DECE2CC7F1C300AAC633 /* DropboxError.swift */; };
 		12476E1F2A5B7D2F00069048 /* TrailingButtonToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12476E1E2A5B7D2F00069048 /* TrailingButtonToolbar.swift */; };
 		12494A482BC0570E00766DFF /* UwaziSubmissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */; };
 		1249B3812AD43A8D009A7023 /* VaultManagerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */; };
@@ -261,6 +259,10 @@
 		1289B98927C53A9C00315FCE /* CameraType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289B98827C53A9C00315FCE /* CameraType.swift */; };
 		1289B98B27C53C2400315FCE /* CameraTypeItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289B98A27C53C2400315FCE /* CameraTypeItemView.swift */; };
 		1289B98D27C53C8400315FCE /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289B98C27C53C8400315FCE /* ImageExtension.swift */; };
+		128A760A2CD23DDA0033F1C2 /* OutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128A76052CD23DDA0033F1C2 /* OutboxDetailsView.swift */; };
+		128A760B2CD23DDA0033F1C2 /* SubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128A76082CD23DDA0033F1C2 /* SubmittedDetailsView.swift */; };
+		128A760C2CD23DDA0033F1C2 /* SubmittedDetailsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128A76072CD23DDA0033F1C2 /* SubmittedDetailsItemView.swift */; };
+		128A760D2CD23DDA0033F1C2 /* OutboxDetailsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128A76042CD23DDA0033F1C2 /* OutboxDetailsItemView.swift */; };
 		128B15C927DA085A00E1C1E0 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128B15C827DA085A00E1C1E0 /* WelcomeView.swift */; };
 		128B15CB27DA30C800E1C1E0 /* OnboardingEndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128B15CA27DA30C700E1C1E0 /* OnboardingEndView.swift */; };
 		128B929727D7920300E92ACF /* SelectingFilesHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128B929627D7920300E92ACF /* SelectingFilesHeaderView.swift */; };
@@ -307,6 +309,7 @@
 		129B845328BFB7AC00F1B344 /* AddServerAccessChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */; };
 		129B845528BFEC8600F1B344 /* TopServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845428BFEC8600F1B344 /* TopServerView.swift */; };
 		129B845928BFED9700F1B344 /* TellaButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B845828BFED9700F1B344 /* TellaButtonView.swift */; };
+		129BC3A62CBE582A001C7323 /* FileHandleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129BC3A52CBE582A001C7323 /* FileHandleExtension.swift */; };
 		12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A1488E27209F2800A1ADDC /* ViewExtension.swift */; };
 		12A148922720A32000A1ADDC /* LockPinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148912720A32000A1ADDC /* LockPinData.swift */; };
 		12A148942720A89E00A1ADDC /* BottomLockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A148932720A89E00A1ADDC /* BottomLockView.swift */; };
@@ -379,12 +382,18 @@
 		1517A9B22C404F4000CB8EBF /* SubmittedMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1517A9B12C404F4000CB8EBF /* SubmittedMainViewModel.swift */; };
 		1517A9B42C4050D500CB8EBF /* GDriveSubmittedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1517A9B32C4050D500CB8EBF /* GDriveSubmittedViewModel.swift */; };
 		1519BED82B9A5A52006FD290 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1519BED72B9A5A52006FD290 /* Resource.swift */; };
+		1524303E2CB8258E00989395 /* DropboxReportToSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1524303D2CB8258E00989395 /* DropboxReportToSend.swift */; };
 		152D38512C2C61DF00323CE7 /* DraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152D38502C2C61DF00323CE7 /* DraftView.swift */; };
 		1535A5F12BAA06490009EA42 /* DownloadedResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1535A5F02BAA06490009EA42 /* DownloadedResource.swift */; };
 		153AACF72BE40BEA0075D5B2 /* UwaziEntityFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AACF62BE40BEA0075D5B2 /* UwaziEntityFetcher.swift */; };
 		153AACFB2BE41C010075D5B2 /* UwaziEntityRelationshipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153AACFA2BE41C010075D5B2 /* UwaziEntityRelationshipItem.swift */; };
+		153C23972CB49C3300C157D9 /* DropboxFileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153C23962CB49C3200C157D9 /* DropboxFileInfo.swift */; };
 		153F96492BFD306F00FE5464 /* CreateDriveFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153F96482BFD306F00FE5464 /* CreateDriveFolderView.swift */; };
 		154B029C2C10FAD0007A5D2B /* DriveConnectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154B029B2C10FAD0007A5D2B /* DriveConnectionType.swift */; };
+		1551C3252C936F2D00DFA6EF /* DropboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1551C3242C936F2D00DFA6EF /* DropboxViewModel.swift */; };
+		1551C3282C9370D300DFA6EF /* DropboxReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1551C3272C9370D300DFA6EF /* DropboxReportMainView.swift */; };
+		1551C32A2C93738400DFA6EF /* DropboxDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1551C3292C93738400DFA6EF /* DropboxDraftViewModel.swift */; };
+		1551C32C2C93740500DFA6EF /* DropboxDraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1551C32B2C93740500DFA6EF /* DropboxDraftView.swift */; };
 		155369232B7E9CC100129F2F /* ResourceDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155369222B7E9CC100129F2F /* ResourceDatabase.swift */; };
 		155541B02C066F990031D3A5 /* ServerConnectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155541AF2C066F990031D3A5 /* ServerConnectionButton.swift */; };
 		155541B22C0672C20031D3A5 /* GDriveRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155541B12C0672C20031D3A5 /* GDriveRepository.swift */; };
@@ -392,10 +401,16 @@
 		15587A012C010F1E0071389E /* GDriveServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15587A002C010F1E0071389E /* GDriveServer.swift */; };
 		15622F4A2B72B1FF00289816 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15622F492B72B1FF00289816 /* DeleteConfirmation.swift */; };
 		156986252B88FCB600534720 /* ResourcePDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156986242B88FCB600534720 /* ResourcePDFView.swift */; };
+		1574AC832C878FF0007BEBF5 /* DropboxRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574AC822C878FF0007BEBF5 /* DropboxRepository.swift */; };
+		1574AC882C879DFF007BEBF5 /* DropboxServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574AC872C879DFF007BEBF5 /* DropboxServerViewModel.swift */; };
 		15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C192B6AC34100D67C74 /* ResourcesView.swift */; };
 		15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C1B2B6AC63200D67C74 /* ReloadButton.swift */; };
 		15791C232B6C2E9100D67C74 /* ResourcesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */; };
 		157E4F532BA385B500147345 /* PDFKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157E4F522BA385B500147345 /* PDFKitView.swift */; };
+		157EDEAB2CB055EB00663549 /* DropboxCreateFolderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157EDEAA2CB055EB00663549 /* DropboxCreateFolderResponse.swift */; };
+		1587D6EB2C98C8C1003E0B3D /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D6EA2C98C8C1003E0B3D /* ConfigurationManager.swift */; };
+		1587D6ED2C99CD15003E0B3D /* LocalizableDropbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D6EC2C99CD15003E0B3D /* LocalizableDropbox.swift */; };
+		1587D6EF2C9A003F003E0B3D /* DropboxReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D6EE2C9A003F003E0B3D /* DropboxReport.swift */; };
 		15917D752B90FCC3005655AC /* ResourceCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15917D742B90FCC3005655AC /* ResourceCardType.swift */; };
 		15994A0C2BFBC6F40017F153 /* SelectDriveConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A0B2BFBC6F40017F153 /* SelectDriveConnectionView.swift */; };
 		15994A0E2BFBE15F0017F153 /* SelectSharedDrive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15994A0D2BFBE15F0017F153 /* SelectSharedDrive.swift */; };
@@ -407,9 +422,13 @@
 		15BD9CAD2BC7410E00C3932B /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CAC2BC7410E00C3932B /* SearchBarView.swift */; };
 		15BD9CB12BC744BC00C3932B /* NavigationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CB02BC744BC00C3932B /* NavigationHeaderView.swift */; };
 		15BD9CB32BC7472A00C3932B /* UwaziRelationshipDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD9CB22BC7472A00C3932B /* UwaziRelationshipDTO.swift */; };
-		15C51C442BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C51C432BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift */; };
 		15C51C462BFE769500DD9AD0 /* GDriveServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C51C452BFE769500DD9AD0 /* GDriveServerViewModel.swift */; };
+		15C540A82CA5BBDF00D45B06 /* DropboxReportFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C540A72CA5BBDF00D45B06 /* DropboxReportFile.swift */; };
 		15CD89102BF297BE00F724F5 /* SelectedEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CD890F2BF297BE00F724F5 /* SelectedEntityView.swift */; };
+		15DCD93C2C9C78B2001339A7 /* DropboxOutboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DCD93B2C9C78B2001339A7 /* DropboxOutboxViewModel.swift */; };
+		15DCD93E2C9C79A6001339A7 /* DropboxOutboxDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DCD93D2C9C79A6001339A7 /* DropboxOutboxDetailsView.swift */; };
+		15DCD9402C9CB18F001339A7 /* DropboxSubmittedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DCD93F2C9CB18F001339A7 /* DropboxSubmittedViewModel.swift */; };
+		15DCD9442C9CB27B001339A7 /* DropboxSubmittedDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DCD9432C9CB27B001339A7 /* DropboxSubmittedDetailsView.swift */; };
 		15E3D50A2C1B71E200B7FECC /* GDriveDraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */; };
 		15E3D50E2C1B87AC00B7FECC /* GDriveDraftViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E3D50D2C1B87AC00B7FECC /* GDriveDraftViewModel.swift */; };
 		15E54AB92C5824DA00290DE8 /* LocalizableGDrive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E54AB82C5824DA00290DE8 /* LocalizableGDrive.swift */; };
@@ -425,6 +444,10 @@
 		15F924482C17929300C436C5 /* ViewModelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F924472C17929300C436C5 /* ViewModelState.swift */; };
 		15FABA362B73F96800B2EFEE /* ResourceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FABA352B73F96800B2EFEE /* ResourceRepository.swift */; };
 		15FABA382B7405B800B2EFEE /* ResourceDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FABA372B7405B800B2EFEE /* ResourceDTO.swift */; };
+		15FE5D0A2CADD2860004AD35 /* DropboxUploadResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FE5D092CADD2860004AD35 /* DropboxUploadResponse.swift */; };
+		15FF77F62C8F862A002E87C3 /* DropboxDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FF77F52C8F862A002E87C3 /* DropboxDatabase.swift */; };
+		15FF77F82C8F89A8002E87C3 /* DropboxData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FF77F72C8F89A8002E87C3 /* DropboxData.swift */; };
+		15FF77FF2C90CF7A002E87C3 /* DropboxServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FF77FE2C90CF7A002E87C3 /* DropboxServer.swift */; };
 		1E67B39223FC9067001F3D64 /* ImagePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */; };
 		1EAE6BF524146C2100114244 /* QuickLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE6BF424146C2100114244 /* QuickLook.swift */; };
 		20219B302C8B33F900AD6D53 /* GdriveReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */; };
@@ -456,8 +479,12 @@
 		20AF68162C89B44E00503D30 /* NextcloudReportMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */; };
 		20BA0BDF2C33428A00823A27 /* ServerLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BA0BDE2C33428A00823A27 /* ServerLoginView.swift */; };
 		20BF26732C98481000E81535 /* ScrollviewViewContentViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BF26722C98481000E81535 /* ScrollviewViewContentViewModifier.swift */; };
+		20DC9F642CB1CAC000649160 /* EditAudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC9F632CB1CAC000649160 /* EditAudioView.swift */; };
+		20DC9F662CB1CAE100649160 /* EditAudioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DC9F652CB1CAE100649160 /* EditAudioViewModel.swift */; };
 		20E4DA832C36E8CF00123843 /* ServerCreateFolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4DA822C36E8CF00123843 /* ServerCreateFolderViewModel.swift */; };
 		20E4DA872C380E3C00123843 /* ServerCreateFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E4DA862C380E3C00123843 /* ServerCreateFolderView.swift */; };
+		20F3E6012CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */; };
+		20FA030D2CD282C3001121F1 /* TrimAudioSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FA030C2CD282C3001121F1 /* TrimAudioSliderView.swift */; };
 		379A13111EE0E1EB59813E7F /* libPods-TellaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F744F7D3402BB64531DB91 /* libPods-TellaTests.a */; };
 		89EDF57136D5C3761B8AB12D /* libPods-Tella.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB425D8CB3D5E80DA3F19E6 /* libPods-Tella.a */; };
 		CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0797BD2A8D46CB00AAE63F /* UnlockView.swift */; };
@@ -518,7 +545,7 @@
 		D53B77012601CA3A0001CD34 /* VaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B77002601CA3A0001CD34 /* VaultManager.swift */; };
 		D572EAC7263A383900CE191A /* RecentFileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC6263A383900CE191A /* RecentFileCell.swift */; };
 		D572EAC9263A384B00CE191A /* FileGroupsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EAC8263A384B00CE191A /* FileGroupsView.swift */; };
-		D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EACA263A43C100CE191A /* FileDetailView.swift */; };
+		D572EACB263A43C100CE191A /* FileDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572EACA263A43C100CE191A /* FileDetailsView.swift */; };
 		D57F5E9026152A4800C1DA47 /* Datable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57F5E8F26152A4800C1DA47 /* Datable.swift */; };
 		D57F5E9526152A8500C1DA47 /* Datable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57F5E9426152A8500C1DA47 /* Datable.swift */; };
 		D57F5EA4261569C300C1DA47 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D57F5EA3261569C300C1DA47 /* Media.xcassets */; };
@@ -658,6 +685,7 @@
 		1209FD2F27AD8AC400D8C17E /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
 		1209FD3127ADBDDE00D8C17E /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
 		120A14462B285E1400870157 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		120D86632CB56FC500C007B4 /* ResultExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultExtension.swift; sourceTree = "<group>"; };
 		1212677D2C0E77A2005F75A4 /* VaultFileItemViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VaultFileItemViewModel.swift; sourceTree = "<group>"; };
 		1212677E2C0E77A2005F75A4 /* VaultFileItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VaultFileItemView.swift; sourceTree = "<group>"; };
 		1216123B28DE13AC00E6D7B6 /* DatabaseUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUtilities.swift; sourceTree = "<group>"; };
@@ -668,9 +696,7 @@
 		1217FCA228F99A7D00DD2D70 /* CircularLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularLoader.swift; sourceTree = "<group>"; };
 		1218E86428E48AEC00FE2E68 /* LoginResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResult.swift; sourceTree = "<group>"; };
 		1218EDFB2AFED7F700F672F7 /* FeedbackConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackConstants.swift; sourceTree = "<group>"; };
-		12199C33294094430041BD38 /* OutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxDetailsView.swift; sourceTree = "<group>"; };
 		12199C352940966E0041BD38 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Italic.ttf"; sourceTree = "<group>"; };
-		12199C392941260D0041BD38 /* OutboxDetailsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxDetailsItemView.swift; sourceTree = "<group>"; };
 		121AD8212943A2F00056AC2A /* ReportRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRepository.swift; sourceTree = "<group>"; };
 		121AD8252943D52B0056AC2A /* SubmitReportResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitReportResult.swift; sourceTree = "<group>"; };
 		121BAB7E29A7E30600D7E847 /* URLRequestExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLRequestExtension.swift; sourceTree = "<group>"; };
@@ -708,8 +734,6 @@
 		122E6A5229A3812A00BDACAD /* ReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewModel.swift; sourceTree = "<group>"; };
 		122E6A5429A396C400BDACAD /* ServerFileSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerFileSize.swift; sourceTree = "<group>"; };
 		123048D1295F84BD0015CD96 /* ProgressFileItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressFileItemViewModel.swift; sourceTree = "<group>"; };
-		123048D4295F95A40015CD96 /* SubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittedDetailsView.swift; sourceTree = "<group>"; };
-		123048D6295F95BB0015CD96 /* SubmittedDetailsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittedDetailsItemView.swift; sourceTree = "<group>"; };
 		1230BE4627CD6D440055F854 /* AudioAuthorizationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAuthorizationStatus.swift; sourceTree = "<group>"; };
 		123125412930241500D3BCD5 /* PhotoVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoVideoViewModel.swift; sourceTree = "<group>"; };
 		1231A45D294C779D0057DA85 /* ReportStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportStatus.swift; sourceTree = "<group>"; };
@@ -737,6 +761,7 @@
 		1242135429B774A40002402D /* DeleteReportConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteReportConfirmationView.swift; sourceTree = "<group>"; };
 		1244141627E357E80037D469 /* LoadMoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCell.swift; sourceTree = "<group>"; };
 		1244141827E35D120037D469 /* VaultFileImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultFileImages.swift; sourceTree = "<group>"; };
+		1246DECE2CC7F1C300AAC633 /* DropboxError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxError.swift; sourceTree = "<group>"; };
 		12476E1E2A5B7D2F00069048 /* TrailingButtonToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailingButtonToolbar.swift; sourceTree = "<group>"; };
 		12494A472BC0570D00766DFF /* UwaziSubmissionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziSubmissionViewModel.swift; sourceTree = "<group>"; };
 		1249B3802AD43A8D009A7023 /* VaultManagerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManagerInterface.swift; sourceTree = "<group>"; };
@@ -872,6 +897,10 @@
 		1289B98827C53A9C00315FCE /* CameraType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraType.swift; sourceTree = "<group>"; };
 		1289B98A27C53C2400315FCE /* CameraTypeItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraTypeItemView.swift; sourceTree = "<group>"; };
 		1289B98C27C53C8400315FCE /* ImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
+		128A76042CD23DDA0033F1C2 /* OutboxDetailsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxDetailsItemView.swift; sourceTree = "<group>"; };
+		128A76052CD23DDA0033F1C2 /* OutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxDetailsView.swift; sourceTree = "<group>"; };
+		128A76072CD23DDA0033F1C2 /* SubmittedDetailsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittedDetailsItemView.swift; sourceTree = "<group>"; };
+		128A76082CD23DDA0033F1C2 /* SubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittedDetailsView.swift; sourceTree = "<group>"; };
 		128B15C827DA085A00E1C1E0 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		128B15CA27DA30C700E1C1E0 /* OnboardingEndView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingEndView.swift; sourceTree = "<group>"; };
 		128B929627D7920300E92ACF /* SelectingFilesHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectingFilesHeaderView.swift; sourceTree = "<group>"; };
@@ -916,6 +945,7 @@
 		129B845228BFB7AC00F1B344 /* AddServerAccessChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerAccessChoiceView.swift; sourceTree = "<group>"; };
 		129B845428BFEC8600F1B344 /* TopServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopServerView.swift; sourceTree = "<group>"; };
 		129B845828BFED9700F1B344 /* TellaButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellaButtonView.swift; sourceTree = "<group>"; };
+		129BC3A52CBE582A001C7323 /* FileHandleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHandleExtension.swift; sourceTree = "<group>"; };
 		12A1488E27209F2800A1ADDC /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		12A148912720A32000A1ADDC /* LockPinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockPinData.swift; sourceTree = "<group>"; };
 		12A148932720A89E00A1ADDC /* BottomLockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLockView.swift; sourceTree = "<group>"; };
@@ -988,13 +1018,19 @@
 		1517A9B12C404F4000CB8EBF /* SubmittedMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittedMainViewModel.swift; sourceTree = "<group>"; };
 		1517A9B32C4050D500CB8EBF /* GDriveSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveSubmittedViewModel.swift; sourceTree = "<group>"; };
 		1519BED72B9A5A52006FD290 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
+		1524303D2CB8258E00989395 /* DropboxReportToSend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxReportToSend.swift; sourceTree = "<group>"; };
 		152D38502C2C61DF00323CE7 /* DraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftView.swift; sourceTree = "<group>"; };
 		1535A5F02BAA06490009EA42 /* DownloadedResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedResource.swift; sourceTree = "<group>"; };
 		153AACF62BE40BEA0075D5B2 /* UwaziEntityFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityFetcher.swift; sourceTree = "<group>"; };
 		153AACFA2BE41C010075D5B2 /* UwaziEntityRelationshipItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziEntityRelationshipItem.swift; sourceTree = "<group>"; };
 		153B2E552C8A32AA0025F76B /* TellaConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = TellaConfig.xcconfig; sourceTree = "<group>"; };
+		153C23962CB49C3200C157D9 /* DropboxFileInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxFileInfo.swift; sourceTree = "<group>"; };
 		153F96482BFD306F00FE5464 /* CreateDriveFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDriveFolderView.swift; sourceTree = "<group>"; };
 		154B029B2C10FAD0007A5D2B /* DriveConnectionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveConnectionType.swift; sourceTree = "<group>"; };
+		1551C3242C936F2D00DFA6EF /* DropboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxViewModel.swift; sourceTree = "<group>"; };
+		1551C3272C9370D300DFA6EF /* DropboxReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxReportMainView.swift; sourceTree = "<group>"; };
+		1551C3292C93738400DFA6EF /* DropboxDraftViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxDraftViewModel.swift; sourceTree = "<group>"; };
+		1551C32B2C93740500DFA6EF /* DropboxDraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxDraftView.swift; sourceTree = "<group>"; };
 		155369222B7E9CC100129F2F /* ResourceDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDatabase.swift; sourceTree = "<group>"; };
 		155541AF2C066F990031D3A5 /* ServerConnectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConnectionButton.swift; sourceTree = "<group>"; };
 		155541B12C0672C20031D3A5 /* GDriveRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveRepository.swift; sourceTree = "<group>"; };
@@ -1002,10 +1038,16 @@
 		15587A002C010F1E0071389E /* GDriveServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveServer.swift; sourceTree = "<group>"; };
 		15622F492B72B1FF00289816 /* DeleteConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteConfirmation.swift; sourceTree = "<group>"; };
 		156986242B88FCB600534720 /* ResourcePDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcePDFView.swift; sourceTree = "<group>"; };
+		1574AC822C878FF0007BEBF5 /* DropboxRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxRepository.swift; sourceTree = "<group>"; };
+		1574AC872C879DFF007BEBF5 /* DropboxServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxServerViewModel.swift; sourceTree = "<group>"; };
 		15791C192B6AC34100D67C74 /* ResourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesView.swift; sourceTree = "<group>"; };
 		15791C1B2B6AC63200D67C74 /* ReloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReloadButton.swift; sourceTree = "<group>"; };
 		15791C222B6C2E9100D67C74 /* ResourcesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesViewModel.swift; sourceTree = "<group>"; };
 		157E4F522BA385B500147345 /* PDFKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFKitView.swift; sourceTree = "<group>"; };
+		157EDEAA2CB055EB00663549 /* DropboxCreateFolderResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxCreateFolderResponse.swift; sourceTree = "<group>"; };
+		1587D6EA2C98C8C1003E0B3D /* ConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationManager.swift; sourceTree = "<group>"; };
+		1587D6EC2C99CD15003E0B3D /* LocalizableDropbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableDropbox.swift; sourceTree = "<group>"; };
+		1587D6EE2C9A003F003E0B3D /* DropboxReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxReport.swift; sourceTree = "<group>"; };
 		1589A6202B7672390048C775 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1589A6212B7672430048C775 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		15917D742B90FCC3005655AC /* ResourceCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceCardType.swift; sourceTree = "<group>"; };
@@ -1019,9 +1061,13 @@
 		15BD9CAC2BC7410E00C3932B /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		15BD9CB02BC744BC00C3932B /* NavigationHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationHeaderView.swift; sourceTree = "<group>"; };
 		15BD9CB22BC7472A00C3932B /* UwaziRelationshipDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UwaziRelationshipDTO.swift; sourceTree = "<group>"; };
-		15C51C432BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveAuthViewModel.swift; sourceTree = "<group>"; };
 		15C51C452BFE769500DD9AD0 /* GDriveServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveServerViewModel.swift; sourceTree = "<group>"; };
+		15C540A72CA5BBDF00D45B06 /* DropboxReportFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxReportFile.swift; sourceTree = "<group>"; };
 		15CD890F2BF297BE00F724F5 /* SelectedEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedEntityView.swift; sourceTree = "<group>"; };
+		15DCD93B2C9C78B2001339A7 /* DropboxOutboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxOutboxViewModel.swift; sourceTree = "<group>"; };
+		15DCD93D2C9C79A6001339A7 /* DropboxOutboxDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxOutboxDetailsView.swift; sourceTree = "<group>"; };
+		15DCD93F2C9CB18F001339A7 /* DropboxSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSubmittedViewModel.swift; sourceTree = "<group>"; };
+		15DCD9432C9CB27B001339A7 /* DropboxSubmittedDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSubmittedDetailsView.swift; sourceTree = "<group>"; };
 		15E3D5092C1B71E200B7FECC /* GDriveDraftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveDraftView.swift; sourceTree = "<group>"; };
 		15E3D50D2C1B87AC00B7FECC /* GDriveDraftViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDriveDraftViewModel.swift; sourceTree = "<group>"; };
 		15E54AB82C5824DA00290DE8 /* LocalizableGDrive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableGDrive.swift; sourceTree = "<group>"; };
@@ -1037,6 +1083,10 @@
 		15F924472C17929300C436C5 /* ViewModelState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelState.swift; sourceTree = "<group>"; };
 		15FABA352B73F96800B2EFEE /* ResourceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceRepository.swift; sourceTree = "<group>"; };
 		15FABA372B7405B800B2EFEE /* ResourceDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDTO.swift; sourceTree = "<group>"; };
+		15FE5D092CADD2860004AD35 /* DropboxUploadResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxUploadResponse.swift; sourceTree = "<group>"; };
+		15FF77F52C8F862A002E87C3 /* DropboxDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxDatabase.swift; sourceTree = "<group>"; };
+		15FF77F72C8F89A8002E87C3 /* DropboxData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxData.swift; sourceTree = "<group>"; };
+		15FF77FE2C90CF7A002E87C3 /* DropboxServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxServer.swift; sourceTree = "<group>"; };
 		1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSheet.swift; sourceTree = "<group>"; };
 		1EAE6BF424146C2100114244 /* QuickLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLook.swift; sourceTree = "<group>"; };
 		20219B2F2C8B33F900AD6D53 /* GdriveReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveReportMainView.swift; sourceTree = "<group>"; };
@@ -1068,9 +1118,13 @@
 		20AF68152C89B44E00503D30 /* NextcloudReportMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudReportMainView.swift; sourceTree = "<group>"; };
 		20BA0BDE2C33428A00823A27 /* ServerLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerLoginView.swift; sourceTree = "<group>"; };
 		20BF26722C98481000E81535 /* ScrollviewViewContentViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollviewViewContentViewModifier.swift; sourceTree = "<group>"; };
+		20DC9F632CB1CAC000649160 /* EditAudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAudioView.swift; sourceTree = "<group>"; };
+		20DC9F652CB1CAE100649160 /* EditAudioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAudioViewModel.swift; sourceTree = "<group>"; };
 		20E4DA822C36E8CF00123843 /* ServerCreateFolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerCreateFolderViewModel.swift; sourceTree = "<group>"; };
 		20E4DA862C380E3C00123843 /* ServerCreateFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerCreateFolderView.swift; sourceTree = "<group>"; };
 		20E4DA882C380F7400123843 /* CreateNextcloudFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNextcloudFolderView.swift; sourceTree = "<group>"; };
+		20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFileCancelBottomSheet.swift; sourceTree = "<group>"; };
+		20FA030C2CD282C3001121F1 /* TrimAudioSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimAudioSliderView.swift; sourceTree = "<group>"; };
 		21FEB79B83E10A1CBE4AA323 /* Pods-TellaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TellaTests.debug.xcconfig"; path = "Target Support Files/Pods-TellaTests/Pods-TellaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		41C55359B3FCA6834440D9D8 /* Pods-Tella.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tella.debug.xcconfig"; path = "Target Support Files/Pods-Tella/Pods-Tella.debug.xcconfig"; sourceTree = "<group>"; };
 		6DD4C039240F547300491438 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -1140,7 +1194,7 @@
 		D572EAC4263A383100CE191A /* RecentFilesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentFilesListView.swift; sourceTree = "<group>"; };
 		D572EAC6263A383900CE191A /* RecentFileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentFileCell.swift; sourceTree = "<group>"; };
 		D572EAC8263A384B00CE191A /* FileGroupsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGroupsView.swift; sourceTree = "<group>"; };
-		D572EACA263A43C100CE191A /* FileDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDetailView.swift; sourceTree = "<group>"; };
+		D572EACA263A43C100CE191A /* FileDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDetailsView.swift; sourceTree = "<group>"; };
 		D57F5E8F26152A4800C1DA47 /* Datable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Datable.swift; sourceTree = "<group>"; };
 		D57F5E9426152A8500C1DA47 /* Datable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Datable.swift; sourceTree = "<group>"; };
 		D57F5EA3261569C300C1DA47 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
@@ -1269,7 +1323,7 @@
 		0DA213CC268028AC00526995 /* FileDetailView */ = {
 			isa = PBXGroup;
 			children = (
-				D572EACA263A43C100CE191A /* FileDetailView.swift */,
+				D572EACA263A43C100CE191A /* FileDetailsView.swift */,
 				0DC6FC53269BCDDE001B0D34 /* FileInfoView.swift */,
 				0E87C874268BDDFB00EB5E34 /* ImageViewer.swift */,
 				12607D5427903ECC00E2B8CC /* Video */,
@@ -1331,7 +1385,6 @@
 		1203CDE429915C6600D09073 /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				209AC6802C332D6E00492356 /* GDriveData.swift */,
 				12964D902BAB44B9003E1E0A /* Models */,
 				1203CDE62991682800D09073 /* Common */,
 				E1F4A8E02AAF3F4E001C8E61 /* Protocols */,
@@ -1341,7 +1394,8 @@
 				E1CF5A242AB3477C00365036 /* UwaziDatabase.swift */,
 				E1CF5A2A2AB3533100365036 /* ServerDatabase.swift */,
 				155369222B7E9CC100129F2F /* ResourceDatabase.swift */,
-				155879FE2C0106FA0071389E /* GDriveDatabase.swift */,
+				127439A12CB7EF800008C3C0 /* GDrive */,
+				15FF77F42C8F8618002E87C3 /* Dropbox */,
 				126E1B022C3D9A85000AE4CE /* Nextcloud */,
 			);
 			path = Database;
@@ -1398,6 +1452,7 @@
 				1233007928E3115500B8F7BA /* Request.swift */,
 				1233007D28E3184D00B8F7BA /* Value.swift */,
 				1206CD4428F59DD100B38539 /* APIError.swift */,
+				1246DECE2CC7F1C300AAC633 /* DropboxError.swift */,
 			);
 			path = APICall;
 			sourceTree = "<group>";
@@ -1451,16 +1506,6 @@
 				15BD9CB22BC7472A00C3932B /* UwaziRelationshipDTO.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		12199C322940936B0041BD38 /* Outbox */ = {
-			isa = PBXGroup;
-			children = (
-				12199C33294094430041BD38 /* OutboxDetailsView.swift */,
-				12199C392941260D0041BD38 /* OutboxDetailsItemView.swift */,
-			);
-			name = Outbox;
-			path = ../../Reports/Outbox;
 			sourceTree = "<group>";
 		};
 		121C945B28FF026200570EB4 /* AddServer */ = {
@@ -1529,16 +1574,6 @@
 			path = TellaButton;
 			sourceTree = "<group>";
 		};
-		123048D3295F954E0015CD96 /* Submitted */ = {
-			isa = PBXGroup;
-			children = (
-				123048D4295F95A40015CD96 /* SubmittedDetailsView.swift */,
-				123048D6295F95BB0015CD96 /* SubmittedDetailsItemView.swift */,
-			);
-			name = Submitted;
-			path = ../../Reports/Submitted;
-			sourceTree = "<group>";
-		};
 		1231A459294C76040057DA85 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
@@ -1564,6 +1599,7 @@
 		1231A45B294C76990057DA85 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				15FF77FD2C90CF5A002E87C3 /* Dropbox */,
 				126E1AF42C3D77F1000AE4CE /* CommonReport */,
 				126E1AFA2C3D8426000AE4CE /* CommonServer */,
 				15994A0F2BFBF0C70017F153 /* GDrive */,
@@ -1717,9 +1753,9 @@
 		125C789B2C36B36900440014 /* CommonConnectionReport */ = {
 			isa = PBXGroup;
 			children = (
-				125C78A02C3804AC00440014 /* Models */,
-				125C789D2C36B50800440014 /* ViewModels */,
 				125C789C2C36B50100440014 /* Views */,
+				125C789D2C36B50800440014 /* ViewModels */,
+				125C78A02C3804AC00440014 /* Models */,
 			);
 			path = CommonConnectionReport;
 			sourceTree = "<group>";
@@ -1727,13 +1763,13 @@
 		125C789C2C36B50100440014 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				1254E2702C6FDCFB004C6280 /* Connections */,
-				1242135429B774A40002402D /* DeleteReportConfirmationView.swift */,
-				123048D3295F954E0015CD96 /* Submitted */,
-				12199C322940936B0041BD38 /* Outbox */,
-				15CA1B882C582168002333A8 /* Draft */,
 				12B84B8F2C333DD0006363F0 /* ReportMainView.swift */,
 				12B84B972C3413AC006363F0 /* CommonReportListView.swift */,
+				1242135429B774A40002402D /* DeleteReportConfirmationView.swift */,
+				15CA1B882C582168002333A8 /* Draft */,
+				128A76062CD23DDA0033F1C2 /* Outbox */,
+				128A76092CD23DDA0033F1C2 /* Submitted */,
+				1254E2702C6FDCFB004C6280 /* Connections */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1760,6 +1796,7 @@
 				125C78A12C38056300440014 /* EntityStatusExtension.swift */,
 				125C78A32C3805C600440014 /* ReportStatusExtension.swift */,
 				12A1FACD2C81E15700E28BC2 /* BaseReportExtension.swift */,
+				1275A8412C5A791A0071A97D /* ReportFileExtension.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1798,6 +1835,8 @@
 				E1CF5A262AB3488E00365036 /* JSONDecoderExtension.swift */,
 				125F9B9A2AD9B4770073748C /* DictionaryExtension.swift */,
 				12742C8E2BEB9FBC00919FAE /* EncodableExtension.swift */,
+				120D86632CB56FC500C007B4 /* ResultExtension.swift */,
+				129BC3A52CBE582A001C7323 /* FileHandleExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1938,12 +1977,20 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		127439A12CB7EF800008C3C0 /* GDrive */ = {
+			isa = PBXGroup;
+			children = (
+				209AC6802C332D6E00492356 /* GDriveData.swift */,
+				155879FE2C0106FA0071389E /* GDriveDatabase.swift */,
+			);
+			path = GDrive;
+			sourceTree = "<group>";
+		};
 		1275A83C2C5A78B50071A97D /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				1275A83D2C5A78C80071A97D /* NextcloudReportToSend.swift */,
 				1275A83F2C5A78FB0071A97D /* NextcloudMetadata.swift */,
-				1275A8412C5A791A0071A97D /* ReportFileExtension.swift */,
 				1275A8432C5AA4460071A97D /* NextcloudUploadProgressInfo.swift */,
 			);
 			path = Models;
@@ -2009,6 +2056,7 @@
 				12935478294A3BFC00735ED0 /* MIMEType.swift */,
 				1289B45528B62A99005DA687 /* DeviceOrientationHelper.swift */,
 				1233076629F15A290019DF7C /* NetworkMonitor.swift */,
+				1587D6EA2C98C8C1003E0B3D /* ConfigurationManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2112,6 +2160,24 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		128A76062CD23DDA0033F1C2 /* Outbox */ = {
+			isa = PBXGroup;
+			children = (
+				128A76042CD23DDA0033F1C2 /* OutboxDetailsItemView.swift */,
+				128A76052CD23DDA0033F1C2 /* OutboxDetailsView.swift */,
+			);
+			path = Outbox;
+			sourceTree = "<group>";
+		};
+		128A76092CD23DDA0033F1C2 /* Submitted */ = {
+			isa = PBXGroup;
+			children = (
+				128A76072CD23DDA0033F1C2 /* SubmittedDetailsItemView.swift */,
+				128A76082CD23DDA0033F1C2 /* SubmittedDetailsView.swift */,
+			);
+			path = Submitted;
+			sourceTree = "<group>";
+		};
 		128A82DB27D113230027699F /* Recent files */ = {
 			isa = PBXGroup;
 			children = (
@@ -2204,6 +2270,7 @@
 			isa = PBXGroup;
 			children = (
 				1209FD2D27AD89C800D8C17E /* AudioPlayerViewModel.swift */,
+				20DC9F652CB1CAE100649160 /* EditAudioViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -2212,6 +2279,8 @@
 			isa = PBXGroup;
 			children = (
 				1209FD2A27AD851E00D8C17E /* AudioPlayerView.swift */,
+				20DC9F632CB1CAC000649160 /* EditAudioView.swift */,
+				20FA030C2CD282C3001121F1 /* TrimAudioSliderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2394,6 +2463,7 @@
 				12B84B842C32EF12006363F0 /* LocalizableNextcloud.swift */,
 				15E54AB82C5824DA00290DE8 /* LocalizableGDrive.swift */,
 				15A173432C78F64100E84F55 /* LocalizableError.swift */,
+				1587D6EC2C99CD15003E0B3D /* LocalizableDropbox.swift */,
 			);
 			path = Localizable;
 			sourceTree = "<group>";
@@ -2428,6 +2498,7 @@
 		12D7D11D28E35FCE008121C8 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				15FE5D062CADC8230004AD35 /* Dropbox */,
 				12D7D11E28E36123008121C8 /* ServerRepository.swift */,
 				121AD8212943A2F00056AC2A /* ReportRepository.swift */,
 				E131BA3A2A1B45A30095BC91 /* UwaziServerRepositories.swift */,
@@ -2477,6 +2548,7 @@
 				15BD9CAC2BC7410E00C3932B /* SearchBarView.swift */,
 				15BD9CB02BC744BC00C3932B /* NavigationHeaderView.swift */,
 				1503C87D2C07A080000F2209 /* ServerConnectionHeaderView.swift */,
+				20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2498,12 +2570,12 @@
 		12E8129F27A19E67007DDDC0 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				1574AC872C879DFF007BEBF5 /* DropboxServerViewModel.swift */,
 				129B845028BF6C7800F1B344 /* ServersViewModel.swift */,
 				123CE84329126B52003C251F /* TellaWebServerViewModel.swift */,
 				12730E68279F420400DC0135 /* SettingsViewModel.swift */,
 				E108B75629FE79340045CCBE /* UwaziServerViewModel.swift */,
 				1293F6692AD7F29B00F6CFBD /* FeedbackViewModel.swift */,
-				15C51C432BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift */,
 				15C51C452BFE769500DD9AD0 /* GDriveServerViewModel.swift */,
 			);
 			path = ViewModel;
@@ -2561,6 +2633,38 @@
 				1519BED72B9A5A52006FD290 /* Resource.swift */,
 			);
 			path = Resource;
+			sourceTree = "<group>";
+		};
+		1551C3232C936F1700DFA6EF /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				1551C3242C936F2D00DFA6EF /* DropboxViewModel.swift */,
+				1551C3292C93738400DFA6EF /* DropboxDraftViewModel.swift */,
+				15DCD93B2C9C78B2001339A7 /* DropboxOutboxViewModel.swift */,
+				15DCD93F2C9CB18F001339A7 /* DropboxSubmittedViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		1551C3262C936FCC00DFA6EF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1551C3272C9370D300DFA6EF /* DropboxReportMainView.swift */,
+				1551C32B2C93740500DFA6EF /* DropboxDraftView.swift */,
+				15DCD93D2C9C79A6001339A7 /* DropboxOutboxDetailsView.swift */,
+				15DCD9432C9CB27B001339A7 /* DropboxSubmittedDetailsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1574AC842C879DA6007BEBF5 /* Dropbox */ = {
+			isa = PBXGroup;
+			children = (
+				15C540A92CA5EB8B00D45B06 /* Models */,
+				1551C3262C936FCC00DFA6EF /* Views */,
+				1551C3232C936F1700DFA6EF /* ViewModel */,
+			);
+			path = Dropbox;
 			sourceTree = "<group>";
 		};
 		15791C182B6AC32B00D67C74 /* Resources */ = {
@@ -2633,12 +2737,23 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		15C540A92CA5EB8B00D45B06 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				15FE5D092CADD2860004AD35 /* DropboxUploadResponse.swift */,
+				157EDEAA2CB055EB00663549 /* DropboxCreateFolderResponse.swift */,
+				153C23962CB49C3200C157D9 /* DropboxFileInfo.swift */,
+				1524303D2CB8258E00989395 /* DropboxReportToSend.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		15CA1B882C582168002333A8 /* Draft */ = {
 			isa = PBXGroup;
 			children = (
+				152D38502C2C61DF00323CE7 /* DraftView.swift */,
 				15E656AA2C2A147E00BDEC91 /* AddFilesToDraftView.swift */,
 				1220A72D292EB11B000BC24C /* ReportFileGridView.swift */,
-				152D38502C2C61DF00323CE7 /* DraftView.swift */,
 			);
 			path = Draft;
 			sourceTree = "<group>";
@@ -2682,6 +2797,33 @@
 				15F64CA72B6D852D008A57AA /* ResourceCard.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		15FE5D062CADC8230004AD35 /* Dropbox */ = {
+			isa = PBXGroup;
+			children = (
+				1574AC822C878FF0007BEBF5 /* DropboxRepository.swift */,
+			);
+			path = Dropbox;
+			sourceTree = "<group>";
+		};
+		15FF77F42C8F8618002E87C3 /* Dropbox */ = {
+			isa = PBXGroup;
+			children = (
+				15FF77F52C8F862A002E87C3 /* DropboxDatabase.swift */,
+				15FF77F72C8F89A8002E87C3 /* DropboxData.swift */,
+			);
+			path = Dropbox;
+			sourceTree = "<group>";
+		};
+		15FF77FD2C90CF5A002E87C3 /* Dropbox */ = {
+			isa = PBXGroup;
+			children = (
+				15FF77FE2C90CF7A002E87C3 /* DropboxServer.swift */,
+				1587D6EE2C9A003F003E0B3D /* DropboxReport.swift */,
+				15C540A72CA5BBDF00D45B06 /* DropboxReportFile.swift */,
+			);
+			path = Dropbox;
 			sourceTree = "<group>";
 		};
 		20985A5B2BE157D00092CCC2 /* EditImageView */ = {
@@ -2853,6 +2995,7 @@
 		D53B76DA2601C9E50001CD34 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				1574AC842C879DA6007BEBF5 /* Dropbox */,
 				125C789B2C36B36900440014 /* CommonConnectionReport */,
 				12B84B8C2C333DD0006363F0 /* Nextcloud */,
 				15B81F332C1A2779007C0E88 /* GDrive */,
@@ -3527,14 +3670,22 @@
 			files = (
 				126E1AFE2C3D8426000AE4CE /* Server.swift in Sources */,
 				CC13138A2A5DB68E0057271C /* BottomSheetTitleView.swift in Sources */,
+				20DC9F642CB1CAC000649160 /* EditAudioView.swift in Sources */,
+				15C540A82CA5BBDF00D45B06 /* DropboxReportFile.swift in Sources */,
 				E1E7C5842AAB70A500DDB07E /* UwaziDictionaryRow.swift in Sources */,
 				15E656AB2C2A147E00BDEC91 /* AddFilesToDraftView.swift in Sources */,
 				12A1489A2720B53800A1ADDC /* ConfirmPasswordErrorView.swift in Sources */,
+				1551C32A2C93738400DFA6EF /* DropboxDraftViewModel.swift in Sources */,
 				128B15CB27DA30C800E1C1E0 /* OnboardingEndView.swift in Sources */,
 				125D2328271F8B6600250FBB /* LockConfirmPinView.swift in Sources */,
+				20DC9F662CB1CAE100649160 /* EditAudioViewModel.swift in Sources */,
 				125D231F271F12A000250FBB /* NSRegularExpressionExtension.swift in Sources */,
 				E1E7C5872AAB7EA200DDB07E /* UwaziTranslation.swift in Sources */,
 				CC0F1DD42B47320F00720010 /* UwaziDatePicker.swift in Sources */,
+				128A760A2CD23DDA0033F1C2 /* OutboxDetailsView.swift in Sources */,
+				128A760B2CD23DDA0033F1C2 /* SubmittedDetailsView.swift in Sources */,
+				128A760C2CD23DDA0033F1C2 /* SubmittedDetailsItemView.swift in Sources */,
+				128A760D2CD23DDA0033F1C2 /* OutboxDetailsItemView.swift in Sources */,
 				1209FD3027AD8AC400D8C17E /* AudioPlayerManager.swift in Sources */,
 				12BAFA7728B3B8D300930451 /* UIImageOrientation.swift in Sources */,
 				CCE875B32A96699000C576B9 /* LocalizableUwazi.swift in Sources */,
@@ -3547,6 +3698,7 @@
 				1293F67A2AD88B8400F6CFBD /* FeedbackAPI.swift in Sources */,
 				D7F55FDA253490BE0028739E /* RecordingAudioManager.swift in Sources */,
 				0E78B3A82656B03600F9BDBC /* ConfirmBottomSheet.swift in Sources */,
+				157EDEAB2CB055EB00663549 /* DropboxCreateFolderResponse.swift in Sources */,
 				1275A84B2C5E96B70071A97D /* NextcloudReportFile.swift in Sources */,
 				E1E7C5772AAB512400DDB07E /* UwaziTemplate.swift in Sources */,
 				12776A9527BA761C00CDC5DC /* CustomCameraController.swift in Sources */,
@@ -3579,6 +3731,7 @@
 				CC1313822A5CB0DB0057271C /* DeleteAfterFailOption.swift in Sources */,
 				15F924482C17929300C436C5 /* ViewModelState.swift in Sources */,
 				20473A632C8BA7FE0015A9B5 /* TellaServerOutboxDetailsView.swift in Sources */,
+				1587D6ED2C99CD15003E0B3D /* LocalizableDropbox.swift in Sources */,
 				1203CDEB2992C1CB00D09073 /* HTTPCodes.swift in Sources */,
 				15BD9CAB2BC740D700C3932B /* EntitySelectorView.swift in Sources */,
 				122389B7293635790058593B /* SetExtension.swift in Sources */,
@@ -3630,7 +3783,6 @@
 				1293F6702AD8295400F6CFBD /* BorderedTextEditorView.swift in Sources */,
 				129B845928BFED9700F1B344 /* TellaButtonView.swift in Sources */,
 				1253B87B2C50481400D675E5 /* NextcloudSubmittedViewModel.swift in Sources */,
-				123048D7295F95BB0015CD96 /* SubmittedDetailsItemView.swift in Sources */,
 				2048DADF2C340FF6000B3D9F /* NextcloudServerLoginView.swift in Sources */,
 				127092D42C2D8BA5002030AA /* NextcloudDatabase.swift in Sources */,
 				E1CF5A272AB3488E00365036 /* JSONDecoderExtension.swift in Sources */,
@@ -3683,7 +3835,7 @@
 				125299E12AD0515600191CAB /* VaultFilesManager.swift in Sources */,
 				1237A719278F172E00D7BC0F /* NSUIImage.swift in Sources */,
 				126818C32A38B69E004606BD /* FileTypeHelper.swift in Sources */,
-				D572EACB263A43C100CE191A /* FileDetailView.swift in Sources */,
+				D572EACB263A43C100CE191A /* FileDetailsView.swift in Sources */,
 				127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */,
 				125D233C2B17344D001EFB8B /* BackgroundActivitiesView.swift in Sources */,
 				1293F6752AD8853500F6CFBD /* FeedbackRepository.swift in Sources */,
@@ -3694,18 +3846,22 @@
 				12B84B962C340025006363F0 /* NextcloudReportViewModel.swift in Sources */,
 				CCBC2F6929A93E4900888779 /* SettingCheckboxItem.swift in Sources */,
 				1293547B294A454900735ED0 /* AppDelegate.swift in Sources */,
+				20F3E6012CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift in Sources */,
 				12B52580284903AE00B3D1C0 /* AboutAndHelpItem.swift in Sources */,
 				CCC1B4332AC75B410075B819 /* UwaziEntityMandatoryTextView.swift in Sources */,
 				12E9DD9927DF65E80002FD00 /* MoveFilesView.swift in Sources */,
 				E1975EE72AB032B10060228F /* UwaziEntryPrompt.swift in Sources */,
 				1291A83628BE3948001A6055 /* SettingsLinkItemView.swift in Sources */,
+				15DCD93C2C9C78B2001339A7 /* DropboxOutboxViewModel.swift in Sources */,
 				0ECC7819267A53A700A2ACF2 /* PageView.swift in Sources */,
 				12FFEFA528BE96E00081DDB2 /* TellaWebAddServerURLView.swift in Sources */,
 				12B5257B2848FC2800B3D1C0 /* LockTimeoutOption.swift in Sources */,
 				127A5B2228538E0800FAAEB0 /* Language.swift in Sources */,
 				1278B66527EB9C1400C9AC4D /* CameraView.swift in Sources */,
+				1574AC882C879DFF007BEBF5 /* DropboxServerViewModel.swift in Sources */,
 				15791C1C2B6AC63200D67C74 /* ReloadButton.swift in Sources */,
-				123048D5295F95A40015CD96 /* SubmittedDetailsView.swift in Sources */,
+				120D86642CB56FC500C007B4 /* ResultExtension.swift in Sources */,
+				1574AC832C878FF0007BEBF5 /* DropboxRepository.swift in Sources */,
 				1293F6682AD7EF3900F6CFBD /* CloseHeaderView.swift in Sources */,
 				1278B66127EB364500C9AC4D /* Utils.swift in Sources */,
 				15A173442C78F64100E84F55 /* LocalizableError.swift in Sources */,
@@ -3720,6 +3876,7 @@
 				12B370332B18D53A00DDA9E9 /* BackgroundActivitiesViewModel.swift in Sources */,
 				125FA6D8278E2828004B9D06 /* DoubleExtension.swift in Sources */,
 				12964D8D2BA9CF0D003E1E0A /* UwaziEntityInstance.swift in Sources */,
+				153C23972CB49C3300C157D9 /* DropboxFileInfo.swift in Sources */,
 				CCEAE5942AE7188F0069204A /* UwaziSelectWidget.swift in Sources */,
 				15F64C9D2B6D7904008A57AA /* DownloadedResources.swift in Sources */,
 				129533C42739D5BC0053FA4B /* TextFieldBottomSheetView.swift in Sources */,
@@ -3728,7 +3885,6 @@
 				1224DAF02719C71B001C0ED0 /* LockPasswordData.swift in Sources */,
 				E14E0CF629FAD68E004FC4CD /* UwaziSuccessView.swift in Sources */,
 				12A1488F27209F2800A1ADDC /* ViewExtension.swift in Sources */,
-				12199C34294094430041BD38 /* OutboxDetailsView.swift in Sources */,
 				CC5CEB892AF0551900BF238B /* UwaziAttachment.swift in Sources */,
 				CCC1B4312AC75B120075B819 /* UwaziEntityButtonView.swift in Sources */,
 				1272F26127C91CD90054F2E2 /* ImportFilesProgressModels.swift in Sources */,
@@ -3791,6 +3947,8 @@
 				125A89582A965BA4009347C3 /* VaultFileDB.swift in Sources */,
 				126ECFEA27C57FA600ED5161 /* CameraState.swift in Sources */,
 				CCC1B42F2AC75AF60075B819 /* UwaziDividerWidget.swift in Sources */,
+				1524303E2CB8258E00989395 /* DropboxReportToSend.swift in Sources */,
+				15FF77F82C8F89A8002E87C3 /* DropboxData.swift in Sources */,
 				12AB30D3272C36500020FFBF /* HomeData.swift in Sources */,
 				CC5CEB872AF037B600BF238B /* FileDropdown.swift in Sources */,
 				1519BED82B9A5A52006FD290 /* Resource.swift in Sources */,
@@ -3802,6 +3960,7 @@
 				E1EEE29629E6796E009FE227 /* ServerSelectionView.swift in Sources */,
 				E131BA3B2A1B45A30095BC91 /* UwaziServerRepositories.swift in Sources */,
 				20AF68162C89B44E00503D30 /* NextcloudReportMainView.swift in Sources */,
+				15DCD9402C9CB18F001339A7 /* DropboxSubmittedViewModel.swift in Sources */,
 				12730E69279F420400DC0135 /* SettingsViewModel.swift in Sources */,
 				12567FF9271742C500A2D356 /* Localizable.swift in Sources */,
 				CC9DEE5F2AE80ED400C8ED29 /* UwaziFileSelector.swift in Sources */,
@@ -3809,6 +3968,7 @@
 				1236EE8228E1E1D700973EEA /* DatabaseExtension.swift in Sources */,
 				15B81F3A2C1A281C007C0E88 /* GDriveViewModel.swift in Sources */,
 				12B84B942C333FE3006363F0 /* ReportCardViewModel.swift in Sources */,
+				15DCD9442C9CB27B001339A7 /* DropboxSubmittedDetailsView.swift in Sources */,
 				12B84B902C333DD0006363F0 /* ReportMainViewModel.swift in Sources */,
 				121F87AA2964383D00E6BA0D /* SubmittedReportVM.swift in Sources */,
 				0DD99E052692D24D009327B3 /* SwipeToDeleteView.swift in Sources */,
@@ -3820,7 +3980,10 @@
 				1251C3902BB45616002E9898 /* UwaziListView.swift in Sources */,
 				CC0797BE2A8D46CB00AAE63F /* UnlockView.swift in Sources */,
 				1216123C28DE13AC00E6D7B6 /* DatabaseUtilities.swift in Sources */,
+				1551C3252C936F2D00DFA6EF /* DropboxViewModel.swift in Sources */,
 				CCC1B4392AC75B8D0075B819 /* UwaziEntityParser.swift in Sources */,
+				1551C3282C9370D300DFA6EF /* DropboxReportMainView.swift in Sources */,
+				1587D6EB2C98C8C1003E0B3D /* ConfigurationManager.swift in Sources */,
 				128BEB222B1E4B7600420923 /* OfflineFeedbackToast.swift in Sources */,
 				126E1B072C3EB28D000AE4CE /* NextcloudDraftView.swift in Sources */,
 				12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */,
@@ -3844,6 +4007,7 @@
 				D75F9E9C25342539006F6212 /* RecordViewModel.swift in Sources */,
 				E1EEE2A129F6EA2B009FE227 /* UwaziLoginView.swift in Sources */,
 				15BD9CB12BC744BC00C3932B /* NavigationHeaderView.swift in Sources */,
+				1587D6EF2C9A003F003E0B3D /* DropboxReport.swift in Sources */,
 				15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */,
 				15CD89102BF297BE00F724F5 /* SelectedEntityView.swift in Sources */,
 				12FAC0CF2799FF230068EC2B /* ImportProgress.swift in Sources */,
@@ -3904,17 +4068,21 @@
 				E17736402A83FFA200FE01C0 /* UwaziDictionaryDTO.swift in Sources */,
 				204E7C3C2C241376004CC49F /* NextcloudRepository.swift in Sources */,
 				E11968B12A1F409D00BA7B56 /* UwaziLanguageDTO.swift in Sources */,
+				15FF77F62C8F862A002E87C3 /* DropboxDatabase.swift in Sources */,
 				12607D5327903E9E00E2B8CC /* CustomVideoControlsView.swift in Sources */,
 				1275A8422C5A791A0071A97D /* ReportFileExtension.swift in Sources */,
 				1216F8742901823100F5AEA5 /* UnderlinedTextEditorView.swift in Sources */,
 				12BA188628343BE5002A11D7 /* MoreFileActionButton.swift in Sources */,
 				208A06532BF6057A004BA033 /* EditImageViewModel.swift in Sources */,
+				1246DECF2CC7F1CF00AAC633 /* DropboxError.swift in Sources */,
 				CCC1B43D2AC75C5D0075B819 /* UwaziConstants.swift in Sources */,
 				1268553E27D2572100385E18 /* FileInfoView.swift in Sources */,
 				1289B45828B63187005DA687 /* RotationViewModifier.swift in Sources */,
 				126818BF2A376A0E004606BD /* OOXMLContentTypeParser.swift in Sources */,
 				125D2326271F896400250FBB /* CustomPinView.swift in Sources */,
+				20FA030D2CD282C3001121F1 /* TrimAudioSliderView.swift in Sources */,
 				E1EEE29A29EECF25009FE227 /* UwaziAddServerURLView.swift in Sources */,
+				15DCD93E2C9C79A6001339A7 /* DropboxOutboxDetailsView.swift in Sources */,
 				CC13138C2A5DB79B0057271C /* BottomButtonsView.swift in Sources */,
 				20473A5F2C8B9B0A0015A9B5 /* TellaServerReportsMainView.swift in Sources */,
 				150913422B841C3F001E782A /* ResourceActionType.swift in Sources */,
@@ -3926,7 +4094,6 @@
 				12FAC12D2B226DEF00DD9615 /* EncryptionOperation.swift in Sources */,
 				1254E2682C6CF794004C6280 /* NextcloudServerModel.swift in Sources */,
 				12494A482BC0570E00766DFF /* UwaziSubmissionViewModel.swift in Sources */,
-				12199C3A2941260D0041BD38 /* OutboxDetailsItemView.swift in Sources */,
 				128D6E1E2804DA2A0082AB18 /* ListActionSheetItem.swift in Sources */,
 				15BD9CAD2BC7410E00C3932B /* SearchBarView.swift in Sources */,
 				15BD9CB32BC7472A00C3932B /* UwaziRelationshipDTO.swift in Sources */,
@@ -3961,7 +4128,6 @@
 				12D37A982721EDB700E43BDB /* PinKeyboardModel.swift in Sources */,
 				12B370392B19109600DDA9E9 /* LocalizableBackgroundActivities.swift in Sources */,
 				122C54BE28C6351E003B2DBC /* AdvancedServerSettingsView.swift in Sources */,
-				15C51C442BFE6EDE00DD9AD0 /* GDriveAuthViewModel.swift in Sources */,
 				15E3D50E2C1B87AC00B7FECC /* GDriveDraftViewModel.swift in Sources */,
 				122C54C028C63E8C003B2DBC /* SuccessAdvancedSettingsView.swift in Sources */,
 				12619B8B27A01F6600999FDA /* BundleExtension.swift in Sources */,
@@ -3979,6 +4145,7 @@
 				E1F4A8E42AAF3F80001C8E61 /* UwaziTemplateProtocol.swift in Sources */,
 				CCD586D12A7C096C00014F87 /* AddTemplatesView.swift in Sources */,
 				1236644F28FFECEF00FA839B /* TellaServerDraftView.swift in Sources */,
+				15FE5D0A2CADD2860004AD35 /* DropboxUploadResponse.swift in Sources */,
 				CCC1B42D2AC75AD20075B819 /* UwaziTextWidget.swift in Sources */,
 				12603DAC2A56C72900FB1492 /* ToastView.swift in Sources */,
 				D50727BF2625561400BBC370 /* KeychainManager.swift in Sources */,
@@ -4008,12 +4175,14 @@
 				12EC94CF28AA566C0070E72B /* GeneralView.swift in Sources */,
 				1218E86528E48AEC00FE2E68 /* LoginResult.swift in Sources */,
 				1204F64327D928C9006E40EE /* FileTypeExtension.swift in Sources */,
+				129BC3A62CBE582A001C7323 /* FileHandleExtension.swift in Sources */,
 				0DA213C72680286F00526995 /* FileListItem.swift in Sources */,
 				124F8E0829119E9400FBB7AC /* StringExtension.swift in Sources */,
 				CE02ED7F24E42B3900014176 /* UserDefaultsProperty.swift in Sources */,
 				122389B3293630DA0058593B /* SaveSuccessView.swift in Sources */,
 				12A1FACE2C81E15700E28BC2 /* BaseReportExtension.swift in Sources */,
 				209AC68E2C332F0000492356 /* ViewClassType.swift in Sources */,
+				15FF77FF2C90CF7A002E87C3 /* DropboxServer.swift in Sources */,
 				12B6AF7D283E4C7200D697F6 /* LocalizableVault.swift in Sources */,
 				CCAE3A682AC217EC00A38C6D /* UwaziViewModel.swift in Sources */,
 				E1EEE2A429F7D192009FE227 /* UwaziTwoStepVerification.swift in Sources */,
@@ -4063,6 +4232,7 @@
 				122C54BC28C614C2003B2DBC /* TellaButtonStyleProtocol.swift in Sources */,
 				E1F4A8E22AAF3F62001C8E61 /* UwaziServerLanguageProtocol.swift in Sources */,
 				12964D8B2BA9C6F8003E1E0A /* EntityStatus.swift in Sources */,
+				1551C32C2C93740500DFA6EF /* DropboxDraftView.swift in Sources */,
 				0DC267A8267AEDAD00E55AFA /* DefaultFileManager.swift in Sources */,
 				123125422930241500D3BCD5 /* PhotoVideoViewModel.swift in Sources */,
 				0D4D7518266470A700D7A635 /* SettingToggleItem.swift in Sources */,
@@ -4332,7 +4502,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Tella/Supporting Files/Tella.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 84;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
@@ -4342,7 +4512,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.4;
+				MARKETING_VERSION = 1.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4360,7 +4531,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 84;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6ZG9T42688;
@@ -4371,7 +4542,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.4;
+				MARKETING_VERSION = 1.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

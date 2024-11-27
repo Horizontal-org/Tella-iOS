@@ -33,7 +33,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     private let ktimeout = TimeInterval(60)
     
     private var subscribers = Set<AnyCancellable>()
-    private var uploadTasks: [String?:URLSessionTask] = [:]
+    private var uploadTask: Task<Void, Error>?
     private var shouldPause : Bool = false
     private let networkStatusSubject = PassthroughSubject<Bool, Never>()
     private let networkMonitor: NetworkMonitor
@@ -73,7 +73,8 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 if result == .success {
                     continuation.resume()
                 } else {
-                    continuation.resume(throwing: APIError.nextcloudError(result.errorCode) )
+                    let error = APIError.convertNextcloudError(errorCode:result.errorCode)
+                    continuation.resume(throwing: error)
                 }
             }
         }
@@ -87,7 +88,8 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 if result == .success {
                     continuation.resume(returning: userProfile?.userId ?? "")
                 } else {
-                    continuation.resume(throwing: APIError.nextcloudError(result.errorCode))
+                    let error = APIError.convertNextcloudError(errorCode:result.errorCode)
+                    continuation.resume(throwing: error)
                 }
             }
         }
@@ -111,7 +113,8 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 if result == .success {
                     continuation.resume()
                 } else {
-                    continuation.resume(throwing: APIError.nextcloudError(result.errorCode))
+                    let error = APIError.convertNextcloudError(errorCode:result.errorCode)
+                    continuation.resume(throwing: error)
                 }
             }
         }
@@ -119,31 +122,31 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     
     func uploadReport(report:NextcloudReportToSend) -> AnyPublisher<NextcloudUploadResponse,APIError> {
         let subject = CurrentValueSubject<NextcloudUploadResponse, APIError>(.initial)
-        upload(report: report, subject: subject)
+        submit(report: report, subject: subject)
         return subject.eraseToAnyPublisher()
     }
-
-    private func upload(report:NextcloudReportToSend,subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) {
+    
+    private func submit(report:NextcloudReportToSend,subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) {
         
         self.setUp(server:report.server)
         
         shouldPause = false
-
-        Task {
+        
+        uploadTask = Task {
             do {
                 guard self.networkMonitor.isConnected else {
                     subject.send(completion:.failure(.noInternetConnection))
                     return
                 }
-
+                
                 switch report.remoteReportStatus {
                     
-                case .initial, .unknown :
-                    try await handleInitialOrUnknownStatus(report: report, subject: subject)
-               
+                case .initial :
+                    try await handleInitialStatus(report: report, subject: subject)
+                    
                 case .created:
                     try await handleCreatedStatus(report: report, subject: subject)
-
+                    
                 default:
                     break
                 }
@@ -153,7 +156,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 }
                 
                 guard !shouldPause else { return }
-
+                
                 uploadFiles(report: report, subject: subject)
                 
                 monitorNetworkConnection(subject: subject)
@@ -164,8 +167,8 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         }
     }
     
-    private func handleInitialOrUnknownStatus(report: NextcloudReportToSend, subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) async throws {
-      
+    private func handleInitialStatus(report: NextcloudReportToSend, subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) async throws {
+        
         guard !shouldPause else { return }
         
         guard let folderName = try await createFileName(fileNameBase: report.folderName) else {
@@ -184,7 +187,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         
         try await uploadDescriptionFile(report: report)
         subject.send(.descriptionSent)
-
+        
     }
     
     private func handleCreatedStatus(report: NextcloudReportToSend, subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) async throws {
@@ -194,7 +197,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
         try await uploadDescriptionFile(report: report)
         subject.send(.descriptionSent)
     }
-
+    
     private func uploadFiles(report: NextcloudReportToSend, subject: CurrentValueSubject<NextcloudUploadResponse, APIError>)   {
         report.files.forEach { file in
             uploadFileInChunks(metadata: file, rootFolder: report.server.rootFolder ?? "")
@@ -204,7 +207,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                     subject.send(.progress(progressInfo: result))
                 }).store(in: &subscribers)
         }
-
+        
     }
     
     private func monitorNetworkConnection(subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) {
@@ -216,19 +219,19 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
             }
             .store(in: &self.subscribers)
     }
-
+    
     private func handleError(_ error: APIError, report: NextcloudReportToSend, subject: CurrentValueSubject<NextcloudUploadResponse, APIError>) async {
         debugLog(error)
         switch error {
         case .nextcloudError(let code) where code == NcHTTPErrorCodes.nonExistentFolder.rawValue:
             try? await createFolder(folderName: "") // This will create a folder with the rootname
             subject.send(.folderRecreated)
-            self.upload(report: report, subject: subject) // re-upload the report
+            self.submit(report: report, subject: subject) // re-upload the report
         default:
             subject.send(completion:.failure(error))
         }
     }
-
+    
     private func uploadDescriptionFile(report:NextcloudReportToSend) async throws {
         
         guard let descriptionFileUrl = report.descriptionFileUrl else { return }
@@ -247,7 +250,8 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 if nkError == .success {
                     continuation.resume()
                 } else {
-                    continuation.resume(throwing: APIError.nextcloudError(nkError.errorCode))
+                    let error = APIError.convertNextcloudError(errorCode:nkError.errorCode)
+                    continuation.resume(throwing: error)
                 }
             })
         }
@@ -295,7 +299,6 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
             } requestHandler: { request in
             } taskHandler: { task in
                 subject.send(progressInfo)
-                self.uploadTasks[metadata.fileId] = task
             } progressHandler: { totalBytesExpected, totalBytes, fractionCompleted in
                 progressInfo.bytesSent = Int(totalBytes)
                 progressInfo.step = .progress
@@ -308,9 +311,8 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                 progressInfo.status = error == .success ? .submitted : .submissionError
                 progressInfo.finishUploading = true
                 progressInfo.step = .finished
-                progressInfo.error = APIError.nextcloudError(error.errorCode)
+                progressInfo.error = APIError.convertNextcloudError(errorCode:error.errorCode)
                 subject.send(progressInfo)
-                self.uploadTasks.removeValue(forKey: metadata.fileId)
             }
         }
         return subject
@@ -338,7 +340,7 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     }
     
     private func fileExists(serverUrlFileName: String) async throws -> Bool?  {
-                
+        
         let option = NKRequestOptions(timeout: ktimeout, queue: NextcloudKit.shared.nkCommonInstance.backgroundQueue)
         
         return try await withCheckedThrowingContinuation({ continuation in
@@ -347,13 +349,14 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
                                                  requestBody: NextcloudConstants.filesRequestBody.data(using: .utf8), account: "",
                                                  options: option) {
                 account, files, _, error in
-                
+                print(error.errorCode)
                 if error == .success, let _ = files.first {
                     continuation.resume(returning: true)
                 } else if error.errorCode == HTTPErrorCodes.notFound.rawValue {
                     continuation.resume(returning: false)
                 } else {
-                    continuation.resume(throwing: APIError.nextcloudError(error.errorCode))
+                    let error = APIError.convertNextcloudError(errorCode:error.errorCode)
+                    continuation.resume(throwing: error)
                 }
             }
         })
@@ -415,8 +418,6 @@ class NextcloudRepository: NextcloudRepositoryProtocol {
     
     func pauseAllUploads() {
         shouldPause = true
-        
-        uploadTasks.forEach { $0.value.cancel() }
-        uploadTasks.removeAll()
+        uploadTask?.cancel()
     }
 }

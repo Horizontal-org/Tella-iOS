@@ -141,7 +141,7 @@ extension TellaDataBase {
         }
     }
     
-    func deleteServer(serverId : Int) -> Result<Bool,Error> {
+    func deleteServer(serverId : Int) -> Result<Void,Error> {
         do {
             var reportIDs : [Int] = []
             let serverCondition = [KeyValue(key: D.cServerId, value: serverId)]
@@ -170,16 +170,17 @@ extension TellaDataBase {
                 try statementBuilder.delete(tableName: D.tReportInstanceVaultFile,
                                             inCondition: reportCondition)
             }
-            return .success(true)
+            return .success
         } catch let error {
             debugLog(error)
-            return .failure(error)
+            return .failure(RuntimeError(LocalizableCommon.commonError.localized))
         }
     }
     
     func deleteAllServers() -> Result<Bool,Error> {
         do {
-            try statementBuilder.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile, D.tUwaziServer, D.tUwaziTemplate, D.tUwaziEntityInstances, D.tUwaziEntityInstanceVaultFile, D.tResource, D.tGDriveServer, D.tGDriveReport, D.tGDriveInstanceVaultFile, D.tNextcloudServer, D.tNextcloudReport, D.tNextcloudInstanceVaultFile])
+            try statementBuilder.deleteAll(tableNames: [D.tServer, D.tReport, D.tReportInstanceVaultFile, D.tUwaziServer, D.tUwaziTemplate, D.tUwaziEntityInstances, D.tUwaziEntityInstanceVaultFile, D.tResource, D.tGDriveServer, D.tGDriveReport, D.tGDriveInstanceVaultFile, D.tNextcloudServer, D.tNextcloudReport, D.tNextcloudInstanceVaultFile,
+                                                        D.tDropboxServer, D.tDropboxReport, D.tDropboxInstanceVaultFile])
             
             return .success(true)
         } catch let error {

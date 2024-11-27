@@ -48,7 +48,7 @@ class RecordViewModel: ObservableObject {
         
         // Update the time
         audioBackend.currentTime.sink { value in
-            self.time = value.stringFromTimeInterval()
+            self.time = value.formattedAsHHMMSS()
         }.store(in: &cancellable)
         
         
@@ -164,10 +164,7 @@ class RecordViewModel: ObservableObject {
         }
         
         self.audioBackend.stopRecording(fileName: fileName)
-        
-        DispatchQueue.main.async {
-            self.resetRecording()
-        }
+        self.resetRecording()
     }
     
     private func resetRecording() {

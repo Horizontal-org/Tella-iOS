@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import SwiftyDropbox
 
 enum APIError: Swift.Error {
     case invalidURL
@@ -12,13 +13,16 @@ enum APIError: Swift.Error {
     case noInternetConnection
     case badServer
     case noToken
+    case tooManyRequests
     case driveApiError(Error)
+    case dropboxApiError(DropboxError)
     case errorOccured
     case nextcloudError(HTTPCode)
 }
 
-extension APIError: LocalizedError {
 
+extension APIError: LocalizedError {
+    
     var errorMessage: String {
         switch self {
         case .invalidURL:
@@ -39,6 +43,10 @@ extension APIError: LocalizedError {
             return customNcErrorMessage(errorCode: code)
         case .errorOccured :
             return LocalizableError.commonError.localized
+        case .dropboxApiError(let error):
+            return customDropboxErrorMessage(error: error)
+        case .tooManyRequests:
+            return LocalizableError.ncTooManyRequests.localized
         }
     }
     
@@ -98,4 +106,51 @@ extension APIError: LocalizedError {
             return fallbackMessage
         }
     }
+    
+    private func customDropboxErrorMessage(error: DropboxError) -> String {
+        switch error {
+        case .conflict:
+            return LocalizableError.dropboxFileConflict.localized
+        case .insufficientSpace:
+            return LocalizableError.dropboxInsufficientSpace.localized
+        case .noWritePermission:
+            return LocalizableError.dropboxNoWritePermission.localized
+        case .disallowedName:
+            return LocalizableError.dropboxDisallowedName.localized
+        case .malformedPath:
+            return LocalizableError.dropboxMalformedPath.localized
+        case .teamFolder:
+            return LocalizableError.dropboxTeamFolder.localized
+        case .tooManyWriteOperations:
+            return LocalizableError.dropboxTooManyWriteOperations.localized
+        case .other:
+            return LocalizableError.dropboxOther.localized
+        case .noInternetConnection:
+            return LocalizableSettings.settServerNoInternetConnection.localized
+        default:
+            return LocalizableError.unexpectedResponse.localized
+        }
+    }
+    
+    static func convertNextcloudError(errorCode: HTTPCode) -> APIError {
+        if [NcHTTPErrorCodes.unauthorized.rawValue,
+            NcHTTPErrorCodes.ncUnauthorizedError.rawValue].contains(errorCode) {
+            return .noToken
+        } else if NcHTTPErrorCodes.ncTooManyRequests.rawValue == errorCode {
+            return .tooManyRequests
+        } else {
+            return .nextcloudError(errorCode)
+        }
+    }
+
+    static func convertDropboxError(_ error: DropboxError) -> APIError {
+      
+        switch error {
+        case .noToken:
+            return .noToken
+         default:
+            return .dropboxApiError(error)
+        }
+    }
 }
+

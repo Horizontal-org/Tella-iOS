@@ -86,7 +86,8 @@ enum LocalizableSettings: String, LocalizableDelegate {
     // Servers
     case settServersAppBar = "Settings_SettServers_AppBar"
     case settServerSelectionTitle = "Setting_SettServer_Selection_Title"
-    case settServerSelectionMessage = "Setting_SettServer_Selection_Message"
+    case settServerSelectionPart1Message = "Setting_SettServer_Selection_Part1_Message"
+    case settServerSelectionPart2Message = "Setting_SettServer_Selection_Part2_Message"
     case settServerTellaWeb = "Setting_SettServer_TellaWeb"
     case settServerUwazi = "Setting_SettServer_Uwazi"
     case settServerGDrive = "Setting_SettServer_GDrive"
@@ -136,6 +137,9 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case nextcloudCreatePersonalFolderDesc = "Setting_Server_Nextcloud_Create_Personal_Desc"    
     case settCreateFolderPlaceholder = "Setting_Server_Foldername_Placeholder"
     case settCreateFolderTitle = "Setting_Server_Create_Folder_Title"
+    case settCreateFolderError = "Setting_Server_Create_Folder_Error"
+
+    
     // About & Help
     
     case settAboutAppBar = "Settings_SettAbout_AppBar"
@@ -143,6 +147,9 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settAboutSubhead = "Settings_SettAbout_Subhead"
     case settAboutContactUs = "Settings_SettAbout_ContactUs"
     case settAboutPrivacyPolicy = "Settings_SettAbout_PrivacyPolicy"
+    case settAboutPrivacyFaq = "Settings_SettAbout_FAQ"
+    case settAboutPrivacyTutorial = "Settings_SettAbout_Tutorial"
+
     
     // Feedback
     case settFeedbackAppBar = "Settings_SettFeedback_AppBar"
@@ -162,6 +169,10 @@ enum LocalizableSettings: String, LocalizableDelegate {
     
     // Reports
     case settServerReportsSuccessMessage = "Setting_Server_Reports_Success_Message"
+    
+    //Dropbox
+    case settServerDropboxSuccessMessage = "Settings_Server_Dropbox_Success_Message"
+    case settServerDropbox = "Setting_SettServer_Dropbox"
  }
 
 

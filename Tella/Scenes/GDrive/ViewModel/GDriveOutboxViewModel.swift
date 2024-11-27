@@ -26,12 +26,8 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         self.gDriveRepository = repository
         super.init(reportsViewModel: reportsViewModel, reportId: reportId)
 
-        if reportViewModel.status == .submissionScheduled {
-            self.submitReport()
-        } else {
-            self.pauseSubmission()
-        }
-        
+        self.initSubmission()
+
         NotificationCenter.default.addObserver(self, selector: #selector(handleAppWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
     }
     
@@ -47,11 +43,16 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     }
 
     override func initVaultFile(reportId: Int?) {
-        if let reportId, let report = self.mainAppModel.tellaData?.getDriveReport(id: reportId) {
-            let files = processVaultFiles(reportFiles: report.reportFiles)
-            
-            self.reportViewModel = ReportViewModel(report: report, files: files)
+        
+        guard
+            let reportId,
+            let report = self.mainAppModel.tellaData?.getDriveReport(id: reportId)
+        else {
+            return
         }
+        
+        let files = processVaultFiles(reportFiles: report.reportFiles)
+        self.reportViewModel = ReportViewModel(report: report, files: files)
     }
     
     //submit report
@@ -90,7 +91,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
     }
     
     private func uploadFiles(to folderId: String) {
-        uploadQueue = reportViewModel.files.filter { $0.status != .uploaded }
+        uploadQueue = reportViewModel.files.filter { $0.status != .submitted }
         uploadNextFile(folderId: folderId)
     }
     
@@ -102,7 +103,7 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         }
         
         Task {
-            guard let fileUrl = await self.loadVaultFileToURLAsync(file: fileToUpload) else {
+            guard let fileUrl = await self.mainAppModel.vaultManager.loadVaultFileToURLAsync(file: fileToUpload, withSubFolder: false) else {
                 await MainActor.run {
                     uploadQueue.removeFirst()
                     uploadNextFile(folderId: folderId)
@@ -176,43 +177,25 @@ class GDriveOutboxViewModel: OutboxMainViewModel<GDriveServer> {
         
         mainAppModel.tellaData?.updateDriveReportStatus(reportId: id, status: reportStatus)
     }
-    
-    override func updateCurrentFile(uploadProgressInfo : UploadProgressInfo) {
-        self.reportViewModel.files = self.reportViewModel.files.compactMap { file in
-            guard file.id == uploadProgressInfo.fileId else { return file }
-            
-            let updatedFile = file
-            updatedFile.bytesSent = uploadProgressInfo.bytesSent ?? 0
-            updatedFile.status = uploadProgressInfo.status
-            return updatedFile
-        }
-    }
 
     private func updateReportFolderId(folderId: String) {
         guard let id = reportViewModel.id else { return }
         
         mainAppModel.tellaData?.updateDriveFolderId(reportId: id, folderId: folderId)
     }
-    
+
     override func updateFile(file: ReportVaultFile) {
-        guard let reportId = reportViewModel.id else { return }
-        
-        let reportFiles = reportViewModel.files.map { file in
-            return ReportFile(
-                file: file,
-                reportInstanceId: reportViewModel.id
-            )
-        }
-        
-        let _ = mainAppModel.tellaData?.updateDriveFiles(reportId: reportId, files: reportFiles)
+        guard let file = ReportFile(reportVaultFile: file) else { return }
+        mainAppModel.tellaData?.updateDriveFile(file: file)
     }
     
-    func loadVaultFileToURLAsync(file: ReportVaultFile) async -> URL? {
-        await withCheckedContinuation { continuation in
-            DispatchQueue.global(qos: .userInitiated).async {
-                let result = self.mainAppModel.vaultManager.loadVaultFileToURL(file: file)
-                continuation.resume(returning: result)
-            }
+    override func deleteReport() {
+        guard
+            let deleteResult = mainAppModel.tellaData?.deleteDriveReport(reportId: reportViewModel.id)
+        else {
+            return
         }
+        handleDeleteReport(deleteResult: deleteResult)
     }
+
 }

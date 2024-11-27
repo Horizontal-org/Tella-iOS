@@ -78,6 +78,10 @@ extension String {
     func slash() -> String {
         return self.hasSuffix("/") ? self : self + "/"
     }
+    
+    func preffixedSlash() -> String {
+        return self.hasPrefix("/") ? self : "/" + self
+    }
 }
 
 extension String {
@@ -193,5 +197,14 @@ extension String {
             debugLog(error)
             return nil
         }
+    }
+}
+extension String: @retroactive Identifiable {
+    public var id: String { self }
+}
+
+extension String {
+    func url() -> URL? {
+        return URL(string: self)
     }
 }

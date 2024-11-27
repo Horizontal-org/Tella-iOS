@@ -196,6 +196,40 @@ extension URL {
         return self.deletingLastPathComponent()
     }
     
+    
+    nonisolated func trimAudio(newName: String,
+                               startTime: Double,
+                               endTime: Double) async throws -> URL {
+        
+        let asset = AVAsset(url: self)
+        let startTime = CMTime(seconds: startTime, preferredTimescale: 600)
+        let endTime = CMTime(seconds: endTime, preferredTimescale: 600)
+        let duration = CMTimeSubtract(endTime, startTime)
+        
+        let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A)
+        
+        let outputURL = createURL(name: newName)
+        exportSession?.outputURL = outputURL
+        exportSession?.outputFileType = .m4a
+        exportSession?.timeRange = CMTimeRange(start: startTime, duration: duration)
+        
+        await exportSession?.export()
+        
+        if exportSession?.status == .completed {
+            return outputURL
+        } else {
+            throw RuntimeError(LocalizableError.commonError.localized)
+        }
+    }
+    
+    func createURL(name: String) -> URL {
+        return self.deletingLastPathComponent().appendingPathComponent(name)
+    }
+    
+    func open() {
+        UIApplication.shared.open(self, options: [:], completionHandler: nil)
+    }
+
 }
 
 

@@ -298,3 +298,9 @@ extension Array where Element == Dictionary<String,Any>{
         return self.compactMap{VaultFileDB.init(dictionnary: $0)}
     }
 }
+extension VaultFileDB {
+    var audioCanBeEdited: Bool {
+        let minimumAudioDuration = 3.9
+        return duration ?? 0.0 >= minimumAudioDuration
+    }
+}

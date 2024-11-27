@@ -20,6 +20,12 @@ class GDriveSubmittedViewModel: SubmittedMainViewModel {
     }
 
     override func deleteReport() {
-        let _ = mainAppModel.tellaData?.deleteDriveReport(reportId: id)
+        guard
+            let deleteResult = mainAppModel.tellaData?.deleteDriveReport(reportId: id)
+        else {
+            return
+        }
+        handleDeleteReport(deleteResult: deleteResult )
     }
+
 }

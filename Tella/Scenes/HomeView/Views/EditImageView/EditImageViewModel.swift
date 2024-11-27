@@ -21,10 +21,9 @@ class EditImageViewModel: ObservableObject {
     private var currenFile: VaultFileDB?
     private var data: Data?
     
-    init(mainAppModel: MainAppModel,
-         fileListViewModel: FileListViewModel) {
+    init(fileListViewModel: FileListViewModel) {
         self.fileListViewModel = fileListViewModel
-        self.mainAppModel = mainAppModel
+        self.mainAppModel = fileListViewModel.appModel
         self.currenFile = fileListViewModel.currentSelectedVaultFile
     }
     
