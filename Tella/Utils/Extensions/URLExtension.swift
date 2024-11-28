@@ -119,7 +119,7 @@ extension URL {
 
     func getAVFileType() -> AVFileType {
         switch self.pathExtension.lowercased() {
-        case "mp4":
+        case "mp4", "m4a":
             return .mp4
         case "mov", ".qt":
             return .mov
@@ -219,8 +219,7 @@ extension URL {
     
     nonisolated func trimMedia(newName: String,
                                startTime: Double,
-                               endTime: Double,
-                               type: FileExtension) async throws -> URL {
+                               endTime: Double) async throws -> URL {
         
         let asset = AVAsset(url: self)
         let startTime = CMTime(seconds: startTime, preferredTimescale: 600)
@@ -231,14 +230,7 @@ extension URL {
         
         let outputURL = createURL(name: newName)
         exportSession?.outputURL = outputURL
-        
-        switch type {
-        case .mov:
-            exportSession?.outputFileType = AVFileType.mov
-        case .mp4:
-            exportSession?.outputFileType  = AVFileType.mp4
-        default: break
-        }
+        exportSession?.outputFileType = self.getAVFileType()
         exportSession?.timeRange = CMTimeRange(start: startTime, duration: duration)
         
         await exportSession?.export()

@@ -51,10 +51,10 @@ class EditAudioViewModel: EditMediaViewModel {
     }
 
     override func trim() {
-        Task {
+        Task { @MainActor in
             do {
                 let copyName: String = file?.getCopyName(from: appModel.vaultFilesManager) ?? ""
-                guard let trimmedAudioUrl = try await fileURL?.trimMedia(newName: "\(copyName).m4a", startTime: startTime, endTime: endTime, type: .mp4) else { return }
+                guard let trimmedAudioUrl = try await fileURL?.trimMedia(newName: "\(copyName).m4a", startTime: startTime, endTime: endTime) else { return }
                 
                 self.addEditedFile(urlFile: trimmedAudioUrl)
             } catch {
