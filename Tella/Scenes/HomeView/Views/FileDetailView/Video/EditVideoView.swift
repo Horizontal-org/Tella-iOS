@@ -95,7 +95,8 @@ struct EditVideoView: View {
                             shouldLimitScrolling: $viewModel.shouldStopLeftScroll,
                             sliderHeight: 36,
                             isRightSlider: false,
-                            sliderImage: "edit.video.left.icon")
+                            sliderImage: "edit.video.left.icon",
+                            imageWidth: 18)
         .frame(height: 36)
         .onReceive(viewModel.$startTime, perform: { value in
             viewModel.shouldStopLeftScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
@@ -108,7 +109,8 @@ struct EditVideoView: View {
                             gestureValue: $viewModel.trailingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopRightScroll,
                             sliderHeight: 36, isRightSlider: true,
-                            sliderImage: "edit.video.right.icon")
+                            sliderImage: "edit.video.right.icon",
+                            imageWidth: 18)
         .frame(height: 36)
         .onReceive(viewModel.$endTime, perform: { value in
             viewModel.shouldStopRightScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime

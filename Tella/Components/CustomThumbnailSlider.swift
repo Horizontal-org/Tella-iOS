@@ -33,7 +33,7 @@ struct CustomThumbnailSlider: View {
     // Extract slider image view with offset calculation
     private func sliderImage(in geometry: GeometryProxy) -> some View {
         ResizableImage(sliderImage)
-            .frame(width: sliderWidth/* , height: sliderHeight*/)
+            .frame(width: sliderWidth)
             .offset(x: calculateThumbOffset(in: geometry), y: -10)
     }
     // Drag gesture with adjusted conditions for limit scrolling

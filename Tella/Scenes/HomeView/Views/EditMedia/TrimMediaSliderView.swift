@@ -19,7 +19,7 @@ struct TrimMediaSliderView: View {
     private let kLabelOffset = 15.0 //This constant is added to center the value label in the trim line
     
     var sliderImage: String
-    
+    var imageWidth = 10.0
     
     @State private var isEditing = false
     var body: some View {
@@ -35,7 +35,7 @@ struct TrimMediaSliderView: View {
     // Extract slider image view with offset calculation
     private func sliderImage(in geometry: GeometryProxy) -> some View {
         ResizableImage(sliderImage)
-            .frame(width: 10 , height: sliderHeight)
+            .frame(width: imageWidth, height: sliderHeight)
             .offset(x: calculateThumbOffset(in: geometry), y: -10)
     }
     
