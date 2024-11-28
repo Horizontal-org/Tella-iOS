@@ -22,10 +22,13 @@ struct EditVideoView: View {
                 
                 EditMediaHeaderView(viewModel: viewModel)
                 CustomVideoPlayer(player: viewModel.player)
-                    .frame(maxWidth: .infinity, maxHeight: 450)
+                    .frame(maxWidth: .infinity, maxHeight:  UIScreen.screenHeight / 0.6)
                 
-                EditMediaControlButtonsView(viewModel: viewModel).padding(.top, 16)
-                trimView.padding(.top, 16)
+                EditMediaControlButtonsView(viewModel: viewModel)
+                    .padding(.top, 16)
+                trimView
+                    .padding(.bottom, 40)
+                    .padding(.top, 16)
 
                 Spacer()
             }
@@ -54,7 +57,7 @@ struct EditVideoView: View {
                     .clipped()
                     .frame(maxWidth: .infinity)
             }
-        }
+        }.border(Color.white.opacity(0.8), width: 1)
         .padding(0)
         .frame(maxWidth: viewModel.kTrimViewWidth, maxHeight: 36)
         .padding(.bottom, 20)
