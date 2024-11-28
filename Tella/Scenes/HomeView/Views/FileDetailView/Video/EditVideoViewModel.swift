@@ -59,12 +59,12 @@ class EditVideoViewModel: EditMediaViewModel {
                 self.updateOffset(time: currentPosition)
                 
                 if time.seconds == self.file?.duration {
-                    seekVideo(to: 0.0)
+                    seekVideo(to: 0.0, and: false)
                 }
             }
         }
     }
-    private func seekVideo(to position: Double) {
+    private func seekVideo(to position: Double, and shouldPlay: Bool = true) {
         
         self.isSeekInProgress = true
         self.currentPosition = position
@@ -73,7 +73,9 @@ class EditVideoViewModel: EditMediaViewModel {
                                 preferredTimescale: 600)
         self.player.seek(to: targetTime) { _ in
             self.isSeekInProgress = false
-            self.onPlay()
+            if shouldPlay {
+                self.onPlay()
+            }
         }
     }
     
