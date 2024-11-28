@@ -23,8 +23,8 @@ final class PlayerViewModel: ObservableObject {
     private var cancellable: Set<AnyCancellable> = []
     private var timeObserver: Any?
     
-    var appModel: MainAppModel?
-    
+    var appModel: MainAppModel
+    var rootFile: VaultFileDB?
     var playList : [VaultFileDB?] = [] {
         didSet {
             guard let item = playList[currentItemIndex]  else {return}
@@ -53,13 +53,13 @@ final class PlayerViewModel: ObservableObject {
             player.removeTimeObserver(timeObserver)
         }
     }
-    
-    init(appModel: MainAppModel?, currentFile: VaultFileDB?, playList: [VaultFileDB?]) {
+    init(appModel: MainAppModel, currentFile: VaultFileDB?, playList: [VaultFileDB?], rootFile: VaultFileDB?) {
         
         self.appModel = appModel
         self.currentFile = currentFile
         self.playList = playList
-
+        self.rootFile = rootFile
+        
         if let index = playList.firstIndex(of: currentFile) {
              currentItemIndex = index
         }
@@ -127,9 +127,8 @@ final class PlayerViewModel: ObservableObject {
         guard let file = file else { return }
         
         DispatchQueue.main.async {
-            guard let videoURL = self.appModel?.vaultManager.loadVaultFileToURL(file: file)  else {return}
+            guard let videoURL = self.appModel.vaultManager.loadVaultFileToURL(file: file)  else {return}
             let playerItem = AVPlayerItem(url:videoURL)
-            
             self.player.replaceCurrentItem(with: playerItem)
             self.player.play()
 
@@ -152,7 +151,7 @@ final class PlayerViewModel: ObservableObject {
             self.player.play()
         }
     }
-    
+
     func showNextVideo() {
         if playList.count - 1 > currentItemIndex {
             deleteTmpFile()
@@ -195,7 +194,7 @@ final class PlayerViewModel: ObservableObject {
     
     func deleteTmpFile() {
         guard let url = self.player.currentItem?.url else {return}
-        appModel?.vaultManager.deleteFiles(files: [url])
+        appModel.vaultManager.deleteFiles(files: [url])
     }
 }
 

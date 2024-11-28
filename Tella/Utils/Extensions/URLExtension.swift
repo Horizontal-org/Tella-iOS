@@ -95,10 +95,31 @@ extension URL {
             return nil
         }
     }
+    
+    func generateThumbnails(count: Double = 10.0) -> [UIImage] {
+        let asset = AVAsset(url: self)
+        let imageGenerator = AVAssetImageGenerator(asset: asset)
+        imageGenerator.appliesPreferredTrackTransform = true
+        
+        var images: [UIImage] = []
+        let duration = asset.duration.seconds
+        let interval = duration / count
+        
+        for i in 0..<Int(count) {
+            let time = CMTime(seconds: interval * Double(i), preferredTimescale: 600)
+            do {
+                let cgImage = try  imageGenerator.copyCGImage(at: time, actualTime: nil)
+                images.append(UIImage(cgImage: cgImage))
+            } catch {
+                debugLog("Error while creating thumbnails")
+            }
+        }
+        return images
+    }
 
     func getAVFileType() -> AVFileType {
         switch self.pathExtension.lowercased() {
-        case "mp4":
+        case "mp4", "m4a":
             return .mp4
         case "mov", ".qt":
             return .mov
@@ -196,8 +217,7 @@ extension URL {
         return self.deletingLastPathComponent()
     }
     
-    
-    nonisolated func trimAudio(newName: String,
+    nonisolated func trimMedia(newName: String,
                                startTime: Double,
                                endTime: Double) async throws -> URL {
         
@@ -206,11 +226,11 @@ extension URL {
         let endTime = CMTime(seconds: endTime, preferredTimescale: 600)
         let duration = CMTimeSubtract(endTime, startTime)
         
-        let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A)
+        let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality)
         
-        let outputURL = createURL(name: newName)
+        let outputURL = createURL(name: "\(newName).\(self.pathExtension.lowercased())")
         exportSession?.outputURL = outputURL
-        exportSession?.outputFileType = .m4a
+        exportSession?.outputFileType = self.getAVFileType()
         exportSession?.timeRange = CMTimeRange(start: startTime, duration: duration)
         
         await exportSession?.export()

@@ -119,10 +119,27 @@ struct MoreFileActionButton: View {
             showEditImageView()
         case .audio:
             showEditAudioView()
+        case .video:
+            showEditVideoView()
         default:  break
         }
     }
-    
+    private func showEditVideoView() {
+        let viewModel = EditVideoViewModel(file: fileListViewModel.currentSelectedVaultFile,
+                                            rootFile: fileListViewModel.rootFile,
+                                            appModel: fileListViewModel.appModel,
+                                            shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
+        DispatchQueue.main.async {
+            if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {
+                self.present(style: .fullScreen) {
+                    EditVideoView(viewModel: viewModel)
+                }
+            }else {
+                Toast.displayToast(message: LocalizableVault.editVideoToastMsg.localized)
+            }
+        }
+    }
+
     private func showEditImageView() {
         self.present(style: .fullScreen) {
             EditImageView(viewModel: EditImageViewModel(fileListViewModel: fileListViewModel))
@@ -135,9 +152,9 @@ struct MoreFileActionButton: View {
                                            shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
         DispatchQueue.main.async {
             
-            if fileListViewModel.currentSelectedVaultFile?.audioCanBeEdited == true {
+            if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {
                 self.present(style: .fullScreen) {
-                    EditAudioView(editAudioViewModel: viewModel)
+                    EditAudioView(viewModel: viewModel)
                 }
             }else {
                 Toast.displayToast(message: LocalizableVault.editAudioToastMsg.localized)

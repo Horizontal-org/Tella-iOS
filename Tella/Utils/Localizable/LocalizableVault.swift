@@ -13,6 +13,7 @@ enum LocalizableVault: String, LocalizableDelegate {
     // Edit Audio
     case editAudioTitle = "Vault_EditAudio_Title"
     case editAudioToastMsg = "Vault_EditAudio_Toast_Message"
+    case editVideoToastMsg = "Vault_EditVideo_Toast_Message"
     // Sort By
     
     case rootDirectoryName = "Vault_RootDirectoryName"

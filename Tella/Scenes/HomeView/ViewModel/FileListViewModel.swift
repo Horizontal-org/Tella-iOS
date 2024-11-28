@@ -51,7 +51,7 @@ class FileListViewModel: ObservableObject {
     
     var shouldAddEditView: Bool {
         switch currentSelectedVaultFile?.tellaFileType {
-        case .audio, .image : return true
+        case .audio, .image, .video : return true
         default: return false
         }
     }
