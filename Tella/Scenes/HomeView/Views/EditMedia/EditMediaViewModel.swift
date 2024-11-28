@@ -80,7 +80,17 @@ class EditMediaViewModel: ObservableObject {
     
     func onPause() {}
     
-    func trim() {}
+    func trim() {
+        Task { @MainActor in
+            do {
+                let copyName = file?.getCopyName(from: appModel.vaultFilesManager) ?? ""
+                guard let trimmedVideoUrl = try await fileURL?.trimMedia(newName: copyName, startTime: startTime, endTime: endTime) else { return }
+                self.addEditedFile(urlFile: trimmedVideoUrl)
+            } catch {
+                self.trimState = .error(error.localizedDescription)
+            }
+        }
+    }
     
     func handlePlayButton() {
         isPlaying.toggle()

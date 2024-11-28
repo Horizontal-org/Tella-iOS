@@ -49,20 +49,6 @@ class EditAudioViewModel: EditMediaViewModel {
             isPlaying = false
         }.store(in: &self.cancellables)
     }
-
-    override func trim() {
-        Task { @MainActor in
-            do {
-                let copyName: String = file?.getCopyName(from: appModel.vaultFilesManager) ?? ""
-                guard let trimmedAudioUrl = try await fileURL?.trimMedia(newName: "\(copyName).m4a", startTime: startTime, endTime: endTime) else { return }
-                
-                self.addEditedFile(urlFile: trimmedAudioUrl)
-            } catch {
-                self.trimState = .error(error.localizedDescription)
-            }
-        }
-    }
-    
     
     override func onPlay() {
         audioPlayerManager.playRecord()

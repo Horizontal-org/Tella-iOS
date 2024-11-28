@@ -228,7 +228,7 @@ extension URL {
         
         let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality)
         
-        let outputURL = createURL(name: newName)
+        let outputURL = createURL(name: "\(newName).\(self.pathExtension.lowercased())")
         exportSession?.outputURL = outputURL
         exportSession?.outputFileType = self.getAVFileType()
         exportSession?.timeRange = CMTimeRange(start: startTime, duration: duration)
