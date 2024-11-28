@@ -2539,6 +2539,7 @@
 				0ECC7815267A532B00A2ACF2 /* Tabs */,
 				0DD99E042692D24D009327B3 /* SwipeToDeleteView.swift */,
 				1E67B39123FC9067001F3D64 /* ImagePickerSheet.swift */,
+				200399022CE60B2B00DCFCF0 /* ResizableImage.swift */,
 				0DEFD547268943CC0014EADE /* DocumentPickerView.swift */,
 				12D37A952721A49D00E43BDB /* NavigationContainerView.swift */,
 				125A0AEE2726F0A000F6E77F /* ContainerView.swift */,
@@ -2640,7 +2641,6 @@
 				CC1313892A5DB68E0057271C /* BottomSheetTitleView.swift */,
 				CC13138B2A5DB79B0057271C /* BottomButtonsView.swift */,
 				1293F66B2AD80DB100F6CFBD /* CardFrameView.swift */,
-				200399022CE60B2B00DCFCF0 /* ResizableImage.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
