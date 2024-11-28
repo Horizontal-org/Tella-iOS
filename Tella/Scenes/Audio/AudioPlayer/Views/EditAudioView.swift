@@ -79,7 +79,8 @@ struct EditAudioView: View {
                             range: 0...viewModel.timeDuration,
                             gestureValue: $viewModel.leadingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopLeftScroll,
-                            isRightSlider: false)
+                            isRightSlider: false,
+                            sliderImage: "edit.audio.trim.line")
         .frame(height: 220)
         .offset(y: 20)
         .onReceive(viewModel.$startTime, perform: { value in
@@ -92,7 +93,8 @@ struct EditAudioView: View {
                             range: 0...viewModel.timeDuration,
                             gestureValue: $viewModel.trailingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopRightScroll,
-                            isRightSlider: true)
+                            isRightSlider: true,
+                            sliderImage: "edit.audio.trim.line")
         .frame(height: 220)
         .offset(y:20)
         .onReceive(viewModel.$endTime, perform: { value in

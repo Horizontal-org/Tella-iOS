@@ -85,7 +85,7 @@ struct EditVideoView: View {
                               sliderImage: "edit.video.play.line") { isEditing in
             viewModel.isSeekInProgress = true
             viewModel.shouldSeekVideo = isEditing
-        }.frame(height: 36)
+        }.frame(height: 40)
     }
     
     private func leadingSliderView() -> some View {

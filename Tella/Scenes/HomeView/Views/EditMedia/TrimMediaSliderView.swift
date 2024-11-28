@@ -18,7 +18,7 @@ struct TrimMediaSliderView: View {
     private let kOffset = 3.0 //This is added to adjust the difference of the elipse in the trim line image
     private let kLabelOffset = 15.0 //This constant is added to center the value label in the trim line
     
-    var sliderImage = "edit.audio.trim.line"
+    var sliderImage: String
     
     
     @State private var isEditing = false

@@ -19,7 +19,7 @@ struct CustomThumbnailSlider: View {
     
     var sliderHeight = 200.0
     var sliderWidth = 10.0
-    var sliderImage = "edit.audio.trim.line"
+    var sliderImage: String
     
     var onEditingChanged: ((Bool) -> Void)?
     
