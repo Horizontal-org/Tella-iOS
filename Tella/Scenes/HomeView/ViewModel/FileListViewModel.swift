@@ -68,7 +68,7 @@ class FileListViewModel: ObservableObject {
         }
     }
     
-    var isAtRootAllFiles: Bool {
+    var isAllFilesType: Bool {
       return  filterType == .all && self.rootFile == nil
     }
     
@@ -143,7 +143,7 @@ class FileListViewModel: ObservableObject {
     var fileActionItems: [ListActionSheetItem] {
         
         var items: [ListActionSheetItem] = []
-        if !shouldHideViewsForGallery && isAtRootAllFiles {
+        if !shouldHideViewsForGallery && isAllFilesType {
             items.append(ListActionSheetItem(imageName: "move-icon",
                                                              content: LocalizableVault.moreActionsMoveSheetSelect.localized,
                                                              type: FileActionType.move))
