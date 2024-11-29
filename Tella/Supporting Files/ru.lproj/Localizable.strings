@@ -540,3 +540,4 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Setting_SettServer_Selection_Part2_Message" = "If you work with an organization, you can ask them about which connection to use.";
 "Settings_SettAbout_FAQ" = "Часто задаваемые вопросы";
 "Settings_SettAbout_Tutorial" = "Руководство";
+"Vault_EditVideo_Toast_Message" = "The video cannot be trimmed because it is shorter than 3 seconds.";
