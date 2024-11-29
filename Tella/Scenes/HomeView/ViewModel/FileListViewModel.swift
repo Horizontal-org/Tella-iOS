@@ -68,6 +68,10 @@ class FileListViewModel: ObservableObject {
         }
     }
     
+    var isAtRootAllFiles: Bool {
+      return  filterType == .all && self.rootFile == nil
+    }
+    
     var selectedFiles : [VaultFileDB] {
         return vaultFileStatusArray.filter{$0.isSelected}.compactMap{$0.file}
     }
@@ -139,9 +143,7 @@ class FileListViewModel: ObservableObject {
     var fileActionItems: [ListActionSheetItem] {
         
         var items: [ListActionSheetItem] = []
-        
-        
-        if !shouldHideViewsForGallery {
+        if !shouldHideViewsForGallery && isAtRootAllFiles {
             items.append(ListActionSheetItem(imageName: "move-icon",
                                                              content: LocalizableVault.moreActionsMoveSheetSelect.localized,
                                                              type: FileActionType.move))
