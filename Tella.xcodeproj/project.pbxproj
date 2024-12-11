@@ -4543,6 +4543,7 @@
 				DEVELOPMENT_TEAM = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Tella/Supporting Files/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Tella QA";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4573,6 +4574,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6ZG9T42688;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Tella/Supporting Files/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Tella QA";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4580,10 +4582,10 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
 				MARKETING_VERSION = 1.13.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wearehorizontal.tella.qa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Tella (AppStore)";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Tella QA (AppStore)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

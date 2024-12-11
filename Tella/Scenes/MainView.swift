@@ -31,7 +31,6 @@ struct MainView: View  {
                      isShown: $sheetManager.isPresented) {
                 sheetManager.content
             }
-            securityScreenView
             
         }.navigationBarHidden(false)
     }
