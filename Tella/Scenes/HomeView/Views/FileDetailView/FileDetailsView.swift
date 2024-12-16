@@ -7,14 +7,15 @@ import QuickLook
 
 struct FileDetailsView: View {
     
-    @EnvironmentObject var fileListViewModel: FileListViewModel
+    @ObservedObject var fileListViewModel: FileListViewModel
     @EnvironmentObject var appModel: MainAppModel
     
     @StateObject var viewModel : FileDetailsViewModel
     @State private var isEditFilePresented = false
     
-    init(  appModel: MainAppModel, currentFile: VaultFileDB?) {
+    init(  appModel: MainAppModel, currentFile: VaultFileDB?, fileListViewModel: FileListViewModel) {
         _viewModel = StateObject(wrappedValue: FileDetailsViewModel(appModel: appModel, currentFile: currentFile))
+        self.fileListViewModel = fileListViewModel
     }
     
     var body: some View {

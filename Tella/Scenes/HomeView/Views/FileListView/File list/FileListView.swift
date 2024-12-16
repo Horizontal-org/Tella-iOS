@@ -81,9 +81,9 @@ struct FileListView: View {
         })
     }
     
-    var fileDetailView: some View {
-        FileDetailsView(appModel: appModel, currentFile: fileListViewModel.selectedFiles.first)
-            .environmentObject(fileListViewModel)
+    
+    var fileDetailView: FileDetailsView {
+        FileDetailsView(appModel: appModel, currentFile: fileListViewModel.selectedFiles.first,fileListViewModel:fileListViewModel)
     }
     
     @ViewBuilder

@@ -254,7 +254,7 @@ struct CameraControlsView: View {
                     shouldAnimate: self.shouldAnimate)
     }
     
-    func getFileListView() -> some View {
+    func getFileListView() -> FileListView {
         FileListView(appModel: mainAppModel,
                      filterType: .photoVideo,
                      title: LocalizableCamera.appBar.localized,
