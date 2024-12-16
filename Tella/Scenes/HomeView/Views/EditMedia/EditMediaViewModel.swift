@@ -16,7 +16,7 @@ class EditMediaViewModel: ObservableObject {
     @Published var endTime: Double = 0.0
     @Published var timeDuration: Double = 0.0
     @Published var currentTime : String  = "00:00:00"
-    @Published var playingOffset: CGFloat = 0.0
+    @Published var playingOffset: Double = 0.0
     @Published var isPlaying = false
     @Published var trimState: ViewModelState<Bool> = .loaded(false)
     @Published var headerTitle = ""

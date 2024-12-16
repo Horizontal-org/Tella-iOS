@@ -57,7 +57,11 @@ class EditAudioViewModel: EditMediaViewModel {
     override func onPause() {
         audioPlayerManager.pauseRecord()
     }
-        
+
+    func setTime(startTime:TimeInterval,endTime:TimeInterval) {
+        audioPlayerManager.setTime(startTime: startTime, endTime: endTime)
+    }
+
     private func generateTimeLabels() {
         if timeDuration != 0.0 {
             let kNumberOfLabels = 5 // This is for the sub-times labels

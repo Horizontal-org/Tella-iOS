@@ -17,16 +17,16 @@ import AVFoundation
 
 class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
     
-    
     var playStatus = false
     var audioPlayer: AVAudioPlayer?
     private var timer = Timer()
+    var stopTimer: Timer?
     
     var currentTime = CurrentValueSubject<TimeInterval, Never>(0.0)
+    var endTime : TimeInterval?
+    
     var duration = 0.0
     var audioPlayerDidFinishPlaying = CurrentValueSubject<Bool, Never>(false)
-    
-    
     
     func initPlayer(audio: Data) {
         
@@ -42,19 +42,28 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
     }
     
     func startPlaying () {
-        
-        audioPlayer?.play()
+        audioPlayer?.play(atTime: self.currentTime.value)
         playStatus = true
+        
+        if let endTime  {
+            // Schedule a timer to stop after the specified duration
+            stopTimer = Timer.scheduledTimer(withTimeInterval: endTime, repeats: false) { [weak self] _ in
+                self?.audioPlayer?.stop()
+                self?.audioPlayerDidFinishPlaying.send(true)
+            }
+        }
     }
     
     func pausePlayback() {
         audioPlayer?.pause()
         playStatus = false
+        stopTimer?.invalidate()
     }
     
     func stopPlayback() {
         audioPlayer?.stop()
         playStatus = false
+        stopTimer?.invalidate()
     }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
@@ -89,6 +98,12 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate, ObservableObject {
         } else {
             audioPlayer?.currentTime = 0
         }
+    }
+    
+    func setTime(startTime:TimeInterval, endTime:TimeInterval) {
+        // Set start time
+        self.currentTime.send(startTime)
+        self.endTime = endTime
     }
     
     func initialiseTimerRunning()  {

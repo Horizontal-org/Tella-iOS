@@ -90,6 +90,7 @@ struct EditVideoView: View {
     
     private func leadingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.startTime,
+                            valueeeee: $viewModel.playingOffset,
                             range: 0...viewModel.timeDuration,
                             gestureValue: $viewModel.leadingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopLeftScroll,
@@ -105,6 +106,7 @@ struct EditVideoView: View {
     
     private func trailingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.endTime,
+                            valueeeee: $viewModel.playingOffset,
                             range: 0...viewModel.timeDuration,
                             gestureValue: $viewModel.trailingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopRightScroll,

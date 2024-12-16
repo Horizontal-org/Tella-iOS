@@ -44,4 +44,8 @@ class AudioPlayerManager: AudioManager {
     func rewindBackRecord() {
         self.audioPlayer.rewindBackRecord()
     }
+    
+    func setTime(startTime:TimeInterval,endTime:TimeInterval) {
+        audioPlayer.setTime(startTime: startTime, endTime: endTime)
+    }
 }

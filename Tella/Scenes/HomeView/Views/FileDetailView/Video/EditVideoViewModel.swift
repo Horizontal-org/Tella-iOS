@@ -11,6 +11,7 @@ import Foundation
 import SwiftUI
 import AVFoundation
 
+
 class EditVideoViewModel: EditMediaViewModel {
     
     private var timeObserver: Any?

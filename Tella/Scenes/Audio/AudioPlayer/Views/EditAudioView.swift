@@ -76,6 +76,7 @@ struct EditAudioView: View {
     
     private func leadingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.startTime,
+                            valueeeee: $viewModel.playingOffset,
                             range: 0...viewModel.timeDuration,
                             gestureValue: $viewModel.leadingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopLeftScroll,
@@ -85,11 +86,14 @@ struct EditAudioView: View {
         .offset(y: 20)
         .onReceive(viewModel.$startTime, perform: { value in
             viewModel.shouldStopLeftScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
+            viewModel.setTime(startTime: viewModel.startTime, endTime: viewModel.endTime)
+
         })
     }
     
     private func trailingSliderView() -> some View {
         TrimMediaSliderView(value: $viewModel.endTime,
+                            valueeeee: $viewModel.playingOffset,
                             range: 0...viewModel.timeDuration,
                             gestureValue: $viewModel.trailingGestureValue,
                             shouldLimitScrolling: $viewModel.shouldStopRightScroll,
@@ -99,6 +103,8 @@ struct EditAudioView: View {
         .offset(y:20)
         .onReceive(viewModel.$endTime, perform: { value in
             viewModel.shouldStopRightScroll = viewModel.startTime + viewModel.minimumAudioDuration >= viewModel.endTime
+            
+            viewModel.setTime(startTime: viewModel.startTime, endTime: viewModel.endTime)
         })
     }
     

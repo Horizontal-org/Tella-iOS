@@ -10,6 +10,8 @@ import SwiftUI
 
 struct TrimMediaSliderView: View {
     @Binding var value: Double
+    @Binding var valueeeee: Double
+
     var range: ClosedRange<Double>
     @Binding var gestureValue: Double
     @Binding var shouldLimitScrolling: Bool
@@ -63,9 +65,12 @@ struct TrimMediaSliderView: View {
                 }
                 
                 value = min(max(newValue, range.lowerBound), range.upperBound)
+                
             }
             .onEnded { _ in
                 gestureValue = calculateThumbOffset(in: geometry)
+                valueeeee = gestureValue
+
             }
 
     }
