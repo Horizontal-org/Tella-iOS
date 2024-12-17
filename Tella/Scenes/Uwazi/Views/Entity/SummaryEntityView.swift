@@ -23,18 +23,7 @@ struct SummaryEntityView: View {
     var body: some View {
         ContainerView {
             VStack {
-                templateData
-                
-                UwaziDividerWidget()
-                
-                Spacer()
-                    .frame(height: 20)
-                
-                entityTitle
-                
-                entityContent
-                
-                Spacer()
+                entityContentView
                 
                 if summaryViewModel.shouldHideBottomActionView {
                     UwaziDividerWidget()
@@ -45,7 +34,6 @@ struct SummaryEntityView: View {
             if summaryViewModel.isLoading {
                 CircularActivityIndicatory()
             }
-
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -64,6 +52,25 @@ struct SummaryEntityView: View {
             }
         })
 
+    }
+    
+    var entityContentView: some View {
+        
+        ScrollView {
+
+            templateData
+            
+            UwaziDividerWidget()
+            
+            Spacer()
+                .frame(height: 20)
+            
+            entityTitle
+            
+            entityFilesView
+            
+            Spacer()
+        }
     }
     
     var templateData: some View {
@@ -89,7 +96,7 @@ struct SummaryEntityView: View {
         .padding()
     }
 
-    var entityContent: some View {
+    var entityFilesView: some View {
         VStack {
             entityResponseItem
             UwaziFileItems(files: summaryViewModel.uwaziVaultFiles)
