@@ -69,15 +69,13 @@
 "Vault_ManageFiles_ImportFromDevice_SheetSelect" = "Import from device";
 
 
-"Vault_DeniedPhotoLibraryPermission_Expl" = "The Tella app does not have permission to access the photo library.\
-\
-If you want to add a picture or a video from the photo library, proceed in the following way:\
-1. Navigate to your phone's settings and find the Tella app.\
-2. Enable permissions for Photos.\
-3. Open the Tella app.\
-";
-"Vault_DeniedPhotosPermission_Action_Settings" = "Settings";
-"Vault_DeniedPhotosPermission_Action_Cancel" = "CANCEL";
+"Vault_DeniedPhotoLibraryPermission_SheetTitle" = "Permission required";
+"Vault_DeniedPhotoLibraryPermission_SheetExpl" = "Tella does not have permission to access your photo library. If you want to add a photo or video from your device, please:
+1. Navigate to your phone's settings
+2. Find the Tella app
+3. Enable photo permissions";
+"Vault_DeniedPhotosPermission_Settings_SheetSelect" = "Phone Settings";
+"Vault_DeniedPhotosPermission_Cancel_SheetSelect" = "cancel";
 
 
 

@@ -48,8 +48,6 @@ struct PhotoVideoPickerView: View {
             
         }.onReceive(Just(showingImagePicker.wrappedValue)) { showingImagePicker in
             checkPhotoLibraryAuthorization(showingImagePicker:showingImagePicker)
-        } .alert(isPresented:$showingPermissionAlert) {
-            authorizationStatus == .limited ? getLimitedPhotoLibraryAlertView() : getDeniedPhotoLibraryAlertView()
         }
     }
     
@@ -85,22 +83,26 @@ struct PhotoVideoPickerView: View {
                 case .limited:
                     showingPermissionAlert = true
                 default:
-                    DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond) {
-                        showingPermissionAlert = true
-                    }
+                    showDeniedPermissionSheetView()
                 }
             }
         }
     }
     
-    private func getDeniedPhotoLibraryAlertView() -> Alert {
-        Alert(title: Text(""),
-              message: Text(LocalizableVault.deniedPhotoLibraryPermissionExpl.localized),
-              primaryButton: .default(Text(LocalizableVault.deniedPhotosPermissionCancel.localized), action: {
-            
-        }), secondaryButton: .default(Text(LocalizableVault.deniedPhotosPermissionSettings.localized), action: {
+    private func showDeniedPermissionSheetView()  {
+        
+        let content = ConfirmBottomSheet(titleText: LocalizableVault.deniedPhotoLibraryPermissionTitle.localized,
+                                         msgText: LocalizableVault.deniedPhotoLibraryPermissionExpl.localized,
+                                         cancelText: LocalizableVault.deniedPhotosPermissionCancel.localized.uppercased(),
+                                         actionText:LocalizableVault.deniedPhotosPermissionSettings.localized.uppercased(),
+                                         shouldHideSheet: false,
+                                         didConfirmAction: {
             UIApplication.shared.openSettings()
-        }))
+        }, didCancelAction: {
+            self.dismiss()
+        })
+        
+        self.showBottomSheetView(content: content, modalHeight: 255)
     }
     
     private func getLimitedPhotoLibraryAlertView() -> Alert {
