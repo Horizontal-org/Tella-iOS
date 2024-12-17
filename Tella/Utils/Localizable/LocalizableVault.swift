@@ -120,10 +120,15 @@ enum LocalizableVault: String, LocalizableDelegate {
     
     case fileAudioUpdateSecondTime = "Vault_FileAudio_UpdateSecondTime"
 
-    case deniedPhotoLibraryPermissionExpl = "Vault_DeniedPhotoLibraryPermission_Expl"
-    case deniedPhotosPermissionSettings = "Vault_DeniedPhotosPermission_Action_Settings"
-    case deniedPhotosPermissionCancel = "Vault_DeniedPhotosPermission_Action_Cancel"
+    
+    
+    case deniedPhotoLibraryPermissionTitle = "Vault_DeniedPhotoLibraryPermission_SheetTitle"
+    case deniedPhotoLibraryPermissionExpl = "Vault_DeniedPhotoLibraryPermission_SheetExpl"
+    case deniedPhotosPermissionSettings = "Vault_DeniedPhotosPermission_Settings_SheetSelect"
+    case deniedPhotosPermissionCancel = "Vault_DeniedPhotosPermission_Cancel_SheetSelect"
 
+    
+    
     case limitedPhotoLibraryPermissionExpl = "Vault_LimitedPhotoLibraryPermission_Expl"
     case limitedPhotoLibraryPermissionSettings = "Vault_LimitedPhotoLibraryPermission_Action_Settings"
     case limitedPhotoLibraryPermissionCancel =  "Vault_LimitedPhotoLibraryPermission_Action_Cancel"
