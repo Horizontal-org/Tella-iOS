@@ -45,13 +45,13 @@ struct QuickDeleteView: View {
                 Spacer()
             }
             .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height, alignment: .center)
-            .onTapGesture {
-                self.cancelCountdown()
-            }
+            
             .zIndex(99)
             .onAppear {
                 startCountdown()
             }
+        }.onTapGesture {
+            self.cancelCountdown()
         }
     }
     
