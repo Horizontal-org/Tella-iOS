@@ -133,6 +133,17 @@ enum LocalizableVault: String, LocalizableDelegate {
     case limitedPhotoLibraryPermissionSettings = "Vault_LimitedPhotoLibraryPermission_Action_Settings"
     case limitedPhotoLibraryPermissionCancel =  "Vault_LimitedPhotoLibraryPermission_Action_Cancel"
     
+    
+    case limitedPhotoLibraryAppBar = "Vault_LimitedPhotoLibrary_AppBar"
+
+    case limitedPhotoLibraryTitle =  "Vault_LimitedPhotoLibrary_Title"
+    case limitedPhotoLibraryExpl =  "Vault_LimitedPhotoLibrary_Expl"
+    case limitedPhotoLibraryManage =  "Vault_LimitedPhotoLibrary_Action_Manage"
+
+    case limitedPhotoLibraryEmptyFiles =  "Vault_LimitedPhotoLibrary_EmptyFiles_Expl"
+
+    
+    
     case copy = "Vault_Copy_Text"
 
 }

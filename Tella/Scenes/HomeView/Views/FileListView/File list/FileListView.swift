@@ -42,14 +42,14 @@ struct FileListView: View {
                     SelectingFilesHeaderView()
                     
                     if (fileListViewModel.vaultFiles.isEmpty) && fileListViewModel.rootFile == nil  {
-                        EmptyFileListView(emptyListType: .allFiles)
+                        EmptyFileView(message: LocalizableVault.emptyAllFilesExpl.localized)
                         
                     } else {
                         if fileListViewModel.folderPathArray.count > 0 {
                             FolderListView()
                         }
                         if fileListViewModel.vaultFiles.isEmpty {
-                            EmptyFileListView(emptyListType: .directory)
+                            EmptyFileView(message: LocalizableVault.emptyFolderExpl.localized)
                             
                         } else {
                             ManageFileView()
