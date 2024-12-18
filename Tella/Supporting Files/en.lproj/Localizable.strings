@@ -90,6 +90,16 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Vault_LimitedPhotoLibraryPermission_Action_Settings" = "Settings";
 "Vault_LimitedPhotoLibraryPermission_Action_Cancel" = "CANCEL";
 
+
+"Vault_LimitedPhotoLibrary_AppBar" = "Import files";
+
+"Vault_LimitedPhotoLibrary_Title" = "Limited access";
+"Vault_LimitedPhotoLibrary_Expl" = "Tella only has access to limited photos and videos from your device library. Add more files or change device access here.";
+"Vault_LimitedPhotoLibrary_Action_Manage" = "Manage";
+
+"Vault_LimitedPhotoLibrary_EmptyFiles_Expl" = "Tap “Manage” to add your first photos and videos.";
+
+
 "Vault_Copy_Text" = "-copy";
 
 

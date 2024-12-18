@@ -16,8 +16,6 @@ struct PhotoVideoPickerView: View {
     var showingImagePicker : Binding<Bool>
     var showingImportDocumentPicker : Binding<Bool>
     @State private var showingImagePickerSheet : Bool = false
-    @State private var showingPermissionAlert : Bool = false
-    @State private var showingLimitedPhotoAlert : Bool = false
     @State private var showingPicker = false
     private let delayTimeInSecond = 0.5
     @State var authorizationStatus : PHAuthorizationStatus = .notDetermined
@@ -81,7 +79,7 @@ struct PhotoVideoPickerView: View {
                         showingImagePickerSheet = true
                     }
                 case .limited:
-                    showingPermissionAlert = true
+                    showLimitedAccessView()
                 default:
                     showDeniedPermissionSheetView()
                 }
@@ -105,6 +103,11 @@ struct PhotoVideoPickerView: View {
         self.showBottomSheetView(content: content, modalHeight: 255)
     }
     
+    func showLimitedAccessView() {
+        let view = LimitedAccessPhotoView()
+        self.present(style: .fullScreen, transitionStyle: .crossDissolve,builder: {view})
+    }
+
     private func getLimitedPhotoLibraryAlertView() -> Alert {
         Alert(title: Text(""),
               message: Text(LocalizableVault.limitedPhotoLibraryPermissionExpl.localized),
