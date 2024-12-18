@@ -48,10 +48,13 @@ extension View {
     }
     
     func dismiss() {
-        UIApplication.shared.topNavigationController()?.dismiss(animated: false)
+        UIApplication.getTopViewController()?.dismiss(animated: false)
+    }
+    
+    func dismiss(completion:@escaping () -> Void) {
+        UIApplication.getTopViewController()?.dismiss(animated: false, completion: completion)
     }
 
-    
     @ViewBuilder
     func addNavigationLink<Destination: View>(isActive:Binding<Bool>, shouldAddEmptyView: Bool = false, destination: Destination) -> some View    {
         

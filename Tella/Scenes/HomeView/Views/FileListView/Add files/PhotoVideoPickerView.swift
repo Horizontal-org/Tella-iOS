@@ -16,7 +16,6 @@ struct PhotoVideoPickerView: View {
     var showingImagePicker : Binding<Bool>
     var showingImportDocumentPicker : Binding<Bool>
     @State private var showingImagePickerSheet : Bool = false
-    @State private var showingPicker = false
     private let delayTimeInSecond = 0.5
     @State var authorizationStatus : PHAuthorizationStatus = .notDetermined
     
@@ -76,18 +75,18 @@ struct PhotoVideoPickerView: View {
                 switch authorizationStatus {
                 case .authorized:
                     DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond) {
-                        showingImagePickerSheet = true
-                    }
+                            showingImagePickerSheet = true
+                        }
                 case .limited:
                     showLimitedAccessView()
                 default:
-                    showDeniedPermissionSheetView()
+                    showAccessDeniedUI()
                 }
             }
         }
     }
     
-    private func showDeniedPermissionSheetView()  {
+    private func showAccessDeniedUI()  {
         
         let content = ConfirmBottomSheet(titleText: LocalizableVault.deniedPhotoLibraryPermissionTitle.localized,
                                          msgText: LocalizableVault.deniedPhotoLibraryPermissionExpl.localized,
@@ -105,17 +104,10 @@ struct PhotoVideoPickerView: View {
     
     func showLimitedAccessView() {
         let view = LimitedAccessPhotoView()
-        self.present(style: .fullScreen, transitionStyle: .crossDissolve,builder: {view})
-    }
-
-    private func getLimitedPhotoLibraryAlertView() -> Alert {
-        Alert(title: Text(""),
-              message: Text(LocalizableVault.limitedPhotoLibraryPermissionExpl.localized),
-              primaryButton: .default(Text(LocalizableVault.limitedPhotoLibraryPermissionCancel.localized), action: {
-            
-        }), secondaryButton: .default(Text(LocalizableVault.limitedPhotoLibraryPermissionSettings.localized), action: {
-            UIApplication.shared.openSettings()
-        }))
+        self.present(style: .fullScreen,
+                     transitionStyle: .crossDissolve,
+                     builder: {view
+        })
     }
     
     var addFileDocumentImporter: some View {

@@ -324,6 +324,7 @@
 		12A697B32840C50400BE5E9C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A697B52840C50400BE5E9C /* Localizable.strings */; };
 		12A6B6622D12CE080002F74B /* EmptyFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B6612D12CE080002F74B /* EmptyFileView.swift */; };
 		12A6B6652D132E310002F74B /* CardFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B6642D132E290002F74B /* CardFrame.swift */; };
+		12A6B6672D13628B0002F74B /* LimitedPhotoLibraryActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B6662D1362860002F74B /* LimitedPhotoLibraryActionType.swift */; };
 		12A8B09D2AFC0CEE007C838F /* LocalizableCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */; };
 		12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5A3428576E9C00134A9B /* ArrayExtension.swift */; };
 		12AB30D3272C36500020FFBF /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB30D2272C36500020FFBF /* HomeData.swift */; };
@@ -973,6 +974,7 @@
 		12A697B72840C54200BE5E9C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12A6B6612D12CE080002F74B /* EmptyFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyFileView.swift; sourceTree = "<group>"; };
 		12A6B6642D132E290002F74B /* CardFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFrame.swift; sourceTree = "<group>"; };
+		12A6B6662D1362860002F74B /* LimitedPhotoLibraryActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitedPhotoLibraryActionType.swift; sourceTree = "<group>"; };
 		12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCommon.swift; sourceTree = "<group>"; };
 		12AA5A3428576E9C00134A9B /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		12AB30D2272C36500020FFBF /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
@@ -2000,6 +2002,7 @@
 				128D6E1D2804DA2A0082AB18 /* ListActionSheetItem.swift */,
 				122389BA293683930058593B /* ServerDataItem.swift */,
 				15622F492B72B1FF00289816 /* DeleteConfirmation.swift */,
+				12A6B6662D1362860002F74B /* LimitedPhotoLibraryActionType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3966,6 +3969,7 @@
 				0E87C875268BDDFB00EB5E34 /* ImageViewer.swift in Sources */,
 				209AC6952C332F6000492356 /* PHPhotoLibraryExtension.swift in Sources */,
 				12A6B6622D12CE080002F74B /* EmptyFileView.swift in Sources */,
+				12A6B6672D13628B0002F74B /* LimitedPhotoLibraryActionType.swift in Sources */,
 				1233076729F15A290019DF7C /* NetworkMonitor.swift in Sources */,
 				1249B3832AD43AA7009A7023 /* VaultFilesManagerInterface.swift in Sources */,
 				15F64CA62B6D80F7008A57AA /* ResourceCardViewModel.swift in Sources */,

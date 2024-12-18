@@ -99,6 +99,9 @@ If you want to add a picture or a video from the photo library, proceed in the f
 
 "Vault_LimitedPhotoLibrary_EmptyFiles_Expl" = "Tap “Manage” to add your first photos and videos.";
 
+"Vault_LimitedPhotoLibrary_Add_SheetSelect" = "Add more photos and videos";
+"Vault_LimitedPhotoLibrary_ChangePermission_SheetSelect" = "Change permissions";
+"Vault_LimitedPhotoLibrary_ManageAccess_Title" = "Manage access";
 
 "Vault_Copy_Text" = "-copy";
 
