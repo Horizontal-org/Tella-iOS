@@ -14,6 +14,15 @@ struct LimitedAccessPhotoView: View {
     @State private var showingLimitedPhotoPickerSheet : Bool = false
     @StateObject var limitedAccessPhotoViewModel = LimitedAccessPhotoViewModel()
     
+    private var gridLayout: [GridItem] {
+        Array(repeating: GridItem(.flexible(), spacing: 2.5), count: 4)
+    }
+    
+    private var height: CGFloat {
+        let totalSpacing = (16 * 2) + (2.5 * 3) // Padding and spacing between cells
+        return (UIScreen.screenWidth - totalSpacing) / 4
+    }
+    
     var body: some View {
         ContainerView {
             content
@@ -51,34 +60,16 @@ struct LimitedAccessPhotoView: View {
     
     var limitedPhotosView: some View {
         ScrollView {
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
-                ForEach(limitedAccessPhotoViewModel.assets, id: \.self) { asset in
-                    Image(uiImage: getImageFromAsset(asset))
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 100, height: 100)
-                        .clipped()
-                        .cornerRadius(8)
+            LazyVGrid(columns: gridLayout, alignment: .center, spacing: 2.5) {
+                ForEach(limitedAccessPhotoViewModel.assets, id: \.self) { file in
+                    AssetGridView(file: file)
+                        .frame(height: height)
                 }
             }
+            .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
         }
     }
     
-    func getImageFromAsset(_ asset: PHAsset) -> UIImage {
-        let manager = PHImageManager.default()
-        var image = UIImage()
-        
-        let options = PHImageRequestOptions()
-        options.isSynchronous = true
-        
-        manager.requestImage(for: asset, targetSize: CGSize(width: 100, height: 100), contentMode: .aspectFill, options: options) { img, info in
-            if let img = img {
-                image = img
-            }
-        }
-        return image
-    }
-
     func showManagelimitedPhotoBottomSheet() {
         self.showBottomSheetView(content: ManagelimitedPhotoBottomSheet(), modalHeight: 195)
     }
