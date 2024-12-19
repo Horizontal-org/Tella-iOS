@@ -1,0 +1,38 @@
+//
+//  LimitedAccessPhotoViewModel.swift
+//  Tella
+//
+//  Created by Dhekra Rouatbi on 19/12/2024.
+//  Copyright © 2024 HORIZONTAL. All rights reserved.
+//
+
+import Foundation
+import Photos
+
+class LimitedAccessPhotoViewModel: NSObject,ObservableObject,PHPhotoLibraryChangeObserver {
+    
+    @Published var assets: [PHAsset] = []
+    
+    override init() {
+        super.init()
+        PHPhotoLibrary.shared().register(self)
+        fetchAssets()
+    }
+    
+    // Handle changes in the photo library
+    func photoLibraryDidChange(_ changeInstance: PHChange) {
+        DispatchQueue.main.async {
+            self.fetchAssets()
+        }
+    }
+    
+    func fetchAssets() {
+        let fetchResult = PHAsset.fetchAssets(with: nil)
+        var assets: [PHAsset] = []
+        fetchResult.enumerateObjects { (asset, _, _) in
+            assets.append(asset)
+        }
+        
+        self.assets = assets
+    }
+}

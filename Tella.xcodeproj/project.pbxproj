@@ -325,6 +325,8 @@
 		12A6B6622D12CE080002F74B /* EmptyFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B6612D12CE080002F74B /* EmptyFileView.swift */; };
 		12A6B6652D132E310002F74B /* CardFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B6642D132E290002F74B /* CardFrame.swift */; };
 		12A6B6672D13628B0002F74B /* LimitedPhotoLibraryActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B6662D1362860002F74B /* LimitedPhotoLibraryActionType.swift */; };
+		12A6B6692D142B610002F74B /* LimitedAccessPhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B6682D142B5C0002F74B /* LimitedAccessPhotoViewModel.swift */; };
+		12A6B66D2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B66C2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift */; };
 		12A8B09D2AFC0CEE007C838F /* LocalizableCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */; };
 		12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5A3428576E9C00134A9B /* ArrayExtension.swift */; };
 		12AB30D3272C36500020FFBF /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB30D2272C36500020FFBF /* HomeData.swift */; };
@@ -975,6 +977,8 @@
 		12A6B6612D12CE080002F74B /* EmptyFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyFileView.swift; sourceTree = "<group>"; };
 		12A6B6642D132E290002F74B /* CardFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFrame.swift; sourceTree = "<group>"; };
 		12A6B6662D1362860002F74B /* LimitedPhotoLibraryActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitedPhotoLibraryActionType.swift; sourceTree = "<group>"; };
+		12A6B6682D142B5C0002F74B /* LimitedAccessPhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitedAccessPhotoViewModel.swift; sourceTree = "<group>"; };
+		12A6B66C2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagelimitedPhotoBottomSheet.swift; sourceTree = "<group>"; };
 		12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCommon.swift; sourceTree = "<group>"; };
 		12AA5A3428576E9C00134A9B /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		12AB30D2272C36500020FFBF /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
@@ -2097,6 +2101,8 @@
 				12A2DB02273576D50094B856 /* AddFileView.swift */,
 				129533C127399A1B0053FA4B /* PhotoVideoPickerView.swift */,
 				12D9A9232D11F78F008C206E /* LimitedAccessPhotoView.swift */,
+				12A6B66C2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift */,
+				12A6B6682D142B5C0002F74B /* LimitedAccessPhotoViewModel.swift */,
 				12D9A9252D121789008C206E /* CardButtonView.swift */,
 				123125412930241500D3BCD5 /* PhotoVideoViewModel.swift */,
 				0D4BC3CD267668D600DCDC30 /* AddFileYellowButton.swift */,
@@ -3888,6 +3894,7 @@
 				209AC68A2C332E3100492356 /* TellaServer.swift in Sources */,
 				12A6B6652D132E310002F74B /* CardFrame.swift in Sources */,
 				CCC1B4352AC75B550075B819 /* UwaziEntitySubtitleView.swift in Sources */,
+				12A6B6692D142B610002F74B /* LimitedAccessPhotoViewModel.swift in Sources */,
 				D5077A40260D300600D72947 /* DebugLogging.swift in Sources */,
 				1234179429CD2CFC004CFAEA /* URLSessionTaskResponse.swift in Sources */,
 				E1F6D7832AB17FB5000A9B64 /* UwaziValue.swift in Sources */,
@@ -4080,6 +4087,7 @@
 				128D6E1C280480500082AB18 /* FileActionType.swift in Sources */,
 				D75F9E9C25342539006F6212 /* RecordViewModel.swift in Sources */,
 				E1EEE2A129F6EA2B009FE227 /* UwaziLoginView.swift in Sources */,
+				12A6B66D2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift in Sources */,
 				15BD9CB12BC744BC00C3932B /* NavigationHeaderView.swift in Sources */,
 				1587D6EF2C9A003F003E0B3D /* DropboxReport.swift in Sources */,
 				15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */,

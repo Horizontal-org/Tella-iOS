@@ -12,6 +12,7 @@ import Photos
 struct LimitedAccessPhotoView: View {
     
     @State private var showingLimitedPhotoPickerSheet : Bool = false
+    @StateObject var limitedAccessPhotoViewModel = LimitedAccessPhotoViewModel()
     
     var body: some View {
         ContainerView {
@@ -25,10 +26,13 @@ struct LimitedAccessPhotoView: View {
                 self.dismiss()
             }.frame(height: 45)
             
-            
             cardButtonView
             
-            EmptyFileView(message: LocalizableVault.limitedPhotoLibraryEmptyFiles.localized)
+            if limitedAccessPhotoViewModel.assets.isEmpty {
+                EmptyFileView(message: LocalizableVault.limitedPhotoLibraryEmptyFiles.localized)
+            } else {
+                limitedPhotosView
+            }
             
             Spacer()
         }
@@ -45,48 +49,38 @@ struct LimitedAccessPhotoView: View {
         }).cardFrameStyle()
     }
     
+    var limitedPhotosView: some View {
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
+                ForEach(limitedAccessPhotoViewModel.assets, id: \.self) { asset in
+                    Image(uiImage: getImageFromAsset(asset))
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 100, height: 100)
+                        .clipped()
+                        .cornerRadius(8)
+                }
+            }
+        }
+    }
+    
+    func getImageFromAsset(_ asset: PHAsset) -> UIImage {
+        let manager = PHImageManager.default()
+        var image = UIImage()
+        
+        let options = PHImageRequestOptions()
+        options.isSynchronous = true
+        
+        manager.requestImage(for: asset, targetSize: CGSize(width: 100, height: 100), contentMode: .aspectFill, options: options) { img, info in
+            if let img = img {
+                image = img
+            }
+        }
+        return image
+    }
+
     func showManagelimitedPhotoBottomSheet() {
-        
-        let items : [ListActionSheetItem] = [ListActionSheetItem(imageName: "uwazi.add-files",
-                                                                 content: LocalizableVault.limitedPhotoLibraryAdd.localized,
-                                                                 type: LimitedPhotoLibraryActionType.add),
-                                             ListActionSheetItem(imageName: "settings.general",
-                                                                 content: LocalizableVault.limitedPhotoLibraryChangePermission.localized,
-                                                                 type: LimitedPhotoLibraryActionType.settings) ]
-        
-        let content = ActionListBottomSheet(items: items, headerTitle: LocalizableVault.limitedPhotoLibraryManageAccess.localized,
-                                            action:  {item in
-            self.handleActions(item : item)
-        })
-        
-        self.showBottomSheetView(content: content, modalHeight: 195)
-    }
-    
-    private func handleActions(item: ListActionSheetItem) {
-        
-        guard let type = item.type as? LimitedPhotoLibraryActionType else { return }
-        
-        switch type {
-            
-        case .add:
-            self.dismiss {
-                showLimittedAccessUI()
-            }
-        case .settings:
-            self.dismiss {
-                self.changePhotoLibraryPermission()
-            }
-        }
-    }
-    
-    func showLimittedAccessUI() {
-        DispatchQueue.main.async {
-            PHPhotoLibrary.shared().presentLimitedLibraryPicker(from: UIApplication.getTopViewController()!)
-        }
-    }
-    
-    func changePhotoLibraryPermission() {
-        UIApplication.shared.openSettings()
+        self.showBottomSheetView(content: ManagelimitedPhotoBottomSheet(), modalHeight: 195)
     }
 }
 
