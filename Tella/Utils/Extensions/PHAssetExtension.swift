@@ -49,7 +49,7 @@ extension PHAsset {
         return try await withCheckedThrowingContinuation { continuation in
             
             PHImageManager.default().requestAVAsset(forVideo: self, options: nil) { avAsset, audioMix, info in
-               
+                
                 if let url = (avAsset as? AVURLAsset)?.url {
                     continuation.resume(returning: url)
                 } else if let error = info?[PHImageErrorKey] as? Error {
@@ -66,7 +66,7 @@ extension PHAsset {
         return try await withCheckedThrowingContinuation { continuation in
             
             PHImageManager.default().requestAVAsset(forVideo: self, options: nil) { avAsset, audioMix, info in
-               
+                
                 if let avAsset = (avAsset ) {
                     continuation.resume(returning: avAsset)
                 } else if let error = info?[PHImageErrorKey] as? Error {
@@ -77,7 +77,7 @@ extension PHAsset {
             }
         }
     }
-
+    
     
     /// An extension on `PHAsset` to fetch the first `PHAssetResource`.
     ///
@@ -89,6 +89,19 @@ extension PHAsset {
     func getAssetResource() -> PHAssetResource? {
         return PHAssetResource.assetResources(for: self).first
     }
+    
+    func getImageFromAsset() -> UIImage {
+        let manager = PHImageManager.default()
+        var image = UIImage()
+        
+        let options = PHImageRequestOptions()
+        options.isSynchronous = true
+        
+        manager.requestImage(for: self, targetSize: CGSize(width: 100, height: 100), contentMode: .aspectFill, options: options) { img, info in
+            if let img = img {
+                image = img
+            }
+        }
+        return image
+    }
 }
-
-
