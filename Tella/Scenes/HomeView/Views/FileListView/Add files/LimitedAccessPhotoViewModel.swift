@@ -11,7 +11,7 @@ import Photos
 
 class LimitedAccessPhotoViewModel: NSObject,ObservableObject,PHPhotoLibraryChangeObserver {
     
-    @Published var assets: [PHAsset] = []
+    @Published var assets: [AssetItem] = []
     
     override init() {
         super.init()
@@ -33,6 +33,6 @@ class LimitedAccessPhotoViewModel: NSObject,ObservableObject,PHPhotoLibraryChang
             assets.append(asset)
         }
         
-        self.assets = assets
+        self.assets = assets.compactMap({ AssetItem(file: $0, isSelected: false) })
     }
 }

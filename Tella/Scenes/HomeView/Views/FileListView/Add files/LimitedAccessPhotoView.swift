@@ -41,6 +41,16 @@ struct LimitedAccessPhotoView: View {
                 EmptyFileView(message: LocalizableVault.limitedPhotoLibraryEmptyFiles.localized)
             } else {
                 limitedPhotosView
+                
+                Spacer()
+                
+                TellaButtonView<AnyView> (title: "Import selected",
+                                          nextButtonAction: .action,
+                                          buttonType: .clear,
+                                          isValid: .constant(true)) {
+                    
+                    print(limitedAccessPhotoViewModel.assets.filter({$0.isSelected}).count)
+                }
             }
             
             Spacer()
@@ -62,7 +72,7 @@ struct LimitedAccessPhotoView: View {
         ScrollView {
             LazyVGrid(columns: gridLayout, alignment: .center, spacing: 2.5) {
                 ForEach(limitedAccessPhotoViewModel.assets, id: \.self) { file in
-                    AssetGridView(file: file)
+                    AssetGridView(assetItem: file)
                         .frame(height: height)
                 }
             }
