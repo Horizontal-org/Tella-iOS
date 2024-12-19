@@ -11,7 +11,7 @@ import Photos
 
 struct AssetGridView: View {
     
-    var file: PHAsset
+    @StateObject var assetItem: AssetItem
     
     var body: some View {
         
@@ -19,7 +19,7 @@ struct AssetGridView: View {
             
             ZStack {
                 
-                Image(uiImage: file.getImageFromAsset())
+                Image(uiImage: assetItem.file.getImageFromAsset())
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: geometryReader.size.width, height: geometryReader.size.height)
@@ -33,26 +33,26 @@ struct AssetGridView: View {
     }
     
     var selectingFilesView: some View {
+        
         GeometryReader { geometryReader in
             
             Color.black.opacity(0.32)
                 .onTapGesture {
-                    // updateSelection(for: file)
+                    assetItem.isSelected.toggle()
                 }
                 .frame(width: geometryReader.size.width, height: geometryReader.size.height)
             
             HStack() {
                 
                 VStack(alignment: .leading) {
-                    // Image(getStatus(for: file) ? "files.selected" : "files.unselected")
-                    Image("files.unselected")
-                    
+                    Image(assetItem.isSelected ? "files.selected" : "files.unselected")
                         .frame(width: 25, height: 25)
                         .padding(EdgeInsets(top: 5, leading: 5, bottom: 0, trailing: 0))
                     Spacer()
                     
                 }.onTapGesture {
-                    // updateSelection(for: file)
+                    assetItem.isSelected.toggle()
+                    
                 }
                 Spacer()
             }
