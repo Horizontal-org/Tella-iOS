@@ -146,6 +146,10 @@ enum LocalizableVault: String, LocalizableDelegate {
     case limitedPhotoLibraryAdd =  "Vault_LimitedPhotoLibrary_Add_SheetSelect"
     case limitedPhotoLibraryChangePermission = "Vault_LimitedPhotoLibrary_ChangePermission_SheetSelect"
 
+    case limitedPhotoLibrarySelectExpl = "Vault_LimitedPhotoLibrary_Select_Expl"
+    
+    case limitedPhotoLibraryImport = "Vault_LimitedPhotoLibrary_Action_Import"
+
     case copy = "Vault_Copy_Text"
 
 }

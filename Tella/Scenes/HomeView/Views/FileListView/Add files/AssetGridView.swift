@@ -12,6 +12,7 @@ import Photos
 struct AssetGridView: View {
     
     @StateObject var assetItem: AssetItem
+    var didSelect: () -> Void
     
     var body: some View {
         
@@ -26,21 +27,21 @@ struct AssetGridView: View {
                 
                 selectingFilesView
                 
-            } .frame(width: geometryReader.size.width, height: geometryReader.size.height)
+            }.frame(width: geometryReader.size.width, height: geometryReader.size.height)
                 .clipped()
-            
+                .onTapGesture {
+                    selectItem()
+                }
         }
     }
     
     var selectingFilesView: some View {
         
         GeometryReader { geometryReader in
-            
-            Color.black.opacity(0.32)
-                .onTapGesture {
-                    assetItem.isSelected.toggle()
-                }
-                .frame(width: geometryReader.size.width, height: geometryReader.size.height)
+            if assetItem.isSelected {
+                Color.black.opacity(0.32)
+                    .frame(width: geometryReader.size.width, height: geometryReader.size.height)
+            }
             
             HStack() {
                 
@@ -50,13 +51,15 @@ struct AssetGridView: View {
                         .padding(EdgeInsets(top: 5, leading: 5, bottom: 0, trailing: 0))
                     Spacer()
                     
-                }.onTapGesture {
-                    assetItem.isSelected.toggle()
-                    
                 }
                 Spacer()
             }
         }
+    }
+    
+    func selectItem()  {
+        assetItem.isSelected.toggle()
+        didSelect()
     }
 }
 

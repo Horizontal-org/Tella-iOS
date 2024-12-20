@@ -13,7 +13,6 @@ struct CardFrameModifier: ViewModifier {
              content
             .background(Color.white.opacity(0.08))
             .cornerRadius(15)
-            .padding(EdgeInsets(top: 6, leading: 17, bottom: 6, trailing: 17))
      }
 }
 

@@ -53,14 +53,14 @@ class PhotoVideoViewModel : ObservableObject {
     
     /// To handle adding the image based on either the user want to preserve the metadata or not
     /// - Parameter completion: Object which contains all the information needed when the user selects a image from Gallery
-    func handleAddingFile(_ completion: PHPickerCompletion?) {
+    func handleAddingFile(_ completion: [PHAsset]?) {
             guard let completion else {return}
             
             let isPreserveMetadataOn = mainAppModel.settings.preserveMetadata
             
             var importedFileArray : [ImportedFile] = []
             
-            completion.assets.enumerateObjects { (asset, _, _) in
+        completion.forEach { asset in
                 importedFileArray.append(ImportedFile(asset: asset,
                                                       parentId: self.rootFile?.wrappedValue?.id, 
                                                       shouldPreserveMetadata:isPreserveMetadataOn,
