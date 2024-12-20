@@ -1543,6 +1543,16 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		12181ABE2D15A73900CDF0F4 /* LimitedAccessPhotoView */ = {
+			isa = PBXGroup;
+			children = (
+				12D9A9232D11F78F008C206E /* LimitedAccessPhotoView.swift */,
+				12A6B66E2D1443DC0002F74B /* AssetGridView.swift */,
+				12A6B66C2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift */,
+			);
+			path = LimitedAccessPhotoView;
+			sourceTree = "<group>";
+		};
 		121C945B28FF026200570EB4 /* AddServer */ = {
 			isa = PBXGroup;
 			children = (
@@ -2010,6 +2020,7 @@
 				128D6E1D2804DA2A0082AB18 /* ListActionSheetItem.swift */,
 				122389BA293683930058593B /* ServerDataItem.swift */,
 				15622F492B72B1FF00289816 /* DeleteConfirmation.swift */,
+				12181ABC2D146F1200CDF0F4 /* AssetItem.swift */,
 				12A6B6662D1362860002F74B /* LimitedPhotoLibraryActionType.swift */,
 			);
 			path = Models;
@@ -2104,14 +2115,9 @@
 			children = (
 				12A2DB02273576D50094B856 /* AddFileView.swift */,
 				129533C127399A1B0053FA4B /* PhotoVideoPickerView.swift */,
-				12D9A9232D11F78F008C206E /* LimitedAccessPhotoView.swift */,
-				12A6B66E2D1443DC0002F74B /* AssetGridView.swift */,
-				12181ABC2D146F1200CDF0F4 /* AssetItem.swift */,
-				12A6B66C2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift */,
-				12A6B6682D142B5C0002F74B /* LimitedAccessPhotoViewModel.swift */,
-				12D9A9252D121789008C206E /* CardButtonView.swift */,
 				123125412930241500D3BCD5 /* PhotoVideoViewModel.swift */,
 				0D4BC3CD267668D600DCDC30 /* AddFileYellowButton.swift */,
+				12181ABE2D15A73900CDF0F4 /* LimitedAccessPhotoView */,
 			);
 			path = "Add files";
 			sourceTree = "<group>";
@@ -2177,6 +2183,7 @@
 				128C7BC32745AB0100A680B3 /* FileListViewModel.swift */,
 				128D6E172804531B0082AB18 /* AddPhotoVideoItems.swift */,
 				128EDB932809897C00747B98 /* HomeViewModel.swift */,
+				12A6B6682D142B5C0002F74B /* LimitedAccessPhotoViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -2396,6 +2403,7 @@
 		12A6B6632D131F4F0002F74B /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				12D9A9252D121789008C206E /* CardButtonView.swift */,
 				12A6B6612D12CE080002F74B /* EmptyFileView.swift */,
 			);
 			path = Common;
