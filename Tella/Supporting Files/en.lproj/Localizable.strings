@@ -103,6 +103,9 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Vault_LimitedPhotoLibrary_ChangePermission_SheetSelect" = "Change permissions";
 "Vault_LimitedPhotoLibrary_ManageAccess_Title" = "Manage access";
 
+"Vault_LimitedPhotoLibrary_Select_Expl" = "Select from these photos and videos to import them to Tella.";
+"Vault_LimitedPhotoLibrary_Action_Import" = "Import selected";
+
 "Vault_Copy_Text" = "-copy";
 
 

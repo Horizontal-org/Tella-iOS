@@ -10,13 +10,9 @@ enum MediaType {
     case image
 }
 
-struct PHPickerCompletion {
-    var assets : PHFetchResult<PHAsset>
-}
-
 struct ImagePickerSheet: UIViewControllerRepresentable {
     
-    let completion: (PHPickerCompletion?) -> ()
+    let completion: ([PHAsset]?) -> ()
     
     func makeCoordinator() -> ImageCoordinator {
         return ImageCoordinator(completion)
@@ -45,9 +41,9 @@ struct ImagePickerSheet: UIViewControllerRepresentable {
 //  Creating the Coordinator (the go between) for the PHPicker
 class ImageCoordinator: NSObject, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
     
-    let completion: (PHPickerCompletion?) -> ()
+    let completion: ([PHAsset]?) -> ()
     
-    init(_ completion: @escaping (PHPickerCompletion?) -> ()) {
+    init(_ completion: @escaping ([PHAsset]?) -> ()) {
         self.completion = completion
     }
     
@@ -56,7 +52,11 @@ class ImageCoordinator: NSObject, UINavigationControllerDelegate, PHPickerViewCo
         let identifiers = results.compactMap(\.assetIdentifier)
         let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
         
-        completion(PHPickerCompletion(assets: fetchResult))
+        var assets : [PHAsset] = []
+        fetchResult.enumerateObjects { (asset, _, _) in
+            assets.append(asset)
+        }
+        completion(assets)
     }
     
     func pickerDidCancel(_ picker: PHPickerViewController) {

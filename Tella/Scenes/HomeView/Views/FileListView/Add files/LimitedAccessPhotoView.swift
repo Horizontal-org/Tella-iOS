@@ -14,6 +14,8 @@ struct LimitedAccessPhotoView: View {
     @State private var showingLimitedPhotoPickerSheet : Bool = false
     @StateObject var limitedAccessPhotoViewModel = LimitedAccessPhotoViewModel()
     
+    var didSelect : ([PHAsset]) -> Void
+    
     private var gridLayout: [GridItem] {
         Array(repeating: GridItem(.flexible(), spacing: 2.5), count: 4)
     }
@@ -34,26 +36,39 @@ struct LimitedAccessPhotoView: View {
             CloseHeaderView(title: LocalizableVault.limitedPhotoLibraryAppBar.localized) {
                 self.dismiss()
             }.frame(height: 45)
-            
-            cardButtonView
-            
-            if limitedAccessPhotoViewModel.assets.isEmpty {
-                EmptyFileView(message: LocalizableVault.limitedPhotoLibraryEmptyFiles.localized)
-            } else {
-                limitedPhotosView
+
+            VStack(alignment: .leading, spacing: 16) {
                 
-                Spacer()
+                cardButtonView
                 
-                TellaButtonView<AnyView> (title: "Import selected",
+                if limitedAccessPhotoViewModel.assets.isEmpty {
+                    EmptyFileView(message: LocalizableVault.limitedPhotoLibraryEmptyFiles.localized)
+                } else {
+                    
+                    DividerView()
+                    
+                    Text(LocalizableVault.limitedPhotoLibrarySelectExpl.localized)
+                        .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                        .foregroundColor(.white.opacity(0.88))
+                    
+                    limitedPhotosView
+                    
+                    Spacer()
+                }
+            }.padding(EdgeInsets(top: 0, leading: 16, bottom: 16, trailing: 16))
+            
+            VStack(spacing: 0) {
+                
+                DividerView()
+                
+                TellaButtonView<AnyView> (title: LocalizableVault.limitedPhotoLibraryImport.localized,
                                           nextButtonAction: .action,
                                           buttonType: .clear,
-                                          isValid: .constant(true)) {
-                    
-                    print(limitedAccessPhotoViewModel.assets.filter({$0.isSelected}).count)
-                }
+                                          isValid: $limitedAccessPhotoViewModel.shouldEnableButton) {
+                    didSelect(limitedAccessPhotoViewModel.selectedAssets)
+                    self.dismiss()
+                }.padding(.all, 16)
             }
-            
-            Spacer()
         }
     }
     
@@ -72,11 +87,12 @@ struct LimitedAccessPhotoView: View {
         ScrollView {
             LazyVGrid(columns: gridLayout, alignment: .center, spacing: 2.5) {
                 ForEach(limitedAccessPhotoViewModel.assets, id: \.self) { file in
-                    AssetGridView(assetItem: file)
-                        .frame(height: height)
+                    AssetGridView(assetItem: file) {
+                        limitedAccessPhotoViewModel.updateButtonState()
+                    } .frame(height: height)
                 }
             }
-            .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+            
         }
     }
     
@@ -86,6 +102,8 @@ struct LimitedAccessPhotoView: View {
 }
 
 #Preview {
-    LimitedAccessPhotoView()
+    LimitedAccessPhotoView { result in
+        
+    }
 }
 

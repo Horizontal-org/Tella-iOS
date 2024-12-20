@@ -17,7 +17,7 @@ struct CardButtonView: View {
     
     var body: some View {
         HStack{
-            VStack(alignment: .leading){
+            VStack(alignment: .leading,spacing: 7){
                 Text(title)
                     .font(.custom(Styles.Fonts.regularFontName, size: 14))
                     .foregroundColor(Color.white).padding(.bottom, -5)

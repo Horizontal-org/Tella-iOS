@@ -52,13 +52,14 @@ struct PhotoVideoPickerView: View {
         
         HStack{}
             .sheet(isPresented: $showingImagePickerSheet, content: {
-                ImagePickerSheet { phPickerCompletion in
+                ImagePickerSheet { assets in
                     self.showingImagePickerSheet = false
-                    if phPickerCompletion != nil  {
-                        if phPickerCompletion?.assets.count != 0 && viewModel.shouldShowProgressView {
+                   
+                    if assets != nil  {
+                        if assets?.count != 0 && viewModel.shouldShowProgressView {
                             showProgressView()
                         }
-                        viewModel.handleAddingFile(phPickerCompletion)
+                        viewModel.handleAddingFile(assets)
                     }
                 }
             })
@@ -103,7 +104,16 @@ struct PhotoVideoPickerView: View {
     }
     
     func showLimitedAccessView() {
-        let view = LimitedAccessPhotoView()
+        
+        let view = LimitedAccessPhotoView { assets in
+ 
+                if assets.count != 0 && viewModel.shouldShowProgressView {
+                    showProgressView()
+                }
+                viewModel.handleAddingFile(assets)
+
+        }
+        
         self.present(style: .fullScreen,
                      transitionStyle: .crossDissolve,
                      builder: {view

@@ -8,10 +8,16 @@
 
 import Foundation
 import Photos
+import SwiftUI
 
 class LimitedAccessPhotoViewModel: NSObject,ObservableObject,PHPhotoLibraryChangeObserver {
     
     @Published var assets: [AssetItem] = []
+    @Published var shouldEnableButton: Bool = false
+
+    var selectedAssets : [PHAsset] {
+        return assets.filter({$0.isSelected}).compactMap({$0.file})
+    }
     
     override init() {
         super.init()
@@ -34,5 +40,10 @@ class LimitedAccessPhotoViewModel: NSObject,ObservableObject,PHPhotoLibraryChang
         }
         
         self.assets = assets.compactMap({ AssetItem(file: $0, isSelected: false) })
+        updateButtonState()
+    }
+    
+    func updateButtonState() {
+        shouldEnableButton = !selectedAssets.isEmpty
     }
 }
