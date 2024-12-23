@@ -16,9 +16,6 @@ struct PhotoVideoPickerView: View {
     var showingImagePicker : Binding<Bool>
     var showingImportDocumentPicker : Binding<Bool>
     @State private var showingImagePickerSheet : Bool = false
-    @State private var showingPermissionAlert : Bool = false
-    @State private var showingLimitedPhotoAlert : Bool = false
-    @State private var showingPicker = false
     private let delayTimeInSecond = 0.5
     @State var authorizationStatus : PHAuthorizationStatus = .notDetermined
     
@@ -48,8 +45,6 @@ struct PhotoVideoPickerView: View {
             
         }.onReceive(Just(showingImagePicker.wrappedValue)) { showingImagePicker in
             checkPhotoLibraryAuthorization(showingImagePicker:showingImagePicker)
-        } .alert(isPresented:$showingPermissionAlert) {
-            authorizationStatus == .limited ? getLimitedPhotoLibraryAlertView() : getDeniedPhotoLibraryAlertView()
         }
     }
     
@@ -57,13 +52,14 @@ struct PhotoVideoPickerView: View {
         
         HStack{}
             .sheet(isPresented: $showingImagePickerSheet, content: {
-                ImagePickerSheet { phPickerCompletion in
+                ImagePickerSheet { assets in
                     self.showingImagePickerSheet = false
-                    if phPickerCompletion != nil  {
-                        if phPickerCompletion?.assets.count != 0 && viewModel.shouldShowProgressView {
+                   
+                    if assets != nil  {
+                        if assets?.count != 0 && viewModel.shouldShowProgressView {
                             showProgressView()
                         }
-                        viewModel.handleAddingFile(phPickerCompletion)
+                        viewModel.handleAddingFile(assets)
                     }
                 }
             })
@@ -80,37 +76,48 @@ struct PhotoVideoPickerView: View {
                 switch authorizationStatus {
                 case .authorized:
                     DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond) {
-                        showingImagePickerSheet = true
-                    }
+                            showingImagePickerSheet = true
+                        }
                 case .limited:
-                    showingPermissionAlert = true
+                    showLimitedAccessView()
                 default:
-                    DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond) {
-                        showingPermissionAlert = true
-                    }
+                    showAccessDeniedUI()
                 }
             }
         }
     }
     
-    private func getDeniedPhotoLibraryAlertView() -> Alert {
-        Alert(title: Text(""),
-              message: Text(LocalizableVault.deniedPhotoLibraryPermissionExpl.localized),
-              primaryButton: .default(Text(LocalizableVault.deniedPhotosPermissionCancel.localized), action: {
-            
-        }), secondaryButton: .default(Text(LocalizableVault.deniedPhotosPermissionSettings.localized), action: {
+    private func showAccessDeniedUI()  {
+        
+        let content = ConfirmBottomSheet(titleText: LocalizableVault.deniedPhotoLibraryPermissionTitle.localized,
+                                         msgText: LocalizableVault.deniedPhotoLibraryPermissionExpl.localized,
+                                         cancelText: LocalizableVault.deniedPhotosPermissionCancel.localized.uppercased(),
+                                         actionText:LocalizableVault.deniedPhotosPermissionSettings.localized.uppercased(),
+                                         shouldHideSheet: false,
+                                         didConfirmAction: {
             UIApplication.shared.openSettings()
-        }))
+        }, didCancelAction: {
+            self.dismiss()
+        })
+        
+        self.showBottomSheetView(content: content, modalHeight: 255)
     }
     
-    private func getLimitedPhotoLibraryAlertView() -> Alert {
-        Alert(title: Text(""),
-              message: Text(LocalizableVault.limitedPhotoLibraryPermissionExpl.localized),
-              primaryButton: .default(Text(LocalizableVault.limitedPhotoLibraryPermissionCancel.localized), action: {
-            
-        }), secondaryButton: .default(Text(LocalizableVault.limitedPhotoLibraryPermissionSettings.localized), action: {
-            UIApplication.shared.openSettings()
-        }))
+    func showLimitedAccessView() {
+        
+        let view = LimitedAccessPhotoView { assets in
+ 
+                if assets.count != 0 && viewModel.shouldShowProgressView {
+                    showProgressView()
+                }
+                viewModel.handleAddingFile(assets)
+
+        }
+        
+        self.present(style: .fullScreen,
+                     transitionStyle: .crossDissolve,
+                     builder: {view
+        })
     }
     
     var addFileDocumentImporter: some View {
