@@ -101,6 +101,10 @@ extension View {
         UIApplication.shared.popTo(classType)
     }
     
+    func classTypeExist(_ classType: AnyClass) -> Bool {
+        UIApplication.shared.classTypeExist(classType)
+    }
+    
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
         clipShape( RoundedCorner(radius: radius, corners: corners) )
     }
