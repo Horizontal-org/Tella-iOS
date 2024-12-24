@@ -693,6 +693,7 @@
 		1209FD3127ADBDDE00D8C17E /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
 		120A14462B285E1400870157 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		120D86632CB56FC500C007B4 /* ResultExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultExtension.swift; sourceTree = "<group>"; };
+		1210A4622D1AD7510027FC15 /* bn */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bn; path = bn.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1212677D2C0E77A2005F75A4 /* VaultFileItemViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VaultFileItemViewModel.swift; sourceTree = "<group>"; };
 		1212677E2C0E77A2005F75A4 /* VaultFileItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VaultFileItemView.swift; sourceTree = "<group>"; };
 		1216123B28DE13AC00E6D7B6 /* DatabaseUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUtilities.swift; sourceTree = "<group>"; };
@@ -3505,6 +3506,7 @@
 				ru,
 				"pt-BR",
 				vi,
+				bn,
 			);
 			mainGroup = F66E65A023E3207D000F93E5;
 			packageReferences = (
@@ -4334,6 +4336,7 @@
 				1589A6202B7672390048C775 /* ru */,
 				1589A6212B7672430048C775 /* pt-BR */,
 				15095DCA2C862DC100592907 /* vi */,
+				1210A4622D1AD7510027FC15 /* bn */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

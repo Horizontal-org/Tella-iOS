@@ -245,7 +245,7 @@ If you want to take a picture or a video, proceed in the following way:\
 "Setting_SettServer_TellaWeb" = "TELLA WEB";
 "Setting_SettServer_NextCloud" = "NEXTCLOUD";
 "Setting_SettServer_Uwazi" = "UWAZI";
-"Setting_SettServer_GDrive" = "GOOGLE DRIVE"; 
+"Setting_SettServer_GDrive" = "GOOGLE DRIVE";
 "Setting_SettServer_Dropbox" = "DROPBOX";
 "Setting_SettServer_No_Internet" = "No Internet connection. Try again when you are connected to the Internet.";
 "Setting_SettServer_Server_URL_Incorrect" = "Error: The server URL is incorrect";
@@ -372,7 +372,6 @@ If you want to take a picture or a video, proceed in the following way:\
 "Settings_SettLang_Kurdish_Expl" = "Kurdish";
 "Settings_SettLang_Burmese_Expl" = "Burmese";
 "Settings_SettLang_Vietnamese_Expl" = "Vietnamese";
-"Settings_SettLang_Bangla_Expl" = "Bangla";
 "Common_Error" = "An error has occurred";
 "LockUnlock_UnlockDeleteAfterFail_Warning_RemainingAttempts" = "You have %i attempts remaining until everything in your Tella is deleted.";
 "LockUnlock_UnlockDeleteAfterFail_Error_ContentDeleted" = "You have exceeded the maximum number of incorrect login attempts. All your Tella data has been deleted.";
