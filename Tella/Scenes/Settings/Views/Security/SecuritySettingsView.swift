@@ -8,14 +8,15 @@ import SwiftUI
 struct SecuritySettingsView: View {
     
     @EnvironmentObject var appModel : MainAppModel
-    @EnvironmentObject var settingsViewModel : SettingsViewModel
+     var settingsViewModel : SettingsViewModel
     @EnvironmentObject private var sheetManager: SheetManager
     @StateObject var lockViewModel: LockViewModel
     @State var passwordTypeString : String = ""
     
     
-    init(appModel: MainAppModel, appViewState: AppViewState) {
+    init(appModel: MainAppModel, appViewState: AppViewState,settingsViewModel:SettingsViewModel) {
         _lockViewModel = StateObject(wrappedValue: LockViewModel(unlockType: .update, appModel: appModel, appViewState: appViewState))
+        self.settingsViewModel = settingsViewModel
     }
     
     var body: some View {
@@ -181,6 +182,8 @@ struct SecuritySettingsView: View {
 
 struct SecuritySettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SecuritySettingsView(appModel: MainAppModel.stub(), appViewState: AppViewState())
+        SecuritySettingsView(appModel: MainAppModel.stub(),
+                             appViewState: AppViewState(),
+                             settingsViewModel: SettingsViewModel(appModel: MainAppModel.stub()))
     }
 }
