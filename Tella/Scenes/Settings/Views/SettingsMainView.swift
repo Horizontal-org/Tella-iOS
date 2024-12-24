@@ -73,12 +73,10 @@ struct SettingsMainView: View {
                          destination:AboutAndHelpView().environmentObject(settingsViewModel))
     }
     
-    var securitySettingsView: some View {
-        SecuritySettingsView(appModel: MainAppModel.stub(), appViewState: appViewState)
-            .environmentObject(settingsViewModel)
+    var securitySettingsView: SecuritySettingsView {
+        SecuritySettingsView(appModel: MainAppModel.stub(), appViewState: appViewState, settingsViewModel:settingsViewModel)
     }
-    
-    
+
     var feedbackView: some View {
         SettingsItemView(imageName: "settings.feedback",
                          title: LocalizableSettings.settFeedback.localized,
