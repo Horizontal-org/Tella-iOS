@@ -535,3 +535,4 @@ If you want to add a picture or a video from the photo library, proceed in the f
 "Settings_SettAbout_FAQ" = "پرسش‌های متداول";
 "Settings_SettAbout_Tutorial" = "آموزش";
 "Vault_EditVideo_Toast_Message" = "The video cannot be trimmed because it is shorter than 3 seconds.";
+"Settings_SettLang_Bangla_Expl" = "Bangla";

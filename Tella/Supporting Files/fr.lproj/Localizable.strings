@@ -535,3 +535,4 @@ Si vous souhaitez ajouter une photo ou une vid√©o de la galerie de photos, proc√
 "Settings_SettAbout_FAQ" = "FAQ";
 "Settings_SettAbout_Tutorial" = "Tutoriel";
 "Vault_EditVideo_Toast_Message" = "The video cannot be trimmed because it is shorter than 3 seconds.";
+"Settings_SettLang_Bangla_Expl" = "Bangla";
