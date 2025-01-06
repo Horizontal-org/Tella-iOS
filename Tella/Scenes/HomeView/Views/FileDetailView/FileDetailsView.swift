@@ -59,9 +59,9 @@ struct FileDetailsView: View {
                                            appModel: fileListViewModel.appModel,
                                            shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
         DispatchQueue.main.async {
-            if fileListViewModel.currentSelectedVaultFile?.audioCanBeEdited == true {
+            if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {
                 self.present(style: .fullScreen) {
-                    EditAudioView(editAudioViewModel: viewModel)
+                    EditAudioView(viewModel: viewModel)
                 }
             }else {
                 Toast.displayToast(message: LocalizableVault.editAudioToastMsg.localized)
@@ -73,7 +73,8 @@ struct FileDetailsView: View {
     func detailsView() -> some View {
         
         if viewModel.currentFile?.tellaFileType == .video {
-            VideoViewer(appModel: appModel, currentFile: viewModel.currentFile, playList: self.fileListViewModel.getVideoFiles())
+            VideoViewer(appModel: appModel, currentFile: viewModel.currentFile, playList: self.fileListViewModel.getVideoFiles(),
+                        rootFile: fileListViewModel.rootFile)
         } else {
             if viewModel.documentIsReady {
                 switch viewModel.currentFile?.tellaFileType {

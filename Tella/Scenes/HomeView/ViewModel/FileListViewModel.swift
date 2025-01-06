@@ -51,7 +51,7 @@ class FileListViewModel: ObservableObject {
     
     var shouldAddEditView: Bool {
         switch currentSelectedVaultFile?.tellaFileType {
-        case .audio, .image : return true
+        case .audio, .image, .video : return true
         default: return false
         }
     }
@@ -66,6 +66,10 @@ class FileListViewModel: ObservableObject {
         didSet {
             getFiles()
         }
+    }
+    
+    var isAllFilesType: Bool {
+      return  filterType == .all && self.rootFile == nil
     }
     
     var selectedFiles : [VaultFileDB] {
@@ -139,9 +143,7 @@ class FileListViewModel: ObservableObject {
     var fileActionItems: [ListActionSheetItem] {
         
         var items: [ListActionSheetItem] = []
-        
-        
-        if !shouldHideViewsForGallery {
+        if !shouldHideViewsForGallery && isAllFilesType {
             items.append(ListActionSheetItem(imageName: "move-icon",
                                                              content: LocalizableVault.moreActionsMoveSheetSelect.localized,
                                                              type: FileActionType.move))

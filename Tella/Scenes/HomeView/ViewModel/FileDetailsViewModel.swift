@@ -19,7 +19,7 @@ final class FileDetailsViewModel: ObservableObject {
     
     var shouldAddEditView: Bool {
         switch currentFile?.tellaFileType {
-        case .audio, .image : return true
+        case .audio, .image, .video: return true
         default: return false
         }
     }
