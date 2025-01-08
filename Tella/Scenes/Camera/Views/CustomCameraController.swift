@@ -49,22 +49,10 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     
     var photoSettings : AVCapturePhotoSettings {
         
-        var photoSettings : AVCapturePhotoSettings
-        
-        if let formats = photoOutput?.supportedPhotoPixelFormatTypes(for: .tif),
-           let uncompressedPixelType = formats.first {
-            
-            photoSettings = AVCapturePhotoSettings(format: [kCVPixelBufferPixelFormatTypeKey as String : uncompressedPixelType])
-            
-        } else {
-            photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
-        }
+        let photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
         
         photoSettings.isHighResolutionPhotoEnabled = true
-        if let previewFormat = photoSettings.availablePreviewPhotoPixelFormatTypes.first {
-            photoSettings.previewPhotoFormat = [kCVPixelBufferPixelFormatTypeKey: previewFormat] as [String: Any]
-        }
-        
+
         if let currentLocation = locationManager.currentLocation {
             photoSettings.add(location: currentLocation)
         }
@@ -186,7 +174,7 @@ public class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDel
     }
     
     private func setupCaptureSession() {
-        captureSession.sessionPreset = AVCaptureSession.Preset.high
+        captureSession.sessionPreset = AVCaptureSession.Preset.photo
     }
     
     private func createTempFileURL() -> URL {
