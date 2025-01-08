@@ -25,8 +25,7 @@ class CameraViewModel: ObservableObject {
     @Published var shouldReloadVaultFiles : Binding<Bool>?
     @Published var shouldShowToast : Bool = false
 
-    var imageData : Data?
-    var currentLocation:CLLocation?
+    var capturePhoto:AVCapturePhoto?
     
     var videoURL : URL?
     var mainAppModel: MainAppModel?
@@ -42,7 +41,7 @@ class CameraViewModel: ObservableObject {
     }
     
     var errorMessage : String = ""
-
+    
     
     // MARK: - Private properties
     
@@ -59,13 +58,13 @@ class CameraViewModel: ObservableObject {
         
         self.mainAppModel = mainAppModel
         self.rootFile = rootFile
-
+        
         self.resultFile = resultFile
         
         self.sourceView = sourceView
         
         self.shouldReloadVaultFiles = shouldReloadVaultFiles
-       
+        
         self.updateLastItem()
         
         self.listenToshouldReloadFiles()
@@ -88,23 +87,17 @@ class CameraViewModel: ObservableObject {
     
     func saveImage() {
         
-        guard let mainAppModel, let imageData else { return }
+        guard let mainAppModel else { return }
         let isPreserveMetadataOn = mainAppModel.settings.preserveMetadata
-
-        if currentLocation != nil && isPreserveMetadataOn {
-            let url = mainAppModel.vaultManager.createTempFileURL(pathExtension: FileExtension.heic.rawValue)
-            let isSaved = imageData.save(withLocation: currentLocation, fileURL: url)
-            if isSaved {
-                saveFile(urlFile: url)
-            } else {
-                displayError()
-            }
-        } else {
-            guard let url = mainAppModel.vaultManager.saveDataToTempFile(data: imageData, pathExtension: FileExtension.heic.rawValue) else {
-                displayError()
-                return
-            }
+        
+        let url = mainAppModel.vaultManager.createTempFileURL(pathExtension: FileExtension.heic.rawValue)
+        
+        let isSaved = capturePhoto!.saveImage(to: url, shouldPreserveMetadata: isPreserveMetadataOn)
+        
+        if isSaved {
             saveFile(urlFile: url)
+        } else {
+            displayError()
         }
     }
     
@@ -131,7 +124,7 @@ class CameraViewModel: ObservableObject {
     private func addVaultFileWithProgressView(urlFile:URL) {
         
         let importedFiles = ImportedFile(urlFile: urlFile,
-                                         parentId: self.rootFile?.id, 
+                                         parentId: self.rootFile?.id,
                                          fileSource: FileSource.camera)
         
         self.mainAppModel?.vaultFilesManager?.addVaultFile(importedFiles: [importedFiles])
@@ -152,7 +145,7 @@ class CameraViewModel: ObservableObject {
         let isPreserveMetadataOn = mainAppModel?.settings.preserveMetadata ?? false
         
         let importedFile = ImportedFile(urlFile: urlFile,
-                                        parentId: self.rootFile?.id, 
+                                        parentId: self.rootFile?.id,
                                         shouldPreserveMetadata: isPreserveMetadataOn,
                                         fileSource: .camera)
         
@@ -172,7 +165,7 @@ class CameraViewModel: ObservableObject {
             self.progressFile.isFinishing = importProgress.isFinishing.value
         }
     }
-
+    
     private func updateResultFile(vaultFiles:[VaultFileDB])  {
         DispatchQueue.main.async {
             self.resultFile?.wrappedValue = vaultFiles
