@@ -13,32 +13,41 @@ struct SelectDriveConnectionView: View {
     @ObservedObject var gDriveServerViewModel: GDriveServerViewModel
     
     var body: some View {
-        ContainerView {
-            VStack {
-                selectDriveToolbar
-                VStack(spacing: 24) {
-                    Spacer()
-                    headerView
-                    connectionsButtons
-                    Spacer()
-                    bottomView
-                }
-                .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
-            }
-            .navigationBarHidden(true)
-        }.onAppear {
+        
+        ContainerViewWithHeader {
+            navigationBar
+        } content: {
+            contentView
+        }
+        .onAppear {
             gDriveServerViewModel.getSharedDrives()
         }
     }
-    
-    var selectDriveToolbar: some View {
+    ContainerViewWithHeader {
+        navigationBar
+    } content: {
+        contentView
+    }
+
+    var navigationBar: some View {
         NavigationHeaderView(title: LocalizableSettings.gDriveSelectTypeToolbar.localized ,trailingButton: .none)
+    }
+    
+    var contentView: some View {
+        VStack(spacing: 24) {
+            Spacer()
+            headerView
+            connectionsButtons
+            Spacer()
+            bottomView
+        }
+        .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
     }
     
     var headerView: some View {
         ServerConnectionHeaderView(
             title: LocalizableSettings.gDriveSelectTypeTitle.localized,
-            subtitle: LocalizableSettings.gDriveSelectTypeDesc.localized, 
+            subtitle: LocalizableSettings.gDriveSelectTypeDesc.localized,
             imageIconName: "gdrive.icon"
         )
     }
@@ -62,8 +71,7 @@ struct SelectDriveConnectionView: View {
             moreInfoText
         }
     }
-    
-    
+
     var moreInfoText: some View {
         Link(destination: URL(string: TellaUrls.gDriveURL)!) {
             Text(LocalizableSettings.gDriveSelectTypeMoreInfo.localized)
@@ -92,7 +100,6 @@ struct SelectDriveConnectionView: View {
                 break
             }
         })
-
     }
 }
 

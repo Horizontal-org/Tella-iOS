@@ -14,20 +14,25 @@ struct SelectSharedDriveView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
-        ContainerView {
-            VStack(alignment: .leading){
-                selectSharedDriveHeader
-                sharedDriveContent
-            }
-            .navigationBarHidden(true)
-
+        
+        ContainerViewWithHeader {
+            navigationBar
+        } content: {
+            contentView
         }
+        
         .onAppear {
             gDriveServerViewModel.getSharedDrives()
         }
     }
     
-    var sharedDriveContent: some View {
+    var navigationBar: some View {
+        NavigationHeaderView(title: LocalizableSettings.gDriveSelectSharedDriveToolbar.localized,
+                             backButtonAction:{ backButtonAction() },
+                             trailingButton: .save)
+    }
+    
+    var contentView: some View {
         VStack(alignment: .leading) {
             switch gDriveServerViewModel.sharedDriveState {
             case .loading:
@@ -55,11 +60,6 @@ struct SelectSharedDriveView: View {
     }
     
     
-    var selectSharedDriveHeader: some View {
-        NavigationHeaderView(title: LocalizableSettings.gDriveSelectSharedDriveToolbar.localized,
-                             backButtonAction:{ backButtonAction() },
-                             trailingButton: .save)
-    }
     
     func backButtonAction() {
         guard let selectedDrive = gDriveServerViewModel.selectedDrive else {

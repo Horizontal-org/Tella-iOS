@@ -15,32 +15,39 @@ struct EntitySelectorView: View {
     @State private var searchText: String = ""
     
     var body: some View {
-        ContainerView {
-            VStack {
-                NavigationHeaderView(title: prompt.question,
-                                     trailingButtonAction: {presentationMode.wrappedValue.dismiss()},
-                                     trailingButton: prompt.value.isEmpty ? .none : .validate)
-                
-                SearchBarView(searchText: $searchText, placeholderText: LocalizableUwazi.uwaziRelationshipSearchTitle.localized)
-                Text(LocalizableUwazi.uwaziRelationshipListExpl.localized)
-                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
-                    .foregroundColor(Color.white.opacity(0.87))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding()
-                ScrollView {
-                    ForEach(filteredEntities()) {entity in
-                        entityListOptionsView(entity: entity,
-                                              isSelected: isSelected(entity: entity), 
-                                              value: $prompt.value
-                        )
-                    }
-                }
-                Spacer()
-            }
+        ContainerViewWithHeader {
+            headerView
+        } content: {
+            contentView
         }
-        .navigationBarHidden(true)
     }
-
+    
+    var headerView: some View {
+        NavigationHeaderView(title: prompt.question,
+                             trailingButtonAction: {presentationMode.wrappedValue.dismiss()},
+                             trailingButton: prompt.value.isEmpty ? .none : .validate)
+    }
+    
+    var contentView: some View {
+        VStack {
+            SearchBarView(searchText: $searchText, placeholderText: LocalizableUwazi.uwaziRelationshipSearchTitle.localized)
+            Text(LocalizableUwazi.uwaziRelationshipListExpl.localized)
+                .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                .foregroundColor(Color.white.opacity(0.87))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding()
+            ScrollView {
+                ForEach(filteredEntities()) {entity in
+                    entityListOptionsView(entity: entity,
+                                          isSelected: isSelected(entity: entity),
+                                          value: $prompt.value
+                    )
+                }
+            }
+            Spacer()
+        }
+    }
+    
     func isSelected(entity: SelectValues) -> Bool {
         if prompt.value.contains(where: { $0 == entity.id}) { return true }
         return false
@@ -52,11 +59,11 @@ struct EntitySelectorView: View {
 }
 
 struct entityListOptionsView: View {
-   
+    
     var entity: SelectValues
     var isSelected: Bool
     @Binding var value: [String]
-
+    
     var body: some View {
         VStack {
             Button(action: {
@@ -71,7 +78,7 @@ struct entityListOptionsView: View {
         }
         .background(isSelected ? Color.white.opacity(0.08) : Styles.Colors.backgroundMain)
     }
-
+    
     var entityOptionView: some View {
         HStack(spacing: 15) {
             if isSelected {
