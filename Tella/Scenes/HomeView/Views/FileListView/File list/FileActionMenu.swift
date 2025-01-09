@@ -13,27 +13,12 @@ struct FileActionMenu: View {
     @State var isPresented = true
     
     var body: some View {
-        fileDocumentExporter
         if fileListViewModel.showingMoveFileView {
             moveFilesView
         }
-        ShareFileView()
         showFileInfoLink
     }
-    
-    var fileDocumentExporter: some View {
-        ZStack {
-            
-        }
-        .sheet(isPresented: $fileListViewModel.showingDocumentPicker, onDismiss: {
-            appModel.vaultManager.clearTmpDirectory()
-        }, content: {
-            DocumentPickerView(documentPickerType: .forExport,
-                               URLs: appModel.vaultManager.loadVaultFilesToURL(files: fileListViewModel.selectedFiles)  ) { _ in
-            }
-        })
-    }
-    
+
     @ViewBuilder
     private var showFileInfoLink : some View{
         if let currentSelectedVaultFile = fileListViewModel.currentSelectedVaultFile {

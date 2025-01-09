@@ -10,7 +10,7 @@ struct SelectingFilesHeaderView: View {
     
     var body: some View {
         if  fileListViewModel.shouldShowSelectingFilesHeaderView  {
-           
+            
             HStack{
                 
                 closeButton
@@ -62,13 +62,21 @@ struct SelectingFilesHeaderView: View {
         if fileListViewModel.shouldActivateShare {
             
             Button {
-                fileListViewModel.showingShareFileView = true
+                showActivityViewController()
             } label: {
                 Image("share-icon")
             }
             .frame(width: 24, height: 24)
         }
     }
+    
+    func showActivityViewController() {
+        self.present(style: .pageSheet) {
+            ActivityViewController(fileData: fileListViewModel.getDataToShare())
+                .edgesIgnoringSafeArea(.all)
+        }
+    }
+
 }
 
 struct SelectingFilesHeaderView_Previews: PreviewProvider {
