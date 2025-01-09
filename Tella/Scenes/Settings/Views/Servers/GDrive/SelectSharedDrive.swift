@@ -56,9 +56,9 @@ struct SelectSharedDriveView: View {
     
     
     var selectSharedDriveHeader: some View {
-        NavigationHeaderView(backButtonAction:{ backButtonAction() },
-                             title: LocalizableSettings.gDriveSelectSharedDriveToolbar.localized,
-                             type: .save)
+        NavigationHeaderView(title: LocalizableSettings.gDriveSelectSharedDriveToolbar.localized,
+                             backButtonAction:{ backButtonAction() },
+                             trailingButton: .save)
     }
     
     func backButtonAction() {

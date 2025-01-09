@@ -17,10 +17,9 @@ struct EntitySelectorView: View {
     var body: some View {
         ContainerView {
             VStack {
-                NavigationHeaderView(rightButtonAction: {presentationMode.wrappedValue.dismiss()},
-                                     title: prompt.question,
-                                     type: prompt.value.isEmpty ? .none : .validate
-                )
+                NavigationHeaderView(title: prompt.question,
+                                     trailingButtonAction: {presentationMode.wrappedValue.dismiss()},
+                                     trailingButton: prompt.value.isEmpty ? .none : .validate)
                 
                 SearchBarView(searchText: $searchText, placeholderText: LocalizableUwazi.uwaziRelationshipSearchTitle.localized)
                 Text(LocalizableUwazi.uwaziRelationshipListExpl.localized)

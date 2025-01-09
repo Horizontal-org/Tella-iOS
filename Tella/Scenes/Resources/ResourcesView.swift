@@ -16,61 +16,38 @@ struct ResourcesView: View {
     init(mainAppModel: MainAppModel) {
         _resourcesViewModel = StateObject(wrappedValue: ResourcesViewModel(mainAppModel: mainAppModel))
     }
-
+    
     var body: some View {
-        ContainerView {
-            ZStack {
-                VStack {
-                    resourceHeaderView
-                    
-                    VStack {
-                        DownloadedResources()
-                            .environmentObject(resourcesViewModel)
-
-                        AvailableResources()
-                            .environmentObject(resourcesViewModel)
-                    }.padding(.top, 18)
-                    
-                    Spacer()
-                }.padding(.horizontal, 18)
-            }
+        
+        ContainerViewWithHeader {
+            headerView
+        } content: {
+            contentView
         }
-        .navigationBarHidden(true)
     }
     
-    var resourceHeaderView: some View {
-        HStack(spacing: 0) {
-            backButton
-            headerTitleView
+    var contentView: some View {
+        
+        VStack {
+            DownloadedResources()
+                .environmentObject(resourcesViewModel)
+            
+            AvailableResources()
+                .environmentObject(resourcesViewModel)
+            
             Spacer()
-            reloadButton
-        }.frame(height: 56)
+            
+        }.padding(.horizontal, 18)
     }
     
-    private var backButton: some View {
-        Button {
-            backButtonAction()
-        } label: {
-            Image("back")
-                .padding(EdgeInsets(top: 10, leading: 0, bottom: 5, trailing: 12))
-        }
+    var headerView: some View {
+        NavigationHeaderView(title: LocalizableResources.resourcesServerTitle.localized,
+                             backButtonAction: {backAction()},
+                             trailingButtonAction: { resourcesViewModel.getAvailableForDownloadResources() },
+                             trailingButton: .reload)
     }
     
-    private var headerTitleView: some View {
-        Text(LocalizableResources.resourcesServerTitle.localized)
-            .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-            .foregroundColor(Color.white)
-    }
-    
-    private var reloadButton: some View {
-        Button(action: { resourcesViewModel.getAvailableForDownloadResources() }) {
-            Image("arrow.clockwise")
-                .resizable()
-                .frame(width: 24, height: 24)
-        }
-    }
-    
-    private func backButtonAction() {
+    private func backAction() {
         if !resourcesViewModel.availableResources.contains(where: { $0.isLoading }) {
             presentationMode.wrappedValue.dismiss()
         } else {

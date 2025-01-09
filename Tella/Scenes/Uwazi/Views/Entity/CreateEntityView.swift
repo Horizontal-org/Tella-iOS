@@ -18,14 +18,18 @@ struct CreateEntityView: View {
     init(appModel: MainAppModel, templateId: Int? = nil, entityInstanceID:Int? = nil) {
         _entityViewModel = StateObject(wrappedValue: UwaziEntityViewModel(mainAppModel: appModel, templateId:templateId, entityInstanceId: entityInstanceID))
     }
-
+    
     var body: some View {
-        ContainerView {
-            contentView
+        
+        ZStack {
+            ContainerViewWithHeader {
+                headerView
+            } content: {
+                contentView
+            }
             
             photoVideoPickerView
         }
-        .navigationBarHidden(true)
         .overlay(cameraView)
         .overlay(recordView)
         .onReceive(entityViewModel.$shouldHideView, perform: { shouldHideView in
@@ -33,28 +37,24 @@ struct CreateEntityView: View {
                 dismissViews()
             }
         })
-
     }
     
     fileprivate var contentView: some View {
         VStack(alignment: .leading) {
-            createEntityHeaderView
             draftContentView
             Spacer()
             UwaziDividerWidget()
             bottomActionView
         }
     }
-
-    fileprivate var createEntityHeaderView: some View {
-        NavigationHeaderView(
-            backButtonAction: { showSaveEntityConfirmationView() },
-            rightButtonAction: {entityViewModel.saveEntityDraft() },
-            title: entityViewModel.templateName,
-            type: .draft
-        )
+    
+    fileprivate var headerView: some View {
+        NavigationHeaderView(title: entityViewModel.templateName,
+                             backButtonAction: { showSaveEntityConfirmationView() },
+                             trailingButtonAction: {entityViewModel.saveEntityDraft() },
+                             trailingButton: .save)
     }
-
+    
     fileprivate var draftContentView: some View {
         GeometryReader { geometry in
             ScrollView {
@@ -98,10 +98,10 @@ struct CreateEntityView: View {
     var recordView : some View {
         entityViewModel.showingRecordView ?
         RecordView(appModel: entityViewModel.mainAppModel,
-                    sourceView: .addReportFile,
-                    showingRecoredrView: $entityViewModel.showingRecordView,
-                    resultFile: $entityViewModel.resultFile) : nil
-        }
+                   sourceView: .addReportFile,
+                   showingRecoredrView: $entityViewModel.showingRecordView,
+                   resultFile: $entityViewModel.resultFile) : nil
+    }
     
     var photoVideoPickerView : some View {
         PhotoVideoPickerView(showingImagePicker: $entityViewModel.showingImagePicker,
@@ -110,7 +110,7 @@ struct CreateEntityView: View {
                              resultFile: $entityViewModel.resultFile,
                              shouldReloadVaultFiles: .constant(false))
     }
-
+    
     private func showSaveEntityConfirmationView() {
         sheetManager.showBottomSheet(modalHeight: modelHeight) {
             ConfirmBottomSheet(titleText: LocalizableUwazi.uwaziEntityExitSheetTitle.localized,
@@ -129,5 +129,5 @@ struct CreateEntityView: View {
         sheetManager.hide()
         self.popTo(ViewClassType.uwaziView)
     }
- }
+}
 

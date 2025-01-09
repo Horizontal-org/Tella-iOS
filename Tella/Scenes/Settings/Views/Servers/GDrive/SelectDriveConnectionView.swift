@@ -32,7 +32,7 @@ struct SelectDriveConnectionView: View {
     }
     
     var selectDriveToolbar: some View {
-        NavigationHeaderView(title: LocalizableSettings.gDriveSelectTypeToolbar.localized ,type: .none)
+        NavigationHeaderView(title: LocalizableSettings.gDriveSelectTypeToolbar.localized ,trailingButton: .none)
     }
     
     var headerView: some View {

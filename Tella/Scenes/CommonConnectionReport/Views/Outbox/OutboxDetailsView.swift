@@ -10,28 +10,21 @@ struct OutboxDetailsView<T: Server>: View {
     @EnvironmentObject private var sheetManager: SheetManager
     private let delayTimeInSecond = 0.1
     var rootView: AnyClass = ViewClassType.reportMainView
-
+    
     var body: some View {
         
-        ContainerView {
+        ZStack {
             
-            VStack {
-                
-                outboxReportHeaderView
-                
-                ZStack {
-                    
-                    reportDetails
-                    
-                    buttonView
-                }
+            ContainerViewWithHeader {
+                headerView
+            } content: {
+                contentView
             }
             
             if outboxReportVM.isLoading {
                 CircularActivityIndicatory()
             }
         }
-        
         .onReceive(outboxReportVM.$shouldShowSubmittedReportView, perform: { value in
             if value {
                 outboxReportVM.reportsViewModel.getReports()
@@ -52,34 +45,20 @@ struct OutboxDetailsView<T: Server>: View {
                 Toast.displayToast(message: outboxReportVM.toastMessage)
             }
         }
-
-        .navigationBarHidden(true)
     }
-
-    var outboxReportHeaderView: some View {
-        
-        HStack(spacing: 0) {
-            Button {
-                handleBackAction()
-            } label: {
-                Image("back")
-                    .flipsForRightToLeftLayoutDirection(true)
-                    .padding()
-            }
-            
-            Text(LocalizableReport.reportsText.localized)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 14))
-                .foregroundColor(.white)
-            
-            Spacer()
-            
-            Button {
-                showDeleteReportConfirmationView()
-            } label: {
-                Image("report.delete-outbox")
-                    .padding(.all, 22)
-            }
-        }.frame(height: 56)
+    
+    var contentView : some View {
+        ZStack {
+            reportDetails
+            buttonView
+        }
+    }
+    
+    var headerView: some View {
+        NavigationHeaderView(title: LocalizableReport.reportsText.localized,
+                             backButtonAction: {handleBackAction()},
+                             trailingButtonAction: { showDeleteReportConfirmationView() },
+                             trailingButton: .delete)
     }
     
     private var reportDetails :some View {
@@ -109,7 +88,7 @@ struct OutboxDetailsView<T: Server>: View {
                 outboxReportVM.isSubmissionInProgress ? outboxReportVM.pauseSubmission() : outboxReportVM.submitReport()
                 
             }
-            .padding(EdgeInsets(top: 30, leading: 24, bottom: 16, trailing: 24))
+                                      .padding(EdgeInsets(top: 30, leading: 24, bottom: 16, trailing: 24))
         }
     }
     
@@ -204,7 +183,7 @@ struct OutboxDetailsView<T: Server>: View {
                 DropboxSubmittedDetailsView(submittedMainViewModel: vm)
             default:
                 Text("")
-
+                
             }
         }
     }
