@@ -23,11 +23,6 @@ struct SelectDriveConnectionView: View {
             gDriveServerViewModel.getSharedDrives()
         }
     }
-    ContainerViewWithHeader {
-        navigationBar
-    } content: {
-        contentView
-    }
 
     var navigationBar: some View {
         NavigationHeaderView(title: LocalizableSettings.gDriveSelectTypeToolbar.localized ,trailingButton: .none)

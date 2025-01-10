@@ -18,11 +18,11 @@ class CustomCropViewController: Mantis.CropViewController {
         UIApplication.shared.setupApperance(with: .black)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         UIApplication.shared.setupApperance()
     }
-    
+
     private func setUpNavigationItem() {
         let close = UIBarButtonItem(
             image: UIImage.init(named: "close")?.withRenderingMode(.alwaysOriginal),

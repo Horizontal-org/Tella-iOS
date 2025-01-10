@@ -12,30 +12,15 @@ import SwiftUI
 struct EditMediaHeaderView: View {
     @ObservedObject var viewModel: EditMediaViewModel
     @State private var isBottomSheetShown : Bool = false
-
+    
     var body: some View {
-        HStack {
-            Button(action: { self.closeView() }) {
-                Image("file.edit.close")
-            }
-            Text(viewModel.headerTitle)
-                .foregroundColor(.white)
-            
-            Spacer()
-            
-            if viewModel.isDurationHasChanged()  {
-                Button(action: {
-                    viewModel.trim()
-                }) {
-                    ResizableImage("edit.audio.cut")
-                        .frame(width: 24, height: 24)
-                }
-            }
-        }
-        .frame(height: 30)
-        .padding(16)
         
+        NavigationHeaderView(title: viewModel.headerTitle,
+                             backButtonAction: {self.closeView()},
+                             trailingButtonAction: { viewModel.trim() },
+                             trailingButton: viewModel.isDurationHasChanged() ? .editFile : .none)
     }
+    
     private func closeView() {
         viewModel.isPlaying = false
         if viewModel.isDurationHasChanged() {
@@ -49,7 +34,7 @@ struct EditMediaHeaderView: View {
         let content = EditFileCancelBottomSheet( saveAction:  { viewModel.trim() })
         self.showBottomSheetView(content: content, modalHeight: 171, isShown: $isBottomSheetShown)
     }
-
+    
 }
 
- 
+
