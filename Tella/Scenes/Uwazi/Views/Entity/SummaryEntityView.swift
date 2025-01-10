@@ -55,9 +55,7 @@ struct SummaryEntityView: View {
     }
     
     var entityContentView: some View {
-        
-        ScrollView {
-
+        VStack {
             templateData
             
             UwaziDividerWidget()
@@ -70,7 +68,7 @@ struct SummaryEntityView: View {
             entityFilesView
             
             Spacer()
-        }
+        }.scrollOnOverflow()
     }
     
     var templateData: some View {
