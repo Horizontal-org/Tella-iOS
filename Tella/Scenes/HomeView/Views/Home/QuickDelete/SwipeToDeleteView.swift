@@ -78,7 +78,7 @@ struct SwipeToDeleteActionView: View {
 
 struct buttonUI_Previews: PreviewProvider {
     static var previews: some View {
-        SwipeToActionView(completion: nil)
+        SwipeToDeleteActionView(completion: nil)
             .background(Color.blue)
     }
 }
