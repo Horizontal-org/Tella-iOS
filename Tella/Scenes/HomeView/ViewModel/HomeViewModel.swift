@@ -9,8 +9,7 @@ import Combine
 class HomeViewModel: ObservableObject {
     
     var appModel: MainAppModel
-    
-    @Published var showingDocumentPicker = false
+
     @Published var showingAddFileSheet = false
     @Published var serverDataItemArray : [ServerDataItem] = []
     @Published var recentFiles : [VaultFileDB] = []

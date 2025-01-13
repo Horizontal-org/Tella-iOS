@@ -57,7 +57,7 @@ struct MoreFileActionButton: View {
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -6, trailing: -12))
         }.frame(width: 35, height: 35)
     }
-
+    
     private func showFileActionSheet() {
         if let file = file {
             fileListViewModel.updateSingleSelection(for: file)
@@ -79,8 +79,7 @@ struct MoreFileActionButton: View {
             
         case .share:
             hideMenu()
-            fileListViewModel.showingShareFileView = true
-            
+            showActivityViewController()
         case .move:
             self.hideMenu()
             fileListViewModel.showingMoveFileView = true
@@ -126,9 +125,9 @@ struct MoreFileActionButton: View {
     }
     private func showEditVideoView() {
         let viewModel = EditVideoViewModel(file: fileListViewModel.currentSelectedVaultFile,
-                                            rootFile: fileListViewModel.rootFile,
-                                            appModel: fileListViewModel.appModel,
-                                            shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
+                                           rootFile: fileListViewModel.rootFile,
+                                           appModel: fileListViewModel.appModel,
+                                           shouldReloadVaultFiles: $fileListViewModel.shouldReloadVaultFiles)
         DispatchQueue.main.async {
             if fileListViewModel.currentSelectedVaultFile?.mediaCanBeEdited == true {
                 self.present(style: .fullScreen) {
@@ -139,7 +138,7 @@ struct MoreFileActionButton: View {
             }
         }
     }
-
+    
     private func showEditImageView() {
         self.present(style: .fullScreen) {
             EditImageView(viewModel: EditImageViewModel(fileListViewModel: fileListViewModel))
@@ -225,9 +224,24 @@ struct MoreFileActionButton: View {
                                cancelText: LocalizableVault.saveToDeviceCancelSheetAction.localized,
                                actionText: LocalizableVault.saveToDeviceSaveSheetAction.localized.uppercased(),
                                didConfirmAction: {
-                fileListViewModel.showingDocumentPicker = true
+                showDocumentPickerView()
             })
         })
+    }
+    
+    func showDocumentPickerView() {
+        self.present(style: .pageSheet) {
+            DocumentPickerView(documentPickerType: .forExport,
+                               URLs: appModel.vaultManager.loadVaultFilesToURL(files: fileListViewModel.selectedFiles)) { _ in
+            }.edgesIgnoringSafeArea(.all)
+        }
+    }
+    
+    func showActivityViewController() {
+        self.present(style: .pageSheet) {
+            ActivityViewController(fileData: fileListViewModel.getDataToShare())
+                .edgesIgnoringSafeArea(.all)
+        }
     }
 }
 

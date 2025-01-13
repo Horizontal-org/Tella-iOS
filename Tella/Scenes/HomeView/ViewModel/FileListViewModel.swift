@@ -33,10 +33,8 @@ class FileListViewModel: ObservableObject {
     @Published var showFileDetails = false
     @Published var showFileInfoActive = false
     @Published var showingMoveFileView = false
-    @Published var showingShareFileView = false
     @Published var showingCamera = false
     @Published var showingMicrophone = false
-    @Published var showingDocumentPicker = false
     @Published var showingImportDocumentPicker = false
     @Published var showingImagePicker = false
     @Published var vaultFiles : [VaultFileDB] = []
