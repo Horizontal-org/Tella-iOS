@@ -33,6 +33,7 @@ struct FileItemsView: View {
                     FileGridItem(file: file)
                         .frame(minHeight: minHeight)
                 }
+                Spacer().frame(height: 70)
             }.padding(EdgeInsets(top: 0, leading: 6, bottom: 0, trailing: 6))
         }
     }
@@ -44,6 +45,7 @@ struct FileItemsView: View {
                     FileListItem(file: file)
                         .frame(height: 60)
                 }
+                Spacer().frame(height: 70)
             }
         }
     }
