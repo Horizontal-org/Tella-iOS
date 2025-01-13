@@ -5,12 +5,12 @@
 import SwiftUI
 import UIKit
 
-struct SwipeToActionView: View {
+struct SwipeToDeleteActionView: View {
     
     let completion: (() -> ())?
     
     private let height: CGFloat = 50
-    private let maxtTranslationWidth: CGFloat = UIScreen.main.bounds.width - 40 - 50
+    private let maxtTranslationWidth: CGFloat = UIScreen.main.bounds.width - 90
     private let width: CGFloat = UIScreen.main.bounds.width - 40
     
     @State private var offset:CGFloat = 0
@@ -42,16 +42,17 @@ struct SwipeToActionView: View {
                             }
                         })
                         .onEnded({ value in
+                            swipeEndAction()
                             if value.translation.width > 0 {
                                 if (value.translation.width >= maxtTranslationWidth) {
                                     self.offset = maxtTranslationWidth
                                     swipeEndAction()
                                     showQuickDeleteView()
                                 }else {
-                                    self.offset = 0
+                                    swipeEndAction()
                                 }
                             }else {
-                                self.offset = 0
+                                swipeEndAction()
                             }
                         })).animation(.linear)
         }
