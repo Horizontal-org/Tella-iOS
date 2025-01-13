@@ -38,7 +38,7 @@ struct HomeView: View {
                 FileGroupsView(shouldShowFilesTitle: viewModel.showingFilesTitle)
                 
                 if appModel.settings.quickDelete {
-                    SwipeToActionView(completion: {
+                    SwipeToDeleteActionView(completion: {
                         if(appModel.settings.deleteVault) {
                             // removes files and folders
                             viewModel.deleteAllVaultFiles()
