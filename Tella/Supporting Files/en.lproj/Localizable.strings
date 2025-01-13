@@ -36,7 +36,7 @@
 "Vault_EditFile_Exit_SheetTitle" = "Unsaved changes";
 "Vault_EditFile_Exit_SheetExpl" = "Your changes have not been saved. Would you like to save before exiting?";
 "Vault_EditFile_Exit_SheetAction" = "EXIT WITHOUT SAVING";
-"Vault_EditFile_FileSaved_Toast" = "Your changes have been saved.";
+"Vault_EditFile_FileSaved_Toast" = "Your changes have been saved as a copy of the original file.";
 "Vault_EditAudio_Title" = "Edit Audio";
 "Vault_EditAudio_Toast_Message" = "The audio cannot be trimmed because it is shorter than 3 seconds.";
 "Vault_EditVideo_Toast_Message" = "The video cannot be trimmed because it is shorter than 3 seconds.";
