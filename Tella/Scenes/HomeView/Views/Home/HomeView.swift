@@ -20,7 +20,7 @@ struct HomeView: View {
             
             VStack() {
                 
-                ScrollView{
+                VStack {
                     Spacer()
                         .frame( height: !viewModel.serverDataItemArray.isEmpty ? 16 : 0 )
                     ConnectionsView()
@@ -38,7 +38,7 @@ struct HomeView: View {
                         .frame(height: 30)
                     
                     FileGroupsView(shouldShowFilesTitle: viewModel.showingFilesTitle)
-                }
+                }.scrollOnOverflow()
                 
                 Spacer()
                 
