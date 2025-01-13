@@ -54,7 +54,7 @@ struct HomeView: View {
     @ViewBuilder
     var quickDeleteView: some View {
         if appModel.settings.quickDelete {
-            SwipeToActionView(completion: {
+            SwipeToDeleteActionView(completion: {
                 if(appModel.settings.deleteVault) {
                     // removes files and folders
                     viewModel.deleteAllVaultFiles()
