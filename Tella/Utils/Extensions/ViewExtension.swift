@@ -101,8 +101,8 @@ extension View {
         UIApplication.shared.popTo(classType)
     }
     
-    func classTypeExist(_ classType: AnyClass) -> Bool {
-        UIApplication.shared.classTypeExist(classType)
+    func navigationHasClassType(_ classType: AnyClass) -> Bool {
+        UIApplication.shared.navigationHasClassType(classType)
     }
     
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {

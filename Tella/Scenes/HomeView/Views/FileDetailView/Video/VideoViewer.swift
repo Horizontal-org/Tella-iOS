@@ -80,7 +80,7 @@ struct BackButton: View {
     
     var body: some View {
         Button {
-            if classTypeExist(ViewClassType.fileListView) {
+            if navigationHasClassType(ViewClassType.fileListView) {
                 self.popTo(ViewClassType.fileListView)
             } else {
                 self.popToRoot()

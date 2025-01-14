@@ -53,7 +53,7 @@ extension UIApplication {
         })
     }
     
-    func classTypeExist(_ classType: AnyClass) -> Bool {
+    func navigationHasClassType(_ classType: AnyClass) -> Bool {
         
         let window = keyWindow
         
