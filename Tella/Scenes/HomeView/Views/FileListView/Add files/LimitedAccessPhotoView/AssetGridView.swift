@@ -11,7 +11,7 @@ import Photos
 
 struct AssetGridView: View {
     
-    @StateObject var assetItem: AssetItem
+    @ObservedObject var assetItem: AssetItem
     var didSelect: () -> Void
     
     var body: some View {
