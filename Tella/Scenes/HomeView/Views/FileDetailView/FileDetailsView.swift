@@ -7,14 +7,14 @@ import QuickLook
 
 struct FileDetailsView: View {
     
-    @EnvironmentObject var fileListViewModel: FileListViewModel
-    @EnvironmentObject var appModel: MainAppModel
+    @ObservedObject var fileListViewModel: FileListViewModel
     
     @StateObject var viewModel : FileDetailsViewModel
     @State private var isEditFilePresented = false
     
-    init(  appModel: MainAppModel, currentFile: VaultFileDB?) {
+    init(  appModel: MainAppModel, currentFile: VaultFileDB?, fileListViewModel: FileListViewModel) {
         _viewModel = StateObject(wrappedValue: FileDetailsViewModel(appModel: appModel, currentFile: currentFile))
+        self.fileListViewModel = fileListViewModel
     }
     
     var body: some View {
@@ -73,7 +73,9 @@ struct FileDetailsView: View {
     func detailsView() -> some View {
         
         if viewModel.currentFile?.tellaFileType == .video {
-            VideoViewer(appModel: appModel, currentFile: viewModel.currentFile, playList: self.fileListViewModel.getVideoFiles(),
+            VideoViewer(appModel: fileListViewModel.appModel,
+                        currentFile: viewModel.currentFile,
+                        playList: self.fileListViewModel.getVideoFiles(),
                         rootFile: fileListViewModel.rootFile)
         } else {
             if viewModel.documentIsReady {

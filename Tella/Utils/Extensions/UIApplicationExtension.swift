@@ -53,7 +53,19 @@ extension UIApplication {
         })
     }
     
-    
+    func navigationHasClassType(_ classType: AnyClass) -> Bool {
+        
+        let window = keyWindow
+        
+        let nvc = window?.rootViewController?.children.last as? UINavigationController
+        
+        if let matchingVC = nvc?.viewControllers.first(where: { $0.isKind(of: classType) }) {
+            return true
+        }
+
+        return false
+    }
+
     class func getTopViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
         
         if let nav = base as? UINavigationController {

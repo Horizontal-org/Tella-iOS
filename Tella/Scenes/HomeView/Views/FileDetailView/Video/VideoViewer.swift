@@ -38,7 +38,7 @@ struct VideoViewer: View {
         .ignoresSafeArea()
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: backButton)
-
+        
     }
     
     func fileActionTrailingView() -> some ToolbarContent {
@@ -79,15 +79,18 @@ struct BackButton: View {
     var action : (() -> ())
     
     var body: some View {
-             Button {
+        Button {
+            if navigationHasClassType(ViewClassType.fileListView) {
+                self.popTo(ViewClassType.fileListView)
+            } else {
                 self.popToRoot()
-                 action()
-            } label: {
-                Image("back")
-                    .flipsForRightToLeftLayoutDirection(true)
-                    .padding(EdgeInsets(top: -3, leading: -8, bottom: 0, trailing: 12))
             }
- 
+            
+            action()
+        } label: {
+            Image("back")
+                .flipsForRightToLeftLayoutDirection(true)
+                .padding(EdgeInsets(top: -3, leading: -8, bottom: 0, trailing: 12))
+        }
     }
 }
-
