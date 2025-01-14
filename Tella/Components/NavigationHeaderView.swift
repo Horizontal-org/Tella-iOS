@@ -11,16 +11,20 @@ import SwiftUI
 struct NavigationHeaderView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-   
-    var title: String = ""
     
+    var title: String = ""
+    var backButtonType: BackButtonType = .back
     var backButtonAction : (() -> Void)?
+    
+    var middleButtonType: MiddleButtonType = .none
     var middleButtonAction: (() -> Void)?
+    
+    var isMiddleButtonEnabled: Bool = true
+    
+    var trailingButton: TrailingButtonType = .none
     var trailingButtonAction: (() -> Void)?
     
-    var backButtonType: BackButtonType = .back
-    var middleButton: TrailingButtonType = .none
-    var trailingButton: TrailingButtonType = .none
+    var trailingButtonView: (AnyView)? = nil
     
     var isTrailingButtonEnabled: Bool = true
     
@@ -29,11 +33,14 @@ struct NavigationHeaderView: View {
             backButton
             headerTitleView
             Spacer()
-            if(!trailingButton.imageName.isEmpty) {
-                rightButton
+            if middleButtonType != .none {
+                middleButton
             }
+            trailingView
+            
         }.frame(height: 56)
-            .padding(.horizontal, 18)
+            .padding(.horizontal, 16)
+            .background(Color.green)
     }
     
     private var backButton: some View {
@@ -56,14 +63,39 @@ struct NavigationHeaderView: View {
             .foregroundColor(Color.white)
     }
     
+    private var trailingView : some View {
+        switch trailingButton {
+            
+        case .custom:
+            trailingButtonView!
+        case .none:
+            AnyView( EmptyView())
+            
+        default:
+            AnyView(rightButton)
+        }
+        
+    }
+    
+    private var middleButton: some View {
+        Button(action: { middleButtonAction?() }) {
+            Image(middleButtonType.imageName)
+                .resizable()
+                .frame(width: 24, height: 24)
+                .opacity(isMiddleButtonEnabled ? 1 : 0.4)
+                .padding()
+        }.disabled(!isMiddleButtonEnabled)
+    }
+    
+    
     private var rightButton: some View {
         Button(action: { trailingButtonAction?() }) {
             Image(trailingButton.imageName)
                 .resizable()
                 .frame(width: 24, height: 24)
                 .opacity(isTrailingButtonEnabled ? 1 : 0.4)
-        }
-        .disabled(!isTrailingButtonEnabled)
+                .padding()
+        }.disabled(!isTrailingButtonEnabled)
     }
 }
 
@@ -77,9 +109,12 @@ struct NavigationHeaderView: View {
 enum TrailingButtonType  {
     
     case save
-     case validate
+    case validate
     case reload
     case delete
+    case editFile
+    case more
+    case custom
     case none
     
     var imageName: String {
@@ -88,20 +123,22 @@ enum TrailingButtonType  {
         case .validate: return "report.select-files"
         case .reload: return "arrow.clockwise"
         case .delete: return "report.delete-outbox"
-        case .none : return ""
+        case .editFile: return "edit.audio.cut"
+        case .more: return "files.more"
+        case .custom, .none : return ""
         }
     }
 }
 
 enum MiddleButtonType  {
     
-    case fileEdit
+    case editFile
     case share
     case none
     
     var imageName: String {
         switch self {
-        case .fileEdit: return "file.edit"
+        case .editFile: return "file.edit"
         case .share: return "report.select-files"
         case .none: return ""
         }

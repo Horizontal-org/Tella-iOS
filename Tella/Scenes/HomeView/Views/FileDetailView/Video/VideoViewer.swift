@@ -8,12 +8,17 @@ import AVFoundation
 struct VideoViewer: View {
     
     @StateObject private var playerVM : PlayerViewModel
-    
-    init(appModel: MainAppModel, currentFile : VaultFileDB?, playList: [VaultFileDB?], rootFile: VaultFileDB?) {
+    @ObservedObject  var fileListViewModel: FileListViewModel
+    init(appModel: MainAppModel,
+         currentFile : VaultFileDB?,
+         playList: [VaultFileDB?],
+         rootFile: VaultFileDB?,
+         fileListViewModel: FileListViewModel) {
         _playerVM = StateObject(wrappedValue: PlayerViewModel(appModel: appModel,
                                                               currentFile: currentFile,
                                                               playList: playList,
                                                               rootFile: rootFile))
+        self.fileListViewModel = fileListViewModel
     }
     
     var body: some View {
@@ -49,7 +54,9 @@ struct VideoViewer: View {
                 } label: {
                     Image("file.edit")
                 }
-                MoreFileActionButton(file: playerVM.currentFile, moreButtonType: .navigationBar)
+                MoreFileActionButton(fileListViewModel: fileListViewModel,
+                                     file: playerVM.currentFile,
+                                     moreButtonType: .navigationBar)
             }
         }
     }

@@ -92,7 +92,9 @@ struct FileListItem: View {
                     }
                     .frame(width: 40, height: 40)
                 } else {
-                    MoreFileActionButton(file: file, moreButtonType: .list)
+                    MoreFileActionButton(fileListViewModel: fileListViewModel,
+                                         file: file,
+                                         moreButtonType: .list)
                 }
             }
         }

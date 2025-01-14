@@ -51,8 +51,8 @@ struct CreateEntityView: View {
     fileprivate var headerView: some View {
         NavigationHeaderView(title: entityViewModel.templateName,
                              backButtonAction: { showSaveEntityConfirmationView() },
-                             trailingButtonAction: {entityViewModel.saveEntityDraft() },
-                             trailingButton: .save)
+                             trailingButton: .save,
+                             trailingButtonAction: {entityViewModel.saveEntityDraft() })
     }
     
     fileprivate var draftContentView: some View {

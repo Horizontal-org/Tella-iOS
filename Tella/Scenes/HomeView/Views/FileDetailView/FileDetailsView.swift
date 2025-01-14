@@ -19,14 +19,19 @@ struct FileDetailsView: View {
     
     var body: some View {
         ZStack {
-            detailsView()
+            
+            ContainerViewWithHeader {
+                toolbar()
+            } content: {
+                detailsView()
+            }
+            
             FileActionMenu()
-            toolbar()
+            
             if !viewModel.documentIsReady && viewModel.currentFile?.tellaFileType != .video {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: .white))
             }
-            
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Styles.Colors.backgroundMain)
@@ -96,26 +101,15 @@ struct FileDetailsView: View {
         }
     }
     
-    func fileActionTrailingView() -> some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            HStack {
-                editView()
-                MoreFileActionButton(file: self.fileListViewModel.selectedFiles.first, moreButtonType: .navigationBar)
-            }
-        }
+    func showEditView() {
+        isEditFilePresented = true
+        self.editFileAction()
     }
     
-    @ViewBuilder
-    func editView() -> some View {
-        if viewModel.shouldAddEditView {
-            Button {
-                //open edit view
-                isEditFilePresented = true
-                self.editFileAction()
-            } label: {
-                Image("file.edit")
-            }
-        }
+    var moreFileActionButton : AnyView {
+        AnyView(MoreFileActionButton(fileListViewModel: fileListViewModel,
+                                     file: self.fileListViewModel.selectedFiles.first,
+                                     moreButtonType: .navigationBar))
     }
     
     @ViewBuilder
@@ -124,9 +118,13 @@ struct FileDetailsView: View {
             
             ZStack{}
                 .if(file.tellaFileType != .video, transform: { view in
-                    view.toolbar {
-                        LeadingTitleToolbar(title: file.name)
-                        fileActionTrailingView()
+                    VStack {
+                        NavigationHeaderView(title: file.name,
+                                             middleButtonType: .editFile,
+                                             middleButtonAction: {showEditView()},
+                                             trailingButton: .custom,
+                                             trailingButtonView:moreFileActionButton )
+                        view
                     }
                 })
         }

@@ -29,7 +29,8 @@ struct SelectingFilesHeaderView: View {
                     Spacer()
                         .frame(width:30)
                     
-                    MoreFileActionButton(moreButtonType: .navigationBar)
+                    MoreFileActionButton(fileListViewModel: fileListViewModel,
+                                         moreButtonType: .navigationBar)
                 }
                 
             }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 23))

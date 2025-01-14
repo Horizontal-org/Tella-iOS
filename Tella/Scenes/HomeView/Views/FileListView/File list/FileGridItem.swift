@@ -70,7 +70,8 @@ struct FileGridItem: View {
                 Spacer()
                 if !fileListViewModel.showingMoveFileView {
                     if !fileListViewModel.selectingFiles && !fileListViewModel.shouldHideViewsForGallery {
-                        MoreFileActionButton(file: file, moreButtonType: .grid)
+                        MoreFileActionButton(fileListViewModel: fileListViewModel,
+                                             file: file, moreButtonType: .grid)
                     }
                 }
             }

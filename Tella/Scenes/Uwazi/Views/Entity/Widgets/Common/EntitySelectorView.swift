@@ -24,8 +24,8 @@ struct EntitySelectorView: View {
     
     var headerView: some View {
         NavigationHeaderView(title: prompt.question,
-                             trailingButtonAction: {presentationMode.wrappedValue.dismiss()},
-                             trailingButton: prompt.value.isEmpty ? .none : .validate)
+                             trailingButton: prompt.value.isEmpty ? .none : .validate,
+                             trailingButtonAction: {presentationMode.wrappedValue.dismiss()})
     }
     
     var contentView: some View {
