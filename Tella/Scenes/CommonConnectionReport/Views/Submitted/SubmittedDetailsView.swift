@@ -41,7 +41,7 @@ struct SubmittedDetailsView: View {
     var navigationBarView: some View {
         NavigationHeaderView(title: LocalizableReport.reportsText.localized,
                              backButtonAction: {dismissViews()},
-                             trailingButton: .save,
+                             trailingButton: .delete,
                              trailingButtonAction: { showDeleteReportConfirmationView() })
     }
     

@@ -45,6 +45,10 @@ class ReportsMainViewModel: ObservableObject {
     var connectionType : ServerConnectionType
     var title : String
     
+    var shouldShowClearButton: Bool {
+        self.selectedPage == .submitted && self.submittedReportsViewModel.count > 0
+    }
+
     init(mainAppModel : MainAppModel, connectionType : ServerConnectionType, title:String) {
         
         self.mainAppModel = mainAppModel

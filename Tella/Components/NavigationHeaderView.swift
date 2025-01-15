@@ -13,6 +13,9 @@ struct NavigationHeaderView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var title: String = ""
+    
+    var navigationBarType: NavigationBarType = .inline
+    
     var backButtonType: BackButtonType = .back
     var backButtonAction : (() -> Void)?
     
@@ -29,17 +32,26 @@ struct NavigationHeaderView: View {
     var isTrailingButtonEnabled: Bool = true
     
     var body: some View {
-        HStack(spacing: 0) {
-            backButton
-            headerTitleView
-            Spacer()
-            if middleButtonType != .none {
-                middleButton
-            }
-            trailingView
+        VStack(alignment: .leading) {
+            HStack(spacing: 0) {
+                backButton
+                if navigationBarType == .inline {
+                    inlineTitleView
+                }
+                Spacer()
+                if middleButtonType != .none {
+                    middleButton
+                }
+                trailingView
+                
+            }.frame(height: 57)
+                .padding(.horizontal, 16)
             
-        }.frame(height: 56)
-            .padding(.horizontal, 16)
+            if navigationBarType == .large {
+                largeTitleView
+                    .padding(.horizontal, 16)
+            }
+        }
     }
     
     private var backButton: some View {
@@ -56,10 +68,17 @@ struct NavigationHeaderView: View {
         }
     }
     
-    private var headerTitleView: some View {
+    private var inlineTitleView: some View {
         Text(title)
             .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
             .foregroundColor(Color.white)
+    }
+    
+    private var largeTitleView: some View {
+        Text(title)
+            .font(.custom(Styles.Fonts.boldFontName, size: 36))
+            .foregroundColor(Color.white)
+            .frame(height: 50)
     }
     
     private var trailingView : some View {
@@ -85,9 +104,19 @@ struct NavigationHeaderView: View {
     
     private var rightButton: some View {
         Button(action: { trailingButtonAction?() }) {
-            Image(trailingButton.imageName)
-                .opacity(isTrailingButtonEnabled ? 1 : 0.4)
-                .padding()
+            
+            switch trailingButton {
+            case .text(let text):
+                Text(text)
+                    .font(.custom(Styles.Fonts.regularFontName, size: 14))
+                    .foregroundColor(Color.white)
+                    .frame(height:25,alignment:.trailing)
+                
+            default:
+                Image(trailingButton.imageName)
+                    .opacity(isTrailingButtonEnabled ? 1 : 0.4)
+                    .padding()
+            }
         }.disabled(!isTrailingButtonEnabled)
     }
 }
@@ -96,10 +125,7 @@ struct NavigationHeaderView: View {
 //    NavigationHeaderView(backButtonAction: {}, rightButtonAction: {}, trailingButton: .save)
 //}
 
-
-
-
-enum TrailingButtonType  {
+enum TrailingButtonType {
     
     case save
     case validate
@@ -107,6 +133,7 @@ enum TrailingButtonType  {
     case delete
     case editFile
     case more
+    case text(text:String)
     case custom
     case none
     
@@ -118,7 +145,7 @@ enum TrailingButtonType  {
         case .delete: return "delete-icon-bin"
         case .editFile: return "edit.audio.cut"
         case .more: return "files.more"
-        case .custom, .none : return ""
+        case .text, .custom, .none : return ""
         }
     }
 }
@@ -149,4 +176,10 @@ enum BackButtonType {
         case .back: return "back"
         }
     }
+}
+
+
+enum NavigationBarType {
+    case inline
+    case large
 }
