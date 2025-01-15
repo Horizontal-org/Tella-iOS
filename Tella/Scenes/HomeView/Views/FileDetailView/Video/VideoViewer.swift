@@ -23,48 +23,49 @@ struct VideoViewer: View {
     
     var body: some View {
         ZStack {
-            VStack {
-                CustomVideoPlayer(player: playerVM.player)
-                    .overlay(CustomVideoControlsView(playerVM: playerVM)
-                             ,alignment: .bottom)
-                
+            
+            ContainerViewWithHeader {
+                navigationBarView
+            } content: {
+                contentView
             }
+            
             if !playerVM.videoIsReady {
                 ProgressView()
             }
         }
-        .toolbar {
-            LeadingTitleToolbar(title: playerVM.currentFile?.name ?? "")
-            fileActionTrailingView()
-        }
         .onDisappear {
             playerVM.player.pause()
         }
-        .ignoresSafeArea()
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: backButton)
-        
     }
     
-    func fileActionTrailingView() -> some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            HStack {
-                Button {
-                    self.showEditVideoView()
-                } label: {
-                    Image("file.edit")
-                }
-                MoreFileActionButton(fileListViewModel: fileListViewModel,
+    var navigationBarView : some View {
+        NavigationHeaderView(title: playerVM.currentFile?.name ?? "",
+                             backButtonAction: { backAction() },
+                             middleButtonType: .editFile,
+                             middleButtonAction: {showEditVideoView()},
+                             trailingButton: .custom,
+                             trailingButtonView:moreFileActionButton)
+    }
+    
+    var moreFileActionButton : AnyView {
+        AnyView(MoreFileActionButton(fileListViewModel: fileListViewModel,
                                      file: playerVM.currentFile,
-                                     moreButtonType: .navigationBar)
-            }
-        }
+                                     moreButtonType: .navigationBar))
     }
     
-    var backButton : some View {
-        BackButton {
-            playerVM.deleteTmpFile()
-        }
+    var contentView: some View {
+        VStack {
+            CustomVideoPlayer(player: playerVM.player)
+                .overlay(CustomVideoControlsView(playerVM: playerVM)
+                         ,alignment: .bottom)
+            Spacer()
+        } 
+    }
+    
+    func backAction() {
+        self.popToRoot()
+        playerVM.deleteTmpFile()
     }
     
     private func showEditVideoView() {
@@ -77,27 +78,6 @@ struct VideoViewer: View {
             }else {
                 Toast.displayToast(message: LocalizableVault.editVideoToastMsg.localized)
             }
-        }
-    }
-}
-
-struct BackButton: View {
-    
-    var action : (() -> ())
-    
-    var body: some View {
-        Button {
-            if navigationHasClassType(ViewClassType.fileListView) {
-                self.popTo(ViewClassType.fileListView)
-            } else {
-                self.popToRoot()
-            }
-            
-            action()
-        } label: {
-            Image("back")
-                .flipsForRightToLeftLayoutDirection(true)
-                .padding(EdgeInsets(top: -3, leading: -8, bottom: 0, trailing: 12))
         }
     }
 }

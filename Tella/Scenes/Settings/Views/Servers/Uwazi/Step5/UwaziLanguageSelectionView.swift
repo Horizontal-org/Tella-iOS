@@ -13,30 +13,40 @@ struct UwaziLanguageSelectionView: View {
     @EnvironmentObject var uwaziServerViewModel: UwaziServerViewModel
     @EnvironmentObject var serversViewModel: ServersViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-
+    
     var body: some View {
-        ContainerView {
-            ZStack {
-                VStack {
-                    headerView()
-                    listView()
-                    Spacer()
-                    Rectangle().frame(height: 0.4).foregroundColor(.white)
-                    bottomView()
-                }
-                if uwaziServerViewModel.isLoading {
-                    CircularActivityIndicatory()
-                }
+        ZStack {
+            
+            ContainerViewWithHeader {
+                navigationBarView
+            } content: {
+                contentView
+            }
+            
+            if uwaziServerViewModel.isLoading {
+                CircularActivityIndicatory()
             }
         }
         .onAppear(perform: {
             self.uwaziServerViewModel.languages.removeAll()
             self.uwaziServerViewModel.getLanguage()
         })
-        .toolbar {
-            LeadingTitleToolbar(title: LocalizableSettings.UwaziLanguageTitle.localized)
+    }
+    
+    var navigationBarView: some View {
+        NavigationHeaderView(title: LocalizableSettings.UwaziLanguageTitle.localized)
+    }
+
+    var contentView: some View {
+        VStack {
+            headerView()
+            listView()
+            Spacer()
+            Rectangle().frame(height: 0.4).foregroundColor(.white)
+            bottomView()
         }
     }
+
     fileprivate func bottomView() -> some View {
         let isDisable = uwaziServerViewModel.selectedLanguage == nil
         return HStack{
@@ -46,13 +56,13 @@ struct UwaziLanguageSelectionView: View {
             }, saveAction: {
                 uwaziServerViewModel.handleServerAction()
                 navigateTo(destination: UwaziSuccessView())
-
+                
             }, saveActionTitle: LocalizableSettings.UwaziLanguageOk.localized, isDisable: isDisable)
         }
         .padding(.trailing, 20)
         .padding(.top, 12)
     }
-
+    
     fileprivate func headerView() -> some View {
         return VStack {
             Spacer()
@@ -66,7 +76,7 @@ struct UwaziLanguageSelectionView: View {
                 .padding(.leading, 20)
         }
     }
-
+    
     fileprivate func listView() -> some View {
         return List {
             ForEach(uwaziServerViewModel.languages, id:\.locale) { item in
@@ -87,23 +97,23 @@ struct UwaziLanguageSelectionView: View {
     }
 }
 struct UwaziLanguageItemView : View {
-
+    
     var languageItem : UwaziLanguageRow?
     @Binding var selectedLanguage: UwaziLanguageRow?
-
+    
     @Binding var isPresented : Bool
     @EnvironmentObject private var appModel: MainAppModel
     var delayTime = 0.1
-
+    
     var body: some View {
-
+        
         ZStack {
             HStack {
                 VStack(alignment: .leading) {
                     Text(languageItem?.languageName ?? "")
                         .font(.custom(Styles.Fonts.regularFontName, size: 15))
                         .foregroundColor(.white)
-
+                    
                     Text(languageItem?.languageName ?? "")
                         .font(.custom(Styles.Fonts.regularFontName, size: 12))
                         .foregroundColor(.white)
@@ -112,7 +122,7 @@ struct UwaziLanguageItemView : View {
                 if isCurrentLanguage(languageItem: languageItem) {
                     Image("settings.done")
                 }
-
+                
             }
             Button("") {
                 selectedLanguage = languageItem
@@ -120,13 +130,13 @@ struct UwaziLanguageItemView : View {
                     isPresented = false
                 }
             }
-
+            
         }.padding(EdgeInsets(top: 7, leading: 20, bottom: 11, trailing: 16))
             .frame(height: 70)
             .listRowBackground(isCurrentLanguage(languageItem: languageItem) ? Color.white.opacity(0.15) : Color.clear )
             .listRowInsets(EdgeInsets())
     }
-
+    
     func isCurrentLanguage(languageItem: UwaziLanguageRow?) -> Bool {
         guard let languageItem = languageItem else { return false }
         if let selectedLanguage = selectedLanguage {

@@ -276,6 +276,7 @@ If you want to take a picture or a video, proceed in the following way:\
 
 
 "Setting_Server_URL" = "Enter the server URL";
+"Setting_Server_AdvancedSettings" = "Advanced settings";
 "Setting_Server_Uwazi_Access_Title" = "Log in if you have a username and password, or access the server as a public instance.";
 "Setting_Server_Uwazi_Login" = "LOG IN";
 "Setting_Server_Uwazi_Access_Public" = "ACCESS AS PUBLIC INSTANCE";

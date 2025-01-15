@@ -40,7 +40,6 @@ struct NavigationHeaderView: View {
             
         }.frame(height: 56)
             .padding(.horizontal, 16)
-            .background(Color.green)
     }
     
     private var backButton: some View {
@@ -79,20 +78,17 @@ struct NavigationHeaderView: View {
     private var middleButton: some View {
         Button(action: { middleButtonAction?() }) {
             Image(middleButtonType.imageName)
-                .resizable()
-                .frame(width: 24, height: 24)
                 .opacity(isMiddleButtonEnabled ? 1 : 0.4)
                 .padding()
         }.disabled(!isMiddleButtonEnabled)
     }
-
+    
     private var rightButton: some View {
         Button(action: { trailingButtonAction?() }) {
             Image(trailingButton.imageName)
                 .opacity(isTrailingButtonEnabled ? 1 : 0.4)
                 .padding()
         }.disabled(!isTrailingButtonEnabled)
-            .background(Color.red)
     }
 }
 

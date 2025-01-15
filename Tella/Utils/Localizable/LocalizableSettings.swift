@@ -105,6 +105,7 @@ enum LocalizableSettings: String, LocalizableDelegate {
     case settServerDeleteSheetAction = "Settings_SettServer_Delete_SheetAction"
     case settServerCancelSheetAction = "Settings_SettServer_Cancel_SheetAction"
     case serverURL = "Setting_Server_URL"
+    case advancedSettings = "Setting_Server_AdvancedSettings"
     case serverUsername = "Setting_Server_Uwazi_Username"
     case serverPassword = "Setting_Server_Password"
 

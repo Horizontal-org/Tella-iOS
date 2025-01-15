@@ -7,26 +7,34 @@ import SwiftUI
 struct AboutAndHelpView: View {
     
     var body: some View {
-        ContainerView {
-            VStack() {
-                Spacer()
-                    .frame(height: 60)
-                
-                topView
-                
-                Spacer()
-                    .frame(height: 24)
-                
-                SettingsCardView(cardViewArray: [tutorialView.eraseToAnyView(),
-                                                 faqView.eraseToAnyView(),
-                                                 contactusView.eraseToAnyView(),
-                                                 privacyView.eraseToAnyView()])
-                
-                Spacer()
-            }
+        
+        ContainerViewWithHeader {
+            navigationBarView
+        } content: {
+            contentView
         }
-        .toolbar {
-            LeadingTitleToolbar(title: LocalizableSettings.settAboutAppBar.localized)
+    }
+    
+    var navigationBarView: some View {
+        NavigationHeaderView(title: LocalizableSettings.settAboutAppBar.localized)
+    }
+    
+    var contentView: some View {
+        VStack() {
+            Spacer()
+                .frame(height: 60)
+            
+            topView
+            
+            Spacer()
+                .frame(height: 24)
+            
+            SettingsCardView(cardViewArray: [tutorialView.eraseToAnyView(),
+                                             faqView.eraseToAnyView(),
+                                             contactusView.eraseToAnyView(),
+                                             privacyView.eraseToAnyView()])
+            
+            Spacer()
         }
     }
     

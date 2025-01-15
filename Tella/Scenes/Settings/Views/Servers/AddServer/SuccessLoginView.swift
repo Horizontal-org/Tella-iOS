@@ -38,7 +38,7 @@ struct SuccessLoginView: View {
                     .frame(height: 12)
                 
                 if type == .tella {
-                    TellaButtonView (title: "Advanced settings",
+                    TellaButtonView (title: LocalizableSettings.advancedSettings.localized,
                                      nextButtonAction: .destination,
                                      destination: AdvancedServerSettingsView()
                         .environmentObject(serverViewModel),
