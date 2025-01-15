@@ -23,7 +23,7 @@ struct CreateEntityView: View {
         
         ZStack {
             ContainerViewWithHeader {
-                headerView
+                navigationBarView
             } content: {
                 contentView
             }
@@ -48,7 +48,7 @@ struct CreateEntityView: View {
         }
     }
     
-    fileprivate var headerView: some View {
+    fileprivate var navigationBarView: some View {
         NavigationHeaderView(title: entityViewModel.templateName,
                              backButtonAction: { showSaveEntityConfirmationView() },
                              trailingButton: .save,

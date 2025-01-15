@@ -23,7 +23,7 @@ struct DraftView: View  {
         ZStack {
             
             ContainerViewWithHeader {
-                headerView
+                navigationBarView
             } content: {
                 contentView
             }
@@ -46,7 +46,7 @@ struct DraftView: View  {
         .overlay(cameraView)
     }
     
-    var headerView: some View {
+    var navigationBarView: some View {
         NavigationHeaderView(title: LocalizableReport.reportsText.localized,
                              backButtonAction: {backAction()},
                              trailingButton: .save,

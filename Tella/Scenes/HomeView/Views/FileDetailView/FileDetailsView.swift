@@ -21,7 +21,7 @@ struct FileDetailsView: View {
         ZStack {
             
             ContainerViewWithHeader {
-                toolbar()
+                navigationBarView()
             } content: {
                 detailsView()
             }
@@ -113,7 +113,7 @@ struct FileDetailsView: View {
     }
     
     @ViewBuilder
-    func toolbar() -> some View {
+    func navigationBarView() -> some View {
         if let file = self.fileListViewModel.selectedFiles.first {
             
             ZStack{}

@@ -20,7 +20,7 @@ struct ResourcesView: View {
     var body: some View {
         
         ContainerViewWithHeader {
-            headerView
+            navigationBarView
         } content: {
             contentView
         }
@@ -40,7 +40,7 @@ struct ResourcesView: View {
         }.padding(.horizontal, 18)
     }
     
-    var headerView: some View {
+    var navigationBarView: some View {
         NavigationHeaderView(title: LocalizableResources.resourcesServerTitle.localized,
                              backButtonAction: {backAction()},
                              trailingButton: .reload,

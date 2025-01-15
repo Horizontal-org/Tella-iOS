@@ -16,7 +16,7 @@ struct OutboxDetailsView<T: Server>: View {
         ZStack {
             
             ContainerViewWithHeader {
-                headerView
+                navigationBarView
             } content: {
                 contentView
             }
@@ -54,7 +54,7 @@ struct OutboxDetailsView<T: Server>: View {
         }
     }
     
-    var headerView: some View {
+    var navigationBarView: some View {
         NavigationHeaderView(title: LocalizableReport.reportsText.localized,
                              backButtonAction: {handleBackAction()},
                              trailingButton: .delete,

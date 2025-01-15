@@ -21,29 +21,16 @@ struct SummaryEntityView: View {
                                                                        entityInstanceId:entityInstanceId))
     }
     var body: some View {
-        ContainerView {
-            VStack {
-                entityContentView
-                
-                if summaryViewModel.shouldHideBottomActionView {
-                    UwaziDividerWidget()
-                    bottomActionView
-                }
-            }
+        ZStack {
             
+            ContainerViewWithHeader {
+                navigationBarView
+            } content: {
+                contentView
+            }
+
             if summaryViewModel.isLoading {
                 CircularActivityIndicatory()
-            }
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack {
-                    Text(LocalizableUwazi.uwaziEntitySummaryDetailToolbarItem.localized)
-                        .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity, alignment: .leading) // Align to leading
-                }
             }
         }
         .onReceive(summaryViewModel.$shouldHideView, perform: { shouldHideView in
@@ -51,10 +38,13 @@ struct SummaryEntityView: View {
                 dismissViews()
             }
         })
-
     }
-    
-    var entityContentView: some View {
+
+    var navigationBarView: some View {
+        NavigationHeaderView(title: LocalizableUwazi.uwaziEntitySummaryDetailToolbarItem.localized)
+    }
+
+    var contentView: some View {
         VStack {
             templateData
             
@@ -65,12 +55,18 @@ struct SummaryEntityView: View {
             
             entityTitle
             
-            entityFilesView
+            entityContent
             
             Spacer()
-        }.scrollOnOverflow()
+            
+            if summaryViewModel.shouldHideBottomActionView {
+                UwaziDividerWidget()
+                bottomActionView
+            }
+        }
     }
-    
+
+        }.scrollOnOverflow()
     var templateData: some View {
         VStack {
             Text(summaryViewModel.serverName)

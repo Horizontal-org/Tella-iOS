@@ -16,7 +16,7 @@ struct SelectSharedDriveView: View {
     var body: some View {
         
         ContainerViewWithHeader {
-            navigationBar
+            navigationBarView
         } content: {
             contentView
         }
@@ -26,7 +26,7 @@ struct SelectSharedDriveView: View {
         }
     }
     
-    var navigationBar: some View {
+    var navigationBarView: some View {
         NavigationHeaderView(title: LocalizableSettings.gDriveSelectSharedDriveToolbar.localized,
                              backButtonAction:{ backButtonAction() },
                              trailingButton: .save)

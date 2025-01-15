@@ -74,7 +74,6 @@ struct NavigationHeaderView: View {
         default:
             AnyView(rightButton)
         }
-        
     }
     
     private var middleButton: some View {
@@ -86,16 +85,14 @@ struct NavigationHeaderView: View {
                 .padding()
         }.disabled(!isMiddleButtonEnabled)
     }
-    
-    
+
     private var rightButton: some View {
         Button(action: { trailingButtonAction?() }) {
             Image(trailingButton.imageName)
-                .resizable()
-                .frame(width: 24, height: 24)
                 .opacity(isTrailingButtonEnabled ? 1 : 0.4)
                 .padding()
         }.disabled(!isTrailingButtonEnabled)
+            .background(Color.red)
     }
 }
 
@@ -122,7 +119,7 @@ enum TrailingButtonType  {
         case .save: return "reports.save"
         case .validate: return "report.select-files"
         case .reload: return "arrow.clockwise"
-        case .delete: return "report.delete-outbox"
+        case .delete: return "delete-icon-bin"
         case .editFile: return "edit.audio.cut"
         case .more: return "files.more"
         case .custom, .none : return ""

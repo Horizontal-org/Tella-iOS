@@ -16,13 +16,13 @@ struct EntitySelectorView: View {
     
     var body: some View {
         ContainerViewWithHeader {
-            headerView
+            navigationBarView
         } content: {
             contentView
         }
     }
     
-    var headerView: some View {
+    var navigationBarView: some View {
         NavigationHeaderView(title: prompt.question,
                              trailingButton: prompt.value.isEmpty ? .none : .validate,
                              trailingButtonAction: {presentationMode.wrappedValue.dismiss()})

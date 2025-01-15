@@ -34,7 +34,7 @@ struct TrailingImageButtonToolBar_Previews: PreviewProvider {
         VStack {
             
         } .toolbar {
-            TrailingImageButtonToolBar(imageName: "report.delete-outbox")
+            TrailingImageButtonToolBar(imageName: "delete-icon-bin")
         }
     }
 }

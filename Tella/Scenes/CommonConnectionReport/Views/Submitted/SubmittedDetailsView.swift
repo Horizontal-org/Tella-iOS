@@ -16,7 +16,7 @@ struct SubmittedDetailsView: View {
     var body: some View {
 
         ContainerViewWithHeader {
-            headerView
+            navigationBarView
         } content: {
             contentView
         }
@@ -38,7 +38,7 @@ struct SubmittedDetailsView: View {
         })
     }
     
-    var headerView: some View {
+    var navigationBarView: some View {
         NavigationHeaderView(title: LocalizableReport.reportsText.localized,
                              backButtonAction: {dismissViews()},
                              trailingButton: .save,
