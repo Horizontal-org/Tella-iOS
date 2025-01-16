@@ -46,6 +46,17 @@ struct SummaryEntityView: View {
     
     var contentView: some View {
         VStack {
+            entityContentView
+            
+            if summaryViewModel.shouldHideBottomActionView {
+                UwaziDividerWidget()
+                bottomActionView
+            }
+        }
+    }
+    
+    var entityContentView: some View {
+        VStack {
             templateData
             
             UwaziDividerWidget()
@@ -55,14 +66,9 @@ struct SummaryEntityView: View {
             
             entityTitle
             
-            entityContent
+            entityFilesView
             
             Spacer()
-            
-            if summaryViewModel.shouldHideBottomActionView {
-                UwaziDividerWidget()
-                bottomActionView
-            }
         }.scrollOnOverflow()
     }
     
