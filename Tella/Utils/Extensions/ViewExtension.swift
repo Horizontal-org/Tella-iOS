@@ -48,10 +48,13 @@ extension View {
     }
     
     func dismiss() {
-        UIApplication.shared.topNavigationController()?.dismiss(animated: false)
+        UIApplication.getTopViewController()?.dismiss(animated: false)
+    }
+    
+    func dismiss(completion:@escaping () -> Void) {
+        UIApplication.getTopViewController()?.dismiss(animated: false, completion: completion)
     }
 
-    
     @ViewBuilder
     func addNavigationLink<Destination: View>(isActive:Binding<Bool>, shouldAddEmptyView: Bool = false, destination: Destination) -> some View    {
         
@@ -120,7 +123,7 @@ extension View {
         self.present(style: .overCurrentContext, transitionStyle: .crossDissolve, builder: {viewToShow})
     }
     
-    func showBottomSheetView<Content:View>(content : Content, modalHeight:CGFloat, isShown: Binding<Bool>) {
+    func showBottomSheetView<Content:View>(content : Content, modalHeight:CGFloat, isShown: Binding<Bool> = .constant(true)) {
         let viewToShow = DragView(modalHeight: modalHeight, isShown: isShown, content: {content})
         self.present(style: .overCurrentContext, transitionStyle: .crossDissolve, builder: {viewToShow})
     }

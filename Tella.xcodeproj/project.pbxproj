@@ -55,6 +55,7 @@
 		1216F8742901823100F5AEA5 /* UnderlinedTextEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1216F8732901823100F5AEA5 /* UnderlinedTextEditorView.swift */; };
 		1217FCA128F9946A00DD2D70 /* CircularActivityIndicatory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217FCA028F9946A00DD2D70 /* CircularActivityIndicatory.swift */; };
 		1217FCA328F99A7D00DD2D70 /* CircularLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1217FCA228F99A7D00DD2D70 /* CircularLoader.swift */; };
+		12181ABD2D146F1500CDF0F4 /* AssetItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12181ABC2D146F1200CDF0F4 /* AssetItem.swift */; };
 		1218E86528E48AEC00FE2E68 /* LoginResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1218E86428E48AEC00FE2E68 /* LoginResult.swift */; };
 		1218EDFC2AFED7F700F672F7 /* FeedbackConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1218EDFB2AFED7F700F672F7 /* FeedbackConstants.swift */; };
 		12199C362940966E0041BD38 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12199C352940966E0041BD38 /* OpenSans-Italic.ttf */; };
@@ -245,6 +246,7 @@
 		127B56D5279AC28300F902C9 /* CancelImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127B56D4279AC28200F902C9 /* CancelImportView.swift */; };
 		127C155827DA486A009EC15B /* TransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155727DA486A009EC15B /* TransitionView.swift */; };
 		127C155C27DA69FF009EC15B /* TransitionViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155B27DA69FF009EC15B /* TransitionViewData.swift */; };
+		127C4AAF27E4A74B00B1A1D3 /* ShareFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C4AAE27E4A74B00B1A1D3 /* ShareFileView.swift */; };
 		127C155E27DA6C2E009EC15B /* EmptyFileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C155D27DA6C2E009EC15B /* EmptyFileListView.swift */; };
 		1280B9902C4082A6004B19F1 /* NextcloudOutboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1280B98F2C4082A6004B19F1 /* NextcloudOutboxViewModel.swift */; };
 		1283C257272AA6F6009180CA /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */; };
@@ -321,6 +323,12 @@
 		12A2DB03273576D50094B856 /* AddFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A2DB02273576D50094B856 /* AddFileView.swift */; };
 		12A43B4F29941574003EF33E /* ReportFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A43B4E29941574003EF33E /* ReportFile.swift */; };
 		12A697B32840C50400BE5E9C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A697B52840C50400BE5E9C /* Localizable.strings */; };
+		12A6B6622D12CE080002F74B /* EmptyFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B6612D12CE080002F74B /* EmptyFileView.swift */; };
+		12A6B6652D132E310002F74B /* CardFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B6642D132E290002F74B /* CardFrame.swift */; };
+		12A6B6672D13628B0002F74B /* LimitedPhotoLibraryActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B6662D1362860002F74B /* LimitedPhotoLibraryActionType.swift */; };
+		12A6B6692D142B610002F74B /* LimitedAccessPhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B6682D142B5C0002F74B /* LimitedAccessPhotoViewModel.swift */; };
+		12A6B66D2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B66C2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift */; };
+		12A6B66F2D1443DC0002F74B /* AssetGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6B66E2D1443DC0002F74B /* AssetGridView.swift */; };
 		12A8B09D2AFC0CEE007C838F /* LocalizableCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */; };
 		12AA5A3528576E9C00134A9B /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AA5A3428576E9C00134A9B /* ArrayExtension.swift */; };
 		12AB30D3272C36500020FFBF /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB30D2272C36500020FFBF /* HomeData.swift */; };
@@ -355,6 +363,8 @@
 		12D4E8322B45964E00E7FCE7 /* FileWalker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D4E8312B45964E00E7FCE7 /* FileWalker.swift */; };
 		12D7D11C28E3581E008121C8 /* URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7D11B28E3581E008121C8 /* URLRequest.swift */; };
 		12D7D11F28E36123008121C8 /* ServerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7D11E28E36123008121C8 /* ServerRepository.swift */; };
+		12D9A9242D11F78F008C206E /* LimitedAccessPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9A9232D11F78F008C206E /* LimitedAccessPhotoView.swift */; };
+		12D9A9262D121789008C206E /* CardButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9A9252D121789008C206E /* CardButtonView.swift */; };
 		12D9A9222D11AADA008C206E /* QuickDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9A9212D11AADA008C206E /* QuickDeleteView.swift */; };
 		12E0882027AD29E400CEB198 /* SaveAudioConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */; };
 		12E0882427AD31F600CEB198 /* LocalizableAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0882327AD31F500CEB198 /* LocalizableAudio.swift */; };
@@ -702,6 +712,7 @@
 		1216F8732901823100F5AEA5 /* UnderlinedTextEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlinedTextEditorView.swift; sourceTree = "<group>"; };
 		1217FCA028F9946A00DD2D70 /* CircularActivityIndicatory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularActivityIndicatory.swift; sourceTree = "<group>"; };
 		1217FCA228F99A7D00DD2D70 /* CircularLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularLoader.swift; sourceTree = "<group>"; };
+		12181ABC2D146F1200CDF0F4 /* AssetItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetItem.swift; sourceTree = "<group>"; };
 		1218E86428E48AEC00FE2E68 /* LoginResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResult.swift; sourceTree = "<group>"; };
 		1218EDFB2AFED7F700F672F7 /* FeedbackConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackConstants.swift; sourceTree = "<group>"; };
 		12199C352940966E0041BD38 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Italic.ttf"; sourceTree = "<group>"; };
@@ -891,6 +902,7 @@
 		127B56D4279AC28200F902C9 /* CancelImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelImportView.swift; sourceTree = "<group>"; };
 		127C155727DA486A009EC15B /* TransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionView.swift; sourceTree = "<group>"; };
 		127C155B27DA69FF009EC15B /* TransitionViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionViewData.swift; sourceTree = "<group>"; };
+		127C4AAE27E4A74B00B1A1D3 /* ShareFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareFileView.swift; sourceTree = "<group>"; };
 		127C155D27DA6C2E009EC15B /* EmptyFileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyFileListView.swift; sourceTree = "<group>"; };
 		1280B98F2C4082A6004B19F1 /* NextcloudOutboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudOutboxViewModel.swift; sourceTree = "<group>"; };
 		1283C256272AA6F6009180CA /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
@@ -965,6 +977,12 @@
 		12A697B42840C50400BE5E9C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12A697B62840C51C00BE5E9C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12A697B72840C54200BE5E9C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		12A6B6612D12CE080002F74B /* EmptyFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyFileView.swift; sourceTree = "<group>"; };
+		12A6B6642D132E290002F74B /* CardFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFrame.swift; sourceTree = "<group>"; };
+		12A6B6662D1362860002F74B /* LimitedPhotoLibraryActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitedPhotoLibraryActionType.swift; sourceTree = "<group>"; };
+		12A6B6682D142B5C0002F74B /* LimitedAccessPhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitedAccessPhotoViewModel.swift; sourceTree = "<group>"; };
+		12A6B66C2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagelimitedPhotoBottomSheet.swift; sourceTree = "<group>"; };
+		12A6B66E2D1443DC0002F74B /* AssetGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetGridView.swift; sourceTree = "<group>"; };
 		12A8B09C2AFC0CEE007C838F /* LocalizableCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableCommon.swift; sourceTree = "<group>"; };
 		12AA5A3428576E9C00134A9B /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		12AB30D2272C36500020FFBF /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
@@ -1000,6 +1018,8 @@
 		12D4E8312B45964E00E7FCE7 /* FileWalker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileWalker.swift; sourceTree = "<group>"; };
 		12D7D11B28E3581E008121C8 /* URLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequest.swift; sourceTree = "<group>"; };
 		12D7D11E28E36123008121C8 /* ServerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerRepository.swift; sourceTree = "<group>"; };
+		12D9A9232D11F78F008C206E /* LimitedAccessPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitedAccessPhotoView.swift; sourceTree = "<group>"; };
+		12D9A9252D121789008C206E /* CardButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardButtonView.swift; sourceTree = "<group>"; };
 		12D9A9212D11AADA008C206E /* QuickDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickDeleteView.swift; sourceTree = "<group>"; };
 		12E0881F27AD29E400CEB198 /* SaveAudioConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveAudioConfirmationView.swift; sourceTree = "<group>"; };
 		12E0882327AD31F500CEB198 /* LocalizableAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableAudio.swift; sourceTree = "<group>"; };
@@ -1523,6 +1543,16 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		12181ABE2D15A73900CDF0F4 /* LimitedAccessPhotoView */ = {
+			isa = PBXGroup;
+			children = (
+				12D9A9232D11F78F008C206E /* LimitedAccessPhotoView.swift */,
+				12A6B66E2D1443DC0002F74B /* AssetGridView.swift */,
+				12A6B66C2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift */,
+			);
+			path = LimitedAccessPhotoView;
+			sourceTree = "<group>";
+		};
 		121C945B28FF026200570EB4 /* AddServer */ = {
 			isa = PBXGroup;
 			children = (
@@ -1990,6 +2020,8 @@
 				128D6E1D2804DA2A0082AB18 /* ListActionSheetItem.swift */,
 				122389BA293683930058593B /* ServerDataItem.swift */,
 				15622F492B72B1FF00289816 /* DeleteConfirmation.swift */,
+				12181ABC2D146F1200CDF0F4 /* AssetItem.swift */,
+				12A6B6662D1362860002F74B /* LimitedPhotoLibraryActionType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2085,6 +2117,7 @@
 				129533C127399A1B0053FA4B /* PhotoVideoPickerView.swift */,
 				123125412930241500D3BCD5 /* PhotoVideoViewModel.swift */,
 				0D4BC3CD267668D600DCDC30 /* AddFileYellowButton.swift */,
+				12181ABE2D15A73900CDF0F4 /* LimitedAccessPhotoView */,
 			);
 			path = "Add files";
 			sourceTree = "<group>";
@@ -2150,6 +2183,7 @@
 				128C7BC32745AB0100A680B3 /* FileListViewModel.swift */,
 				128D6E172804531B0082AB18 /* AddPhotoVideoItems.swift */,
 				128EDB932809897C00747B98 /* HomeViewModel.swift */,
+				12A6B6682D142B5C0002F74B /* LimitedAccessPhotoViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -2221,7 +2255,6 @@
 				D5DA7F9A2648D05400B00FDA /* FileListView.swift */,
 				12E9DD9827DF65E70002FD00 /* MoveFilesView.swift */,
 				12E9DD9A27DF7DA50002FD00 /* CreateNewFolderView.swift */,
-				127C155D27DA6C2E009EC15B /* EmptyFileListView.swift */,
 				128B929C27D7A08700E92ACF /* FileItemsView.swift */,
 				128B929627D7920300E92ACF /* SelectingFilesHeaderView.swift */,
 				128B929827D796E800E92ACF /* FolderListView.swift */,
@@ -2365,6 +2398,15 @@
 				12A148992720B53800A1ADDC /* ConfirmPasswordErrorView.swift */,
 			);
 			path = CommonView;
+			sourceTree = "<group>";
+		};
+		12A6B6632D131F4F0002F74B /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				12D9A9252D121789008C206E /* CardButtonView.swift */,
+				12A6B6612D12CE080002F74B /* EmptyFileView.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		12AB30D1272C33D90020FFBF /* Home */ = {
@@ -2567,6 +2609,7 @@
 				1503C87D2C07A080000F2209 /* ServerConnectionHeaderView.swift */,
 				20F3E6002CB5D9EC00B570E3 /* EditFileCancelBottomSheet.swift */,
 				203F4D7F2CE77B1500D15086 /* CustomThumbnailSlider.swift */,
+				12A6B6642D132E290002F74B /* CardFrame.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -3095,6 +3138,7 @@
 			children = (
 				128B929527D77FF000E92ACF /* File list */,
 				127964B327CFA8AF003DD7DF /* Add files */,
+				12A6B6632D131F4F0002F74B /* Common */,
 			);
 			path = FileListView;
 			sourceTree = "<group>";
@@ -3828,6 +3872,7 @@
 				127092D42C2D8BA5002030AA /* NextcloudDatabase.swift in Sources */,
 				E1CF5A272AB3488E00365036 /* JSONDecoderExtension.swift in Sources */,
 				1291F4F227B52BF9006A34D3 /* QueuePlayer.swift in Sources */,
+				12A6B66F2D1443DC0002F74B /* AssetGridView.swift in Sources */,
 				1221CB7128DB1B5A0042F15F /* KeyValue.swift in Sources */,
 				1234179229CD19E6004CFAEA /* BaseUploadOperation.swift in Sources */,
 				125EFACE274A834300D93DF6 /* FileActionMenu.swift in Sources */,
@@ -3862,7 +3907,9 @@
 				12D9A9222D11AADA008C206E /* QuickDeleteView.swift in Sources */,
 				0E64C6A6265E7625005A7934 /* ActionListBottomSheet.swift in Sources */,
 				209AC68A2C332E3100492356 /* TellaServer.swift in Sources */,
+				12A6B6652D132E310002F74B /* CardFrame.swift in Sources */,
 				CCC1B4352AC75B550075B819 /* UwaziEntitySubtitleView.swift in Sources */,
+				12A6B6692D142B610002F74B /* LimitedAccessPhotoViewModel.swift in Sources */,
 				D5077A40260D300600D72947 /* DebugLogging.swift in Sources */,
 				1234179429CD2CFC004CFAEA /* URLSessionTaskResponse.swift in Sources */,
 				E1F6D7832AB17FB5000A9B64 /* UwaziValue.swift in Sources */,
@@ -3908,6 +3955,7 @@
 				120D86642CB56FC500C007B4 /* ResultExtension.swift in Sources */,
 				1574AC832C878FF0007BEBF5 /* DropboxRepository.swift in Sources */,
 				1293F6682AD7EF3900F6CFBD /* CloseHeaderView.swift in Sources */,
+				12D9A9242D11F78F008C206E /* LimitedAccessPhotoView.swift in Sources */,
 				1278B66127EB364500C9AC4D /* Utils.swift in Sources */,
 				15A173442C78F64100E84F55 /* LocalizableError.swift in Sources */,
 				125D2321271F823100250FBB /* UIApplicationExtension.swift in Sources */,
@@ -3942,6 +3990,8 @@
 				122B61362AE72D8D00631403 /* FeedbackService.swift in Sources */,
 				0E87C875268BDDFB00EB5E34 /* ImageViewer.swift in Sources */,
 				209AC6952C332F6000492356 /* PHPhotoLibraryExtension.swift in Sources */,
+				12A6B6622D12CE080002F74B /* EmptyFileView.swift in Sources */,
+				12A6B6672D13628B0002F74B /* LimitedPhotoLibraryActionType.swift in Sources */,
 				1233076729F15A290019DF7C /* NetworkMonitor.swift in Sources */,
 				1249B3832AD43AA7009A7023 /* VaultFilesManagerInterface.swift in Sources */,
 				15F64CA62B6D80F7008A57AA /* ResourceCardViewModel.swift in Sources */,
@@ -4052,6 +4102,7 @@
 				128D6E1C280480500082AB18 /* FileActionType.swift in Sources */,
 				D75F9E9C25342539006F6212 /* RecordViewModel.swift in Sources */,
 				E1EEE2A129F6EA2B009FE227 /* UwaziLoginView.swift in Sources */,
+				12A6B66D2D143D030002F74B /* ManagelimitedPhotoBottomSheet.swift in Sources */,
 				15BD9CB12BC744BC00C3932B /* NavigationHeaderView.swift in Sources */,
 				1587D6EF2C9A003F003E0B3D /* DropboxReport.swift in Sources */,
 				15791C1A2B6AC34100D67C74 /* ResourcesView.swift in Sources */,
@@ -4134,6 +4185,7 @@
 				150913422B841C3F001E782A /* ResourceActionType.swift in Sources */,
 				129B845128BF6C7800F1B344 /* ServersViewModel.swift in Sources */,
 				1203CDDC298C5B9100D09073 /* ConnectionActionType.swift in Sources */,
+				12181ABD2D146F1500CDF0F4 /* AssetItem.swift in Sources */,
 				E16D20CF2ABEAAB1001708CC /* TemplateItemViewModel.swift in Sources */,
 				15F64CA42B6D7CA1008A57AA /* AvailableResources.swift in Sources */,
 				12476E1F2A5B7D2F00069048 /* TrailingButtonToolbar.swift in Sources */,
@@ -4208,6 +4260,7 @@
 				12A43B4F29941574003EF33E /* ReportFile.swift in Sources */,
 				0E998553266E57FC0019FDF4 /* HeaderView.swift in Sources */,
 				12935479294A3BFC00735ED0 /* MIMEType.swift in Sources */,
+				12D9A9262D121789008C206E /* CardButtonView.swift in Sources */,
 				15791C232B6C2E9100D67C74 /* ResourcesViewModel.swift in Sources */,
 				E1E7C5822AAB707C00DDB07E /* UwaziDictionary.swift in Sources */,
 				126FE4D727A427E200AE4188 /* Constants.swift in Sources */,
@@ -4244,7 +4297,6 @@
 				121AD8222943A2F00056AC2A /* ReportRepository.swift in Sources */,
 				E1E7C5792AAB515100DDB07E /* UwaziTemplateRow.swift in Sources */,
 				12567FFC27178EE200A2D356 /* LockButton.swift in Sources */,
-				127C155E27DA6C2E009EC15B /* EmptyFileListView.swift in Sources */,
 				CC1C734D2AF5439600D736F8 /* UwaziMultipartData.swift in Sources */,
 				12781F4427E9FCE200FE9609 /* PasswordTypeEnum.swift in Sources */,
 				D5DA7F9B2648D05400B00FDA /* FileListView.swift in Sources */,

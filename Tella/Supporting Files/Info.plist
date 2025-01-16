@@ -116,5 +116,10 @@
     </array>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Tella requires access to the location to capture photos with location information.</string>
+    
+    
+    <key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
+    <string>YES</string>
+
 </dict>
 </plist>
