@@ -94,11 +94,7 @@ class CameraViewModel: ObservableObject {
         
         let isSaved = capturePhoto!.saveImage(to: url, shouldPreserveMetadata: isPreserveMetadataOn)
         
-        if isSaved {
-            saveFile(urlFile: url)
-        } else {
-            displayError()
-        }
+        isSaved ? saveFile(urlFile: url) : displayError()
     }
     
     func displayError() {
