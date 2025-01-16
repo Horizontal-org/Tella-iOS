@@ -63,8 +63,10 @@ struct NavigationHeaderView: View {
             }
             
         } label: {
-            Image(backButtonType.imageName)
-                .padding(EdgeInsets(top: 10, leading: 0, bottom: 5, trailing: 12))
+            if backButtonType != .none {
+                Image(backButtonType.imageName)
+                    .padding(EdgeInsets(top: 10, leading: 0, bottom: 5, trailing: 12))
+            }
         }
     }
     
@@ -169,11 +171,14 @@ enum BackButtonType {
     
     case back
     case close
-    
+    case none
+
     var imageName: String {
         switch self {
         case .close: return "close"
         case .back: return "back"
+        case .none: return ""
+
         }
     }
 }

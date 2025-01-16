@@ -8,8 +8,8 @@ import SwiftUI
 
 struct ConnectionsView: View {
     
+    var homeViewModel: HomeViewModel
     @EnvironmentObject var appModel: MainAppModel
-    @EnvironmentObject var homeViewModel: HomeViewModel
     
     var body: some View {
         
@@ -122,6 +122,6 @@ struct ConnectionsItemView<Destination:View>: View {
 
 struct ConnectionsView_Previews: PreviewProvider {
     static var previews: some View {
-        ConnectionsView()
+        ConnectionsView(homeViewModel: HomeViewModel(appModel: MainAppModel.stub()))
     }
 }

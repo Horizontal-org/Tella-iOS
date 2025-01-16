@@ -46,7 +46,7 @@ extension View {
 
 struct ContainerViewWithHeader<Header:View,Content:View>: View {
     
-    var headerView : () -> Header
+    var headerView : () -> Header?
     var content : () -> Content
     
     init( @ViewBuilder headerView : @escaping () -> Header, @ViewBuilder content : @escaping () -> Content) {
@@ -59,11 +59,12 @@ struct ContainerViewWithHeader<Header:View,Content:View>: View {
             Styles.Colors.backgroundMain
                 .edgesIgnoringSafeArea(.all)
             VStack {
-                headerView()
+                if let headerView = headerView() {
+                    headerView
+                }
                 self.content()
             }
         }
         .navigationBarHidden(true)
-        
     }
 }

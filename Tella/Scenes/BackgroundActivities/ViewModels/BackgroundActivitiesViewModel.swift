@@ -13,7 +13,7 @@ class BackgroundActivitiesViewModel:ObservableObject {
     
     init(mainAppModel:MainAppModel) {
         
-        mainAppModel.encryptionService?.$items
+        mainAppModel.encryptionService?.$backgroundItems
             .sink(receiveValue: { items in
                 self.items = items
                 UIApplication.shared.isIdleTimerDisabled = !self.items.isEmpty

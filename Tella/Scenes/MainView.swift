@@ -13,10 +13,8 @@ struct MainView: View  {
     @EnvironmentObject private var appViewState: AppViewState
     @EnvironmentObject private var sheetManager: SheetManager
     @State private var shouldReload : Bool = false
-    @StateObject var viewModel : MainViewModel
     
     init(mainAppModel: MainAppModel) {
-        _viewModel = StateObject(wrappedValue: MainViewModel(appModel: mainAppModel))
         UIApplication.shared.setupApperance()
     }
     
@@ -42,7 +40,7 @@ struct MainView: View  {
             CustomNavigation() {
                 tabbarContentView
             }.accentColor(.white)
-
+            
             if appModel.selectedTab == .mic {
                 RecordView(appModel: appModel,
                            sourceView: .tab,
@@ -84,21 +82,6 @@ struct MainView: View  {
                     Text(LocalizableSettings.settAppBar.localized)
                 }.tag(MainAppModel.Tabs.settings)
         }
-        
-        
-        .navigationBarTitle(appModel.selectedTab == .home ? LocalizableHome.appBar.localized : "", displayMode: .inline)
-        
-        .if(appModel.selectedTab == .home, transform: { view in
-            view.toolbar {
-                homeToolbar
-            }
-        })
-        .if(appModel.selectedTab == .settings, transform: { view in
-            view.toolbar {
-                settingsToolbar
-            }
-        })
-        
     }
     
     @ViewBuilder
@@ -108,51 +91,6 @@ struct MainView: View  {
                 .edgesIgnoringSafeArea(.all)
         }
     }
-    
-    @ToolbarContentBuilder
-    private var homeToolbar : some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
-            Button() {
-                showTopSheetView(content: BackgroundActivitiesView(mainAppModel: appModel))
-            } label: {
-                Image(viewModel.items.count > 0 ? "home.notification_badge" : "home.notificaiton")
-                    .padding()
-            }
-        }
-        
-        ToolbarItem(placement: .topBarTrailing) {
-            Button {
-                viewModel.items.count > 0 ? showBgEncryptionConfirmationView() : appViewState.resetToUnlock()
-            } label: {
-                Image("home.close")
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 35, height: 35)
-            }
-        }
-    }
-
-    private func showBgEncryptionConfirmationView() {
-        sheetManager.showBottomSheet(modalHeight: 200) {
-            ConfirmBottomSheet(titleText: LocalizableBackgroundActivities.exitSheetTitle.localized,
-                               msgText: LocalizableBackgroundActivities.exitSheetExpl.localized,
-                               cancelText: LocalizableBackgroundActivities.exitcancelSheetAction.localized,
-                               actionText: LocalizableBackgroundActivities.exitDiscardSheetAction.localized, didConfirmAction: {
-                appViewState.resetToUnlock()
-                sheetManager.hide()
-            })
-        }
-    }
-
-    @ToolbarContentBuilder
-    private var settingsToolbar : some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
-            Text(LocalizableSettings.settAppBar.localized)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-                .foregroundColor(Color.white)
-                .frame(width: 260,height:25,alignment:.leading)
-        }
-    }
-    
 }
 
 struct AppView_Previews: PreviewProvider {
@@ -164,3 +102,4 @@ struct AppView_Previews: PreviewProvider {
             .environmentObject(MainAppModel.stub())
     }
 }
+
