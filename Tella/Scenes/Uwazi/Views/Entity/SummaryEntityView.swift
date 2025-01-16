@@ -13,10 +13,10 @@ struct SummaryEntityView: View {
     @StateObject var summaryViewModel : SummaryViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    init(mainAppModel: MainAppModel, 
+    init(mainAppModel: MainAppModel,
          entityInstance: UwaziEntityInstance? = nil,
          entityInstanceId: Int? = nil) {
-        _summaryViewModel = StateObject(wrappedValue: SummaryViewModel(mainAppModel: mainAppModel, 
+        _summaryViewModel = StateObject(wrappedValue: SummaryViewModel(mainAppModel: mainAppModel,
                                                                        entityInstance: entityInstance,
                                                                        entityInstanceId:entityInstanceId))
     }
@@ -28,7 +28,7 @@ struct SummaryEntityView: View {
             } content: {
                 contentView
             }
-
+            
             if summaryViewModel.isLoading {
                 CircularActivityIndicatory()
             }
@@ -39,11 +39,11 @@ struct SummaryEntityView: View {
             }
         })
     }
-
+    
     var navigationBarView: some View {
         NavigationHeaderView(title: LocalizableUwazi.uwaziEntitySummaryDetailToolbarItem.localized)
     }
-
+    
     var contentView: some View {
         VStack {
             templateData
@@ -63,10 +63,9 @@ struct SummaryEntityView: View {
                 UwaziDividerWidget()
                 bottomActionView
             }
-        }
-    }
-
         }.scrollOnOverflow()
+    }
+    
     var templateData: some View {
         VStack {
             Text(summaryViewModel.serverName)
@@ -89,13 +88,13 @@ struct SummaryEntityView: View {
         }
         .padding()
     }
-
+    
     var entityFilesView: some View {
         VStack {
             entityResponseItem
             UwaziFileItems(files: summaryViewModel.uwaziVaultFiles)
         }           .padding(.horizontal, 16)
-
+        
     }
     
     var bottomActionView: some View {
@@ -118,7 +117,7 @@ struct SummaryEntityView: View {
                                       buttonType: .yellow,
                                       isValid: .constant(true)) {
                 
-                summaryViewModel.submitEntity() 
+                summaryViewModel.submitEntity()
                 
             }
             
@@ -126,14 +125,14 @@ struct SummaryEntityView: View {
     }
     
     var entityResponseItem: some View {
-
+        
         VaultFileItemView(file: VaultFileItemViewModel(image: AnyView(Image("document")),
-                                              name: LocalizableUwazi.uwaziEntitySummaryDetailEntityResponseTitle.localized,
-                                              size: summaryViewModel.getEntityResponseSize()))
+                                                       name: LocalizableUwazi.uwaziEntitySummaryDetailEntityResponseTitle.localized,
+                                                       size: summaryViewModel.getEntityResponseSize()))
         .padding(.bottom, 17)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-
+    
     private func dismissViews() {
         self.popTo(ViewClassType.uwaziView)
     }
@@ -148,9 +147,9 @@ struct UwaziFileItems: View {
         VStack {
             ForEach(files.sorted{$0.created < $1.created}, id: \.id) { file in
                 VaultFileItemView(file: VaultFileItemViewModel(image: file.listImage,
-                                                      name: file.name,
-                                                      size: file.size.getFormattedFileSize(),
-                                                      iconName: file.statusIcon))
+                                                               name: file.name,
+                                                               size: file.size.getFormattedFileSize(),
+                                                               iconName: file.statusIcon))
                 .padding(.bottom, 17)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }

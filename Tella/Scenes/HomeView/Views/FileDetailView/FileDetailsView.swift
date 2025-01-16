@@ -81,7 +81,8 @@ struct FileDetailsView: View {
             VideoViewer(appModel: fileListViewModel.appModel,
                         currentFile: viewModel.currentFile,
                         playList: self.fileListViewModel.getVideoFiles(),
-                        rootFile: fileListViewModel.rootFile)
+                        rootFile: fileListViewModel.rootFile,
+                        fileListViewModel: fileListViewModel)
         } else {
             if viewModel.documentIsReady {
                 switch viewModel.currentFile?.tellaFileType {
