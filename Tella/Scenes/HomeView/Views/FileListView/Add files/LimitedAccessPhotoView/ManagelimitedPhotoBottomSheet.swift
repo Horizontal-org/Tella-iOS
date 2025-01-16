@@ -28,15 +28,11 @@ struct ManagelimitedPhotoBottomSheet: View {
     private func handleActions(item: ListActionSheetItem) {
         
         guard let type = item.type as? LimitedPhotoLibraryActionType else { return }
-        
+        self.dismiss {
         switch type {
-            
-        case .add:
-            self.dismiss {
+         case .add:
                 showLimittedAccessUI()
-            }
         case .settings:
-            self.dismiss {
                 self.changePhotoLibraryPermission()
             }
         }

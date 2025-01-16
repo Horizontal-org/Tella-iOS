@@ -9,8 +9,8 @@ import Photos
 
 class AssetItem: Hashable, ObservableObject {
     
-    @Published var file : PHAsset
-    @Published var isSelected : Bool
+    @Published var file: PHAsset
+    @Published var isSelected: Bool
     
     init(file : PHAsset, isSelected : Bool) {
         self.file = file

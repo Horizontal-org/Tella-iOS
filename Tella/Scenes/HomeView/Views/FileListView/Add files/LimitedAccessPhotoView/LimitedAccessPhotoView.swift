@@ -11,17 +11,18 @@ import Photos
 
 struct LimitedAccessPhotoView: View {
     
-    @State private var showingLimitedPhotoPickerSheet : Bool = false
+    @State private var showingLimitedPhotoPickerSheet: Bool = false
     @StateObject var limitedAccessPhotoViewModel = LimitedAccessPhotoViewModel()
     
     var didSelect : ([PHAsset]) -> Void
+    let kCellSpacing = 2.5
     
     private var gridLayout: [GridItem] {
-        Array(repeating: GridItem(.flexible(), spacing: 2.5), count: 4)
+        Array(repeating: GridItem(.flexible(), spacing: kCellSpacing), count: 4)
     }
     
     private var height: CGFloat {
-        let totalSpacing = (16 * 2) + (2.5 * 3) // Padding and spacing between cells
+        let totalSpacing = (16 * 2) + (kCellSpacing * 3) // Padding and spacing between cells
         return (UIScreen.screenWidth - totalSpacing) / 4
     }
     
@@ -85,14 +86,13 @@ struct LimitedAccessPhotoView: View {
     
     var limitedPhotosView: some View {
         ScrollView {
-            LazyVGrid(columns: gridLayout, alignment: .center, spacing: 2.5) {
+            LazyVGrid(columns: gridLayout, alignment: .center, spacing: kCellSpacing) {
                 ForEach(limitedAccessPhotoViewModel.assets, id: \.self) { file in
                     AssetGridView(assetItem: file) {
                         limitedAccessPhotoViewModel.updateButtonState()
                     } .frame(height: height)
                 }
             }
-            
         }
     }
     

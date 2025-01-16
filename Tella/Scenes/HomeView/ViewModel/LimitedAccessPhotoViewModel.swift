@@ -15,7 +15,7 @@ class LimitedAccessPhotoViewModel: NSObject,ObservableObject,PHPhotoLibraryChang
     @Published var assets: [AssetItem] = []
     @Published var shouldEnableButton: Bool = false
 
-    var selectedAssets : [PHAsset] {
+    var selectedAssets: [PHAsset] {
         return assets.filter({$0.isSelected}).compactMap({$0.file})
     }
     

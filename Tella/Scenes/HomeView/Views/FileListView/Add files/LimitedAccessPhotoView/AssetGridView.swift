@@ -62,7 +62,3 @@ struct AssetGridView: View {
         didSelect()
     }
 }
-
-//#Preview {
-//    AssetGridView()
-//}

@@ -19,7 +19,6 @@ struct PhotoVideoPickerView: View {
     private let delayTimeInSecond = 0.5
     @State var authorizationStatus : PHAuthorizationStatus = .notDetermined
     
-    @EnvironmentObject private var appModel: MainAppModel
     @EnvironmentObject var sheetManager: SheetManager
     
     init(showingImagePicker: Binding<Bool>,
@@ -54,7 +53,7 @@ struct PhotoVideoPickerView: View {
             .sheet(isPresented: $showingImagePickerSheet, content: {
                 ImagePickerSheet { assets in
                     self.showingImagePickerSheet = false
-                   
+                    
                     if assets != nil  {
                         if assets?.count != 0 && viewModel.shouldShowProgressView {
                             showProgressView()
@@ -75,9 +74,7 @@ struct PhotoVideoPickerView: View {
                 
                 switch authorizationStatus {
                 case .authorized:
-                    DispatchQueue.main.asyncAfter(deadline: .now() + delayTimeInSecond) {
-                            showingImagePickerSheet = true
-                        }
+                    showingImagePickerSheet = true
                 case .limited:
                     showLimitedAccessView()
                 default:
@@ -106,18 +103,15 @@ struct PhotoVideoPickerView: View {
     func showLimitedAccessView() {
         
         let view = LimitedAccessPhotoView { assets in
- 
-                if assets.count != 0 && viewModel.shouldShowProgressView {
-                    showProgressView()
-                }
-                viewModel.handleAddingFile(assets)
-
+            if assets.count != 0 && viewModel.shouldShowProgressView {
+                showProgressView()
+            }
+            viewModel.handleAddingFile(assets)
         }
         
         self.present(style: .fullScreen,
                      transitionStyle: .crossDissolve,
-                     builder: {view
-        })
+                     builder: {view})
     }
     
     var addFileDocumentImporter: some View {
@@ -148,12 +142,3 @@ struct PhotoVideoPickerView: View {
         })
     }
 }
-
-//struct AddPhotoVideoBottomSheet_Previews: PreviewProvider {
-//    static var previews: some View {
-//        PhotoVideoPickerView()
-//            .environmentObject(MainAppModel())
-//            .environmentObject(FileListViewModel.stub())
-//
-//    }
-//}
