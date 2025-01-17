@@ -23,7 +23,7 @@ struct LockConfirmPinView: View {
                 } else {
                     lockViewModel.unlockType == .new ? self.lockWithPin() : self.updatePin()
                 }
-            }
+            }.navigationBarHidden(true)
         }
     }
     

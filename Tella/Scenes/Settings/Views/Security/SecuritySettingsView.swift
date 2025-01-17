@@ -141,15 +141,20 @@ struct SecuritySettingsView: View {
     var unlockView : some View {
         
         let passwordType = appModel.vaultManager.getPasswordType()
-        return passwordType == .tellaPassword ?
-        
-        UnlockView(type: .tellaPassword)
-            .environmentObject(lockViewModel)
-            .eraseToAnyView()  :
-        
-        UnlockView(type: .tellaPin)
-            .environmentObject(lockViewModel)
-            .eraseToAnyView()
+
+        return ContainerViewWithHeader {
+            NavigationHeaderView()
+        } content: {
+            passwordType == .tellaPassword ?
+            
+            UnlockView(type: .tellaPassword)
+                .environmentObject(lockViewModel)
+                .eraseToAnyView()  :
+            
+            UnlockView(type: .tellaPin)
+                .environmentObject(lockViewModel)
+                .eraseToAnyView()
+        }
     }
     
     func showLockTimeout() {

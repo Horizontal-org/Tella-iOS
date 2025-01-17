@@ -22,7 +22,7 @@ struct LockPinView: View {
             .onAppear {
                 lockViewModel.initLockData()
 
-            }
+            }.navigationBarHidden(true)
     }
 }
 
