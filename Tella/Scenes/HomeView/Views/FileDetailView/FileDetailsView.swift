@@ -26,7 +26,7 @@ struct FileDetailsView: View {
                 detailsView()
             }
             
-            FileActionMenu()
+            FileActionMenu(fileListViewModel: fileListViewModel)
             
             if !viewModel.documentIsReady && viewModel.currentFile?.tellaFileType != .video {
                 ProgressView()
@@ -35,7 +35,6 @@ struct FileDetailsView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Styles.Colors.backgroundMain)
-        .environmentObject(fileListViewModel)
         .ignoresSafeArea(edges: .bottom)
         .onAppear(perform: {
             self.fileListViewModel.fileActionSource = .details

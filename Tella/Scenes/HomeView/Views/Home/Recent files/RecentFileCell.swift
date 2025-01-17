@@ -12,10 +12,7 @@ struct RecentFileCell<Destination:View>: View {
     
     var body: some View {
         Button {
-            navigateTo(destination: desination
-                .environmentObject(FileListViewModel(appModel: appModel,
-                                                     fileActionSource: .details,
-                                                     selectedFile: recentFile)))
+            navigateTo(destination: desination)
         } label: {
             ZStack{
                 recentFile.gridImage

@@ -39,5 +39,6 @@ struct ContentView: View {
             setDebugLevel(level: .debug, for: .app)
         }
         .environmentObject(DeviceOrientationHelper())
+        .navigationBarHidden(true)
     }
 }

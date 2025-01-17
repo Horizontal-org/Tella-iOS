@@ -31,7 +31,7 @@ struct MainView: View  {
             }
             securityScreenView
             
-        }.navigationBarHidden(false)
+        }
     }
     
     private var contentView: some View {

@@ -13,7 +13,7 @@ enum MoreButtonType {
 
 struct MoreFileActionButton: View {
     
-    @StateObject var fileListViewModel: FileListViewModel
+    @ObservedObject var fileListViewModel: FileListViewModel
     @EnvironmentObject var sheetManager: SheetManager
     @EnvironmentObject var appModel: MainAppModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -44,7 +44,7 @@ struct MoreFileActionButton: View {
         } label: {
             Image("files.more")
                 .padding(.all, moreButtonType == .navigationBar ? 20 : 13)
-        } .background(Color.gray)
+        }
     }
     
     var gridMoreButton: some View {
@@ -56,7 +56,7 @@ struct MoreFileActionButton: View {
                 .frame(width: 35, height: 35)
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: -6, trailing: -12))
         }.frame(width: 35, height: 35)
-            .background(Color.gray)
+            
     }
     
     private func showFileActionSheet() {

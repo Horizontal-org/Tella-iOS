@@ -7,7 +7,7 @@ import SwiftUI
 struct AddNewFolderView: View {
     
     @EnvironmentObject var appModel: MainAppModel
-    @EnvironmentObject var fileListViewModel : FileListViewModel
+    @ObservedObject var fileListViewModel : FileListViewModel
     @EnvironmentObject var sheetManager: SheetManager
     
     @State var fieldContent : String = ""
@@ -44,7 +44,7 @@ struct AddNewFolderView: View {
 
 struct AddNewFolderView_Previews: PreviewProvider {
     static var previews: some View {
-        AddNewFolderView()
+        AddNewFolderView(fileListViewModel: FileListViewModel.stub())
             .background(Styles.Colors.backgroundMain)
     }
 }

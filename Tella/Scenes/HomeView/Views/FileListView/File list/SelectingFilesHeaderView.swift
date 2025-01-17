@@ -6,69 +6,28 @@ import SwiftUI
 
 struct SelectingFilesHeaderView: View {
     
-    @EnvironmentObject var fileListViewModel : FileListViewModel
+    @ObservedObject var fileListViewModel : FileListViewModel
     
     var body: some View {
         if  fileListViewModel.shouldShowSelectingFilesHeaderView  {
-            
-            HStack{
-                
-                closeButton
-                
-                Spacer()
-                    .frame(width: 12)
-                
-                itemsTitle
-                
-                Spacer(minLength: 15)
-                
-                if fileListViewModel.selectedItemsNumber > 0 {
-                    
-                    shareButton
-                    
-                    Spacer()
-                        .frame(width:30)
-                    
-                    MoreFileActionButton(fileListViewModel: fileListViewModel,
-                                         moreButtonType: .navigationBar)
-                }
-                
-            }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 23))
-                .frame( height: 56)
+            NavigationHeaderView(title: fileListViewModel.selectedItemsNumber > 0 ? fileListViewModel.selectedItemsTitle : "",
+                                 backButtonType: .close,
+                                 backButtonAction: { backAction() },
+                                 middleButtonType: fileListViewModel.shouldShowShareButton ? .share : .none,
+                                 middleButtonAction: {showActivityViewController()},
+                                 trailingButton: fileListViewModel.selectedItemsNumber > 0 ? .custom : .none,
+                                 trailingButtonView:moreFileActionButton)
         }
     }
     
-    var closeButton: some View {
-        Button {
-            fileListViewModel.selectingFiles = false
-            fileListViewModel.resetSelectedItems()
-        } label: {
-            Image("close")
-        }
-        .frame(width: 24, height: 24)
+    var moreFileActionButton : AnyView {
+        AnyView(MoreFileActionButton(fileListViewModel: fileListViewModel,
+                                     moreButtonType: .navigationBar))
     }
     
-    @ViewBuilder
-    var itemsTitle: some View {
-        if fileListViewModel.selectedItemsNumber > 0 {
-            
-            Text(fileListViewModel.selectedItemsTitle)
-                .foregroundColor(.white).opacity(0.8)
-                .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-        }
-    }
-    
-    @ViewBuilder
-    var shareButton: some View {
-        if fileListViewModel.shouldActivateShare {
-            
-            Button {
-                showActivityViewController()
-            } label: {
-                Image("share-icon")
-            }
-            .frame(width: 24, height: 24)
-        }
+    func backAction() {
+        fileListViewModel.selectingFiles = false
+        fileListViewModel.resetSelectedItems()
     }
     
     func showActivityViewController() {
@@ -77,13 +36,11 @@ struct SelectingFilesHeaderView: View {
                 .edgesIgnoringSafeArea(.all)
         }
     }
-
 }
 
 struct SelectingFilesHeaderView_Previews: PreviewProvider {
     static var previews: some View {
-        SelectingFilesHeaderView()
-            .environmentObject(FileListViewModel.stub())
+        SelectingFilesHeaderView(fileListViewModel: FileListViewModel.stub())
             .background(Styles.Colors.backgroundMain)
     }
 }

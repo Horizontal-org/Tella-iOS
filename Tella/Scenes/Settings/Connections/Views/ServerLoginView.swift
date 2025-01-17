@@ -41,7 +41,6 @@ struct ServerLoginView: View {
         }
 
         .containerStyle()
-        .navigationBarHidden(true)
     }
     
     fileprivate func usernameTextFieldView() -> some View {

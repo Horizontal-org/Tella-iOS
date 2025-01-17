@@ -48,7 +48,6 @@ struct AddServerAccessChoiceView: View {
                 })
             }
         }
-        .navigationBarHidden(true)
     }
 }
 

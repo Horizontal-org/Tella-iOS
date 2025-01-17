@@ -9,7 +9,7 @@ struct FileListItem: View {
     var file: VaultFileDB
     
     @EnvironmentObject var appModel: MainAppModel
-    @EnvironmentObject var fileListViewModel : FileListViewModel
+    @ObservedObject var fileListViewModel : FileListViewModel
     
     var backgroundColor : Color {
         (fileListViewModel.getStatus(for: file) && fileListViewModel.selectingFiles) ? Color.white.opacity(0.16) : Styles.Colors.backgroundMain.opacity(0.001)
@@ -115,9 +115,8 @@ struct FileListItemButtonStyle : ButtonStyle {
 
 struct FileListItem_Previews: PreviewProvider {
     static var previews: some View {
-        FileListItem(file: VaultFileDB.stub())
+        FileListItem(file: VaultFileDB.stub(), fileListViewModel: FileListViewModel.stub())
             .environmentObject(MainAppModel.stub())
-            .environmentObject(FileListViewModel.stub())
     }
 }
 

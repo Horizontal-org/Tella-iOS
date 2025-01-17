@@ -161,7 +161,7 @@ enum MiddleButtonType  {
     var imageName: String {
         switch self {
         case .editFile: return "file.edit"
-        case .share: return "report.select-files"
+        case .share: return "share-icon"
         case .none: return ""
         }
     }

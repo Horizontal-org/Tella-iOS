@@ -46,8 +46,6 @@ struct LockChoiceView: View {
                 .padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
             }
         }
-        .navigationBarTitle("")
-        .navigationBarHidden(true)
         .onReceive(appViewState.$shouldHidePresentedView) { value in
             if(value) {
                 self.presentationMode.wrappedValue.dismiss()

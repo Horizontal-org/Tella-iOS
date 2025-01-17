@@ -10,11 +10,10 @@ struct FileListView: View {
     @StateObject var fileListViewModel : FileListViewModel
     @State var showFileDetails : Bool = false
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @State var navigationBarIsHidden : Bool = true
     
     var title : String = ""
     
-    init(appModel: MainAppModel, 
+    init(appModel: MainAppModel,
          rootFile: VaultFileDB? = nil ,
          filterType: FilterType ,
          title : String = "",
@@ -31,46 +30,15 @@ struct FileListView: View {
     
     var body: some View {
         
-        NavigationContainerView {
+        ContainerViewWithHeader {
             
-            ZStack(alignment: .top) {
-                
-                VStack {
-                    
-                    headerView
-                    
-                    SelectingFilesHeaderView()
-                    
-                    if (fileListViewModel.vaultFiles.isEmpty) && fileListViewModel.rootFile == nil  {
-                        EmptyFileView(message: LocalizableVault.emptyAllFilesExpl.localized)
-                        
-                    } else {
-                        if fileListViewModel.folderPathArray.count > 0 {
-                            FolderListView()
-                        }
-                        if fileListViewModel.vaultFiles.isEmpty {
-                            EmptyFileView(message: LocalizableVault.emptyFolderExpl.localized)
-                            
-                        } else {
-                            ManageFileView()
-                            FileItemsView(files: fileListViewModel.vaultFiles)
-                        }
-                    }
-                }
-                
-                if !fileListViewModel.shouldHideAddFileButton {
-                    AddFileView()
-                }
-                
-                FileActionMenu()
-                
-                
-            }.environmentObject(fileListViewModel)
+            VStack {
+                navigationBarView
+                SelectingFilesHeaderView(fileListViewModel: fileListViewModel)
+            }
+        } content: {
+            contentView
         }
-        .navigationBarHidden(navigationBarIsHidden)
-        
-        .environmentObject(fileListViewModel)
-        
         .onReceive(fileListViewModel.$showFileDetails) { value in
             if value {
                 navigateTo(destination: fileDetailView)
@@ -81,45 +49,56 @@ struct FileListView: View {
         })
     }
     
+    var contentView: some View {
+        
+        ZStack(alignment: .top) {
+            
+            VStack {
+                
+                if (fileListViewModel.vaultFiles.isEmpty) && fileListViewModel.rootFile == nil  {
+                    EmptyFileView(message: LocalizableVault.emptyAllFilesExpl.localized)
+                    
+                } else {
+                    if fileListViewModel.folderPathArray.count > 0 {
+                        FolderListView(fileListViewModel: fileListViewModel)
+                    }
+                    if fileListViewModel.vaultFiles.isEmpty {
+                        EmptyFileView(message: LocalizableVault.emptyFolderExpl.localized)
+                        
+                    } else {
+                        ManageFileView(fileListViewModel: fileListViewModel)
+                        FileItemsView(fileListViewModel: fileListViewModel, files: fileListViewModel.vaultFiles)
+                    }
+                }
+            }
+            
+            if !fileListViewModel.shouldHideAddFileButton {
+                AddFileView(fileListViewModel: fileListViewModel)
+            }
+            
+            FileActionMenu(fileListViewModel: fileListViewModel)
+        }
+    }
     
     var fileDetailView: FileDetailsView {
         FileDetailsView(appModel: appModel, currentFile: fileListViewModel.selectedFiles.first,fileListViewModel:fileListViewModel)
     }
     
     @ViewBuilder
-    var headerView: some View {
+    var navigationBarView: some View {
+        
         if !fileListViewModel.shouldHideNavigationBar {
-            HStack(spacing: 0) {
-                Button {
-                    navigationBarIsHidden = false
-                    presentationMode.wrappedValue.dismiss()
-                    
-                } label: {
-                    Image("back")
-                        .flipsForRightToLeftLayoutDirection(true)
-                        .padding()
-                }
-                
-                Text(title)
-                    .font(.custom(Styles.Fonts.semiBoldFontName, size: 18))
-                    .foregroundColor(.white)
-                
-                Spacer()
-                
-                if  fileListViewModel.fileListType == .selectFiles {
-                    
-                    Button {
-                        fileListViewModel.attachFiles()
-                        presentationMode.wrappedValue.dismiss()
-                        
-                        
-                    } label: {
-                        Image("report.select-files")
-                    }.padding(.trailing, 15)
-                    
-                }
-            }.frame(height: 56)
+            
+            NavigationHeaderView(title: title,
+                                 trailingButton: fileListViewModel.shouldShowSelectButton ? .validate : .none,
+                                 trailingButtonAction: { attachFiles() },
+                                 isTrailingButtonEnabled: fileListViewModel.selectButtonEnabled)
         }
+    }
+    
+    func attachFiles() {
+        fileListViewModel.attachFiles()
+        presentationMode.wrappedValue.dismiss()
     }
 }
 
@@ -133,6 +112,5 @@ struct FileListView_Previews: PreviewProvider {
         }
         .background(Styles.Colors.backgroundMain)
         .environmentObject(MainAppModel.stub())
-        .environmentObject(FileListViewModel.stub())
     }
 }

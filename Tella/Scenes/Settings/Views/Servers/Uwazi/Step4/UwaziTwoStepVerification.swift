@@ -54,9 +54,7 @@ struct UwaziTwoStepVerification: View {
                     CircularActivityIndicatory()
                 }
             }
-
         }
-        .navigationBarHidden(true)
         .onReceive(uwaziServerViewModel.$showLanguageSelectionView) { value in
             if value {
                 let languageView = UwaziLanguageSelectionView(isPresented: .constant(true))

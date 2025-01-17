@@ -33,7 +33,6 @@ struct UwaziSuccessView: View {
                 .padding(.trailing, 23)
 
         }
-        .navigationBarBackButtonHidden(true)
     }
 }
 

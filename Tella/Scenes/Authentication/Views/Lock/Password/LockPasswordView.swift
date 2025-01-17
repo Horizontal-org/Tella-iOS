@@ -21,7 +21,7 @@ struct LockPasswordView: View {
                      destination: ConfirmLockPasswordView().environmentObject(lockViewModel))
             .onAppear {
                 lockViewModel.initLockData()
-            }.navigationBarBackButtonHidden(true)
+            }
 
     }
 }

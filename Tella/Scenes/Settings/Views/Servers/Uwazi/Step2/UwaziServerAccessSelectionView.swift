@@ -41,9 +41,8 @@ struct UwaziServerAccessSelectionView: View {
                 })
             }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
         }
-        .navigationBarBackButtonHidden(true)
-
     }
+    
     struct HeaderView: View {
         var body: some View {
             VStack(spacing: 12) {
